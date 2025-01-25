@@ -19,7 +19,7 @@ public class Entity : MonoBehaviour
         {
             if (this is Player p)
             { 
-                if(proj.Hostile)
+                if(proj.Hostile && p.DeathKillTimer <= 0)
                 {
                     p.Pop();
                 }
