@@ -239,15 +239,64 @@ public class Player : Entity
     {
         Instance = this;
         EventManager.Update();
-        MovementUpdate();
-        WandUpdate();
-        HatStuff();
+        if (DeathKillTimer > 0)
+            Pop();
+        else
+        {
+            MovementUpdate();
+            WandUpdate();
+            HatStuff();
+        }
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
     void Update() => Instance = this;
+    public float DeathKillTimer = 0;
     public void Pop()
     {
-        Debug.Log("POP");
-        //This is where I'll put die stuff
+        rb.velocity *= 0.9f;
+        if(DeathKillTimer <= 0)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), 
+                    Utils.RandFloat(0.6f, 1.5f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3));
+            }
+            Body.SetActive(false);
+            additionalHatPos.y += 0.25f;
+        }
+        HatDeathStuff();
+        WandDeathStuff();
+        DeathKillTimer++;
+        if(Input.GetKey(KeyCode.R))
+        {
+            DeathKillTimer = 0;
+            Body.SetActive(true);
+        }
+    }
+    public void HatDeathStuff()
+    {
+        float toBody = Hat.transform.localPosition.y - Body.transform.localPosition.y;
+        float sinusoid1 = Mathf.Sin(DeathKillTimer * Mathf.PI / 60f);
+        float sinusoid2 = Mathf.Sin(DeathKillTimer * Mathf.PI / 40f);
+        if(toBody < 0)
+        {
+            Hat.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Hat.transform.localEulerAngles.z, 0, 0.1f));
+            Hat.transform.localPosition = (Vector2)Hat.transform.localPosition + additionalHatPos;
+            additionalHatPos *= 0.6f;
+        }
+        else
+        {
+            Hat.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Hat.transform.localEulerAngles.z, sinusoid1 * 25f, 0.1f));
+            Hat.transform.localPosition = (Vector2)Hat.transform.localPosition + additionalHatPos;
+            additionalHatPos.x = sinusoid2 * 0.019f * toBody;
+            additionalHatPos.y -= 0.003f;
+            additionalHatPos *= 0.97f;
+        }
+    }
+    public void WandDeathStuff()
+    {
+        Wand.transform.localPosition = Vector3.Lerp(Wand.transform.localPosition, new Vector3(0.4f, -0.6f), 0.1f);
+        Wand.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Wand.transform.transform.eulerAngles.z, Mathf.Sign(lastVelo.x) == 1 ? 0 : 180, 0.1f));
     }
 }
