@@ -79,6 +79,7 @@ public class Player : Entity
                 velocity = velocity * MaxSpeed + movespeed * speed * 25f;
                 squash = SquashAmt;
                 Body.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
+                AudioManager.PlaySound(GlobalDefinitions.audioClips[12], Wand.transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
             }
 
         //Final stuff
@@ -142,6 +143,7 @@ public class Player : Entity
         {
             if (Input.GetMouseButton(0))
             {
+                AudioManager.PlaySound(GlobalDefinitions.audioClips[14], Wand.transform.position, 1f, 1f);
                 AttackLeft = 50;
             }
         }
