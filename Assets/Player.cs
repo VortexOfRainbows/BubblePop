@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Transactions;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class Control
@@ -98,8 +99,17 @@ public class Player : MonoBehaviour
     private float PointDirOffset;
     private float MoveOffset;
     private float DashOffset;
+    private float AttackTimer = 0;
     private void WandUpdate()
     {
+        if(AttackTimer < -10)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                AttackTimer = 50;
+            }
+        }
+
         Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
         float dir = Mathf.Sign(toMouse.x);
         float bodyDir = Mathf.Sign(rb.velocity.x);
@@ -107,10 +117,25 @@ public class Player : MonoBehaviour
 
         //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
 
-        PointDirOffset = -40 * dir * squash;
+        PointDirOffset = -45 * dir * squash;
         MoveOffset = -5 * bodyDir * squash;
         DashOffset = 100 * dir * (1 - squash);
 
+        if (AttackTimer > 0)
+        {
+            if(AttackTimer % 2 == 1 && AttackTimer >= 41)
+            {
+                Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
+                Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
+                    toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad)
+                    * Utils.RandFloat(9, 15) + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
+            }
+            float percent = AttackTimer / 50f;
+            PointDirOffset += 165 * percent * dir * squash;
+        }
+        AttackTimer--;
+
+        //Final Stuff
         float r = attemptedPosition.ToRotation() * Mathf.Rad2Deg - PointDirOffset - MoveOffset + DashOffset;
         Wand.transform.localPosition = Vector2.Lerp(Wand.transform.localPosition, attemptedPosition, 0.08f);
         Wand.GetComponent<SpriteRenderer>().flipY = PointDirOffset < 0;
