@@ -30,6 +30,8 @@ public class Projectile : MonoBehaviour
     {
         if (Type == 0 || Type == 3)
         {
+            if(Type == 0)
+                timer += Random.Range(0, 40);
             transform.localScale *= 0.3f;
             Damage = 1;
             Friendly = true;
@@ -69,9 +71,9 @@ public class Projectile : MonoBehaviour
             Vector2 norm = rb.velocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.6f, .3f);
         }
-        if(timer > 120)
+        if(timer > 180)
         {
-            float alphaOut = 1 - (timer - 120) / 80f;
+            float alphaOut = 1 - (timer - 180) / 20f;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
         }
         timer++;
@@ -172,7 +174,16 @@ public class Projectile : MonoBehaviour
     }
     public void OnKill()
     {
-        if(Type == 1)
+        if(Type == 0)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(3, 6), 4f, 0.4f);
+            }
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], transform.position, 0.7f, 1.1f);
+        }
+        if (Type == 1)
         {
             for (int i = 0; i < 50; i++)
             {
