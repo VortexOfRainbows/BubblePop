@@ -1,5 +1,6 @@
 using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Projectile : MonoBehaviour
 {
@@ -32,10 +33,12 @@ public class Projectile : MonoBehaviour
             BathBombAI();
         if (Type == 2)
             SpikeAI();
+        if (Type == 3)
+            BigBubbleAI();
     }
     public void Init()
     {
-        if (Type == 0)
+        if (Type == 0 || Type == 3)
             transform.localScale *= 0.3f;
         if (Type == 2)
             spriteRenderer.sprite = GlobalDefinitions.SpikyProjectileSprite;
@@ -49,7 +52,7 @@ public class Projectile : MonoBehaviour
         velo.y += 0.005f;
         rb.velocity = velo;
 
-        if (rb.velocity.magnitude < 0.5f || timer > 200)
+        if (timer > 200)
         {
             Kill();
         }
@@ -57,6 +60,11 @@ public class Projectile : MonoBehaviour
         {
             Vector2 norm = rb.velocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.6f, .3f);
+        }
+        if(timer > 120)
+        {
+            float alphaOut = 1 - (timer - 120) / 80f;
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
         }
         timer++;
     }
@@ -110,12 +118,47 @@ public class Projectile : MonoBehaviour
         timer++;
         if(timer > 610)
         {
-            float alphaOut = (timer - 610) / 90f;
-            spriteRenderer.color = Color.white * alphaOut;
+            float alphaOut = 1 - (timer - 610) / 90f;
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
         }
         if(timer > 700)
         {
             Kill();
+        }
+    }
+    public void BigBubbleAI()
+    {
+        if(Player.Instance.AttackRight >= 50 && timer <= 0)
+        {
+            float targetSize = ((int)(Player.Instance.AttackRight - 50) / 100) * 0.8f + 0.8f + Player.Instance.AttackRight / 160f;
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
+            timer = -Player.Instance.AttackRight;
+            Vector2 awayFromWand = new Vector2(1, (0.55f + targetSize * 0.45f) * Mathf.Sign(Player.Instance.PointDirOffset)).RotatedBy(Player.Instance.Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
+            transform.position = Vector2.Lerp(transform.position,(Vector2)Player.Instance.Wand.transform.position + awayFromWand, 0.15f);
+            rb.velocity *= 0.8f;
+            rb.velocity += Player.Instance.rb.velocity * 0.1f;
+        }
+        else if(timer <= 0)
+        {
+            Vector2 toMouse = Utils.MouseWorld - Player.Position;
+            if (toMouse.magnitude < 6)
+                toMouse = toMouse.normalized * 6;
+            Vector2 mouse = Player.Position + toMouse;
+            toMouse = mouse - (Vector2) transform.position;
+            rb.velocity = toMouse * 0.1f + toMouse.normalized * (5f + Mathf.Min(15, 15f * (timer + 50) / -300f));
+            timer = 1;
+        }
+        else if(timer > 0)
+        {
+            rb.velocity *= 0.997f - timer / 6000f;
+            timer++;
+            if (timer > 1100)
+            {
+                float alphaOut = 1 - (timer - 1100) / 100f;
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+            }
+            if (timer > 1200)
+                Kill();
         }
     }
     public void OnKill()

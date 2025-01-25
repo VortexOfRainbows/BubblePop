@@ -15,16 +15,10 @@ public class Player : MonoBehaviour
     public static Player Instance;
     public static Vector2 Position => (Vector2)Instance.transform.position;
     [SerializeField]
-    private Sprite WandUp;
-    [SerializeField]
-    private Sprite WandDown;
-    [SerializeField]
     private Camera MainCamera;
-    [SerializeField]
-    private GameObject Wand;
-    [SerializeField]
-    private GameObject Body;
-    private Rigidbody2D rb;
+    public GameObject Wand;
+    public GameObject Body;
+    public Rigidbody2D rb;
     private float speed = 2.5f;
     private float MovementDeacceleration = 0.9f;
     private float MaxSpeed = 6f;
@@ -104,17 +98,25 @@ public class Player : MonoBehaviour
         squash = Mathf.Lerp(squash, 1, 0.025f);
     }
     private Vector3 WandEulerAngles = new Vector3(0, 0, 0);
-    private float PointDirOffset;
+    public float PointDirOffset;
     private float MoveOffset;
     private float DashOffset;
-    private float AttackTimer = 0;
+    private float AttackLeft = 0;
+    public float AttackRight = 0;
     private void WandUpdate()
     {
-        if(AttackTimer < -20)
+        if(AttackLeft < -20 && AttackRight < 0)
         {
             if (Input.GetMouseButton(0))
             {
-                AttackTimer = 50;
+                AttackLeft = 50;
+            }
+        }
+        if (AttackRight < -20 && AttackLeft < 0)
+        {
+            if (Input.GetMouseButton(1))
+            {
+                AttackRight = 50;
             }
         }
 
@@ -129,19 +131,41 @@ public class Player : MonoBehaviour
         MoveOffset = -5 * bodyDir * squash;
         DashOffset = 100 * dir * (1 - squash);
 
-        if (AttackTimer > 0)
+        Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
+        if (AttackLeft > 0)
         {
-            if(AttackTimer % 2 == 1 && AttackTimer >= 41)
+            if(AttackLeft % 2 == 1 && AttackLeft >= 41)
             {
-                Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
                 Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
                     toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad)
                     * Utils.RandFloat(9, 15) + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
             }
-            float percent = AttackTimer / 50f;
+            float percent = AttackLeft / 50f;
             PointDirOffset += 165 * percent * dir * squash;
         }
-        AttackTimer--;
+        if(AttackRight > 0)
+        {
+            if((Input.GetMouseButton(1) || AttackRight < 100) && AttackRight >= 50 )
+            {
+                if(AttackRight == 50)
+                {
+                    Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand, Vector2.zero, 3, 0);
+                }
+                if(AttackRight < 350)
+                    AttackRight++;
+                PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 300f * 45f) * dir * squash;
+            }
+            else
+            {
+                if (AttackRight > 50)
+                    AttackRight = 50;
+                AttackRight--;
+                float percent = AttackRight / 50f;
+                PointDirOffset += 125 * percent * dir * squash;
+            }
+        }
+        else
+            AttackRight--;
 
         //Final Stuff
         float r = attemptedPosition.ToRotation() * Mathf.Rad2Deg - PointDirOffset - MoveOffset + DashOffset;
@@ -149,6 +173,7 @@ public class Player : MonoBehaviour
         Wand.GetComponent<SpriteRenderer>().flipY = PointDirOffset < 0;
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
         Wand.transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
+        AttackLeft--;
     }
     private void FixedUpdate()
     {
