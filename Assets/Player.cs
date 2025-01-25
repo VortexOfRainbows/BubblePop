@@ -17,6 +17,10 @@ public class Player : Entity
     private Camera MainCamera;
     public GameObject Wand;
     public GameObject Body;
+    public GameObject Hat;
+    public SpriteRenderer WandR;
+    public SpriteRenderer BodyR;
+    public SpriteRenderer HatR;
     public Rigidbody2D rb;
     private float speed = 2.5f;
     private float MovementDeacceleration = 0.9f;
@@ -25,6 +29,7 @@ public class Player : Entity
     private float walkTimer = 0;
     private Vector2 lastVelo;
     private float SquashAmt = 0.45f;
+    private float Bobbing;
     void Start()
     {
         Instance = this;
@@ -66,15 +71,15 @@ public class Player : Entity
             velocity.x *= MovementDeacceleration;
         movespeed = movespeed.normalized;
 
+        dashTimer -= Time.fixedDeltaTime;
         if(Control.Dash && !Control.LastDash && movespeed.magnitude > 0)
-            if(dashTimer <= 0)
+            if (dashTimer <= 0)
             {
                 dashTimer = dashCD;
                 velocity = velocity * MaxSpeed + movespeed * speed * 25f;
                 squash = SquashAmt;
                 Body.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
             }
-        dashTimer -= Time.fixedDeltaTime;
 
         //Final stuff
         velocity += movespeed * speed;
@@ -93,7 +98,8 @@ public class Player : Entity
         rb.velocity = velocity;
         Control.LastDash = Control.Dash;
         float angleMult = 0.5f + (squash < 0.9f ? 0.5f : 0);
-        if(velocity.sqrMagnitude > 0.5f)
+        Bobbing = BobbingUpdate();
+        if (lastVelo.sqrMagnitude > 0.10f)
         {
             float r = Body.transform.eulerAngles.z;
             float angle = lastVelo.ToRotation() * Mathf.Rad2Deg;
@@ -111,19 +117,18 @@ public class Player : Entity
                 angle *= angleMult;
             }
             r = Mathf.LerpAngle(r, angle, 0.12f);
-            Body.GetComponent<SpriteRenderer>().flipY = r >= 90 && r < 270;
+            BodyR.flipY = r >= 90 && r < 270;
+            bool flip = !BodyR.flipY;
             Body.transform.eulerAngles = new Vector3(0, 0, r);
         }
-        float bobbing = BobbingUpdate();
-        Body.transform.localScale = new Vector3(1 + (1 - squash) * 2.5f + 0.1f * (1 - bobbing), bobbing * squash, 1);
-        Body.transform.localPosition = new Vector2(0, Mathf.Sign(lastVelo.x) * ((bobbing * squash) - 1)).RotatedBy(lastVelo.ToRotation());
+        Body.transform.localScale = new Vector3(1 + (1 - squash) * 2.5f + 0.1f * (1 - Bobbing), Bobbing * squash, 1);
+        Body.transform.localPosition = new Vector2(0, Mathf.Sign(lastVelo.x) * ((Bobbing * squash) - 1)).RotatedBy(lastVelo.ToRotation());
         if (squash < 1)
             squash += 0.005f;
         squash = Mathf.Lerp(squash, 1, 0.025f);
         if (Mathf.Abs(velocity.x) > 0.1f)
             lastVelo.x = velocity.x;
-        if (Mathf.Abs(velocity.y) > 0.1f)
-            lastVelo.y = velocity.y;
+        lastVelo.y = velocity.y;
     }
     private Vector3 WandEulerAngles = new Vector3(0, 0, 0);
     public float PointDirOffset;
@@ -212,12 +217,31 @@ public class Player : Entity
         float bobbing = 0.9f + 0.1f * sin;
         return bobbing;
     }
+    public Vector2 additionalHatPos = Vector2.zero;
+    public void HatStuff()
+    {
+        float r = new Vector2(Mathf.Abs(lastVelo.x), lastVelo.y * Mathf.Sign(lastVelo.x)).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, dashTimer / dashCD));
+        if (HatR.flipX == BodyR.flipY)
+        {
+            HatR.flipX = !BodyR.flipY;
+        }
+        Hat.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Hat.transform.eulerAngles.z, r, 0.2f));
+        //if (dashTimer > 0)
+        //{
+        //    float sin = Mathf.Sqrt(Mathf.Abs( Mathf.Sin(Mathf.PI * Mathf.Max(0, dashTimer / dashCD)))) * dashTimer / dashCD;
+        //    additionalHatPos = new Vector2(-sin, Mathf.Sign(lastVelo.x) * 1.1f * sin).RotatedBy(lastVelo.ToRotation());
+        //}
+        //else if (dashTimer <= 0)
+        additionalHatPos = Vector2.Lerp(additionalHatPos, Vector2.zero, 0.2f);
+        Hat.transform.localPosition = Vector2.Lerp((Vector2)Hat.transform.localPosition, new Vector2(0, -0.3f + 0.8f * Bobbing * squash - 1f * (1 - squash)), 0.05f) + additionalHatPos;
+    }
     private void FixedUpdate()
     {
         Instance = this;
         EventManager.Update();
         MovementUpdate();
         WandUpdate();
+        HatStuff();
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
     void Update() => Instance = this;
