@@ -13,4 +13,6 @@ public class GlobalDefinitions : MonoBehaviour
     public GameObject Duck;
     public static GameObject Soap => Instance.SoapNPC;
     public GameObject SoapNPC;
+    public static GameObject TinySoap => Instance.SoapTinyNPC;
+    public GameObject SoapTinyNPC;
 }
