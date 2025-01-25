@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Transactions;
 using UnityEngine;
 
 public static class Control
@@ -13,7 +14,15 @@ public static class Control
 public class Player : MonoBehaviour
 {
     [SerializeField]
+    private Sprite WandUp;
+    [SerializeField]
+    private Sprite WandDown;
+    [SerializeField]
     private Camera MainCamera;
+    [SerializeField]
+    private GameObject Wand;
+    [SerializeField]
+    private GameObject Body;
     private Rigidbody2D rb;
     private float speed = 2.5f;
     private float MovementDeacceleration = 0.9f;
@@ -64,7 +73,7 @@ public class Player : MonoBehaviour
             {
                 dashTimer = dashCD;
                 velocity = velocity * MaxSpeed + movespeed * speed * 20f;
-                squash = 0.5f;
+                squash = 0.45f;
             }
         dashTimer -= Time.fixedDeltaTime;
 
@@ -75,23 +84,47 @@ public class Player : MonoBehaviour
         {
             velocity = velocity.normalized * (MaxSpeed + (currentSpeed - MaxSpeed) * 0.8f);
         }
-        if (currentSpeed > MaxSpeed + 1)
-        {
-        }
 
         rb.velocity = velocity;
         Control.LastDash = Control.Dash;
 
-        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, velocity.ToRotation() * Mathf.Rad2Deg, 0.15f));
-        transform.localScale = new Vector3(1 + (1 - squash) * 2, squash, 1);
-        squash = Mathf.Lerp(squash, 1, 0.05f);
+        Body.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Body.transform.eulerAngles.z, velocity.ToRotation() * Mathf.Rad2Deg, 0.12f));
+        Body.transform.localScale = new Vector3(1 + (1 - squash) * 2.5f, squash, 1);
+        if (squash < 1)
+            squash += 0.005f;
+        squash = Mathf.Lerp(squash, 1, 0.025f);
+    }
+    private Vector3 WandEulerAngles = new Vector3(0, 0, 0);
+    private float PointDirOffset;
+    private float MoveOffset;
+    private float DashOffset;
+    private void WandUpdate()
+    {
+        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
+        float dir = Mathf.Sign(toMouse.x);
+        float bodyDir = Mathf.Sign(rb.velocity.x);
+        Vector2 attemptedPosition = new Vector2(0.8f, 0.3f * dir).RotatedBy(toMouse.ToRotation()) + rb.velocity.normalized * 0.1f;
+
+        //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
+
+        PointDirOffset = -40 * dir * squash;
+        MoveOffset = -5 * bodyDir * squash;
+        DashOffset = 100 * dir * (1 - squash);
+
+        float r = attemptedPosition.ToRotation() * Mathf.Rad2Deg - PointDirOffset - MoveOffset + DashOffset;
+        Wand.transform.localPosition = Vector2.Lerp(Wand.transform.localPosition, attemptedPosition, 0.08f);
+        Wand.GetComponent<SpriteRenderer>().flipY = PointDirOffset < 0;
+        WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
+        Wand.transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
     }
     private void FixedUpdate()
     {
         MovementUpdate();
+        WandUpdate();
         //MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
     void Update()
     {
+
     }
 }

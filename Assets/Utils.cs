@@ -36,9 +36,5 @@ public static class Utils
             x += Mathf.PI * 2;
         return x - Mathf.PI;
     }
-    public static Vector2 MouseWorld()
-    {
-        Vector2 mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        return mPos;
-    }
+    public static Vector2 MouseWorld => Camera.main.ScreenToWorldPoint(Input.mousePosition);
 }
