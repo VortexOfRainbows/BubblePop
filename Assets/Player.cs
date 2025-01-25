@@ -84,6 +84,10 @@ public class Player : MonoBehaviour
         if (currentSpeed > MaxSpeed)
         {
             velocity = velocity.normalized * (MaxSpeed + (currentSpeed - MaxSpeed) * 0.8f);
+            if(currentSpeed > MaxSpeed + 15f)
+            {
+                ParticleManager.NewParticle(transform.position);
+            }
         }
 
         rb.velocity = velocity;
@@ -102,7 +106,7 @@ public class Player : MonoBehaviour
     private float AttackTimer = 0;
     private void WandUpdate()
     {
-        if(AttackTimer < -10)
+        if(AttackTimer < -20)
         {
             if (Input.GetMouseButton(0))
             {
