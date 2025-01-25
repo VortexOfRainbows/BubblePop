@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
             if(dashTimer <= 0)
             {
                 dashTimer = dashCD;
-                velocity = velocity * MaxSpeed + movespeed * speed * 20f;
+                velocity = velocity * MaxSpeed + movespeed * speed * 25f;
                 squash = 0.45f;
             }
         dashTimer -= Time.fixedDeltaTime;
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
             velocity = velocity.normalized * (MaxSpeed + (currentSpeed - MaxSpeed) * 0.8f);
             if(currentSpeed > MaxSpeed + 15f)
             {
-                ParticleManager.NewParticle(transform.position);
+                ParticleManager.NewParticle(transform.position, .5f, velocity * 0.1f, true, 0.5f);
             }
         }
 
