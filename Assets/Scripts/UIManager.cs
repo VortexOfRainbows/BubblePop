@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,9 +15,24 @@ public class UIManager : MonoBehaviour
     public static bool gamePaused = false;
     private static bool tutorialSeen = false;
 
+    public float highscore;
+    public float score;
+
+    [SerializeField]
+    private TMPro.TextMeshProUGUI scoreText;
+    [SerializeField]
+    private TMPro.TextMeshProUGUI highscoreText;
+    [SerializeField]
+    private TMPro.TextMeshProUGUI deadHighscoreText;
+
+
     // Start is called before the first frame update
     void Start()
     {
+
+        score = 0f;
+        highscore = PlayerPrefs.GetInt("Highscore", 0);
+
         if(tutorialSeen == false)
         {
             tutorial.SetActive(true);
@@ -50,6 +66,17 @@ public class UIManager : MonoBehaviour
         ///{
         ///GameOver();
         ///}
+
+        scoreText.text = "Score: " + Mathf.FloorToInt(score);
+        highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
+        deadHighscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
+        score += 10f * Time.deltaTime;
+        if (score > highscore)
+        {
+            highscore = score;
+            PlayerPrefs.SetInt("Highscore", (int)highscore);
+        }
+
     }
 
     public void Pause()
