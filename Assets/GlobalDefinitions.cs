@@ -15,4 +15,6 @@ public class GlobalDefinitions : MonoBehaviour
     public GameObject SoapNPC;
     public static GameObject TinySoap => Instance.SoapTinyNPC;
     public GameObject SoapTinyNPC;
+    public static AudioClip[] audioClips => Instance.clips;
+    public AudioClip[] clips;
 }

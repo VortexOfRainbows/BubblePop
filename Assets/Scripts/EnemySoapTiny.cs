@@ -44,8 +44,8 @@ public class EnemySoapTiny : MonoBehaviour
     }
 
     private Vector2 FindTargetedPlayerPosition() {
-        float offsetX = Random.Range(-3f, 3f);
-        float offsetY = Random.Range(-3f, 3f);
+        float offsetX = Random.Range(-4f, 4f);
+        float offsetY = Random.Range(-4f, 4f);
         return new Vector2 (Player.Position.x + offsetX, Player.Position.y + offsetY);
     }
 }
