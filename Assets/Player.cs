@@ -10,7 +10,7 @@ public static class Control
     public static bool Left => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
     public static bool Right => Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
 }
-public class Player : MonoBehaviour
+public class Player : Entity
 {
     public static Player Instance;
     public static Vector2 Position => (Vector2)Instance.transform.position;
@@ -184,4 +184,9 @@ public class Player : MonoBehaviour
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
     void Update() => Instance = this;
+    public void Pop()
+    {
+        Debug.Log("POP");
+        //This is where I'll put die stuff
+    }
 }

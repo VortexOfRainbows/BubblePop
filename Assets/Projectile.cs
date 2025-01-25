@@ -24,7 +24,24 @@ public class Projectile : MonoBehaviour
     public CircleCollider2D c2D;
     public float timer = 0f;
     public int Type = 0;
-    public float Data1;
+    public float Data1 = 0;
+    public int Damage = 0;
+    public bool Friendly = false;
+    public bool Hostile = false;
+    public void Init()
+    {
+        if (Type == 0 || Type == 3)
+        {
+            transform.localScale *= 0.3f;
+            Damage = 1;
+            Friendly = true;
+        }
+        if (Type == 2)
+        {
+            spriteRenderer.sprite = GlobalDefinitions.SpikyProjectileSprite;
+            Hostile = true;
+        }
+    }
     public void FixedUpdate()
     {
         if(Type == 0)
@@ -35,13 +52,6 @@ public class Projectile : MonoBehaviour
             SpikeAI();
         if (Type == 3)
             BigBubbleAI();
-    }
-    public void Init()
-    {
-        if (Type == 0 || Type == 3)
-            transform.localScale *= 0.3f;
-        if (Type == 2)
-            spriteRenderer.sprite = GlobalDefinitions.SpikyProjectileSprite;
     }
     public void BubbleAI()
     {
