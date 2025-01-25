@@ -10,7 +10,7 @@ public static class EventManager
         enemySpawnTimer--;
         if (enemySpawnTimer <= 0)
         {
-            //SpawnRandomEnemy();
+            SpawnRandomEnemy();
             enemySpawnTimer = Random.Range(minSpawnTime, maxSpawnTime);
         }
         bathBombTimer -= Time.deltaTime;
@@ -29,7 +29,7 @@ public static class EventManager
             GameObject.Instantiate(GlobalDefinitions.Ducky, stuff, Quaternion.identity);
         }
         else
-            GameObject.Instantiate(GlobalDefinitions.Soap, stuff, Quaternion.identity);
+            GameObject.Instantiate(GlobalDefinitions.flamingoFloatie, stuff, Quaternion.identity);
     }
     private static float bathBombTimer = 0;
     public static void SpawnBathBomb()
