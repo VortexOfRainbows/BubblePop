@@ -1,7 +1,5 @@
-using System.Reflection;
-using System.Transactions;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public static class Control
 {
@@ -14,6 +12,8 @@ public static class Control
 }
 public class Player : MonoBehaviour
 {
+    public static Player Instance;
+    public static Vector2 Position => (Vector2)Instance.transform.position;
     [SerializeField]
     private Sprite WandUp;
     [SerializeField]
@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     private float squash = 1f;
     void Start()
     {
+        Instance = this;
         rb = GetComponent<Rigidbody2D>();
     }
     private float dashCD = 0.5f;
@@ -95,7 +96,8 @@ public class Player : MonoBehaviour
         rb.velocity = velocity;
         Control.LastDash = Control.Dash;
 
-        Body.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Body.transform.eulerAngles.z, velocity.ToRotation() * Mathf.Rad2Deg, 0.12f));
+        if(velocity.sqrMagnitude > 0.5f)
+            Body.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Body.transform.eulerAngles.z, velocity.ToRotation() * Mathf.Rad2Deg, 0.12f));
         Body.transform.localScale = new Vector3(1 + (1 - squash) * 2.5f, squash, 1);
         if (squash < 1)
             squash += 0.005f;
@@ -150,12 +152,11 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        Instance = this;
+        EventManager.Update();
         MovementUpdate();
         WandUpdate();
-        //MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
+        MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
-    void Update()
-    {
-
-    }
+    void Update() => Instance = this;
 }
