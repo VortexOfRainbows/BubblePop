@@ -26,6 +26,11 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if((int)timer % 3 == 0)
+        {
+            Vector2 norm = rb.velocity.normalized;
+            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.6f, .3f);
+        }
         timer++;
     }
 }

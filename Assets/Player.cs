@@ -83,10 +83,12 @@ public class Player : MonoBehaviour
         float currentSpeed = velocity.magnitude;
         if (currentSpeed > MaxSpeed)
         {
-            velocity = velocity.normalized * (MaxSpeed + (currentSpeed - MaxSpeed) * 0.8f);
+            Vector2 norm = velocity.normalized;
+            velocity = norm * (MaxSpeed + (currentSpeed - MaxSpeed) * 0.8f);
             if(currentSpeed > MaxSpeed + 15f)
             {
-                ParticleManager.NewParticle(transform.position, .5f, velocity * 0.1f, true, 0.5f);
+                for(float i = 0; i < 1; i += 0.5f)
+                    ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * Utils.RandFloat(10f, 15f), 1.0f, 0.6f);
             }
         }
 

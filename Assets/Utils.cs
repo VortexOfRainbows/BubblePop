@@ -45,4 +45,8 @@ public static class Utils
     {
         return UnityEngine.Random.Range(min, max);
     }
+    public static Vector2 RandCircle(float r)
+    {
+        return UnityEngine.Random.insideUnitCircle * r;
+    }
 }
