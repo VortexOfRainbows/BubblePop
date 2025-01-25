@@ -1,6 +1,4 @@
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Projectile : MonoBehaviour
 {
@@ -123,7 +121,8 @@ public class Projectile : MonoBehaviour
     }
     public void SpikeAI()
     {
-        rb.velocity *= 1.011f;
+        if(timer < 200)
+            rb.velocity *= 1.011f;
         rb.rotation = rb.velocity.ToRotation() * Mathf.Rad2Deg;
         timer++;
         if(timer > 610)

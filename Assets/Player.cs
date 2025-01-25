@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public static class Control
 {
@@ -23,6 +22,9 @@ public class Player : Entity
     private float MovementDeacceleration = 0.9f;
     private float MaxSpeed = 6f;
     private float squash = 1f;
+    private float walkTimer = 0;
+    private Vector2 lastVelo;
+    private float SquashAmt = 0.45f;
     void Start()
     {
         Instance = this;
@@ -69,7 +71,8 @@ public class Player : Entity
             {
                 dashTimer = dashCD;
                 velocity = velocity * MaxSpeed + movespeed * speed * 25f;
-                squash = 0.45f;
+                squash = SquashAmt;
+                Body.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
             }
         dashTimer -= Time.fixedDeltaTime;
 
@@ -80,7 +83,7 @@ public class Player : Entity
         {
             Vector2 norm = velocity.normalized;
             velocity = norm * (MaxSpeed + (currentSpeed - MaxSpeed) * 0.8f);
-            if(currentSpeed > MaxSpeed + 15f)
+            if (currentSpeed > MaxSpeed + 15f)
             {
                 for(float i = 0; i < 1; i += 0.5f)
                     ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * Utils.RandFloat(10f, 15f), 1.0f, 0.6f);
@@ -89,13 +92,38 @@ public class Player : Entity
 
         rb.velocity = velocity;
         Control.LastDash = Control.Dash;
-
+        float angleMult = 0.5f + (squash < 0.9f ? 0.5f : 0);
         if(velocity.sqrMagnitude > 0.5f)
-            Body.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Body.transform.eulerAngles.z, velocity.ToRotation() * Mathf.Rad2Deg, 0.12f));
-        Body.transform.localScale = new Vector3(1 + (1 - squash) * 2.5f, squash, 1);
+        {
+            float r = Body.transform.eulerAngles.z;
+            float angle = lastVelo.ToRotation() * Mathf.Rad2Deg;
+            if (angle < 0)
+                angle += 360;
+            if (angle > 90 && angle <= 270)
+            {
+                angle = angle - 180;
+                angle = 180 + angle * angleMult;
+            }
+            else
+            {
+                if (angle >= 270)
+                    angle -= 360;
+                angle *= angleMult;
+            }
+            r = Mathf.LerpAngle(r, angle, 0.12f);
+            Body.GetComponent<SpriteRenderer>().flipY = r >= 90 && r < 270;
+            Body.transform.eulerAngles = new Vector3(0, 0, r);
+        }
+        float bobbing = BobbingUpdate();
+        Body.transform.localScale = new Vector3(1 + (1 - squash) * 2.5f + 0.1f * (1 - bobbing), bobbing * squash, 1);
+        Body.transform.localPosition = new Vector2(0, Mathf.Sign(lastVelo.x) * ((bobbing * squash) - 1)).RotatedBy(lastVelo.ToRotation());
         if (squash < 1)
             squash += 0.005f;
         squash = Mathf.Lerp(squash, 1, 0.025f);
+        if (Mathf.Abs(velocity.x) > 0.1f)
+            lastVelo.x = velocity.x;
+        if (Mathf.Abs(velocity.y) > 0.1f)
+            lastVelo.y = velocity.y;
     }
     private Vector3 WandEulerAngles = new Vector3(0, 0, 0);
     public float PointDirOffset;
@@ -174,6 +202,15 @@ public class Player : Entity
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
         Wand.transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
         AttackLeft--;
+    }
+    public float BobbingUpdate()
+    { 
+        float abs = Mathf.Sqrt(Mathf.Abs(rb.velocity.magnitude)) * 0.5f;
+        walkTimer += abs + 1;
+        walkTimer %= 100f;
+        float sin = Mathf.Sin(walkTimer / 50f * Mathf.PI);
+        float bobbing = 0.9f + 0.1f * sin;
+        return bobbing;
     }
     private void FixedUpdate()
     {
