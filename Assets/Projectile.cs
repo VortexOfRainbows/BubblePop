@@ -237,7 +237,7 @@ public class Projectile : MonoBehaviour
             startPos = (Vector2)transform.position - rb.velocity.normalized; 
         if (timer < 200 && Data2 != 5 && Data2 != 6)
         {
-            rb.velocity *= 1.005f;
+            rb.velocity *= 1.0045f;
         }
         rb.rotation += rb.velocity.magnitude * 0.2f * Mathf.Sign(rb.velocity.x) + 0.2f * rb.velocity.x;
         timer++;
@@ -265,7 +265,8 @@ public class Projectile : MonoBehaviour
             transform.position = startPos + rotate - rb.velocity * Time.fixedDeltaTime;
             if(Data1 != 0)
                 Data1 = Mathf.Sign(Data1) * (0.3f + 1.1f / rotateDist);
-            rb.velocity *= 1.005f;
+            if(timer < 200)
+                rb.velocity *= 1.0045f;
             color.a *= 0.5f;
         }
         ParticleManager.NewParticle((Vector2)transform.position, 0.175f, Utils.RandCircle(0.01f), 1f, 0.175f, 1, color);
@@ -460,9 +461,10 @@ public class Projectile : MonoBehaviour
                     }
                 }
             }
-            if (Utils.RandFloat(1) < 0.5f)
+            if (EventManager.CanSpawnPower())
             {
                 Projectile.NewProjectile(transform.position, Vector2.zero, 4, Random.Range(0, 2), 0);
+                EventManager.PointsSpent += 100;
             }
         }
         if (Type == 2)
@@ -496,7 +498,7 @@ public class Projectile : MonoBehaviour
                 Player.ShotgunPower++;
             else
                 Player.DamagePower++;
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[39], transform.position, 1.2f, 0.9f);
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[37], transform.position, 1.2f, 0.9f);
         }
         if (Type == 5)
         {
