@@ -1,12 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using UnityEngine.UIElements;
-using UnityEditor.UIElements;
-
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(EdgeCollider2D))]
-[RequireComponent(typeof(Watertrigger))]
 
 public class Interactablewater : MonoBehaviour
 {
@@ -31,62 +23,54 @@ public class Interactablewater : MonoBehaviour
     private Vector3[] vertices;
     private int[] topverticesindex;
 
-    private EdgeCollider2D edgeCollider;
-
-
     private void Reset()
     {
-        edgeCollider = GetComponent<EdgeCollider2D>();
-        edgeCollider.isTrigger = true;
-    }
-
-    public void GenerateMesh()
-    {
-        Mesh mesh = new Mesh();
-        GameObject capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-
-        mesh.vertices = new Vector3[NumOfXVertices * num_of_y_vertices];
-        topverticesindex = new int[NumOfXVertices];
-        for (int y = 0; y < num_of_y_vertices; y++) 
-        {
-            for (int x = 0; x < NumOfXVertices; x++)
-            {
-                float xPos = (x / (float)(NumOfXVertices - 1)) * Width - Width/2;
-                float yPos = (y / (float)(num_of_y_vertices - 1)) * Height - Height / 2; 
-                vertices[y * NumOfXVertices + x] = new Vector3 (xPos, yPos, 0f);
-
-                if (y == num_of_y_vertices -1)
-                {
-                    topverticesindex[x] = y * NumOfXVertices + x;
-                }
-
-            }
-        }
-
-
-
-        //UVs
-        Vector2[] uvs = new Vector2[vertices.Length];
-        for(int i = 0; i < vertices.Length; i++)
-        {
-            uvs[i] = new Vector2((vertices[i].x + Width /2) / Width, (vertices[i].y + Height / 2) / Height);
-        }
-
-        if (meshRenderer == null)
-            meshRenderer = GetComponent <MeshRenderer>();
-
-        if (meshfilter == null)
-            meshfilter = GetComponent <MeshFilter>();
-
-        meshRenderer.material = WaterMaterial;
-
-        mesh.vertices = vertices;
-        mesh.uv = uvs;
-        //will need mesh of capsule here
-
-        meshfilter.mesh = mesh;
 
     }
+    //public void GenerateMesh()
+    //{
+    //    Mesh mesh = new Mesh();
+    //    GameObject capsule = GameObject.CreatePrimitive(PrimitiveType.Quad);
+
+    //    mesh.vertices = new Vector3[NumOfXVertices * num_of_y_vertices];
+    //    topverticesindex = new int[NumOfXVertices];
+    //    for (int y = 0; y < num_of_y_vertices; y++) 
+    //    {
+    //        for (int x = 0; x < NumOfXVertices; x++)
+    //        {
+    //            float xPos = (x / (float)(NumOfXVertices - 1)) * Width - Width/2;
+    //            float yPos = (y / (float)(num_of_y_vertices - 1)) * Height - Height / 2; 
+    //            vertices[y * NumOfXVertices + x] = new Vector3 (xPos, yPos, 0f);
+
+    //            if (y == num_of_y_vertices -1)
+    //            {
+    //                topverticesindex[x] = y * NumOfXVertices + x;
+    //            }
+
+    //        }
+    //    }
 
 
+
+    //    //UVs
+    //    Vector2[] uvs = new Vector2[vertices.Length];
+    //    for(int i = 0; i < vertices.Length; i++)
+    //    {
+    //        uvs[i] = new Vector2((vertices[i].x + Width /2) / Width, (vertices[i].y + Height / 2) / Height);
+    //    }
+
+    //    if (meshRenderer == null)
+    //        meshRenderer = GetComponent <MeshRenderer>();
+
+    //    if (meshfilter == null)
+    //        meshfilter = GetComponent <MeshFilter>();
+
+    //    meshRenderer.material = WaterMaterial;
+
+    //    mesh.vertices = vertices;
+    //    mesh.uv = uvs;
+    //    //will need mesh of capsule here
+
+    //    meshfilter.mesh = mesh;
+    //}
 }
