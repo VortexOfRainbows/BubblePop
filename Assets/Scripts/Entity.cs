@@ -56,6 +56,8 @@ public class Entity : MonoBehaviour
                                 ParticleManager.NewParticle((Vector2)proj.transform.position + Utils.RandCircle(proj.transform.localScale.x), Utils.RandFloat(.3f, .4f), proj.rb.velocity.normalized * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.4f, .8f), 0, default);
                         }
                     }
+                    if (Life < 0)
+                        Life = 0;
                 }
                 if (Life <= 0 && Life > -50)
                 {
