@@ -211,7 +211,7 @@ public class Player : Entity
             if (canAttack)
             {
                 Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
-                    toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad)
+                    toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad) 
                     * Utils.RandFloat(9, 15) + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
                 float odds = Mathf.Sqrt(1f / (AttackLeft - 40f));
                 int attempts = bonusBubbles;
@@ -220,7 +220,7 @@ public class Player : Entity
                     if(Utils.RandFloat(1) <= odds)
                     {
                         Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
-                            toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad)
+                            toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad) 
                             * Utils.RandFloat(9, 15) + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
                         bonusBubbles--;
                     }
@@ -236,8 +236,8 @@ public class Player : Entity
             {
                 if(AttackRight == 50)
                 {
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[33], Position, 0.6f, 1.5f);
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[34], Position, 0.8f, 1f);
+                    AudioManager.PlaySound(GlobalDefinitions.audioClips[33], Position, 0.3f, 1.5f);
+                    AudioManager.PlaySound(GlobalDefinitions.audioClips[34], Position, 0.6f, 1f);
                     Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand, Vector2.zero, 3, 0);
                 }
                 if(AttackRight < 250)
@@ -245,11 +245,11 @@ public class Player : Entity
                     AttackRight++;
                     if (AttackRight == 150)
                     {
-                        AudioManager.PlaySound(GlobalDefinitions.audioClips[35], Position, 0.85f, 1f);
+                        AudioManager.PlaySound(GlobalDefinitions.audioClips[35], Position, 0.65f, 1f);
                     }
                     if (AttackRight == 250)
                     {
-                        AudioManager.PlaySound(GlobalDefinitions.audioClips[36], Position, 0.9f, 1f);
+                        AudioManager.PlaySound(GlobalDefinitions.audioClips[36], Position, 0.7f, 1f);
                     }
                 }
                 PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * squash;

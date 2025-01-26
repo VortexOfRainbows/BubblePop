@@ -119,9 +119,9 @@ public class Projectile : MonoBehaviour
             FeatherAI();
         if (Type == 6)
             LaserAI();
-        if (!Friendly && Type != 3 && Type != 4 && Type != 6)
+        if (Type == 2)
             spriteRendererGlow.color = spriteRenderer.color;
-        else if(Type != 4 && Type != 6)
+        else if(Type == 0 || Type == 3)
             spriteRendererGlow.gameObject.SetActive(false);
     }
     public void BubbleAI()
@@ -129,7 +129,7 @@ public class Projectile : MonoBehaviour
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 0.66f, 0.085f);
 
         Vector2 velo = rb.velocity;
-        velo *= 0.995f - timer / 5000f;
+        velo *= 0.9965f - timer / 6000f;
         velo.y += 0.005f;
         rb.velocity = velo;
         rb.rotation += Mathf.Sqrt(rb.velocity.magnitude) * Mathf.Sign(rb.velocity.x);
@@ -138,7 +138,7 @@ public class Projectile : MonoBehaviour
         {
             Kill();
         }
-        if ((int)timer % 5 == 0)
+        if ((int)timer % 3 == 0)
         {
             Vector2 norm = rb.velocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.8f, Utils.RandFloat(0.25f, 0.4f));
@@ -256,6 +256,8 @@ public class Projectile : MonoBehaviour
             float alphaOut = 1 - (timer - 610) / 90f;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
             spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
+            if (timer > 650)
+                Hostile = false;
         }
         if(timer > 700)
         {
@@ -316,7 +318,7 @@ public class Projectile : MonoBehaviour
                 toMouse = toMouse.normalized * 6;
             Vector2 mouse = Player.Position + toMouse;
             toMouse = mouse - (Vector2) transform.position;
-            rb.velocity = toMouse * 0.1f + toMouse.normalized * (8f + Mathf.Min(24, 24f * (timer + 50) / -200f));
+            rb.velocity = toMouse * 0.1f + toMouse.normalized * (10f + Mathf.Min(24, 24f * (timer + 50) / -200f));
             timer = 1;
 
             for (int i = 0; i < 30; i++)
@@ -361,19 +363,23 @@ public class Projectile : MonoBehaviour
         timer++;
         if(timer < 300)
         {
-            rb.velocity += rb.velocity.normalized * 0.008f;
-            rb.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.1f;
+            rb.velocity += rb.velocity.normalized * 0.006f;
+            rb.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.075f;
         }
         if (timer > 610)
         {
             float alphaOut = 1 - (timer - 610) / 90f;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
             spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
+            if (timer > 650)
+                Hostile = false;
         }
         if (timer > 700)
         {
             Kill();
         }
+        if(Utils.RandFloat(1) < 0.5f)
+            ParticleManager.NewParticle((Vector2)transform.position, 0.5f, Utils.RandCircle(0.02f), 1.5f, 0.4f, 0, spriteRendererGlow.color);
     }
     public void LaserAI()
     {
@@ -384,6 +390,18 @@ public class Projectile : MonoBehaviour
         {
             rb.velocity += rb.velocity.normalized * 0.02f;
             rb.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.08f * (1 - timer / 200f);
+        }
+        if (timer > 610)
+        {
+            float alphaOut = 1 - (timer - 610) / 90f;
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
+            if (timer > 650)
+                Hostile = false;
+        }
+        if (timer > 700)
+        {
+            Kill();
         }
         timer++;
     }

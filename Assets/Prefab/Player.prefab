@@ -111,7 +111,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1, y: 0.3, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 995395983974909505}
@@ -557,9 +557,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bac8f8e85b65ff48a319146651a39f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseRenderer: {fileID: 0}
   PointWorth: 0
   IFrame: 0
   Life: 10
+  DamageTaken: 0
   lastPos: {x: 0, y: 0}
   bonusBubbles: 0
   MainCamera: {fileID: 0}
