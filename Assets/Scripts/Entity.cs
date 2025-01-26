@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    public SpriteRenderer baseRenderer;
     public float PointWorth = 0;
     public float IFrame = 0;
     public int Life = 10;
+    public float DamageTaken = 0;
     public static readonly string ProjTag = "Proj";
     public static readonly string EnemyTag = "Enemy";
     public void OnTriggerStay2D(Collider2D collision)
@@ -36,6 +38,7 @@ public class Entity : MonoBehaviour
                 if (proj.Friendly && (IFrame <= 0 || proj.Type != 3))
                 {
                     Life -= proj.Damage;
+                    DamageTaken += proj.Damage;
                     if (proj.Type == 0)
                         proj.Kill();
                     if (proj.Type == 3)
@@ -83,7 +86,22 @@ public class Entity : MonoBehaviour
     public Vector2 lastPos = Vector2.zero;
     public void Update()
     {
-        if(Utils.RandFloat(1) < 0.5f && lastPos != (Vector2)transform.position)
+        if (this is not Player)
+        {
+            if (baseRenderer == null)
+                baseRenderer = GetComponent<SpriteRenderer>();
+            if (DamageTaken > 0)
+            {
+                baseRenderer.color = Color.Lerp(baseRenderer.color, Color.Lerp(Color.white, Color.red, 0.8f), 0.05f + DamageTaken / 200f);
+                DamageTaken -= 20f * Time.deltaTime;
+            }
+            else
+            {
+                DamageTaken = 0;
+                baseRenderer.color = Color.Lerp(baseRenderer.color, Color.white, 0.15f);
+            }
+        }
+        if (Utils.RandFloat(1) < 0.5f && lastPos != (Vector2)transform.position)
         {
             Vector2 toLastPos = lastPos - (Vector2)transform.position;
             if(toLastPos.sqrMagnitude > 0.002f)

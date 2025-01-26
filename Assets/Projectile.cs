@@ -81,7 +81,10 @@ public class Projectile : MonoBehaviour
         if(Type == 4)
         {
             spriteRenderer.sprite = Data1 == 0 ? GlobalDefinitions.BubblePower1 :  GlobalDefinitions.BubblePower2;
+            spriteRendererGlow.color = new Color(241 / 255f, 215 / 255f, 1f, 0.6f);
+            spriteRendererGlow.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
             Hostile = true;
+            transform.localScale = new Vector3(1, 1, 1);
         }
     }
     public void FixedUpdate()
@@ -94,9 +97,11 @@ public class Projectile : MonoBehaviour
             SpikeAI();
         if (Type == 3)
             BigBubbleAI();
-        if (!Friendly && Type != 3)
+        if (Type == 4)
+            PowerUpAI();
+        if (!Friendly && Type != 3 && Type != 4)
             spriteRendererGlow.color = spriteRenderer.color;
-        else
+        else if(Type != 4)
             spriteRendererGlow.gameObject.SetActive(false);
     }
     public void BubbleAI()
@@ -261,8 +266,8 @@ public class Projectile : MonoBehaviour
         if(Player.Instance.AttackRight >= 50 && timer <= 0)
         {
             int target = (int)(Player.Instance.AttackRight - 50) / 100;
-            float targetSize = target * 0.7f * + 0.8f + Player.Instance.AttackRight / 240f;
-            targetSize *= 1f + Mathf.Sqrt(Player.DamagePower) * 0.5f;
+            float targetSize = target * 0.7f + 0.8f + Player.Instance.AttackRight / 240f;
+            targetSize *= 1f + Mathf.Sqrt(Player.DamagePower) * 0.4f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
             timer = -Player.Instance.AttackRight;
             Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
@@ -313,6 +318,19 @@ public class Projectile : MonoBehaviour
             }
             if (timer > 180)
                 Kill();
+        }
+    }
+    public void PowerUpAI()
+    {
+        timer++;
+        float scale = 1.0f + 0.1f * Mathf.Sin(Mathf.Deg2Rad * timer * 2f);
+        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(2f / scale, 2f * scale, 2), 0.1f);
+
+        if(Utils.RandFloat(1) < 0.4f)
+        {
+            Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
+            ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.6f), circular * Utils.RandFloat(3, 6) + new Vector2(0, Utils.RandFloat(-1, 2)),
+                2f, Utils.RandFloat(0.3f, .5f), 0, spriteRendererGlow.color * 0.9f);
         }
     }
     private bool Dead = false;
