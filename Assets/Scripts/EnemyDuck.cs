@@ -21,43 +21,56 @@ public class EnemyDuck : Entity
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    public void MoveUpdate()
     {
+        if (aiState == 0)
+        {
+            if (aimingTimer <= 0)
+            {
+                aimingTimer = baseAimingTimer;
+                targetedLocation = FindLocation();
+                aiState = 1;
+            }
+            else
+            {
+                aimingTimer--;
+            }
+        }
+
+        if (aiState == 1)
+        {
+            Vector2 toTarget = targetedLocation - (Vector2)transform.position;
+            bobbingTimer += Mathf.Sqrt(toTarget.magnitude);
+            sRender.flipX = toTarget.x > 0;
+            if (this is EnemyFlamingo)
+                sRender.flipX = !sRender.flipX;
+            transform.position = Vector2.Lerp(transform.position, targetedLocation, moveSpeed * Time.deltaTime);
+            if (movingTimer <= 0)
+            {
+                movingTimer = baseMovingTimer;
+                aiState = 0;
+            }
+            else
+            {
+                movingTimer--;
+            }
+        }
+        bobbingTimer++;
+        float bobSpeed = 80f;
+        if (this is EnemyFlamingo)
+            bobSpeed = 100f;
+        float sin = Mathf.Sin(bobbingTimer * Mathf.PI / bobSpeed);
+        transform.eulerAngles = new Vector3(0, 0, sin * 15);
+    }
+    public void FixedUpdate()
+    {
+        IFrame--;
         int soundChance = Random.Range(1, 500);
         if (soundChance == 1)
         {
             AudioManager.PlaySound(GlobalDefinitions.audioClips[13], sRender.transform.position, 0.13f, 1.2f);
         }
-        
-
-        IFrame--;
-        if (aiState == 0) {
-            if (aimingTimer <= 0) {
-                aimingTimer = baseAimingTimer;
-                targetedLocation = FindLocation();
-                aiState = 1;
-            }
-            else {
-                aimingTimer--;
-            }
-        }
-
-        if (aiState == 1) {
-            Vector2 toTarget = targetedLocation - (Vector2)transform.position;
-            bobbingTimer += Mathf.Sqrt(toTarget.magnitude);
-            sRender.flipX = toTarget.x > 0;
-            transform.position = Vector2.Lerp(transform.position, targetedLocation, moveSpeed * Time.deltaTime);
-            if (movingTimer <= 0) {
-                movingTimer = baseMovingTimer;
-                aiState = 0;
-            }
-            else {
-                movingTimer--;
-            }
-        }
-        bobbingTimer++;
-        float sin = Mathf.Sin(bobbingTimer * Mathf.PI / 80f);
-        transform.eulerAngles = new Vector3(0, 0, sin * 15);
+        MoveUpdate();
     }
 
     private Vector2 FindLocation() {
