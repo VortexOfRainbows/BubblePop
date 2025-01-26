@@ -520,7 +520,7 @@ public class Projectile : MonoBehaviour
                 Player.ShotgunPower++;
             else
                 Player.DamagePower++;
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[37], transform.position, 1.2f, 0.9f);
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[39], transform.position, 1.2f, 0.9f);
         }
         if (Type == 5)
         {

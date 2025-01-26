@@ -16,7 +16,7 @@ public class EnemyFlamingo : EnemyDuck
         int soundChance = Random.Range(1, 500);
         if (soundChance == 1)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(28, 30)], transform.position, 0.13f, 1.2f);
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(28, 31)], transform.position, 0.13f, 1.2f);
         }
         MoveUpdate();
         if (projectileTimer <= 0) {
