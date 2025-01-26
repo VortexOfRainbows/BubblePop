@@ -237,7 +237,7 @@ public class Projectile : MonoBehaviour
             startPos = (Vector2)transform.position - rb.velocity.normalized; 
         if (timer < 200 && Data2 != 5 && Data2 != 6)
         {
-            rb.velocity *= 1.008f;
+            rb.velocity *= 1.005f;
         }
         rb.rotation += rb.velocity.magnitude * 0.2f * Mathf.Sign(rb.velocity.x) + 0.2f * rb.velocity.x;
         timer++;
@@ -487,10 +487,16 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 4)
         {
+            for (int i = 0; i < 30; i++)
+            {
+                Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.6f, 0.7f), circular * Utils.RandFloat(3, 6), 4f, Utils.RandFloat(0.4f, 0.6f), 1, spriteRendererGlow.color);
+            }
             if (Data1 == 0)
                 Player.ShotgunPower++;
             else
                 Player.DamagePower++;
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[39], transform.position, 1.2f, 0.9f);
         }
         if (Type == 5)
         {
