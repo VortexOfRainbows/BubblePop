@@ -10,6 +10,11 @@ using UnityEditor.UIElements;
 
 public class Interactablewater : MonoBehaviour
 {
+    [Header("Springs")]
+    [SerializeField] private float springConstant = 1.4f;
+    [SerializeField, Range(1, 10)] private int wavePropogationIterations = 8;
+    [SerializeField, ]
+
     [Header("Mesh Generation")]
     [Range(2, 500)] public int NumOfXVertices = 70;
     public float Width = 10f;
