@@ -11,6 +11,12 @@ public class GlobalDefinitions : MonoBehaviour
     public Sprite SpikyProj;
     public static Sprite BathBombSprite => Instance.BathBomb;
     public Sprite BathBomb;
+    public static Sprite BubbleSprite => Instance.BigBubble;
+    public Sprite BigBubble;
+    public static Sprite BubbleSmall => Instance.BubbleParticle;
+    public Sprite BubbleParticle;
+    public static Sprite SquareBubble => Instance.SqrParticle;
+    public Sprite SqrParticle;
     public static GameObject Ducky => Instance.Duck;
     public GameObject Duck;
     public static GameObject Soap => Instance.SoapNPC;

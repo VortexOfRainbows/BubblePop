@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public static GameObject NewProjectile(Vector2 pos, Vector2 velo, int type = 0, float data1 = 0)
+    public static GameObject NewProjectile(Vector2 pos, Vector2 velo, int type = 0, float data1 = 0, float data2 = 0)
     {
         GameObject Proj = Instantiate(GlobalDefinitions.Projectile, pos, Quaternion.identity);
         Proj.GetComponent<Rigidbody2D>().velocity = velo;
         Projectile proj = Proj.GetComponent<Projectile>();
         proj.Type = type;
         proj.Data1 = data1;
+        proj.Data2 = data2;
         proj.Init();
         return Proj;
     }
@@ -25,6 +26,8 @@ public class Projectile : MonoBehaviour
     {
         if(collision.tag == "Tub" && Type != 1)
         {
+            if (Type == 3 && timer < 100)
+                return;
             Kill();
         }
     }
@@ -32,8 +35,10 @@ public class Projectile : MonoBehaviour
     public Rigidbody2D rb;
     public CircleCollider2D c2D;
     public float timer = 0f;
+    public float timer2 = 0f;
     public int Type = 0;
     public float Data1 = 0;
+    public float Data2 = 0;
     public int Damage = 0;
     public bool Friendly = false;
     public bool Hostile = false;
@@ -41,6 +46,7 @@ public class Projectile : MonoBehaviour
     {
         if (Type == 0 || Type == 3)
         {
+            spriteRenderer.sprite = Type == 0 ? GlobalDefinitions.BubbleSmall : GlobalDefinitions.BubbleSprite;
             if(Type == 0)
                 timer += Random.Range(0, 40);
             transform.localScale *= 0.3f;
@@ -94,6 +100,21 @@ public class Projectile : MonoBehaviour
         }
         timer++;
     }
+    public Color Rainbow(float timer)
+    {
+        timer = timer * Mathf.Deg2Rad * 2.5f;
+        double center = 130;
+        Vector2 circlePalette = new Vector2(1, 0).RotatedBy(timer);
+        double width = 125 * circlePalette.y;
+        int red = (int)(center + width);
+        circlePalette = new Vector2(1, 0).RotatedBy(timer + Mathf.PI * 2f / 3f);
+        width = 125 * circlePalette.y;
+        int grn = (int)(center + width);
+        circlePalette = new Vector2(1, 0).RotatedBy(timer + Mathf.PI * 4f / 3f);
+        width = 125 * circlePalette.y;
+        int blu = (int)(center + width);
+        return new Color(red / 255f, grn / 255f, blu / 255f);
+    }
     public void BathBombAI()
     {
         float yPointBeforeLanding = Data1;
@@ -101,7 +122,7 @@ public class Projectile : MonoBehaviour
         transform.localScale = Vector3.one * (1 + distTillLanding / 12f);
 
         Vector2 velo = rb.velocity;
-        if (transform.position.y < yPointBeforeLanding)
+        if (transform.position.y < yPointBeforeLanding + 1)
         {
             if(velo.y < 0)
                 velo.y *= 0.75f;
@@ -123,15 +144,32 @@ public class Projectile : MonoBehaviour
         }
         rb.velocity = velo;
 
-        if(timer > 0)
+        Color color = Color.white;
+        if (Data2 == 0)
+            color = new Color(112 / 255f, 54 / 255f, 157 / 255f);
+        if (Data2 == 1)
+            color = new Color(75 / 255f, 54 / 255f, 157 / 255f);
+        if (Data2 == 2)
+            color = new Color(121 / 255f, 195 / 255f, 20 / 255f);
+        if (Data2 == 3)
+            color = new Color(250 / 255f, 235 / 255f, 54 / 255f);
+        if (Data2 == 4)
+            color = new Color(255 / 255f, 165 / 255f, 0 / 255f);
+        if (Data2 == 5)
+            color = new Color(232 / 255f, 20 / 255f, 22 / 255f);
+        if (Data2 == 6)
+            color = Rainbow(timer2++);
+        if (timer > 0)
         {
             float sqr = timer / 240f;
             sqr *= sqr;
             float sin = Mathf.Sin(sqr * Mathf.PI * 12f);
             transform.localScale *= 1f + (sin * 0.1f + sqr * 0.2f) + sqr * 0.4f;
             timer++;
-            spriteRenderer.color = Color.Lerp(Color.white, Color.red, 0.0f + Mathf.Max(0, sin * 0.4f) + 0.6f * sqr);
+            spriteRenderer.color = Color.Lerp(color, Color.red, 0.0f + Mathf.Max(0, sin * 0.4f) + 0.6f * sqr);
         }
+        else
+            spriteRenderer.color = color;
         if (timer > 240)
         {
             Kill();
@@ -165,7 +203,7 @@ public class Projectile : MonoBehaviour
             transform.position = Vector2.Lerp(transform.position,(Vector2)Player.Instance.Wand.transform.position + awayFromWand, 0.15f);
             rb.velocity *= 0.8f;
             rb.velocity += Player.Instance.rb.velocity * 0.1f;
-            Damage = 1 + target * 3;
+            Damage = 2 + target * 2;
         }
         else if(timer <= 0)
         {
@@ -174,7 +212,7 @@ public class Projectile : MonoBehaviour
                 toMouse = toMouse.normalized * 6;
             Vector2 mouse = Player.Position + toMouse;
             toMouse = mouse - (Vector2) transform.position;
-            rb.velocity = toMouse * 0.1f + toMouse.normalized * (5f + Mathf.Min(15, 15f * (timer + 50) / -300f));
+            rb.velocity = toMouse * 0.1f + toMouse.normalized * (5f + Mathf.Min(15, 15f * (timer + 50) / -200f));
             timer = 1;
         }
         else if(timer > 0)

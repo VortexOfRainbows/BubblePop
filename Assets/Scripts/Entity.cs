@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Entity : MonoBehaviour
 {
+    public float IFrame = 0;
     public int Life = 10;
     public static readonly string ProjTag = "Proj";
     public static readonly string EnemyTag = "Enemy";
@@ -26,11 +29,19 @@ public class Entity : MonoBehaviour
             }
             else
             {
-                if (proj.Friendly)
+                if (proj.Friendly && IFrame <= 0)
                 {
                     Life -= proj.Damage;
-                    if (proj.Type == 0 || proj.Type == 3)
+                    if (proj.Type == 0)
                         proj.Kill();
+                    if (proj.Type == 3)
+                    {
+                        IFrame = 100;
+                        proj.gameObject.transform.localScale *= 0.75f;
+                        proj.Damage--;
+                        if (proj.Damage < 0)
+                            proj.Kill();
+                    }
                 }
                 if (Life <= 0)
                 {

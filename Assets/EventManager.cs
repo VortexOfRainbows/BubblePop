@@ -6,7 +6,7 @@ public static class EventManager
     public static bool InsideBathtub(Vector2 pos)
     {
         pos.x *= 0.28f;
-        return pos.magnitude <= 22f;
+        return pos.magnitude <= 21f;
     }
     private static int enemySpawnTimer = 30;
     private static int minSpawnTime = 300, maxSpawnTime = 600;
@@ -23,7 +23,7 @@ public static class EventManager
         if (bathBombTimer < 0)
         {
             SpawnBathBomb();
-            bathBombTimer = Utils.RandFloat(5, 8); //5 to 8 seconds for another bath bomb
+            bathBombTimer = Utils.RandFloat(4, 8); //5 to 8 seconds for another bath bomb
         }
     }
     public static void SpawnRandomEnemy()
@@ -73,6 +73,6 @@ public static class EventManager
                 break;
             }
         }
-        Projectile.NewProjectile(Player.Position + new Vector2(randPos.x, 30), Vector2.zero, 1, Player.Position.y + randPos.y);
+        Projectile.NewProjectile(Player.Position + new Vector2(randPos.x, 30), Vector2.zero, 1, Player.Position.y + randPos.y, Random.Range(0, 7));
     }
 }

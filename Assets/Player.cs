@@ -197,9 +197,9 @@ public class Player : Entity
                 {
                     Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand, Vector2.zero, 3, 0);
                 }
-                if(AttackRight < 350)
+                if(AttackRight < 250)
                     AttackRight++;
-                PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 300f * 45f) * dir * squash;
+                PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * squash;
             }
             else
             {
@@ -266,6 +266,8 @@ public class Player : Entity
     public float DeathKillTimer = 0;
     public void Pop()
     {
+        AttackLeft = 0;
+        AttackRight = 0;
         rb.velocity *= 0.9f;
         if(DeathKillTimer <= 0)
         {

@@ -18,9 +18,11 @@ public class EnemyFlamingo : Entity
         Life = 10;
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (aiState == 0) {
+        IFrame--;
+        if (aiState == 0)
+        {
             if (aimingTimer <= 0) {
                 aimingTimer = baseAimingTimer;
                 targetedLocation = FindLocation();

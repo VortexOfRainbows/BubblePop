@@ -19,6 +19,7 @@ public class EnemySoap : Entity
     // Update is called once per frame
     void FixedUpdate()
     {
+        IFrame--;
         timer++;
         if (timer > 120) 
         {

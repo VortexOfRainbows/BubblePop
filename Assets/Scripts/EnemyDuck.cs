@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 public class EnemyDuck : Entity
 {
     public SpriteRenderer sRender;
@@ -19,8 +20,9 @@ public class EnemyDuck : Entity
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        IFrame--;
         if (aiState == 0) {
             if (aimingTimer <= 0) {
                 aimingTimer = baseAimingTimer;
