@@ -656,16 +656,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 235526817}
   m_CullTransparentMesh: 1
---- !u!1 &409853107 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5904723820575881631, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-  m_PrefabInstance: {fileID: 3216373783092858490}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &409853109 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 3894163109312308584, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-  m_PrefabInstance: {fileID: 3216373783092858490}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3368,34 +3358,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2109105119270937474, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-      propertyPath: m_SortingOrder
-      value: -3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3894163109312308584, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-      propertyPath: m_Color.a
-      value: 0.9019608
-      objectReference: {fileID: 0}
-    - target: {fileID: 3894163109312308584, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-      propertyPath: m_SortingOrder
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5904723820575881631, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-      propertyPath: m_Name
-      value: Face
-      objectReference: {fileID: 0}
     - target: {fileID: 6670607549082870492, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7594576432851193269, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-      propertyPath: Face
-      value: 
-      objectReference: {fileID: 409853107}
-    - target: {fileID: 7594576432851193269, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-      propertyPath: FaceR
-      value: 
-      objectReference: {fileID: 409853109}
     - target: {fileID: 7594576432851193269, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
       propertyPath: MainCamera
       value: 

@@ -29,7 +29,7 @@ public static class EventManager
             GameObject.Instantiate(GlobalDefinitions.Ducky, stuff, Quaternion.identity);
         }
         else
-            GameObject.Instantiate(GlobalDefinitions.TinySoap, stuff, Quaternion.identity);
+            GameObject.Instantiate(GlobalDefinitions.Soap, stuff, Quaternion.identity);
     }
     private static float bathBombTimer = 0;
     public static void SpawnBathBomb()

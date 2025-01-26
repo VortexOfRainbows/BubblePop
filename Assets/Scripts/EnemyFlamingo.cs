@@ -13,8 +13,10 @@ public class EnemyFlamingo : Entity
     private float moveSpeed = 0.075f;
     private float projectileSpeed = 3f;
     private int projectileTimer;
-
-
+    private void Start()
+    {
+        Life = 10;
+    }
     // Update is called once per frame
     void Update()
     {

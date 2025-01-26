@@ -10,7 +10,10 @@ public class EnemyDuck : Entity
     private int movingTimer;
     const int baseMovingTimer = 3000;
     private float moveSpeed = 0.1f;
-
+    private void Start()
+    {
+        Life = 20;
+    }
 
     // Update is called once per frame
     void Update()
