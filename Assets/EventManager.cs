@@ -33,7 +33,9 @@ public static class EventManager
         if (bathBombTimer < 0)
         {
             SpawnBathBomb();
-            bathBombTimer = Utils.RandFloat(4, 8); //5 to 8 seconds for another bath bomb
+            float minTime = GetSpawnTime(6, 1, 0, 5000);
+            float maxTime = GetSpawnTime(8, 2, 0, 10000);
+            bathBombTimer = Utils.RandFloat(minTime, maxTime); //5 to 8 seconds for another bath bomb
         }
         EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 10, 1000), GlobalDefinitions.Ducky);
         EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 100, 1100), GlobalDefinitions.Soap);
@@ -84,6 +86,41 @@ public static class EventManager
         }
     }
     private static float bathBombTimer = 0;
+    public static int GetBathBombType()
+    {
+        float[] weights = new float[] { 2, 1, 0.1f, 0, 0, 0, 0 };
+        if (Point < 100)
+            if(Point < 50)
+                weights = new float[] { 2, 2, 1, 0.2f, 0, 0, 0 };
+        else if (Point < 150)
+            weights = new float[] { 1, 2, 2, 1, 0.2f, 0.1f, 0 };
+        else if (Point < 200)
+            weights = new float[] { 0.1f, 1, 2, 2, 1, 0.1f, 0 };
+        else if (Point < 250)
+            weights = new float[] { 0.1f, 1, 2, 2, 2, 1, 0.1f };
+        else if (Point < 300)
+            weights = new float[] { 0.1f, 0.2f, 1, 2, 2, 2, 1 };
+        else if (Point < 400)
+            weights = new float[] { 0.1f, 0.2f, 0.3f, 1, 2, 2, 1 };
+        else if (Point < 500)
+            weights = new float[] { 0.1f, 0.2f, 0.3f, 1, 2, 3, 2 };
+        float total = 0f;
+        for (int i = 0; i < weights.Length; i++)
+        {
+            total += weights[i];
+        }
+        float rand = Utils.RandFloat(total);
+        for (int i = 0; i < weights.Length; i++)
+        {
+            if (rand < weights[i])
+            {
+                return i;
+            }
+            else
+                rand -= weights[i];
+        }
+        return 0;
+    }
     public static void SpawnBathBomb()
     {
         Vector2 randPos = new Vector2(Utils.RandFloat(-12, 12), Utils.RandFloat(-7, 7));
@@ -98,6 +135,6 @@ public static class EventManager
                 break;
             }
         }
-        Projectile.NewProjectile(Player.Position + new Vector2(randPos.x, 30), Vector2.zero, 1, Player.Position.y + randPos.y, Random.Range(0, 7));
+        Projectile.NewProjectile(Player.Position + new Vector2(randPos.x, 30), Vector2.zero, 1, Player.Position.y + randPos.y, GetBathBombType());
     }
 }

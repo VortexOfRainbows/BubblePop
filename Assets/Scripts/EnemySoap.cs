@@ -48,6 +48,8 @@ public class EnemySoap : Entity
             Vector2 norm = rb.velocity.normalized;
             if(Random.Range(0, 2) == 0)
                 ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(1) - norm * 1.5f, .3f, norm * Utils.RandFloat(5f, 15f), 1.5f, 0.6f, 1, new Color(1, 0.85f, 0.99f));
+            else if (Random.Range(0, 3) != 0)
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(1) - norm * 1.5f, Utils.RandFloat(0.45f, 0.75f), norm * Utils.RandFloat(5f, 15f), 1.5f, Utils.RandFloat(0.5f, 0.7f), 0, new Color(1, 0.85f, 0.99f));
             rb.velocity += toPlayer.normalized * 0.5f;
         }
         if(timer > 90)

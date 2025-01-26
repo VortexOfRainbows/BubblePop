@@ -102,6 +102,7 @@ public class Projectile : MonoBehaviour
         velo *= 0.995f - timer / 5000f;
         velo.y += 0.005f;
         rb.velocity = velo;
+        rb.rotation += Mathf.Sqrt(rb.velocity.magnitude) * Mathf.Sign(rb.velocity.x);
 
         if (timer > 200)
         {
@@ -168,8 +169,10 @@ public class Projectile : MonoBehaviour
             velo.y += 0.2f;
             if (timer <= 0)
             {
-                for(int i = 0; i < 15; i++)
-                    ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.8f), .7f, velo * 0.2f + new Vector2(0, Utils.RandFloat(1, 3)), 4f, 1.5f);
+                AudioManager.PlaySound(GlobalDefinitions.audioClips[24], transform.position, 1, 0.9f);
+                AudioManager.PlaySound(GlobalDefinitions.audioClips[26], transform.position, 1, 1.1f);
+                for (int i = 0; i < 15; i++)
+                    ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1f), .7f, velo * 0.2f + new Vector2(0, Utils.RandFloat(1, 3)), 4f, 1.5f);
                 timer++;
             }
             else if(timer % 2 == 0)
@@ -312,6 +315,7 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 1)
         {
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[25], transform.position, 1.1f, 0.9f);
             Color c = PickColor(Data2, timer2);
             for (int i = 0; i < 70; i++)
             {
