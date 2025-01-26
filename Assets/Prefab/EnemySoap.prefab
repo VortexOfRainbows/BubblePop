@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 893f98b2dff3f3442beaaa880b037015, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 70d22a55f3a00004dad40619cc1b57bc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -102,8 +102,8 @@ MonoBehaviour:
   Life: 10
   sRender: {fileID: 6365378942410168952}
   rb: {fileID: 0}
-  Soap1: {fileID: 21300000, guid: a6b3b7f638ac25b49bae47793697e8e4, type: 3}
-  Soap2: {fileID: 21300000, guid: f29463e0e8b3fdd4883c2e8afacab820, type: 3}
+  Soap1: {fileID: 21300000, guid: 8635ccc7d0b3bfc498756c3949706b62, type: 3}
+  Soap2: {fileID: 21300000, guid: 782cdb13087e783428464b36fc0b7c23, type: 3}
 --- !u!50 &1561463213389821838
 Rigidbody2D:
   serializedVersion: 4
@@ -163,16 +163,16 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.05154538, y: 0.09278181}
+  m_Offset: {x: 0.024054408, y: 0.0068725348}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.33, y: 2.37}
+    oldSize: {x: 2.8030002, y: 1.823045}
     newSize: {x: 3.33, y: 2.37}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.1410193, y: 1.3184733}
+  m_Size: {x: 2.4984004, y: 1.4902918}
   m_EdgeRadius: 0
