@@ -60,7 +60,8 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 2)
         {
-            spriteRenderer.sprite = GlobalDefinitions.SpikyProjectileSprite;
+            spriteRenderer.sprite = GlobalDefinitions.bathBombShards[Random.Range(0, 4)];
+            spriteRenderer.color = PickColor(Data2, Utils.RandFloat(360));
             Hostile = true;
         }
     }
@@ -99,6 +100,25 @@ public class Projectile : MonoBehaviour
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
         }
         timer++;
+    }
+    public Color PickColor(float data, float counter)
+    {
+        Color color = Color.white;
+        if (data == 0)
+            color = new Color(112 / 255f, 54 / 255f, 157 / 255f);
+        if (data == 1)
+            color = new Color(75 / 255f, 54 / 255f, 157 / 255f);
+        if (data == 2)
+            color = new Color(121 / 255f, 195 / 255f, 20 / 255f);
+        if (data == 3)
+            color = new Color(250 / 255f, 235 / 255f, 54 / 255f);
+        if (data == 4)
+            color = new Color(255 / 255f, 165 / 255f, 0 / 255f);
+        if (data == 5)
+            color = new Color(232 / 255f, 20 / 255f, 22 / 255f);
+        if (data == 6)
+            color = Rainbow(counter);
+        return color;
     }
     public Color Rainbow(float timer)
     {
@@ -143,22 +163,7 @@ public class Projectile : MonoBehaviour
             velo.y -= 0.125f;
         }
         rb.velocity = velo;
-
-        Color color = Color.white;
-        if (Data2 == 0)
-            color = new Color(112 / 255f, 54 / 255f, 157 / 255f);
-        if (Data2 == 1)
-            color = new Color(75 / 255f, 54 / 255f, 157 / 255f);
-        if (Data2 == 2)
-            color = new Color(121 / 255f, 195 / 255f, 20 / 255f);
-        if (Data2 == 3)
-            color = new Color(250 / 255f, 235 / 255f, 54 / 255f);
-        if (Data2 == 4)
-            color = new Color(255 / 255f, 165 / 255f, 0 / 255f);
-        if (Data2 == 5)
-            color = new Color(232 / 255f, 20 / 255f, 22 / 255f);
-        if (Data2 == 6)
-            color = Rainbow(timer2++);
+        Color color = PickColor(Data2, timer2++);
         if (timer > 0)
         {
             float sqr = timer / 240f;
@@ -179,7 +184,7 @@ public class Projectile : MonoBehaviour
     {
         if(timer < 200)
             rb.velocity *= 1.011f;
-        rb.rotation = rb.velocity.ToRotation() * Mathf.Rad2Deg;
+        rb.rotation += rb.velocity.magnitude * 0.2f * Mathf.Sign(rb.velocity.x) + 0.2f * rb.velocity.x;
         timer++;
         if(timer > 610)
         {
@@ -251,7 +256,15 @@ public class Projectile : MonoBehaviour
             for (int i = 0; i < 10; i++)
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 5f);
-                NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0);
+                NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2);
+            }
+        }
+        if (Type == 2)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.2f, 0.4f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 1, spriteRenderer.color);
             }
         }
     }

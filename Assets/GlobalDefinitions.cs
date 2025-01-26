@@ -27,5 +27,7 @@ public class GlobalDefinitions : MonoBehaviour
     public GameObject flamingo;
     public static AudioClip[] audioClips => Instance.clips;
     public AudioClip[] clips;
-    
+    public static Sprite[] bathBombShards => Instance.bathbombShards;
+    public Sprite[] bathbombShards;
+
 }
