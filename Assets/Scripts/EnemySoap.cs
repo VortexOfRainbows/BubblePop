@@ -46,7 +46,7 @@ public class EnemySoap : Entity
     }
     public void Kill()
     {
-        AudioManger.PlaySound(GlobalDefinitions.audioClips[Random.Range(16, 18)], 1f, 1f);
+        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(16, 18)], 1f, 1f);
         GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap1;
         GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap2;
     }
