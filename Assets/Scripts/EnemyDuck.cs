@@ -22,6 +22,13 @@ public class EnemyDuck : Entity
     // Update is called once per frame
     void FixedUpdate()
     {
+        int soundChance = Random.Range(1, 500);
+        if (soundChance == 1)
+        {
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[13], sRender.transform.position, 0.13f, 1.2f);
+        }
+        
+
         IFrame--;
         if (aiState == 0) {
             if (aimingTimer <= 0) {
