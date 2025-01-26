@@ -39,9 +39,9 @@ public class EnemySoap : Entity
             if(timer == 51)
             {
                 if(this is EnemySoapTiny)
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(18, 23)], transform.position, 1f, 1.2f);
+                    AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(19, 23)], transform.position, 1f, 1.2f);
                 else
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(18, 23)], transform.position, 1f, 1f);
+                    AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(19, 23)], transform.position, 1f, 1f);
                 rb.velocity *= 0.5f;
                 rb.velocity += toPlayer.normalized * 6f;
             }
