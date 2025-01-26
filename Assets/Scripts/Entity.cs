@@ -63,11 +63,12 @@ public class Entity : MonoBehaviour
                 {
                     OnKill();
                     Life = -50;
+                    bool LuckyDrop = Utils.RandFloat(1) < 0.04f || this is EnemyBossDuck;
                     EventManager.Point += (int)PointWorth;
-                    if (EventManager.CanSpawnPower() || this is EnemyBossDuck)
+                    if (EventManager.CanSpawnPower() || LuckyDrop)
                     {
                         Projectile.NewProjectile(transform.position, Vector2.zero, 4, Random.Range(0, 2), 0);
-                        if (this is not EnemyBossDuck)
+                        if (!LuckyDrop)
                             EventManager.PointsSpent += 100;
                     }
                     Destroy(gameObject);
