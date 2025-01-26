@@ -8,12 +8,8 @@ public class EnemySoap : Entity
     public Sprite Soap2;
     //aiState 0 = aiming
     //aiState 1 = attacking
-    protected int aiState = 0;
-    protected Vector2 targetedPlayerPosition;
-    protected int aimingTimer;
-    const int baseAimingTimer = 400;
-    protected int attackingTimer;
-    const int baseAttackingTimer = 300;
+    protected Vector2 targetedPlayerPosition = Vector2.zero;
+    protected float timer = 0;
     protected float moveSpeed = 3f;
     private void Start()
     {
@@ -21,34 +17,31 @@ public class EnemySoap : Entity
         Life = 5;
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (aiState == 0) {
-            if (aimingTimer <= 0) {
-                aimingTimer = baseAimingTimer;
-                targetedPlayerPosition = FindTargetedPlayerPosition();
-                aiState = 1;
-            }
-            else {
-                aimingTimer--;
-            }
-        }
-
-        if (aiState == 1) 
+        timer++;
+        if (timer > 120) 
         {
+            timer = 0;
+            targetedPlayerPosition = FindTargetedPlayerPosition();
+        }
+        if (timer > 50 && timer < 90)
+        {
+            if(targetedPlayerPosition == Vector2.zero)
+                targetedPlayerPosition = FindTargetedPlayerPosition();
             Vector2 toPlayer = targetedPlayerPosition - (Vector2)transform.position;
             rb.rotation = toPlayer.ToRotation() * Mathf.Rad2Deg;
             if (rb.rotation > 90 || rb.rotation < -90)
                 rb.rotation -= 180;
-            transform.position = Vector2.Lerp(transform.position, targetedPlayerPosition, 0.04f);
-            if (attackingTimer <= 0) {
-                attackingTimer = 12;
-                aiState = 0;
+            if(timer == 51)
+            {
+                rb.velocity *= 0.5f;
+                rb.velocity += toPlayer.normalized * 6f;
             }
-            else {
-                attackingTimer--;
-            }
+            rb.velocity += toPlayer.normalized * 0.5f;
         }
+        if(timer > 90)
+            rb.velocity *= 0.91f;
     }
     public void Kill()
     {
@@ -56,8 +49,8 @@ public class EnemySoap : Entity
         GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap2;
     }
     private Vector2 FindTargetedPlayerPosition() {
-        float offsetX = Random.Range(-3f, 3f);
-        float offsetY = Random.Range(-3f, 3f);
+        float offsetX = Random.Range(-5f, 5f);
+        float offsetY = Random.Range(-5f, 5f);
         return new Vector2 (Player.Position.x + offsetX, Player.Position.y + offsetY);
     }
 }

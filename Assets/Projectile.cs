@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
                 timer += Random.Range(0, 40);
             transform.localScale *= 0.3f;
             Damage = 1;
-            Friendly = true;
+            Friendly = Type == 0;
         }
         if (Type == 2)
         {
@@ -163,6 +163,7 @@ public class Projectile : MonoBehaviour
         }
         else if(timer > 0)
         {
+            Friendly = true;
             rb.velocity *= 0.997f - timer / 6000f;
             timer++;
             if (timer > 1100)

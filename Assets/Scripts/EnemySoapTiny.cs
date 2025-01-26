@@ -5,6 +5,6 @@ public class EnemySoapTiny : EnemySoap
     {
         rb = GetComponent<Rigidbody2D>();
         Life = 3;
-        aiState = 1;
+        timer  = 60;
     }
 }
