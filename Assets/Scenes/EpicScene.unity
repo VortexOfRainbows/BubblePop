@@ -179,6 +179,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultProjectile: {fileID: 5354334585636703099, guid: d866ed2d2fa03ea418d42382f103df58, type: 3}
   SpikyProj: {fileID: 0}
+  BathBomb: {fileID: 0}
+  BigBubble: {fileID: 0}
+  BubbleParticle: {fileID: 0}
+  SqrParticle: {fileID: 0}
+  Duck: {fileID: 0}
+  SoapNPC: {fileID: 0}
+  SoapTinyNPC: {fileID: 0}
+  flamingo: {fileID: 0}
+  clips: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,6 +631,10 @@ PrefabInstance:
     - target: {fileID: 2941314396104103120, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
       propertyPath: m_Name
       value: UICanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6512970454066852320, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
