@@ -13,6 +13,9 @@ public static class Control
 }
 public class Player : Entity
 {
+    public static int DamagePower = 0;
+    public static int ShotgunPower = 0;
+    public int bonusBubbles = 0;
     public static Player Instance;
     public static Vector2 Position => (Vector2)Instance.transform.position;
     [SerializeField]
@@ -46,6 +49,8 @@ public class Player : Entity
     {
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
+        DamagePower = 0;
+        ShotgunPower = 0;
     }
     private float dashCD = 0.5f;
     private float dashTimer = 0;
@@ -160,12 +165,18 @@ public class Player : Entity
     public float AttackRight = 0;
     private void WandUpdate()
     {
+        //if(Input.GetKeyDown(KeyCode.V))
+        //{
+        //    DamagePower++;
+        //    ShotgunPower++;
+        //}
         if(AttackLeft < -20 && AttackRight < 0)
         {
             if (Input.GetMouseButton(0))
             {
                 AudioManager.PlaySound(GlobalDefinitions.audioClips[14], Wand.transform.position, 1f, 1f);
                 AttackLeft = 50;
+                bonusBubbles = ShotgunPower;
             }
         }
         if (AttackRight < -20 && AttackLeft < 0)
@@ -179,7 +190,7 @@ public class Player : Entity
         Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
         float dir = Mathf.Sign(toMouse.x);
         float bodyDir = Mathf.Sign(rb.velocity.x);
-        Vector2 attemptedPosition = new Vector2(0.8f, 0.3f * dir).RotatedBy(toMouse.ToRotation()) + rb.velocity.normalized * 0.1f;
+        Vector2 attemptedPosition = new Vector2(0.8f, 0.2f * dir).RotatedBy(toMouse.ToRotation()) + rb.velocity.normalized * 0.1f;
 
         //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
 
@@ -190,11 +201,31 @@ public class Player : Entity
         Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
         if (AttackLeft > 0)
         {
-            if(AttackLeft % 2 == 1 && AttackLeft >= 41)
+            bool canAttack = AttackLeft % 2 == 1 && AttackLeft >= 41;
+            bool bonusBubble = bonusBubbles > 0 && AttackLeft >= 41;
+            if(!canAttack && bonusBubble)
+            {
+                canAttack = true;
+                bonusBubbles--;
+            }
+            if (canAttack)
             {
                 Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
                     toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad)
                     * Utils.RandFloat(9, 15) + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
+                float odds = Mathf.Sqrt(1f / (AttackLeft - 40f));
+                int attempts = bonusBubbles;
+                while (attempts >= AttackLeft - 40)
+                {
+                    if(Utils.RandFloat(1) <= odds)
+                    {
+                        Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
+                            toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad)
+                            * Utils.RandFloat(9, 15) + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
+                        bonusBubbles--;
+                    }
+                    attempts--; 
+                }
             }
             float percent = AttackLeft / 50f;
             PointDirOffset += 165 * percent * dir * squash;

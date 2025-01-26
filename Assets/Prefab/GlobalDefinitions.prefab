@@ -4797,7 +4797,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -6
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -9628,7 +9628,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -6
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -9776,6 +9776,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5f7eed8797974b4409f7052e9f61af38, type: 3}
   - {fileID: 21300000, guid: 362ad3531a7ae044f909d8fa7c046c3b, type: 3}
   - {fileID: 21300000, guid: 258330d3075eba14a812be88cbfcaca9, type: 3}
+  PowerBubble1: {fileID: 21300000, guid: a5f007143c114de4c8539a290adeb330, type: 3}
+  PowerBubble2: {fileID: 21300000, guid: c9e067f91fc7a744a93eec5ccd03a850, type: 3}
 --- !u!114 &4056103149566074873
 MonoBehaviour:
   m_ObjectHideFlags: 0

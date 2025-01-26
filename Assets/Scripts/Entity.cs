@@ -23,7 +23,12 @@ public class Entity : MonoBehaviour
             {
                 if (proj.Hostile && p.DeathKillTimer <= 0)
                 {
-                    p.Pop();
+                    if (proj.Type == 4)
+                    {
+                        proj.Kill();
+                    }
+                    else
+                        p.Pop();
                 }
             }
             else
@@ -49,9 +54,10 @@ public class Entity : MonoBehaviour
                         }
                     }
                 }
-                if (Life <= 0)
+                if (Life <= 0 && Life > -50)
                 {
                     OnKill();
+                    Life = -50;
                     EventManager.Point += (int)PointWorth;
                     Destroy(gameObject);
                 }

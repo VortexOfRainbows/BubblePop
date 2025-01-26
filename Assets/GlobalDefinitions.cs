@@ -29,5 +29,9 @@ public class GlobalDefinitions : MonoBehaviour
     public AudioClip[] clips;
     public static Sprite[] bathBombShards => Instance.bathbombShards;
     public Sprite[] bathbombShards;
+    public static Sprite BubblePower1 => Instance.PowerBubble1;
+    public Sprite PowerBubble1;
+    public static Sprite BubblePower2 => Instance.PowerBubble2;
+    public Sprite PowerBubble2;
 
 }

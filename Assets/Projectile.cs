@@ -78,6 +78,11 @@ public class Projectile : MonoBehaviour
             Data2 = 6;
             Hostile = true;
         }
+        if(Type == 4)
+        {
+            spriteRenderer.sprite = Data1 == 0 ? GlobalDefinitions.BubblePower1 :  GlobalDefinitions.BubblePower2;
+            Hostile = true;
+        }
     }
     public void FixedUpdate()
     {
@@ -256,7 +261,8 @@ public class Projectile : MonoBehaviour
         if(Player.Instance.AttackRight >= 50 && timer <= 0)
         {
             int target = (int)(Player.Instance.AttackRight - 50) / 100;
-            float targetSize = target * 0.7f + 0.8f + Player.Instance.AttackRight / 240f;
+            float targetSize = target * 0.7f * + 0.8f + Player.Instance.AttackRight / 240f;
+            targetSize *= 1f + Mathf.Sqrt(Player.DamagePower) * 0.5f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
             timer = -Player.Instance.AttackRight;
             Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
@@ -270,12 +276,11 @@ public class Projectile : MonoBehaviour
                     ParticleManager.NewParticle((Vector2)transform.position + circular * 1.1f, .3f, -circular.normalized * Utils.RandFloat(5, 10) + Player.Instance.rb.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, default);
                 }
             }
-            Vector2 awayFromWand = new Vector2(1, (0.55f + targetSize * 0.45f) * Mathf.Sign(Player.Instance.PointDirOffset)).RotatedBy(Player.Instance.Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
+            Vector2 awayFromWand = new Vector2(1.4f, (0.51f + targetSize * 0.49f) * Mathf.Sign(Player.Instance.PointDirOffset)).RotatedBy(Player.Instance.Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
             transform.position = Vector2.Lerp(transform.position,(Vector2)Player.Instance.Wand.transform.position + awayFromWand, 0.15f);
             rb.velocity *= 0.8f;
             rb.velocity += Player.Instance.rb.velocity * 0.1f;
-            Damage = 2 + target * 2;
-
+            Damage = (1 + target) * (2 + Player.DamagePower);
             //rb.rotation = toMouse.ToRotation() * Mathf.Rad2Deg;
         }
         else if(timer <= 0)
@@ -406,6 +411,11 @@ public class Projectile : MonoBehaviour
                     }
                 }
             }
+
+            if(Utils.RandFloat(1) < 0.5f)
+            {
+                Projectile.NewProjectile(transform.position, Vector2.zero, 4, Random.Range(0, 2), 0);
+            }
         }
         if (Type == 2)
         {
@@ -426,6 +436,13 @@ public class Projectile : MonoBehaviour
                 Vector2 circular = new Vector2(.5f + transform.localScale.x * 0.4f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(4, 7), 3f, Utils.RandFloat(0.3f, 0.5f), 0, spriteRenderer.color);
             }
+        }
+        if (Type == 4)
+        {
+            if (Data1 == 0)
+                Player.ShotgunPower++;
+            else
+                Player.DamagePower++;
         }
     }
 }
