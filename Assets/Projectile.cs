@@ -1,7 +1,9 @@
+using System.Xml;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public static int colorGradient = 0;
     public static GameObject NewProjectile(Vector2 pos, Vector2 velo, int type = 0, float data1 = 0, float data2 = 0)
     {
         GameObject Proj = Instantiate(GlobalDefinitions.Projectile, pos, Quaternion.identity);
@@ -31,6 +33,7 @@ public class Projectile : MonoBehaviour
             Kill();
         }
     }
+    public SpriteRenderer spriteRendererGlow;
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
     public CircleCollider2D c2D;
@@ -60,7 +63,9 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 2)
         {
-            spriteRenderer.sprite = GlobalDefinitions.SpikyProjectileSprite;
+            spriteRenderer.sprite = GlobalDefinitions.bathBombShards[Random.Range(0, 4)];
+            spriteRenderer.color = PickColor(Mathf.Min(Data2, 6), Data2 - 6);
+            Data2 = 6;
             Hostile = true;
         }
     }
@@ -74,6 +79,10 @@ public class Projectile : MonoBehaviour
             SpikeAI();
         if (Type == 3)
             BigBubbleAI();
+        if (!Friendly && Type != 3)
+            spriteRendererGlow.color = spriteRenderer.color;
+        else
+            spriteRendererGlow.gameObject.SetActive(false);
     }
     public void BubbleAI()
     {
@@ -100,6 +109,25 @@ public class Projectile : MonoBehaviour
         }
         timer++;
     }
+    public Color PickColor(float data, float counter)
+    {
+        Color color = Color.white;
+        if (data == 0)
+            color = new Color(112 / 255f, 54 / 255f, 157 / 255f);
+        if (data == 1)
+            color = new Color(75 / 255f, 54 / 255f, 255 / 255f);
+        if (data == 2)
+            color = new Color(121 / 255f, 195 / 255f, 20 / 255f);
+        if (data == 3)
+            color = new Color(250 / 255f, 235 / 255f, 54 / 255f);
+        if (data == 4)
+            color = new Color(255 / 255f, 165 / 255f, 0 / 255f);
+        if (data == 5)
+            color = new Color(232 / 255f, 20 / 255f, 22 / 255f);
+        if (data == 6)
+            color = Rainbow(counter);
+        return color;
+    }
     public Color Rainbow(float timer)
     {
         timer = timer * Mathf.Deg2Rad * 2.5f;
@@ -119,7 +147,7 @@ public class Projectile : MonoBehaviour
     {
         float yPointBeforeLanding = Data1;
         float distTillLanding = transform.position.y - Data1;
-        transform.localScale = Vector3.one * (1 + distTillLanding / 12f);
+        transform.localScale = Vector3.one * (1 + 0.1f * Data2 + distTillLanding / 15f);
 
         Vector2 velo = rb.velocity;
         if (transform.position.y < yPointBeforeLanding + 1)
@@ -143,22 +171,7 @@ public class Projectile : MonoBehaviour
             velo.y -= 0.125f;
         }
         rb.velocity = velo;
-
-        Color color = Color.white;
-        if (Data2 == 0)
-            color = new Color(112 / 255f, 54 / 255f, 157 / 255f);
-        if (Data2 == 1)
-            color = new Color(75 / 255f, 54 / 255f, 157 / 255f);
-        if (Data2 == 2)
-            color = new Color(121 / 255f, 195 / 255f, 20 / 255f);
-        if (Data2 == 3)
-            color = new Color(250 / 255f, 235 / 255f, 54 / 255f);
-        if (Data2 == 4)
-            color = new Color(255 / 255f, 165 / 255f, 0 / 255f);
-        if (Data2 == 5)
-            color = new Color(232 / 255f, 20 / 255f, 22 / 255f);
-        if (Data2 == 6)
-            color = Rainbow(timer2++);
+        Color color = PickColor(Data2, timer2++);
         if (timer > 0)
         {
             float sqr = timer / 240f;
@@ -175,21 +188,45 @@ public class Projectile : MonoBehaviour
             Kill();
         }
     }
+    private Vector2 startPos = Vector2.zero;
     public void SpikeAI()
     {
-        if(timer < 200)
+        if(startPos == Vector2.zero)
+            startPos = (Vector2)transform.position - rb.velocity.normalized; 
+        if (timer < 200 && Data2 != 5 && Data2 != 6)
+        {
             rb.velocity *= 1.011f;
-        rb.rotation = rb.velocity.ToRotation() * Mathf.Rad2Deg;
+        }
+        rb.rotation += rb.velocity.magnitude * 0.2f * Mathf.Sign(rb.velocity.x) + 0.2f * rb.velocity.x;
         timer++;
         if(timer > 610)
         {
             float alphaOut = 1 - (timer - 610) / 90f;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
         }
         if(timer > 700)
         {
             Kill();
         }
+        //if(Data2 == 2)
+        //{
+        //    rb.velocity = rb.velocity.RotatedBy(Data1 * Mathf.Deg2Rad);
+        //}
+        Color color = spriteRenderer.color;
+        if (Data2 == 5 || Data2 == 6)
+        {
+            Vector2 fromStart = (Vector2)transform.position - startPos;
+            Vector2 rotate = fromStart.RotatedBy(Data1 * Mathf.Deg2Rad);
+            float rotateDist = rotate.magnitude;
+            rotate = rotate.normalized * (rotateDist + rb.velocity.magnitude * Time.fixedDeltaTime);
+            transform.position = startPos + rotate - rb.velocity * Time.fixedDeltaTime;
+            if(Data1 != 0)
+                Data1 = Mathf.Sign(Data1) * (0.3f + 1.1f / rotateDist);
+            rb.velocity *= 1.005f;
+            color.a *= 0.5f;
+        }
+        ParticleManager.NewParticle((Vector2)transform.position, 0.175f, Utils.RandCircle(0.01f), 1f, 0.175f, 1, color);
     }
     public void BigBubbleAI()
     {
@@ -243,15 +280,94 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 1)
         {
+            Color c = PickColor(Data2, timer2);
             for (int i = 0; i < 70; i++)
             {
-                Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
-                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 1.1f), circular * Utils.RandFloat(4, 20) + new Vector2(0, Utils.RandFloat(-1, 3)), 4f, Utils.RandFloat(0.4f, 0.7f));
+                Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 35f);
+                Color color = Data2 == 6 ? PickColor(Data2, i / 69f * Mathf.Deg2Rad) : c;
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.9f), circular * Utils.RandFloat(4, 20) + new Vector2(0, Utils.RandFloat(-1, 3)), 4f, Utils.RandFloat(0.7f, 1f), 0, c);
             }
-            for (int i = 0; i < 10; i++)
+            if (Data2 == 6)
             {
-                Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 5f);
-                NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0);
+                for(int j = 0; j < 3; j++)
+                {
+                    float rand = Utils.RandFloat(360);
+                    for (int i = 0; i < 14; i++)
+                    {
+                        float r = (j * 8 + i / 14f * 360) + rand;
+                        Vector2 circular = new Vector2(1, 0).RotatedBy(r * Mathf.Deg2Rad);
+                        NewProjectile((Vector2)transform.position + circular * (j * 2f), circular * 2.0f, 2, Mathf.Sign(j % 2 * 2 - 1) * (1 + j * 0.5f), Data2 + r / 2.5f);
+                    }
+                }
+            }
+            if (Data2 == 0)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    float r = Mathf.PI * i / 5f;
+                    Vector2 circular = new Vector2(1, 0).RotatedBy(r);
+                    NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2);
+                }
+            }
+            if(Data2 == 1)
+            {
+                for(float j = 1; j < 2.5f; j += 0.2f)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f);
+                        NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2);
+                    }
+                }
+            }
+            if(Data2 == 2)
+            {
+                for (float j = 1; j < 4.5f; j += 0.5f)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f);
+                        NewProjectile((Vector2)transform.position + circular * 0.25f, circular * 2.0f, 2, 0, Data2);
+                    }
+                }
+            }
+            if (Data2 == 3)
+            {
+                for (int i = 0; i < 24; i++)
+                {
+                    Vector2 circular = Utils.RandCircle(3);
+                    NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 1.5f, 2, 0, Data2);
+                }
+            }
+            if (Data2 == 4)
+            {
+                float r = Utils.RandFloat(Mathf.PI);
+                float petals = 10;
+                for (int i = 0; i < 36; i++)
+                {
+                    float sin = Mathf.Sin(i * Mathf.PI / 36f * petals);
+                    Vector2 circular = new Vector2(0.7f + 0.3f * sin, 0).RotatedBy(r + Mathf.PI * i / 18f);
+                    NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2);
+                }
+            }
+            if (Data2 == 5)
+            {
+                for(int j = -1; j <= 1; j += 2)
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 5f);
+                        NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, j * 1f, Data2);
+                    }
+                }
+            }
+        }
+        if (Type == 2)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.2f, 0.4f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 1, spriteRenderer.color);
             }
         }
     }

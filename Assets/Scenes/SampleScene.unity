@@ -562,6 +562,10 @@ PrefabInstance:
       propertyPath: MainCamera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 8845014620957060780, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -676,6 +680,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlobalDefinitions
       objectReference: {fileID: 0}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.size
+      value: 37
+      objectReference: {fileID: 0}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[24]
+      value: 
+      objectReference: {fileID: 8300000, guid: 0bdf20f24bc87a14aa3d885e9155b2b4, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[25]
+      value: 
+      objectReference: {fileID: 8300000, guid: 060ce4daca353f841a0387719fadd08f, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[26]
+      value: 
+      objectReference: {fileID: 8300000, guid: 73a883a83efea704989b571a2df1d687, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[27]
+      value: 
+      objectReference: {fileID: 8300000, guid: fc81c916e897d8441b83fa16f6770b72, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[28]
+      value: 
+      objectReference: {fileID: 8300000, guid: a7dfa870024834a41941aa43b700fc9c, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[29]
+      value: 
+      objectReference: {fileID: 8300000, guid: 77eace836ccaf1f41ade88fdde517529, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[30]
+      value: 
+      objectReference: {fileID: 8300000, guid: a40da86b9e64b3847bd8654827e86d27, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[31]
+      value: 
+      objectReference: {fileID: 8300000, guid: a0b3e727165fdf142babf1290bd83fa1, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[32]
+      value: 
+      objectReference: {fileID: 8300000, guid: c7c501ad49f8e6c44ae9d6672424d905, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[33]
+      value: 
+      objectReference: {fileID: 8300000, guid: 2d8b9cf990231d647addac39774de01e, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[34]
+      value: 
+      objectReference: {fileID: 8300000, guid: 5d653b21b2c722641b55f2cab6217c91, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[35]
+      value: 
+      objectReference: {fileID: 8300000, guid: b3155d88d8695a245a55e3ba9547bab4, type: 3}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: clips.Array.data[36]
+      value: 
+      objectReference: {fileID: 8300000, guid: 97c590c5fe5acce40a96d21d95112450, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -61,4 +61,9 @@ public class EnemyFlamingo : Entity
         Vector2 projectileDirection = (Player.Position - (Vector2)this.transform.position).normalized * projectileSpeed;
         Projectile.NewProjectile(this.transform.position, projectileDirection, 2);
     }
+
+    public override void OnKill()
+    {
+        DeathParticles(30, 0.6f, new Color(1, 0.85f, 0.99f));
+    }
 }
