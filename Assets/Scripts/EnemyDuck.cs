@@ -66,5 +66,6 @@ public class EnemyDuck : Entity
     public override void OnKill()
     {
         DeathParticles(20, 0.5f, new Color(1, .97f, .52f));
+        AudioManager.PlaySound(GlobalDefinitions.audioClips[27], sRender.transform.position, 0.01f, 1.2f);
     }
 }
