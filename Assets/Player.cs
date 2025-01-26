@@ -324,7 +324,11 @@ public class Player : Entity
         }
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
-    void Update() => Instance = this;
+    void Update()
+    {
+        base.Update();
+        Instance = this;
+    }
     public float DeathKillTimer = 0;
     public void Pop()
     {

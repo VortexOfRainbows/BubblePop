@@ -619,10 +619,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BathTub
       objectReference: {fileID: 0}
-    - target: {fileID: 5107109665193778385, guid: 6556bd34676f9c849b52ae33940ee05a, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -676,9 +672,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4094991249792074390, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_SortingOrder
+      value: -6
+      objectReference: {fileID: 0}
     - target: {fileID: 4159048281131907602, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_Name
       value: GlobalDefinitions
+      objectReference: {fileID: 0}
+    - target: {fileID: 6102137410564368588, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_SortingOrder
+      value: -6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

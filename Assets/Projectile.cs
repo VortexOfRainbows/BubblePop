@@ -171,12 +171,12 @@ public class Projectile : MonoBehaviour
             {
                 AudioManager.PlaySound(GlobalDefinitions.audioClips[24], transform.position, 1, 0.9f);
                 AudioManager.PlaySound(GlobalDefinitions.audioClips[26], transform.position, 1, 1.1f);
-                for (int i = 0; i < 15; i++)
-                    ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1f), .7f, velo * 0.2f + new Vector2(0, Utils.RandFloat(1, 3)), 4f, 1.5f);
+                for (int i = 0; i < 20; i++)
+                    ParticleManager.NewParticle((Vector2)transform.position + new Vector2(Utils.RandFloat(-1f, 1f), -1.1f * transform.localScale.y), .7f, velo * 0.2f + new Vector2(0, Utils.RandFloat(1, 3)), 4f, Utils.RandFloat(1.2f, 1.5f), 0, ParticleManager.BathColor);
                 timer++;
             }
             else if(timer % 2 == 0)
-                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.8f), .5f, velo * 0.15f + new Vector2(0, Utils.RandFloat(1)), 3f, 1.0f);
+                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(Utils.RandFloat(-1f, 1f), -1.1f * transform.localScale.y), .5f, velo * 0.15f + new Vector2(0, Utils.RandFloat(1)), 3f, Utils.RandFloat(0.8f, 1.2f), 0, ParticleManager.BathColor);
         }
         else
         {
@@ -192,6 +192,15 @@ public class Projectile : MonoBehaviour
             float sin = Mathf.Sin(sqr * Mathf.PI * 12f);
             transform.localScale *= 1f + (sin * 0.1f + sqr * 0.2f) + sqr * 0.4f;
             timer++;
+            if(Utils.RandFloat(1) < 0.6f)
+            {
+                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, 0.9f * transform.localScale.y), Utils.RandFloat(0.4f, 0.5f), velo * 0.08f + new Vector2(0, Utils.RandFloat(4 + sqr * 3.5f, 5 + sqr * 5)), 3f, Utils.RandFloat(0.8f, 1.2f), 1, Color.Lerp(color, Color.red, sqr * 0.8f));
+            }
+            else
+            {
+                Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.7f), circular * Utils.RandFloat(4 + sqr * 6, 12 + sqr * 6) + new Vector2(0, Utils.RandFloat(-1, 2)), 4f, Utils.RandFloat(0.5f, .6f), 0, color);
+            }
             spriteRenderer.color = Color.Lerp(color, Color.red, 0.0f + Mathf.Max(0, sin * 0.4f) + 0.6f * sqr);
         }
         else
@@ -362,7 +371,7 @@ public class Projectile : MonoBehaviour
                 {
                     for (int i = 0; i < 4; i++)
                     {
-                        Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f);
+                        Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f + j * -25 * Mathf.Deg2Rad);
                         NewProjectile((Vector2)transform.position + circular * 0.25f, circular * 1.7f, 2, 1, Data2);
                     }
                 }

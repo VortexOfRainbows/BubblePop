@@ -7,6 +7,7 @@ public class ParticleManager : MonoBehaviour
     public static ParticleManager Instance;
     public ParticleSystem thisSystem;
     public ParticleSystem SecondSystem;
+    public static readonly Color BathColor = new Color(189 / 255f, 227 / 255f, 246 / 255f, 0.6f);
     public static void NewParticle(Vector2 pos, float size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f, int type = 0, Color color = default)
     {
         if (color == default)

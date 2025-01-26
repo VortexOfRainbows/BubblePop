@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Entity : MonoBehaviour
 {
@@ -75,6 +73,17 @@ public class Entity : MonoBehaviour
             Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
             ParticleManager.NewParticle(randPos, size * Utils.RandFloat(0.9f, 1.1f), Utils.RandCircle(1) * Utils.RandFloat(4, 12) + Vector2.up * Utils.RandFloat(3), 3, .75f, 1, c);
         }
+    }
+    public Vector2 lastPos = Vector2.zero;
+    public void Update()
+    {
+        if(Utils.RandFloat(1) < 0.5f && lastPos != (Vector2)transform.position)
+        {
+            Vector2 toLastPos = lastPos - (Vector2)transform.position;
+            if(toLastPos.sqrMagnitude > 0.002f)
+                ParticleManager.NewParticle(transform.position + new Vector3(Utils.RandFloat(-transform.lossyScale.x, transform.lossyScale.x) * 1.1f, -transform.lossyScale.y * 0.7f), Utils.RandFloat(0.35f, 0.45f), toLastPos * Utils.RandFloat(0.9f, 1.1f), .5f, Utils.RandFloat(0.4f, 0.5f), 0, ParticleManager.BathColor);
+        }
+        lastPos = transform.position;
     }
     public virtual void OnKill()
     {
