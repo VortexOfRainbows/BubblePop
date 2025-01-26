@@ -86,6 +86,14 @@ public class Projectile : MonoBehaviour
             Hostile = true;
             transform.localScale = new Vector3(1, 1, 1);
         }
+        if(Type == 5)
+        {
+            transform.localScale = new Vector3(0.65f, 0.45f, 1);
+            spriteRendererGlow.transform.localScale = new Vector3(1.5f, 4f, 1);
+            spriteRendererGlow.color = new Color(253 / 255f, 181 / 255f, 236 / 255f, 0.5f);
+            spriteRenderer.sprite = GlobalDefinitions.Feather;
+            Hostile = true;
+        }
     }
     public void FixedUpdate()
     {
@@ -99,6 +107,8 @@ public class Projectile : MonoBehaviour
             BigBubbleAI();
         if (Type == 4)
             PowerUpAI();
+        if (Type == 5)
+            FeatherAI();
         if (!Friendly && Type != 3 && Type != 4)
             spriteRendererGlow.color = spriteRenderer.color;
         else if(Type != 4)
@@ -227,7 +237,7 @@ public class Projectile : MonoBehaviour
             startPos = (Vector2)transform.position - rb.velocity.normalized; 
         if (timer < 200 && Data2 != 5 && Data2 != 6)
         {
-            rb.velocity *= 1.011f;
+            rb.velocity *= 1.0045f;
         }
         rb.rotation += rb.velocity.magnitude * 0.2f * Mathf.Sign(rb.velocity.x) + 0.2f * rb.velocity.x;
         timer++;
@@ -255,7 +265,8 @@ public class Projectile : MonoBehaviour
             transform.position = startPos + rotate - rb.velocity * Time.fixedDeltaTime;
             if(Data1 != 0)
                 Data1 = Mathf.Sign(Data1) * (0.3f + 1.1f / rotateDist);
-            rb.velocity *= 1.005f;
+            if(timer < 200)
+                rb.velocity *= 1.0045f;
             color.a *= 0.5f;
         }
         ParticleManager.NewParticle((Vector2)transform.position, 0.175f, Utils.RandCircle(0.01f), 1f, 0.175f, 1, color);
@@ -331,6 +342,27 @@ public class Projectile : MonoBehaviour
             Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
             ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.6f), circular * Utils.RandFloat(3, 6) + new Vector2(0, Utils.RandFloat(-1, 2)),
                 2f, Utils.RandFloat(0.3f, .5f), 0, spriteRendererGlow.color * 0.9f);
+        }
+    }
+    public void FeatherAI()
+    {
+        rb.rotation = rb.velocity.ToRotation() * Mathf.Rad2Deg + 90;
+
+        timer++;
+        if(timer < 300)
+        {
+            rb.velocity += rb.velocity.normalized * 0.008f;
+            rb.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.1f;
+        }
+        if (timer > 610)
+        {
+            float alphaOut = 1 - (timer - 610) / 90f;
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
+        }
+        if (timer > 700)
+        {
+            Kill();
         }
     }
     private bool Dead = false;
@@ -429,10 +461,10 @@ public class Projectile : MonoBehaviour
                     }
                 }
             }
-
-            if(Utils.RandFloat(1) < 0.5f)
+            if (EventManager.CanSpawnPower())
             {
                 Projectile.NewProjectile(transform.position, Vector2.zero, 4, Random.Range(0, 2), 0);
+                EventManager.PointsSpent += 100;
             }
         }
         if (Type == 2)
@@ -457,10 +489,24 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 4)
         {
+            for (int i = 0; i < 30; i++)
+            {
+                Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.6f, 0.7f), circular * Utils.RandFloat(3, 6), 4f, Utils.RandFloat(0.4f, 0.6f), 1, spriteRendererGlow.color);
+            }
             if (Data1 == 0)
                 Player.ShotgunPower++;
             else
                 Player.DamagePower++;
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[37], transform.position, 1.2f, 0.9f);
+        }
+        if (Type == 5)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.2f, 0.4f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 1, spriteRendererGlow.color);
+            }
         }
     }
 }

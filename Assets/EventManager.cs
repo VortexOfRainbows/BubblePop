@@ -11,9 +11,14 @@ public static class EventManager
     }
     public static bool InsideBathtub(Vector2 pos)
     {
-        pos.x *= 0.28f;
-        return pos.magnitude <= 21f;
+        pos.x *= 0.3f;
+        return pos.magnitude <= 20f;
     }
+    public static bool CanSpawnPower()
+    {
+        return PointsSpent < Point && Utils.RandFloat(1.0f) < 0.25f;
+    }
+    public static float PointsSpent = 0;
     private static float PointTimer = 0;
     private static float SoapTimer, DuckTimer, FlamingoTimer;
     private static float minXBound = -30, maxXBound = 30, minYBound = -20, maxYBound = 20;
@@ -39,7 +44,7 @@ public static class EventManager
         }
         EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 10, 1000), GlobalDefinitions.Ducky);
         EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 100, 1100), GlobalDefinitions.Soap);
-        EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(20, 15, 300, 1500), GlobalDefinitions.flamingoFloatie);
+        EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), GlobalDefinitions.flamingoFloatie);
     }
     private static float GetSpawnTime(float max, float min, float minimumThreshhold, float maxThreshold)
     {
@@ -56,20 +61,20 @@ public static class EventManager
         if(SpawnTimer > respawnTime && respawnTime > 0)
         {
             Vector2 stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
-            if ((stuff - Player.Position).magnitude < 20)
+            if ((stuff - Player.Position).magnitude < 24)
             {
                 stuff -= Player.Position;
-                stuff = Player.Position + stuff.normalized * 20;
+                stuff = Player.Position + stuff.normalized * 24;
             }
             int att = 0;
             while (!InsideBathtub(stuff))
             {
                 stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
                 stuff *= 1f - (att / 100f);
-                if ((stuff - Player.Position).magnitude < 20)
+                if ((stuff - Player.Position).magnitude < 24)
                 {
                     stuff -= Player.Position;
-                    stuff = Player.Position + stuff.normalized * 20;
+                    stuff = Player.Position + stuff.normalized * 24;
                 }
                 if (++att > 100)
                 {
@@ -91,20 +96,20 @@ public static class EventManager
         float[] weights = new float[] { 2, 1, 0.1f, 0, 0, 0, 0 };
         if (Point < 200)
         {
-            if (Point < 100)
+            if (Point > 100)
                 weights = new float[] { 2, 2, 1, 0.2f, 0, 0, 0 };
         }
-        else if (Point < 300)
-            weights = new float[] { 1, 2, 2, 1, 0.2f, 0.1f, 0 };
         else if (Point < 400)
+            weights = new float[] { 1, 2, 2, 1, 0.2f, 0.1f, 0 };
+        else if (Point < 700)
             weights = new float[] { 0.1f, 1, 2, 2, 1, 0.1f, 0 };
-        else if (Point < 500)
+        else if (Point < 1000)
             weights = new float[] { 0.1f, 1, 2, 2, 2, 1, 0.1f };
-        else if (Point < 600)
+        else if (Point < 1400)
             weights = new float[] { 0.1f, 0.2f, 1, 2, 2, 2, 1 };
-        else if (Point < 800)
+        else if (Point < 2000)
             weights = new float[] { 0.1f, 0.2f, 0.3f, 1, 2, 2, 1 };
-        else if (Point < 1600)
+        else if (Point < 3000)
             weights = new float[] { 0.1f, 0.2f, 0.3f, 1, 2, 3, 2 };
         else
             weights = new float[] { 0.1f, 0.2f, 0.3f, 1, 2, 3, 7 };
