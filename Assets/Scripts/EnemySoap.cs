@@ -15,6 +15,7 @@ public class EnemySoap : Entity
     {
         rb = GetComponent<Rigidbody2D>();
         Life = 5;
+        PointWorth = 5;
     }
     // Update is called once per frame
     void FixedUpdate()

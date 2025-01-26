@@ -15,8 +15,8 @@ public class UIManager : MonoBehaviour
     public static bool gamePaused = false;
     private static bool tutorialSeen = false;
 
-    public float highscore;
-    public float score;
+    public static int highscore;
+    public static int score;
 
     [SerializeField]
     private TMPro.TextMeshProUGUI scoreText;
@@ -29,8 +29,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        score = 0f;
+        score = 0;
         highscore = PlayerPrefs.GetInt("Highscore", 0);
 
         if(tutorialSeen == false)
@@ -70,7 +69,6 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: " + Mathf.FloorToInt(score);
         highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
         deadHighscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
-        score += 10f * Time.deltaTime;
         if (score > highscore)
         {
             highscore = score;

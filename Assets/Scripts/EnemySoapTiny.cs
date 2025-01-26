@@ -7,5 +7,6 @@ public class EnemySoapTiny : EnemySoap
         Life = 3;
         timer  = 60;
         IFrame = 80;
+        PointWorth = 5;
     }
 }

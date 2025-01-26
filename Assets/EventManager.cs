@@ -1,23 +1,29 @@
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class EventManager
 {
+    public static int Point
+    {
+        get => UIManager.score;
+        set => UIManager.score = value;
+    }
     public static bool InsideBathtub(Vector2 pos)
     {
         pos.x *= 0.28f;
         return pos.magnitude <= 21f;
     }
-    private static int enemySpawnTimer = 30;
-    private static int minSpawnTime = 300, maxSpawnTime = 600;
+    private static float PointTimer = 0;
+    private static float SoapTimer, DuckTimer, FlamingoTimer;
     private static float minXBound = -30, maxXBound = 30, minYBound = -20, maxYBound = 20;
     public static void Update()
     {
-        enemySpawnTimer--;
-        if (enemySpawnTimer <= 0)
+        PointTimer += Time.deltaTime;
+        if (PointTimer > 1)
         {
-            SpawnRandomEnemy();
-            enemySpawnTimer = Random.Range(minSpawnTime, maxSpawnTime);
+            Point++;
+            PointTimer--;
         }
         bathBombTimer -= Time.deltaTime;
         if (bathBombTimer < 0)
@@ -25,38 +31,53 @@ public static class EventManager
             SpawnBathBomb();
             bathBombTimer = Utils.RandFloat(4, 8); //5 to 8 seconds for another bath bomb
         }
+        EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 10, 1000), GlobalDefinitions.Ducky);
+        EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 100, 1100), GlobalDefinitions.Soap);
+        EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(20, 15, 300, 1500), GlobalDefinitions.flamingoFloatie);
     }
-    public static void SpawnRandomEnemy()
+    private static float GetSpawnTime(float max, float min, float minimumThreshhold, float maxThreshold)
     {
-        // Spawn instance of random enemy
-        Vector2 stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
-        if ((stuff - Player.Position).magnitude < 20)
+        if(Point < minimumThreshhold)
         {
-            stuff -= Player.Position;
-            stuff = Player.Position + stuff.normalized * 20;
+            return -1;
         }
-        int att = 0;
-        while (!InsideBathtub(stuff))
+        float dist = maxThreshold - minimumThreshhold;
+        float percent = (Point - minimumThreshhold) / dist;
+        return Mathf.Lerp(max, min, percent);
+    }
+    private static void EnemySpawning(ref float SpawnTimer, float SpawnTimerSpeedScaling, float respawnTime, GameObject Enemy)
+    {
+        if(SpawnTimer > respawnTime && respawnTime > 0)
         {
-            stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
-            stuff *= 1 - (att / 100f);
-            if((stuff - Player.Position).magnitude < 20)
+            Vector2 stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
+            if ((stuff - Player.Position).magnitude < 20)
             {
                 stuff -= Player.Position;
                 stuff = Player.Position + stuff.normalized * 20;
             }
-            if (++att > 100)
+            int att = 0;
+            while (!InsideBathtub(stuff))
             {
-                Debug.Log("Fail to spawn");
-                return;
+                stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
+                stuff *= 1f - (att / 100f);
+                if ((stuff - Player.Position).magnitude < 20)
+                {
+                    stuff -= Player.Position;
+                    stuff = Player.Position + stuff.normalized * 20;
+                }
+                if (++att > 100)
+                {
+                    Debug.Log("Fail to spawn");
+                    return;
+                }
             }
-        }
-        if (Utils.RandFloat(1) < 0.3f)
-        {
-            GameObject.Instantiate(GlobalDefinitions.Ducky, stuff, Quaternion.identity);
+            GameObject.Instantiate(Enemy, stuff, Quaternion.identity);
+            SpawnTimer = Utils.RandFloat(-0.5f, 0.5f) * respawnTime;
         }
         else
-            GameObject.Instantiate(GlobalDefinitions.Soap, stuff, Quaternion.identity);
+        {
+            SpawnTimer += Time.deltaTime * SpawnTimerSpeedScaling;
+        }
     }
     private static float bathBombTimer = 0;
     public static void SpawnBathBomb()

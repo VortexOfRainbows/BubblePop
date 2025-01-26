@@ -4,6 +4,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Entity : MonoBehaviour
 {
+    public float PointWorth = 0;
     public float IFrame = 0;
     public int Life = 10;
     public static readonly string ProjTag = "Proj";
@@ -29,7 +30,7 @@ public class Entity : MonoBehaviour
             }
             else
             {
-                if (proj.Friendly && IFrame <= 0)
+                if (proj.Friendly && (IFrame <= 0 || proj.Type != 3))
                 {
                     Life -= proj.Damage;
                     if (proj.Type == 0)
@@ -49,6 +50,7 @@ public class Entity : MonoBehaviour
                     {
                         soap.Kill();
                     }
+                    EventManager.Point += (int)PointWorth;
                     Destroy(gameObject);
                 }
             }

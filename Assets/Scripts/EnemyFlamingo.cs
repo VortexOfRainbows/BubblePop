@@ -16,6 +16,7 @@ public class EnemyFlamingo : Entity
     private void Start()
     {
         Life = 10;
+        PointWorth = 15;
     }
     // Update is called once per frame
     void FixedUpdate()
