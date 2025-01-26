@@ -79,7 +79,7 @@ public class Projectile : MonoBehaviour
             SpikeAI();
         if (Type == 3)
             BigBubbleAI();
-        if (!Friendly)
+        if (!Friendly && Type != 3)
             spriteRendererGlow.color = spriteRenderer.color;
         else
             spriteRendererGlow.gameObject.SetActive(false);
@@ -209,10 +209,10 @@ public class Projectile : MonoBehaviour
         {
             Kill();
         }
-        if(Data2 == 2)
-        {
-            rb.velocity = rb.velocity.RotatedBy(Data1 * Mathf.Deg2Rad);
-        }
+        //if(Data2 == 2)
+        //{
+        //    rb.velocity = rb.velocity.RotatedBy(Data1 * Mathf.Deg2Rad);
+        //}
         Color color = spriteRenderer.color;
         if (Data2 == 5 || Data2 == 6)
         {
@@ -322,12 +322,12 @@ public class Projectile : MonoBehaviour
             }
             if(Data2 == 2)
             {
-                for (float j = 1; j < 2.5f; j += 0.5f)
+                for (float j = 1; j < 4.5f; j += 0.5f)
                 {
                     for (int i = 0; i < 4; i++)
                     {
                         Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f);
-                        NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 1, Data2);
+                        NewProjectile((Vector2)transform.position + circular * 0.25f, circular * 2.0f, 2, 0, Data2);
                     }
                 }
             }
