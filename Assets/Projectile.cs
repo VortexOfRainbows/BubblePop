@@ -1,7 +1,9 @@
+using System.Xml;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public static int colorGradient = 0;
     public static GameObject NewProjectile(Vector2 pos, Vector2 velo, int type = 0, float data1 = 0, float data2 = 0)
     {
         GameObject Proj = Instantiate(GlobalDefinitions.Projectile, pos, Quaternion.identity);
@@ -31,6 +33,7 @@ public class Projectile : MonoBehaviour
             Kill();
         }
     }
+    public SpriteRenderer spriteRendererGlow;
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
     public CircleCollider2D c2D;
@@ -61,7 +64,8 @@ public class Projectile : MonoBehaviour
         if (Type == 2)
         {
             spriteRenderer.sprite = GlobalDefinitions.bathBombShards[Random.Range(0, 4)];
-            spriteRenderer.color = PickColor(Data2, Utils.RandFloat(360));
+            spriteRenderer.color = PickColor(Mathf.Min(Data2, 6), Data2 - 6);
+            colorGradient += 10;
             Hostile = true;
         }
     }
@@ -75,6 +79,10 @@ public class Projectile : MonoBehaviour
             SpikeAI();
         if (Type == 3)
             BigBubbleAI();
+        if (!Friendly)
+            spriteRendererGlow.color = spriteRenderer.color;
+        else
+            spriteRendererGlow.gameObject.SetActive(false);
     }
     public void BubbleAI()
     {
@@ -180,10 +188,15 @@ public class Projectile : MonoBehaviour
             Kill();
         }
     }
+    private Vector2 startPos = Vector2.zero;
     public void SpikeAI()
     {
-        if(timer < 200)
+        if(startPos == Vector2.zero)
+            startPos = (Vector2)transform.position - rb.velocity; 
+        if (timer < 200 && Data2 != 5 && Data2 != 6)
+        {
             rb.velocity *= 1.011f;
+        }
         rb.rotation += rb.velocity.magnitude * 0.2f * Mathf.Sign(rb.velocity.x) + 0.2f * rb.velocity.x;
         timer++;
         if(timer > 610)
@@ -195,6 +208,23 @@ public class Projectile : MonoBehaviour
         {
             Kill();
         }
+        if(Data2 == 2)
+        {
+            rb.velocity = rb.velocity.RotatedBy(Data1 * Mathf.Deg2Rad);
+        }
+        Color color = spriteRenderer.color;
+        if (Data2 == 5 || Data2 == 6)
+        {
+            Vector2 fromStart = (Vector2)transform.position - startPos;
+            Vector2 rotate = fromStart.RotatedBy(Data1 * Mathf.Deg2Rad);
+            float rotateDist = rotate.magnitude;
+            rotate = rotate.normalized * (rotateDist + rb.velocity.magnitude * Time.fixedDeltaTime);
+            transform.position = startPos + rotate - rb.velocity * Time.fixedDeltaTime;
+            Data1 = Mathf.Sign(Data1) * (0.3f + 1.1f / rotateDist);
+            rb.velocity *= 1.005f;
+            color.a *= 0.5f;
+        }
+        ParticleManager.NewParticle((Vector2)transform.position, 0.175f, Utils.RandCircle(0.01f), 1f, 0.175f, 1, color);
     }
     public void BigBubbleAI()
     {
@@ -248,15 +278,81 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 1)
         {
+            Color c = PickColor(Data2, timer2);
             for (int i = 0; i < 70; i++)
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
-                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 1.1f), circular * Utils.RandFloat(4, 20) + new Vector2(0, Utils.RandFloat(-1, 3)), 4f, Utils.RandFloat(0.4f, 0.7f));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.9f), circular * Utils.RandFloat(4, 20) + new Vector2(0, Utils.RandFloat(-1, 3)), 4f, Utils.RandFloat(0.4f, 0.7f), 0, c);
             }
-            for (int i = 0; i < 10; i++)
+            if (Data2 == 6)
             {
-                Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 5f);
-                NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2);
+                for (int i = 0; i < 31; i++)
+                {
+                    float r = i * 12 * Mathf.Deg2Rad;
+                    Vector2 circular = new Vector2(1, 0).RotatedBy(r);
+                    NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2 + (i * 6) / 2.5f);
+                }
+            }
+            if (Data2 == 0)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    float r = Mathf.PI * i / 5f;
+                    Vector2 circular = new Vector2(1, 0).RotatedBy(r);
+                    NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2);
+                }
+            }
+            if(Data2 == 1)
+            {
+                for(float j = 1; j < 2.5f; j += 0.2f)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f);
+                        NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2);
+                    }
+                }
+            }
+            if(Data2 == 2)
+            {
+                for (float j = 1; j < 2.5f; j += 0.2f)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f);
+                        NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 1, Data2);
+                    }
+                }
+            }
+            if (Data2 == 3)
+            {
+                for (int i = 0; i < 24; i++)
+                {
+                    Vector2 circular = Utils.RandCircle(3);
+                    NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 1.5f, 2, 0, Data2);
+                }
+            }
+            if (Data2 == 4)
+            {
+                float r = Utils.RandFloat(Mathf.PI);
+                float petals = 10;
+                for (int i = 0; i < 36; i++)
+                {
+                    float sin = Mathf.Sin(i * Mathf.PI / 36f * petals);
+                    Vector2 circular = new Vector2(0.7f + 0.3f * sin, 0).RotatedBy(r + Mathf.PI * i / 18f);
+                    NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2);
+                }
+            }
+            if (Data2 == 5)
+            {
+                for(int j = -1; j <= 1; j += 2)
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 5f);
+                        NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, j * 1f, Data2);
+                    }
+                }
             }
         }
         if (Type == 2)
