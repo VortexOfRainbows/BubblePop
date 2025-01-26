@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    public int Life = 10;
     public readonly string ProjTag = "Proj";
     public void OnTriggerStay2D(Collider2D collision)
     {
@@ -26,7 +27,16 @@ public class Entity : MonoBehaviour
             }
             else
             {
-
+                if(proj.Friendly)
+                {
+                    Life -= proj.Damage;
+                    if (proj.Type == 0 || proj.Type == 3)
+                        Destroy(proj.gameObject);
+                }
+                if(Life <= 0)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }

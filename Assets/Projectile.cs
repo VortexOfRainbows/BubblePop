@@ -141,13 +141,15 @@ public class Projectile : MonoBehaviour
     {
         if(Player.Instance.AttackRight >= 50 && timer <= 0)
         {
-            float targetSize = ((int)(Player.Instance.AttackRight - 50) / 100) * 0.8f + 0.8f + Player.Instance.AttackRight / 160f;
+            int target = (int)(Player.Instance.AttackRight - 50) / 100;
+            float targetSize = target * 0.8f + 0.8f + Player.Instance.AttackRight / 160f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
             timer = -Player.Instance.AttackRight;
             Vector2 awayFromWand = new Vector2(1, (0.55f + targetSize * 0.45f) * Mathf.Sign(Player.Instance.PointDirOffset)).RotatedBy(Player.Instance.Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
             transform.position = Vector2.Lerp(transform.position,(Vector2)Player.Instance.Wand.transform.position + awayFromWand, 0.15f);
             rb.velocity *= 0.8f;
             rb.velocity += Player.Instance.rb.velocity * 0.1f;
+            Damage = 1 + target * 3;
         }
         else if(timer <= 0)
         {

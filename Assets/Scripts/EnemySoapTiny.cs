@@ -1,5 +1,5 @@
 using UnityEngine;
-public class EnemySoapTiny : MonoBehaviour
+public class EnemySoapTiny : Entity
 {
     //aiState 0 = aiming
     //aiState 1 = attacking

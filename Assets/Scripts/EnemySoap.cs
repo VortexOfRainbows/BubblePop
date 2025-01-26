@@ -1,5 +1,5 @@
 using UnityEngine;
-public class EnemySoap : MonoBehaviour
+public class EnemySoap : Entity
 {
     //aiState 0 = aiming
     //aiState 1 = attacking

@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-
-public class EnemyDuck : MonoBehaviour
+public class EnemyDuck : Entity
 {
     //aiState 0 = choosing location
     //aiState 1 = going to location

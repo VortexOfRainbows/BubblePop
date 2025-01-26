@@ -10,7 +10,7 @@ public static class EventManager
         enemySpawnTimer--;
         if (enemySpawnTimer <= 0)
         {
-            //SpawnRandomEnemy();
+            SpawnRandomEnemy();
             enemySpawnTimer = Random.Range(minSpawnTime, maxSpawnTime);
         }
         bathBombTimer -= Time.deltaTime;

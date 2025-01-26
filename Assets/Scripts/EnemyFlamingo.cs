@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyFlamingo : MonoBehaviour
+public class EnemyFlamingo : Entity
 {
     //aiState 0 = choosing location
     //aiState 1 = going to location
