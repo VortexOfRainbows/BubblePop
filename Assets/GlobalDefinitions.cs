@@ -33,5 +33,7 @@ public class GlobalDefinitions : MonoBehaviour
     public Sprite PowerBubble1;
     public static Sprite BubblePower2 => Instance.PowerBubble2;
     public Sprite PowerBubble2;
+    public static Sprite Feather => Instance.FlamigoFeater;
+    public Sprite FlamigoFeater;
 
 }

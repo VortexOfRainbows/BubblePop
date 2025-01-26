@@ -86,6 +86,14 @@ public class Projectile : MonoBehaviour
             Hostile = true;
             transform.localScale = new Vector3(1, 1, 1);
         }
+        if(Type == 5)
+        {
+            transform.localScale = new Vector3(0.65f, 0.45f, 1);
+            spriteRendererGlow.transform.localScale = new Vector3(1.5f, 4f, 1);
+            spriteRendererGlow.color = new Color(253 / 255f, 181 / 255f, 236 / 255f, 0.5f);
+            spriteRenderer.sprite = GlobalDefinitions.Feather;
+            Hostile = true;
+        }
     }
     public void FixedUpdate()
     {
@@ -99,6 +107,8 @@ public class Projectile : MonoBehaviour
             BigBubbleAI();
         if (Type == 4)
             PowerUpAI();
+        if (Type == 5)
+            FeatherAI();
         if (!Friendly && Type != 3 && Type != 4)
             spriteRendererGlow.color = spriteRenderer.color;
         else if(Type != 4)
@@ -227,7 +237,7 @@ public class Projectile : MonoBehaviour
             startPos = (Vector2)transform.position - rb.velocity.normalized; 
         if (timer < 200 && Data2 != 5 && Data2 != 6)
         {
-            rb.velocity *= 1.011f;
+            rb.velocity *= 1.008f;
         }
         rb.rotation += rb.velocity.magnitude * 0.2f * Mathf.Sign(rb.velocity.x) + 0.2f * rb.velocity.x;
         timer++;
@@ -333,6 +343,27 @@ public class Projectile : MonoBehaviour
                 2f, Utils.RandFloat(0.3f, .5f), 0, spriteRendererGlow.color * 0.9f);
         }
     }
+    public void FeatherAI()
+    {
+        rb.rotation = rb.velocity.ToRotation() * Mathf.Rad2Deg + 90;
+
+        timer++;
+        if(timer < 300)
+        {
+            rb.velocity += rb.velocity.normalized * 0.008f;
+            rb.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.1f;
+        }
+        if (timer > 610)
+        {
+            float alphaOut = 1 - (timer - 610) / 90f;
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
+        }
+        if (timer > 700)
+        {
+            Kill();
+        }
+    }
     private bool Dead = false;
     public void OnKill()
     {
@@ -429,8 +460,7 @@ public class Projectile : MonoBehaviour
                     }
                 }
             }
-
-            if(Utils.RandFloat(1) < 0.5f)
+            if (Utils.RandFloat(1) < 0.5f)
             {
                 Projectile.NewProjectile(transform.position, Vector2.zero, 4, Random.Range(0, 2), 0);
             }
@@ -461,6 +491,14 @@ public class Projectile : MonoBehaviour
                 Player.ShotgunPower++;
             else
                 Player.DamagePower++;
+        }
+        if (Type == 5)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.2f, 0.4f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 1, spriteRendererGlow.color);
+            }
         }
     }
 }

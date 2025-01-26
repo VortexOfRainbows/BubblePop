@@ -92,7 +92,7 @@ public class Entity : MonoBehaviour
                 baseRenderer = GetComponent<SpriteRenderer>();
             if (DamageTaken > 0)
             {
-                baseRenderer.color = Color.Lerp(baseRenderer.color, Color.Lerp(Color.white, Color.red, 0.8f), 0.05f + DamageTaken / 200f);
+                baseRenderer.color = Color.Lerp(baseRenderer.color, Color.Lerp(Color.white, Color.red, 0.8f), 0.05f + DamageTaken / 500f);
                 DamageTaken -= 20f * Time.deltaTime;
             }
             else
