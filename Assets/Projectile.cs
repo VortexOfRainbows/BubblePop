@@ -1,4 +1,3 @@
-using System.Xml;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -28,8 +27,16 @@ public class Projectile : MonoBehaviour
     {
         if(collision.tag == "Tub" && Type != 1)
         {
-            if (Type == 3 && timer < 100)
+            if (Type == 3)
+            {
+                if(timer > 10)
+                {
+                    Vector2 toClosest = collision.ClosestPoint(transform.position) - (Vector2)transform.position;
+
+                    rb.velocity = -toClosest.normalized * 0.75f * rb.velocity.magnitude;
+                }
                 return;
+            }
             Kill();
         }
     }
@@ -50,7 +57,10 @@ public class Projectile : MonoBehaviour
         if (Type == 0 || Type == 3)
         {
             spriteRenderer.sprite = Type == 0 ? GlobalDefinitions.BubbleSmall : GlobalDefinitions.BubbleSprite;
-            if(Type == 0)
+            Color c = ParticleManager.DefaultColor;
+            c.a = 0.68f;
+            spriteRenderer.color = c;
+            if (Type == 0)
                 timer += Random.Range(0, 40);
             transform.localScale *= 0.3f;
             Damage = 1;
@@ -86,7 +96,7 @@ public class Projectile : MonoBehaviour
     }
     public void BubbleAI()
     {
-        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 0.6f, 0.085f);
+        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 0.66f, 0.085f);
 
         Vector2 velo = rb.velocity;
         velo *= 0.995f - timer / 5000f;
@@ -97,10 +107,10 @@ public class Projectile : MonoBehaviour
         {
             Kill();
         }
-        if ((int)timer % 3 == 0)
+        if ((int)timer % 5 == 0)
         {
             Vector2 norm = rb.velocity.normalized;
-            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.6f, .3f);
+            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.8f, Utils.RandFloat(0.25f, 0.4f));
         }
         if(timer > 180)
         {
@@ -230,39 +240,61 @@ public class Projectile : MonoBehaviour
     }
     public void BigBubbleAI()
     {
+        Vector2 toMouse = Utils.MouseWorld - Player.Position;
         if(Player.Instance.AttackRight >= 50 && timer <= 0)
         {
             int target = (int)(Player.Instance.AttackRight - 50) / 100;
-            float targetSize = target * 0.8f + 0.8f + Player.Instance.AttackRight / 160f;
+            float targetSize = target * 0.7f + 0.8f + Player.Instance.AttackRight / 240f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
             timer = -Player.Instance.AttackRight;
+            Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+            if(Utils.RandFloat(1) < 0.2f)
+                ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + Player.Instance.rb.velocity * 0.9f, 0.2f, 0.3f, 0, default);
+            if (Player.Instance.AttackRight == 149|| Player.Instance.AttackRight == 249)
+            {
+                for (int i = 0; i < 30; i++)
+                {
+                    circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                    ParticleManager.NewParticle((Vector2)transform.position + circular * 1.1f, .3f, -circular.normalized * Utils.RandFloat(5, 10) + Player.Instance.rb.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, default);
+                }
+            }
             Vector2 awayFromWand = new Vector2(1, (0.55f + targetSize * 0.45f) * Mathf.Sign(Player.Instance.PointDirOffset)).RotatedBy(Player.Instance.Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
             transform.position = Vector2.Lerp(transform.position,(Vector2)Player.Instance.Wand.transform.position + awayFromWand, 0.15f);
             rb.velocity *= 0.8f;
             rb.velocity += Player.Instance.rb.velocity * 0.1f;
             Damage = 2 + target * 2;
+
+            //rb.rotation = toMouse.ToRotation() * Mathf.Rad2Deg;
         }
         else if(timer <= 0)
         {
-            Vector2 toMouse = Utils.MouseWorld - Player.Position;
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[15], transform.position, 1.1f, 0.6f);
             if (toMouse.magnitude < 6)
                 toMouse = toMouse.normalized * 6;
             Vector2 mouse = Player.Position + toMouse;
             toMouse = mouse - (Vector2) transform.position;
-            rb.velocity = toMouse * 0.1f + toMouse.normalized * (5f + Mathf.Min(15, 15f * (timer + 50) / -200f));
+            rb.velocity = toMouse * 0.1f + toMouse.normalized * (8f + Mathf.Min(24, 24f * (timer + 50) / -200f));
             timer = 1;
+
+            for (int i = 0; i < 30; i++)
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .5f), rb.velocity * Utils.RandFloat(2f), 0.5f, Utils.RandFloat(.4f, 1f), 0, default);
+
+            rb.rotation = rb.velocity.ToRotation() * Mathf.Rad2Deg;
         }
         else if(timer > 0)
         {
+            rb.rotation += Mathf.Sqrt(rb.velocity.magnitude) * Mathf.Sign(rb.velocity.x);
+            if (Utils.RandFloat(1) < 0.15f)
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x * 0.5f), Utils.RandFloat(.3f, .4f), rb.velocity * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.3f, .6f), 0, default);
             Friendly = true;
             rb.velocity *= 0.997f - timer / 6000f;
             timer++;
-            if (timer > 1100)
+            if (timer > 160)
             {
-                float alphaOut = 1 - (timer - 1100) / 100f;
+                float alphaOut = 1 - (timer - 160) / 20f;
                 spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
             }
-            if (timer > 1200)
+            if (timer > 180)
                 Kill();
         }
     }
@@ -368,6 +400,18 @@ public class Projectile : MonoBehaviour
             {
                 Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.2f, 0.4f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 1, spriteRenderer.color);
+            }
+        }
+        if (Type == 3)
+        {
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], transform.position, 0.8f, 0.9f);
+            float amt = 1 + 4 * (Damage / 8f);
+            for (int i = 0; i < amt; i++)
+                Projectile.NewProjectile(transform.position, new Vector2(Utils.RandFloat(2, 4), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 0, 0, 0);
+            for (int i = 0; i < 20; i++)
+            {
+                Vector2 circular = new Vector2(.5f + transform.localScale.x * 0.4f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(4, 7), 3f, Utils.RandFloat(0.3f, 0.5f), 0, spriteRenderer.color);
             }
         }
     }

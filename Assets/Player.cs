@@ -94,7 +94,7 @@ public class Player : Entity
             if (currentSpeed > MaxSpeed + 15f)
             {
                 for(float i = 0; i < 1; i += 0.5f)
-                    ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * Utils.RandFloat(10f, 15f), 1.0f, 0.6f);
+                    ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f);
             }
         }
 
@@ -195,10 +195,22 @@ public class Player : Entity
             {
                 if(AttackRight == 50)
                 {
+                    AudioManager.PlaySound(GlobalDefinitions.audioClips[33], Position, 0.6f, 1.5f);
+                    AudioManager.PlaySound(GlobalDefinitions.audioClips[34], Position, 0.8f, 1f);
                     Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand, Vector2.zero, 3, 0);
                 }
                 if(AttackRight < 250)
+                {
                     AttackRight++;
+                    if (AttackRight == 150)
+                    {
+                        AudioManager.PlaySound(GlobalDefinitions.audioClips[35], Position, 0.85f, 1f);
+                    }
+                    if (AttackRight == 250)
+                    {
+                        AudioManager.PlaySound(GlobalDefinitions.audioClips[36], Position, 0.9f, 1f);
+                    }
+                }
                 PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * squash;
             }
             else
@@ -276,7 +288,7 @@ public class Player : Entity
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), 
-                    Utils.RandFloat(0.6f, 1.5f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3));
+                    Utils.RandFloat(0.5f, 1.1f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3));
             }
             Body.SetActive(false);
             additionalHatPos.y += 0.25f;

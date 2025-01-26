@@ -3,13 +3,14 @@ using UnityEngine;
 //Fast reload hates this script for some reason
 public class ParticleManager : MonoBehaviour
 {
+    public static readonly Color DefaultColor = new Color(0.89f, 206 / 255f, 240 / 255f, 0.5f);
     [SerializeField] private static ParticleManager Instance;
     public ParticleSystem thisSystem;
     public ParticleSystem SecondSystem;
     public static void NewParticle(Vector2 pos, float size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f, int type = 0, Color color = default)
     {
         if (color == default)
-            color = Color.white;
+            color = DefaultColor;
         ParticleSystem.EmitParams style = new ParticleSystem.EmitParams
         {
             position = pos,
