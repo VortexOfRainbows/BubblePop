@@ -57,9 +57,9 @@ public class UIManager : MonoBehaviour
         ///GameOver();
         ///}
 
-        scoreText.text = "Score: " + Mathf.FloorToInt(score);
-        highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
-        deadHighscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
+        scoreText.text = " Soapy Score: " + Mathf.FloorToInt(score);
+        highscoreText.text = "Bubble Best: " + Mathf.FloorToInt(highscore);
+        deadHighscoreText.text = "Bubble Best: " + Mathf.FloorToInt(highscore);
         if (score > highscore)
         {
             highscore = score;
