@@ -42,15 +42,6 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(tutorial.activeSelf)
-        {
-            if(Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                tutorial.SetActive(false);
-                Time.timeScale = 1f;
-                tutorialSeen = true;
-            }
-        }
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -82,6 +73,13 @@ public class UIManager : MonoBehaviour
         gamePaused = true;
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
+    }
+
+    public void CloseTutorial()
+    {
+        tutorial.SetActive(false);
+        Time.timeScale = 1f;
+        tutorialSeen = true;
     }
 
     public void Resume()
