@@ -96,20 +96,20 @@ public static class EventManager
         float[] weights = new float[] { 2, 1, 0.1f, 0, 0, 0, 0 };
         if (Point < 200)
         {
-            if (Point < 100)
+            if (Point > 100)
                 weights = new float[] { 2, 2, 1, 0.2f, 0, 0, 0 };
         }
-        else if (Point < 300)
-            weights = new float[] { 1, 2, 2, 1, 0.2f, 0.1f, 0 };
         else if (Point < 400)
+            weights = new float[] { 1, 2, 2, 1, 0.2f, 0.1f, 0 };
+        else if (Point < 700)
             weights = new float[] { 0.1f, 1, 2, 2, 1, 0.1f, 0 };
-        else if (Point < 500)
+        else if (Point < 1000)
             weights = new float[] { 0.1f, 1, 2, 2, 2, 1, 0.1f };
-        else if (Point < 600)
+        else if (Point < 1400)
             weights = new float[] { 0.1f, 0.2f, 1, 2, 2, 2, 1 };
-        else if (Point < 800)
+        else if (Point < 2000)
             weights = new float[] { 0.1f, 0.2f, 0.3f, 1, 2, 2, 1 };
-        else if (Point < 1600)
+        else if (Point < 3000)
             weights = new float[] { 0.1f, 0.2f, 0.3f, 1, 2, 3, 2 };
         else
             weights = new float[] { 0.1f, 0.2f, 0.3f, 1, 2, 3, 7 };
