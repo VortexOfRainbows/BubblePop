@@ -10,10 +10,19 @@ public class EnemySoapTiny : MonoBehaviour
     private int attackingTimer;
     const int baseAttackingTimer = 250;
     private float moveSpeed = 3f;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
+    [SerializeField]
+    private Sprite[] soapPieceSprites;
 
+    private void Awake()
+    {
+        spriteRenderer.sprite = soapPieceSprites[Random.Range(0, soapPieceSprites.Length)];
+    }
+    
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (aiState == 0) {
             if (aimingTimer <= 0) {
