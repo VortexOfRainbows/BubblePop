@@ -25,9 +25,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI deadHighscoreText;
     [SerializeField]
-    private TMPro.TextMeshProUGUI PowerUpOne;
+    private TMPro.TextMeshProUGUI ShotgunPowerUp;
     [SerializeField]
-    private TMPro.TextMeshProUGUI PowerUpTwo;
+    private TMPro.TextMeshProUGUI DamagePowerUp;
 
 
     // Start is called before the first frame update
@@ -64,8 +64,8 @@ public class UIManager : MonoBehaviour
         ///GameOver();
         ///}
 
-        PowerUpTwo.text = Player.DamagePower.ToString();
-        PowerUpOne.text = Player.ShotgunPower.ToString();
+        DamagePowerUp.text = Player.DamagePower.ToString();
+        ShotgunPowerUp.text = Player.ShotgunPower.ToString();
         scoreText.text = " Soapy Score: " + Mathf.FloorToInt(score);
         highscoreText.text = "Bubble Best: " + Mathf.FloorToInt(highscore);
         deadHighscoreText.text = "Bubble Best: " + Mathf.FloorToInt(highscore);

@@ -494,7 +494,7 @@ GameObject:
   - component: {fileID: 7529594414672972931}
   - component: {fileID: 2854843676743448199}
   m_Layer: 5
-  m_Name: PowerupTwo
+  m_Name: ShotgunPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1298,8 +1298,8 @@ MonoBehaviour:
   scoreText: {fileID: 5639466344580548556}
   highscoreText: {fileID: 1194306982699523071}
   deadHighscoreText: {fileID: 77155793733996554}
-  PowerupOne: {fileID: 5608269229061169426}
-  PowerUpTwo: {fileID: 738853401987641814}
+  ShotgunPowerUp: {fileID: 738853401987641814}
+  DamagePowerUp: {fileID: 5608269229061169426}
 --- !u!1 &2968039826061709901
 GameObject:
   m_ObjectHideFlags: 0
@@ -2403,7 +2403,7 @@ GameObject:
   - component: {fileID: 2170343467084639972}
   - component: {fileID: 7823185539024156727}
   m_Layer: 5
-  m_Name: PowerupOne
+  m_Name: DamagePowerup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
