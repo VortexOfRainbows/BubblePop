@@ -18,9 +18,11 @@ public class Player : Entity
     public GameObject Wand;
     public GameObject Body;
     public GameObject Hat;
+    public GameObject Face;
     public SpriteRenderer WandR;
     public SpriteRenderer BodyR;
     public SpriteRenderer HatR;
+    public SpriteRenderer FaceR;
     public Rigidbody2D rb;
     private float speed = 2.5f;
     private float MovementDeacceleration = 0.9f;
@@ -79,6 +81,7 @@ public class Player : Entity
                 velocity = velocity * MaxSpeed + movespeed * speed * 25f;
                 squash = SquashAmt;
                 Body.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
+                AudioManager.PlaySound(GlobalDefinitions.audioClips[12], Wand.transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
             }
 
         //Final stuff
@@ -129,6 +132,15 @@ public class Player : Entity
         if (Mathf.Abs(velocity.x) > 0.1f)
             lastVelo.x = velocity.x;
         lastVelo.y = velocity.y;
+        FaceUpdate();
+    }
+    public void FaceUpdate()
+    {
+        Vector2 toMouse = Utils.MouseWorld - (Vector2)Body.transform.position;
+        toMouse *= Mathf.Sign(lastVelo.x);
+        Vector2 pos = new Vector2(0.15f, 0) + toMouse.normalized * 0.25f;
+        Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
+        FaceR.flipY = BodyR.flipY;
     }
     private Vector3 WandEulerAngles = new Vector3(0, 0, 0);
     public float PointDirOffset;
@@ -142,6 +154,7 @@ public class Player : Entity
         {
             if (Input.GetMouseButton(0))
             {
+                AudioManager.PlaySound(GlobalDefinitions.audioClips[14], Wand.transform.position, 1f, 1f);
                 AttackLeft = 50;
             }
         }
@@ -184,9 +197,9 @@ public class Player : Entity
                 {
                     Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand, Vector2.zero, 3, 0);
                 }
-                if(AttackRight < 350)
+                if(AttackRight < 250)
                     AttackRight++;
-                PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 300f * 45f) * dir * squash;
+                PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * squash;
             }
             else
             {
@@ -239,15 +252,67 @@ public class Player : Entity
     {
         Instance = this;
         EventManager.Update();
-        MovementUpdate();
-        WandUpdate();
-        HatStuff();
+        if (DeathKillTimer > 0)
+            Pop();
+        else
+        {
+            MovementUpdate();
+            WandUpdate();
+            HatStuff();
+        }
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
     void Update() => Instance = this;
+    public float DeathKillTimer = 0;
     public void Pop()
     {
-        Debug.Log("POP");
-        //This is where I'll put die stuff
+        AttackLeft = 0;
+        AttackRight = 0;
+        rb.velocity *= 0.9f;
+        if(DeathKillTimer <= 0)
+        {
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], Body.transform.position, 1, 1);
+            for (int i = 0; i < 100; i++)
+            {
+                Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), 
+                    Utils.RandFloat(0.6f, 1.5f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3));
+            }
+            Body.SetActive(false);
+            additionalHatPos.y += 0.25f;
+        }
+        HatDeathStuff();
+        WandDeathStuff();
+        DeathKillTimer++;
+        if(Input.GetKey(KeyCode.R))
+        {
+            DeathKillTimer = 0;
+            Body.SetActive(true);
+        }
+    }
+    public void HatDeathStuff()
+    {
+        float toBody = Hat.transform.localPosition.y - Body.transform.localPosition.y;
+        float sinusoid1 = Mathf.Sin(DeathKillTimer * Mathf.PI / 60f);
+        float sinusoid2 = Mathf.Sin(DeathKillTimer * Mathf.PI / 40f);
+        if(toBody < 0)
+        {
+            Hat.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Hat.transform.localEulerAngles.z, 0, 0.1f));
+            Hat.transform.localPosition = (Vector2)Hat.transform.localPosition + additionalHatPos;
+            additionalHatPos *= 0.6f;
+        }
+        else
+        {
+            Hat.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Hat.transform.localEulerAngles.z, sinusoid1 * 25f, 0.1f));
+            Hat.transform.localPosition = (Vector2)Hat.transform.localPosition + additionalHatPos;
+            additionalHatPos.x = sinusoid2 * 0.019f * toBody;
+            additionalHatPos.y -= 0.003f;
+            additionalHatPos *= 0.97f;
+        }
+    }
+    public void WandDeathStuff()
+    {
+        Wand.transform.localPosition = Vector3.Lerp(Wand.transform.localPosition, new Vector3(0.4f, -0.6f), 0.1f);
+        Wand.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Wand.transform.transform.eulerAngles.z, Mathf.Sign(lastVelo.x) == 1 ? 0 : 180, 0.1f));
     }
 }

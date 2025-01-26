@@ -1,51 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Callbacks;
-using UnityEditor.Networking.PlayerConnection;
+using System.IO.Pipes;
 using UnityEngine;
-
-public class EnemySoap : MonoBehaviour
+public class EnemySoap : Entity
 {
+    public SpriteRenderer sRender;
+    public Rigidbody2D rb;
+    public Sprite Soap1;
+    public Sprite Soap2;
     //aiState 0 = aiming
     //aiState 1 = attacking
-    private int aiState = 0;
-    private Vector2 targetedPlayerPosition;
-    private int aimingTimer;
-    const int baseAimingTimer = 400;
-    private int attackingTimer;
-    const int baseAttackingTimer = 300;
-    private float moveSpeed = 3f;
-
-
-    // Update is called once per frame
-    void Update()
+    protected Vector2 targetedPlayerPosition = Vector2.zero;
+    protected float timer = 0;
+    protected float moveSpeed = 3f;
+    private void Start()
     {
-        if (aiState == 0) {
-            if (aimingTimer <= 0) {
-                aimingTimer = baseAimingTimer;
-                targetedPlayerPosition = FindTargetedPlayerPosition();
-                aiState = 1;
-            }
-            else {
-                aimingTimer--;
-            }
-        }
-
-        if (aiState == 1) {
-            transform.position = Vector2.Lerp(transform.position, targetedPlayerPosition, moveSpeed * Time.deltaTime);
-            if (attackingTimer <= 0) {
-                attackingTimer = baseAttackingTimer;
-                aiState = 0;
-            }
-            else {
-                attackingTimer--;
-            }
-        }
+        rb = GetComponent<Rigidbody2D>();
+        Life = 5;
     }
-
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        IFrame--;
+        timer++;
+        if (timer > 120) 
+        {
+            timer = 0;
+            targetedPlayerPosition = FindTargetedPlayerPosition();
+        }
+        if (timer > 50 && timer < 90)
+        {
+            if(targetedPlayerPosition == Vector2.zero)
+                targetedPlayerPosition = FindTargetedPlayerPosition();
+            Vector2 toPlayer = targetedPlayerPosition - (Vector2)transform.position;
+            rb.rotation = toPlayer.ToRotation() * Mathf.Rad2Deg;
+            if (rb.rotation > 90 || rb.rotation < -90)
+                rb.rotation -= 180;
+            if(timer == 51)
+            {
+                rb.velocity *= 0.5f;
+                rb.velocity += toPlayer.normalized * 6f;
+            }
+            rb.velocity += toPlayer.normalized * 0.5f;
+        }
+        if(timer > 90)
+            rb.velocity *= 0.91f;
+    }
+    public void Kill()
+    {
+        GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap1;
+        GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap2;
+    }
     private Vector2 FindTargetedPlayerPosition() {
-        float offsetX = Random.Range(-3f, 3f);
-        float offsetY = Random.Range(-3f, 3f);
+        float offsetX = Random.Range(-5f, 5f);
+        float offsetY = Random.Range(-5f, 5f);
         return new Vector2 (Player.Position.x + offsetX, Player.Position.y + offsetY);
     }
 }
