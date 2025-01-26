@@ -17,7 +17,7 @@ public class EnemyDuck : Entity
     private void Start()
     {
         Life = 15;
-        PointWorth = 10;
+        PointWorth = 20;
     }
 
     // Update is called once per frame
