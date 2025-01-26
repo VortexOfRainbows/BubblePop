@@ -14,8 +14,19 @@ public class Projectile : MonoBehaviour
     }
     public void Kill()
     {
+        if (!Dead)
+            Dead = true;
+        else
+            return;
         OnKill();
         Destroy(gameObject);
+    }
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.tag == "Tub" && Type != 1)
+        {
+            Kill();
+        }
     }
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
@@ -35,6 +46,11 @@ public class Projectile : MonoBehaviour
             transform.localScale *= 0.3f;
             Damage = 1;
             Friendly = Type == 0;
+        }
+        if (Type == 1)
+        {
+            spriteRenderer.sprite = GlobalDefinitions.BathBombSprite;
+            //Hostile = true;
         }
         if (Type == 2)
         {
@@ -82,7 +98,7 @@ public class Projectile : MonoBehaviour
     {
         float yPointBeforeLanding = Data1;
         float distTillLanding = transform.position.y - Data1;
-        transform.localScale = Vector3.one * (1 + distTillLanding / 20f);
+        transform.localScale = Vector3.one * (1 + distTillLanding / 12f);
 
         Vector2 velo = rb.velocity;
         if (transform.position.y < yPointBeforeLanding)
@@ -94,11 +110,11 @@ public class Projectile : MonoBehaviour
             if (timer <= 0)
             {
                 for(int i = 0; i < 15; i++)
-                    ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.5f), .7f, velo * 0.2f + new Vector2(0, Utils.RandFloat(1, 3)), 4f, 1.5f);
+                    ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.8f), .7f, velo * 0.2f + new Vector2(0, Utils.RandFloat(1, 3)), 4f, 1.5f);
                 timer++;
             }
             else if(timer % 2 == 0)
-                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.5f), .5f, velo * 0.15f + new Vector2(0, Utils.RandFloat(1)), 3f, 1.0f);
+                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.8f), .5f, velo * 0.15f + new Vector2(0, Utils.RandFloat(1)), 3f, 1.0f);
         }
         else
         {
@@ -175,6 +191,7 @@ public class Projectile : MonoBehaviour
                 Kill();
         }
     }
+    private bool Dead = false;
     public void OnKill()
     {
         if(Type == 0)
@@ -188,10 +205,10 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 1)
         {
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 70; i++)
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
-                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 1.0f), circular * Utils.RandFloat(4, 20) + new Vector2(0, Utils.RandFloat(-1, 3)), 4f, 0.5f);
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 1.1f), circular * Utils.RandFloat(4, 20) + new Vector2(0, Utils.RandFloat(-1, 3)), 4f, Utils.RandFloat(0.4f, 0.7f));
             }
             for (int i = 0; i < 10; i++)
             {

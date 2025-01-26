@@ -4893,6 +4893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultProjectile: {fileID: 5354334585636703099, guid: d866ed2d2fa03ea418d42382f103df58, type: 3}
   SpikyProj: {fileID: 3625043607559282579, guid: 82aeeab3f0984804fb4bc21e59d86a45, type: 3}
+  BathBomb: {fileID: 21300000, guid: eba8c7e375175c041b0032c0aa657acd, type: 3}
   Duck: {fileID: 9186793293513504730, guid: 427cee293b2d5ce4593792950a7c836b, type: 3}
   SoapNPC: {fileID: 4191183863552249340, guid: edb2619659dd0d440917d02f36b6a875, type: 3}
   SoapTinyNPC: {fileID: 3935670433084553770, guid: 9b55e550861de9148a9a1b49138bc4f4, type: 3}
@@ -4913,7 +4914,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 88c9c9acc06de924abde90603c38d8d6, type: 3}
   - {fileID: 8300000, guid: 4651b95a7864af443afbeaeec85839ac, type: 3}
   - {fileID: 8300000, guid: c1bf09053da48fb4c963cfa94e2992af, type: 3}
-  flamingo: {fileID: 0}
 --- !u!114 &4056103149566074873
 MonoBehaviour:
   m_ObjectHideFlags: 0

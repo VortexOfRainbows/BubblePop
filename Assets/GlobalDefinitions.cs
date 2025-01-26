@@ -9,6 +9,8 @@ public class GlobalDefinitions : MonoBehaviour
     public GameObject DefaultProjectile;
     public static Sprite SpikyProjectileSprite => Instance.SpikyProj;
     public Sprite SpikyProj;
+    public static Sprite BathBombSprite => Instance.BathBomb;
+    public Sprite BathBomb;
     public static GameObject Ducky => Instance.Duck;
     public GameObject Duck;
     public static GameObject Soap => Instance.SoapNPC;

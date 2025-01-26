@@ -3,8 +3,8 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public int Life = 10;
-    public readonly string ProjTag = "Proj";
-    public readonly string EnemyTag = "Enemy";
+    public static readonly string ProjTag = "Proj";
+    public static readonly string EnemyTag = "Enemy";
     public void OnTriggerStay2D(Collider2D collision)
     {
         TriggerCollision(collision);
