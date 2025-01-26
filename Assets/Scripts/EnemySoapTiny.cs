@@ -9,4 +9,9 @@ public class EnemySoapTiny : EnemySoap
         IFrame = 80;
         PointWorth = 5;
     }
+    public override void OnKill()
+    {
+        DeathParticles(10, 0.4f, new Color(1, 0.85f, 0.99f));
+        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(16, 19)], transform.position, 0.9f, 1.1f);
+    }
 }

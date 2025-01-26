@@ -4,22 +4,27 @@ using UnityEngine;
 public class ParticleManager : MonoBehaviour
 {
     [SerializeField] private static ParticleManager Instance;
-    [SerializeField] private ParticleSystem thisSystem;
-    public static void NewParticle(Vector2 pos, float size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f)
+    public ParticleSystem thisSystem;
+    public ParticleSystem SecondSystem;
+    public static void NewParticle(Vector2 pos, float size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f, int type = 0, Color color = default)
     {
+        if (color == default)
+            color = Color.white;
         ParticleSystem.EmitParams style = new ParticleSystem.EmitParams
         {
             position = pos,
             startSize = size * Utils.RandFloat(0.9f, 1.1f),
-            startColor = Color.white,
+            startColor = color,
             velocity = new Vector2(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)) * randomizeFactor + velo,
             startLifetime = lifeTime
         };
-        Instance.thisSystem.Emit(style, 1);
+        if(type == 0)
+            Instance.thisSystem.Emit(style, 1);
+        else
+            Instance.SecondSystem.Emit(style, 1);
     }
     void Start()
     {
-        thisSystem = GetComponent<ParticleSystem>();
         Instance = this;
     }
     void Update()

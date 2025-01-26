@@ -1,4 +1,5 @@
 using System.IO.Pipes;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 public class EnemySoap : Entity
 {
@@ -37,19 +38,30 @@ public class EnemySoap : Entity
                 rb.rotation -= 180;
             if(timer == 51)
             {
+                if(this is EnemySoapTiny)
+                    AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(18, 23)], transform.position, 1f, 1.2f);
+                else
+                    AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(18, 23)], transform.position, 1f, 1f);
                 rb.velocity *= 0.5f;
                 rb.velocity += toPlayer.normalized * 6f;
             }
+            Vector2 norm = rb.velocity.normalized;
+            if(Random.Range(0, 2) == 0)
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(1) - norm * 1.5f, .3f, norm * Utils.RandFloat(5f, 15f), 1.5f, 0.6f, 1, new Color(1, 0.85f, 0.99f));
             rb.velocity += toPlayer.normalized * 0.5f;
         }
         if(timer > 90)
             rb.velocity *= 0.91f;
     }
-    public void Kill()
+    public override void OnKill()
     {
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(16, 18)], sRender.transform.position, 1f, 1f);
-        GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap1;
-        GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap2;
+        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(16, 19)], sRender.transform.position, 1f, 1f);
+        DeathParticles(15, 0.5f, new Color(1, 0.85f, 0.99f));
+        if(this is not EnemySoapTiny)
+        {
+            GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap1;
+            GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap2;
+        }
     }
     private Vector2 FindTargetedPlayerPosition() {
         float offsetX = Random.Range(-5f, 5f);

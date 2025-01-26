@@ -19,6 +19,10 @@ public static class EventManager
     private static float minXBound = -30, maxXBound = 30, minYBound = -20, maxYBound = 20;
     public static void Update()
     {
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            Point += 100;
+        }
         PointTimer += Time.deltaTime;
         if (PointTimer > 1)
         {

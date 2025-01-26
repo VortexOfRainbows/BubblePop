@@ -271,7 +271,7 @@ public class Player : Entity
         rb.velocity *= 0.9f;
         if(DeathKillTimer <= 0)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[23], Body.transform.position, 0.08f, 1);
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[23], Body.transform.position, 0.21f, 0.4f);
             for (int i = 0; i < 100; i++)
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);

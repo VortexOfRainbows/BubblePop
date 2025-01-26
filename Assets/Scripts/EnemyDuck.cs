@@ -16,7 +16,7 @@ public class EnemyDuck : Entity
     protected float bobbingTimer = 0;
     private void Start()
     {
-        Life = 20;
+        Life = 15;
         PointWorth = 10;
     }
 
@@ -62,5 +62,9 @@ public class EnemyDuck : Entity
 
     private Vector2 FindLocation() {
         return (Vector2)transform.position + new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f));
+    }
+    public override void OnKill()
+    {
+        DeathParticles(20, 0.5f, new Color(1, .97f, .52f));
     }
 }
