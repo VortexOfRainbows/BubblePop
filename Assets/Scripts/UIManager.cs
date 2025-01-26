@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager UI_Manager;
     [SerializeField]
     private GameObject tutorial;
     [SerializeField]
