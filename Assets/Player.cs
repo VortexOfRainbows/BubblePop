@@ -18,9 +18,11 @@ public class Player : Entity
     public GameObject Wand;
     public GameObject Body;
     public GameObject Hat;
+    public GameObject Face;
     public SpriteRenderer WandR;
     public SpriteRenderer BodyR;
     public SpriteRenderer HatR;
+    public SpriteRenderer FaceR;
     public Rigidbody2D rb;
     private float speed = 2.5f;
     private float MovementDeacceleration = 0.9f;
@@ -130,6 +132,15 @@ public class Player : Entity
         if (Mathf.Abs(velocity.x) > 0.1f)
             lastVelo.x = velocity.x;
         lastVelo.y = velocity.y;
+        FaceUpdate();
+    }
+    public void FaceUpdate()
+    {
+        Vector2 toMouse = Utils.MouseWorld - (Vector2)Body.transform.position;
+        toMouse *= Mathf.Sign(lastVelo.x);
+        Vector2 pos = new Vector2(0.15f, 0) + toMouse.normalized * 0.25f;
+        Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
+        FaceR.flipY = BodyR.flipY;
     }
     private Vector3 WandEulerAngles = new Vector3(0, 0, 0);
     public float PointDirOffset;

@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Callbacks;
-using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
-
 public class EnemySoapTiny : MonoBehaviour
 {
     //aiState 0 = aiming
