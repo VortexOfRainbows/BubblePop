@@ -65,7 +65,7 @@ public class Projectile : MonoBehaviour
         {
             spriteRenderer.sprite = GlobalDefinitions.bathBombShards[Random.Range(0, 4)];
             spriteRenderer.color = PickColor(Mathf.Min(Data2, 6), Data2 - 6);
-            colorGradient += 10;
+            Data2 = 6;
             Hostile = true;
         }
     }
@@ -115,7 +115,7 @@ public class Projectile : MonoBehaviour
         if (data == 0)
             color = new Color(112 / 255f, 54 / 255f, 157 / 255f);
         if (data == 1)
-            color = new Color(75 / 255f, 54 / 255f, 157 / 255f);
+            color = new Color(75 / 255f, 54 / 255f, 255 / 255f);
         if (data == 2)
             color = new Color(121 / 255f, 195 / 255f, 20 / 255f);
         if (data == 3)
@@ -147,7 +147,7 @@ public class Projectile : MonoBehaviour
     {
         float yPointBeforeLanding = Data1;
         float distTillLanding = transform.position.y - Data1;
-        transform.localScale = Vector3.one * (1 + distTillLanding / 12f);
+        transform.localScale = Vector3.one * (1 + 0.1f * Data2 + distTillLanding / 15f);
 
         Vector2 velo = rb.velocity;
         if (transform.position.y < yPointBeforeLanding + 1)
@@ -192,7 +192,7 @@ public class Projectile : MonoBehaviour
     public void SpikeAI()
     {
         if(startPos == Vector2.zero)
-            startPos = (Vector2)transform.position - rb.velocity; 
+            startPos = (Vector2)transform.position - rb.velocity.normalized; 
         if (timer < 200 && Data2 != 5 && Data2 != 6)
         {
             rb.velocity *= 1.011f;
@@ -203,6 +203,7 @@ public class Projectile : MonoBehaviour
         {
             float alphaOut = 1 - (timer - 610) / 90f;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
         }
         if(timer > 700)
         {
@@ -220,7 +221,8 @@ public class Projectile : MonoBehaviour
             float rotateDist = rotate.magnitude;
             rotate = rotate.normalized * (rotateDist + rb.velocity.magnitude * Time.fixedDeltaTime);
             transform.position = startPos + rotate - rb.velocity * Time.fixedDeltaTime;
-            Data1 = Mathf.Sign(Data1) * (0.3f + 1.1f / rotateDist);
+            if(Data1 != 0)
+                Data1 = Mathf.Sign(Data1) * (0.3f + 1.1f / rotateDist);
             rb.velocity *= 1.005f;
             color.a *= 0.5f;
         }
@@ -281,16 +283,21 @@ public class Projectile : MonoBehaviour
             Color c = PickColor(Data2, timer2);
             for (int i = 0; i < 70; i++)
             {
-                Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
-                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.9f), circular * Utils.RandFloat(4, 20) + new Vector2(0, Utils.RandFloat(-1, 3)), 4f, Utils.RandFloat(0.4f, 0.7f), 0, c);
+                Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 35f);
+                Color color = Data2 == 6 ? PickColor(Data2, i / 69f * Mathf.Deg2Rad) : c;
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.9f), circular * Utils.RandFloat(4, 20) + new Vector2(0, Utils.RandFloat(-1, 3)), 4f, Utils.RandFloat(0.7f, 1f), 0, c);
             }
             if (Data2 == 6)
             {
-                for (int i = 0; i < 31; i++)
+                for(int j = 0; j < 3; j++)
                 {
-                    float r = i * 12 * Mathf.Deg2Rad;
-                    Vector2 circular = new Vector2(1, 0).RotatedBy(r);
-                    NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2 + (i * 6) / 2.5f);
+                    float rand = Utils.RandFloat(360);
+                    for (int i = 0; i < 14; i++)
+                    {
+                        float r = (j * 8 + i / 14f * 360) + rand;
+                        Vector2 circular = new Vector2(1, 0).RotatedBy(r * Mathf.Deg2Rad);
+                        NewProjectile((Vector2)transform.position + circular * (j * 2f), circular * 2.0f, 2, Mathf.Sign(j % 2 * 2 - 1) * (1 + j * 0.5f), Data2 + r / 2.5f);
+                    }
                 }
             }
             if (Data2 == 0)
@@ -315,7 +322,7 @@ public class Projectile : MonoBehaviour
             }
             if(Data2 == 2)
             {
-                for (float j = 1; j < 2.5f; j += 0.2f)
+                for (float j = 1; j < 2.5f; j += 0.5f)
                 {
                     for (int i = 0; i < 4; i++)
                     {
