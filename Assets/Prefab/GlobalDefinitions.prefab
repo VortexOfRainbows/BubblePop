@@ -604,7 +604,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 1
-    maxNumParticles: 1000
+    maxNumParticles: 10000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -5435,7 +5435,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 1000
+    maxNumParticles: 10000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -9733,6 +9733,7 @@ MonoBehaviour:
   SoapNPC: {fileID: 4191183863552249340, guid: edb2619659dd0d440917d02f36b6a875, type: 3}
   SoapTinyNPC: {fileID: 3935670433084553770, guid: 9b55e550861de9148a9a1b49138bc4f4, type: 3}
   flamingo: {fileID: 623309373829601734, guid: 5bdd5a3f8b0cf9a45a5cf5daf54811d1, type: 3}
+  RadDuck: {fileID: 623309373829601734, guid: 307ced563d8d82240b5ff0ad455cc2c8, type: 3}
   clips:
   - {fileID: 8300000, guid: 8acd4d0cf7a481b4b928f1d84a50abd7, type: 3}
   - {fileID: 8300000, guid: dc537cd8afa232d459b9828671af1e36, type: 3}
@@ -9771,9 +9772,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5d653b21b2c722641b55f2cab6217c91, type: 3}
   - {fileID: 8300000, guid: b3155d88d8695a245a55e3ba9547bab4, type: 3}
   - {fileID: 8300000, guid: 97c590c5fe5acce40a96d21d95112450, type: 3}
+  - {fileID: 8300000, guid: 48a0ffecea1d9444a9fbb90e428082e3, type: 3}
   - {fileID: 8300000, guid: c72d1be389190bc40a182def8c4160f9, type: 3}
   - {fileID: 8300000, guid: 5938484080e15fc4ea080046430e9aa9, type: 3}
-  - {fileID: 8300000, guid: b354851ed9be75540940ce28601a06de, type: 3}
   - {fileID: 8300000, guid: 4ed6494f3ee230d43bd597517634cf02, type: 3}
   - {fileID: 8300000, guid: 8b164cd46a7181940a4e8b0768d71d2f, type: 3}
   bathbombShards:
@@ -9784,6 +9785,7 @@ MonoBehaviour:
   PowerBubble1: {fileID: 21300000, guid: a5f007143c114de4c8539a290adeb330, type: 3}
   PowerBubble2: {fileID: 21300000, guid: c9e067f91fc7a744a93eec5ccd03a850, type: 3}
   FlamigoFeater: {fileID: 21300000, guid: 45cdfc3633408b24d8f55ab83cb0a278, type: 3}
+  LaserProj: {fileID: 21300000, guid: 283e526a1d532af4caa3e466e6fdddc3, type: 3}
 --- !u!114 &4056103149566074873
 MonoBehaviour:
   m_ObjectHideFlags: 0

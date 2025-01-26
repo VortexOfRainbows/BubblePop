@@ -64,10 +64,11 @@ public class Entity : MonoBehaviour
                     OnKill();
                     Life = -50;
                     EventManager.Point += (int)PointWorth;
-                    if (EventManager.CanSpawnPower())
+                    if (EventManager.CanSpawnPower() || this is EnemyBossDuck)
                     {
                         Projectile.NewProjectile(transform.position, Vector2.zero, 4, Random.Range(0, 2), 0);
-                        EventManager.PointsSpent += 100;
+                        if (this is not EnemyBossDuck)
+                            EventManager.PointsSpent += 100;
                     }
                     Destroy(gameObject);
                 }

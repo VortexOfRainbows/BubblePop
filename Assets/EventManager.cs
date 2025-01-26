@@ -20,7 +20,7 @@ public static class EventManager
     }
     public static float PointsSpent = 0;
     private static float PointTimer = 0;
-    private static float SoapTimer, DuckTimer, FlamingoTimer;
+    private static float SoapTimer, DuckTimer, FlamingoTimer, MadLadTimer;
     private static float minXBound = -30, maxXBound = 30, minYBound = -20, maxYBound = 20;
     public static void Update()
     {
@@ -45,6 +45,7 @@ public static class EventManager
         EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 10, 1000), GlobalDefinitions.Ducky);
         EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 100, 1100), GlobalDefinitions.Soap);
         EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), GlobalDefinitions.flamingoFloatie);
+        EnemySpawning(ref MadLadTimer, 1f, GetSpawnTime(90, 30, 1000, 10000), GlobalDefinitions.FinalDuck);
     }
     private static float GetSpawnTime(float max, float min, float minimumThreshhold, float maxThreshold)
     {

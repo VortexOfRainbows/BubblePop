@@ -25,6 +25,8 @@ public class GlobalDefinitions : MonoBehaviour
     public GameObject SoapTinyNPC;
     public static GameObject flamingoFloatie => Instance.flamingo;
     public GameObject flamingo;
+    public static GameObject FinalDuck => Instance.RadDuck;
+    public GameObject RadDuck;
     public static AudioClip[] audioClips => Instance.clips;
     public AudioClip[] clips;
     public static Sprite[] bathBombShards => Instance.bathbombShards;
@@ -35,5 +37,7 @@ public class GlobalDefinitions : MonoBehaviour
     public Sprite PowerBubble2;
     public static Sprite Feather => Instance.FlamigoFeater;
     public Sprite FlamigoFeater;
+    public static Sprite Laser => Instance.LaserProj;
+    public Sprite LaserProj;
 
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class Projectile : MonoBehaviour
 {
     public static int colorGradient = 0;
@@ -94,6 +93,15 @@ public class Projectile : MonoBehaviour
             spriteRenderer.sprite = GlobalDefinitions.Feather;
             Hostile = true;
         }
+        if (Type == 6)
+        {
+            transform.localScale = new Vector3(0.9f, 0.8f, 1);
+            spriteRendererGlow.transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
+            spriteRendererGlow.color = new Color(168f / 255f, 62f / 255f, 70f / 255f, 0.4f);
+            spriteRenderer.sprite = GlobalDefinitions.Laser;
+            Hostile = true;
+        }
+        FixedUpdate();
     }
     public void FixedUpdate()
     {
@@ -109,9 +117,11 @@ public class Projectile : MonoBehaviour
             PowerUpAI();
         if (Type == 5)
             FeatherAI();
-        if (!Friendly && Type != 3 && Type != 4)
+        if (Type == 6)
+            LaserAI();
+        if (!Friendly && Type != 3 && Type != 4 && Type != 6)
             spriteRendererGlow.color = spriteRenderer.color;
-        else if(Type != 4)
+        else if(Type != 4 && Type != 6)
             spriteRendererGlow.gameObject.SetActive(false);
     }
     public void BubbleAI()
@@ -364,6 +374,18 @@ public class Projectile : MonoBehaviour
         {
             Kill();
         }
+    }
+    public void LaserAI()
+    {
+        rb.rotation = rb.velocity.ToRotation() * Mathf.Rad2Deg + 180;
+        for (float i = 0; i < 1; i += 0.5f)
+            ParticleManager.NewParticle((Vector2)transform.position + rb.velocity * i * Time.fixedDeltaTime, 0.5f, -rb.velocity.normalized * 2.5f, 0f, 0.3f, 1, spriteRendererGlow.color);
+        if (timer < 200)
+        {
+            rb.velocity += rb.velocity.normalized * 0.02f;
+            rb.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.08f * (1 - timer / 200f);
+        }
+        timer++;
     }
     private bool Dead = false;
     public void OnKill()
