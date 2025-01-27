@@ -74,6 +74,7 @@ public class Projectile : MonoBehaviour
         {
             spriteRenderer.sprite = GlobalDefinitions.bathBombShards[Random.Range(0, 4)];
             spriteRenderer.color = PickColor(Mathf.Min(Data2, 6), Data2 - 6);
+            spriteRendererGlow.transform.localScale = new Vector3(1, 1, 1) * 1.4f;
             Data2 = 6;
             Hostile = true;
         }
@@ -186,9 +187,13 @@ public class Projectile : MonoBehaviour
     }
     public void BathBombAI()
     {
+        Color color = PickColor(Data2, timer2++);
         float yPointBeforeLanding = Data1;
         float distTillLanding = transform.position.y - Data1;
         transform.localScale = Vector3.one * (1 + 0.1f * Data2 + distTillLanding / 15f);
+
+        spriteRendererGlow.gameObject.transform.localPosition = new Vector3(0, -distTillLanding / transform.localScale.y, 0);
+        spriteRendererGlow.color = color * 1.5f / transform.localScale.x;
 
         Vector2 velo = rb.velocity;
         if (transform.position.y < yPointBeforeLanding + 1)
@@ -214,7 +219,6 @@ public class Projectile : MonoBehaviour
             velo.y -= 0.125f;
         }
         rb.velocity = velo;
-        Color color = PickColor(Data2, timer2++);
         if (timer > 0)
         {
             float sqr = timer / 240f;

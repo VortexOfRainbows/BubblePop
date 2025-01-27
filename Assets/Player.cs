@@ -47,6 +47,7 @@ public class Player : Entity
     private float Bobbing;
     void Start()
     {
+        EventManager.Restart();
         MainCamera.orthographicSize = 12;
         Instance = this;
         rb = GetComponent<Rigidbody2D>();

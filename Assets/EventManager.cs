@@ -20,6 +20,11 @@ public static class EventManager
     private static float PointTimer = 0;
     private static float SoapTimer, DuckTimer, FlamingoTimer, MadLadTimer;
     private static float minXBound = -30, maxXBound = 30, minYBound = -20, maxYBound = 20;
+    private static float bathBombTimer = 0;
+    public static void Restart()
+    {
+        PointsSpent = PointTimer = SoapTimer = DuckTimer = FlamingoTimer = MadLadTimer = bathBombTimer = 0;
+    }
     public static void Update()
     {
         if(Input.GetKeyDown(KeyCode.T))
@@ -28,7 +33,9 @@ public static class EventManager
         }
         PointTimer += Time.deltaTime;
         if (Player.Instance.DeathKillTimer > 0)
+        {
             PointTimer = 0;
+        }
         if (PointTimer > 1)
         {
             Point++;
@@ -91,7 +98,6 @@ public static class EventManager
             SpawnTimer += Time.deltaTime * SpawnTimerSpeedScaling;
         }
     }
-    private static float bathBombTimer = 0;
     public static int GetBathBombType()
     {
         float[] weights = new float[] { 2, 1, 0.1f, 0, 0, 0, 0 };

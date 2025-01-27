@@ -47,9 +47,9 @@ public class EnemyBossDuck : EnemyDuck
         }
         AudioManager.PlaySound(GlobalDefinitions.audioClips[38], transform.position, 0.3f, 1.5f);
     }
-    private Vector2 FindLocation()
+    protected override Vector2 FindLocation()
     {
-        return (Vector2)transform.position + new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f));
+        return (Vector2)transform.position + new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f)) + (Player.Position - (Vector2)transform.position) * 0.1f;
     }
     public override void OnKill()
     {

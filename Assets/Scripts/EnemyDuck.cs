@@ -72,8 +72,7 @@ public class EnemyDuck : Entity
         }
         MoveUpdate();
     }
-
-    private Vector2 FindLocation() {
+    protected virtual Vector2 FindLocation() {
         return (Vector2)transform.position + new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f));
     }
     public override void OnKill()
