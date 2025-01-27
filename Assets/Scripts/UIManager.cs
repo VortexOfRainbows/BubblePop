@@ -112,6 +112,13 @@ public class UIManager : MonoBehaviour
 
     public void PlaySound()
     {
+        StaticPlaySound();
+    }
+    public static void StaticPlaySound()
+    {
+        Vector3 pos = Vector3.zero;
+        if (Player.Instance != null)
+            pos = Player.Position;
         AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], Vector3.zero, 1f, 1.0f);
     }
 }
