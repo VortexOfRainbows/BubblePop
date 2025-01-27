@@ -56,15 +56,7 @@ public class UIManager : MonoBehaviour
             else
                 Pause();
         }
-
-        if(Input.GetKeyDown(KeyCode.Backspace))
-        {
-            GameOver();
-        }
-        ///if player == dead
-        ///{
-        ///GameOver();
-        ///}
+        
 
         DamagePowerUp.text = Player.DamagePower.ToString();
         ShotgunPowerUp.text = Player.ShotgunPower.ToString();

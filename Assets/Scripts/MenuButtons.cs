@@ -14,4 +14,9 @@ public class MenuButtons : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void MenuSound()
+    {
+        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], Vector3.zero, 1f, 1.0f);
+    }
 }
