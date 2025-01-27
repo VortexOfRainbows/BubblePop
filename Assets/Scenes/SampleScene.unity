@@ -501,6 +501,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: UICanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3474497694868916465, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -49.851074
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486974618734333983, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6512970454066852320, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
