@@ -17,13 +17,13 @@ public class EnemyBossDuck : EnemyDuck
         int soundChance = Random.Range(1, 400);
         if (soundChance == 1)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(28, 30)], transform.position, 0.3f, 0.8f);
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(40, 42)], transform.position, 0.3f, 0.9f);
         }
         MoveUpdate();
         projectileTimer++;
         if (projectileTimer >= 500)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(28, 30)], transform.position, 0.6f, 0.3f);
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(40, 42)], transform.position, 0.6f, 0.9f);
             ShootProjectile(12);
             GameObject.Instantiate(GlobalDefinitions.Ducky, transform.position, Quaternion.identity);
             projectileTimer = -200;

@@ -347,7 +347,7 @@ public class Player : Entity
     {
         Instance = this;
         EventManager.Update();
-        if (DeathKillTimer > 0 || Input.GetKey(KeyCode.I))
+        if (DeathKillTimer > 0)
             Pop();
         else
         {
@@ -368,9 +368,9 @@ public class Player : Entity
     {
         Time.timeScale = 0.5f + 0.5f * Mathf.Sqrt(Mathf.Max(0, 1 - DeathKillTimer / 200f));
         if (DeathKillTimer > 100)
-            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 5f, 0.03f);
+            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 6f, 0.03f);
         else
-            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 16, 0.03f);
+            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 17f, 0.03f);
         AttackLeft = 0;
         AttackRight = 0;
         rb.velocity *= 0.9f;
@@ -390,11 +390,11 @@ public class Player : Entity
         WandDeathStuff();
         CapeDeathStuff();
         DeathKillTimer++;
-        if(Input.GetKey(KeyCode.R))
-        {
-            DeathKillTimer = 0;
-            Body.SetActive(true);
-        }
+        //if(Input.GetKey(KeyCode.R))
+        //{
+        //    DeathKillTimer = 0;
+        //    Body.SetActive(true);
+        //}
         if(DeathKillTimer > 200)
         {
             UIManager.UI_Manager.GameOver();

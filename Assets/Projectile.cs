@@ -193,7 +193,7 @@ public class Projectile : MonoBehaviour
         transform.localScale = Vector3.one * (1 + 0.1f * Data2 + distTillLanding / 15f);
 
         spriteRendererGlow.gameObject.transform.localPosition = new Vector3(0, -distTillLanding / transform.localScale.y, 0);
-        spriteRendererGlow.color = color * 1.5f / transform.localScale.x;
+        spriteRendererGlow.color = color * 1.5f / transform.localScale.x * Mathf.Min(timer2 / 100f, 1);
 
         Vector2 velo = rb.velocity;
         if (transform.position.y < yPointBeforeLanding + 1)

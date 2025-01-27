@@ -27,10 +27,10 @@ public static class EventManager
     }
     public static void Update()
     {
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-            Point += 100;
-        }
+        //if(Input.GetKeyDown(KeyCode.T))
+        //{
+        //    Point += 100;
+        //}
         PointTimer += Time.deltaTime;
         if (Player.Instance.DeathKillTimer > 0)
         {
@@ -69,20 +69,20 @@ public static class EventManager
         if(SpawnTimer > respawnTime && respawnTime > 0)
         {
             Vector2 stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
-            if ((stuff - Player.Position).magnitude < 24)
+            if ((stuff - Player.Position).magnitude < 25)
             {
                 stuff -= Player.Position;
-                stuff = Player.Position + stuff.normalized * 24;
+                stuff = Player.Position + stuff.normalized * 25;
             }
             int att = 0;
             while (!InsideBathtub(stuff))
             {
                 stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
                 stuff *= 1f - (att / 100f);
-                if ((stuff - Player.Position).magnitude < 24)
+                if ((stuff - Player.Position).magnitude < 25)
                 {
                     stuff -= Player.Position;
-                    stuff = Player.Position + stuff.normalized * 24;
+                    stuff = Player.Position + stuff.normalized * 25;
                 }
                 if (++att > 100)
                 {
