@@ -30,10 +30,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI DamagePowerUp;
 
-
     // Start is called before the first frame update
     void Start()
     {
+        UI_Manager = this;
         score = 0;
         highscore = PlayerPrefs.GetInt("Highscore", 0);
 
@@ -47,8 +47,9 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UI_Manager = this;
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if(gamePaused)
                 Resume();

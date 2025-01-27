@@ -35,7 +35,7 @@ public class Entity : MonoBehaviour
             }
             else
             {
-                if (proj.Friendly && (IFrame <= 0 || proj.Type != 3))
+                if (proj.Friendly && (IFrame <= 0 || proj.Type != 3) && Life > -50)
                 {
                     Life -= proj.Damage;
                     DamageTaken += proj.Damage;

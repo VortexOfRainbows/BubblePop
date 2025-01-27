@@ -47,10 +47,12 @@ public class Player : Entity
     private float Bobbing;
     void Start()
     {
+        MainCamera.orthographicSize = 12;
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         DamagePower = 0;
         ShotgunPower = 0;
+        DeathKillTimer = 0;
     }
     private float dashCD = 0.5f;
     private float dashTimer = 0;
@@ -363,6 +365,11 @@ public class Player : Entity
     public float DeathKillTimer = 0;
     public void Pop()
     {
+        Time.timeScale = 0.5f + 0.5f * Mathf.Sqrt(Mathf.Max(0, 1 - DeathKillTimer / 200f));
+        if (DeathKillTimer > 100)
+            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 5f, 0.03f);
+        else
+            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 16, 0.03f);
         AttackLeft = 0;
         AttackRight = 0;
         rb.velocity *= 0.9f;
@@ -386,6 +393,10 @@ public class Player : Entity
         {
             DeathKillTimer = 0;
             Body.SetActive(true);
+        }
+        if(DeathKillTimer > 200)
+        {
+            UIManager.UI_Manager.GameOver();
         }
     }
     public void HatDeathStuff()

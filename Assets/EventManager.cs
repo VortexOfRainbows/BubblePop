@@ -27,6 +27,8 @@ public static class EventManager
             Point += 100;
         }
         PointTimer += Time.deltaTime;
+        if (Player.Instance.DeathKillTimer > 0)
+            PointTimer = 0;
         if (PointTimer > 1)
         {
             Point++;
@@ -40,8 +42,8 @@ public static class EventManager
             float maxTime = GetSpawnTime(8, 2, 0, 10000);
             bathBombTimer = Utils.RandFloat(minTime, maxTime); //5 to 8 seconds for another bath bomb
         }
-        EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 10, 1000), GlobalDefinitions.Ducky);
-        EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 100, 1100), GlobalDefinitions.Soap);
+        EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 0, 1000), GlobalDefinitions.Ducky);
+        EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 80, 1100), GlobalDefinitions.Soap);
         EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), GlobalDefinitions.flamingoFloatie);
         EnemySpawning(ref MadLadTimer, 1f, GetSpawnTime(90, 30, 1000, 10000), GlobalDefinitions.FinalDuck);
     }
