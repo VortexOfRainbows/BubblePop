@@ -117,4 +117,9 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
         Time.timeScale = 1f;
     }
+
+    public void PlaySound()
+    {
+        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], Vector3.zero, 1f, 1.0f);
+    }
 }
