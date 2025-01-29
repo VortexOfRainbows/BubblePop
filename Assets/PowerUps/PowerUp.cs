@@ -19,11 +19,22 @@ public static class ReflectiveEnumerator
 }
 public abstract class PowerUp
 {
-    public static PowerUp Get(int i)
+    public static GameObject Spawn<T>(Vector2 pos, int pointCost = 100) where T : PowerUp => Spawn(typeof(T).Name, pos, pointCost);
+    public static GameObject Spawn(string powerTypeName, Vector2 pos, int pointCost = 100) => Spawn(Reverses[powerTypeName], pos, pointCost);
+    public static GameObject Spawn(int powerUpID, Vector2 pos, int pointCost = 100)
+    {
+        PowerUpObject obj = GameObject.Instantiate(PowerDefinitions.PowerUpObj, pos, Quaternion.identity);
+        obj.Type = powerUpID;
+        EventManager.PointsSpent += 100;
+        return obj.gameObject;
+    }
+    public static PowerUp Get(string powerTypeName) => Get(Reverses[powerTypeName]);
+    public static PowerUp Get<T>() where T : PowerUp => Get(typeof(T).Name);
+    public static PowerUp Get(int powerUpID)
     {
         if (PowerUps == null)
             InitDict();
-        return PowerUps[i];
+        return PowerUps[powerUpID];
     }
     public static void ResetAll()
     {
@@ -34,11 +45,12 @@ public abstract class PowerUp
     }
     private static void AddToDictionary(PowerUp p)
     {
-        if (Reverses.ContainsKey(p))
+        string typeName = p.GetType().Name;
+        if (Reverses.ContainsKey(typeName))
             return;
         p.MyID = typeCounter;
         PowerUps[typeCounter] = p;
-        Reverses[p] = typeCounter;
+        Reverses[typeName] = typeCounter;
         Debug.Log($"Added: {p.Name()} to the dictionary at index {typeCounter}");
         typeCounter++;
         maximumTypes++;
@@ -49,7 +61,7 @@ public abstract class PowerUp
         PowerUps = new Dictionary<int, PowerUp>();
         ReflectiveEnumerator.AssembleInstances<PowerUp>();
     }
-    public static Dictionary<PowerUp, int> Reverses = new Dictionary<PowerUp, int>();
+    public static Dictionary<string, int> Reverses = new Dictionary<string, int>();
     private static int typeCounter = 0;
     private static int maximumTypes = 0;
     public int Stack;

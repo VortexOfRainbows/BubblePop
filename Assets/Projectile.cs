@@ -114,8 +114,6 @@ public class Projectile : MonoBehaviour
             SpikeAI();
         if (Type == 3)
             BigBubbleAI();
-        if (Type == 4)
-            PowerUpAI();
         if (Type == 5)
             FeatherAI();
         if (Type == 6)
@@ -347,19 +345,6 @@ public class Projectile : MonoBehaviour
                 Kill();
         }
     }
-    public void PowerUpAI()
-    {
-        timer++;
-        float scale = 1.0f + 0.1f * Mathf.Sin(Mathf.Deg2Rad * timer * 2f);
-        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(2f / scale, 2f * scale, 2), 0.1f);
-
-        if(Utils.RandFloat(1) < 0.4f)
-        {
-            Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
-            ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.6f), circular * Utils.RandFloat(3, 6) + new Vector2(0, Utils.RandFloat(-1, 2)),
-                2f, Utils.RandFloat(0.3f, .5f), 0, spriteRendererGlow.color * 0.9f);
-        }
-    }
     public void FeatherAI()
     {
         rb.rotation = rb.velocity.ToRotation() * Mathf.Rad2Deg + 90;
@@ -505,11 +490,9 @@ public class Projectile : MonoBehaviour
                     }
                 }
             }
-            if (EventManager.CanSpawnPower())
-            {
-                Projectile.NewProjectile(transform.position, Vector2.zero, 4, Random.Range(0, 2), 0);
-                EventManager.PointsSpent += 100;
-            }
+            bool LuckyDrop = Utils.RandFloat(1) < 0.04f;
+            if (EventManager.CanSpawnPower() || LuckyDrop)
+                PowerUp.Spawn(Random.Range(0, 2), transform.position, LuckyDrop ? 0 : 100);
         }
         if (Type == 2)
         {
@@ -530,19 +513,6 @@ public class Projectile : MonoBehaviour
                 Vector2 circular = new Vector2(.5f + transform.localScale.x * 0.4f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(4, 7), 3f, Utils.RandFloat(0.3f, 0.5f), 0, spriteRenderer.color);
             }
-        }
-        if (Type == 4)
-        {
-            for (int i = 0; i < 30; i++)
-            {
-                Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.6f, 0.7f), circular * Utils.RandFloat(3, 6), 4f, Utils.RandFloat(0.4f, 0.6f), 0, spriteRendererGlow.color);
-            }
-            if (Data1 == 0)
-                Player.Instance.ShotgunPower++;
-            else
-                Player.Instance.DamagePower++;
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[37], transform.position, 1.2f, 0.9f);
         }
         if (Type == 5)
         {

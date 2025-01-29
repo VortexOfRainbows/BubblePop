@@ -66,11 +66,7 @@ public class Entity : MonoBehaviour
                     bool LuckyDrop = Utils.RandFloat(1) < 0.04f || this is EnemyBossDuck;
                     EventManager.Point += (int)PointWorth;
                     if (EventManager.CanSpawnPower() || LuckyDrop)
-                    {
-                        Projectile.NewProjectile(transform.position, Vector2.zero, 4, Random.Range(0, 2), 0);
-                        if (!LuckyDrop)
-                            EventManager.PointsSpent += 100;
-                    }
+                        PowerUp.Spawn(Random.Range(0, 2), transform.position, LuckyDrop ? 0 : 100);
                     Destroy(gameObject);
                 }
             }
