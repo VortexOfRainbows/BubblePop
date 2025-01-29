@@ -58,8 +58,8 @@ public class UIManager : MonoBehaviour
         }
         
 
-        DamagePowerUp.text = Player.DamagePower.ToString();
-        ShotgunPowerUp.text = Player.ShotgunPower.ToString();
+        DamagePowerUp.text = Player.Instance.DamagePower.ToString();
+        ShotgunPowerUp.text = Player.Instance.ShotgunPower.ToString();
         scoreText.text = " Soapy Score: " + Mathf.FloorToInt(score);
         highscoreText.text = "Bubble Best: " + Mathf.FloorToInt(highscore);
         deadHighscoreText.text = "Bubble Best: " + Mathf.FloorToInt(highscore);

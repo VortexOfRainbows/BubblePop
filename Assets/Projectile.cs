@@ -294,7 +294,7 @@ public class Projectile : MonoBehaviour
         {
             int target = (int)(Player.Instance.AttackRight - 50) / 100;
             float targetSize = target * 0.7f + 0.8f + Player.Instance.AttackRight / 240f;
-            targetSize *= 1f + Mathf.Sqrt(Player.DamagePower) * 0.4f;
+            targetSize *= 1f + Mathf.Sqrt(Player.Instance.DamagePower) * 0.4f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
             timer = -Player.Instance.AttackRight;
             Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
@@ -312,7 +312,7 @@ public class Projectile : MonoBehaviour
             transform.position = Vector2.Lerp(transform.position,(Vector2)Player.Instance.Wand.transform.position + awayFromWand, 0.15f);
             rb.velocity *= 0.8f;
             rb.velocity += Player.Instance.rb.velocity * 0.1f;
-            Damage = (1 + target) * (2 + Player.DamagePower);
+            Damage = (1 + target) * (2 + Player.Instance.DamagePower);
             //rb.rotation = toMouse.ToRotation() * Mathf.Rad2Deg;
         }
         else if(timer <= 0)
@@ -539,9 +539,9 @@ public class Projectile : MonoBehaviour
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.6f, 0.7f), circular * Utils.RandFloat(3, 6), 4f, Utils.RandFloat(0.4f, 0.6f), 0, spriteRendererGlow.color);
             }
             if (Data1 == 0)
-                Player.ShotgunPower++;
+                Player.Instance.ShotgunPower++;
             else
-                Player.DamagePower++;
+                Player.Instance.DamagePower++;
             AudioManager.PlaySound(GlobalDefinitions.audioClips[37], transform.position, 1.2f, 0.9f);
         }
         if (Type == 5)

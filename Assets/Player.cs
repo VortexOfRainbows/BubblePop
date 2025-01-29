@@ -11,10 +11,8 @@ public static class Control
     public static bool Left => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
     public static bool Right => Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
 }
-public class Player : Entity
+public partial class Player : Entity
 {
-    public static int DamagePower = 0;
-    public static int ShotgunPower = 0;
     public int bonusBubbles = 0;
     public static Player Instance;
     public static Vector2 Position => (Vector2)Instance.transform.position;
@@ -47,6 +45,7 @@ public class Player : Entity
     private float Bobbing;
     void Start()
     {
+        PowerInit();
         EventManager.Restart();
         MainCamera.orthographicSize = 12;
         Instance = this;
@@ -351,6 +350,7 @@ public class Player : Entity
             Pop();
         else
         {
+            UpdatePowerUps();
             MovementUpdate();
             WandUpdate();
             HatStuff();

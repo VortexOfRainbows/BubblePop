@@ -584,6 +584,8 @@ MonoBehaviour:
   AttackRight: 0
   additionalHatPos: {x: 0, y: 0}
   DeathKillTimer: 0
+  DamagePower: 0
+  ShotgunPower: 0
 --- !u!50 &3216590746651522342
 Rigidbody2D:
   serializedVersion: 4
@@ -658,7 +660,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 375
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 128
