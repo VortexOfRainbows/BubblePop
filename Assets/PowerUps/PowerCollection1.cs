@@ -27,10 +27,7 @@ public class Choice : PowerUp
     public override void HeldEffect(Player p)
     {
         if (Stack > 0)
-        {
-            Stack--;
-            //bring up menu for selecting other powers
-        }
+            p.RemovePower(Type);
     }
 }
 public class Dash : PowerUp

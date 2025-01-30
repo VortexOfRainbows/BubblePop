@@ -4,13 +4,29 @@ using UnityEngine;
 public partial class Player : Entity
 {
     public int PowerCount => powers.Count;
-    public int GetPower(int i) => powers[i];
+    /// <summary>
+    /// Returns the PowerUpID of the power at the given index
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public int GetPower(int index) => powers[index];
     public void PickUpPower(int Type)
     {
         if (powers.Contains(Type))
             return;
         else
             powers.Add(Type);
+    }
+    public void RemovePower(int Type, int num = 1)
+    {
+        int index= powers.IndexOf(Type);
+        if (index != -1)
+        {
+            PowerUp p = PowerUp.Get(GetPower(index));
+            p.Stack -= num;
+            if(p.Stack <= 0)
+                powers.RemoveAt(index);
+        }
     }
     public int DamagePower = 0;
     public int ShotgunPower = 0;

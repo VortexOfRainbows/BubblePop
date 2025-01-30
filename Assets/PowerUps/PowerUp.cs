@@ -67,6 +67,8 @@ public abstract class PowerUp
     public int Stack;
     public float Rarity;
     public int MyID = -1;
+    //Returns the MyID of this power
+    public int Type => MyID;
     protected PowerUp()
     {
         sprite = Resources.Load<Sprite>(GetType().Name);

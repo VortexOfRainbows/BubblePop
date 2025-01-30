@@ -492,7 +492,7 @@ public class Projectile : MonoBehaviour
             }
             bool LuckyDrop = Utils.RandFloat(1) < 0.04f;
             if (EventManager.CanSpawnPower() || LuckyDrop)
-                PowerUp.Spawn(Random.Range(0, 2), transform.position, LuckyDrop ? 0 : 100);
+                PowerUp.Spawn(Random.Range(0, 3), transform.position, LuckyDrop ? 0 : 100);
         }
         if (Type == 2)
         {

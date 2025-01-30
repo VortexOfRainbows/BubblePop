@@ -32,7 +32,7 @@ public class PowerUpUIElement : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if(PlayerHasPower())
+        if(PlayerHasPower() && MyPower is not Choice)
         {
             if (!inner.gameObject.activeSelf)
                 TurnedOn();
