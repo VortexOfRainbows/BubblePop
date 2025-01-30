@@ -46,7 +46,7 @@ public class PowerUpObject : MonoBehaviour
         AudioManager.PlaySound(GlobalDefinitions.audioClips[37], transform.position, 1.2f, 0.9f);
 
         MyPower.PickUp();
-        Debug.Log($"Player has picked up {MyPower.Name()}");
+        //Debug.Log($"Player has picked up {MyPower.Name()}");
         Destroy(gameObject);
     }
 }

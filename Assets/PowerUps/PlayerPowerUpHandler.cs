@@ -1,9 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public partial class Player : Entity
 {
+    public int PowerCount => powers.Count;
+    public int GetPower(int i) => powers[i];
     public void PickUpPower(int Type)
     {
         if (powers.Contains(Type))
@@ -17,6 +18,7 @@ public partial class Player : Entity
     private void PowerInit()
     {
         powers = new List<int>();
+        PowerUp.ResetAll();
     }
     private void ResetPowers()
     {
@@ -35,7 +37,7 @@ public partial class Player : Entity
             if(power.Stack > 0)
             {
                 power.HeldEffect(this);
-                Debug.Log($"Doing held effect for {power.Stack}");
+                //Debug.Log($"Doing held effect for {power.Stack}");
             }
         }
     }

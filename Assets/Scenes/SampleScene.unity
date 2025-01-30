@@ -506,23 +506,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1195111245 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1287304659113225603, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-  m_PrefabInstance: {fileID: 1362747312}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1195111249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195111245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9faae22ebe6b0b0459f8af6c0340ba5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1362747312
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -531,10 +514,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2579308609860627661, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-      propertyPath: DamagePowerUp
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2792770979017610796, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -622,10 +601,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1287304659113225603, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1195111249}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
 --- !u!1001 &3216373783092858490
 PrefabInstance:
