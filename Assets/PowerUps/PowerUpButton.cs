@@ -15,6 +15,7 @@ public class PowerUpButton : MonoBehaviour
         if (Active)
             PowerUp.PickingPowerUps = true;
         buttons[index] = this;
+        TurnOff();
     }
     public void OnButtonPress()
     {

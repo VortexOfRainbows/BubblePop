@@ -118,7 +118,7 @@ public class Projectile : MonoBehaviour
             FeatherAI();
         if (Type == 6)
             LaserAI();
-        if (Type == 2)
+        if (Type == 2 && timer < 10)
             spriteRendererGlow.color = spriteRenderer.color;
         else if(Type == 0 || Type == 3)
             spriteRendererGlow.gameObject.SetActive(false);
@@ -247,7 +247,7 @@ public class Projectile : MonoBehaviour
     {
         if(startPos == Vector2.zero)
             startPos = (Vector2)transform.position - rb.velocity.normalized; 
-        if (timer < 200 && Data2 != 5 && Data2 != 6)
+        if (timer < 200 && Data2 != 4 && Data2 != 6)
         {
             rb.velocity *= 1.0045f;
         }
@@ -257,7 +257,7 @@ public class Projectile : MonoBehaviour
         {
             float alphaOut = 1 - (timer - 610) / 90f;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
-            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b) * alphaOut;
             if (timer > 650)
                 Hostile = false;
         }
@@ -265,12 +265,12 @@ public class Projectile : MonoBehaviour
         {
             Kill();
         }
-        if(Data2 == 2)
+        if(Data2 == 5)
         {
             rb.velocity = rb.velocity.RotatedBy(Data1 * Mathf.Deg2Rad);
         }
         Color color = spriteRenderer.color;
-        if (Data2 == 5 || Data2 == 6)
+        if (Data2 == 4 || Data2 == 6)
         {
             Vector2 fromStart = (Vector2)transform.position - startPos;
             Vector2 rotate = fromStart.RotatedBy(Data1 * Mathf.Deg2Rad);
@@ -359,7 +359,7 @@ public class Projectile : MonoBehaviour
         {
             float alphaOut = 1 - (timer - 610) / 90f;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
-            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b) * alphaOut;
             if (timer > 650)
                 Hostile = false;
         }
@@ -384,7 +384,7 @@ public class Projectile : MonoBehaviour
         {
             float alphaOut = 1 - (timer - 610) / 90f;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
-            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b) * alphaOut;
             if (timer > 650)
                 Hostile = false;
         }
@@ -451,24 +451,13 @@ public class Projectile : MonoBehaviour
             }
             if(Data2 == 2)
             {
-                for (float j = 1; j < 3.5f; j += 0.5f)
-                {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f + j * -25 * Mathf.Deg2Rad);
-                        NewProjectile((Vector2)transform.position + circular * 0.25f, circular * 1.7f, 2, 1, Data2);
-                    }
-                }
-            }
-            if (Data2 == 3)
-            {
                 for (int i = 0; i < 24; i++)
                 {
                     Vector2 circular = Utils.RandCircle(3);
                     NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 1.5f, 2, 0, Data2);
                 }
             }
-            if (Data2 == 4)
+            if (Data2 == 3)
             {
                 float r = Utils.RandFloat(Mathf.PI);
                 float petals = 10;
@@ -479,14 +468,25 @@ public class Projectile : MonoBehaviour
                     NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, 0, Data2);
                 }
             }
-            if (Data2 == 5)
+            if (Data2 == 4)
             {
-                for(int j = -1; j <= 1; j += 2)
+                for (int j = -1; j <= 1; j += 2)
                 {
                     for (int i = 0; i < 10; i++)
                     {
                         Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 5f);
                         NewProjectile((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 2, j * 1f, Data2);
+                    }
+                }
+            }
+            if (Data2 == 5)
+            {
+                for (float j = 1; j < 3.5f; j += 0.5f)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f + j * -25 * Mathf.Deg2Rad);
+                        NewProjectile((Vector2)transform.position + circular * 0.25f, circular * 1.7f, 2, 1, Data2);
                     }
                 }
             }
