@@ -39,5 +39,7 @@ public class GlobalDefinitions : MonoBehaviour
     public Sprite FlamigoFeater;
     public static Sprite Laser => Instance.LaserProj;
     public Sprite LaserProj;
+    public static Sprite Sparkle => Instance.sparkle;
+    public Sprite sparkle;
 
 }

@@ -39,7 +39,7 @@ public class Entity : MonoBehaviour
                 {
                     Life -= proj.Damage;
                     DamageTaken += proj.Damage;
-                    if (proj.Type == 0)
+                    if (proj.Type == 0 || proj.Type == 4)
                         proj.Kill();
                     if (proj.Type == 3)
                     {
@@ -66,7 +66,7 @@ public class Entity : MonoBehaviour
                     bool LuckyDrop = Utils.RandFloat(1) < 0.04f || this is EnemyBossDuck;
                     EventManager.Point += (int)PointWorth;
                     if (EventManager.CanSpawnPower() || LuckyDrop)
-                        PowerUp.Spawn(Random.Range(0, 3), transform.position, LuckyDrop ? 0 : 100);
+                        PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : 100);
                     Destroy(gameObject);
                 }
             }

@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 public class Projectile : MonoBehaviour
 {
@@ -80,11 +81,10 @@ public class Projectile : MonoBehaviour
         }
         if(Type == 4)
         {
-            spriteRenderer.sprite = Data1 == 0 ? GlobalDefinitions.BubblePower1 :  GlobalDefinitions.BubblePower2;
-            spriteRendererGlow.color = new Color(241 / 255f, 215 / 255f, 1f, 0.6f);
-            spriteRendererGlow.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
-            Hostile = true;
-            transform.localScale = new Vector3(1, 1, 1);
+            spriteRenderer.sprite = GlobalDefinitions.Sparkle;
+            spriteRenderer.color = spriteRendererGlow.color = new Color(1f, 1f, 0.2f, 0.6f);
+            Damage = 2;
+            Friendly = true;
         }
         if(Type == 5)
         {
@@ -114,6 +114,8 @@ public class Projectile : MonoBehaviour
             SpikeAI();
         if (Type == 3)
             BigBubbleAI();
+        if (Type == 4)
+            SparkleAI();
         if (Type == 5)
             FeatherAI();
         if (Type == 6)
@@ -394,6 +396,34 @@ public class Projectile : MonoBehaviour
         }
         timer++;
     }
+    public void SparkleAI()
+    {
+        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 0.66f, 0.085f);
+
+        Vector2 target = new Vector2(Data1, Data2);
+        Vector2 toTarget = (target - (Vector2)transform.position);
+        float dist = toTarget.magnitude;
+        toTarget = toTarget.normalized;
+        Vector2 newVelo = rb.velocity.magnitude * toTarget;
+        if (timer < 100 && dist > 1)
+            rb.velocity = Vector2.Lerp(rb.velocity, newVelo, 0.065f).normalized * rb.velocity.magnitude;
+        else if (timer < 100)
+            timer = 100;
+        rb.rotation += Mathf.Sqrt(rb.velocity.magnitude) * Mathf.Sign(rb.velocity.x);
+        if (timer > 170)
+        {
+            Kill();
+        }
+        Vector2 norm = rb.velocity.normalized;
+        ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .175f, norm * -.75f, 0.1f, Utils.RandFloat(0.55f, 0.65f), 0, spriteRenderer.color);
+        if (timer > 150)
+        {
+            float alphaOut = 1 - (timer - 150) / 20f;
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b) * alphaOut;
+        }
+        timer++;
+    }
     private bool Dead = false;
     public void OnKill()
     {
@@ -492,7 +522,7 @@ public class Projectile : MonoBehaviour
             }
             bool LuckyDrop = Utils.RandFloat(1) < 0.04f;
             if (EventManager.CanSpawnPower() || LuckyDrop)
-                PowerUp.Spawn(Random.Range(0, 3), transform.position, LuckyDrop ? 0 : 100);
+                PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : 100);
         }
         if (Type == 2)
         {
@@ -521,6 +551,15 @@ public class Projectile : MonoBehaviour
                 Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.2f, 0.4f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 1, spriteRendererGlow.color);
             }
+        }
+        if (Type == 4)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.4f, 0.5f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 0, spriteRenderer.color);
+            }
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], transform.position, 0.7f, 1.1f);
         }
     }
 }

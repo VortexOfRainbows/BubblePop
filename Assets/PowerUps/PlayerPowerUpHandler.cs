@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security;
 using UnityEngine;
 
 public partial class Player : Entity
@@ -30,6 +31,7 @@ public partial class Player : Entity
     }
     public int DamagePower = 0;
     public int ShotgunPower = 0;
+    public int DashSparkle = 0;
     private List<int> powers;
     private void PowerInit()
     {
@@ -42,7 +44,7 @@ public partial class Player : Entity
     }
     private void ClearPowerBonuses()
     {
-        DamagePower = ShotgunPower = 0;
+        DamagePower = ShotgunPower = DashSparkle = 0;
     }
     private void UpdatePowerUps()
     {
@@ -54,6 +56,19 @@ public partial class Player : Entity
             {
                 power.HeldEffect(this);
                 //Debug.Log($"Doing held effect for {power.Stack}");
+            }
+        }
+    }
+    public void OnDash(Vector2 velo)
+    {
+        if(DashSparkle > 0)
+        {
+            Vector2 norm = velo.normalized;
+            int stars = 1 + DashSparkle;
+            Vector2 target = (Vector2)transform.position + norm * 14 + Utils.RandCircle(3);
+            for (; stars > 0; --stars)
+            {
+                Projectile.NewProjectile(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 4, target.x, target.y);
             }
         }
     }

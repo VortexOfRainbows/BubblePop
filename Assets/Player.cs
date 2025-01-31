@@ -91,15 +91,10 @@ public partial class Player : Entity
         movespeed = movespeed.normalized;
 
         dashTimer -= Time.fixedDeltaTime;
-        if(Control.Dash && !Control.LastDash && movespeed.magnitude > 0)
-            if (dashTimer <= 0)
-            {
-                dashTimer = dashCD;
-                velocity = velocity * MaxSpeed + movespeed * speed * 25f;
-                squash = SquashAmt;
-                Body.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
-                AudioManager.PlaySound(GlobalDefinitions.audioClips[12], Wand.transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
-            }
+        if(Control.Dash && !Control.LastDash && movespeed.magnitude > 0 && dashTimer <= 0)
+        {
+            Dash(ref velocity, movespeed);
+        }
 
         //Final stuff
         velocity += movespeed * speed;
@@ -449,5 +444,15 @@ public partial class Player : Entity
             CapeLRend.flipX = true;
             CapeBRend.flipX = true;
         }
+    }
+    public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
+    {
+        dashTimer = dashCD;
+        velocity = velocity * MaxSpeed + moveSpeed * speed * 25f;
+        squash = SquashAmt;
+        Body.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
+        AudioManager.PlaySound(GlobalDefinitions.audioClips[12], Wand.transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
+
+        OnDash(velocity);
     }
 }

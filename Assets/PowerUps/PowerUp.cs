@@ -20,9 +20,9 @@ public static class ReflectiveEnumerator
 public abstract class PowerUp
 {
     public static bool PickingPowerUps = false;
-    public static int RandomPowerFromPool()
+    public static int RandomFromPool()
     {
-        return UnityEngine.Random.Range(0, 3);
+        return UnityEngine.Random.Range(0, 4);
     }
     public static void TurnOnPowerUpSelectors()
     {

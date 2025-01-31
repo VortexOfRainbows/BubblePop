@@ -2,6 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class Choice : PowerUp
+{
+    public override string Name() => "???";
+    public override string Description() => "Pick which power you want from a given selection";
+    public override void HeldEffect(Player p)
+    {
+        if (Stack > 0 && !PowerUp.PickingPowerUps)
+        {
+            p.RemovePower(Type);
+            PowerUp.TurnOnPowerUpSelectors();
+        }
+    }
+}
 public class ChargeShot : PowerUp
 {
     public override string Name() => "Charge Shot";
@@ -20,32 +33,19 @@ public class Shotgun : PowerUp
         p.ShotgunPower += Stack;
     }
 }
-public class Choice : PowerUp
-{
-    public override string Name() => "???";
-    public override string Description() => "Pick which power you want from a given selection";
-    public override void HeldEffect(Player p)
-    {
-        if (Stack > 0 && !PowerUp.PickingPowerUps)
-        {
-            p.RemovePower(Type);
-            PowerUp.TurnOnPowerUpSelectors();
-        }
-    }
-}
 public class Dash : PowerUp
 {
-    public override string Name() => "Dash Trail";
-    public override string Description() => "Leave a trail of bubbles behind as you dash";
+    public override string Name() => "Sparkle-Sparkle Dash";
+    public override string Description() => "Release sparkles when dashing that damage enemies";
     public override void HeldEffect(Player p)
     {
-        //Unimplemented;
+        p.DashSparkle += Stack;
     }
 }
-public class Planet : PowerUp
+public class ShotSpeed : PowerUp
 {
-    public override string Name() => "Bubble System";
-    public override string Description() => "Periodically spawn bubbles around you";
+    public override string Name() => "Propulsion";
+    public override string Description() => "Blown bubbles travel further";
     public override void HeldEffect(Player p)
     {
         //Unimplemented;

@@ -16,6 +16,7 @@ public class PowerUpUIElement : MonoBehaviour
     }
     public Image outer;
     public Image inner;
+    [SerializeField] private GameObject visual;
     public PowerUp MyPower => PowerUp.Get(Type);
     public Sprite Sprite => MyPower.sprite;
     private int prevType;
@@ -36,14 +37,17 @@ public class PowerUpUIElement : MonoBehaviour
     public void TurnedOn()
     {
         inner.sprite = Sprite;
+        RectTransform rect = inner.transform as RectTransform;
+        Rect rectangle = inner.sprite.rect;
+        rect.pivot = inner.sprite.pivot / new Vector2(rectangle.width, rectangle.height);
         inner.SetNativeSize();
         outer.SetNativeSize();
-        inner.gameObject.SetActive(true);
+        visual.SetActive(true);
     }
     public void TurnedOff()
     {
         Timer = 0;
-        inner.gameObject.SetActive(false);
+        visual.SetActive(false);
     }
     public void WhileOn()
     {
@@ -54,7 +58,7 @@ public class PowerUpUIElement : MonoBehaviour
     {
         if (Type >= 0)
         {
-            if ((!inner.gameObject.activeSelf || prevType != Type) && Timer > 1)
+            if ((!visual.activeSelf || prevType != Type) && Timer > 1)
                 TurnedOn();
             WhileOn();
         }
