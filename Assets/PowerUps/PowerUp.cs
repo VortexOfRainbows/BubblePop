@@ -19,6 +19,31 @@ public static class ReflectiveEnumerator
 }
 public abstract class PowerUp
 {
+    public static bool PickingPowerUps = false;
+    public static int RandomPowerFromPool()
+    {
+        return UnityEngine.Random.Range(0, 3);
+    }
+    public static void TurnOnPowerUpSelectors()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if(!PowerUpButton.buttons[i].Active)
+            {
+                PowerUpButton.buttons[i].TurnOn();
+            }
+        }
+    }
+    public static void TurnOffPowerUpSelectors()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (PowerUpButton.buttons[i].Active)
+            {
+                PowerUpButton.buttons[i].TurnOff();
+            }
+        }
+    }
     public static GameObject Spawn<T>(Vector2 pos, int pointCost = 100) where T : PowerUp => Spawn(typeof(T).Name, pos, pointCost);
     public static GameObject Spawn(string powerTypeName, Vector2 pos, int pointCost = 100) => Spawn(Reverses[powerTypeName], pos, pointCost);
     public static GameObject Spawn(int powerUpID, Vector2 pos, int pointCost = 100)

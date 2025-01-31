@@ -26,8 +26,11 @@ public class Choice : PowerUp
     public override string Description() => "Pick which power you want from a given selection";
     public override void HeldEffect(Player p)
     {
-        if (Stack > 0)
+        if (Stack > 0 && !PowerUp.PickingPowerUps)
+        {
             p.RemovePower(Type);
+            PowerUp.TurnOnPowerUpSelectors();
+        }
     }
 }
 public class Dash : PowerUp
