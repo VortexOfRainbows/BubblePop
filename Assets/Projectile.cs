@@ -554,6 +554,8 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 4)
         {
+            if (timer >= 165)
+                return;
             for (int i = 0; i < 8; i++)
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));

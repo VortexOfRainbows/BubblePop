@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class GlobalDefinitions : MonoBehaviour
 {
-    void Start() => Instance = this;
+    void Start()
+    {
+        Instance = this;
+        EventManager.Restart();
+    }
     void Update() => Instance = this;
     public static GlobalDefinitions Instance;
     public static GameObject Projectile => Instance.DefaultProjectile;

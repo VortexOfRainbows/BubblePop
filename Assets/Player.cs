@@ -46,7 +46,6 @@ public partial class Player : Entity
     void Start()
     {
         PowerInit();
-        EventManager.Restart();
         MainCamera.orthographicSize = 12;
         Instance = this;
         rb = GetComponent<Rigidbody2D>();

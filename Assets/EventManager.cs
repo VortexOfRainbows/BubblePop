@@ -24,6 +24,8 @@ public static class EventManager
     public static void Restart()
     {
         PointsSpent = PointTimer = SoapTimer = DuckTimer = FlamingoTimer = MadLadTimer = bathBombTimer = 0;
+        for(int i = 0; i < 10; i++)
+            TrySpawnEnemy(GlobalDefinitions.Ducky);
     }
     public static void Update()
     {
@@ -68,35 +70,40 @@ public static class EventManager
     {
         if(SpawnTimer > respawnTime && respawnTime > 0)
         {
-            Vector2 stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
-            if ((stuff - Player.Position).magnitude < 25)
-            {
-                stuff -= Player.Position;
-                stuff = Player.Position + stuff.normalized * 25;
-            }
-            int att = 0;
-            while (!InsideBathtub(stuff))
-            {
-                stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
-                stuff *= 1f - (att / 100f);
-                if ((stuff - Player.Position).magnitude < 25)
-                {
-                    stuff -= Player.Position;
-                    stuff = Player.Position + stuff.normalized * 25;
-                }
-                if (++att > 100)
-                {
-                    Debug.Log("Fail to spawn");
-                    return;
-                }
-            }
-            GameObject.Instantiate(Enemy, stuff, Quaternion.identity);
-            SpawnTimer = Utils.RandFloat(-0.5f, 0.5f) * respawnTime;
+            if(TrySpawnEnemy(Enemy))
+                SpawnTimer = Utils.RandFloat(-0.5f, 0.5f) * respawnTime;
         }
         else
         {
             SpawnTimer += Time.deltaTime * SpawnTimerSpeedScaling;
         }
+    }
+    private static bool TrySpawnEnemy(GameObject Enemy)
+    {
+        Vector2 stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
+        if ((stuff - Player.Position).magnitude < 25)
+        {
+            stuff -= Player.Position;
+            stuff = Player.Position + stuff.normalized * 25;
+        }
+        int att = 0;
+        while (!InsideBathtub(stuff))
+        {
+            stuff = Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
+            stuff *= 1f - (att / 100f);
+            if ((stuff - Player.Position).magnitude < 25)
+            {
+                stuff -= Player.Position;
+                stuff = Player.Position + stuff.normalized * 25;
+            }
+            if (++att > 100)
+            {
+                Debug.Log("Fail to spawn");
+                return false;
+            }
+        }
+        GameObject.Instantiate(Enemy, stuff, Quaternion.identity);
+        return true;
     }
     public static int GetBathBombType()
     {
