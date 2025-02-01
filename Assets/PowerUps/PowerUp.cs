@@ -22,7 +22,7 @@ public abstract class PowerUp
     public static bool PickingPowerUps = false;
     public static int RandomFromPool()
     {
-        return UnityEngine.Random.Range(0, 4);
+        return UnityEngine.Random.Range(0, 5);
     }
     public static void TurnOnPowerUpSelectors()
     {

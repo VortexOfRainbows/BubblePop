@@ -15,7 +15,7 @@ public partial class Player : Entity
 {
     public int bonusBubbles = 0;
     public static Player Instance;
-    public static Vector2 Position => (Vector2)Instance.transform.position;
+    public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
     [SerializeField]
     private Camera MainCamera;
     public GameObject Wand;
@@ -206,18 +206,21 @@ public partial class Player : Entity
             }
             if (canAttack)
             {
+                float speed = Utils.RandFloat(9, 15) + 1.5f * FasterBulletSpeed;
+                float spread = 12 + Mathf.Sqrt(ShotgunPower) * (10f / (10f + FasterBulletSpeed));
                 Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
-                    toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad) 
-                    * Utils.RandFloat(9, 15) + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
+                    toMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad) 
+                    * speed + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
                 float odds = Mathf.Sqrt(1f / (AttackLeft - 40f));
                 int attempts = bonusBubbles;
                 while (attempts >= AttackLeft - 40)
                 {
                     if(Utils.RandFloat(1) <= odds)
                     {
+                        speed = Utils.RandFloat(9, 15) + 1.5f * FasterBulletSpeed;
                         Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
-                            toMouse.normalized.RotatedBy(Utils.RandFloat(-12, 12) * Mathf.Deg2Rad) 
-                            * Utils.RandFloat(9, 15) + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
+                            toMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad) 
+                            * speed + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
                         bonusBubbles--;
                     }
                     attempts--; 

@@ -130,7 +130,7 @@ public class Projectile : MonoBehaviour
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 0.66f, 0.085f);
 
         Vector2 velo = rb.velocity;
-        velo *= 0.9965f - timer / 6000f;
+        velo *= 1 - 0.008f / (2 + Player.Instance.FasterBulletSpeed) - timer / 5000f;
         velo.y += 0.005f;
         rb.velocity = velo;
         rb.rotation += Mathf.Sqrt(rb.velocity.magnitude) * Mathf.Sign(rb.velocity.x);
@@ -322,7 +322,7 @@ public class Projectile : MonoBehaviour
                 toMouse = toMouse.normalized * 6;
             Vector2 mouse = Player.Position + toMouse;
             toMouse = mouse - (Vector2) transform.position;
-            rb.velocity = toMouse * 0.1f + toMouse.normalized * (10f + Mathf.Min(24, 24f * (timer + 50) / -200f));
+            rb.velocity = toMouse * 0.1f + toMouse.normalized * (10f + Player.Instance.FasterBulletSpeed + Mathf.Min(24, 24f * (timer + 50) / -200f));
             timer = 1;
 
             for (int i = 0; i < 30; i++)
@@ -336,7 +336,7 @@ public class Projectile : MonoBehaviour
             if (Utils.RandFloat(1) < 0.15f)
                 ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x * 0.5f), Utils.RandFloat(.3f, .4f), rb.velocity * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.3f, .6f), 0, default);
             Friendly = true;
-            rb.velocity *= 0.997f - timer / 6000f;
+            rb.velocity *= 1 - 0.007f / (2 + Player.Instance.FasterBulletSpeed) - timer / 4000f;
             timer++;
             if (timer > 160)
             {

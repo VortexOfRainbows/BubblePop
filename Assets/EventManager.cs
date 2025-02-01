@@ -25,7 +25,9 @@ public static class EventManager
     {
         PointsSpent = PointTimer = SoapTimer = DuckTimer = FlamingoTimer = MadLadTimer = bathBombTimer = 0;
         for(int i = 0; i < 10; i++)
+        {
             TrySpawnEnemy(GlobalDefinitions.Ducky);
+        }
     }
     public static void Update()
     {
