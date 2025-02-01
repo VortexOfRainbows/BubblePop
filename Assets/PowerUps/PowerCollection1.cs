@@ -36,7 +36,7 @@ public class Shotgun : PowerUp
 public class Dash : PowerUp
 {
     public override string Name() => "Sparkle-Sparkle Dash";
-    public override string Description() => "Release damaging stars when dashing";
+    public override string Description() => "Scatter stars around you while dashing";
     public override void HeldEffect(Player p)
     {
         p.DashSparkle += Stack;

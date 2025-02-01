@@ -62,13 +62,13 @@ public partial class Player : Entity
     }
     public void OnDash(Vector2 velo)
     {
-        if(DashSparkle > 0)
+        if (DashSparkle > 0)
         {
             Vector2 norm = velo.normalized;
             int stars = 1 + DashSparkle;
-            Vector2 target = (Vector2)transform.position + norm * 14 + Utils.RandCircle(3);
             for (; stars > 0; --stars)
             {
+                Vector2 target = (Vector2)transform.position + norm * 14 + Utils.RandCircle(6);
                 Projectile.NewProjectile(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 4, target.x, target.y);
             }
         }

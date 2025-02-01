@@ -405,6 +405,8 @@ public class Projectile : MonoBehaviour
         float dist = toTarget.magnitude;
         toTarget = toTarget.normalized;
         Vector2 newVelo = rb.velocity.magnitude * toTarget;
+        if (timer < 60)
+            rb.velocity *= 1.002f;
         if (timer < 100 && dist > 1)
             rb.velocity = Vector2.Lerp(rb.velocity, newVelo, 0.065f).normalized * rb.velocity.magnitude;
         else if (timer < 100)
