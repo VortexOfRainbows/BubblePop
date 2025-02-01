@@ -67,7 +67,7 @@ public class PowerUpUIElement : MonoBehaviour
         }
         else
         {
-            if((outer.transform.position - Input.mousePosition).sqrMagnitude < 2200)
+            if((outer.transform.position - Input.mousePosition).magnitude < 62 * UIManager.Instance.MainGameCanvas.scaleFactor)
             {
                 PopUpTextUI.Enable(MyPower.Name(), MyPower.Description());
             }

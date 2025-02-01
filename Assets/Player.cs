@@ -394,7 +394,7 @@ public partial class Player : Entity
         //}
         if(DeathKillTimer > 200)
         {
-            UIManager.UI_Manager.GameOver();
+            UIManager.Instance.GameOver();
         }
     }
     public void HatDeathStuff()

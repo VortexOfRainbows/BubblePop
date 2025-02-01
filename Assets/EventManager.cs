@@ -21,16 +21,22 @@ public static class EventManager
     private static float SoapTimer, DuckTimer, FlamingoTimer, MadLadTimer;
     private static float minXBound = -30, maxXBound = 30, minYBound = -20, maxYBound = 20;
     private static float bathBombTimer = 0;
+    private static bool RunOnce = true;
     public static void Restart()
     {
         PointsSpent = PointTimer = SoapTimer = DuckTimer = FlamingoTimer = MadLadTimer = bathBombTimer = 0;
-        for(int i = 0; i < 10; i++)
-        {
-            TrySpawnEnemy(GlobalDefinitions.Ducky);
-        }
+        RunOnce = true;
     }
     public static void Update()
     {
+        if(RunOnce)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                TrySpawnEnemy(GlobalDefinitions.Ducky);
+            }
+            RunOnce = false;
+        }
         //if(Input.GetKeyDown(KeyCode.T))
         //{
         //    Point += 100;

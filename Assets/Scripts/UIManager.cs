@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager UI_Manager;
+    public Canvas MainGameCanvas;
+    public static UIManager Instance;
     [SerializeField]
     private GameObject tutorial;
     [SerializeField]
@@ -33,7 +34,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UI_Manager = this;
+        Instance = this;
         score = 0;
         highscore = PlayerPrefs.GetInt("Highscore", 0);
 
@@ -47,7 +48,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UI_Manager = this;
+        Instance = this;
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
