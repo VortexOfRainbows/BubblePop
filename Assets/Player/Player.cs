@@ -13,6 +13,7 @@ public static class Control
 }
 public partial class Player : Entity
 {
+    public float Direction => Mathf.Abs(lastVelo.x);
     public int bonusBubbles = 0;
     public static Player Instance;
     public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
@@ -20,11 +21,10 @@ public partial class Player : Entity
     private Camera MainCamera;
     public GameObject Wand;
     public GameObject Body;
-    public GameObject Hat;
+    public Hat Hat;
     public GameObject Face;
     public SpriteRenderer WandR;
     public SpriteRenderer BodyR;
-    public SpriteRenderer HatR;
     public SpriteRenderer FaceR;
     public Rigidbody2D rb;
 
@@ -38,11 +38,11 @@ public partial class Player : Entity
     private float speed = 2.5f;
     private float MovementDeacceleration = 0.9f;
     private float MaxSpeed = 6f;
-    private float squash = 1f;
+    public float squash { get; private set; } = 1f;
     private float walkTimer = 0;
-    private Vector2 lastVelo;
-    private float SquashAmt = 0.45f;
-    private float Bobbing;
+    public Vector2 lastVelo;
+    public float SquashAmt { get; private set; } = 0.45f;
+    public float Bobbing { get; private set; }
     void Start()
     {
         PowerInit();
@@ -54,8 +54,8 @@ public partial class Player : Entity
         ShotgunPower = 0;
         DeathKillTimer = 0;
     }
-    private float dashCD = 0.5f;
-    private float dashTimer = 0;
+    public float dashCD { get; private set; } = 0.5f;
+    public float dashTimer = 0;
     private void MovementUpdate()
     {
         Vector2 velocity = rb.velocity;
@@ -283,24 +283,6 @@ public partial class Player : Entity
         float bobbing = 0.9f + 0.1f * sin;
         return bobbing;
     }
-    public Vector2 additionalHatPos = Vector2.zero;
-    public void HatStuff()
-    {
-        float r = new Vector2(Mathf.Abs(lastVelo.x), lastVelo.y * Mathf.Sign(lastVelo.x)).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, dashTimer / dashCD));
-        if (HatR.flipX == BodyR.flipY)
-        {
-            HatR.flipX = !BodyR.flipY;
-        }
-        Hat.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Hat.transform.eulerAngles.z, r, 0.2f));
-        //if (dashTimer > 0)
-        //{
-        //    float sin = Mathf.Sqrt(Mathf.Abs( Mathf.Sin(Mathf.PI * Mathf.Max(0, dashTimer / dashCD)))) * dashTimer / dashCD;
-        //    additionalHatPos = new Vector2(-sin, Mathf.Sign(lastVelo.x) * 1.1f * sin).RotatedBy(lastVelo.ToRotation());
-        //}
-        //else if (dashTimer <= 0)
-        additionalHatPos = Vector2.Lerp(additionalHatPos, Vector2.zero, 0.2f);
-        Hat.transform.localPosition = Vector2.Lerp((Vector2)Hat.transform.localPosition, new Vector2(0, -0.3f + 0.8f * Bobbing * squash - 1f * (1 - squash)), 0.05f) + additionalHatPos;
-    }
     public void CapeStuff()
     {
         //Time.timeScale = 0.2f;
@@ -351,7 +333,7 @@ public partial class Player : Entity
             UpdatePowerUps();
             MovementUpdate();
             WandUpdate();
-            HatStuff();
+            Hat.AliveUpdate();
             CapeStuff();
         }
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
@@ -382,9 +364,8 @@ public partial class Player : Entity
                     Utils.RandFloat(0.5f, 1.1f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3));
             }
             Body.SetActive(false);
-            additionalHatPos.y += 0.25f;
         }
-        HatDeathStuff();
+        Hat.DeadUpdate();
         WandDeathStuff();
         CapeDeathStuff();
         DeathKillTimer++;
@@ -396,26 +377,6 @@ public partial class Player : Entity
         if(DeathKillTimer > 200)
         {
             UIManager.Instance.GameOver();
-        }
-    }
-    public void HatDeathStuff()
-    {
-        float toBody = Hat.transform.localPosition.y - Body.transform.localPosition.y;
-        float sinusoid1 = Mathf.Sin(DeathKillTimer * Mathf.PI / 60f);
-        float sinusoid2 = Mathf.Sin(DeathKillTimer * Mathf.PI / 40f);
-        if(toBody < 0)
-        {
-            Hat.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Hat.transform.localEulerAngles.z, 0, 0.1f));
-            Hat.transform.localPosition = (Vector2)Hat.transform.localPosition + additionalHatPos;
-            additionalHatPos *= 0.6f;
-        }
-        else
-        {
-            Hat.transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Hat.transform.localEulerAngles.z, sinusoid1 * 25f, 0.1f));
-            Hat.transform.localPosition = (Vector2)Hat.transform.localPosition + additionalHatPos;
-            additionalHatPos.x = sinusoid2 * 0.019f * toBody;
-            additionalHatPos.y -= 0.003f;
-            additionalHatPos *= 0.97f;
         }
     }
     public void WandDeathStuff()
