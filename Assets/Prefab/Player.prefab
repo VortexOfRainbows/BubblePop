@@ -262,6 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4300367830045641871}
   - component: {fileID: 6822063360552901501}
+  - component: {fileID: 8082472918508703403}
   m_Layer: 3
   m_Name: Cape
   m_TagString: Untagged
@@ -338,6 +339,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8082472918508703403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3153787031006401097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e7c34ecc4e90046a0d3f94f28b0f7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRender: {fileID: 6822063360552901501}
+  velocity: {x: 0, y: 0}
+  CapeB: {fileID: 3153787031006401097}
+  CapeL: {fileID: 2035908864499327072}
+  CapeR: {fileID: 565174071351106855}
+  CapeBRend: {fileID: 6822063360552901501}
+  CapeLRend: {fileID: 516965884885737246}
+  CapeRRend: {fileID: 5513403695500868129}
 --- !u!1 &3301933071415050790
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,8 +456,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0a55e023d35764c9438b88f076f1c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HatRender: {fileID: 8845014620957060780}
-  posOffset: {x: 0, y: 0}
+  spriteRender: {fileID: 8845014620957060780}
+  velocity: {x: 0, y: 0}
 --- !u!1 &5904723820575881631
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,22 +604,16 @@ MonoBehaviour:
   Wand: {fileID: 634357062426568089}
   Body: {fileID: 9219487561320023369}
   Hat: {fileID: 2507463096150176444}
+  Cape: {fileID: 8082472918508703403}
   Face: {fileID: 5904723820575881631}
   WandR: {fileID: 1426295005384955597}
   BodyR: {fileID: 2109105119270937474}
   FaceR: {fileID: 3894163109312308584}
   rb: {fileID: 3216590746651522342}
-  CapeB: {fileID: 3153787031006401097}
-  CapeL: {fileID: 2035908864499327072}
-  CapeR: {fileID: 565174071351106855}
-  CapeBRend: {fileID: 6822063360552901501}
-  CapeLRend: {fileID: 516965884885737246}
-  CapeRRend: {fileID: 5513403695500868129}
   lastVelo: {x: 0, y: 0}
   dashTimer: 0
   PointDirOffset: 0
   AttackRight: 0
-  additionalHatPos: {x: 0, y: 0}
   DeathKillTimer: 0
   DamagePower: 0
   ShotgunPower: 0

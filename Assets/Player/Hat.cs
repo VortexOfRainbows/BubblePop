@@ -2,25 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hat : MonoBehaviour
+public class Hat : Equipment
 {
-    public static Player p => Player.Instance;
-    public SpriteRenderer HatRender;
-    public Vector2 velocity;
-    public void AliveUpdate()
-    {
-        AnimationUpdate();
-    }
-    public void DeadUpdate()
-    {
-        DeathAnimation();
-    }
-    protected void AnimationUpdate()
+    protected override void AnimationUpdate()
     {
         float r = new Vector2(p.Direction, p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.dashTimer / p.dashCD));
-        if (HatRender.flipX == p.BodyR.flipY)
+        if (spriteRender.flipX == p.BodyR.flipY)
         {
-            HatRender.flipX = !p.BodyR.flipY;
+            spriteRender.flipX = !p.BodyR.flipY;
         }
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r, 0.2f));
         //if (dashTimer > 0)
@@ -32,7 +21,7 @@ public class Hat : MonoBehaviour
         velocity = Vector2.Lerp(velocity, Vector2.zero, 0.2f);
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition, new Vector2(0, -0.3f + 0.8f * p.Bobbing * p.squash - 1f * (1 - p.squash)), 0.05f) + velocity;
     }
-    protected void DeathAnimation()
+    protected override void DeathAnimation()
     {
         if(p.DeathKillTimer <= 0)
             velocity.y += 0.25f;

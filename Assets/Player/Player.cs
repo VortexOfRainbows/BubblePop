@@ -21,19 +21,13 @@ public partial class Player : Entity
     private Camera MainCamera;
     public GameObject Wand;
     public GameObject Body;
-    public Hat Hat;
+    [SerializeField] protected Hat Hat;
+    [SerializeField] protected Accessory Cape;
     public GameObject Face;
     public SpriteRenderer WandR;
     public SpriteRenderer BodyR;
     public SpriteRenderer FaceR;
     public Rigidbody2D rb;
-
-    public GameObject CapeB;
-    public GameObject CapeL;
-    public GameObject CapeR;
-    public SpriteRenderer CapeBRend;
-    public SpriteRenderer CapeLRend;
-    public SpriteRenderer CapeRRend;
 
     private float speed = 2.5f;
     private float MovementDeacceleration = 0.9f;
@@ -283,45 +277,6 @@ public partial class Player : Entity
         float bobbing = 0.9f + 0.1f * sin;
         return bobbing;
     }
-    public void CapeStuff()
-    {
-        //Time.timeScale = 0.2f;
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)Body.transform.position;
-        float facingDir = Mathf.Sign(lastVelo.x);
-        toMouse = toMouse.normalized * 0.5f * facingDir;
-
-        float dashFactorL = (0.8f - squash + Bobbing * 0.2f);
-        float dashFactorR = (0.8f - squash + Bobbing * 0.3f);
-        CapeR.transform.localPosition = new Vector3((-1.1f + 0.3f * dashFactorR) * facingDir, 0);// + toMouse.x, 0, 0);
-        CapeR.transform.localScale = new Vector3(0.9f + toMouse.x * 0.75f + 0.1f * toMouse.x * facingDir, 1, 1);
-        CapeL.transform.localPosition = new Vector3((1.25f - 0.425f * dashFactorL) * facingDir, 0);// + toMouse.x + facingDir, 0, 0);
-        CapeL.transform.localScale = new Vector3(0.9f - toMouse.x * 0.9f + 0.1f * toMouse.x * facingDir, 1, 1);
-
-        float addedXOffset = 0.4f * Mathf.Sin(Hat.transform.eulerAngles.z * Mathf.Deg2Rad);
-        CapeL.transform.eulerAngles = new Vector3(0, 0, 15f * dashFactorL * facingDir);
-        CapeR.transform.eulerAngles = new Vector3(0, 0, -25 * dashFactorR * facingDir);
-        CapeB.transform.localPosition = new Vector2(Mathf.Lerp(-0.2f, 0.6f, 1 - squash) * toMouse.x * facingDir + addedXOffset, -.25f);
-        Vector2 scale = new Vector2((1 - squash) * 2.5f + 0.1f * (1 - Bobbing), Bobbing * squash);
-        //if its 90% or 270%, we want the x scale reduced
-        scale.x *= 0.2f + 0.875f * Mathf.Cos(new Vector2(Mathf.Abs(lastVelo.x), lastVelo.y).ToRotation());
-        scale.x += 1;
-        CapeB.transform.localScale = Vector2.Lerp(CapeB.transform.localScale, scale * new Vector2(0.73f, 0.67f), 0.5f);
-        CapeB.transform.eulerAngles = new Vector3(0, 0, 0);
-
-        if (facingDir < 0)
-        {
-            CapeRRend.flipX = false;
-            CapeLRend.flipX = false;
-            CapeBRend.flipX = false;
-        }
-        else
-        {
-            CapeRRend.flipX = true;
-            CapeLRend.flipX = true;
-            CapeBRend.flipX = true;
-        }
-
-    }
     private void FixedUpdate()
     {
         Instance = this;
@@ -334,7 +289,7 @@ public partial class Player : Entity
             MovementUpdate();
             WandUpdate();
             Hat.AliveUpdate();
-            CapeStuff();
+            Cape.AliveUpdate();
         }
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
@@ -367,7 +322,7 @@ public partial class Player : Entity
         }
         Hat.DeadUpdate();
         WandDeathStuff();
-        CapeDeathStuff();
+        Cape.DeadUpdate();
         DeathKillTimer++;
         //if(Input.GetKey(KeyCode.R))
         //{
@@ -383,31 +338,6 @@ public partial class Player : Entity
     {
         Wand.transform.localPosition = Vector3.Lerp(Wand.transform.localPosition, new Vector3(0.4f, -0.6f), 0.1f);
         Wand.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Wand.transform.transform.eulerAngles.z, Mathf.Sign(lastVelo.x) == 1 ? 0 : 180, 0.1f));
-    }
-    public void CapeDeathStuff()
-    {
-        float facingDir = Mathf.Sign(lastVelo.x);
-        CapeL.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(CapeL.transform.eulerAngles.z, 15 * facingDir, 0.1f));
-        CapeR.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(CapeR.transform.eulerAngles.z, -25 * facingDir, 0.1f));
-        CapeR.transform.localPosition = Vector3.Lerp(CapeR.transform.localPosition, new Vector3(-0.8f * facingDir, 0), 0.1f);
-        CapeL.transform.localPosition = Vector3.Lerp(CapeL.transform.localPosition, new Vector3(1f * facingDir, 0), 0.1f);
-        CapeL.transform.localScale = Vector3.Lerp(CapeL.transform.localScale, new Vector3(1f, .9f, 1), 0.1f);
-        CapeR.transform.localScale = Vector3.Lerp(CapeR.transform.localScale, new Vector3(1f, .9f, 1), 0.1f);
-        CapeB.transform.localScale = Vector3.Lerp(CapeB.transform.localScale, new Vector3(1.3f, .4f, 1) * 0.9f, 0.1f);
-        CapeB.transform.localPosition = Vector3.Lerp(CapeB.transform.localPosition, new Vector3(.5f, CapeB.transform.localPosition.y, 0), 0.1f);
-
-        if (facingDir < 0)
-        {
-            CapeRRend.flipX = false;
-            CapeLRend.flipX = false;
-            CapeBRend.flipX = false;
-        }
-        else
-        {
-            CapeRRend.flipX = true;
-            CapeLRend.flipX = true;
-            CapeBRend.flipX = true;
-        }
     }
     public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
     {
