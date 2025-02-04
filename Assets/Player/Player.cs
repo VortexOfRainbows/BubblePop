@@ -19,12 +19,11 @@ public partial class Player : Entity
     public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
     [SerializeField]
     private Camera MainCamera;
-    public GameObject Wand;
     public GameObject Body;
+    [SerializeField] public Weapon Wand;
     [SerializeField] protected Hat Hat;
     [SerializeField] protected Accessory Cape;
     public GameObject Face;
-    public SpriteRenderer WandR;
     public SpriteRenderer BodyR;
     public SpriteRenderer FaceR;
     public Rigidbody2D rb;
@@ -148,126 +147,11 @@ public partial class Player : Entity
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         FaceR.flipY = BodyR.flipY;
     }
-    private Vector3 WandEulerAngles = new Vector3(0, 0, 0);
     public float PointDirOffset;
-    private float MoveOffset;
-    private float DashOffset;
-    private float AttackLeft = 0;
+    public float MoveOffset;
+    public float DashOffset;
+    public float AttackLeft = 0;
     public float AttackRight = 0;
-    private void WandUpdate()
-    {
-        //if(Input.GetKeyDown(KeyCode.V))
-        //{
-        //    DamagePower++;
-        //    ShotgunPower++;
-        //}
-        if(AttackLeft < -20 && AttackRight < 0)
-        {
-            if (Input.GetMouseButton(0))
-            {
-                AudioManager.PlaySound(GlobalDefinitions.audioClips[14], Wand.transform.position, 1f, 1f);
-                AttackLeft = 50;
-                bonusBubbles = ShotgunPower;
-            }
-        }
-        if (AttackRight < -20 && AttackLeft < 0)
-        {
-            if (Input.GetMouseButton(1))
-            {
-                AttackRight = 50;
-            }
-        }
-
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
-        float dir = Mathf.Sign(toMouse.x);
-        float bodyDir = Mathf.Sign(rb.velocity.x);
-        Vector2 attemptedPosition = new Vector2(0.8f, 0.2f * dir).RotatedBy(toMouse.ToRotation()) + rb.velocity.normalized * 0.1f;
-
-        //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
-
-        PointDirOffset = -45 * dir * squash;
-        MoveOffset = -5 * bodyDir * squash;
-        DashOffset = 100 * dir * (1 - squash);
-
-        Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(Wand.transform.eulerAngles.z * Mathf.Deg2Rad);
-        if (AttackLeft > 0)
-        {
-            bool canAttack = AttackLeft % 2 == 1 && AttackLeft >= 41;
-            bool bonusBubble = bonusBubbles > 0 && AttackLeft >= 41;
-            if(!canAttack && bonusBubble)
-            {
-                canAttack = true;
-                bonusBubbles--;
-            }
-            if (canAttack)
-            {
-                float speed = Utils.RandFloat(9, 15) + 1.5f * FasterBulletSpeed;
-                float spread = 12 + Mathf.Sqrt(ShotgunPower) * (10f / (10f + FasterBulletSpeed));
-                Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
-                    toMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad) 
-                    * speed + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
-                float odds = Mathf.Sqrt(1f / (AttackLeft - 40f));
-                int attempts = bonusBubbles;
-                while (attempts >= AttackLeft - 40)
-                {
-                    if(Utils.RandFloat(1) <= odds)
-                    {
-                        speed = Utils.RandFloat(9, 15) + 1.5f * FasterBulletSpeed;
-                        Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand * 2,
-                            toMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad) 
-                            * speed + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
-                        bonusBubbles--;
-                    }
-                    attempts--; 
-                }
-            }
-            float percent = AttackLeft / 50f;
-            PointDirOffset += 165 * percent * dir * squash;
-        }
-        if(AttackRight > 0)
-        {
-            if((Input.GetMouseButton(1) || AttackRight < 100) && AttackRight >= 50 )
-            {
-                if(AttackRight == 50)
-                {
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[33], Position, 0.3f, 1.5f);
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[34], Position, 0.6f, 1f);
-                    Projectile.NewProjectile((Vector2)Wand.transform.position + awayFromWand, Vector2.zero, 3, 0);
-                }
-                if(AttackRight < 250)
-                {
-                    AttackRight++;
-                    if (AttackRight == 150)
-                    {
-                        AudioManager.PlaySound(GlobalDefinitions.audioClips[35], Position, 0.65f, 1f);
-                    }
-                    if (AttackRight == 250)
-                    {
-                        AudioManager.PlaySound(GlobalDefinitions.audioClips[36], Position, 0.7f, 1f);
-                    }
-                }
-                PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * squash;
-            }
-            else
-            {
-                if (AttackRight > 50)
-                    AttackRight = 50;
-                AttackRight--;
-                float percent = AttackRight / 50f;
-                PointDirOffset += 125 * percent * dir * squash;
-            }
-        }
-        else
-            AttackRight--;
-
-        //Final Stuff
-        float r = attemptedPosition.ToRotation() * Mathf.Rad2Deg - PointDirOffset - MoveOffset + DashOffset;
-        Wand.transform.localPosition = Vector2.Lerp(Wand.transform.localPosition, attemptedPosition, 0.08f);
-        Wand.GetComponent<SpriteRenderer>().flipY = PointDirOffset < 0;
-        WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
-        Wand.transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
-        AttackLeft--;
-    }
     public float BobbingUpdate()
     { 
         float abs = Mathf.Sqrt(Mathf.Abs(rb.velocity.magnitude)) * 0.5f;
@@ -287,7 +171,7 @@ public partial class Player : Entity
         {
             UpdatePowerUps();
             MovementUpdate();
-            WandUpdate();
+            Wand.AliveUpdate();
             Hat.AliveUpdate();
             Cape.AliveUpdate();
         }
@@ -321,7 +205,7 @@ public partial class Player : Entity
             Body.SetActive(false);
         }
         Hat.DeadUpdate();
-        WandDeathStuff();
+        Wand.DeadUpdate();
         Cape.DeadUpdate();
         DeathKillTimer++;
         //if(Input.GetKey(KeyCode.R))
@@ -333,11 +217,6 @@ public partial class Player : Entity
         {
             UIManager.Instance.GameOver();
         }
-    }
-    public void WandDeathStuff()
-    {
-        Wand.transform.localPosition = Vector3.Lerp(Wand.transform.localPosition, new Vector3(0.4f, -0.6f), 0.1f);
-        Wand.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(Wand.transform.transform.eulerAngles.z, Mathf.Sign(lastVelo.x) == 1 ? 0 : 180, 0.1f));
     }
     public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
     {
