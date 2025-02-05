@@ -115,8 +115,6 @@ public partial class Player : Entity
     public float PointDirOffset;
     public float MoveOffset;
     public float DashOffset;
-    public float AttackLeft = 0;
-    public float AttackRight = 0;
     public float BobbingUpdate()
     { 
         float abs = Mathf.Sqrt(Mathf.Abs(rb.velocity.magnitude)) * 0.5f;
@@ -136,6 +134,10 @@ public partial class Player : Entity
         {
             UpdatePowerUps();
             MovementUpdate();
+            if (Input.GetMouseButton(0))
+                Wand.StartAttack(false);
+            else if (Input.GetMouseButton(1))
+                Wand.StartAttack(true);
             Wand.AliveUpdate();
             Hat.AliveUpdate();
             Cape.AliveUpdate();
@@ -155,8 +157,6 @@ public partial class Player : Entity
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 6f, 0.03f);
         else
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 17f, 0.03f);
-        AttackLeft = 0;
-        AttackRight = 0;
         rb.velocity *= 0.9f;
         Body.DeadUpdate();
         Hat.DeadUpdate();

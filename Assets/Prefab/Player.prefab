@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4439646451783487447}
   - component: {fileID: 1426295005384955597}
-  - component: {fileID: 5671365401850119370}
+  - component: {fileID: 4398803498948371710}
   m_Layer: 3
   m_Name: Wand
   m_TagString: Untagged
@@ -169,7 +169,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5671365401850119370
+--- !u!114 &4398803498948371710
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,11 +178,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 634357062426568089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb25dfb885a55fa43b1396d5390942f8, type: 3}
+  m_Script: {fileID: 11500000, guid: c0f792ead6052534bb08d28002838f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 1426295005384955597}
   velocity: {x: 0, y: 0}
+  AttackLeft: 0
+  AttackRight: 0
   WandEulerAngles: {x: 0, y: 0, z: 0}
 --- !u!1 &2035908864499327072
 GameObject:
@@ -369,6 +371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 6822063360552901501}
   velocity: {x: 0, y: 0}
+  CapeB: {fileID: 3153787031006401097}
   CapeL: {fileID: 2035908864499327072}
   CapeR: {fileID: 565174071351106855}
   CapeLRend: {fileID: 516965884885737246}
@@ -615,8 +618,8 @@ MonoBehaviour:
   lastPos: {x: 0, y: 0}
   bonusBubbles: 0
   MainCamera: {fileID: 0}
-  Body: {fileID: 7744505802058954844}
-  Wand: {fileID: 5671365401850119370}
+  Body: {fileID: 7589797464362351196}
+  Wand: {fileID: 4398803498948371710}
   Hat: {fileID: 4793643284589324687}
   Cape: {fileID: 6990591328264648732}
   BodyR: {fileID: 2109105119270937474}
@@ -626,8 +629,6 @@ MonoBehaviour:
   PointDirOffset: 0
   MoveOffset: 0
   DashOffset: 0
-  AttackLeft: 0
-  AttackRight: 0
   DeathKillTimer: 0
   DamagePower: 0
   ShotgunPower: 0
@@ -740,7 +741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4981973282153690138}
   - component: {fileID: 2109105119270937474}
-  - component: {fileID: 7744505802058954844}
+  - component: {fileID: 7589797464362351196}
   m_Layer: 3
   m_Name: Bubble Bro
   m_TagString: Untagged
@@ -816,7 +817,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7744505802058954844
+--- !u!114 &7589797464362351196
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -825,10 +826,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9219487561320023369}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8f2fbfeb5803324a9aeb1169108d6ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 6197bbe4200b7f3498b8207aaaf56ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 2109105119270937474}
   velocity: {x: 0, y: 0}
   Face: {fileID: 5904723820575881631}
   FaceR: {fileID: 3894163109312308584}
+  i: 0

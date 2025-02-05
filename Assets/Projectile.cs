@@ -289,18 +289,23 @@ public class Projectile : MonoBehaviour
     }
     public void BigBubbleAI()
     {
-        Vector2 toMouse = Utils.MouseWorld - Player.Position;
-        if(Player.Instance.AttackRight >= 50 && timer <= 0)
+        if(Player.Instance.Wand is not BubblemancerWand wand)
         {
-            int target = (int)(Player.Instance.AttackRight - 50) / 100;
-            float targetSize = target * 0.7f + 0.8f + Player.Instance.AttackRight / 240f;
+            return;
+        }
+        int attackRight = (int)wand.AttackRight;
+        Vector2 toMouse = Utils.MouseWorld - Player.Position;
+        if(attackRight >= 50 && timer <= 0)
+        {
+            int target = (int)(attackRight - 50) / 100;
+            float targetSize = target * 0.7f + 0.8f + attackRight / 240f;
             targetSize *= 1f + Mathf.Sqrt(Player.Instance.DamagePower) * 0.4f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
-            timer = -Player.Instance.AttackRight;
+            timer = -attackRight;
             Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             if(Utils.RandFloat(1) < 0.2f)
                 ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + Player.Instance.rb.velocity * 0.9f, 0.2f, 0.3f, 0, default);
-            if (Player.Instance.AttackRight == 149|| Player.Instance.AttackRight == 249)
+            if (attackRight == 149|| attackRight == 249)
             {
                 for (int i = 0; i < 30; i++)
                 {

@@ -781,10 +781,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6990591328264648732, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-      propertyPath: CapeB
-      value: 
-      objectReference: {fileID: 3216373783092858498}
     - target: {fileID: 7594576432851193269, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
       propertyPath: MainCamera
       value: 
@@ -794,11 +790,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
---- !u!1 &3216373783092858498 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3153787031006401097, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
-  m_PrefabInstance: {fileID: 3216373783092858490}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4461085669940230160
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class Sound : MonoBehaviour
     }
     private void Update()
     {
-        if(Source.clip == GlobalDefinitions.audioClips[33] && Player.Instance.AttackRight < 50)
+        if(Source.clip == GlobalDefinitions.audioClips[33] && Player.Instance.Wand.AttackRight < 50)
         {
             Source.Stop();
             DestroyImmediate(gameObject);
