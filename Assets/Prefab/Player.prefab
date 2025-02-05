@@ -278,7 +278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4300367830045641871}
   - component: {fileID: 6822063360552901501}
-  - component: {fileID: 8082472918508703403}
+  - component: {fileID: 6990591328264648732}
   m_Layer: 3
   m_Name: Cape
   m_TagString: Untagged
@@ -355,7 +355,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8082472918508703403
+--- !u!114 &6990591328264648732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -364,15 +364,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3153787031006401097}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e7c34ecc4e90046a0d3f94f28b0f7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d4e186ac4b2fb84d83d6fc8debbd9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 6822063360552901501}
   velocity: {x: 0, y: 0}
-  CapeB: {fileID: 3153787031006401097}
   CapeL: {fileID: 2035908864499327072}
   CapeR: {fileID: 565174071351106855}
-  CapeBRend: {fileID: 6822063360552901501}
   CapeLRend: {fileID: 516965884885737246}
   CapeRRend: {fileID: 5513403695500868129}
 --- !u!1 &3301933071415050790
@@ -385,7 +383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7232897044086735031}
   - component: {fileID: 8845014620957060780}
-  - component: {fileID: 2507463096150176444}
+  - component: {fileID: 4793643284589324687}
   m_Layer: 3
   m_Name: Hat
   m_TagString: Untagged
@@ -460,7 +458,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2507463096150176444
+--- !u!114 &4793643284589324687
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -469,7 +467,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3301933071415050790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb0a55e023d35764c9438b88f076f1c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 40e94e7e6af77ab43bf9d100198d7493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 8845014620957060780}
@@ -619,8 +617,8 @@ MonoBehaviour:
   MainCamera: {fileID: 0}
   Body: {fileID: 7744505802058954844}
   Wand: {fileID: 5671365401850119370}
-  Hat: {fileID: 2507463096150176444}
-  Cape: {fileID: 8082472918508703403}
+  Hat: {fileID: 4793643284589324687}
+  Cape: {fileID: 6990591328264648732}
   BodyR: {fileID: 2109105119270937474}
   rb: {fileID: 3216590746651522342}
   lastVelo: {x: 0, y: 0}

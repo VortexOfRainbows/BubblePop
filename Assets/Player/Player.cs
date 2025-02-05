@@ -13,7 +13,7 @@ public static class Control
 }
 public partial class Player : Entity
 {
-    public float Direction => Mathf.Abs(lastVelo.x);
+    public float Direction => Mathf.Sign(lastVelo.x);
     public int bonusBubbles = 0;
     public static Player Instance;
     public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
