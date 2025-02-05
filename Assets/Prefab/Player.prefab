@@ -617,13 +617,11 @@ MonoBehaviour:
   lastPos: {x: 0, y: 0}
   bonusBubbles: 0
   MainCamera: {fileID: 0}
-  Body: {fileID: 9219487561320023369}
+  Body: {fileID: 7744505802058954844}
   Wand: {fileID: 5671365401850119370}
   Hat: {fileID: 2507463096150176444}
   Cape: {fileID: 8082472918508703403}
-  Face: {fileID: 5904723820575881631}
   BodyR: {fileID: 2109105119270937474}
-  FaceR: {fileID: 3894163109312308584}
   rb: {fileID: 3216590746651522342}
   lastVelo: {x: 0, y: 0}
   dashTimer: 0
@@ -744,6 +742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4981973282153690138}
   - component: {fileID: 2109105119270937474}
+  - component: {fileID: 7744505802058954844}
   m_Layer: 3
   m_Name: Bubble Bro
   m_TagString: Untagged
@@ -819,3 +818,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7744505802058954844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9219487561320023369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f2fbfeb5803324a9aeb1169108d6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRender: {fileID: 2109105119270937474}
+  velocity: {x: 0, y: 0}
+  Face: {fileID: 5904723820575881631}
+  FaceR: {fileID: 3894163109312308584}
