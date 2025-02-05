@@ -20,9 +20,24 @@ public static class ReflectiveEnumerator
 public abstract class PowerUp
 {
     public static bool PickingPowerUps = false;
-    public static int RandomFromPool()
+    public static int RandomFromPool(float bonusChoiceChance = 0.2f)
     {
-        return UnityEngine.Random.Range(0, 5);
+        return PickRandomPower(0, bonusChoiceChance);
+    }
+    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.2f)
+    {
+        if(Utils.RandFloat() < addedChoiceChance)
+        {
+            return Get<Choice>().MyID;
+        }
+        float recursionModifier = 1.0f + recursionDepth * 0.5f;
+        int type = UnityEngine.Random.Range(0, 6);
+        if (PowerUps[type].Weighting * recursionModifier > Utils.RandFloat(1))
+        {
+            return type;
+        }
+        else
+            return PickRandomPower(recursionDepth + 1, addedChoiceChance + 0.02f);
     }
     public static void TurnOnPowerUpSelectors()
     {
@@ -90,7 +105,7 @@ public abstract class PowerUp
     private static int typeCounter = 0;
     private static int maximumTypes = 0;
     public int Stack;
-    public float Rarity;
+    public float Weighting = 1;
     public int MyID = -1;
     //Returns the MyID of this power
     public int Type => MyID;
@@ -103,7 +118,7 @@ public abstract class PowerUp
     private void Reset()
     {
         Stack = 0;
-        Rarity = 0;
+        Weighting = 1;
         Init();
     }
     public void PickUp()

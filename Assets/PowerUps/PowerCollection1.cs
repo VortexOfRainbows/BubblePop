@@ -51,3 +51,16 @@ public class ShotSpeed : PowerUp
         p.FasterBulletSpeed += Stack;
     }
 }
+public class Starbarbs : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.5f;
+    }
+    public override string Name() => "Starbarbs";
+    public override string Description() => "Enemies killed by stars explode into stars";
+    public override void HeldEffect(Player p)
+    {
+        p.Starbarbs += Stack;
+    }
+}

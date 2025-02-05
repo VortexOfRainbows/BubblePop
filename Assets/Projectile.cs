@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 public class Projectile : MonoBehaviour
 {
@@ -569,6 +568,30 @@ public class Projectile : MonoBehaviour
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.4f, 0.5f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 0, spriteRenderer.color);
             }
             AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], transform.position, 0.7f, 1.1f);
+        }
+    }
+    public void OnHitTarget(Entity target)
+    {
+        if(Type == 4 && target.Life <= 0) //Sparkles
+        {
+            if (Player.Instance.Starbarbs > 0)
+            {
+                Vector2 norm = rb.velocity.normalized;
+                float randRot = norm.ToRotation();
+                for (int i = 0; i < 30; i++)
+                {
+                    Vector2 randPos = new Vector2(3.5f, 0).RotatedBy(i / 15f * Mathf.PI);
+                    randPos.x *= Utils.RandFloat(0.5f, 0.7f);
+                    randPos = randPos.RotatedBy(randRot);
+                    ParticleManager.NewParticle(target.transform.position, Utils.RandFloat(0.95f, 1.05f), -norm * 4.5f + randPos * Utils.RandFloat(4, 5) + Utils.RandCircle(.3f), 0.1f, .6f, 0, spriteRenderer.color);
+                }
+                int stars = 3 + Player.Instance.Starbarbs * 2;
+                for (; stars > 0; --stars)
+                {
+                    Vector2 targetPos = (Vector2)target.transform.position + norm * 9 + Utils.RandCircle(7);
+                    NewProjectile(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 4, targetPos.x, targetPos.y);
+                }
+            }
         }
     }
 }

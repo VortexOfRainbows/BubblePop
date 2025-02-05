@@ -37,7 +37,7 @@ public static class Utils
         return x - Mathf.PI;
     }
     public static Vector2 MouseWorld => Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    public static float RandFloat(float max)
+    public static float RandFloat(float max = 1)
     {
         return UnityEngine.Random.Range(0, max);
     }

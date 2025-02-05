@@ -39,6 +39,7 @@ public class Entity : MonoBehaviour
                 {
                     Life -= proj.Damage;
                     DamageTaken += proj.Damage;
+                    proj.OnHitTarget(this);
                     if (proj.Type == 0 || proj.Type == 4)
                         proj.Kill();
                     if (proj.Type == 3)

@@ -33,6 +33,7 @@ public partial class Player : Entity
     public int ShotgunPower = 0;
     public int DashSparkle = 0;
     public int FasterBulletSpeed = 0;
+    public int Starbarbs = 0;
     private List<int> powers;
     private void PowerInit()
     {
@@ -45,7 +46,7 @@ public partial class Player : Entity
     }
     private void ClearPowerBonuses()
     {
-        DamagePower = ShotgunPower = DashSparkle = FasterBulletSpeed = 0;
+        DamagePower = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = 0;
     }
     private void UpdatePowerUps()
     {

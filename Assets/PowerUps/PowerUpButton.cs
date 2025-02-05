@@ -41,7 +41,7 @@ public class PowerUpButton : MonoBehaviour
         PowerUp.PickingPowerUps = true;
         for (int i = RerollAttempsForSamePowerInPicker; i > 0; --i)
         {
-            SetType(PowerUp.RandomFromPool()); //This needs to happen first, before the button is turned on
+            SetType(PowerUp.RandomFromPool(0.04f)); //This needs to happen first, before the button is turned on
             if (!SameTypeAsOthers())
                 break;
         }
