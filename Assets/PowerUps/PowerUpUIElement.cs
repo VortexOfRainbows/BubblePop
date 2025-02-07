@@ -53,25 +53,8 @@ public class PowerUpUIElement : MonoBehaviour
     {
         Timer += 1;
         Count.text = MyPower.Stack.ToString();
-        bool useRectangularCollision = false;
-        if (useRectangularCollision)
-        {
-            Rect rect = outer.rectTransform.rect;
-            Vector2 diff = outer.rectTransform.position - outer.rectTransform.localPosition;
-            rect = new Rect(rect.x + diff.x, rect.y + diff.y, rect.width, rect.height);
-            if (rect.Contains(Input.mousePosition))
-            {
-                //Debug.Log(rect.ToString() + ": " + Input.mousePosition.ToString());
-                PopUpTextUI.Enable(MyPower.Name(), MyPower.Description());
-            }
-        }
-        else
-        {
-            if((outer.transform.position - Input.mousePosition).magnitude < 62 * UIManager.Instance.MainGameCanvas.scaleFactor)
-            {
-                PopUpTextUI.Enable(MyPower.Name(), MyPower.Description());
-            }
-        }
+        if(Utils.IsMouseHoveringOverThis(false, outer.rectTransform))
+            PopUpTextUI.Enable(MyPower.Name(), MyPower.Description());
     }
     public void FixedUpdate()
     {

@@ -131,7 +131,6 @@ public abstract class PowerUp
         Stack = Stack + count;
         return Stack;
     }
-
     public virtual void Init()
     {
 

@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class Weapon : Equipment
 {
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        offset = new Vector2(-0.7f, -0.7f);
+        rotation = 45f;
+    }
     public float AttackLeft = 0;
     public float AttackRight = 0;
     public Vector3 WandEulerAngles = new Vector3(0, 0, 0);

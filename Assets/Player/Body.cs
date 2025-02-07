@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Body : Equipment
 {
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        scale = 1.2f;
+    }
     public GameObject Face;
     public SpriteRenderer FaceR;
     protected sealed override void AnimationUpdate()

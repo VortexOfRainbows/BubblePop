@@ -29,6 +29,7 @@ public static class EventManager
     }
     public static void Update()
     {
+        return;
         if(RunOnce)
         {
             for (int i = 0; i < 10; i++)

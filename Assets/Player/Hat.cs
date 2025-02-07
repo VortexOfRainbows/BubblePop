@@ -1,6 +1,14 @@
 
+using UnityEngine;
+
 public class Hat : Equipment
 {
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        offset = new Vector2(0.1f, -0.2f);
+        scale = 0.95f;
+        rotation = 15f;
+    }
     protected override void AnimationUpdate()
     {
         //float r = new Vector2(p.Direction, p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.dashTimer / p.dashCD));

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Accessory : Equipment
 {
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        offset = new Vector2(0.05f, 0.9f);
+    }
     protected float MimicHatEulerZ = 0;
     new public void AliveUpdate()
     {

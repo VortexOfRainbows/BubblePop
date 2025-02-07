@@ -49,4 +49,39 @@ public static class Utils
     {
         return UnityEngine.Random.insideUnitCircle * r;
     }
+    public const int AlternativeCameraPosX = 5000;
+    public const int AlternativeCameraPosY = 1000;
+    public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius = 62, Canvas canvas = null)
+    {
+        Vector3 pos = transform.position;
+        float scale = UIManager.Instance.MainGameCanvas.scaleFactor;
+        if (canvas == null)
+            canvas = UIManager.Instance.MainGameCanvas;
+        else
+        {
+            pos.x -= canvas.transform.position.x;
+            pos.y -= canvas.transform.position.y;
+            pos /= canvas.GetComponent<RectTransform>().lossyScale.x;
+            pos *= UIManager.Instance.MainGameCanvas.scaleFactor;
+            pos += UIManager.Instance.MainGameCanvas.transform.position;
+        }
+        if (rectangular)
+        {
+            //Debug.Log(pos);
+            Rect rect = transform.rect;
+            Vector2 diff = pos;// - transform.localPosition;
+            float width = rect.width * scale;
+            float height = rect.height * scale;
+            rect = new Rect(pos.x - width / 2, pos.y - height / 2, width, height);
+            //Debug.Log(rect);
+            if (rect.Contains(Input.mousePosition))
+                return true;
+        }
+        else
+        {
+            if ((pos - Input.mousePosition).magnitude < radius * scale)
+                return true;
+        }
+        return false;
+    }
 }

@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class BubblemancerWand : Weapon
 {
+    public override string Name()
+    {
+        return "Bubble Wand";
+    }
     protected override void AnimationUpdate()
     {
         WandUpdate();
