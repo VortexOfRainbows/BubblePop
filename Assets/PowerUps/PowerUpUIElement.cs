@@ -54,7 +54,13 @@ public class PowerUpUIElement : MonoBehaviour
         Timer += 1;
         Count.text = MyPower.Stack.ToString();
         if(Utils.IsMouseHoveringOverThis(false, outer.rectTransform))
+        {
             PopUpTextUI.Enable(MyPower.Name(), MyPower.Description());
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 1.2f, 0.15f);
+        }
+        else
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.15f);
+
     }
     public void FixedUpdate()
     {
