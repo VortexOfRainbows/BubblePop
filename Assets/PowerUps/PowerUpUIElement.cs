@@ -53,13 +53,15 @@ public class PowerUpUIElement : MonoBehaviour
     {
         Timer += 1;
         Count.text = MyPower.Stack.ToString();
-        if(Utils.IsMouseHoveringOverThis(false, outer.rectTransform))
+        float scale = Mathf.Max(1, transform.localScale.x * transform.localScale.y);
+        if(Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 62 * scale))
         {
             PopUpTextUI.Enable(MyPower.Name(), MyPower.Description());
-            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 1.2f, 0.15f);
+            float scaleUP = InventoryElement ? 1.125f : 1.25f;
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
         }
         else
-            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.15f);
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);
 
     }
     public void FixedUpdate()

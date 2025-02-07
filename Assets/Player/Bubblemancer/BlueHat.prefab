@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8187517550139534184}
   - component: {fileID: 8016481760766100851}
-  - component: {fileID: 6303350027237884496}
+  - component: {fileID: 5355558573942193287}
   m_Layer: 3
   m_Name: BlueHat
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6303350027237884496
+--- !u!114 &5355558573942193287
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4047993882583738873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40e94e7e6af77ab43bf9d100198d7493, type: 3}
+  m_Script: {fileID: 11500000, guid: e80e9ebfc2bf2a84db441ba20f9d5e4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 8016481760766100851}

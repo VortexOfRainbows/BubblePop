@@ -21,8 +21,8 @@ public partial class Player : Entity
     private Camera MainCamera;
     [SerializeField] public Body Body;
     [SerializeField] public Weapon Wand;
-    [SerializeField] protected Hat Hat;
-    [SerializeField] protected Accessory Cape;
+    [SerializeField] public Hat Hat;
+    [SerializeField] public Accessory Cape;
     public SpriteRenderer BodyR;
     public Rigidbody2D rb;
 
