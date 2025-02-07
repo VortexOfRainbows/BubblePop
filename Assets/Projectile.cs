@@ -247,8 +247,9 @@ public class Projectile : MonoBehaviour
     public void SpikeAI()
     {
         if(startPos == Vector2.zero)
-            startPos = (Vector2)transform.position - rb.velocity.normalized; 
-        if (timer < 200 && Data2 != 4 && Data2 != 6)
+            startPos = (Vector2)transform.position - rb.velocity.normalized;
+        float accelerationStop = Data2 == 5 ? 100 : 200;
+        if (timer < accelerationStop && Data2 != 4 && Data2 != 6)
         {
             rb.velocity *= 1.0045f;
         }
