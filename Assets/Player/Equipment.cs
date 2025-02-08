@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour
@@ -18,7 +17,7 @@ public class Equipment : MonoBehaviour
     }
     protected virtual string Name()
     {
-        return this.GetType().HumanName(true);
+        return this.GetType().Name.ToSpacedString();
     }
     protected virtual string Description()
     {

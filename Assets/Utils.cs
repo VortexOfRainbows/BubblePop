@@ -3,6 +3,15 @@ using UnityEngine;
 
 public static class Utils
 {
+    public static string ToSpacedString(this string str)
+    {
+        for(int i = str.Length - 1; i > 0; --i)
+        {
+            if (char.IsUpper(str[i]))
+                str = str.Insert(i, " ");
+        }
+        return str;
+    }
     public const float PixelsPerUnit = 4;
     public static Vector2 RotatedBy(this Vector2 spinningpoint, float radians, Vector2 center = default(Vector2))
     {

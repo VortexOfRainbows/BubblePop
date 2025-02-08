@@ -251,7 +251,7 @@ public class Projectile : MonoBehaviour
         float accelerationStop = Data2 == 5 ? 100 : 200;
         if (timer < accelerationStop && Data2 != 4 && Data2 != 6)
         {
-            rb.velocity *= 1.0045f;
+            rb.velocity *= Data2 == 5 ? 1.004f : 1.0045f;
         }
         rb.rotation += rb.velocity.magnitude * 0.2f * Mathf.Sign(rb.velocity.x) + 0.2f * rb.velocity.x;
         timer++;
