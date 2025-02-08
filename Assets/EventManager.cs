@@ -37,10 +37,10 @@ public static class EventManager
             }
             RunOnce = false;
         }
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-            Point += 100;
-        }
+        //if(Input.GetKeyDown(KeyCode.T))
+        //{
+        //    Point += 100;
+        //}
         PointTimer += Time.deltaTime;
         if (Player.Instance.DeathKillTimer > 0)
         {

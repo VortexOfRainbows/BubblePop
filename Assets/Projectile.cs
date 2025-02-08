@@ -359,8 +359,8 @@ public class Projectile : MonoBehaviour
         timer++;
         if(timer < 300)
         {
-            rb.velocity += rb.velocity.normalized * 0.006f;
-            rb.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.075f;
+            rb.velocity += rb.velocity.normalized * 0.005f;
+            rb.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.07f;
         }
         if (timer > 610)
         {
