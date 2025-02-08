@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class BubblemancerCape : Accessory
 {
+    protected override string Description()
+    {
+        return "A stylish robe fashioned with wool from the flock";
+    }
     public GameObject CapeB;
     public GameObject CapeL;
     public GameObject CapeR;

@@ -3,15 +3,24 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
+    public virtual UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
     public virtual void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
     {
 
     }
-    public virtual string Name()
+    public string GetName()
+    {
+        return UnlockCondition.IsUnlocked ? Name() : "???";
+    }
+    public string GetDescription()
+    {
+        return UnlockCondition.IsUnlocked ? Description() : UnlockCondition.LockedText();
+    }
+    protected virtual string Name()
     {
         return this.GetType().HumanName(true);
     }
-    public virtual string Description()
+    protected virtual string Description()
     {
         return "Temporary Equipment Description";
     }

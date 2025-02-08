@@ -16,6 +16,7 @@ public class CharacterSelect : MonoBehaviour
     private Canvas myCanvas;
     public EquipmentUIElement[] UIElems;
     private List<EquipmentUIElement> TempSlots = new();
+    private int prevPressedButton = -1;
     public void Start()
     {
         Equipments[0] = Hats;
@@ -34,20 +35,27 @@ public class CharacterSelect : MonoBehaviour
             if(wasPressed && !hasClickedAButtonAlready)
             {
                 hasClickedAButtonAlready = true;
+                bool justClosed = false;
                 if (TempSlots.Count > 0)
+                {
+                    justClosed = true;
                     CloseNewBoxes();
-                else
-                    for(int j = 0; j < Equipments[i].Length; j++)
+                }
+                if(!justClosed || i != prevPressedButton)
+                {
+                    for (int j = 0; j < Equipments[i].Length; j++)
                     {
                         AddNewBox(UIElems[i], j);
                     }
+                }
+                prevPressedButton = i;
             }
         }
         for(int i = 0; i < TempSlots.Count; i++)
         {
             int slot = TempSlots[i].ParentEquipSlot;
             bool wasPressed = TempSlots[i].UpdateActive(myCanvas);
-            if(wasPressed && !hasClickedAButtonAlready)
+            if(wasPressed && !hasClickedAButtonAlready && TempSlots[i].Unlocked)
             {
                 hasClickedAButtonAlready = true;
                 UIElems[slot].ActiveEquipmentIndex = TempSlots[i].ActiveEquipmentIndex;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 public static class ReflectiveEnumerator
 {
@@ -19,46 +20,9 @@ public static class ReflectiveEnumerator
 }
 public abstract class PowerUp
 {
-    public static bool PickingPowerUps = false;
-    public static int RandomFromPool(float bonusChoiceChance = 0.2f)
-    {
-        return PickRandomPower(0, bonusChoiceChance);
-    }
-    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.2f)
-    {
-        if(Utils.RandFloat() < addedChoiceChance)
-        {
-            return Get<Choice>().MyID;
-        }
-        float recursionModifier = 1.0f + recursionDepth * 0.5f;
-        int type = UnityEngine.Random.Range(0, 6);
-        if (PowerUps[type].Weighting * recursionModifier > Utils.RandFloat(1))
-        {
-            return type;
-        }
-        else
-            return PickRandomPower(recursionDepth + 1, addedChoiceChance + 0.02f);
-    }
-    public static void TurnOnPowerUpSelectors()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            if(!PowerUpButton.buttons[i].Active)
-            {
-                PowerUpButton.buttons[i].TurnOn();
-            }
-        }
-    }
-    public static void TurnOffPowerUpSelectors()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            if (PowerUpButton.buttons[i].Active)
-            {
-                PowerUpButton.buttons[i].TurnOff();
-            }
-        }
-    }
+    #region Powerup Datastructure Related Stuff
+    private static int typeCounter = 0;
+    private static int maximumTypes = 0;
     public static GameObject Spawn<T>(Vector2 pos, int pointCost = 100) where T : PowerUp => Spawn(typeof(T).Name, pos, pointCost);
     public static GameObject Spawn(string powerTypeName, Vector2 pos, int pointCost = 100) => Spawn(Reverses[powerTypeName], pos, pointCost);
     public static GameObject Spawn(int powerUpID, Vector2 pos, int pointCost = 100)
@@ -68,7 +32,12 @@ public abstract class PowerUp
         EventManager.PointsSpent += 100;
         return obj.gameObject;
     }
-    public static PowerUp Get(string powerTypeName) => Get(Reverses[powerTypeName]);
+    public static PowerUp Get(string powerTypeName)
+    {
+        if (Reverses == null)
+            InitDict();
+        return Get(Reverses[powerTypeName]);
+    }
     public static PowerUp Get<T>() where T : PowerUp => Get(typeof(T).Name);
     public static PowerUp Get(int powerUpID)
     {
@@ -96,17 +65,57 @@ public abstract class PowerUp
         maximumTypes++;
     }
     protected static Dictionary<int, PowerUp> PowerUps;
+    public static Dictionary<string, int> Reverses;
     protected static void InitDict()
     {
+        Reverses = new();
         PowerUps = new Dictionary<int, PowerUp>();
         ReflectiveEnumerator.AssembleInstances<PowerUp>();
     }
-    public static Dictionary<string, int> Reverses = new Dictionary<string, int>();
-    private static int typeCounter = 0;
-    private static int maximumTypes = 0;
+    public int MyID = -1;
+    #endregion
+    public static bool PickingPowerUps = false;
+    public static int RandomFromPool(float bonusChoiceChance = 0.2f)
+    {
+        return PickRandomPower(0, bonusChoiceChance);
+    }
+    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.2f)
+    {
+        if (Utils.RandFloat() < addedChoiceChance)
+        {
+            return Get<Choice>().MyID;
+        }
+        float recursionModifier = 1.0f + recursionDepth * 0.5f;
+        int type = UnityEngine.Random.Range(0, 6);
+        if (PowerUps[type].Weighting * recursionModifier > Utils.RandFloat(1))
+        {
+            return type;
+        }
+        else
+            return PickRandomPower(recursionDepth + 1, addedChoiceChance + 0.02f);
+    }
+    public static void TurnOnPowerUpSelectors()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (!PowerUpButton.buttons[i].Active)
+            {
+                PowerUpButton.buttons[i].TurnOn();
+            }
+        }
+    }
+    public static void TurnOffPowerUpSelectors()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (PowerUpButton.buttons[i].Active)
+            {
+                PowerUpButton.buttons[i].TurnOff();
+            }
+        }
+    }
     public int Stack;
     public float Weighting = 1;
-    public int MyID = -1;
     //Returns the MyID of this power
     public int Type => MyID;
     protected PowerUp()

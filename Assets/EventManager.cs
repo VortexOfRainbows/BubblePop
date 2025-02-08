@@ -29,7 +29,6 @@ public static class EventManager
     }
     public static void Update()
     {
-        return;
         if(RunOnce)
         {
             for (int i = 0; i < 10; i++)
@@ -38,10 +37,10 @@ public static class EventManager
             }
             RunOnce = false;
         }
-        //if(Input.GetKeyDown(KeyCode.T))
-        //{
-        //    Point += 100;
-        //}
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            Point += 100;
+        }
         PointTimer += Time.deltaTime;
         if (Player.Instance.DeathKillTimer > 0)
         {

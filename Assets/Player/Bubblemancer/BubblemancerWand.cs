@@ -1,10 +1,15 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BubblemancerWand : Weapon
 {
-    public override string Name()
+    protected override string Name()
     {
         return "Bubble Wand";
+    }
+    protected override string Description()
+    {
+        return "A magical bubble-blowing wand given to The Bubblemancer by a suspicious scientist";
     }
     protected override void AnimationUpdate()
     {
