@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PopUpTextUI : MonoBehaviour
 {
@@ -24,19 +25,20 @@ public class PopUpTextUI : MonoBehaviour
     {
         if (myRect == null)
             myRect = GetComponent<RectTransform>();
+        RectTransform visualRect = Visual.GetComponent<RectTransform>();
+        visualRect.sizeDelta = new Vector2(myRect.sizeDelta.x, Description.renderedHeight + Name.renderedHeight + 20);
         Instance = this;
-        transform.position = Input.mousePosition + new Vector3(50, -50);
+        transform.position = Input.mousePosition + new Vector3(40, -40);
         //Instance.gameObject.SetActive(false);
         if(--enabledDuration < 0)
         {
             Visual.SetActive(false);
         }
 
-        float width = Screen.width - myRect.rect.width * MainGameCanvas.scaleFactor;
-        float height = myRect.rect.height * MainGameCanvas.scaleFactor;
+        float width = Screen.width - visualRect.rect.width * MainGameCanvas.scaleFactor;
+        float height = visualRect.rect.height * MainGameCanvas.scaleFactor;
         //Clamp so it won't leave the boundaries of the screen
         //Debug.Log($"{transform.position}, {width}, {height}");
-        transform.position = new Vector2(Mathf.Clamp(transform.position.x, 0, width), Mathf.Clamp(transform.position.y, height, 10000));
-
+        transform.position = new Vector2(Mathf.Clamp(transform.position.x, 0, width), Mathf.Clamp(transform.position.y, height, 10000) + myRect.rect.height / 4);
     }
 }

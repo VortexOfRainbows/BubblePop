@@ -7,6 +7,15 @@ public class BlueblemancerHat : BubblemancerHat
     public override UnlockCondition UnlockCondition => UnlockCondition.Get<ScoreUnlock2000>();
     protected override string Description()
     {
-        return "A suspiciously blue variation of Bubblemancer's classic hat\nNobody knows where it came from...";
+        return "A suspiciously blue variation of Bubblemancer's classic hat\n" +
+            "Nobody knows where it came from...\n" +
+            "\n" +
+            "Start with 100 points and 2 shotgun power ups";
+    }
+    public override void OnStartWith()
+    {
+        EventManager.Point += 100;
+        PowerUp.Spawn<Shotgun>(Player.Position, 100);
+        PowerUp.Spawn<Shotgun>(Player.Position, 0);
     }
 }

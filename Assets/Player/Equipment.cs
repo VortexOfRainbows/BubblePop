@@ -43,4 +43,8 @@ public class Equipment : MonoBehaviour
     {
 
     }
+    public virtual void OnStartWith()
+    {
+
+    }
 }

@@ -15,21 +15,19 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject gameOverScreen;
     public static bool gamePaused = false;
-    private static bool tutorialSeen = false;
+    public static bool StartingScreen = false;
 
     public static int highscore;
     public static int score;
 
+    [SerializeField]
+    private GameObject pauseButton;
     [SerializeField]
     private TMPro.TextMeshProUGUI scoreText;
     [SerializeField]
     private TMPro.TextMeshProUGUI highscoreText;
     [SerializeField]
     private TMPro.TextMeshProUGUI deadHighscoreText;
-    [SerializeField]
-    private TMPro.TextMeshProUGUI ShotgunPowerUp;
-    [SerializeField]
-    private TMPro.TextMeshProUGUI DamagePowerUp;
 
     // Start is called before the first frame update
     void Start()
@@ -37,12 +35,10 @@ public class UIManager : MonoBehaviour
         Instance = this;
         score = 0;
         highscore = PlayerPrefs.GetInt("Highscore", 0);
-
-        if(tutorialSeen == false)
-        {
-            tutorial.SetActive(true);
-            Time.timeScale = 0f;
-        }
+        tutorial.SetActive(true);
+        pauseButton.SetActive(false);
+        StartingScreen = true;
+        Time.timeScale = 0f;
     }
 
     // Update is called once per frame
@@ -57,7 +53,6 @@ public class UIManager : MonoBehaviour
             else
                 Pause();
         }
-        
 
         //DamagePowerUp.text = Player.Instance.DamagePower.ToString();
         //ShotgunPowerUp.text = Player.Instance.ShotgunPower.ToString();
@@ -83,7 +78,8 @@ public class UIManager : MonoBehaviour
     {
         tutorial.SetActive(false);
         Time.timeScale = 1f;
-        tutorialSeen = true;
+        StartingScreen = false;
+        pauseButton.SetActive(true);
     }
 
     public void Resume()

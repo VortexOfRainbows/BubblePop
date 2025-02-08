@@ -6,7 +6,7 @@ public class BubblemancerCape : Accessory
 {
     protected override string Description()
     {
-        return "A stylish robe fashioned with wool from the flock";
+        return "A stylish robe fashioned with wool from his precious sheep";
     }
     public GameObject CapeB;
     public GameObject CapeL;

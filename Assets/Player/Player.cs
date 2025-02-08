@@ -34,6 +34,7 @@ public partial class Player : Entity
     public Vector2 lastVelo;
     public float SquashAmt { get; private set; } = 0.45f;
     public float Bobbing { get; private set; }
+    private bool HasRunStartingGear = false;
     void Start()
     {
         PowerInit();
@@ -44,6 +45,7 @@ public partial class Player : Entity
         DamagePower = 0;
         ShotgunPower = 0;
         DeathKillTimer = 0;
+        HasRunStartingGear = false;
     }
     public float dashCD { get; private set; } = 0.5f;
     public float dashTimer = 0;
@@ -126,6 +128,14 @@ public partial class Player : Entity
     }
     private void FixedUpdate()
     {
+        if(!HasRunStartingGear && !UIManager.StartingScreen)
+        {
+            Hat.OnStartWith();
+            Cape.OnStartWith();
+            Wand.OnStartWith();
+            Body.OnStartWith();
+            HasRunStartingGear = true;
+        }
         Instance = this;
         EventManager.Update();
         if (DeathKillTimer > 0)

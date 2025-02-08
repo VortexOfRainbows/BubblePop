@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CharacterSelect : MonoBehaviour
 {
     public EquipmentUIElement EquipmentUISlotPrefab;
+    public GameObject visual;
     public const int UILayer = 5;
     public GameObject[][] Equipments = new GameObject[4][];
     public GameObject[] Hats;
@@ -28,6 +29,13 @@ public class CharacterSelect : MonoBehaviour
     }
     public void Update()
     {
+        if (UIManager.StartingScreen)
+            visual.SetActive(true);
+        else
+        {
+            visual.SetActive(false);
+            return;
+        }
         bool hasClickedAButtonAlready = false;
         for (int i = 0; i < 4; i++)
         {
@@ -96,7 +104,7 @@ public class CharacterSelect : MonoBehaviour
     }
     public void AddNewBox(EquipmentUIElement parent, int index)
     {
-        EquipmentUIElement ui = Instantiate(EquipmentUISlotPrefab, transform);
+        EquipmentUIElement ui = Instantiate(EquipmentUISlotPrefab, visual.transform);
         ui.transform.localPosition = parent.transform.localPosition + new Vector3(180 * TempSlots.Count, -210);
         ui.ParentEquipSlot = parent.ParentEquipSlot;
         ui.ActiveEquipmentIndex = index;

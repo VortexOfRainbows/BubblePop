@@ -4,7 +4,7 @@ public class BubblemancerHat : Hat
 {
     protected override string Description()
     {
-        return "A stylish hat fashioned with wool from the flock";
+        return "A stylish hat fashioned with wool from his precious sheep";
     }
     protected override void AnimationUpdate()
     {
