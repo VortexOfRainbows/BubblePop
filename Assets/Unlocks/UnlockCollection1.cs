@@ -17,5 +17,14 @@ public class ScoreUnlock2000 : UnlockCondition
     {
         return "Reach a Bubble Best of 2000 to unlock";
     }
-    public override bool IsUnlocked => UIManager.highscore > 2000;
+    public override bool IsUnlocked => UIManager.highscore >= 2000;
+}
+
+public class ScoreUnlock5000 : UnlockCondition
+{
+    public override string LockedText()
+    {
+        return "Reach a Bubble Best of 5000 to unlock";
+    }
+    public override bool IsUnlocked => UIManager.highscore >= 5000;
 }
