@@ -24,7 +24,12 @@ public abstract class PowerUp
     private static int typeCounter = 0;
     private static int maximumTypes = 0;
     public static GameObject Spawn<T>(Vector2 pos, int pointCost = 100) where T : PowerUp => Spawn(typeof(T).Name, pos, pointCost);
-    public static GameObject Spawn(string powerTypeName, Vector2 pos, int pointCost = 100) => Spawn(Reverses[powerTypeName], pos, pointCost);
+    public static GameObject Spawn(string powerTypeName, Vector2 pos, int pointCost = 100)
+    {
+        if (Reverses == null)
+            InitDict();
+        return Spawn(Reverses[powerTypeName], pos, pointCost);
+    }
     public static GameObject Spawn(int powerUpID, Vector2 pos, int pointCost = 100)
     {
         PowerUpObject obj = GameObject.Instantiate(PowerDefinitions.PowerUpObj, pos, Quaternion.identity);

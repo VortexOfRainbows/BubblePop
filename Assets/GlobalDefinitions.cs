@@ -2,11 +2,28 @@ using UnityEngine;
 
 public class GlobalDefinitions : MonoBehaviour
 {
-    void Start()
+    public void OnGameOpen()
+    {
+        //PlayerPrefs.DeleteAll();
+        UnlockCondition.LoadAllData();
+    }
+    public void OnGameClose()
+    {
+        UnlockCondition.SaveAllData();
+    }
+    public void Awake()
+    {
+        OnGameOpen();
+    }
+    public void OnDestroy()
+    {
+        OnGameClose();
+    }
+    public void Start()
     {
         Instance = this;
     }
-    void Update() => Instance = this;
+    public void Update() => Instance = this;
     public static GlobalDefinitions Instance;
     public static GameObject Projectile => Instance.DefaultProjectile;
     public GameObject DefaultProjectile;

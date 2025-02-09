@@ -62,6 +62,8 @@ public class Starbarbs : PowerUp
     public override void HeldEffect(Player p)
     {
         p.Starbarbs += Stack;
+        if (Stack > StarbarbUnlock5.StarbarbBestCount)
+            StarbarbUnlock5.StarbarbBestCount = Stack;
     }
 }
 public class SoapySoap : PowerUp

@@ -348,6 +348,8 @@ public class Projectile : MonoBehaviour
             {
                 int count = 1 + (int)Data2 + Player.Instance.SoapySoap * 2;
                 int interval = 120 / count;
+                if (interval <= 0)
+                    interval = 1;
                 if(timer % interval == 0)
                 {
                     Projectile.NewProjectile(transform.position, Utils.RandCircle(2) - rb.velocity.normalized * Utils.RandFloat(0, 3f), 0, 0, 0);

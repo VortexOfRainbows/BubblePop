@@ -35,6 +35,8 @@ public partial class Player : Entity
     public float SquashAmt { get; private set; } = 0.45f;
     public float Bobbing { get; private set; }
     private bool HasRunStartingGear = false;
+    public const float DashDefault = 25f;
+    public float DashMult = 1f;
     void Start()
     {
         PowerInit();
@@ -45,6 +47,7 @@ public partial class Player : Entity
         DamagePower = 0;
         ShotgunPower = 0;
         DeathKillTimer = 0;
+        DashMult = 1;
         HasRunStartingGear = false;
     }
     public float dashCD { get; private set; } = 0.5f;
@@ -185,8 +188,9 @@ public partial class Player : Entity
     }
     public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
     {
-        dashTimer = dashCD;
-        velocity = velocity * MaxSpeed + moveSpeed * speed * 25f;
+        float speed = DashDefault * DashMult;
+        dashTimer = dashCD * DashMult;
+        velocity = velocity * MaxSpeed + moveSpeed * speed;
         squash = SquashAmt;
         Body.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
         AudioManager.PlaySound(GlobalDefinitions.audioClips[12], Wand.transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));

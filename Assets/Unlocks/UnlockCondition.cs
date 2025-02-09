@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,32 @@ using UnityEngine.U2D;
 
 public abstract class UnlockCondition
 {
+    public static void SaveInt(string tag, int value)
+    {
+        PlayerPrefs.SetInt(tag, value);
+    }
+    public static int LoadInt(string tag)
+    {
+        return PlayerPrefs.GetInt(tag);
+    }
+    public static void SaveAllData()
+    {
+        if (Unlocks == null)
+            InitDict();
+        for (int i = 0; i < maximumTypes; ++i)
+        {
+            Unlocks[i].SaveData();
+        }
+    }
+    public static void LoadAllData()
+    {
+        if (Unlocks == null)
+            InitDict();
+        for (int i = 0; i < maximumTypes; ++i)
+        {
+            Unlocks[i].LoadData();
+        }
+    }
     #region UnlockCondition Datastructure Related Stuff
     private static int typeCounter = 0;
     private static int maximumTypes = 0;
@@ -49,11 +76,11 @@ public abstract class UnlockCondition
     }
     public virtual void SaveData()
     {
-        throw new System.Exception("Saving data for unlocks not yet implemented");
+
     }
     public virtual void LoadData()
     {
-        throw new System.Exception("Saving data for unlocks not yet implemented");
+
     }
     public virtual bool IsUnlocked => false;
     public virtual string LockedText()

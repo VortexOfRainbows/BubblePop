@@ -15,7 +15,8 @@ public class ScoreUnlock2000 : UnlockCondition
 {
     public override string LockedText()
     {
-        return "Reach a Bubble Best of 2000 to unlock";
+        return "Reach a Bubble Best of 2000 to unlock\n" +
+            $"Current best: {UIManager.highscore}";
     }
     public override bool IsUnlocked => UIManager.highscore >= 2000;
 }
@@ -24,7 +25,27 @@ public class ScoreUnlock5000 : UnlockCondition
 {
     public override string LockedText()
     {
-        return "Reach a Bubble Best of 5000 to unlock";
+        return "Reach a Bubble Best of 5000 to unlock\n" +
+            $"Current best: {UIManager.highscore}";
     }
     public override bool IsUnlocked => UIManager.highscore >= 5000;
+}
+
+public class StarbarbUnlock5 : UnlockCondition
+{
+    public static int StarbarbBestCount = 0;
+    public override void SaveData()
+    {
+        SaveInt("StarbarbBest", StarbarbBestCount);
+    }
+    public override void LoadData()
+    {
+        StarbarbBestCount = LoadInt("StarbarbBest");
+    }
+    public override string LockedText()
+    {
+        return $"Possess 5 starbarb power ups in a single run to unlock\n" +
+            $"Current best: {StarbarbBestCount}";
+    }
+    public override bool IsUnlocked => StarbarbBestCount >= 5;
 }
