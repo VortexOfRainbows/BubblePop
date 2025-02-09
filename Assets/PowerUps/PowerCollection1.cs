@@ -55,12 +55,25 @@ public class Starbarbs : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.5f;
+        Weighting = 0.25f;
     }
     public override string Name() => "Starbarbs";
     public override string Description() => "Enemies killed by stars explode into stars";
     public override void HeldEffect(Player p)
     {
         p.Starbarbs += Stack;
+    }
+}
+public class SoapySoap : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.25f;
+    }
+    public override string Name() => "Soapy Soap";
+    public override string Description() => "Charge attacks leave behind a trail of bubbles";
+    public override void HeldEffect(Player p)
+    {
+        p.SoapySoap += Stack;
     }
 }

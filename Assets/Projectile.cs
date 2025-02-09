@@ -318,6 +318,7 @@ public class Projectile : MonoBehaviour
             rb.velocity *= 0.8f;
             rb.velocity += Player.Instance.rb.velocity * 0.1f;
             Damage = (1 + target) * (2 + Player.Instance.DamagePower);
+            Data2 = target;
             //rb.rotation = toMouse.ToRotation() * Mathf.Rad2Deg;
         }
         else if(timer <= 0)
@@ -343,6 +344,15 @@ public class Projectile : MonoBehaviour
             Friendly = true;
             rb.velocity *= 1 - 0.007f / (2 + Player.Instance.FasterBulletSpeed) - timer / 4000f;
             timer++;
+            if(Player.Instance.SoapySoap > 0 && timer <= 120)
+            {
+                int count = 1 + (int)Data2 + Player.Instance.SoapySoap * 2;
+                int interval = 120 / count;
+                if(timer % interval == 0)
+                {
+                    Projectile.NewProjectile(transform.position, Utils.RandCircle(2) - rb.velocity.normalized * Utils.RandFloat(0, 3f), 0, 0, 0);
+                }
+            }
             if (timer > 160)
             {
                 float alphaOut = 1 - (timer - 160) / 20f;
