@@ -21,7 +21,7 @@ public class ChargeShot : PowerUp
     public override string Description() => "Increases the size and damage of your charge attacks";
     public override void HeldEffect(Player p)
     {
-        p.DamagePower += Stack;
+        p.ChargeShotDamage += Stack;
     }
 }
 public class Shotgun : PowerUp
@@ -77,5 +77,18 @@ public class SoapySoap : PowerUp
     public override void HeldEffect(Player p)
     {
         p.SoapySoap += Stack;
+    }
+}
+public class BubbleBlast : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.75f;
+    }
+    public override string Name() => "Bubble Blast";
+    public override string Description() => "Charge attacks release bubbles upon expiring";
+    public override void HeldEffect(Player p)
+    {
+        p.BubbleBlast += Stack;
     }
 }

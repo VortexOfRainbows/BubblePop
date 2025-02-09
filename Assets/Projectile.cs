@@ -299,7 +299,7 @@ public class Projectile : MonoBehaviour
         {
             int target = (int)(attackRight - 50) / 100;
             float targetSize = target * 0.7f + 0.8f + attackRight / 240f;
-            targetSize *= 1f + Mathf.Sqrt(Player.Instance.DamagePower) * 0.4f;
+            targetSize *= 1f + Mathf.Sqrt(Player.Instance.ChargeShotDamage) * 0.4f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
             timer = -attackRight;
             Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
@@ -317,7 +317,7 @@ public class Projectile : MonoBehaviour
             transform.position = Vector2.Lerp(transform.position,(Vector2)Player.Instance.Wand.transform.position + awayFromWand, 0.15f);
             rb.velocity *= 0.8f;
             rb.velocity += Player.Instance.rb.velocity * 0.1f;
-            Damage = (1 + target) * (2 + Player.Instance.DamagePower);
+            Damage = (1 + target) * (2 + Player.Instance.ChargeShotDamage);
             Data2 = target;
             //rb.rotation = toMouse.ToRotation() * Mathf.Rad2Deg;
         }
@@ -554,13 +554,17 @@ public class Projectile : MonoBehaviour
         if (Type == 3)
         {
             AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], transform.position, 0.8f, 0.9f);
-            float amt = 1 + 4 * (Damage / 8f);
-            for (int i = 0; i < amt; i++)
-                Projectile.NewProjectile(transform.position, new Vector2(Utils.RandFloat(2, 4), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 0, 0, 0);
-            for (int i = 0; i < 20; i++)
+            if(Player.Instance.BubbleBlast > 0)
             {
-                Vector2 circular = new Vector2(.5f + transform.localScale.x * 0.4f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(4, 7), 3f, Utils.RandFloat(0.3f, 0.5f), 0, spriteRenderer.color);
+                float amt = 1 + (3 + Data2) * Player.Instance.BubbleBlast;
+                float speed = 3.5f + (Data2 * 1.25f + Player.Instance.FasterBulletSpeed * 1.75f + Player.Instance.ChargeShotDamage * 0.75f);
+                for (int i = 0; i < amt; i++)
+                    Projectile.NewProjectile(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 0, 0, 0);
+            }
+            for (int i = 0; i < 30; i++)
+            {
+                Vector2 circular = new Vector2(.6f + transform.localScale.x * 0.4f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(4, 7), 3f, Utils.RandFloat(0.3f, 0.5f), 0, ParticleManager.DefaultColor);
             }
         }
         if (Type == 5)

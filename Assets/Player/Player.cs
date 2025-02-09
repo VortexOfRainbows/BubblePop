@@ -44,7 +44,7 @@ public partial class Player : Entity
         MainCamera.orthographicSize = 12;
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
-        DamagePower = 0;
+        ChargeShotDamage = 0;
         ShotgunPower = 0;
         DeathKillTimer = 0;
         DashMult = 1;

@@ -30,12 +30,13 @@ public partial class Player : Entity
                 powers.RemoveAt(index);
         }
     }
-    public int DamagePower = 0;
+    public int ChargeShotDamage = 0;
     public int ShotgunPower = 0;
     public int DashSparkle = 0;
     public int FasterBulletSpeed = 0;
     public int Starbarbs = 0;
     public int SoapySoap = 0;
+    public int BubbleBlast = 0;
     private List<int> powers;
     private void PowerInit()
     {
@@ -48,7 +49,7 @@ public partial class Player : Entity
     }
     private void ClearPowerBonuses()
     {
-        DamagePower = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = 0;
+        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = 0;
     }
     private void UpdatePowerUps()
     {
