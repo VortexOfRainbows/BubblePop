@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlueblemancerHat : BubblemancerHat
 {
-    public override UnlockCondition UnlockCondition => UnlockCondition.Get<ScoreUnlock2000>();
+    public override UnlockCondition UnlockCondition => UnlockCondition.Get<ScoreUnlock1000>();
     protected override string Description()
     {
         return "A suspiciously blue variation of Bubblemancer's classic hat\n" +

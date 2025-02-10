@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class BubbleStaff : BubblemancerWand
 {
-    public override UnlockCondition UnlockCondition => UnlockCondition.Get<ScoreUnlock5000>();
+    public override UnlockCondition UnlockCondition => UnlockCondition.Get<ScoreUnlock3000>();
+    protected override void ModifyPowerPool(List<PowerUp> powerPool)
+    {
+        base.ModifyPowerPool(powerPool);
+        powerPool.Remove<Shotgun>();
+        powerPool.Remove<Starshot>();
+        powerPool.Add<BubbleBlast>();
+        powerPool.Add<SoapySoap>();
+    }
     protected override string Name()
     {
         return "Bubble Staff";

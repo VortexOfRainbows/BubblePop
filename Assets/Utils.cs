@@ -9,6 +9,11 @@ public static class Utils
         list.Add(PowerUp.Get<T>());
         return list;
     }
+    public static List<PowerUp> Remove<T>(this List<PowerUp> list) where T : PowerUp
+    {
+        list.Remove(PowerUp.Get<T>());
+        return list;
+    }
     public static string ToSpacedString(this string str)
     {
         for(int i = str.Length - 1; i > 0; --i)

@@ -108,7 +108,7 @@ public class CharacterSelect : MonoBehaviour
     public void AddNewBox(EquipmentUIElement parent, int index)
     {
         EquipmentUIElement ui = Instantiate(EquipmentUISlotPrefab, visual.transform);
-        ui.transform.localPosition = parent.transform.localPosition + new Vector3(180 * TempSlots.Count, -210);
+        ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * TempSlots.Count, 0);
         ui.ParentEquipSlot = parent.ParentEquipSlot;
         ui.ActiveEquipmentIndex = index;
         ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
@@ -151,17 +151,22 @@ public class CharacterSelect : MonoBehaviour
     }
     public void RenderPowerUpIcons()
     {
-        Equipment.ModifyPowerPoolAll();
-        for (int i = 0; i < PowerUp.AvailablePowers.Count; ++i)
+        foreach (PowerUpUIElement pUI in AvailablePowersUI) 
         {
-            PowerUp p = PowerUp.AvailablePowers[i];
-            AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, p.Type);
+            Destroy(pUI.gameObject);
+        }
+        AvailablePowersUI.Clear();
+        Equipment.ModifyPowerPoolAll();
+        PowerUp.SortAvailablePowers();
+        for(int i = 0; i < PowerUp.AvailablePowers.Count; ++i)
+        {
+            AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, PowerUp.AvailablePowers[i]);
         }
     }
     public PowerUpUIElement AddNewPower(GameObject prefab, GameObject parent, int index)
     {
-        PowerUpUIElement obj = Instantiate(prefab.GetComponent<PowerUpUIElement>(), parent.transform);
-        obj.transform.localPosition = parent.transform.localPosition + new Vector3(150 * AvailablePowersUI.Count, -400);
+        PowerUpUIElement obj = Instantiate(prefab.GetComponent<PowerUpUIElement>(), visual.transform);
+        obj.transform.localPosition = UIElems[3].transform.localPosition + new Vector3(160 + 150 * AvailablePowersUI.Count, -70);
         obj.Index = index;
         obj.InventoryElement = false;
         obj.TurnedOn();
