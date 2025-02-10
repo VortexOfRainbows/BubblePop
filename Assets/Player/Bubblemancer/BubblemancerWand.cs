@@ -1,8 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-
 public class BubblemancerWand : Weapon
 {
+    protected override void ModifyPowerPool(List<PowerUp> powerPool)
+    {
+        powerPool.Add<Shotgun>();
+        powerPool.Add<ChargeShot>();
+        powerPool.Add<BubbleBlast>();
+        powerPool.Add<SoapySoap>();
+        powerPool.Add<ShotSpeed>();
+        powerPool.Add<Starshot>();
+    }
     protected override string Name()
     {
         return "Bubble Wand";

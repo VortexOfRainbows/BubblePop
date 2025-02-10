@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CharacterSelect : MonoBehaviour
 {
     public EquipmentUIElement EquipmentUISlotPrefab;
+    public PowerUpUIElement PowerUpUISlotPrefab;
     public GameObject visual;
     public const int UILayer = 5;
     public GameObject[][] Equipments = new GameObject[4][];
@@ -17,6 +18,7 @@ public class CharacterSelect : MonoBehaviour
     private Canvas myCanvas;
     public EquipmentUIElement[] UIElems;
     private List<EquipmentUIElement> TempSlots = new();
+    private List<PowerUpUIElement> AvailablePowersUI = new();
     private int prevPressedButton = -1;
     public void Start()
     {
@@ -99,7 +101,8 @@ public class CharacterSelect : MonoBehaviour
             if (i == 2)            
                 Player.Instance.Wand = equip as Weapon; 
             if (i == 3)          
-                Player.Instance.Body = equip as Body; 
+                Player.Instance.Body = equip as Body;
+            RenderPowerUpIcons();
         }
     }
     public void AddNewBox(EquipmentUIElement parent, int index)
@@ -144,6 +147,25 @@ public class CharacterSelect : MonoBehaviour
         {
             t.gameObject.layer = UILayer;
         }
+        return obj;
+    }
+    public void RenderPowerUpIcons()
+    {
+        Equipment.ModifyPowerPoolAll();
+        for (int i = 0; i < PowerUp.AvailablePowers.Count; ++i)
+        {
+            PowerUp p = PowerUp.AvailablePowers[i];
+            AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, p.Type);
+        }
+    }
+    public PowerUpUIElement AddNewPower(GameObject prefab, GameObject parent, int index)
+    {
+        PowerUpUIElement obj = Instantiate(prefab.GetComponent<PowerUpUIElement>(), parent.transform);
+        obj.transform.localPosition = parent.transform.localPosition + new Vector3(150 * AvailablePowersUI.Count, -400);
+        obj.Index = index;
+        obj.InventoryElement = false;
+        obj.TurnedOn();
+        AvailablePowersUI.Add(obj);
         return obj;
     }
 }

@@ -1,9 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BubblemancerCape : Accessory
 {
+    protected override void ModifyPowerPool(List<PowerUp> powerPool)
+    {
+        powerPool.Add<Dash>();
+    }
     protected override string Description()
     {
         return "A stylish robe fashioned with wool from his precious sheep";

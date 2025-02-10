@@ -20,6 +20,15 @@ public static class ReflectiveEnumerator
 }
 public abstract class PowerUp
 {
+    public static SortedList<int, PowerUp> AvailablePowers = new();
+    public static void ResetPowerAvailability()
+    {
+        AvailablePowers.Clear();
+    }
+    public static void AddPowerUpToAvailability(PowerUp power)
+    {
+        AvailablePowers.Add(power.Type, power);
+    }
     #region Powerup Datastructure Related Stuff
     private static int typeCounter = 0;
     private static int maximumTypes = 0;

@@ -191,6 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EquipmentUISlotPrefab: {fileID: 827946258357719481, guid: 8b6a7577c1446004b8a72cbbc03174c7, type: 3}
+  PowerUpUISlotPrefab: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
   visual: {fileID: 8072074900162673644}
   Hats:
   - {fileID: 4047993882583738873, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
@@ -393,7 +394,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -490}
+  m_AnchoredPosition: {x: 0, y: -489.99994}
   m_SizeDelta: {x: 800, y: 420}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &5240151025368906697

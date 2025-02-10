@@ -1,7 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
+    private static List<PowerUp> PowerPool = new();
+    public static void ModifyPowerPoolAll()
+    {
+        PowerUp.ResetPowerAvailability();
+        PowerPool.Clear();
+        Player.Instance.Hat.ModifyPowerPool(PowerPool);
+        Player.Instance.Cape.ModifyPowerPool(PowerPool);
+        Player.Instance.Wand.ModifyPowerPool(PowerPool);
+        Player.Instance.Body.ModifyPowerPool(PowerPool);
+        for(int i = 0; i < PowerPool.Count; ++i)
+        {
+            PowerUp.AddPowerUpToAvailability(PowerPool[i]);
+        }
+        PowerPool.Clear();
+    }
     public virtual UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
     public virtual void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
     {
@@ -43,6 +59,10 @@ public class Equipment : MonoBehaviour
 
     }
     public virtual void OnStartWith()
+    {
+
+    }
+    protected virtual void ModifyPowerPool(List<PowerUp> powerPool)
     {
 
     }
