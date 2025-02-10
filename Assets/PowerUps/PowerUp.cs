@@ -91,7 +91,7 @@ public abstract class PowerUp
             return Get<Choice>().MyID;
         }
         float recursionModifier = 1.0f + recursionDepth * 0.5f;
-        int type = UnityEngine.Random.Range(0, 8);
+        int type = UnityEngine.Random.Range(0, 9);
         if (PowerUps[type].Weighting * recursionModifier > Utils.RandFloat(1))
         {
             return type;

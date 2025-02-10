@@ -10,12 +10,11 @@ public class BlueblemancerHat : BubblemancerHat
         return "A suspiciously blue variation of Bubblemancer's classic hat\n" +
             "Nobody knows where it came from...\n" +
             "\n" +
-            "Start with 100 points and 2 shotgun power ups";
+            "Start with 100 points and a choice power up";
     }
     public override void OnStartWith()
     {
         EventManager.Point += 100;
-        PowerUp.Spawn<Shotgun>(Player.Position, 100);
-        PowerUp.Spawn<Shotgun>(Player.Position, 0);
+        PowerUp.Spawn<Choice>(Player.Position, 100);
     }
 }

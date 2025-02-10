@@ -37,6 +37,7 @@ public partial class Player : Entity
     public int Starbarbs = 0;
     public int SoapySoap = 0;
     public int BubbleBlast = 0;
+    public int Starshot = 0;
     private List<int> powers;
     private void PowerInit()
     {
@@ -49,7 +50,7 @@ public partial class Player : Entity
     }
     private void ClearPowerBonuses()
     {
-        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = 0;
+        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = 0;
     }
     private void UpdatePowerUps()
     {

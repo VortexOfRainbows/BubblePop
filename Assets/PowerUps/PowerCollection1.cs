@@ -35,7 +35,11 @@ public class Shotgun : PowerUp
 }
 public class Dash : PowerUp
 {
-    public override string Name() => "Sparkle-Sparkle Dash";
+    public override void Init()
+    {
+        Weighting = 0.8f;
+    }
+    public override string Name() => "Sparkle Sparkle";
     public override string Description() => "Scatter stars around you while dashing";
     public override void HeldEffect(Player p)
     {
@@ -55,7 +59,7 @@ public class Starbarbs : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.25f;
+        Weighting = 0.3f;
     }
     public override string Name() => "Starbarbs";
     public override string Description() => "Enemies killed by stars explode into stars";
@@ -70,7 +74,7 @@ public class SoapySoap : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.25f;
+        Weighting = 0.3f;
     }
     public override string Name() => "Soapy Soap";
     public override string Description() => "Charge attacks leave behind a trail of bubbles";
@@ -90,5 +94,20 @@ public class BubbleBlast : PowerUp
     public override void HeldEffect(Player p)
     {
         p.BubbleBlast += Stack;
+    }
+}
+public class Starshot : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.075f;
+    }
+    public override string Name() => "Starshot";
+    public override string Description() => "Chance for stars to be fired alongside shotgun bubbles" +
+        "\nIncreases the amount of bubbles shot by your primary weapon";
+    public override void HeldEffect(Player p)
+    {
+        p.Starshot += Stack;
+        p.ShotgunPower += Stack;
     }
 }
