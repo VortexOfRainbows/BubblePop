@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class UnlockCondition
 {
+    public static bool ForceUnlockAll = true;
     public virtual PowerUp Power => null;
     public static void SaveInt(string tag, int value)
     {
@@ -80,7 +81,8 @@ public abstract class UnlockCondition
     {
 
     }
-    public virtual bool IsUnlocked => false;
+    public bool Unlocked => ForceUnlockAll || IsUnlocked;
+    protected virtual bool IsUnlocked => false;
     public virtual string LockedText()
     {
         return "Unlocked by accomplishing *some* objective";

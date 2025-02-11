@@ -66,6 +66,14 @@ public static class Utils
     {
         return UnityEngine.Random.Range(min, max);
     }
+    public static int RandInt(int max = 1)
+    {
+        return UnityEngine.Random.Range(0, max);
+    }
+    public static int RandInt(int min, int maxExclusive)
+    {
+        return UnityEngine.Random.Range(min, maxExclusive);
+    }
     public static Vector2 RandCircle(float r)
     {
         return UnityEngine.Random.insideUnitCircle * r;

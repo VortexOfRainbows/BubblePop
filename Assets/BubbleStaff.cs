@@ -22,13 +22,12 @@ public class BubbleStaff : BubblemancerWand
     }
     protected override string Description()
     {
-        return "Start with 200 points, charge shot, bubble blast, and soapy soap";
+        return "Start with 100 points, bubble blast, and soapy soap";
     }
     public override void OnStartWith()
     {
-        EventManager.Point += 200;
-        PowerUp.Spawn<ChargeShot>(Player.Position, 0);
+        EventManager.Point += 100;
         PowerUp.Spawn<BubbleBlast>(Player.Position, 0);
-        PowerUp.Spawn<SoapySoap>(Player.Position, 200);
+        PowerUp.Spawn<SoapySoap>(Player.Position, 100);
     }
 }

@@ -30,11 +30,11 @@ public class Equipment : MonoBehaviour
     }
     public string GetName()
     {
-        return UnlockCondition.IsUnlocked ? Name() : "???";
+        return UnlockCondition.Unlocked ? Name() : "???";
     }
     public string GetDescription()
     {
-        return UnlockCondition.IsUnlocked ? Description() : UnlockCondition.LockedText();
+        return UnlockCondition.Unlocked ? Description() : UnlockCondition.LockedText();
     }
     protected virtual string Name()
     {

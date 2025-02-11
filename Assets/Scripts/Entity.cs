@@ -42,21 +42,6 @@ public class Entity : MonoBehaviour
                     proj.OnHitTarget(this);
                     if (proj.Type == 0 || proj.Type == 4)
                         proj.Kill();
-                    if (proj.Type == 3)
-                    {
-                        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], proj.gameObject.transform.position, 0.8f, 1.5f);
-                        IFrame = 100;
-                        proj.gameObject.transform.localScale *= 0.825f;
-                        proj.Damage--;
-                        if (proj.Damage < 0)
-                            proj.Kill();
-                        else
-                        {
-                            int c = 5 + proj.Damage * 3;
-                            for (int i = 0; i < c; i++)
-                                ParticleManager.NewParticle((Vector2)proj.transform.position + Utils.RandCircle(proj.transform.localScale.x), Utils.RandFloat(.3f, .4f), proj.rb.velocity.normalized * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.4f, .8f), 0, default);
-                        }
-                    }
                     if (Life < 0)
                         Life = 0;
                 }

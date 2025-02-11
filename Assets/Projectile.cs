@@ -1,4 +1,5 @@
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 public class Projectile : MonoBehaviour
 {
     public static int colorGradient = 0;
@@ -346,13 +347,14 @@ public class Projectile : MonoBehaviour
             timer++;
             if(Player.Instance.SoapySoap > 0 && timer <= 120)
             {
-                int count = 1 + (int)Data2 + Player.Instance.SoapySoap * 2;
+                int count = (int)(2.0f + Data2 * 1.5f + Player.Instance.SoapySoap * 3.5f);
                 int interval = 120 / count;
                 if (interval <= 0)
                     interval = 1;
                 if(timer % interval == 0)
                 {
-                    Projectile.NewProjectile(transform.position, Utils.RandCircle(2) - rb.velocity.normalized * Utils.RandFloat(0, 3f), 0, 0, 0);
+                    float veloMult = Utils.RandFloat(0.75f * Player.Instance.FasterBulletSpeed, 3f + Player.Instance.FasterBulletSpeed * 1.25f);
+                    Projectile.NewProjectile(transform.position, Utils.RandCircle(2) - rb.velocity.normalized * veloMult, 0, 0, 0);
                 }
             }
             if (timer > 160)
@@ -589,7 +591,23 @@ public class Projectile : MonoBehaviour
     }
     public void OnHitTarget(Entity target)
     {
-        if(Type == 4 && target.Life <= 0) //Sparkles
+        if (Type == 3)
+        {
+            target.IFrame = 100;
+            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], gameObject.transform.position, 0.8f, 1.5f);
+            gameObject.transform.localScale *= 0.8f;
+            rb.velocity *= 0.8f;
+            Damage = (int)Mathf.Max(Damage * 0.8f, 1);
+            if (Damage < 0)
+                Kill();
+            else
+            {
+                int c = 5 + Damage * 3;
+                for (int i = 0; i < c; i++)
+                    ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .4f), rb.velocity.normalized * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.4f, .8f), 0, default);
+            }
+        }
+        if (Type == 4 && target.Life <= 0) //Sparkles
         {
             if (Player.Instance.Starbarbs > 0)
             {

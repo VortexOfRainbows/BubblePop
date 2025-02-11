@@ -8,7 +8,7 @@ public class StartsUnlocked : UnlockCondition
     {
         return "Starts unlocked by default";
     }
-    public override bool IsUnlocked => true;
+    protected override bool IsUnlocked => true;
 }
 
 public class ScoreUnlock1000 : UnlockCondition
@@ -18,7 +18,7 @@ public class ScoreUnlock1000 : UnlockCondition
         return "Reach a Bubble Best of 1000 to unlock\n" +
             $"Current best: {UIManager.highscore}";
     }
-    public override bool IsUnlocked => UIManager.highscore >= 1000;
+    protected override bool IsUnlocked => UIManager.highscore >= 1000;
 }
 
 public class ChargeShot10 : UnlockCondition
@@ -29,7 +29,7 @@ public class ChargeShot10 : UnlockCondition
         return $"Possess 10 {Power.Name()} in a single run\n" +
             $"Current best: {PowerUp.Get<ChargeShot>().PickedUpBestAllRuns}";
     }
-    public override bool IsUnlocked => Power.PickedUpBestAllRuns >= 10;
+    protected override bool IsUnlocked => Power.PickedUpBestAllRuns >= 10;
 }
 
 public class StarbarbUnlock5 : UnlockCondition
@@ -40,5 +40,5 @@ public class StarbarbUnlock5 : UnlockCondition
         return $"Possess 5 {Power.Name()} in a single run or pick up 50 {Power.Name()} accross multiple runs to unlock\n" +
             $"Current best: {Power.PickedUpBestAllRuns} / {Power.PickedUpCountAllRuns}";
     }
-    public override bool IsUnlocked => Power.PickedUpCountAllRuns >= 50 || Power.PickedUpBestAllRuns >= 5;
+    protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 50 || Power.PickedUpBestAllRuns >= 5;
 }

@@ -12,7 +12,7 @@ public class EquipmentUIElement : MonoBehaviour
     public int ActiveEquipmentIndex = 0;
     public int ParentEquipSlot = -1;
     public Vector3 targetScale = Vector3.one;
-    public bool Unlocked => ActiveEquipment.UnlockCondition.IsUnlocked;
+    public bool Unlocked => ActiveEquipment.UnlockCondition.Unlocked;
     private bool prevUnlockStatus = true;
     public void UpdateOrientation()
     {
