@@ -14,6 +14,7 @@ public class PowerUpUIElement : MonoBehaviour
             throw new Exception("Cannot set the power type of a power in the inventory!");
         }
     }
+    public Canvas myCanvas = null;
     public Image outer;
     public Image inner;
     [SerializeField] private GameObject visual;
@@ -53,8 +54,7 @@ public class PowerUpUIElement : MonoBehaviour
     {
         Timer += 1;
         Count.text = MyPower.Stack.ToString();
-        float scale = Mathf.Max(1, transform.localScale.x * transform.localScale.y);
-        if(Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 62 * scale))
+        if(Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 64 * transform.localScale.x, myCanvas))
         {
             PopUpTextUI.Enable(MyPower.Name(), MyPower.Description());
             float scaleUP = InventoryElement ? 1.125f : 1.25f;
@@ -64,7 +64,7 @@ public class PowerUpUIElement : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);
 
     }
-    public void FixedUpdate()
+    public void Update()
     {
         if (Type >= 0)
         {

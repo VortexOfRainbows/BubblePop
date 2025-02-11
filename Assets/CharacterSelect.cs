@@ -24,6 +24,7 @@ public class CharacterSelect : MonoBehaviour
     private GameObject hoveringElement, prevHoveringElement;
     private bool NewHovering => hoveringElement != prevHoveringElement;
     private bool EquipmentPageOpen = false;
+    private bool PowerUpPageIsOpen = false;
     public void Start()
     {
         Equipments[0] = Hats;
@@ -42,7 +43,7 @@ public class CharacterSelect : MonoBehaviour
             visual.SetActive(false);
             return;
         }
-        bool hasClickedAButtonAlready = false;
+        bool hasOpenPageAlready = false;
         for (int i = 0; i < 4; i++) 
         {
             UIElems[i].UpdateActive(myCanvas, out bool hovering, out bool clicked);
@@ -55,9 +56,9 @@ public class CharacterSelect : MonoBehaviour
             }
             else if(hoveringElement == UIElems[i].gameObject && !EquipmentPageOpen)
                 hoveringElement = null;
-            if (openPage && !hasClickedAButtonAlready)
+            if (openPage && !hasOpenPageAlready)
             {
-                hasClickedAButtonAlready = clicked;
+                hasOpenPageAlready = true;
                 bool justClosed = false;
                 if (EquipmentPage.Count > 0)
                 {
@@ -83,9 +84,9 @@ public class CharacterSelect : MonoBehaviour
             //}
             //else if (hoveringElement == slot.gameObject && !EquipmentPageOpen)
             //    hoveringElement = null;
-            if (openPage && !hasClickedAButtonAlready && slot.Unlocked)
+            if (openPage && !hasOpenPageAlready && slot.Unlocked)
             {
-                hasClickedAButtonAlready = clicked;
+                hasOpenPageAlready = true;
                 UIElems[parent].ActiveEquipmentIndex = slot.ActiveEquipmentIndex;
                 RenderBox(UIElems[parent]);
                 SwapPlayerEquipment(UIElems[parent].ParentEquipSlot);
@@ -93,6 +94,11 @@ public class CharacterSelect : MonoBehaviour
             }
         }
         prevHoveringElement = hoveringElement;
+        if(!PowerUpPageIsOpen)
+        {
+            ResetPowerUps();
+            PowerUpPageIsOpen = true;
+        }
     }
     /// <summary>
     /// Opens an equipment page. equipmentType: 0 = hat, 1 = accessory, 2 = weapon, 3 = character
@@ -145,7 +151,7 @@ public class CharacterSelect : MonoBehaviour
                 Player.Instance.Wand = equip as Weapon; 
             if (i == 3)          
                 Player.Instance.Body = equip as Body;
-            RenderPowerUpIcons();
+            ResetPowerUps();
         }
     }
     public void AddNewBox(EquipmentUIElement parent, int index)
@@ -184,7 +190,14 @@ public class CharacterSelect : MonoBehaviour
         }
         return obj;
     }
-    public void RenderPowerUpIcons()
+    public void UpdatePowerUps()
+    {
+        for (int i = 0; i < AvailablePowersUI.Count; ++i)
+        {
+
+        }
+    }
+    public void ResetPowerUps()
     {
         foreach (PowerUpUIElement pUI in AvailablePowersUI) 
         {
@@ -200,12 +213,14 @@ public class CharacterSelect : MonoBehaviour
     }
     public PowerUpUIElement AddNewPower(GameObject prefab, GameObject parent, int index)
     {
-        PowerUpUIElement obj = Instantiate(prefab.GetComponent<PowerUpUIElement>(), visual.transform);
-        obj.transform.localPosition = UIElems[3].transform.localPosition + new Vector3(160 + 150 * AvailablePowersUI.Count, -70);
-        obj.Index = index;
-        obj.InventoryElement = false;
-        obj.TurnedOn();
-        AvailablePowersUI.Add(obj);
-        return obj;
+        PowerUpUIElement powerUI = Instantiate(prefab.GetComponent<PowerUpUIElement>(), visual.transform);
+        powerUI.transform.localPosition = UIElems[3].transform.localPosition + new Vector3(200 + 150 * AvailablePowersUI.Count, 0);
+        powerUI.Index = index;
+        powerUI.InventoryElement = false;
+        powerUI.TurnedOn();
+        powerUI.Count.gameObject.SetActive(false);
+        powerUI.myCanvas = myCanvas;
+        AvailablePowersUI.Add(powerUI);
+        return powerUI;
     }
 }
