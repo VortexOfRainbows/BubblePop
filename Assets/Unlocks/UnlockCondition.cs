@@ -1,18 +1,16 @@
-using JetBrains.Annotations;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.U2D;
 
 public abstract class UnlockCondition
 {
+    public virtual PowerUp Power => null;
     public static void SaveInt(string tag, int value)
     {
-        PlayerPrefs.SetInt(tag, value);
+        PlayerData.SaveInt(tag, value);
     }
     public static int LoadInt(string tag)
     {
-        return PlayerPrefs.GetInt(tag);
+        return PlayerData.GetInt(tag);
     }
     public static void SaveAllData()
     {

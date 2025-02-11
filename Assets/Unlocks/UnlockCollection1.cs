@@ -21,31 +21,24 @@ public class ScoreUnlock1000 : UnlockCondition
     public override bool IsUnlocked => UIManager.highscore >= 1000;
 }
 
-public class ScoreUnlock3000 : UnlockCondition
+public class ChargeShot10 : UnlockCondition
 {
+    public override PowerUp Power => PowerUp.Get<ChargeShot>();
     public override string LockedText()
     {
-        return "Reach a Bubble Best of 3000 to unlock\n" +
-            $"Current best: {UIManager.highscore}";
+        return $"Possess 10 {Power.Name()} in a single run\n" +
+            $"Current best: {PowerUp.Get<ChargeShot>().PickedUpBestAllRuns}";
     }
-    public override bool IsUnlocked => UIManager.highscore >= 3000;
+    public override bool IsUnlocked => Power.PickedUpBestAllRuns >= 10;
 }
 
 public class StarbarbUnlock5 : UnlockCondition
 {
-    public static int StarbarbBestCount = 0;
-    public override void SaveData()
-    {
-        SaveInt("StarbarbBest", StarbarbBestCount);
-    }
-    public override void LoadData()
-    {
-        StarbarbBestCount = LoadInt("StarbarbBest");
-    }
+    public override PowerUp Power => PowerUp.Get<Starbarbs>();
     public override string LockedText()
     {
-        return $"Possess 5 starbarb power ups in a single run to unlock\n" +
-            $"Current best: {StarbarbBestCount}";
+        return $"Possess 5 {Power.Name()} in a single run or pick up 50 {Power.Name()} accross multiple runs to unlock\n" +
+            $"Current best: {Power.PickedUpBestAllRuns} / {Power.PickedUpCountAllRuns}";
     }
-    public override bool IsUnlocked => StarbarbBestCount >= 5;
+    public override bool IsUnlocked => Power.PickedUpCountAllRuns >= 50 || Power.PickedUpBestAllRuns >= 5;
 }

@@ -20,6 +20,34 @@ public static class ReflectiveEnumerator
 }
 public abstract class PowerUp
 {
+    public int PickedUpCountAllRuns => AmountPickedUpAcrossAllRuns;
+    public int PickedUpBestAllRuns => HighestAmountPickedUpInASingleRun;
+    protected int AmountPickedUpAcrossAllRuns = 0;
+    protected int HighestAmountPickedUpInASingleRun = 0;
+    public static void SaveAllData()
+    {
+        if (PowerUps == null)
+            InitDict();
+        for (int i = 0; i < maximumTypes; ++i)
+            PowerUps[i].SaveData();
+    }
+    public static void LoadAllData()
+    {
+        if (PowerUps == null)
+            InitDict();
+        for (int i = 0; i < maximumTypes; ++i)
+            PowerUps[i].LoadData();
+    }
+    public void SaveData()
+    {
+        PlayerData.SaveInt(InternalName + "Total", AmountPickedUpAcrossAllRuns);
+        PlayerData.SaveInt(InternalName + "Best", HighestAmountPickedUpInASingleRun);
+    }
+    public void LoadData()
+    {
+        AmountPickedUpAcrossAllRuns = PlayerData.GetInt(InternalName + "Total");
+        HighestAmountPickedUpInASingleRun = PlayerData.GetInt(InternalName + "Best");
+    }
     public static List<int> AvailablePowers = new();
     public static void ResetPowerAvailability()
     {
@@ -72,12 +100,11 @@ public abstract class PowerUp
     }
     private static void AddToDictionary(PowerUp p)
     {
-        string typeName = p.GetType().Name;
-        if (Reverses.ContainsKey(typeName))
+        if (Reverses.ContainsKey(p.InternalName))
             return;
         p.MyID = typeCounter;
         PowerUps[typeCounter] = p;
-        Reverses[typeName] = typeCounter;
+        Reverses[p.InternalName] = typeCounter;
         Debug.Log($"Added: {p.Name()} to the dictionary at index {typeCounter}");
         typeCounter++;
         maximumTypes++;
@@ -136,9 +163,11 @@ public abstract class PowerUp
     public float Weighting = 1;
     //Returns the MyID of this power
     public int Type => MyID;
+    private string InternalName;
     protected PowerUp()
     {
-        sprite = Resources.Load<Sprite>(GetType().Name);
+        InternalName = GetType().Name;
+        sprite = Resources.Load<Sprite>(InternalName);
         AddToDictionary(this);
         Init();
     }
@@ -151,6 +180,9 @@ public abstract class PowerUp
     public void PickUp()
     {
         AddToPlayer(1);
+        AmountPickedUpAcrossAllRuns++;
+        if (Stack > HighestAmountPickedUpInASingleRun)
+            HighestAmountPickedUpInASingleRun = Stack;
     }
     private int AddToPlayer(int count = 1)
     {

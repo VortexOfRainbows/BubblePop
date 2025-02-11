@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
         score = 0;
-        highscore = PlayerPrefs.GetInt("Highscore", 0);
+        highscore = PlayerData.GetInt("Highscore");
         tutorial.SetActive(true);
         pauseButton.SetActive(false);
         StartingScreen = true;
@@ -62,7 +62,7 @@ public class UIManager : MonoBehaviour
         if (score > highscore)
         {
             highscore = score;
-            PlayerPrefs.SetInt("Highscore", (int)highscore);
+            PlayerData.SaveInt("Highscore", (int)highscore);
         }
 
     }

@@ -214,7 +214,7 @@ public class CharacterSelect : MonoBehaviour
     public PowerUpUIElement AddNewPower(GameObject prefab, GameObject parent, int index)
     {
         PowerUpUIElement powerUI = Instantiate(prefab.GetComponent<PowerUpUIElement>(), visual.transform);
-        powerUI.transform.localPosition = UIElems[3].transform.localPosition + new Vector3(200 + 150 * AvailablePowersUI.Count, 0);
+        powerUI.transform.localPosition = UIElems[3].transform.localPosition + new Vector3(150 * AvailablePowersUI.Count, -190);
         powerUI.Index = index;
         powerUI.InventoryElement = false;
         powerUI.TurnedOn();

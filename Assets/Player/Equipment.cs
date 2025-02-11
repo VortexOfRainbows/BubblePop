@@ -13,7 +13,11 @@ public class Equipment : MonoBehaviour
         Player.Instance.Cape.ModifyPowerPool(PowerPool);
         Player.Instance.Wand.ModifyPowerPool(PowerPool);
         Player.Instance.Body.ModifyPowerPool(PowerPool);
-        for(int i = 0; i < PowerPool.Count; ++i)
+        Player.Instance.Hat.ReducePowerPool(PowerPool);
+        Player.Instance.Cape.ReducePowerPool(PowerPool);
+        Player.Instance.Wand.ReducePowerPool(PowerPool);
+        Player.Instance.Body.ReducePowerPool(PowerPool);
+        for (int i = 0; i < PowerPool.Count; ++i)
         {
             PowerUp.AddPowerUpToAvailability(PowerPool[i]);
         }
@@ -64,6 +68,10 @@ public class Equipment : MonoBehaviour
 
     }
     protected virtual void ModifyPowerPool(List<PowerUp> powerPool)
+    {
+
+    }
+    protected virtual void ReducePowerPool(List<PowerUp> powerPool)
     {
 
     }
