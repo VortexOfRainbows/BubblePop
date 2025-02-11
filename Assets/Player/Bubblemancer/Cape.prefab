@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d4e186ac4b2fb84d83d6fc8debbd9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SubEquipment:
+  - {fileID: 2132375691569730818, guid: 88b3ca26d0245474896a68c13bff6ef7, type: 3}
   spriteRender: {fileID: 7956459227241470557}
   velocity: {x: 0, y: 0}
   CapeB: {fileID: 1946491136762909545}

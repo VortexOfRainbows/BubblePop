@@ -5,6 +5,7 @@ public class GlobalDefinitions : MonoBehaviour
     public void OnGameOpen()
     {
         //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
         UnlockCondition.LoadAllData();
     }
     public void OnGameClose()

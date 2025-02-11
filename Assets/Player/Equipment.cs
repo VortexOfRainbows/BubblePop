@@ -4,6 +4,7 @@ using UnityEngine;
 public class Equipment : MonoBehaviour
 {
     private static List<PowerUp> PowerPool = new();
+    public List<Equipment> SubEquipment = new();
     public static void ModifyPowerPoolAll()
     {
         PowerUp.ResetPowerAvailability();

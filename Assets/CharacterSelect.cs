@@ -17,9 +17,13 @@ public class CharacterSelect : MonoBehaviour
     public GameObject[] Characters;
     private Canvas myCanvas;
     public EquipmentUIElement[] UIElems;
-    private List<EquipmentUIElement> TempSlots = new();
+    private List<EquipmentUIElement> SubEquipmentPage = new();
+    private List<EquipmentUIElement> EquipmentPage = new();
     private List<PowerUpUIElement> AvailablePowersUI = new();
     private int prevPressedButton = -1;
+    private GameObject hoveringElement, prevHoveringElement;
+    private bool NewHovering => hoveringElement != prevHoveringElement;
+    private bool EquipmentPageOpen = false;
     public void Start()
     {
         Equipments[0] = Hats;
@@ -39,41 +43,80 @@ public class CharacterSelect : MonoBehaviour
             return;
         }
         bool hasClickedAButtonAlready = false;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++) 
         {
-            bool wasPressed = UIElems[i].UpdateActive(myCanvas);
-            if(wasPressed && !hasClickedAButtonAlready)
+            UIElems[i].UpdateActive(myCanvas, out bool hovering, out bool clicked);
+            bool openPage = clicked;
+            if(hovering)
             {
-                hasClickedAButtonAlready = true;
+                hoveringElement = UIElems[i].gameObject;
+                if (NewHovering)
+                    openPage = true;
+            }
+            else if(hoveringElement == UIElems[i].gameObject && !EquipmentPageOpen)
+                hoveringElement = null;
+            if (openPage && !hasClickedAButtonAlready)
+            {
+                hasClickedAButtonAlready = clicked;
                 bool justClosed = false;
-                if (TempSlots.Count > 0)
+                if (EquipmentPage.Count > 0)
                 {
                     justClosed = true;
-                    CloseNewBoxes();
+                    CloseEquipmentPage();
                 }
                 if(!justClosed || i != prevPressedButton)
-                {
-                    for (int j = 0; j < Equipments[i].Length; j++)
-                    {
-                        AddNewBox(UIElems[i], j);
-                    }
-                }
+                    OpenEquipmentPage(i);
                 prevPressedButton = i;
             }
         }
-        for(int i = 0; i < TempSlots.Count; i++)
+        for(int i = 0; i < EquipmentPage.Count; i++)
         {
-            int slot = TempSlots[i].ParentEquipSlot;
-            bool wasPressed = TempSlots[i].UpdateActive(myCanvas);
-            if(wasPressed && !hasClickedAButtonAlready && TempSlots[i].Unlocked)
+            EquipmentUIElement slot = EquipmentPage[i];
+            int parent = slot.ParentEquipSlot;
+            slot.UpdateActive(myCanvas, out bool hovering, out bool clicked);
+            bool openPage = clicked;
+            //if (hovering)
+            //{
+            //    hoveringElement = slot.gameObject;
+            //    if (NewHovering)
+            //        openPage = true;
+            //}
+            //else if (hoveringElement == slot.gameObject && !EquipmentPageOpen)
+            //    hoveringElement = null;
+            if (openPage && !hasClickedAButtonAlready && slot.Unlocked)
             {
-                hasClickedAButtonAlready = true;
-                UIElems[slot].ActiveEquipmentIndex = TempSlots[i].ActiveEquipmentIndex;
-                RenderBox(UIElems[slot]);
-                SwapPlayerEquipment(UIElems[slot].ParentEquipSlot);
-                CloseNewBoxes();
+                hasClickedAButtonAlready = clicked;
+                UIElems[parent].ActiveEquipmentIndex = slot.ActiveEquipmentIndex;
+                RenderBox(UIElems[parent]);
+                SwapPlayerEquipment(UIElems[parent].ParentEquipSlot);
+                CloseEquipmentPage();
             }
         }
+        prevHoveringElement = hoveringElement;
+    }
+    /// <summary>
+    /// Opens an equipment page. equipmentType: 0 = hat, 1 = accessory, 2 = weapon, 3 = character
+    /// </summary>
+    /// <param name="equipmentType"></param>
+    public void OpenEquipmentPage(int equipmentType)
+    {
+        for (int j = 0; j < Equipments[equipmentType].Length; j++)
+        {
+            AddNewBox(UIElems[equipmentType], j);
+        }
+        EquipmentPageOpen = true;
+    }
+    /// <summary>
+    /// Closes the equipment page.
+    /// </summary>
+    public void CloseEquipmentPage()
+    {
+        for (int i = EquipmentPage.Count - 1; i >= 0; --i)
+        {
+            Destroy(EquipmentPage[i].gameObject);
+            EquipmentPage.RemoveAt(i);
+        }
+        EquipmentPageOpen = false;
     }
     public void SwapPlayerEquipment(int i)
     {
@@ -108,20 +151,12 @@ public class CharacterSelect : MonoBehaviour
     public void AddNewBox(EquipmentUIElement parent, int index)
     {
         EquipmentUIElement ui = Instantiate(EquipmentUISlotPrefab, visual.transform);
-        ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * TempSlots.Count, 0);
+        ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * EquipmentPage.Count, 0);
         ui.ParentEquipSlot = parent.ParentEquipSlot;
         ui.ActiveEquipmentIndex = index;
         ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
         RenderBox(ui);
-        TempSlots.Add(ui);
-    }
-    public void CloseNewBoxes()
-    {
-        for(int i = TempSlots.Count - 1; i >= 0; --i)
-        {
-            Destroy(TempSlots[i].gameObject);
-            TempSlots.RemoveAt(i);
-        }
+        EquipmentPage.Add(ui);
     }
     public void RenderBoxes()
     {

@@ -46,18 +46,19 @@ public class EquipmentUIElement : MonoBehaviour
         }
         prevUnlockStatus = currentUnlockStatus;
     }
-    public bool UpdateActive(Canvas canvas)
+    public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked)
     {
+        hovering = clicked = false;
         UpdateUnlockRelated();
         UpdateOrientation();
         if (Utils.IsMouseHoveringOverThis(true, Self.GetComponent<RectTransform>(), 50, canvas))
         {
             PopUpTextUI.Enable(ActiveEquipment.GetName(), ActiveEquipment.GetDescription());
             transform.localScale = Vector3.Lerp(transform.localScale, targetScale * 1.2f, 0.15f);
-            return Input.GetMouseButtonDown(0);
+            hovering = true;
+            clicked = Input.GetMouseButtonDown(0);
         }
         else
-            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, 0.15f);
-        return false;
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale * 1.0f, 0.1f);
     }
 }

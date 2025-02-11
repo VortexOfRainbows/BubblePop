@@ -97,6 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0f792ead6052534bb08d28002838f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SubEquipment:
+  - {fileID: 4503938881933358564, guid: 4ee10e6ca7971ca4683e9a86ad747cf3, type: 3}
   spriteRender: {fileID: 8973945380139369154}
   velocity: {x: 0, y: 0}
   AttackLeft: 0
