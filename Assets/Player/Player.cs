@@ -131,7 +131,9 @@ public partial class Player : Entity
     }
     private void FixedUpdate()
     {
-        if(!HasRunStartingGear && !UIManager.StartingScreen)
+        if (Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.N))
+            UnlockCondition.ForceUnlockAll = true;
+        if (!HasRunStartingGear && !UIManager.StartingScreen)
         {
             Hat.OnStartWith();
             Cape.OnStartWith();
@@ -170,6 +172,10 @@ public partial class Player : Entity
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 6f, 0.03f);
         else
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 17f, 0.03f);
+        if (DeathKillTimer <= 0)
+        {
+            PlayerData.PlayerDeaths++;
+        }
         rb.velocity *= 0.9f;
         Body.DeadUpdate();
         Hat.DeadUpdate();

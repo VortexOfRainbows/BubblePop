@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Xml.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
+using UnityEngine.UIElements;
 public static class ReflectiveEnumerator
 {
     static ReflectiveEnumerator() { }
@@ -167,9 +169,13 @@ public abstract class PowerUp
     protected PowerUp()
     {
         InternalName = GetType().Name;
-        sprite = Resources.Load<Sprite>(InternalName);
+        sprite = GetTexture();
         AddToDictionary(this);
         Init();
+    }
+    public virtual Sprite GetTexture()
+    {
+        return Resources.Load<Sprite>(InternalName);
     }
     private void Reset()
     {
@@ -205,6 +211,12 @@ public abstract class PowerUp
     public virtual void HeldEffect(Player p)
     {
 
+    }
+    public virtual void AliveUpdate(GameObject inner, GameObject outer, bool UI = false)
+    {
+        inner.transform.localPosition = Vector3.zero;
+        inner.transform.eulerAngles = Vector3.zero;
+        inner.transform.localScale = Vector3.one;
     }
     public Sprite sprite;
 }

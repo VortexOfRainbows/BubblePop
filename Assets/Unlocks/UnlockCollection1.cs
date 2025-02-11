@@ -42,3 +42,14 @@ public class StarbarbUnlock5 : UnlockCondition
     }
     protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 50 || Power.PickedUpBestAllRuns >= 5;
 }
+
+public class PlayerDeathUnlock100 : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<Starbarbs>();
+    public override string LockedText()
+    {
+        return $"Die 100 times to unlock\n" +
+            $"Current best: {PlayerData.PlayerDeaths}";
+    }
+    protected override bool IsUnlocked => PlayerData.PlayerDeaths >= 100;
+}

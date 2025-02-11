@@ -196,6 +196,7 @@ MonoBehaviour:
   Hats:
   - {fileID: 4047993882583738873, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
   - {fileID: 4047993882583738873, guid: d8e3ac15ce6711b4eb88bfb58d6648bd, type: 3}
+  - {fileID: 4047993882583738873, guid: 40faa4fda98c03e4f8174c64dd991267, type: 3}
   Accessories:
   - {fileID: 1946491136762909545, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
   - {fileID: 1946491136762909545, guid: 88b3ca26d0245474896a68c13bff6ef7, type: 3}
@@ -470,7 +471,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 481, y: -436}
+  m_AnchoredPosition: {x: 682, y: -401}
   m_SizeDelta: {x: 502.434, y: 167.754}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3924921890402026676

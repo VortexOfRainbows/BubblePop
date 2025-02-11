@@ -16,6 +16,9 @@ public class PowerUpObject : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        if (inner.sprite == null)
+            inner.sprite = Sprite;
+        MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
         timer++;
         float scale = 1.0f + 0.1f * Mathf.Sin(Mathf.Deg2Rad * timer * 2f);
         transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(2f / scale, 2f * scale, 2), 0.1f);

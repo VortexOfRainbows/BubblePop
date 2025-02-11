@@ -37,6 +37,7 @@ public class PowerUpUIElement : MonoBehaviour
     }
     public void TurnedOn()
     {
+        MyPower.AliveUpdate(inner.gameObject, outer.gameObject, true);
         inner.sprite = Sprite;
         RectTransform rect = inner.transform as RectTransform;
         Rect rectangle = inner.sprite.rect;
@@ -62,7 +63,6 @@ public class PowerUpUIElement : MonoBehaviour
         }
         else
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);
-
     }
     public void Update()
     {

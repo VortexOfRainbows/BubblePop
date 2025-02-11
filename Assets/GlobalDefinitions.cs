@@ -5,13 +5,11 @@ public class GlobalDefinitions : MonoBehaviour
     public void OnGameOpen()
     {
         //PlayerPrefs.DeleteAll();
-        UnlockCondition.LoadAllData();
-        PowerUp.LoadAllData();
+        PlayerData.LoadAll();
     }
     public void OnGameClose()
     {
-        UnlockCondition.SaveAllData();
-        PowerUp.SaveAllData();
+        PlayerData.SaveAll();
     }
     public void Awake()
     {

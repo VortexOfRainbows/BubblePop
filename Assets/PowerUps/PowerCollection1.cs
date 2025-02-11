@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Choice : PowerUp
 {
@@ -13,6 +14,49 @@ public class Choice : PowerUp
             p.RemovePower(Type);
             PowerUp.TurnOnPowerUpSelectors();
         }
+    }
+}
+public class WeaponUpgrade : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.69f;
+    }
+    public override string Name() => "Super Cool Weapon Upgrade";
+    public override string Description() => "Does nothing!";
+    public override Sprite GetTexture()
+    {
+        return Player.Instance != null && Player.Instance.Wand != null ? Player.Instance.Wand.spriteRender.sprite : null;
+    }
+    public override void AliveUpdate(GameObject inner, GameObject outer, bool UI = false)
+    {
+        sprite = GetTexture();
+        //if (outer.TryGetComponent(out SpriteRenderer rend))
+        //{
+        //    rend.color = new Color(.49f, .82f, .95f, 0.8f);
+        //}
+        //if (outer.TryGetComponent(out Image image))
+        //{
+        //    image.color = new Color(.49f, .82f, .95f, 0.8f);
+        //}
+        Vector2 offset = Vector2.zero;
+        float rot = 0f;
+        float scale = 1f;
+        float secondaryScalar = 1;
+        float finalScaler = 0.315f;
+        if (UI)
+        {
+            secondaryScalar = 100;
+            finalScaler = 0.315f;
+        }
+        Player.Instance.Wand.ModifyUIOffsets(ref offset, ref rot, ref scale);
+        inner.transform.localPosition = offset * secondaryScalar * finalScaler;
+        inner.transform.eulerAngles = new Vector3(0, 0, rot);
+        inner.transform.localScale = Player.Instance.Wand.transform.localScale * scale * finalScaler;
+    }
+    public override void HeldEffect(Player p)
+    {
+
     }
 }
 public class ChargeShot : PowerUp
