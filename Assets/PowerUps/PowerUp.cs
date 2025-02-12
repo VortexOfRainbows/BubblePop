@@ -177,6 +177,10 @@ public abstract class PowerUp
     {
         return Resources.Load<Sprite>(InternalName);
     }
+    public virtual Sprite GetAdornment()
+    {
+        return null;
+    }
     private void Reset()
     {
         Stack = 0;

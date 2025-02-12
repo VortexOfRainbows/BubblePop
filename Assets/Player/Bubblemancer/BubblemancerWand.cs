@@ -24,9 +24,10 @@ public class BubblemancerWand : Weapon
     {
         WandUpdate();
     }
+    private float AttackCooldown => 20f / Player.Instance.AttackSpeedModifier;
     public override void StartAttack(bool alternate)
     {
-        if (AttackLeft < -20 && AttackRight < 0)
+        if (AttackLeft < -AttackCooldown && AttackRight < 0)
         {
             if (!alternate)
             {
@@ -35,7 +36,7 @@ public class BubblemancerWand : Weapon
                 p.bonusBubbles = p.ShotgunPower;
             }
         }
-        if (AttackRight < -20 && AttackLeft < 0)
+        if (AttackRight < -AttackCooldown && AttackLeft < 0)
         {
             if (alternate)
             {
@@ -128,7 +129,7 @@ public class BubblemancerWand : Weapon
                 {
                     AudioManager.PlaySound(GlobalDefinitions.audioClips[33], Player.Position, 0.3f, 1.5f);
                     AudioManager.PlaySound(GlobalDefinitions.audioClips[34], Player.Position, 0.6f, 1f);
-                    Projectile.NewProjectile((Vector2)transform.position + awayFromWand, Vector2.zero, 3, 0);
+                    Projectile.NewProjectile((Vector2)transform.position + awayFromWand, Vector2.zero, 3, 149, 0);
                 }
                 if (AttackRight < 250)
                 {

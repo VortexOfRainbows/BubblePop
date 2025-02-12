@@ -20,13 +20,17 @@ public class WeaponUpgrade : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.69f;
+        Weighting = 0.75f;
     }
-    public override string Name() => "Super Cool Weapon Upgrade";
-    public override string Description() => "Does nothing!";
+    public override string Name() => "Haste";
+    public override string Description() => "Increases weapon attack speed";
     public override Sprite GetTexture()
     {
         return Player.Instance != null && Player.Instance.Wand != null ? Player.Instance.Wand.spriteRender.sprite : null;
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("WeaponUpgrade");
     }
     public override void AliveUpdate(GameObject inner, GameObject outer, bool UI = false)
     {
@@ -56,7 +60,7 @@ public class WeaponUpgrade : PowerUp
     }
     public override void HeldEffect(Player p)
     {
-
+        p.AttackSpeedModifier += Stack * 0.1f;
     }
 }
 public class ChargeShot : PowerUp

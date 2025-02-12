@@ -17,6 +17,7 @@ public class PowerUpUIElement : MonoBehaviour
     public Canvas myCanvas = null;
     public Image outer;
     public Image inner;
+    public Image adornment;
     [SerializeField] private GameObject visual;
     public PowerUp MyPower => PowerUp.Get(Type);
     public Sprite Sprite => MyPower.sprite;
@@ -38,11 +39,26 @@ public class PowerUpUIElement : MonoBehaviour
     public void TurnedOn()
     {
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, true);
+
         inner.sprite = Sprite;
         RectTransform rect = inner.transform as RectTransform;
         Rect rectangle = inner.sprite.rect;
         rect.pivot = inner.sprite.pivot / new Vector2(rectangle.width, rectangle.height);
         inner.SetNativeSize();
+
+        Sprite adornSprite = MyPower.GetAdornment();
+        if (adornSprite != null)
+        {
+            adornment.gameObject.SetActive(true);
+            adornment.sprite = adornSprite;
+            rect = adornment.transform as RectTransform;
+            rectangle = adornment.sprite.rect;
+            rect.pivot = adornment.sprite.pivot / new Vector2(rectangle.width, rectangle.height);
+            adornment.SetNativeSize();
+        }
+        else
+            adornment.gameObject.SetActive(false);
+
         outer.SetNativeSize();
         visual.SetActive(true);
     }

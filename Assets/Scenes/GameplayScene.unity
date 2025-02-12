@@ -426,6 +426,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChoicePowerSpawn
       objectReference: {fileID: 0}
+    - target: {fileID: 4732324013924634454, guid: ed2b0754a4ce9f64ea77c2500a5c222a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5263547178869038422, guid: ed2b0754a4ce9f64ea77c2500a5c222a, type: 3}
       propertyPath: Type
       value: 0
@@ -469,6 +473,10 @@ PrefabInstance:
     - target: {fileID: 6938877991546977162, guid: ed2b0754a4ce9f64ea77c2500a5c222a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8265489489373656602, guid: ed2b0754a4ce9f64ea77c2500a5c222a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8882983222386335977, guid: ed2b0754a4ce9f64ea77c2500a5c222a, type: 3}
       propertyPath: m_Enabled

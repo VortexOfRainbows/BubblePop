@@ -129,6 +129,7 @@ public partial class Player : Entity
         float bobbing = 0.9f + 0.1f * sin;
         return bobbing;
     }
+    private float AttackUpdateTimer = 0;
     private void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.N))
@@ -153,7 +154,12 @@ public partial class Player : Entity
                 Wand.StartAttack(false);
             else if (Input.GetMouseButton(1))
                 Wand.StartAttack(true);
-            Wand.AliveUpdate();
+            AttackUpdateTimer += AttackSpeedModifier;
+            while(AttackUpdateTimer >= 1)
+            {
+                Wand.AliveUpdate();
+                AttackUpdateTimer -= 1;
+            }
             Hat.AliveUpdate();
             Cape.AliveUpdate();
         }

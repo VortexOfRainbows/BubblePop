@@ -3,6 +3,7 @@ using UnityEngine;
 public class PowerUpObject : MonoBehaviour
 {
     public SpriteRenderer outer;
+    public SpriteRenderer adornment;
     public SpriteRenderer inner;
     public SpriteRenderer glow;
     public int Type;
@@ -13,6 +14,16 @@ public class PowerUpObject : MonoBehaviour
     public void Start()
     {
         inner.sprite = Sprite;
+        Sprite adornmentSprite = MyPower.GetAdornment();
+        if (adornmentSprite != null)
+        {
+            adornment.gameObject.SetActive(true);
+            adornment.sprite = adornmentSprite;
+        }
+        else
+            adornment.gameObject.SetActive(false);
+        adornment = null;
+        MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
     }
     public void FixedUpdate()
     {
