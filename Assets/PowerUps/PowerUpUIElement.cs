@@ -26,6 +26,7 @@ public class PowerUpUIElement : MonoBehaviour
     public TMPro.TextMeshProUGUI Count;
     public int Index = 0;
     public bool InventoryElement = true;
+    public bool MenuElement = false;
     private float Timer;
     public bool PickerElement
     {
@@ -61,24 +62,31 @@ public class PowerUpUIElement : MonoBehaviour
 
         outer.SetNativeSize();
         visual.SetActive(true);
+        WhileOn();
     }
     public void TurnedOff()
     {
         Timer = 0;
         visual.SetActive(false);
     }
+    public bool AppearLocked => MenuElement && MyPower.PickedUpCountAllRuns <= 0;
     public void WhileOn()
     {
         Timer += 1;
         Count.text = MyPower.Stack.ToString();
         if(Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 64 * transform.localScale.x, myCanvas))
         {
-            PopUpTextUI.Enable(MyPower.Name(), MyPower.Description());
+            PopUpTextUI.Enable(AppearLocked ? MyPower.LockedName() : MyPower.UnlockedName(), AppearLocked ? MyPower.LockedDescription() : MyPower.UnlockedDescription());
             float scaleUP = InventoryElement ? 1.125f : 1.25f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
         }
         else
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);
+
+        if(AppearLocked)
+            inner.color = adornment.color = Color.black;
+        else
+            inner.color = adornment.color = Color.white;
     }
     public void Update()
     {
@@ -86,7 +94,8 @@ public class PowerUpUIElement : MonoBehaviour
         {
             if ((!visual.activeSelf || prevType != Type) && Timer > 1)
                 TurnedOn();
-            WhileOn();
+            else
+                WhileOn();
         }
         else
             TurnedOff();

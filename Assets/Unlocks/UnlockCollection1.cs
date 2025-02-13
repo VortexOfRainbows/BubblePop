@@ -26,7 +26,7 @@ public class ChargeShot10 : UnlockCondition
     public override PowerUp Power => PowerUp.Get<ChargeShot>();
     public override string LockedText()
     {
-        return $"Possess 10 {Power.Name()} in a single run\n" +
+        return $"Possess 10 {Power.UnlockedName()} in a single run\n" +
             $"Current best: {PowerUp.Get<ChargeShot>().PickedUpBestAllRuns}";
     }
     protected override bool IsUnlocked => Power.PickedUpBestAllRuns >= 10;
@@ -37,7 +37,7 @@ public class StarbarbUnlock5 : UnlockCondition
     public override PowerUp Power => PowerUp.Get<Starbarbs>();
     public override string LockedText()
     {
-        return $"Possess 5 {Power.Name()} in a single run or pick up 50 {Power.Name()} accross multiple runs to unlock\n" +
+        return $"Possess 5 {Power.UnlockedName()} in a single run or pick up 50 {Power.UnlockedName()} accross multiple runs to unlock\n" +
             $"Current best: {Power.PickedUpBestAllRuns} / {Power.PickedUpCountAllRuns}";
     }
     protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 50 || Power.PickedUpBestAllRuns >= 5;

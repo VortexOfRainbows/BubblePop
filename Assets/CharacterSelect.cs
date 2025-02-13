@@ -217,9 +217,10 @@ public class CharacterSelect : MonoBehaviour
         powerUI.transform.localPosition = UIElems[3].transform.localPosition + new Vector3(150 * AvailablePowersUI.Count, -190);
         powerUI.Index = index;
         powerUI.InventoryElement = false;
-        powerUI.TurnedOn();
         powerUI.Count.gameObject.SetActive(false);
         powerUI.myCanvas = myCanvas;
+        powerUI.MenuElement = true;
+        powerUI.TurnedOn();
         AvailablePowersUI.Add(powerUI);
         return powerUI;
     }

@@ -219,14 +219,12 @@ public abstract class PowerUp
     {
 
     }
-    public virtual string Name()
-    {
-        return "Unnamed Power Up";
-    }
-    public virtual string Description()
-    {
-        return "Power Up";
-    }
+    public string LockedName() => "???";
+    public string LockedDescription() => "Powerup not yet discovered";
+    protected virtual string Name() => "Unnamed Power Up";
+    protected virtual string Description() => "Power Up";
+    public string UnlockedName() => Name();
+    public string UnlockedDescription() => Description();
     public virtual void HeldEffect(Player p)
     {
 
