@@ -205,7 +205,7 @@ public class CharacterSelect : MonoBehaviour
         }
         AvailablePowersUI.Clear();
         Equipment.ModifyPowerPoolAll();
-        PowerUp.SortAvailablePowers();
+        //PowerUp.SortAvailablePowers();
         for(int i = 0; i < PowerUp.AvailablePowers.Count; ++i)
         {
             AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, PowerUp.AvailablePowers[i]);

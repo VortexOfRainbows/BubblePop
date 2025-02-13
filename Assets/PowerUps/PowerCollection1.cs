@@ -146,7 +146,7 @@ public class Starshot : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.075f;
+        Weighting = 0.08f;
     }
     public override string Name() => "Starshot";
     public override string Description() => "Chance for stars to be fired alongside shotgun bubbles" +
@@ -155,5 +155,18 @@ public class Starshot : PowerUp
     {
         p.Starshot += Stack;
         p.ShotgunPower += Stack;
+    }
+}
+public class BinaryStars : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.27f;
+    }
+    public override string Name() => "Binary Stars";
+    public override string Description() => "Periodically release 2 stars";
+    public override void HeldEffect(Player p)
+    {
+        p.BinaryStars += Stack;
     }
 }

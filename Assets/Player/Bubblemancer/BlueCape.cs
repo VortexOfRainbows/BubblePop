@@ -13,6 +13,6 @@ public class BlueCape : BubblemancerCape
     }
     public override void OnStartWith()
     {
-        Player.Instance.DashMult = 0.5f;
+        Player.Instance.DashMult = 0.6f;
     }
 }

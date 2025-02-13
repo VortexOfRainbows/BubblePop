@@ -15,6 +15,10 @@ public class BunceHat : BubblemancerHat
         base.ModifyPowerPool(powerPool);
         powerPool.Add<WeaponUpgrade>();
     }
+    protected override void ReducePowerPool(List<PowerUp> powerPool)
+    {
+        powerPool.Remove<BinaryStars>();
+    }
     protected override string Description()
     {
         return "You stupid!";

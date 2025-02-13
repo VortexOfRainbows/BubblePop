@@ -39,6 +39,7 @@ public partial class Player : Entity
     public int BubbleBlast = 0;
     public int Starshot = 0;
     public float AttackSpeedModifier = 1.0f;
+    public int BinaryStars = 0;
     private List<int> powers;
     private void PowerInit()
     {
@@ -51,7 +52,7 @@ public partial class Player : Entity
     }
     private void ClearPowerBonuses()
     {
-        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = 0;
+        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = 0;
         AttackSpeedModifier = 1.0f;
     }
     private void UpdatePowerUps()
@@ -65,6 +66,31 @@ public partial class Player : Entity
                 power.HeldEffect(this);
                 //Debug.Log($"Doing held effect for {power.Stack}");
             }
+        }
+        UpdateFixed();
+    }
+    private float BinaryStarTimer = 0.0f;
+    private void UpdateFixed()
+    {
+        if(BinaryStars > 0)
+        {
+            BinaryStarTimer -= Time.fixedDeltaTime;
+            while(BinaryStarTimer <= 0)
+            {
+                BinaryStarTimer = 2f / Mathf.Pow(BinaryStars, 0.75f); //1.0, 1.25, 1.5, 1.75, 2.0
+                Vector2 circular = Utils.RandCircle(1).normalized;
+                float speedMax = 18 + FasterBulletSpeed;
+                for (int i = 0; i < 2; i++)
+                {
+                    circular = circular.RotatedBy(Mathf.PI * i);
+                    Vector2 target = (Vector2)transform.position + circular * (16 + FasterBulletSpeed);
+                    Projectile.NewProjectile(transform.position, circular.RotatedBy(Mathf.PI * 0.9f) * speedMax, 4, target.x, target.y);
+                }
+            }
+        }
+        else
+        {
+            BinaryStarTimer = 0;
         }
     }
     public void OnDash(Vector2 velo)

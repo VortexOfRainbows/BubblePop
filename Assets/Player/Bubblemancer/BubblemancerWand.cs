@@ -48,7 +48,7 @@ public class BubblemancerWand : Weapon
     {
         if (starshotNum <= 0)
             return;
-        float chance = 0.08f + 0.02f * starshotNum;
+        float chance = 0.1f + 0.05f * starshotNum;
         if (Utils.RandFloat(1f) < chance)
         {
             Vector2 toMouse = Utils.MouseWorld - (Vector2)p.gameObject.transform.position;
@@ -59,8 +59,8 @@ public class BubblemancerWand : Weapon
             Vector2 norm = velocity.normalized * (12 + p.FasterBulletSpeed * 0.5f) + Utils.RandCircle(4) * (10f / (10f + p.FasterBulletSpeed));
             Projectile.NewProjectile((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), type: 4, transform.position.x + norm.x, transform.position.y + norm.y);
 
-            float chanceOfLosingAStarProc = 0.5f * (10f / (9f + p.ShotgunPower)); //0.45 chance when you have one extra power, .409f when you have another, etc
-            if (Utils.RandFloat(1) < 0.5f)
+            float chanceOfLosingAStarProc = 0.6f * (10f / (9f + p.ShotgunPower)); //0.45 chance when you have one extra power, .409f when you have another, etc
+            if (Utils.RandFloat(1) < chanceOfLosingAStarProc)
                 --starshotNum;
         }
     }

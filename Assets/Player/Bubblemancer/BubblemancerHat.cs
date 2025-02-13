@@ -5,6 +5,7 @@ public class BubblemancerHat : Hat
 {
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
+        powerPool.Add<BinaryStars>();
         powerPool.Add<Starbarbs>();
     }
     protected override string Description()

@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
 using UnityEngine.UIElements;
+using UnityEditor.Timeline.Actions;
 public static class ReflectiveEnumerator
 {
     static ReflectiveEnumerator() { }
@@ -57,11 +58,25 @@ public abstract class PowerUp
     }
     public static void AddPowerUpToAvailability(PowerUp power)
     {
+        for(int i = 0; i < AvailablePowers.Count; ++i)
+        {
+            PowerUp currentPower = Get(AvailablePowers[i]);
+            if (power.Weighting > currentPower.Weighting)
+            {
+                AvailablePowers.Insert(i, power.MyID);
+                return;
+            }
+            else if(power.Weighting == currentPower.Weighting)
+            {
+                if(power.MyID < currentPower.MyID)
+                {
+                    AvailablePowers.Insert(i, power.MyID);
+                    return;
+                }
+            }
+        }
+        Debug.Log($"Insert {power.Name()} at end");
         AvailablePowers.Add(power.MyID);
-    }
-    public static void SortAvailablePowers()
-    {
-        AvailablePowers.Sort();
     }
     #region Powerup Datastructure Related Stuff
     private static int typeCounter = 0;
