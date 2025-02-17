@@ -135,7 +135,13 @@ public class Projectile : MonoBehaviour
         rb.velocity = velo;
         rb.rotation += Mathf.Sqrt(rb.velocity.magnitude) * Mathf.Sign(rb.velocity.x);
 
-        if (timer > 200)
+        float deathTime = 180;
+        if(Player.Instance.EternalBubbles > 0)
+        {
+            deathTime += 20 + 50 * Player.Instance.EternalBubbles;
+        }
+        float FadeOutTime = 20;
+        if (timer > deathTime + FadeOutTime)
         {
             Kill();
         }
@@ -144,10 +150,10 @@ public class Projectile : MonoBehaviour
             Vector2 norm = rb.velocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.8f, Utils.RandFloat(0.25f, 0.4f));
         }
-        if(timer > 180)
+        if(timer > deathTime)
         {
-            float alphaOut = 1 - (timer - 180) / 20f;
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+            float alphaOut = 1 - (timer - deathTime) / FadeOutTime;
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.68f * alphaOut);
         }
         timer++;
     }
@@ -361,7 +367,7 @@ public class Projectile : MonoBehaviour
             if (timer > 160)
             {
                 float alphaOut = 1 - (timer - 160) / 20f;
-                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.68f * alphaOut);
             }
             if (timer > 180)
                 Kill();

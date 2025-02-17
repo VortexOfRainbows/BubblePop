@@ -5,6 +5,7 @@ public class BubblemancerWand : Weapon
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         //powerPool.Add<WeaponUpgrade>();
+        powerPool.Add<EternalBubbles>();
         powerPool.Add<Shotgun>();
         powerPool.Add<ChargeShot>();
         powerPool.Add<BubbleBlast>();

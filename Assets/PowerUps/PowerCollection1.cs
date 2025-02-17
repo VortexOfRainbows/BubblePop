@@ -170,3 +170,20 @@ public class BinaryStars : PowerUp
         p.BinaryStars += Stack;
     }
 }
+public class EternalBubbles : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.9f;
+    }
+    protected override string Name() => "Eternal Bubbles";
+    protected override string Description() => "Increases lifespan of all small bubbles";
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("DurationUpgrade");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.EternalBubbles += Stack;
+    }
+}
