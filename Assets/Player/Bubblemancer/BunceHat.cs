@@ -42,7 +42,9 @@ public class BunceHat : BubblemancerHat
         }
         else if (p.dashTimer <= 0)
             velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
-        transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition, velocity + new Vector2(0, 0.2f + 0.5f * p.Bobbing * p.squash - 1f * (1 - p.squash)), 0.25f);
+        transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
+            new Vector2(-0.1f * p.Direction, 0.2f + 0.5f * p.Bobbing * p.squash - 0.2f * (1 - p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,
+            0.25f);
     }
     protected override void DeathAnimation()
     {

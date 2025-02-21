@@ -47,8 +47,14 @@ public class Equipment : MonoBehaviour
     public static Player p => Player.Instance;
     public SpriteRenderer spriteRender;
     public Vector2 velocity;
+    public bool hasInit = false;
     public void AliveUpdate()
     {
+        if(!hasInit)
+        {
+            Init();
+            hasInit = true;
+        }
         AnimationUpdate();
     }
     public void DeadUpdate()
@@ -72,6 +78,10 @@ public class Equipment : MonoBehaviour
 
     }
     protected virtual void ReducePowerPool(List<PowerUp> powerPool)
+    {
+
+    }
+    public virtual void Init()
     {
 
     }

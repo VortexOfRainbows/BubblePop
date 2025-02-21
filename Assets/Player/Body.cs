@@ -36,7 +36,8 @@ public class Body : Equipment
             transform.eulerAngles = new Vector3(0, 0, r);
         }
         transform.localScale = new Vector3(1 + (1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash, 1);
-        transform.localPosition = new Vector2(0, Mathf.Sign(p.lastVelo.x) * ((p.Bobbing * p.squash) - 1)).RotatedBy(p.lastVelo.ToRotation());
+        Vector2 squashReAlign = new Vector2(0, p.Bobbing * p.squash - 1);
+        transform.localPosition = squashReAlign;
         FaceUpdate();
     }
     protected sealed override void DeathAnimation()
