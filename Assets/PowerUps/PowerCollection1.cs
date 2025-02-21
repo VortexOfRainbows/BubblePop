@@ -187,3 +187,17 @@ public class EternalBubbles : PowerUp
         p.EternalBubbles += Stack;
     }
 }
+public class BubbleBirb : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 1f;
+    }
+    protected override string Name() => "Bubble Birb";
+    protected override string Description() => "Resurrect from a bath of flames after death";
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+

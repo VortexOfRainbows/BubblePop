@@ -7,6 +7,7 @@ public class Bubblemancer : Body
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<Choice>();
+        powerPool.Add<BubbleBirb>();
     }
     protected override string Description()
     {

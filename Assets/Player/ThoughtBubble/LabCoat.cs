@@ -9,8 +9,8 @@ public class LabCoat : BubblemancerCape
     {
         base.ModifyUIOffsets(ref offset, ref rotation, ref scale);
         scale *= 1.05f;
-        offset.x += 0.1f;
-        offset.y -= 0.05f;
+        offset.x += 0.05f;
+        offset.y -= 0.1f;
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
@@ -27,7 +27,7 @@ public class LabCoat : BubblemancerCape
     }
     protected override string Description()
     {
-        return "WIP Desc";
+        return "Ready to do science!";
     }
     public override void Init()
     {

@@ -48,7 +48,7 @@ public class BubblemancerCape : Accessory
         CapeL.transform.eulerAngles = new Vector3(0, 0, 15f * dashFactorL * facingDir);
         CapeR.transform.eulerAngles = new Vector3(0, 0, -25 * dashFactorR * facingDir);
         CapeB.transform.localPosition = new Vector2(Mathf.Lerp(-0.2f, 0.6f, 1 - p.squash) * toMouse.x * facingDir, -.25f);
-        Debug.Log(CapeB.transform.localPosition.x);
+        //Debug.Log(CapeB.transform.localPosition.x);
         Vector2 scale = new Vector2((1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash);
         //if its 90% or 270%, we want the x scale reduced
         scale.x *= 0.2f + DashStretchAmt * Mathf.Cos(new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y).ToRotation());
