@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CharacterSelect : MonoBehaviour
 {
     public EquipmentUIElement EquipmentUISlotPrefab;
-    public PowerUpUIElement PowerUpUISlotPrefab;
+    public PowerUpLayout PowerLayout;
     public GameObject visual;
     public const int UILayer = 5;
     public GameObject[][] Equipments = new GameObject[4][];
@@ -96,7 +96,7 @@ public class CharacterSelect : MonoBehaviour
         prevHoveringElement = hoveringElement;
         if(!PowerUpPageIsOpen)
         {
-            ResetPowerUps();
+            PowerLayout.Generate(PowerUp.AvailablePowers);
             PowerUpPageIsOpen = true;
         }
     }
@@ -151,7 +151,7 @@ public class CharacterSelect : MonoBehaviour
                 Player.Instance.Wand = equip as Weapon; 
             if (i == 3)          
                 Player.Instance.Body = equip as Body;
-            ResetPowerUps();
+            PowerLayout.Generate(PowerUp.AvailablePowers);
         }
     }
     public void AddNewBox(EquipmentUIElement parent, int index)
@@ -189,39 +189,5 @@ public class CharacterSelect : MonoBehaviour
             t.gameObject.layer = UILayer;
         }
         return obj;
-    }
-    public void UpdatePowerUps()
-    {
-        for (int i = 0; i < AvailablePowersUI.Count; ++i)
-        {
-
-        }
-    }
-    public void ResetPowerUps()
-    {
-        foreach (PowerUpUIElement pUI in AvailablePowersUI) 
-        {
-            Destroy(pUI.gameObject);
-        }
-        AvailablePowersUI.Clear();
-        Equipment.ModifyPowerPoolAll();
-        //PowerUp.SortAvailablePowers();
-        for(int i = 0; i < PowerUp.AvailablePowers.Count; ++i)
-        {
-            AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, PowerUp.AvailablePowers[i]);
-        }
-    }
-    public PowerUpUIElement AddNewPower(GameObject prefab, GameObject parent, int index)
-    {
-        PowerUpUIElement powerUI = Instantiate(prefab.GetComponent<PowerUpUIElement>(), visual.transform);
-        powerUI.transform.localPosition = UIElems[3].transform.localPosition + new Vector3(150 * AvailablePowersUI.Count, -190);
-        powerUI.Index = index;
-        powerUI.InventoryElement = false;
-        powerUI.Count.gameObject.SetActive(false);
-        powerUI.myCanvas = myCanvas;
-        powerUI.MenuElement = true;
-        powerUI.TurnedOn();
-        AvailablePowersUI.Add(powerUI);
-        return powerUI;
     }
 }
