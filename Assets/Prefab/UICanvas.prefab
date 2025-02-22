@@ -2842,6 +2842,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2792770979017610796}
     m_Modifications:
+    - target: {fileID: 1995466014493422204, guid: f29c6b43d92d412428bb29689ecf84c4, type: 3}
+      propertyPath: myCanvas
+      value: 
+      objectReference: {fileID: 4181591558398037338}
+    - target: {fileID: 1995466014493422204, guid: f29c6b43d92d412428bb29689ecf84c4, type: 3}
+      propertyPath: isInGameLayout
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4998872359050829464, guid: f29c6b43d92d412428bb29689ecf84c4, type: 3}
       propertyPath: m_Name
       value: PowerUpLayout

@@ -27,6 +27,7 @@ public class CharacterSelect : MonoBehaviour
     private bool PowerUpPageIsOpen = false;
     public void Start()
     {
+        PowerUpLayout.MenuLayout = PowerLayout;
         Equipments[0] = Hats;
         Equipments[1] = Accessories;
         Equipments[2] = Weapons;

@@ -96,6 +96,7 @@ public static class Utils
         }
         if (rectangular)
         {
+            //Debug.Log(pos);
             scale *= transform.localScale.x;
             Rect rect = transform.rect;
             float width = rect.width * scale;

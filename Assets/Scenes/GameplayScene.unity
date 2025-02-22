@@ -367,30 +367,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TopCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 3360116889236769765, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3360116889236769765, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3360116889236769765, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3360116889236769765, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3360116889236769765, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3360116889236769765, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4181591558398037338, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
       propertyPath: m_Camera
       value: 
@@ -726,14 +702,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BottomCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 1059993504668043725, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
-      propertyPath: Accessories.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1059993504668043725, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
-      propertyPath: Accessories.Array.data[2]
-      value: 
-      objectReference: {fileID: 1946491136762909545, guid: 4fde2b21b6a1f7d43aa0129cf6aa80c6, type: 3}
     - target: {fileID: 1287074701057382900, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

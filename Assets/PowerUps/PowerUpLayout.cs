@@ -5,9 +5,20 @@ using UnityEngine;
 
 public class PowerUpLayout : MonoBehaviour
 {
+    public static PowerUpLayout InGameLayout;
+    public static PowerUpLayout MenuLayout;
     public GameObject PowerUpUISlotPrefab;
     public List<PowerUpUIElement> PowerUpElems;
     public Canvas myCanvas;
+    public bool isInGameLayout;
+    public void Update()
+    {
+        if(isInGameLayout)
+        {
+            InGameLayout = this;
+            GenerateInventory();
+        }
+    }
     public void Generate(List<int> AvailablePowers)
     {
         foreach (PowerUpUIElement pUI in PowerUpElems)

@@ -77,7 +77,7 @@ public class PowerUpUIElement : MonoBehaviour
         if(Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 64 * transform.localScale.x, myCanvas))
         {
             PopUpTextUI.Enable(AppearLocked ? MyPower.LockedName() : MyPower.UnlockedName(), AppearLocked ? MyPower.LockedDescription() : MyPower.UnlockedDescription());
-            float scaleUP = InventoryElement ? 1.125f : 1.25f;
+            float scaleUP = 1.125f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
         }
         else
