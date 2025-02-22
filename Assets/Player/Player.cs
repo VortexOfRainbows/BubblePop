@@ -49,6 +49,7 @@ public partial class Player : Entity
         DeathKillTimer = 0;
         DashMult = 1;
         HasRunStartingGear = false;
+        PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
     }
     public float dashCD { get; private set; } = 0.5f;
     public float dashTimer = 0;
@@ -87,7 +88,7 @@ public partial class Player : Entity
         movespeed = movespeed.normalized;
 
         dashTimer -= Time.fixedDeltaTime;
-        if(Control.Dash && !Control.LastDash && movespeed.magnitude > 0 && dashTimer <= 0)
+        if (Control.Dash && !Control.LastDash && movespeed.magnitude > 0 && dashTimer <= 0)
         {
             Dash(ref velocity, movespeed);
         }
@@ -101,7 +102,7 @@ public partial class Player : Entity
             velocity = norm * (MaxSpeed + (currentSpeed - MaxSpeed) * 0.8f);
             if (currentSpeed > MaxSpeed + 15f)
             {
-                for(float i = 0; i < 1; i += 0.5f)
+                for (float i = 0; i < 1; i += 0.5f)
                     ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f);
             }
         }
@@ -121,7 +122,7 @@ public partial class Player : Entity
     public float MoveOffset;
     public float DashOffset;
     public float BobbingUpdate()
-    { 
+    {
         float abs = Mathf.Sqrt(Mathf.Abs(rb.velocity.magnitude)) * 0.5f;
         walkTimer += abs + 1;
         walkTimer %= 100f;
@@ -130,7 +131,7 @@ public partial class Player : Entity
         return bobbing;
     }
     private float AttackUpdateTimer = 0;
-    private void FixedUpdate()
+    new private void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.N))
             UnlockCondition.ForceUnlockAll = true;
@@ -144,18 +145,20 @@ public partial class Player : Entity
         }
         Instance = this;
         EventManager.Update();
+        UpdatePowerUps();
         if (DeathKillTimer > 0)
             Pop();
         else
         {
-            UpdatePowerUps();
+            base.FixedUpdate(); //Reduce I frames. Will reorganize later
+            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 15f, 0.03f);
             MovementUpdate();
             if (Input.GetMouseButton(0))
                 Wand.StartAttack(false);
             else if (Input.GetMouseButton(1))
                 Wand.StartAttack(true);
             AttackUpdateTimer += AttackSpeedModifier;
-            while(AttackUpdateTimer >= 1)
+            while (AttackUpdateTimer >= 1)
             {
                 Wand.AliveUpdate();
                 AttackUpdateTimer -= 1;
@@ -173,15 +176,11 @@ public partial class Player : Entity
     public float DeathKillTimer = 0;
     public void Pop()
     {
-        Time.timeScale = 0.5f + 0.5f * Mathf.Sqrt(Mathf.Max(0, 1 - DeathKillTimer / 200f));
+        //Time.timeScale = 0.5f + 0.5f * Mathf.Sqrt(Mathf.Max(0, 1 - DeathKillTimer / 200f));
         if (DeathKillTimer > 100)
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 6f, 0.03f);
         else
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 17f, 0.03f);
-        if (DeathKillTimer <= 0)
-        {
-            PlayerData.PlayerDeaths++;
-        }
         rb.velocity *= 0.9f;
         Body.DeadUpdate();
         Hat.DeadUpdate();
@@ -193,9 +192,9 @@ public partial class Player : Entity
         //    DeathKillTimer = 0;
         //    Body.SetActive(true);
         //}
-        if(DeathKillTimer > 200)
+        if (DeathKillTimer > 200)
         {
-            UIManager.Instance.GameOver();
+            RegisterDeath();
         }
     }
     public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
@@ -208,5 +207,26 @@ public partial class Player : Entity
         AudioManager.PlaySound(GlobalDefinitions.audioClips[12], Wand.transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
 
         OnDash(velocity);
+    }
+    public void RegisterDeath()
+    {
+        if(BonusPhoenixLives > 0)
+        {
+            RemovePower(PowerUp.Get<BubbleBirb>().Type, 1);
+            Rebirth();
+            return;
+        }
+        UIManager.Instance.GameOver();
+        PlayerData.PlayerDeaths++;
+    }
+    public void Rebirth()
+    {
+        for(int i = 0; i < 30; i++)
+        {
+            Projectile.NewProjectile(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 7, 0, 0);
+        }
+        IFrame = 200;
+        SpentBonusLives++;
+        DeathKillTimer = 0;
     }
 }

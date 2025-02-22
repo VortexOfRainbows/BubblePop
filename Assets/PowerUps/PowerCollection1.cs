@@ -191,13 +191,17 @@ public class BubbleBirb : PowerUp
 {
     public override void Init()
     {
-        Weighting = 1f;
+        Weighting = 0.08f;
     }
     protected override string Name() => "Bubble Birb";
-    protected override string Description() => "Resurrect from a bath of flames after death";
+    protected override string Description() => "Resurrect in a dance of flames after death";
     public override void HeldEffect(Player p)
     {
-
+        p.BonusPhoenixLives += Stack; 
+    }
+    public override void OnPickup(int count)
+    {
+        Player.Instance.PickedUpPhoenixLivesThisRound += count;
     }
 }
 

@@ -17,9 +17,9 @@ public class EnemySoap : Entity
         PointWorth = 5;
     }
     // Update is called once per frame
-    void FixedUpdate()
+    new private void FixedUpdate()
     {
-        IFrame--;
+        base.FixedUpdate(); //Reduce I frames
         timer++;
         if (timer > 120) 
         {

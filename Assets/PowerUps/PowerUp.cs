@@ -200,6 +200,7 @@ public abstract class PowerUp
     public void PickUp()
     {
         AddToPlayer(1);
+        OnPickup(1);
         AmountPickedUpAcrossAllRuns++;
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;
@@ -211,6 +212,10 @@ public abstract class PowerUp
         return Stack;
     }
     public virtual void Init()
+    {
+
+    }
+    public virtual void OnPickup(int count)
     {
 
     }

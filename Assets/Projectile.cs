@@ -102,6 +102,17 @@ public class Projectile : MonoBehaviour
             spriteRenderer.sprite = GlobalDefinitions.Laser;
             Hostile = true;
         }
+        if (Type == 7)
+        {
+            transform.localScale = Vector3.one * 0.5f;
+            spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+            spriteRendererGlow.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            spriteRendererGlow.color = new Color(1f, 0.45f, .25f);
+            spriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/PhoenixFire");
+            Damage = 1;
+            Friendly = true;
+            Hostile = false;
+        }
         FixedUpdate();
     }
     public void FixedUpdate()
@@ -120,6 +131,8 @@ public class Projectile : MonoBehaviour
             FeatherAI();
         if (Type == 6)
             LaserAI();
+        if (Type == 7)
+            FireAI();
         if (Type == 2 && timer < 10)
             spriteRendererGlow.color = spriteRenderer.color;
         else if(Type == 0 || Type == 3)
@@ -448,6 +461,33 @@ public class Projectile : MonoBehaviour
         {
             float alphaOut = 1 - (timer - 150) / 20f;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaOut);
+            spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b) * alphaOut;
+        }
+        timer++;
+    }
+    public void FireAI()
+    {
+        float deathTime = 100;
+        float FadeOutTime = 20;
+        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 3 * (1f - 0.8f * timer / deathTime), 0.1f);
+
+        Vector2 velo = rb.velocity;
+        velo *= 0.99f;
+        rb.velocity = velo;
+
+        if (timer > deathTime + FadeOutTime)
+        {
+            Kill();
+        }
+        if ((int)timer % 5 == 0)
+        {
+            Vector2 norm = rb.velocity.normalized;
+            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.8f, Utils.RandFloat(0.25f, 0.4f), 0, spriteRendererGlow.color);
+        }
+        if (timer > deathTime)
+        {
+            float alphaOut = 1 - (timer - deathTime) / FadeOutTime;
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.5f * alphaOut);
             spriteRendererGlow.color = new Color(spriteRendererGlow.color.r, spriteRendererGlow.color.g, spriteRendererGlow.color.b) * alphaOut;
         }
         timer++;

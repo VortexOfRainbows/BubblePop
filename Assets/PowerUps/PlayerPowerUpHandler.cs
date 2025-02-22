@@ -39,6 +39,11 @@ public partial class Player : Entity
     public float AttackSpeedModifier = 1.0f;
     public int BinaryStars = 0;
     public int EternalBubbles = 0;
+
+    public int BonusPhoenixLives = 0;
+    public int PickedUpPhoenixLivesThisRound = 0;
+    public int SpentBonusLives = 0;
+
     private List<int> powers;
     private void PowerInit()
     {
@@ -51,7 +56,7 @@ public partial class Player : Entity
     }
     private void ClearPowerBonuses()
     {
-        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = 0;
+        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = 0;
         AttackSpeedModifier = 1.0f;
     }
     private void UpdatePowerUps()

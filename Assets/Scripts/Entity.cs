@@ -23,12 +23,10 @@ public class Entity : MonoBehaviour
         {
             if (this is Player p)
             {
-                if (proj.Hostile && p.DeathKillTimer <= 0)
+                if (proj.Hostile && p.DeathKillTimer <= 0 && p.IFrame <= 0)
                 {
                     if (proj.Type == 4)
-                    {
                         proj.Kill();
-                    }
                     else
                         p.Pop();
                 }
@@ -75,6 +73,10 @@ public class Entity : MonoBehaviour
         }
     }
     public Vector2 lastPos = Vector2.zero;
+    public void FixedUpdate()
+    {
+        IFrame--;
+    }
     public void Update()
     {
         if (this is not Player)

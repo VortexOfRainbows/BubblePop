@@ -1,6 +1,5 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+
 public class EnemyDuck : Entity
 {
     public SpriteRenderer sRender;
@@ -62,9 +61,9 @@ public class EnemyDuck : Entity
         float sin = Mathf.Sin(bobbingTimer * Mathf.PI / bobSpeed);
         transform.eulerAngles = new Vector3(0, 0, sin * 15);
     }
-    public void FixedUpdate()
+    new public void FixedUpdate()
     {
-        IFrame--;
+        base.FixedUpdate(); //Reduce I frames
         int soundChance = Random.Range(1, 500);
         if (soundChance == 1)
         {

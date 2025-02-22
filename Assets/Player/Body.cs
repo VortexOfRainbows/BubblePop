@@ -38,6 +38,7 @@ public class Body : Equipment
         transform.localScale = new Vector3(1 + (1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash, 1);
         Vector2 squashReAlign = new Vector2(0, p.Bobbing * p.squash - 1);
         transform.localPosition = squashReAlign;
+        gameObject.SetActive(true);
         FaceUpdate();
     }
     protected sealed override void DeathAnimation()
