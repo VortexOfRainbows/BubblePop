@@ -57,7 +57,7 @@ public class PowerUpObject : MonoBehaviour
             Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.6f, 0.7f), circular * Utils.RandFloat(3, 6), 4f, Utils.RandFloat(0.4f, 0.6f), 0, glow.color);
         }
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[37], transform.position, 1.2f, 0.9f);
+        AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.2f, 0.9f);
 
         MyPower.PickUp();
         //Debug.Log($"Player has picked up {MyPower.Name()}");

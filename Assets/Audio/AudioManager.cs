@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    //Still needs music!
     [SerializeField]
     private AudioSource MusicSource;
     [SerializeField]
@@ -21,12 +20,15 @@ public class AudioManager : MonoBehaviour
             m_Instance = value;
         }
     }
+    public static void PlaySound(SoundClip soundID, Vector2 position, float volume = 1, float pitch = 1, int variation = -1)
+    {
+        PlaySound(soundID.GetVariation(variation), position, volume, pitch);
+    }
     public static void PlaySound(AudioClip soundID, Vector2 position, float volume = 1, float pitch = 1)
     {
         Sound sound = Instantiate(Instance.AudioObject, position, Quaternion.identity).GetComponent<Sound>();
         sound.Init(soundID, volume, pitch);
     }
-
     private void Start()
     {
         m_Instance = this;

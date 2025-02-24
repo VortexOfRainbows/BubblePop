@@ -17,13 +17,13 @@ public class EnemyBossDuck : EnemyDuck
         int soundChance = Random.Range(1, 400);
         if (soundChance == 1)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(40, 42)], transform.position, 0.3f, 0.9f);
+            AudioManager.PlaySound(SoundID.LenardNoise, transform.position, 0.3f, 0.9f);
         }
         MoveUpdate();
         projectileTimer++;
         if (projectileTimer >= 500)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(40, 42)], transform.position, 0.6f, 0.9f);
+            AudioManager.PlaySound(SoundID.LenardNoise, transform.position, 0.6f, 0.9f);
             ShootProjectile(12);
             GameObject.Instantiate(GlobalDefinitions.Ducky, transform.position, Quaternion.identity);
             projectileTimer = -200;
@@ -45,7 +45,7 @@ public class EnemyBossDuck : EnemyDuck
             Vector2 circular = projectileDirection.RotatedBy(i / (float)c * 2 * Mathf.PI);
             Projectile.NewProjectile(this.transform.position, circular * 2.5f, 6);
         }
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[38], transform.position, 0.3f, 1.5f);
+        AudioManager.PlaySound(SoundID.LenardLaser.GetVariation(0), transform.position, 0.3f, 1.5f);
     }
     protected override Vector2 FindLocation()
     {
@@ -55,6 +55,6 @@ public class EnemyBossDuck : EnemyDuck
     {
         DeathParticles(40, 0.7f, new Color(0.1f, 0.1f, 0.1f));
         DeathParticles(80, 0.9f, new Color(1, .97f, .52f));
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[27], transform.position, 0.3f, 0.5f);
+        AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.3f, 0.5f);
     }
 }

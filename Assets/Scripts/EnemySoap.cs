@@ -37,9 +37,9 @@ public class EnemySoap : Entity
             if(timer == 51)
             {
                 if(this is EnemySoapTiny)
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(19, 23)], transform.position, 1f, 1.2f);
+                    AudioManager.PlaySound(SoundID.SoapSlide, transform.position, 1f, 1.2f);
                 else
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(19, 23)], transform.position, 1f, 1f);
+                    AudioManager.PlaySound(SoundID.SoapSlide, transform.position, 1f, 1f);
                 rb.velocity *= 0.5f;
                 rb.velocity += toPlayer.normalized * 6f;
             }
@@ -55,12 +55,12 @@ public class EnemySoap : Entity
     }
     public override void OnKill()
     {
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(16, 19)], sRender.transform.position, 1f, 1f);
+        AudioManager.PlaySound(SoundID.SoapDie, sRender.transform.position, 1f, 1f);
         DeathParticles(15, 0.5f, new Color(1, 0.85f, 0.99f));
         if(this is not EnemySoapTiny)
         {
-            GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap1;
-            GameObject.Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap2;
+            Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap1;
+            Instantiate(GlobalDefinitions.TinySoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap2;
         }
     }
     private Vector2 FindTargetedPlayerPosition() {

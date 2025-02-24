@@ -32,7 +32,7 @@ public class BubblemancerWand : Weapon
         {
             if (!alternate)
             {
-                AudioManager.PlaySound(GlobalDefinitions.audioClips[14], transform.position, 1f, 1f);
+                AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1f);
                 AttackLeft = 50;
                 p.bonusBubbles = p.ShotgunPower;
             }
@@ -128,8 +128,8 @@ public class BubblemancerWand : Weapon
             {
                 if (AttackRight == 50)
                 {
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[33], Player.Position, 0.3f, 1.5f);
-                    AudioManager.PlaySound(GlobalDefinitions.audioClips[34], Player.Position, 0.6f, 1f);
+                    AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.5f);
+                    AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(0), Player.Position, 0.6f, 1f);
                     Projectile.NewProjectile((Vector2)transform.position + awayFromWand, Vector2.zero, 3, 149, 0);
                 }
                 if (AttackRight < 250)
@@ -137,11 +137,11 @@ public class BubblemancerWand : Weapon
                     AttackRight++;
                     if (AttackRight == 150)
                     {
-                        AudioManager.PlaySound(GlobalDefinitions.audioClips[35], Player.Position, 0.65f, 1f);
+                        AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(1), Player.Position, 0.65f, 1f);
                     }
                     if (AttackRight == 250)
                     {
-                        AudioManager.PlaySound(GlobalDefinitions.audioClips[36], Player.Position, 0.7f, 1f);
+                        AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(2), Player.Position, 0.7f, 1f);
                     }
                 }
                 p.PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * p.squash;

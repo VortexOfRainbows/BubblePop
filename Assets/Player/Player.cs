@@ -204,7 +204,7 @@ public partial class Player : Entity
         velocity = velocity * MaxSpeed + moveSpeed * speed;
         squash = SquashAmt;
         Body.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[12], Wand.transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
+        AudioManager.PlaySound(SoundID.Dash.GetVariation(3), Wand.transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
 
         OnDash(velocity);
     }

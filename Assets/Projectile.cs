@@ -223,8 +223,8 @@ public class Projectile : MonoBehaviour
             velo.y += 0.2f;
             if (timer <= 0)
             {
-                AudioManager.PlaySound(GlobalDefinitions.audioClips[24], transform.position, 1, 0.9f);
-                AudioManager.PlaySound(GlobalDefinitions.audioClips[26], transform.position, 1, 1.1f);
+                AudioManager.PlaySound(SoundID.BathBombSizzle, transform.position, 1, 0.9f);
+                AudioManager.PlaySound(SoundID.BathBombSplash, transform.position, 1, 1.1f);
                 for (int i = 0; i < 20; i++)
                     ParticleManager.NewParticle((Vector2)transform.position + new Vector2(Utils.RandFloat(-1f, 1f), -1.1f * transform.localScale.y), .7f, velo * 0.2f + new Vector2(0, Utils.RandFloat(1, 3)), 4f, Utils.RandFloat(1.2f, 1.5f), 0, ParticleManager.BathColor);
                 timer++;
@@ -344,7 +344,7 @@ public class Projectile : MonoBehaviour
         }
         else if(timer <= 0)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[15], transform.position, 1.1f, 0.6f);
+            AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1.1f, 0.6f);
             if (toMouse.magnitude < 6)
                 toMouse = toMouse.normalized * 6;
             Vector2 mouse = Player.Position + toMouse;
@@ -502,11 +502,11 @@ public class Projectile : MonoBehaviour
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(3, 6), 4f, 0.4f);
             }
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], transform.position, 0.7f, 1.1f);
+            AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
         }
         if (Type == 1)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[25], transform.position, 1.1f, 0.9f);
+            AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1.1f, 0.9f);
             Color c = PickColor(Data2, timer2);
             for (int i = 0; i < 70; i++)
             {
@@ -602,7 +602,7 @@ public class Projectile : MonoBehaviour
         }
         if (Type == 3)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], transform.position, 0.8f, 0.9f);
+            AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.8f, 0.9f);
             if(Player.Instance.BubbleBlast > 0)
             {
                 float amt = 1 + (3 + Data2) * Player.Instance.BubbleBlast;
@@ -633,7 +633,7 @@ public class Projectile : MonoBehaviour
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.4f, 0.5f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 0, spriteRenderer.color);
             }
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], transform.position, 0.7f, 1.1f);
+            AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
         }
     }
     public void OnHitTarget(Entity target)
@@ -641,7 +641,7 @@ public class Projectile : MonoBehaviour
         if (Type == 3)
         {
             target.IFrame = 100;
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], gameObject.transform.position, 0.8f, 1.5f);
+            AudioManager.PlaySound(SoundID.BubblePop, gameObject.transform.position, 0.8f, 1.5f);
             gameObject.transform.localScale *= 0.8f;
             rb.velocity *= 0.8f;
             Damage = (int)Mathf.Max(Damage * 0.8f, 1);

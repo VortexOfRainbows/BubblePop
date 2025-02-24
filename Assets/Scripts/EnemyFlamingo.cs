@@ -16,7 +16,7 @@ public class EnemyFlamingo : EnemyDuck
         int soundChance = Random.Range(1, 500);
         if (soundChance == 1)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(28, 31)], transform.position, 0.13f, 1.2f);
+            AudioManager.PlaySound(SoundID.FlamingoNoise, transform.position, 0.13f, 1.2f);
         }
         MoveUpdate();
         if (projectileTimer <= 0) {
@@ -29,11 +29,11 @@ public class EnemyFlamingo : EnemyDuck
     private void ShootProjectile() {
         Vector2 projectileDirection = (Player.Position - (Vector2)this.transform.position).normalized * projectileSpeed;
         Projectile.NewProjectile(this.transform.position, projectileDirection.RotatedBy(Mathf.Deg2Rad * Utils.RandFloat(-15, 15)), 5);
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[31], transform.position, 0.05f, 1.2f);
+        AudioManager.PlaySound(SoundID.FlamingoShot.GetVariation(0), transform.position, 0.05f, 1.2f);
     }
     public override void OnKill()
     {
         DeathParticles(30, 0.6f, new Color(1, 0.85f, 0.99f));
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[32], transform.position, 0.7f, 1.2f);
+        AudioManager.PlaySound(SoundID.FlamingoShot.GetVariation(1), transform.position, 0.7f, 1.2f);
     }
 }

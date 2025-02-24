@@ -67,7 +67,7 @@ public class EnemyDuck : Entity
         int soundChance = Random.Range(1, 500);
         if (soundChance == 1)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[13], transform.position, 0.13f, 1.2f);
+            AudioManager.PlaySound(SoundID.DuckNoise, transform.position, 0.13f, 1.2f);
         }
         MoveUpdate();
     }
@@ -77,6 +77,6 @@ public class EnemyDuck : Entity
     public override void OnKill()
     {
         DeathParticles(20, 0.5f, new Color(1, .97f, .52f));
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[27], transform.position, 0.25f, 1.2f);
+        AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.25f, 1.2f);
     }
 }

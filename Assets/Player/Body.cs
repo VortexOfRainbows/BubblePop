@@ -45,7 +45,7 @@ public class Body : Equipment
     {
         if (p.DeathKillTimer <= 0)
         {
-            AudioManager.PlaySound(GlobalDefinitions.audioClips[23], transform.position, 0.21f, 0.4f);
+            AudioManager.PlaySound(SoundID.Death.GetVariation(1), transform.position, 0.21f, 0.4f);
             for (int i = 0; i < 100; i++)
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);

@@ -12,6 +12,6 @@ public class EnemySoapTiny : EnemySoap
     public override void OnKill()
     {
         DeathParticles(10, 0.4f, new Color(1, 0.85f, 0.99f));
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(16, 19)], transform.position, 0.9f, 1.1f);
+        AudioManager.PlaySound(SoundID.SoapDie, transform.position, 0.9f, 1.1f);
     }
 }

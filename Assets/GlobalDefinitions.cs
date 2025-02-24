@@ -47,8 +47,6 @@ public class GlobalDefinitions : MonoBehaviour
     public GameObject flamingo;
     public static GameObject FinalDuck => Instance.RadDuck;
     public GameObject RadDuck;
-    public static AudioClip[] audioClips => Instance.clips;
-    public AudioClip[] clips;
     public static Sprite[] bathBombShards => Instance.bathbombShards;
     public Sprite[] bathbombShards;
     public static Sprite BubblePower1 => Instance.PowerBubble1;

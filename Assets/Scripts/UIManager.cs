@@ -116,6 +116,6 @@ public class UIManager : MonoBehaviour
         Vector3 pos = Vector3.zero;
         if (Player.Instance != null)
             pos = Player.Position;
-        AudioManager.PlaySound(GlobalDefinitions.audioClips[Random.Range(0, 8)], Vector3.zero, 1f, 1.0f);
+        AudioManager.PlaySound(SoundID.BubblePop, Vector3.zero, 1f, 1.0f);
     }
 }
