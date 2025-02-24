@@ -210,6 +210,7 @@ public partial class Player : Entity
     }
     public void RegisterDeath()
     {
+        PlayerData.PlayerDeaths++;
         if(BonusPhoenixLives > 0)
         {
             RemovePower(PowerUp.Get<BubbleBirb>().Type, 1);
@@ -217,7 +218,6 @@ public partial class Player : Entity
             return;
         }
         UIManager.Instance.GameOver();
-        PlayerData.PlayerDeaths++;
     }
     public void Rebirth()
     {
