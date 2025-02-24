@@ -37,10 +37,20 @@ public class StarbarbUnlock5 : UnlockCondition
     public override PowerUp Power => PowerUp.Get<Starbarbs>();
     public override string LockedText()
     {
-        return $"Possess 5 {Power.UnlockedName()} in a single run or pick up 50 {Power.UnlockedName()} accross multiple runs to unlock\n" +
+        return $"Possess 5 {Power.UnlockedName()} in a single run or pick up 50 {Power.UnlockedName()} across multiple runs to unlock\n" +
             $"Current best: {Power.PickedUpBestAllRuns} / {Power.PickedUpCountAllRuns}";
     }
     protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 50 || Power.PickedUpBestAllRuns >= 5;
+}
+public class ChoiceUnlock200 : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<Choice>();
+    public override string LockedText()
+    {
+        return $"Pick up 200 {Power.UnlockedName()} across multiple runs to unlock\n" +
+            $"Current best: {Power.PickedUpCountAllRuns}";
+    }
+    protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 200;
 }
 
 public class PlayerDeathUnlock100 : UnlockCondition

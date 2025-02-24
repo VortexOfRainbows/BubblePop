@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Choice : PowerUp
 {
-    protected override string Name() => "???";
+    protected override string Name() => "Choice";
     protected override string Description() => "Pick which power you want from a given selection";
     public override void HeldEffect(Player p)
     {
