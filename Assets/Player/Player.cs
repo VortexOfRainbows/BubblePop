@@ -187,11 +187,11 @@ public partial class Player : Entity
         Wand.DeadUpdate();
         Cape.DeadUpdate();
         DeathKillTimer++;
-        //if(Input.GetKey(KeyCode.R))
-        //{
-        //    DeathKillTimer = 0;
-        //    Body.SetActive(true);
-        //}
+        if(Input.GetKey(KeyCode.R))
+        {
+            DeathKillTimer = 0;
+            //Body.SetActive(true);
+        }
         if (DeathKillTimer > 200)
         {
             RegisterDeath();
