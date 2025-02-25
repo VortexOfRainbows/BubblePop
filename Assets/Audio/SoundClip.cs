@@ -50,7 +50,7 @@ public static class SoundID
     public static SoundClip PickupPower = new SoundClip("Powerup/",
         "Pickup");
     public static SoundClip StarbarbImpact = new SoundClip("Projectile/",
-        "Starbarb_impact_1", "Starbarb_impact_2", "Starbarb_impact_3");
+        "StarbarbImpact1", "StarbarbImpact2", "StarbarbImpact3");
 }
 public class SoundClip
 {
@@ -61,6 +61,11 @@ public class SoundClip
     {
         return Resources.Load<AudioClip>($"{myPath}{audioFileName}");
     }
+    /// <summary>
+    /// Creates a new sound clip
+    /// </summary>
+    /// <param name="path">The path to the sound clip inside the Resources/Audio/ directory</param>
+    /// <param name="args">A list of the sound clips that are considered variants of each other</param>
     public SoundClip(string path, params string[] args)
     {
         myPath = audioPath + path;

@@ -57,7 +57,7 @@ public class Entity : MonoBehaviour
         }
         if (collision.tag == EnemyTag)
         {
-            if (this is Player p && p.DeathKillTimer <= 0)
+            if (this is Player p && p.DeathKillTimer <= 0 && p.IFrame <= 0)
             {
                 p.Pop();
             }

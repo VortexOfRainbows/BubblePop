@@ -633,7 +633,7 @@ public class Projectile : MonoBehaviour
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.4f, 0.5f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 0, spriteRenderer.color);
             }
-            AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
+            AudioManager.PlaySound(SoundID.StarbarbImpact.GetVariation(2), transform.position, 0.7f, 0.66f);
         }
     }
     public void OnHitTarget(Entity target)
