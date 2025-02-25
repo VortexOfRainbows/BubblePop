@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 
 public static class SoundID
@@ -48,6 +49,8 @@ public static class SoundID
 
     public static SoundClip PickupPower = new SoundClip("Powerup/",
         "Pickup");
+    public static SoundClip StarbarbImpact = new SoundClip("Projectile/",
+        "Starbarb_impact_1", "Starbarb_impact_2", "Starbarb_impact_3");
 }
 public class SoundClip
 {
