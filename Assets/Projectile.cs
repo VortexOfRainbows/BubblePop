@@ -57,7 +57,7 @@ public class Projectile : MonoBehaviour
         if (Type == 0 || Type == 3)
         {
             spriteRenderer.sprite = Type == 0 ? GlobalDefinitions.BubbleSmall : GlobalDefinitions.BubbleSprite;
-            Color c = ParticleManager.DefaultColor;
+            Color c = Player.ProjectileColor;
             c.a = 0.68f;
             spriteRenderer.color = c;
             if (Type == 0)
@@ -161,7 +161,7 @@ public class Projectile : MonoBehaviour
         if ((int)timer % 3 == 0)
         {
             Vector2 norm = rb.velocity.normalized;
-            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.8f, Utils.RandFloat(0.25f, 0.4f));
+            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.8f, Utils.RandFloat(0.25f, 0.4f), 0, Player.ProjectileColor);
         }
         if(timer > deathTime)
         {
@@ -324,13 +324,13 @@ public class Projectile : MonoBehaviour
             timer = -attackRight;
             Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             if(Utils.RandFloat(1) < 0.2f)
-                ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + Player.Instance.rb.velocity * 0.9f, 0.2f, 0.3f, 0, default);
+                ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + Player.Instance.rb.velocity * 0.9f, 0.2f, 0.3f, 0, Player.ProjectileColor);
             if (attackRight >= Data1)
             {
                 for (int i = 0; i < 30; i++)
                 {
                     circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-                    ParticleManager.NewParticle((Vector2)transform.position + circular * 1.1f, .3f, -circular.normalized * Utils.RandFloat(5, 10) + Player.Instance.rb.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, default);
+                    ParticleManager.NewParticle((Vector2)transform.position + circular * 1.1f, .3f, -circular.normalized * Utils.RandFloat(5, 10) + Player.Instance.rb.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, Player.ProjectileColor);
                 }
                 Data1 += 100;
             }
@@ -353,7 +353,7 @@ public class Projectile : MonoBehaviour
             timer = 1;
 
             for (int i = 0; i < 30; i++)
-                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .5f), rb.velocity * Utils.RandFloat(2f), 0.5f, Utils.RandFloat(.4f, 1f), 0, default);
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .5f), rb.velocity * Utils.RandFloat(2f), 0.5f, Utils.RandFloat(.4f, 1f), 0, Player.ProjectileColor);
 
             rb.rotation = rb.velocity.ToRotation() * Mathf.Rad2Deg;
         }
@@ -361,7 +361,7 @@ public class Projectile : MonoBehaviour
         {
             rb.rotation += Mathf.Sqrt(rb.velocity.magnitude) * Mathf.Sign(rb.velocity.x);
             if (Utils.RandFloat(1) < 0.15f)
-                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x * 0.5f), Utils.RandFloat(.3f, .4f), rb.velocity * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.3f, .6f), 0, default);
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x * 0.5f), Utils.RandFloat(.3f, .4f), rb.velocity * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.3f, .6f), 0, Player.ProjectileColor);
             Friendly = true;
             rb.velocity *= 1 - 0.007f / (2 + Player.Instance.FasterBulletSpeed) - timer / 4000f;
             timer++;
@@ -500,7 +500,7 @@ public class Projectile : MonoBehaviour
             for (int i = 0; i < 5; i++)
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(3, 6), 4f, 0.4f);
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 0, Player.ProjectileColor);
             }
             AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
         }
@@ -613,7 +613,7 @@ public class Projectile : MonoBehaviour
             for (int i = 0; i < 30; i++)
             {
                 Vector2 circular = new Vector2(.6f + transform.localScale.x * 0.4f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(4, 7), 3f, Utils.RandFloat(0.3f, 0.5f), 0, ParticleManager.DefaultColor);
+                ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(4, 7), 3f, Utils.RandFloat(0.3f, 0.5f), 0, Player.ProjectileColor);
             }
         }
         if (Type == 5)

@@ -13,6 +13,7 @@ public static class Control
 }
 public partial class Player : Entity
 {
+    public static Color ProjectileColor => Instance.Body.PrimaryColor;
     public float Direction => Mathf.Sign(lastVelo.x);
     public int bonusBubbles = 0;
     public static Player Instance;

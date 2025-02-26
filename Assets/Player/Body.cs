@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class Body : Equipment
 {
+    public Color PrimaryColor = ParticleManager.DefaultColor;
     public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
     {
         scale = 1.2f;
     }
     public GameObject Face;
     public SpriteRenderer FaceR;
+    protected virtual float AngleMultiplier => 1f;
+    protected virtual float RotationSpeed => 0.12f;
     protected sealed override void AnimationUpdate()
     {
-        float angleMult = 0.5f + (p.squash < 0.9f ? 0.5f : 0);
+        float angleMult = 0.5f * AngleMultiplier;
+        if (p.squash < 0.9f)
+            angleMult = 1;
         if (p.lastVelo.sqrMagnitude > 0.10f)
         {
             float r = transform.eulerAngles.z;
@@ -30,7 +35,7 @@ public class Body : Equipment
                     angle -= 360;
                 angle *= angleMult;
             }
-            r = Mathf.LerpAngle(r, angle, 0.12f);
+            r = Mathf.LerpAngle(r, angle, RotationSpeed);
             spriteRender.flipY = r >= 90 && r < 270;
             bool flip = !spriteRender.flipY;
             transform.eulerAngles = new Vector3(0, 0, r);
@@ -50,7 +55,7 @@ public class Body : Equipment
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1),
-                    Utils.RandFloat(0.5f, 1.1f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3));
+                    Utils.RandFloat(0.5f, 1.1f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3), 0, Player.ProjectileColor);
             }
             gameObject.SetActive(false);
         }

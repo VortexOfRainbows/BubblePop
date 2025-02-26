@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Bubblemancer : Body
 {
+    public override void Init()
+    {
+        PrimaryColor = ParticleManager.DefaultColor;
+    }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<Choice>();
