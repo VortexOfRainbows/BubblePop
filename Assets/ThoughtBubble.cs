@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngineInternal;
 
 public class ThoughtBubble : Body
 {
@@ -36,5 +37,9 @@ public class ThoughtBubble : Body
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
         FaceR.flipX = !p.BodyR.flipY;
         MouthR.flipX = p.BodyR.flipY;
+    }
+    public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
+    {
+
     }
 }
