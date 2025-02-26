@@ -23,7 +23,7 @@ public partial class Player : Entity
     [SerializeField] public Weapon Wand;
     [SerializeField] public Hat Hat;
     [SerializeField] public Accessory Cape;
-    public SpriteRenderer BodyR;
+    public SpriteRenderer BodyR => Body.spriteRender;
     public Rigidbody2D rb;
 
     private float speed = 2.5f;

@@ -55,7 +55,7 @@ public class Body : Equipment
             gameObject.SetActive(false);
         }
     }
-    public void FaceUpdate()
+    public virtual void FaceUpdate()
     {
         Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
         toMouse *= Mathf.Sign(p.lastVelo.x);
