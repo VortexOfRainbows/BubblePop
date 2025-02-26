@@ -46,5 +46,6 @@ public class BubblemancerHat : Hat
             velocity.y -= 0.003f;
             velocity *= 0.97f;
         }
+        transform.localPosition = Vector2.Lerp(transform.localPosition, new Vector2(0, transform.localPosition.y), 0.03f);
     }
 }

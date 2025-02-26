@@ -79,7 +79,7 @@ public class BubblemancerCape : Accessory
         CapeL.transform.localScale = Vector3.Lerp(CapeL.transform.localScale, new Vector3(1f, .9f, 1), 0.1f);
         CapeR.transform.localScale = Vector3.Lerp(CapeR.transform.localScale, new Vector3(1f, .9f, 1), 0.1f);
         CapeB.transform.localScale = Vector3.Lerp(CapeB.transform.localScale, new Vector3(1.3f, .4f, 1) * 0.9f, 0.1f);
-        CapeB.transform.localPosition = Vector3.Lerp(CapeB.transform.localPosition, new Vector3(.5f, CapeB.transform.localPosition.y, 0), 0.1f);
+        CapeB.transform.localPosition = Vector3.Lerp(CapeB.transform.localPosition, new Vector3(0f, CapeB.transform.localPosition.y, 0), 0.1f);
 
         if (facingDir < 0)
         {

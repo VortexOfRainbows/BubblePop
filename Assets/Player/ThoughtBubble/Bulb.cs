@@ -34,16 +34,10 @@ public class Bulb : Hat
             spriteRender.flipX = !p.BodyR.flipY;
         }
         spriteRender.sprite = OnBulb; 
-        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r - 15 * p.Direction, 0.2f));
-        if (p.dashTimer > 0)
-        {
-            float sin = Mathf.Sqrt(Mathf.Abs( Mathf.Sin(Mathf.PI * Mathf.Max(0, p.dashTimer / p.dashCD)))) * p.dashTimer / p.dashCD;
-            velocity = new Vector2(0, p.Direction * 2.5f * sin).RotatedBy(p.lastVelo.ToRotation());
-        }
-        else if (p.dashTimer <= 0)
-            velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
+        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r - 10 * p.Direction, 0.2f));
+        velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
-            new Vector2(-0.2f * p.Direction, 0.5f + 0.5f * p.Bobbing * p.squash - 0.2f * (1 - p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,
+            new Vector2(-0.5f * p.Direction, 0.5f + 0.5f * p.Bobbing * p.squash - 0.2f * (1 - p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,
             0.25f);
         bounceCount = 0.7f;
     }
@@ -55,7 +49,7 @@ public class Bulb : Hat
         {
             velocity *= 0.0f;
             velocity.y += 0.03f;
-            velocity.x += 0.03f * p.Direction;
+            velocity.x += 0.05f * p.Direction;
         }
         if (toBody < -0.5f)
         {
@@ -68,9 +62,9 @@ public class Bulb : Hat
             velocity.x *= 0.998f;
             velocity.y -= 0.005f;
         }
-        spriteRender.sprite = Mathf.Abs(velocity.y) > 0.036f ? OnBulb : OffBulb;
+        spriteRender.sprite = Mathf.Abs(velocity.y) > 0.032f ? OnBulb : OffBulb;
         transform.localPosition = (Vector2)transform.localPosition + velocity;
-        float deathAngle = 0; // 90 * Mathf.Min(p.DeathKillTimer / 100f, 1) * (spriteRender.flipX ? -1 : 1);
+        float deathAngle = 90 * Mathf.Min(p.DeathKillTimer / 100f, 1);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, (deathAngle - 20) * p.Direction, 0.2f));
     }
 }
