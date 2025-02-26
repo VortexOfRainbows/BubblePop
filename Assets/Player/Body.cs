@@ -68,4 +68,8 @@ public class Body : Equipment
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         FaceR.flipY = spriteRender.flipY;
     }
+    public virtual void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
+    {
+
+    }
 }

@@ -28,7 +28,7 @@ public class Bulb : Hat
     }
     protected override void AnimationUpdate()
     {
-        float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.dashTimer / p.dashCD));
+        float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.abilityTimer / p.abilityCD));
         if (spriteRender.flipX == p.BodyR.flipY)
         {
             spriteRender.flipX = !p.BodyR.flipY;

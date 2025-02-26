@@ -14,6 +14,7 @@ public class ThoughtBubble : Body
     {
         powerPool.Add<Choice>();
         powerPool.Add<Choice>();
+        powerPool.Add<BubbleBirb>();
     }
     protected override string Description()
     {

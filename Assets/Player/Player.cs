@@ -4,8 +4,8 @@ using UnityEngine.TextCore;
 
 public static class Control
 {
-    public static bool Dash => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.Space);
-    public static bool LastDash = false;
+    public static bool Ability => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.Space);
+    public static bool LastAbility = false;
     public static bool Up => Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
     public static bool Down => Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
     public static bool Left => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
@@ -29,8 +29,8 @@ public partial class Player : Entity
 
     private float speed = 2.5f;
     private float MovementDeacceleration = 0.9f;
-    private float MaxSpeed = 6f;
-    public float squash { get; private set; } = 1f;
+    public float MaxSpeed = 6f;
+    public float squash = 1f;
     private float walkTimer = 0;
     public Vector2 lastVelo;
     public float SquashAmt { get; private set; } = 0.45f;
@@ -52,8 +52,8 @@ public partial class Player : Entity
         HasRunStartingGear = false;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
     }
-    public float dashCD { get; private set; } = 0.5f;
-    public float dashTimer = 0;
+    public float abilityCD { get; private set; } = 0.5f;
+    public float abilityTimer = 0;
     private void MovementUpdate()
     {
         Vector2 velocity = rb.velocity;
@@ -88,11 +88,9 @@ public partial class Player : Entity
             velocity.x *= MovementDeacceleration;
         movespeed = movespeed.normalized;
 
-        dashTimer -= Time.fixedDeltaTime;
-        if (Control.Dash && !Control.LastDash && movespeed.magnitude > 0 && dashTimer <= 0)
-        {
-            Dash(ref velocity, movespeed);
-        }
+        abilityTimer -= Time.fixedDeltaTime;
+
+        Body.AbilityUpdate(ref velocity, movespeed);
 
         //Final stuff
         velocity += movespeed * speed;
@@ -109,7 +107,7 @@ public partial class Player : Entity
         }
 
         rb.velocity = velocity;
-        Control.LastDash = Control.Dash;
+        Control.LastAbility = Control.Ability;
         Bobbing = BobbingUpdate();
         Body.AliveUpdate();
         if (squash < 1)
@@ -197,17 +195,6 @@ public partial class Player : Entity
         {
             RegisterDeath();
         }
-    }
-    public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
-    {
-        float speed = DashDefault * DashMult;
-        dashTimer = dashCD * DashMult;
-        velocity = velocity * MaxSpeed + moveSpeed * speed;
-        squash = SquashAmt;
-        Body.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
-        AudioManager.PlaySound(SoundID.Dash.GetVariation(3), Wand.transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
-
-        OnDash(velocity);
     }
     public void RegisterDeath()
     {

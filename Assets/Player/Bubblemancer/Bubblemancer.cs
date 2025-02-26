@@ -17,4 +17,21 @@ public class Bubblemancer : Body
     {
         return "A humble shepard from the quaint Bubble Fields";
     }
+    public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
+    {
+        if (Control.Ability && !Control.LastAbility && moveSpeed.magnitude > 0 && p.abilityTimer <= 0)
+        {
+            Dash(ref playerVelo, moveSpeed);
+        }
+    }
+    public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
+    {
+        float speed = Player.DashDefault * p.DashMult;
+        p.abilityTimer = p.abilityCD * p.DashMult;
+        velocity = velocity * p.MaxSpeed + moveSpeed * speed;
+        p.squash = p.SquashAmt;
+        transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
+        AudioManager.PlaySound(SoundID.Dash.GetVariation(3), transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
+        p.OnDash(velocity);
+    }
 }
