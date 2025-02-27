@@ -3,8 +3,22 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
+    public string TypeName { 
+        get
+        {
+            if (InternalName == null)
+                InternalName = this.GetType().Name;
+            return InternalName;
+        }
+        set
+        {
+            InternalName = value;
+        }
+    }
+    private string InternalName = null;
     private static List<PowerUp> PowerPool = new();
     public List<Equipment> SubEquipment = new();
+    public int myEquipmentIndex;
     public static void ModifyPowerPoolAll()
     {
         PowerUp.ResetPowerAvailability();
@@ -38,7 +52,7 @@ public class Equipment : MonoBehaviour
     }
     protected virtual string Name()
     {
-        return this.GetType().Name.ToSpacedString();
+        return TypeName.ToSpacedString();
     }
     protected virtual string Description()
     {

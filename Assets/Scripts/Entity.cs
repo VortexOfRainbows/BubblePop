@@ -21,43 +21,51 @@ public class Entity : MonoBehaviour
     {
         if (collision.tag == ProjTag && collision.GetComponentInParent<Projectile>() is Projectile proj)
         {
-            if (this is Player p)
-            {
-                if (proj.Hostile && p.DeathKillTimer <= 0 && p.IFrame <= 0)
-                {
-                    p.Pop();
-                }
-            }
-            else
-            {
-                if (proj.Friendly && (IFrame <= 0 || proj is not BigBubble) && Life > -50)
-                {
-                    Life -= proj.Damage;
-                    DamageTaken += proj.Damage;
-                    proj.OnHitTarget(this);
-                    if (proj is SmallBubble || proj is StarProj)
-                        proj.Kill();
-                    if (Life < 0)
-                        Life = 0;
-                }
-                if (Life <= 0 && Life > -50)
-                {
-                    OnKill();
-                    Life = -50;
-                    bool LuckyDrop = Utils.RandFloat(1) < 0.04f || this is EnemyBossDuck;
-                    EventManager.Point += (int)PointWorth;
-                    if (EventManager.CanSpawnPower() || LuckyDrop)
-                        PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : 100);
-                    Destroy(gameObject);
-                }
-            }
+            HurtByProjectile(proj);
         }
         if (collision.tag == EnemyTag)
         {
-            if (this is Player p && p.DeathKillTimer <= 0 && p.IFrame <= 0)
+            HurtByNPC();
+        }
+    }
+    public void HurtByProjectile(Projectile proj)
+    {
+        if (this is Player p)
+        {
+            if (proj.Hostile && p.DeathKillTimer <= 0 && p.IFrame <= 0)
             {
                 p.Pop();
             }
+        }
+        else
+        {
+            if (proj.Friendly && (IFrame <= 0 || proj is not BigBubble) && Life > -50)
+            {
+                Life -= proj.Damage;
+                DamageTaken += proj.Damage;
+                proj.OnHitTarget(this);
+                if (proj is SmallBubble || proj is StarProj)
+                    proj.Kill();
+                if (Life < 0)
+                    Life = 0;
+            }
+            if (Life <= 0 && Life > -50)
+            {
+                OnKill();
+                Life = -50;
+                bool LuckyDrop = Utils.RandFloat(1) < 0.04f || this is EnemyBossDuck;
+                EventManager.Point += (int)PointWorth;
+                if (EventManager.CanSpawnPower() || LuckyDrop)
+                    PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : 100);
+                Destroy(gameObject);
+            }
+        }
+    }
+    public void HurtByNPC()
+    {
+        if (this is Player p && p.DeathKillTimer <= 0 && p.IFrame <= 0)
+        {
+            p.Pop();
         }
     }
     public void DeathParticles(int count = 10, float size = 0, Color c = default)

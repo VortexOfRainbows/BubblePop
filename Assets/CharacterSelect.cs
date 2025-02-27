@@ -88,9 +88,7 @@ public class CharacterSelect : MonoBehaviour
             if (openPage && !hasOpenPageAlready && slot.Unlocked)
             {
                 hasOpenPageAlready = true;
-                UIElems[parent].ActiveEquipmentIndex = slot.ActiveEquipmentIndex;
-                RenderBox(UIElems[parent]);
-                SwapPlayerEquipment(UIElems[parent].ParentEquipSlot);
+                UpdateSelectedEquipmentBox(parent, slot.ActiveEquipmentType);
                 CloseEquipmentPage();
             }
         }
@@ -101,6 +99,12 @@ public class CharacterSelect : MonoBehaviour
             PowerUpPageIsOpen = true;
         }
     }
+    public void UpdateSelectedEquipmentBox(int equipSlot, int newType)
+    {
+        UIElems[equipSlot].ActiveEquipmentType = newType;
+        RenderBox(UIElems[equipSlot]);
+        SwapPlayerEquipment(UIElems[equipSlot].ParentEquipSlot);
+    }
     /// <summary>
     /// Opens an equipment page. equipmentType: 0 = hat, 1 = accessory, 2 = weapon, 3 = character
     /// </summary>
@@ -109,7 +113,7 @@ public class CharacterSelect : MonoBehaviour
     {
         for (int j = 0; j < Equipments[equipmentType].Length; j++)
         {
-            AddNewBox(UIElems[equipmentType], j);
+            AddNewEquipmentBox(UIElems[equipmentType], j);
         }
         EquipmentPageOpen = true;
     }
@@ -138,29 +142,46 @@ public class CharacterSelect : MonoBehaviour
             equip = Player.Instance.Body;
         if (equip.GetType() != UIElems[i].ActiveEquipment.GetType())
         {
-            GameObject equipmentPrefab = Equipments[i][UIElems[i].ActiveEquipmentIndex];
-            GameObject oldHat = equip.gameObject;
+            int equipmentType = UIElems[i].ActiveEquipmentType;
+            GameObject equipmentPrefab = Equipments[i] //Select whether this is a hat, accessory, weapon, or body element
+                [equipmentType]; //Which type of hat, accessory, weapon, or body element is this?
+            GameObject oldEquipment = equip.gameObject;
             equip = Instantiate(equipmentPrefab, Player.Instance.transform).GetComponent<Equipment>();
+            equip.myEquipmentIndex = equipmentType;
             Debug.Log(equip);
             equip.AliveUpdate();
-            Destroy(oldHat);
             if (i == 0)
-                Player.Instance.Hat  = equip as Hat; 
+                Player.Instance.Hat = equip as Hat; 
             if (i == 1)      
                 Player.Instance.Cape = equip as Accessory; 
             if (i == 2)            
                 Player.Instance.Wand = equip as Weapon; 
-            if (i == 3)          
-                Player.Instance.Body = equip as Body;
+            if (i == 3)
+            {
+                SwapBody(oldEquipment.GetComponent<Equipment>() as Body, equip as Body);
+            }
+            Destroy(oldEquipment);
             PowerLayout.Generate(PowerUp.AvailablePowers);
         }
     }
-    public void AddNewBox(EquipmentUIElement parent, int index)
+    public void SwapBody(Body oldBody, Body newBody)
+    {
+        oldBody.LastSelectedHatType = Player.Instance.Hat.myEquipmentIndex;
+        oldBody.LastSelectedAccType = Player.Instance.Cape.myEquipmentIndex;
+        oldBody.LastSelectedWepType = Player.Instance.Wand.myEquipmentIndex;
+        oldBody.SaveData();
+        Player.Instance.Body = newBody;
+        newBody.LoadData();
+        UpdateSelectedEquipmentBox(0, newBody.LastSelectedHatType);
+        UpdateSelectedEquipmentBox(1, newBody.LastSelectedAccType);
+        UpdateSelectedEquipmentBox(2, newBody.LastSelectedWepType);
+    }
+    public void AddNewEquipmentBox(EquipmentUIElement parent, int index)
     {
         EquipmentUIElement ui = Instantiate(EquipmentUISlotPrefab, visual.transform);
         ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * EquipmentPage.Count, 0);
         ui.ParentEquipSlot = parent.ParentEquipSlot;
-        ui.ActiveEquipmentIndex = index;
+        ui.ActiveEquipmentType = index;
         ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
         RenderBox(ui);
         EquipmentPage.Add(ui);
@@ -177,7 +198,7 @@ public class CharacterSelect : MonoBehaviour
     {
         if(uiElem.ActiveEquipment != null)
             Destroy(uiElem.ActiveEquipment.gameObject);
-        uiElem.ActiveEquipment = RenderSingular(Equipments[uiElem.ParentEquipSlot][uiElem.ActiveEquipmentIndex], uiElem.Visual);
+        uiElem.ActiveEquipment = RenderSingular(Equipments[uiElem.ParentEquipSlot][uiElem.ActiveEquipmentType], uiElem.Visual);
         uiElem.UpdateOrientation();
     }
     public Equipment RenderSingular(GameObject prefab, GameObject parent)

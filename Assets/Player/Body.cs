@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class Body : Equipment
 {
-    public Color PrimaryColor = ParticleManager.DefaultColor;
-    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    public void SaveData()
     {
-        scale = 1.2f;
+        PlayerData.SaveInt($"{TypeName}Hat", LastSelectedHatType);
+        PlayerData.SaveInt($"{TypeName}Acc", LastSelectedAccType);
+        PlayerData.SaveInt($"{TypeName}Wep", LastSelectedWepType);
     }
+    public void LoadData()
+    {
+        LastSelectedHatType = PlayerData.GetInt($"{TypeName}Hat");
+        LastSelectedAccType = PlayerData.GetInt($"{TypeName}Acc");
+        LastSelectedWepType = PlayerData.GetInt($"{TypeName}Wep");
+    }
+    public int LastSelectedHatType = 0;
+    public int LastSelectedAccType = 0;
+    public int LastSelectedWepType = 0;
+    public Color PrimaryColor = ParticleManager.DefaultColor;
     public GameObject Face;
     public SpriteRenderer FaceR;
     protected virtual float AngleMultiplier => 1f;
     protected virtual float RotationSpeed => 0.12f;
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        scale = 1.2f;
+    }
     protected sealed override void AnimationUpdate()
     {
         float angleMult = 0.5f * AngleMultiplier;
