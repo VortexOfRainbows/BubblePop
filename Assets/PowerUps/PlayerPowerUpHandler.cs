@@ -88,7 +88,7 @@ public partial class Player : Entity
                 {
                     circular = circular.RotatedBy(Mathf.PI * i);
                     Vector2 target = (Vector2)transform.position + circular * (16 + FasterBulletSpeed);
-                    Projectile.NewProjectile(transform.position, circular.RotatedBy(Mathf.PI * 0.9f) * speedMax, 4, target.x, target.y);
+                    Projectile.LegacyNewProjectile(transform.position, circular.RotatedBy(Mathf.PI * 0.9f) * speedMax, 4, target.x, target.y);
                 }
             }
         }
@@ -106,7 +106,7 @@ public partial class Player : Entity
             for (; stars > 0; --stars)
             {
                 Vector2 target = (Vector2)transform.position + norm * 14 + Utils.RandCircle(6);
-                Projectile.NewProjectile(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 4, target.x, target.y);
+                Projectile.LegacyNewProjectile(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 4, target.x, target.y);
             }
         }
     }

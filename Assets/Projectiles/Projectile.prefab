@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2215360517042039597}
   - component: {fileID: 7267669788572449075}
   m_Layer: 6
-  m_Name: GameObject
+  m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,9 +94,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6068578339141598114}
   - component: {fileID: 9010058924001855763}
-  - component: {fileID: 5294649518696471049}
   - component: {fileID: 8140297732417559093}
   - component: {fileID: 7350993437632372227}
+  - component: {fileID: -2840941619545629644}
   m_Layer: 6
   m_Name: Projectile
   m_TagString: Proj
@@ -172,30 +172,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5294649518696471049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5354334585636703099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03cf6d4c8c359ae4e9fd3e548dc72973, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteRendererGlow: {fileID: 7267669788572449075}
-  spriteRenderer: {fileID: 9010058924001855763}
-  rb: {fileID: 8140297732417559093}
-  c2D: {fileID: 7350993437632372227}
-  timer: 0
-  timer2: 0
-  Type: 0
-  Data1: 0
-  Data2: 0
-  Damage: 0
-  Friendly: 0
-  Hostile: 0
 --- !u!50 &8140297732417559093
 Rigidbody2D:
   serializedVersion: 4
@@ -258,3 +234,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &-2840941619545629644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5354334585636703099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54326b91fd0fe3845a286934781f8dde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRendererGlow: {fileID: 7267669788572449075}
+  spriteRenderer: {fileID: 9010058924001855763}
+  rb: {fileID: 8140297732417559093}
+  c2D: {fileID: 7350993437632372227}

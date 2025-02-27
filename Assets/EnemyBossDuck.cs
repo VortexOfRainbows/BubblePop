@@ -43,7 +43,7 @@ public class EnemyBossDuck : EnemyDuck
         for(int i = 0; i < c; i++)
         {
             Vector2 circular = projectileDirection.RotatedBy(i / (float)c * 2 * Mathf.PI);
-            Projectile.NewProjectile(this.transform.position, circular * 2.5f, 6);
+            Projectile.LegacyNewProjectile(this.transform.position, circular * 2.5f, 6);
         }
         AudioManager.PlaySound(SoundID.LenardLaser.GetVariation(0), transform.position, 0.3f, 1.5f);
     }

@@ -25,20 +25,17 @@ public class Entity : MonoBehaviour
             {
                 if (proj.Hostile && p.DeathKillTimer <= 0 && p.IFrame <= 0)
                 {
-                    if (proj.Type == 4)
-                        proj.Kill();
-                    else
-                        p.Pop();
+                    p.Pop();
                 }
             }
             else
             {
-                if (proj.Friendly && (IFrame <= 0 || proj.Type != 3) && Life > -50)
+                if (proj.Friendly && (IFrame <= 0 || proj is not BigBubble) && Life > -50)
                 {
                     Life -= proj.Damage;
                     DamageTaken += proj.Damage;
                     proj.OnHitTarget(this);
-                    if (proj.Type == 0 || proj.Type == 4)
+                    if (proj is SmallBubble || proj is StarProj)
                         proj.Kill();
                     if (Life < 0)
                         Life = 0;

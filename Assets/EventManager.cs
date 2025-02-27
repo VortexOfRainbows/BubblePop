@@ -169,6 +169,6 @@ public static class EventManager
                 break;
             }
         }
-        Projectile.NewProjectile(Player.Position + new Vector2(randPos.x, 30), Vector2.zero, 1, Player.Position.y + randPos.y, GetBathBombType());
+        Projectile.LegacyNewProjectile(Player.Position + new Vector2(randPos.x, 30), Vector2.zero, 1, Player.Position.y + randPos.y, GetBathBombType());
     }
 }

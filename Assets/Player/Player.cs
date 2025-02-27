@@ -211,7 +211,7 @@ public partial class Player : Entity
     {
         for(int i = 0; i < 30; i++)
         {
-            Projectile.NewProjectile(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 7, 0, 0);
+            Projectile.LegacyNewProjectile(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 7, 0, 0);
         }
         IFrame = 200;
         SpentBonusLives++;
