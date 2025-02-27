@@ -11,7 +11,7 @@ public class PowerUpLayout : MonoBehaviour
     public List<PowerUpUIElement> PowerUpElems;
     public Canvas myCanvas;
     public bool isInGameLayout;
-    public void Update()
+    public void FixedUpdate()
     {
         if(isInGameLayout)
         {

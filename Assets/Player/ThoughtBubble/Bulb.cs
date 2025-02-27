@@ -1,18 +1,21 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Bulb : Hat
 {
     public Sprite OnBulb;
     public Sprite OffBulb;
-    public override UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
+    public Light2D light2d;
+    public override UnlockCondition UnlockCondition => UnlockCondition.Get<ChoiceUnlock200>();
     public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
     {
         base.ModifyUIOffsets(ref offset, ref rotation, ref scale);
         scale *= 2.2f;
-        offset.y -= 0.3f;
-        offset.x = 0.1f;
+        offset.y -= 0.25f;
+        offset.x = 0.075f;
+        light2d.gameObject.SetActive(false);
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
@@ -33,7 +36,9 @@ public class Bulb : Hat
         {
             spriteRender.flipX = !p.BodyR.flipY;
         }
-        spriteRender.sprite = OnBulb; 
+        spriteRender.sprite = OnBulb;
+        light2d.intensity = Mathf.Lerp(light2d.intensity, 1, 0.08f);
+        light2d.gameObject.SetActive(true);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r - 10 * p.Direction, 0.2f));
         velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
@@ -62,7 +67,13 @@ public class Bulb : Hat
             velocity.x *= 0.998f;
             velocity.y -= 0.005f;
         }
-        spriteRender.sprite = Mathf.Abs(velocity.y) > 0.032f ? OnBulb : OffBulb;
+        bool on = Mathf.Abs(velocity.y) > 0.032f;
+        if (on)
+            light2d.intensity = Mathf.Lerp(light2d.intensity, 1, 0.08f);
+        if (!on)
+            light2d.intensity = Mathf.Lerp(light2d.intensity, 0, 0.08f);
+        spriteRender.sprite = on ? OnBulb : OffBulb;
+        light2d.gameObject.SetActive(on);
         transform.localPosition = (Vector2)transform.localPosition + velocity;
         float deathAngle = 90 * Mathf.Min(p.DeathKillTimer / 100f, 1);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, (deathAngle - 20) * p.Direction, 0.2f));
