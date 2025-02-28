@@ -1,20 +1,27 @@
 using System.Collections.Generic;
+using System.Globalization;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class CharacterSelect : MonoBehaviour
 {
     public class EquipmentPage
     {
+        public bool IsPrimary = false;
         public int Count => Equips.Count;
-        public EquipmentPage(CharacterSelect charSelect)
+        public EquipmentPage(CharacterSelect charSelect, bool isPrimary)
         {
             this.charSelect = charSelect;
+            IsPrimary = isPrimary;
         }
         public CharacterSelect charSelect;
         public List<EquipmentUIElement> Equips = new List<EquipmentUIElement>();
         public bool IsOpen = false;
+        public int PreviousType = -1;
+        public GameObject hoveringElement, prevHoveringElement;
+        public bool NewHovering => hoveringElement != prevHoveringElement;
         /// </summary>
         /// <param name="equipmentType"></param>
         public void Open(EquipmentUIElement parent, List<GameObject> Equipments)
@@ -37,11 +44,18 @@ public class CharacterSelect : MonoBehaviour
                 Equips.RemoveAt(i);
             }
             IsOpen = false;
+            if(this == charSelect.PrimaryPage)
+            {
+                charSelect.SecondaryPage.Close();
+            }
         }
         public void Add(EquipmentUIElement parent, Equipment equipment)
         {
             EquipmentUIElement ui = Instantiate(charSelect.EquipmentUISlotPrefab, charSelect.visual.transform);
-            ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * Count, 0);
+            if(IsPrimary)
+                ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * Count, 0);
+            else
+                ui.transform.localPosition = parent.transform.localPosition + new Vector3(180 * Count, -180);
             ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
             charSelect.RenderBox(ui,  equipment);
             Equips.Add(ui);
@@ -67,19 +81,17 @@ public class CharacterSelect : MonoBehaviour
     public List<GameObject> Accessories;
     public List<GameObject> Weapons;
     public List<GameObject> Characters;
+    public List<GameObject> AllEquipmentsList = new List<GameObject>();
     private Canvas myCanvas;
-    private EquipmentPage SubPage;
+    private EquipmentPage SecondaryPage;
     private EquipmentPage PrimaryPage;
     private List<PowerUpUIElement> AvailablePowersUI = new();
-    private int prevPressedButton = -1;
-    private GameObject hoveringElement, prevHoveringElement;
-    private bool NewHovering  => hoveringElement != prevHoveringElement;
     private bool PowerUpPageIsOpen = false;
     public bool HasLoaded = false;
     public void Start()
     {
-        SubPage = new EquipmentPage(this);
-        PrimaryPage = new EquipmentPage(this);
+        SecondaryPage = new EquipmentPage(this, false);
+        PrimaryPage = new EquipmentPage(this, true);
         PowerUpLayout.MenuLayout = PowerLayout;
         PrimaryEquipments[0] = Hats;
         PrimaryEquipments[1] = Accessories;
@@ -87,13 +99,23 @@ public class CharacterSelect : MonoBehaviour
         PrimaryEquipments[3] = Characters;
         myCanvas = GetComponent<Canvas>();
         HasLoaded = false;
-        //for(int j = 0; j < 4; j++)
-        //{
-        //    for(int i = 0; i < PrimaryEquipments[j].Length; ++i)
-        //    {
-        //        PrimaryEquipments[j][i].GetComponent<Equipment>().myEquipmentIndex = i;
-        //    }
-        //}
+        for(int j = 0; j < PrimaryEquipments.Length; j++)
+        {
+            for(int i = 0; i < PrimaryEquipments[j].Count; ++i)
+            {
+                Equipment equip = PrimaryEquipments[j][i].GetComponent<Equipment>();
+                equip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
+                AllEquipmentsList.Add(equip.gameObject);
+                if (equip.SubEquipment != null)
+                {
+                    for(int k = 0; k < equip.SubEquipment.Count; k++)
+                    {
+                        equip.SubEquipment[k].GetComponent<Equipment>().IndexInTheAllEquipPool = AllEquipmentsList.Count;
+                        AllEquipmentsList.Add(equip.SubEquipment[k]);
+                    }
+                }
+            }
+        }
         InitializeMainButtons();
     }
     public void Update()
@@ -119,59 +141,72 @@ public class CharacterSelect : MonoBehaviour
         bool hasOpenPageAlready = false;
         for (int i = 0; i < 4; i++) 
         {
-            MainButtons[i].UpdateActive(myCanvas, out bool hovering, out bool clicked);
-            bool openPage = clicked;
-            if(hovering)
-            {
-                hoveringElement = MainButtons[i].gameObject;
-                if (NewHovering)
-                    openPage = true;
-            }
-            else if(hoveringElement == MainButtons[i].gameObject && !PrimaryPage.IsOpen)
-                hoveringElement = null;
-            if (openPage && !hasOpenPageAlready)
-            {
+            if (UISlotUpdate(MainButtons[i], PrimaryPage, i, !hasOpenPageAlready))
                 hasOpenPageAlready = true;
-                bool justClosed = false;
-                if (PrimaryPage.Count > 0)
-                {
-                    justClosed = true;
-                    PrimaryPage.Close();
-                }
-                if(!justClosed || i != prevPressedButton)
-                {
-                    PrimaryPage.Open(MainButtons[i], PrimaryEquipments[i]);
-                    Debug.Log("Opened Page");
-                }
-                prevPressedButton = i;
-            }
         }
         for(int i = 0; i < PrimaryPage.Count; i++)
         {
-            EquipmentUIElement slot = PrimaryPage.Equips[i];
-            slot.UpdateActive(myCanvas, out bool hovering, out bool clicked);
-            //if (hovering)
-            //{
-            //    hoveringElement = slot.gameObject;
-            //    if (NewHovering)
-            //        openPage = true;
-            //}
-            //else if (hoveringElement == slot.gameObject && !EquipmentPageOpen)
-            //    hoveringElement = null;
-            if (clicked && !hasOpenPageAlready && slot.Unlocked)
-            {
+            if (UISlotUpdate(PrimaryPage.Equips[i], SecondaryPage, i, !hasOpenPageAlready))
                 hasOpenPageAlready = true;
-                UpdateSelectedEquipmentBox(slot.ActiveEquipment.OriginalPrefab);
-                //OPEN SUBEQUIPMENT SLOTS
-                PrimaryPage.Close();
-            }
         }
-        prevHoveringElement = hoveringElement;
+        for (int i = 0; i < SecondaryPage.Count; i++)
+        {
+            if (UISlotUpdate(SecondaryPage.Equips[i], null, i, false))
+                hasOpenPageAlready = true;
+        }
+        PrimaryPage.prevHoveringElement = PrimaryPage.hoveringElement;
+        SecondaryPage.prevHoveringElement = SecondaryPage.hoveringElement;
         if(!PowerUpPageIsOpen)
         {
             PowerLayout.Generate(PowerUp.AvailablePowers);
             PowerUpPageIsOpen = true;
         }
+    }
+    public bool UISlotUpdate(EquipmentUIElement slot, EquipmentPage page, int index, bool AllowOpeningPage)
+    {
+        slot.UpdateActive(myCanvas, out bool hovering, out bool clicked);
+        bool openPage = page == PrimaryPage ? clicked : false;
+        if(page != null)
+        {
+            if (hovering)
+            {
+                page.hoveringElement = slot.gameObject;
+                if (page.NewHovering)
+                    openPage = true;
+            }
+            else if (page.hoveringElement == slot.gameObject && !page.IsOpen)
+                page.hoveringElement = null;
+        }
+        if (openPage && AllowOpeningPage)
+        {
+            if(page != null)
+            {
+                bool justClosed = false;
+                if (page.Count > 0)
+                {
+                    justClosed = true;
+                    page.Close();
+                }
+                if (!justClosed || index != page.PreviousType)
+                {
+                    if (page == PrimaryPage)
+                        page.Open(slot, PrimaryEquipments[index]);
+                    else
+                        page.Open(slot, slot.ActiveEquipment.OriginalPrefab.SubEquipment);
+                }
+                page.PreviousType = index;
+            }
+            return true;
+        }
+        if(page != PrimaryPage)
+        {
+            if(clicked && slot.Unlocked)
+            {
+                UpdateSelectedEquipmentBox(slot.ActiveEquipment.OriginalPrefab);
+                PrimaryPage.Close();
+            }
+        }
+        return false;
     }
     public void UpdateSelectedEquipmentBox(Equipment equipPrefab)
     {
@@ -271,9 +306,5 @@ public class CharacterSelect : MonoBehaviour
         foreach(Transform t in obj.GetComponentsInChildren<Transform>())
             t.gameObject.layer = UILayer;
         return obj;
-    }
-    public void OpenSecondaryEquipmentSlots(EquipmentUIElement parent)
-    {
-        SubPage.Open(parent, parent.ActiveEquipment.SubEquipment);
     }
 }

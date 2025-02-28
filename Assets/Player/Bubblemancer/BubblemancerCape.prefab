@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7956459227241470557}
   - component: {fileID: 5891907047205517628}
   m_Layer: 3
-  m_Name: Cape
+  m_Name: BubblemancerCape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,9 +100,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SubEquipment:
-  - {fileID: 2132375691569730818, guid: 88b3ca26d0245474896a68c13bff6ef7, type: 3}
+  - {fileID: 1946491136762909545, guid: 88b3ca26d0245474896a68c13bff6ef7, type: 3}
+  OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 7956459227241470557}
   velocity: {x: 0, y: 0}
+  hasInit: 0
   CapeB: {fileID: 1946491136762909545}
   CapeL: {fileID: 3208484516123435328}
   CapeR: {fileID: 3967729728672570375}

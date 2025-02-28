@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8973945380139369154}
   - component: {fileID: 5929372085670736113}
   m_Layer: 3
-  m_Name: Wand
+  m_Name: BubblemancerWand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,9 +98,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SubEquipment:
-  - {fileID: 4503938881933358564, guid: 4ee10e6ca7971ca4683e9a86ad747cf3, type: 3}
+  - {fileID: 7462284700642931094, guid: 4ee10e6ca7971ca4683e9a86ad747cf3, type: 3}
+  OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 8973945380139369154}
   velocity: {x: 0, y: 0}
+  hasInit: 0
   AttackLeft: 0
   AttackRight: 0
   WandEulerAngles: {x: 0, y: 0, z: 0}

@@ -3,6 +3,26 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
+    public static Player p => Player.Instance;
+    private static List<PowerUp> PowerPool = new();
+    private string InternalName = null;
+    public List<GameObject> SubEquipment = new();
+    public Equipment OriginalPrefab = null;
+    public SpriteRenderer spriteRender;
+    public Vector2 velocity;
+    public bool hasInit = false;
+    public int IndexInTheAllEquipPool
+    {
+        get
+        {
+            return OriginalPrefab == null ? myIndexInAllEquipPool : OriginalPrefab.IndexInTheAllEquipPool;
+        }
+        set
+        {
+            myIndexInAllEquipPool = value;
+        }
+    }
+    private int myIndexInAllEquipPool;
     public string TypeName { 
         get
         {
@@ -15,10 +35,6 @@ public class Equipment : MonoBehaviour
             InternalName = value;
         }
     }
-    private string InternalName = null;
-    private static List<PowerUp> PowerPool = new();
-    public List<GameObject> SubEquipment = new();
-    public Equipment OriginalPrefab = null;
     public static void ModifyPowerPoolAll()
     {
         PowerUp.ResetPowerAvailability();
@@ -58,10 +74,6 @@ public class Equipment : MonoBehaviour
     {
         return "Temporary Equipment Description";
     }
-    public static Player p => Player.Instance;
-    public SpriteRenderer spriteRender;
-    public Vector2 velocity;
-    public bool hasInit = false;
     public void AliveUpdate()
     {
         if(!hasInit)
