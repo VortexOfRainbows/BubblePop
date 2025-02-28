@@ -186,7 +186,7 @@ public partial class Player : Entity
         Wand.DeadUpdate();
         Cape.DeadUpdate();
         DeathKillTimer++;
-        if(Input.GetKey(KeyCode.R))
+        if(Input.GetKey(KeyCode.R) && UnlockCondition.ForceUnlockAll)
         {
             DeathKillTimer = 0;
             //Body.SetActive(true);

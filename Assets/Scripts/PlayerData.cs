@@ -28,13 +28,4 @@ public static class PlayerData
     {
         return PlayerPrefs.GetInt(tag);
     }
-    public static void SaveEquipmentData(string tag, Body.EquipSaveData value)
-    {
-        PlayerPrefs.SetInt(tag, value.Type);
-        PlayerPrefs.SetInt(tag + "Cat", value.ParentCategory);
-    }
-    public static Body.EquipSaveData LoadEquipmentData(string tag)
-    {
-        return new Body.EquipSaveData(PlayerPrefs.GetInt(tag), PlayerPrefs.GetInt(tag + "Cat"));
-    }
 }

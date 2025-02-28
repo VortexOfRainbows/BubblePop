@@ -1,9 +1,5 @@
 using System.Collections.Generic;
-using System.Globalization;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class CharacterSelect : MonoBehaviour
 {
@@ -75,7 +71,7 @@ public class CharacterSelect : MonoBehaviour
     public PowerUpLayout PowerLayout;
     public GameObject visual;
     public const int UILayer = 5;
-    public EquipmentUIElement[] MainButtons;
+    public EquipmentUIElement[] DisplayBoxes;
     public List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
     public List<GameObject> Hats;
     public List<GameObject> Accessories;
@@ -123,8 +119,8 @@ public class CharacterSelect : MonoBehaviour
         if(!HasLoaded)
         {
             HasLoaded = true;
-            //LoadData();
-            //UpdateSelectedEquipmentBox(3, LastSelectedBody);
+            LoadData();
+            UpdateSelectedEquipmentBox(LastSelectedBody);
         }
         if (UIManager.StartingScreen)
             visual.SetActive(true);
@@ -141,7 +137,7 @@ public class CharacterSelect : MonoBehaviour
         bool hasOpenPageAlready = false;
         for (int i = 0; i < 4; i++) 
         {
-            if (UISlotUpdate(MainButtons[i], PrimaryPage, i, !hasOpenPageAlready))
+            if (UISlotUpdate(DisplayBoxes[i], PrimaryPage, i, !hasOpenPageAlready))
                 hasOpenPageAlready = true;
         }
         for(int i = 0; i < PrimaryPage.Count; i++)
@@ -220,7 +216,22 @@ public class CharacterSelect : MonoBehaviour
         else if (equipPrefab is Body)
             i = 3;
         SwapPlayerEquipment(equipPrefab);
-        RenderBox(MainButtons[i], equipPrefab);
+        RenderBox(DisplayBoxes[i], equipPrefab);
+    }
+    public void UpdateSelectedEquipmentBox(int AllIndex)
+    {
+        Equipment equipPrefab = AllEquipmentsList[AllIndex].GetComponent<Equipment>();
+        int i = -1;
+        if (equipPrefab is Hat)
+            i = 0;
+        else if (equipPrefab is Accessory)
+            i = 1;
+        else if (equipPrefab is Weapon)
+            i = 2;
+        else if (equipPrefab is Body)
+            i = 3;
+        SwapPlayerEquipment(equipPrefab);
+        RenderBox(DisplayBoxes[i], equipPrefab);
     }
     public void SwapPlayerEquipment(Equipment equipPrefab)
     {
@@ -253,13 +264,24 @@ public class CharacterSelect : MonoBehaviour
         Debug.Log(equip);
         equip.AliveUpdate();
         if (i == 0)
+        {
             Player.Instance.Hat = equip as Hat;
+            Player.Instance.Body.LastSelectedHat = equip.IndexInTheAllEquipPool;
+        }
         if (i == 1)
+        {
             Player.Instance.Cape = equip as Accessory;
+            Player.Instance.Body.LastSelectedAcc = equip.IndexInTheAllEquipPool;
+        }
         if (i == 2)
+        {
             Player.Instance.Wand = equip as Weapon;
+            Player.Instance.Body.LastSelectedWep = equip.IndexInTheAllEquipPool;
+        }
         if (i == 3)
+        {
             SwapBody(oldEquipment.GetComponent<Equipment>() as Body, equip as Body);
+        }
         SaveCurrentSelects();
         Destroy(oldEquipment);
         PowerLayout.Generate(PowerUp.AvailablePowers);
@@ -267,27 +289,23 @@ public class CharacterSelect : MonoBehaviour
     public void SwapBody(Body oldBody, Body newBody)
     {
         Player.Instance.Body = newBody;
-        //newBody.LoadData();
-        //UpdateSelectedEquipmentBox(0, newBody.LastSelectedHat.Type);
-        //UpdateSelectedEquipmentBox(1, newBody.LastSelectedAcc.Type);
-        //UpdateSelectedEquipmentBox(2, newBody.LastSelectedWep.Type);
-        // LastSelectedBody = newBody.myEquipmentIndex;
-        //SaveCurrentSelects();
+        newBody.LoadData();
+        UpdateSelectedEquipmentBox(newBody.LastSelectedHat);
+        UpdateSelectedEquipmentBox(newBody.LastSelectedAcc);
+        UpdateSelectedEquipmentBox(newBody.LastSelectedWep);
+        LastSelectedBody = newBody.IndexInTheAllEquipPool;
+        SaveCurrentSelects();
     }
     public void SaveCurrentSelects()
     {
-        Body body = Player.Instance.Body;
-        //body.LastSelectedHatType = Player.Instance.Hat.myEquipmentIndex;
-        //body.LastSelectedAccType = Player.Instance.Cape.myEquipmentIndex;
-        //body.LastSelectedWepType = Player.Instance.Wand.myEquipmentIndex;
-        //body.SaveData();
+        Player.Instance.Body.SaveData();
         SaveData();
     }
     public void InitializeMainButtons()
     {
         for (int i = 0; i < 4; i++)
         {
-            RenderBox(MainButtons[i], PrimaryEquipments[i][0].GetComponent<Equipment>());
+            RenderBox(DisplayBoxes[i], PrimaryEquipments[i][0].GetComponent<Equipment>());
         }
     }
     public void RenderBox(EquipmentUIElement uiElem, Equipment equipmentToRender)

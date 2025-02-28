@@ -194,7 +194,7 @@ MonoBehaviour:
   EquipmentUISlotPrefab: {fileID: 827946258357719481, guid: 8b6a7577c1446004b8a72cbbc03174c7, type: 3}
   PowerLayout: {fileID: 7175752992377758916}
   visual: {fileID: 8072074900162673644}
-  MainButtons:
+  DisplayBoxes:
   - {fileID: 2217727480356087716}
   - {fileID: 7909803367287900046}
   - {fileID: 5932755871299263339}
@@ -210,6 +210,7 @@ MonoBehaviour:
   Characters:
   - {fileID: 8132037870103020878, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
   - {fileID: 8132037870103020878, guid: 82c5e4272ac2b6141bc30d305bdeef47, type: 3}
+  AllEquipmentsList: []
   HasLoaded: 0
 --- !u!1 &1360845014166193570
 GameObject:
