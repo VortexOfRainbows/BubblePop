@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 
 public static class PlayerData
 {
@@ -26,5 +27,14 @@ public static class PlayerData
     public static int GetInt(string tag)
     {
         return PlayerPrefs.GetInt(tag);
+    }
+    public static void SaveEquipmentData(string tag, Body.EquipSaveData value)
+    {
+        PlayerPrefs.SetInt(tag, value.Type);
+        PlayerPrefs.SetInt(tag + "Cat", value.ParentCategory);
+    }
+    public static Body.EquipSaveData LoadEquipmentData(string tag)
+    {
+        return new Body.EquipSaveData(PlayerPrefs.GetInt(tag), PlayerPrefs.GetInt(tag + "Cat"));
     }
 }

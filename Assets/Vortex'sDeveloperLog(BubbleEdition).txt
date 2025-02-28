@@ -23,7 +23,13 @@ Need to do:
 
 10. Make characters show their currently selected equipment before equipping
 
+11. Equipments store a reference to their original prefab when replicated, that way they can have persistent data stored on the prefab
+	1. Procedurally generate index for them to use
+
 Done:
+
+2/28/25
+1. WIP Character selection internal overhaul
 
 2/27/25
 1. Small rework to the projectile class to make it better

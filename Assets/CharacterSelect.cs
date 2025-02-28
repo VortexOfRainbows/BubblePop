@@ -1,11 +1,52 @@
-using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class CharacterSelect : MonoBehaviour
 {
+    public class EquipmentPage
+    {
+        public int Count => Equips.Count;
+        public EquipmentPage(CharacterSelect charSelect)
+        {
+            this.charSelect = charSelect;
+        }
+        public CharacterSelect charSelect;
+        public List<EquipmentUIElement> Equips = new List<EquipmentUIElement>();
+        public bool IsOpen = false;
+        /// </summary>
+        /// <param name="equipmentType"></param>
+        public void Open(EquipmentUIElement parent, List<GameObject> Equipments)
+        {
+            Close();
+            for (int j = 0; j < Equipments.Count; j++)
+            {
+                Add(parent, Equipments[j].GetComponent<Equipment>());
+            }
+            IsOpen = true;
+        }
+        /// <summary>
+        /// Closes the equipment page.
+        /// </summary>
+        public void Close()
+        {
+            for (int i = Equips.Count - 1; i >= 0; --i)
+            {
+                Destroy(Equips[i].gameObject);
+                Equips.RemoveAt(i);
+            }
+            IsOpen = false;
+        }
+        public void Add(EquipmentUIElement parent, Equipment equipment)
+        {
+            EquipmentUIElement ui = Instantiate(charSelect.EquipmentUISlotPrefab, charSelect.visual.transform);
+            ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * Count, 0);
+            ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
+            charSelect.RenderBox(ui,  equipment);
+            Equips.Add(ui);
+        }
+    }
     public void SaveData()
     {
         PlayerData.SaveInt("LastSelectedChar", LastSelectedBody);
@@ -20,47 +61,48 @@ public class CharacterSelect : MonoBehaviour
     public PowerUpLayout PowerLayout;
     public GameObject visual;
     public const int UILayer = 5;
-    public GameObject[][] Equipments = new GameObject[4][];
-    public GameObject[] Hats;
-    public GameObject[] Accessories;
-    public GameObject[] Weapons;
-    public GameObject[] Characters;
+    public EquipmentUIElement[] MainButtons;
+    public List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
+    public List<GameObject> Hats;
+    public List<GameObject> Accessories;
+    public List<GameObject> Weapons;
+    public List<GameObject> Characters;
     private Canvas myCanvas;
-    public EquipmentUIElement[] UIElems;
-    private List<EquipmentUIElement> SubEquipmentPage = new();
-    private List<EquipmentUIElement> EquipmentPage = new();
+    private EquipmentPage SubPage;
+    private EquipmentPage PrimaryPage;
     private List<PowerUpUIElement> AvailablePowersUI = new();
     private int prevPressedButton = -1;
     private GameObject hoveringElement, prevHoveringElement;
-    private bool NewHovering => hoveringElement != prevHoveringElement;
-    private bool EquipmentPageOpen = false;
+    private bool NewHovering  => hoveringElement != prevHoveringElement;
     private bool PowerUpPageIsOpen = false;
+    public bool HasLoaded = false;
     public void Start()
     {
+        SubPage = new EquipmentPage(this);
+        PrimaryPage = new EquipmentPage(this);
         PowerUpLayout.MenuLayout = PowerLayout;
-        Equipments[0] = Hats;
-        Equipments[1] = Accessories;
-        Equipments[2] = Weapons;
-        Equipments[3] = Characters;
+        PrimaryEquipments[0] = Hats;
+        PrimaryEquipments[1] = Accessories;
+        PrimaryEquipments[2] = Weapons;
+        PrimaryEquipments[3] = Characters;
         myCanvas = GetComponent<Canvas>();
-        RenderBoxes();
         HasLoaded = false;
-        for(int j = 0; j < 4; j++)
-        {
-            for(int i = 0; i < Equipments[j].Length; ++i)
-            {
-                Equipments[j][i].GetComponent<Equipment>().myEquipmentIndex = i;
-            }
-        }
+        //for(int j = 0; j < 4; j++)
+        //{
+        //    for(int i = 0; i < PrimaryEquipments[j].Length; ++i)
+        //    {
+        //        PrimaryEquipments[j][i].GetComponent<Equipment>().myEquipmentIndex = i;
+        //    }
+        //}
+        InitializeMainButtons();
     }
-    public bool HasLoaded = false;
     public void Update()
     {
         if(!HasLoaded)
         {
             HasLoaded = true;
-            LoadData();
-            UpdateSelectedEquipmentBox(3, LastSelectedBody);
+            //LoadData();
+            //UpdateSelectedEquipmentBox(3, LastSelectedBody);
         }
         if (UIManager.StartingScreen)
             visual.SetActive(true);
@@ -77,36 +119,37 @@ public class CharacterSelect : MonoBehaviour
         bool hasOpenPageAlready = false;
         for (int i = 0; i < 4; i++) 
         {
-            UIElems[i].UpdateActive(myCanvas, out bool hovering, out bool clicked);
+            MainButtons[i].UpdateActive(myCanvas, out bool hovering, out bool clicked);
             bool openPage = clicked;
             if(hovering)
             {
-                hoveringElement = UIElems[i].gameObject;
+                hoveringElement = MainButtons[i].gameObject;
                 if (NewHovering)
                     openPage = true;
             }
-            else if(hoveringElement == UIElems[i].gameObject && !EquipmentPageOpen)
+            else if(hoveringElement == MainButtons[i].gameObject && !PrimaryPage.IsOpen)
                 hoveringElement = null;
             if (openPage && !hasOpenPageAlready)
             {
                 hasOpenPageAlready = true;
                 bool justClosed = false;
-                if (EquipmentPage.Count > 0)
+                if (PrimaryPage.Count > 0)
                 {
                     justClosed = true;
-                    CloseEquipmentPage();
+                    PrimaryPage.Close();
                 }
                 if(!justClosed || i != prevPressedButton)
-                    OpenEquipmentPage(i);
+                {
+                    PrimaryPage.Open(MainButtons[i], PrimaryEquipments[i]);
+                    Debug.Log("Opened Page");
+                }
                 prevPressedButton = i;
             }
         }
-        for(int i = 0; i < EquipmentPage.Count; i++)
+        for(int i = 0; i < PrimaryPage.Count; i++)
         {
-            EquipmentUIElement slot = EquipmentPage[i];
-            int parent = slot.ParentEquipSlot;
+            EquipmentUIElement slot = PrimaryPage.Equips[i];
             slot.UpdateActive(myCanvas, out bool hovering, out bool clicked);
-            bool openPage = clicked;
             //if (hovering)
             //{
             //    hoveringElement = slot.gameObject;
@@ -115,11 +158,12 @@ public class CharacterSelect : MonoBehaviour
             //}
             //else if (hoveringElement == slot.gameObject && !EquipmentPageOpen)
             //    hoveringElement = null;
-            if (openPage && !hasOpenPageAlready && slot.Unlocked)
+            if (clicked && !hasOpenPageAlready && slot.Unlocked)
             {
                 hasOpenPageAlready = true;
-                UpdateSelectedEquipmentBox(parent, slot.ActiveEquipmentType);
-                CloseEquipmentPage();
+                UpdateSelectedEquipmentBox(slot.ActiveEquipment.OriginalPrefab);
+                //OPEN SUBEQUIPMENT SLOTS
+                PrimaryPage.Close();
             }
         }
         prevHoveringElement = hoveringElement;
@@ -129,74 +173,58 @@ public class CharacterSelect : MonoBehaviour
             PowerUpPageIsOpen = true;
         }
     }
-    public void UpdateSelectedEquipmentBox(int equipSlot, int newType)
+    public void UpdateSelectedEquipmentBox(Equipment equipPrefab)
     {
-        UIElems[equipSlot].ActiveEquipmentType = newType;
-        SwapPlayerEquipment(UIElems[equipSlot].ParentEquipSlot);
-        RenderBox(UIElems[equipSlot]);
+        int i = -1;
+        if (equipPrefab is Hat)
+            i = 0;
+        else if (equipPrefab is Accessory)
+            i = 1;
+        else if (equipPrefab is Weapon)
+            i = 2;
+        else if (equipPrefab is Body)
+            i = 3;
+        SwapPlayerEquipment(equipPrefab);
+        RenderBox(MainButtons[i], equipPrefab);
     }
-    /// </summary>
-    /// <param name="equipmentType"></param>
-    public void OpenEquipmentPage(int equipmentType)
-    {
-        for (int j = 0; j < Equipments[equipmentType].Length; j++)
-        {
-            AddNewEquipmentBox(UIElems[equipmentType], j);
-        }
-        EquipmentPageOpen = true;
-    }
-    /// <summary>
-    /// Closes the equipment page.
-    /// </summary>
-    public void CloseEquipmentPage()
-    {
-        for (int i = EquipmentPage.Count - 1; i >= 0; --i)
-        {
-            Destroy(EquipmentPage[i].gameObject);
-            EquipmentPage.RemoveAt(i);
-        }
-        EquipmentPageOpen = false;
-    }
-    public void SwapPlayerEquipment(int i)
+    public void SwapPlayerEquipment(Equipment equipPrefab)
     {
         Equipment equip = null;
-        if (i == 0)
+        int i = -1;
+        if (equipPrefab is Hat)
+        {
+            i = 0;
             equip = Player.Instance.Hat;
-        if (i == 1)
+        }
+        else if (equipPrefab is Accessory)
+        {
+            i = 1;
             equip = Player.Instance.Cape;
-        if (i == 2)
+        }
+        else if (equipPrefab is Weapon)
+        {
+            i = 2;
             equip = Player.Instance.Wand;
-        if (i == 3)
+        }
+        else if (equipPrefab is Body)
+        {
+            i = 3;
             equip = Player.Instance.Body;
+        }
 
-        int equipmentType = UIElems[i].ActiveEquipmentType;
-        GameObject equipmentPrefab = Equipments[i] //Select whether this is a hat, accessory, weapon, or body element
-            [equipmentType]; //Which type of hat, accessory, weapon, or body element is this?
         GameObject oldEquipment = equip.gameObject;
-        equip = Instantiate(equipmentPrefab, Player.Instance.transform).GetComponent<Equipment>();
-        equip.myEquipmentIndex = equipmentType;
+        equip = Instantiate(equipPrefab, Player.Instance.transform).GetComponent<Equipment>();
+        equip.OriginalPrefab = equipPrefab;
         Debug.Log(equip);
         equip.AliveUpdate();
         if (i == 0)
-        {
             Player.Instance.Hat = equip as Hat;
-            Player.Instance.Body.LastSelectedHatType = equipmentType;
-        }
         if (i == 1)
-        {
             Player.Instance.Cape = equip as Accessory;
-            Player.Instance.Body.LastSelectedAccType = equipmentType;
-
-        }
         if (i == 2)
-        {
             Player.Instance.Wand = equip as Weapon;
-            Player.Instance.Body.LastSelectedWepType = equipmentType;
-        }
         if (i == 3)
-        {
             SwapBody(oldEquipment.GetComponent<Equipment>() as Body, equip as Body);
-        }
         SaveCurrentSelects();
         Destroy(oldEquipment);
         PowerLayout.Generate(PowerUp.AvailablePowers);
@@ -204,12 +232,12 @@ public class CharacterSelect : MonoBehaviour
     public void SwapBody(Body oldBody, Body newBody)
     {
         Player.Instance.Body = newBody;
-        newBody.LoadData();
-        UpdateSelectedEquipmentBox(0, newBody.LastSelectedHatType);
-        UpdateSelectedEquipmentBox(1, newBody.LastSelectedAccType);
-        UpdateSelectedEquipmentBox(2, newBody.LastSelectedWepType);
-        LastSelectedBody = newBody.myEquipmentIndex;
-        SaveCurrentSelects();
+        //newBody.LoadData();
+        //UpdateSelectedEquipmentBox(0, newBody.LastSelectedHat.Type);
+        //UpdateSelectedEquipmentBox(1, newBody.LastSelectedAcc.Type);
+        //UpdateSelectedEquipmentBox(2, newBody.LastSelectedWep.Type);
+        // LastSelectedBody = newBody.myEquipmentIndex;
+        //SaveCurrentSelects();
     }
     public void SaveCurrentSelects()
     {
@@ -217,43 +245,35 @@ public class CharacterSelect : MonoBehaviour
         //body.LastSelectedHatType = Player.Instance.Hat.myEquipmentIndex;
         //body.LastSelectedAccType = Player.Instance.Cape.myEquipmentIndex;
         //body.LastSelectedWepType = Player.Instance.Wand.myEquipmentIndex;
-        body.SaveData();
+        //body.SaveData();
         SaveData();
     }
-    public void AddNewEquipmentBox(EquipmentUIElement parent, int index)
-    {
-        EquipmentUIElement ui = Instantiate(EquipmentUISlotPrefab, visual.transform);
-        ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * EquipmentPage.Count, 0);
-        ui.ParentEquipSlot = parent.ParentEquipSlot;
-        ui.ActiveEquipmentType = index;
-        ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
-        RenderBox(ui);
-        EquipmentPage.Add(ui);
-    }
-    public void RenderBoxes()
+    public void InitializeMainButtons()
     {
         for (int i = 0; i < 4; i++)
         {
-            UIElems[i].ParentEquipSlot = i;
-            RenderBox(UIElems[i]);
+            RenderBox(MainButtons[i], PrimaryEquipments[i][0].GetComponent<Equipment>());
         }
     }
-    public void RenderBox(EquipmentUIElement uiElem)
+    public void RenderBox(EquipmentUIElement uiElem, Equipment equipmentToRender)
     {
         if(uiElem.ActiveEquipment != null)
             Destroy(uiElem.ActiveEquipment.gameObject);
-        uiElem.ActiveEquipment = RenderSingular(Equipments[uiElem.ParentEquipSlot][uiElem.ActiveEquipmentType], uiElem.Visual);
+        uiElem.ActiveEquipment = GenerateEquipment(equipmentToRender, uiElem.Visual);
         uiElem.UpdateOrientation();
     }
-    public Equipment RenderSingular(GameObject prefab, GameObject parent)
+    public Equipment GenerateEquipment(Equipment prefab, GameObject parent)
     {
-        Equipment obj = Instantiate(prefab.GetComponent<Equipment>(), parent.transform);
+        Equipment obj = Instantiate(prefab, parent.transform);
         obj.gameObject.layer = UILayer;
         obj.transform.localPosition = Vector3.zero;
+        obj.OriginalPrefab = prefab;
         foreach(Transform t in obj.GetComponentsInChildren<Transform>())
-        {
             t.gameObject.layer = UILayer;
-        }
         return obj;
+    }
+    public void OpenSecondaryEquipmentSlots(EquipmentUIElement parent)
+    {
+        SubPage.Open(parent, parent.ActiveEquipment.SubEquipment);
     }
 }

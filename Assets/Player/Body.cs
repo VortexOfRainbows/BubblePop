@@ -4,21 +4,31 @@ using UnityEngine;
 
 public class Body : Equipment
 {
+    public struct EquipSaveData
+    {
+        public int Type;
+        public int ParentCategory;
+        public EquipSaveData(int type, int parent)
+        {
+            Type = type;
+            ParentCategory = parent;
+        }
+    }
     public void SaveData()
     {
-        PlayerData.SaveInt($"{TypeName}Hat", LastSelectedHatType);
-        PlayerData.SaveInt($"{TypeName}Acc", LastSelectedAccType);
-        PlayerData.SaveInt($"{TypeName}Wep", LastSelectedWepType);
+        PlayerData.SaveEquipmentData($"{TypeName}Hat", LastSelectedHat);
+        PlayerData.SaveEquipmentData($"{TypeName}Acc", LastSelectedAcc);
+        PlayerData.SaveEquipmentData($"{TypeName}Wep", LastSelectedWep);
     }
     public void LoadData()
     {
-        LastSelectedHatType = PlayerData.GetInt($"{TypeName}Hat");
-        LastSelectedAccType = PlayerData.GetInt($"{TypeName}Acc");
-        LastSelectedWepType = PlayerData.GetInt($"{TypeName}Wep");
+        LastSelectedHat = PlayerData.LoadEquipmentData($"{TypeName}Hat");
+        LastSelectedAcc = PlayerData.LoadEquipmentData($"{TypeName}Acc");
+        LastSelectedWep = PlayerData.LoadEquipmentData($"{TypeName}Wep");
     }
-    public int LastSelectedHatType = 0;
-    public int LastSelectedAccType = 0;
-    public int LastSelectedWepType = 0;
+    public EquipSaveData LastSelectedHat;
+    public EquipSaveData LastSelectedAcc;
+    public EquipSaveData LastSelectedWep;
     public Color PrimaryColor = ParticleManager.DefaultColor;
     public GameObject Face;
     public SpriteRenderer FaceR;

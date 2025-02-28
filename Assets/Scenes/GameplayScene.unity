@@ -521,9 +521,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4398803498948371710, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
+      propertyPath: SubEquipment.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4793643284589324687, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
+      propertyPath: SubEquipment.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6670607549082870492, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6990591328264648732, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
+      propertyPath: SubEquipment.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7594576432851193269, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
       propertyPath: MainCamera

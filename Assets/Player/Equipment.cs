@@ -17,8 +17,8 @@ public class Equipment : MonoBehaviour
     }
     private string InternalName = null;
     private static List<PowerUp> PowerPool = new();
-    public List<Equipment> SubEquipment = new();
-    public int myEquipmentIndex;
+    public List<GameObject> SubEquipment = new();
+    public Equipment OriginalPrefab = null;
     public static void ModifyPowerPoolAll()
     {
         PowerUp.ResetPowerAvailability();

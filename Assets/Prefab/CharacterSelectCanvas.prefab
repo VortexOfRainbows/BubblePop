@@ -190,29 +190,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28668e1700677940886f05983e0b50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LastSelectedBody: 0
   EquipmentUISlotPrefab: {fileID: 827946258357719481, guid: 8b6a7577c1446004b8a72cbbc03174c7, type: 3}
   PowerLayout: {fileID: 7175752992377758916}
   visual: {fileID: 8072074900162673644}
-  Hats:
-  - {fileID: 4047993882583738873, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
-  - {fileID: 4047993882583738873, guid: d8e3ac15ce6711b4eb88bfb58d6648bd, type: 3}
-  - {fileID: 4047993882583738873, guid: 40faa4fda98c03e4f8174c64dd991267, type: 3}
-  - {fileID: 4047993882583738873, guid: 1f63ba17f8dbc15439ae06b7a750dd20, type: 3}
-  Accessories:
-  - {fileID: 1946491136762909545, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
-  - {fileID: 1946491136762909545, guid: 88b3ca26d0245474896a68c13bff6ef7, type: 3}
-  - {fileID: 1946491136762909545, guid: 4fde2b21b6a1f7d43aa0129cf6aa80c6, type: 3}
-  Weapons:
-  - {fileID: 7462284700642931094, guid: e7d67ac7adef0454a96cab6df826ac8e, type: 3}
-  - {fileID: 7462284700642931094, guid: 4ee10e6ca7971ca4683e9a86ad747cf3, type: 3}
-  Characters:
-  - {fileID: 8132037870103020878, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
-  - {fileID: 8132037870103020878, guid: 82c5e4272ac2b6141bc30d305bdeef47, type: 3}
-  UIElems:
+  MainButtons:
   - {fileID: 2217727480356087716}
   - {fileID: 7909803367287900046}
   - {fileID: 5932755871299263339}
   - {fileID: 3856447319907767268}
+  Hats:
+  - {fileID: 4047993882583738873, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
+  - {fileID: 4047993882583738873, guid: 1f63ba17f8dbc15439ae06b7a750dd20, type: 3}
+  Accessories:
+  - {fileID: 1946491136762909545, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
+  - {fileID: 1946491136762909545, guid: 4fde2b21b6a1f7d43aa0129cf6aa80c6, type: 3}
+  Weapons:
+  - {fileID: 7462284700642931094, guid: e7d67ac7adef0454a96cab6df826ac8e, type: 3}
+  Characters:
+  - {fileID: 8132037870103020878, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
+  - {fileID: 8132037870103020878, guid: 82c5e4272ac2b6141bc30d305bdeef47, type: 3}
+  HasLoaded: 0
 --- !u!1 &1360845014166193570
 GameObject:
   m_ObjectHideFlags: 0
