@@ -6,6 +6,16 @@ using UnityEngine.UI;
 
 public class CharacterSelect : MonoBehaviour
 {
+    public void SaveData()
+    {
+        PlayerData.SaveInt("LastSelectedChar", LastSelectedBody);
+    }
+    public void LoadData()
+    {
+        LastSelectedBody = PlayerData.GetInt("LastSelectedChar");
+    }
+    public int LastSelectedBody = 0;
+
     public EquipmentUIElement EquipmentUISlotPrefab;
     public PowerUpLayout PowerLayout;
     public GameObject visual;
@@ -34,14 +44,34 @@ public class CharacterSelect : MonoBehaviour
         Equipments[3] = Characters;
         myCanvas = GetComponent<Canvas>();
         RenderBoxes();
+        HasLoaded = false;
+        for(int j = 0; j < 4; j++)
+        {
+            for(int i = 0; i < Equipments[j].Length; ++i)
+            {
+                Equipments[j][i].GetComponent<Equipment>().myEquipmentIndex = i;
+            }
+        }
     }
+    public bool HasLoaded = false;
     public void Update()
     {
+        if(!HasLoaded)
+        {
+            HasLoaded = true;
+            LoadData();
+            UpdateSelectedEquipmentBox(3, LastSelectedBody);
+        }
         if (UIManager.StartingScreen)
             visual.SetActive(true);
         else
         {
-            visual.SetActive(false);
+            if(visual.activeSelf)
+            {
+                visual.SetActive(false);
+                SaveData();
+                Player.Instance.Body.SaveData();
+            }
             return;
         }
         bool hasOpenPageAlready = false;
@@ -102,11 +132,9 @@ public class CharacterSelect : MonoBehaviour
     public void UpdateSelectedEquipmentBox(int equipSlot, int newType)
     {
         UIElems[equipSlot].ActiveEquipmentType = newType;
-        RenderBox(UIElems[equipSlot]);
         SwapPlayerEquipment(UIElems[equipSlot].ParentEquipSlot);
+        RenderBox(UIElems[equipSlot]);
     }
-    /// <summary>
-    /// Opens an equipment page. equipmentType: 0 = hat, 1 = accessory, 2 = weapon, 3 = character
     /// </summary>
     /// <param name="equipmentType"></param>
     public void OpenEquipmentPage(int equipmentType)
@@ -140,41 +168,57 @@ public class CharacterSelect : MonoBehaviour
             equip = Player.Instance.Wand;
         if (i == 3)
             equip = Player.Instance.Body;
-        if (equip.GetType() != UIElems[i].ActiveEquipment.GetType())
+
+        int equipmentType = UIElems[i].ActiveEquipmentType;
+        GameObject equipmentPrefab = Equipments[i] //Select whether this is a hat, accessory, weapon, or body element
+            [equipmentType]; //Which type of hat, accessory, weapon, or body element is this?
+        GameObject oldEquipment = equip.gameObject;
+        equip = Instantiate(equipmentPrefab, Player.Instance.transform).GetComponent<Equipment>();
+        equip.myEquipmentIndex = equipmentType;
+        Debug.Log(equip);
+        equip.AliveUpdate();
+        if (i == 0)
         {
-            int equipmentType = UIElems[i].ActiveEquipmentType;
-            GameObject equipmentPrefab = Equipments[i] //Select whether this is a hat, accessory, weapon, or body element
-                [equipmentType]; //Which type of hat, accessory, weapon, or body element is this?
-            GameObject oldEquipment = equip.gameObject;
-            equip = Instantiate(equipmentPrefab, Player.Instance.transform).GetComponent<Equipment>();
-            equip.myEquipmentIndex = equipmentType;
-            Debug.Log(equip);
-            equip.AliveUpdate();
-            if (i == 0)
-                Player.Instance.Hat = equip as Hat; 
-            if (i == 1)      
-                Player.Instance.Cape = equip as Accessory; 
-            if (i == 2)            
-                Player.Instance.Wand = equip as Weapon; 
-            if (i == 3)
-            {
-                SwapBody(oldEquipment.GetComponent<Equipment>() as Body, equip as Body);
-            }
-            Destroy(oldEquipment);
-            PowerLayout.Generate(PowerUp.AvailablePowers);
+            Player.Instance.Hat = equip as Hat;
+            Player.Instance.Body.LastSelectedHatType = equipmentType;
         }
+        if (i == 1)
+        {
+            Player.Instance.Cape = equip as Accessory;
+            Player.Instance.Body.LastSelectedAccType = equipmentType;
+
+        }
+        if (i == 2)
+        {
+            Player.Instance.Wand = equip as Weapon;
+            Player.Instance.Body.LastSelectedWepType = equipmentType;
+        }
+        if (i == 3)
+        {
+            SwapBody(oldEquipment.GetComponent<Equipment>() as Body, equip as Body);
+        }
+        SaveCurrentSelects();
+        Destroy(oldEquipment);
+        PowerLayout.Generate(PowerUp.AvailablePowers);
     }
     public void SwapBody(Body oldBody, Body newBody)
     {
-        oldBody.LastSelectedHatType = Player.Instance.Hat.myEquipmentIndex;
-        oldBody.LastSelectedAccType = Player.Instance.Cape.myEquipmentIndex;
-        oldBody.LastSelectedWepType = Player.Instance.Wand.myEquipmentIndex;
-        oldBody.SaveData();
         Player.Instance.Body = newBody;
         newBody.LoadData();
         UpdateSelectedEquipmentBox(0, newBody.LastSelectedHatType);
         UpdateSelectedEquipmentBox(1, newBody.LastSelectedAccType);
         UpdateSelectedEquipmentBox(2, newBody.LastSelectedWepType);
+        LastSelectedBody = newBody.myEquipmentIndex;
+        SaveCurrentSelects();
+    }
+    public void SaveCurrentSelects()
+    {
+        Body body = Player.Instance.Body;
+        //body.LastSelectedHatType = Player.Instance.Hat.myEquipmentIndex;
+        //body.LastSelectedAccType = Player.Instance.Cape.myEquipmentIndex;
+        //body.LastSelectedWepType = Player.Instance.Wand.myEquipmentIndex;
+        body.SaveData();
+        SaveData();
     }
     public void AddNewEquipmentBox(EquipmentUIElement parent, int index)
     {

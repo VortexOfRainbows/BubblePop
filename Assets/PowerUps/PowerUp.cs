@@ -70,7 +70,7 @@ public abstract class PowerUp
                 }
             }
         }
-        Debug.Log($"Insert {power.Name()} at end");
+        //Debug.Log($"Insert {power.Name()} at end");
         AvailablePowers.Add(power.MyID);
     }
     #region Powerup Datastructure Related Stuff
