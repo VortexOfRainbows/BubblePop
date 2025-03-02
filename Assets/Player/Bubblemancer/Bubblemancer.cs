@@ -12,6 +12,7 @@ public class Bubblemancer : Body
     {
         powerPool.Add<Choice>();
         powerPool.Add<BubbleBirb>();
+        powerPool.Add<BubbleTrail>();
     }
     protected override string Description()
     {

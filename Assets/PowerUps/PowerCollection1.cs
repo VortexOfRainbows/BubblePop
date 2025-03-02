@@ -204,4 +204,30 @@ public class BubbleBirb : PowerUp
         Player.Instance.PickedUpPhoenixLivesThisRound += count;
     }
 }
-
+public class BubbleTrail : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.7f;
+    }
+    protected override string Name() => "Bubble Trail";
+    protected override string Description() => "Periodically release bubbles behind you";
+    public override void HeldEffect(Player p)
+    {
+        p.BubbleTrail += Stack;
+    }
+}
+public class Coalescence : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.3f;
+    }
+    protected override string Name() => "Coalescence";
+    protected override string Description() => "Secondary attack may be charged an additional time\nSlightly increases secondary attack speed";
+    public override void HeldEffect(Player p)
+    {
+        p.Coalescence += Stack;
+        p.SecondaryAttackSpeedModifier += 0.05f * Stack;
+    }
+}

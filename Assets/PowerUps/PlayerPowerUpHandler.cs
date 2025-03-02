@@ -25,7 +25,13 @@ public partial class Player : Entity
             PowerUp p = PowerUp.Get(GetPower(index));
             p.Stack -= num;
             if(p.Stack <= 0)
+            {
                 powers.RemoveAt(index);
+                if (powers.Count < index)
+                {
+                    
+                }
+            }
         }
     }
     public int ChargeShotDamage = 0;
@@ -37,12 +43,17 @@ public partial class Player : Entity
     public int BubbleBlast = 0;
     public int Starshot = 0;
     public float AttackSpeedModifier = 1.0f;
+    public float PrimaryAttackSpeedModifier = 1.0f;
+    public float SecondaryAttackSpeedModifier = 1.0f;
     public int BinaryStars = 0;
     public int EternalBubbles = 0;
 
     public int BonusPhoenixLives = 0;
     public int PickedUpPhoenixLivesThisRound = 0;
     public int SpentBonusLives = 0;
+
+    public int BubbleTrail = 0;
+    public int Coalescence = 0;
 
     private List<int> powers;
     private void PowerInit()
@@ -56,8 +67,8 @@ public partial class Player : Entity
     }
     private void ClearPowerBonuses()
     {
-        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = 0;
-        AttackSpeedModifier = 1.0f;
+        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = Coalescence = 0;
+        AttackSpeedModifier = PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = 1.0f;
     }
     private void UpdatePowerUps()
     {
@@ -74,6 +85,7 @@ public partial class Player : Entity
         UpdateFixed();
     }
     private float BinaryStarTimer = 0.0f;
+    private float BubbleTrailTimer = 0.0f;
     private void UpdateFixed()
     {
         if(BinaryStars > 0)
@@ -81,7 +93,7 @@ public partial class Player : Entity
             BinaryStarTimer -= Time.fixedDeltaTime;
             while(BinaryStarTimer <= 0)
             {
-                BinaryStarTimer = 2f / Mathf.Pow(BinaryStars, 0.75f); //1.0, 1.25, 1.5, 1.75, 2.0
+                BinaryStarTimer += 2f / Mathf.Pow(BinaryStars, 0.75f); //1.0, 1.25, 1.5, 1.75, 2.0
                 Vector2 circular = Utils.RandCircle(1).normalized;
                 float speedMax = 18 + FasterBulletSpeed;
                 for (int i = 0; i < 2; i++)
@@ -95,6 +107,21 @@ public partial class Player : Entity
         else
         {
             BinaryStarTimer = 0;
+        }
+        if(BubbleTrail > 0)
+        {
+            BubbleTrailTimer -= Time.fixedDeltaTime;
+            while (BubbleTrailTimer <= 0)
+            {
+                BubbleTrailTimer += 2f / (BubbleTrail + 3f); //.5, 2/5, 2/6, 2/7, 1/4
+                Vector2 circular = (Utils.RandCircle(1.3f) - lastVelo * 0.4f).normalized;
+                float speedMax = 2 + FasterBulletSpeed * 0.1f;
+                Projectile.NewProjectile<SmallBubble>(transform.position, circular * speedMax);
+            }
+        }
+        else
+        {
+            BubbleTrailTimer = 0;
         }
     }
     public void OnDash(Vector2 velo)

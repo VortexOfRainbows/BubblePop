@@ -156,7 +156,18 @@ public partial class Player : Entity
                 Wand.StartAttack(false);
             else if (Input.GetMouseButton(1))
                 Wand.StartAttack(true);
-            AttackUpdateTimer += AttackSpeedModifier;
+            if (Wand.IsAttacking())
+            {
+                AttackUpdateTimer += AttackSpeedModifier;
+                if(Wand.IsPrimaryAttacking())
+                    AttackUpdateTimer += PrimaryAttackSpeedModifier - 1;
+                if(Wand.IsSecondaryAttacking())
+                    AttackUpdateTimer += SecondaryAttackSpeedModifier - 1;
+            }
+            else
+            {
+                AttackUpdateTimer += 1;
+            }
             while (AttackUpdateTimer >= 1)
             {
                 Wand.AliveUpdate();

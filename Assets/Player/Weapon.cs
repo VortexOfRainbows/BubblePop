@@ -25,4 +25,16 @@ public class Weapon : Equipment
         transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, -0.6f), 0.1f);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.transform.eulerAngles.z, Mathf.Sign(p.lastVelo.x) == 1 ? 0 : 180, 0.1f));
     }
+    public virtual bool IsAttacking()
+    {
+        return IsSecondaryAttacking() || IsPrimaryAttacking();
+    }
+    public virtual bool IsSecondaryAttacking()
+    {
+        return AttackRight > 0;
+    }
+    public virtual bool IsPrimaryAttacking()
+    {
+        return AttackLeft > 0;
+    }
 }

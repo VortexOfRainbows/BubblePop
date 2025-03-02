@@ -99,8 +99,11 @@ public class BigBubble : Projectile
         Vector2 toMouse = Utils.MouseWorld - Player.Position;
         if (attackRight >= 50 && timer <= 0)
         {
+            int maximumTarget = Player.Instance.Coalescence + 2;
+            float maximumSize = 0.8f + maximumTarget * .3f;
+
             int target = (int)(attackRight - 50) / 100;
-            float targetSize = target * 0.7f + 0.8f + attackRight / 240f;
+            float targetSize = target * maximumSize / maximumTarget + 0.8f + attackRight / 240f;
             targetSize *= 1f + Mathf.Sqrt(Player.Instance.ChargeShotDamage) * 0.4f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
             timer = -attackRight;

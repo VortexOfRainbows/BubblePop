@@ -12,6 +12,7 @@ public class BubblemancerWand : Weapon
         powerPool.Add<SoapySoap>();
         powerPool.Add<ShotSpeed>();
         powerPool.Add<Starshot>();
+        powerPool.Add<Coalescence>();
     }
     protected override string Name()
     {
@@ -126,13 +127,14 @@ public class BubblemancerWand : Weapon
         {
             if ((Input.GetMouseButton(1) || AttackRight < 100) && AttackRight >= 50)
             {
+                int maxCharge = 250 + 100 * p.Coalescence;
                 if (AttackRight == 50)
                 {
                     AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.5f);
                     AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(0), Player.Position, 0.6f, 1f);
                     Projectile.LegacyNewProjectile((Vector2)transform.position + awayFromWand, Vector2.zero, 3, 149, 0);
                 }
-                if (AttackRight < 250)
+                if (AttackRight < maxCharge)
                 {
                     AttackRight++;
                     if (AttackRight == 150)
@@ -142,6 +144,11 @@ public class BubblemancerWand : Weapon
                     if (AttackRight == 250)
                     {
                         AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(2), Player.Position, 0.7f, 1f);
+                    }
+                    if(AttackRight > 250 && (AttackRight - 50) % 100 == 0)
+                    {
+                        float scale = (AttackRight - 250) / 100;
+                        AudioManager.PlaySound(SoundID.ChargePoint.GetVariation((int)scale % 3), Player.Position, 0.7f + Mathf.Sqrt(scale) * 0.1f, 1f);
                     }
                 }
                 p.PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * p.squash;

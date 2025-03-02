@@ -10,6 +10,7 @@ public class BubbleStaff : BubblemancerWand
         base.ModifyPowerPool(powerPool);
         powerPool.Add<BubbleBlast>();
         powerPool.Add<SoapySoap>();
+        powerPool.Add<Coalescence>();
     }
     protected override void ReducePowerPool(List<PowerUp> powerPool)
     {

@@ -93,12 +93,14 @@ public class PowerUpUIElement : MonoBehaviour
         if (Type >= 0)
         {
             if ((!visual.activeSelf || prevType != Type) && Timer > 1)
+            {
                 TurnedOn();
+                prevType = Type;
+            }
             else
                 WhileOn();
         }
         else
             TurnedOff();
-        prevType = Type;
     }
 }
