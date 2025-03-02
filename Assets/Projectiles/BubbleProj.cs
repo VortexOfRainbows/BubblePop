@@ -114,8 +114,8 @@ public class BigBubble : Projectile
             {
                 for (int i = 0; i < 30; i++)
                 {
-                    circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-                    ParticleManager.NewParticle((Vector2)transform.position + circular * 1.1f, .3f, -circular.normalized * Utils.RandFloat(5, 10) + Player.Instance.rb.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, Player.ProjectileColor);
+                    circular = new Vector2(targetSize * 0.5f + 1f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                    ParticleManager.NewParticle((Vector2)transform.position + circular, .3f, -circular.normalized * Utils.RandFloat(5, 10) + Player.Instance.rb.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, Player.ProjectileColor);
                 }
                 Data1 += 100;
             }

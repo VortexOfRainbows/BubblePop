@@ -1,7 +1,9 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PowerUpLayout : MonoBehaviour
 {
@@ -9,8 +11,11 @@ public class PowerUpLayout : MonoBehaviour
     public static PowerUpLayout MenuLayout;
     public GameObject PowerUpUISlotPrefab;
     public List<PowerUpUIElement> PowerUpElems;
+    public GridLayoutGroup layout;
     public Canvas myCanvas;
+    public Image bg;
     public bool isInGameLayout;
+    public bool isHovering;
     public void FixedUpdate()
     {
         if(isInGameLayout)
@@ -18,6 +23,43 @@ public class PowerUpLayout : MonoBehaviour
             InGameLayout = this;
             GenerateInventory();
         }
+        else
+        {
+            MenuLayout = this;
+        }
+    }
+    public void Update()
+    {
+        UpdateSizing();
+        if(Input.GetKeyDown(KeyCode.V) && !isInGameLayout)
+        {
+            AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, 0);
+        }
+        isHovering = false;
+        for (int i = PowerUpElems.Count - 1; i >= 0; --i)
+        {
+            PowerUpElems[i].OnUpdate();
+        }
+    }
+    public void UpdateSizing()
+    {
+        int rowCount = 1;
+        int powerupSize = 130;
+        int padding = 20;
+        layout.padding = new RectOffset(padding, padding, padding, padding);
+        float resolution = Screen.width - padding * 2;
+        int amountFittable = (int)(resolution / powerupSize);
+        int amountINeedToFit = (PowerUpElems.Count + rowCount - 1) / rowCount;
+        if (amountINeedToFit < amountFittable)
+            amountINeedToFit = amountFittable;
+
+        //float scaleChange = amountFittable / (float)amountINeedToFit;
+
+        float actualSize = resolution / amountINeedToFit;
+        layout.cellSize = new Vector2(actualSize, powerupSize + 10);
+        layout.constraintCount = amountINeedToFit;
+
+        //layout.transform.localScale = Vector3.one * scaleChange;
     }
     public void Generate(List<int> AvailablePowers)
     {
@@ -55,8 +97,10 @@ public class PowerUpLayout : MonoBehaviour
         powerUI.Count.gameObject.SetActive(inventory);
         powerUI.myCanvas = myCanvas;
         powerUI.MenuElement = !inventory;
+        powerUI.myLayout = this;
         powerUI.TurnedOn();
         PowerUpElems.Add(powerUI);
+        UpdateSizing();
         return powerUI;
     }
 }

@@ -28,6 +28,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool InventoryElement = true;
     public bool MenuElement = false;
     private float Timer;
+    public PowerUpLayout myLayout;
     public bool PickerElement
     {
         get => !InventoryElement;
@@ -74,8 +75,11 @@ public class PowerUpUIElement : MonoBehaviour
     {
         Timer += 1;
         Count.text = MyPower.Stack.ToString();
-        if(Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 64 * transform.localScale.x, myCanvas))
+        bool canHover = myLayout == null ? true : !myLayout.isHovering;
+        if(canHover && Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 64 * transform.localScale.x, myCanvas))
         {
+            if(myLayout != null)
+                myLayout.isHovering = true;
             PopUpTextUI.Enable(AppearLocked ? MyPower.LockedName() : MyPower.UnlockedName(), AppearLocked ? MyPower.LockedDescription() : MyPower.UnlockedDescription());
             float scaleUP = 1.125f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
@@ -89,6 +93,11 @@ public class PowerUpUIElement : MonoBehaviour
             inner.color = adornment.color = Color.white;
     }
     public void Update()
+    {
+        if(!InventoryElement && !MenuElement)
+            OnUpdate();
+    }
+    public void OnUpdate()
     {
         if (Type >= 0)
         {

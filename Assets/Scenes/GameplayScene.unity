@@ -381,12 +381,17 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2579308609860627661, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
   m_PrefabInstance: {fileID: 777730584}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 821324524}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: acc1a7d9a6017de48b3c1704875e30a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &821324524 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2941314396104103120, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
+  m_PrefabInstance: {fileID: 777730584}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &828013770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -714,6 +719,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BottomCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1059993504668043725, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
+      propertyPath: topCanvas
+      value: 
+      objectReference: {fileID: 821324524}
     - target: {fileID: 1287074701057382900, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
