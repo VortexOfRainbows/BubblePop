@@ -124,14 +124,14 @@ public class CharacterSelect : MonoBehaviour
         }
         if (UIManager.StartingScreen)
         {
-            topCanvas.SetActive(false);
+            //topCanvas.SetActive(false);
             visual.SetActive(true);
         }
         else
         {
             if(visual.activeSelf)
             {
-                topCanvas.SetActive(true);
+                //topCanvas.SetActive(true);
                 visual.SetActive(false);
                 SaveData();
                 Player.Instance.Body.SaveData();

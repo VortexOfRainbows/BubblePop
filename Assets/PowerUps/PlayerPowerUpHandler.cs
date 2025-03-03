@@ -54,6 +54,7 @@ public partial class Player : Entity
 
     public int BubbleTrail = 0;
     public int Coalescence = 0;
+    public int LuckyStar = 0;
 
     private List<int> powers;
     private void PowerInit()
@@ -69,6 +70,7 @@ public partial class Player : Entity
     {
         ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = Coalescence = 0;
         AttackSpeedModifier = PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = 1.0f;
+        LuckyStar = 0;
     }
     private void UpdatePowerUps()
     {

@@ -19,6 +19,7 @@ public class BubblemancerCape : Accessory
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<Dash>();
+        powerPool.Add<LuckyStar>();
     }
     protected override string Description()
     {

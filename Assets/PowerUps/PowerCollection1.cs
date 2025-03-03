@@ -231,3 +231,16 @@ public class Coalescence : PowerUp
         p.SecondaryAttackSpeedModifier += 0.05f * Stack;
     }
 }
+public class LuckyStar : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.3f;
+    }
+    protected override string Name() => "Lucky Star";
+    protected override string Description() => "Enemies killed by stars have an additional chance to drop power ups";
+    public override void HeldEffect(Player p)
+    {
+        p.LuckyStar += Stack;
+    }
+}

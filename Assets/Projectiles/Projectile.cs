@@ -192,22 +192,33 @@ public class StarProj : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        if (target.Life <= 0 && Player.Instance.Starbarbs > 0)
+        if (target.Life <= 0)
         {
-            Vector2 norm = RB.velocity.normalized;
-            float randRot = norm.ToRotation();
-            for (int i = 0; i < 30; i++)
+            if(Player.Instance.Starbarbs > 0)
             {
-                Vector2 randPos = new Vector2(3.5f, 0).RotatedBy(i / 15f * Mathf.PI);
-                randPos.x *= Utils.RandFloat(0.5f, 0.7f);
-                randPos = randPos.RotatedBy(randRot);
-                ParticleManager.NewParticle(target.transform.position, Utils.RandFloat(0.95f, 1.05f), -norm * 4.5f + randPos * Utils.RandFloat(4, 5) + Utils.RandCircle(.3f), 0.1f, .6f, 0, SpriteRenderer.color);
+                Vector2 norm = RB.velocity.normalized;
+                float randRot = norm.ToRotation();
+                for (int i = 0; i < 30; i++)
+                {
+                    Vector2 randPos = new Vector2(3.5f, 0).RotatedBy(i / 15f * Mathf.PI);
+                    randPos.x *= Utils.RandFloat(0.5f, 0.7f);
+                    randPos = randPos.RotatedBy(randRot);
+                    ParticleManager.NewParticle(target.transform.position, Utils.RandFloat(0.95f, 1.05f), -norm * 4.5f + randPos * Utils.RandFloat(4, 5) + Utils.RandCircle(.3f), 0.1f, .6f, 0, SpriteRenderer.color);
+                }
+                int stars = 3 + Player.Instance.Starbarbs * 2;
+                for (; stars > 0; --stars)
+                {
+                    Vector2 targetPos = (Vector2)target.transform.position + norm * 9 + Utils.RandCircle(7);
+                    LegacyNewProjectile(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 4, targetPos.x, targetPos.y);
+                }
             }
-            int stars = 3 + Player.Instance.Starbarbs * 2;
-            for (; stars > 0; --stars)
+            if(Player.Instance.LuckyStar > 0)
             {
-                Vector2 targetPos = (Vector2)target.transform.position + norm * 9 + Utils.RandCircle(7);
-                LegacyNewProjectile(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 4, targetPos.x, targetPos.y);
+                float chance = 0.04f + Player.Instance.LuckyStar * 0.02f;
+                if(Utils.RandFloat(1) < chance)
+                {
+                    PowerUp.Spawn(PowerUp.RandomFromPool(), (Vector2)transform.position, 0);
+                }
             }
         }
     }
