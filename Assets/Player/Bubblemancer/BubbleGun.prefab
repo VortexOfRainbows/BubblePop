@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5971252943124798424}
   - component: {fileID: 8973945380139369154}
-  - component: {fileID: 5929372085670736113}
+  - component: {fileID: 205085050948696032}
   m_Layer: 3
-  m_Name: BubblemancerWand
+  m_Name: BubbleGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: d6d88823605c77547a014dc7a7572c94, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0c8e92d7874df08418e6d87022b517a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5929372085670736113
+--- !u!114 &205085050948696032
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,12 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7462284700642931094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0f792ead6052534bb08d28002838f02, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b60c9d48c999e046b0d279635f8f665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SubEquipment:
-  - {fileID: 7462284700642931094, guid: 4ee10e6ca7971ca4683e9a86ad747cf3, type: 3}
-  - {fileID: 7462284700642931094, guid: ebf32fc3247b295408faa7311e482525, type: 3}
+  SubEquipment: []
   OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 8973945380139369154}
   velocity: {x: 0, y: 0}
