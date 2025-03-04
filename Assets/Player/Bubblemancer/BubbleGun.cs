@@ -20,7 +20,6 @@ public class BubbleGun : BubblemancerWand
     {
         base.ModifyPowerPool(powerPool);
         powerPool.Add<WeaponUpgrade>();
-        powerPool.Add<ShotSpeed>();
     }
     protected override string Name()
     {
@@ -34,8 +33,8 @@ public class BubbleGun : BubblemancerWand
     {
         GunUpdate();
     }
-    private float AttackCooldownLeft => 14f / Player.Instance.AttackSpeedModifier;
-    private float AttackCooldownRight => 20f / Player.Instance.AttackSpeedModifier;
+    private float AttackCooldownLeft => Mathf.Max(0, 14f - Player.Instance.AttackSpeedModifier);
+    private float AttackCooldownRight => Mathf.Max(0, 20f - Player.Instance.AttackSpeedModifier);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft < -AttackCooldownLeft && AttackRight < 0)
@@ -150,7 +149,6 @@ public class BubbleGun : BubblemancerWand
                         AudioManager.PlaySound(SoundID.ChargePoint.GetVariation((int)scale % 3), Player.Position, 0.7f + Mathf.Sqrt(scale) * 0.1f, 1f);
                     }
                 }
-                p.PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * p.squash;
             }
             else
             {
@@ -158,7 +156,7 @@ public class BubbleGun : BubblemancerWand
                     AttackRight = 50;
                 AttackRight--;
                 float percent = AttackRight / 50f;
-                p.PointDirOffset += 125 * percent * dir * p.squash;
+                p.PointDirOffset -= 45 * percent * dir * p.squash;
             }
         }
         else

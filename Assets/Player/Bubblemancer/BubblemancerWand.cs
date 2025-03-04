@@ -12,7 +12,7 @@ public class BubblemancerWand : Weapon
         powerPool.Add<SoapySoap>();
         powerPool.Add<ShotSpeed>();
         powerPool.Add<Starshot>();
-        powerPool.Add<Coalescence>();
+        //powerPool.Add<Coalescence>();
     }
     protected override string Name()
     {
@@ -26,7 +26,7 @@ public class BubblemancerWand : Weapon
     {
         WandUpdate();
     }
-    private float AttackCooldown => 20f / Player.Instance.AttackSpeedModifier;
+    private float AttackCooldown => Mathf.Max(0, 20f - Player.Instance.AttackSpeedModifier);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft < -AttackCooldown && AttackRight < 0)
