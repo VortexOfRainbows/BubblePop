@@ -19,7 +19,7 @@ public class ThoughtBubble : Body
     }
     protected override string Description()
     {
-        return "A mysterious Bubbletech Scientist. His origin is unknown; he appeared before Bubblemancer shortly after the first waves... why was he there?";
+        return "A mysterious Bubbletech Scientist. His origin is unknown; he appeared to Bubblemancer shortly after the first waves... why was he there?";
     }
     public override void FaceUpdate()
     {

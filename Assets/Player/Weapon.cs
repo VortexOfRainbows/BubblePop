@@ -18,12 +18,12 @@ public class Weapon : Equipment
     {
 
     }
-    protected sealed override void DeathAnimation()
+    protected override void DeathAnimation()
     {
         AttackLeft = 0;
         AttackRight = 0;
         transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, -0.6f), 0.1f);
-        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.transform.eulerAngles.z, Mathf.Sign(p.lastVelo.x) == 1 ? 0 : 180, 0.1f));
+        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.transform.eulerAngles.z, p.Direction == 1 ? 0 : 180, 0.1f));
     }
     public virtual bool IsAttacking()
     {

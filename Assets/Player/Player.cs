@@ -144,7 +144,7 @@ public partial class Player : Entity
         }
         if (Input.GetKey(KeyCode.V) && UnlockCondition.ForceUnlockAll)
         {
-            PowerUp.Spawn<Starshot>(transform.position, 0);
+            PowerUp.Spawn<WeaponUpgrade>(transform.position, 0);
         }
         Instance = this;
         EventManager.Update();

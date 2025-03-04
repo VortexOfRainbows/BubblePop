@@ -27,7 +27,18 @@ public class ChargeShot10 : UnlockCondition
     public override string LockedText()
     {
         return $"Possess 10 {Power.UnlockedName()} in a single run\n" +
-            $"Current best: {PowerUp.Get<ChargeShot>().PickedUpBestAllRuns}";
+            $"Current best: {Power.PickedUpBestAllRuns}";
+    }
+    protected override bool IsUnlocked => Power.PickedUpBestAllRuns >= 10;
+}
+
+public class ShotSpeed10 : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<ShotSpeed>();
+    public override string LockedText()
+    {
+        return $"Possess 10 {Power.UnlockedName()} in a single run\n" +
+            $"Current best: {Power.PickedUpBestAllRuns}";
     }
     protected override bool IsUnlocked => Power.PickedUpBestAllRuns >= 10;
 }

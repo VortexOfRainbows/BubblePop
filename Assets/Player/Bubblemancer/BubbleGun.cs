@@ -2,23 +2,27 @@ using System.Collections.Generic;
 using UnityEngine;
 public class BubbleGun : BubblemancerWand
 {
+    public override UnlockCondition UnlockCondition => UnlockCondition.Get<ShotSpeed10>();
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
-        offset.x += 0.10f;
-        offset.y -= 0.05f;
+        offset.x += 0.01f;
+        offset.y -= 0.01f;
         scale *= 1.05f;
         if (isBubble)
         {
             scale *= 1.05f;
-            offset *= 1.14f;
+            offset *= 1.11f;
         }
     }
     public SpriteRenderer Upper;
     public SpriteRenderer Lower;
+    private float spinSpeed = 0;
+    private float spin = 0;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         base.ModifyPowerPool(powerPool);
+        powerPool.Add<ShotSpeed>();
         powerPool.Add<WeaponUpgrade>();
     }
     protected override string Name()
@@ -27,7 +31,7 @@ public class BubbleGun : BubblemancerWand
     }
     protected override string Description()
     {
-        return "The Right to Bubble shall not be infringed";
+        return "The right to bare bubble shall not be infringed";
     }
     protected override void AnimationUpdate()
     {
@@ -82,7 +86,7 @@ public class BubbleGun : BubblemancerWand
         Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
         Vector2 mouseAdjustedFromPlayer = playerToMouse.magnitude < 4 ? playerToMouse.normalized * 4 + (Vector2)p.transform.position : Utils.MouseWorld;
         float dir = Mathf.Sign(playerToMouse.x);
-        Vector2 awayFromWand = new Vector2(2, 0.2f * dir).RotatedBy(playerToMouse.ToRotation());
+        Vector2 awayFromWand = new Vector2(2, 0.1f * dir).RotatedBy(playerToMouse.ToRotation());
         Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)transform.position - awayFromWand;
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
         Vector2 attemptedPosition = playerToMouse.normalized + p.rb.velocity.normalized * 0.1f;
@@ -119,7 +123,7 @@ public class BubbleGun : BubblemancerWand
                 p.bonusBubbles %= 5;
             }
             float percent = AttackLeft / 10f;
-            p.PointDirOffset -= 25 * percent * dir * p.squash;
+            p.PointDirOffset -= 20 * percent * dir * p.squash;
         }
         if (AttackRight > 0)
         {
@@ -156,7 +160,7 @@ public class BubbleGun : BubblemancerWand
                     AttackRight = 50;
                 AttackRight--;
                 float percent = AttackRight / 50f;
-                p.PointDirOffset -= 45 * percent * dir * p.squash;
+                p.PointDirOffset -= 40 * percent * dir * p.squash;
             }
         }
         else
@@ -169,5 +173,40 @@ public class BubbleGun : BubblemancerWand
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
         transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
         AttackLeft--;
+
+        bool notAttacking = false;
+        if (-AttackCooldownLeft <= AttackLeft || -AttackCooldownRight <= AttackRight || Input.GetMouseButton(1) || Input.GetMouseButton(0))
+        {
+            spinSpeed += 0.275f;
+        }
+        else
+            notAttacking = true;
+        float cos = 1.1f * Mathf.Abs(Mathf.Cos(spin * Mathf.Deg2Rad));
+        float angleScale = Mathf.Min(1.0f, cos);
+        if(notAttacking)
+        {
+            if(cos - 1.0f > 0.02f)
+            {
+                spinSpeed += 0.3f;
+            }
+            else
+            {
+                spinSpeed *= 0.9f;
+                spin = Mathf.LerpAngle(spin, 0, 0.05f);
+            }
+        }
+
+        Lower.transform.localScale = new Vector3(1, Mathf.Lerp(Lower.transform.localScale.y, angleScale, 0.25f), 1);
+        spinSpeed *= 0.96f;
+        spin += spinSpeed;
+        spin %= 360;
+    }
+    protected override void DeathAnimation()
+    {
+        AttackLeft = 0;
+        AttackRight = 0;
+        transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, -0.5f), 0.1f);
+        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.transform.eulerAngles.z,
+             spriteRender.flipY ? 190 : - 10, 0.1f));
     }
 }
