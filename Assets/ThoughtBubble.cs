@@ -4,6 +4,8 @@ using UnityEngineInternal;
 
 public class ThoughtBubble : Body
 {
+    public GameObject TailPrefab;
+    public List<GameObject> Tails;
     public override void Init()
     {
         PrimaryColor = new Color(1.00f, 1.05f, 1.1f);
@@ -40,6 +42,36 @@ public class ThoughtBubble : Body
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
+        TailUpdate();
+    }
+    public void TailUpdate()
+    {
+        if(Tails == null || Tails.Count <= 0)
+        {
+            Tails = new List<GameObject>();
+            for(int i = 0; i < 10; ++i)
+            {
+                Vector2 circular = new Vector2(0, 1 + i * 0.25f).RotatedBy(i * Mathf.Deg2Rad * 36);
+                Tails.Add(Instantiate(TailPrefab, (Vector2)transform.position + circular, Quaternion.identity));
+            }
+        }
+        Vector3 previousPos = transform.position;
+        float tailSeparation = 0.95f;
+        for(int i = 0; i < Tails.Count; ++i)
+        {
+            GameObject Tail = Tails[i];
+            Vector2 tailToBody = previousPos - Tail.transform.position;
+            tailToBody = tailToBody.normalized * tailSeparation;
 
+            float deg = tailToBody.ToRotation() * Mathf.Rad2Deg;
+            if (deg > 360)
+                deg %= 360;
+            else if (deg < 0)
+                deg += 360;
+            Tail.GetComponent<SpriteRenderer>().flipY = deg > 90 && deg < 270;
+            Tail.transform.eulerAngles = new Vector3(0, 0, deg);
+            Tail.transform.position = (Vector2)previousPos - tailToBody;
+            previousPos = Tail.transform.position;
+        }
     }
 }

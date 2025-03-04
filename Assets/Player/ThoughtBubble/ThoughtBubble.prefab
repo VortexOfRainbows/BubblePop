@@ -268,10 +268,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SubEquipment: []
+  OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 1327987545438757765}
   velocity: {x: 0, y: 0}
   hasInit: 0
+  LastSelectedHat: 0
+  LastSelectedAcc: 0
+  LastSelectedWep: 0
   PrimaryColor: {r: 0.89, g: 0.80784315, b: 0.9411765, a: 0.5}
   Face: {fileID: 6834552506591836568}
   FaceR: {fileID: 4116895871933785455}
+  TailPrefab: {fileID: 3265141040751608713, guid: b07dcbee7d4ea0645879043d1b0991be, type: 3}
+  Tail: {fileID: 0}
   MouthR: {fileID: 6669102899738470072}
