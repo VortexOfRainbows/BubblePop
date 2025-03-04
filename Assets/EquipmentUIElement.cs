@@ -17,7 +17,7 @@ public class EquipmentUIElement : MonoBehaviour
         Vector2 offset = Vector2.zero;
         float rot = 0f;
         float scale = 1f;
-        ActiveEquipment.ModifyUIOffsets(ref offset, ref rot, ref scale);
+        ActiveEquipment.ModifyUIOffsets(false, ref offset, ref rot, ref scale);
         ActiveEquipment.transform.localPosition = offset;
         ActiveEquipment.transform.eulerAngles = new Vector3(0, 0, rot);
         Visual.transform.localScale = Vector3.one * 50f * scale;

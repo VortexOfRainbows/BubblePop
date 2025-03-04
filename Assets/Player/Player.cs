@@ -142,6 +142,10 @@ public partial class Player : Entity
             Body.OnStartWith();
             HasRunStartingGear = true;
         }
+        if (Input.GetKey(KeyCode.V) && UnlockCondition.ForceUnlockAll)
+        {
+            PowerUp.Spawn<Starshot>(transform.position, 0);
+        }
         Instance = this;
         EventManager.Update();
         UpdatePowerUps();

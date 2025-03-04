@@ -22,7 +22,7 @@ public class Body : Equipment
     public SpriteRenderer FaceR;
     protected virtual float AngleMultiplier => 1f;
     protected virtual float RotationSpeed => 0.12f;
-    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         scale = 1.2f;
     }

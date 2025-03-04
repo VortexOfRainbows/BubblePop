@@ -4,9 +4,9 @@ using UnityEngine;
 public class BunceHat : BubblemancerHat
 {
     public override UnlockCondition UnlockCondition => UnlockCondition.Get<PlayerDeathUnlock100>();
-    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
-        base.ModifyUIOffsets(ref offset, ref rotation, ref scale);
+        base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
         scale *= 1.33f;
         offset.y -= 0.1f;
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Weapon : Equipment
 {
-    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         offset = new Vector2(-0.7f, -0.7f);
         rotation = 45f;

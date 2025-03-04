@@ -9,9 +9,9 @@ public class Bulb : Hat
     public Sprite OffBulb;
     public Light2D light2d;
     public override UnlockCondition UnlockCondition => UnlockCondition.Get<ChoiceUnlock200>();
-    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
-        base.ModifyUIOffsets(ref offset, ref rotation, ref scale);
+        base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
         scale *= 2.2f;
         offset.y -= 0.25f;
         offset.x = 0.075f;

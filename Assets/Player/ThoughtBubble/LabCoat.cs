@@ -5,9 +5,9 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class LabCoat : BubblemancerCape
 {
-    public override void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
-        base.ModifyUIOffsets(ref offset, ref rotation, ref scale);
+        base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
         scale *= 1.05f;
         offset.x += 0.05f;
         offset.y -= 0.1f;

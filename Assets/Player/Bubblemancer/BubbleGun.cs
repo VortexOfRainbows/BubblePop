@@ -2,10 +2,25 @@ using System.Collections.Generic;
 using UnityEngine;
 public class BubbleGun : BubblemancerWand
 {
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
+        offset.x += 0.10f;
+        offset.y -= 0.05f;
+        scale *= 1.05f;
+        if (isBubble)
+        {
+            scale *= 1.05f;
+            offset *= 1.14f;
+        }
+    }
+    public SpriteRenderer Upper;
+    public SpriteRenderer Lower;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         base.ModifyPowerPool(powerPool);
         powerPool.Add<WeaponUpgrade>();
+        powerPool.Add<ShotSpeed>();
     }
     protected override string Name()
     {
@@ -19,7 +34,7 @@ public class BubbleGun : BubblemancerWand
     {
         GunUpdate();
     }
-    private float AttackCooldownLeft => 10f / Player.Instance.AttackSpeedModifier;
+    private float AttackCooldownLeft => 14f / Player.Instance.AttackSpeedModifier;
     private float AttackCooldownRight => 20f / Player.Instance.AttackSpeedModifier;
     public override void StartAttack(bool alternate)
     {
@@ -44,20 +59,17 @@ public class BubbleGun : BubblemancerWand
     {
         if (starshotNum <= 0)
             return;
-        float chance = 0.1f + 0.05f * starshotNum;
+        float chance = 0.1f + 0.1f * starshotNum;
         if (Utils.RandFloat(1f) < chance)
         {
             Vector2 toMouse = Utils.MouseWorld - (Vector2)p.gameObject.transform.position;
             Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
-            float spread = Mathf.Max(90 - p.FasterBulletSpeed * 5, 0);
-            float speed = Utils.RandFloat(16, 19) + 1.6f * p.FasterBulletSpeed;
+            float spread = Mathf.Max(60 - p.FasterBulletSpeed * 4, 0);
+            float speed = Utils.RandFloat(16, 17) + 2.4f * p.FasterBulletSpeed;
             Vector2 velocity = toMouse.normalized * speed + awayFromWand * 4;
             Vector2 norm = velocity.normalized * (12 + p.FasterBulletSpeed * 0.5f) + Utils.RandCircle(4) * (10f / (10f + p.FasterBulletSpeed));
             Projectile.LegacyNewProjectile((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), type: 4, transform.position.x + norm.x, transform.position.y + norm.y);
-
-            float chanceOfLosingAStarProc = 0.6f * (10f / (9f + p.ShotgunPower)); //0.45 chance when you have one extra power, .409f when you have another, etc
-            if (Utils.RandFloat(1) < chanceOfLosingAStarProc)
-                --starshotNum;
+            --starshotNum;
         }
     }
     private void GunUpdate()
@@ -68,16 +80,18 @@ public class BubbleGun : BubblemancerWand
         //    ShotgunPower++;
         //}
 
-        Vector2 awayFromWand = new Vector2(2, 0).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)p.gameObject.transform.position - awayFromWand;
-        float dir = Mathf.Sign(toMouse.x);
+        Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
+        Vector2 mouseAdjustedFromPlayer = playerToMouse.magnitude < 4 ? playerToMouse.normalized * 4 + (Vector2)p.transform.position : Utils.MouseWorld;
+        float dir = Mathf.Sign(playerToMouse.x);
+        Vector2 awayFromWand = new Vector2(2, 0.2f * dir).RotatedBy(playerToMouse.ToRotation());
+        Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)transform.position - awayFromWand;
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
-        Vector2 attemptedPosition = new Vector2(0.8f, 0.2f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.velocity.normalized * 0.1f;
+        Vector2 attemptedPosition = playerToMouse.normalized + p.rb.velocity.normalized * 0.1f;
 
         //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
 
         p.PointDirOffset = 2 * dir * p.squash;
-        p.MoveOffset = -5 * bodyDir * p.squash;
+        p.MoveOffset = -0 * bodyDir * p.squash;
         p.DashOffset = 100 * dir * (1 - p.squash);
 
         if (AttackLeft > 0)
@@ -93,19 +107,20 @@ public class BubbleGun : BubblemancerWand
             {
                 int starshotNum = p.Starshot;
                 int shotCount = p.bonusBubbles / 5;
+                float spreadAmt = (25f + shotCount * 0.5f) / shotCount;
                 for(int i = 0; i < shotCount; ++i)
                 {
-                    float speed = Utils.RandFloat(12, 15) + 1.75f * p.FasterBulletSpeed;
-                    float spread = 15 * (i - (shotCount - 1) * 0.5f);
+                    float speed = Utils.RandFloat(14.5f, 15) + 2.1f * p.FasterBulletSpeed;
+                    float spread = spreadAmt * (i - (shotCount - 1) * 0.5f);
                     Projectile.LegacyNewProjectile((Vector2)transform.position + awayFromWand,
                         toMouse.normalized.RotatedBy(spread * Mathf.Deg2Rad)
-                        * speed + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)));
+                        * speed + Utils.RandCircle(0.2f));
                     TryDoingStarShot(ref starshotNum);
                 }
                 p.bonusBubbles %= 5;
             }
-            float percent = AttackLeft / 50f;
-            p.PointDirOffset += 165 * percent * dir * p.squash;
+            float percent = AttackLeft / 10f;
+            p.PointDirOffset -= 25 * percent * dir * p.squash;
         }
         if (AttackRight > 0)
         {
@@ -152,7 +167,7 @@ public class BubbleGun : BubblemancerWand
         //Final Stuff
         float r = attemptedPosition.ToRotation() * Mathf.Rad2Deg - p.PointDirOffset - p.MoveOffset + p.DashOffset;
         transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition, 0.08f);
-        spriteRender.flipY = dir < 0;
+        spriteRender.flipY = Upper.flipY = Lower.flipY = dir < 0;
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
         transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
         AttackLeft--;

@@ -54,7 +54,7 @@ public class Equipment : MonoBehaviour
         PowerPool.Clear();
     }
     public virtual UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
-    public virtual void ModifyUIOffsets(ref Vector2 offset, ref float rotation, ref float scale)
+    public virtual void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
 
     }

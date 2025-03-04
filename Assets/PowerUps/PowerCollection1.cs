@@ -53,8 +53,8 @@ public class WeaponUpgrade : PowerUp
             secondaryScalar = 100;
             finalScaler = 0.315f;
         }
-        Player.Instance.Wand.ModifyUIOffsets(ref offset, ref rot, ref scale);
-        inner.transform.localPosition = offset * secondaryScalar * finalScaler;
+        Player.Instance.Wand.ModifyUIOffsets(true, ref offset, ref rot, ref scale);
+        inner.transform.localPosition = offset * secondaryScalar * finalScaler * scale;
         inner.transform.eulerAngles = new Vector3(0, 0, rot);
         inner.transform.localScale = Player.Instance.Wand.transform.localScale * scale * finalScaler;
     }
