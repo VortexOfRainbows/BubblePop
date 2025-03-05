@@ -9,6 +9,7 @@ public class ThoughtBubble : Body
     protected float TailAddTimer = 0;
     protected int CurrentMarkedTail = -1;
     protected float TailTravelTimer = 0;
+    public int TailCount = 0;
     public override void Init()
     {
         PrimaryColor = new Color(1.00f, 1.05f, 1.1f);
@@ -55,21 +56,21 @@ public class ThoughtBubble : Body
         if (Tails == null)
         {
             Tails = new List<GameObject>();
-            for(int i = 0; i < maxTail; ++i)
-            {
-                TryAddingTail();
-            }
         }
-        if(Control.Ability && (!Control.LastAbility || CurrentMarkedTail != -1) && CurrentMarkedTail != Tails.Count - 1)
+        while(Tails.Count < maxTail && TailCount == Tails.Count)
+        {
+            TryAddingTail();
+        }
+        if (Control.Ability && (!Control.LastAbility || CurrentMarkedTail != -1) && CurrentMarkedTail < TailCount - 1)
         {
             if(TailTravelTimer >= 4)
             {
                 TailTravelTimer = 0;
                 TravelDownTail();
             }
-            if (CurrentMarkedTail >= Tails.Count)
+            if (CurrentMarkedTail >= TailCount)
             {
-                CurrentMarkedTail = Tails.Count - 1;
+                CurrentMarkedTail = TailCount - 1;
             }
             TailTravelTimer++;
             playerVelo *= 0.25f;
@@ -81,19 +82,20 @@ public class ThoughtBubble : Body
                 p.transform.position = Tails[CurrentMarkedTail].transform.position;
                 for(int i = CurrentMarkedTail; i >= 0; --i)
                 {
-                    TryRemovingTail();
+                    TryTurningOffTail();
                 }
+                reverseOrder = !reverseOrder;
                 CurrentMarkedTail = -1;
             }
             else
             {
-                if (Tails.Count < maxTail)
+                if (TailCount < maxTail)
                 {
                     TailAddTimer += Time.deltaTime * p.TrailOfThoughtsRecoverySpeed;
                     while (TailAddTimer > 0.5f)
                     {
                         TailAddTimer -= 0.5f;
-                        TryAddingTail();
+                        TryTurningOnTail();
                     }
                 }
                 else
@@ -110,8 +112,14 @@ public class ThoughtBubble : Body
             UpdateTailPos(i, ref previousPos);
         }
     }
+    public bool reverseOrder = false;
     public void UpdateTailPos(int i, ref Vector3 previousPos)
     {
+        int orig = i;
+        if(reverseOrder)
+        {
+            i = Tails.Count - orig - 1;
+        }
         float tailSeparation = 1.25f;
         GameObject Tail = Tails[i];
         Vector2 tailToBody = previousPos - Tail.transform.position;
@@ -128,10 +136,38 @@ public class ThoughtBubble : Body
         Tail.transform.position = Vector2.Lerp(Tail.transform.position, targetPos, CurrentMarkedTail == -1 ? 0.75f : 0.2f);
         previousPos = Tail.transform.position;
         Tail.transform.localScale = Vector3.Lerp(Tails[i].transform.localScale, new Vector3(1.1f, 1.1f, 1.1f), 0.05f);
+
+        if (orig < TailCount)
+            UpdateTailOn(i);
+        else
+            UpdateTailOff(i);
     }
-    /// <summary>
-    /// Optimizations to be made: Instead of removing trails, just mark them as deleted. This will make preserving positions and stuff easier, and it will make it more consistent
-    /// </summary>
+    public void UpdateTailOn(int i)
+    {
+        Tails[i].SetActive(true);
+    }
+    public void UpdateTailOff(int i)
+    {
+        Tails[i].SetActive(false);
+    }
+    public void TravelDownTail()
+    {
+        CurrentMarkedTail++;
+        GameObject current = Tails[CurrentMarkedTail];
+        Projectile.NewProjectile<SmallBubble>(current.transform.position, Utils.RandCircle(1));
+        if(p.DashSparkle > 0)
+        {
+            for(int i = 0; i < p.DashSparkle; i++)
+            {
+                if(Utils.RandFloat(1) < 0.5f)
+                {
+                    Vector2 target = Utils.RandCircle(1).normalized * 20;
+                    Vector2 target2 = Utils.RandCircle(1).normalized * 10;
+                    Projectile.NewProjectile<StarProj>(current.transform.position, target2, current.transform.position.x + target.x, current.transform.position.y + target.y);
+                }
+            }
+        }
+    }
     public void TryAddingTail()
     {
         int i = Tails.Count;
@@ -140,20 +176,26 @@ public class ThoughtBubble : Body
         Tails.Add(Instantiate(TailPrefab, (Vector2)spawnPos + circular, Quaternion.identity));
         Tails[i].transform.localScale = new Vector3(2f, 2f, 2f);
         UpdateTailPos(Tails.Count - 1, ref spawnPos);
+        ++TailCount;
     }
     public void TryRemovingTail()
     {
-        if(Tails.Count > 0)
+        if (TailCount > 0)
         {
             int end = Tails.Count - 1;
             Destroy(Tails[end].gameObject);
             Tails.RemoveAt(end);
+            --TailCount;
         }
     }
-    public void TravelDownTail()
+    public void TryTurningOnTail()
     {
-        CurrentMarkedTail++;
-        GameObject current = Tails[CurrentMarkedTail];
-        Projectile.NewProjectile<SmallBubble>(current.transform.position, Utils.RandCircle(1));
+        if (TailCount < Tails.Count)
+            ++TailCount;
+    }
+    public void TryTurningOffTail()
+    {
+        if (TailCount > 0)
+            --TailCount;
     }
 }
