@@ -56,6 +56,9 @@ public partial class Player : Entity
     public int Coalescence = 0;
     public int LuckyStar = 0;
 
+    public int TrailOfThoughts = 0;
+    public float TrailOfThoughtsRecoverySpeed = 1.0f;
+
     private List<int> powers;
     private void PowerInit()
     {
@@ -69,8 +72,8 @@ public partial class Player : Entity
     private void ClearPowerBonuses()
     {
         ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = Coalescence = 0;
-        AttackSpeedModifier = PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = 1.0f;
-        LuckyStar = 0;
+        AttackSpeedModifier = PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = TrailOfThoughtsRecoverySpeed = 1.0f;
+        LuckyStar = TrailOfThoughts = 0;
     }
     private void UpdatePowerUps()
     {
