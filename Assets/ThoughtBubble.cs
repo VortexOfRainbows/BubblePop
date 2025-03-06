@@ -13,9 +13,9 @@ public class ThoughtBubble : Body
     protected float TailAddTimer = 0;
     protected int CurrentMarkedTail = -1;
     protected float TailTravelTimer = 0;
-    public bool reverseOrder = false;
+    public int StartTail = 0;
     public int TailCount = 0;
-    public GameObject CurrentTail => Tails[reverseOrder ? Tails.Count - 1 - CurrentMarkedTail : CurrentMarkedTail];
+    public GameObject CurrentTail => Tails[(CurrentMarkedTail + StartTail) % Tails.Count];
     public override void Init()
     {
         PrimaryColor = new Color(1.00f, 1.05f, 1.1f);
@@ -63,11 +63,7 @@ public class ThoughtBubble : Body
         {
             for (int i = 0; i < TailCount; ++i)
             {
-                int orig = i;
-                if (reverseOrder)
-                {
-                    orig = Tails.Count - orig - 1;
-                }
+                int orig = (i + StartTail) % Tails.Count;
                 DetonateTail(Tails[orig]);
             }
             for (int i = 0; i < Tails.Count; ++i)
@@ -87,7 +83,7 @@ public class ThoughtBubble : Body
         {
             TryAddingTail();
         }
-        if (Control.Ability && (!Control.LastAbility || CurrentMarkedTail != -1) && CurrentMarkedTail < TailCount - 1)
+        if (Control.Ability && (!Control.LastAbility || CurrentMarkedTail != -1) && CurrentMarkedTail < TailCount - 1 && TailCount >= 3)
         {
             if(TailTravelTimer >= TailTravelTime)
             {
@@ -99,7 +95,7 @@ public class ThoughtBubble : Body
                 CurrentMarkedTail = TailCount - 1;
             }
             TailTravelTimer++;
-            playerVelo *= 0.65f;
+            playerVelo *= 0.9f;
         }
         else
         {
@@ -110,12 +106,12 @@ public class ThoughtBubble : Body
                 {
                     TryTurningOffTail();
                 }
-                reverseOrder = !reverseOrder;
+                StartTail = (CurrentMarkedTail + StartTail) % Tails.Count;
                 CurrentMarkedTail = -1;
             }
             else
             {
-                if (TailCount < maxTail && p.DeathKillTimer <= 0)
+                if (TailCount < maxTail && p.DeathKillTimer <= 0 && playerVelo.magnitude > 1.5f)
                 {
                     TailAddTimer += Time.deltaTime * p.TrailOfThoughtsRecoverySpeed;
                     while (TailAddTimer > TailRegenTime)
@@ -141,10 +137,7 @@ public class ThoughtBubble : Body
     public void UpdateTailPos(int i, ref Vector3 previousPos)
     {
         int orig = i;
-        if(reverseOrder)
-        {
-            i = Tails.Count - orig - 1;
-        }
+        i = (i + StartTail) % Tails.Count;
         float tailSeparation = 1.25f;
         GameObject Tail = Tails[i];
         Vector2 tailToBody = previousPos - Tail.transform.position;
@@ -155,16 +148,17 @@ public class ThoughtBubble : Body
             deg %= 360;
         else if (deg < 0)
             deg += 360;
-        Tail.GetComponent<SpriteRenderer>().flipY = deg > 90 && deg < 270;
-        Tail.transform.eulerAngles = new Vector3(0, 0, deg);
-        Vector2 targetPos = (Vector2)previousPos - tailToBody;
-        Tail.transform.position = Vector2.Lerp(Tail.transform.position, targetPos, CurrentMarkedTail == -1 ? 0.75f : 0.2f);
-        previousPos = Tail.transform.position;
-
         if (orig < TailCount)
+        {
+            Tail.GetComponent<SpriteRenderer>().flipY = deg > 90 && deg < 270;
+            Tail.transform.eulerAngles = new Vector3(0, 0, deg);
+            Vector2 targetPos = (Vector2)previousPos - tailToBody;
+            Tail.transform.position = Vector2.Lerp(Tail.transform.position, targetPos, CurrentMarkedTail == -1 ? 1f : 0.2f);
             UpdateTailOn(i);
+        }
         else
             UpdateTailOff(i);
+        previousPos = Tail.transform.position;
     }
     public void UpdateTailOn(int i)
     {
@@ -217,12 +211,11 @@ public class ThoughtBubble : Body
     public void TryAddingTail()
     {
         int i = Tails.Count;
-        Vector2 circular = i > 0 ? new Vector2(-1, 0).RotatedBy(Tails[i - 1].transform.eulerAngles.z * Mathf.Deg2Rad) : new Vector2(0, 1);
-        Vector3 spawnPos = i > 0 ? Tails[i - 1].transform.position : transform.position;
+        Vector2 circular = i >= 12 ? new Vector2(-1, 0).RotatedBy(Tails[i - 1].transform.eulerAngles.z * Mathf.Deg2Rad) : new Vector2(0, 3 + .5f * i).RotatedBy(i * 33f * Mathf.Deg2Rad);
+        Vector3 spawnPos = i >= 12 ? Tails[i - 1].transform.position : transform.position;
         Tails.Add(Instantiate(TailPrefab, (Vector2)spawnPos + circular, Quaternion.identity));
         Tails[i].transform.localScale = new Vector3(2f, 2f, 2f);
         UpdateTailPos(Tails.Count - 1, ref spawnPos);
-        ++TailCount;
     }
     public void TryRemovingTail()
     {
