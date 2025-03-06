@@ -1,15 +1,21 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngineInternal;
 
 public class ThoughtBubble : Body
 {
+    public const float TailRegenTime = 0.3f;
+    public const float TailTravelTime = 4f;
     public GameObject TailPrefab;
     protected List<GameObject> Tails;
     protected float TailAddTimer = 0;
     protected int CurrentMarkedTail = -1;
     protected float TailTravelTimer = 0;
+    public bool reverseOrder = false;
     public int TailCount = 0;
+    public GameObject CurrentTail => Tails[reverseOrder ? Tails.Count - 1 - CurrentMarkedTail : CurrentMarkedTail];
     public override void Init()
     {
         PrimaryColor = new Color(1.00f, 1.05f, 1.1f);
@@ -49,6 +55,26 @@ public class ThoughtBubble : Body
     {
         TailUpdate(ref playerVelo);
     }
+    protected override void DeathAnimation()
+    {
+        Vector2 empty = Vector2.zero;
+        base.DeathAnimation();
+        if(p.DeathKillTimer == 0)
+        {
+            for (int i = 0; i < TailCount; ++i)
+            {
+                int orig = i;
+                if (reverseOrder)
+                {
+                    orig = Tails.Count - orig - 1;
+                }
+                DetonateTail(Tails[orig]);
+            }
+            for (int i = 0; i < Tails.Count; ++i)
+                TryTurningOffTail();
+        }
+        TailUpdate(ref empty);
+    }
     public void TailUpdate(ref Vector2 playerVelo)
     {
         //p.TrailOfThoughts = 10;
@@ -63,7 +89,7 @@ public class ThoughtBubble : Body
         }
         if (Control.Ability && (!Control.LastAbility || CurrentMarkedTail != -1) && CurrentMarkedTail < TailCount - 1)
         {
-            if(TailTravelTimer >= 4)
+            if(TailTravelTimer >= TailTravelTime)
             {
                 TailTravelTimer = 0;
                 TravelDownTail();
@@ -73,13 +99,13 @@ public class ThoughtBubble : Body
                 CurrentMarkedTail = TailCount - 1;
             }
             TailTravelTimer++;
-            playerVelo *= 0.25f;
+            playerVelo *= 0.65f;
         }
         else
         {
             if(Control.LastAbility && CurrentMarkedTail != -1) //This will only be true upon releasing the button
             {
-                p.transform.position = Tails[CurrentMarkedTail].transform.position;
+                p.transform.position = CurrentTail.transform.position;
                 for(int i = CurrentMarkedTail; i >= 0; --i)
                 {
                     TryTurningOffTail();
@@ -89,12 +115,12 @@ public class ThoughtBubble : Body
             }
             else
             {
-                if (TailCount < maxTail)
+                if (TailCount < maxTail && p.DeathKillTimer <= 0)
                 {
                     TailAddTimer += Time.deltaTime * p.TrailOfThoughtsRecoverySpeed;
-                    while (TailAddTimer > 0.5f)
+                    while (TailAddTimer > TailRegenTime)
                     {
-                        TailAddTimer -= 0.5f;
+                        TailAddTimer -= TailRegenTime;
                         TryTurningOnTail();
                     }
                 }
@@ -112,7 +138,6 @@ public class ThoughtBubble : Body
             UpdateTailPos(i, ref previousPos);
         }
     }
-    public bool reverseOrder = false;
     public void UpdateTailPos(int i, ref Vector3 previousPos)
     {
         int orig = i;
@@ -135,7 +160,6 @@ public class ThoughtBubble : Body
         Vector2 targetPos = (Vector2)previousPos - tailToBody;
         Tail.transform.position = Vector2.Lerp(Tail.transform.position, targetPos, CurrentMarkedTail == -1 ? 0.75f : 0.2f);
         previousPos = Tail.transform.position;
-        Tail.transform.localScale = Vector3.Lerp(Tails[i].transform.localScale, new Vector3(1.1f, 1.1f, 1.1f), 0.05f);
 
         if (orig < TailCount)
             UpdateTailOn(i);
@@ -144,27 +168,49 @@ public class ThoughtBubble : Body
     }
     public void UpdateTailOn(int i)
     {
-        Tails[i].SetActive(true);
+        Light2D l2D = Tails[i].GetComponentInChildren<Light2D>();
+        Tails[i].GetComponent<SpriteRenderer>().enabled = true;
+        Tails[i].transform.localScale = Vector3.Lerp(Tails[i].transform.localScale, new Vector3(1.1f, 1.1f, 1.1f), 0.05f);
+        if(CurrentMarkedTail >= 0 && CurrentTail == Tails[i])
+        {
+            l2D.intensity = Mathf.Lerp(l2D.intensity, 1.5f, 0.2f);
+        }
+        else
+        {
+            l2D.intensity = Mathf.Lerp(l2D.intensity, 0f, 0.1f);
+            if (l2D.intensity <= 0.05f)
+                l2D.intensity = 0;
+        }
+        l2D.pointLightOuterRadius = 1.0f + l2D.intensity;
     }
     public void UpdateTailOff(int i)
     {
-        Tails[i].SetActive(false);
+        Light2D l2D = Tails[i].GetComponentInChildren<Light2D>();
+        Tails[i].transform.localScale = new Vector3(2f, 2f, 2f);
+        Tails[i].GetComponent<SpriteRenderer>().enabled = false;
+        l2D.intensity = Mathf.Lerp(l2D.intensity, 0f, 0.1f);
+        if (l2D.intensity <= 0.05f)
+            l2D.intensity = 0;
     }
+    public float sparkleSparkleNum = 0.0f;
     public void TravelDownTail()
     {
         CurrentMarkedTail++;
-        GameObject current = Tails[CurrentMarkedTail];
+        GameObject current = CurrentTail;
+        DetonateTail(current);
+    }
+    public void DetonateTail(GameObject current)
+    {
         Projectile.NewProjectile<SmallBubble>(current.transform.position, Utils.RandCircle(1));
-        if(p.DashSparkle > 0)
+        if (p.DashSparkle > 0)
         {
-            for(int i = 0; i < p.DashSparkle; i++)
+            sparkleSparkleNum += (p.DashSparkle + 1) / 6f;
+            while (sparkleSparkleNum > 1f)
             {
-                if(Utils.RandFloat(1) < 0.5f)
-                {
-                    Vector2 target = Utils.RandCircle(1).normalized * 20;
-                    Vector2 target2 = Utils.RandCircle(1).normalized * 10;
-                    Projectile.NewProjectile<StarProj>(current.transform.position, target2, current.transform.position.x + target.x, current.transform.position.y + target.y);
-                }
+                Vector2 target = Utils.RandCircle(1).normalized * 20;
+                Vector2 target2 = Utils.RandCircle(1).normalized * 10;
+                Projectile.NewProjectile<StarProj>(current.transform.position, target2, current.transform.position.x + target.x, current.transform.position.y + target.y);
+                sparkleSparkleNum -= 1.0f;
             }
         }
     }

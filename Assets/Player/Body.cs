@@ -59,7 +59,7 @@ public class Body : Equipment
         gameObject.SetActive(true);
         FaceUpdate();
     }
-    protected sealed override void DeathAnimation()
+    protected override void DeathAnimation()
     {
         if (p.DeathKillTimer <= 0)
         {
