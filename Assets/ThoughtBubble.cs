@@ -27,7 +27,7 @@ public class ThoughtBubble : Body
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<Choice>();
-        powerPool.Add<Choice>();
+        powerPool.Add<TrailOfThoughts>();
         powerPool.Add<BubbleBirb>();
     }
     protected override string Description()
@@ -74,7 +74,7 @@ public class ThoughtBubble : Body
     public void TailUpdate(ref Vector2 playerVelo)
     {
         //p.TrailOfThoughts = 10;
-        int maxTail = p.TrailOfThoughts * 3 + 15;
+        int maxTail = p.TrailOfThoughts * 3 + 12;
         if (Tails == null)
         {
             Tails = new List<GameObject>();
@@ -138,9 +138,10 @@ public class ThoughtBubble : Body
     {
         int orig = i;
         i = (i + StartTail) % Tails.Count;
-        float tailSeparation = 1.25f;
+        float tailSeparation = orig == 0 ? 1.5f : 1.25f;
         GameObject Tail = Tails[i];
         Vector2 tailToBody = previousPos - Tail.transform.position;
+        tailSeparation = Mathf.Min(tailSeparation, tailToBody.magnitude);
         tailToBody = tailToBody.normalized * tailSeparation;
 
         float deg = tailToBody.ToRotation() * Mathf.Rad2Deg;
@@ -153,18 +154,26 @@ public class ThoughtBubble : Body
             Tail.GetComponent<SpriteRenderer>().flipY = deg > 90 && deg < 270;
             Tail.transform.eulerAngles = new Vector3(0, 0, deg);
             Vector2 targetPos = (Vector2)previousPos - tailToBody;
-            Tail.transform.position = Vector2.Lerp(Tail.transform.position, targetPos, CurrentMarkedTail == -1 ? 1f : 0.2f);
-            UpdateTailOn(i);
+            Tail.transform.position = Vector2.Lerp(Tail.transform.position, targetPos, CurrentMarkedTail == -1 ? 0.5f : 0.15f); //Only update position in here so the light position stays the same
+            UpdateTailOn(orig, i);
         }
         else
+        {
             UpdateTailOff(i);
+
+        }
         previousPos = Tail.transform.position;
     }
-    public void UpdateTailOn(int i)
+    public void UpdateTailOn(int orig, int i)
     {
+        int properIndex = orig % TailCount;
+        float percent = 1f * properIndex / TailCount;
+        Vector3 targetScale = new Vector3(1f, 1f) * (1f - 0.4f * percent);
         Light2D l2D = Tails[i].GetComponentInChildren<Light2D>();
-        Tails[i].GetComponent<SpriteRenderer>().enabled = true;
-        Tails[i].transform.localScale = Vector3.Lerp(Tails[i].transform.localScale, new Vector3(1.1f, 1.1f, 1.1f), 0.05f);
+        SpriteRenderer sr = Tails[i].GetComponent<SpriteRenderer>();
+        sr.enabled = true;
+        sr.color = new Color(1, 1, 1, 0.6f - 0.2f * percent);
+        Tails[i].transform.localScale = Vector3.Lerp(Tails[i].transform.localScale, targetScale, 0.05f);
         if(CurrentMarkedTail >= 0 && CurrentTail == Tails[i])
         {
             l2D.intensity = Mathf.Lerp(l2D.intensity, 1.5f, 0.2f);
@@ -180,7 +189,7 @@ public class ThoughtBubble : Body
     public void UpdateTailOff(int i)
     {
         Light2D l2D = Tails[i].GetComponentInChildren<Light2D>();
-        Tails[i].transform.localScale = new Vector3(2f, 2f, 2f);
+        Tails[i].transform.localScale = new Vector3(0f, 0f, 0f);
         Tails[i].GetComponent<SpriteRenderer>().enabled = false;
         l2D.intensity = Mathf.Lerp(l2D.intensity, 0f, 0.1f);
         if (l2D.intensity <= 0.05f)

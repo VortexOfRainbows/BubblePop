@@ -88,7 +88,7 @@ public class Dash : PowerUp
         Weighting = 0.8f;
     }
     protected override string Name() => "Sparkle Sparkle";
-    protected override string Description() => "Scatter stars around you while dashing";
+    protected override string Description() => "Adds damaging stars to your ability";
     public override void HeldEffect(Player p)
     {
         p.DashSparkle += Stack;
@@ -242,5 +242,18 @@ public class LuckyStar : PowerUp
     public override void HeldEffect(Player p)
     {
         p.LuckyStar += Stack;
+    }
+}
+public class TrailOfThoughts : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.7f;
+    }
+    protected override string Name() => "Trail of Thoughts";
+    protected override string Description() => "Increases the maximum length of your thought trail";
+    public override void HeldEffect(Player p)
+    {
+        p.TrailOfThoughts += Stack;
     }
 }
