@@ -63,19 +63,37 @@ MonoBehaviour:
   Wand: {fileID: 4398803498948371710}
   Hat: {fileID: 4793643284589324687}
   Cape: {fileID: 6990591328264648732}
-  BodyR: {fileID: 2109105119270937474}
   rb: {fileID: 3216590746651522342}
+  MaxSpeed: 6
+  squash: 1
   lastVelo: {x: 0, y: 0}
-  dashTimer: 0
+  DashMult: 1
+  abilityTimer: 0
   PointDirOffset: 0
   MoveOffset: 0
   DashOffset: 0
   DeathKillTimer: 0
-  DamagePower: 0
+  ChargeShotDamage: 0
   ShotgunPower: 0
   DashSparkle: 0
   FasterBulletSpeed: 0
   Starbarbs: 0
+  SoapySoap: 0
+  BubbleBlast: 0
+  Starshot: 0
+  AttackSpeedModifier: 1
+  PrimaryAttackSpeedModifier: 1
+  SecondaryAttackSpeedModifier: 1
+  BinaryStars: 0
+  EternalBubbles: 0
+  BonusPhoenixLives: 0
+  PickedUpPhoenixLivesThisRound: 0
+  SpentBonusLives: 0
+  BubbleTrail: 0
+  Coalescence: 0
+  LuckyStar: 0
+  TrailOfThoughts: 0
+  TrailOfThoughtsRecoverySpeed: 1
 --- !u!50 &3216590746651522342
 Rigidbody2D:
   serializedVersion: 4
@@ -230,11 +248,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
---- !u!212 &2109105119270937474 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 1327987545438757765, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
-  m_PrefabInstance: {fileID: 1092402514359156743}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4981973282153690138 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5335490131377714205, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
@@ -262,6 +275,10 @@ PrefabInstance:
     - target: {fileID: 4047993882583738873, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
       propertyPath: m_Name
       value: Hat
+      objectReference: {fileID: 0}
+    - target: {fileID: 6303350027237884496, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
+      propertyPath: SubEquipment.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8187517550139534184, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
       propertyPath: m_LocalPosition.x
@@ -376,6 +393,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cape
       objectReference: {fileID: 0}
+    - target: {fileID: 5891907047205517628, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
+      propertyPath: SubEquipment.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -405,6 +426,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 995395983974909505}
     m_Modifications:
+    - target: {fileID: 5929372085670736113, guid: e7d67ac7adef0454a96cab6df826ac8e, type: 3}
+      propertyPath: SubEquipment.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5971252943124798424, guid: e7d67ac7adef0454a96cab6df826ac8e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
