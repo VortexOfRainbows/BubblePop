@@ -116,4 +116,8 @@ public class Entity : MonoBehaviour
     {
 
     }
+    public float Distance(GameObject other)
+    {
+        return (other.transform.position - transform.position).magnitude;
+    }
 }
