@@ -9,12 +9,14 @@ public static class PlayerData
         SaveInt("Deaths", PlayerDeaths);
         UnlockCondition.SaveAllData();
         PowerUp.SaveAllData();
+        CoinManager.Save();
     }
     public static void LoadAll()
     {
         PlayerDeaths = GetInt("Deaths");
         UnlockCondition.LoadAllData();
         PowerUp.LoadAllData();
+        CoinManager.Load();
     }
     public static void Clear()
     {

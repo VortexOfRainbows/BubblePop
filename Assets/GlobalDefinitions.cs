@@ -6,6 +6,7 @@ public class GlobalDefinitions : MonoBehaviour
     {
         //PlayerPrefs.DeleteAll();
         PlayerData.LoadAll();
+        CoinManager.InitCoinPrefabs();
     }
     public void OnGameClose()
     {

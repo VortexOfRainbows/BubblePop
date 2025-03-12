@@ -51,7 +51,7 @@ public class Entity : MonoBehaviour
             }
             if (Life <= 0 && Life > -50)
             {
-                OnKill();
+                Kill();
                 Life = -50;
                 bool LuckyDrop = Utils.RandFloat(1) < 0.04f || this is EnemyBossDuck;
                 EventManager.Point += (int)PointWorth;
@@ -107,7 +107,13 @@ public class Entity : MonoBehaviour
         }
         lastPos = transform.position;
     }
+    private void Kill()
+    {
+        OnKill();
+        CoinManager.SpawnCoin(transform.position, (int)(1 + 30 * Utils.RandFloat(1) * Utils.RandFloat(1) * Utils.RandFloat(1) * Utils.RandFloat(1)));
+    }
     public virtual void OnKill()
     {
+
     }
 }
