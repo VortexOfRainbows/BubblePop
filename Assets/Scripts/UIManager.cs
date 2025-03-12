@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
     private TMPro.TextMeshProUGUI deadHighscoreText;
     [SerializeField]
     private TMPro.TextMeshProUGUI moneyText;
+    [SerializeField]
+    private TMPro.TextMeshProUGUI savingsText;
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +64,7 @@ public class UIManager : MonoBehaviour
         highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
         deadHighscoreText.text = highscoreText.text;
         moneyText.text = $"Gold: {CoinManager.Current}";
+        savingsText.text = $"Savings: {CoinManager.Savings}";
         if (score > highscore)
         {
             highscore = score;
