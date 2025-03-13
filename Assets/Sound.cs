@@ -13,7 +13,7 @@ public class Sound : MonoBehaviour
     }
     private void Update()
     {
-        if(Source.clip == SoundID.ChargeWindup.GetVariation(0) && Player.Instance.Wand.AttackRight < 50)
+        if(Source.clip == SoundID.ChargeWindup.GetVariation(0) && Player.Instance.Weapon.AttackRight < 50)
         {
             Source.Stop();
             DestroyImmediate(gameObject);

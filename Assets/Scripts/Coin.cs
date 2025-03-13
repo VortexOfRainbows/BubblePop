@@ -35,6 +35,6 @@ public class Coin : MonoBehaviour
     }
     public void OnCollected()
     {
-        CoinManager.Gain(Value);
+        CoinManager.ModifyCurrent(Value);
     }
 }

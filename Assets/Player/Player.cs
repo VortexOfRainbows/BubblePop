@@ -19,9 +19,9 @@ public partial class Player : Entity
     [SerializeField]
     private Camera MainCamera;
     [SerializeField] public Body Body;
-    [SerializeField] public Weapon Wand;
+    [SerializeField] public Weapon Weapon;
     [SerializeField] public Hat Hat;
-    [SerializeField] public Accessory Cape;
+    [SerializeField] public Accessory Accessory;
     public SpriteRenderer BodyR => Body.spriteRender;
     public Rigidbody2D rb;
 
@@ -135,8 +135,8 @@ public partial class Player : Entity
         if (!HasRunStartingGear && !UIManager.StartingScreen)
         {
             Hat.OnStartWith();
-            Cape.OnStartWith();
-            Wand.OnStartWith();
+            Accessory.OnStartWith();
+            Weapon.OnStartWith();
             Body.OnStartWith();
             HasRunStartingGear = true;
         }
@@ -156,15 +156,15 @@ public partial class Player : Entity
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 15f, 0.03f);
             MovementUpdate();
             if (Input.GetMouseButton(0))
-                Wand.StartAttack(false);
+                Weapon.StartAttack(false);
             else if (Input.GetMouseButton(1))
-                Wand.StartAttack(true);
-            if (Wand.IsAttacking())
+                Weapon.StartAttack(true);
+            if (Weapon.IsAttacking())
             {
                 AttackUpdateTimer += AttackSpeedModifier;
-                if(Wand.IsPrimaryAttacking())
+                if(Weapon.IsPrimaryAttacking())
                     AttackUpdateTimer += PrimaryAttackSpeedModifier - 1;
-                if(Wand.IsSecondaryAttacking())
+                if(Weapon.IsSecondaryAttacking())
                     AttackUpdateTimer += SecondaryAttackSpeedModifier - 1;
             }
             else
@@ -173,11 +173,11 @@ public partial class Player : Entity
             }
             while (AttackUpdateTimer >= 1)
             {
-                Wand.AliveUpdate();
+                Weapon.AliveUpdate();
                 AttackUpdateTimer -= 1;
             }
             Hat.AliveUpdate();
-            Cape.AliveUpdate();
+            Accessory.AliveUpdate();
         }
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
@@ -197,8 +197,8 @@ public partial class Player : Entity
         rb.velocity *= 0.9f;
         Body.DeadUpdate();
         Hat.DeadUpdate();
-        Wand.DeadUpdate();
-        Cape.DeadUpdate();
+        Weapon.DeadUpdate();
+        Accessory.DeadUpdate();
         DeathKillTimer++;
         if(Input.GetKey(KeyCode.R) && UnlockCondition.ForceUnlockAll)
         {

@@ -39,16 +39,17 @@ public static class CoinManager
     }
     public static int Current { get; private set; }
     public static int Savings { get; private set; }
+    public static int TotalEquipCost;
     public static void AfterDeathTransfer()
     {
-        GainSavings(Current / 10);
+        ModifySavings(Current / 10);
         Current = 0;
     }
-    public static void GainSavings(int amt)
+    public static void ModifySavings(int amt)
     {
         Savings += amt;
     }
-    public static void Gain(int amt)
+    public static void ModifyCurrent(int amt)
     {
         Current += amt;
     }

@@ -8,6 +8,10 @@ public class GlobalDefinitions : MonoBehaviour
         PlayerData.LoadAll();
         CoinManager.InitCoinPrefabs();
     }
+    public static void OnGameStart()
+    {
+        CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
+    }
     public void OnGameClose()
     {
         PlayerData.SaveAll();

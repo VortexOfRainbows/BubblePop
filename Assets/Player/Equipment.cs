@@ -42,12 +42,12 @@ public class Equipment : MonoBehaviour
         PowerUp.ResetPowerAvailability();
         PowerPool.Clear();
         Player.Instance.Hat.ModifyPowerPool(PowerPool);
-        Player.Instance.Cape.ModifyPowerPool(PowerPool);
-        Player.Instance.Wand.ModifyPowerPool(PowerPool);
+        Player.Instance.Accessory.ModifyPowerPool(PowerPool);
+        Player.Instance.Weapon.ModifyPowerPool(PowerPool);
         Player.Instance.Body.ModifyPowerPool(PowerPool);
         Player.Instance.Hat.ReducePowerPool(PowerPool);
-        Player.Instance.Cape.ReducePowerPool(PowerPool);
-        Player.Instance.Wand.ReducePowerPool(PowerPool);
+        Player.Instance.Accessory.ReducePowerPool(PowerPool);
+        Player.Instance.Weapon.ReducePowerPool(PowerPool);
         Player.Instance.Body.ReducePowerPool(PowerPool);
         for (int i = 0; i < PowerPool.Count; ++i)
         {

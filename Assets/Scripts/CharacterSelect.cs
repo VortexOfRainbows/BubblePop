@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -180,6 +181,8 @@ public class CharacterSelect : MonoBehaviour
             PowerLayout.Generate(PowerUp.AvailablePowers);
             PowerUpPageIsOpen = true;
         }
+        if(Player.Instance != null)
+            CoinManager.TotalEquipCost = Player.Instance.Hat.GetPrice() + Player.Instance.Accessory.GetPrice() + Player.Instance.Weapon.GetPrice() + Player.Instance.Body.GetPrice(); 
     }
     public bool UISlotUpdate(EquipmentUIElement slot, EquipmentPage page, int index, bool AllowOpeningPage)
     {
@@ -215,7 +218,7 @@ public class CharacterSelect : MonoBehaviour
                     justClosed = true;
                     page.Close();
                 }
-                if ((slot.Unlocked || page == PrimaryPage) && (!justClosed || index != page.PreviousType))
+                if (((slot.Unlocked && slot.CanAfford) || page == PrimaryPage) && (!justClosed || index != page.PreviousType))
                 {
                     if (page == PrimaryPage)
                         page.Open(slot, PrimaryEquipments[index]);
@@ -244,7 +247,7 @@ public class CharacterSelect : MonoBehaviour
         }
         if(page != PrimaryPage)
         {
-            if(clicked && slot.Unlocked)
+            if(clicked && slot.Unlocked && slot.CanAfford)
             {
                 UpdateSelectedEquipmentBox(slot.ActiveEquipment.OriginalPrefab);
                 PrimaryPage.Close();
@@ -293,12 +296,12 @@ public class CharacterSelect : MonoBehaviour
         else if (equipPrefab is Accessory)
         {
             i = 1;
-            equip = Player.Instance.Cape;
+            equip = Player.Instance.Accessory;
         }
         else if (equipPrefab is Weapon)
         {
             i = 2;
-            equip = Player.Instance.Wand;
+            equip = Player.Instance.Weapon;
         }
         else if (equipPrefab is Body)
         {
@@ -318,12 +321,12 @@ public class CharacterSelect : MonoBehaviour
         }
         if (i == 1)
         {
-            Player.Instance.Cape = equip as Accessory;
+            Player.Instance.Accessory = equip as Accessory;
             Player.Instance.Body.LastSelectedAcc = equip.IndexInTheAllEquipPool;
         }
         if (i == 2)
         {
-            Player.Instance.Wand = equip as Weapon;
+            Player.Instance.Weapon = equip as Weapon;
             Player.Instance.Body.LastSelectedWep = equip.IndexInTheAllEquipPool;
         }
         if (i == 3)

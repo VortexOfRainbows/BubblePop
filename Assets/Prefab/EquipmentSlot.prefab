@@ -29,8 +29,8 @@ RectTransform:
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8569400729880823020}
   - {fileID: 8581875612040110261}
+  - {fileID: 8569400729880823020}
   m_Father: {fileID: 3496537221042283537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -70,7 +70,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3584196865769174835}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -435,4 +435,5 @@ MonoBehaviour:
   Text: {fileID: 9135475655574816022}
   PriceVisual: {fileID: 2391634145921466989}
   targetScale: {x: 1, y: 1, z: 1}
+  Slot: {fileID: 562547092509180396}
   DisplayOnly: 0

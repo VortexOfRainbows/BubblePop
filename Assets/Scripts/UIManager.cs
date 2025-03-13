@@ -9,8 +9,6 @@ public class UIManager : MonoBehaviour
     public Canvas MainGameCanvas;
     public static UIManager Instance;
     [SerializeField]
-    private GameObject tutorial;
-    [SerializeField]
     private GameObject pauseMenu;
     [SerializeField]
     private GameObject gameOverScreen;
@@ -39,7 +37,6 @@ public class UIManager : MonoBehaviour
         Instance = this;
         score = 0;
         highscore = PlayerData.GetInt("Highscore");
-        tutorial.SetActive(true);
         pauseButton.SetActive(false);
         StartingScreen = true;
         Time.timeScale = 0f;
@@ -82,10 +79,10 @@ public class UIManager : MonoBehaviour
 
     public void CloseTutorial()
     {
-        tutorial.SetActive(false);
         Time.timeScale = 1f;
         StartingScreen = false;
         pauseButton.SetActive(true);
+        GlobalDefinitions.OnGameStart();
     }
 
     public void Resume()

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BunceHat : BubblemancerHat
 {
+    public override int GetPrice() => 5;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<PlayerDeathUnlock100>();
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {

@@ -26,7 +26,7 @@ public class WeaponUpgrade : PowerUp
     protected override string Description() => "Increases weapon attack speed";
     public override Sprite GetTexture()
     {
-        return Player.Instance != null && Player.Instance.Wand != null ? Player.Instance.Wand.spriteRender.sprite : null;
+        return Player.Instance != null && Player.Instance.Weapon != null ? Player.Instance.Weapon.spriteRender.sprite : null;
     }
     public override Sprite GetAdornment()
     {
@@ -53,10 +53,10 @@ public class WeaponUpgrade : PowerUp
             secondaryScalar = 100;
             finalScaler = 0.315f;
         }
-        Player.Instance.Wand.ModifyUIOffsets(true, ref offset, ref rot, ref scale);
+        Player.Instance.Weapon.ModifyUIOffsets(true, ref offset, ref rot, ref scale);
         inner.transform.localPosition = offset * secondaryScalar * finalScaler * scale;
         inner.transform.eulerAngles = new Vector3(0, 0, rot);
-        inner.transform.localScale = Player.Instance.Wand.transform.localScale * scale * finalScaler;
+        inner.transform.localScale = Player.Instance.Weapon.transform.localScale * scale * finalScaler;
     }
     public override void HeldEffect(Player p)
     {

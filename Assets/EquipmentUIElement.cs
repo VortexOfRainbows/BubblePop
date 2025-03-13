@@ -1,17 +1,20 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class EquipmentUIElement : MonoBehaviour
 {
     private Color actualColor = default;
+    private Color slotColor = default;
     public GameObject Visual;
     public Equipment ActiveEquipment;
     public TextMeshPro Text;
     public GameObject PriceVisual;
     public GameObject Self => gameObject;
     public Vector3 targetScale = Vector3.one;
+    public Image Slot;
     public bool Unlocked => ActiveEquipment.IsUnlocked || DisplayOnly;
-    private bool prevUnlockStatus = true;
+    public bool CanAfford => CoinManager.Savings >= ActiveEquipment.GetPrice() || ActiveEquipment.GetPrice() <= 0;
     public bool DisplayOnly = false;
     public void UpdateOrientation()
     {
@@ -25,35 +28,47 @@ public class EquipmentUIElement : MonoBehaviour
     }
     private void UpdateUnlockRelated()
     {
-        bool currentUnlockStatus = Unlocked;
         if (actualColor == default)
-            actualColor = ActiveEquipment.spriteRender.color;
-        if(prevUnlockStatus != currentUnlockStatus)
         {
-            if (currentUnlockStatus)
+            slotColor = Slot.color;
+            actualColor = ActiveEquipment.spriteRender.color;
+        }
+        Text.color = Color.white;
+        if (Unlocked)
+        {
+                UpdateColor(actualColor);
+            if (CanAfford)
             {
-                ActiveEquipment.spriteRender.color = actualColor;
-                foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
-                    s.color = actualColor;
+                Slot.color = slotColor;
             }
             else
             {
-                ActiveEquipment.spriteRender.color = Color.black;
-                foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
-                    s.color = Color.black;
+                //UpdateColor(Color.Lerp(actualColor, Color.red, 0.1f));
+                Text.color = Color.red;
+                Slot.color = Color.Lerp(slotColor, new Color(0.9f, 0.0f, 0.0f, slotColor.a), 0.5f);
             }
         }
-        prevUnlockStatus = currentUnlockStatus;
+        else
+        {
+            UpdateColor(Color.black);
+        }
+    }
+    private void UpdateColor(Color c)
+    {
+        ActiveEquipment.spriteRender.color = c;
+        foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
+            s.color = c;
     }
     public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked)
     {
+        int price = ActiveEquipment.GetPrice();
+        Text.text = price.ToString();
+        PriceVisual.SetActive(price != 0 && Unlocked);
+
         hovering = clicked = false;
         UpdateUnlockRelated();
         UpdateOrientation();
 
-        int price = ActiveEquipment.GetPrice();
-        Text.text = price.ToString();
-        PriceVisual.SetActive(price != 0);
 
         if (Utils.IsMouseHoveringOverThis(true, Self.GetComponent<RectTransform>(), 50, canvas))
         {
