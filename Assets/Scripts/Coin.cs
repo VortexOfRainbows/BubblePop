@@ -25,12 +25,12 @@ public class Coin : MonoBehaviour
         float length = toPlayer.magnitude;
         if (length < attractDist)
         {
-            rb.velocity += toPlayer.normalized * 0.1f * (0.25f + attractDist - length);
-            float speed = rb.velocity.magnitude;
-            if (speed > length)
-            {
-                rb.velocity *= length / speed; //Max out the velocity at the length to player, so it doesn't move to fast when it is close
-            }
+            rb.velocity += toPlayer.normalized * 0.15f * (0.3f + attractDist - length);
+            //float speed = rb.velocity.magnitude;
+            //if (speed > length)
+            //{
+            //    rb.velocity *= length / speed; //Max out the velocity at the length to player, so it doesn't move to fast when it is close
+            //}
         }
     }
     public void OnCollected()

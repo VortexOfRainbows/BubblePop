@@ -10,8 +10,9 @@ public class EquipmentUIElement : MonoBehaviour
     public Equipment ActiveEquipment;
     public GameObject Self => gameObject;
     public Vector3 targetScale = Vector3.one;
-    public bool Unlocked => ActiveEquipment.UnlockCondition.Unlocked;
+    public bool Unlocked => ActiveEquipment.IsUnlocked || DisplayOnly;
     private bool prevUnlockStatus = true;
+    public bool DisplayOnly = false;
     public void UpdateOrientation()
     {
         Vector2 offset = Vector2.zero;
@@ -52,9 +53,14 @@ public class EquipmentUIElement : MonoBehaviour
         if (Utils.IsMouseHoveringOverThis(true, Self.GetComponent<RectTransform>(), 50, canvas))
         {
             PopUpTextUI.Enable(ActiveEquipment.GetName(), ActiveEquipment.GetDescription());
-            transform.localScale = Vector3.Lerp(transform.localScale, targetScale * 1.2f, 0.15f);
+            float scaleUp = 1.1f;
+            if (!DisplayOnly)
+            {
+                clicked = Input.GetMouseButtonDown(0);
+                scaleUp = 1.2f;
+            }
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale * scaleUp, 0.15f);
             hovering = true;
-            clicked = Input.GetMouseButtonDown(0);
         }
         else
             transform.localScale = Vector3.Lerp(transform.localScale, targetScale * 1.0f, 0.1f);

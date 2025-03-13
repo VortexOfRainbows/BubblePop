@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CharacterSelect : MonoBehaviour
 {
@@ -23,9 +24,17 @@ public class CharacterSelect : MonoBehaviour
         public void Open(EquipmentUIElement parent, List<GameObject> Equipments)
         {
             Close();
-            for (int j = 0; j < Equipments.Count; j++)
+            int start = this == charSelect.PrimaryPage ? 0 : 1;
+            for (int i = start; i < 2; ++i)
             {
-                Add(parent, Equipments[j].GetComponent<Equipment>());
+                for (int j = 0; j < Equipments.Count; j++)
+                {
+                    Equipment e = Equipments[j].GetComponent<Equipment>();
+                    if (start == 1 || (i == 0 && e.SameUnlockAsBody(Player.Instance.Body)) || (i == 1 && !e.SameUnlockAsBody(Player.Instance.Body)))
+                    {
+                        Add(parent, Equipments[j].GetComponent<Equipment>());
+                    }
+                }
             }
             IsOpen = true;
         }
@@ -48,11 +57,18 @@ public class CharacterSelect : MonoBehaviour
         public void Add(EquipmentUIElement parent, Equipment equipment)
         {
             EquipmentUIElement ui = Instantiate(charSelect.EquipmentUISlotPrefab, charSelect.visual.transform);
+            ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
             if(IsPrimary)
                 ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * Count, 0);
+            else if(parent.ActiveEquipment is Body)
+            {
+                ui.DisplayOnly = true;
+                ui.transform.localPosition = parent.transform.localPosition + new Vector3(0, 150 + 125 * Count);
+                ui.targetScale *= 0.625f / 0.75f;
+                ui.transform.localScale *= 0.65f;
+            }
             else
                 ui.transform.localPosition = parent.transform.localPosition + new Vector3(180 * Count, -180);
-            ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
             charSelect.RenderBox(ui,  equipment);
             Equips.Add(ui);
         }
@@ -84,8 +100,10 @@ public class CharacterSelect : MonoBehaviour
     private List<PowerUpUIElement> AvailablePowersUI = new();
     private bool PowerUpPageIsOpen = false;
     public bool HasLoaded = false;
+    public static CharacterSelect Instance;
     public void Start()
     {
+        Instance = this;
         SecondaryPage = new EquipmentPage(this, false);
         PrimaryPage = new EquipmentPage(this, true);
         PowerUpLayout.MenuLayout = PowerLayout;
@@ -116,6 +134,7 @@ public class CharacterSelect : MonoBehaviour
     }
     public void Update()
     {
+        Instance = this;
         if(!HasLoaded)
         {
             HasLoaded = true;
@@ -166,7 +185,8 @@ public class CharacterSelect : MonoBehaviour
     {
         slot.UpdateActive(myCanvas, out bool hovering, out bool clicked);
         bool openPage = page == PrimaryPage ? clicked : false;
-        if(page != null)
+        bool justClosedFromDragOff = false;
+        if (page != null)
         {
             if (hovering)
             {
@@ -175,7 +195,15 @@ public class CharacterSelect : MonoBehaviour
                     openPage = true;
             }
             else if (page.hoveringElement == slot.gameObject && !page.IsOpen)
+            {
                 page.hoveringElement = null;
+            }
+            else if(slot.ActiveEquipment is Body && page.IsOpen && page == SecondaryPage && page.PreviousType == index && page.hoveringElement == slot.gameObject)
+            {
+                openPage = true;
+                page.hoveringElement = null; 
+                justClosedFromDragOff = true;
+            }
         }
         if (openPage && AllowOpeningPage)
         {
@@ -187,16 +215,32 @@ public class CharacterSelect : MonoBehaviour
                     justClosed = true;
                     page.Close();
                 }
-                if (!justClosed || index != page.PreviousType)
+                if ((slot.Unlocked || page == PrimaryPage) && (!justClosed || index != page.PreviousType))
                 {
                     if (page == PrimaryPage)
                         page.Open(slot, PrimaryEquipments[index]);
                     else
-                        page.Open(slot, slot.ActiveEquipment.OriginalPrefab.SubEquipment);
+                    {
+                        if(slot.ActiveEquipment is Body b)
+                        {
+                            b.LoadData();
+                            List<GameObject> bodyPrevSelectedEquips = new List<GameObject>
+                            {
+                                AllEquipmentsList[b.LastSelectedWep],
+                                AllEquipmentsList[b.LastSelectedAcc],
+                                AllEquipmentsList[b.LastSelectedHat]
+                            };
+                            page.Open(slot, bodyPrevSelectedEquips);
+                        }
+                        else
+                        {
+                            page.Open(slot, slot.ActiveEquipment.OriginalPrefab.SubEquipment);
+                        }
+                    }
                 }
                 page.PreviousType = index;
             }
-            return true;
+            return !justClosedFromDragOff;
         }
         if(page != PrimaryPage)
         {

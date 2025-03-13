@@ -19,7 +19,8 @@ public class LabCoat : BubblemancerCape
     }
     public SpriteRenderer ArmL;
     public SpriteRenderer ArmR;
-    public override UnlockCondition UnlockCondition => UnlockCondition.Get<ChoiceUnlock200>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ChoiceUnlock200>();
+    protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     protected override Vector2 CapeScale => new Vector2(0.86f, 0.8f);
     protected override string Name()
     {

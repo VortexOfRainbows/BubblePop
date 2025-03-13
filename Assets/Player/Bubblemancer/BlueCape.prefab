@@ -99,8 +99,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6b64be08c27943b852c0b5815c516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SubEquipment: []
+  OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 7956459227241470557}
   velocity: {x: 0, y: 0}
+  hasInit: 0
+  isSubEquipment: 1
   CapeB: {fileID: 1946491136762909545}
   CapeL: {fileID: 3208484516123435328}
   CapeR: {fileID: 3967729728672570375}

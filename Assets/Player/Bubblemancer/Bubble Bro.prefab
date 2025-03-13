@@ -182,8 +182,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6197bbe4200b7f3498b8207aaaf56ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SubEquipment: []
+  OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 1327987545438757765}
   velocity: {x: 0, y: 0}
+  hasInit: 0
+  isSubEquipment: 0
+  LastSelectedHat: -1
+  LastSelectedAcc: -1
+  LastSelectedWep: -1
+  PrimaryColor: {r: 0.89, g: 0.80784315, b: 0.9411765, a: 0.5}
   Face: {fileID: 6834552506591836568}
   FaceR: {fileID: 4116895871933785455}
-  i: 0

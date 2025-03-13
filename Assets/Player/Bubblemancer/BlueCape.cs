@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlueCape : BubblemancerCape
 {
-    public override UnlockCondition UnlockCondition => UnlockCondition.Get<StarbarbUnlock5>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<StarbarbUnlock5>();
     protected override string Description()
     {
         return "A fashionable robe styled with wool from Bubblemancer's elite blue sheep" +

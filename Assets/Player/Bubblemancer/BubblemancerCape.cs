@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 
 public class BubblemancerCape : Accessory
 {
+    protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
     public override void Init()
     {
         RightCapeDefaultPos = CapeR.transform.localPosition;

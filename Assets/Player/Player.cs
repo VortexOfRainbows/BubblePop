@@ -142,7 +142,8 @@ public partial class Player : Entity
         }
         if (Input.GetKey(KeyCode.V) && UnlockCondition.ForceUnlockAll)
         {
-            PowerUp.Spawn<TrailOfThoughts>(transform.position, 0);
+            //PowerUp.Spawn<TrailOfThoughts>(transform.position, 0);
+            UIManager.score += 100;
         }
         Instance = this;
         EventManager.Update();

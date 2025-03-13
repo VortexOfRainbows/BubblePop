@@ -6,6 +6,8 @@ using UnityEngineInternal;
 
 public class ThoughtBubble : Body
 {
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
+    protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     public const float TailRegenTime = 0.3f;
     public const float TailTravelTime = 4f;
     public GameObject TailPrefab;
@@ -32,7 +34,7 @@ public class ThoughtBubble : Body
     }
     protected override string Description()
     {
-        return "A mysterious Bubbletech Scientist. His origin is unknown; he appeared to Bubblemancer shortly after the first waves... why was he there?";
+        return "A mysterious Bubbletech Scientist. His origin is unknown. He appeared before Bubblemancer shortly after the first waves... why was he there?";
     }
     public override void FaceUpdate()
     {

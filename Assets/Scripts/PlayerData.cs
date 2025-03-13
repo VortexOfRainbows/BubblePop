@@ -26,8 +26,8 @@ public static class PlayerData
     {
         PlayerPrefs.SetInt(tag, value);
     }
-    public static int GetInt(string tag)
+    public static int GetInt(string tag, int defaultValue = 0)
     {
-        return PlayerPrefs.GetInt(tag);
+        return PlayerPrefs.GetInt(tag, defaultValue);
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour
@@ -11,6 +12,7 @@ public class Equipment : MonoBehaviour
     public SpriteRenderer spriteRender;
     public Vector2 velocity;
     public bool hasInit = false;
+    public bool isSubEquipment = false; 
     public int IndexInTheAllEquipPool
     {
         get
@@ -53,18 +55,34 @@ public class Equipment : MonoBehaviour
         }
         PowerPool.Clear();
     }
-    public virtual UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
+    protected virtual UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
+    /// <summary>
+    /// Essentially which character this equipment should be unlocked by default under. For bodies, this unlock condition should be the same as the normal unlock condition
+    /// </summary>
+    protected virtual UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<StartsUnlocked>();
+    public bool SameUnlockAsBody(Body b)
+    {
+        return b.CategoryUnlockCondition == CategoryUnlockCondition && this is not Body;
+    }
+    public bool CategoryUnlocked => CategoryUnlockCondition.Unlocked || this is Body || isSubEquipment;
+    public bool IsUnlocked => (UnlockCondition.Unlocked && CategoryUnlocked) || (SameUnlockAsBody(p.Body) && !isSubEquipment);
     public virtual void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
 
     }
     public string GetName()
     {
-        return UnlockCondition.Unlocked ? Name() : "???";
+        return IsUnlocked ? Name() : "???";
     }
     public string GetDescription()
     {
-        return UnlockCondition.Unlocked ? Description() : UnlockCondition.LockedText();
+        if (IsUnlocked) //If fully unlocked
+            return Description();
+        if (CategoryUnlocked && !UnlockCondition.Unlocked) //If only the character is unlocked
+            return "Unlock by:\n" + UnlockCondition.LockedText();
+        if (!CategoryUnlocked && UnlockCondition.Unlocked) //If only the equipment is unlocked
+            return "Unlock by:\n" + CategoryUnlockCondition.LockedText();
+        return "Play more to discover this equipment";
     }
     protected virtual string Name()
     {

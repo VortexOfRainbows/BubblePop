@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class BubbleGun : BubblemancerWand
 {
-    public override UnlockCondition UnlockCondition => UnlockCondition.Get<ShotSpeed10>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ShotSpeed10>();
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);

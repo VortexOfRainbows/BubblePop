@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bubblemancer : Body
 {
+    protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
     public override void Init()
     {
         PrimaryColor = ParticleManager.DefaultColor;

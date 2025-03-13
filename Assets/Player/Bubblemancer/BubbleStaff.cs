@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BubbleStaff : BubblemancerWand
 {
-    public override UnlockCondition UnlockCondition => UnlockCondition.Get<ChargeShot10>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ChargeShot10>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         base.ModifyPowerPool(powerPool);
@@ -17,12 +17,11 @@ public class BubbleStaff : BubblemancerWand
     }
     protected override string Description()
     {
-        return "Start with 100 points, Coalescence, and Soapy Soap";
+        return "Start with Coalescence and Soapy Soap";
     }
     public override void OnStartWith()
     {
-        EventManager.Point += 100;
         PowerUp.Spawn<Coalescence>(Player.Position, 0);
-        PowerUp.Spawn<SoapySoap>(Player.Position, 100);
+        PowerUp.Spawn<SoapySoap>(Player.Position, 0);
     }
 }

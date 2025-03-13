@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Body : Equipment
@@ -10,13 +11,33 @@ public class Body : Equipment
     }
     public void LoadData()
     {
-        LastSelectedHat = PlayerData.GetInt($"{TypeName}Hat");
-        LastSelectedAcc = PlayerData.GetInt($"{TypeName}Acc");
-        LastSelectedWep = PlayerData.GetInt($"{TypeName}Wep");
+        LastSelectedHat = PlayerData.GetInt($"{TypeName}Hat", -1);
+        LastSelectedAcc = PlayerData.GetInt($"{TypeName}Acc", -1);
+        LastSelectedWep = PlayerData.GetInt($"{TypeName}Wep", -1);
+        //Debug.Log($"{LastSelectedHat}, {LastSelectedAcc}, {LastSelectedWep}");
+        if (LastSelectedHat < 0)
+            LastSelectedHat = GetDefaultEquip(CharacterSelect.Instance.Hats);
+        if (LastSelectedAcc < 0)
+            LastSelectedAcc = GetDefaultEquip(CharacterSelect.Instance.Accessories);
+        if (LastSelectedWep < 0)
+            LastSelectedWep = GetDefaultEquip(CharacterSelect.Instance.Weapons);
     }
-    public int LastSelectedHat;
-    public int LastSelectedAcc;
-    public int LastSelectedWep;
+    public int GetDefaultEquip(List<GameObject> equipList)
+    {
+        for(int i = 0; i < equipList.Count; ++i)
+        {
+            Equipment e = equipList[i].GetComponent<Equipment>();
+            if (e.SameUnlockAsBody(this))
+            {
+                //Debug.Log(e.name);
+                return e.IndexInTheAllEquipPool;
+            }
+        }
+        return equipList[0].GetComponent<Equipment>().IndexInTheAllEquipPool;
+    }
+    public int LastSelectedHat = -1;
+    public int LastSelectedAcc = -1;
+    public int LastSelectedWep = -1;
     public Color PrimaryColor = ParticleManager.DefaultColor;
     public GameObject Face;
     public SpriteRenderer FaceR;

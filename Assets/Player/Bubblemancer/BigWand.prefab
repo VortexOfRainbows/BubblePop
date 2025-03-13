@@ -97,8 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66eca54f7b614804d9a6445b373c42e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SubEquipment: []
+  OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 8973945380139369154}
   velocity: {x: 0, y: 0}
+  hasInit: 0
+  isSubEquipment: 1
   AttackLeft: 0
   AttackRight: 0
   WandEulerAngles: {x: 0, y: 0, z: 0}
