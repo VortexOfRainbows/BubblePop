@@ -1,13 +1,13 @@
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
-using UnityEngine.UIElements;
-using System.Collections.Generic;
+using TMPro;
 
 public class EquipmentUIElement : MonoBehaviour
 {
     private Color actualColor = default;
     public GameObject Visual;
     public Equipment ActiveEquipment;
+    public TextMeshPro Text;
+    public GameObject PriceVisual;
     public GameObject Self => gameObject;
     public Vector3 targetScale = Vector3.one;
     public bool Unlocked => ActiveEquipment.IsUnlocked || DisplayOnly;
@@ -50,6 +50,11 @@ public class EquipmentUIElement : MonoBehaviour
         hovering = clicked = false;
         UpdateUnlockRelated();
         UpdateOrientation();
+
+        int price = ActiveEquipment.GetPrice();
+        Text.text = price.ToString();
+        PriceVisual.SetActive(price != 0);
+
         if (Utils.IsMouseHoveringOverThis(true, Self.GetComponent<RectTransform>(), 50, canvas))
         {
             PopUpTextUI.Enable(ActiveEquipment.GetName(), ActiveEquipment.GetDescription());

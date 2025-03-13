@@ -129,4 +129,5 @@ public class Equipment : MonoBehaviour
     {
 
     }
+    public virtual int GetPrice() => 0;
 }

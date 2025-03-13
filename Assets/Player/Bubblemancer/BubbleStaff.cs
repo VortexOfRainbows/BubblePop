@@ -24,4 +24,5 @@ public class BubbleStaff : BubblemancerWand
         PowerUp.Spawn<Coalescence>(Player.Position, 0);
         PowerUp.Spawn<SoapySoap>(Player.Position, 0);
     }
+    public override int GetPrice() => 5;
 }

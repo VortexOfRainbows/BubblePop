@@ -15,4 +15,5 @@ public class BlueCape : BubblemancerCape
     {
         Player.Instance.DashMult = 0.6f;
     }
+    public override int GetPrice() => 10;
 }
