@@ -1,16 +1,31 @@
 using UnityEngine;
 
-public class GlobalDefinitions : MonoBehaviour
+public class Main : MonoBehaviour
 {
+    public static bool GamePaused = false;
+    public static bool GameStarted = false;
     public void OnGameOpen()
     {
         //PlayerPrefs.DeleteAll();
         PlayerData.LoadAll();
         CoinManager.InitCoinPrefabs();
     }
-    public static void OnGameStart()
+    public static void StartGame()
     {
+        Time.timeScale = 1f;
         CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
+        GamePaused = false;
+        GameStarted = true;
+    }
+    public static void PauseGame()
+    {
+        Time.timeScale = 0f;
+        GamePaused = true;
+    }
+    public static void UnpauseGame()
+    {
+        Time.timeScale = 1f;
+        GamePaused = false;
     }
     public void OnGameClose()
     {
@@ -29,7 +44,7 @@ public class GlobalDefinitions : MonoBehaviour
         Instance = this;
     }
     public void Update() => Instance = this;
-    public static GlobalDefinitions Instance;
+    public static Main Instance;
     public static GameObject Projectile => Instance.DefaultProjectile;
     public GameObject DefaultProjectile;
     public static Sprite SpikyProjectileSprite => Instance.SpikyProj;

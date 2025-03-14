@@ -20,7 +20,7 @@ public class Projectile : MonoBehaviour
     public Vector2 startPos = Vector2.zero;
     public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, float data1 = 0, float data2 = 0) where T : Projectile
     {
-        GameObject Proj = Instantiate(GlobalDefinitions.Projectile, pos, Quaternion.identity);
+        GameObject Proj = Instantiate(Main.Projectile, pos, Quaternion.identity);
         Projectile proj = Proj.AddComponent<T>();
         proj.cmp = Proj.GetComponent<ProjComponents>();
         proj.RB.velocity = velo;
@@ -140,7 +140,7 @@ public class StarProj : Projectile
 {
     public override void Init()
     {
-        SpriteRenderer.sprite = GlobalDefinitions.Sparkle;
+        SpriteRenderer.sprite = Main.Sparkle;
         SpriteRenderer.color = SpriteRendererGlow.color = new Color(1f, 1f, 0.2f, 0.6f);
         Damage = 2;
         Friendly = true;
@@ -230,7 +230,7 @@ public class FlamingoFeather : Projectile
         transform.localScale = new Vector3(0.65f, 0.45f, 1);
         SpriteRendererGlow.transform.localScale = new Vector3(1.5f, 4f, 1);
         SpriteRendererGlow.color = new Color(253 / 255f, 181 / 255f, 236 / 255f, 0.5f);
-        SpriteRenderer.sprite = GlobalDefinitions.Feather;
+        SpriteRenderer.sprite = Main.Feather;
         Hostile = true;
     }
     public override void AI()
@@ -278,7 +278,7 @@ public class Laser : Projectile
         transform.localScale = new Vector3(0.9f, 0.8f, 1);
         SpriteRendererGlow.transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
         SpriteRendererGlow.color = new Color(168f / 255f, 62f / 255f, 70f / 255f, 0.4f);
-        SpriteRenderer.sprite = GlobalDefinitions.Laser;
+        SpriteRenderer.sprite = Main.Laser;
         Hostile = true;
     }
     public override void AI()

@@ -25,7 +25,7 @@ public class EnemyBossDuck : EnemyDuck
         {
             AudioManager.PlaySound(SoundID.LenardNoise, transform.position, 0.6f, 0.9f);
             ShootProjectile(12);
-            GameObject.Instantiate(GlobalDefinitions.Ducky, transform.position, Quaternion.identity);
+            GameObject.Instantiate(Main.Ducky, transform.position, Quaternion.identity);
             projectileTimer = -200;
         }
         else

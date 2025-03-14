@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     private GameObject pauseMenu;
     [SerializeField]
     private GameObject gameOverScreen;
-    public static bool gamePaused = false;
+    public static bool Paused => Main.GamePaused;
     public static bool StartingScreen = false;
 
     public static int highscore;
@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
         highscore = PlayerData.GetInt("Highscore");
         pauseButton.SetActive(false);
         StartingScreen = true;
-        Time.timeScale = 0f;
+        Main.GameStarted = false;
     }
 
     // Update is called once per frame
@@ -49,14 +49,12 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(gamePaused)
+            if(Paused)
                 Resume();
             else
                 Pause();
         }
 
-        //DamagePowerUp.text = Player.Instance.DamagePower.ToString();
-        //ShotgunPowerUp.text = Player.Instance.ShotgunPower.ToString();
         scoreText.text = "Score: " + Mathf.FloorToInt(score);
         highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
         deadHighscoreText.text = highscoreText.text;
@@ -67,49 +65,39 @@ public class UIManager : MonoBehaviour
             highscore = score;
             PlayerData.SaveInt("Highscore", (int)highscore);
         }
-
     }
-
     public void Pause()
     {
-        gamePaused = true;
         pauseMenu.SetActive(true);
-        Time.timeScale = 0f;
+        Main.PauseGame();
     }
-
-    public void CloseTutorial()
+    public void UnleashWaves()
     {
-        Time.timeScale = 1f;
         StartingScreen = false;
         pauseButton.SetActive(true);
-        GlobalDefinitions.OnGameStart();
+        Main.StartGame();
     }
-
     public void Resume()
     {
-        gamePaused = false;
+        Main.GamePaused = false;
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
     }
-
     public void MainMenu()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
-
     public void GameOver()
     {
         gameOverScreen.SetActive(true);
-        Time.timeScale = 0f;
+        Main.PauseGame();
     }
-
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1f;
     }
-
     public void PlaySound()
     {
         StaticPlaySound();

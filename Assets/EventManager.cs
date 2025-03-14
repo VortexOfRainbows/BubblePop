@@ -29,11 +29,15 @@ public static class EventManager
     }
     public static void Update()
     {
+        if (!Main.GameStarted)
+            return;
         if(RunOnce)
         {
+            Vector2 spawnPos = new Vector2(Utils.RandFloat(24), 0).RotatedBy(Utils.RandFloat(6.284f));
+            PowerUp.Spawn<Choice>(spawnPos);
             for (int i = 0; i < 10; i++)
             {
-                TrySpawnEnemy(GlobalDefinitions.Ducky);
+                TrySpawnEnemy(Main.Ducky);
             }
             RunOnce = false;
         }
@@ -59,10 +63,10 @@ public static class EventManager
             float maxTime = GetSpawnTime(8, 2, 0, 10000);
             bathBombTimer = Utils.RandFloat(minTime, maxTime); //5 to 8 seconds for another bath bomb
         }
-        EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 0, 1000), GlobalDefinitions.Ducky);
-        EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 80, 1100), GlobalDefinitions.Soap);
-        EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), GlobalDefinitions.flamingoFloatie);
-        EnemySpawning(ref MadLadTimer, 1f, GetSpawnTime(90, 30, 1000, 10000), GlobalDefinitions.FinalDuck);
+        EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 0, 1000), Main.Ducky);
+        EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 80, 1100), Main.Soap);
+        EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), Main.flamingoFloatie);
+        EnemySpawning(ref MadLadTimer, 1f, GetSpawnTime(90, 30, 1000, 10000), Main.FinalDuck);
     }
     private static float GetSpawnTime(float max, float min, float minimumThreshhold, float maxThreshold)
     {

@@ -7,7 +7,7 @@ public class SmallBubble : Projectile
         Color c = Player.ProjectileColor;
         c.a = 0.68f;
         SpriteRenderer.color = c;
-        SpriteRenderer.sprite = GlobalDefinitions.BubbleSmall;
+        SpriteRenderer.sprite = Main.BubbleSmall;
         timer += Utils.RandInt(41);
         transform.localScale *= 0.3f;
         Damage = 1;
@@ -60,7 +60,7 @@ public class BigBubble : Projectile
 {
     public override void Init()
     {
-        SpriteRenderer.sprite = GlobalDefinitions.BubbleSprite;
+        SpriteRenderer.sprite = Main.BubbleSprite;
         Color c = Player.ProjectileColor;
         c.a = 0.68f;
         SpriteRenderer.color = c;

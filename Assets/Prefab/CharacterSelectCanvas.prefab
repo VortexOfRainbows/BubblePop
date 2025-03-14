@@ -661,6 +661,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6913079670113530045, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UnleashWaves
+      objectReference: {fileID: 0}
     - target: {fileID: 8980551393198275346, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
       propertyPath: m_Name
       value: StartButton
