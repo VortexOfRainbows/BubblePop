@@ -85,6 +85,7 @@ public class UIManager : MonoBehaviour
     }
     public void MainMenu()
     {
+        CoinManager.AfterDeathTransfer();
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }

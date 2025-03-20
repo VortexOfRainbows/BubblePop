@@ -160,7 +160,7 @@ SpriteRenderer:
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: f8d449e04bd31df4cbe287850df2dbf0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 7.32, y: 4.27}
@@ -246,7 +246,7 @@ SpriteRenderer:
   m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: 96e71d3056947be47ba8944af96d9ec8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -272,6 +272,7 @@ MonoBehaviour:
   spriteRender: {fileID: 1327987545438757765}
   velocity: {x: 0, y: 0}
   hasInit: 0
+  isSubEquipment: 0
   LastSelectedHat: 0
   LastSelectedAcc: 0
   LastSelectedWep: 0
@@ -279,5 +280,7 @@ MonoBehaviour:
   Face: {fileID: 6834552506591836568}
   FaceR: {fileID: 4116895871933785455}
   TailPrefab: {fileID: 3265141040751608713, guid: b07dcbee7d4ea0645879043d1b0991be, type: 3}
-  Tail: {fileID: 0}
+  StartTail: 0
+  TailCount: 0
   MouthR: {fileID: 6669102899738470072}
+  sparkleSparkleNum: 0

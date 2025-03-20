@@ -35,7 +35,6 @@ public partial class Player : Entity
     public float Bobbing { get; private set; }
     private bool HasRunStartingGear = false;
     public const float DashDefault = 25f;
-    public float DashMult = 1f;
     void Start()
     {
         PowerInit();
@@ -46,11 +45,9 @@ public partial class Player : Entity
         ChargeShotDamage = 0;
         ShotgunPower = 0;
         DeathKillTimer = 0;
-        DashMult = 1;
         HasRunStartingGear = false;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
     }
-    public float abilityCD { get; private set; } = 0.5f;
     public float abilityTimer = 0;
     private void MovementUpdate()
     {
@@ -86,7 +83,7 @@ public partial class Player : Entity
             velocity.x *= MovementDeacceleration;
         movespeed = movespeed.normalized;
 
-        abilityTimer -= Time.fixedDeltaTime;
+        abilityTimer -= Time.fixedDeltaTime * AbilityRecoverySpeed;
 
         Body.AbilityUpdate(ref velocity, movespeed);
 
@@ -142,12 +139,19 @@ public partial class Player : Entity
         }
         if (Input.GetKey(KeyCode.V) && UnlockCondition.ForceUnlockAll)
         {
-            //PowerUp.Spawn<TrailOfThoughts>(transform.position, 0);
-            UIManager.score += 100;
+            PowerUp.Spawn<TrailOfThoughts>(transform.position, 0);
+            //UIManager.score += 100;
+            CoinManager.SpawnCoin(transform.position, 25);
         }
         Instance = this;
         EventManager.Update();
         UpdatePowerUps();
+
+        Hat.EquipUpdate();
+        Accessory.EquipUpdate();
+        Weapon.EquipUpdate();
+        Body.EquipUpdate();
+
         if (DeathKillTimer > 0)
             Pop();
         else

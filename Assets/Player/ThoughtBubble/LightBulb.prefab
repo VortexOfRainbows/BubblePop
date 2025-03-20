@@ -159,7 +159,7 @@ SpriteRenderer:
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: e160e06f6faaa1d41bef273fd4a86171, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 32.756836, y: 17.609999}
@@ -185,6 +185,7 @@ MonoBehaviour:
   spriteRender: {fileID: 8016481760766100851}
   velocity: {x: 0, y: 0}
   hasInit: 0
+  isSubEquipment: 0
   OnBulb: {fileID: 21300000, guid: e160e06f6faaa1d41bef273fd4a86171, type: 3}
   OffBulb: {fileID: 21300000, guid: 1307fb9504737084b8ef9c5138c73d45, type: 3}
   light2d: {fileID: 4579325466411998389}

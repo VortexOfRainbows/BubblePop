@@ -33,10 +33,7 @@ public class Bulb : Hat
     protected override void AnimationUpdate()
     {
         float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.abilityTimer / p.abilityCD));
-        if (spriteRender.flipX == p.BodyR.flipY)
-        {
-            spriteRender.flipX = !p.BodyR.flipY;
-        }
+        spriteRender.flipX = p.BodyR.flipY;
         spriteRender.sprite = OnBulb;
         light2d.intensity = Mathf.Lerp(light2d.intensity, 1, 0.08f);
         light2d.gameObject.SetActive(true);

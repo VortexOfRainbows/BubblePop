@@ -71,7 +71,6 @@ public class Body : Equipment
             }
             r = Mathf.LerpAngle(r, angle, RotationSpeed);
             spriteRender.flipY = r >= 90 && r < 270;
-            bool flip = !spriteRender.flipY;
             transform.eulerAngles = new Vector3(0, 0, r);
         }
         transform.localScale = new Vector3(1 + (1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash, 1);

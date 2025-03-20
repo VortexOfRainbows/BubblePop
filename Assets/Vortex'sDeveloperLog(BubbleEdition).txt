@@ -7,7 +7,7 @@ Need to do:
 
 2. Thought Bubble equipment
 	1. Tail: also needs better visuals, sound cues
-	2. Tail: Maybe make camera follow the tail
+	2. Tail: Maybe make camera follow the tail while traveling down
 
 3. More content (thought bubble weapon, power ups)
 
@@ -19,11 +19,20 @@ Need to do:
 
 6. Outline Shader
 
-7. Ask about VGDC bonus project
+7. Ask about VGDC bonus project by March 29!
 
 8. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
 
+9. Separate Faces from the transform of the body so that they can act independently of it (try to fix the weird rotation bug with faces rn)
+
+10. Rework the powerup icons for Weapon Upgrade and Ability Upgrade to be more standardized like the rest of the powers
+
 Done:
+
+3/20/25
+1. Various bug fixes related to player visuals, thought bubble trail, and character select
+2. add Ability cooldown power
+3. Modify Blue Cape effect to reduce ability timer and increase attack speed
 
 3/12/25 to 3/14/25
 1. Start work on money system

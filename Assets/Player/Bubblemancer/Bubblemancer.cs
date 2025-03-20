@@ -14,6 +14,7 @@ public class Bubblemancer : Body
         powerPool.Add<Choice>();
         powerPool.Add<BubbleBirb>();
         powerPool.Add<BubbleTrail>();
+        powerPool.Add<AbilityUpgrade>();
     }
     protected override string Description()
     {
@@ -28,8 +29,8 @@ public class Bubblemancer : Body
     }
     public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
     {
-        float speed = Player.DashDefault * p.DashMult;
-        p.abilityTimer = p.abilityCD * p.DashMult;
+        float speed = Player.DashDefault;
+        p.abilityTimer = p.abilityCD;
         velocity = velocity * p.MaxSpeed + moveSpeed * speed;
         p.squash = p.SquashAmt;
         transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);

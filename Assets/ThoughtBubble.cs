@@ -15,8 +15,9 @@ public class ThoughtBubble : Body
     protected float TailAddTimer = 0;
     protected int CurrentMarkedTail = -1;
     protected float TailTravelTimer = 0;
-    public int StartTail = 0;
+    protected int StartTail = 0;
     public int TailCount = 0;
+    public int LastTail => StartTail == 0 ? Tails.Count - 1 : StartTail - 1;
     public GameObject CurrentTail => Tails[(CurrentMarkedTail + StartTail) % Tails.Count];
     public override void Init()
     {
@@ -31,6 +32,7 @@ public class ThoughtBubble : Body
         powerPool.Add<Choice>();
         powerPool.Add<TrailOfThoughts>();
         powerPool.Add<BubbleBirb>();
+        powerPool.Add<AbilityUpgrade>();
     }
     protected override string Description()
     {
@@ -39,7 +41,7 @@ public class ThoughtBubble : Body
     public override void FaceUpdate()
     {
         Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
-        toMouse *= Mathf.Sign(p.lastVelo.x);
+        toMouse *= p.Direction;
         Vector2 toMouse2 = toMouse.normalized;
         toMouse2.x += Mathf.Sign(toMouse2.x) * 4;
         float toMouseR = toMouse2.ToRotation();
@@ -50,7 +52,7 @@ public class ThoughtBubble : Body
         Vector2 pos = new Vector2(0.1f, 0.16f * p.Direction) + looking;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
-        FaceR.flipX = !p.BodyR.flipY;
+        FaceR.flipX = p.BodyR.flipY;
         MouthR.flipX = p.BodyR.flipY;
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
@@ -108,7 +110,7 @@ public class ThoughtBubble : Body
                 {
                     TryTurningOffTail();
                 }
-                StartTail = (CurrentMarkedTail + StartTail) % Tails.Count;
+                StartTail = (CurrentMarkedTail + StartTail + 1) % Tails.Count;
                 CurrentMarkedTail = -1;
             }
             else
@@ -162,7 +164,6 @@ public class ThoughtBubble : Body
         else
         {
             UpdateTailOff(i);
-
         }
         previousPos = Tail.transform.position;
     }
@@ -222,21 +223,20 @@ public class ThoughtBubble : Body
     public void TryAddingTail()
     {
         int i = Tails.Count;
-        Vector2 circular = i >= 12 ? new Vector2(-1, 0).RotatedBy(Tails[i - 1].transform.eulerAngles.z * Mathf.Deg2Rad) : new Vector2(0, 3 + .5f * i).RotatedBy(i * 33f * Mathf.Deg2Rad);
-        Vector3 spawnPos = i >= 12 ? Tails[i - 1].transform.position : transform.position;
-        Tails.Add(Instantiate(TailPrefab, (Vector2)spawnPos + circular, Quaternion.identity));
-        Tails[i].transform.localScale = new Vector3(2f, 2f, 2f);
-        UpdateTailPos(Tails.Count - 1, ref spawnPos);
-    }
-    public void TryRemovingTail()
-    {
-        if (TailCount > 0)
+        Vector3 spawnPos = LastTail >= 0 ? Tails[LastTail].transform.position : transform.position;
+        Debug.Log(LastTail);
+        if(LastTail == Tails.Count - 1)
         {
-            int end = Tails.Count - 1;
-            Destroy(Tails[end].gameObject);
-            Tails.RemoveAt(end);
-            --TailCount;
+            Tails.Add(Instantiate(TailPrefab, (Vector2)spawnPos, Quaternion.identity));
         }
+        else
+        {
+            Tails.Insert(LastTail, Instantiate(TailPrefab, (Vector2)spawnPos, Quaternion.identity));
+            ++StartTail;
+        }
+        Tails[LastTail].transform.localScale = new Vector3(0f, 0f, 0f);
+        //UpdateTailPos(LastTail, ref spawnPos);
+        //Debug.Log(StartTail);
     }
     public void TryTurningOnTail()
     {
@@ -247,5 +247,16 @@ public class ThoughtBubble : Body
     {
         if (TailCount > 0)
             --TailCount;
+    }
+    private void OnDestroy()
+    {
+        if (Tails == null)
+            return;
+        while (Tails.Count > 0)
+        {
+            int end = Tails.Count - 1;
+            Destroy(Tails[end].gameObject);
+            Tails.RemoveAt(end);
+        }
     }
 }

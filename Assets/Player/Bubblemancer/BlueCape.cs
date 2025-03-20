@@ -9,11 +9,12 @@ public class BlueCape : BubblemancerCape
     {
         return "A fashionable robe styled with wool from Bubblemancer's elite blue sheep" +
             "\n" +
-            "Decreases dash cooldown and dash distance";
-    }
-    public override void OnStartWith()
-    {
-        Player.Instance.DashMult = 0.6f;
+            "Greatly reduces ability cooldown and slightly increases attack speed";
     }
     public override int GetPrice() => 10;
+    public override void EquipUpdate()
+    {
+        p.AbilityRecoverySpeed += 0.6f;
+        p.AttackSpeedModifier += 0.1f;
+    }
 }
