@@ -6,6 +6,8 @@ public class BubblemancerHat : Hat
     protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
+        powerPool.Add<Dash>();
+        powerPool.Add<LuckyStar>();
         powerPool.Add<BinaryStars>();
         powerPool.Add<Starbarbs>();
     }

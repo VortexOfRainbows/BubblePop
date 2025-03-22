@@ -304,3 +304,16 @@ public class TrailOfThoughts : PowerUp
         p.TrailOfThoughts += Stack;
     }
 }
+public class Magnet : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 1f;
+    }
+    protected override string Name() => "Magnet";
+    protected override string Description() => "Extends the distance coins are collected from";
+    public override void HeldEffect(Player p)
+    {
+        p.Magnet += Stack;
+    }
+}

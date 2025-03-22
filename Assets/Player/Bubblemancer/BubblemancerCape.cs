@@ -19,8 +19,7 @@ public class BubblemancerCape : Accessory
     protected float LookingAtMouseScale = 0.5f;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Dash>();
-        powerPool.Add<LuckyStar>();
+        powerPool.Add<Magnet>();
     }
     protected override string Description()
     {
