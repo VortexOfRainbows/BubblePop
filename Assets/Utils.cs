@@ -101,12 +101,13 @@ public static class Utils
             Rect rect = transform.rect;
             float width = rect.width * scale;
             float height = rect.height * scale;
-            rect = new Rect(pos.x - width / 2, pos.y - height / 2, width, height);
+            rect = new Rect(pos.x - width * transform.pivot.x, pos.y - height * transform.pivot.y, width, height);
             if (rect.Contains(Input.mousePosition))
                 return true;
         }
         else
         {
+            pos += new Vector3(1 - 2 * transform.pivot.x, 1 - 2 * transform.pivot.y) * scale * radius;
             if (((Vector2)pos - (Vector2)Input.mousePosition).magnitude < radius * scale)
                 return true;
         }

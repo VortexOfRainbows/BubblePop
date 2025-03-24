@@ -6,30 +6,22 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public Canvas MainGameCanvas;
     public static UIManager Instance;
-    [SerializeField]
-    private GameObject pauseMenu;
-    [SerializeField]
-    private GameObject gameOverScreen;
+    public Canvas MainGameCanvas;
+    public GameObject pauseMenu;
+    public GameObject gameOverScreen;
     public static bool Paused => Main.GamePaused;
     public static bool StartingScreen = false;
 
     public static int highscore;
     public static int score;
 
-    [SerializeField]
-    private GameObject pauseButton;
-    [SerializeField]
-    private TMPro.TextMeshProUGUI scoreText;
-    [SerializeField]
-    private TMPro.TextMeshProUGUI highscoreText;
-    [SerializeField]
-    private TMPro.TextMeshProUGUI deadHighscoreText;
-    [SerializeField]
-    private TMPro.TextMeshProUGUI moneyText;
-    [SerializeField]
-    private TMPro.TextMeshProUGUI savingsText;
+    public TMPro.TextMeshProUGUI scoreText;
+    public TMPro.TextMeshProUGUI highscoreText;
+    public TMPro.TextMeshProUGUI deadHighscoreText;
+    public TMPro.TextMeshProUGUI moneyText;
+    public GameObject CurrencyIcon;
+    public GameObject SavingsIcon;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +29,6 @@ public class UIManager : MonoBehaviour
         Instance = this;
         score = 0;
         highscore = PlayerData.GetInt("Highscore");
-        pauseButton.SetActive(false);
         StartingScreen = true;
         Main.GameStarted = false;
     }
@@ -58,8 +49,12 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: " + Mathf.FloorToInt(score);
         highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
         deadHighscoreText.text = highscoreText.text;
-        moneyText.text = $"Gold: {CoinManager.Current}";
-        savingsText.text = $"Savings: {CoinManager.Savings}";
+
+        int money = Main.GameStarted ? CoinManager.Current : CoinManager.Savings;
+        moneyText.text = $"${money}";
+        CurrencyIcon.SetActive(Main.GameStarted);
+        SavingsIcon.SetActive(!Main.GameStarted);
+
         if (score > highscore)
         {
             highscore = score;
@@ -74,7 +69,6 @@ public class UIManager : MonoBehaviour
     public void UnleashWaves()
     {
         StartingScreen = false;
-        pauseButton.SetActive(true);
         Main.StartGame();
     }
     public void Resume()
