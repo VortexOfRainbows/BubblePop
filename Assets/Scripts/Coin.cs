@@ -7,6 +7,7 @@ public class Coin : MonoBehaviour
     public Rigidbody2D rb;
     public int Value;
     public float AttractTimer = 0;
+    public Color PopupColor;
     public void OnTriggerStay2D(Collider2D collision)
     {
         if (gameObject.activeSelf && collision.CompareTag("Player"))
@@ -45,5 +46,6 @@ public class Coin : MonoBehaviour
     public void OnCollected()
     {
         CoinManager.ModifyCurrent(Value);
+        PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"${Value.ToString()}");
     }
 }
