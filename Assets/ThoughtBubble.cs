@@ -32,7 +32,7 @@ public class ThoughtBubble : Body
         powerPool.Add<Choice>();
         powerPool.Add<TrailOfThoughts>();
         powerPool.Add<BubbleBirb>();
-        powerPool.Add<AbilityUpgrade>();
+        //powerPool.Add<AbilityUpgrade>();
     }
     protected override string Description()
     {
