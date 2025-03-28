@@ -21,7 +21,7 @@ public class PopUpTextUI : MonoBehaviour
     public void SetName(string name) => Name.text = name;
     public void SetDescription(string desc) => Description.text = desc;
     public void Start() => Instance = this;
-    public void Update()
+    public void FixedUpdate()
     {
         if (myRect == null)
             myRect = GetComponent<RectTransform>();
