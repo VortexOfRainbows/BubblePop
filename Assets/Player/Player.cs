@@ -137,9 +137,11 @@ public partial class Player : Entity
             Body.OnStartWith();
             HasRunStartingGear = true;
         }
-        if (Input.GetKey(KeyCode.V) && UnlockCondition.ForceUnlockAll)
+        if (Input.GetKeyDown(KeyCode.V) && UnlockCondition.ForceUnlockAll)
         {
-            PowerUp.Spawn<TrailOfThoughts>(transform.position, 0);
+            for(int i = 0; i < PowerUp.Reverses.Count; ++i)
+                PowerUp.Spawn(i, transform.position, 0);
+            //PowerUp.Spawn<TrailOfThoughts>(transform.position, 0);
             //UIManager.score += 100;
             CoinManager.SpawnCoin(transform.position, 25);
         }

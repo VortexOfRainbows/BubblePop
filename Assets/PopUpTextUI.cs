@@ -9,7 +9,7 @@ public class PopUpTextUI : MonoBehaviour
         Instance.SetName(name);
         Instance.SetDescription(desc);
         Instance.Visual.SetActive(true);
-        enabledDuration = 2;
+        enabledDuration = 3;
     }
     private static float enabledDuration = 0;
     public static PopUpTextUI Instance;
@@ -40,5 +40,10 @@ public class PopUpTextUI : MonoBehaviour
         //Clamp so it won't leave the boundaries of the screen
         //Debug.Log($"{transform.position}, {width}, {height}");
         transform.position = new Vector2(Mathf.Clamp(transform.position.x, 0, width), Mathf.Clamp(transform.position.y, height, 10000) + myRect.rect.height / 2 * MainGameCanvas.scaleFactor);
+    }
+    public void Update()
+    {
+        if (Main.GamePaused)
+            FixedUpdate();
     }
 }
