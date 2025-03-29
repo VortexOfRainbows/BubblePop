@@ -317,3 +317,16 @@ public class Magnet : PowerUp
         p.Magnet += Stack;
     }
 }
+public class SpearOfLight : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.27f;
+    }
+    protected override string Name() => "Spear of Light";
+    protected override string Description() => "Periodically fire beams of light at nearby enemies";
+    public override void HeldEffect(Player p)
+    {
+        p.LightSpear += Stack;
+    }
+}

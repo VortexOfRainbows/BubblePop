@@ -21,6 +21,7 @@ public class Bulb : Hat
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<WeaponUpgrade>();
+        powerPool.Add<SpearOfLight>();
     }
     protected override string Description()
     {
@@ -75,5 +76,26 @@ public class Bulb : Hat
         transform.localPosition = (Vector2)transform.localPosition + velocity;
         float deathAngle = 90 * Mathf.Min(p.DeathKillTimer / 100f, 1);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, (deathAngle - 20) * p.Direction, 0.2f));
+    }
+    private float lightSpearCounter = 0;
+    public override void EquipUpdate()
+    {
+        if(p.LightSpear > 0)
+        {
+            Vector2 shootFromPos = (Vector2)transform.position + new Vector2(0, 0.4f).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
+            float shotTime = 2;
+            lightSpearCounter += Time.fixedDeltaTime * (1 + Mathf.Sqrt(p.LightSpear));
+            while(lightSpearCounter > shotTime)
+            {
+                float spearSpeed = 10 + p.LightSpear;
+                float spearRange = 4 + p.LightSpear * 2;
+                Entity target = Entity.FindClosest(shootFromPos, spearRange, out Vector2 norm);
+                if (target != null)
+                {
+                    Projectile.NewProjectile<SmallBubble>(shootFromPos, norm * spearSpeed, 0, 0);
+                }
+                lightSpearCounter -= shotTime;
+            }
+        }
     }
 }

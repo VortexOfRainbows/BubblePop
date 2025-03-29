@@ -224,7 +224,7 @@ public class ThoughtBubble : Body
     {
         int i = Tails.Count;
         Vector3 spawnPos = LastTail >= 0 ? Tails[LastTail].transform.position : transform.position;
-        Debug.Log(LastTail);
+        //Debug.Log(LastTail);
         if(LastTail == Tails.Count - 1)
         {
             Tails.Add(Instantiate(TailPrefab, (Vector2)spawnPos, Quaternion.identity));

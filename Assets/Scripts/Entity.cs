@@ -1,12 +1,34 @@
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    public static Entity FindClosest(Vector3 position, float searchDistance, out Vector2 norm, string tag = "Enemy")
+    {
+        norm = Vector2.zero;
+        int best = -1;
+        Entity[] e = FindObjectsByType<Entity>(FindObjectsSortMode.None);
+        for(int i = 0; i < e.Length; ++i)
+        {
+            Vector2 toDest = e[i].transform.position - position;
+            float dist = toDest.magnitude;
+            Debug.Log(e[i].tag);
+            if (dist <= searchDistance && e[i].CompareTag(tag))
+            {
+                best = i;
+                searchDistance = dist;
+                norm = toDest;
+            }
+        }
+        norm = norm.normalized;
+        return best == -1 ? null : e[best];
+    }
     public SpriteRenderer baseRenderer;
     public float PointWorth = 0;
     public float IFrame = 0;
     public int Life = 10;
     public float DamageTaken = 0;
+    public static readonly string PlayerTag = "Player";
     public static readonly string ProjTag = "Proj";
     public static readonly string EnemyTag = "Enemy";
     public void OnTriggerStay2D(Collider2D collision)
