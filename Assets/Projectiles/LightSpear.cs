@@ -20,6 +20,7 @@ public class LightSpear : Projectile
         immunityFrames = 5;
         Penetrate = -1;
         SetSize();
+        SpawnParticles();
     }
     public void SetSize()
     {
@@ -28,6 +29,25 @@ public class LightSpear : Projectile
         float scaleX = toDest.magnitude;
         transform.localScale = new Vector3(scaleX, transform.localScale.y, transform.localScale.z);
         transform.eulerAngles = new Vector3(0, 0, toDest.ToRotation() * Mathf.Rad2Deg);
+    }
+    public void SpawnParticles()
+    {
+        Vector2 destination = new Vector2(Data1, Data2);
+        Vector2 toDest = destination - (Vector2)transform.position;
+        float scaleX = toDest.magnitude;
+        for(int j = 0; j < 12; ++j)
+        {
+            ParticleManager.NewParticle(transform.position, Utils.RandFloat(0.2f, 0.4f), RB.velocity * Utils.RandFloat(0.8f, 4.5f), 3.6f, Utils.RandFloat(0.45f, 0.6f), 2, SpriteRenderer.color);
+        }
+        for(float i = 0; i < scaleX; i += 0.33f)
+        {
+            Vector2 inBetween = Vector2.Lerp(transform.position, destination, i / scaleX);
+            ParticleManager.NewParticle(inBetween, Utils.RandFloat(0.1f, 0.3f), RB.velocity * Utils.RandFloat(0.1f, 0.7f), 2, Utils.RandFloat(0.3f, 0.45f), 2, SpriteRenderer.color);
+        }
+        for (int j = 0; j < 20; ++j)
+        {
+            ParticleManager.NewParticle(destination, Utils.RandFloat(0.2f, 0.4f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 8f, Utils.RandFloat(0.45f, 0.6f), 2, SpriteRenderer.color);
+        }
     }
     public override void AI()
     {

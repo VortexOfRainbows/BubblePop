@@ -87,12 +87,13 @@ public class Bulb : Hat
             lightSpearCounter += Time.fixedDeltaTime * (1 + Mathf.Sqrt(p.LightSpear));
             while(lightSpearCounter > shotTime)
             {
-                float spearSpeed = 5 + p.LightSpear * 0.02f; // this only matters for visuals as the spear is hitscan
+                float spearSpeed = 5 + p.LightSpear * 0.015f; // this only matters for visuals as the spear is hitscan
                 float spearRange = 6.5f + p.LightSpear * 1.25f;
                 Entity target = Entity.FindClosest(shootFromPos, spearRange, out Vector2 norm);
                 if (target != null)
                 {
                     Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, target.transform.position.x, target.transform.position.y);
+                    velocity -= norm;
                     lightSpearCounter -= shotTime;
                 }
                 else
