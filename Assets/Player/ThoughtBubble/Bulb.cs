@@ -83,12 +83,12 @@ public class Bulb : Hat
         if(p.LightSpear > 0)
         {
             Vector2 shootFromPos = (Vector2)transform.position + new Vector2(0, 0.6f).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) * transform.lossyScale.x;
-            float shotTime = 2;
+            float shotTime = 2.2f;
             lightSpearCounter += Time.fixedDeltaTime * (1 + Mathf.Sqrt(p.LightSpear));
             while(lightSpearCounter > shotTime)
             {
-                float spearSpeed = 5 + p.LightSpear * 0.1f; // this only matters for visuals as the spear is hitscan
-                float spearRange = 6 + p.LightSpear * 2;
+                float spearSpeed = 5 + p.LightSpear * 0.02f; // this only matters for visuals as the spear is hitscan
+                float spearRange = 6.5f + p.LightSpear * 1.25f;
                 Entity target = Entity.FindClosest(shootFromPos, spearRange, out Vector2 norm);
                 if (target != null)
                 {

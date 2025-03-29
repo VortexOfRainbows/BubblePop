@@ -2,18 +2,15 @@ Vortex'sDeveloperLog(BubbleEdition)
 
 Need to do:
 
-1. Projectile code improvement
-	1. Immunity frame functionality improvements
-
-2. Thought Bubble equipment
+1. Thought Bubble equipment
 	1. Tail: also needs better visuals, sound cues
 	2. Tail: Maybe make camera follow the tail while traveling down
 
-3. More content (thought bubble weapon, power ups)
+2. More content (thought bubble weapon, power ups)
 
-4. GameObject Request system (in order to somewhat replicate manual spritebatch)
+3. GameObject Request system (in order to somewhat replicate manual spritebatch)
 
-5. Add cloud particles
+4. Add cloud particles
 
 5. Improve UI and add UNLOCK SCREEN *** (maximum importance)
 
@@ -27,13 +24,15 @@ Need to do:
 
 Done:
 
-3/22/25 and 3/24/25 to 3/28/25
+3/22/25 and 3/24/25 to 3/29/25
 1. Add Magnet power + shift star powers to the Bubblemancer Hat line
 2. Coins now collide with walls
 3. Simplify UI and add money UI icon with some details
 4. More WIP UI and popup text (damage and money)
 5. PopupUI can now be used in paused mode (might have to change how pause works to make this more intuitive)
 6. Title screen animations!
+7. WIP Spear of light powerup
+8. Projectiles now have specialized immunity frames, meaning that piercing projectiles can now coexist, and phoenix fire is nerfed!
 
 3/20/25
 1. Various bug fixes related to player visuals, thought bubble trail, and character select

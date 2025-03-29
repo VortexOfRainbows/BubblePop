@@ -66,6 +66,7 @@ public class BigBubble : Projectile
         SpriteRenderer.color = c;
         transform.localScale *= 0.3f;
         Damage = 1;
+        Penetrate = -1;
         Friendly = false;
         SpriteRendererGlow.gameObject.SetActive(false);
     }
@@ -175,7 +176,6 @@ public class BigBubble : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        target.IFrame = 100;
         AudioManager.PlaySound(SoundID.BubblePop, gameObject.transform.position, 0.8f, 1.5f);
         gameObject.transform.localScale *= 0.8f;
         RB.velocity *= 0.8f;

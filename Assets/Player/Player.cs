@@ -142,6 +142,7 @@ public partial class Player : Entity
             //for(int i = 0; i < PowerUp.Reverses.Count; ++i)
             //    PowerUp.Spawn(i, transform.position, 0);
             PowerUp.Spawn<SpearOfLight>(transform.position, 0);
+            PowerUp.Spawn<BubbleBirb>(transform.position, 0);
             //UIManager.score += 100;
             CoinManager.SpawnCoin(transform.position, 25);
         }
@@ -149,15 +150,16 @@ public partial class Player : Entity
         EventManager.Update();
         UpdatePowerUps();
 
-        Hat.EquipUpdate();
-        Accessory.EquipUpdate();
-        Weapon.EquipUpdate();
-        Body.EquipUpdate();
+        bool dead = DeathKillTimer > 0;
 
-        if (DeathKillTimer > 0)
+        if (dead)
             Pop();
         else
         {
+            Hat.EquipUpdate();
+            Accessory.EquipUpdate();
+            Weapon.EquipUpdate();
+            Body.EquipUpdate();
             base.FixedUpdate(); //Reduce I frames. Will reorganize later
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 15f, 0.03f);
             MovementUpdate();
@@ -234,7 +236,7 @@ public partial class Player : Entity
         {
             Projectile.LegacyNewProjectile(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 7, 0, 0);
         }
-        IFrame = 200;
+        UniversalImmuneFrames = 200;
         SpentBonusLives++;
         DeathKillTimer = 0;
     }

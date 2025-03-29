@@ -14,9 +14,11 @@ public class Projectile : MonoBehaviour
     public float Data1 = 0;
     public float Data2 = 0;
     public int Damage = 0;
+    public int Penetrate = 1;
     public bool Friendly = false;
     private bool Dead = false;
     public bool Hostile = false;
+    public int immunityFrames = 100;
     public Vector2 startPos = Vector2.zero;
     public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, float data1 = 0, float data2 = 0) where T : Projectile
     {
@@ -323,7 +325,9 @@ public class PhoenixFire : Projectile
         SpriteRendererGlow.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         SpriteRendererGlow.color = new Color(1f, 0.45f, .25f);
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/PhoenixFire");
-        Damage = 1;
+        Damage = 15;
+        immunityFrames = 100;
+        Penetrate = 3;
         Friendly = true;
         Hostile = false;
     }

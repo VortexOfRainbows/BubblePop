@@ -11,9 +11,8 @@ public class EnemyBossDuck : EnemyDuck
         Life = 100;
         PointWorth = 50;
     }
-    new public void FixedUpdate()
+    public override void AI()
     {
-        IFrame--;
         int soundChance = Random.Range(1, 400);
         if (soundChance == 1)
         {

@@ -6,7 +6,7 @@ public class EnemySoapTiny : EnemySoap
         rb = GetComponent<Rigidbody2D>();
         Life = 3;
         timer  = 60;
-        IFrame = 80;
+        UniversalImmuneFrames = 80;
         PointWorth = 5;
     }
     public override void OnKill()

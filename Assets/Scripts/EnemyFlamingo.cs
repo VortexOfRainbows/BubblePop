@@ -9,20 +9,21 @@ public class EnemyFlamingo : EnemyDuck
         Life = 10;
         PointWorth = 15;
     }
-    // Update is called once per frame
-    new public void FixedUpdate()
+    public override void AI()
     {
-        IFrame--;
         int soundChance = Random.Range(1, 500);
         if (soundChance == 1)
         {
             AudioManager.PlaySound(SoundID.FlamingoNoise, transform.position, 0.13f, 1.2f);
         }
         MoveUpdate();
-        if (projectileTimer <= 0) {
+        if (projectileTimer <= 0)
+        {
             ShootProjectile();
             projectileTimer = Random.Range(60, 300);
-        } else {
+        }
+        else
+        {
             projectileTimer--;
         }
     }

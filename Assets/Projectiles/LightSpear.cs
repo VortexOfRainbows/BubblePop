@@ -1,3 +1,4 @@
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.UIElements;
 public class LightSpear : Projectile
@@ -10,12 +11,14 @@ public class LightSpear : Projectile
         SpriteRendererGlow.transform.localScale = new Vector3(0.4f, 3f, 3f);
         SpriteRendererGlow.color = new Color(1.2f, 1.2f, 1.2f);
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/LaserSquare");
-        Damage = 0;
+        Damage = 1;
         Friendly = true;
         Hostile = false;
         cmp.c2D.offset = new Vector2(1, 0);
         cmp.c2D.radius = 0.02f;
         transform.localScale = new Vector3(1, 0.1f, transform.localScale.z);
+        immunityFrames = 5;
+        Penetrate = -1;
         SetSize();
     }
     public void SetSize()
@@ -40,6 +43,8 @@ public class LightSpear : Projectile
             transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(transform.localScale.y, 0f, 0.1f), 1);
             if (transform.lossyScale.y < 0.01f)
                 timer = 101;
+            if (timer > 14)
+                Friendly = false; //turn off hitbox after a bit
         }
         //RB.position -= RB.velocity * Time.fixedDeltaTime * 0.9f; //basically this should not be very effected by velocity
         if (timer > 100)

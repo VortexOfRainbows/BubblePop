@@ -61,9 +61,8 @@ public class EnemyDuck : Entity
         float sin = Mathf.Sin(bobbingTimer * Mathf.PI / bobSpeed);
         transform.eulerAngles = new Vector3(0, 0, sin * 15);
     }
-    new public void FixedUpdate()
+    public override void AI()
     {
-        base.FixedUpdate(); //Reduce I frames
         int soundChance = Random.Range(1, 500);
         if (soundChance == 1)
         {

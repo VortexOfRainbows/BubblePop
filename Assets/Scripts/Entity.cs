@@ -1,9 +1,21 @@
+using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    public static Entity FindClosest(Vector3 position, float searchDistance, out Vector2 norm, string tag = "Enemy")
+    public class ImmunityData
+    {
+        public ImmunityData(Projectile attacker, int frames)
+        {
+            this.attacker = attacker;
+            immuneFrames = frames;
+        }
+        public Projectile attacker;
+        public int immuneFrames;
+    }
+    public List<ImmunityData> SpecializedImmuneFrames = new List<ImmunityData>();
+    public static Entity FindClosest(Vector3 position, float searchDistance, out Vector2 norm, string tag = "Enemy", bool requireNonImmune = true)
     {
         norm = Vector2.zero;
         int best = -1;
@@ -13,7 +25,7 @@ public class Entity : MonoBehaviour
             Vector2 toDest = e[i].transform.position - position;
             float dist = toDest.magnitude;
             Debug.Log(e[i].tag);
-            if (dist <= searchDistance && e[i].CompareTag(tag))
+            if (dist <= searchDistance && (!requireNonImmune || e[i].UniversalImmuneFrames <= 0) && e[i].CompareTag(tag))
             {
                 best = i;
                 searchDistance = dist;
@@ -25,7 +37,7 @@ public class Entity : MonoBehaviour
     }
     public SpriteRenderer baseRenderer;
     public float PointWorth = 0;
-    public float IFrame = 0;
+    public float UniversalImmuneFrames = 0;
     public int Life = 10;
     public float DamageTaken = 0;
     public static readonly string PlayerTag = "Player";
@@ -54,21 +66,36 @@ public class Entity : MonoBehaviour
     {
         if (this is Player p)
         {
-            if (proj.Hostile && p.DeathKillTimer <= 0 && p.IFrame <= 0)
+            if (UniversalImmuneFrames > 0)
+                return;
+            if (proj.Hostile && p.DeathKillTimer <= 0)
             {
                 p.Pop();
             }
         }
         else
         {
-            if (proj.Friendly && (IFrame <= 0 || proj is not BigBubble) && Life > -50)
+            if (SpecializedImmuneFrames.Contains(proj))
+                return;
+            bool piercingProjectile = proj.Penetrate > 1 || proj.Penetrate == -1;
+            if (piercingProjectile && UniversalImmuneFrames > 0)
+                return;
+            if (proj.Friendly && Life > -50)
             {
                 InjureNPC(proj.Damage);
                 proj.OnHitTarget(this);
-                if (proj is SmallBubble || proj is StarProj)
-                    proj.Kill();
+                if(proj.Penetrate != -1)
+                {
+                    --proj.Penetrate;
+                    if (proj.Penetrate <= 0)
+                        proj.Kill();
+                }
                 if (Life < 0)
                     Life = 0;
+                if (piercingProjectile)
+                {
+                    SpecializedImmuneFrames.Add(new ImmunityData(proj, proj.immunityFrames));
+                }
             }
             if (Life <= 0 && Life > -50)
             {
@@ -92,7 +119,7 @@ public class Entity : MonoBehaviour
     }
     public void HurtByNPC()
     {
-        if (this is Player p && p.DeathKillTimer <= 0 && p.IFrame <= 0)
+        if (this is Player p && p.DeathKillTimer <= 0 && p.UniversalImmuneFrames <= 0)
         {
             p.Pop();
         }
@@ -109,7 +136,18 @@ public class Entity : MonoBehaviour
     public Vector2 lastPos = Vector2.zero;
     public void FixedUpdate()
     {
-        IFrame--;
+        if(SpecializedImmuneFrames.Count > 0)
+        {
+            for(int i = SpecializedImmuneFrames.Count - 1; i >= 0; --i)
+                if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
+                    SpecializedImmuneFrames.RemoveAt(i);
+        }
+        UniversalImmuneFrames--;
+        AI();
+    }
+    public virtual void AI()
+    {
+
     }
     public void Update()
     {

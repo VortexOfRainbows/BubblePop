@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using UnityEngine;
+using static Entity;
 
 public static class Utils
 {
@@ -111,6 +112,13 @@ public static class Utils
             if (((Vector2)pos - (Vector2)Input.mousePosition).magnitude < radius * scale)
                 return true;
         }
+        return false;
+    }
+    public static bool Contains(this List<ImmunityData> list, Projectile proj)
+    {
+        foreach(ImmunityData data in list)
+            if (data.attacker == proj)
+                return true;
         return false;
     }
 }
