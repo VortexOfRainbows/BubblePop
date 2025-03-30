@@ -207,6 +207,10 @@ public class ThoughtBubble : Body
     }
     public void DetonateTail(GameObject current)
     {
+        for(int i = 0; i < 5; ++i)
+        {
+            ParticleManager.NewParticle(current.transform.position, Utils.RandFloat(0.4f, 0.5f), Vector2.zero, 4.5f, Utils.RandFloat(0.4f, 0.6f), 2, new Color(1, 0.8377f, 0f));
+        }
         Projectile.NewProjectile<SmallBubble>(current.transform.position, Utils.RandCircle(1));
         if (p.DashSparkle > 0)
         {

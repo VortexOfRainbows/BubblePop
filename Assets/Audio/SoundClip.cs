@@ -47,6 +47,9 @@ public static class SoundID
         "Pickup");
     public static SoundClip StarbarbImpact = new SoundClip("Projectile/",
         "StarbarbImpact1", "StarbarbImpact2", "StarbarbImpact3");
+
+    public static SoundClip CoinPickup = new SoundClip("Coin/",
+        "CoinTier1", "CoinTier2", "CoinTier3");
 }
 public class SoundClip
 {

@@ -47,5 +47,11 @@ public class Coin : MonoBehaviour
     {
         CoinManager.ModifyCurrent(Value);
         PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"${Value.ToString()}");
+        if (Value <= 1)
+            AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 0);
+        else if (Value <= 5)
+            AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 1);
+        else
+            AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 2);
     }
 }

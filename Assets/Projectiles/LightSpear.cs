@@ -21,6 +21,7 @@ public class LightSpear : Projectile
         Penetrate = -1;
         SetSize();
         SpawnParticles();
+        AudioManager.PlaySound(SoundID.LenardLaser, transform.position, 0.65f, 2.5f, 0);
     }
     public void SetSize()
     {
