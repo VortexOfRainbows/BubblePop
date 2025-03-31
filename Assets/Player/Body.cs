@@ -54,7 +54,7 @@ public class Body : Equipment
             angleMult = 1;
         if (p.lastVelo.sqrMagnitude > 0.10f)
         {
-            float r = transform.eulerAngles.z;
+            float r = spriteRender.transform.eulerAngles.z;
             float angle = p.lastVelo.ToRotation() * Mathf.Rad2Deg;
             if (angle < 0)
                 angle += 360;
@@ -71,9 +71,9 @@ public class Body : Equipment
             }
             r = Mathf.LerpAngle(r, angle, RotationSpeed);
             spriteRender.flipY = r >= 90 && r < 270;
-            transform.eulerAngles = new Vector3(0, 0, r);
+            spriteRender.transform.eulerAngles = new Vector3(0, 0, r);
         }
-        transform.localScale = new Vector3(1 + (1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash, 1);
+        spriteRender.transform.localScale = FaceR.transform.localScale = new Vector3(1 + (1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash, 1);
         Vector2 squashReAlign = new Vector2(0, p.Bobbing * p.squash - 1);
         transform.localPosition = squashReAlign;
         gameObject.SetActive(true);
@@ -96,10 +96,9 @@ public class Body : Equipment
     public virtual void FaceUpdate()
     {
         Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
-        toMouse *= Mathf.Sign(p.lastVelo.x);
-        Vector2 pos = new Vector2(0.15f, 0) + toMouse.normalized * 0.25f;
+        Vector2 pos = new Vector2(0.15f * p.Direction, 0) + toMouse.normalized * 0.21f;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
-        FaceR.flipY = spriteRender.flipY;
+        FaceR.flipX = spriteRender.flipY;
     }
     public virtual void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {

@@ -41,7 +41,6 @@ public class ThoughtBubble : Body
     public override void FaceUpdate()
     {
         Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
-        toMouse *= p.Direction;
         Vector2 toMouse2 = toMouse.normalized;
         toMouse2.x += Mathf.Sign(toMouse2.x) * 4;
         float toMouseR = toMouse2.ToRotation();
@@ -49,11 +48,11 @@ public class ThoughtBubble : Body
         looking.y *= 0.8f;
         if (looking.x < 0)
             toMouseR += Mathf.PI;
-        Vector2 pos = new Vector2(0.1f, 0.16f * p.Direction) + looking;
+        Vector2 pos = new Vector2(0.1f * p.Direction, 0.16f) + looking;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
-        FaceR.flipX = p.BodyR.flipY;
-        MouthR.flipX = p.BodyR.flipY;
+        FaceR.flipX = toMouse.x < 0;
+        MouthR.flipX = FaceR.flipX;
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {

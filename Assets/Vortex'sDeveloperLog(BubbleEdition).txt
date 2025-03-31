@@ -13,14 +13,13 @@ Need to do:
 4. Add cloud particles
 
 5. Improve UI and add UNLOCK SCREEN *** (maximum importance)
+	1. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 
-6. Outline Shader
+6. Outline Shader and bubble outline
 
 7. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
 
-8. Separate Faces from the transform of the body so that they can act independently of it (try to fix the weird rotation bug with faces rn)
-
-9. Rework the powerup icons for Weapon Upgrade and Ability Upgrade to be more standardized like the rest of the powers
+8. Rework the powerup icons for Weapon Upgrade to be more standardized like the rest of the powers
 
 Done:
 
