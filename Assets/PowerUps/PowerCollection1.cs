@@ -63,51 +63,17 @@ public class WeaponUpgrade : PowerUp
         p.AttackSpeedModifier += Stack * 0.1f;
     }
 }
-public class AbilityUpgrade : PowerUp
+public class Overclock : PowerUp
 {
     public override void Init()
     {
         Weighting = 0.75f;
     }
-    protected override string Name() => "Cooldown Reduction";
+    protected override string Name() => "Overclock";
     protected override string Description() => "Reduces ability cooldown";
-    public override Sprite GetTexture()
-    {
-        return Player.Instance != null && Player.Instance.Body != null ? Player.Instance.Body.spriteRender.sprite : null;
-    }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("WeaponUpgrade");
-    }
-    public override void AliveUpdate(GameObject inner, GameObject outer, bool UI = false)
-    {
-        sprite = GetTexture();
-        //if (outer.TryGetComponent(out SpriteRenderer rend))
-        //{
-        //    rend.color = new Color(.49f, .82f, .95f, 0.8f);
-        //}
-        //if (outer.TryGetComponent(out Image image))
-        //{
-        //    image.color = new Color(.49f, .82f, .95f, 0.8f);
-        //}
-        Vector2 offset = Vector2.zero;
-        float rot = 0f;
-        float scale = 1f;
-        float secondaryScalar = 1;
-        float finalScaler = 0.38f;
-        if (UI)
-        {
-            secondaryScalar = 100;
-            finalScaler = 0.38f;
-        }
-        Player.Instance.Body.ModifyUIOffsets(true, ref offset, ref rot, ref scale);
-        inner.transform.localPosition = offset * secondaryScalar * finalScaler * scale;
-        inner.transform.eulerAngles = new Vector3(0, 0, rot);
-        inner.transform.localScale = Vector3.one * scale * finalScaler;
-    }
     public override void HeldEffect(Player p)
     {
-        p.AbilityRecoverySpeed += 0.1f * Stack;
+        p.AbilityRecoverySpeed += 0.2f * Stack;
     }
 }
 public class ChargeShot : PowerUp
