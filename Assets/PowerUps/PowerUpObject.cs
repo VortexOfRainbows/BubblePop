@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class PowerUpObject : MonoBehaviour
@@ -7,6 +8,9 @@ public class PowerUpObject : MonoBehaviour
     public SpriteRenderer inner;
     public SpriteRenderer glow;
     public int Type;
+    public int Cost;
+    public GameObject CostObj;
+    public TextMeshPro CostText;
     public PowerUp MyPower => PowerUp.Get(Type);
     public Sprite Sprite => MyPower.sprite;
     private int timer;
@@ -32,12 +36,21 @@ public class PowerUpObject : MonoBehaviour
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
         timer++;
         float scale = 1.0f + 0.1f * Mathf.Sin(Mathf.Deg2Rad * timer * 2f);
-        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(2f / scale, 2f * scale, 2), 0.1f);
+        outer.transform.localScale = Vector3.Lerp(outer.transform.localScale, new Vector3(2f / scale, 2f * scale, 2), 0.1f);
         if (Utils.RandFloat(1) < 0.4f)
         {
             Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
             ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.6f), circular * Utils.RandFloat(3, 6) + new Vector2(0, Utils.RandFloat(-1, 2)),
                 2f, Utils.RandFloat(0.3f, .5f), 0, glow.color * 0.9f);
+        }
+        if(Cost > 0)
+        {
+            CostObj.SetActive(true);
+            CostText.text = $"${Cost}";
+        }
+        else
+        {
+            CostObj.SetActive(false);
         }
     }
     public void OnTriggerStay2D(Collider2D collision) => OnTrigger(collision);

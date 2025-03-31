@@ -23,6 +23,6 @@ public class PricedButton : MonoBehaviour
             Text.color = Color.red;
         }
         StartButtonCoinVisual.SetActive(CoinManager.TotalEquipCost > 0);
-        Text.text = CoinManager.TotalEquipCost.ToString();
+        Text.text = $"${CoinManager.TotalEquipCost}";
     }
 }

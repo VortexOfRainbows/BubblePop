@@ -61,9 +61,9 @@ public class EquipmentUIElement : MonoBehaviour
     }
     public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked)
     {
-        int price = ActiveEquipment.GetPrice();
-        Text.text = price.ToString();
-        PriceVisual.SetActive(price != 0 && Unlocked);
+        int cost = ActiveEquipment.GetPrice();
+        Text.text = $"${cost}";
+        PriceVisual.SetActive(cost != 0 && Unlocked);
 
         hovering = clicked = false;
         UpdateUnlockRelated();
