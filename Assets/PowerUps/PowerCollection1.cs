@@ -30,7 +30,7 @@ public class WeaponUpgrade : PowerUp
     }
     public override Sprite GetAdornment()
     {
-        return Resources.Load<Sprite>("WeaponUpgrade");
+        return Resources.Load<Sprite>("PowerUps/WeaponUpgrade");
     }
     public override void AliveUpdate(GameObject inner, GameObject outer, bool UI = false)
     {
@@ -193,7 +193,7 @@ public class EternalBubbles : PowerUp
     protected override string Description() => "Increases lifespan of all small bubbles";
     public override Sprite GetAdornment()
     {
-        return Resources.Load<Sprite>("DurationUpgrade");
+        return Resources.Load<Sprite>("PowerUps/DurationUpgrade");
     }
     public override void HeldEffect(Player p)
     {
@@ -294,5 +294,18 @@ public class SpearOfLight : PowerUp
     public override void HeldEffect(Player p)
     {
         p.LightSpear += Stack;
+    }
+}
+public class NeuronActivation : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.08f;
+    }
+    protected override string Name() => "Neuron Activation";
+    protected override string Description() => "Enemies cause chain reactions when struck by light";
+    public override void HeldEffect(Player p)
+    {
+        p.LightChainReact += Stack;
     }
 }

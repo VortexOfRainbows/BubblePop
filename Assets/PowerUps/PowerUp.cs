@@ -185,7 +185,7 @@ public abstract class PowerUp
     }
     public virtual Sprite GetTexture()
     {
-        return Resources.Load<Sprite>(InternalName);
+        return Resources.Load<Sprite>($"PowerUps/{InternalName}");
     }
     public virtual Sprite GetAdornment()
     {
