@@ -11,8 +11,9 @@ public class Projectile : MonoBehaviour
     public static int colorGradient = 0;
     public float timer = 0f;
     public float timer2 = 0f;
-    public float Data1 = 0;
-    public float Data2 = 0;
+    public float[] Data;
+    public float Data1 { get => Data[0]; set => Data[0] = value; }
+    public float Data2 { get => Data[1]; set => Data[1] = value; }
     public int Damage = 0;
     public int Penetrate = 1;
     public bool Friendly = false;
@@ -20,40 +21,14 @@ public class Projectile : MonoBehaviour
     public bool Hostile = false;
     public int immunityFrames = 100;
     public Vector2 startPos = Vector2.zero;
-    public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, float data1 = 0, float data2 = 0) where T : Projectile
+    public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, params float[] data) where T : Projectile
     {
         GameObject Proj = Instantiate(Main.Projectile, pos, Quaternion.identity);
         Projectile proj = Proj.AddComponent<T>();
         proj.cmp = Proj.GetComponent<ProjComponents>();
         proj.RB.velocity = velo;
-        proj.Data1 = data1;
-        proj.Data2 = data2;
+        proj.Data = data;
         proj.Init();
-        return null;
-    }
-    public static GameObject LegacyNewProjectile(Vector2 pos, Vector2 velo, int type = 0, float data1 = 0, float data2 = 0)
-    {
-        if(type > 7 || type < 0)
-        {
-            throw new Exception("Use the new projectile spawning method");
-        }    
-        GameObject Proj = null;
-        if(type == 0)
-            NewProjectile<SmallBubble>(pos, velo, data1, data2);
-        if (type == 1)
-            NewProjectile<BathBomb>(pos, velo, data1, data2);
-        if (type == 2)
-            NewProjectile<Spike>(pos, velo, data1, data2);
-        if (type == 3)
-            NewProjectile<BigBubble>(pos, velo, data1, data2);
-        if (type == 4)
-            NewProjectile<StarProj>(pos, velo, data1, data2);
-        if (type == 5)
-            NewProjectile<FlamingoFeather>(pos, velo, data1, data2);
-        if (type == 6)
-            NewProjectile<Laser>(pos, velo, data1, data2);
-        if (type == 7)
-            NewProjectile<PhoenixFire>(pos, velo, data1, data2);
         return Proj;
     }
     public void Kill()
@@ -211,7 +186,7 @@ public class StarProj : Projectile
                 for (; stars > 0; --stars)
                 {
                     Vector2 targetPos = (Vector2)target.transform.position + norm * 9 + Utils.RandCircle(7);
-                    LegacyNewProjectile(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 4, targetPos.x, targetPos.y);
+                    NewProjectile<StarProj>(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), targetPos.x, targetPos.y);
                 }
             }
             if(Player.Instance.LuckyStar > 0)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -22,6 +23,7 @@ public class Bulb : Hat
     {
         powerPool.Add<WeaponUpgrade>();
         powerPool.Add<SpearOfLight>();
+        powerPool.Add<NeuronActivation>();
     }
     protected override string Description()
     {
@@ -77,30 +79,43 @@ public class Bulb : Hat
         float deathAngle = 90 * Mathf.Min(p.DeathKillTimer / 100f, 1);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, (deathAngle - 20) * p.Direction, 0.2f));
     }
+    public static readonly float DefaultShotSpeed = 2.2f;
+    public static readonly float MaxRange = 48;
     private float lightSpearCounter = 0;
+    public static float SpeedModifier => (1 + Mathf.Sqrt(p.LightSpear));
     public override void EquipUpdate()
     {
         if(p.LightSpear > 0)
         {
             Vector2 shootFromPos = (Vector2)transform.position + new Vector2(0, 0.6f).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) * transform.lossyScale.x;
-            float shotTime = 2.2f;
-            lightSpearCounter += Time.fixedDeltaTime * (1 + Mathf.Sqrt(p.LightSpear));
+            float shotTime = DefaultShotSpeed;
+            lightSpearCounter += Time.fixedDeltaTime * SpeedModifier;
             while(lightSpearCounter > shotTime)
             {
-                float spearSpeed = 5 + p.LightSpear * 0.015f; // this only matters for visuals as the spear is hitscan
-                float spearRange = 6.5f + p.LightSpear * 1.25f;
-                Entity target = Entity.FindClosest(shootFromPos, spearRange, out Vector2 norm);
-                if (target != null)
+                if(LaunchSpear(shootFromPos, out Vector2 norm, null, p.LightChainReact))
                 {
-                    Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, target.transform.position.x, target.transform.position.y);
                     velocity -= norm;
                     lightSpearCounter -= shotTime;
                 }
                 else
-                {
                     lightSpearCounter -= shotTime * 0.1f;
-                }
             }
         }
+    }
+    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, Entity ignore, int BounceNum = 0, float bonusRange = 0)
+    {
+        float speedMod = SpeedModifier;
+        float spearSpeed = 5 + speedMod * 0.015f; // this only matters for visuals as the spear is hitscan
+        float spearRange = speedMod * 4.5f + bonusRange; //starts at 2 * 4.5 = 9
+        if (spearRange > MaxRange)
+            spearRange = MaxRange;
+        Entity target = Entity.FindClosest(shootFromPos, spearRange, out Vector2 norm2, "Enemy", true, ignore);
+        norm = norm2;
+        if (target != null)
+        {
+            Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, target.transform.position.x, target.transform.position.y, BounceNum);
+            return true;
+        }
+        return false;
     }
 }

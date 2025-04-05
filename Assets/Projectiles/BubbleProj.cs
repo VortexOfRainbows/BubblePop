@@ -78,7 +78,7 @@ public class BigBubble : Projectile
             float amt = 1 + (3 + Data2) * Player.Instance.BubbleBlast;
             float speed = 3.5f + (Data2 * 1.25f + Player.Instance.FasterBulletSpeed * 1.75f + Player.Instance.ChargeShotDamage * 0.75f);
             for (int i = 0; i < amt; i++)
-                Projectile.LegacyNewProjectile(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 0, 0, 0);
+                NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f));
         }
         for (int i = 0; i < 30; i++)
         {
@@ -162,7 +162,7 @@ public class BigBubble : Projectile
                 if (timer % interval == 0)
                 {
                     float veloMult = Utils.RandFloat(0.75f * Player.Instance.FasterBulletSpeed, 3f + Player.Instance.FasterBulletSpeed * 1.25f);
-                    Projectile.LegacyNewProjectile(transform.position, Utils.RandCircle(2) - RB.velocity.normalized * veloMult, 0, 0, 0);
+                    NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(2) - RB.velocity.normalized * veloMult);
                 }
             }
             if (timer > 160)

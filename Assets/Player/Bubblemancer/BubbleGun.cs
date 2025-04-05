@@ -71,7 +71,7 @@ public class BubbleGun : BubblemancerWand
             float speed = Utils.RandFloat(16, 17) + 2.4f * p.FasterBulletSpeed;
             Vector2 velocity = toMouse.normalized * speed + awayFromWand * 4;
             Vector2 norm = velocity.normalized * (12 + p.FasterBulletSpeed * 0.5f) + Utils.RandCircle(4) * (10f / (10f + p.FasterBulletSpeed));
-            Projectile.LegacyNewProjectile((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), type: 4, transform.position.x + norm.x, transform.position.y + norm.y);
+            Projectile.NewProjectile<StarProj>((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), transform.position.x + norm.x, transform.position.y + norm.y);
             --starshotNum;
         }
     }
@@ -115,7 +115,7 @@ public class BubbleGun : BubblemancerWand
                 {
                     float speed = Utils.RandFloat(14.5f, 15) + 2.1f * p.FasterBulletSpeed;
                     float spread = spreadAmt * (i - (shotCount - 1) * 0.5f);
-                    Projectile.LegacyNewProjectile((Vector2)transform.position + awayFromWand,
+                    Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand,
                         toMouse.normalized.RotatedBy(spread * Mathf.Deg2Rad)
                         * speed + Utils.RandCircle(0.2f));
                     TryDoingStarShot(ref starshotNum);
@@ -134,7 +134,7 @@ public class BubbleGun : BubblemancerWand
                 {
                     AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.5f);
                     AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(0), Player.Position, 0.6f, 1f);
-                    Projectile.LegacyNewProjectile((Vector2)transform.position + awayFromWand, Vector2.zero, 3, 149, 0);
+                    Projectile.NewProjectile<BigBubble>((Vector2)transform.position + awayFromWand, Vector2.zero, 149, 0);
                 }
                 if (AttackRight < maxCharge)
                 {

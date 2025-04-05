@@ -137,14 +137,17 @@ public partial class Player : Entity
             Body.OnStartWith();
             HasRunStartingGear = true;
         }
-        if (Input.GetKeyDown(KeyCode.V) && UnlockCondition.ForceUnlockAll)
+        if (UnlockCondition.ForceUnlockAll)
         {
             //for(int i = 0; i < PowerUp.Reverses.Count; ++i)
             //    PowerUp.Spawn(i, transform.position, 0);
-            PowerUp.Spawn<SpearOfLight>(transform.position, 0);
-            PowerUp.Spawn<NeuronActivation>(transform.position, 0);
             //UIManager.score += 100;
-            CoinManager.SpawnCoin(transform.position, 25);
+            if(Input.GetKeyDown(KeyCode.V))
+                PowerUp.Spawn<SpearOfLight>(transform.position, 0);
+            if(Input.GetKeyDown(KeyCode.B))
+                PowerUp.Spawn<NeuronActivation>(transform.position, 0);
+            if(Input.GetKeyDown(KeyCode.C))
+                CoinManager.SpawnCoin(transform.position, 25);
         }
         Instance = this;
         EventManager.Update();
@@ -234,7 +237,7 @@ public partial class Player : Entity
     {
         for(int i = 0; i < 30; i++)
         {
-            Projectile.LegacyNewProjectile(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 7, 0, 0);
+            Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI));
         }
         UniversalImmuneFrames = 200;
         SpentBonusLives++;

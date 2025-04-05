@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    //public static int NextUniqueID = 0;
+    //public int UniqueID = NextUniqueID++;
     public class ImmunityData
     {
         public ImmunityData(Projectile attacker, int frames)
@@ -15,21 +16,35 @@ public class Entity : MonoBehaviour
         public int immuneFrames;
     }
     public List<ImmunityData> SpecializedImmuneFrames = new List<ImmunityData>();
-    public static Entity FindClosest(Vector3 position, float searchDistance, out Vector2 norm, string tag = "Enemy", bool requireNonImmune = true)
+    public static Entity FindClosest(Vector3 position, float searchDistance, out Vector2 norm, string tag = "Enemy", bool requireNonImmune = true, params Entity[] ignore)
     {
         norm = Vector2.zero;
         int best = -1;
         Entity[] e = FindObjectsByType<Entity>(FindObjectsSortMode.None);
         for(int i = 0; i < e.Length; ++i)
         {
-            Vector2 toDest = e[i].transform.position - position;
+            Entity e1 = e[i];
+            Vector2 toDest = e1.transform.position - position;
             float dist = toDest.magnitude;
-            Debug.Log(e[i].tag);
-            if (dist <= searchDistance && (!requireNonImmune || e[i].UniversalImmuneFrames <= 0) && e[i].CompareTag(tag))
+            Debug.Log(e1.tag);
+            if (dist <= searchDistance && (!requireNonImmune || e1.UniversalImmuneFrames <= 0) && e1.CompareTag(tag))
             {
-                best = i;
-                searchDistance = dist;
-                norm = toDest;
+                bool blackListed = false;
+                foreach(Entity e2 in ignore)
+                {
+                    if(/*e2 != null &&*/e2 == e1)
+                    {
+                        //Debug.Log("Failed Blacklist");
+                        blackListed = true;
+                        break;
+                    }
+                }
+                if (!blackListed)
+                {
+                    best = i;
+                    searchDistance = dist;
+                    norm = toDest;
+                }
             }
         }
         norm = norm.normalized;

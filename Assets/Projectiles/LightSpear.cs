@@ -1,6 +1,6 @@
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Rendering.Universal;
+
 public class LightSpear : Projectile
 {
     public override void Init()
@@ -11,13 +11,13 @@ public class LightSpear : Projectile
         SpriteRendererGlow.transform.localScale = new Vector3(0.4f, 3f, 3f);
         SpriteRendererGlow.color = new Color(1.2f, 1.2f, 1.2f);
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/LaserSquare");
-        Damage = 1;
+        Damage = 3;
         Friendly = true;
         Hostile = false;
         cmp.c2D.offset = new Vector2(1, 0);
         cmp.c2D.radius = 0.02f;
         transform.localScale = new Vector3(1, 0.1f, transform.localScale.z);
-        immunityFrames = 5;
+        immunityFrames = 25;
         Penetrate = -1;
         SetSize();
         SpawnParticles();
@@ -74,5 +74,80 @@ public class LightSpear : Projectile
             return;
         }
         SetSize();
+    }
+    public bool HasFiredLaser = false;
+    public override void OnHitTarget(Entity target)
+    {
+        if(Player.Instance.LightChainReact > 0 && !HasFiredLaser && Data[2] > 0)
+        {
+            Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), Data[2]).GetComponent<LightSpearCaster>().ignore = target;
+            HasFiredLaser = true;
+        }
+    }
+}
+public class LightSpearCaster : Projectile
+{
+    public Light2D Glow;
+    public Entity ignore;
+    public override void Init()
+    {
+        Destroy(SpriteRendererGlow);
+        Glow = Instantiate(Resources.Load<GameObject>("Projectiles/LightBulbGlow"), transform).GetComponent<Light2D>();
+        Glow.transform.localPosition = new Vector3(0, 0.6f, 0);
+        Glow.transform.localScale = new Vector3(1, 1, 1);
+        Glow.intensity = 0;
+        transform.localScale = Vector3.zero;
+        SpriteRenderer.color = new Color(1, 1, 1, 0);
+
+        transform.localScale = Vector3.one;
+        RB.rotation = -20f;
+        SpriteRenderer.sprite = Player.Instance.Hat.spriteRender.sprite;
+        SpriteRendererGlow.enabled = false;
+        Damage = 0;
+        Friendly = false;
+        Hostile = false;
+        transform.localScale = new Vector3(1, 1f, 1);
+    }
+    public bool HasShot = false;
+    public override void AI()
+    {
+        RB.velocity *= 0.945f;
+        float speed = Bulb.DefaultShotSpeed / 5f;
+        if (RB.velocity.sqrMagnitude < 1)
+        {
+            float speedMod = Bulb.SpeedModifier;
+            timer += Time.fixedDeltaTime * speedMod;
+            if (timer > speed)
+            {
+                if (!HasShot)
+                {
+                    Vector2 shootFromPos = Glow.transform.position;
+                    if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, ignore, (int)Data1 - 1, bonusRange: 5 + 1f * Player.Instance.LightChainReact))
+                        RB.velocity -= norm * 6;
+                    HasShot = true;
+                }
+                float percent = (timer - speed) / speed * 5;
+                Glow.intensity = 0.9f * (1 - percent);
+                SpriteRenderer.color = new Color(1, 1, 1, 1 - percent);
+                transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 0.03f);
+                if (percent >= 1)
+                {
+                    Kill();
+                }
+            }
+        }
+        if (timer < speed)
+        {
+            Glow.intensity = Mathf.Lerp(Glow.intensity, 0.9f, 0.06f);
+            SpriteRenderer.color = new Color(1, 1, 1, Mathf.Lerp(SpriteRenderer.color.a, 1, 0.06f));
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.06f);
+        }
+    }
+    public override void OnKill()
+    {
+        for (int j = 0; j < 15; ++j)
+        {
+            ParticleManager.NewParticle(Glow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, Glow.color * 0.5f);
+        }
     }
 }
