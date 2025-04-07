@@ -148,6 +148,8 @@ public partial class Player : Entity
                 PowerUp.Spawn<NeuronActivation>(transform.position, 0);
             if(Input.GetKeyDown(KeyCode.C))
                 CoinManager.SpawnCoin(transform.position, 25);
+            if (Input.GetKeyDown(KeyCode.Z))
+                EventManager.Point += 100;
         }
         Instance = this;
         EventManager.Update();

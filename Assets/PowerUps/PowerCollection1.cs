@@ -302,8 +302,8 @@ public class NeuronActivation : PowerUp
     {
         Weighting = 0.08f;
     }
-    protected override string Name() => "Neuron Activation";
-    protected override string Description() => "Enemies cause chain reactions when struck by light";
+    protected override string Name() => "Chain Reaction";
+    protected override string Description() => "Enemies fire beams of light at other enemies when struck by light";
     public override void HeldEffect(Player p)
     {
         p.LightChainReact += Stack;
