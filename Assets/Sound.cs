@@ -9,6 +9,7 @@ public class Sound : MonoBehaviour
         Source.clip = clip;
         Source.volume = volume;
         Source.pitch = pitch;
+        Source.outputAudioMixerGroup = AudioManager.Instance.SFX;
         Source.Play();
     }
     private void Update()

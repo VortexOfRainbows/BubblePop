@@ -1,7 +1,11 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
+    public AudioMixerGroup Master;
+    public AudioMixerGroup Music;
+    public AudioMixerGroup SFX;
     [SerializeField]
     private AudioSource MusicSource;
     [SerializeField]
@@ -26,8 +30,10 @@ public class AudioManager : MonoBehaviour
     }
     public static void PlaySound(AudioClip soundID, Vector2 position, float volume = 1, float pitch = 1)
     {
+        if (PlayerData.SFXVolume <= 0)
+            return;
         Sound sound = Instantiate(Instance.AudioObject, position, Quaternion.identity).GetComponent<Sound>();
-        sound.Init(soundID, volume, pitch);
+        sound.Init(soundID, volume * PlayerData.SFXVolume, pitch);
     }
     private void Start()
     {
@@ -35,6 +41,7 @@ public class AudioManager : MonoBehaviour
     }
     private void Update()
     {
+        MusicSource.volume = PlayerData.MusicVolume;
         //MusicSource.clip = null;
         //if (!MusicSource.isPlaying)
         //{
