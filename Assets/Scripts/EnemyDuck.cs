@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyDuck : Entity
+public class EnemyDuck : Enemy
 {
     public SpriteRenderer sRender;
     //aiState 0 = choosing location

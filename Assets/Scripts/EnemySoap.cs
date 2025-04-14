@@ -1,5 +1,5 @@
 using UnityEngine;
-public class EnemySoap : Entity
+public class EnemySoap : Enemy
 {
     public SpriteRenderer sRender;
     public Rigidbody2D rb;

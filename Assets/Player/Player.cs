@@ -245,4 +245,13 @@ public partial class Player : Entity
         SpentBonusLives++;
         DeathKillTimer = 0;
     }
+    public override void OnHurtByProjectile(Projectile proj)
+    {
+        if (UniversalImmuneFrames > 0)
+            return;
+        if (proj.Hostile && DeathKillTimer <= 0)
+        {
+            Pop();
+        }
+    }
 }

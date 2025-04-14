@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using UnityEngine;
+using static Enemy;
 using static Entity;
 
 public static class Utils
