@@ -138,9 +138,13 @@ MonoBehaviour:
   - {fileID: 5082056640273750499}
   - {fileID: 2282287358398773689}
   - {fileID: 5473822135336107818}
+  Visual: {fileID: 9213078945221673091}
+  ScaleMultiplier: 5
   Timer: 0
+  Timer2: 0
   ScaleSpeed: 0
   Scale: 0
+  Closing: 0
 --- !u!1 &2282287358398773689
 GameObject:
   m_ObjectHideFlags: 0

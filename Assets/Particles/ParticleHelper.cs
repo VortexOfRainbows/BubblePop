@@ -10,6 +10,8 @@ public class ParticleManager : MonoBehaviour
     public List<ParticleSystem> thisSystem;
     public static void NewParticle(Vector2 pos, float size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f, int type = 0, Color color = default)
     {
+        if (ParticleManager.Instance == null)
+            return;
         if (color == default)
             color = DefaultColor;
         ParticleSystem.EmitParams style = new ParticleSystem.EmitParams
