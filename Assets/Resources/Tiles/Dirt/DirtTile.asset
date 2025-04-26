@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: DirtTile
   m_EditorClassIdentifier: 
   RealTileMapVariant: {fileID: 11400000, guid: 3181d3395d4fe0942a54930a16706ea5, type: 2}
+  TilesThatCountForBlending:
+  - {fileID: 11400000, guid: 6b42f1c117edfb14f987eb8a5b79b53b, type: 2}
   DisplayTileVariants:
   - {fileID: 11400000, guid: f5aa4d5dce4a5e34e901fe8fd5cf6a37, type: 2}
   - {fileID: 11400000, guid: 80d3caa39c377164baa588c9d7d32d46, type: 2}

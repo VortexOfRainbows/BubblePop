@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
-using static TileType;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "DualGridTile", menuName = "ScriptableObjects/DualGridTile", order = 1)]
 public class DualGridTile : ScriptableObject
@@ -41,6 +41,10 @@ public class DualGridTile : ScriptableObject
     public bool AdjacentTileSameType(Vector3Int coords, Vector3Int offset)
     {
         var adjacentTileType = RealTileMap.GetTile(coords + offset);
+        if(TilesThatCountForBlending != null && TilesThatCountForBlending.Contains(adjacentTileType))
+        {
+            return true;
+        }
         return adjacentTileType == RealTileMapVariant;
     }
     public int CalculateDisplayTile(Vector3Int coords)
@@ -62,6 +66,7 @@ public class DualGridTile : ScriptableObject
         }
     }
     public Tile RealTileMapVariant;
+    public Tile[] TilesThatCountForBlending;
     public Tile[] DisplayTileVariants;
     public void SetDisplayVariants()
     {
