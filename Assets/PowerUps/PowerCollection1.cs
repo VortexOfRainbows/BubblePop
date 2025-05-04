@@ -26,37 +26,11 @@ public class WeaponUpgrade : PowerUp
     protected override string Description() => "Increases weapon attack speed";
     public override Sprite GetTexture()
     {
-        return Player.Instance != null && Player.Instance.Weapon != null ? Player.Instance.Weapon.spriteRender.sprite : null;
+        return Resources.Load<Sprite>("PowerUps/Haste");
     }
     public override Sprite GetAdornment()
     {
-        return Resources.Load<Sprite>("PowerUps/WeaponUpgrade");
-    }
-    public override void AliveUpdate(GameObject inner, GameObject outer, bool UI = false)
-    {
-        sprite = GetTexture();
-        //if (outer.TryGetComponent(out SpriteRenderer rend))
-        //{
-        //    rend.color = new Color(.49f, .82f, .95f, 0.8f);
-        //}
-        //if (outer.TryGetComponent(out Image image))
-        //{
-        //    image.color = new Color(.49f, .82f, .95f, 0.8f);
-        //}
-        Vector2 offset = Vector2.zero;
-        float rot = 0f;
-        float scale = 1f;
-        float secondaryScalar = 1;
-        float finalScaler = 0.315f;
-        if (UI)
-        {
-            secondaryScalar = 100;
-            finalScaler = 0.315f;
-        }
-        Player.Instance.Weapon.ModifyUIOffsets(true, ref offset, ref rot, ref scale);
-        inner.transform.localPosition = offset * secondaryScalar * finalScaler * scale;
-        inner.transform.eulerAngles = new Vector3(0, 0, rot);
-        inner.transform.localScale = Player.Instance.Weapon.transform.localScale * scale * finalScaler;
+        return null;
     }
     public override void HeldEffect(Player p)
     {
