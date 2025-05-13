@@ -39,7 +39,7 @@ public class Body : Equipment
     public int LastSelectedAcc = -1;
     public int LastSelectedWep = -1;
     public Color PrimaryColor = ParticleManager.DefaultColor;
-    public GameObject Face;
+    public GameObject Face => FaceR.gameObject;
     public SpriteRenderer FaceR;
     protected virtual float AngleMultiplier => 1f;
     protected virtual float RotationSpeed => 0.12f;
