@@ -88,6 +88,11 @@ public class ThoughtBubble : Body
         }
         if (Control.Ability && (!Control.LastAbility || CurrentMarkedTail != -1) && CurrentMarkedTail < TailCount - 1 && TailCount >= 3)
         {
+            if(Control.Ability && !Control.LastAbility)
+            {
+                FinishedTeleport = false;
+                AudioManager.PlaySound(SoundID.TeleportCharge, transform.position, 1f, 1);
+            }
             if(TailTravelTimer >= TailTravelTime)
             {
                 TailTravelTimer = 0;
@@ -104,7 +109,7 @@ public class ThoughtBubble : Body
         {
             if(Control.LastAbility && CurrentMarkedTail != -1) //This will only be true upon releasing the button
             {
-                p.transform.position = CurrentTail.transform.position;
+                Teleport(CurrentTail.transform.position);
                 for(int i = CurrentMarkedTail; i >= 0; --i)
                 {
                     TryTurningOffTail();
@@ -136,6 +141,13 @@ public class ThoughtBubble : Body
         {
             UpdateTailPos(i, ref previousPos);
         }
+    }
+    public static bool FinishedTeleport = false;
+    public void Teleport(Vector2 pos)
+    {
+        p.transform.position = pos;
+        AudioManager.PlaySound(SoundID.Teleport, pos, 2f, 1);
+        FinishedTeleport = true;
     }
     public void UpdateTailPos(int i, ref Vector3 previousPos)
     {

@@ -146,7 +146,9 @@ public partial class Player : Entity
                 PowerUp.Spawn<SpearOfLight>(transform.position, 0);
             if(Input.GetKeyDown(KeyCode.B))
                 PowerUp.Spawn<NeuronActivation>(transform.position, 0);
-            if(Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.Y))
+                PowerUp.Spawn<TrailOfThoughts>(transform.position, 0);
+            if (Input.GetKeyDown(KeyCode.C))
                 CoinManager.SpawnCoin(transform.position, 25);
             if (Input.GetKeyDown(KeyCode.Z))
                 EventManager.Point += 100;

@@ -17,7 +17,7 @@ public class Crystal : Accessory
     {
         return "They are said to hold a moderate amount of power";
     }
-    protected override UnlockCondition CategoryUnlockCondition => base.CategoryUnlockCondition;
+    protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     protected override UnlockCondition UnlockCondition => base.UnlockCondition;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

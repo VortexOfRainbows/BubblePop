@@ -18,7 +18,7 @@ public class Dice : Hat
     {
         return "Strategically superglued dice";
     }
-    protected override UnlockCondition CategoryUnlockCondition => base.CategoryUnlockCondition;
+    protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     protected override UnlockCondition UnlockCondition => base.UnlockCondition;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

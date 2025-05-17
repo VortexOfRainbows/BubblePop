@@ -20,3 +20,12 @@ public class ThoughtBubbleUnlock : UnlockCondition
     }
     protected override bool IsUnlocked => UIManager.highscore >= 3000;
 }
+public class GachaponUnlock : UnlockCondition
+{
+    public override string LockedText()
+    {
+        return "Reach a total coin count of $500\n" +
+            $"Current best: {UIManager.highscore}";
+    }
+    protected override bool IsUnlocked => true;
+}
