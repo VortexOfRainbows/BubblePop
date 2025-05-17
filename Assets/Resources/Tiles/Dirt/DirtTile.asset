@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354ada615d12a894f938c2f1bac80208, type: 3}
   m_Name: DirtTile
   m_EditorClassIdentifier: 
+  LayerOffset: -5
   RealTileMapVariant: {fileID: 11400000, guid: 3181d3395d4fe0942a54930a16706ea5, type: 2}
   TilesThatCountForBlending:
   - {fileID: 11400000, guid: 6b42f1c117edfb14f987eb8a5b79b53b, type: 2}
+  - {fileID: 11400000, guid: 45ac33884c3b5964ab51fa406b495bab, type: 2}
   DisplayTileVariants:
   - {fileID: 11400000, guid: f5aa4d5dce4a5e34e901fe8fd5cf6a37, type: 2}
   - {fileID: 11400000, guid: 80d3caa39c377164baa588c9d7d32d46, type: 2}

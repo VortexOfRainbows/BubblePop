@@ -65,6 +65,7 @@ public class DualGridTile : ScriptableObject
             map.SetTile(newPos, id != -1 ? DisplayTileVariants[CalculateDisplayTile(newPos)] : null);
         }
     }
+    public int LayerOffset = 0;
     public Tile RealTileMapVariant;
     public Tile[] TilesThatCountForBlending;
     public Tile[] DisplayTileVariants;

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354ada615d12a894f938c2f1bac80208, type: 3}
   m_Name: GrassTile
   m_EditorClassIdentifier: 
+  LayerOffset: -4
   RealTileMapVariant: {fileID: 11400000, guid: 6b42f1c117edfb14f987eb8a5b79b53b, type: 2}
+  TilesThatCountForBlending: []
   DisplayTileVariants:
   - {fileID: 11400000, guid: 338c9b1cc8897d240b38acd52eef4286, type: 2}
   - {fileID: 11400000, guid: d38b99487fc3bda4da3fe7cbbcab02da, type: 2}

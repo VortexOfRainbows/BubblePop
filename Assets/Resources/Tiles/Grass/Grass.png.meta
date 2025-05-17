@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 0
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Grass_0
+      name: Tile_0
       rect:
         serializedVersion: 2
         x: 0
@@ -118,7 +118,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -131,7 +131,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_1
+      name: Tile_1
       rect:
         serializedVersion: 2
         x: 62
@@ -139,7 +139,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -152,7 +152,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_2
+      name: Tile_2
       rect:
         serializedVersion: 2
         x: 124
@@ -160,7 +160,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,7 +173,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_3
+      name: Tile_3
       rect:
         serializedVersion: 2
         x: 186
@@ -181,7 +181,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,7 +194,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_4
+      name: Tile_4
       rect:
         serializedVersion: 2
         x: 0
@@ -202,7 +202,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -215,7 +215,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_5
+      name: Tile_5
       rect:
         serializedVersion: 2
         x: 62
@@ -223,7 +223,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -236,7 +236,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_6
+      name: Tile_6
       rect:
         serializedVersion: 2
         x: 124
@@ -244,7 +244,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -257,7 +257,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_7
+      name: Tile_7
       rect:
         serializedVersion: 2
         x: 186
@@ -265,7 +265,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -278,7 +278,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_8
+      name: Tile_8
       rect:
         serializedVersion: 2
         x: 0
@@ -286,7 +286,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -299,7 +299,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_9
+      name: Tile_9
       rect:
         serializedVersion: 2
         x: 62
@@ -307,7 +307,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -320,7 +320,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_10
+      name: Tile_10
       rect:
         serializedVersion: 2
         x: 124
@@ -328,7 +328,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -341,7 +341,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_11
+      name: Tile_11
       rect:
         serializedVersion: 2
         x: 186
@@ -349,7 +349,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -362,7 +362,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_12
+      name: Tile_12
       rect:
         serializedVersion: 2
         x: 62
@@ -370,7 +370,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -383,7 +383,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_13
+      name: Tile_13
       rect:
         serializedVersion: 2
         x: 124
@@ -391,7 +391,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -404,7 +404,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_14
+      name: Tile_14
       rect:
         serializedVersion: 2
         x: 186
@@ -412,7 +412,7 @@ TextureImporter:
         width: 62.5
         height: 62.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -435,21 +435,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Grass_0: -1117102972
-      Grass_1: -544838208
-      Grass_10: 519098932
-      Grass_11: -1670750488
-      Grass_12: -145786884
-      Grass_13: 833069838
-      Grass_14: 2002059496
-      Grass_2: -452326184
-      Grass_3: -665019358
-      Grass_4: -1349802824
-      Grass_5: 1288125508
-      Grass_6: -1928018411
-      Grass_7: -2139458152
-      Grass_8: -694699381
-      Grass_9: 1539142984
+      Tile_0: -1117102972
+      Tile_1: -544838208
+      Tile_10: 519098932
+      Tile_11: -1670750488
+      Tile_12: -145786884
+      Tile_13: 833069838
+      Tile_14: 2002059496
+      Tile_2: -452326184
+      Tile_3: -665019358
+      Tile_4: -1349802824
+      Tile_5: 1288125508
+      Tile_6: -1928018411
+      Tile_7: -2139458152
+      Tile_8: -694699381
+      Tile_9: 1539142984
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

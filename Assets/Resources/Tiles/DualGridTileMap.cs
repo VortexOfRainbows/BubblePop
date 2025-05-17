@@ -19,8 +19,10 @@ public class DualGridTilemap : MonoBehaviour
     public void Start()
     {
         VisualMaps = new List<Tilemap>();
-        for (int k = 0; k < Tiles.Length; ++k)
+        for (int k = 0; k < Tiles.Length; ++k) {
             VisualMaps.Add(Instantiate(VisualMapPrefab, Visual.transform).GetComponent<Tilemap>());
+            VisualMaps[k].GetComponent<TilemapRenderer>().sortingOrder = -50 + Tiles[k].LayerOffset;
+        }
         m_Instance = this;
         RefreshDisplayTilemap();
         RealTileMap.gameObject.SetActive(false);
