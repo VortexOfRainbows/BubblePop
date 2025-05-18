@@ -38,18 +38,16 @@ public partial class Player : Entity
     public const float DashDefault = 25f;
     public bool AbilityReady => abilityTimer <= 0;
     public bool AbilityOnCooldown => abilityTimer > 0;
-    void Start()
+    public void Start()
     {
         PowerInit();
         EventManager.Restart();
         MainCamera.orthographicSize = 12;
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
-        ChargeShotDamage = 0;
-        ShotgunPower = 0;
         DeathKillTimer = 0;
-        HasRunStartingGear = false;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
+        HasRunStartingGear = false;
     }
     public float abilityTimer = 0;
     private void MovementUpdate()
@@ -201,7 +199,7 @@ public partial class Player : Entity
         }
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
     }
-    new void Update()
+    new public void Update()
     {
         base.Update();
         Instance = this;
