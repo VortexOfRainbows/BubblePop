@@ -78,6 +78,8 @@ public partial class Player : Entity
         ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = Coalescence = Magnet = LightSpear = 0;
         AttackSpeedModifier = PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = AbilityRecoverySpeed = 1.0f;
         LuckyStar = TrailOfThoughts = LightChainReact = 0;
+        TotalChipsAllowed = 5;
+        TotalChipStacks = 2;
     }
     private void UpdatePowerUps()
     {

@@ -18,7 +18,7 @@ public class Bubblemancer : Body
     }
     protected override string Description()
     {
-        return "A humble shepard from the quaint Bubble Fields";
+        return "A humble shepard from the quaint Bubble Fields.";
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
