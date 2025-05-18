@@ -45,7 +45,7 @@ public class Bubblemancer : Body
     }
     public override void FaceUpdate()
     {
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
+        Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
         Vector2 pos = new Vector2(0.2f * p.Direction, 0) + toMouse.normalized * 0.2f;
         pos.y *= 0.7f;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.05f);

@@ -12,6 +12,7 @@ public class Choice : PowerUp
             PowerUp.TurnOnPowerUpSelectors();
         }
     }
+    public override int Cost => 25;
 }
 public class WeaponUpgrade : PowerUp
 {
