@@ -11,6 +11,7 @@ public static class Control
 }
 public partial class Player : Entity
 {
+    public PlayerAnimator Animator;
     public static Color ProjectileColor => Instance.Body.PrimaryColor;
     public float Direction => Mathf.Sign(lastVelo.x);
     public int bonusBubbles = 0;
@@ -18,10 +19,10 @@ public partial class Player : Entity
     public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
     [SerializeField]
     private Camera MainCamera;
-    [SerializeField] public Body Body;
-    [SerializeField] public Weapon Weapon;
-    [SerializeField] public Hat Hat;
-    [SerializeField] public Accessory Accessory;
+    public Body Body { get => Animator.Body; set => Animator.Body = value; }
+    public Weapon Weapon { get => Animator.Weapon; set => Animator.Weapon = value; }
+    public Hat Hat { get => Animator.Hat; set => Animator.Hat = value; }
+    public Accessory Accessory { get => Animator.Accessory; set => Animator.Accessory = value; }
     public SpriteRenderer BodyR => Body.spriteRender;
     public Rigidbody2D rb;
     public GameObject Visual;

@@ -167,6 +167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4177b109971490449e1470692b9c663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Body: {fileID: 0}
+  Weapon: {fileID: 0}
+  Hat: {fileID: 0}
+  Accessory: {fileID: 0}
 --- !u!1001 &490337678
 PrefabInstance:
   m_ObjectHideFlags: 0

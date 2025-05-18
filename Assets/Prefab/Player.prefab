@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7046234285421291866}
+  - component: {fileID: 6147547588852434854}
   m_Layer: 3
   m_Name: Visual
   m_TagString: Untagged
@@ -35,6 +36,22 @@ Transform:
   - {fileID: 4300367830045641871}
   m_Father: {fileID: 995395983974909505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6147547588852434854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904879408648245512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4177b109971490449e1470692b9c663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Body: {fileID: 7589797464362351196}
+  Weapon: {fileID: 4398803498948371710}
+  Hat: {fileID: 4793643284589324687}
+  Accessory: {fileID: 6990591328264648732}
 --- !u!1 &6670607549082870492
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,12 +105,9 @@ MonoBehaviour:
   Life: 10
   DamageTaken: 0
   lastPos: {x: 0, y: 0}
+  Animator: {fileID: 6147547588852434854}
   bonusBubbles: 0
   MainCamera: {fileID: 0}
-  Body: {fileID: 7589797464362351196}
-  Weapon: {fileID: 4398803498948371710}
-  Hat: {fileID: 4793643284589324687}
-  Accessory: {fileID: 6990591328264648732}
   rb: {fileID: 3216590746651522342}
   Visual: {fileID: 2904879408648245512}
   MaxSpeed: 6
