@@ -22,7 +22,7 @@ public class Bubblemancer : Body
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
-        if (Control.Ability && !Control.LastAbility && moveSpeed.magnitude > 0 && p.abilityTimer <= 0)
+        if (Control.Ability && !Control.LastAbility && moveSpeed.magnitude > 0 && p.AbilityReady)
         {
             Dash(ref playerVelo, moveSpeed);
         }

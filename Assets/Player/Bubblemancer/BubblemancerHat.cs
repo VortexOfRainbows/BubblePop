@@ -17,7 +17,8 @@ public class BubblemancerHat : Hat
     }
     protected override void AnimationUpdate()
     {
-        float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.abilityTimer / p.abilityCD));
+        float bonusR = p.Body is Bubblemancer ? 1f * Mathf.Max(0, p.abilityTimer / p.abilityCD) : 0;
+        float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + bonusR);
         spriteRender.flipX = !p.Body.Flipped;
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r, 0.2f));
         velocity = Vector2.Lerp(velocity, Vector2.zero, 0.2f);

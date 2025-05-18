@@ -41,7 +41,7 @@ public class BunceHat : BubblemancerHat
             float sin = Mathf.Sqrt(Mathf.Abs( Mathf.Sin(Mathf.PI * Mathf.Max(0, p.abilityTimer / p.abilityCD)))) * p.abilityTimer / p.abilityCD;
             velocity = new Vector2(0, p.Direction * 2.5f * sin).RotatedBy(p.lastVelo.ToRotation());
         }
-        else if (p.abilityTimer <= 0)
+        else if (p.AbilityReady)
             velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
             new Vector2(-0.1f * p.Direction, 0.2f + 0.5f * p.Bobbing * p.squash - 0.2f * (1 - p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,

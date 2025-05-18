@@ -24,6 +24,7 @@ public partial class Player : Entity
     [SerializeField] public Accessory Accessory;
     public SpriteRenderer BodyR => Body.spriteRender;
     public Rigidbody2D rb;
+    public GameObject Visual;
 
     private float speed = 2.5f;
     private float MovementDeacceleration = 0.9f;
@@ -35,6 +36,8 @@ public partial class Player : Entity
     public float Bobbing { get; private set; }
     private bool HasRunStartingGear = false;
     public const float DashDefault = 25f;
+    public bool AbilityReady => abilityTimer <= 0;
+    public bool AbilityOnCooldown => abilityTimer > 0;
     void Start()
     {
         PowerInit();
@@ -84,6 +87,8 @@ public partial class Player : Entity
         movespeed = movespeed.normalized;
 
         abilityTimer -= Time.fixedDeltaTime * AbilityRecoverySpeed;
+        if (abilityTimer < 0)
+            abilityTimer = 0;
 
         Body.AbilityUpdate(ref velocity, movespeed);
 

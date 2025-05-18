@@ -48,6 +48,31 @@ public class Gachapon : Body
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
-
+        PrimaryColor = new Color(0.95f, 1f, 0.6f);
+        if(p.Accessory is Crystal)
+        {
+            PrimaryColor = new Color(0.6f, 0.933f, 0.255f);
+        }
+        if (p.AbilityReady && Control.Ability && !Control.LastAbility)
+        {
+            p.abilityTimer = p.abilityCD * 2;
+            p.Visual.SetActive(false);
+        }
+        if(p.AbilityOnCooldown)
+        {
+            if (Control.Ability && !p.Visual.activeSelf)
+            {
+                p.Visual.SetActive(false);
+                ParticleManager.NewParticle(transform.position, 1, playerVelo * Utils.RandFloat(-1f, 0.5f), 1, 0.5f, 2, PrimaryColor);
+            }
+            else
+            {
+                p.Visual.SetActive(true);
+            }
+        }
+        else
+        {
+            p.Visual.SetActive(true);
+        }
     }
 }
