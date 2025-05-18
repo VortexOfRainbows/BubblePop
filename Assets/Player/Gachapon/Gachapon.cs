@@ -47,10 +47,10 @@ public class Gachapon : Body
         }
         Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
         toMouse = toMouse.normalized * 14;
-        int half = totalCount / 2;
         float rotation = 12.5f * (totalCount - 1);
-        if (rotation > 180)
-            rotation = 180;
+        float max = 180 * (1f - 1f / totalCount);
+        if (rotation > max)
+            rotation = max;
         for (int i = 0; i < totalCount; ++i)
         {
             float lerp = totalCount == 1 ? 0 : (float)i / (totalCount - 1);
@@ -142,8 +142,8 @@ public class Gachapon : Body
         }
         if(Control.Ability && !Control.LastAbility)
         {
-            p.abilityTimer = AbilityCD;
-            RemoveChip();
+            if (RemoveChip())
+                p.abilityTimer = AbilityCD;
         }
         else if(Control.Ability)
         {

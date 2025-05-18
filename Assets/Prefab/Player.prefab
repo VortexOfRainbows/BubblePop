@@ -128,6 +128,8 @@ MonoBehaviour:
   LightSpear: 0
   LightChainReact: 0
   AbilityRecoverySpeed: 1
+  TotalChipsAllowed: 5
+  TotalChipStacks: 2
 --- !u!50 &3216590746651522342
 Rigidbody2D:
   serializedVersion: 4
@@ -275,7 +277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8132037870103020878, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
       propertyPath: m_Name
-      value: Bubble Bro
+      value: Body
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
