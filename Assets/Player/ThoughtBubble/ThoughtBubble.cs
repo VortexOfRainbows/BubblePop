@@ -40,7 +40,7 @@ public class ThoughtBubble : Body
     }
     public override void FaceUpdate()
     {
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
+        Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
         Vector2 toMouse2 = toMouse.normalized;
         toMouse2.x += Mathf.Sign(toMouse2.x) * 4;
         float toMouseR = toMouse2.ToRotation();

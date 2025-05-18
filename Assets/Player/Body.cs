@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Overlays;
 using UnityEngine;
 
 public class Body : Equipment
@@ -116,7 +117,7 @@ public class Body : Equipment
     }
     public virtual void FaceUpdate()
     {
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
+        Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
         Vector2 pos = new Vector2(0.15f * p.Direction, 0) + toMouse.normalized * 0.21f;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         FaceR.flipX = spriteRender.flipY;

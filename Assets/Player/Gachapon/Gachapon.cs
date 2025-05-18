@@ -100,12 +100,22 @@ public class Gachapon : Body
     public GameObject top;
     public override void FaceUpdate()
     {
-        if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && Player.Instance.Weapon.IsAttacking())
-            FaceR.sprite = altFaces[1];
-        else
-            FaceR.sprite = altFaces[0];
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
+        Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
         Vector2 toMouse2 = toMouse.normalized;
+        if (p.IsMainPlayerAnimator)
+        {
+            if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && Player.Instance.Weapon.IsAttacking())
+                FaceR.sprite = altFaces[1];
+            else
+                FaceR.sprite = altFaces[0];
+        }
+        else 
+        {
+            if (toMouse.magnitude < 5)
+                FaceR.sprite = altFaces[1];
+            else
+                FaceR.sprite = altFaces[0];
+        }
         toMouse2.x += Mathf.Sign(toMouse2.x) * 4;
         float toMouseR = toMouse2.ToRotation();
         Vector2 looking = new Vector2(0.16f, 0).RotatedBy(toMouseR);

@@ -51,7 +51,7 @@ MonoBehaviour:
   PointDirOffset: 0
   MoveOffset: 0
   DashOffset: 0
-  IsMainPlayerAnimator: 0
+  IsMainPlayerAnimator: 1
   squash: 1
   Bobbing: 1
   rb: {fileID: 3216590746651522342}
@@ -185,7 +185,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 119
