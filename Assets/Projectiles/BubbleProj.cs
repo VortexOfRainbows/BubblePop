@@ -121,7 +121,7 @@ public class BigBubble : Projectile
                 Data1 += 100;
             }
             float r = Player.Instance.Weapon.transform.eulerAngles.z * Mathf.Deg2Rad;
-            Vector2 awayFromWand = Player.Instance.Weapon is BubbleGun ? new Vector2(1.8f + targetSize * 0.5f, 0.2f * Mathf.Sign(Player.Instance.PointDirOffset)).RotatedBy(r) : new Vector2(1.4f, (0.51f + targetSize * 0.49f) * Mathf.Sign(Player.Instance.PointDirOffset)).RotatedBy(r);
+            Vector2 awayFromWand = Player.Instance.Weapon is BubbleGun ? new Vector2(1.8f + targetSize * 0.5f, 0.2f * Mathf.Sign(Player.Instance.Animator.PointDirOffset)).RotatedBy(r) : new Vector2(1.4f, (0.51f + targetSize * 0.49f) * Mathf.Sign(Player.Instance.Animator.PointDirOffset)).RotatedBy(r);
 
             transform.position = Vector2.Lerp(transform.position, (Vector2)Player.Instance.Weapon.transform.position + awayFromWand, 0.15f);
             RB.velocity *= 0.8f;

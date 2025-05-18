@@ -56,7 +56,7 @@ public class Gachapon : Body
             float lerp = totalCount == 1 ? 0 : (float)i / (totalCount - 1);
             Vector2 rot = toMouse.RotatedBy(Mathf.Deg2Rad * Mathf.Lerp(-rotation, rotation, lerp));
             Projectile.NewProjectile<PokerChip>(transform.position,rot);
-            for(int j = 0; j < p.DashSparkle; ++j)
+            for(int j = 0; j < player.DashSparkle; ++j)
             {
                 Vector2 target = (Vector2)transform.position + rot * Utils.RandFloat(0.2f, 1.0f);
                 Projectile.NewProjectile<StarProj>(transform.position, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
@@ -69,7 +69,7 @@ public class Gachapon : Body
         int total = stacks.Count / 2 + 1;
         int direction = stacks.Count % 2 * 2 - 1;
         stacks.Add(Instantiate(ChipStackPrefab, transform).GetComponent<ChipStack>());
-        float totalOffset = (0.5f + 0.4f * total) * direction;
+        float totalOffset = (0.55f + 0.45f * total) * direction;
         stacks[stacks.Count - 1].transform.localPosition = new Vector3(totalOffset, -0.78f);
     }
     public void RemoveStack()
@@ -128,36 +128,32 @@ public class Gachapon : Body
         {
             PrimaryColor = new Color(0.6f, 0.933f, 0.255f);
         }
-        while(stacks.Count < p.TotalChipStacks)
+        while(stacks.Count < player.TotalChipStacks)
             AddStack();
-        while (stacks.Count > p.TotalChipStacks)
+        while (stacks.Count > player.TotalChipStacks)
             RemoveStack();
         if (Main.GameStarted)
         {
-            if(p.AbilityReady)
+            if(player.AbilityReady)
             {
-                p.abilityTimer = AbilityCD;
+                player.abilityTimer = AbilityCD;
                 AddChip();
             }
         }
         if(Control.Ability && !Control.LastAbility)
         {
             if (RemoveChip())
-                p.abilityTimer = AbilityCD;
+                player.abilityTimer = AbilityCD;
         }
         else if(Control.Ability)
         {
-            while(p.abilityTimer < AbilityCD * 0.9f)
+            while(player.abilityTimer < AbilityCD * 0.9f)
             {
                 if (RemoveChip())
-                    p.abilityTimer += AbilityCD * 0.1f;
+                    player.abilityTimer += AbilityCD * 0.1f;
                 else
                     break;
             }
-        }
-        else if(Control.LastAbility && !Control.Ability)
-        {
-            p.abilityTimer = AbilityCD;
         }
         //if (p.AbilityReady && Control.Ability && !Control.LastAbility)
         //{

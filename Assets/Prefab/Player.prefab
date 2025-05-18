@@ -48,10 +48,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4177b109971490449e1470692b9c663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PointDirOffset: 0
+  MoveOffset: 0
+  DashOffset: 0
+  IsMainPlayerAnimator: 0
+  squash: 1
+  Bobbing: 1
+  rb: {fileID: 3216590746651522342}
   Body: {fileID: 7589797464362351196}
   Weapon: {fileID: 4398803498948371710}
   Hat: {fileID: 4793643284589324687}
   Accessory: {fileID: 6990591328264648732}
+  lastVelo: {x: 0, y: 0}
+  DeathKillTimer: 0
 --- !u!1 &6670607549082870492
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,16 +117,9 @@ MonoBehaviour:
   Animator: {fileID: 6147547588852434854}
   bonusBubbles: 0
   MainCamera: {fileID: 0}
-  rb: {fileID: 3216590746651522342}
   Visual: {fileID: 2904879408648245512}
   MaxSpeed: 6
-  squash: 1
-  lastVelo: {x: 1, y: 0}
   abilityTimer: 0
-  PointDirOffset: 0
-  MoveOffset: 0
-  DashOffset: 0
-  DeathKillTimer: 0
   ChargeShotDamage: 0
   ShotgunPower: 0
   DashSparkle: 0

@@ -22,11 +22,11 @@ public class Bubblemancer : Body
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
-        if (Control.Ability && !Control.LastAbility && moveSpeed.magnitude > 0 && p.AbilityReady)
+        if (Control.Ability && !Control.LastAbility && moveSpeed.magnitude > 0 && player.AbilityReady)
         {
             Dash(ref playerVelo, moveSpeed);
         }
-        if (playerVelo.magnitude <= p.MaxSpeed + 12f)
+        if (playerVelo.magnitude <= player.MaxSpeed + 12f)
         {
             float r = Mathf.LerpAngle(FaceR.transform.eulerAngles.z, 0, 0.04f);
             FaceR.transform.eulerAngles = new Vector3(0, 0, r);
@@ -35,13 +35,13 @@ public class Bubblemancer : Body
     public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
     {
         float speed = Player.DashDefault;
-        p.abilityTimer = p.AbilityCD;
-        velocity = velocity * p.MaxSpeed + moveSpeed * speed;
-        p.squash = p.SquashAmt;
+        player.abilityTimer = player.AbilityCD;
+        velocity = velocity * player.MaxSpeed + moveSpeed * speed;
+        p.squash = player.SquashAmt;
         spriteRender.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
         FaceR.transform.eulerAngles = new Vector3(0, 0, p.Direction < 0 ? (Mathf.PI +velocity.ToRotation()) * Mathf.Rad2Deg : velocity.ToRotation() * Mathf.Rad2Deg);
         AudioManager.PlaySound(SoundID.Dash.GetVariation(3), transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
-        p.OnDash(velocity);
+        player.OnDash(velocity);
     }
     public override void FaceUpdate()
     {

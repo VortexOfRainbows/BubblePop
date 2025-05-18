@@ -167,10 +167,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4177b109971490449e1470692b9c663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PointDirOffset: 0
+  MoveOffset: 0
+  DashOffset: 0
+  IsMainPlayerAnimator: 0
+  squash: 1
+  Bobbing: 1
+  rb: {fileID: 0}
   Body: {fileID: 0}
   Weapon: {fileID: 0}
   Hat: {fileID: 0}
   Accessory: {fileID: 0}
+  lastVelo: {x: 0, y: 0}
+  DeathKillTimer: 0
 --- !u!1001 &490337678
 PrefabInstance:
   m_ObjectHideFlags: 0

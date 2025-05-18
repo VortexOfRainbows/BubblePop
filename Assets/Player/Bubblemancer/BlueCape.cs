@@ -14,7 +14,7 @@ public class BlueCape : BubblemancerCape
     public override int GetPrice() => 10;
     public override void EquipUpdate()
     {
-        p.AbilityRecoverySpeed += 0.6f;
-        p.AttackSpeedModifier += 0.1f;
+        player.AbilityRecoverySpeed += 0.6f;
+        player.AttackSpeedModifier += 0.1f;
     }
 }

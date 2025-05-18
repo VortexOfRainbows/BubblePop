@@ -123,7 +123,7 @@ public partial class Player : Entity
             while (BubbleTrailTimer <= 0)
             {
                 BubbleTrailTimer += 2f / (BubbleTrail + 3f); //.5, 2/5, 2/6, 2/7, 1/4
-                Vector2 circular = (Utils.RandCircle(1.3f) - lastVelo * 0.4f).normalized;
+                Vector2 circular = (Utils.RandCircle(1.3f) - Animator.lastVelo * 0.4f).normalized;
                 float speedMax = 2 + FasterBulletSpeed * 0.1f;
                 Projectile.NewProjectile<SmallBubble>(transform.position, circular * speedMax);
             }

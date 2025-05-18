@@ -11,30 +11,28 @@ public static class Control
 }
 public partial class Player : Entity
 {
-    public PlayerAnimator Animator;
-    public static Color ProjectileColor => Instance.Body.PrimaryColor;
-    public float Direction => Mathf.Sign(lastVelo.x);
-    public int bonusBubbles = 0;
-    public static Player Instance;
-    public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
-    [SerializeField]
-    private Camera MainCamera;
+    #region Animator References
     public Body Body { get => Animator.Body; set => Animator.Body = value; }
     public Weapon Weapon { get => Animator.Weapon; set => Animator.Weapon = value; }
     public Hat Hat { get => Animator.Hat; set => Animator.Hat = value; }
     public Accessory Accessory { get => Animator.Accessory; set => Animator.Accessory = value; }
-    public SpriteRenderer BodyR => Body.spriteRender;
-    public Rigidbody2D rb;
-    public GameObject Visual;
-
-    private float speed = 2.5f;
-    private float MovementDeacceleration = 0.9f;
-    public float MaxSpeed = 6f;
-    public float squash = 1f;
-    private float walkTimer = 0;
-    public Vector2 lastVelo;
+    public PlayerAnimator Animator;
+    public Rigidbody2D rb => Animator.rb;
     public float SquashAmt { get; private set; } = 0.45f;
-    public float Bobbing { get; private set; }
+    private float DeathKillTimer { get => Animator.DeathKillTimer; set => Animator.DeathKillTimer = value; }
+    #endregion
+    public bool IsDead => DeathKillTimer > 0;
+    public static Color ProjectileColor => Instance.Body.PrimaryColor;
+    public int bonusBubbles = 0;
+    public static Player Instance { get => m_Instance == null ? m_Instance = FindObjectOfType<Player>() : m_Instance; set => m_Instance = value; }
+    private static Player m_Instance;
+    public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
+    [SerializeField]
+    private Camera MainCamera;
+    public GameObject Visual;
+    private readonly float speed = 2.5f;
+    private readonly float MovementDeacceleration = 0.9f;
+    public float MaxSpeed = 6f;
     private bool HasRunStartingGear = false;
     public const float DashDefault = 25f;
     public bool AbilityReady => abilityTimer <= 0;
@@ -45,7 +43,6 @@ public partial class Player : Entity
         EventManager.Restart();
         MainCamera.orthographicSize = 12;
         Instance = this;
-        rb = GetComponent<Rigidbody2D>();
         DeathKillTimer = 0;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
         HasRunStartingGear = false;
@@ -107,29 +104,11 @@ public partial class Player : Entity
 
         rb.velocity = velocity;
         Control.LastAbility = Control.Ability;
-        Bobbing = BobbingUpdate();
         Body.AliveUpdate();
-        if (squash < 1)
-            squash += 0.005f;
-        squash = Mathf.Lerp(squash, 1, 0.025f);
-        if (Mathf.Abs(velocity.x) > 0.1f)
-            lastVelo.x = velocity.x;
-        lastVelo.y = velocity.y;
-    }
-    public float PointDirOffset;
-    public float MoveOffset;
-    public float DashOffset;
-    public float BobbingUpdate()
-    {
-        float abs = Mathf.Sqrt(Mathf.Abs(rb.velocity.magnitude)) * 0.5f;
-        walkTimer += abs + 1;
-        walkTimer %= 100f;
-        float sin = Mathf.Sin(walkTimer / 50f * Mathf.PI);
-        float bobbing = 0.9f + 0.1f * sin;
-        return bobbing;
+        Animator.PostUpdate();
     }
     private float AttackUpdateTimer = 0;
-    new private void FixedUpdate()
+    public override void OnFixedUpdate()
     {
         if (Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.N))
             UnlockCondition.ForceUnlockAll = true;
@@ -171,7 +150,6 @@ public partial class Player : Entity
             Accessory.EquipUpdate();
             Weapon.EquipUpdate();
             Body.EquipUpdate();
-            base.FixedUpdate(); //Reduce I frames. Will reorganize later
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 15f, 0.03f);
             MovementUpdate();
             if (Input.GetMouseButton(0))
@@ -205,7 +183,6 @@ public partial class Player : Entity
         base.Update();
         Instance = this;
     }
-    public float DeathKillTimer = 0;
     public void Pop()
     {
         //Time.timeScale = 0.5f + 0.5f * Mathf.Sqrt(Mathf.Max(0, 1 - DeathKillTimer / 200f));
