@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,9 +31,38 @@ public class Gachapon : Body
         int total = stacks[index].Chips.Count - 1;
         stack.Chips[total].transform.localPosition = new Vector3(total % 2 * -0.1f * direction, total * 0.15f);
     }
-    public void RemoveChip()
+    public bool RemoveChip()
     {
-
+        int totalCount = 0;
+        foreach(ChipStack stack in stacks)
+        {
+            if(stack.Chips.Count > 0)
+            {
+                int top = stack.Chips.Count - 1;
+                GameObject topChip = stack.Chips[top];
+                Destroy(topChip);
+                totalCount++;
+                stack.Chips.RemoveAt(top);
+            }
+        }
+        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
+        toMouse = toMouse.normalized * 14;
+        int half = totalCount / 2;
+        float rotation = 12.5f * (totalCount - 1);
+        if (rotation > 180)
+            rotation = 180;
+        for (int i = 0; i < totalCount; ++i)
+        {
+            float lerp = totalCount == 1 ? 0 : (float)i / (totalCount - 1);
+            Vector2 rot = toMouse.RotatedBy(Mathf.Deg2Rad * Mathf.Lerp(-rotation, rotation, lerp));
+            Projectile.NewProjectile<PokerChip>(transform.position,rot);
+            for(int j = 0; j < p.DashSparkle; ++j)
+            {
+                Vector2 target = (Vector2)transform.position + rot * Utils.RandFloat(0.2f, 1.0f);
+                Projectile.NewProjectile<StarProj>(transform.position, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+            }
+        }
+        return totalCount > 0;
     }
     public void AddStack()
     {
@@ -44,7 +74,7 @@ public class Gachapon : Body
     }
     public void RemoveStack()
     {
-
+        stacks.RemoveAt(stacks.Count - 1);
     }
     public Sprite[] altFaces;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
@@ -90,7 +120,7 @@ public class Gachapon : Body
         top.SetActive(true);
         //MouthR.flipX = FaceR.flipX;
     }
-    public override float AbilityCD => 5;
+    public override float AbilityCD => 3f;
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
         PrimaryColor = new Color(0.95f, 1f, 0.6f);
@@ -100,6 +130,8 @@ public class Gachapon : Body
         }
         while(stacks.Count < p.TotalChipStacks)
             AddStack();
+        while (stacks.Count > p.TotalChipStacks)
+            RemoveStack();
         if (Main.GameStarted)
         {
             if(p.AbilityReady)
@@ -107,6 +139,25 @@ public class Gachapon : Body
                 p.abilityTimer = AbilityCD;
                 AddChip();
             }
+        }
+        if(Control.Ability && !Control.LastAbility)
+        {
+            p.abilityTimer = AbilityCD;
+            RemoveChip();
+        }
+        else if(Control.Ability)
+        {
+            while(p.abilityTimer < AbilityCD * 0.9f)
+            {
+                if (RemoveChip())
+                    p.abilityTimer += AbilityCD * 0.1f;
+                else
+                    break;
+            }
+        }
+        else if(Control.LastAbility && !Control.Ability)
+        {
+            p.abilityTimer = AbilityCD;
         }
         //if (p.AbilityReady && Control.Ability && !Control.LastAbility)
         //{

@@ -152,7 +152,7 @@ public partial class Player : Entity
             if(Input.GetKeyDown(KeyCode.B))
                 PowerUp.Spawn<NeuronActivation>(transform.position, 0);
             if (Input.GetKeyDown(KeyCode.Y))
-                PowerUp.Spawn<TrailOfThoughts>(transform.position, 0);
+                PowerUp.Spawn<Dash>(transform.position, 0);
             if (Input.GetKeyDown(KeyCode.C))
                 CoinManager.SpawnCoin(transform.position, 25);
             if (Input.GetKeyDown(KeyCode.Z))
