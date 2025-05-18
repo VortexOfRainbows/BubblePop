@@ -31,16 +31,38 @@ public class Dice : Hat
     }
     protected override void AnimationUpdate()
     {
-        float bonusR = p.Body is Bubblemancer ? 1f * Mathf.Max(0, p.abilityTimer / p.abilityCD) : 0;
+        float bonusR = p.Body is Bubblemancer ? 1f * Mathf.Max(0, p.abilityTimer / p.AbilityCD) : 0;
         float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + bonusR);
         transform.localScale = new Vector3(p.Body.transform.localScale.x * (p.Body.Flipped ? -1 : 1), p.Body.transform.localScale.y, p.Body.transform.localScale.z);
         transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, r, 0.1f) * Vector3.forward;
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
             new Vector2(0, (-1.5f + 1.5f * p.Bobbing * p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
             0.25f) + velocity;
+        bounceCount = 0.7f;
+        velocity *= 0.9f;
     }
+    private float bounceCount = 0.7f;
     protected override void DeathAnimation()
     {
-        base.DeathAnimation();
+        float toBody = transform.localPosition.y - p.Body.transform.localPosition.y;
+        if (p.DeathKillTimer <= 0)
+        {
+            velocity *= 0.1f;
+            velocity.x += Utils.RandFloat(-1, 1) * 0.05f;
+            velocity.y += 0.05f;
+        }
+        if (toBody < -0.95f)
+        {
+            velocity *= -bounceCount;
+            transform.localPosition = (Vector2)transform.localPosition + new Vector2(0, -0.95f - toBody);
+            bounceCount *= 0.5f;
+        }
+        else
+        {
+            velocity.x *= 0.998f;
+            velocity.y -= 0.005f;
+        }
+        transform.localPosition = (Vector2)transform.localPosition + velocity;
+        transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, 0, 0.1f) * Vector3.forward;
     }
 }

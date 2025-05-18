@@ -35,7 +35,7 @@ public class Bubblemancer : Body
     public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
     {
         float speed = Player.DashDefault;
-        p.abilityTimer = p.abilityCD;
+        p.abilityTimer = p.AbilityCD;
         velocity = velocity * p.MaxSpeed + moveSpeed * speed;
         p.squash = p.SquashAmt;
         spriteRender.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);

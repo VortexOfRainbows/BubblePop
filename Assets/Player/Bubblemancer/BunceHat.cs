@@ -30,7 +30,7 @@ public class BunceHat : BubblemancerHat
     }
     protected override void AnimationUpdate()
     {
-        float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.abilityTimer / p.abilityCD));
+        float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.abilityTimer / p.AbilityCD));
         if (spriteRender.flipX == p.BodyR.flipY)
         {
             spriteRender.flipX = !p.BodyR.flipY;
@@ -38,7 +38,7 @@ public class BunceHat : BubblemancerHat
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r - 12 * p.Direction, 0.2f));
         if (p.abilityTimer > 0)
         {
-            float sin = Mathf.Sqrt(Mathf.Abs( Mathf.Sin(Mathf.PI * Mathf.Max(0, p.abilityTimer / p.abilityCD)))) * p.abilityTimer / p.abilityCD;
+            float sin = Mathf.Sqrt(Mathf.Abs( Mathf.Sin(Mathf.PI * Mathf.Max(0, p.abilityTimer / p.AbilityCD)))) * p.abilityTimer / p.AbilityCD;
             velocity = new Vector2(0, p.Direction * 2.5f * sin).RotatedBy(p.lastVelo.ToRotation());
         }
         else if (p.AbilityReady)

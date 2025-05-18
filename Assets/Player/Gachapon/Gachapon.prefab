@@ -310,6 +310,10 @@ MonoBehaviour:
   LastSelectedWep: -1
   PrimaryColor: {r: 0.15632069, g: 1, b: 0, a: 0.5}
   FaceR: {fileID: 4116895871933785455}
+  stacks: []
+  ChipPrefab: {fileID: 2609007049445654007, guid: 65c90d82fce99c347a44f71f54f7866e, type: 3}
+  ChipStackPrefab: {fileID: 8026238406786924639, guid: 45d774af757344b42b6577eb161f632e, type: 3}
   altFaces:
   - {fileID: 21300000, guid: 2ab72b14c805bec4bac955ad35057d64, type: 3}
   - {fileID: 21300000, guid: 91fb63f187eb1114fb6abef01794a35e, type: 3}
+  top: {fileID: 5798485092431379948}

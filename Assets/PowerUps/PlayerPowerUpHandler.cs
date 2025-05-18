@@ -34,7 +34,7 @@ public partial class Player : Entity
             }
         }
     }
-    public float abilityCD { get; private set; } = 0.5f;
+    public float AbilityCD => Body.AbilityCD;
     public int ChargeShotDamage = 0;
     public int ShotgunPower = 0;
     public int DashSparkle = 0;
@@ -60,7 +60,8 @@ public partial class Player : Entity
     public int TrailOfThoughts = 0, Magnet = 0, LightSpear, LightChainReact = 0;
     public float TrailOfThoughtsRecoverySpeed => AbilityRecoverySpeed;
     public float AbilityRecoverySpeed = 1.0f;
-
+    public int TotalChipsAllowed = 5;
+    public int TotalChipStacks = 2;
 
     private List<int> powers;
     private void PowerInit()
@@ -75,7 +76,6 @@ public partial class Player : Entity
     private void ClearPowerBonuses()
     {
         ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = Coalescence = Magnet = LightSpear = 0;
-        abilityCD = 0.5f;
         AttackSpeedModifier = PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = AbilityRecoverySpeed = 1.0f;
         LuckyStar = TrailOfThoughts = LightChainReact = 0;
     }

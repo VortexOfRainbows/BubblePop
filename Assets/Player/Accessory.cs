@@ -11,7 +11,7 @@ public class Accessory : Equipment
     protected float MimicHatEulerZ = 0;
     new public void AliveUpdate()
     {
-        float r = new Vector2(p.Direction, p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.abilityTimer / p.abilityCD));
+        float r = new Vector2(p.Direction, p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.abilityTimer / p.AbilityCD));
         MimicHatEulerZ = Mathf.LerpAngle(transform.eulerAngles.z, r, 0.2f);
         base.AliveUpdate();
     }
