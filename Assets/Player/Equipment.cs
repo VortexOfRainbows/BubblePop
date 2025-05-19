@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    public static Player p => Player.Instance;
+    public void Start()
+    {
+        if(p == null)
+            p = Player.Instance.Animator;
+    }
+    public static Player player => Player.Instance;
+    public PlayerAnimator p;
     private static List<PowerUp> PowerPool = new();
     private string InternalName = null;
     public List<GameObject> SubEquipment = new();
@@ -65,7 +71,7 @@ public class Equipment : MonoBehaviour
         return b.CategoryUnlockCondition == CategoryUnlockCondition && this is not Body;
     }
     public bool CategoryUnlocked => CategoryUnlockCondition.Unlocked || this is Body || isSubEquipment;
-    public bool IsUnlocked => (UnlockCondition.Unlocked && CategoryUnlocked) || (SameUnlockAsBody(p.Body) && !isSubEquipment);
+    public bool IsUnlocked => (UnlockCondition.Unlocked && CategoryUnlocked) || (SameUnlockAsBody(Player.Instance.Body) && !isSubEquipment);
     public virtual void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
 
@@ -133,6 +139,7 @@ public class Equipment : MonoBehaviour
     /// <summary>
     /// Ran while the player has this equipment equipped.
     /// Runs after the powerup-reset code, meaning that any adjustments to powerup related states will take effect.
+    /// Not called on non-player equipment.
     /// </summary>
     public virtual void EquipUpdate()
     {

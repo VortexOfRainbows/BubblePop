@@ -236,4 +236,5 @@ public abstract class PowerUp
         inner.transform.localScale = Vector3.one;
     }
     public Sprite sprite;
+    public virtual int Cost => (int)(10 / Weighting);
 }

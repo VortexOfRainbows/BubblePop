@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: 96e71d3056947be47ba8944af96d9ec8, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -243,7 +243,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: f8d449e04bd31df4cbe287850df2dbf0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8666667}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -309,7 +309,6 @@ MonoBehaviour:
   LastSelectedAcc: 0
   LastSelectedWep: 0
   PrimaryColor: {r: 0.89, g: 0.80784315, b: 0.9411765, a: 0.5}
-  Face: {fileID: 6834552506591836568}
   FaceR: {fileID: 4116895871933785455}
   TailPrefab: {fileID: 3265141040751608713, guid: b07dcbee7d4ea0645879043d1b0991be, type: 3}
   TailCount: 0

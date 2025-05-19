@@ -1,5 +1,66 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2904879408648245512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7046234285421291866}
+  - component: {fileID: 6147547588852434854}
+  m_Layer: 3
+  m_Name: Visual
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7046234285421291866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904879408648245512}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4439646451783487447}
+  - {fileID: 4981973282153690138}
+  - {fileID: 7232897044086735031}
+  - {fileID: 4300367830045641871}
+  m_Father: {fileID: 995395983974909505}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6147547588852434854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904879408648245512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4177b109971490449e1470692b9c663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PointDirOffset: 0
+  MoveOffset: 0
+  DashOffset: 0
+  IsMainPlayerAnimator: 1
+  squash: 1
+  Bobbing: 1
+  rb: {fileID: 3216590746651522342}
+  Body: {fileID: 7589797464362351196}
+  Weapon: {fileID: 4398803498948371710}
+  Hat: {fileID: 4793643284589324687}
+  Accessory: {fileID: 6990591328264648732}
+  lastVelo: {x: 0, y: 0}
+  DeathKillTimer: 0
 --- !u!1 &6670607549082870492
 GameObject:
   m_ObjectHideFlags: 0
@@ -33,10 +94,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4439646451783487447}
-  - {fileID: 4981973282153690138}
-  - {fileID: 7232897044086735031}
-  - {fileID: 4300367830045641871}
+  - {fileID: 7046234285421291866}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7594576432851193269
@@ -52,27 +110,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseRenderer: {fileID: 0}
-  PointWorth: 0
-  IFrame: 0
+  UniversalImmuneFrames: 0
   Life: 10
   DamageTaken: 0
   lastPos: {x: 0, y: 0}
+  Animator: {fileID: 6147547588852434854}
   bonusBubbles: 0
   MainCamera: {fileID: 0}
-  Body: {fileID: 7589797464362351196}
-  Weapon: {fileID: 4398803498948371710}
-  Hat: {fileID: 4793643284589324687}
-  Accessory: {fileID: 6990591328264648732}
-  rb: {fileID: 3216590746651522342}
+  Visual: {fileID: 2904879408648245512}
   MaxSpeed: 6
-  squash: 1
-  lastVelo: {x: 0, y: 0}
-  DashMult: 1
   abilityTimer: 0
-  PointDirOffset: 0
-  MoveOffset: 0
-  DashOffset: 0
-  DeathKillTimer: 0
   ChargeShotDamage: 0
   ShotgunPower: 0
   DashSparkle: 0
@@ -93,7 +140,12 @@ MonoBehaviour:
   Coalescence: 0
   LuckyStar: 0
   TrailOfThoughts: 0
-  TrailOfThoughtsRecoverySpeed: 1
+  Magnet: 0
+  LightSpear: 0
+  LightChainReact: 0
+  AbilityRecoverySpeed: 1
+  TotalChipsAllowed: 5
+  TotalChipStacks: 2
 --- !u!50 &3216590746651522342
 Rigidbody2D:
   serializedVersion: 4
@@ -133,7 +185,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 119
@@ -197,7 +249,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 995395983974909505}
+    m_TransformParent: {fileID: 7046234285421291866}
     m_Modifications:
     - target: {fileID: 5335490131377714205, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
       propertyPath: m_LocalPosition.x
@@ -241,7 +293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8132037870103020878, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
       propertyPath: m_Name
-      value: Bubble Bro
+      value: Body
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -270,7 +322,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 995395983974909505}
+    m_TransformParent: {fileID: 7046234285421291866}
     m_Modifications:
     - target: {fileID: 4047993882583738873, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
       propertyPath: m_Name
@@ -347,7 +399,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 995395983974909505}
+    m_TransformParent: {fileID: 7046234285421291866}
     m_Modifications:
     - target: {fileID: 822516308599803311, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -367,15 +419,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 822516308599803311, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 822516308599803311, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 822516308599803311, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 822516308599803311, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -424,7 +476,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 995395983974909505}
+    m_TransformParent: {fileID: 7046234285421291866}
     m_Modifications:
     - target: {fileID: 5929372085670736113, guid: e7d67ac7adef0454a96cab6df826ac8e, type: 3}
       propertyPath: SubEquipment.Array.data[0]

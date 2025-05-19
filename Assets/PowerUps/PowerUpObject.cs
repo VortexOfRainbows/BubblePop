@@ -36,12 +36,13 @@ public class PowerUpObject : MonoBehaviour
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
         timer++;
         float scale = 1.0f + 0.1f * Mathf.Sin(Mathf.Deg2Rad * timer * 2f);
+        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.1f);
         outer.transform.localScale = Vector3.Lerp(outer.transform.localScale, new Vector3(2f / scale, 2f * scale, 2), 0.1f);
         if (Utils.RandFloat(1) < 0.4f)
         {
-            Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
-            ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.5f, 0.6f), circular * Utils.RandFloat(3, 6) + new Vector2(0, Utils.RandFloat(-1, 2)),
-                2f, Utils.RandFloat(0.3f, .5f), 0, glow.color * 0.9f);
+            Vector2 circular = new Vector2(Utils.RandFloat(0, 1) * transform.localScale.x, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
+            ParticleManager.NewParticle((Vector2)transform.position + circular, Utils.RandFloat(0.5f, 0.6f), circular * Utils.RandFloat(3, 6) + new Vector2(0, Utils.RandFloat(-1, 2)),
+                1.6f, Utils.RandFloat(0.3f, 0.4f), 0, glow.color * 0.8f);
         }
         if(Cost > 0)
         {
@@ -59,9 +60,18 @@ public class PowerUpObject : MonoBehaviour
     {
         if(collision.tag == "Player" && !PickedUp)
         {
-            Kill();
-            PickedUp = true;
+            if(CoinManager.Current >= Cost && transform.lossyScale.x > 0.8f)
+            {
+                PickUp();
+            }
         }
+    }
+    public void PickUp()
+    {
+        CoinManager.ModifyCurrent(-Cost);
+        PickedUp = true;
+        MyPower.PickUp();
+        Kill();
     }
     private void Kill()
     {
@@ -71,9 +81,7 @@ public class PowerUpObject : MonoBehaviour
             ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.6f, 0.7f), circular * Utils.RandFloat(3, 6), 4f, Utils.RandFloat(0.4f, 0.6f), 0, glow.color);
         }
         AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.2f, 0.9f);
-
-        MyPower.PickUp();
-        //Debug.Log($"Player has picked up {MyPower.Name()}");
         Destroy(gameObject);
+        //Debug.Log($"Player has picked up {MyPower.Name()}");
     }
 }

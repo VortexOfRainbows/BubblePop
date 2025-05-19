@@ -36,7 +36,6 @@ public class EquipmentUIElement : MonoBehaviour
         Text.color = Color.white;
         if (Unlocked)
         {
-                UpdateColor(actualColor);
             if (CanAfford)
             {
                 Slot.color = slotColor;

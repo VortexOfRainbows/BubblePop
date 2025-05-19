@@ -32,7 +32,7 @@ public class Bulb : Hat
     }
     protected override void AnimationUpdate()
     {
-        float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, p.abilityTimer / p.abilityCD));
+        float r = p.MoveDashRotation();
         spriteRender.flipX = p.Body.Flipped;
         spriteRender.sprite = OnBulb;
         light2d.intensity = Mathf.Lerp(light2d.intensity, 1, 0.08f);
@@ -79,17 +79,17 @@ public class Bulb : Hat
     public static readonly float DefaultShotSpeed = 2.2f;
     public static readonly float MaxRange = 48;
     private float lightSpearCounter = 0;
-    public static float SpeedModifier => (1 + Mathf.Sqrt(p.LightSpear));
+    public static float SpeedModifier => (1 + Mathf.Sqrt(player.LightSpear));
     public override void EquipUpdate()
     {
-        if(p.LightSpear > 0)
+        if(player.LightSpear > 0)
         {
             Vector2 shootFromPos = (Vector2)transform.position + new Vector2(0, 0.6f).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) * transform.lossyScale.x;
             float shotTime = DefaultShotSpeed;
             lightSpearCounter += Time.fixedDeltaTime * SpeedModifier;
             while(lightSpearCounter > shotTime)
             {
-                if(LaunchSpear(shootFromPos, out Vector2 norm, null, p.LightChainReact))
+                if(LaunchSpear(shootFromPos, out Vector2 norm, null, player.LightChainReact))
                 {
                     velocity -= norm;
                     lightSpearCounter -= shotTime;

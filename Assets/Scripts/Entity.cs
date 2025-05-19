@@ -83,7 +83,7 @@ public class Entity : MonoBehaviour
     }
     public void HurtByNPC()
     {
-        if (this is Player p && p.DeathKillTimer <= 0 && p.UniversalImmuneFrames <= 0)
+        if (this is Player p && !p.IsDead && p.UniversalImmuneFrames <= 0)
         {
             p.Pop();
         }

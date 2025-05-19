@@ -46,7 +46,7 @@ public static class EventManager
         //    Point += 100;
         //}
         PointTimer += Time.deltaTime;
-        if (Player.Instance.DeathKillTimer > 0)
+        if (Player.Instance.IsDead)
         {
             PointTimer = 0;
         }

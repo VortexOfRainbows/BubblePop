@@ -310,10 +310,11 @@ public class CharacterSelect : MonoBehaviour
         }
 
         GameObject oldEquipment = equip.gameObject;
-        equip = Instantiate(equipPrefab, Player.Instance.transform).GetComponent<Equipment>();
+        equip = Instantiate(equipPrefab, Player.Instance.Visual.transform).GetComponent<Equipment>();
         equip.OriginalPrefab = equipPrefab;
-        Debug.Log(equip);
+        equip.p = Player.Instance.Animator;
         equip.AliveUpdate();
+        //Debug.Log(equip);
         if (i == 0)
         {
             Player.Instance.Hat = equip as Hat;

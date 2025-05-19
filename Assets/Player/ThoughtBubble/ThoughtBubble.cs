@@ -40,7 +40,7 @@ public class ThoughtBubble : Body
     }
     public override void FaceUpdate()
     {
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
+        Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
         Vector2 toMouse2 = toMouse.normalized;
         toMouse2.x += Mathf.Sign(toMouse2.x) * 4;
         float toMouseR = toMouse2.ToRotation();
@@ -77,7 +77,7 @@ public class ThoughtBubble : Body
     public void TailUpdate(ref Vector2 playerVelo)
     {
         //p.TrailOfThoughts = 10;
-        int maxTail = p.TrailOfThoughts * 3 + 12;
+        int maxTail = player.TrailOfThoughts * 3 + 12;
         if (Tails == null)
         {
             Tails = new List<GameObject>();
@@ -88,6 +88,11 @@ public class ThoughtBubble : Body
         }
         if (Control.Ability && (!Control.LastAbility || CurrentMarkedTail != -1) && CurrentMarkedTail < TailCount - 1 && TailCount >= 3)
         {
+            if(Control.Ability && !Control.LastAbility)
+            {
+                FinishedTeleport = false;
+                AudioManager.PlaySound(SoundID.TeleportCharge, transform.position, 1f, 1);
+            }
             if(TailTravelTimer >= TailTravelTime)
             {
                 TailTravelTimer = 0;
@@ -104,7 +109,7 @@ public class ThoughtBubble : Body
         {
             if(Control.LastAbility && CurrentMarkedTail != -1) //This will only be true upon releasing the button
             {
-                p.transform.position = CurrentTail.transform.position;
+                Teleport(CurrentTail.transform.position);
                 for(int i = CurrentMarkedTail; i >= 0; --i)
                 {
                     TryTurningOffTail();
@@ -116,7 +121,7 @@ public class ThoughtBubble : Body
             {
                 if (TailCount < maxTail && p.DeathKillTimer <= 0 && playerVelo.magnitude > 1.5f)
                 {
-                    TailAddTimer += Time.deltaTime * p.TrailOfThoughtsRecoverySpeed;
+                    TailAddTimer += Time.deltaTime * player.TrailOfThoughtsRecoverySpeed;
                     while (TailAddTimer > TailRegenTime)
                     {
                         TailAddTimer -= TailRegenTime;
@@ -136,6 +141,13 @@ public class ThoughtBubble : Body
         {
             UpdateTailPos(i, ref previousPos);
         }
+    }
+    public static bool FinishedTeleport = false;
+    public void Teleport(Vector2 pos)
+    {
+        player.transform.position = pos;
+        AudioManager.PlaySound(SoundID.Teleport, pos, 2f, 1);
+        FinishedTeleport = true;
     }
     public void UpdateTailPos(int i, ref Vector3 previousPos)
     {
@@ -211,9 +223,9 @@ public class ThoughtBubble : Body
             ParticleManager.NewParticle(current.transform.position, Utils.RandFloat(0.4f, 0.5f), Vector2.zero, 4.5f, Utils.RandFloat(0.4f, 0.6f), 2, new Color(1, 0.8377f, 0f));
         }
         Projectile.NewProjectile<SmallBubble>(current.transform.position, Utils.RandCircle(1));
-        if (p.DashSparkle > 0)
+        if (player.DashSparkle > 0)
         {
-            sparkleSparkleNum += (p.DashSparkle + 1) / 6f;
+            sparkleSparkleNum += (player.DashSparkle + 1) / 6f;
             while (sparkleSparkleNum > 1f)
             {
                 Vector2 target = Utils.RandCircle(1).normalized * 20;

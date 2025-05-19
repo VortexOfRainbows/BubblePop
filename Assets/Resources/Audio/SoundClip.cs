@@ -50,6 +50,13 @@ public static class SoundID
 
     public static SoundClip CoinPickup = new SoundClip("Coin/",
         "CoinTier1", "CoinTier2", "CoinTier3");
+
+    public static SoundClip Teleport = new SoundClip("ThoughtBubble/",
+        "Teleport");
+    public static SoundClip TeleportCharge = new SoundClip("ThoughtBubble/",
+        "TeleportCharge");
+    public static SoundClip TeleportSustain = new SoundClip("ThoughtBubble/",
+        "TeleportSustain");
 }
 public class SoundClip
 {

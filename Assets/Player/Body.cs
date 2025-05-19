@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Overlays;
 using UnityEngine;
 
 public class Body : Equipment
@@ -100,19 +101,23 @@ public class Body : Equipment
     {
         if (p.DeathKillTimer <= 0)
         {
-            AudioManager.PlaySound(SoundID.Death.GetVariation(1), transform.position, 0.21f, 0.4f);
+            AudioManager.PlaySound(SoundID.Death.GetVariation(1), transform.position, 0.15f, 0.4f);
             for (int i = 0; i < 100; i++)
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1),
-                    Utils.RandFloat(0.5f, 1.1f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3), 0, Player.ProjectileColor);
+                    Utils.RandFloat(0.5f, 1.0f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3), 0, Player.ProjectileColor);
             }
-            gameObject.SetActive(false);
         }
+        ModifyDeathAnimation();
+    }
+    public virtual void ModifyDeathAnimation()
+    {
+        gameObject.SetActive(false);
     }
     public virtual void FaceUpdate()
     {
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
+        Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
         Vector2 pos = new Vector2(0.15f * p.Direction, 0) + toMouse.normalized * 0.21f;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         FaceR.flipX = spriteRender.flipY;
@@ -121,4 +126,5 @@ public class Body : Equipment
     {
 
     }
+    public virtual float AbilityCD => 0.5f;
 }
