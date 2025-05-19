@@ -9,7 +9,7 @@ public class BubblemancerUnlock : UnlockCondition
         return "Reach a Highscore of 5000\n" +
             $"Current best: {UIManager.highscore}";
     }
-    protected override bool IsUnlocked => UIManager.highscore >= 5000;
+    protected override bool IsUnlocked => true; //UIManager.highscore >= 5000;
 }
 public class ThoughtBubbleUnlock : UnlockCondition
 {
@@ -18,7 +18,7 @@ public class ThoughtBubbleUnlock : UnlockCondition
         return "Reach a Highscore of 3000\n" +
             $"Current best: {UIManager.highscore}";
     }
-    protected override bool IsUnlocked => UIManager.highscore >= 3000;
+    protected override bool IsUnlocked => true; // UIManager.highscore >= 3000;
 }
 public class GachaponUnlock : UnlockCondition
 {
@@ -27,5 +27,5 @@ public class GachaponUnlock : UnlockCondition
         return "Reach a total coin count of $500\n" +
             $"Current best: {UIManager.highscore}";
     }
-    protected override bool IsUnlocked => true;
+    protected override bool IsUnlocked => true; // purchase 10 items from shops
 }

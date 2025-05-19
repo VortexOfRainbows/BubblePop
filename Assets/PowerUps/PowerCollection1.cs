@@ -281,3 +281,30 @@ public class NeuronActivation : PowerUp
         p.LightChainReact += Stack;
     }
 }
+public class BrainBlast : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.3f;
+    }
+    protected override string Name() => "Brain Blast";
+    protected override string Description() => "Release additional bubbles when teleporting";
+    public override void HeldEffect(Player p)
+    {
+        p.BrainBlast += Stack;
+    }
+}
+public class Raise : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.75f;
+    }
+    protected override string Name() => "Raise";
+    protected override string Description() => "Increases maximum chip stack size\nSlightly reduces ability cooldown";
+    public override void HeldEffect(Player p)
+    {
+        p.TotalChipsAllowed += Stack;
+        p.AbilityRecoverySpeed += 0.1f * Stack;
+    }
+}

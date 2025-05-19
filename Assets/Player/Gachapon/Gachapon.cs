@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Gachapon : Body
 {
@@ -69,11 +65,16 @@ public class Gachapon : Body
         int total = stacks.Count / 2 + 1;
         int direction = stacks.Count % 2 * 2 - 1;
         stacks.Add(Instantiate(ChipStackPrefab, transform).GetComponent<ChipStack>());
-        float totalOffset = (0.55f + 0.45f * total) * direction;
+        float totalOffset = (0.575f + 0.525f * total) * direction;
         stacks[stacks.Count - 1].transform.localPosition = new Vector3(totalOffset, -0.78f);
     }
     public void RemoveStack()
     {
+        ChipStack stack = stacks[stacks.Count - 1];
+        foreach(GameObject chip in stack.Chips)
+        {
+            Destroy(chip);
+        }
         stacks.RemoveAt(stacks.Count - 1);
     }
     public Sprite[] altFaces;
@@ -92,6 +93,7 @@ public class Gachapon : Body
         powerPool.Add<Choice>();
         powerPool.Add<BubbleBirb>();
         powerPool.Add<Overclock>();
+        powerPool.Add<Raise>();
     }
     protected override string Description()
     {
@@ -130,7 +132,7 @@ public class Gachapon : Body
         top.SetActive(true);
         //MouthR.flipX = FaceR.flipX;
     }
-    public override float AbilityCD => 3f;
+    public override float AbilityCD => 2.5f;
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
         PrimaryColor = new Color(0.95f, 1f, 0.6f);
@@ -160,7 +162,7 @@ public class Gachapon : Body
             while(player.abilityTimer < AbilityCD * 0.9f)
             {
                 if (RemoveChip())
-                    player.abilityTimer += AbilityCD * 0.1f * Mathf.Sqrt(player.AbilityRecoverySpeed);
+                    player.abilityTimer += AbilityCD * 0.15f * ((player.AbilityRecoverySpeed - 1) * 0.25f + Mathf.Sqrt(player.AbilityRecoverySpeed));
                 else
                     break;
             }

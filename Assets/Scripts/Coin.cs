@@ -29,7 +29,7 @@ public class Coin : MonoBehaviour
         {
             float attractSpeed = 3 + p.Magnet + (++AttractTimer) / 30f;
             float percent = length / attractDist;
-            rb.velocity = Vector2.Lerp(rb.velocity * 1.05f, toPlayer.normalized * attractSpeed, (1 - percent) * 0.2f);
+            rb.velocity = Vector2.Lerp(rb.velocity, toPlayer.normalized * attractSpeed, (1 - percent) * 0.2f);
             float speed = rb.velocity.magnitude;
             float maxSpeed = attractDist + attractSpeed;
             if (speed > maxSpeed)

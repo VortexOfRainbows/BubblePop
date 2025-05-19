@@ -33,6 +33,7 @@ public class ThoughtBubble : Body
         powerPool.Add<TrailOfThoughts>();
         powerPool.Add<BubbleBirb>();
         powerPool.Add<Overclock>();
+        powerPool.Add<BrainBlast>();
     }
     protected override string Description()
     {
@@ -148,6 +149,12 @@ public class ThoughtBubble : Body
         player.transform.position = pos;
         AudioManager.PlaySound(SoundID.Teleport, pos, 2f, 1);
         FinishedTeleport = true;
+        int amt = (int)BrainBlastNum;
+        while (BrainBlastNum-- >= 1)
+        {
+            float speed = 5f + Player.Instance.FasterBulletSpeed * 2.5f + player.BrainBlast * Utils.RandFloat(1.5f, 2.5f);
+            Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.5f)), 0).RotatedBy((BrainBlastNum + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f));
+        }
     }
     public void UpdateTailPos(int i, ref Vector3 previousPos)
     {
@@ -216,13 +223,26 @@ public class ThoughtBubble : Body
         GameObject current = CurrentTail;
         DetonateTail(current);
     }
+    public float BrainBlastNum = 0;
+    public float BrainBlastTrailNum = 0;
     public void DetonateTail(GameObject current)
     {
         for(int i = 0; i < 5; ++i)
         {
             ParticleManager.NewParticle(current.transform.position, Utils.RandFloat(0.4f, 0.5f), Vector2.zero, 4.5f, Utils.RandFloat(0.4f, 0.6f), 2, new Color(1, 0.8377f, 0f));
         }
-        Projectile.NewProjectile<SmallBubble>(current.transform.position, Utils.RandCircle(1));
+        int amt = 1 + (int)BrainBlastTrailNum;
+        for(int i = 0; i < amt; ++i)
+        {
+            Projectile.NewProjectile<SmallBubble>(current.transform.position, UnityEngine.Random.insideUnitCircle * Utils.RandFloat(0.1f + i * 0.05f, 1.0f + i * 0.2f));
+            if (i > 0)
+                BrainBlastTrailNum--;
+        }
+        if (player.BrainBlast > 0)
+        {
+            BrainBlastNum += 0.25f + player.BrainBlast * 0.75f;
+            BrainBlastTrailNum += 0.2f + player.BrainBlast * 0.1f;
+        }
         if (player.DashSparkle > 0)
         {
             sparkleSparkleNum += (player.DashSparkle + 1) / 6f;
