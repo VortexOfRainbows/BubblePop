@@ -41,9 +41,10 @@ public class DualGridTilemap : MonoBehaviour
     //}
     public void RefreshDisplayTilemap()
     {
-        for (int i = -50; i < 50; i++)
+        int worldSize = 100;
+        for (int i = -worldSize; i <= worldSize; i++)
         {
-            for (int j = -50; j < 50; j++)
+            for (int j = -worldSize; j <= worldSize; j++)
             {
                 Vector3Int coords = new Vector3Int(i, j);
                 for (int k = 0; k < Tiles.Length; ++k)
