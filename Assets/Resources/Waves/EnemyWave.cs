@@ -95,7 +95,7 @@ public class EnemyPattern
     }
     public bool InWorld(Vector2 location)
     {
-        bool hasWorldMap = DualGridTilemap.RealTileMap != null;
+        bool hasWorldMap = DualGridTilemap.Instance != null && DualGridTilemap.RealTileMap != null;
         if(hasWorldMap)
         {
             int success = 0;
@@ -106,7 +106,7 @@ public class EnemyPattern
                     if (DualGridTilemap.RealTileMap.HasTile(DualGridTilemap.RealTileMap.WorldToCell(location) + new Vector3Int(i, j)))
                     {
                         success++;
-                        if (success > 6)
+                        if (success > 7)
                             return true;
                     }
                 }

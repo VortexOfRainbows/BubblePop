@@ -13,7 +13,7 @@ public class DualGridTile : ScriptableObject
     public static Dictionary<Tuple<bool, bool, bool, bool>, int> SetNeighborRelations()
     {
         return new() {
-            {new (true, true, true, true), 6},
+            {new (true, true, true, true), 6}, //Inner tile
             {new (false, false, false, true), 12}, // OUTER_BOTTOM_RIGHT
             {new (false, false, true, false), 0}, // OUTER_BOTTOM_LEFT
             {new (false, true, false, false), 8}, // OUTER_TOP_RIGHT
@@ -54,7 +54,12 @@ public class DualGridTile : ScriptableObject
         bool topLeft = AdjacentTileSameType(coords, -NEIGHBOURS[1]);
         bool botLeft = AdjacentTileSameType(coords, -NEIGHBOURS[3]);
         Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft, topRight, botLeft, botRight);
-        return NeighbourRelations[neighbourTuple];
+        int i = NeighbourRelations[neighbourTuple];
+        if(i == 6 && DisplayTileVariants.Length > 15 && Utils.RandFloat() < 0.5f)
+        {
+            return Utils.RandInt(15, DisplayTileVariants.Length);
+        }
+        return i;
     }
     public void UpdateDisplayTile(Vector3Int pos, Tilemap map)
     {
