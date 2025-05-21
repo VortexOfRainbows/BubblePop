@@ -5,7 +5,23 @@ using UnityEngine;
 
 public static class WaveDeck
 {
-    private static float minXBound = -30, maxXBound = 30, minYBound = -20, maxYBound = 20;
+    public static readonly float minXBound = -30, maxXBound = 30, minYBound = -18, maxYBound = 18;
+    public static List<GameObject> GetPossibleEnemies()
+    {
+        List<GameObject> possibleEnemies = new()
+        {
+            EnemyID.OldDuck
+        };
+        if (WaveDirector.WaveNum > 1 || WaveDirector.CardsPlayed > 4)
+            possibleEnemies.Add(EnemyID.OldSoap);
+        if (WaveDirector.WaveNum > 1 && WaveDirector.CardsPlayed > 2)
+            possibleEnemies.Add(EnemyID.Chicken);
+        if (WaveDirector.WaveNum > 2 || WaveDirector.CardsPlayed > 4)
+            possibleEnemies.Add(EnemyID.OldFlamingo);
+        if (WaveDirector.WaveNum > 3 && WaveDirector.CardsPlayed > 2)
+            possibleEnemies.Add(EnemyID.OldLeonard);
+        return possibleEnemies;
+    }
     public static GameObject DrawEnemy(List<GameObject> possibleEnemies)
     {
         return possibleEnemies[Utils.RandInt(possibleEnemies.Count)];
@@ -52,15 +68,26 @@ public static class WaveDeck
     }
     public static WaveCard DrawCard()
     {
-        Vector2 stuff = new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
-        return DrawSingleSpawn(stuff, DrawEnemy(EnemyID.AllEnemyList));
+        return DrawSingleSpawn(RandomEdgeLocation(), DrawEnemy(GetPossibleEnemies()));
+    }
+    public static Vector2 RandomEdgeLocation()
+    {
+        return new(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
+    }
+    public static WaveCard DrawSingleSpawn(GameObject enemy)
+    {
+        return DrawSingleSpawn(RandomEdgeLocation(), enemy);
     }
     public static WaveCard DrawSingleSpawn(Vector2 location, GameObject enemy)
     {
+        return DrawSingleSpawn(location, enemy, Utils.RandFloat(3, 9), Utils.RandFloat(1, 2), 1 + 2 * enemy.GetComponent<Enemy>().CostMultiplier);
+    }
+    public static WaveCard DrawSingleSpawn(Vector2 location, GameObject enemy, float charge, float delay, float cost)
+    {
         return new WaveCard(
-            1 + 2 * enemy.GetComponent<Enemy>().CostMultiplier,
-            Utils.RandFloat(2, 5), //Since single spawn cards are cheap, they have a long mulligan cooldown
-            Utils.RandFloat(1, 2), //The cards drawn after this card also get a longer mulligan
+            cost,
+            charge, //Since single spawn cards are cheap, they have a long mulligan cooldown
+            delay, //The cards drawn after this card also get a longer mulligan
             new EnemyPattern(location, 0, 0, enemy));
     }
 }

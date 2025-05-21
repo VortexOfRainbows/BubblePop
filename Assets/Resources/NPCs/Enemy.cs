@@ -19,6 +19,7 @@ public static class EnemyID
     public static GameObject OldFlamingo = LoadNPC("Old/EnemyFlamingo");
     public static GameObject OldSoap = LoadNPC("Old/EnemySoap");
     public static GameObject OldSmallSoap = LoadNPC("Old/EnemySoapTiny");
+    public static GameObject Chicken = LoadNPC("Chicken/Chicken");
 }
 
 public class Enemy : Entity

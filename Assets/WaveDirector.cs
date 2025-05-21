@@ -182,39 +182,94 @@ public static class WaveDirector
         if (!Main.GameStarted)
             return;
     }
-    public static float Credits;
+    public static int MaxCards = 6;
+    public static float Credits = 0, CreditsSpent = 0;
     public static float PlayRecoil;
     public static List<WaveCard> Deck = new List<WaveCard>();
     public static List<WaveCard> Board = new List<WaveCard>();
+    public static int CardsPlayed = 0;
+    public static int WaveNum = 1;
+    public static float WaveMult = 1.0f;
+    public static void Reset()
+    {
+        WaveNum = 1;
+        WaveMult = 1.0f;
+        CardsPlayed = 0;
+        CreditsSpent = 0;
+        Deck.Clear();
+        Board.Clear();
+    }
     public static void FixedUpdate()
     {
         if (!Main.GameStarted)
-            return;
-        if ((int)Credits % 100 == 0)
         {
-            Debug.Log("Card Status: ");
-            foreach(WaveCard c in Deck)
-            {
-                Debug.Log(c);
-            }
-            Debug.Log("-------------");
+            Reset();
+            return;
         }
-        DrawNewCards();
-        UpdateMulligans();
-        GatherCredits();
-        if (PlayRecoil <= 0)
-            TryPlayingCard();
-        else
-            PlayRecoil -= Time.fixedDeltaTime;
+        //if ((int)Credits % 100 == 0)
+        //{
+        //    Debug.Log("Card Status: ");
+        //    foreach(WaveCard c in Deck)
+        //    {
+        //        Debug.Log(c);
+        //    }
+        //    Debug.Log("-------------");
+        //}
+        if (CardsPlayed < 10 || CreditsSpent < (40 * WaveMult))
+        {
+            DrawNewCards();
+            UpdateMulligans();
+            if (Utils.RandInt(1000) == 0) //roughly 10 seconds to mulligan a random card
+                MulliganRandomCard();
+            if (PlayRecoil <= 0)
+                TryPlayingCard();
+            GatherCredits();
+        }
+        else if(Board.Count <= 0) //All played cards have finish processing
+        {
+            CardsPlayed = 0;
+            WaveNum++;
+            WaveMult += 0.1f;
+            CreditsSpent = 0;
+            if(WaveNum == 2)
+            {
+                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
+                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
+            }
+            if (WaveNum == 3)
+            {
+                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldFlamingo, 10, 2, 0);
+                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldFlamingo, 10, 2, 0);
+            }
+            if (WaveNum == 4)
+            {
+                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
+                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
+                Deck[MaxCards - 3] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
+            }
+            if (WaveNum == 5)
+            {
+                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 20, 5, 0);
+            }
+            if (WaveNum >= 10)
+            {
+                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 10, 5, 0);
+            }
+        }
         ProcessPlayedCards();
+        if (PlayRecoil > 0)
+            PlayRecoil -= Time.fixedDeltaTime * WaveMult;
     }
     public static void GatherCredits()
     {
-        Credits += 1.0f * Time.fixedDeltaTime;
+        Credits += 1.2f * Time.fixedDeltaTime * WaveMult;
     }
     public static void DrawNewCards()
     {
-        while (Deck.Count < 5)
+        Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldDuck, 0, 1, 0));
+        Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldDuck, 0, 1, 0));
+        Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldDuck, 0, 1, 0));
+        while (Deck.Count < MaxCards)
         {
             Deck.Add(WaveDeck.DrawCard());
         }
@@ -222,9 +277,13 @@ public static class WaveDirector
     public static void UpdateMulligans()
     {
         foreach(WaveCard card in Deck)
-        {
             card.mulliganDelay -= Time.fixedDeltaTime;
-        }
+    }
+    public static void MulliganRandomCard()
+    {
+        int rand = Utils.RandInt(Deck.Count);
+        if (Deck[rand].Cost > 0)
+            Deck[rand] = WaveDeck.DrawCard();
     }
     public static void TryPlayingCard()
     {
@@ -236,9 +295,11 @@ public static class WaveDirector
             if(canPlay && canAfford)
             {
                 Board.Add(card);
-                Deck.RemoveAt(i);
+                Deck[i] = WaveDeck.DrawCard();
                 PlayRecoil += card.postPlayDelay;
                 Credits -= card.Cost;
+                CreditsSpent += card.Cost;
+                CardsPlayed++;
                 return;
             }
         }

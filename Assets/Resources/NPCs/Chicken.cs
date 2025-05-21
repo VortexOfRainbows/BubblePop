@@ -10,7 +10,7 @@ public class Chicken : Enemy
     private void Start()
     {
         Life = 7;
-        MaxCoins = 5;
+        MaxCoins = 10;
     }
     public void UpdateDirection(float i)
     {

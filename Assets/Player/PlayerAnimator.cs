@@ -32,7 +32,7 @@ public class PlayerAnimator : MonoBehaviour
     public float BobbingUpdate()
     {
         float abs = Mathf.Sqrt(Mathf.Abs(rb.velocity.magnitude)) * 0.5f;
-        walkTimer += abs + 1;
+        walkTimer += abs + (IsMainPlayerAnimator ? 1 : 0.5f);
         walkTimer %= 100f;
         float sin = Mathf.Sin(walkTimer / 50f * Mathf.PI);
         float bobbing = 0.9f + 0.1f * sin;

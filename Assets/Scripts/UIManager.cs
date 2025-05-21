@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     public TMPro.TextMeshProUGUI highscoreText;
     public TMPro.TextMeshProUGUI deadHighscoreText;
     public TMPro.TextMeshProUGUI moneyText;
+    public TMPro.TextMeshProUGUI waveText;
     public GameObject CurrencyIcon;
     public GameObject SavingsIcon;
 
@@ -48,6 +49,7 @@ public class UIManager : MonoBehaviour
 
         scoreText.text = "Score: " + Mathf.FloorToInt(score);
         highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
+        waveText.text = "Wave: " + Mathf.FloorToInt(WaveDirector.WaveNum);
         deadHighscoreText.text = highscoreText.text;
 
         int money = Main.GameStarted ? CoinManager.Current : CoinManager.Savings;

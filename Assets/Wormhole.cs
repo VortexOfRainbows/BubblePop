@@ -46,15 +46,17 @@ public class Wormhole : MonoBehaviour
         float p = Mathf.Min(2, Timer / 2f);
         if(p < 1 && !Closing)
         {
-            for(int i = 0; i < 5; ++i)
+            int amt = Utils.RandInt(3, 6);
+            for (int i = 0; i < amt; ++i)
             {
-                Vector2 circular = new Vector2(15 + p * 4 + Utils.RandFloat(2), 0).RotatedBy(Mathf.PI * (i / 5f * 2) + Utils.RandFloat(Mathf.PI * 0.4f)) * ParticleEffectMult;
+                Vector2 circular = new Vector2(15 + p * 4 + Utils.RandFloat(2), 0).RotatedBy(Mathf.PI * (i / (float)amt * 2) + Utils.RandFloat(Mathf.PI * 0.4f)) * ParticleEffectMult;
                 ParticleManager.NewParticle(transform.position, Utils.RandFloat(1, 3), circular, 1 + p, Utils.RandFloat(0.5f, 1.0f), 3, Color.red * 1.5f);
             }
         }
         else
         {
-            for (int i = 0; i < 2; ++i)
+            int amt = Utils.RandInt(1, 3);
+            for (int i = 0; i < amt; ++i)
             {
                 Vector2 circular = new Vector2(1 * Scale, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
                 float r = Utils.RandFloat(0.2f, 1);

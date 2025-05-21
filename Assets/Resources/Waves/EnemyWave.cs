@@ -9,19 +9,20 @@ public class WaveCard
     }
     public WaveCard(float cost, float startUpDelay, float endDelay, List<EnemyPattern> patterns)
     {
-        this.mulliganDelay = startUpDelay;
+        this.mulliganDelay = fullDelay = startUpDelay;
         this.postPlayDelay = endDelay;
         this.Patterns = patterns.ToArray();
         this.Cost = cost;
     }
     public WaveCard(float cost, float startUpDelay, float endDelay, params EnemyPattern[] patterns)
     {
-        this.mulliganDelay = startUpDelay;
+        this.mulliganDelay = fullDelay = startUpDelay;
         this.postPlayDelay = endDelay;
         this.Patterns = patterns;
         this.Cost = cost;
     }
     public EnemyPattern[] Patterns;
+    public float fullDelay = 100;
     public float mulliganDelay = 100;
     /// <summary>
     /// Additional delay put on the next card drawn.
@@ -72,6 +73,49 @@ public class EnemyPattern
     public float BetweenEnemyDelay = 20f;
     public void Release()
     {
-        Wormhole.Spawn(RelativeLocationToPlayer ? Location + Player.Position : Location, EnemyPrefabs, BetweenEnemyDelay);
+        Vector2 spawnPos = ShiftLocationIfOutOfBounds(RelativeLocationToPlayer ? Location + Player.Position : Location);
+        Wormhole.Spawn(spawnPos, EnemyPrefabs, BetweenEnemyDelay);
+    }
+    public Vector2 ShiftLocationIfOutOfBounds(Vector2 stuff)
+    {
+        if ((stuff - Player.Position).magnitude < 25)
+        {
+            stuff -= Player.Position;
+            stuff = Player.Position + stuff.normalized * 25;
+        }
+        int att = 0;
+        Vector2 toPlayer = (Player.Position - stuff).normalized;
+        while (!InWorld(stuff))
+        {
+            stuff += toPlayer * 0.8f + Utils.RandCircle(1);
+            if (++att > 100)
+                return stuff;
+        }
+        return stuff;
+    }
+    public bool InWorld(Vector2 location)
+    {
+        bool hasWorldMap = DualGridTilemap.RealTileMap != null;
+        if(hasWorldMap)
+        {
+            int success = 0;
+            for(int i = -1; i <= 1; ++i)
+            {
+                for(int j = -1; j <= 1; ++j)
+                {
+                    if (DualGridTilemap.RealTileMap.HasTile(DualGridTilemap.RealTileMap.WorldToCell(location) + new Vector3Int(i, j)))
+                    {
+                        success++;
+                        if (success > 6)
+                            return true;
+                    }
+                }
+            }
+            return success > 6;
+        }
+        else
+        {
+            return WaveDirector.InsideBathtub(location);
+        }
     }
 }
