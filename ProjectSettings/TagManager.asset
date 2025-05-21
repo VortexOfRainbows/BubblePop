@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Tub
   - Power
+  - WorldObj
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Tub
   - Power
   - NPC
-  - 
+  - WorldObj
   - 
   - 
   - 
@@ -56,4 +57,7 @@ TagManager:
     locked: 0
   - name: Enemies
     uniqueID: 598801709
+    locked: 0
+  - name: Tree
+    uniqueID: 3503933805
     locked: 0
