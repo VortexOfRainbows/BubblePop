@@ -1,11 +1,12 @@
 using System.IO;
 using UnityEngine;
 
-public class Walker : Enemy
+public class Chicken : Enemy
 {
     private Vector2 targetedLocation;
     public float moveSpeed = 0.12f;
     public float inertiaMult = 0.96f;
+    public override float CostMultiplier => 1;
     private void Start()
     {
         Life = 7;

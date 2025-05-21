@@ -13,7 +13,7 @@ public static class EnemyID
         AllEnemyList.Add(prefab);
         return prefab;
     }
-    public static GameObject PortalPrefab = LoadNPC("Portal");
+    public static GameObject PortalPrefab = Resources.Load<GameObject>("NPCs/Portal");
     public static GameObject OldDuck = LoadNPC("Old/EnemyDuck");
     public static GameObject OldLeonard = LoadNPC("Old/EnemyLaserDuck");
     public static GameObject OldFlamingo = LoadNPC("Old/EnemyFlamingo");
@@ -43,8 +43,14 @@ public class Enemy : Entity
             ParticleManager.NewParticle(randPos, size * Utils.RandFloat(0.9f, 1.1f), Utils.RandCircle(1) * Utils.RandFloat(4, 12) + Vector2.up * Utils.RandFloat(3), 3, .75f, 1, c);
         }
     }
+    private bool JustSpawnedIn = true;
     public sealed override void OnFixedUpdate()
     {
+        if(JustSpawnedIn)
+        {
+            UpdateRendererColor(new Color(1, 0, 0, 0), 1);
+            JustSpawnedIn = false;
+        }
         if (SpecializedImmuneFrames.Count > 0)
         {
             for (int i = SpecializedImmuneFrames.Count - 1; i >= 0; --i)
@@ -93,7 +99,7 @@ public class Enemy : Entity
     /// <summary>
     /// The cost multiplier to spawn this specific enemy by the director
     /// </summary>
-    public float CostMultiplier { get; protected set; } = 1;
+    public virtual float CostMultiplier => 1;
     public sealed override void Kill()
     {
         OnKill();

@@ -10,20 +10,24 @@ public class WaveCard
     public WaveCard(float cost, float startUpDelay, float endDelay, List<EnemyPattern> patterns)
     {
         this.mulliganDelay = startUpDelay;
-        this.nextMulliganDelay = endDelay;
+        this.postPlayDelay = endDelay;
         this.Patterns = patterns.ToArray();
         this.Cost = cost;
     }
     public WaveCard(float cost, float startUpDelay, float endDelay, params EnemyPattern[] patterns)
     {
         this.mulliganDelay = startUpDelay;
-        this.nextMulliganDelay = endDelay;
+        this.postPlayDelay = endDelay;
         this.Patterns = patterns;
         this.Cost = cost;
     }
     public EnemyPattern[] Patterns;
     public float mulliganDelay = 100;
-    public float nextMulliganDelay = 100;
+    /// <summary>
+    /// Additional delay put on the next card drawn.
+    /// Currently unimplemented
+    /// </summary>
+    public float postPlayDelay = 100;
     private int patternNum = 0;
     private float counter = 0;
     public bool Resolved = false;
@@ -40,7 +44,7 @@ public class WaveCard
             }
             else
             {
-                if(counter > nextMulliganDelay + mulliganDelay)
+                if(counter > postPlayDelay + mulliganDelay)
                 {
                     Finish();
                 }

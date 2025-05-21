@@ -13,6 +13,7 @@ public class EnemyDuck : Enemy
     const int baseMovingTimer = 300;
     private float moveSpeed = 0.1f;
     protected float bobbingTimer = 0;
+    public override float CostMultiplier => 1;
     private void Start()
     {
         Life = 15;

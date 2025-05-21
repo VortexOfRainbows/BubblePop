@@ -136,7 +136,7 @@ public partial class Player : Entity
                 WaveDirector.Point += 100;
         }
         Instance = this;
-        WaveDirector.Update();
+        WaveDirector.FixedUpdate();
         UpdatePowerUps();
 
         bool dead = DeathKillTimer > 0;

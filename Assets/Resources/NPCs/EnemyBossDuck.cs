@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBossDuck : EnemyDuck
 {
     private float projectileSpeed = 3f;
     private int projectileTimer;
+    public override float CostMultiplier => 10;
     private void Start()
     {
         Life = 100;

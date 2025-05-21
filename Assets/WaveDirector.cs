@@ -1,7 +1,16 @@
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public static class WaveDirector
 {
+    #region legacy wave spawner
+    public static float PointsSpent = 0;
+    private static float PointTimer = 0;
+    private static float SoapTimer, DuckTimer, FlamingoTimer, MadLadTimer;
+    private static float minXBound = -30, maxXBound = 30, minYBound = -20, maxYBound = 20;
+    private static float bathBombTimer = 0;
+    private static bool RunOnce = true;
     public static int Point
     {
         get => UIManager.score;
@@ -16,61 +25,14 @@ public static class WaveDirector
     {
         return PointsSpent < Point && Utils.RandFloat(1.0f) < 0.25f;
     }
-    public static float PointsSpent = 0;
-    private static float PointTimer = 0;
-    private static float SoapTimer, DuckTimer, FlamingoTimer, MadLadTimer;
-    private static float minXBound = -30, maxXBound = 30, minYBound = -20, maxYBound = 20;
-    private static float bathBombTimer = 0;
-    private static bool RunOnce = true;
     public static void Restart()
     {
         PointsSpent = PointTimer = SoapTimer = DuckTimer = FlamingoTimer = MadLadTimer = bathBombTimer = 0;
         RunOnce = true;
     }
-    public static void Update()
-    {
-        if (!Main.GameStarted)
-            return;
-        if(RunOnce)
-        {
-            Vector2 spawnPos = new Vector2(Utils.RandFloat(24), 0).RotatedBy(Utils.RandFloat(6.284f));
-            PowerUp.Spawn<Choice>(spawnPos);
-            for (int i = 0; i < 10; i++)
-            {
-                TrySpawnEnemy(EnemyID.OldDuck);
-            }
-            RunOnce = false;
-        }
-        //if(Input.GetKeyDown(KeyCode.T))
-        //{
-        //    Point += 100;
-        //}
-        PointTimer += Time.deltaTime;
-        if (Player.Instance.IsDead)
-        {
-            PointTimer = 0;
-        }
-        if (PointTimer > 1)
-        {
-            Point++;
-            PointTimer--;
-        }
-        bathBombTimer -= Time.deltaTime;
-        if (bathBombTimer < 0)
-        {
-            SpawnBathBomb();
-            float minTime = GetSpawnTime(6, 1, 0, 5000);
-            float maxTime = GetSpawnTime(8, 2, 0, 10000);
-            bathBombTimer = Utils.RandFloat(minTime, maxTime); //5 to 8 seconds for another bath bomb
-        }
-        EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 0, 1000), EnemyID.OldDuck);
-        EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 80, 1100), EnemyID.OldSoap);
-        EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), EnemyID.OldFlamingo);
-        EnemySpawning(ref MadLadTimer, 1f, GetSpawnTime(90, 30, 1000, 10000), EnemyID.OldLeonard);
-    }
     private static float GetSpawnTime(float max, float min, float minimumThreshhold, float maxThreshold)
     {
-        if(Point < minimumThreshhold)
+        if (Point < minimumThreshhold)
         {
             return -1;
         }
@@ -80,9 +42,9 @@ public static class WaveDirector
     }
     private static void EnemySpawning(ref float SpawnTimer, float SpawnTimerSpeedScaling, float respawnTime, GameObject Enemy)
     {
-        if(SpawnTimer > respawnTime && respawnTime > 0)
+        if (SpawnTimer > respawnTime && respawnTime > 0)
         {
-            if(TrySpawnEnemy(Enemy))
+            if (TrySpawnEnemy(Enemy))
                 SpawnTimer = Utils.RandFloat(-0.5f, 0.5f) * respawnTime;
         }
         else
@@ -174,5 +136,123 @@ public static class WaveDirector
             }
         }
         Projectile.NewProjectile<BathBomb>(Player.Position + new Vector2(randPos.x, 30), Vector2.zero, Player.Position.y + randPos.y, GetBathBombType());
+    }
+    public static void LegacyUpdate()
+    {
+        if (RunOnce)
+        {
+            Vector2 spawnPos = new Vector2(Utils.RandFloat(24), 0).RotatedBy(Utils.RandFloat(6.284f));
+            PowerUp.Spawn<Choice>(spawnPos);
+            for (int i = 0; i < 10; i++)
+            {
+                TrySpawnEnemy(EnemyID.OldDuck);
+            }
+            RunOnce = false;
+        }
+        //if(Input.GetKeyDown(KeyCode.T))
+        //{
+        //    Point += 100;
+        //}
+        PointTimer += Time.deltaTime;
+        if (Player.Instance.IsDead)
+        {
+            PointTimer = 0;
+        }
+        if (PointTimer > 1)
+        {
+            Point++;
+            PointTimer--;
+        }
+        bathBombTimer -= Time.deltaTime;
+        if (bathBombTimer < 0)
+        {
+            SpawnBathBomb();
+            float minTime = GetSpawnTime(6, 1, 0, 5000);
+            float maxTime = GetSpawnTime(8, 2, 0, 10000);
+            bathBombTimer = Utils.RandFloat(minTime, maxTime); //5 to 8 seconds for another bath bomb
+        }
+        EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 0, 1000), EnemyID.OldDuck);
+        EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 80, 1100), EnemyID.OldSoap);
+        EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), EnemyID.OldFlamingo);
+        EnemySpawning(ref MadLadTimer, 1f, GetSpawnTime(90, 30, 1000, 10000), EnemyID.OldLeonard);
+    }
+    #endregion
+    public static void Update()
+    {
+        if (!Main.GameStarted)
+            return;
+    }
+    public static float Credits;
+    public static float PlayRecoil;
+    public static List<WaveCard> Deck = new List<WaveCard>();
+    public static List<WaveCard> Board = new List<WaveCard>();
+    public static void FixedUpdate()
+    {
+        if (!Main.GameStarted)
+            return;
+        if ((int)Credits % 100 == 0)
+        {
+            Debug.Log("Card Status: ");
+            foreach(WaveCard c in Deck)
+            {
+                Debug.Log(c);
+            }
+            Debug.Log("-------------");
+        }
+        DrawNewCards();
+        UpdateMulligans();
+        GatherCredits();
+        if (PlayRecoil <= 0)
+            TryPlayingCard();
+        else
+            PlayRecoil -= Time.fixedDeltaTime;
+        ProcessPlayedCards();
+    }
+    public static void GatherCredits()
+    {
+        Credits += 1.0f * Time.fixedDeltaTime;
+    }
+    public static void DrawNewCards()
+    {
+        while (Deck.Count < 5)
+        {
+            Deck.Add(WaveDeck.DrawCard());
+        }
+    }
+    public static void UpdateMulligans()
+    {
+        foreach(WaveCard card in Deck)
+        {
+            card.mulliganDelay -= Time.fixedDeltaTime;
+        }
+    }
+    public static void TryPlayingCard()
+    {
+        for(int i = Deck.Count - 1; i >= 0; --i)
+        {
+            WaveCard card = Deck[i];
+            bool canPlay = card.mulliganDelay <= 0;
+            bool canAfford = card.Cost <= Credits;
+            if(canPlay && canAfford)
+            {
+                Board.Add(card);
+                Deck.RemoveAt(i);
+                PlayRecoil += card.postPlayDelay;
+                Credits -= card.Cost;
+                return;
+            }
+        }
+    }
+    public static void ProcessPlayedCards()
+    {
+        for (int i = Board.Count - 1; i >= 0; --i)
+        {
+            WaveCard card = Board[i];
+            card.Resolve();
+            if(card.Resolved)
+            {
+                Board.RemoveAt(i);
+            }
+        }
     }
 }

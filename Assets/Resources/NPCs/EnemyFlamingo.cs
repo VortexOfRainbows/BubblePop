@@ -9,6 +9,7 @@ public class EnemyFlamingo : EnemyDuck
         Life = 10;
         MaxCoins = 15;
     }
+    public override float CostMultiplier => 3;
     public override void AI()
     {
         int soundChance = Random.Range(1, 500);

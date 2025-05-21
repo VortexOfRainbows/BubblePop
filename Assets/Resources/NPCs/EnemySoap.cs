@@ -10,6 +10,7 @@ public class EnemySoap : Enemy
     protected Vector2 targetedPlayerPosition = Vector2.zero;
     protected float timer = 0;
     protected float moveSpeed = 3f;
+    public override float CostMultiplier => 2;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();

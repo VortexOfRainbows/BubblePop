@@ -22,7 +22,7 @@ public class Wormhole : MonoBehaviour
     public List<GameObject> Rings;
     public GameObject Visual;
     public float ParticleEffectMult => ScaleMultiplier / 9f;
-    private float ScaleMultiplier = 6f;
+    private float ScaleMultiplier = 5.25f;
     public float Timer;
     public float Timer2;
     public float ScaleSpeed = 0;
@@ -35,14 +35,14 @@ public class Wormhole : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if (Input.GetMouseButton(1))
-        {
-            Timer = 0;
-            ScaleSpeed = 0;
-            Scale = 0;
-            Timer2 = 0;
-            Closing = false;
-        }
+        //if (Input.GetMouseButton(1))
+        //{
+        //    Timer = 0;
+        //    ScaleSpeed = 0;
+        //    Scale = 0;
+        //    Timer2 = 0;
+        //    Closing = false;
+        //}
         float p = Mathf.Min(2, Timer / 2f);
         if(p < 1 && !Closing)
         {

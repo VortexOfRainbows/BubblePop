@@ -58,9 +58,9 @@ public static class WaveDeck
     public static WaveCard DrawSingleSpawn(Vector2 location, GameObject enemy)
     {
         return new WaveCard(
-            20 + 80 * enemy.GetComponent<Enemy>().CostMultiplier,
-            Utils.RandFloat(200, 500), //Since single spawn cards are cheap, they have a long mulligan cooldown
-            Utils.RandFloat(100, 200), //The cards drawn after this card also get a longer mulligan
+            1 + 2 * enemy.GetComponent<Enemy>().CostMultiplier,
+            Utils.RandFloat(2, 5), //Since single spawn cards are cheap, they have a long mulligan cooldown
+            Utils.RandFloat(1, 2), //The cards drawn after this card also get a longer mulligan
             new EnemyPattern(location, 0, 0, enemy));
     }
 }
