@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class EventManager
+public static class WaveDirector
 {
     public static int Point
     {
@@ -37,7 +37,7 @@ public static class EventManager
             PowerUp.Spawn<Choice>(spawnPos);
             for (int i = 0; i < 10; i++)
             {
-                TrySpawnEnemy(Main.Ducky);
+                TrySpawnEnemy(EnemyID.OldDuck);
             }
             RunOnce = false;
         }
@@ -63,10 +63,10 @@ public static class EventManager
             float maxTime = GetSpawnTime(8, 2, 0, 10000);
             bathBombTimer = Utils.RandFloat(minTime, maxTime); //5 to 8 seconds for another bath bomb
         }
-        EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 0, 1000), Main.Ducky);
-        EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 80, 1100), Main.Soap);
-        EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), Main.flamingoFloatie);
-        EnemySpawning(ref MadLadTimer, 1f, GetSpawnTime(90, 30, 1000, 10000), Main.FinalDuck);
+        EnemySpawning(ref DuckTimer, 1f, GetSpawnTime(10, 5, 0, 1000), EnemyID.OldDuck);
+        EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 80, 1100), EnemyID.OldSoap);
+        EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), EnemyID.OldFlamingo);
+        EnemySpawning(ref MadLadTimer, 1f, GetSpawnTime(90, 30, 1000, 10000), EnemyID.OldLeonard);
     }
     private static float GetSpawnTime(float max, float min, float minimumThreshhold, float maxThreshold)
     {

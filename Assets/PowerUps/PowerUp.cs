@@ -87,7 +87,7 @@ public abstract class PowerUp
     {
         PowerUpObject obj = GameObject.Instantiate(PowerDefinitions.PowerUpObj, pos, Quaternion.identity);
         obj.Type = powerUpID;
-        EventManager.PointsSpent += 100;
+        WaveDirector.PointsSpent += 100;
         return obj.gameObject;
     }
     public static PowerUp Get(string powerTypeName)

@@ -57,16 +57,6 @@ public class Main : MonoBehaviour
     public Sprite BubbleParticle;
     public static Sprite SquareBubble => Instance.SqrParticle;
     public Sprite SqrParticle;
-    public static GameObject Ducky => Instance.Duck;
-    public GameObject Duck;
-    public static GameObject Soap => Instance.SoapNPC;
-    public GameObject SoapNPC;
-    public static GameObject TinySoap => Instance.SoapTinyNPC;
-    public GameObject SoapTinyNPC;
-    public static GameObject flamingoFloatie => Instance.flamingo;
-    public GameObject flamingo;
-    public static GameObject FinalDuck => Instance.RadDuck;
-    public GameObject RadDuck;
     public static Sprite[] bathBombShards => Instance.bathbombShards;
     public Sprite[] bathbombShards;
     public static Sprite BubblePower1 => Instance.PowerBubble1;
@@ -79,5 +69,4 @@ public class Main : MonoBehaviour
     public Sprite LaserProj;
     public static Sprite Sparkle => Instance.sparkle;
     public Sprite sparkle;
-
 }

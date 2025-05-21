@@ -39,7 +39,7 @@ public partial class Player : Entity
     public void Start()
     {
         PowerInit();
-        EventManager.Restart();
+        WaveDirector.Restart();
         MainCamera.orthographicSize = 12;
         Instance = this;
         DeathKillTimer = 0;
@@ -133,10 +133,10 @@ public partial class Player : Entity
             if (Input.GetKeyDown(KeyCode.C))
                 CoinManager.SpawnCoin(transform.position, 25);
             if (Input.GetKeyDown(KeyCode.Z))
-                EventManager.Point += 100;
+                WaveDirector.Point += 100;
         }
         Instance = this;
-        EventManager.Update();
+        WaveDirector.Update();
         UpdatePowerUps();
 
         bool dead = DeathKillTimer > 0;

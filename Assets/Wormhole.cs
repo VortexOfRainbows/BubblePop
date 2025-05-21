@@ -1,10 +1,24 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering.Universal;
 
 public class Wormhole : MonoBehaviour
 {
+    public static GameObject Prefab = Resources.Load<GameObject>("NPCs/Portal");
+    public static Wormhole Spawn(Vector2 location, GameObject[] EnemyPrefabs, float spawnDelay = 20)
+    {
+        Wormhole w = Instantiate(Prefab, location, Quaternion.identity).GetComponent<Wormhole>();
+        w.QueuedEnemies = EnemyPrefabs;
+        w.SpawnDelay = spawnDelay;
+        return w;
+    }
+
+    public GameObject[] QueuedEnemies;
+    public int enemyNum = 0;
+    public float SpawnDelay = 0;
+
     public Light2D Light;
     public List<GameObject> Rings;
     public GameObject Visual;
@@ -60,8 +74,17 @@ public class Wormhole : MonoBehaviour
                     Vector2 circular = new Vector2(10 + Utils.RandFloat(10), 0).RotatedBy(Mathf.PI * (i / 5f * 2) + Utils.RandFloat(Mathf.PI * 0.4f)) * ParticleEffectMult;
                     ParticleManager.NewParticle(transform.position, Utils.RandFloat(1, 3), circular, 1 + p, Utils.RandFloat(0.5f, 1.0f), 3, Color.red * 1.5f);
                 }
-                GameObject.Instantiate(Main.Ducky, transform.position, Quaternion.identity);
-                Closing = true;
+                if(enemyNum < QueuedEnemies.Length)
+                {
+                    Instantiate(QueuedEnemies[enemyNum++], transform.position, Quaternion.identity);
+                }
+                if (enemyNum >= QueuedEnemies.Length)
+                {
+                    Timer2 = 0;
+                    Closing = true;
+                }
+                else
+                    Timer2 -= SpawnDelay;
             }
         }
 

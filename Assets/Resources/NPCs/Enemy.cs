@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public static class EnemyID
+{
+    public static GameObject OldDuck = Resources.Load<GameObject>("NPCs/Old/EnemyDuck");
+    public static GameObject OldLeonard = Resources.Load<GameObject>("NPCs/Old/EnemyLaserDuck");
+    public static GameObject OldFlamingo = Resources.Load<GameObject>("NPCs/Old/EnemyFlamingo");
+    public static GameObject OldSoap = Resources.Load<GameObject>("NPCs/Old/EnemySoap");
+    public static GameObject OldSmallSoap = Resources.Load<GameObject>("NPCs/Old/EnemySoapTiny");
+}
+
 public class Enemy : Entity
 {
     public class ImmunityData
@@ -82,8 +91,8 @@ public class Enemy : Entity
         }
         CoinManager.SpawnCoin(transform.position, (int)(MinCoins + MaxCoins * rand));
         bool LuckyDrop = Utils.RandFloat(1) < PowerDropChance;
-        EventManager.Point += (int)MaxCoins;
-        if (EventManager.CanSpawnPower() || LuckyDrop)
+        WaveDirector.Point += (int)MaxCoins;
+        if (WaveDirector.CanSpawnPower() || LuckyDrop)
             PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : 100);
         Destroy(gameObject);
     }
