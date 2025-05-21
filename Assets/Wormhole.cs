@@ -6,10 +6,9 @@ using UnityEngine.Rendering.Universal;
 
 public class Wormhole : MonoBehaviour
 {
-    public static GameObject Prefab = Resources.Load<GameObject>("NPCs/Portal");
     public static Wormhole Spawn(Vector2 location, GameObject[] EnemyPrefabs, float spawnDelay = 20)
     {
-        Wormhole w = Instantiate(Prefab, location, Quaternion.identity).GetComponent<Wormhole>();
+        Wormhole w = Instantiate(EnemyID.PortalPrefab, location, Quaternion.identity).GetComponent<Wormhole>();
         w.QueuedEnemies = EnemyPrefabs;
         w.SpawnDelay = spawnDelay;
         return w;

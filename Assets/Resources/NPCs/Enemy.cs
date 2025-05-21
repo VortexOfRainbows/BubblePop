@@ -5,11 +5,20 @@ using UnityEngine;
 
 public static class EnemyID
 {
-    public static GameObject OldDuck = Resources.Load<GameObject>("NPCs/Old/EnemyDuck");
-    public static GameObject OldLeonard = Resources.Load<GameObject>("NPCs/Old/EnemyLaserDuck");
-    public static GameObject OldFlamingo = Resources.Load<GameObject>("NPCs/Old/EnemyFlamingo");
-    public static GameObject OldSoap = Resources.Load<GameObject>("NPCs/Old/EnemySoap");
-    public static GameObject OldSmallSoap = Resources.Load<GameObject>("NPCs/Old/EnemySoapTiny");
+    public static List<GameObject> AllEnemyList = new();
+    public static int Max => AllEnemyList.Count;
+    public static GameObject LoadNPC(string str)
+    {
+        GameObject prefab = Resources.Load<GameObject>($"NPCs/{str}");
+        AllEnemyList.Add(prefab);
+        return prefab;
+    }
+    public static GameObject PortalPrefab = LoadNPC("Portal");
+    public static GameObject OldDuck = LoadNPC("Old/EnemyDuck");
+    public static GameObject OldLeonard = LoadNPC("Old/EnemyLaserDuck");
+    public static GameObject OldFlamingo = LoadNPC("Old/EnemyFlamingo");
+    public static GameObject OldSoap = LoadNPC("Old/EnemySoap");
+    public static GameObject OldSmallSoap = LoadNPC("Old/EnemySoapTiny");
 }
 
 public class Enemy : Entity
@@ -81,6 +90,10 @@ public class Enemy : Entity
     protected float MaxCoins = 0;
     protected float MinCoins = 1;
     protected int CoinRandomizationAggressiveness = 3;
+    /// <summary>
+    /// The cost multiplier to spawn this specific enemy by the director
+    /// </summary>
+    public float CostMultiplier { get; protected set; } = 1;
     public sealed override void Kill()
     {
         OnKill();
