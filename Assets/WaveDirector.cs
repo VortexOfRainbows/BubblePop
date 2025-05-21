@@ -153,16 +153,6 @@ public static class WaveDirector
         //{
         //    Point += 100;
         //}
-        PointTimer += Time.deltaTime;
-        if (Player.Instance.IsDead)
-        {
-            PointTimer = 0;
-        }
-        if (PointTimer > 1)
-        {
-            Point++;
-            PointTimer--;
-        }
         bathBombTimer -= Time.deltaTime;
         if (bathBombTimer < 0)
         {
@@ -175,6 +165,19 @@ public static class WaveDirector
         EnemySpawning(ref SoapTimer, 1f, GetSpawnTime(20, 7, 80, 1100), EnemyID.OldSoap);
         EnemySpawning(ref FlamingoTimer, 1f, GetSpawnTime(30, 20, 300, 1800), EnemyID.OldFlamingo);
         EnemySpawning(ref MadLadTimer, 1f, GetSpawnTime(90, 30, 1000, 10000), EnemyID.OldLeonard);
+    }
+    public static void PointUpdate()
+    {
+        PointTimer += Time.deltaTime;
+        if (Player.Instance.IsDead)
+        {
+            PointTimer = 0;
+        }
+        if (PointTimer > 1)
+        {
+            Point++;
+            PointTimer--;
+        }
     }
     #endregion
     public static void Update()
@@ -192,6 +195,8 @@ public static class WaveDirector
     public static float WaveMult = 1.0f;
     public static void Reset()
     {
+        PointsSpent = 0;
+        PointTimer = 0;   
         WaveNum = 1;
         WaveMult = 1.0f;
         CardsPlayed = 0;
@@ -206,6 +211,7 @@ public static class WaveDirector
             Reset();
             return;
         }
+        PointUpdate();
         //if ((int)Credits % 100 == 0)
         //{
         //    Debug.Log("Card Status: ");

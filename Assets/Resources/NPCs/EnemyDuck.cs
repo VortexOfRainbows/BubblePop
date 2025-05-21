@@ -60,7 +60,7 @@ public class EnemyDuck : Enemy
         if (this is EnemyFlamingo)
             bobSpeed = 100f;
         float sin = Mathf.Sin(bobbingTimer * Mathf.PI / bobSpeed);
-        transform.eulerAngles = new Vector3(0, 0, sin * 15);
+        Visual.transform.eulerAngles = new Vector3(0, 0, sin * 15);
     }
     public override void AI()
     {

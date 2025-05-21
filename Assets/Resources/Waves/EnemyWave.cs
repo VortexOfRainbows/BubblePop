@@ -78,11 +78,11 @@ public class EnemyPattern
     }
     public Vector2 ShiftLocationIfOutOfBounds(Vector2 stuff)
     {
-        //if ((stuff - Player.Position).magnitude < 25)
-        //{
-        //    stuff -= Player.Position;
-        //    stuff = Player.Position + stuff.normalized * 25;
-        //}
+        if ((stuff - Player.Position).magnitude < 10)
+        {
+            stuff -= Player.Position;
+            stuff = Player.Position + stuff.normalized * 10;
+        }
         int att = 0;
         Vector2 toPlayer = (Player.Position - stuff).normalized;
         while (!InWorld(stuff))
