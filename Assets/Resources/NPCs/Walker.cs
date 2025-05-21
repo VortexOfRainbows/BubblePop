@@ -27,6 +27,9 @@ public class Walker : Enemy
         RB.velocity *= inertiaMult;
         if (Mathf.Abs(RB.velocity.x) > 0.1f)
             UpdateDirection(RB.velocity.x);
+        float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
+        tilt += RB.velocity.y * 2.0f * Visual.transform.localScale.x;
+        Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
     }
     public override void AI()
     {

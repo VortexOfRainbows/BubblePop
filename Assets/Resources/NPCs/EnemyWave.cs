@@ -6,3 +6,13 @@ public class EnemyWave
 {
 
 }
+
+public class SubWave : EnemyWave
+{ 
+
+}
+
+public class EnemyPattern
+{
+
+}
