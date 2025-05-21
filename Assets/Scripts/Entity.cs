@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    public GameObject Visual;
     //public static int NextUniqueID = 0;
     //public int UniqueID = NextUniqueID++;
     public static Entity FindClosest(Vector3 position, float searchDistance, out Vector2 norm, string tag = "Enemy", bool requireNonImmune = true, params Entity[] ignore)
@@ -39,7 +40,6 @@ public class Entity : MonoBehaviour
         norm = norm.normalized;
         return best == -1 ? null : e[best];
     }
-    public SpriteRenderer baseRenderer;
     public float UniversalImmuneFrames = 0;
     public int Life = 10;
     public float DamageTaken = 0;
@@ -93,6 +93,7 @@ public class Entity : MonoBehaviour
     {
         UniversalImmuneFrames--;
         OnFixedUpdate();
+        Animate();
     }
     public virtual void OnFixedUpdate()
     {
@@ -102,26 +103,33 @@ public class Entity : MonoBehaviour
     {
         if (this is not Player)
         {
-            if (baseRenderer == null)
-                baseRenderer = GetComponent<SpriteRenderer>();
             if (DamageTaken > 0)
             {
-                baseRenderer.color = Color.Lerp(baseRenderer.color, Color.Lerp(Color.white, Color.red, 0.8f), 0.05f + DamageTaken / 500f);
+                UpdateRendererColor(Color.Lerp(Color.white, Color.red, 0.8f), 0.05f + DamageTaken / 500f); 
                 DamageTaken -= 20f * Time.deltaTime;
             }
             else
             {
                 DamageTaken = 0;
-                baseRenderer.color = Color.Lerp(baseRenderer.color, Color.white, 0.15f);
+                UpdateRendererColor(Color.white, 0.15f);
             }
         }
-        if (Utils.RandFloat(1) < 0.5f && lastPos != (Vector2)transform.position)
-        {
-            Vector2 toLastPos = lastPos - (Vector2)transform.position;
-            if(toLastPos.sqrMagnitude > 0.002f)
-                ParticleManager.NewParticle(transform.position + new Vector3(Utils.RandFloat(-transform.lossyScale.x, transform.lossyScale.x) * 1.1f, -transform.lossyScale.y * 0.7f), Utils.RandFloat(0.35f, 0.45f), toLastPos * Utils.RandFloat(0.9f, 1.1f), .5f, Utils.RandFloat(0.4f, 0.5f), 0, ParticleManager.BathColor);
-        }
+        //if (Utils.RandFloat(1) < 0.5f && lastPos != (Vector2)transform.position)
+        //{
+        //    Vector2 toLastPos = lastPos - (Vector2)transform.position;
+        //    if(toLastPos.sqrMagnitude > 0.002f)
+        //        ParticleManager.NewParticle(transform.position + new Vector3(Utils.RandFloat(-transform.lossyScale.x, transform.lossyScale.x) * 1.1f, -transform.lossyScale.y * 0.7f), Utils.RandFloat(0.35f, 0.45f), toLastPos * Utils.RandFloat(0.9f, 1.1f), .5f, Utils.RandFloat(0.4f, 0.5f), 0, ParticleManager.BathColor);
+        //}
         lastPos = transform.position;
+    }
+    private SpriteRenderer[] childrenRenderers = null;
+    public void UpdateRendererColor(Color c, float lerp)
+    {
+        childrenRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer r in childrenRenderers)
+        {
+            r.color = Color.Lerp(r.color, c, lerp);
+        }
     }
     public virtual void Kill()
     {
@@ -130,5 +138,17 @@ public class Entity : MonoBehaviour
     public float Distance(GameObject other)
     {
         return (other.transform.position - transform.position).magnitude;
+    }
+    public Rigidbody2D RB;
+    //public float Anim = 0;
+    protected List<Animator> ChildAnimators = new();
+    public void AddAnim(Animator a)
+    {
+        ChildAnimators.Add(a);
+    }
+    public void Animate()
+    {
+        foreach (Animator a in ChildAnimators)
+            a.UpdateAnimation();
     }
 }

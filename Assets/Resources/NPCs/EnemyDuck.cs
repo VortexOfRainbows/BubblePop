@@ -16,7 +16,7 @@ public class EnemyDuck : Enemy
     private void Start()
     {
         Life = 15;
-        PointWorth = 20;
+        MaxCoins = 20;
     }
 
     // Update is called once per frame

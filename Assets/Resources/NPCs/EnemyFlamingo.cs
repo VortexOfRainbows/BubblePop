@@ -7,7 +7,7 @@ public class EnemyFlamingo : EnemyDuck
     private void Start()
     {
         Life = 10;
-        PointWorth = 15;
+        MaxCoins = 15;
     }
     public override void AI()
     {

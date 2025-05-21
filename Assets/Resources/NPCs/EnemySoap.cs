@@ -14,7 +14,7 @@ public class EnemySoap : Enemy
     {
         rb = GetComponent<Rigidbody2D>();
         Life = 5;
-        PointWorth = 5;
+        MaxCoins = 5;
     }
     // Update is called once per frame
     public override void AI()

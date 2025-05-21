@@ -9,7 +9,7 @@ public class EnemyBossDuck : EnemyDuck
     private void Start()
     {
         Life = 100;
-        PointWorth = 50;
+        MaxCoins = 50;
     }
     public override void AI()
     {

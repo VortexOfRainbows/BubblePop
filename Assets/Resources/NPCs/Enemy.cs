@@ -69,13 +69,20 @@ public class Enemy : Entity
         }
     }
     public virtual float PowerDropChance => 0.04f;
-    public float PointWorth = 0;
+    protected float MaxCoins = 0;
+    protected float MinCoins = 1;
+    protected int CoinRandomizationAggressiveness = 3;
     public sealed override void Kill()
     {
         OnKill();
-        CoinManager.SpawnCoin(transform.position, (int)(1 + 30 * Utils.RandFloat(1) * Utils.RandFloat(1) * Utils.RandFloat(1) * Utils.RandFloat(1)));
+        float rand = 1;
+        for(int i = 0; i < CoinRandomizationAggressiveness; ++i)
+        {
+            rand *= Utils.RandFloat();
+        }
+        CoinManager.SpawnCoin(transform.position, (int)(MinCoins + MaxCoins * rand));
         bool LuckyDrop = Utils.RandFloat(1) < PowerDropChance;
-        EventManager.Point += (int)PointWorth;
+        EventManager.Point += (int)MaxCoins;
         if (EventManager.CanSpawnPower() || LuckyDrop)
             PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : 100);
         Destroy(gameObject);

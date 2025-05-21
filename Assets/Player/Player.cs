@@ -29,7 +29,6 @@ public partial class Player : Entity
     public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
     [SerializeField]
     private Camera MainCamera;
-    public GameObject Visual;
     private readonly float speed = 2.5f;
     private readonly float MovementDeacceleration = 0.9f;
     public float MaxSpeed = 6f;

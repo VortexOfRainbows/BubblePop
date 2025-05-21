@@ -171,10 +171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c28f90f22ef824a8f1f1666e1b94b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseRenderer: {fileID: 4458705742293419194}
-  PointWorth: 0
-  IFrame: 0
+  Visual: {fileID: 623309373829601734}
+  UniversalImmuneFrames: 0
   Life: 10
   DamageTaken: 0
   lastPos: {x: 0, y: 0}
+  PointWorth: 0
   sRender: {fileID: 4458705742293419194}
