@@ -195,14 +195,13 @@ public static class WaveDirector
     public static float WaveMult = 1.0f;
     public static void Reset()
     {
-        PointsSpent = 0;
-        PointTimer = 0;   
         WaveNum = 1;
         WaveMult = 1.0f;
         CardsPlayed = 0;
         CreditsSpent = 0;
         Deck.Clear();
         Board.Clear();
+        Restart();
     }
     public static void FixedUpdate()
     {
@@ -221,7 +220,7 @@ public static class WaveDirector
         //    }
         //    Debug.Log("-------------");
         //}
-        if (CardsPlayed < 10 || CreditsSpent < (40 * WaveMult))
+        if (CardsPlayed < 10 || CreditsSpent < ((50 + WaveNum) * WaveMult))
         {
             DrawNewCards();
             UpdateMulligans();
@@ -240,20 +239,19 @@ public static class WaveDirector
             if(WaveNum == 2)
             {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
-                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
+                //Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
             }
             if (WaveNum == 3)
             {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldFlamingo, 10, 2, 0);
-                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldFlamingo, 10, 2, 0);
+                //Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldFlamingo, 10, 2, 0);
             }
             if (WaveNum == 4)
             {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
                 Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
-                Deck[MaxCards - 3] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
             }
-            if (WaveNum == 5)
+            if (WaveNum == 6)
             {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 20, 5, 0);
             }
@@ -268,13 +266,12 @@ public static class WaveDirector
     }
     public static void GatherCredits()
     {
-        Credits += 1.2f * Time.fixedDeltaTime * WaveMult;
+        Credits += 1.1f * Time.fixedDeltaTime * WaveMult;
     }
     public static void DrawNewCards()
     {
         if(Deck.Count < MaxCards - 2)
         {
-            Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldDuck, 0, 1, 0));
             Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldDuck, 0, 1, 0));
             Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldDuck, 0, 1, 0));
         }
