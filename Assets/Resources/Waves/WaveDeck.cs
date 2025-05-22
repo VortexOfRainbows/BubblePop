@@ -12,11 +12,11 @@ public static class WaveDeck
         {
             EnemyID.OldDuck
         };
-        if (WaveDirector.WaveNum > 1 || WaveDirector.CardsPlayed > 4)
+        if (WaveDirector.WaveNum > 1 || WaveDirector.CardsPlayed > 5)
             possibleEnemies.Add(EnemyID.OldSoap);
-        if (WaveDirector.WaveNum > 1 && WaveDirector.CardsPlayed > 2)
+        if (WaveDirector.WaveNum > 1)
             possibleEnemies.Add(EnemyID.Chicken);
-        if (WaveDirector.WaveNum > 2 || WaveDirector.CardsPlayed > 8)
+        if (WaveDirector.WaveNum > 2)
             possibleEnemies.Add(EnemyID.OldFlamingo);
         if (WaveDirector.WaveNum > 7 && WaveDirector.CardsPlayed > 2)
             possibleEnemies.Add(EnemyID.OldLeonard);

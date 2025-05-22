@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-
 public class Wormhole : MonoBehaviour
 {
     public static Wormhole Spawn(Vector2 location, GameObject[] EnemyPrefabs, float spawnDelay = 20)
