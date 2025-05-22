@@ -162,7 +162,7 @@ public class Gachapon : Body
             while(player.abilityTimer < AbilityCD * 0.9f)
             {
                 if (RemoveChip())
-                    player.abilityTimer += AbilityCD * 0.15f * ((player.AbilityRecoverySpeed - 1) * 0.25f + Mathf.Sqrt(player.AbilityRecoverySpeed));
+                    player.abilityTimer += AbilityCD * 0.125f * ((player.AbilityRecoverySpeed - 1) * 0.2f + Mathf.Sqrt(player.AbilityRecoverySpeed));
                 else
                     break;
             }

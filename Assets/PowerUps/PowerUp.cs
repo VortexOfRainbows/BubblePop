@@ -88,6 +88,7 @@ public abstract class PowerUp
         PowerUpObject obj = GameObject.Instantiate(PowerDefinitions.PowerUpObj, pos, Quaternion.identity);
         obj.Type = powerUpID;
         WaveDirector.PointsSpent += pointCost;
+        WaveDirector.PityPowersSpawned += pointCost / 100f;
         return obj.gameObject;
     }
     public static PowerUp Get(string powerTypeName)

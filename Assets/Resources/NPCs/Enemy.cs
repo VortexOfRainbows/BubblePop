@@ -113,7 +113,7 @@ public class Enemy : Entity
         bool LuckyDrop = Utils.RandFloat(1) < PowerDropChance;
         WaveDirector.Point += (int)MaxCoins;
         if (WaveDirector.CanSpawnPower() || LuckyDrop)
-            PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : 100);
+            PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 5));
         Destroy(gameObject);
     }
     public virtual void AI()

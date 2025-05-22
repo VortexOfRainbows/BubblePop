@@ -229,18 +229,18 @@ public class FlamingoFeather : Projectile
         timer++;
         if (timer < 300)
         {
-            RB.velocity += RB.velocity.normalized * 0.005f;
-            RB.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.07f;
+            RB.velocity += RB.velocity.normalized * 0.003f;
+            RB.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.06f;
         }
-        if (timer > 610)
+        if (timer > 510)
         {
-            float alphaOut = 1 - (timer - 610) / 90f;
+            float alphaOut = 1 - (timer - 510) / 90f;
             SpriteRenderer.color = new Color(SpriteRenderer.color.r, SpriteRenderer.color.g, SpriteRenderer.color.b, alphaOut);
             SpriteRendererGlow.color = new Color(SpriteRendererGlow.color.r, SpriteRendererGlow.color.g, SpriteRendererGlow.color.b) * alphaOut;
-            if (timer > 650)
+            if (timer > 550)
                 Hostile = false;
         }
-        if (timer > 700)
+        if (timer > 600)
         {
             Kill();
         }

@@ -39,7 +39,7 @@ public partial class Player : Entity
     public void Start()
     {
         PowerInit();
-        WaveDirector.Restart();
+        WaveDirector.Reset();
         MainCamera.orthographicSize = 12;
         Instance = this;
         DeathKillTimer = 0;

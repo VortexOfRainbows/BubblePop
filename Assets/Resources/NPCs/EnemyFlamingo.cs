@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyFlamingo : EnemyDuck
 {
     private float projectileSpeed = 3f;
-    private int projectileTimer;
+    private int projectileTimer = 240;
     private void Start()
     {
         Life = 10;

@@ -22,30 +22,31 @@ public class WaveCard
         this.Cost = cost;
     }
     public EnemyPattern[] Patterns;
-    public float fullDelay = 100;
-    public float mulliganDelay = 100;
+    public float fullDelay = 1;
+    public float mulliganDelay = 1;
     /// <summary>
     /// Additional delay put on the next card drawn.
     /// Currently unimplemented
     /// </summary>
-    public float postPlayDelay = 100;
+    public float postPlayDelay = 1;
     private int patternNum = 0;
-    private float counter = 0;
     public bool Resolved = false;
     public float Cost = 100;
+    public float resolveCounter = 0;
     public void Resolve()
     {
-        if(++counter > mulliganDelay)
+        resolveCounter += Time.fixedDeltaTime;
+        if (resolveCounter > 0)
         {
             if (patternNum < Patterns.Length)
             {
                 Patterns[patternNum].Release();
-                counter -= Patterns[patternNum].EndDelay;
+                resolveCounter -= Patterns[patternNum].EndDelay;
                 ++patternNum;
             }
             else
             {
-                if(counter > postPlayDelay + mulliganDelay)
+                if(resolveCounter > postPlayDelay)
                 {
                     Finish();
                 }
@@ -69,25 +70,27 @@ public class EnemyPattern
     public bool RelativeLocationToPlayer = true;
     public GameObject[] EnemyPrefabs;
     public Vector2 Location;
-    public float EndDelay = 50f;
-    public float BetweenEnemyDelay = 20f;
+    public float EndDelay = 0.50f;
+    public float BetweenEnemyDelay = 0.2f;
     public void Release()
     {
         Vector2 spawnPos = ShiftLocationIfOutOfBounds(RelativeLocationToPlayer ? Location + Player.Position : Location);
-        Wormhole.Spawn(spawnPos, EnemyPrefabs, BetweenEnemyDelay);
+        Wormhole.Spawn(spawnPos, EnemyPrefabs, BetweenEnemyDelay / Time.fixedDeltaTime);
     }
     public Vector2 ShiftLocationIfOutOfBounds(Vector2 stuff)
     {
-        if ((stuff - Player.Position).magnitude < 12)
+        Vector2 toPlayer = Player.Position - stuff;
+        float dist = toPlayer.magnitude;
+        toPlayer = toPlayer.normalized;
+        if (dist < 12)
         {
-            stuff -= Player.Position;
-            stuff = Player.Position + stuff.normalized * 12;
+            stuff = Player.Position - toPlayer * 12;
         }
         int att = 0;
-        Vector2 toPlayer = (Player.Position - stuff).normalized;
         while (!InWorld(stuff))
         {
-            stuff += toPlayer * 1f + Utils.RandCircle(1.5f);
+            toPlayer = (Player.Position - stuff).normalized;
+            stuff += toPlayer * 1.25f + Utils.RandCircle(2f);
             if (++att > 200)
                 return stuff;
         }
@@ -98,20 +101,17 @@ public class EnemyPattern
         bool hasWorldMap = DualGridTilemap.Instance != null && DualGridTilemap.RealTileMap != null;
         if(hasWorldMap)
         {
-            int success = 0;
             for(int i = -1; i <= 1; ++i)
             {
                 for(int j = -1; j <= 1; ++j)
                 {
-                    if (DualGridTilemap.RealTileMap.HasTile(DualGridTilemap.RealTileMap.WorldToCell(location) + new Vector3Int(i, j)))
+                    if (!DualGridTilemap.RealTileMap.HasTile(DualGridTilemap.RealTileMap.WorldToCell(location) + new Vector3Int(i, j)))
                     {
-                        success++;
-                        if (success > 7)
-                            return true;
+                        return false;
                     }
                 }
             }
-            return success > 6;
+            return true;
         }
         else
         {

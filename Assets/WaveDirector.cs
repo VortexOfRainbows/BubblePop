@@ -25,11 +25,6 @@ public static class WaveDirector
     {
         return PointsSpent < Point && Utils.RandFloat(1.0f) < 0.25f;
     }
-    public static void Restart()
-    {
-        PointsSpent = PointTimer = SoapTimer = DuckTimer = FlamingoTimer = MadLadTimer = bathBombTimer = 0;
-        RunOnce = true;
-    }
     private static float GetSpawnTime(float max, float min, float minimumThreshhold, float maxThreshold)
     {
         if (Point < minimumThreshhold)
@@ -185,6 +180,7 @@ public static class WaveDirector
         if (!Main.GameStarted)
             return;
     }
+    public static float PityPowersSpawned = 0;
     public static int MaxCards = 6;
     public static float Credits = 0, CreditsSpent = 0;
     public static float PlayRecoil;
@@ -201,7 +197,8 @@ public static class WaveDirector
         CreditsSpent = 0;
         Deck.Clear();
         Board.Clear();
-        Restart();
+        PointsSpent = PointTimer = PityPowersSpawned = SoapTimer = DuckTimer = FlamingoTimer = MadLadTimer = bathBombTimer = 0;
+        RunOnce = true;
     }
     public static void FixedUpdate()
     {
@@ -239,6 +236,7 @@ public static class WaveDirector
             if(WaveNum == 2)
             {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
+                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(new EnemyPattern(Vector2.zero, 0.5f, 0f, EnemyID.OldDuck), 2, 5, 0).ToSwarmCircle(3, 10, 0);
                 //Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
             }
             if (WaveNum == 3)
@@ -251,13 +249,22 @@ public static class WaveDirector
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
                 Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
             }
+            if (WaveNum % 5 == 0)
+            {
+                Deck[MaxCards - 2] = WaveDeck.DrawMultiSpawn(WaveDeck.RandomEdgeLocation(), 6, 7, 0, 0.75f, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken);
+                if(WaveNum > 10)
+                {
+                    Deck[MaxCards - 2].Patterns[0].Location = Vector2.zero;
+                    Deck[MaxCards - 2] = Deck[MaxCards - 2].ToSwarmCircle(3, 5, 0, 0.5f);
+                }
+            }
             if (WaveNum == 6)
             {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 20, 5, 0);
             }
-            if (WaveNum >= 10)
+            if (WaveNum >= 10 && WaveNum % 3 == 0)
             {
-                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 10, 5, 0);
+                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 15, 5, 0);
             }
         }
         ProcessPlayedCards();
@@ -266,7 +273,7 @@ public static class WaveDirector
     }
     public static void GatherCredits()
     {
-        Credits += 1.1f * Time.fixedDeltaTime * WaveMult;
+        Credits += 1.15f * Time.fixedDeltaTime * WaveMult;
     }
     public static void DrawNewCards()
     {
@@ -274,6 +281,7 @@ public static class WaveDirector
         {
             Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldDuck, 0, 1, 0));
             Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldDuck, 0, 1, 0));
+            //Deck.Add(WaveDeck.DrawSingleSpawn(new EnemyPattern(Vector2.zero, 0.5f, 0f, EnemyID.OldDuck), 2, 5, 0).ToSwarmCircle(3, 10, 0));
         }
         while (Deck.Count < MaxCards)
         {
@@ -288,7 +296,7 @@ public static class WaveDirector
     public static void MulliganRandomCard()
     {
         int rand = Utils.RandInt(Deck.Count);
-        if (Deck[rand].Cost > 0)
+        if (Deck[rand].Cost > 0 && Deck[rand].mulliganDelay <= 0)
             Deck[rand] = WaveDeck.DrawCard();
     }
     public static void TryPlayingCard()
