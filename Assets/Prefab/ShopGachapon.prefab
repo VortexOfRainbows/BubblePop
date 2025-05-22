@@ -142,6 +142,7 @@ MonoBehaviour:
   Life: 10
   DamageTaken: 0
   lastPos: {x: 0, y: 0}
+  RB: {fileID: 0}
   p: {fileID: 7710747734503710076}
 --- !u!212 &4870930668747883590
 SpriteRenderer:
@@ -766,7 +767,7 @@ Transform:
   m_GameObject: {fileID: 8880733734445247598}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: 0}
+  m_LocalPosition: {x: 0, y: -6, z: 0}
   m_LocalScale: {x: 1, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
