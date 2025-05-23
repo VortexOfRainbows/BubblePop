@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
         score = 0;
         highscore = PlayerData.GetInt("Highscore");
         StartingScreen = true;
-        Main.GameStarted = false;
+        Main.WavesUnleashed = false;
     }
 
     // Update is called once per frame
@@ -52,10 +52,10 @@ public class UIManager : MonoBehaviour
         waveText.text = "Wave: " + Mathf.FloorToInt(WaveDirector.WaveNum);
         deadHighscoreText.text = highscoreText.text;
 
-        int money = Main.GameStarted ? CoinManager.Current : CoinManager.Savings;
+        int money = Main.WavesUnleashed ? CoinManager.Current : CoinManager.Savings;
         moneyText.text = $"${money}";
-        CurrencyIcon.SetActive(Main.GameStarted);
-        SavingsIcon.SetActive(!Main.GameStarted);
+        CurrencyIcon.SetActive(Main.WavesUnleashed);
+        SavingsIcon.SetActive(!Main.WavesUnleashed);
 
         if (score > highscore)
         {

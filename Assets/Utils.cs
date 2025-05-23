@@ -122,4 +122,8 @@ public static class Utils
                 return true;
         return false;
     }
+    public static Vector3 Lerp(this Vector3 vector3, Vector3 other, float amt)
+    {
+        return vector3 = Vector3.Lerp(vector3, other, amt);
+    }
 }

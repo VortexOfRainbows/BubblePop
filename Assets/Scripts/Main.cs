@@ -2,8 +2,16 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
+    public static bool PlayerNearPylon => PrevPylon != null;
+    public static Pylon CurrentPylon = null;
+    private static Pylon PrevPylon = null;
     public static bool GamePaused = false;
-    public static bool GameStarted = false;
+    public static bool WavesUnleashed = false;
+    public void FixedUpdate()
+    {
+        PrevPylon = CurrentPylon;
+        CurrentPylon = null;
+    }
     public void OnGameOpen()
     {
         //PlayerPrefs.DeleteAll();
@@ -15,7 +23,7 @@ public class Main : MonoBehaviour
         Time.timeScale = 1f;
         CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
         GamePaused = false;
-        GameStarted = true;
+        WavesUnleashed = true;
     }
     public static void PauseGame()
     {

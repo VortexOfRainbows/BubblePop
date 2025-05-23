@@ -177,7 +177,7 @@ public static class WaveDirector
     #endregion
     public static void Update()
     {
-        if (!Main.GameStarted)
+        if (!Main.WavesUnleashed)
             return;
     }
     public static float PityPowersSpawned = 0;
@@ -202,7 +202,7 @@ public static class WaveDirector
     }
     public static void FixedUpdate()
     {
-        if (!Main.GameStarted)
+        if (!Main.WavesUnleashed)
         {
             Reset();
             return;

@@ -8,10 +8,12 @@ public class PricedButton : MonoBehaviour
     public Image StartButtonImage;
     public GameObject StartButtonCoinVisual;
     public TextMeshProUGUI Text;
-    public bool CanAfford => CoinManager.TotalEquipCost <= CoinManager.Savings || CoinManager.TotalEquipCost <= 0;
+    public Image PylonVisual;
+    public bool CanAfford => (CoinManager.TotalEquipCost <= CoinManager.Savings || CoinManager.TotalEquipCost <= 0);
+    public bool CanUse => (PylonVisual == null || Main.PlayerNearPylon);
     public void Update()
     {
-        StartButton.interactable = CanAfford;
+        StartButton.interactable = CanAfford && CanUse;
         if (StartButton.interactable)
         {
             StartButtonImage.color = new Color(1, 1, 1, 0.8f);
@@ -20,9 +22,23 @@ public class PricedButton : MonoBehaviour
         else
         {
             StartButtonImage.color = Color.Lerp(new Color(1, 1, 1, 0.8f), new Color(0.9f, 0.0f, 0.0f, 0.8f), 0.5f);
-            Text.color = Color.red;
+            Text.color = CanAfford ? Color.white : Color.red;
         }
+        PylonUpdate();
         StartButtonCoinVisual.SetActive(CoinManager.TotalEquipCost > 0);
         Text.text = $"${CoinManager.TotalEquipCost}";
+    }
+    public void PylonUpdate()
+    {
+        if (PylonVisual == null)
+            return;
+        if(Main.PlayerNearPylon)
+        {
+            PylonVisual.color = Color.white;
+        }
+        else
+        {
+            PylonVisual.color = new Color(0.75f, 0.75f, 0.75f, 0.75f);
+        }
     }
 }

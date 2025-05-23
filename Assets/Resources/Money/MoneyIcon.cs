@@ -16,7 +16,7 @@ public class MoneyIcon : MonoBehaviour
     public float SparkleTimer = 0;
     private void FixedUpdate()
     {
-        if(!Main.GameStarted)
+        if(!Main.WavesUnleashed)
         {
             if (Utils.IsMouseHoveringOverThis(true, Icon.rectTransform, canvas: myCanvas))
             {

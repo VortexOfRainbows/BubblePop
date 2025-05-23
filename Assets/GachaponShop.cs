@@ -12,7 +12,7 @@ public class GachaponShop : MonoBehaviour
     public int NextToFillUp = -1;
     public void FixedUpdate()
     {
-        if(Main.GameStarted)
+        if(Main.WavesUnleashed)
         {
             if(Stock == null)
             {

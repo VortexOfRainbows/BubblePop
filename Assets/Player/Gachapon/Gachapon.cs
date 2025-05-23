@@ -191,7 +191,7 @@ public class Gachapon : Body
             AddStack();
         while (stacks.Count > player.ChipStacks)
             RemoveStack();
-        if (Main.GameStarted)
+        if (Main.WavesUnleashed)
         {
             if(player.AbilityReady)
             {
