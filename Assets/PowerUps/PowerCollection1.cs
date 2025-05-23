@@ -301,10 +301,26 @@ public class Raise : PowerUp
         Weighting = 0.75f;
     }
     protected override string Name() => "Raise";
-    protected override string Description() => "Increases maximum chip stack size\nSlightly reduces ability cooldown";
+    protected override string Description() => "Increases maximum chip stack height\nSlightly reduces ability cooldown";
     public override void HeldEffect(Player p)
     {
-        p.TotalChipsAllowed += Stack;
+        p.ChipHeight += Stack;
         p.AbilityRecoverySpeed += 0.1f * Stack;
+    }
+}
+public class AllIn : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.05f;
+    }
+    protected override string Name() => "All-In";
+    protected override string Description() => "Grants additional chip stacks and a chance for chips to be enhanced\nIncreases maximum chip stack height\nGreatly reduces ability cooldown";
+    public override void HeldEffect(Player p)
+    {
+        p.ChipHeight += Stack;
+        p.ChipStacks += Stack * 2;
+        p.AbilityRecoverySpeedMult += 0.6f * Stack;
+        p.BlueChipChance += Mathf.Min(10, Stack) * 0.05f;
     }
 }

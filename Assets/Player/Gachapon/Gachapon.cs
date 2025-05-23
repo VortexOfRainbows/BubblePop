@@ -1,41 +1,65 @@
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 public class Gachapon : Body
 {
+    public static Sprite BlueChip => bChip == null ? bChip = Resources.Load<Sprite>("Projectiles/BlueChip") : bChip;
+    private static Sprite bChip = null;
     public List<ChipStack> stacks;
+    private List<GameObject> notYetResizedCips = new();
     public GameObject ChipPrefab;
     public GameObject ChipStackPrefab;
     public void AddChip()
     {
         List<int> possibleStacks = new List<int>();
+        int stacksWithAppropriateChips = 2;
         for (int i = 0; i < stacks.Count; ++i)
+        {
+            if (stacks[i].Chips.Count >= 3)
+                stacksWithAppropriateChips++;
             possibleStacks.Add(i);
-        int rand = Utils.RandInt(possibleStacks.Count);
+        }
+        if (stacksWithAppropriateChips > possibleStacks.Count)
+            stacksWithAppropriateChips = possibleStacks.Count;
+        stacksWithAppropriateChips = stacksWithAppropriateChips / 2 * 2;
+        int rand = Utils.RandInt(stacksWithAppropriateChips);
         int index = possibleStacks[rand];
         while (stacks[index].IsFull())
         {
+            --stacksWithAppropriateChips;
             possibleStacks.RemoveAt(rand);
             if (possibleStacks.Count <= 0)
                 return;
-            rand = Utils.RandInt(possibleStacks.Count);
+            rand = Utils.RandInt(stacksWithAppropriateChips);
             index = possibleStacks[rand];
         }
         int direction = index % 2 * 2 - 1;
         ChipStack stack = stacks[index];
-        stack.Chips.Add(Instantiate(ChipPrefab, stack.Transform));
+        SpriteRenderer r = Instantiate(ChipPrefab, stack.Transform).GetComponent<SpriteRenderer>();
+        if (Utils.RandFloat() < player.BlueChipChance){
+            r.sprite = BlueChip;
+        }
+        r.gameObject.transform.localScale = Vector3.zero;
+        notYetResizedCips.Add(r.gameObject);
+        stack.Chips.Add(r.gameObject);
         int total = stacks[index].Chips.Count - 1;
         stack.Chips[total].transform.localPosition = new Vector3(total % 2 * -0.1f * direction, total * 0.15f);
     }
     public bool RemoveChip()
     {
         int totalCount = 0;
+        int blueCount = 0;
         foreach(ChipStack stack in stacks)
         {
             if(stack.Chips.Count > 0)
             {
                 int top = stack.Chips.Count - 1;
                 GameObject topChip = stack.Chips[top];
+                if (topChip.GetComponent<SpriteRenderer>().sprite == BlueChip)
+                    blueCount++;
                 Destroy(topChip);
                 totalCount++;
                 stack.Chips.RemoveAt(top);
@@ -47,11 +71,17 @@ public class Gachapon : Body
         float max = 180 * (1f - 1f / totalCount);
         if (rotation > max)
             rotation = max;
+        int half = totalCount / 2;
+        int bHalf = blueCount / 2;
         for (int i = 0; i < totalCount; ++i)
         {
+            bool blue = i >= half - bHalf && i <= half + bHalf;
             float lerp = totalCount == 1 ? 0 : (float)i / (totalCount - 1);
             Vector2 rot = toMouse.RotatedBy(Mathf.Deg2Rad * Mathf.Lerp(-rotation, rotation, lerp));
-            Projectile.NewProjectile<PokerChip>(transform.position,rot);
+            if(blue && blueCount-- > 0)
+                Projectile.NewProjectile<BlueChip>(transform.position, rot);
+            else
+                Projectile.NewProjectile<PokerChip>(transform.position, rot);
             for(int j = 0; j < player.DashSparkle; ++j)
             {
                 Vector2 target = (Vector2)transform.position + rot * Utils.RandFloat(0.2f, 1.0f);
@@ -65,7 +95,7 @@ public class Gachapon : Body
         int total = stacks.Count / 2 + 1;
         int direction = stacks.Count % 2 * 2 - 1;
         stacks.Add(Instantiate(ChipStackPrefab, transform).GetComponent<ChipStack>());
-        float totalOffset = (0.575f + 0.525f * total) * direction;
+        float totalOffset = (0.575f + 0.625f * total) * direction;
         stacks[stacks.Count - 1].transform.localPosition = new Vector3(totalOffset, -0.78f);
     }
     public void RemoveStack()
@@ -76,6 +106,21 @@ public class Gachapon : Body
             Destroy(chip);
         }
         stacks.RemoveAt(stacks.Count - 1);
+    }
+    public void ResizeChips()
+    {
+        for(int i = notYetResizedCips.Count - 1; i >= 0; --i)
+        {
+            GameObject chip = notYetResizedCips[i];
+            if(chip == null || chip.transform.localScale.x >= 1)
+            {
+                if(chip != null)
+                    chip.transform.localScale = Vector3.one;
+                notYetResizedCips.RemoveAt(i);
+            }
+            else
+                chip.transform.localScale = Vector3.Lerp(chip.transform.localScale * 1.01f, Vector3.one, 0.08f);
+        }
     }
     public Sprite[] altFaces;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
@@ -94,6 +139,7 @@ public class Gachapon : Body
         powerPool.Add<BubbleBirb>();
         powerPool.Add<Overclock>();
         powerPool.Add<Raise>();
+        powerPool.Add<AllIn>();
     }
     protected override string Description()
     {
@@ -135,14 +181,15 @@ public class Gachapon : Body
     public override float AbilityCD => 2.5f;
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
+        ResizeChips();
         PrimaryColor = new Color(0.95f, 1f, 0.6f);
         if(p.Accessory is Crystal)
         {
             PrimaryColor = new Color(0.6f, 0.933f, 0.255f);
         }
-        while(stacks.Count < player.TotalChipStacks)
+        while(stacks.Count < player.ChipStacks)
             AddStack();
-        while (stacks.Count > player.TotalChipStacks)
+        while (stacks.Count > player.ChipStacks)
             RemoveStack();
         if (Main.GameStarted)
         {
@@ -159,7 +206,7 @@ public class Gachapon : Body
         }
         else if(Control.Ability)
         {
-            while(player.abilityTimer < AbilityCD * 0.9f)
+            while(player.abilityTimer < AbilityCD)
             {
                 if (RemoveChip())
                     player.abilityTimer += AbilityCD * 0.125f * ((player.AbilityRecoverySpeed - 1) * 0.2f + Mathf.Sqrt(player.AbilityRecoverySpeed));

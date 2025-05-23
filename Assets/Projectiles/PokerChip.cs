@@ -5,10 +5,13 @@ using UnityEngine.SocialPlatforms;
 
 public class PokerChip : Projectile
 {
+    public float HomingRate = 10.0f;
+    public int HomingNum = 0;
     public override void Init()
     {
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/RedChip");
         timer += Utils.RandInt(41);
+        HomingNum = Utils.RandInt(10);
         Damage = 3;
         Friendly = true;
         SpriteRendererGlow.gameObject.SetActive(true);
@@ -20,7 +23,7 @@ public class PokerChip : Projectile
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 2, 0.1f);
         RB.rotation = RB.velocity.ToRotation() * Mathf.Rad2Deg;
         RB.velocity *= 1.007f;
-        if(timer % 6 == 0)
+        if(timer % 10 == HomingNum)
         {
             Entity target =  Entity.FindClosest(transform.position, 7, out Vector2 norm2, "Enemy", true);
             //if (target == null)
@@ -28,7 +31,7 @@ public class PokerChip : Projectile
             if (target != null)
             {
                 float previousSpeed = RB.velocity.magnitude;
-                RB.velocity += norm2 * 6.0f;
+                RB.velocity += norm2 * HomingRate;
                 RB.velocity = RB.velocity.normalized * previousSpeed;
             }
         }
@@ -63,5 +66,16 @@ public class PokerChip : Projectile
             ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 0, SpriteRendererGlow.color);
         }
         AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 0.6f);
+    }
+}
+public class BlueChip : PokerChip
+{
+    public override void Init()
+    {
+        base.Init();
+        SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/BlueChip");
+        SpriteRendererGlow.color = new Color(0.1764706f, .6f, 0.6941177f);
+        Damage = 6;
+        HomingRate = 20.0f;
     }
 }

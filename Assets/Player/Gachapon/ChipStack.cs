@@ -7,6 +7,6 @@ public class ChipStack : MonoBehaviour
     public Transform Transform;
     public bool IsFull()
     {
-        return Chips.Count >= Player.Instance.TotalChipsAllowed;
+        return Chips.Count >= Player.Instance.ChipHeight;
     }
 }

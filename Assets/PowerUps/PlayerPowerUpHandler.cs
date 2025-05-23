@@ -59,9 +59,10 @@ public partial class Player : Entity
 
     public int TrailOfThoughts = 0, Magnet = 0, LightSpear = 0, LightChainReact = 0, BrainBlast = 0;
     public float TrailOfThoughtsRecoverySpeed => AbilityRecoverySpeed;
-    public float AbilityRecoverySpeed = 1.0f;
-    public int TotalChipsAllowed = 5;
-    public int TotalChipStacks = 2;
+    public float AbilityRecoverySpeed = 1.0f, AbilityRecoverySpeedMult = 1.0f;
+    public float BlueChipChance = 0.0f;
+    public int ChipHeight = 5;
+    public int ChipStacks = 2;
 
     private List<int> powers;
     private void PowerInit()
@@ -76,10 +77,11 @@ public partial class Player : Entity
     private void ClearPowerBonuses()
     {
         ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = Coalescence = Magnet = LightSpear = 0;
-        AttackSpeedModifier = PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = AbilityRecoverySpeed = 1.0f;
+        AttackSpeedModifier = PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = AbilityRecoverySpeed = AbilityRecoverySpeedMult = 1.0f;
         LuckyStar = TrailOfThoughts = LightChainReact = BrainBlast = 0;
-        TotalChipsAllowed = 5;
-        TotalChipStacks = 2;
+        BlueChipChance = 0.0f;
+        ChipHeight = 5;
+        ChipStacks = 2;
     }
     private void UpdatePowerUps()
     {
@@ -93,6 +95,7 @@ public partial class Player : Entity
                 //Debug.Log($"Doing held effect for {power.Stack}");
             }
         }
+        AbilityRecoverySpeed = AbilityRecoverySpeed * AbilityRecoverySpeedMult;
         UpdateFixed();
     }
     private float BinaryStarTimer = 0.0f;
