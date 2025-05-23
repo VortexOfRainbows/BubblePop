@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
+    public const float SnakeEyeChance = 0.0278f;
     public static bool DebugCheats = false;
     public static bool PlayerNearPylon => PrevPylon != null;
     public static Pylon CurrentPylon = null;

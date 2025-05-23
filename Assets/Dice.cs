@@ -22,7 +22,7 @@ public class Dice : Hat
     protected override UnlockCondition UnlockCondition => base.UnlockCondition;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<BubbleBirb>();
+        powerPool.Add<SnakeEyes>();
         powerPool.Add<Choice>();
     }
     protected override void ReducePowerPool(List<PowerUp> powerPool)

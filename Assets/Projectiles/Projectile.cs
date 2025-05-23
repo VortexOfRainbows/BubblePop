@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -15,6 +16,9 @@ public class Projectile : MonoBehaviour
     public float Data1 { get => Data[0]; set => Data[0] = value; }
     public float Data2 { get => Data[1]; set => Data[1] = value; }
     public int Damage = 0;
+    /// <summary>
+    /// How many enemies this projectile can hit
+    /// </summary>
     public int Penetrate = 1;
     public bool Friendly = false;
     private bool Dead = false;
@@ -63,6 +67,22 @@ public class Projectile : MonoBehaviour
     public void FixedUpdate()
     {
         AI();
+    }
+    public void HitTarget(Entity target)
+    {
+        if(Player.Instance.SnakeEyes > 0)
+        {
+            int eyes = Player.Instance.SnakeEyes + 2;
+            float recursiveDepth = 1;
+            if (this is SnakeLightning)
+            {
+                recursiveDepth += Data1 * 1.2f;
+            }
+            float chanceOfSuccess = Main.SnakeEyeChance * (eyes - recursiveDepth);
+            if(Utils.RandFloat() < chanceOfSuccess)
+                NewProjectile<SnakeLightning>(transform.position, (target.transform.position - transform.position).normalized * 2.5f, recursiveDepth);
+        }
+        OnHitTarget(target);
     }
     public virtual void OnHitTarget(Entity target)
     {
@@ -336,5 +356,37 @@ public class PhoenixFire : Projectile
             SpriteRendererGlow.color = new Color(SpriteRendererGlow.color.r, SpriteRendererGlow.color.g, SpriteRendererGlow.color.b) * alphaOut;
         }
         timer++;
+    }
+}
+public class SnakeLightning : Projectile
+{
+    public override void Init()
+    {
+        transform.localScale = Vector3.one * 3f;
+        SpriteRenderer.enabled = false;
+        SpriteRendererGlow.gameObject.SetActive(false);
+        SpriteRenderer.sprite = null;
+        Damage = 1;
+        Penetrate = -1;
+        Friendly = false;
+        Hostile = false;
+        Lightning();
+    }
+    public void Lightning()
+    {
+        for (int i = 0; i < 15; ++i)
+        {
+            Vector2 circular = new Vector2(3 + Utils.RandFloat(6), 0).RotatedBy(Mathf.PI * (i / 5f * 2) + Utils.RandFloat(Mathf.PI * 0.4f));
+            ParticleManager.NewParticle(transform.position, Utils.RandFloat(2, 3), circular, 5, Utils.RandFloat(0.5f, 1.5f), 3, Color.green * 1.5f);
+        }
+        Pylon.SummonLightning((Vector2)transform.position - RB.velocity * 0.4f, (Vector2)transform.position + RB.velocity * 2.4f, Color.green);
+    }
+    public override void AI()
+    {
+        timer++;
+        if (timer > 15)
+            Friendly = true;
+        if (timer > 40)
+            Kill();
     }
 }

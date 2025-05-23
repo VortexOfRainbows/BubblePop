@@ -74,7 +74,7 @@ public class Enemy : Entity
         if (proj.Friendly && !AlreadyDead)
         {
             InjureNPC(proj.Damage);
-            proj.OnHitTarget(this);
+            proj.HitTarget(this);
             if (proj.Penetrate != -1)
             {
                 --proj.Penetrate;

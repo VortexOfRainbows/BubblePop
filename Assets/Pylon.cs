@@ -45,14 +45,14 @@ public class Pylon : MonoBehaviour
             {
                 for (int i = -1; i <= 1; ++i)
                 {
-                    SummonLightning((Vector2)Portal.transform.position + new Vector2(0, 24).RotatedBy(Mathf.Deg2Rad * 33 * i), Portal.transform.position);
+                    SummonLightning((Vector2)Portal.transform.position + new Vector2(0, 24).RotatedBy(Mathf.Deg2Rad * 33 * i), Portal.transform.position, Color.red);
                 }
                 Portal.SetActive(true);
                 AudioManager.PlaySound(SoundID.PylonStart, transform.position, 2f, 1, 0);
             }
             else if(Utils.RandFloat(1) < 0.01f)
             {
-                SummonLightning((Vector2)Portal.transform.position + new Vector2(0, Utils.RandFloat(3, 6.5f)).RotatedBy(Utils.RandFloat(-Mathf.PI, Mathf.PI)), Portal.transform.position);
+                SummonLightning((Vector2)Portal.transform.position + new Vector2(0, Utils.RandFloat(3, 6.5f)).RotatedBy(Utils.RandFloat(-Mathf.PI, Mathf.PI)), Portal.transform.position, Color.red);
             }
             Crystal.color = Color.Lerp(Crystal.color, Color.red, 0.1f);
             Glow.color = Color.Lerp(Glow.color, Color.red * 0.55f, 0.1f);
@@ -65,7 +65,7 @@ public class Pylon : MonoBehaviour
         Crystal.transform.localPosition = Crystal.transform.localPosition.Lerp(new Vector3(0, 1, 1), lerp);
         Crystal.transform.localScale = Crystal.transform.localScale.Lerp(Vector3.one * 0.6f, lerp);
     }
-    public void SummonLightning(Vector2 start, Vector2 end)
+    public static void SummonLightning(Vector2 start, Vector2 end, Color c)
     {
         float dist = Vector2.Distance(start, end);
         float distRounded = (int)dist;
@@ -76,12 +76,13 @@ public class Pylon : MonoBehaviour
             float scaleMult = 1f + 0.5f * (1 - perc);
             Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
             Vector2 toPrev = prev - pos;
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .5f * scaleMult), Vector2.zero, 0, 1.2f, 4, Color.red, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .5f * scaleMult), Vector2.zero, 0, 1.2f, 4, c, -toPrev.ToRotation() * Mathf.Rad2Deg);
             ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.2f, 4, Color.white * 1f, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 1.2f) * 1.0f, .4f * scaleMult), Vector2.zero, 0, 1.2f, 4, Color.red * 0.8f, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 1.2f) * 1.0f, .4f * scaleMult), Vector2.zero, 0, 1.2f, 4, c * 0.8f, -toPrev.ToRotation() * Mathf.Rad2Deg);
             ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 1.2f) * 1.0f, .2f * scaleMult), Vector2.zero, 0, 1.2f, 4, Color.white * 0.8f, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 2.3f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.2f, 4, Color.red * 0.6f, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 2.3f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.2f, 4, c * 0.6f, -toPrev.ToRotation() * Mathf.Rad2Deg);
             ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 2.3f) * 1.0f, .1f * scaleMult), Vector2.zero, 0, 1.2f, 4, Color.white * 0.6f, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, Utils.RandFloat(0.7f, 1.5f), 3, c * 1.5f);
             prev = pos;
         }
     }

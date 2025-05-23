@@ -128,7 +128,7 @@ public partial class Player : Entity
             if(Input.GetKeyDown(KeyCode.V))
                 PowerUp.Spawn<SpearOfLight>(transform.position, 0);
             if(Input.GetKeyDown(KeyCode.B))
-                PowerUp.Spawn<AllIn>(transform.position, 0);
+                PowerUp.Spawn<SnakeEyes>(transform.position, 0);
             if (Input.GetKeyDown(KeyCode.Y))
                 PowerUp.Spawn<Overclock>(transform.position, 0);
             if (Input.GetKeyDown(KeyCode.C))

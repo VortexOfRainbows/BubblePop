@@ -324,3 +324,16 @@ public class AllIn : PowerUp
         p.BlueChipChance += Mathf.Min(10, Stack) * 0.05f;
     }
 }
+public class SnakeEyes : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.3f;
+    }
+    protected override string Name() => "Snake Eyes";
+    protected override string Description() => "Chance to deal additional damage, including recursively";
+    public override void HeldEffect(Player p)
+    {
+        p.SnakeEyes += Stack;
+    }
+}

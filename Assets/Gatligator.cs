@@ -74,6 +74,7 @@ public class Gatligator : Enemy
             ShootTimer -= ShootSpeed;
             Vector2 norm = (GunTip.position - Gun.transform.position).normalized;
             Projectile.NewProjectile<Gatorade>(GunTip.transform.position, norm * 16f);
+            AudioManager.PlaySound(SoundID.ShootBubbles, GunTip.transform.position, 0.5f, 1.5f);
         }
     }
     public override void AI()
