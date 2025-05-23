@@ -84,8 +84,11 @@ public class Gachapon : Body
                 Projectile.NewProjectile<PokerChip>(transform.position, rot);
             for(int j = 0; j < player.DashSparkle; ++j)
             {
-                Vector2 target = (Vector2)transform.position + rot * Utils.RandFloat(0.2f, 1.0f);
-                Projectile.NewProjectile<StarProj>(transform.position, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                if(Utils.RandFloat(1) < 0.5f)
+                {
+                    Vector2 target = (Vector2)transform.position + rot * Utils.RandFloat(0.2f, 1.0f);
+                    Projectile.NewProjectile<StarProj>(transform.position, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                }
             }
         }
         return totalCount > 0;
@@ -206,7 +209,7 @@ public class Gachapon : Body
         }
         else if(Control.Ability)
         {
-            while(player.abilityTimer < AbilityCD)
+            while(player.abilityTimer < AbilityCD * 0.8f)
             {
                 if (RemoveChip())
                     player.abilityTimer += AbilityCD * 0.125f * ((player.AbilityRecoverySpeed - 1) * 0.2f + Mathf.Sqrt(player.AbilityRecoverySpeed));

@@ -182,7 +182,7 @@ public class StarProj : Projectile
                     randPos = randPos.RotatedBy(randRot);
                     ParticleManager.NewParticle(target.transform.position, Utils.RandFloat(0.95f, 1.05f), -norm * 4.5f + randPos * Utils.RandFloat(4, 5) + Utils.RandCircle(.3f), 0.1f, .6f, 0, SpriteRenderer.color);
                 }
-                int stars = 3 + Player.Instance.Starbarbs * 2;
+                int stars = 2 + Player.Instance.Starbarbs;
                 for (; stars > 0; --stars)
                 {
                     Vector2 targetPos = (Vector2)target.transform.position + norm * 9 + Utils.RandCircle(7);

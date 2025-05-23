@@ -19,12 +19,14 @@ public class Wormhole : MonoBehaviour
     public List<GameObject> Rings;
     public GameObject Visual;
     public float ParticleEffectMult => ScaleMultiplier / 9f;
-    private float ScaleMultiplier = 5.25f;
+    public float ScaleMultiplier = 5.25f;
+    public float LightIntensity = 20f;
     public float Timer;
     public float Timer2;
     public float ScaleSpeed = 0;
     public float Scale = 0;
     public bool Closing = false;
+    public bool StayOpen = false;
     public void Start()
     {
         Visual.transform.localScale = new Vector3(ScaleMultiplier, ScaleMultiplier, 1);
@@ -32,6 +34,7 @@ public class Wormhole : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        Visual.transform.localScale = new Vector3(ScaleMultiplier, ScaleMultiplier, 1);
         //if (Input.GetMouseButton(1))
         //{
         //    Timer = 0;
@@ -65,7 +68,7 @@ public class Wormhole : MonoBehaviour
         if (p >= 2)
         {
             Timer2++;
-            if(Timer2 >= 20 && !Closing)
+            if(Timer2 >= 20 && !Closing && !StayOpen)
             {
                 for (int i = 0; i < 30; ++i)
                 {
@@ -113,7 +116,7 @@ public class Wormhole : MonoBehaviour
         }
         Timer += Time.fixedDeltaTime * 10;
         transform.localScale = Vector3.one * Scale;
-        Light.intensity = p * p * 5f * Scale;
+        Light.intensity = p * p * LightIntensity / 5f * Scale;
         Light.pointLightOuterRadius = 0.7f * ScaleMultiplier * Scale;
         for (int i = 0; i < Rings.Count; ++i)
         {
@@ -134,9 +137,9 @@ public class Wormhole : MonoBehaviour
     }
     public void Kill()
     {
-        for (int i = 0; i < 60; ++i)
+        for (int i = 0; i < 40; ++i)
         {
-            Vector2 circular = new Vector2(4 + Utils.RandFloat(20), 0).RotatedBy(Mathf.PI * (i / 5f * 2) + Utils.RandFloat(Mathf.PI * 0.4f)) * ParticleEffectMult;
+            Vector2 circular = new Vector2(3 + Utils.RandFloat(13), 0).RotatedBy(Mathf.PI * (i / 5f * 2) + Utils.RandFloat(Mathf.PI * 0.4f)) * ParticleEffectMult;
             ParticleManager.NewParticle(transform.position, Utils.RandFloat(2, 3), circular, 5, Utils.RandFloat(0.5f, 1.5f), 3, Color.red * 1.5f);
         }
         Destroy(gameObject);

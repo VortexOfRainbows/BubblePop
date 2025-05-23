@@ -14,15 +14,32 @@ public class ParticleManager : MonoBehaviour
             return;
         if (color == default)
             color = DefaultColor;
-        ParticleSystem.EmitParams style = new ParticleSystem.EmitParams
+        ParticleSystem.EmitParams style = new()
         {
             position = pos,
             rotation = Utils.RandFloat(360),
             startColor = color,
             velocity = new Vector2(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)) * randomizeFactor + velo,
             startLifetime = lifeTime,
+            startSize = Instance.thisSystem[type].main.startSizeMultiplier * size * Utils.RandFloat(0.9f, 1.1f)
         };
-        style.startSize = Instance.thisSystem[type].main.startSizeMultiplier * size * Utils.RandFloat(0.9f, 1.1f);
+        Instance.thisSystem[type].Emit(style, 1);
+    }
+    public static void NewParticle(Vector2 pos, Vector2 size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f, int type = 0, Color color = default, float rotation = 0)
+    {
+        if (ParticleManager.Instance == null)
+            return;
+        if (color == default)
+            color = DefaultColor;
+        ParticleSystem.EmitParams style = new()
+        {
+            position = pos,
+            rotation = rotation,
+            startColor = color,
+            velocity = new Vector2(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)) * randomizeFactor + velo,
+            startLifetime = lifeTime,
+            startSize3D = Instance.thisSystem[type].main.startSizeMultiplier * new Vector3(size.x, size.y, 1)
+        };
         Instance.thisSystem[type].Emit(style, 1);
     }
     void Start()

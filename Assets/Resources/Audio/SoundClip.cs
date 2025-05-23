@@ -57,6 +57,12 @@ public static class SoundID
         "TeleportCharge");
     public static SoundClip TeleportSustain = new SoundClip("ThoughtBubble/",
         "TeleportSustain");
+
+    public static SoundClip PylonDrone = new SoundClip("Pylon/",
+        "DroningPylon");
+
+    public static SoundClip PylonStart = new SoundClip("Pylon/",
+        "PylonThunder");
 }
 public class SoundClip
 {
