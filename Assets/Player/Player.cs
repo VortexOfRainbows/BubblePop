@@ -1,6 +1,4 @@
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
-
 public static class Control
 {
     public static bool Ability => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.Space);
