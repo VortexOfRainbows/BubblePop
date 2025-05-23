@@ -19,10 +19,11 @@ public class Main : MonoBehaviour
             DirectorCanvas.SetActive(true);
         else if(Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.G) && Main.DebugCheats)
             DirectorCanvas.SetActive(false);
+        if (DebugCheats && Input.GetKey(KeyCode.O))
+            PlayerPrefs.DeleteAll(); //Reset all save data persistently for the purposes of the playtest
     }
     public void OnGameOpen()
     {
-        PlayerPrefs.DeleteAll(); //Reset all save data persistently for the purposes of the playtest
         PlayerData.LoadAll();
         CoinManager.InitCoinPrefabs();
     }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public static class Control
 {
@@ -141,8 +142,10 @@ public partial class Player : Entity
         UpdatePowerUps();
 
         bool dead = DeathKillTimer > 0;
-
-        if (dead)
+        bool outOfBounds = false;
+        if (!DualGridTilemap.RealTileMap.HasTile(DualGridTilemap.RealTileMap.WorldToCell(transform.position)))
+            outOfBounds = true;
+        if (dead || outOfBounds)
             Pop();
         else
         {
