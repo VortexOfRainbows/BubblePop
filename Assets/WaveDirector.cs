@@ -251,20 +251,28 @@ public static class WaveDirector
             }
             if (WaveNum % 5 == 0)
             {
-                Deck[MaxCards - 2] = WaveDeck.DrawMultiSpawn(WaveDeck.RandomEdgeLocation(), 6, 7, 0, 0.75f, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken);
+                Deck[MaxCards - 3] = WaveDeck.DrawMultiSpawn(WaveDeck.RandomEdgeLocation(), 6, 7, 0, 0.75f, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken);
                 if(WaveNum > 10)
                 {
-                    Deck[MaxCards - 2].Patterns[0].Location = Vector2.zero;
-                    Deck[MaxCards - 2] = Deck[MaxCards - 2].ToSwarmCircle(3, 5, 0, 0.5f);
+                    Deck[MaxCards - 3].Patterns[0].Location = Vector2.zero;
+                    Deck[MaxCards - 3] = Deck[MaxCards - 2].ToSwarmCircle(3, 5, 0, 0.5f);
                 }
             }
             if (WaveNum == 6)
             {
+                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Gatligator, 10, 5, 0);
+                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Gatligator, 25, 2, 0);
+            }
+            if (WaveNum == 7)
+            {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 20, 5, 0);
             }
-            if (WaveNum >= 10 && WaveNum % 3 == 0)
+            if (WaveNum >= 10)
             {
-                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 15, 5, 0);
+                if(WaveNum % 3 == 0)
+                    Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 15, 5, 0);
+                if (WaveNum % 4 == 1)
+                    Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Gatligator, 15, 5, 0);
             }
         }
         ProcessPlayedCards();
