@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 822516308599803311}
   - component: {fileID: 7956459227241470557}
-  - component: {fileID: 5891907047205517628}
+  - component: {fileID: 4626761265814094764}
   m_Layer: 3
-  m_Name: BubblemancerCape
+  m_Name: RedCape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -5
-  m_Sprite: {fileID: 21300000, guid: 59349d44aa51cd24185592651098e955, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c58b8f7592252a240865528f0f0b2321, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -87,7 +87,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5891907047205517628
+--- !u!114 &4626761265814094764
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,18 +96,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1946491136762909545}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d4e186ac4b2fb84d83d6fc8debbd9c2, type: 3}
+  m_Script: {fileID: 11500000, guid: a7f89073ef3f78d4da5d7ff8539dae7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   p: {fileID: 0}
-  SubEquipment:
-  - {fileID: 1946491136762909545, guid: 88b3ca26d0245474896a68c13bff6ef7, type: 3}
-  - {fileID: 1946491136762909545, guid: b5e86eb464b904f4fb6da6c5215a2af8, type: 3}
+  SubEquipment: []
   OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 7956459227241470557}
   velocity: {x: 0, y: 0}
   hasInit: 0
-  isSubEquipment: 0
+  isSubEquipment: 1
   CapeB: {fileID: 1946491136762909545}
   CapeL: {fileID: 3208484516123435328}
   CapeR: {fileID: 3967729728672570375}
@@ -186,7 +184,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e4f353a8eeb8d6947a7f6138864b336b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3c9bf2787d3b3bc48aecc854a25c9311, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -270,7 +268,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 24bfe55baf9275345bdc405267652798, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d709e8b3418385c42a30dee4a8c8ef70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0

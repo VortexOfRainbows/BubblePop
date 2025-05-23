@@ -31,7 +31,7 @@ public partial class Player : Entity
     private Camera MainCamera;
     private readonly float speed = 2.5f;
     private readonly float MovementDeacceleration = 0.9f;
-    public float MaxSpeed = 6f;
+    public float MaxSpeed => MoveSpeedMod * 6f;
     private bool HasRunStartingGear = false;
     public const float DashDefault = 25f;
     public bool AbilityReady => abilityTimer <= 0;
@@ -50,18 +50,19 @@ public partial class Player : Entity
     private void MovementUpdate()
     {
         Vector2 velocity = rb.velocity;
+        float cSpeed = speed * MoveSpeedMod;
         Vector2 movespeed = Vector2.zero;
         if (Control.Up && !Control.Down)
         {
             if (velocity.y < 0)
                 velocity.y *= MovementDeacceleration;
-            movespeed.y += speed;
+            movespeed.y += cSpeed;
         }
         else if (!Control.Up && Control.Down)
         {
             if (velocity.y > 0)
                 velocity.y *= MovementDeacceleration;
-            movespeed.y -= speed;
+            movespeed.y -= cSpeed;
         }
         else
             velocity.y *= MovementDeacceleration;
@@ -69,13 +70,13 @@ public partial class Player : Entity
         {
             if (velocity.x > 0)
                 velocity.x *= MovementDeacceleration;
-            movespeed.x -= speed;
+            movespeed.x -= cSpeed;
         }
         else if (Control.Right && !Control.Left)
         {
             if (velocity.x < 0)
                 velocity.x *= MovementDeacceleration;
-            movespeed.x += speed;
+            movespeed.x += cSpeed;
         }
         else
             velocity.x *= MovementDeacceleration;
@@ -88,13 +89,13 @@ public partial class Player : Entity
         Body.AbilityUpdate(ref velocity, movespeed);
 
         //Final stuff
-        velocity += movespeed * speed;
+        velocity += movespeed * cSpeed;
         float currentSpeed = velocity.magnitude;
         if (currentSpeed > MaxSpeed)
         {
             Vector2 norm = velocity.normalized;
             velocity = norm * (MaxSpeed + (currentSpeed - MaxSpeed) * 0.8f);
-            if (currentSpeed > MaxSpeed + 15f)
+            if (currentSpeed > MaxSpeed + 15f * MoveSpeedMod)
             {
                 for (float i = 0; i < 1; i += 0.5f)
                     ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f);

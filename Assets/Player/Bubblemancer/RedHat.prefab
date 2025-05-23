@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8187517550139534184}
   - component: {fileID: 8016481760766100851}
-  - component: {fileID: 6303350027237884496}
+  - component: {fileID: 7274672798375506512}
   m_Layer: 3
-  m_Name: BubblemancerHat
+  m_Name: RedHat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: b9857b724fc7d3d4db2e2cbedfc11790, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 43c58e6038fd3fa43bad66ecf8b956de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6303350027237884496
+--- !u!114 &7274672798375506512
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,16 +94,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4047993882583738873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40e94e7e6af77ab43bf9d100198d7493, type: 3}
+  m_Script: {fileID: 11500000, guid: 77efe529991b0ae45841c8886d8c0f99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   p: {fileID: 0}
-  SubEquipment:
-  - {fileID: 4047993882583738873, guid: d8e3ac15ce6711b4eb88bfb58d6648bd, type: 3}
-  - {fileID: 4047993882583738873, guid: 40faa4fda98c03e4f8174c64dd991267, type: 3}
-  - {fileID: 4047993882583738873, guid: 2d3a882e65b1a1743a17bf9ef49da893, type: 3}
+  SubEquipment: []
   OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 8016481760766100851}
   velocity: {x: 0, y: 0}
   hasInit: 0
-  isSubEquipment: 0
+  isSubEquipment: 1

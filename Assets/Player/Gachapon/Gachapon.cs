@@ -46,7 +46,7 @@ public class Gachapon : Body
         notYetResizedCips.Add(r.gameObject);
         stack.Chips.Add(r.gameObject);
         int total = stacks[index].Chips.Count - 1;
-        stack.Chips[total].transform.localPosition = new Vector3(total % 2 * -0.1f * direction, total * 0.15f);
+        stack.Chips[total].transform.localPosition = new Vector3(total % 2 * -0.1f * direction, total * 0.15f, total * -0.025f);
     }
     public bool RemoveChip()
     {

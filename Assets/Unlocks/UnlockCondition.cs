@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class UnlockCondition
 {
-    public static bool ForceUnlockAll = false;
+    public static bool ForceUnlockAll = true; //For the playtest, we will have everything unlocked
     public virtual PowerUp Power => null;
     public static void SaveInt(string tag, int value)
     {
