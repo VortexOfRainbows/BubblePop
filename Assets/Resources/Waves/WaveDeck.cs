@@ -21,6 +21,8 @@ public static class WaveDeck
             possibleEnemies.Add(EnemyID.Chicken);
         if (WaveDirector.WaveNum > 2)
             possibleEnemies.Add(EnemyID.OldFlamingo);
+        if (WaveDirector.WaveNum > 5 && WaveDirector.CardsPlayed > 5)
+            possibleEnemies.Add(EnemyID.Gatligator);
         if (WaveDirector.WaveNum > 7 && WaveDirector.CardsPlayed > 2)
             possibleEnemies.Add(EnemyID.OldLeonard);
         return possibleEnemies;
