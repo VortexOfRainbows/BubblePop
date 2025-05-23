@@ -1,11 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static UnityEditor.FilePathAttribute;
-
 public static class WaveDeck
 {
     public static readonly float minXBound = -30, maxXBound = 30, minYBound = -18, maxYBound = 18;

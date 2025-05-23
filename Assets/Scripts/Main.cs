@@ -22,7 +22,7 @@ public class Main : MonoBehaviour
     }
     public void OnGameOpen()
     {
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll(); //Reset all save data persistently for the purposes of the playtest
         PlayerData.LoadAll();
         CoinManager.InitCoinPrefabs();
     }

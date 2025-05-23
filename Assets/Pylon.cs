@@ -1,7 +1,4 @@
-using TreeEditor;
-using Unity.VisualScripting;
 using UnityEngine;
-
 public class Pylon : MonoBehaviour
 {
     public SpriteRenderer Crystal;
