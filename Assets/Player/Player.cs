@@ -111,7 +111,7 @@ public partial class Player : Entity
     public override void OnFixedUpdate()
     {
         if (Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.N))
-            UnlockCondition.ForceUnlockAll = true;
+            Main.DebugCheats = true;
         if (!HasRunStartingGear && !UIManager.StartingScreen)
         {
             Hat.OnStartWith();
@@ -120,7 +120,7 @@ public partial class Player : Entity
             Body.OnStartWith();
             HasRunStartingGear = true;
         }
-        if (UnlockCondition.ForceUnlockAll)
+        if (Main.DebugCheats)
         {
             //for(int i = 0; i < PowerUp.Reverses.Count; ++i)
             //    PowerUp.Spawn(i, transform.position, 0);
@@ -196,7 +196,7 @@ public partial class Player : Entity
         Weapon.DeadUpdate();
         Accessory.DeadUpdate();
         DeathKillTimer++;
-        if(Input.GetKey(KeyCode.R) && UnlockCondition.ForceUnlockAll)
+        if(Input.GetKey(KeyCode.R) && Main.DebugCheats)
         {
             DeathKillTimer = 0;
             //Body.SetActive(true);

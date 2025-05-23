@@ -2,15 +2,22 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
+    public static bool DebugCheats = false;
     public static bool PlayerNearPylon => PrevPylon != null;
     public static Pylon CurrentPylon = null;
     private static Pylon PrevPylon = null;
     public static bool GamePaused = false;
     public static bool WavesUnleashed = false;
+    public GameObject DirectorCanvas;
     public void FixedUpdate()
     {
         PrevPylon = CurrentPylon;
         CurrentPylon = null;
+
+        if(Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.F) && Main.DebugCheats)
+            DirectorCanvas.SetActive(true);
+        else if(Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.G) && Main.DebugCheats)
+            DirectorCanvas.SetActive(false);
     }
     public void OnGameOpen()
     {
