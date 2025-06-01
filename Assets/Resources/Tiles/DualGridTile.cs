@@ -8,7 +8,7 @@ using System.Linq;
 public class DualGridTile : ScriptableObject
 {
     #region static/global stuff
-    public static Tilemap RealTileMap => DualGridTilemap.RealTileMap;
+    public static Tilemap RealTileMap => World.CurrentGeneratingMap;
     public static Dictionary<Tuple<bool, bool, bool, bool>, int> NeighbourRelations = SetNeighborRelations();
     public static Dictionary<Tuple<bool, bool, bool, bool>, int> SetNeighborRelations()
     {

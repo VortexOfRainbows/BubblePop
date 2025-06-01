@@ -141,7 +141,7 @@ public partial class Player : Entity
 
         bool dead = DeathKillTimer > 0;
         bool outOfBounds = false;
-        if (!DualGridTilemap.RealTileMap.HasTile(DualGridTilemap.RealTileMap.WorldToCell(transform.position)))
+        if (!World.RealTileMap.Map.HasTile(World.RealTileMap.Map.WorldToCell(transform.position)))
             outOfBounds = true;
         if (dead || outOfBounds)
             Pop();
