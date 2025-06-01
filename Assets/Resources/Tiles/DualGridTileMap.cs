@@ -12,12 +12,14 @@ public class DualGridTilemap : MonoBehaviour
     public Tilemap m_RealTileMap;
     // Provide the 16 tiles in the inspector
     // The tiles on the display tilemap will recalculate themselves based on the placeholder tilemap
-    public void Init()
+    public void Init(Color c, int orderOffset = -50)
     {
         VisualMaps = new List<Tilemap>();
         for (int k = 0; k < World.Instance.Tiles.Length; ++k) {
-            VisualMaps.Add(Instantiate(VisualMapPrefab, Visual.transform).GetComponent<Tilemap>());
-            VisualMaps[k].GetComponent<TilemapRenderer>().sortingOrder = -50 + World.Instance.Tiles[k].LayerOffset;
+            Tilemap t = Instantiate(VisualMapPrefab, Visual.transform).GetComponent<Tilemap>();
+            VisualMaps.Add(t);
+            t.color = c;
+            VisualMaps[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + World.Instance.Tiles[k].LayerOffset;
         };
         RefreshDisplayTilemap();
         m_RealTileMap.GetComponent<TilemapRenderer>().enabled = false;

@@ -16,7 +16,7 @@ public class EnemyDuck : Enemy
     public override float CostMultiplier => 1;
     private void Start()
     {
-        Life = 15;
+        Life = 12;
         MaxCoins = 10;
     }
 

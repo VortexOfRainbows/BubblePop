@@ -17,12 +17,12 @@ public class World : MonoBehaviour
         if (RealTileMap != null)
         {
             CurrentGeneratingMap = RealTileMap.Map;
-            RealTileMap.Init();
+            RealTileMap.Init(Color.white);
         }
         if (ColliderTileMap != null)
         {
             CurrentGeneratingMap = ColliderTileMap.Map;
-            ColliderTileMap.Init();
+            ColliderTileMap.Init(new Color(0.4056604f, 0.4056604f, 0.4056604f), -49);
         }
         CurrentGeneratingMap = null;
     }
