@@ -3,6 +3,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+public class World : MonoBehaviour
+{
+    public static DualGridTilemap RealTileMap;
+    public static DualGridTilemap ColliderTileMap;
+}
 public class DualGridTilemap : MonoBehaviour
 {
     public static DualGridTilemap Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<DualGridTilemap>()): m_Instance;
