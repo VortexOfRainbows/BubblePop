@@ -20,7 +20,11 @@ public class Main : MonoBehaviour
         else if(Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.G) && Main.DebugCheats)
             DirectorCanvas.SetActive(false);
         if (DebugCheats && Input.GetKey(KeyCode.O))
+        {
             PlayerPrefs.DeleteAll(); //Reset all save data persistently for the purposes of the playtest
+            PlayerData.LoadAll();
+            PlayerData.SaveAll();
+        }
     }
     public void OnGameOpen()
     {
