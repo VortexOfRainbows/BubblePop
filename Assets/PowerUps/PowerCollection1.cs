@@ -274,7 +274,7 @@ public class NeuronActivation : PowerUp
     {
         Weighting = 0.08f;
     }
-    protected override string Name() => "Chain Reaction";
+    protected override string Name() => "Reflection";
     protected override string Description() => "Enemies fire beams of light at other enemies when struck by light";
     public override void HeldEffect(Player p)
     {
@@ -335,5 +335,18 @@ public class SnakeEyes : PowerUp
     public override void HeldEffect(Player p)
     {
         p.SnakeEyes += Stack;
+    }
+}
+public class Refraction : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = 0.05f;
+    }
+    protected override string Name() => "Refraction (WIP)";
+    protected override string Description() => "Multiplies the amount of beams shot at enemies (NOT YET IMPLEMENTED)";
+    public override void HeldEffect(Player p)
+    {
+        p.Refraction += Stack;
     }
 }

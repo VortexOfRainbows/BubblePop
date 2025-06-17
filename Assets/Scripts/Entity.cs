@@ -6,40 +6,6 @@ public class Entity : MonoBehaviour
     public GameObject Visual;
     //public static int NextUniqueID = 0;
     //public int UniqueID = NextUniqueID++;
-    public static Entity FindClosest(Vector3 position, float searchDistance, out Vector2 norm, string tag = "Enemy", bool requireNonImmune = true, params Entity[] ignore)
-    {
-        norm = Vector2.zero;
-        int best = -1;
-        Entity[] e = FindObjectsByType<Entity>(FindObjectsSortMode.None);
-        for(int i = 0; i < e.Length; ++i)
-        {
-            Entity e1 = e[i];
-            Vector2 toDest = e1.transform.position - position;
-            float dist = toDest.magnitude;
-            Debug.Log(e1.tag);
-            if (dist <= searchDistance && (!requireNonImmune || e1.UniversalImmuneFrames <= 0) && e1.CompareTag(tag))
-            {
-                bool blackListed = false;
-                foreach(Entity e2 in ignore)
-                {
-                    if(/*e2 != null &&*/e2 == e1)
-                    {
-                        //Debug.Log("Failed Blacklist");
-                        blackListed = true;
-                        break;
-                    }
-                }
-                if (!blackListed)
-                {
-                    best = i;
-                    searchDistance = dist;
-                    norm = toDest;
-                }
-            }
-        }
-        norm = norm.normalized;
-        return best == -1 ? null : e[best];
-    }
     public float UniversalImmuneFrames = 0;
     public int Life = 10;
     public float DamageTaken = 0;

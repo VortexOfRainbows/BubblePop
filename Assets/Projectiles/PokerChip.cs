@@ -25,7 +25,7 @@ public class PokerChip : Projectile
         RB.velocity *= 1.007f;
         if(timer % 10 == HomingNum)
         {
-            Entity target =  Entity.FindClosest(transform.position, 7, out Vector2 norm2, "Enemy", true);
+            Enemy target =  Enemy.FindClosest(transform.position, 7, out Vector2 norm2, true);
             //if (target == null)
             //norm2 = (Utils.MouseWorld - (Vector2)transform.position).normalized;
             if (target != null)

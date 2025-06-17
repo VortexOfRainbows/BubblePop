@@ -27,7 +27,7 @@ public class BubblemancerWand : Weapon
     {
         WandUpdate();
     }
-    private float AttackCooldown => Mathf.Max(0, 20f - player.AttackSpeedModifier);
+    private float AttackCooldown => Mathf.Max(0, 20f - (player.AttackSpeedModifier - 1) * 5);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft < -AttackCooldown && AttackRight < 0)

@@ -10,20 +10,14 @@ public class Main : MonoBehaviour
     public static bool GamePaused = false;
     public static bool WavesUnleashed = false;
     public GameObject DirectorCanvas;
+    public GameObject PowerupCheatCanvas;
     public void FixedUpdate()
     {
         PrevPylon = CurrentPylon;
         CurrentPylon = null;
-
-        if(Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.F) && Main.DebugCheats)
-            DirectorCanvas.SetActive(true);
-        else if(Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.G) && Main.DebugCheats)
-            DirectorCanvas.SetActive(false);
         if (DebugCheats && Input.GetKey(KeyCode.O))
         {
-            PlayerPrefs.DeleteAll(); //Reset all save data persistently for the purposes of the playtest
-            PlayerData.LoadAll();
-            PlayerData.SaveAll();
+            PlayerData.ResetAll();
         }
     }
     public void OnGameOpen()
@@ -64,7 +58,14 @@ public class Main : MonoBehaviour
     {
         Instance = this;
     }
-    public void Update() => Instance = this;
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && DebugCheats)
+            DirectorCanvas.SetActive(!DirectorCanvas.activeSelf);
+        if (Input.GetKeyDown(KeyCode.P) && DebugCheats)
+            PowerupCheatCanvas.SetActive(!PowerupCheatCanvas.activeSelf);
+        Instance = this;
+    }
     public static Main Instance;
     public static GameObject Projectile => Instance.DefaultProjectile;
     public GameObject DefaultProjectile;
