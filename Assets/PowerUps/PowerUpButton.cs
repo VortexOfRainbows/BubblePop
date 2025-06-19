@@ -9,13 +9,21 @@ public class PowerUpButton : MonoBehaviour
     public static PowerUpButton[] buttons = new PowerUpButton[3];
     [SerializeField] public PowerUpUIElement PowerUI;
     [SerializeField] private int index = 0;
+    public bool IsCheatButton = false;
     public bool Active => gameObject.activeSelf;
     public void Start()
     {
-        if (Active)
-            PowerUp.PickingPowerUps = true;
-        buttons[index] = this;
-        TurnOff();
+        if(!IsCheatButton)
+        {
+            if (Active)
+                PowerUp.PickingPowerUps = true;
+            buttons[index] = this;
+            TurnOff();
+        }
+        else
+        {
+            TurnOn();
+        }
     }
     public void OnButtonPress()
     {
@@ -24,7 +32,8 @@ public class PowerUpButton : MonoBehaviour
     public void GrantPower()
     {
         PowerUI.MyPower.PickUp();
-        PowerUp.TurnOffPowerUpSelectors();
+        if(!IsCheatButton)
+            PowerUp.TurnOffPowerUpSelectors();
     }
     public void FixedUpdate()
     {
@@ -38,12 +47,15 @@ public class PowerUpButton : MonoBehaviour
     }
     public void TurnOn()
     {
-        PowerUp.PickingPowerUps = true;
-        for (int i = RerollAttempsForSamePowerInPicker; i > 0; --i)
+        if(!IsCheatButton)
         {
-            SetType(PowerUp.RandomFromPool(0.04f)); //This needs to happen first, before the button is turned on
-            if (!SameTypeAsOthers())
-                break;
+            PowerUp.PickingPowerUps = true;
+            for (int i = RerollAttempsForSamePowerInPicker; i > 0; --i)
+            {
+                SetType(PowerUp.RandomFromPool(0.04f)); //This needs to happen first, before the button is turned on
+                if (!SameTypeAsOthers())
+                    break;
+            }
         }
         PowerUI.TurnedOn();
         gameObject.SetActive(true);

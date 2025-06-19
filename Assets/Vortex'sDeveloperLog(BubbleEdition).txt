@@ -25,6 +25,20 @@ Need to do:
 
 Done:
 
+6/16/25
+1. Light bulb now increases in attack speed from the haste powerup, to increase consistency. 
+	1. Stacking now increases range and damage instead
+2. Binary star stacking now increases the number of stars shot instead of the firerate
+	1. Haste and other attack speed boosts now buff its firerate
+3. Firerate of bubble trail is now boosted by haste in addition to itself
+4. Fix some firerate related bugs
+5. Add cheat menu for testing powerups (cheat in any powerup using debug code (IAN) + P)
+6. Optimizations to homing related code (should make stuff like pokerchips less laggy
+
+6/1/25
+1. Rework tile system a bit + add dirt tile from Keira
+2. Nerf duck hp 15 -> 12
+
 5/12/25 to 5/23/25
 1. Import some sprites and begin work on Gachapon
 2. More Gachapon equips + gachapon death animations

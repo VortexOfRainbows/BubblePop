@@ -11,6 +11,12 @@ public static class PlayerData
         SaveFloat("SFX", SFXVolume);
         SaveFloat("Music", MusicVolume);
     }
+    public static void ResetAll()
+    {
+        PlayerPrefs.DeleteAll(); //Reset all save data persistently for the purposes of the playtest
+        LoadAll();
+        SaveAll();
+    }
     public static void SaveAll()
     {
         SaveInt("Deaths", PlayerDeaths);

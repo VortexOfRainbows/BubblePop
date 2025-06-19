@@ -121,15 +121,6 @@ public partial class Player : Entity
         }
         if (Main.DebugCheats)
         {
-            //for(int i = 0; i < PowerUp.Reverses.Count; ++i)
-            //    PowerUp.Spawn(i, transform.position, 0);
-            //UIManager.score += 100;
-            if(Input.GetKeyDown(KeyCode.V))
-                PowerUp.Spawn<SpearOfLight>(transform.position, 0);
-            if(Input.GetKeyDown(KeyCode.B))
-                PowerUp.Spawn<SnakeEyes>(transform.position, 0);
-            if (Input.GetKeyDown(KeyCode.Y))
-                PowerUp.Spawn<Overclock>(transform.position, 0);
             if (Input.GetKeyDown(KeyCode.C))
                 CoinManager.SpawnCoin(transform.position, 25);
             if (Input.GetKeyDown(KeyCode.Z))
@@ -141,7 +132,7 @@ public partial class Player : Entity
 
         bool dead = DeathKillTimer > 0;
         bool outOfBounds = false;
-        if (!DualGridTilemap.RealTileMap.HasTile(DualGridTilemap.RealTileMap.WorldToCell(transform.position)))
+        if (!World.RealTileMap.Map.HasTile(World.RealTileMap.Map.WorldToCell(transform.position)))
             outOfBounds = true;
         if (dead || outOfBounds)
             Pop();
@@ -151,6 +142,11 @@ public partial class Player : Entity
             Accessory.EquipUpdate();
             Weapon.EquipUpdate();
             Body.EquipUpdate();
+            PostEquipUpdate();
+            Hat.PostEquipUpdate();
+            Accessory.PostEquipUpdate();
+            Weapon.PostEquipUpdate();
+            Body.PostEquipUpdate();
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 15f, 0.03f);
             MovementUpdate();
             if (Input.GetMouseButton(0))
@@ -159,11 +155,10 @@ public partial class Player : Entity
                 Weapon.StartAttack(true);
             if (Weapon.IsAttacking())
             {
-                AttackUpdateTimer += AttackSpeedModifier;
                 if(Weapon.IsPrimaryAttacking())
-                    AttackUpdateTimer += PrimaryAttackSpeedModifier - 1;
+                    AttackUpdateTimer += PrimaryAttackSpeedModifier;
                 if(Weapon.IsSecondaryAttacking())
-                    AttackUpdateTimer += SecondaryAttackSpeedModifier - 1;
+                    AttackUpdateTimer += SecondaryAttackSpeedModifier;
             }
             else
             {

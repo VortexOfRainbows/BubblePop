@@ -12,6 +12,10 @@ public class LightSpear : Projectile
         SpriteRendererGlow.color = new Color(1.2f, 1.2f, 1.2f);
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/LaserSquare");
         Damage = 3;
+        if(Player.Instance.LightSpear > 0)
+        {
+            Damage = (int)(2.5f + Player.Instance.LightSpear * 0.5f);
+        }
         Friendly = true;
         Hostile = false;
         cmp.c2D.offset = new Vector2(1, 0);
@@ -78,9 +82,9 @@ public class LightSpear : Projectile
     public bool HasFiredLaser = false;
     public override void OnHitTarget(Entity target)
     {
-        if(Player.Instance.LightChainReact > 0 && !HasFiredLaser && Data[2] > 0)
+        if(Player.Instance.LightChainReact > 0 && !HasFiredLaser && Data[2] > 0 && target is Enemy e)
         {
-            Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), Data[2]).GetComponent<LightSpearCaster>().ignore = target;
+            Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), Data[2]).GetComponent<LightSpearCaster>().ignore = e;
             HasFiredLaser = true;
         }
     }
@@ -88,7 +92,7 @@ public class LightSpear : Projectile
 public class LightSpearCaster : Projectile
 {
     public Light2D Glow;
-    public Entity ignore;
+    public Enemy ignore;
     public override void Init()
     {
         Destroy(SpriteRendererGlow);

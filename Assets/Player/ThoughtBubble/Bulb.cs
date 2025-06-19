@@ -21,6 +21,7 @@ public class Bulb : Hat
         powerPool.Add<WeaponUpgrade>();
         powerPool.Add<SpearOfLight>();
         powerPool.Add<NeuronActivation>();
+        powerPool.Add<Refraction>();
     }
     protected override string Description()
     {
@@ -79,8 +80,8 @@ public class Bulb : Hat
     public static readonly float DefaultShotSpeed = 2.2f;
     public static readonly float MaxRange = 48;
     private float lightSpearCounter = 0;
-    public static float SpeedModifier => (1 + Mathf.Sqrt(player.LightSpear));
-    public override void EquipUpdate()
+    public static float SpeedModifier => player.PassiveAttackSpeedModifier;
+    public override void PostEquipUpdate()
     {
         if(player.LightSpear > 0)
         {
@@ -99,14 +100,14 @@ public class Bulb : Hat
             }
         }
     }
-    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, Entity ignore, int BounceNum = 0, float bonusRange = 0)
+    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, Enemy ignore, int BounceNum = 0, float bonusRange = 0)
     {
         float speedMod = SpeedModifier;
         float spearSpeed = 5 + speedMod * 0.015f; // this only matters for visuals as the spear is hitscan
-        float spearRange = speedMod * 4.5f + bonusRange; //starts at 2 * 4.5 = 9
+        float spearRange = (player.LightSpear + 3) * 2.25f + bonusRange; //starts at 3 * 3 = 9, +2.25 range per stack
         if (spearRange > MaxRange)
             spearRange = MaxRange;
-        Entity target = Entity.FindClosest(shootFromPos, spearRange, out Vector2 norm2, "Enemy", true, ignore);
+        Enemy target = Enemy.FindClosest(shootFromPos, spearRange, out Vector2 norm2, true, ignore);
         norm = norm2;
         if (target != null)
         {

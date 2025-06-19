@@ -25,6 +25,30 @@ public static class EnemyID
 
 public class Enemy : Entity
 {
+    public static HashSet<Enemy> Enemies = new HashSet<Enemy>();
+    public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, bool requireNonImmune = true, params Enemy[] ignore)
+    {
+        norm = Vector2.zero;
+        Enemy best = null;
+        foreach(Enemy e in Enemies)
+        {
+            Vector2 toDest = e.transform.position - position;
+            float dist = toDest.magnitude;
+            //Debug.Log(e.tag);
+            if (dist <= searchDistance && (!requireNonImmune || e.UniversalImmuneFrames <= 0))
+            {
+                bool blackListed = ignore.Contains(e);
+                if (!blackListed)
+                {
+                    best = e;
+                    searchDistance = dist;
+                    norm = toDest;
+                }
+            }
+        }
+        norm = norm.normalized;
+        return best;
+    }
     public class ImmunityData
     {
         public ImmunityData(Projectile attacker, int frames)
@@ -50,6 +74,7 @@ public class Enemy : Entity
     {
         if(JustSpawnedIn)
         {
+            Enemies.Add(this);
             UpdateRendererColor(new Color(1, 0, 0, 0), 1);
             JustSpawnedIn = false;
         }
@@ -104,6 +129,7 @@ public class Enemy : Entity
     public virtual float CostMultiplier => 1;
     public sealed override void Kill()
     {
+        Enemies.Remove(this);
         OnKill();
         float rand = 1;
         for(int i = 0; i < CoinRandomizationAggressiveness; ++i)
@@ -124,5 +150,9 @@ public class Enemy : Entity
     public virtual void OnKill()
     {
 
+    }
+    public void OnDestroy()
+    {
+        Enemies.Remove(this);
     }
 }

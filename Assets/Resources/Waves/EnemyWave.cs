@@ -98,14 +98,14 @@ public class EnemyPattern
     }
     public bool InWorld(Vector2 location)
     {
-        bool hasWorldMap = DualGridTilemap.Instance != null && DualGridTilemap.RealTileMap != null;
+        bool hasWorldMap = World.RealTileMap != null && World.RealTileMap.Map != null;
         if(hasWorldMap)
         {
             for(int i = -1; i <= 1; ++i)
             {
                 for(int j = -1; j <= 1; ++j)
                 {
-                    if (!DualGridTilemap.RealTileMap.HasTile(DualGridTilemap.RealTileMap.WorldToCell(location) + new Vector3Int(i, j)))
+                    if (!World.RealTileMap.Map.HasTile(World.RealTileMap.Map.WorldToCell(location) + new Vector3Int(i, j)))
                     {
                         return false;
                     }

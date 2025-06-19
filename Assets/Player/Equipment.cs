@@ -145,4 +145,14 @@ public class Equipment : MonoBehaviour
     {
 
     }
+    /// <summary>
+    /// Ran while the player has this equipment equipped, but after the equips have been processed.
+    /// Runs after the powerup-reset code, meaning that any adjustments to powerup related states will take effect.
+    /// Not called on non-player equipment.
+    /// Useful for attack-like effects that rely on powerups and other equipment modifications before activating.
+    /// </summary>
+    public virtual void PostEquipUpdate()
+    {
+
+    }
 }

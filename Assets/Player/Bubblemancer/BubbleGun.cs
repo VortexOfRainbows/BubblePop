@@ -37,8 +37,8 @@ public class BubbleGun : BubblemancerWand
     {
         GunUpdate();
     }
-    private float AttackCooldownLeft => Mathf.Max(0, 14f - Player.Instance.AttackSpeedModifier);
-    private float AttackCooldownRight => Mathf.Max(0, 20f - Player.Instance.AttackSpeedModifier);
+    private float AttackCooldownLeft => Mathf.Max(0, 14f - (Player.Instance.PrimaryAttackSpeedModifier - 1) * 2f);
+    private float AttackCooldownRight => Mathf.Max(0, 20f - (Player.Instance.SecondaryAttackSpeedModifier - 1) * 20f);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft < -AttackCooldownLeft && AttackRight < 0)
