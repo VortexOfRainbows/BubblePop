@@ -46,9 +46,10 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Speed: 1
+    - _stepedge: 4.44
     m_Colors:
     - _Base_Color: {r: 0, g: 0, b: 0, a: 0}
-    - _SmoothStepEdges: {r: 2.45, g: 7.2, b: 0, a: 0}
+    - _SmoothStepEdges: {r: 2.44, g: 6.44, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4616085275954376006
 MonoBehaviour:
