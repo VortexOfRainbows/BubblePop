@@ -1,0 +1,37 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+        <ui:Toggle label="Active" name="ActiveToggle" style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;" />
+        <ui:ScrollView>
+            <ui:GroupBox name="Prefab1">
+                <uie:ObjectField label="Object Prefab 1" name="Prefab1" />
+                <ui:IntegerField label="Probability Weight" value="42" name="Weight1" />
+                <ui:FloatField label="Min Scale" value="42.2" name="MinScale1" />
+                <ui:FloatField label="Max Scale" value="42.2" name="MaxScale1" />
+            </ui:GroupBox>
+            <ui:GroupBox name="Prefab2">
+                <uie:ObjectField label="Object Prefab 2" name="Prefab2" />
+                <ui:IntegerField label="Probability Weight" value="42" name="Weight2" />
+                <ui:FloatField label="Min Scale" value="42.2" name="MinScale2" />
+                <ui:FloatField label="Max Scale" value="42.2" name="MaxScale2" />
+            </ui:GroupBox>
+            <ui:GroupBox name="Prefab3">
+                <uie:ObjectField label="Object Prefab 3" name="Prefab3" />
+                <ui:IntegerField label="Probability Weight" value="42" name="Weight3" />
+                <ui:FloatField label="Min Scale" value="42.2" name="MinScale3" />
+                <ui:FloatField label="Max Scale" value="42.2" name="MaxScale3" />
+            </ui:GroupBox>
+            <ui:GroupBox name="Prefab4">
+                <uie:ObjectField label="Object Prefab 4" name="Prefab4" />
+                <ui:IntegerField label="Probability Weight" value="42" name="Weight4" />
+                <ui:FloatField label="Min Scale" value="42.2" name="MinScale4" />
+                <ui:FloatField label="Max Scale" value="42.2" name="MaxScale4" />
+            </ui:GroupBox>
+            <ui:GroupBox name="Prefab5">
+                <uie:ObjectField label="Object Prefab 5" name="Prefab5" />
+                <ui:IntegerField label="Probability Weight" value="42" name="Weight5" />
+                <ui:FloatField label="Min Scale" value="42.2" name="MinScale5" />
+                <ui:FloatField label="Max Scale" value="42.2" name="MaxScale5" />
+            </ui:GroupBox>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>
