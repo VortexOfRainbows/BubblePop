@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using static UnityEngine.GraphicsBuffer;
 public class Bulb : Hat
 {
     public Sprite OnBulb;
@@ -90,7 +93,7 @@ public class Bulb : Hat
             lightSpearCounter += Time.fixedDeltaTime * SpeedModifier;
             while(lightSpearCounter > shotTime)
             {
-                if(LaunchSpear(shootFromPos, out Vector2 norm, null, player.LightChainReact))
+                if(LaunchSpear(shootFromPos, out Vector2 norm, new(), player.LightChainReact))
                 {
                     velocity -= norm;
                     lightSpearCounter -= shotTime;
@@ -100,20 +103,43 @@ public class Bulb : Hat
             }
         }
     }
-    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, Enemy ignore, int BounceNum = 0, float bonusRange = 0)
+    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, List<Enemy> ignore, int BounceNum = 0, float bonusRange = 0)
     {
         float speedMod = SpeedModifier;
         float spearSpeed = 5 + speedMod * 0.015f; // this only matters for visuals as the spear is hitscan
         float spearRange = (player.LightSpear + 3) * 2.25f + bonusRange; //starts at 3 * 3 = 9, +2.25 range per stack
         if (spearRange > MaxRange)
             spearRange = MaxRange;
-        Enemy target = Enemy.FindClosest(shootFromPos, spearRange, out Vector2 norm2, true, ignore);
-        norm = norm2;
-        if (target != null)
+        norm = Vector2.zero;
+        Vector2 searchPosition = shootFromPos;
+        bool hitTarget = false;
+        int totalHits = Mathf.Max(1, 1 + player.Refraction);
+        int enemiesFound = 0;
+        for (int i = 0; i < totalHits; ++i)
         {
-            Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, target.transform.position.x, target.transform.position.y, BounceNum);
-            return true;
+            Enemy target = Enemy.FindClosest(searchPosition, spearRange, out Vector2 norm2, ignore, true);
+            if (target != null)
+            {
+                if (++enemiesFound == 1) //refraction targetting
+                {
+                    norm = norm2;
+                    Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, target.transform.position.x, target.transform.position.y, BounceNum);
+                    searchPosition = target.transform.position;
+                    spearRange = 7 + player.Refraction * 2; //Starts at 7 + 2 = 9, scales by + 2 per stack
+                }
+                ignore.Add(target);
+                hitTarget = true;
+            }
         }
-        return false;
+        for(int i = 1; i < enemiesFound; i++) //Only activates if enemies found is >= 2
+        {
+            int index = ignore.Count - i;
+            float percent = i / (float)(enemiesFound - 1);
+            float radians = Mathf.PI * percent * 2f;
+            Enemy target = ignore[index];
+            Vector2 newNorm = (Vector2)target.transform.position - shootFromPos;
+            Projectile.NewProjectile<LightSpear>(shootFromPos, newNorm.normalized * spearSpeed, target.transform.position.x, target.transform.position.y, BounceNum, radians);
+        }
+        return hitTarget;
     }
 }

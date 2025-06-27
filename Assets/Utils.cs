@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using UnityEngine;
 using static Enemy;
-using static Entity;
 
 public static class Utils
 {
@@ -125,5 +123,27 @@ public static class Utils
     public static Vector3 Lerp(this Vector3 vector3, Vector3 other, float amt)
     {
         return vector3 = Vector3.Lerp(vector3, other, amt);
+    }
+    public static Color PastelRainbow(float radians, float centerColor = 0.75f, Color overrideColor = default)
+    {
+        float center = centerColor;
+        float spread = 1 - center;
+
+        float circlePalette = Mathf.Cos(radians);
+        float width = spread * circlePalette;
+        float red = center + width;
+
+        circlePalette = Mathf.Cos(radians + 2.094f);
+        width = spread * circlePalette;
+        float grn = center + width;
+
+        circlePalette = Mathf.Cos(radians + 4.1888f);
+        width = spread * circlePalette;
+        float blu = center + width;
+
+        if (overrideColor == default)
+            return new Color(red, grn, blu);
+        else
+            return new Color(red, grn, blu) * overrideColor;
     }
 }

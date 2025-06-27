@@ -275,7 +275,7 @@ public class NeuronActivation : PowerUp
         Weighting = 0.08f;
     }
     protected override string Name() => "Reflection";
-    protected override string Description() => "Enemies fire beams of light at other enemies when struck by light";
+    protected override string Description() => "Enemies struck by beams of light fire beams of light at nearby enemies";
     public override void HeldEffect(Player p)
     {
         p.LightChainReact += Stack;
@@ -343,8 +343,8 @@ public class Refraction : PowerUp
     {
         Weighting = 0.05f;
     }
-    protected override string Name() => "Refraction (WIP)";
-    protected override string Description() => "Multiplies the amount of beams shot at enemies (NOT YET IMPLEMENTED)";
+    protected override string Name() => "Refraction";
+    protected override string Description() => "Beams of light can target an additional enemy";
     public override void HeldEffect(Player p)
     {
         p.Refraction += Stack;

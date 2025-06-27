@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -11,6 +12,12 @@ public class LightSpear : Projectile
         SpriteRendererGlow.transform.localScale = new Vector3(0.4f, 3f, 3f);
         SpriteRendererGlow.color = new Color(1.2f, 1.2f, 1.2f);
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/LaserSquare");
+        if(Data.Length > 3)
+        {
+            Color c = Utils.PastelRainbow(Data[3], 0.67f) * 1.2f;
+            SpriteRenderer.color *= c;
+            SpriteRendererGlow.color *= c;
+        }
         Damage = 3;
         if(Player.Instance.LightSpear > 0)
         {
@@ -126,7 +133,7 @@ public class LightSpearCaster : Projectile
                 if (!HasShot)
                 {
                     Vector2 shootFromPos = Glow.transform.position;
-                    if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, ignore, (int)Data1 - 1, bonusRange: 5 + 1f * Player.Instance.LightChainReact))
+                    if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new List<Enemy> { ignore }, (int)Data1 - 1, bonusRange: 5 + 1f * Player.Instance.LightChainReact))
                         RB.velocity -= norm * 6;
                     HasShot = true;
                 }

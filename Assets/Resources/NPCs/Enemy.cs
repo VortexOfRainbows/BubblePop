@@ -28,9 +28,15 @@ public class Enemy : Entity
     public static HashSet<Enemy> Enemies = new HashSet<Enemy>();
     public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, bool requireNonImmune = true, params Enemy[] ignore)
     {
+        Enemy e = FindClosest(position, searchDistance, out Vector2 newNorm, ignore.ToList(), requireNonImmune);
+        norm = newNorm;
+        return e;
+    }
+    public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, List<Enemy> ignore, bool requireNonImmune = true)
+    {
         norm = Vector2.zero;
         Enemy best = null;
-        foreach(Enemy e in Enemies)
+        foreach (Enemy e in Enemies)
         {
             Vector2 toDest = e.transform.position - position;
             float dist = toDest.magnitude;
