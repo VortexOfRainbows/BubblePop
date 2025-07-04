@@ -200,11 +200,17 @@ public abstract class PowerUp
     }
     public void PickUp()
     {
+        AddToDisplayQueue();
         AddToPlayer(1);
         OnPickup(1);
         AmountPickedUpAcrossAllRuns++;
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;
+    }
+    public void AddToDisplayQueue()
+    {
+        if (!PopUpTextUI.PowerupQueue.Contains(this))
+            PopUpTextUI.PowerupQueue.Enqueue(this);
     }
     private int AddToPlayer(int count = 1)
     {

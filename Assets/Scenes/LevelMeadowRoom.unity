@@ -2518,6 +2518,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 413977869086127961, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 823073481762150899, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_audioClip
       value: 
@@ -2566,30 +2570,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainPackage
       objectReference: {fileID: 0}
-    - target: {fileID: 5445925894574317994, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5445925894574317994, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5445925894574317994, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5445925894574317994, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5445925894574317994, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5445925894574317994, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6018279833943819648, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2612,6 +2592,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6018279833943819648, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036088899788858041, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -26,6 +26,9 @@ public class PowerUpUIElement : MonoBehaviour
     public TMPro.TextMeshProUGUI Count;
     public int Index = 0;
     public bool InventoryElement = true;
+    /// <summary>
+    /// Whether this element appears in the main menu. Determines whether it can be locked (blacked out)
+    /// </summary>
     public bool MenuElement = false;
     private float Timer;
     public PowerUpLayout myLayout;
@@ -71,11 +74,12 @@ public class PowerUpUIElement : MonoBehaviour
         visual.SetActive(false);
     }
     public bool AppearLocked => MenuElement && MyPower.PickedUpCountAllRuns <= 0;
+    public bool PreventHovering;
     public void WhileOn()
     {
         Timer += 1;
         Count.text = MyPower.Stack.ToString();
-        bool canHover = myLayout == null ? true : !myLayout.isHovering;
+        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering);
         if(canHover && Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 64 * transform.localScale.x, myCanvas))
         {
             if(myLayout != null)
@@ -89,7 +93,7 @@ public class PowerUpUIElement : MonoBehaviour
 
         if(AppearLocked)
             inner.color = adornment.color = Color.black;
-        else
+        else if(MenuElement)
             inner.color = adornment.color = Color.white;
     }
     public void Update()
