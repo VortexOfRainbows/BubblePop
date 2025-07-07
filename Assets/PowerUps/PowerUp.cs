@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 public static class ReflectiveEnumerator
 {
@@ -244,4 +245,20 @@ public abstract class PowerUp
     }
     public Sprite sprite;
     public virtual int Cost => (int)(10 / Weighting);
+    public int CalculateRarity()
+    {
+        if(Weighting <= 0.05f)
+            return 5;
+        if (Weighting <= 0.1f)
+            return 4;
+        if (Weighting <= 0.4f)
+            return 3;
+        if (Weighting <= 0.8f)
+            return 2;
+        return 1;
+    }
+    public virtual int GetRarity()
+    {
+        return CalculateRarity();
+    }
 }
