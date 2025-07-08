@@ -23,11 +23,16 @@ public class PowerUpObject : MonoBehaviour
         {
             adornment.gameObject.SetActive(true);
             adornment.sprite = adornmentSprite;
+            outer.material = inner.material = adornment.material = MyPower.GetBorder();
         }
         else
+        {
+            outer.material = inner.material = MyPower.GetBorder();
             adornment.gameObject.SetActive(false);
+        }
         adornment = null;
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
+
     }
     public void FixedUpdate()
     {
