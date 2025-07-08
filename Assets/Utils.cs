@@ -146,4 +146,9 @@ public static class Utils
         else
             return new Color(red, grn, blu) * overrideColor;
     }
+    public static Color WithAlphaMultiplied(this Color color, float alphaMultiplier)
+    {
+        color.a *= alphaMultiplier;
+        return color;
+    }
 }
