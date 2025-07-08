@@ -19,6 +19,16 @@ public static class ReflectiveEnumerator
 }
 public abstract class PowerUp
 {
+    public static readonly Material WhiteOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderWhite");
+    public static readonly Material GreenOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderGreen");
+    public static readonly Material BlueOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderBlue");
+    public static readonly Material PurpleOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderPurple");
+    public static readonly Material GoldOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderGold");
+    public static readonly Material WhiteOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderWhiteThin");
+    public static readonly Material GreenOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderGreenThin");
+    public static readonly Material BlueOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderBlueThin");
+    public static readonly Material PurpleOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderPurpleThin");
+    public static readonly Material GoldOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderGoldThin");
     public int PickedUpCountAllRuns => AmountPickedUpAcrossAllRuns;
     public int PickedUpBestAllRuns => HighestAmountPickedUpInASingleRun;
     protected int AmountPickedUpAcrossAllRuns = 0;
@@ -260,5 +270,18 @@ public abstract class PowerUp
     public virtual int GetRarity()
     {
         return CalculateRarity();
+    }
+    public virtual Material GetBorder(bool thin = false)
+    {
+        int rare = GetRarity();
+        if (rare == 5)
+            return thin ? GoldOutlineThin : GoldOutline;
+        if (rare == 4)
+            return thin ? PurpleOutlineThin : PurpleOutline;
+        if (rare == 3)
+            return thin ? BlueOutlineThin : BlueOutline;
+        if (rare == 2)
+            return thin ? GreenOutlineThin : GreenOutline;
+        return thin ? WhiteOutlineThin : WhiteOutline;
     }
 }

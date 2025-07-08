@@ -53,6 +53,7 @@ public class PopUpTextUI : MonoBehaviour
         if (FollowMouse)
         {
             Instance = this;
+            //Debug.Log(Input.mousePosition);
             transform.position = Input.mousePosition + new Vector3(40, -40);
             SnapToScreen();
         }
@@ -122,7 +123,7 @@ public class PopUpTextUI : MonoBehaviour
         float width = Screen.width - visualRect.rect.width * MainGameCanvas.scaleFactor;
         float height = visualRect.rect.height * MainGameCanvas.scaleFactor;
         //Clamp so it won't leave the boundaries of the screen
-        //Debug.Log($"{transform.position}, {width}, {height}");
+        //Debug.Log($"{transform.position}, {width}, {height}, {MainGameCanvas.scaleFactor}");
         transform.position = new Vector2(Mathf.Clamp(transform.position.x, 0, width), Mathf.Clamp(transform.position.y, height, 10000) + myRect.rect.height / 2 * MainGameCanvas.scaleFactor);
     }
     public void Update()

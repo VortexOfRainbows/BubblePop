@@ -46,8 +46,8 @@ public class Sound : MonoBehaviour
             float dist = Vector2.Distance(transform.position, Player.Position) - 2;
             if (dist < 0)
                 dist = 0;
-            float vol = 1 - Mathf.Min(1, Mathf.Pow(dist / 9f, 2));
-            Source.volume = vol * 1f;
+            float vol = 1 - Mathf.Min(1, Mathf.Pow(dist / 8f, 2));
+            Source.volume = vol * 0.8f;
         }
         if (!Source.isPlaying && !Source.loop)
         {

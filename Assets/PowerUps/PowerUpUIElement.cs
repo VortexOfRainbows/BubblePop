@@ -21,7 +21,7 @@ public class PowerUpUIElement : MonoBehaviour
     [SerializeField] private GameObject visual;
     public PowerUp MyPower => PowerUp.Get(Type);
     public Sprite Sprite => MyPower.sprite;
-    private int prevType;
+    private int prevType = -1;
     public int Type => InventoryElement ? (PlayerHasPower() ? Player.Instance.GetPower(Index) : -1) : Index;
     public TMPro.TextMeshProUGUI Count;
     public int Index = 0;
@@ -66,7 +66,12 @@ public class PowerUpUIElement : MonoBehaviour
 
         outer.SetNativeSize();
         visual.SetActive(true);
+        SetBorderColors();
         WhileOn();
+    }
+    public void SetBorderColors()
+    {
+        outer.material = inner.material = MyPower.GetBorder();
     }
     public void TurnedOff()
     {
