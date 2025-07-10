@@ -9,7 +9,6 @@ public class RedCape : BubblemancerCape
     {
         return "Increases movement speed\nAdditionally increases movement speed each time you resurrect";
     }
-    public override int GetPrice() => 15;
     public override void EquipUpdate()
     {
         player.MoveSpeedMod += 0.2f + 0.1f * player.SpentBonusLives;

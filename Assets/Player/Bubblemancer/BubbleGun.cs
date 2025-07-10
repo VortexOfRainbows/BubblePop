@@ -209,5 +209,4 @@ public class BubbleGun : BubblemancerWand
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.transform.eulerAngles.z,
              spriteRender.flipY ? 190 : - 10, 0.1f));
     }
-    public override int GetPrice() => 10;
 }

@@ -14,7 +14,7 @@ public class EquipmentUIElement : MonoBehaviour
     public Vector3 targetScale = Vector3.one;
     public Image Slot;
     public bool Unlocked => ActiveEquipment.IsUnlocked || DisplayOnly;
-    public bool CanAfford => CoinManager.Savings >= ActiveEquipment.GetPrice() || ActiveEquipment.GetPrice() <= 0;
+    public bool CanAfford => true; // CoinManager.Savings >= ActiveEquipment.GetPrice() || ActiveEquipment.GetPrice() <= 0;
     public bool DisplayOnly = false;
     public void UpdateOrientation()
     {
@@ -60,7 +60,7 @@ public class EquipmentUIElement : MonoBehaviour
     }
     public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked)
     {
-        int cost = ActiveEquipment.GetPrice();
+        int cost = 0; // ActiveEquipment.GetPrice();
         Text.text = $"${cost}";
         PriceVisual.SetActive(cost != 0 && Unlocked);
 

@@ -181,8 +181,8 @@ public class CharacterSelect : MonoBehaviour
             PowerLayout.Generate(PowerUp.AvailablePowers);
             PowerUpPageIsOpen = true;
         }
-        if(Player.Instance != null)
-            CoinManager.TotalEquipCost = Player.Instance.Hat.GetPrice() + Player.Instance.Accessory.GetPrice() + Player.Instance.Weapon.GetPrice() + Player.Instance.Body.GetPrice(); 
+        if (Player.Instance != null)
+            CoinManager.TotalEquipCost = 0; //Player.Instance.Hat.GetPrice() + Player.Instance.Accessory.GetPrice() + Player.Instance.Weapon.GetPrice() + Player.Instance.Body.GetPrice(); 
     }
     public bool UISlotUpdate(EquipmentUIElement slot, EquipmentPage page, int index, bool AllowOpeningPage)
     {

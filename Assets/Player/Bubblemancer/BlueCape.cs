@@ -11,7 +11,6 @@ public class BlueCape : BubblemancerCape
             "\n" +
             "Greatly reduces ability cooldown and slightly increases attack speed";
     }
-    public override int GetPrice() => 10;
     public override void EquipUpdate()
     {
         player.AbilityRecoverySpeed += 0.6f;

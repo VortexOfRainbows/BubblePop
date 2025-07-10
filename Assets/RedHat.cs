@@ -11,5 +11,4 @@ public class RedHat : BubblemancerHat
     {
         PowerUp.Spawn(PowerUp.AvailablePowers.Last(), Player.Position, 0);
     }
-    public override int GetPrice() => 15;
 }

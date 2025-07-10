@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
@@ -135,7 +136,12 @@ public class Equipment : MonoBehaviour
     {
 
     }
-    public virtual int GetPrice() => 0;
+    /// <summary>
+    /// Equipment is at 0
+    /// </summary>
+    /// <returns></returns>
+    [Obsolete]
+    public int GetPrice() => 0;
     /// <summary>
     /// Ran while the player has this equipment equipped.
     /// Runs after the powerup-reset code, meaning that any adjustments to powerup related states will take effect.
