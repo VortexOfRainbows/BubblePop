@@ -16,34 +16,34 @@ public class MoneyIcon : MonoBehaviour
     public float SparkleTimer = 0;
     private void FixedUpdate()
     {
-        if(!Main.WavesUnleashed)
+        //if(true)
+        //{
+        if (Utils.IsMouseHoveringOverThis(true, Icon.rectTransform, canvas: myCanvas))
         {
-            if (Utils.IsMouseHoveringOverThis(true, Icon.rectTransform, canvas: myCanvas))
-            {
-                Icon.gameObject.transform.localScale = Vector3.Lerp(Icon.gameObject.transform.localScale, one * ScaleFactor, 0.1f);
-                PopUpTextUI.Enable("Savings", "Can be used to purchase fancy equipment\n10% of money is converted into savings at the end of a run");
-                UpdateSparkle(Sparkle, true);
-            }
-            else
-            {
-                Icon.gameObject.transform.localScale = Vector3.Lerp(Icon.gameObject.transform.localScale, one * 1.0f, 0.1f);
-                UpdateSparkle(Sparkle, false);
-            }
+            Icon.gameObject.transform.localScale = Vector3.Lerp(Icon.gameObject.transform.localScale, one * ScaleFactor, 0.1f);
+            PopUpTextUI.Enable("Money", "Can be used to purchase fancy powerups");
+            UpdateSparkle(Sparkle, true);
         }
         else
         {
-            if (Utils.IsMouseHoveringOverThis(false, Icon2.rectTransform, 50, canvas: myCanvas))
-            {
-                Icon2.gameObject.transform.localScale = Vector3.Lerp(Icon2.gameObject.transform.localScale, one * ScaleFactor, 0.1f);
-                PopUpTextUI.Enable("Money", "Can be used to purchase fancy powerups\n10% is converted into savings at the end of a run");
-                UpdateSparkle(Sparkle2, true);
-            }
-            else
-            {
-                Icon2.gameObject.transform.localScale = Vector3.Lerp(Icon2.gameObject.transform.localScale, one * 1.0f, 0.1f);
-                UpdateSparkle(Sparkle2, false);
-            }
+            Icon.gameObject.transform.localScale = Vector3.Lerp(Icon.gameObject.transform.localScale, one * 1.0f, 0.1f);
+            UpdateSparkle(Sparkle, false);
         }
+        //}
+        //else
+        //{
+        //    if (Utils.IsMouseHoveringOverThis(false, Icon2.rectTransform, 50, canvas: myCanvas))
+        //    {
+        //        Icon2.gameObject.transform.localScale = Vector3.Lerp(Icon2.gameObject.transform.localScale, one * ScaleFactor, 0.1f);
+        //        PopUpTextUI.Enable("Money", "Can be used to purchase fancy powerups");
+        //        UpdateSparkle(Sparkle2, true);
+        //    }
+        //    else
+        //    {
+        //        Icon2.gameObject.transform.localScale = Vector3.Lerp(Icon2.gameObject.transform.localScale, one * 1.0f, 0.1f);
+        //        UpdateSparkle(Sparkle2, false);
+        //    }
+        //}
     }
     private void UpdateSparkle(GameObject obj, bool on)
     {

@@ -52,10 +52,11 @@ public class UIManager : MonoBehaviour
         waveText.text = "Wave: " + Mathf.FloorToInt(WaveDirector.WaveNum);
         deadHighscoreText.text = highscoreText.text;
 
-        int money = Main.WavesUnleashed ? CoinManager.Current : CoinManager.Savings;
+        int money = CoinManager.Current; // : CoinManager.Savings;
         moneyText.text = $"${money}";
-        CurrencyIcon.SetActive(Main.WavesUnleashed);
-        SavingsIcon.SetActive(!Main.WavesUnleashed);
+        moneyText.enabled = true;
+        CurrencyIcon.SetActive(false);
+        SavingsIcon.SetActive(true);
 
         if (score > highscore)
         {

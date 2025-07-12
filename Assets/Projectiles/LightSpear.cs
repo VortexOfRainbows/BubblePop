@@ -4,6 +4,10 @@ using UnityEngine.Rendering.Universal;
 
 public class LightSpear : Projectile
 {
+    public override bool CanBeAffectedByHoming()
+    {
+        return false;
+    }
     public override void Init()
     {
         transform.localScale = Vector3.one * 0.5f;
@@ -98,6 +102,10 @@ public class LightSpear : Projectile
 }
 public class LightSpearCaster : Projectile
 {
+    public override bool CanBeAffectedByHoming()
+    {
+        return false;
+    }
     public Light2D Glow;
     public Enemy ignore;
     public override void Init()
