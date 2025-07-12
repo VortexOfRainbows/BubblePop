@@ -18,7 +18,7 @@ public class WeaponUpgrade : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.75f;
+        Weighting = Uncommon;
     }
     protected override string Name() => "Haste";
     protected override string Description() => "Increases weapon attack speed";
@@ -39,7 +39,7 @@ public class Overclock : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.75f;
+        Weighting = Uncommon;
     }
     protected override string Name() => "Overclock";
     protected override string Description() => "Reduces ability cooldown";
@@ -70,7 +70,7 @@ public class Dash : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.8f;
+        Weighting = Uncommon;
     }
     protected override string Name() => "Sparkle Sparkle";
     protected override string Description() => "Adds damaging stars to your ability";
@@ -92,7 +92,7 @@ public class Starbarbs : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.3f;
+        Weighting = Rare;
     }
     protected override string Name() => "Starbarbs";
     protected override string Description() => "Enemies killed by stars explode into stars";
@@ -105,7 +105,7 @@ public class SoapySoap : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.3f;
+        Weighting = Rare;
     }
     protected override string Name() => "Soapy Soap";
     protected override string Description() => "Charge attacks leave behind a trail of bubbles";
@@ -118,7 +118,7 @@ public class BubbleBlast : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.75f;
+        Weighting = Uncommon;
     }
     protected override string Name() => "Bubble Blast";
     protected override string Description() => "Charge attacks release bubbles upon expiring";
@@ -131,7 +131,7 @@ public class Starshot : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.08f;
+        Weighting = SuperRare;
     }
     protected override string Name() => "Starshot";
     protected override string Description() => "Chance for stars to be fired alongside shotgun bubbles" +
@@ -146,7 +146,7 @@ public class BinaryStars : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.27f;
+        Weighting = Rare;
     }
     protected override string Name() => "Binary Stars";
     protected override string Description() => "Periodically release 2 stars";
@@ -159,7 +159,7 @@ public class EternalBubbles : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.9f;
+        Weighting = Uncommon;
     }
     protected override string Name() => "Eternal Bubbles";
     protected override string Description() => "Increases lifespan of all small bubbles";
@@ -176,7 +176,7 @@ public class BubbleBirb : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.08f;
+        Weighting =SuperRare;
     }
     protected override string Name() => "Bubble Birb";
     protected override string Description() => "Resurrect in a dance of flames after death";
@@ -193,7 +193,7 @@ public class BubbleTrail : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.7f;
+        Weighting = Uncommon;
     }
     protected override string Name() => "Bubble Trail";
     protected override string Description() => "Periodically release bubbles behind you";
@@ -206,7 +206,7 @@ public class Coalescence : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.3f;
+        Weighting = Rare;
     }
     protected override string Name() => "Coalescence";
     protected override string Description() => "Secondary attack may be charged an additional time\nSlightly increases secondary attack speed";
@@ -220,7 +220,7 @@ public class LuckyStar : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.3f;
+        Weighting = Rare;
     }
     protected override string Name() => "Lucky Star";
     protected override string Description() => "Enemies killed by stars have an additional chance to drop power ups";
@@ -233,7 +233,7 @@ public class TrailOfThoughts : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.7f;
+        Weighting = Uncommon;
     }
     protected override string Name() => "Trail of Thoughts";
     protected override string Description() => "Increases the maximum length of your thought trail";
@@ -246,7 +246,7 @@ public class Magnet : PowerUp
 {
     public override void Init()
     {
-        Weighting = 1f;
+        Weighting = Common;
     }
     protected override string Name() => "Magnet";
     protected override string Description() => "Extends the distance coins are collected from";
@@ -259,7 +259,7 @@ public class SpearOfLight : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.27f;
+        Weighting = Rare;
     }
     protected override string Name() => "Spear of Light";
     protected override string Description() => "Periodically fire beams of light at nearby enemies";
@@ -272,7 +272,7 @@ public class NeuronActivation : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.08f;
+        Weighting = SuperRare;
     }
     protected override string Name() => "Reflection";
     protected override string Description() => "Enemies struck by beams of light fire beams of light at nearby enemies";
@@ -285,7 +285,7 @@ public class BrainBlast : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.3f;
+        Weighting = PowerUp.Rare;
     }
     protected override string Name() => "Brain Blast";
     protected override string Description() => "Release additional bubbles when teleporting";
@@ -298,7 +298,7 @@ public class Raise : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.75f;
+        Weighting = PowerUp.Uncommon;
     }
     protected override string Name() => "Raise";
     protected override string Description() => "Increases maximum chip stack height\nSlightly reduces ability cooldown";
@@ -312,7 +312,7 @@ public class AllIn : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.05f;
+        Weighting = PowerUp.Legendary;
     }
     protected override string Name() => "All-In";
     protected override string Description() => "Grants additional chip stacks and a chance for chips to be enhanced\nIncreases maximum chip stack height\nGreatly reduces ability cooldown";
@@ -328,7 +328,7 @@ public class SnakeEyes : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.3f;
+        Weighting = PowerUp.Rare;
     }
     protected override string Name() => "Snake Eyes";
     protected override string Description() => "Chance to deal additional damage, including recursively";
@@ -341,12 +341,25 @@ public class Refraction : PowerUp
 {
     public override void Init()
     {
-        Weighting = 0.05f;
+        Weighting = SuperRare;
     }
     protected override string Name() => "Refraction";
     protected override string Description() => "Beams of light can target an additional enemy";
     public override void HeldEffect(Player p)
     {
         p.Refraction += Stack;
+    }
+}
+public class Calculator : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    protected override string Name() => "Calculator";
+    protected override string Description() => "Grants aim assist";
+    public override void HeldEffect(Player p)
+    {
+        p.HomingRange += Stack;
     }
 }

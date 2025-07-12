@@ -19,6 +19,11 @@ public static class ReflectiveEnumerator
 }
 public abstract class PowerUp
 {
+    public static readonly float Common = 1f;
+    public static readonly float Uncommon = 0.7f;
+    public static readonly float Rare = 0.27f;
+    public static readonly float SuperRare = 0.1f;
+    public static readonly float Legendary = 0.05f;
     public static readonly Material WhiteOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderWhite");
     public static readonly Material GreenOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderGreen");
     public static readonly Material BlueOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderBlue");

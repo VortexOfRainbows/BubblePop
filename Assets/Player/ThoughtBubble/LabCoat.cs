@@ -15,7 +15,7 @@ public class LabCoat : BubblemancerCape
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         base.ModifyPowerPool(powerPool);
-        powerPool.Add<Choice>();
+        powerPool.Add<Calculator>();
     }
     public SpriteRenderer ArmL;
     public SpriteRenderer ArmR;

@@ -60,6 +60,7 @@ public partial class Player : Entity
     public float TrailOfThoughtsRecoverySpeed => AbilityRecoverySpeed;
     public float AbilityRecoverySpeed = 1.0f, AbilityRecoverySpeedMult = 1.0f, MoveSpeedMod = 1.0f;
     public float BlueChipChance = 0.0f;
+    public float HomingRange = 0;
     public int ChipHeight = 5;
     public int ChipStacks = 2;
 
@@ -79,7 +80,7 @@ public partial class Player : Entity
         AttackSpeedModifier = AbilityRecoverySpeed = AbilityRecoverySpeedMult = MoveSpeedMod = 1.0f;
         LuckyStar = TrailOfThoughts = LightChainReact = BrainBlast = SnakeEyes = Refraction = 0;
         PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = PassiveAttackSpeedModifier = 0;
-        BlueChipChance = 0.0f;
+        BlueChipChance = HomingRange = 0.0f;
         ChipHeight = 5;
         ChipStacks = 2;
     }

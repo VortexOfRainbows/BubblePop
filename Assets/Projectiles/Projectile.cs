@@ -67,6 +67,10 @@ public class Projectile : MonoBehaviour
     public void FixedUpdate()
     {
         AI();
+        if(CanBeAffectedByHoming() && Friendly && Player.Instance.HomingRange > 0)
+        {
+            HomingBehavior();
+        }
     }
     public void HitTarget(Entity target)
     {
@@ -96,7 +100,6 @@ public class Projectile : MonoBehaviour
     {
 
     }
-    #region bath bomb colors
     public Color PickColor(float data, float counter)
     {
         Color color = Color.white;
@@ -131,7 +134,29 @@ public class Projectile : MonoBehaviour
         int blu = (int)(center + width);
         return new Color(red / 255f, grn / 255f, blu / 255f);
     }
-    #endregion
+    public virtual bool CanBeAffectedByHoming()
+    {
+        return true;
+    }
+    private int homingCounter = 0;
+    public void HomingBehavior()
+    {
+        if(homingCounter++ % 2 == 0)
+        {
+            float range = Player.Instance.HomingRange * 1.5f + 2.5f;
+            Enemy target = Enemy.FindClosest(transform.position, range, out Vector2 norm2, true);
+            if (target != null && DoHomingBehavior(target, norm2, range))
+            {
+                float currentSpeed = RB.velocity.magnitude + Mathf.Sqrt(range) * 0.1f;
+                float modAmt = 0.03f + Mathf.Sqrt(range) * 0.01f;
+                RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm2 * currentSpeed, modAmt).normalized * currentSpeed;
+            }
+        }
+    }
+    public virtual bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
+    {
+        return true;
+    }
 }
 public class StarProj : Projectile
 {
@@ -186,6 +211,15 @@ public class StarProj : Projectile
             SpriteRendererGlow.color = new Color(SpriteRendererGlow.color.r, SpriteRendererGlow.color.g, SpriteRendererGlow.color.b) * alphaOut;
         }
         timer++;
+    }
+    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
+    {
+        Vector2 targetPos = new Vector2(Data1, Data2);
+        float modAmt = 0.03f + Mathf.Sqrt(scale) * 0.01f;
+        targetPos = Vector2.Lerp(targetPos, target.transform.position, modAmt);
+        Data1 = targetPos.x;
+        Data2 = targetPos.y;
+        return true;
     }
     public override void OnHitTarget(Entity target)
     {
