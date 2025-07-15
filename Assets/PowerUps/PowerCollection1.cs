@@ -176,7 +176,7 @@ public class BubbleBirb : PowerUp
 {
     public override void Init()
     {
-        Weighting =SuperRare;
+        Weighting = Legendary;
     }
     protected override string Name() => "Bubble Birb";
     protected override string Description() => "Resurrect in a dance of flames after death";

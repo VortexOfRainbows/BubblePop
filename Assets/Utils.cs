@@ -151,4 +151,9 @@ public static class Utils
         color.a *= alphaMultiplier;
         return color;
     }
+    public static Transform LerpLocalScale(this Transform transform, Vector2 newScale, float t)
+    {
+        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3( newScale.x, newScale.y, transform.localScale.z), t);
+        return transform;
+    }
 }

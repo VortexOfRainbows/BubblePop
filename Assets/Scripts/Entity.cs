@@ -8,6 +8,7 @@ public class Entity : MonoBehaviour
     //public int UniqueID = NextUniqueID++;
     public float UniversalImmuneFrames = 0;
     public int Life = 10;
+    public int MaxLife = -1;
     public float DamageTaken = 0;
     public static readonly string PlayerTag = "Player";
     public static readonly string ProjTag = "Proj";
@@ -51,7 +52,7 @@ public class Entity : MonoBehaviour
     {
         if (this is Player p && !p.IsDead && p.UniversalImmuneFrames <= 0)
         {
-            p.Pop();
+            p.Hurt(1);
         }
     }
     public Vector2 lastPos = Vector2.zero;
@@ -62,6 +63,16 @@ public class Entity : MonoBehaviour
         Animate();
     }
     public virtual void OnFixedUpdate()
+    {
+
+    }
+    public void Start()
+    {
+        Init();
+        if (MaxLife < Life)
+            MaxLife = Life;
+    }
+    public virtual void Init()
     {
 
     }

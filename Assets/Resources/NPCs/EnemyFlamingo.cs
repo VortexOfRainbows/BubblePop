@@ -4,7 +4,7 @@ public class EnemyFlamingo : EnemyDuck
 {
     private float projectileSpeed = 3f;
     private int projectileTimer = 240;
-    private void Start()
+    public override void Init()
     {
         Life = 10;
         MaxCoins = 15;

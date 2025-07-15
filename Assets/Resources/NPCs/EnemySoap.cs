@@ -10,7 +10,7 @@ public class EnemySoap : Enemy
     protected float timer = 0;
     protected float moveSpeed = 3f;
     public override float CostMultiplier => 2;
-    private void Start()
+    public override void Init()
     {
         Life = 5;
         MaxCoins = 5;

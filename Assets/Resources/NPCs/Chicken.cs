@@ -7,7 +7,7 @@ public class Chicken : Enemy
     public float moveSpeed = 0.12f;
     public float inertiaMult = 0.96f;
     public override float CostMultiplier => 1;
-    private void Start()
+    public override void Init()
     {
         Life = 7;
         MaxCoins = 10;

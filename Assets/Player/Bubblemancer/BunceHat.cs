@@ -29,22 +29,22 @@ public class BunceHat : BubblemancerHat
     }
     protected override void AnimationUpdate()
     {
-        float r = new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y * p.Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + 1f * Mathf.Max(0, player.abilityTimer / player.AbilityCD));
-        if (spriteRender.flipX == p.BodyR.flipY)
+        if (player.Body is Bubblemancer)
         {
-            spriteRender.flipX = !p.BodyR.flipY;
+            if (player.abilityTimer > 0)
+            {
+                float sin = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(Mathf.PI * Mathf.Max(0, player.abilityTimer / player.AbilityCD)))) * player.abilityTimer / player.AbilityCD;
+                velocity = new Vector2(0, p.Direction * 2.5f * sin).RotatedBy(p.lastVelo.ToRotation());
+            }
+            else if (player.AbilityReady)
+                velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
         }
-        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r - 12 * p.Direction, 0.2f));
-        if (player.abilityTimer > 0)
-        {
-            float sin = Mathf.Sqrt(Mathf.Abs( Mathf.Sin(Mathf.PI * Mathf.Max(0, player.abilityTimer / player.AbilityCD)))) * player.abilityTimer / player.AbilityCD;
-            velocity = new Vector2(0, p.Direction * 2.5f * sin).RotatedBy(p.lastVelo.ToRotation());
-        }
-        else if (player.AbilityReady)
-            velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
+        spriteRender.flipX = !p.Body.Flipped;
+        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, p.MoveDashRotation() - 12 * p.Direction, 0.2f));
+        velocity = Vector2.Lerp(velocity, Vector2.zero, 0.2f);
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
-            new Vector2(-0.1f * p.Direction, 0.2f + 0.5f * p.Bobbing * p.squash - 0.2f * (1 - p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,
-            0.25f);
+            new Vector2(-0.1f * p.Direction, (0.2f + 0.5f * p.Bobbing * p.squash - 0.2f * (1 - p.squash))).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
+            0.2f) + velocity;
     }
     protected override void DeathAnimation()
     {

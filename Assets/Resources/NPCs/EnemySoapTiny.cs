@@ -1,10 +1,10 @@
 using UnityEngine;
 public class EnemySoapTiny : EnemySoap
 {
-    private void Start()
+    public override void Init()
     {
         Life = 3;
-        timer  = 60;
+        timer = 60;
         UniversalImmuneFrames = 80;
         MaxCoins = 5;
     }

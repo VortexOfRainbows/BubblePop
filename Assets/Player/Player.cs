@@ -35,7 +35,7 @@ public partial class Player : Entity
     public const float DashDefault = 25f;
     public bool AbilityReady => abilityTimer <= 0;
     public bool AbilityOnCooldown => abilityTimer > 0;
-    public void Start()
+    public override void Init()
     {
         PowerInit();
         WaveDirector.Reset();
@@ -44,6 +44,8 @@ public partial class Player : Entity
         DeathKillTimer = 0;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
         HasRunStartingGear = false;
+        Life = MaxLife = 3;
+        PlayerStatUI.Initialize();
     }
     public float abilityTimer = 0;
     private void MovementUpdate()
@@ -179,6 +181,14 @@ public partial class Player : Entity
         base.Update();
         Instance = this;
     }
+    public void Hurt(int damage = 1)
+    {
+        UniversalImmuneFrames = 100;
+        Life -= damage;
+        PlayerStatUI.Set(Life);
+        if (Life <= 0)
+            Pop();
+    }
     public void Pop()
     {
         //Time.timeScale = 0.5f + 0.5f * Mathf.Sqrt(Mathf.Max(0, 1 - DeathKillTimer / 200f));
@@ -223,6 +233,8 @@ public partial class Player : Entity
         UniversalImmuneFrames = 200;
         SpentBonusLives++;
         DeathKillTimer = 0;
+        Life = MaxLife;
+        PlayerStatUI.Set(Life);
     }
     public override void OnHurtByProjectile(Projectile proj)
     {
@@ -230,7 +242,7 @@ public partial class Player : Entity
             return;
         if (proj.Hostile && DeathKillTimer <= 0)
         {
-            Pop();
+            Hurt(1);
         }
     }
 }

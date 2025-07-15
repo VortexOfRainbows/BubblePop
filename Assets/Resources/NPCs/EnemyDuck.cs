@@ -14,7 +14,7 @@ public class EnemyDuck : Enemy
     private float moveSpeed = 0.1f;
     protected float bobbingTimer = 0;
     public override float CostMultiplier => 1;
-    private void Start()
+    public override void Init()
     {
         Life = 12;
         MaxCoins = 10;

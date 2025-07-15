@@ -64,6 +64,8 @@ public class Main : MonoBehaviour
             DirectorCanvas.SetActive(!DirectorCanvas.activeSelf);
         if (Input.GetKeyDown(KeyCode.P) && DebugCheats)
             PowerupCheatCanvas.SetActive(!PowerupCheatCanvas.activeSelf);
+        if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
+            UnlockCondition.ForceUnlockAll = true;
         Instance = this;
     }
     public static Main Instance;

@@ -22,7 +22,6 @@ public static class EnemyID
     public static GameObject Chicken = LoadNPC("Chicken/Chicken");
     public static GameObject Gatligator = LoadNPC("Gatligator/Gatligator");
 }
-
 public class Enemy : Entity
 {
     public static HashSet<Enemy> Enemies = new HashSet<Enemy>();
@@ -90,7 +89,7 @@ public class Enemy : Entity
                 if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
                     SpecializedImmuneFrames.RemoveAt(i);
         }
-        UniversalImmuneFrames--;
+        //UniversalImmuneFrames--;
         AI();
     }
     public bool AlreadyDead => Life <= -50;

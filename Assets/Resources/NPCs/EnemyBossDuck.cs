@@ -6,7 +6,7 @@ public class EnemyBossDuck : EnemyDuck
     private int projectileTimer;
     public override float CostMultiplier => 10;
     public override float PowerDropChance => 1f;
-    private void Start()
+    public override void Init()
     {
         Life = 100;
         MaxCoins = 50;
