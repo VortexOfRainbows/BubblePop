@@ -89,7 +89,6 @@ public class Enemy : Entity
                 if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
                     SpecializedImmuneFrames.RemoveAt(i);
         }
-        //UniversalImmuneFrames--;
         AI();
     }
     public bool AlreadyDead => Life <= -50;

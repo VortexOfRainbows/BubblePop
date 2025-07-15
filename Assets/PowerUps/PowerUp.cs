@@ -259,7 +259,22 @@ public abstract class PowerUp
         inner.transform.localScale = Vector3.one;
     }
     public Sprite sprite;
-    public virtual int Cost => (int)(10 / Weighting);
+    public virtual int Cost => GetDefaultCost();
+    public int GetDefaultCost()
+    {
+        int rare = GetRarity();
+        if (rare == 5)
+            return 100;
+        if (rare == 4)
+            return 50;
+        if (rare == 3)
+            return 25;
+        if (rare == 2)
+            return 15;
+        if (rare == 1)
+            return 10;
+        return (int)(10 / Weighting);
+    }
     public int CalculateRarity()
     {
         if(Weighting <= 0.05f)

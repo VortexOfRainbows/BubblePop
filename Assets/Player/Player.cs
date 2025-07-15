@@ -187,6 +187,7 @@ public partial class Player : Entity
             Accessory.AliveUpdate();
         }
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
+        ImmuneFlashing();
     }
     new public void Update()
     {
@@ -195,12 +196,15 @@ public partial class Player : Entity
     }
     public void Hurt(int damage = 1)
     {
-        Body.ModifyHurtAnimation();
         UniversalImmuneFrames = 100;
         Life -= damage;
         OnSetLife(Life);
         if (Life <= 0)
             Pop();
+        else
+        {
+            Body.ModifyHurtAnimation();
+        }
     }
     public void Pop()
     {
@@ -261,5 +265,19 @@ public partial class Player : Entity
     public void OnSetLife(int value)
     {
         PlayerStatUI.SetHearts(value);
+    }
+    public void ImmuneFlashing()
+    {
+        if (UniversalImmuneFrames > 0 && !IsDead)
+        {
+            float percent = UniversalImmuneFrames / 100f;
+            float totalFlashes = 8;
+            float sin = Mathf.Cos(Mathf.PI * percent * 2 * totalFlashes);
+            Visual.SetActive(sin <= 0);
+        }
+        else if (UniversalImmuneFrames == 0 || IsDead)
+        {
+            Visual.SetActive(true);
+        }
     }
 }

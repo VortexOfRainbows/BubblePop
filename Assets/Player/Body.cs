@@ -117,7 +117,7 @@ public class Body : Equipment
     }
     public virtual void ModifyHurtAnimation()
     {
-        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 1.5f, 0.5f);
+        AudioManager.PlaySound(SoundID.Death.GetVariation(1), transform.position, 0.1f, 0.6f);
         for (int i = 0; i < 15; i++)
         {
             Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 7.5f);
