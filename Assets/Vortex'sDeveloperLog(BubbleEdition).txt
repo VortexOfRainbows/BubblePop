@@ -25,6 +25,7 @@ Done:
 	1. Having the same rendering layer (-1) across all parts, but different relative z access
 6. Fix bug where small bubbles sometimes hit twice
 7. Cost adjustments that should make powerup prices more consistent and overall cheaper
+8. Resize powerup canvases to be consistently 3000x3000 (should help a bit with consistency of borders)
 
 7/11/25
 1. Rework some item rarities
