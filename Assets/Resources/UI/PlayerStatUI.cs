@@ -9,9 +9,18 @@ public class PlayerStatUI : MonoBehaviour
     private static int MaxLife = 0;
     private static PlayerStatUI Instance { get => s_Instance == null ? s_Instance = FindFirstObjectByType<PlayerStatUI>() : s_Instance; set => s_Instance = value; }
     private static PlayerStatUI s_Instance;
+    public static void ClearHearts()
+    {
+        foreach (PlayerHeartUI heart in Hearts)
+            if (heart != null)
+                Destroy(heart.gameObject);
+        Hearts.Clear();
+    }
     public void Start()
     {
         Instance = this;
+        ClearHearts();
+        CurrentLife = MaxLife = 0;
     }
     public static void SetHeartsToPlayerLife()
     {
@@ -20,9 +29,7 @@ public class PlayerStatUI : MonoBehaviour
         CurrentLife = MaxLife;
         if(Hearts.Count != MaxLife)
         {
-            foreach (PlayerHeartUI heart in Hearts)
-                Destroy(heart.gameObject);
-            Hearts.Clear();
+            ClearHearts();
             while (Hearts.Count < MaxLife)
             {
                 Hearts.Add(Instantiate(Prefab, Instance.transform.GetChild(0)).GetComponent<PlayerHeartUI>());

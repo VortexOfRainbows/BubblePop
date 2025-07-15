@@ -195,6 +195,7 @@ public partial class Player : Entity
     }
     public void Hurt(int damage = 1)
     {
+        Body.ModifyHurtAnimation();
         UniversalImmuneFrames = 100;
         Life -= damage;
         OnSetLife(Life);

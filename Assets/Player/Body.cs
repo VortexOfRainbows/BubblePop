@@ -110,10 +110,20 @@ public class Body : Equipment
             {
                 Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 25f);
                 ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1),
-                    Utils.RandFloat(0.5f, 1.0f), circular * Utils.RandFloat(0, 24) + new Vector2(0, Utils.RandFloat(-2, 4)), 4f, Utils.RandFloat(1, 3), 0, Player.ProjectileColor);
+                    Utils.RandFloat(0.5f, 1.0f), circular * Utils.RandFloat(0, 24), 4f, Utils.RandFloat(1, 3), 0, Player.ProjectileColor);
             }
         }
         ModifyDeathAnimation();
+    }
+    public virtual void ModifyHurtAnimation()
+    {
+        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 1.5f, 0.5f);
+        for (int i = 0; i < 15; i++)
+        {
+            Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 7.5f);
+            ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1),
+                Utils.RandFloat(0.5f, 1.0f), circular * Utils.RandFloat(3, 18), 4f, Utils.RandFloat(1, 3), 0, Player.ProjectileColor);
+        }
     }
     public virtual void ModifyDeathAnimation()
     {
