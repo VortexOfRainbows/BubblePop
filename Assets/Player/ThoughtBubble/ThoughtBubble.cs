@@ -6,6 +6,11 @@ using UnityEngineInternal;
 
 public class ThoughtBubble : Body
 {
+    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
+    {
+        MaxLife += 2;
+        Life += 2;
+    }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     public const float TailRegenTime = 0.3f;

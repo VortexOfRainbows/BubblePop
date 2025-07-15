@@ -1,7 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+
 public class Body : Equipment
 {
+    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
+    {
+        MaxLife += 3;
+        Life += 3;
+    }
     public void SaveData()
     {
         PlayerData.SaveInt($"{TypeName}Hat", LastSelectedHat);

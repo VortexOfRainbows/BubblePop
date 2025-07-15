@@ -5,6 +5,11 @@ using UnityEngine.Rendering.Universal;
 
 public class Crystal : Accessory
 {
+    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
+    {
+        MaxLife += 1;
+        Life += 1;
+    }
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         offset = Vector2.zero;
@@ -16,13 +21,12 @@ public class Crystal : Accessory
     }
     protected override string Description()
     {
-        return "They are said to hold a moderate amount of power";
+        return "Grants an additional heart";
     }
     protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     protected override UnlockCondition UnlockCondition => base.UnlockCondition;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<BubbleBirb>();
         powerPool.Add<Magnet>();
     }
     protected override void ReducePowerPool(List<PowerUp> powerPool)

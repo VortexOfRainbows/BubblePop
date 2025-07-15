@@ -1,3 +1,5 @@
+using UnityEditor.Rendering;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 public static class Control
 {
@@ -11,6 +13,7 @@ public static class Control
 public partial class Player : Entity
 {
     #region Animator References
+    public int Shield = 0;
     public Body Body { get => Animator.Body; set => Animator.Body = value; }
     public Weapon Weapon { get => Animator.Weapon; set => Animator.Weapon = value; }
     public Hat Hat { get => Animator.Hat; set => Animator.Hat = value; }
@@ -45,7 +48,7 @@ public partial class Player : Entity
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
         HasRunStartingGear = false;
         Life = MaxLife = 3;
-        PlayerStatUI.Initialize();
+        PlayerStatUI.SetHeartsToPlayerLife();
     }
     public float abilityTimer = 0;
     private void MovementUpdate()
@@ -140,6 +143,15 @@ public partial class Player : Entity
             Pop();
         else
         {
+            if(!HasRunStartingGear)
+            {
+                MaxLife = Life = Shield = 0;
+                Body.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
+                Accessory.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
+                Weapon.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
+                Hat.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
+                PlayerStatUI.SetHeartsToPlayerLife();
+            }
             Hat.EquipUpdate();
             Accessory.EquipUpdate();
             Weapon.EquipUpdate();
@@ -185,7 +197,7 @@ public partial class Player : Entity
     {
         UniversalImmuneFrames = 100;
         Life -= damage;
-        PlayerStatUI.Set(Life);
+        OnSetLife(Life);
         if (Life <= 0)
             Pop();
     }
@@ -234,7 +246,7 @@ public partial class Player : Entity
         SpentBonusLives++;
         DeathKillTimer = 0;
         Life = MaxLife;
-        PlayerStatUI.Set(Life);
+        OnSetLife(Life);
     }
     public override void OnHurtByProjectile(Projectile proj)
     {
@@ -244,5 +256,9 @@ public partial class Player : Entity
         {
             Hurt(1);
         }
+    }
+    public void OnSetLife(int value)
+    {
+        PlayerStatUI.SetHearts(value);
     }
 }
