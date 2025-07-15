@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PopUpTextUI : MonoBehaviour
 {
-    public const int DefaultPopupDuration = 300;
+    public const int DefaultPopupDuration = 350;
     public static Queue<PowerUp> PowerupQueue = new();
     public static void Enable(string name, string desc, int duration = 3)
     {
@@ -68,6 +68,17 @@ public class PopUpTextUI : MonoBehaviour
     }
     private List<Color> defaultColors = null;
     private List<Image> childImages = null;
+    public StarUI[] stars;
+    public void UpdateStars(float per, float grow)
+    {
+        int i = PowerUpVisual.MyPower.GetRarity() - 1;
+        for(int j = 0; j < stars.Length; ++j)
+        {
+            stars[j].gameObject.SetActive(i == j);
+        }
+        stars[i].transform.localScale = 1.1f * grow * Vector3.one;
+        stars[i].SetAlpha(per * per);
+    }
     public void UpdateMiddleInstance()
     {
         SetHeightMiddle();
@@ -80,7 +91,7 @@ public class PopUpTextUI : MonoBehaviour
         {
             defaultColors = new List<Color>();
             childImages = new List<Image>();
-            GetComponentsInChildren(true, childImages);
+            GetComponentsInChildren(false, childImages);
             childImages.Add(PowerUpVisual.inner);
             foreach (Image i in childImages)
             {
@@ -98,6 +109,7 @@ public class PopUpTextUI : MonoBehaviour
             }
             Name.color = defaultColors[i++].WithAlphaMultiplied(colPer);
             Description.color = defaultColors[i++].WithAlphaMultiplied(colPer);
+            UpdateStars(colPer, 1 + (growPercent - 1) * 3);
         }
         if(percent >= 1.05f)
         {
