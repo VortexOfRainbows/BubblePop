@@ -10,6 +10,7 @@ public class Entity : MonoBehaviour
     public int Life = 10;
     public int MaxLife = -1;
     public float DamageTaken = 0;
+    public bool SpawnedIn = false;
     public static readonly string PlayerTag = "Player";
     public static readonly string ProjTag = "Proj";
     public static readonly string EnemyTag = "Enemy";
@@ -71,6 +72,7 @@ public class Entity : MonoBehaviour
         Init();
         if (MaxLife < Life)
             MaxLife = Life;
+        SpawnedIn = true;
     }
     public virtual void Init()
     {

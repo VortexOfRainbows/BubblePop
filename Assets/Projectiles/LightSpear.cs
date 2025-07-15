@@ -25,7 +25,7 @@ public class LightSpear : Projectile
         Damage = 3;
         if(Player.Instance.LightSpear > 0)
         {
-            Damage = (int)(2.5f + Player.Instance.LightSpear * 0.5f);
+            Damage = (int)(2.0f + Player.Instance.LightSpear * 0.5f);
         }
         Friendly = true;
         Hostile = false;

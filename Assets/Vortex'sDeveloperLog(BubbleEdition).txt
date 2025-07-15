@@ -27,6 +27,8 @@ Done:
 8. Resize powerup canvases to be consistently 3000x3000 (should help a bit with consistency of borders)
 9. Setting for pausing the game during choice powerup
 10. Add Star rarities
+11. Starting damage for spear of light is now 2, becomes 3 on second pickup
+12. Prevent enemies from being hit until their health is properly assigned. Should prevent some issues where Leonard was dying too easily
 
 7/11/25
 1. Rework some item rarities
