@@ -21,6 +21,9 @@ Done:
 2. Fix bunce cap animation
 3. Bubblebirb is now legendary
 4. Emeralds now grant health instead of another bubblebirb
+5. Experimental layering changes tested on Chicken
+	1. Having the same rendering layer (-1) across all parts, but different relative z access
+6. Fix bug where small bubbles sometimes hit twice
 
 7/11/25
 1. Rework some item rarities

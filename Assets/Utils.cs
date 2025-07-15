@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using static Enemy;
 
@@ -155,5 +156,17 @@ public static class Utils
     {
         transform.localScale = Vector3.Lerp(transform.localScale, new Vector3( newScale.x, newScale.y, transform.localScale.z), t);
         return transform;
+    }
+    public static Vector3 SetXY(this Vector3 v, float x, float y)
+    {
+        v.x = x;
+        v.y = y;
+        return v;
+    }
+    public static Vector3 SetXY(this Vector3 v, Vector2 v2)
+    {
+        v.x = v2.x;
+        v.y = v2.y;
+        return v;
     }
 }

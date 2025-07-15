@@ -46,7 +46,7 @@ public class LegMotion : Animator
         if (inverse.y < 0)
             inverse.y *= 0.1f;
 
-        transform.localPosition = inverse;
+        transform.localPosition = transform.localPosition.SetXY(inverse);
         float angle = WalkTiltAngle;
         float leftAngle = Mathf.Sin(WalkCounter) * -angle * walkSpeedMultiplier;
         transform.localEulerAngles = new Vector3(0, 0, leftAngle);

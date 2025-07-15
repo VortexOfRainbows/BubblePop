@@ -96,7 +96,7 @@ public class Enemy : Entity
     private void SetDead() => Life = -50;
     public sealed override void OnHurtByProjectile(Projectile proj)
     {
-        if (SpecializedImmuneFrames.Contains(proj))
+        if (SpecializedImmuneFrames.Contains(proj) || proj.Penetrate == 0)
             return;
         bool piercingProjectile = proj.Penetrate > 1 || proj.Penetrate == -1;
         if (piercingProjectile && UniversalImmuneFrames > 0)

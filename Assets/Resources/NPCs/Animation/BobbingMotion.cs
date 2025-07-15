@@ -22,7 +22,7 @@ public class BobbingMotion : Animator
         Counter = Counter.WrapAngle();
         float sin = Mathf.Sin(Counter * 2 + AngleOffset * Mathf.Deg2Rad);
         float sin2 = Mathf.Sin(Counter * 2 * angularSpeedMult + AngleOffset * Mathf.Deg2Rad);
-        transform.localPosition = new Vector3(0, sin * sizeMult, 0);
+        transform.localPosition = new Vector3(0, sin * sizeMult, transform.localPosition.z);
         transform.localEulerAngles = new Vector3(0, 0, sin2 * angularMult);
     }
 }
