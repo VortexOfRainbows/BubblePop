@@ -9,10 +9,9 @@ Need to do:
 	1. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 5. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
 6. Thought Bubble Weapon (spell book)
-7. Freeze game when picking powerups
-8. More descriptive pause and select screen
-9. Powerup descriptions to show scaling with unique colors (like "+10% per stack")
-10. Quadrant system UI
+7. More descriptive pause and select screen
+8. Powerup descriptions to show scaling with unique colors (like "+10% per stack")
+9. Quadrant system UI
 
 Done: 
 
@@ -26,6 +25,7 @@ Done:
 6. Fix bug where small bubbles sometimes hit twice
 7. Cost adjustments that should make powerup prices more consistent and overall cheaper
 8. Resize powerup canvases to be consistently 3000x3000 (should help a bit with consistency of borders)
+9. Setting for pausing the game during choice powerup
 
 7/11/25
 1. Rework some item rarities

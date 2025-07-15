@@ -177,6 +177,8 @@ public abstract class PowerUp
                 PowerUpButton.buttons[i].TurnOn();
             }
         }
+        if(PlayerData.PauseDuringPowerSelect)
+            Time.timeScale = 0;
     }
     public static void TurnOffPowerUpSelectors()
     {
@@ -187,6 +189,7 @@ public abstract class PowerUp
                 PowerUpButton.buttons[i].TurnOff();
             }
         }
+        Time.timeScale = 1;
     }
     public int Stack;
     public float Weighting = 1;

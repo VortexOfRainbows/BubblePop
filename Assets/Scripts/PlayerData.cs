@@ -6,6 +6,11 @@ public static class PlayerData
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
+    public static bool PauseDuringPowerSelect = true;
+    public static void SaveSettings()
+    {
+        SaveBool("PauseDuringPowerSelect", PauseDuringPowerSelect);
+    }
     public static void SaveSound()
     {
         SaveFloat("SFX", SFXVolume);
@@ -27,6 +32,7 @@ public static class PlayerData
     }
     public static void LoadAll()
     {
+        PauseDuringPowerSelect = GetBool("PauseDuringPowerSelect");
         PlayerDeaths = GetInt("Deaths");
         SFXVolume = GetFloat("SFX", 1);
         MusicVolume = GetFloat("Music", 1);
@@ -53,5 +59,13 @@ public static class PlayerData
     public static float GetFloat(string tag, float defaultValue = 0)
     {
         return PlayerPrefs.GetFloat(tag, defaultValue);
+    }
+    public static void SaveBool(string tag, bool value)
+    {
+        PlayerPrefs.SetInt(tag, value ? 1 : 0);
+    }
+    public static bool GetBool(string tag, bool defaultValue = false)
+    {
+        return PlayerPrefs.GetInt(tag, defaultValue ? 1 : 0) == 1;
     }
 }
