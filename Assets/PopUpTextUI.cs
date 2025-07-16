@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PopUpTextUI : MonoBehaviour
 {
-    public const int DefaultPopupDuration = 350;
+    public const int DefaultPopupDuration = 400;
     public static Queue<PowerUp> PowerupQueue = new();
     public static void Enable(string name, string desc, int duration = 3)
     {

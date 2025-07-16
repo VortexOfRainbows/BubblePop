@@ -250,7 +250,7 @@ public class ThoughtBubble : Body
         }
         if (player.DashSparkle > 0)
         {
-            sparkleSparkleNum += (player.DashSparkle + 1) / 6f;
+            sparkleSparkleNum += (player.DashSparkle + 1) / 6f; //33% + 16.67% per stack
             while (sparkleSparkleNum > 1f)
             {
                 Vector2 target = Utils.RandCircle(1).normalized * 20;

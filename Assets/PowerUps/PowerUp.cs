@@ -22,9 +22,11 @@ public static class ReflectiveEnumerator
 public class PowerUpDescription
 {
     public PowerUp owner;
+    private static readonly string[] Rares = new string[] { "#EFEFEF", "#C8FEAD", "#BAE3FE", "#D4BAFE", "#FCB934" };
     private static readonly string Yellow = "#FFED75";
     private static readonly string Gray = "#999999";
-    private static readonly int NormalTextSize = 30;
+    private static readonly string TabForMoreDetail = " <size=24><color=#CB8A8A>(TAB for more detail)</color></size>";
+    private static readonly int NormalTextSize = 28;
     private static readonly int GrayTextSize = 24;
     public string ToRichText(string t)
     {
@@ -100,10 +102,16 @@ public class PowerUpDescription
     {
         ShortDescription = lines;
     }
+    public void WithDescriptionVariant<T>(string lines) where T: Body
+    {
+        AltDescriptions.Add(typeof(T), lines);
+    }
     public void WithName(string name)
     {
         Name = name;
     }
+    private readonly Dictionary<Type, string> AltDescriptions = new();
+    private readonly Dictionary<Type, string> CompleteAltDescriptions = new();
     private string Name;
     private string Description;
     private string ShortDescription = null;
@@ -113,19 +121,29 @@ public class PowerUpDescription
     {
         if(CompleteDescription == string.Empty)
             CompleteDescription = ToRichText(Description);
+        Type playerBodyType = Player.Instance.Body.GetType();
+        if (AltDescriptions.TryGetValue(playerBodyType, out string lines))
+        {
+            if (!CompleteAltDescriptions.TryGetValue(playerBodyType, out string lines2))
+            {
+                CompleteAltDescriptions[playerBodyType] = ToRichText(lines);
+            }
+            else
+                return lines2;
+        }
         return CompleteDescription;
     }
-    public string BriefDescription()
+    public string BriefDescription(bool withDetails = false)
     {
         if(ShortDescription == null)
             return FullDescription();
         if (CompleteShortDescription == string.Empty)
             CompleteShortDescription = ToRichText(ShortDescription);
-        return CompleteShortDescription;
+        return CompleteShortDescription + (withDetails ? TabForMoreDetail : string.Empty);
     }
     public string GetName()
     {
-        return Name;
+        return $"<color={Rares[owner.GetRarity() - 1]}>{Name}</color>";
     }
 }
 
@@ -368,7 +386,7 @@ public abstract class PowerUp
     public static readonly string LockedDescription = "Powerup not yet discovered";
     public string UnlockedName => TrueDescription.GetName();
     public string ShortDescription => TrueDescription.BriefDescription();
-    public string FullDescription => TrueDescription.FullDescription();
+    public string FullDescription => (Control.Tab || !PlayerData.BriefDescriptionsByDefault) ? TrueDescription.FullDescription() : TrueDescription.BriefDescription(true);
     public virtual void HeldEffect(Player p)
     {
 
