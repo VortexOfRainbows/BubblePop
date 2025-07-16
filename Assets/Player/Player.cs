@@ -1,5 +1,3 @@
-using UnityEditor.Rendering;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 public static class Control
 {
