@@ -89,7 +89,7 @@ public class PowerUpUIElement : MonoBehaviour
         {
             if(myLayout != null)
                 myLayout.isHovering = true;
-            PopUpTextUI.Enable(AppearLocked ? MyPower.LockedName() : MyPower.UnlockedName(), AppearLocked ? MyPower.LockedDescription() : MyPower.UnlockedDescription());
+            PopUpTextUI.Enable(AppearLocked ? PowerUp.LockedName : MyPower.UnlockedName, AppearLocked ? PowerUp.LockedDescription : MyPower.FullDescription);
             float scaleUP = 1.125f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
         }

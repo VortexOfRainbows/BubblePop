@@ -70,7 +70,7 @@ public class PowerUpLayout : MonoBehaviour
         //PowerUp.SortAvailablePowers();
         for (int i = 0; i < PowerUp.AvailablePowers.Count; ++i)
         {
-            AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, AvailablePowers[i]);
+            AddNewPower(PowerUpUISlotPrefab, gameObject, AvailablePowers[i]);
         }
     }
     public void GenerateInventory()

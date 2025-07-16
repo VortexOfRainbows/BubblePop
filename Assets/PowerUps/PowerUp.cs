@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+
 public static class ReflectiveEnumerator
 {
     static ReflectiveEnumerator() { }
@@ -17,6 +19,116 @@ public static class ReflectiveEnumerator
         }
     }
 }
+public class PowerUpDescription
+{
+    public PowerUp owner;
+    private static readonly string Yellow = "#FFED75";
+    private static readonly string Gray = "#999999";
+    private static readonly int NormalTextSize = 30;
+    private static readonly int GrayTextSize = 24;
+    public string ToRichText(string t)
+    {
+        string[] segments = t.Split(' ');
+        string concat = string.Empty;
+        int secondLast = segments.Length - 1;
+        bool openBracket = false;
+        for (int i = 0; i < segments.Length; ++i)
+        {
+            string segment = segments[i];
+            concat += SegmentToRichRext(segment, ref openBracket);
+            if (i != secondLast)
+                concat += ' ';
+        }
+        return concat;
+    }
+    public string SegmentToRichRext(string t, ref bool waitingForEnding)
+    {
+        if(t.Length > 2)
+        {
+            string first2 = t[..2];
+            char third = t[2];
+            char last = t[^1];
+            bool isOpening = third == '[' || third == '(';
+            bool isEnding = last == ']' || last == ')';
+            string start = string.Empty;
+            string end = string.Empty;
+            string contents = t;
+            if (first2 == "G:")
+                start = $"<size={GrayTextSize}><color={Gray}>";
+            else if (first2 == "Y:")
+                start = $"<size={NormalTextSize}><color={Yellow}>";
+            if (isEnding && waitingForEnding && !isOpening) //If this string ends with a ']' and we have previously seen a '['
+            {
+                waitingForEnding = false;
+                if (last != ')')
+                    contents = t[..^1];
+                end = "</color></size>";
+            }
+            else if (isOpening && !waitingForEnding && !isEnding) //If this string starts with a '[' and we have not seen a ']'
+            {
+                waitingForEnding = true;
+                if (third != '(')
+                    contents = t[3..];
+                else
+                    contents = t[2..];
+            }
+            else if (start != string.Empty) //there are no brackets, so we start and end at once
+            {
+                if(isOpening && isEnding && third != '(')
+                {
+                    contents = t[3..^1];
+                }
+                else
+                    contents = t[2..];
+                end = "</color></size>";
+            }
+            return $"{start}{contents}{end}";
+        }
+        return t;
+    }
+    public PowerUpDescription(PowerUp p) 
+    { 
+        owner = p;
+        Name = p.GetType().FullName.ToSpacedString();
+        Description = "N/A";
+    }
+    public void WithDescription(string lines)
+    {
+        Description = lines;
+    }
+    public void WithShortDescription(string lines)
+    {
+        ShortDescription = lines;
+    }
+    public void WithName(string name)
+    {
+        Name = name;
+    }
+    private string Name;
+    private string Description;
+    private string ShortDescription = null;
+    private string CompleteDescription = string.Empty;
+    private string CompleteShortDescription = string.Empty;
+    public string FullDescription()
+    {
+        if(CompleteDescription == string.Empty)
+            CompleteDescription = ToRichText(Description);
+        return CompleteDescription;
+    }
+    public string BriefDescription()
+    {
+        if(ShortDescription == null)
+            return FullDescription();
+        if (CompleteShortDescription == string.Empty)
+            CompleteShortDescription = ToRichText(ShortDescription);
+        return CompleteShortDescription;
+    }
+    public string GetName()
+    {
+        return Name;
+    }
+}
+
 public abstract class PowerUp
 {
     public static readonly float Common = 1f;
@@ -134,7 +246,7 @@ public abstract class PowerUp
         p.MyID = typeCounter;
         PowerUps[typeCounter] = p;
         Reverses[p.InternalName] = typeCounter;
-        Debug.Log($"Added: {p.Name()} to the dictionary at index {typeCounter}");
+        Debug.Log($"Added: {p.TrueDescription.GetName()} to the dictionary at index {typeCounter}");
         typeCounter++;
         maximumTypes++;
     }
@@ -198,6 +310,8 @@ public abstract class PowerUp
     private string InternalName;
     protected PowerUp()
     {
+        TrueDescription = new(this);
+        InitializeDescription(ref TrueDescription);
         InternalName = GetType().Name;
         sprite = GetTexture();
         AddToDictionary(this);
@@ -245,12 +359,16 @@ public abstract class PowerUp
     {
 
     }
-    public string LockedName() => "???";
-    public string LockedDescription() => "Powerup not yet discovered";
-    protected virtual string Name() => "Unnamed Power Up";
-    protected virtual string Description() => "Power Up";
-    public string UnlockedName() => Name();
-    public string UnlockedDescription() => Description();
+    private PowerUpDescription TrueDescription;
+    public virtual void InitializeDescription(ref PowerUpDescription description)
+    {
+
+    }
+    public static readonly string LockedName = "???";
+    public static readonly string LockedDescription = "Powerup not yet discovered";
+    public string UnlockedName => TrueDescription.GetName();
+    public string ShortDescription => TrueDescription.BriefDescription();
+    public string FullDescription => TrueDescription.FullDescription();
     public virtual void HeldEffect(Player p)
     {
 

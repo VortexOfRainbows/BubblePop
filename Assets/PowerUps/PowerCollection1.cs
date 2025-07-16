@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class Choice : PowerUp
 {
-    protected override string Name() => "Choice";
-    protected override string Description() => "Pick which power you want from a given selection";
+    public override void InitializeDescription(ref PowerUpDescription description)
+    {
+        description.WithDescription("Pick which power you want from a given selection");
+    }
     public override void HeldEffect(Player p)
     {
         if (Stack > 0 && !PowerUp.PickingPowerUps)
@@ -20,19 +22,18 @@ public class WeaponUpgrade : PowerUp
     {
         Weighting = Uncommon;
     }
-    protected override string Name() => "Haste";
-    protected override string Description() => "Increases weapon attack speed";
-    public override Sprite GetTexture()
+    public override void InitializeDescription(ref PowerUpDescription description)
     {
-        return Resources.Load<Sprite>("PowerUps/Haste");
-    }
-    public override Sprite GetAdornment()
-    {
-        return null;
+        description.WithDescription("Increases Y:[attack speed] by Y:10% G:(+10% per stack)");
+        description.WithShortDescription("Increases attack speed");
     }
     public override void HeldEffect(Player p)
     {
         p.AttackSpeedModifier += Stack * 0.1f;
+    }
+    public override Sprite GetTexture()
+    {
+        return Resources.Load<Sprite>("PowerUps/Haste");
     }
 }
 public class Overclock : PowerUp
@@ -41,8 +42,11 @@ public class Overclock : PowerUp
     {
         Weighting = Uncommon;
     }
-    protected override string Name() => "Overclock";
-    protected override string Description() => "Reduces ability cooldown";
+    public override void InitializeDescription(ref PowerUpDescription description)
+    {
+        description.WithDescription("Reduces Y:[ability cooldown] by Y:20% G:(+20% per stack)");
+        description.WithShortDescription("Reduces ability cooldown");
+    }
     public override void HeldEffect(Player p)
     {
         p.AbilityRecoverySpeed += 0.2f * Stack;
@@ -50,8 +54,11 @@ public class Overclock : PowerUp
 }
 public class ChargeShot : PowerUp
 {
-    protected override string Name() => "Charge Shot";
-    protected override string Description() => "Increases the size and damage of your charge attacks";
+    public override void InitializeDescription(ref PowerUpDescription description)
+    {
+        description.WithDescription("Increases the Y:damage of your Y:[secondary attack] by Y:50% G:(+50% per stack) and the Y:[size] of your Y:[secondary attacks] by 40% G:(+40% per stack)");
+        description.WithShortDescription("Increases the size and damage of your secondary attack");
+    }
     public override void HeldEffect(Player p)
     {
         p.ChargeShotDamage += Stack;
@@ -59,8 +66,11 @@ public class ChargeShot : PowerUp
 }
 public class Shotgun : PowerUp
 {
-    protected override string Name() => "Shotgun";
-    protected override string Description() => "Increases the amount of bubbles shot by your primary weapon";
+    public override void InitializeDescription(ref PowerUpDescription description)
+    {
+        description.WithDescription("Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)");
+        description.WithShortDescription("Increases the amount of bubbles shot by your primary attack");
+    }
     public override void HeldEffect(Player p)
     {
         p.ShotgunPower += Stack;
@@ -72,8 +82,12 @@ public class Dash : PowerUp
     {
         Weighting = Uncommon;
     }
-    protected override string Name() => "Sparkle Sparkle";
-    protected override string Description() => "Adds damaging stars to your ability";
+    public override void InitializeDescription(ref PowerUpDescription description)
+    {
+        description.WithName("Sparkle Sparkle");
+        description.WithDescription("Adds damaging stars to your ability");
+        description.WithShortDescription("Adds damaging stars to your ability");
+    }
     public override void HeldEffect(Player p)
     {
         p.DashSparkle += Stack;
@@ -81,8 +95,8 @@ public class Dash : PowerUp
 }
 public class ShotSpeed : PowerUp
 {
-    protected override string Name() => "Bubble Propulsion";
-    protected override string Description() => "Blown bubbles travel further and faster";
+    //protected override string Name() => "Bubble Propulsion";
+    //protected override string Description() => "Blown bubbles travel further and faster";
     public override void HeldEffect(Player p)
     {
         p.FasterBulletSpeed += Stack;
@@ -94,8 +108,8 @@ public class Starbarbs : PowerUp
     {
         Weighting = Rare;
     }
-    protected override string Name() => "Starbarbs";
-    protected override string Description() => "Enemies killed by stars explode into stars";
+    //protected override string Name() => "Starbarbs";
+    //protected override string Description() => "Enemies killed by stars explode into stars";
     public override void HeldEffect(Player p)
     {
         p.Starbarbs += Stack;
@@ -107,8 +121,8 @@ public class SoapySoap : PowerUp
     {
         Weighting = Rare;
     }
-    protected override string Name() => "Soapy Soap";
-    protected override string Description() => "Charge attacks leave behind a trail of bubbles";
+   //protected override string Name() => "Soapy Soap";
+   //protected override string Description() => "Charge attacks leave behind a trail of bubbles";
     public override void HeldEffect(Player p)
     {
         p.SoapySoap += Stack;
@@ -120,8 +134,8 @@ public class BubbleBlast : PowerUp
     {
         Weighting = Uncommon;
     }
-    protected override string Name() => "Bubble Blast";
-    protected override string Description() => "Charge attacks release bubbles upon expiring";
+    //protected override string Name() => "Bubble Blast";
+    //protected override string Description() => "Charge attacks release bubbles upon expiring";
     public override void HeldEffect(Player p)
     {
         p.BubbleBlast += Stack;
@@ -133,9 +147,8 @@ public class Starshot : PowerUp
     {
         Weighting = SuperRare;
     }
-    protected override string Name() => "Starshot";
-    protected override string Description() => "Chance for stars to be fired alongside shotgun bubbles" +
-        "\nIncreases the amount of bubbles shot by your primary weapon";
+    //protected override string Name() => "Starshot";
+    //protected override string Description() => "Chance for stars to be fired alongside shotgun bubbles" + "\nIncreases the amount of bubbles shot by your primary weapon";
     public override void HeldEffect(Player p)
     {
         p.Starshot += Stack;
@@ -148,8 +161,8 @@ public class BinaryStars : PowerUp
     {
         Weighting = Rare;
     }
-    protected override string Name() => "Binary Stars";
-    protected override string Description() => "Periodically release 2 stars";
+    // protected override string Name() => "Binary Stars";
+    // protected override string Description() => "Periodically release 2 stars";
     public override void HeldEffect(Player p)
     {
         p.BinaryStars += Stack;
@@ -161,8 +174,8 @@ public class EternalBubbles : PowerUp
     {
         Weighting = Uncommon;
     }
-    protected override string Name() => "Eternal Bubbles";
-    protected override string Description() => "Increases lifespan of all small bubbles";
+    //protected override string Name() => "Eternal Bubbles";
+    //protected override string Description() => "Increases lifespan of all small bubbles";
     public override Sprite GetAdornment()
     {
         return Resources.Load<Sprite>("PowerUps/DurationUpgrade");
@@ -178,8 +191,8 @@ public class BubbleBirb : PowerUp
     {
         Weighting = Legendary;
     }
-    protected override string Name() => "Bubble Birb";
-    protected override string Description() => "Resurrect in a dance of flames after death";
+    //protected override string Name() => "Bubble Birb";
+    //protected override string Description() => "Resurrect in a dance of flames after death";
     public override void HeldEffect(Player p)
     {
         p.BonusPhoenixLives += Stack; 
@@ -195,8 +208,8 @@ public class BubbleTrail : PowerUp
     {
         Weighting = Uncommon;
     }
-    protected override string Name() => "Bubble Trail";
-    protected override string Description() => "Periodically release bubbles behind you";
+    // protected override string Name() => "Bubble Trail";
+    // protected override string Description() => "Periodically release bubbles behind you";
     public override void HeldEffect(Player p)
     {
         p.BubbleTrail += Stack;
@@ -208,8 +221,8 @@ public class Coalescence : PowerUp
     {
         Weighting = Rare;
     }
-    protected override string Name() => "Coalescence";
-    protected override string Description() => "Secondary attack may be charged an additional time\nSlightly increases secondary attack speed";
+    //protected override string Name() => "Coalescence";
+    //protected override string Description() => "Secondary attack may be charged an additional time\nSlightly increases secondary attack speed";
     public override void HeldEffect(Player p)
     {
         p.Coalescence += Stack;
@@ -222,8 +235,8 @@ public class LuckyStar : PowerUp
     {
         Weighting = Rare;
     }
-    protected override string Name() => "Lucky Star";
-    protected override string Description() => "Enemies killed by stars have an additional chance to drop power ups";
+    // protected override string Name() => "Lucky Star";
+    // protected override string Description() => "Enemies killed by stars have an additional chance to drop power ups";
     public override void HeldEffect(Player p)
     {
         p.LuckyStar += Stack;
@@ -235,8 +248,8 @@ public class TrailOfThoughts : PowerUp
     {
         Weighting = Uncommon;
     }
-    protected override string Name() => "Trail of Thoughts";
-    protected override string Description() => "Increases the maximum length of your thought trail";
+    //protected override string Name() => "Trail of Thoughts";
+    //protected override string Description() => "Increases the maximum length of your thought trail";
     public override void HeldEffect(Player p)
     {
         p.TrailOfThoughts += Stack;
@@ -248,8 +261,8 @@ public class Magnet : PowerUp
     {
         Weighting = Common;
     }
-    protected override string Name() => "Magnet";
-    protected override string Description() => "Extends the distance coins are collected from";
+    // protected override string Name() => "Magnet";
+    // protected override string Description() => "Extends the distance coins are collected from";
     public override void HeldEffect(Player p)
     {
         p.Magnet += Stack;
@@ -261,8 +274,8 @@ public class SpearOfLight : PowerUp
     {
         Weighting = Rare;
     }
-    protected override string Name() => "Spear of Light";
-    protected override string Description() => "Periodically fire beams of light at nearby enemies";
+    // protected override string Name() => "Spear of Light";
+    // protected override string Description() => "Periodically fire beams of light at nearby enemies";
     public override void HeldEffect(Player p)
     {
         p.LightSpear += Stack;
@@ -274,8 +287,8 @@ public class NeuronActivation : PowerUp
     {
         Weighting = SuperRare;
     }
-    protected override string Name() => "Reflection";
-    protected override string Description() => "Enemies struck by beams of light fire beams of light at nearby enemies";
+    //protected override string Name() => "Reflection";
+    //protected override string Description() => "Enemies struck by beams of light fire beams of light at nearby enemies";
     public override void HeldEffect(Player p)
     {
         p.LightChainReact += Stack;
@@ -287,8 +300,8 @@ public class BrainBlast : PowerUp
     {
         Weighting = PowerUp.Rare;
     }
-    protected override string Name() => "Brain Blast";
-    protected override string Description() => "Release additional bubbles when teleporting";
+    //protected override string Name() => "Brain Blast";
+    //protected override string Description() => "Release additional bubbles when teleporting";
     public override void HeldEffect(Player p)
     {
         p.BrainBlast += Stack;
@@ -300,8 +313,8 @@ public class Raise : PowerUp
     {
         Weighting = PowerUp.Uncommon;
     }
-    protected override string Name() => "Raise";
-    protected override string Description() => "Increases maximum chip stack height\nSlightly reduces ability cooldown";
+    // protected override string Name() => "Raise";
+    // protected override string Description() => "Increases maximum chip stack height\nSlightly reduces ability cooldown";
     public override void HeldEffect(Player p)
     {
         p.ChipHeight += Stack;
@@ -314,8 +327,8 @@ public class AllIn : PowerUp
     {
         Weighting = PowerUp.Legendary;
     }
-    protected override string Name() => "All-In";
-    protected override string Description() => "Grants additional chip stacks and a chance for chips to be enhanced\nIncreases maximum chip stack height\nGreatly reduces ability cooldown";
+    // protected override string Name() => "All-In";
+    // protected override string Description() => "Grants additional chip stacks and a chance for chips to be enhanced\nIncreases maximum chip stack height\nGreatly reduces ability cooldown";
     public override void HeldEffect(Player p)
     {
         p.ChipHeight += Stack;
@@ -330,8 +343,8 @@ public class SnakeEyes : PowerUp
     {
         Weighting = PowerUp.Rare;
     }
-    protected override string Name() => "Snake Eyes";
-    protected override string Description() => "Chance to deal additional damage, including recursively";
+    // protected override string Name() => "Snake Eyes";
+    // protected override string Description() => "Chance to deal additional damage, including recursively";
     public override void HeldEffect(Player p)
     {
         p.SnakeEyes += Stack;
@@ -343,8 +356,8 @@ public class Refraction : PowerUp
     {
         Weighting = SuperRare;
     }
-    protected override string Name() => "Refraction";
-    protected override string Description() => "Beams of light can target an additional enemy";
+    // protected override string Name() => "Refraction";
+    // protected override string Description() => "Beams of light can target an additional enemy";
     public override void HeldEffect(Player p)
     {
         p.Refraction += Stack;
@@ -356,8 +369,8 @@ public class Calculator : PowerUp
     {
         Weighting = SuperRare;
     }
-    protected override string Name() => "Calculator";
-    protected override string Description() => "Grants aim assist";
+    // protected override string Name() => "Calculator";
+    // protected override string Description() => "Grants aim assist";
     public override void HeldEffect(Player p)
     {
         p.HomingRange += Stack;

@@ -118,7 +118,7 @@ public class PopUpTextUI : MonoBehaviour
                 //swap to next in queue
                 PowerUp p = PowerupQueue.Dequeue();
                 UpdatePowerUp(this, p.Type);
-                Enable(this, p.UnlockedName(), p.UnlockedDescription());
+                Enable(this, p.UnlockedName, p.ShortDescription);
             }
         }
     }
