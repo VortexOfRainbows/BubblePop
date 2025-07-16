@@ -67,6 +67,7 @@ MonoBehaviour:
   Description: {fileID: 4636412129008565710}
   myRect: {fileID: 7498300394331013810}
   FollowMouse: 1
+  stars: []
 --- !u!1 &2697765004524130178
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,8 +140,8 @@ MonoBehaviour:
     esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e22d14b31be97f74b898e5745d592050, type: 2}
-  m_sharedMaterial: {fileID: 6547761085111397673, guid: e22d14b31be97f74b898e5745d592050, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dcc4d89fd7a456e489958be9bd9ab26f, type: 2}
+  m_sharedMaterial: {fileID: 3917725879710383133, guid: dcc4d89fd7a456e489958be9bd9ab26f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -240,7 +241,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: -16}
   m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4508084916355753520
@@ -273,8 +274,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Power Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e22d14b31be97f74b898e5745d592050, type: 2}
-  m_sharedMaterial: {fileID: 6547761085111397673, guid: e22d14b31be97f74b898e5745d592050, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dcc4d89fd7a456e489958be9bd9ab26f, type: 2}
+  m_sharedMaterial: {fileID: 3917725879710383133, guid: dcc4d89fd7a456e489958be9bd9ab26f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -306,7 +307,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 8192
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

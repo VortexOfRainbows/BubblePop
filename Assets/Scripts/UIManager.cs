@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: " + Mathf.FloorToInt(score);
         highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
         waveText.text = "Wave: " + Mathf.FloorToInt(WaveDirector.WaveNum);
-        deadHighscoreText.text = highscoreText.text;
+        deadHighscoreText.text = scoreText.text;
 
         int money = CoinManager.Current; // : CoinManager.Savings;
         moneyText.text = $"${money}";

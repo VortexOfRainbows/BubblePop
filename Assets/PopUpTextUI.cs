@@ -124,12 +124,12 @@ public class PopUpTextUI : MonoBehaviour
     }
     private void SetHeightMiddle()
     {
-        float height = Mathf.Max(155, Description.renderedHeight + Name.renderedHeight + 20);
+        float height = Mathf.Max(155, Description.renderedHeight + Name.renderedHeight + 30);
         visualRect.sizeDelta = new Vector2(Mathf.Max(760, myRect.sizeDelta.x), height);
     }
     public void SnapToScreen()
     {
-        visualRect.sizeDelta = new Vector2(myRect.sizeDelta.x, Description.renderedHeight + Name.renderedHeight + 20);
+        visualRect.sizeDelta = new Vector2(myRect.sizeDelta.x, Description.renderedHeight + Name.renderedHeight + 30);
         float width = Screen.width - visualRect.rect.width * MainGameCanvas.scaleFactor;
         float height = visualRect.rect.height * MainGameCanvas.scaleFactor;
         //Clamp so it won't leave the boundaries of the screen
