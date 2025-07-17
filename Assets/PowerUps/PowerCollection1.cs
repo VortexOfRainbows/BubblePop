@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Choice : PowerUp
 {
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Pick which power you want from a given selection");
     }
@@ -22,7 +22,7 @@ public class WeaponUpgrade : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Haste");
         description.WithDescription("Increases Y:[attack speed] by Y:10% G:(+10% per stack)");
@@ -43,7 +43,7 @@ public class Overclock : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Reduces Y:[ability cooldown] by Y:20% G:(+20% per stack)");
         description.WithShortDescription("Reduces ability cooldown");
@@ -55,7 +55,7 @@ public class Overclock : PowerUp
 }
 public class ChargeShot : PowerUp
 {
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Increases the Y:damage of your Y:[secondary attack] by Y:50% G:(+50% per stack) and the Y:size of your Y:[secondary attacks] by 40% G:(+40% per stack)");
         description.WithShortDescription("Increases the size and damage of your secondary attack");
@@ -67,7 +67,7 @@ public class ChargeShot : PowerUp
 }
 public class Shotgun : PowerUp
 {
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)");
         description.WithShortDescription("Increases the amount of bubbles shot by your primary attack");
@@ -83,7 +83,7 @@ public class Dash : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Sparkle Sparkle");
         description.WithDescription("Y:Dashing releases Y:2 G:(+1 per stack) damaging stars");
@@ -98,7 +98,7 @@ public class Dash : PowerUp
 }
 public class ShotSpeed : PowerUp
 {
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bubble Propulsion");
         description.WithDescription("Blown bubbles travel Y:10% G:(+10% per stack) further and Y:10% G:(+10% per stack) faster"); //These numbers are not quite correct but do give a good estimate
@@ -117,7 +117,7 @@ public class Starbarbs : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Enemies Y:[killed by stars] explode into Y:2 G:(+1 per stack) stars");
         description.WithShortDescription("Enemies killed by stars explode into stars");
@@ -133,7 +133,7 @@ public class SoapySoap : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Your Y:[secondary attack] releases Y:5 G:(+3 per stack) bubbles while traveling, plus Y:[2 more bubbles for each charge level]");
         description.WithShortDescription("Your secondary attack leaves behind a trail of bubbles");
@@ -149,7 +149,7 @@ public class BubbleBlast : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Your Y:[secondary attack] releases Y:4 G:(+3 per stack) bubbles upon expiring, plus Y:1 G:(+1 per stack) Y:[more bubbles for each charge level]");
         description.WithShortDescription("Your secondary attack releases bubbles upon expiring");
@@ -165,7 +165,7 @@ public class Starshot : PowerUp
     {
         Weighting = SuperRare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Y:15% G:(+5% per stack) Y:chance to launch stars with your Y:[primary attack] " + //This isn't quite accurate, but is a good approximation
             "\nIncreases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)");
@@ -183,7 +183,7 @@ public class BinaryStars : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Release Y:2 G:(+1 per stack) stars every Y:[1.5 seconds]");
         description.WithShortDescription("Periodically release stars");
@@ -199,7 +199,7 @@ public class EternalBubbles : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Increases lifespan of small bubbles by Y:[0.7 seconds] G:(+0.5 seconds per stack)");
         description.WithShortDescription("Increases lifespan of small bubbles");
@@ -219,7 +219,7 @@ public class BubbleBirb : PowerUp
     {
         Weighting = Legendary;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Resurrect in a dance of flames after death G:(consumed on use)");
         description.WithShortDescription("Resurrect in a dance of flames after death");
@@ -239,7 +239,7 @@ public class BubbleTrail : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Release a bubble every Y:[0.67 seconds] G:(-33% per stack)");
         description.WithShortDescription("Periodically release bubbles");
@@ -255,7 +255,7 @@ public class Coalescence : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Your Y:[secondary attack] may be charged Y:1 additional times " +
             "\nIncreases Y:[secondary attack speed] by Y:5% G:(+5% per stack)");
@@ -273,7 +273,7 @@ public class LuckyStar : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Enemies Y:[killed by stars] have an additional Y:2% G:(+2% per stack) Y:chance to Y:[drop power ups]");
         description.WithShortDescription("Enemies killed by stars have an additional chance to drop power ups");
@@ -289,7 +289,7 @@ public class TrailOfThoughts : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Trail of Thoughts");
         description.WithDescription("Increases the maximum length of your Y:[thought trail] by Y:3 G:(+3 per stacK)");
@@ -306,7 +306,7 @@ public class Magnet : PowerUp
     {
         Weighting = Common;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Extends the distance coins are collected from by Y:75% G:(+75% per stack)");
         description.WithShortDescription("Collect coins from farther away");
@@ -322,7 +322,7 @@ public class SpearOfLight : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Spear of Light");
         description.WithDescription("Fire beams of light at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2.5 damage] G:(+0.5 per stack) every Y:[2.2 seconds]");
@@ -339,7 +339,7 @@ public class NeuronActivation : PowerUp
     {
         Weighting = SuperRare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Reflection");
         description.WithDescription("Enemies Y:[struck by beams of light] fire beams of light at nearby enemies up to Y:1 G:(+1 per stack) additional times");
@@ -356,7 +356,7 @@ public class BrainBlast : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Release Y:20% G:(+10% per stack) more bubbles when Y:[channeling recall] and explode into Y:1 G:(+0.75 per stack) additional bubbles per segment Y:[after recall]");
         description.WithShortDescription("Release additional bubbles when recalling");
@@ -372,7 +372,7 @@ public class Raise : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Increases Y:[maximum chip stack height] by Y:1 G:(+1 per stack) and reduces Y:[ability cooldown] by Y:10% G:(+10% per stack)");
         description.WithShortDescription("Increases maximum chip stack height and slightly reduces ability cooldown");
@@ -389,7 +389,7 @@ public class AllIn : PowerUp
     {
         Weighting = Legendary;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("All-In");
         description.WithDescription("Increases Y:[total chip stacks] by Y:2 G:(+2 per stack) and grants a Y:5% G:(+5% per stack) Y:chance for chips to be enhanced " +
@@ -410,7 +410,7 @@ public class SnakeEyes : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Y:8.3% G:(+2.8% per stack) Y:chance to Y:[recursively strike] enemies with green lightning");
         description.WithShortDescription("Chance to deal additional damage");
@@ -426,7 +426,7 @@ public class Refraction : PowerUp
     {
         Weighting = SuperRare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Beams of light target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units");
         description.WithShortDescription("Beams of light can target an additional enemy");
@@ -442,7 +442,7 @@ public class Calculator : PowerUp
     {
         Weighting = SuperRare;
     }
-    public override void InitializeDescription(ref PowerUpDescription description)
+    public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Y:[Friendly projectiles seek out] enemies within Y:4 G:(+1.5 per stack) Y:units");
         description.WithShortDescription("Grants aim assist");

@@ -84,7 +84,7 @@ public class Gachapon : Body
                 Projectile.NewProjectile<PokerChip>(transform.position, rot);
             for(int j = 0; j < player.DashSparkle; ++j)
             {
-                if(Utils.RandFloat(1) < 0.5f)
+                if(Utils.RandFloat(1) < 0.5f) //replace with heuristic for better speed
                 {
                     Vector2 target = (Vector2)transform.position + rot * Utils.RandFloat(0.2f, 1.0f);
                     Projectile.NewProjectile<StarProj>(transform.position, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
@@ -194,14 +194,6 @@ public class Gachapon : Body
             AddStack();
         while (stacks.Count > player.ChipStacks)
             RemoveStack();
-        if (Main.WavesUnleashed)
-        {
-            if(player.AbilityReady)
-            {
-                player.abilityTimer = AbilityCD;
-                AddChip();
-            }
-        }
         if(Control.Ability && !Control.LastAbility)
         {
             if (RemoveChip())
@@ -215,6 +207,14 @@ public class Gachapon : Body
                     player.abilityTimer = AbilityCD * 0.8f + AbilityCD * 0.125f * ((player.AbilityRecoverySpeed - 1) * 0.2f + Mathf.Sqrt(player.AbilityRecoverySpeed));
                 else
                     break;
+            }
+        }
+        if (Main.WavesUnleashed)
+        {
+            while(player.AbilityReady)
+            {
+                player.abilityTimer += AbilityCD;
+                AddChip();
             }
         }
         //if (p.AbilityReady && Control.Ability && !Control.LastAbility)

@@ -19,7 +19,7 @@ public static class ReflectiveEnumerator
         }
     }
 }
-public class PowerUpDescription
+public class DetailedDescription
 {
     public PowerUp owner;
     private static readonly string[] Rares = new string[] { "#EFEFEF", "#C8FEAD", "#BAE3FE", "#D4BAFE", "#FCB934" };
@@ -88,7 +88,7 @@ public class PowerUpDescription
         }
         return t;
     }
-    public PowerUpDescription(PowerUp p) 
+    public DetailedDescription(PowerUp p) 
     { 
         owner = p;
         Name = p.GetType().FullName.ToSpacedString();
@@ -377,8 +377,8 @@ public abstract class PowerUp
     {
 
     }
-    private PowerUpDescription TrueDescription;
-    public virtual void InitializeDescription(ref PowerUpDescription description)
+    private DetailedDescription TrueDescription;
+    public virtual void InitializeDescription(ref DetailedDescription description)
     {
 
     }

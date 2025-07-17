@@ -35,6 +35,9 @@ public partial class Player : Entity
     public float MaxSpeed => MoveSpeedMod * 6f;
     private bool HasRunStartingGear = false;
     public const float DashDefault = 25f;
+    /// <summary>
+    /// Shorthand for abilityTimer <= 0;
+    /// </summary>
     public bool AbilityReady => abilityTimer <= 0;
     public bool AbilityOnCooldown => abilityTimer > 0;
     public override void Init()
