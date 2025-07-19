@@ -349,12 +349,13 @@ public abstract class PowerUp
         Weighting = 1;
         Init();
     }
-    public void PickUp()
+    public void PickUp(int amt = 1)
     {
         AddToDisplayQueue();
-        AddToPlayer(1);
-        OnPickup(1);
-        AmountPickedUpAcrossAllRuns++;
+        AddToPlayer(amt);
+        OnPickup(amt);
+        Player.Instance.MostRecentPower = this;
+        AmountPickedUpAcrossAllRuns += amt;
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;
     }

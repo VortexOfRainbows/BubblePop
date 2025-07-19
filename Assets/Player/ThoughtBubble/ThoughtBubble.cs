@@ -39,6 +39,7 @@ public class ThoughtBubble : Body
         powerPool.Add<BubbleBirb>();
         powerPool.Add<Overclock>();
         powerPool.Add<BrainBlast>();
+        powerPool.Add<BubbleMitosis>();
     }
     protected override string Description()
     {

@@ -143,6 +143,7 @@ public class Gachapon : Body
         powerPool.Add<Overclock>();
         powerPool.Add<Raise>();
         powerPool.Add<AllIn>();
+        powerPool.Add<BubbleMitosis>();
     }
     protected override string Description()
     {

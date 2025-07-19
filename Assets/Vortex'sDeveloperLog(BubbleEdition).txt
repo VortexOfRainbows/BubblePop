@@ -12,11 +12,19 @@ Need to do:
 7. More descriptive pause and select screen
 8. Quadrant system UI
 9. Look into optimizing projectiles with collision masks
+10. Changes needed:
+	1. Nerf Sparkle Sparkle with gachapon and optimize (lagginess with gachapon chance loops)
+	2. Diminishing returns on eternal bubbles
 
 Done: 
 
-7/17/25
+7/17/25 and 7/19/25
 1. Fix issue where Gachapon ability would prevent holding after reaching a certain speed
+2. Add Mitosis (power), currently a default pool power
+3. Fix bug where popup text behaves weirdly before the game starts
+4. Soapy Soap generates around the bubble instead of straight in the center
+5. Bubbles spawn less particles, smaller particles, and lower life particles, and particles are more transparent (for clarity and less lag)
+6. The first stack of eternal bubbles now grants 0.7 -> 0.8 seconds, but subsequent stacks only grant 0.5 -> 0.4
 
 7/14/25 to 7/16/25
 1. Health system + hurt effects

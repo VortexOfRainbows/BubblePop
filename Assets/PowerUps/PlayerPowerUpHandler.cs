@@ -27,10 +27,10 @@ public partial class Player : Entity
             if(p.Stack <= 0)
             {
                 powers.RemoveAt(index);
-                if (powers.Count < index)
-                {
-                    
-                }
+                //if (powers.Count < index)
+                //{
+                //    
+                //}
             }
         }
     }

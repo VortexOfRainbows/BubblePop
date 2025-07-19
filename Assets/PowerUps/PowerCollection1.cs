@@ -201,7 +201,7 @@ public class EternalBubbles : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Increases lifespan of small bubbles by Y:[0.7 seconds] G:(+0.5 seconds per stack)");
+        description.WithDescription("Increases lifespan of small bubbles by Y:[0.8 seconds] G:(+0.4 seconds per stack)");
         description.WithShortDescription("Increases lifespan of small bubbles");
     }
     public override Sprite GetAdornment()
@@ -275,8 +275,8 @@ public class LuckyStar : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:2% G:(+2% per stack) Y:chance to Y:[drop power ups]");
-        description.WithShortDescription("Enemies killed by stars have an additional chance to drop power ups");
+        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:2% G:(+2% per stack) Y:chance to Y:[drop powers]");
+        description.WithShortDescription("Enemies killed by stars have an additional chance to drop powers");
     }
     public override void HeldEffect(Player p)
     {
@@ -444,7 +444,7 @@ public class Calculator : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:[Friendly projectiles seek out] enemies within Y:4 G:(+1.5 per stack) Y:units");
+        description.WithDescription("Friendly projectiles Y:[seek out] enemies within Y:4 G:(+1.5 per stack) Y:units");
         description.WithShortDescription("Grants aim assist");
     }
     public override void HeldEffect(Player p)

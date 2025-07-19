@@ -138,7 +138,7 @@ public class PopUpTextUI : MonoBehaviour
     }
     public void Update()
     {
-        if (Main.GamePaused || Time.timeScale == 0)
+        if (Main.GamePaused)
             FixedUpdate();
     }
 }

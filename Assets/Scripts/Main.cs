@@ -7,7 +7,7 @@ public class Main : MonoBehaviour
     public static bool PlayerNearPylon => PrevPylon != null;
     public static Pylon CurrentPylon = null;
     private static Pylon PrevPylon = null;
-    public static bool GamePaused = false;
+    public static bool GamePaused => Time.timeScale == 0;
     public static bool WavesUnleashed = false;
     public GameObject DirectorCanvas;
     public GameObject PowerupCheatCanvas;
@@ -29,18 +29,15 @@ public class Main : MonoBehaviour
     {
         Time.timeScale = 1f;
         CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
-        GamePaused = false;
         WavesUnleashed = true;
     }
     public static void PauseGame()
     {
         Time.timeScale = 0f;
-        GamePaused = true;
     }
     public static void UnpauseGame()
     {
         Time.timeScale = 1f;
-        GamePaused = false;
     }
     public void OnGameClose()
     {

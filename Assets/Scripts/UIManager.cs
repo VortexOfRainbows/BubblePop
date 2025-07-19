@@ -76,7 +76,6 @@ public class UIManager : MonoBehaviour
     }
     public void Resume()
     {
-        Main.GamePaused = false;
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
     }

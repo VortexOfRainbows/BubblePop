@@ -27,17 +27,17 @@ public class SmallBubble : Projectile
         float deathTime = 180;
         if (Player.Instance.EternalBubbles > 0)
         {
-            deathTime += 20 + 50 * Player.Instance.EternalBubbles;
+            deathTime += 40 + 40 * Player.Instance.EternalBubbles;
         }
         float FadeOutTime = 20;
         if (timer > deathTime + FadeOutTime)
         {
             Kill();
         }
-        if ((int)timer % 3 == 0)
+        if ((int)timer % 4 == 0)
         {
             Vector2 norm = RB.velocity.normalized;
-            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.8f, Utils.RandFloat(0.25f, 0.4f), 0, Player.ProjectileColor);
+            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f + Utils.RandCircle(transform.lossyScale.x * 0.4f), .225f, norm * -.75f, 0.6f, Utils.RandFloat(0.225f, 0.35f), 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
         }
         if (timer > deathTime)
         {
@@ -48,10 +48,10 @@ public class SmallBubble : Projectile
     }
     public override void OnKill()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
-            Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-            ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 0, Player.ProjectileColor);
+            Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+            ParticleManager.NewParticle((Vector2)transform.position, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
         }
         AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
     }
@@ -161,8 +161,9 @@ public class BigBubble : Projectile
                     interval = 1;
                 if (timer % interval == 0)
                 {
+                    Vector2 norm = RB.velocity.normalized;
                     float veloMult = Utils.RandFloat(0.75f * Player.Instance.FasterBulletSpeed, 3f + Player.Instance.FasterBulletSpeed * 1.25f);
-                    NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(2) - RB.velocity.normalized * veloMult);
+                    NewProjectile<SmallBubble>((Vector2)transform.position + Utils.RandCircle(transform.lossyScale.x * 0.5f), Utils.RandCircle(2) - norm * veloMult);
                 }
             }
             if (timer > 160)
