@@ -8,12 +8,13 @@ public class PopupText : MonoBehaviour
     public TextMeshPro tmp;
     private float timeLeft = 100;
     public Rigidbody2D rb;
-    public static GameObject NewPopupText(Vector3 pos, Vector3 velo, Color clr, string text)
+    public static GameObject NewPopupText(Vector3 pos, Vector3 velo, Color clr, string text, bool bold = false)
     {
         GameObject obj = Instantiate(PopupTextPrefab, pos, Quaternion.identity);
         TextMeshPro tmp = obj.GetComponent<TextMeshPro>();
         tmp.text = text;
         tmp.color = clr;
+        tmp.fontStyle = bold ? (FontStyles)FontStyle.Bold : 0;
         obj.GetComponent<Rigidbody2D>().velocity = velo;
         obj.transform.localScale = Vector3.zero;
         return obj;

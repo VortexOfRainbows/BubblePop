@@ -152,6 +152,7 @@ public partial class Player : Entity
     }
     public void OnDash(Vector2 velo)
     {
+        OnUseAbility();
         if (DashSparkle > 0)
         {
             Vector2 norm = velo.normalized;

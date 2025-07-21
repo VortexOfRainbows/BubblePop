@@ -3,6 +3,30 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    public List<Buff> buffs = new();
+    public void AddBuff<T>(float time) where T: Buff, new()
+    {
+        Buff b = new T
+        {
+            timeLeft = time,
+            initiallyAppliedDuration = time,
+            owner = this,
+        };
+        buffs.Add(b);
+        Debug.Log($"Added buff: {b.GetType().Name} for {b.timeLeft} seconds");
+    }
+    public void UpdateBuffs()
+    {
+        for(int i = buffs.Count - 1; i >= 0; --i)
+        {
+            Buff b = buffs[i];
+            b.Update();
+            if (!b.active)
+            {
+                buffs.RemoveAt(i);
+            }
+        }
+    }
     public GameObject Visual;
     //public static int NextUniqueID = 0;
     //public int UniqueID = NextUniqueID++;
@@ -41,13 +65,14 @@ public class Entity : MonoBehaviour
     {
 
     }
-    public void InjureNPC(int damage)
+    public void InjureNPC(int damage, bool specialColor = false)
     {
         Life -= damage;
         DamageTaken += damage;
         BoxCollider2D c2D = GetComponent<BoxCollider2D>();
         Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
-        PopupText.NewPopupText(randPos, Utils.RandCircle(3) + Vector2.up * 2, new Color(1f, 0.5f, 0.4f), damage.ToString());
+        Color c = !specialColor ? new Color(1f, 0.5f, 0.4f) : new Color(1f, 0.9f, 0.3f);
+        PopupText.NewPopupText(randPos, Utils.RandCircle(3) + Vector2.up * 2, c, damage.ToString(), specialColor);
     }
     public void HurtByNPC()
     {

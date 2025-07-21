@@ -89,10 +89,12 @@ public class Enemy : Entity
                 if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
                     SpecializedImmuneFrames.RemoveAt(i);
         }
+        UpdateBuffs();
         AI();
     }
     public bool AlreadyDead => Life <= -50;
     private void SetDead() => Life = -50;
+    public bool FirstStrike = true;
     public sealed override void OnHurtByProjectile(Projectile proj)
     {
         if (SpecializedImmuneFrames.Contains(proj) || proj.Penetrate == 0 || !SpawnedIn)
@@ -102,7 +104,25 @@ public class Enemy : Entity
             return;
         if (proj.Friendly && !AlreadyDead)
         {
-            InjureNPC(proj.Damage);
+            int damage = proj.Damage;
+            bool crit = false;
+            if(FirstStrike)
+            {
+                FirstStrike = false;
+                int initiative = Player.Instance.RollInit;
+                if (initiative > 0)
+                {
+                    if (initiative >= 81 || Utils.RandFloat(1) < 0.19f + initiative * 0.01f)
+                    {
+                        float minIncrease = 1.45f + 0.05f * initiative;
+                        float maxIncrease = 2.80f + 0.20f * initiative;
+                        float increase = Utils.RandFloat(minIncrease, maxIncrease);
+                        damage += (int)(damage * increase + 0.5f);
+                        crit = true;
+                    }
+                }
+            }
+            InjureNPC(damage, crit);
             proj.HitTarget(this);
             if (proj.Penetrate != -1)
             {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
@@ -91,7 +92,12 @@ public class Gachapon : Body
                 }
             }
         }
-        return totalCount > 0;
+        bool ret = totalCount > 0;
+        if(ret)
+        {
+            player.OnUseAbility();
+        }
+        return ret;
     }
     public void AddStack()
     {

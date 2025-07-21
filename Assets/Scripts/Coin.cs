@@ -8,9 +8,10 @@ public class Coin : MonoBehaviour
     public int Value;
     public float AttractTimer = 0;
     public Color PopupColor;
+    public float BeforeCollectableTimer = 0;
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (gameObject.activeSelf && collision.CompareTag("Player"))
+        if (gameObject.activeSelf && collision.CompareTag("Player") && BeforeCollectableTimer <= 0)
         {
             OnCollected();
             gameObject.SetActive(false);
@@ -25,7 +26,7 @@ public class Coin : MonoBehaviour
         float attractDist = 4 + p.Magnet * 3f;
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
-        if (length < attractDist)
+        if (length < attractDist && BeforeCollectableTimer <= 0)
         {
             float attractSpeed = 3 + p.Magnet + (++AttractTimer) / 30f;
             float percent = length / attractDist;
@@ -41,6 +42,7 @@ public class Coin : MonoBehaviour
         {
             rb.velocity *= 0.985f;
             AttractTimer = 0;
+            BeforeCollectableTimer -= Time.fixedDeltaTime;
         }
     }
     public void OnCollected()

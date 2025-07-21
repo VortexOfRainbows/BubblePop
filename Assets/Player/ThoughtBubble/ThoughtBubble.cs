@@ -152,6 +152,7 @@ public class ThoughtBubble : Body
     public static bool FinishedTeleport = false;
     public void Teleport(Vector2 pos)
     {
+        player.OnUseAbility();
         player.transform.position = pos;
         AudioManager.PlaySound(SoundID.Teleport, pos, 2f, 1);
         FinishedTeleport = true;
@@ -260,6 +261,7 @@ public class ThoughtBubble : Body
                 sparkleSparkleNum -= 1.0f;
             }
         }
+        player.OnUseAbility();
     }
     public void TryAddingTail()
     {

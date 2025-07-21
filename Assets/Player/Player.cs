@@ -137,7 +137,7 @@ public partial class Player : Entity
         Instance = this;
         WaveDirector.FixedUpdate();
         UpdatePowerUps();
-
+        UpdateBuffs();
         bool dead = DeathKillTimer > 0;
         bool outOfBounds = false;
         if (!World.RealTileMap.Map.HasTile(World.RealTileMap.Map.WorldToCell(transform.position)))
@@ -197,11 +197,15 @@ public partial class Player : Entity
         base.Update();
         Instance = this;
     }
+    public void SetLife(int num)
+    {
+        Life = num;
+        OnSetLife(Life);
+    }
     public void Hurt(int damage = 1)
     {
         UniversalImmuneFrames = 100;
-        Life -= damage;
-        OnSetLife(Life);
+        SetLife(Life - damage);
         if (Life <= 0)
             Pop();
         else
@@ -281,6 +285,24 @@ public partial class Player : Entity
         else if (UniversalImmuneFrames == 0 || IsDead)
         {
             Visual.SetActive(true);
+        }
+    }
+    public void OnUseAbility()
+    {
+        int dex = RollDex;
+        Debug.Log(dex);
+        if (dex > 0)
+        {
+            if (dex >= 81 || Utils.RandFloat(1) < 0.19f + dex * 0.01f)
+            {
+                int allowedBoosts = 1 + dex;
+                int existingSpeedBoosts = 0;
+                foreach(Buff b in buffs)
+                    if (b is SpeedBoost)
+                        existingSpeedBoosts++;
+                if(existingSpeedBoosts < allowedBoosts)
+                    AddBuff<SpeedBoost>(5);
+            }
         }
     }
 }

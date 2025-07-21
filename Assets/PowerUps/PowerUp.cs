@@ -289,9 +289,25 @@ public abstract class PowerUp
         {
             return Get<Choice>().MyID;
         }
-        float recursionModifier = 1.0f + recursionDepth * 0.5f;
+        float weightMult = 1.0f + recursionDepth * 0.1f;
         int type = AvailablePowers[Utils.RandInt(AvailablePowers.Count)];
-        if (PowerUps[type].Weighting * recursionModifier > Utils.RandFloat(1))
+        if (Player.Instance.RollPerc > 0)
+        {
+            int rare = PowerUps[type].GetRarity();
+            if (rare >= 3) //Increase odds of seeing blue, purple, yellow
+                weightMult += 0.2f * Player.Instance.RollPerc;
+            else //Slightly decrease odds of seeing white, green
+            {
+                float decreaseMult = rare == 1 ? 0.02f : 0.01f;
+                weightMult -= decreaseMult * Player.Instance.RollPerc;
+                if(weightMult < 0.2f)
+                {
+                    weightMult = 0.2f;
+                }
+            }
+        }
+        float powerupWeighting = PowerUps[type].Weighting * weightMult;
+        if (powerupWeighting > Utils.RandFloat(1))
         {
             return type;
         }

@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PowerUpObject : MonoBehaviour
@@ -73,7 +74,21 @@ public class PowerUpObject : MonoBehaviour
     }
     public void PickUp()
     {
-        CoinManager.ModifyCurrent(-Cost);
+        if(Cost > 0)
+        {
+            CoinManager.ModifyCurrent(-Cost);
+            int charisma = Player.Instance.RollChar;
+            if(charisma > 0)
+            {
+                if (charisma >= 81 || Utils.RandFloat(1) < 0.19f + charisma * 0.01f)
+                {
+                    if(Player.Instance.Life < Player.Instance.MaxLife)
+                        Player.Instance.SetLife(Player.Instance.Life + 1);
+                    else
+                        CoinManager.SpawnCoin(transform.position, 5 + charisma * 5, 0.5f);
+                }
+            }
+        }
         PickedUp = true;
         MyPower.PickUp();
         Kill();
