@@ -22,6 +22,10 @@ public class Dice : Hat
     protected override UnlockCondition UnlockCondition => base.UnlockCondition;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
+        powerPool.Add<RollForDexterity>();
+        powerPool.Add<RollForCharisma>();
+        powerPool.Add<RollForInitiative>();
+        powerPool.Add<RollForPerception>();
         powerPool.Add<SnakeEyes>();
         powerPool.Add<Choice>();
     }

@@ -93,6 +93,7 @@ public class PopUpTextUI : MonoBehaviour
             childImages = new List<Image>();
             GetComponentsInChildren(false, childImages);
             childImages.Add(PowerUpVisual.inner);
+            childImages.Add(PowerUpVisual.adornment);
             foreach (Image i in childImages)
             {
                 defaultColors.Add(i.color);
