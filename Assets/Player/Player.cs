@@ -138,6 +138,7 @@ public partial class Player : Entity
         WaveDirector.FixedUpdate();
         UpdatePowerUps();
         UpdateBuffs();
+        HomingRangeSqrt = Mathf.Sqrt(HomingRange);
         bool dead = DeathKillTimer > 0;
         bool outOfBounds = false;
         if (!World.RealTileMap.Map.HasTile(World.RealTileMap.Map.WorldToCell(transform.position)))

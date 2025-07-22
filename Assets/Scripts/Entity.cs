@@ -48,14 +48,10 @@ public class Entity : MonoBehaviour
     }
     public void TriggerCollision(Collider2D collision)
     {
-        if (collision.tag == ProjTag && collision.GetComponentInParent<Projectile>() is Projectile proj)
-        {
+        if (collision.CompareTag(ProjTag) && collision.GetComponentInParent<Projectile>() is Projectile proj)
             HurtByProjectile(proj);
-        }
-        if (collision.tag == EnemyTag)
-        {
+        if (collision.CompareTag(EnemyTag))
             HurtByNPC();
-        }
     }
     public void HurtByProjectile(Projectile proj)
     {

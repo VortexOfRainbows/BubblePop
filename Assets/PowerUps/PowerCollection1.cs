@@ -444,11 +444,11 @@ public class Calculator : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Friendly projectiles Y:[seek out] enemies within Y:4 G:(+1.5 per stack) Y:units");
+        description.WithDescription("Friendly projectiles Y:[seek out] enemies within Y:4 G:(+2 per stack) Y:units");
         description.WithShortDescription("Grants aim assist");
     }
     public override void HeldEffect(Player p)
     {
-        p.HomingRange += Stack;
+        p.HomingRange += Stack * 2f + 2f;
     }
 }

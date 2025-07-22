@@ -46,14 +46,14 @@ public class Projectile : MonoBehaviour
     }
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.tag == "Tub" && this is not BathBomb)
+        if(collision.CompareTag("Tub") && this is not BathBomb)
         {
             if (this is BigBubble)
             {
                 if(timer > 10)
                 {
                     Vector2 toClosest = collision.ClosestPoint(transform.position) - (Vector2)transform.position;
-                    RB.velocity = -toClosest.normalized * 0.75f * RB.velocity.magnitude;
+                    RB.velocity = 0.75f * RB.velocity.magnitude * -toClosest.normalized;
                 }
                 return;
             }
@@ -68,9 +68,7 @@ public class Projectile : MonoBehaviour
     {
         AI();
         if(CanBeAffectedByHoming() && Friendly && Player.Instance.HomingRange > 0)
-        {
             HomingBehavior();
-        }
     }
     public void HitTarget(Entity target)
     {
@@ -141,14 +139,14 @@ public class Projectile : MonoBehaviour
     private int homingCounter = 0;
     public void HomingBehavior()
     {
-        if(homingCounter++ % 2 == 0)
+        if(homingCounter++ % 4 == 0)
         {
-            float range = Player.Instance.HomingRange * 1.5f + 2.5f;
+            float range = Player.Instance.HomingRange;
             Enemy target = Enemy.FindClosest(transform.position, range, out Vector2 norm2, true);
             if (target != null && DoHomingBehavior(target, norm2, range))
             {
-                float currentSpeed = RB.velocity.magnitude + Mathf.Sqrt(range) * 0.1f;
-                float modAmt = 0.03f + Mathf.Sqrt(range) * 0.01f;
+                float currentSpeed = RB.velocity.magnitude + Player.Instance.HomingRangeSqrt * 0.225f;
+                float modAmt = 0.0625f + Player.Instance.HomingRangeSqrt * 0.03f;
                 RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm2 * currentSpeed, modAmt).normalized * currentSpeed;
             }
         }

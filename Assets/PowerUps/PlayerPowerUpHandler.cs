@@ -62,6 +62,7 @@ public partial class Player : Entity
     public float AbilityRecoverySpeed = 1.0f, AbilityRecoverySpeedMult = 1.0f, MoveSpeedMod = 1.0f;
     public float BlueChipChance = 0.0f;
     public float HomingRange = 0;
+    public float HomingRangeSqrt = 0;
     public int ChipHeight = 5;
     public int ChipStacks = 2;
 
@@ -141,7 +142,7 @@ public partial class Player : Entity
             {
                 BubbleTrailTimer += 2f / (PassiveAttackSpeedModifier * (BubbleTrail + 2f)); //.5, 2/5, 2/6, 2/7, 1/4
                 Vector2 circular = (Utils.RandCircle(1.3f) - Animator.lastVelo * 0.4f).normalized;
-                float speedMax = 2 + FasterBulletSpeed * 0.1f;
+                float speedMax = 2 + FasterBulletSpeed * 0.2f;
                 Projectile.NewProjectile<SmallBubble>(transform.position, circular * speedMax);
             }
         }

@@ -11,8 +11,7 @@ Need to do:
 6. Thought Bubble Weapon (spell book)
 7. More descriptive pause and select screen
 8. Quadrant system UI
-9. Look into optimizing projectiles with collision masks
-10. Add buff icons
+9. Add buff icons
 
 Done: 
 
@@ -26,6 +25,8 @@ Done:
 7. Add the four gachapon dice powers
 8. Sparkle sparkle scaling nerfed on gachapon + heuristic
 9. Slight diminishing returns on eternal bubbles (at stack 10, its effect is dramatically reduced)
+10. Improved calculator stack rate (but reduced frequency of homing calls in order to improve performance), and other improvements to performance
+11. Performance improvements with projectile collision detection and bubble trail effected by shotspeed more
 
 7/14/25 to 7/16/25
 1. Health system + hurt effects
