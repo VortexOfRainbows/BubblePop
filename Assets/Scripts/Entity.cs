@@ -91,6 +91,8 @@ public class Entity : MonoBehaviour
     public void Start()
     {
         Init();
+        if(this is Enemy)
+            EnemyHealthScaling();
         if (MaxLife < Life)
             MaxLife = Life;
         SpawnedIn = true;
@@ -98,6 +100,10 @@ public class Entity : MonoBehaviour
     public virtual void Init()
     {
 
+    }
+    public void EnemyHealthScaling()
+    {
+        Life = (int)(Life * WaveDirector.EnemyScalingFactor + 0.5f);
     }
     public void Update()
     {

@@ -189,10 +189,11 @@ public static class WaveDirector
     public static int CardsPlayed = 0;
     public static int WaveNum = 1;
     public static float WaveMult = 1.0f;
+    public static float EnemyScalingFactor = 1.0f;
     public static void Reset()
     {
         WaveNum = 1;
-        WaveMult = 1.0f;
+        WaveMult = EnemyScalingFactor = 1.0f;
         CardsPlayed = 0;
         CreditsSpent = 0;
         Deck.Clear();
@@ -229,10 +230,7 @@ public static class WaveDirector
         }
         else if(Board.Count <= 0) //All played cards have finish processing
         {
-            CardsPlayed = 0;
-            WaveNum++;
-            WaveMult += 0.1f;
-            CreditsSpent = 0;
+            ProgressToNextWave();
             if(WaveNum == 2)
             {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
@@ -278,6 +276,29 @@ public static class WaveDirector
         ProcessPlayedCards();
         if (PlayRecoil > 0)
             PlayRecoil -= Time.fixedDeltaTime * WaveMult;
+    }
+    public static void ProgressToNextWave()
+    {
+        CardsPlayed = 0;
+        WaveNum++;
+        WaveMult += 0.1f;
+        CreditsSpent = 0;
+        if(WaveNum > 10)
+        {
+            if(WaveNum <= 20)
+                EnemyScalingFactor += 0.1f;
+            else if(WaveNum <= 50)
+            {
+                EnemyScalingFactor *= 1.05f;
+                EnemyScalingFactor += 0.05f;
+            }
+            else
+                EnemyScalingFactor *= 1.1f;
+        }
+        else if(WaveNum > 5)
+        {
+            EnemyScalingFactor += 0.05f;
+        }
     }
     public static void GatherCredits()
     {
