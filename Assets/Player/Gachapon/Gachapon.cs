@@ -83,12 +83,22 @@ public class Gachapon : Body
                 Projectile.NewProjectile<BlueChip>(transform.position, rot);
             else
                 Projectile.NewProjectile<PokerChip>(transform.position, rot);
-            for(int j = 0; j < player.DashSparkle; ++j)
+            int sparkle = player.DashSparkle;
+            if(sparkle > 0)
             {
-                if(Utils.RandFloat(1) < 0.5f) //replace with heuristic for better speed
+                Vector2 pos = (Vector2)transform.position;
+                float approximate = player.DashSparkle * 0.25f + 0.25f;
+                int whole = (int)approximate;
+                approximate -= whole;
+                for (int j = 0; j < whole; ++j)
                 {
-                    Vector2 target = (Vector2)transform.position + rot * Utils.RandFloat(0.2f, 1.0f);
-                    Projectile.NewProjectile<StarProj>(transform.position, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                    Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                }
+                if(Utils.RandFloat(1) < approximate)
+                {
+                    Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
                 }
             }
         }

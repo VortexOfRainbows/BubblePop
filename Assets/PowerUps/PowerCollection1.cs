@@ -88,7 +88,7 @@ public class Dash : PowerUp
         description.WithName("Sparkle Sparkle");
         description.WithDescription("Y:Dashing releases Y:2 G:(+1 per stack) damaging stars");
         description.WithDescriptionVariant<ThoughtBubble>("Y:[Channeling recall] has a Y:33% G:(+17% per stack) Y:chance to release damaging stars");
-        description.WithDescriptionVariant<Gachapon>("Y:Chips have a Y:50% G:(+50% per stack) Y:chance to release damaging stars");
+        description.WithDescriptionVariant<Gachapon>("Y:Chips have a Y:50% G:(+25% per stack) Y:chance to release damaging stars");
         description.WithShortDescription("Adds damaging stars to your ability");
     }
     public override void HeldEffect(Player p)

@@ -36,7 +36,7 @@ public class PokerChip : Projectile
         float deathTime = 200;
         if (Player.Instance.EternalBubbles > 0)
         {
-            deathTime += 50 + 100 * Player.Instance.EternalBubbles;
+            deathTime += 40 + 40 * Player.Instance.EternalBubbles;
         }
         float FadeOutTime = 20;
         if (timer > deathTime + FadeOutTime)

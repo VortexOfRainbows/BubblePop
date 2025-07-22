@@ -27,7 +27,13 @@ public class SmallBubble : Projectile
         float deathTime = 180;
         if (Player.Instance.EternalBubbles > 0)
         {
-            deathTime += 40 + 40 * Player.Instance.EternalBubbles;
+            int bonus = Player.Instance.EternalBubbles;
+            if (bonus > 9)
+            {
+                deathTime += 10 * (bonus - 9);
+                bonus = 9;
+            }
+            deathTime += 40 + 40 * bonus;
         }
         float FadeOutTime = 20;
         if (timer > deathTime + FadeOutTime)
