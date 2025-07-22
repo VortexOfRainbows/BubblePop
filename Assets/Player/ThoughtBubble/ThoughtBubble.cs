@@ -247,7 +247,7 @@ public class ThoughtBubble : Body
         }
         if (player.BrainBlast > 0)
         {
-            BrainBlastNum += 0.25f + player.BrainBlast * 0.75f;
+            BrainBlastNum += 0.5f + player.BrainBlast * 0.5f;
             BrainBlastTrailNum += 0.2f + player.BrainBlast * 0.1f;
         }
         if (player.DashSparkle > 0)

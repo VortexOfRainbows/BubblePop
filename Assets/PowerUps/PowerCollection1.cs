@@ -358,7 +358,7 @@ public class BrainBlast : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Release Y:20% G:(+10% per stack) more bubbles when Y:[channeling recall] and explode into Y:1 G:(+0.75 per stack) additional bubbles per segment Y:[after recall]");
+        description.WithDescription("Release Y:30% G:(+10% per stack) more bubbles when Y:[channeling recall] and explode into Y:1 G:(+0.5 per stack) additional bubbles per segment Y:[after recall]");
         description.WithShortDescription("Release additional bubbles when recalling");
     }
     public override void HeldEffect(Player p)

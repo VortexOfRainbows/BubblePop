@@ -10,22 +10,14 @@ public class BunceHat : BubblemancerHat
         scale *= 1.33f;
         offset.y -= 0.1f;
     }
-    protected override void ModifyPowerPool(List<PowerUp> powerPool)
-    {
-        base.ModifyPowerPool(powerPool);
-        powerPool.Add<WeaponUpgrade>();
-    }
-    protected override void ReducePowerPool(List<PowerUp> powerPool)
-    {
-        powerPool.Remove<BinaryStars>();
-    }
     protected override string Description()
     {
-        return "You stupid!";
+        return "Grants an additional heart\nYou stupid!";
     }
-    public override void OnStartWith()
+    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
     {
-
+        ++Life;
+        ++MaxLife;
     }
     protected override void AnimationUpdate()
     {
@@ -34,7 +26,7 @@ public class BunceHat : BubblemancerHat
             if (player.abilityTimer > 0)
             {
                 float sin = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(Mathf.PI * Mathf.Max(0, player.abilityTimer / player.AbilityCD)))) * player.abilityTimer / player.AbilityCD;
-                velocity = new Vector2(0, p.Direction * 2.5f * sin).RotatedBy(p.lastVelo.ToRotation());
+                velocity = new Vector2(0, p.Direction * 0.65f * sin).RotatedBy(p.lastVelo.ToRotation());
             }
             else if (player.AbilityReady)
                 velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
