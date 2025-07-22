@@ -48,17 +48,17 @@ public class Projectile : MonoBehaviour
     {
         if(collision.CompareTag("Tub") && this is not BathBomb)
         {
-            if (this is BigBubble)
-            {
-                if(timer > 10)
-                {
-                    Vector2 toClosest = collision.ClosestPoint(transform.position) - (Vector2)transform.position;
-                    RB.velocity = 0.75f * RB.velocity.magnitude * -toClosest.normalized;
-                }
-                return;
-            }
-            Kill();
+            if(OnTileCollide(collision))
+                Kill();
         }
+    }
+    public virtual bool OnTileCollide(Collider2D collision)
+    {
+        return true;
+    }
+    public virtual bool OnInsideTile()
+    {
+        return true;
     }
     public virtual void Init()
     {
@@ -69,6 +69,9 @@ public class Projectile : MonoBehaviour
         AI();
         if(CanBeAffectedByHoming() && Friendly && Player.Instance.HomingRange > 0)
             HomingBehavior();
+        if(World.ColliderTileMap.Map.HasTile(World.ColliderTileMap.Map.WorldToCell(transform.position)))
+            if(OnInsideTile())
+                Kill();
     }
     public void HitTarget(Entity target)
     {
@@ -178,7 +181,7 @@ public class StarProj : Projectile
             Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.4f, 0.5f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 0, SpriteRenderer.color);
         }
-        AudioManager.PlaySound(SoundID.StarbarbImpact.GetVariation(2), transform.position, 0.7f, 0.66f);
+        AudioManager.PlaySound(SoundID.StarbarbImpact.GetVariation(2), transform.position, 0.45f, 0.66f);
     }
     public void SparkleAI()
     {

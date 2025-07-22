@@ -196,4 +196,17 @@ public class BigBubble : Projectile
                 ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .4f), RB.velocity.normalized * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.4f, .8f), 0, default);
         }
     }
+    public override bool OnTileCollide(Collider2D collision)
+    {
+        if (timer > 10)
+        {
+            Vector2 toClosest = collision.ClosestPoint(transform.position) - (Vector2)transform.position;
+            RB.velocity = 0.75f * RB.velocity.magnitude * -toClosest.normalized;
+        }
+        return false;
+    }
+    public override bool OnInsideTile()
+    {
+        return timer > 12;
+    }
 }
