@@ -119,7 +119,7 @@ public class Starbarbs : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Enemies Y:[killed by stars] explode into Y:2 G:(+1 per stack) stars");
+        description.WithDescription("Enemies Y:[killed by stars] explode into Y:3 G:(+1 per stack) stars");
         description.WithShortDescription("Enemies killed by stars explode into stars");
     }
     public override void HeldEffect(Player p)

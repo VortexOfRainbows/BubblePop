@@ -13,12 +13,14 @@ Need to do:
 8. Quadrant system UI
 9. Add buff icons
 10. Potentially enemy health bars
+11. Difficulty multiplier indicator for players
 
 Done: 
 
 7/21/25
 1. Primitive enemy scaling factors (starts slow at 5% per wave, then 10%, then 5% plus 5% multiplicative, then 10% multiplicative
 	1. Really needs playtesting to understand
+2. Decrease Leonard base health 100 -> 80, and decrease laser burst proj shot 12 -> 8 (in order to compensate for difficulty scaling)
 
 7/17/25 and 7/19/25 and 7/21/25
 1. Fix issue where Gachapon ability would prevent holding after reaching a certain speed
