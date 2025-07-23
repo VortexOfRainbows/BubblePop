@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     public TMPro.TextMeshProUGUI deadHighscoreText;
     public TMPro.TextMeshProUGUI moneyText;
     public TMPro.TextMeshProUGUI waveText;
+    public TMPro.TextMeshProUGUI enemyScaleText;
     public GameObject CurrencyIcon;
     public GameObject SavingsIcon;
 
@@ -51,6 +52,10 @@ public class UIManager : MonoBehaviour
         highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
         waveText.text = "Wave: " + Mathf.FloorToInt(WaveDirector.WaveNum);
         deadHighscoreText.text = scoreText.text;
+
+        if(Main.WavesUnleashed)
+            enemyScaleText.text = $"ES: {WaveDirector.EnemyScalingFactor:#.#}";
+        enemyScaleText.enabled = Main.WavesUnleashed;
 
         int money = CoinManager.Current; // : CoinManager.Savings;
         moneyText.text = $"${money}";

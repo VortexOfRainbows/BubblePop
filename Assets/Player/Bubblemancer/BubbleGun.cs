@@ -33,6 +33,10 @@ public class BubbleGun : BubblemancerWand
     {
         return "The right to bare bubble shall not be infringed";
     }
+    public override void EquipUpdate()
+    {
+        player.PrimaryAttackSpeedModifier += 0.2f;
+    }
     protected override void AnimationUpdate()
     {
         GunUpdate();
@@ -75,6 +79,7 @@ public class BubbleGun : BubblemancerWand
             --starshotNum;
         }
     }
+    private float CompleteOneRotation = 0;
     private void GunUpdate()
     {
         //if(Input.GetKeyDown(KeyCode.V))
@@ -185,7 +190,7 @@ public class BubbleGun : BubblemancerWand
         float angleScale = Mathf.Min(1.0f, cos);
         if(notAttacking)
         {
-            if(cos - 1.0f > 0.02f)
+            if(cos - 1.0f > 0.01f)
             {
                 spinSpeed += 0.3f;
             }
