@@ -61,6 +61,18 @@ public abstract class Buff
     {
 
     }
+    public int GetCurrentStacks(Entity e)
+    {
+        return e.UniqueBuffTypes.GetValueOrDefault(GetType());
+    }
+    public virtual Sprite GetSprite()
+    {
+        return Resources.Load<Sprite>($"Buffs/{GetType().Name}");
+    }
+    public virtual Color BackgroundColor()
+    {
+        return new Color(200 / 255f, 255 / 255f, 255 / 255f, 150 / 255f);
+    }
 }
 public class SpeedBoost : Buff
 {

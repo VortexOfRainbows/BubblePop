@@ -113,13 +113,15 @@ MonoBehaviour:
   Visual: {fileID: 2904879408648245512}
   UniversalImmuneFrames: 0
   Life: 10
+  MaxLife: -1
   DamageTaken: 0
+  SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 0}
+  BuffIconParent: {fileID: 0}
   Animator: {fileID: 6147547588852434854}
   bonusBubbles: 0
   MainCamera: {fileID: 0}
-  MaxSpeed: 6
   abilityTimer: 0
   ChargeShotDamage: 0
   ShotgunPower: 0
@@ -132,6 +134,7 @@ MonoBehaviour:
   AttackSpeedModifier: 1
   PrimaryAttackSpeedModifier: 1
   SecondaryAttackSpeedModifier: 1
+  PassiveAttackSpeedModifier: 1
   BinaryStars: 0
   EternalBubbles: 0
   BonusPhoenixLives: 0
@@ -145,9 +148,23 @@ MonoBehaviour:
   LightSpear: 0
   LightChainReact: 0
   BrainBlast: 0
+  SnakeEyes: 0
+  Refraction: 0
+  RollDex: 0
+  RollInit: 0
+  RollChar: 0
+  RollPerc: 0
   AbilityRecoverySpeed: 1
-  TotalChipsAllowed: 5
-  TotalChipStacks: 2
+  AbilityRecoverySpeedMult: 1
+  MoveSpeedMod: 1
+  BlueChipChance: 0
+  HomingRange: 0
+  HomingRangeSqrt: 0
+  ChipHeight: 5
+  ChipStacks: 2
+  BubbleShields: 0
+  ImmunityFrameMultiplier: 1
+  ShieldImmunityFrameMultiplier: 1
 --- !u!50 &3216590746651522342
 Rigidbody2D:
   serializedVersion: 4

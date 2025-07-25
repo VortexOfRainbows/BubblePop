@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 293182179415698555}
@@ -123,9 +123,12 @@ MonoBehaviour:
   Visual: {fileID: 979492237864127347}
   UniversalImmuneFrames: 0
   Life: 10
+  MaxLife: -1
   DamageTaken: 0
+  SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 3394753933866938757}
+  FirstStrike: 1
   sRender: {fileID: 7870486419755120067}
 --- !u!1 &979492237864127347
 GameObject:

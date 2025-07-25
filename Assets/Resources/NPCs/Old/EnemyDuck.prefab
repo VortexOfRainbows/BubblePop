@@ -136,9 +136,12 @@ MonoBehaviour:
   Visual: {fileID: 8773268448822246216}
   UniversalImmuneFrames: 0
   Life: 10
+  MaxLife: -1
   DamageTaken: 0
+  SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 1104329810366391754}
+  FirstStrike: 1
   sRender: {fileID: 3233961230181913397}
 --- !u!50 &1104329810366391754
 Rigidbody2D:

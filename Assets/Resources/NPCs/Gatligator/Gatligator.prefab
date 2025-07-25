@@ -159,15 +159,15 @@ MonoBehaviour:
   Visual: {fileID: 7281897138054420183}
   UniversalImmuneFrames: 0
   Life: 10
+  MaxLife: -1
   DamageTaken: 0
+  SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 8718947618727373290}
+  FirstStrike: 1
   GunTip: {fileID: 5799320799732887532}
   Gun: {fileID: 6216060947607906070}
-  moveSpeed: 0.15
-  inertiaMult: 0.98
   direction: 1
-  ShootTimer: 0
 --- !u!1 &4448670732246871798
 GameObject:
   m_ObjectHideFlags: 0

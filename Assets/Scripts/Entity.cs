@@ -1,32 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour
+public partial class Entity : MonoBehaviour
 {
-    public List<Buff> buffs = new();
-    public void AddBuff<T>(float time) where T: Buff, new()
-    {
-        Buff b = new T
-        {
-            timeLeft = time,
-            initiallyAppliedDuration = time,
-            owner = this,
-        };
-        buffs.Add(b);
-        Debug.Log($"Added buff: {b.GetType().Name} for {b.timeLeft} seconds");
-    }
-    public void UpdateBuffs()
-    {
-        for(int i = buffs.Count - 1; i >= 0; --i)
-        {
-            Buff b = buffs[i];
-            b.Update();
-            if (!b.active)
-            {
-                buffs.RemoveAt(i);
-            }
-        }
-    }
     public GameObject Visual;
     //public static int NextUniqueID = 0;
     //public int UniqueID = NextUniqueID++;

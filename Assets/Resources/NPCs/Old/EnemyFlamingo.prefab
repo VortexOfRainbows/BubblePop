@@ -78,9 +78,12 @@ MonoBehaviour:
   Visual: {fileID: 8646482693813849268}
   UniversalImmuneFrames: 0
   Life: 10
+  MaxLife: -1
   DamageTaken: 0
+  SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 3394753933866938757}
+  FirstStrike: 1
   sRender: {fileID: 7346615532675971073}
 --- !u!61 &5627336714113378011
 BoxCollider2D:

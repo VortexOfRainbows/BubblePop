@@ -45,6 +45,7 @@ public class Main : MonoBehaviour
     }
     public void Awake()
     {
+        BuffIcon.Load();
         OnGameOpen();
     }
     public void OnDestroy()

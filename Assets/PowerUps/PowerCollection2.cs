@@ -28,6 +28,7 @@ public class RollForCharisma : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
+        description.WithName("Roll For Persuasion");
         description.WithDescription("Y:20% G:(+1% per stack) chance to Y:heal after Y:[purchasing a power] or gain Y:10 G:(+5 per stack) Y:coins if uninjured");
         description.WithShortDescription("Chance to heal or refund a portion of money spent when purchasing power");
     } 
@@ -125,7 +126,7 @@ public class BubbleShield : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Gain Y:[1 shield slot] and Y:[recover 1 shield] on pickup or at the start of Y:[even-numbered waves] " +
-            "\nExtend immunity frames by Y:40% G:(+20% per stack) and release Y:24 G:(+8 per stack) bubbles when a Y:[shield is broken]");
+            "\nWhen a Y:[shield is broken,] extend Y:[immunity frames] by Y:40% G:(+20% per stack) and release Y:24 G:(+8 per stack) bubbles");
         description.WithShortDescription("Gain a shield on even-numbered waves, extend immunity frames and release bubbles when shields are broken");
     }
     public override void OnPickup(int count)
