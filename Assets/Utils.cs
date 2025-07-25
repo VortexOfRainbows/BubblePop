@@ -82,17 +82,19 @@ public static class Utils
     public const int AlternativeCameraPosY = 1000;
     public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius = 64, Canvas canvas = null)
     {
+        if (UIManager.ActivePrimaryCanvas == null)
+            return false;
         Vector3 pos = transform.position;
-        float scale = UIManager.Instance.MainGameCanvas.scaleFactor;
+        float scale = UIManager.ActivePrimaryCanvas.scaleFactor;
         if (canvas == null)
-            canvas = UIManager.Instance.MainGameCanvas;
+            canvas = UIManager.ActivePrimaryCanvas;
         else
         {
             pos.x -= canvas.transform.position.x;
             pos.y -= canvas.transform.position.y;
             pos /= canvas.GetComponent<RectTransform>().lossyScale.x;
-            pos *= UIManager.Instance.MainGameCanvas.scaleFactor;
-            pos += UIManager.Instance.MainGameCanvas.transform.position;
+            pos *= UIManager.ActivePrimaryCanvas.scaleFactor;
+            pos += UIManager.ActivePrimaryCanvas.transform.position;
         }
         if (rectangular)
         {

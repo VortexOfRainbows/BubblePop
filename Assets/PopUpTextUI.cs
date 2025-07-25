@@ -6,15 +6,20 @@ public class PopUpTextUI : MonoBehaviour
 {
     public const int DefaultPopupDuration = 400;
     public static Queue<PowerUp> PowerupQueue = new();
-    public static void Enable(string name, string desc, int duration = 3)
+    public static void Enable(string name, string desc, int duration = 4)
     {
         Enable(Instance, name, desc, duration);
     }
     public static void Enable(PopUpTextUI instance, string name, string desc, int duration = DefaultPopupDuration)
     {
-        instance.SetName(name);
-        instance.SetDescription(desc);
-        instance.Visual.SetActive(true);
+        if (instance.Name.text != name || instance.Description.text != desc)
+        {
+            instance.SetName(name);
+            instance.SetDescription(desc);
+            //instance.ReadyToRenderFixed = false;
+            instance.ReadyToRenderNormal = false;
+            instance.Visual.SetActive(false);
+        }
         instance.enabledDuration = duration;
     }
     public static void UpdatePowerUp(PopUpTextUI instance, int type)
@@ -35,6 +40,8 @@ public class PopUpTextUI : MonoBehaviour
     public TMPro.TextMeshProUGUI Description;
     public RectTransform myRect;
     public bool FollowMouse = false;
+    //public bool ReadyToRenderFixed = false;
+    public bool ReadyToRenderNormal = false;
     public void SetName(string name) => Name.text = name;
     public void SetDescription(string desc) => Description.text = desc;
     public void Start()
@@ -46,23 +53,11 @@ public class PopUpTextUI : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if (myRect == null)
-            myRect = GetComponent<RectTransform>();
-        if (FollowMouse)
-        {
-            Instance = this;
-            //Debug.Log(Input.mousePosition);
-            transform.position = Input.mousePosition + new Vector3(40, -40);
-            SnapToScreen();
-        }
-        else
-        {
-            MiddleInstance = this;
-            UpdateMiddleInstance();
-        }
         //Instance.gameObject.SetActive(false);
         if (--enabledDuration < 0)
         {
+            //ReadyToRenderFixed = false;
+            ReadyToRenderNormal = false;
             Visual.SetActive(false);
         }
     }
@@ -128,17 +123,59 @@ public class PopUpTextUI : MonoBehaviour
         float height = Mathf.Max(155, Description.renderedHeight + Name.renderedHeight + 30);
         visualRect.sizeDelta = new Vector2(Mathf.Max(760, myRect.sizeDelta.x), height);
     }
-    public void SnapToScreen()
+    public void SnapToScreen(bool sizeOnly = false)
     {
-        visualRect.sizeDelta = new Vector2(myRect.sizeDelta.x, Description.renderedHeight + Name.renderedHeight + 30);
-        float width = Screen.width - visualRect.rect.width * MainGameCanvas.scaleFactor;
-        float height = visualRect.rect.height * MainGameCanvas.scaleFactor;
-        //Clamp so it won't leave the boundaries of the screen
-        //Debug.Log($"{transform.position}, {width}, {height}, {MainGameCanvas.scaleFactor}");
-        transform.position = new Vector2(Mathf.Clamp(transform.position.x, 0, width), Mathf.Clamp(transform.position.y, height, 10000) + myRect.rect.height / 2 * MainGameCanvas.scaleFactor);
+        Vector2 DescriptionSize = Description.GetRenderedValues(false);
+        Vector2 NameSize = Name.GetRenderedValues(false);
+        float DefaultSize = 610;
+        float height = DescriptionSize.y + NameSize.y;
+        if (height < NameSize.y)
+            height = NameSize.y;
+        height += 30;
+        float width = Mathf.Min(DefaultSize, Mathf.Max(NameSize.x, DescriptionSize.x) + 10);
+        visualRect.sizeDelta = new Vector2(width, height);
+        if (!sizeOnly)
+        {
+            //Clamp so it won't leave the boundaries of the screen
+            //Debug.Log($"{transform.position}, {width}, {height}, {MainGameCanvas.scaleFactor}");
+            width = Screen.width - visualRect.rect.width * MainGameCanvas.scaleFactor;
+            height = visualRect.rect.height * MainGameCanvas.scaleFactor;
+            transform.position = new Vector2(Mathf.Clamp(transform.position.x, 0, width), Mathf.Clamp(transform.position.y, height, 10000) + myRect.rect.height / 2 * MainGameCanvas.scaleFactor);
+        }
     }
     public void Update()
     {
+        if (myRect == null)
+            myRect = GetComponent<RectTransform>();
+        if (enabledDuration >= 0)
+        {
+            if (!Visual.activeSelf)
+            {
+                transform.position = new Vector3(1920, transform.position.y, 0);
+                SnapToScreen(true);
+                Visual.SetActive(true);
+            }
+            else
+            {
+                ReadyToRenderNormal = true;
+                //ReadyToRenderFixed = true;
+            }
+        }
+        if (/*ReadyToRenderFixed &&*/ReadyToRenderNormal)
+        {
+            if (FollowMouse)
+            {
+                Instance = this;
+                //Debug.Log(Input.mousePosition);
+                transform.position = Input.mousePosition + new Vector3(40, -40);
+                SnapToScreen();
+            }
+            else
+            {
+                MiddleInstance = this;
+                UpdateMiddleInstance();
+            }
+        }
         if (Main.GamePaused)
             FixedUpdate();
     }

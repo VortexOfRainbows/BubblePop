@@ -175,7 +175,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2394480594598589513}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -215,8 +215,8 @@ MonoBehaviour:
   visual: {fileID: 7945062083358457359}
   Count: {fileID: 4226457754920069148}
   Index: 0
-  InventoryElement: 1
-  MenuElement: 0
+  InventoryElement: 0
+  MenuElement: 1
   myLayout: {fileID: 0}
   PreventHovering: 0
 --- !u!1 &4605461942512514401

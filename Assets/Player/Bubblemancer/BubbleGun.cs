@@ -79,7 +79,6 @@ public class BubbleGun : BubblemancerWand
             --starshotNum;
         }
     }
-    private float CompleteOneRotation = 0;
     private void GunUpdate()
     {
         //if(Input.GetKeyDown(KeyCode.V))

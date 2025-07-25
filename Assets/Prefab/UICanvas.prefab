@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc1a7d9a6017de48b3c1704875e30a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainGameCanvas: {fileID: 4181591558398037338}
+  m_MainGameCanvas: {fileID: 4181591558398037338}
   pauseMenu: {fileID: 4486974618734333983}
   gameOverScreen: {fileID: 529953255211315426}
   scoreText: {fileID: 5639466344580548556}

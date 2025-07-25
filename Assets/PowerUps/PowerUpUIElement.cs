@@ -10,9 +10,7 @@ public class PowerUpUIElement : MonoBehaviour
         if (PickerElement)
             Index = PowerID;
         else
-        {
             throw new Exception("Cannot set the power type of a power in the inventory!");
-        }
     }
     public Canvas myCanvas = null;
     public Image outer;
@@ -27,9 +25,13 @@ public class PowerUpUIElement : MonoBehaviour
     public int Index = 0;
     public bool InventoryElement = true;
     /// <summary>
-    /// Whether this element appears in the main menu. Determines whether it can be locked (blacked out)
+    /// Whether this element appears in the char select screen or compendium. Determines whether it can be locked (blacked out)
     /// </summary>
     public bool MenuElement = false;
+    /// <summary>
+    /// Whether this element appears in the compendium. If true, does not show a description
+    /// </summary>
+    public bool CompendiumElement = false;
     private float Timer;
     public PowerUpLayout myLayout;
     public bool PickerElement
@@ -89,7 +91,9 @@ public class PowerUpUIElement : MonoBehaviour
         {
             if(myLayout != null)
                 myLayout.isHovering = true;
-            PopUpTextUI.Enable(AppearLocked ? PowerUp.LockedName : MyPower.UnlockedName, AppearLocked ? PowerUp.LockedDescription : MyPower.FullDescription);
+            string name = AppearLocked ? PowerUp.LockedName : MyPower.UnlockedName;
+            string desc = AppearLocked ? PowerUp.LockedDescription : CompendiumElement ? "" : MyPower.FullDescription;
+            PopUpTextUI.Enable(name, desc);
             float scaleUP = 1.125f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
         }

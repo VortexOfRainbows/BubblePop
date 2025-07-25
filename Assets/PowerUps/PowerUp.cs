@@ -121,15 +121,18 @@ public class DetailedDescription
     {
         if(CompleteDescription == string.Empty)
             CompleteDescription = ToRichText(Description);
-        Type playerBodyType = Player.Instance.Body.GetType();
-        if (AltDescriptions.TryGetValue(playerBodyType, out string lines))
+        if(Player.Instance != null)
         {
-            if (!CompleteAltDescriptions.TryGetValue(playerBodyType, out string lines2))
+            Type playerBodyType = Player.Instance.Body.GetType();
+            if (AltDescriptions.TryGetValue(playerBodyType, out string lines))
             {
-                CompleteAltDescriptions[playerBodyType] = ToRichText(lines);
+                if (!CompleteAltDescriptions.TryGetValue(playerBodyType, out string lines2))
+                {
+                    CompleteAltDescriptions[playerBodyType] = ToRichText(lines);
+                }
+                else
+                    return lines2;
             }
-            else
-                return lines2;
         }
         return CompleteDescription;
     }

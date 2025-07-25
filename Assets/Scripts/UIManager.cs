@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance;
-    public Canvas MainGameCanvas;
+    public static UIManager Instance { get; set; }
+    public static Canvas ActivePrimaryCanvas => Instance.m_MainGameCanvas;
+    [SerializeField] private Canvas m_MainGameCanvas;
     public GameObject pauseMenu;
     public GameObject gameOverScreen;
     public static bool Paused => Main.GamePaused;

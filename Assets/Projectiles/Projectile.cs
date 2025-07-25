@@ -424,4 +424,8 @@ public class SnakeLightning : Projectile
         if (timer > 40)
             Kill();
     }
+    public override bool CanBeAffectedByHoming()
+    {
+        return false;
+    }
 }
