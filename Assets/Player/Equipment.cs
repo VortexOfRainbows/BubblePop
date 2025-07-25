@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    public virtual void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
+    public virtual void ModifyLifeStats(ref int MaxLife, ref int Life, ref int MaxShield, ref int Shield)
     {
 
     }

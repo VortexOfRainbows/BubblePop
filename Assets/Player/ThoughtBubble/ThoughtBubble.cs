@@ -6,7 +6,7 @@ using UnityEngineInternal;
 
 public class ThoughtBubble : Body
 {
-    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
+    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int MaxShield, ref int Shield)
     {
         MaxLife += 2;
         Life += 2;

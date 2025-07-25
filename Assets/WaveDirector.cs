@@ -280,7 +280,8 @@ public static class WaveDirector
     public static void ProgressToNextWave()
     {
         CardsPlayed = 0;
-        WaveNum++;
+        Player.Instance.OnWaveEnd(WaveNum, WaveNum + 1);
+        ++WaveNum;
         WaveMult += 0.1f;
         CreditsSpent = 0;
         if(WaveNum > 10)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Body : Equipment
 {
-    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
+    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int MaxShield, ref int Shield)
     {
         MaxLife += 3;
         Life += 3;

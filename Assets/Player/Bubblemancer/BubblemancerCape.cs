@@ -20,6 +20,7 @@ public class BubblemancerCape : Accessory
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<Magnet>();
+        powerPool.Add<BubbleShield>();
     }
     protected override string Description()
     {

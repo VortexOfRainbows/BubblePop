@@ -14,7 +14,7 @@ public class BunceHat : BubblemancerHat
     {
         return "Grants an additional heart\nYou stupid!";
     }
-    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
+    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int MaxShield, ref int Shield)
     {
         ++Life;
         ++MaxLife;

@@ -116,3 +116,27 @@ public class RollForPerception : PowerUp
         return Resources.Load<Sprite>("PowerUps/Dice/InsightAddOn");
     }
 }
+public class BubbleShield : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription("Gain Y:[1 shield slot] and Y:[recover 1 shield] on pickup or at the start of Y:[even-numbered waves] " +
+            "\nExtend immunity frames by Y:40% G:(+20% per stack) and release Y:24 G:(+8 per stack) bubbles when a Y:[shield is broken]");
+        description.WithShortDescription("Gain a shield on even-numbered waves, extend immunity frames and release bubbles when shields are broken");
+    }
+    public override void OnPickup(int count)
+    {
+        Player.Instance.SetShield(Player.Instance.GetShield() + 1);
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BubbleShields += Stack;
+        p.TotalMaxShield += 1;
+        //p.ImmunityFrameMultiplier += 0.05f * Stack;
+        p.ShieldImmunityFrameMultiplier += 0.2f + 0.2f * Stack;
+    }
+}

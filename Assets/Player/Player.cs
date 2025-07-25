@@ -12,7 +12,9 @@ public static class Control
 public partial class Player : Entity
 {
     #region Animator References
-    public int Shield = 0;
+    private int Shield = 0;
+    private int MaxShield = 0;
+    public int GetShield() => Shield;
     public PowerUp MostRecentPower = null;
     public Body Body { get => Animator.Body; set => Animator.Body = value; }
     public Weapon Weapon { get => Animator.Weapon; set => Animator.Weapon = value; }
@@ -136,6 +138,15 @@ public partial class Player : Entity
         }
         Instance = this;
         WaveDirector.FixedUpdate();
+        if (!HasRunStartingGear)
+        {
+            MaxLife = Life = Shield = MaxShield = 0;
+            Body.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
+            Accessory.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
+            Weapon.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
+            Hat.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
+            PlayerStatUI.SetHeartsToPlayerLife();
+        }
         UpdatePowerUps();
         UpdateBuffs();
         HomingRangeSqrt = Mathf.Sqrt(HomingRange);
@@ -147,14 +158,14 @@ public partial class Player : Entity
             Pop();
         else
         {
-            if(!HasRunStartingGear)
+            if (HasRunStartingGear)
             {
-                MaxLife = Life = Shield = 0;
-                Body.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
-                Accessory.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
-                Weapon.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
-                Hat.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
-                PlayerStatUI.SetHeartsToPlayerLife();
+                //Debug.Log($"{Shield}, {MaxShield}, {TotalMaxShield}");
+                if (TotalMaxLife < Life)
+                    Life = TotalMaxLife;
+                if (TotalMaxShield < Shield)
+                    Shield = TotalMaxShield;
+                PlayerStatUI.UpdateHearts(this);
             }
             Hat.EquipUpdate();
             Accessory.EquipUpdate();
@@ -205,8 +216,25 @@ public partial class Player : Entity
     }
     public void Hurt(int damage = 1)
     {
-        UniversalImmuneFrames = 100;
-        SetLife(Life - damage);
+        float defaultImmuneFrames = 100;
+        float immunityFrameMultiplier = ImmunityFrameMultiplier;
+        if(Shield > 0)
+        {
+            SetShield(Shield - damage);
+            immunityFrameMultiplier *= ShieldImmunityFrameMultiplier;
+            if(BubbleShields > 0)
+            {
+                float velocity = 2;
+                int amt = 16 + 8 * BubbleShields;
+                for (int i = 0; i < amt; ++i)
+                    Projectile.NewProjectile<SmallBubble>(transform.position, Random.insideUnitCircle * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f));
+            }
+        }
+        else
+        {
+            SetLife(Life - damage);
+        }
+        UniversalImmuneFrames = defaultImmuneFrames * immunityFrameMultiplier;
         if (Life <= 0)
             Pop();
         else
@@ -255,10 +283,10 @@ public partial class Player : Entity
         {
             Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI));
         }
-        UniversalImmuneFrames = 200;
+        UniversalImmuneFrames = 200 * ImmunityFrameMultiplier;
         SpentBonusLives++;
         DeathKillTimer = 0;
-        Life = MaxLife;
+        Life = TotalMaxLife;
         OnSetLife(Life);
     }
     public override void OnHurtByProjectile(Projectile proj)
@@ -272,7 +300,12 @@ public partial class Player : Entity
     }
     public void OnSetLife(int value)
     {
-        PlayerStatUI.SetHearts(value);
+        PlayerStatUI.SetHearts(value, Shield);
+    }
+    public void SetShield(int num)
+    {
+        Shield = num;
+        PlayerStatUI.SetHearts(Life, num);
     }
     public void ImmuneFlashing()
     {
@@ -283,8 +316,9 @@ public partial class Player : Entity
             float sin = Mathf.Cos(Mathf.PI * percent * 2 * totalFlashes);
             Visual.SetActive(sin <= 0);
         }
-        else if (UniversalImmuneFrames == 0 || IsDead)
+        else if (UniversalImmuneFrames <= 0 || IsDead)
         {
+            UniversalImmuneFrames = 0;
             Visual.SetActive(true);
         }
     }
@@ -304,6 +338,14 @@ public partial class Player : Entity
                 if(existingSpeedBoosts < allowedBoosts)
                     AddBuff<SpeedBoost>(5);
             }
+        }
+    }
+    public void OnWaveEnd(int oldWaveNumber, int newWaveNumber)
+    {
+        if(newWaveNumber % 2 == 0)
+        {
+            if (HasBubbleShield && Shield < TotalMaxShield)
+                SetShield(Shield + 1);
         }
     }
 }

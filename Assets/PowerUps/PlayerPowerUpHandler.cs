@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public partial class Player : Entity
 {
@@ -65,6 +66,12 @@ public partial class Player : Entity
     public float HomingRangeSqrt = 0;
     public int ChipHeight = 5;
     public int ChipStacks = 2;
+    public bool HasBubbleShield => BubbleShields > 0;
+    public int BubbleShields = 0;
+    public int TotalMaxShield { get; set; }
+    public int TotalMaxLife { get; set; }
+    public float ImmunityFrameMultiplier = 1.0f;
+    public float ShieldImmunityFrameMultiplier = 1.0f;
 
     private List<int> powers;
     private void PowerInit()
@@ -79,13 +86,15 @@ public partial class Player : Entity
     private void ClearPowerBonuses()
     {
         ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = Coalescence = Magnet = LightSpear = 0;
-        AttackSpeedModifier = AbilityRecoverySpeed = AbilityRecoverySpeedMult = MoveSpeedMod = 1.0f;
+        AttackSpeedModifier = AbilityRecoverySpeed = AbilityRecoverySpeedMult = MoveSpeedMod = ImmunityFrameMultiplier = ShieldImmunityFrameMultiplier = 1.0f;
         LuckyStar = TrailOfThoughts = LightChainReact = BrainBlast = SnakeEyes = Refraction = 0;
         PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = PassiveAttackSpeedModifier = 0;
         BlueChipChance = HomingRange = 0.0f;
         ChipHeight = 5;
         ChipStacks = 2;
-
+        TotalMaxShield = MaxShield;
+        TotalMaxLife = MaxLife;
+        BubbleShields = 0;
         RollDex = RollInit = RollChar = RollPerc = 0;
     }
     private void UpdatePowerUps()

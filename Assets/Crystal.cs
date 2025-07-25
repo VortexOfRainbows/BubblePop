@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Crystal : Accessory
 {
-    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
+    public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int MaxShield, ref int Shield)
     {
         MaxLife += 1;
         Life += 1;

@@ -27,7 +27,6 @@ public class Dice : Hat
         powerPool.Add<RollForInitiative>();
         powerPool.Add<RollForPerception>();
         powerPool.Add<SnakeEyes>();
-        powerPool.Add<Choice>();
     }
     protected override void ReducePowerPool(List<PowerUp> powerPool)
     {
