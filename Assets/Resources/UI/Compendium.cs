@@ -11,7 +11,9 @@ public class Compendium : MonoBehaviour
     public static bool MouseInCompendiumArea = false;
     public static int SelectedType = 0;
     public CompendiumPowerUpElement PrimaryCPUE;
+    public TextMeshProUGUI PrimaryCPUEDescription;
     public RectTransform SelectionArea;
+    public RectTransform DescriptionScrollArea;
     private const int ArbitrarySort = 0;
     private const int RaritySort = 1;
     private const int FavSort = 2;
@@ -84,6 +86,7 @@ public class Compendium : MonoBehaviour
         ToggleCount(); //On by default
 
         PrimaryCPUE.Init(SelectedType, MyCanvas);
+        UpdateDescription(true);
     }
     public List<CompendiumPowerUpElement> GetCPUEChildren(out int count)
     {
@@ -155,7 +158,12 @@ public class Compendium : MonoBehaviour
             if (transform.position.x > -0.5f)
                 transform.position = Vector3.zero;
             if(PrimaryCPUE.PowerID != SelectedType)
+            {
                 PrimaryCPUE.Init(SelectedType, MyCanvas);
+                UpdateDescription(true);
+            }
+            else
+                UpdateDescription(false);
         }
         else
         {
@@ -163,5 +171,28 @@ public class Compendium : MonoBehaviour
             if (transform.position.x < -1919.5f)
                 transform.position = StartingPosition;
         }
+    }
+    public void UpdateDescription(bool reset)
+    {
+        if(reset)
+        {
+            PowerUp p = PowerUp.Get(SelectedType);
+            string shortLineBreak = "<size=12>\n\n</size>";
+            int rare = p.GetRarity() - 1;
+            string concat = $"<size=42>{p.UnlockedName}</size>" + shortLineBreak;
+            concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n")}</size>";
+            concat += p.ShortDescription + shortLineBreak;
+            concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Detailed\n")}</size>";
+            concat += p.TrueFullDescription + shortLineBreak;
+            concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n")}</size>";
+            concat += p.PickedUpCountAllRuns + shortLineBreak;
+            concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n")}</size>";
+            concat += p.PickedUpBestAllRuns + shortLineBreak;
+            PrimaryCPUEDescription.text = concat;
+        }
+        Vector2 target = PrimaryCPUEDescription.GetRenderedValues();
+        float minW = 361;
+        float minH = 480;
+        DescriptionScrollArea.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + 40));
     }
 }

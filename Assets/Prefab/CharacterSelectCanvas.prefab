@@ -809,6 +809,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7563945110523091720}
     - target: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
+      propertyPath: MenuElement
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
       propertyPath: InventoryElement
       value: 0
       objectReference: {fileID: 0}

@@ -101,6 +101,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 8102947865901628746}
     m_Modifications:
     - target: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
+      propertyPath: MenuElement
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
       propertyPath: CompendiumElement
       value: 1
       objectReference: {fileID: 0}

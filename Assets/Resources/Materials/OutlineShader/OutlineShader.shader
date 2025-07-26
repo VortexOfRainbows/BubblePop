@@ -8,13 +8,13 @@ Shader "Shader Graphs/OutlineShader"
         [HideInInspector][NoScaleOffset]unity_Lightmaps("unity_Lightmaps", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset]unity_LightmapsInd("unity_LightmapsInd", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset]unity_ShadowMasks("unity_ShadowMasks", 2DArray) = "" {}
-        
-		_StencilComp ("Stencil Comparison", Float) = 8
-		_Stencil ("Stencil ID", Float) = 0
-		_StencilOp ("Stencil Operation", Float) = 0
-		_StencilWriteMask ("Stencil Write Mask", Float) = 255
-		_StencilReadMask ("Stencil Read Mask", Float) = 255
-		_ColorMask ("Color Mask", Float) = 15
+
+		[HideInInspector]_StencilComp ("Stencil Comparison", Float) = 8
+		[HideInInspector]_Stencil ("Stencil ID", Float) = 0
+		[HideInInspector]_StencilOp ("Stencil Operation", Float) = 0
+		[HideInInspector]_StencilWriteMask ("Stencil Write Mask", Float) = 255
+		[HideInInspector]_StencilReadMask ("Stencil Read Mask", Float) = 255
+		[HideInInspector]_ColorMask ("Color Mask", Float) = 15
     }
     SubShader
     {
@@ -28,7 +28,6 @@ Shader "Shader Graphs/OutlineShader"
             "ShaderGraphShader"="true"
             "ShaderGraphTargetId"="UniversalSpriteUnlitSubTarget"
         }
-        
 		Stencil
 		{
 			Ref [_Stencil]
@@ -37,8 +36,6 @@ Shader "Shader Graphs/OutlineShader"
 			ReadMask [_StencilReadMask]
 			WriteMask [_StencilWriteMask]
 		}
- 		ColorMask [_ColorMask]
-
         Pass
         {
             Name "Sprite Unlit"
@@ -295,7 +292,7 @@ Shader "Shader Graphs/OutlineShader"
         float _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float;
         Unity_Add_float(_SampleTexture2D_dca0c0fda7634b36b05feacbe3dcaa87_A_7_Float, float(0), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float);
         float _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float;
-        Unity_Step_float(float(1), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float, _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float);
+        Unity_Step_float(float(0.4), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float, _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float);
         New_0 = _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float;
         }
         
@@ -768,7 +765,7 @@ Shader "Shader Graphs/OutlineShader"
         float _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float;
         Unity_Add_float(_SampleTexture2D_dca0c0fda7634b36b05feacbe3dcaa87_A_7_Float, float(0), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float);
         float _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float;
-        Unity_Step_float(float(1), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float, _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float);
+        Unity_Step_float(float(0.4), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float, _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float);
         New_0 = _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float;
         }
         
@@ -1218,7 +1215,7 @@ Shader "Shader Graphs/OutlineShader"
         float _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float;
         Unity_Add_float(_SampleTexture2D_dca0c0fda7634b36b05feacbe3dcaa87_A_7_Float, float(0), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float);
         float _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float;
-        Unity_Step_float(float(1), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float, _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float);
+        Unity_Step_float(float(0.4), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float, _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float);
         New_0 = _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float;
         }
         
@@ -1679,7 +1676,7 @@ Shader "Shader Graphs/OutlineShader"
         float _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float;
         Unity_Add_float(_SampleTexture2D_dca0c0fda7634b36b05feacbe3dcaa87_A_7_Float, float(0), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float);
         float _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float;
-        Unity_Step_float(float(1), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float, _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float);
+        Unity_Step_float(float(0.4), _Add_440834d7a3004f94a51a623f674cafae_Out_2_Float, _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float);
         New_0 = _Step_5f19070689ad497e92a0f5d4e57d0d64_Out_2_Float;
         }
         

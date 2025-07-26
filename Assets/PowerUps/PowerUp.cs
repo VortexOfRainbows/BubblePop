@@ -22,7 +22,7 @@ public static class ReflectiveEnumerator
 public class DetailedDescription
 {
     public PowerUp owner;
-    private static readonly string[] Rares = new string[] { "#EFEFEF", "#C8FEAD", "#BAE3FE", "#D4BAFE", "#FCB934" };
+    private static readonly string[] Rares = new string[] { "#DFDFFF", "#C8FEAD", "#BAE3FE", "#D4BAFE", "#FCB934" };
     private static readonly string Yellow = "#FFED75";
     private static readonly string Gray = "#999999";
     private static readonly string TabForMoreDetail = " <size=24><color=#CB8A8A>(TAB for more detail)</color></size>";
@@ -144,9 +144,17 @@ public class DetailedDescription
             CompleteShortDescription = ToRichText(ShortDescription);
         return CompleteShortDescription + (withDetails ? TabForMoreDetail : string.Empty);
     }
+    public static string TextBoundedByRarityColor(int rare, string text)
+    {
+        return $"<color={Rares[rare]}>{text}</color>";
+    }
+    public string TextBoundedByRarityColor(string text)
+    {
+        return TextBoundedByRarityColor(owner.GetRarity() - 1, text);
+    }
     public string GetName()
     {
-        return $"<color={Rares[owner.GetRarity() - 1]}>{Name}</color>";
+        return TextBoundedByRarityColor(Name);
     }
 }
 
@@ -406,7 +414,8 @@ public abstract class PowerUp
     public static readonly string LockedDescription = "Powerup not yet discovered";
     public string UnlockedName => TrueDescription.GetName();
     public string ShortDescription => TrueDescription.BriefDescription();
-    public string FullDescription => (Control.Tab || !PlayerData.BriefDescriptionsByDefault) ? TrueDescription.FullDescription() : TrueDescription.BriefDescription(true);
+    public string TrueFullDescription => TrueDescription.FullDescription();
+    public string FullDescription => (Control.Tab || !PlayerData.BriefDescriptionsByDefault) ? TrueFullDescription : TrueDescription.BriefDescription(true);
     public virtual void HeldEffect(Player p)
     {
 
