@@ -8,6 +8,7 @@ public static class Control
     public static bool Left => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
     public static bool Right => Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
     public static bool Tab => Input.GetKey(KeyCode.Tab);
+    public static bool LeftMouse => Input.GetMouseButtonDown(0);
 }
 public partial class Player : Entity
 {

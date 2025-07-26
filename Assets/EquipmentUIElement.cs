@@ -68,8 +68,7 @@ public class EquipmentUIElement : MonoBehaviour
         UpdateUnlockRelated();
         UpdateOrientation();
 
-
-        if (Utils.IsMouseHoveringOverThis(true, Self.GetComponent<RectTransform>(), 50, canvas))
+        if (Utils.IsMouseHoveringOverThis(true, Self.GetComponent<RectTransform>(), 0, canvas))
         {
             PopUpTextUI.Enable(ActiveEquipment.GetName(), ActiveEquipment.GetDescription());
             float scaleUp = 1.1f;

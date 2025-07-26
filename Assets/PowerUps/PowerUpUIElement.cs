@@ -91,10 +91,14 @@ public class PowerUpUIElement : MonoBehaviour
         }
         else
         {
-            Count.gameObject.SetActive(!AppearLocked && Compendium.ShowCounts);
+            Count.gameObject.SetActive(!AppearLocked && Compendium.ShowCounts && !PreventHovering);
         }
         bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering);
-        if(canHover && Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 64 * transform.localScale.x, myCanvas))
+        if(CompendiumElement && !Compendium.MouseInCompendiumArea)
+            canHover = false;
+        float size = CompendiumElement ? 160 - outer.rectTransform.rect.width : 64 * transform.localScale.x;
+        bool rectangular = CompendiumElement;
+        if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas))
         {
             if(myLayout != null)
                 myLayout.isHovering = true;
@@ -103,6 +107,9 @@ public class PowerUpUIElement : MonoBehaviour
             PopUpTextUI.Enable(name, desc);
             float scaleUP = 1.125f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
+
+            if(CompendiumElement && Control.LeftMouse)
+                Compendium.SelectedType = Index;
         }
         else
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);

@@ -18,7 +18,7 @@ public class MoneyIcon : MonoBehaviour
     {
         //if(true)
         //{
-        if (Utils.IsMouseHoveringOverThis(true, Icon.rectTransform, canvas: myCanvas))
+        if (Utils.IsMouseHoveringOverThis(true, Icon.rectTransform, 0, myCanvas))
         {
             Icon.gameObject.transform.localScale = Vector3.Lerp(Icon.gameObject.transform.localScale, one * ScaleFactor, 0.1f);
             PopUpTextUI.Enable("Money", "Can be used to purchase fancy powerups");

@@ -80,7 +80,7 @@ public static class Utils
     }
     public const int AlternativeCameraPosX = 5000;
     public const int AlternativeCameraPosY = 1000;
-    public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius = 64, Canvas canvas = null)
+    public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null)
     {
         if (UIManager.ActivePrimaryCanvas == null)
             return false;
@@ -101,8 +101,8 @@ public static class Utils
             //Debug.Log(pos);
             scale *= transform.localScale.x;
             Rect rect = transform.rect;
-            float width = rect.width * scale;
-            float height = rect.height * scale;
+            float width = (rect.width + radius) * scale;
+            float height = (rect.height + radius) * scale ;
             rect = new Rect(pos.x - width * transform.pivot.x, pos.y - height * transform.pivot.y, width, height);
             if (rect.Contains(Input.mousePosition))
                 return true;

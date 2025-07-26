@@ -7,6 +7,11 @@ using UnityEngine.UI;
 
 public class Compendium : MonoBehaviour
 {
+    //public static Compendium Instance;
+    public static bool MouseInCompendiumArea = false;
+    public static int SelectedType = 0;
+    public CompendiumPowerUpElement PrimaryCPUE;
+    public RectTransform SelectionArea;
     private const int ArbitrarySort = 0;
     private const int RaritySort = 1;
     private const int FavSort = 2;
@@ -53,6 +58,7 @@ public class Compendium : MonoBehaviour
     }
     public void Start()
     {
+        //Instance = this;
         StartingPosition = transform.position;
     }
     public void ToggleActive()
@@ -75,8 +81,9 @@ public class Compendium : MonoBehaviour
         float dist = -lastElement.y + (ContentLayout.padding.bottom + ContentLayout.cellSize.y) / 2f;
         Debug.Log(dist);
         r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(r.sizeDelta.y, dist));
-
         ToggleCount(); //On by default
+
+        PrimaryCPUE.Init(SelectedType, MyCanvas);
     }
     public List<CompendiumPowerUpElement> GetCPUEChildren(out int count)
     {
@@ -130,8 +137,13 @@ public class Compendium : MonoBehaviour
             CPUE.transform.SetParent(ContentLayout.transform);
         }
     }
+    public void Update()
+    {
+        MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
+    }
     public void FixedUpdate()
     {
+        //Instance = this;
         if (Active)
         {
             if (!HasInit)
@@ -142,6 +154,8 @@ public class Compendium : MonoBehaviour
             transform.position = transform.position.Lerp(new Vector3(0, 0, 0), 0.1f);
             if (transform.position.x > -0.5f)
                 transform.position = Vector3.zero;
+            if(PrimaryCPUE.PowerID != SelectedType)
+                PrimaryCPUE.Init(SelectedType, MyCanvas);
         }
         else
         {
