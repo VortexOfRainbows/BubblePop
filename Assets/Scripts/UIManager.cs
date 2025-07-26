@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex != 0)
         {
             if(Paused)
                 Resume();

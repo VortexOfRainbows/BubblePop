@@ -127,7 +127,7 @@ public class BubbleShield : PowerUp
     {
         description.WithDescription("Gain Y:[1 shield slot] and Y:[recover 1 shield] on pickup or at the start of Y:[even-numbered waves] " +
             "\nWhen a Y:[shield is broken,] extend Y:[immunity frames] by Y:40% G:(+20% per stack) and release Y:24 G:(+8 per stack) bubbles");
-        description.WithShortDescription("Gain a shield on even-numbered waves, extend immunity frames and release bubbles when shields are broken");
+        description.WithShortDescription("Gain a shield on even-numbered waves\nWhen shields are broken, extend immunity frames and release bubbles");
     }
     public override void OnPickup(int count)
     {

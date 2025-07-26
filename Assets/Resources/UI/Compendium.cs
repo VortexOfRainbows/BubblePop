@@ -84,6 +84,7 @@ public class Compendium : MonoBehaviour
         float dist = -lastElement.y + (ContentLayout.padding.bottom + ContentLayout.cellSize.y) / 2f;
         Debug.Log(dist);
         r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(r.sizeDelta.y, dist));
+        ShowCounts = false;
         ToggleCount(); //On by default
 
         PrimaryCPUE.Init(SelectedType, MyCanvas);
