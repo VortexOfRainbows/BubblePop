@@ -187,9 +187,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: PowerUpUIElement
       objectReference: {fileID: 0}
+    - target: {fileID: 4226457754920069148, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
+      propertyPath: m_fontSize
+      value: 55
+      objectReference: {fileID: 0}
     - target: {fileID: 4605461942512514401, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4644367938180726249, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

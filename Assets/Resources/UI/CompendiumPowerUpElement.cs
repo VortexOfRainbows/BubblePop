@@ -12,10 +12,11 @@ public class CompendiumPowerUpElement : MonoBehaviour
     {
         MyElem.SetPowerType(PowerID = i);
         MyElem.myCanvas = canvas;
+        MyElem.Count.text = PowerUp.Get(PowerID).PickedUpCountAllRuns.ToString();
     }
     public void Update()
     {
-        if (PowerID < 0 && gameObject.activeSelf)
+        if (PowerID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
         MyElem.OnUpdate();
     }

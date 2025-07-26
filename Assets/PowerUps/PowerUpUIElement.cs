@@ -85,7 +85,14 @@ public class PowerUpUIElement : MonoBehaviour
     public void WhileOn()
     {
         Timer += 1;
-        Count.text = MyPower.Stack.ToString();
+        if(!CompendiumElement)
+        {
+            Count.text = MyPower.Stack.ToString();
+        }
+        else
+        {
+            Count.gameObject.SetActive(!AppearLocked && Compendium.ShowCounts);
+        }
         bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering);
         if(canHover && Utils.IsMouseHoveringOverThis(false, outer.rectTransform, 64 * transform.localScale.x, myCanvas))
         {

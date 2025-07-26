@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: OutlineShaderGreen
-  m_Shader: {fileID: -6465566751694194690, guid: 6d36196b7cc49dc41a9a7aa27f06b78d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 34798627957c0824284adc9267c2c987, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -53,8 +53,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ColorMask: 15
     - _EnableExternalAlpha: 0
     - _OutlineSize: 25
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
