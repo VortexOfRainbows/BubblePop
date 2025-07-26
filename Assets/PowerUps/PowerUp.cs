@@ -21,6 +21,30 @@ public static class ReflectiveEnumerator
 }
 public class DetailedDescription
 {
+    public static string BastardizeText(string s, char bChar)
+    {
+        string ret = string.Empty;
+        bool open = false;
+        for(int i = 0; i < s.Length; ++i)
+        {
+            Char c = s[i];
+            if(!open)
+            {
+                if (c == '<')
+                {
+                    open = true;
+                }
+                else if(char.IsLetterOrDigit(c))
+                {
+                    c = bChar;
+                }
+            }
+            else if (c == '>')
+                open = false;
+            ret += c;
+        }
+        return ret;
+    }
     public PowerUp owner;
     private static readonly string[] Rares = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934" };
     private static readonly string Yellow = "#FFED75";

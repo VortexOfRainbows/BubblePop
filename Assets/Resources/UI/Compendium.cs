@@ -183,12 +183,16 @@ public class Compendium : MonoBehaviour
             concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n")}</size>";
             concat += p.ShortDescription + shortLineBreak;
             concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Detailed\n")}</size>";
-            concat += p.TrueFullDescription + shortLineBreak;
-            concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n")}</size>";
-            concat += p.PickedUpCountAllRuns + shortLineBreak;
-            concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n")}</size>";
-            concat += p.PickedUpBestAllRuns + shortLineBreak;
-            PrimaryCPUEDescription.text = concat;
+            concat += p.TrueFullDescription;
+            if(!PrimaryCPUE.MyElem.AppearLocked)
+            {
+                concat += shortLineBreak;
+                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n")}</size>";
+                concat += p.PickedUpCountAllRuns + shortLineBreak;
+                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n")}</size>";
+                concat += p.PickedUpBestAllRuns + shortLineBreak;
+            }
+            PrimaryCPUEDescription.text = PrimaryCPUE.MyElem.AppearLocked ? DetailedDescription.BastardizeText(concat, '?') : concat;
         }
         Vector2 target = PrimaryCPUEDescription.GetRenderedValues();
         float minW = 361;
