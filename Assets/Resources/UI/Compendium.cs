@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class Compendium : MonoBehaviour
     private const int FavSort = 2;
     public Canvas MyCanvas;
     public GridLayoutGroup ContentLayout;
+    public RectTransform ContentLayoutRect;
     private bool Active = false;
     private bool HasInit = false;
     private Vector3 StartingPosition;
@@ -86,11 +88,7 @@ public class Compendium : MonoBehaviour
             CompendiumPowerUpElement CPUE = Instantiate(CompendiumPowerUpElement.Prefab, ContentLayout.transform, false).GetComponent<CompendiumPowerUpElement>();
             CPUE.Init(i, MyCanvas);
         }
-        Vector3 lastElement = ContentLayout.transform.GetChild(ContentLayout.transform.childCount - 1).localPosition;
-        RectTransform r = ContentLayout.GetComponent<RectTransform>();
-        float dist = -lastElement.y + (ContentLayout.padding.bottom + ContentLayout.cellSize.y) / 2f;
-        Debug.Log(dist);
-        r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(r.sizeDelta.y, dist));
+        UpdateContentSize();
         ShowCounts = false;
         ToggleCount(); //On by default
         SortMode = ArbitrarySort;
@@ -98,6 +96,19 @@ public class Compendium : MonoBehaviour
 
         PrimaryCPUE.Init(SelectedType, MyCanvas);
         UpdateDescription(true);
+    }
+    public void UpdateContentSize()
+    {
+        int c = ContentLayout.transform.childCount;
+        if (c <= 0)
+            return;
+        Vector3 lastElement = ContentLayout.transform.GetChild(c - 1).localPosition;
+        RectTransform r = ContentLayout.GetComponent<RectTransform>();
+        float defaultDist = 600;
+        float paddingBonus = ContentLayout.padding.bottom + ContentLayout.cellSize.y;
+        float dist = -lastElement.y + paddingBonus;
+        r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(defaultDist, dist));
+        ContentLayoutRect.sizeDelta = Vector2.Lerp(ContentLayoutRect.sizeDelta, new Vector2(0, paddingBonus / 2f + (TierListActive ? defaultDist : 0)), 0.1f);
     }
     public List<CompendiumPowerUpElement> GetCPUEChildren(out int count)
     {
@@ -217,9 +228,12 @@ public class Compendium : MonoBehaviour
         for (int j = 0; j < Stars.Length; ++j)
             Stars[j].SetActive(rare == j);
     }
+    public ScrollRect ContentScrollRect;
     public GameObject TopBar;
     public GameObject SideBar;
+    public GameObject ViewPort, TierList;
     public bool TierListActive = false;
+    public VerticalLayoutGroup TierListLayoutGroup;
     private Vector2 LerpSnap(Transform target, Vector2 position, float amt = 0.1f, float tolerance = 0.5f)
     {
         if (target.localPosition.Distance(position) < tolerance)
@@ -228,15 +242,35 @@ public class Compendium : MonoBehaviour
             target.localPosition = target.localPosition.Lerp(position, amt);
         return target.localPosition;
     }
+    private bool hasSnappedTierList = false;
     public void TierListUpdate()
     {
+        UpdateContentSize();
         OpenButton.interactable = !TierListActive;
         Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, 540f) : new Vector2(0, 740f);
         Vector2 newSideBarPosition = !TierListActive ? new Vector2(960f, 340f) : new Vector2(960f, 540f);
         Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-934.5f, 515f) : new Vector2(-934.5f, 715f);
+        Vector2 targetViewport = !TierListActive ? new Vector2(-760f, 390f) : new Vector2(-760f, 590f);
+        Vector2 targetTierList = !TierListActive ? new Vector2(0, 0) : new Vector2(0, -800f);
 
         LerpSnap(TopBar.transform, newTopBarPositon);
         LerpSnap(SideBar.transform, newSideBarPosition);
         LerpSnap(OpenButton.gameObject.transform, newOpenButtonPosition);
+        LerpSnap(ViewPort.transform, targetViewport);
+        LerpSnap(TierList.transform, targetTierList);
+        RectTransform r = ViewPort.GetComponent<RectTransform>();
+        r.sizeDelta = Vector2.Lerp(r.sizeDelta, new Vector2(0, TierListActive ? 200 : 0), 0.1f);
+
+        if (hasSnappedTierList != TierListActive)
+        {
+            if(ContentLayoutRect.transform.localPosition.Distance(Vector2.zero) > 0.5f)
+                ContentLayoutRect.transform.localPosition = ContentLayoutRect.transform.localPosition.Lerp(Vector2.zero, 0.1f);
+            else
+            {
+                ContentLayoutRect.transform.localPosition = Vector2.zero;
+                hasSnappedTierList = TierListActive;
+            }
+        }
+        ContentScrollRect.vertical = hasSnappedTierList == TierListActive;
     }
 }
