@@ -26,6 +26,7 @@ public class Compendium : MonoBehaviour
     public static bool ShowOnlyUnlocked, ShowCounts;
     public Button SortButton, UnlockButton, CountButton;
     public TextMeshProUGUI SortText;
+    public GameObject[] Stars;
     public void ToggleSort()
     {
         SortMode = (SortMode + 1) % 3;
@@ -193,10 +194,16 @@ public class Compendium : MonoBehaviour
                 concat += p.PickedUpBestAllRuns + shortLineBreak;
             }
             PrimaryCPUEDescription.text = PrimaryCPUE.MyElem.AppearLocked ? DetailedDescription.BastardizeText(concat, '?') : concat;
+            UpdateStars(rare);
         }
         Vector2 target = PrimaryCPUEDescription.GetRenderedValues();
         float minW = 361;
         float minH = 480;
         DescriptionScrollArea.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + 40));
+    }
+    public void UpdateStars(int rare)
+    {
+        for (int j = 0; j < Stars.Length; ++j)
+            Stars[j].SetActive(rare == j);
     }
 }
