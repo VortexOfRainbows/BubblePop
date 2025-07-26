@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -24,13 +25,19 @@ public class Compendium : MonoBehaviour
     private Vector3 StartingPosition;
     public int SortMode = 0;
     public static bool ShowOnlyUnlocked, ShowCounts;
-    public Button SortButton, UnlockButton, CountButton;
+    public Button SortButton, UnlockButton, CountButton, TierListButton, OpenButton;
     public TextMeshProUGUI SortText;
+    public TextMeshProUGUI TierListText;
     public GameObject[] Stars;
     public void ToggleSort()
     {
         SortMode = (SortMode + 1) % 3;
         UpdateSort();
+    }
+    public void ToggleTierList()
+    {
+        TierListActive = !TierListActive;
+        TierListText.text = TierListActive ? "Save Tier List" : "Make Tier List";
     }
     public void UpdateSort()
     {
@@ -86,6 +93,8 @@ public class Compendium : MonoBehaviour
         r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(r.sizeDelta.y, dist));
         ShowCounts = false;
         ToggleCount(); //On by default
+        SortMode = ArbitrarySort;
+        ToggleSort(); //default sort is rare
 
         PrimaryCPUE.Init(SelectedType, MyCanvas);
         UpdateDescription(true);
@@ -156,9 +165,9 @@ public class Compendium : MonoBehaviour
                 Init();
                 HasInit = true;
             }
-            transform.position = transform.position.Lerp(new Vector3(0, 0, 0), 0.1f);
             if (transform.position.x > -0.5f)
                 transform.position = Vector3.zero;
+            else transform.position = transform.position.Lerp(new Vector3(0, 0, 0), 0.1f);
             if(PrimaryCPUE.PowerID != SelectedType)
             {
                 PrimaryCPUE.Init(SelectedType, MyCanvas);
@@ -169,10 +178,11 @@ public class Compendium : MonoBehaviour
         }
         else
         {
-            transform.position = transform.position.Lerp(StartingPosition, 0.1f);
             if (transform.position.x < -1919.5f)
                 transform.position = StartingPosition;
+            else transform.position = transform.position.Lerp(StartingPosition, 0.1f);
         }
+        TierListUpdate();
     }
     public void UpdateDescription(bool reset)
     {
@@ -206,5 +216,27 @@ public class Compendium : MonoBehaviour
     {
         for (int j = 0; j < Stars.Length; ++j)
             Stars[j].SetActive(rare == j);
+    }
+    public GameObject TopBar;
+    public GameObject SideBar;
+    public bool TierListActive = false;
+    private Vector2 LerpSnap(Transform target, Vector2 position, float amt = 0.1f, float tolerance = 0.5f)
+    {
+        if (target.localPosition.Distance(position) < tolerance)
+            target.localPosition = position;
+        else
+            target.localPosition = target.localPosition.Lerp(position, amt);
+        return target.localPosition;
+    }
+    public void TierListUpdate()
+    {
+        OpenButton.interactable = !TierListActive;
+        Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, 540f) : new Vector2(0, 740f);
+        Vector2 newSideBarPosition = !TierListActive ? new Vector2(960f, 340f) : new Vector2(960f, 540f);
+        Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-934.5f, 515f) : new Vector2(-934.5f, 715f);
+
+        LerpSnap(TopBar.transform, newTopBarPositon);
+        LerpSnap(SideBar.transform, newSideBarPosition);
+        LerpSnap(OpenButton.gameObject.transform, newOpenButtonPosition);
     }
 }

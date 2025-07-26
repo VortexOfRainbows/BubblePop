@@ -1,17 +1,18 @@
 Vortex'sDeveloperLog(BubbleEdition)
 
+Maybe Do:
+1. GameObject Request system (in order to somewhat replicate manual spritebatch)
+2. Add cloud particles
+3. Quadrant system UI
+4. Potentially enemy health bars
+
 Need to do:
 
-1. More content (thought bubble weapon, power ups)
-2. GameObject Request system (in order to somewhat replicate manual spritebatch)
-3. Add cloud particles
-4. Improve UI and add UNLOCK SCREEN *** (maximum importance)
+1. Improve UI and add UNLOCK SCREEN *** (maximum importance)
 	1. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
-5. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
-6. Thought Bubble Weapon (spell book)
-7. More descriptive pause and select screen
-8. Quadrant system UI
-9. Potentially enemy health bars
+2. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
+3. Thought Bubble Weapon (spell book)
+4. More descriptive pause and select screen
 
 Done: 
 

@@ -178,4 +178,8 @@ public static class Utils
             ((byte)(color.b * 255)).ToString("X2") +
             ((byte)(color.a * 255)).ToString("X2");
     }
+    public static float Distance(this Vector3 v, Vector3 v2)
+    {
+        return (v - v2).magnitude;
+    }
 }
