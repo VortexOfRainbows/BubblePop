@@ -73,7 +73,8 @@ public class PowerUpUIElement : MonoBehaviour
     }
     public void SetBorderColors()
     {
-        outer.material = inner.material = adornment.material = MyPower.GetBorder();
+        outer.material = adornment.material = MyPower.GetBorder(true);
+        inner.material = MyPower.GetBorder();
     }
     public void TurnedOff()
     {

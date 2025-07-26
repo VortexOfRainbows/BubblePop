@@ -22,7 +22,7 @@ public static class ReflectiveEnumerator
 public class DetailedDescription
 {
     public PowerUp owner;
-    private static readonly string[] Rares = new string[] { "#DFDFFF", "#C8FEAD", "#BAE3FE", "#D4BAFE", "#FCB934" };
+    private static readonly string[] Rares = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934" };
     private static readonly string Yellow = "#FFED75";
     private static readonly string Gray = "#999999";
     private static readonly string TabForMoreDetail = " <size=24><color=#CB8A8A>(TAB for more detail)</color></size>";
