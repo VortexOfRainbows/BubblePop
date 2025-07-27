@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -56,6 +57,58 @@ public class TierList : MonoBehaviour
             }
             cat.CalculateSizeNeededToHousePowerups();
         }
+        if(SelectedCat == null && Owner.HoverCPUE.PowerID >= 0)
+        {
+            RemovePower(Owner.HoverCPUE.PowerID);
+        }
+        bool canHover = Owner.HoldingAPower;
+        foreach (CompendiumPowerUpElement cpue in Powers)
+        {
+            cpue.MyElem.PreventHovering = canHover;
+        }
+    }
+    public void InsertIntoTransform(Transform parentGrid, CompendiumPowerUpElement newestCPU, int position = -1)
+    {
+        float currentPosX = newestCPU.rectTransform.position.x;
+        newestCPU.transform.SetParent(null);
+        int c = parentGrid.childCount;
+        if (c <= 0 || position >= c - 1)
+        {
+            newestCPU.transform.SetParent(parentGrid);
+            return;
+        }
+        List<CompendiumPowerUpElement> childs = Compendium.GetCPUEChildren(parentGrid, out c);
+        bool autoSelectPosition = position == -1;
+        Vector2 mousePos = autoSelectPosition ? Utils.MouseWorld : Vector2.zero;
+        if(autoSelectPosition)
+        {
+            position = 0;
+            float firstElementRelativePosition = MathF.Min(currentPosX - parentGrid.position.x, childs[0].rectTransform.position.x - parentGrid.position.x) * 1.2f;
+            for (int i = 0; i < c; ++i)
+            {
+                CompendiumPowerUpElement CPUE = childs[i];
+                Vector2 pos = (Vector2)CPUE.rectTransform.position;
+                Debug.Log($"{pos.y}, {mousePos.y}, {firstElementRelativePosition}");
+                bool right = (pos.x + firstElementRelativePosition) < mousePos.x; // || (pos.y + rect.height / 2f) > mousePos.y;
+                bool above = (pos.y + firstElementRelativePosition * 0.6f) < mousePos.y; // || (pos.y + rect.height / 2f) > mousePos.y;
+                bool down = (pos.y - firstElementRelativePosition * 0.6f) > mousePos.y; // || (pos.y + rect.height / 2f) > mousePos.y;
+                if ((right && !above) || down)
+                    ++position;
+            }
+            Debug.Log(position);
+        }
+        parentGrid.DetachChildren();
+        for (int i = 0; i < c; ++i)
+        {
+            CompendiumPowerUpElement CPUE = childs[i];
+            if (position == i)
+                newestCPU.transform.SetParent(parentGrid);
+            CPUE.transform.SetParent(parentGrid);
+        }
+        if(position >= c)
+        {
+            newestCPU.transform.SetParent(parentGrid);
+        }
     }
     public void PlacePower(int i, bool preview = true)
     {
@@ -68,17 +121,25 @@ public class TierList : MonoBehaviour
         {
             if (cpue == null)
             {
-                cpue = Instantiate(CompendiumPowerUpElement.Prefab, SelectedCat.Grid.transform, false).GetComponent<CompendiumPowerUpElement>();
+                cpue = Instantiate(CompendiumPowerUpElement.Prefab).GetComponent<CompendiumPowerUpElement>();
+                InsertIntoTransform(SelectedCat.Grid.transform, cpue);
                 cpue.Style = 2;
                 cpue.MyElem.PreventHovering = true;
                 cpue.GrayOut = true;
+                cpue.MyElem.HoverRadius = 0;
                 cpue.Init(i, MyCanvas);
                 Powers.Add(cpue);
             }
             else
             {
                 cpue.transform.SetParent(SelectedCat.Grid.transform);
+                InsertIntoTransform(SelectedCat.Grid.transform, cpue);
             }
+        }
+        else
+        {
+            ModifyOnTierList(i, false);
+            cpue.transform.SetParent(SelectedCat.Grid.transform);
         }
         if (preview && !OnTierList[i] && cpue != null)
             cpue.GrayOut = true;
@@ -88,10 +149,10 @@ public class TierList : MonoBehaviour
             ModifyOnTierList(i, true);
         }
     }
-    public void RemovePower(int i)
+    public void RemovePower(int i, bool OnlyIfGray = true)
     {
         CompendiumPowerUpElement existingCPUE = Powers.Find(g => g.PowerID == i);
-        if (existingCPUE != null)
+        if (existingCPUE != null && existingCPUE.GrayOut == OnlyIfGray)
         {
             Powers.Remove(existingCPUE);
             Destroy(existingCPUE.gameObject);
@@ -115,7 +176,7 @@ public class TierList : MonoBehaviour
             }
             else
             {
-                Owner.UpdateSelectedType(-3);
+                Owner.UpdateSelectedType(-4);
             }
         }
     }

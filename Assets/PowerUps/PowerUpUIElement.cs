@@ -88,6 +88,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool AppearLocked => MenuElement && MyPower.PickedUpCountAllRuns <= 0;
     public bool PreventHovering;
     public bool ForceHideCount = false;
+    public float HoverRadius { get; set; } = 64;
     public void WhileOn()
     {
         Timer += 1;
@@ -100,7 +101,7 @@ public class PowerUpUIElement : MonoBehaviour
         bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering);
         if(CompendiumElement && !Compendium.MouseInCompendiumArea)
             canHover = false;
-        float size = CompendiumElement ? 160 - outer.rectTransform.rect.width : 64 * transform.localScale.x;
+        float size = CompendiumElement ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
         bool rectangular = CompendiumElement;
         if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas))
         {
@@ -113,7 +114,9 @@ public class PowerUpUIElement : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
 
             if(CompendiumElement && Control.LeftMouseClick)
+            {
                 Compendium.SelectedType = Index;
+            }
         }
         else
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);

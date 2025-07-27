@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 using static Enemy;
+using static UnityEditor.PlayerSettings;
 
 public static class Utils
 {
@@ -81,6 +82,15 @@ public static class Utils
     }
     public const int AlternativeCameraPosX = 5000;
     public const int AlternativeCameraPosY = 1000;
+    public static Vector3 PositionAdjustedByCanvas(Vector3 pos, Canvas canvas)
+    {
+        pos.x -= canvas.transform.position.x;
+        pos.y -= canvas.transform.position.y;
+        pos /= canvas.GetComponent<RectTransform>().lossyScale.x;
+        pos *= UIManager.ActivePrimaryCanvas.scaleFactor;
+        pos += UIManager.ActivePrimaryCanvas.transform.position;
+        return pos;
+    }
     public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null)
     {
         if (UIManager.ActivePrimaryCanvas == null)
@@ -91,11 +101,7 @@ public static class Utils
             canvas = UIManager.ActivePrimaryCanvas;
         else
         {
-            pos.x -= canvas.transform.position.x;
-            pos.y -= canvas.transform.position.y;
-            pos /= canvas.GetComponent<RectTransform>().lossyScale.x;
-            pos *= UIManager.ActivePrimaryCanvas.scaleFactor;
-            pos += UIManager.ActivePrimaryCanvas.transform.position;
+            pos = PositionAdjustedByCanvas(pos, canvas);
         }
         if (rectangular)
         {

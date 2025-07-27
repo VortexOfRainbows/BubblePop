@@ -89,9 +89,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c43facf95d32caf47a3709cfe4c864e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rectTransform: {fileID: 8102947865901628746}
   BG: {fileID: 3738054596444974786}
   MyElem: {fileID: 8806183417431389966}
   PowerID: -1
+  Style: 0
 --- !u!1001 &7538693559011979869
 PrefabInstance:
   m_ObjectHideFlags: 0

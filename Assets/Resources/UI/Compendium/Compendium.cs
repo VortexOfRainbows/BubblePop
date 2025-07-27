@@ -5,8 +5,18 @@ using UnityEngine.UI;
 
 public class Compendium : MonoBehaviour
 {
+    private const int ArbitrarySort = 0;
+    private const int RaritySort = 1;
+    private const int FavSort = 2;
     //public static Compendium Instance;
     public static bool MouseInCompendiumArea = false;
+    /// <summary>
+    /// Unique behaviors:
+    /// -1: Deleted on load (intended for helping with editor behavior)
+    /// -2: None
+    /// -3: Empty hand, with special delete logic for elements temporarily on the tier list
+    /// -4: Empty hand, with special logic for after you have placed all available elements
+    /// </summary>
     public static int SelectedType { get; set; }
     public void UpdateSelectedType(int i)
     {
@@ -20,6 +30,7 @@ public class Compendium : MonoBehaviour
             UpdateDescription(false);
         if (HoverCPUE.PowerID != SelectedType && SelectedType >= 0)
         {
+            TierList.RemovePower(HoverCPUE.PowerID);
             bool hasSelectedPower = PowerUp.Get(SelectedType).PickedUpCountAllRuns > 0;
             HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
             HoverCPUE.Init(SelectedType, MyCanvas);
@@ -30,9 +41,6 @@ public class Compendium : MonoBehaviour
     public TextMeshProUGUI PrimaryCPUEDescription;
     public RectTransform SelectionArea;
     public RectTransform DescriptionScrollArea;
-    private const int ArbitrarySort = 0;
-    private const int RaritySort = 1;
-    private const int FavSort = 2;
     public Canvas MyCanvas;
     public GridLayoutGroup ContentLayout;
     public RectTransform ContentLayoutRect;
@@ -45,6 +53,7 @@ public class Compendium : MonoBehaviour
     public TextMeshProUGUI SortText;
     public TextMeshProUGUI TierListText;
     public GameObject[] Stars;
+    public bool HoldingAPower { get => SelectedType >= 0; } // set => SelectedType = value ? SelectedType : -3; }
     public void ToggleSort()
     {
         SortMode = (SortMode + 1) % 3;
@@ -129,13 +138,17 @@ public class Compendium : MonoBehaviour
 
         ContentLayout.transform.localPosition = new Vector3(0, Mathf.Min(0, 600 - defaultDist), 0);
     }
-    public List<CompendiumPowerUpElement> GetCPUEChildren(out int count)
+    public static List<CompendiumPowerUpElement> GetCPUEChildren(Transform parent, out int count)
     {
-        count = ContentLayout.transform.childCount;
+        count = parent.childCount;
         List<CompendiumPowerUpElement> childs = new();
         for (int i = 0; i < count; ++i)
-            childs.Add(ContentLayout.transform.GetChild(i).GetComponent<CompendiumPowerUpElement>());
+            childs.Add(parent.GetChild(i).GetComponent<CompendiumPowerUpElement>());
         return childs;
+    }
+    public List<CompendiumPowerUpElement> GetCPUEChildren(out int count)
+    {
+        return GetCPUEChildren(ContentLayout.transform, out count);
     }
     public CompendiumPowerUpElement NextSlot()
     {
@@ -156,8 +169,8 @@ public class Compendium : MonoBehaviour
             cpue.gameObject.SetActive(!locked || !ShowOnlyUnlocked);
             if (!TierListActive)
                 cpue.GrayOut = false;
-            else if(TierList.PowerHasBeenPlaced(cpue.PowerID))
-                cpue.GrayOut = true;
+            else
+                cpue.GrayOut = TierList.PowerHasBeenPlaced(cpue.PowerID);
             cpue.transform.localPosition = new Vector3(0, 0, 0); //Failsafe for repositioning elements as disabling them sometimes has weird behavior with layout group
         }
     }
@@ -219,9 +232,20 @@ public class Compendium : MonoBehaviour
     public void Update()
     {
         MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
-        if (TierListActive && MouseInCompendiumArea && HoverCPUE.PowerID == SelectedType)
+        if (Control.RightMouseClick)
         {
-            TierList.PlacePower(HoverCPUE.PowerID, !Control.LeftMouseClick);
+            UpdateSelectedType(-3);
+        }
+        if (TierListActive && MouseInCompendiumArea)
+        {
+            if(HoverCPUE.PowerID == SelectedType)
+            {
+                TierList.PlacePower(HoverCPUE.PowerID, !Control.LeftMouseClick);
+            }
+            else if(SelectedType == -3)
+            {
+                TierList.RemovePower(HoverCPUE.PowerID);
+            }
         }
     }
     public void FixedUpdate()

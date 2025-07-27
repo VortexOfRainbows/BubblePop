@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class CompendiumPowerUpElement : MonoBehaviour
 {
     public static GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumPowerUpElement");
+    public RectTransform rectTransform;
     public Image BG;
     public PowerUpUIElement MyElem;
     public int PowerID = 0;
