@@ -151,29 +151,39 @@ public class PopUpTextUI : MonoBehaviour
         {
             if (!Visual.activeSelf)
             {
-                transform.position = new Vector3(1920, transform.position.y, 0);
-                SnapToScreen(true);
-                Visual.SetActive(true);
+                if (FollowMouse)
+                {
+                    transform.position = new Vector3(1920, transform.position.y, 0);
+                    SnapToScreen(true);
+                    Visual.SetActive(true);
+                }
+                else
+                {
+                    transform.position = new Vector3(1920, transform.position.y, 0);
+                    Visual.SetActive(true);
+                }
             }
             else
             {
                 ReadyToRenderNormal = true;
-                //ReadyToRenderFixed = true;
+                if(!FollowMouse)
+                    transform.localPosition = new Vector3(1035, -150, 0);
             }
         }
-        if (/*ReadyToRenderFixed &&*/ReadyToRenderNormal)
+        if(FollowMouse)
+            Instance = this;
+        else
+        {
+            UpdateMiddleInstance();
+            MiddleInstance = this;
+        }
+        if (ReadyToRenderNormal)
         {
             if (FollowMouse)
             {
-                Instance = this;
                 //Debug.Log(Input.mousePosition);
                 transform.position = Input.mousePosition + new Vector3(40, -40);
                 SnapToScreen();
-            }
-            else
-            {
-                MiddleInstance = this;
-                UpdateMiddleInstance();
             }
         }
         if (Main.GamePaused)

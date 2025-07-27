@@ -13,6 +13,7 @@ Need to do:
 2. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
 3. Thought Bubble Weapon (spell book)
 4. More descriptive pause and select screen
+5. Fix resolution scaling issues across the board, such as with the compendium and tier list
 
 Done: 
 
@@ -26,6 +27,7 @@ Done:
 6. Fix issue where some empty lines appear inside locked powerups
 7. Resize some powerups so their border sizes are more consistent (Propulsion and Starbarbs)
 8. WIP Tier List functionality (Yes, really)
+9. Fix issue where popup powerup description queue was not appearing
 
 7/21/25 to 7/24/25
 1. Primitive enemy scaling factors (starts slow at 5% per wave, then 10%, then 5% plus 5% multiplicative, then 10% multiplicative
