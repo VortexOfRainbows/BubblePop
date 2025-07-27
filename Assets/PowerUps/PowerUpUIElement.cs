@@ -113,9 +113,12 @@ public class PowerUpUIElement : MonoBehaviour
             float scaleUP = 1.125f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
 
-            if(CompendiumElement && Control.LeftMouseClick)
+            if(CompendiumElement)
             {
-                Compendium.SelectedType = Index;
+                if (Control.LeftMouseClick)
+                    Compendium.SelectedType = Index;
+                else if (Control.RightMouseClick)
+                    TierList.QueueRemoval = Index;
             }
         }
         else

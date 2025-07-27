@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,11 +9,12 @@ using UnityEngine.Timeline;
 
 public class TierList : MonoBehaviour
 {
+    public static int QueueRemoval = -1;
     public Compendium Owner;
     public static float TotalDistanceCovered = 800f;
     public static readonly Dictionary<int, bool> OnTierList = new();
-    private readonly List<CompendiumPowerUpElement> Powers = new();
-    private readonly string TierNames = "SABCDF";
+    private static readonly List<CompendiumPowerUpElement> Powers = new();
+    private static readonly string TierNames = "SABCDF";
     public TierCategory[] Categories;
     private TierCategory SelectedCat;
     public Canvas MyCanvas;
@@ -57,6 +59,11 @@ public class TierList : MonoBehaviour
             }
             cat.CalculateSizeNeededToHousePowerups();
         }
+        if(QueueRemoval >= 0)
+        {
+            RemovePower(QueueRemoval, false);
+            QueueRemoval = -1;
+        }
         if(SelectedCat == null && Owner.HoverCPUE.PowerID >= 0)
         {
             RemovePower(Owner.HoverCPUE.PowerID);
@@ -70,6 +77,7 @@ public class TierList : MonoBehaviour
     public void InsertIntoTransform(Transform parentGrid, CompendiumPowerUpElement newestCPU, int position = -1)
     {
         float currentPosX = newestCPU.rectTransform.position.x;
+        float currentPosY = newestCPU.rectTransform.position.y;
         newestCPU.transform.SetParent(null);
         int c = parentGrid.childCount;
         if (c <= 0 || position >= c - 1)
@@ -82,22 +90,52 @@ public class TierList : MonoBehaviour
         Vector2 mousePos = autoSelectPosition ? Utils.MouseWorld : Vector2.zero;
         if(autoSelectPosition)
         {
-            position = 0;
-            float firstElementRelativePosition = MathF.Min(currentPosX - parentGrid.position.x, childs[0].rectTransform.position.x - parentGrid.position.x) * 1.2f;
+            float offset = 2.95f; // 100f / 2f / 17.4f; //for some reason the mouse and transform values do not match (this roughly gets the center of the rect transform) = width / 2 / camera viewport size
+            float scalerX = 1.5f;// offset / 1.9f; //Divide offset by almost two to get roughly half the size needed
+            float scalerY = scalerX; //Scaller is different for Y based on resolution
+            int closest = int.MaxValue;
+            float best = float.MaxValue;
             for (int i = 0; i < c; ++i)
             {
                 CompendiumPowerUpElement CPUE = childs[i];
-                Vector2 pos = (Vector2)CPUE.rectTransform.position;
-                Debug.Log($"{pos.y}, {mousePos.y}, {firstElementRelativePosition}");
-                bool right = (pos.x + firstElementRelativePosition) < mousePos.x; // || (pos.y + rect.height / 2f) > mousePos.y;
-                bool above = (pos.y + firstElementRelativePosition * 0.6f) < mousePos.y; // || (pos.y + rect.height / 2f) > mousePos.y;
-                bool down = (pos.y - firstElementRelativePosition * 0.6f) > mousePos.y; // || (pos.y + rect.height / 2f) > mousePos.y;
-                if ((right && !above) || down)
-                    ++position;
+                Vector2 pos = new(CPUE.rectTransform.position.x + offset, CPUE.rectTransform.position.y);
+                //Debug.Log($"{pos}, {mousePos}");
+                float d = pos.Distance(mousePos);
+                float dY = Mathf.Abs(mousePos.y - pos.y);
+                float dY2 = Mathf.Abs(currentPosY - pos.y);
+                float dY3 = Mathf.Abs(currentPosY - mousePos.y);
+                bool selectorIsNearMouse = dY < scalerY;
+                bool sameLevelAsPreviewVisual = dY2 < 0.1f;
+                bool mouseSameLevelAsPreviewVisual = dY3 < scalerY;
+                bool AllowedToPlaceNear = (sameLevelAsPreviewVisual && mouseSameLevelAsPreviewVisual) || selectorIsNearMouse;
+                if (!AllowedToPlaceNear) //closest element is not on the same y level
+                    continue;
+                if (d < best)
+                {
+                    best = d;
+                    closest = i;
+                    float positionToConsider = mouseSameLevelAsPreviewVisual ? currentPosX : mousePos.x;
+                    bool right = pos.x < positionToConsider;
+                    if(right) //If i am to the right of you, I want to check for your right side
+                    {
+                        if (pos.x + scalerX < mousePos.x)
+                            closest++;
+                    }
+                    else //If i am to the left of you, I want to check for your left side
+                    {
+                        if (pos.x - scalerX < mousePos.x && mouseSameLevelAsPreviewVisual)
+                            closest++;
+                    }
+                }
             }
-            Debug.Log(position);
+            //Debug.Log(trueClosest + ": " + closest);
+            position = closest;
         }
         parentGrid.DetachChildren();
+        if (position < 0)
+        {
+            newestCPU.transform.SetParent(parentGrid);
+        }
         for (int i = 0; i < c; ++i)
         {
             CompendiumPowerUpElement CPUE = childs[i];

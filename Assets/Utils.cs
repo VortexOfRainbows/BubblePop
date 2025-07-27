@@ -189,6 +189,10 @@ public static class Utils
     {
         return (v - v2).magnitude;
     }
+    public static float Distance(this Vector2 v, Vector2 v2)
+    {
+        return (v - v2).magnitude;
+    }
     public static Vector3 ClampToRect(Vector3 v, Rect boundingRect, float padding = 0)
     {
         float left = boundingRect.xMin + padding;

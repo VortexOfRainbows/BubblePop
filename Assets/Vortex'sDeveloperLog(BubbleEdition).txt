@@ -14,6 +14,7 @@ Need to do:
 3. Thought Bubble Weapon (spell book)
 4. More descriptive pause and select screen
 5. Fix resolution scaling issues across the board, such as with the compendium and tier list
+	1. Power display issue may be referencing the incorrect resolution values
 6. Coalescence and Bubble Staff rework
 7. Buttons for TL:
 	1. Autonext (default off)
@@ -32,7 +33,8 @@ Done:
 5. Add some delay on popup text to allow proper resizing
 6. Fix issue where some empty lines appear inside locked powerups
 7. Resize some powerups so their border sizes are more consistent (Propulsion and Starbarbs)
-8. WIP Tier List functionality (Yes, really)
+8. WIP Tier List functionality (Yes, really), + a lot more of this
+	1. Extremely intuitive drag and drop (kill me)
 9. Fix issue where popup powerup description queue was not appearing
 
 7/21/25 to 7/24/25

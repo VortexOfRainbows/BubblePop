@@ -352,7 +352,7 @@ public class Compendium : MonoBehaviour
         HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
         if(TierListActive)
         {
-            Vector3 targetPosition = Utils.MouseWorld;
+            Vector3 targetPosition = Utils.MouseWorld + new Vector2(-1, 1);
             Rect boundingRect = r.rect;
             HoverCPUE.gameObject.transform.position = HoverCPUE.gameObject.transform.position.Lerp(targetPosition, 0.1f);
             Vector3 pos = Utils.ClampToRect(HoverCPUE.gameObject.transform.localPosition, boundingRect, 66);
