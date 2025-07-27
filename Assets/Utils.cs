@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using static Enemy;
 
@@ -181,5 +182,21 @@ public static class Utils
     public static float Distance(this Vector3 v, Vector3 v2)
     {
         return (v - v2).magnitude;
+    }
+    public static Vector3 ClampToRect(Vector3 v, Rect boundingRect, float padding = 0)
+    {
+        float left = boundingRect.xMin + padding;
+        float right = boundingRect.xMax - padding;
+        float bot = boundingRect.yMin + padding;
+        float top = boundingRect.yMax - padding;
+        if (v.x < left)
+            v.x = left;
+        if (v.x > right)
+            v.x = right;
+        if (v.y < bot)
+            v.y = bot;
+        if (v.y > top)
+            v.y = top;
+        return v;
     }
 }

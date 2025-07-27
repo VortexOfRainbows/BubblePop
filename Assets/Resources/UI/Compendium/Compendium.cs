@@ -6,6 +6,7 @@ using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public class Compendium : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Compendium : MonoBehaviour
     public static bool MouseInCompendiumArea = false;
     public static int SelectedType = 0;
     public CompendiumPowerUpElement PrimaryCPUE;
+    public CompendiumPowerUpElement HoverCPUE;
     public TextMeshProUGUI PrimaryCPUEDescription;
     public RectTransform SelectionArea;
     public RectTransform DescriptionScrollArea;
@@ -234,6 +236,7 @@ public class Compendium : MonoBehaviour
     public GameObject ViewPort, TierList;
     public bool TierListActive = false;
     public VerticalLayoutGroup TierListLayoutGroup;
+    public TierList TierListCat => TierListLayoutGroup.GetComponent<TierList>();
     private Vector2 LerpSnap(Transform target, Vector2 position, float amt = 0.1f, float tolerance = 0.5f)
     {
         if (target.localPosition.Distance(position) < tolerance)
@@ -272,5 +275,17 @@ public class Compendium : MonoBehaviour
             }
         }
         ContentScrollRect.vertical = hasSnappedTierList == TierListActive;
+        
+        HoverCPUE.gameObject.SetActive(TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
+        if(TierListActive)
+        {
+            if (HoverCPUE.PowerID != PrimaryCPUE.PowerID)
+                HoverCPUE.Init(PrimaryCPUE.PowerID, MyCanvas);
+            Vector3 targetPosition = Utils.MouseWorld;
+            Rect boundingRect = r.rect;
+            HoverCPUE.gameObject.transform.position = HoverCPUE.gameObject.transform.position.Lerp(targetPosition, 0.1f);
+            Vector3 pos = Utils.ClampToRect(HoverCPUE.gameObject.transform.localPosition, boundingRect, 66);
+            HoverCPUE.gameObject.transform.localPosition = pos;
+        }
     }
 }

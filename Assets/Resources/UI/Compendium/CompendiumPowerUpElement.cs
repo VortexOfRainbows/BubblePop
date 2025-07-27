@@ -3,11 +3,12 @@ using UnityEngine.UI;
 
 public class CompendiumPowerUpElement : MonoBehaviour
 {
-    public static GameObject Prefab => Resources.Load<GameObject>("UI/CompendiumPowerUpElement");
+    public static GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumPowerUpElement");
     public Image BG;
     public PowerUpUIElement MyElem;
     public int PowerID = 0;
     private bool Selected;
+    public int Style = 0;
     public void Init(int i, Canvas canvas)
     {
         MyElem.SetPowerType(PowerID = i);
