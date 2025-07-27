@@ -15,8 +15,9 @@ public class CompendiumPowerUpElement : MonoBehaviour
         MyElem.SetPowerType(PowerID = i);
         MyElem.myCanvas = canvas;
         MyElem.Count.text = PowerUp.Get(PowerID).PickedUpCountAllRuns.ToString();
+        MyElem.GrayOut = GrayOut;
         int forceInitUpdates = 1;
-        if(Style == 2)
+        if (Style == 2)
         {
             BG.enabled = false;
             MyElem.ForceHideCount = true;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -58,12 +59,16 @@ public class TierList : MonoBehaviour
         if (SelectedCat == null)
             return;
         CompendiumPowerUpElement cpue = Powers.Find(g => g.PowerID == i);
+        if (PowerUp.Get(i).PickedUpCountAllRuns <= 0)
+            return;
         if (!OnTierList[i])
         {
             if (cpue == null)
             {
                 cpue = Instantiate(CompendiumPowerUpElement.Prefab, SelectedCat.Grid.transform, false).GetComponent<CompendiumPowerUpElement>();
                 cpue.Style = 2;
+                cpue.MyElem.PreventHovering = true;
+                cpue.GrayOut = true;
                 cpue.Init(i, MyCanvas);
                 Powers.Add(cpue);
             }
@@ -72,7 +77,7 @@ public class TierList : MonoBehaviour
                 cpue.transform.SetParent(SelectedCat.Grid.transform);
             }
         }
-        if(preview && !OnTierList[i] && cpue != null)
+        if (preview && !OnTierList[i] && cpue != null)
             cpue.GrayOut = true;
         else
         {
@@ -92,8 +97,23 @@ public class TierList : MonoBehaviour
     }
     public void ModifyOnTierList(int i, bool val)
     {
+        if (i < 0)
+            return;
+        bool prevVal = OnTierList[i];
         OnTierList[i] = val;
         Owner.SetVisibility();
         Owner.Sort();
+        if (!prevVal && val) //Place power
+        {
+            CompendiumPowerUpElement nextElem = Owner.NextSlot();
+            if (nextElem != null && !nextElem.GrayOut)
+            {
+                Owner.UpdateSelectedType(nextElem.PowerID);
+            }
+            else
+            {
+                Owner.UpdateSelectedType(-3);
+            }
+        }
     }
 }

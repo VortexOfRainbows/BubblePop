@@ -7,7 +7,24 @@ public class Compendium : MonoBehaviour
 {
     //public static Compendium Instance;
     public static bool MouseInCompendiumArea = false;
-    public static int SelectedType = 0;
+    public static int SelectedType { get; set; }
+    public void UpdateSelectedType(int i)
+    {
+        SelectedType = i;
+        if (PrimaryCPUE.PowerID != SelectedType && SelectedType >= 0)
+        {
+            PrimaryCPUE.Init(SelectedType, MyCanvas);
+            UpdateDescription(true);
+        }
+        else
+            UpdateDescription(false);
+        if (HoverCPUE.PowerID != SelectedType && SelectedType >= 0)
+        {
+            bool hasSelectedPower = PowerUp.Get(SelectedType).PickedUpCountAllRuns > 0;
+            HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
+            HoverCPUE.Init(SelectedType, MyCanvas);
+        }
+    }
     public CompendiumPowerUpElement PrimaryCPUE;
     public CompendiumPowerUpElement HoverCPUE;
     public TextMeshProUGUI PrimaryCPUEDescription;
@@ -116,6 +133,16 @@ public class Compendium : MonoBehaviour
             childs.Add(ContentLayout.transform.GetChild(i).GetComponent<CompendiumPowerUpElement>());
         return childs;
     }
+    public CompendiumPowerUpElement NextSlot()
+    {
+        int i = 0;
+        CompendiumPowerUpElement cpue = ContentLayout.transform.GetChild(i).GetComponent<CompendiumPowerUpElement>();
+        while (cpue != null && cpue.MyElem.AppearLocked)
+        {
+            cpue = ContentLayout.transform.GetChild(++i).GetComponent<CompendiumPowerUpElement>();
+        }
+        return cpue;
+    }
     public void SetVisibility()
     {
         List<CompendiumPowerUpElement> childs = GetCPUEChildren(out int c);
@@ -125,6 +152,7 @@ public class Compendium : MonoBehaviour
             cpue.gameObject.SetActive(!locked || !ShowOnlyUnlocked);
             if(TierList.PowerHasBeenPlaced(cpue.PowerID))
                 cpue.GrayOut = true;
+            cpue.transform.localPosition = new Vector3(0, 0, 0); //Failsafe for repositioning elements as disabling them sometimes has weird behavior with layout group
         }
     }
     public int CompareID(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
@@ -185,8 +213,10 @@ public class Compendium : MonoBehaviour
     public void Update()
     {
         MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
-        if(TierListActive && MouseInCompendiumArea)
+        if (TierListActive && MouseInCompendiumArea && HoverCPUE.PowerID == SelectedType)
+        {
             TierListCat.PlacePower(HoverCPUE.PowerID, !Control.LeftMouseClick);
+        }
     }
     public void FixedUpdate()
     {
@@ -200,13 +230,7 @@ public class Compendium : MonoBehaviour
             if (transform.position.x > -0.1f)
                 transform.position = Vector3.zero;
             else transform.position = transform.position.Lerp(new Vector3(0, 0, 0), 0.1f);
-            if(PrimaryCPUE.PowerID != SelectedType)
-            {
-                PrimaryCPUE.Init(SelectedType, MyCanvas);
-                UpdateDescription(true);
-            }
-            else
-                UpdateDescription(false);
+            UpdateSelectedType(SelectedType);
         }
         else
         {
@@ -218,7 +242,7 @@ public class Compendium : MonoBehaviour
     }
     public void UpdateDescription(bool reset)
     {
-        if(reset)
+        if(reset && SelectedType >= 0)
         {
             PowerUp p = PowerUp.Get(SelectedType);
             string shortLineBreak = "<size=12>\n\n</size>";
@@ -294,12 +318,11 @@ public class Compendium : MonoBehaviour
             }
         }
         ContentScrollRect.vertical = hasSnappedTierList == TierListActive;
-        
-        HoverCPUE.gameObject.SetActive(TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
+
+        bool hasSelectedPower = SelectedType >= 0 && PowerUp.Get(SelectedType).PickedUpCountAllRuns > 0;
+        HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
         if(TierListActive)
         {
-            if (HoverCPUE.PowerID != PrimaryCPUE.PowerID)
-                HoverCPUE.Init(PrimaryCPUE.PowerID, MyCanvas);
             Vector3 targetPosition = Utils.MouseWorld;
             Rect boundingRect = r.rect;
             HoverCPUE.gameObject.transform.position = HoverCPUE.gameObject.transform.position.Lerp(targetPosition, 0.1f);
@@ -307,6 +330,8 @@ public class Compendium : MonoBehaviour
             HoverCPUE.gameObject.transform.localPosition = pos;
 
             TierListCat.OnUpdate();
+
+            //Debug.Log(SelectedType);
         }
     }
 }
