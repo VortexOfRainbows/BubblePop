@@ -8,6 +8,7 @@ using UnityEngine.Timeline;
 public class TierList : MonoBehaviour
 {
     public Compendium Owner;
+    public static float TotalDistanceCovered = 800f;
     public static readonly Dictionary<int, bool> OnTierList = new();
     private readonly List<CompendiumPowerUpElement> Powers = new();
     private readonly string TierNames = "SABCDF";
@@ -40,6 +41,7 @@ public class TierList : MonoBehaviour
         Color unselectColor = new(0.24706f, 0.24706f, 0.24706f);
         Color selectColor = new(.6f, .6f, .25f); 
         SelectedCat = null;
+        TotalDistanceCovered = 0;
         for (int i = 0; i < Categories.Length; ++i)
         {
             TierCategory cat = Categories[i];
@@ -52,6 +54,7 @@ public class TierList : MonoBehaviour
             {
                 cat.TierRect.color = Color.Lerp(cat.TierRect.color, unselectColor, 0.25f);
             }
+            cat.CalculateSizeNeededToHousePowerups();
         }
     }
     public void PlacePower(int i, bool preview = true)

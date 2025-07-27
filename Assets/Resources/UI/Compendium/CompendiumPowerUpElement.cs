@@ -9,7 +9,7 @@ public class CompendiumPowerUpElement : MonoBehaviour
     public int PowerID = 0;
     private bool Selected;
     public int Style = 0;
-    public bool GrayOut = false;
+    public bool GrayOut { get; set; } = false;
     public void Init(int i, Canvas canvas)
     {
         MyElem.SetPowerType(PowerID = i);

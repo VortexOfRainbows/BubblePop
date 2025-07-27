@@ -54,6 +54,8 @@ public class Compendium : MonoBehaviour
     {
         TierListActive = !TierListActive;
         TierListText.text = TierListActive ? "Save Tier List" : "Make Tier List";
+        SetVisibility();
+        Sort();
     }
     public void UpdateSort()
     {
@@ -119,11 +121,13 @@ public class Compendium : MonoBehaviour
             return;
         Vector3 lastElement = ContentLayout.transform.GetChild(c - 1).localPosition;
         RectTransform r = ContentLayout.GetComponent<RectTransform>();
-        float defaultDist = 600;
+        float defaultDist = TierList.TotalDistanceCovered - 200;
         float paddingBonus = ContentLayout.padding.bottom + ContentLayout.cellSize.y;
         float dist = -lastElement.y + paddingBonus;
         r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(defaultDist, dist));
         ContentLayoutRect.sizeDelta = Vector2.Lerp(ContentLayoutRect.sizeDelta, new Vector2(0, paddingBonus / 2f + (TierListActive ? defaultDist : 0)), 0.1f);
+
+        ContentLayout.transform.localPosition = new Vector3(0, Mathf.Min(0, 600 - defaultDist), 0);
     }
     public List<CompendiumPowerUpElement> GetCPUEChildren(out int count)
     {
@@ -150,7 +154,9 @@ public class Compendium : MonoBehaviour
         {
             bool locked = cpue.MyElem.AppearLocked;
             cpue.gameObject.SetActive(!locked || !ShowOnlyUnlocked);
-            if(TierList.PowerHasBeenPlaced(cpue.PowerID))
+            if (!TierListActive)
+                cpue.GrayOut = false;
+            else if(TierList.PowerHasBeenPlaced(cpue.PowerID))
                 cpue.GrayOut = true;
             cpue.transform.localPosition = new Vector3(0, 0, 0); //Failsafe for repositioning elements as disabling them sometimes has weird behavior with layout group
         }
@@ -215,7 +221,7 @@ public class Compendium : MonoBehaviour
         MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
         if (TierListActive && MouseInCompendiumArea && HoverCPUE.PowerID == SelectedType)
         {
-            TierListCat.PlacePower(HoverCPUE.PowerID, !Control.LeftMouseClick);
+            TierList.PlacePower(HoverCPUE.PowerID, !Control.LeftMouseClick);
         }
     }
     public void FixedUpdate()
@@ -278,8 +284,7 @@ public class Compendium : MonoBehaviour
     public GameObject SideBar;
     public GameObject ViewPort, ContentTierList;
     public bool TierListActive = false;
-    public VerticalLayoutGroup TierListLayoutGroup;
-    public TierList TierListCat => TierListLayoutGroup.GetComponent<TierList>();
+    public TierList TierList;
     private Vector2 LerpSnap(Transform target, Vector2 position, float amt = 0.1f, float tolerance = 0.5f)
     {
         if (target.localPosition.Distance(position) < tolerance)
@@ -297,7 +302,7 @@ public class Compendium : MonoBehaviour
         Vector2 newSideBarPosition = !TierListActive ? new Vector2(960f, 340f) : new Vector2(960f, 540f);
         Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-934.5f, 515f) : new Vector2(-934.5f, 715f);
         Vector2 targetViewport = !TierListActive ? new Vector2(-760f, 390f) : new Vector2(-760f, 590f);
-        Vector2 targetTierList = !TierListActive ? new Vector2(0, 0) : new Vector2(0, -800f);
+        Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);
 
         LerpSnap(TopBar.transform, newTopBarPositon);
         LerpSnap(SideBar.transform, newSideBarPosition);
@@ -329,7 +334,7 @@ public class Compendium : MonoBehaviour
             Vector3 pos = Utils.ClampToRect(HoverCPUE.gameObject.transform.localPosition, boundingRect, 66);
             HoverCPUE.gameObject.transform.localPosition = pos;
 
-            TierListCat.OnUpdate();
+            TierList.OnUpdate();
 
             //Debug.Log(SelectedType);
         }
