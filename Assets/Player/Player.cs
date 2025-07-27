@@ -1,14 +1,16 @@
 using UnityEngine;
+using UnityEngine.XR;
 public static class Control
 {
-    public static bool Ability => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.Space);
-    public static bool LastAbility = false;
+    public static bool Ability { get; set; } = false;
+    public static bool LastAbility { get; set; } = false;
     public static bool Up => Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
     public static bool Down => Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
     public static bool Left => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
     public static bool Right => Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
     public static bool Tab => Input.GetKey(KeyCode.Tab);
-    public static bool LeftMouse => Input.GetMouseButtonDown(0);
+    public static bool LeftMouseHold => Input.GetMouseButton(0);
+    public static bool LeftMouseClick => Input.GetMouseButtonDown(0);
 }
 public partial class Player : Entity
 {
@@ -111,9 +113,7 @@ public partial class Player : Entity
                     ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f);
             }
         }
-
         rb.velocity = velocity;
-        Control.LastAbility = Control.Ability;
         Body.AliveUpdate();
         Animator.PostUpdate();
     }

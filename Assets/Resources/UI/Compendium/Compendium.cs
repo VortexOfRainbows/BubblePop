@@ -167,10 +167,11 @@ public class Compendium : MonoBehaviour
     public void Update()
     {
         MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
+        if(TierListActive && Control.LeftMouseClick)
+            TierListCat.PlacePower(HoverCPUE.PowerID);
     }
     public void FixedUpdate()
     {
-        //Instance = this;
         if (Active)
         {
             if (!HasInit)
@@ -178,7 +179,7 @@ public class Compendium : MonoBehaviour
                 Init();
                 HasInit = true;
             }
-            if (transform.position.x > -0.5f)
+            if (transform.position.x > -0.1f)
                 transform.position = Vector3.zero;
             else transform.position = transform.position.Lerp(new Vector3(0, 0, 0), 0.1f);
             if(PrimaryCPUE.PowerID != SelectedType)
@@ -191,7 +192,7 @@ public class Compendium : MonoBehaviour
         }
         else
         {
-            if (transform.position.x < -1919.5f)
+            if (transform.position.x < -1919.9f)
                 transform.position = StartingPosition;
             else transform.position = transform.position.Lerp(StartingPosition, 0.1f);
         }
@@ -286,6 +287,8 @@ public class Compendium : MonoBehaviour
             HoverCPUE.gameObject.transform.position = HoverCPUE.gameObject.transform.position.Lerp(targetPosition, 0.1f);
             Vector3 pos = Utils.ClampToRect(HoverCPUE.gameObject.transform.localPosition, boundingRect, 66);
             HoverCPUE.gameObject.transform.localPosition = pos;
+
+            TierListCat.OnUpdate();
         }
     }
 }

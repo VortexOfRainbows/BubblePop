@@ -83,17 +83,16 @@ public class PowerUpUIElement : MonoBehaviour
     }
     public bool AppearLocked => MenuElement && MyPower.PickedUpCountAllRuns <= 0;
     public bool PreventHovering;
+    public bool ForceHideCount = false;
     public void WhileOn()
     {
         Timer += 1;
-        if(!CompendiumElement)
-        {
+        if(ForceHideCount)
+            Count.gameObject.SetActive(false);
+        else if(!CompendiumElement)
             Count.text = MyPower.Stack.ToString();
-        }
         else
-        {
             Count.gameObject.SetActive(!AppearLocked && Compendium.ShowCounts && !PreventHovering);
-        }
         bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering);
         if(CompendiumElement && !Compendium.MouseInCompendiumArea)
             canHover = false;
@@ -109,7 +108,7 @@ public class PowerUpUIElement : MonoBehaviour
             float scaleUP = 1.125f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
 
-            if(CompendiumElement && Control.LeftMouse)
+            if(CompendiumElement && Control.LeftMouseClick)
                 Compendium.SelectedType = Index;
         }
         else
