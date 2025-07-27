@@ -1,12 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
-using UnityEditor.UI;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
 
 public class Compendium : MonoBehaviour
 {
@@ -89,6 +84,7 @@ public class Compendium : MonoBehaviour
         {
             CompendiumPowerUpElement CPUE = Instantiate(CompendiumPowerUpElement.Prefab, ContentLayout.transform, false).GetComponent<CompendiumPowerUpElement>();
             CPUE.Init(i, MyCanvas);
+            TierList.OnTierList[i] = false;
         }
         UpdateContentSize();
         ShowCounts = false;
@@ -127,35 +123,57 @@ public class Compendium : MonoBehaviour
         {
             bool locked = cpue.MyElem.AppearLocked;
             cpue.gameObject.SetActive(!locked || !ShowOnlyUnlocked);
+            if(TierList.PowerHasBeenPlaced(cpue.PowerID))
+                cpue.GrayOut = true;
         }
+    }
+    public int CompareID(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
+    {
+        int id1 = e1.PowerID;
+        int id2 = e2.PowerID;
+        if (e1.GrayOut)
+            id1 += 10000;
+        if (e2.GrayOut)
+            id2 += 10000;
+        int num = id1 - id2;
+        return num;
+    }
+    public int CompareRare(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
+    {
+        int rare1 = PowerUp.Get(e1.PowerID).GetRarity();
+        int rare2 = PowerUp.Get(e2.PowerID).GetRarity();
+        if (e1.GrayOut)
+            rare1 += 10;
+        if (e2.GrayOut)
+            rare2 += 10;
+        int num = rare1 - rare2;
+        return num == 0 ? CompareID(e1, e2) : num;
+    }
+    public int CompareFav(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
+    {
+        int count1 = PowerUp.Get(e1.PowerID).PickedUpCountAllRuns;
+        int count2 = PowerUp.Get(e2.PowerID).PickedUpCountAllRuns;
+        if (e1.GrayOut)
+            count1 = (int.MinValue >> 1) + count1;
+        if (e2.GrayOut)
+            count2 = (int.MinValue >> 1) + count2;
+        int num = count2 - count1;
+        return num == 0 ? CompareRare(e1, e2) : num;
     }
     public void Sort()
     {
         List<CompendiumPowerUpElement> childs = GetCPUEChildren(out int c);
         if(SortMode == ArbitrarySort)
         {
-            childs.Sort(delegate (CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
-            {
-                return e1.PowerID - e2.PowerID;
-            });
+            childs.Sort(CompareID);
         }
         if (SortMode == RaritySort)
         {
-            childs.Sort(delegate (CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
-            {
-                int rare1 = PowerUp.Get(e1.PowerID).GetRarity();
-                int rare2 = PowerUp.Get(e2.PowerID).GetRarity();
-                return rare1 - rare2;
-            });
+            childs.Sort(CompareRare);
         }
         if (SortMode == FavSort)
         {
-            childs.Sort(delegate (CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
-            {
-                int count1 = PowerUp.Get(e1.PowerID).PickedUpCountAllRuns;
-                int count2 = PowerUp.Get(e2.PowerID).PickedUpCountAllRuns;
-                return count2 - count1;
-            });
+            childs.Sort(CompareFav);
         }
         ContentLayout.transform.DetachChildren();
         for (int i = 0; i < c; ++i)
@@ -167,8 +185,8 @@ public class Compendium : MonoBehaviour
     public void Update()
     {
         MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
-        if(TierListActive && Control.LeftMouseClick)
-            TierListCat.PlacePower(HoverCPUE.PowerID);
+        if(TierListActive && MouseInCompendiumArea)
+            TierListCat.PlacePower(HoverCPUE.PowerID, !Control.LeftMouseClick);
     }
     public void FixedUpdate()
     {
@@ -234,7 +252,7 @@ public class Compendium : MonoBehaviour
     public ScrollRect ContentScrollRect;
     public GameObject TopBar;
     public GameObject SideBar;
-    public GameObject ViewPort, TierList;
+    public GameObject ViewPort, ContentTierList;
     public bool TierListActive = false;
     public VerticalLayoutGroup TierListLayoutGroup;
     public TierList TierListCat => TierListLayoutGroup.GetComponent<TierList>();
@@ -261,7 +279,7 @@ public class Compendium : MonoBehaviour
         LerpSnap(SideBar.transform, newSideBarPosition);
         LerpSnap(OpenButton.gameObject.transform, newOpenButtonPosition);
         LerpSnap(ViewPort.transform, targetViewport);
-        LerpSnap(TierList.transform, targetTierList);
+        LerpSnap(ContentTierList.transform, targetTierList);
         RectTransform r = ViewPort.GetComponent<RectTransform>();
         r.sizeDelta = Vector2.Lerp(r.sizeDelta, new Vector2(0, TierListActive ? 200 : 0), 0.1f);
 

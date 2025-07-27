@@ -2,13 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class TierList : MonoBehaviour
 {
+    public Compendium Owner;
+    public static readonly Dictionary<int, bool> OnTierList = new();
+    private readonly List<CompendiumPowerUpElement> Powers = new();
     private readonly string TierNames = "SABCDF";
     public TierCategory[] Categories;
     private TierCategory SelectedCat;
     public Canvas MyCanvas;
+    public static bool PowerHasBeenPlaced(int i)
+    {
+        return OnTierList[i];
+    }
     public void Start()
     {
         InitializeCategories();
@@ -45,12 +53,47 @@ public class TierList : MonoBehaviour
             }
         }
     }
-    public void PlacePower(int i)
+    public void PlacePower(int i, bool preview = true)
     {
         if (SelectedCat == null)
             return;
-        CompendiumPowerUpElement CPUE = Instantiate(CompendiumPowerUpElement.Prefab, SelectedCat.Grid.transform, false).GetComponent<CompendiumPowerUpElement>();
-        CPUE.Style = 2;
-        CPUE.Init(i, MyCanvas);
+        CompendiumPowerUpElement cpue = Powers.Find(g => g.PowerID == i);
+        if (!OnTierList[i])
+        {
+            if (cpue == null)
+            {
+                cpue = Instantiate(CompendiumPowerUpElement.Prefab, SelectedCat.Grid.transform, false).GetComponent<CompendiumPowerUpElement>();
+                cpue.Style = 2;
+                cpue.Init(i, MyCanvas);
+                Powers.Add(cpue);
+            }
+            else
+            {
+                cpue.transform.SetParent(SelectedCat.Grid.transform);
+            }
+        }
+        if(preview && !OnTierList[i] && cpue != null)
+            cpue.GrayOut = true;
+        else
+        {
+            cpue.GrayOut = false;
+            ModifyOnTierList(i, true);
+        }
+    }
+    public void RemovePower(int i)
+    {
+        CompendiumPowerUpElement existingCPUE = Powers.Find(g => g.PowerID == i);
+        if (existingCPUE != null)
+        {
+            Powers.Remove(existingCPUE);
+            Destroy(existingCPUE.gameObject);
+            ModifyOnTierList(i, false);
+        }
+    }
+    public void ModifyOnTierList(int i, bool val)
+    {
+        OnTierList[i] = val;
+        Owner.SetVisibility();
+        Owner.Sort();
     }
 }

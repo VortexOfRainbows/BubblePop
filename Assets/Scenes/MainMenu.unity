@@ -2149,7 +2149,7 @@ MonoBehaviour:
   TopBar: {fileID: 2133538416}
   SideBar: {fileID: 1515259657}
   ViewPort: {fileID: 177081123}
-  TierList: {fileID: 614172721}
+  ContentTierList: {fileID: 614172721}
   TierListActive: 0
   TierListLayoutGroup: {fileID: 15193216}
 --- !u!224 &1182055240 stripped
@@ -8175,6 +8175,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5024856524399782131, guid: e33f9eea7eaee984493c391e1484d67a, type: 3}
+      propertyPath: Owner
+      value: 
+      objectReference: {fileID: 1179315249}
     - target: {fileID: 5024856524399782131, guid: e33f9eea7eaee984493c391e1484d67a, type: 3}
       propertyPath: MyCanvas
       value: 

@@ -9,6 +9,7 @@ public class CompendiumPowerUpElement : MonoBehaviour
     public int PowerID = 0;
     private bool Selected;
     public int Style = 0;
+    public bool GrayOut = false;
     public void Init(int i, Canvas canvas)
     {
         MyElem.SetPowerType(PowerID = i);
@@ -30,6 +31,7 @@ public class CompendiumPowerUpElement : MonoBehaviour
     {
         if (PowerID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
+        MyElem.GrayOut = GrayOut;
         MyElem.OnUpdate();
         if(!MyElem.PreventHovering)
         {

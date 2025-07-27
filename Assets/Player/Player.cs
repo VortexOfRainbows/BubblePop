@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.XR;
 public static class Control
 {
-    public static bool Ability { get; set; } = false;
-    public static bool LastAbility { get; set; } = false;
+    public static bool Ability => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.Space);
+    public static bool LastAbility = false;
     public static bool Up => Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
     public static bool Down => Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
     public static bool Left => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
@@ -11,6 +11,8 @@ public static class Control
     public static bool Tab => Input.GetKey(KeyCode.Tab);
     public static bool LeftMouseHold => Input.GetMouseButton(0);
     public static bool LeftMouseClick => Input.GetMouseButtonDown(0);
+    public static bool RightMouseHold => Input.GetMouseButton(1);
+    public static bool RightMouseClick => Input.GetMouseButtonDown(1);
 }
 public partial class Player : Entity
 {
@@ -114,6 +116,7 @@ public partial class Player : Entity
             }
         }
         rb.velocity = velocity;
+        Control.LastAbility = Control.Ability;
         Body.AliveUpdate();
         Animator.PostUpdate();
     }

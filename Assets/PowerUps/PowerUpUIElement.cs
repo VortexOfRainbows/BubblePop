@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class PowerUpUIElement : MonoBehaviour
 {
+    public static readonly Color DefaultBubbleColor = new(1, 1, 1, 0.627451f);
+    public static readonly Color GrayBubbleColor = new(.4f, .4f, .4f, 0.627451f);
+    public static readonly Color GrayColor = new(.4f, .4f, .4f, 0.8f);
     public void SetPowerType(int PowerID)
     {
         if (PickerElement)
@@ -34,6 +37,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool CompendiumElement = false;
     private float Timer;
     public PowerUpLayout myLayout;
+    public bool GrayOut { get; set; }
     public bool PickerElement
     {
         get => !InventoryElement;
@@ -114,10 +118,19 @@ public class PowerUpUIElement : MonoBehaviour
         else
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);
 
-        if(AppearLocked)
-            inner.color = adornment.color = Color.black;
-        else if(MenuElement)
-            inner.color = adornment.color = Color.white;
+        if(GrayOut && !AppearLocked)
+        {
+            inner.color = adornment.color = GrayColor;
+            outer.color = GrayBubbleColor;
+        }
+        else
+        {
+            if (AppearLocked)
+                inner.color = adornment.color = Color.black;
+            else if (MenuElement)
+                inner.color = adornment.color = Color.white;
+            outer.color = DefaultBubbleColor;
+        }
     }
     public void Update()
     {
