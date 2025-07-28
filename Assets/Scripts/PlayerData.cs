@@ -115,7 +115,7 @@ public static class PlayerData
     {
         string CSV = GetString("TierList");
         Debug.Log(CSV);
-        if (CSV.Length <= 0 || TierList.Powers.Count > 0)
+        if (CSV.Length <= 0)
             return;
         TierList.ReadingFromSave = true;
         string[] words = CSV.Split(',', ':');

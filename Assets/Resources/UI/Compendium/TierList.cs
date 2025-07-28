@@ -130,7 +130,7 @@ public class TierList : MonoBehaviour
         {
             List<float> RoundedMousePos = UniqueYValues(childs, currentPosY);
             mousePos.y = ConvertToClosestYValue(mousePos.y, RoundedMousePos);
-            float offset = 2.95f; // 100f / 2f / 17.4f; //for some reason the mouse and transform values do not match (this roughly gets the center of the rect transform) = width / 2 / camera viewport size
+            float offset = Camera.main.transform.position.x;
             float scalerX = 1.6f;// offset / 1.9f; //Divide offset by almost two to get roughly half the size needed
             float scalerY = 1.75f; //Scaller is different for Y based on resolution
             int closest = int.MaxValue;
@@ -248,7 +248,7 @@ public class TierList : MonoBehaviour
             if (!prevVal && val) //Place power
             {
                 CompendiumPowerUpElement nextElem = Owner.NextSlot();
-                if (nextElem != null && !nextElem.GrayOut)
+                if (nextElem != null && !nextElem.GrayOut && Compendium.AutoNextTierList)
                 {
                     Owner.UpdateSelectedType(nextElem.PowerID);
                 }

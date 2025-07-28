@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Compendium : MonoBehaviour
 {
+    public static bool AutoNextTierList { get; set; } = false;
     private const int ArbitrarySort = 0;
     private const int RaritySort = 1;
     private const int FavSort = 2;
@@ -49,7 +50,7 @@ public class Compendium : MonoBehaviour
     private Vector3 StartingPosition;
     public int SortMode = 0;
     public static bool ShowOnlyUnlocked, ShowCounts;
-    public Button SortButton, UnlockButton, CountButton, TierListButton, OpenButton;
+    public Button SortButton, UnlockButton, CountButton, TierListButton, OpenButton, AutoButton;
     public TextMeshProUGUI SortText;
     public TextMeshProUGUI TierListText;
     public GameObject[] Stars;
@@ -70,7 +71,7 @@ public class Compendium : MonoBehaviour
         {
             PlayerData.LoadTierList(TierList);
         }
-        UpdateSelectedType(-3);
+        UpdateSelectedType(-4);
         TierListActive = !TierListActive;
         TierListText.text = TierListActive ? "Save Tier List" : "Make Tier List";
         SetVisibility();
@@ -103,11 +104,35 @@ public class Compendium : MonoBehaviour
         ShowCounts = !ShowCounts;
         CountButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
     }
+    public void ToggleAuto()
+    {
+        AutoNextTierList = !AutoNextTierList;
+        AutoButton.targetGraphic.color = AutoNextTierList ? Color.yellow : Color.white;
+    }
+    public void CancelTierListChanges()
+    {
+        PlayerData.LoadTierList(TierList);
+        UpdateSelectedType(-3);
+        SetVisibility();
+        Sort();
+    }
+    public void ClearTierList()
+    {
+        TierList.ReadingFromSave = true;
+        for(int i = TierList.Powers.Count - 1; i >= 0; --i)
+        {
+            TierList.RemovePower(TierList.Powers[i].PowerID, false);
+        }
+        TierList.ReadingFromSave = false;
+        UpdateSelectedType(-3);
+        SetVisibility();
+        Sort();
+    }
     public void Start()
     {
         //Instance = this;
         SelectedType = 0;
-        ShowOnlyUnlocked = ShowCounts = TierListActive = MouseInCompendiumArea = false;
+        ShowOnlyUnlocked = ShowCounts = TierListActive = MouseInCompendiumArea = AutoNextTierList = false;
         StartingPosition = transform.position;
     }
     public void ToggleActive()
@@ -363,7 +388,7 @@ public class Compendium : MonoBehaviour
         HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
         if(TierListActive)
         {
-            Vector3 targetPosition = Utils.MouseWorld + new Vector2(-1, 1);
+            Vector3 targetPosition = Utils.MouseWorld + new Vector2(2, 1);
             Rect boundingRect = r.rect;
             HoverCPUE.gameObject.transform.position = HoverCPUE.gameObject.transform.position.Lerp(targetPosition, 0.1f);
             Vector3 pos = Utils.ClampToRect(HoverCPUE.gameObject.transform.localPosition, boundingRect, 66);

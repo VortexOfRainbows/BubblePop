@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74d81d08802d6a640809431426ddd334, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CaptureSystem: {fileID: 0}
   Owner: {fileID: 0}
   Categories:
   - {fileID: 4321217329390274933}
