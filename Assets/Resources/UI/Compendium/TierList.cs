@@ -74,6 +74,35 @@ public class TierList : MonoBehaviour
             cpue.MyElem.PreventHovering = canHover;
         }
     }
+    public List<float> UniqueYValues(List<CompendiumPowerUpElement> childs, float bonus)
+    {
+        List<float> unique = new();
+        foreach(CompendiumPowerUpElement cpue in childs)
+        {
+            if (!unique.Contains(cpue.rectTransform.position.y))
+            {
+                unique.Add(cpue.rectTransform.position.y);
+            }
+        }
+        if(!unique.Contains(bonus))
+            unique.Add(bonus);
+        return unique;
+    }
+    public float ConvertToClosestYValue(float y, List<float> uniqueYVals)
+    {
+        float dist = float.MaxValue;
+        int best = 0;
+        for(int i = 0; i < uniqueYVals.Count; ++i)
+        {
+            float compete = MathF.Abs(y - uniqueYVals[i]);
+            if(compete < dist)
+            {
+                dist = compete;
+                best = i;
+            }
+        }
+        return uniqueYVals[best];
+    }
     public void InsertIntoTransform(Transform parentGrid, CompendiumPowerUpElement newestCPU, int position = -1)
     {
         float currentPosX = newestCPU.rectTransform.position.x;
@@ -90,18 +119,20 @@ public class TierList : MonoBehaviour
         Vector2 mousePos = autoSelectPosition ? Utils.MouseWorld : Vector2.zero;
         if(autoSelectPosition)
         {
+            List<float> RoundedMousePos = UniqueYValues(childs, currentPosY);
+            mousePos.y = ConvertToClosestYValue(mousePos.y, RoundedMousePos);
             float offset = 2.95f; // 100f / 2f / 17.4f; //for some reason the mouse and transform values do not match (this roughly gets the center of the rect transform) = width / 2 / camera viewport size
-            float scalerX = 1.5f;// offset / 1.9f; //Divide offset by almost two to get roughly half the size needed
-            float scalerY = scalerX; //Scaller is different for Y based on resolution
+            float scalerX = 1.6f;// offset / 1.9f; //Divide offset by almost two to get roughly half the size needed
+            float scalerY = 1.75f; //Scaller is different for Y based on resolution
             int closest = int.MaxValue;
             float best = float.MaxValue;
             for (int i = 0; i < c; ++i)
             {
                 CompendiumPowerUpElement CPUE = childs[i];
-                Vector2 pos = new(CPUE.rectTransform.position.x + offset, CPUE.rectTransform.position.y);
+                Vector2 pos = new(CPUE.rectTransform.position.x + offset, CPUE.rectTransform.position.y + 0.025f);
                 //Debug.Log($"{pos}, {mousePos}");
-                float d = pos.Distance(mousePos);
-                float dY = Mathf.Abs(mousePos.y - pos.y);
+                float d = pos.Distance(mousePos, 1, 100f);
+                float dY = Mathf.Abs(pos.y - mousePos.y);
                 float dY2 = Mathf.Abs(currentPosY - pos.y);
                 float dY3 = Mathf.Abs(currentPosY - mousePos.y);
                 bool selectorIsNearMouse = dY < scalerY;
@@ -115,7 +146,8 @@ public class TierList : MonoBehaviour
                     best = d;
                     closest = i;
                     float positionToConsider = mouseSameLevelAsPreviewVisual ? currentPosX : mousePos.x;
-                    bool right = pos.x < positionToConsider;
+                    bool selectorIsAbove = currentPosY > pos.y && !sameLevelAsPreviewVisual; //If the selector is above, that is the same as it being to the left
+                    bool right = pos.x < positionToConsider && !selectorIsAbove;
                     if(right) //If i am to the right of you, I want to check for your right side
                     {
                         if (pos.x + scalerX < mousePos.x)
@@ -123,7 +155,7 @@ public class TierList : MonoBehaviour
                     }
                     else //If i am to the left of you, I want to check for your left side
                     {
-                        if (pos.x - scalerX < mousePos.x && mouseSameLevelAsPreviewVisual)
+                        if (pos.x - scalerX < mousePos.x && (mouseSameLevelAsPreviewVisual || selectorIsAbove))
                             closest++;
                     }
                 }
