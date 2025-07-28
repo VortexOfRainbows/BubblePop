@@ -53,7 +53,8 @@ public class Compendium : MonoBehaviour
     public TextMeshProUGUI SortText;
     public TextMeshProUGUI TierListText;
     public GameObject[] Stars;
-    public bool HoldingAPower { get => SelectedType >= 0; } // set => SelectedType = value ? SelectedType : -3; }
+    public static bool HoldingAPower { get => SelectedType >= 0; } // set => SelectedType = value ? SelectedType : -3; }
+    public static bool HoldingALockedPower { get => HoldingAPower && PowerUp.Get(SelectedType).PickedUpCountAllRuns <= 0; }
     public void ToggleSort()
     {
         SortMode = (SortMode + 1) % 3;
@@ -61,6 +62,15 @@ public class Compendium : MonoBehaviour
     }
     public void ToggleTierList()
     {
+        if (TierListActive) //Save
+        {
+            PlayerData.SaveTierList(TierList);
+        }
+        else //Load
+        {
+            PlayerData.LoadTierList(TierList);
+        }
+        UpdateSelectedType(-3);
         TierListActive = !TierListActive;
         TierListText.text = TierListActive ? "Save Tier List" : "Make Tier List";
         SetVisibility();
@@ -96,6 +106,8 @@ public class Compendium : MonoBehaviour
     public void Start()
     {
         //Instance = this;
+        SelectedType = 0;
+        ShowOnlyUnlocked = ShowCounts = TierListActive = MouseInCompendiumArea = false;
         StartingPosition = transform.position;
     }
     public void ToggleActive()
@@ -115,8 +127,8 @@ public class Compendium : MonoBehaviour
             TierList.OnTierList[i] = false;
         }
         UpdateContentSize();
-        ShowCounts = false;
-        ToggleCount(); //On by default
+        ShowCounts = true;
+        ToggleCount(); //OFF by default
         SortMode = ArbitrarySort;
         ToggleSort(); //default sort is rare
 
@@ -222,11 +234,10 @@ public class Compendium : MonoBehaviour
         {
             childs.Sort(CompareFav);
         }
-        ContentLayout.transform.DetachChildren();
         for (int i = 0; i < c; ++i)
         {
             CompendiumPowerUpElement CPUE = childs[i];
-            CPUE.transform.SetParent(ContentLayout.transform);
+            CPUE.transform.SetSiblingIndex(i);
         }
     }
     public void Update()

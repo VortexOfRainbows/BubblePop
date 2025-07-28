@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 using UnityEngine.Experimental.AI;
 
@@ -70,5 +72,69 @@ public static class PlayerData
     public static bool GetBool(string tag, bool defaultValue = false)
     {
         return PlayerPrefs.GetInt(tag, defaultValue ? 1 : 0) == 1;
+    }
+    public static void SaveString(string tag, string value)
+    {
+        PlayerPrefs.SetString(tag, value);
+    }
+    public static string GetString(string tag)
+    {
+        return PlayerPrefs.GetString(tag, string.Empty);
+    }
+    public static void SaveTierList(TierList list)
+    {
+        string CSV = "";
+        for(int i = 0; i < list.Categories.Length; ++i)
+        {
+            char tier = TierList.TierNames[i];
+            CSV += tier;
+            CSV += ":";
+            TierCategory cat = list.Categories[i];
+            List<CompendiumPowerUpElement> l = Compendium.GetCPUEChildren(cat.Grid.transform, out int c);
+            for(int j = 0; j < l.Count; ++j)
+            {
+                CompendiumPowerUpElement cpue = l[j];
+                if(cpue != null)
+                {
+                    CSV += cpue.PowerID;
+                    CSV += ",";
+                }
+            }
+        }
+        //Output should look something like this:
+        /*
+         *S:1,2,3,4,5,
+         *A:6,7,8,9,10,
+         *B:11,12,13,14,15,
+         *etc.
+         */
+        Debug.Log(CSV);
+        SaveString("TierList", CSV);
+    }
+    public static void LoadTierList(TierList list)
+    {
+        string CSV = GetString("TierList");
+        Debug.Log(CSV);
+        if (CSV.Length <= 0 || TierList.Powers.Count > 0)
+            return;
+        TierList.ReadingFromSave = true;
+        string[] words = CSV.Split(',', ':');
+        int CurrentCategory = -1;
+        for(int i = 0; i < words.Length; ++i)
+        {
+            string word = words[i];
+            if(TierList.TierNames.Contains(word)) //SABCDE
+            {
+                ++CurrentCategory;
+            }
+            else //Nums
+            {
+                list.SetSelectedCategory(CurrentCategory);
+                int PowerID = int.Parse(word);
+                if(PowerID >= 0)
+                    list.PlacePower(PowerID, false);
+            }
+        }
+        TierList.ReadingFromSave = false;
     }
 }
