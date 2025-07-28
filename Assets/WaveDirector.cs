@@ -181,6 +181,7 @@ public static class WaveDirector
             return;
     }
     public static float PityPowersSpawned = 0;
+    public static float TotalPowersSpawned = 0;
     public static int MaxCards = 6;
     public static float Credits = 0, CreditsSpent = 0;
     public static float PlayRecoil;
@@ -198,7 +199,7 @@ public static class WaveDirector
         CreditsSpent = 0;
         Deck.Clear();
         Board.Clear();
-        PointsSpent = PointTimer = PityPowersSpawned = SoapTimer = DuckTimer = FlamingoTimer = MadLadTimer = bathBombTimer = 0;
+        PointsSpent = PointTimer = PityPowersSpawned = SoapTimer = DuckTimer = FlamingoTimer = MadLadTimer = bathBombTimer = TotalPowersSpawned = 0;
         RunOnce = true;
     }
     public static void FixedUpdate()

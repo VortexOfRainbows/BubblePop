@@ -246,7 +246,7 @@ public class StarProj : Projectile
             }
             if(Player.Instance.LuckyStar > 0)
             {
-                float chance = 0.04f + Player.Instance.LuckyStar * 0.02f;
+                float chance = 0.02f + Player.Instance.LuckyStar * 0.02f;
                 if(Utils.RandFloat(1) < chance)
                 {
                     PowerUp.Spawn(PowerUp.RandomFromPool(), (Vector2)target.transform.position, 0);
@@ -285,7 +285,7 @@ public class FlamingoFeather : Projectile
         if (timer < 300)
         {
             RB.velocity += RB.velocity.normalized * 0.003f;
-            RB.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.06f;
+            RB.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.03f;
         }
         if (timer > 510)
         {

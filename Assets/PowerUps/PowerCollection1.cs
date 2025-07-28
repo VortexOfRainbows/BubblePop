@@ -275,7 +275,7 @@ public class LuckyStar : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:2% G:(+2% per stack) Y:chance to Y:[drop powers]");
+        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:4% G:(+2% per stack) Y:chance to Y:[drop powers]");
         description.WithShortDescription("Enemies killed by stars have an additional chance to drop powers");
     }
     public override void HeldEffect(Player p)

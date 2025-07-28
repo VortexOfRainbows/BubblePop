@@ -58,7 +58,9 @@ public class EnemyDuck : Enemy
         bobbingTimer++;
         float bobSpeed = 80f;
         if (this is EnemyFlamingo)
+        {
             bobSpeed = 100f;
+        }
         float sin = Mathf.Sin(bobbingTimer * Mathf.PI / bobSpeed);
         Visual.transform.eulerAngles = new Vector3(0, 0, sin * 15);
     }

@@ -270,6 +270,7 @@ public abstract class PowerUp
         obj.Type = powerUpID;
         WaveDirector.PointsSpent += pointCost;
         WaveDirector.PityPowersSpawned += pointCost / 100f;
+        WaveDirector.TotalPowersSpawned += 1;
         return obj.gameObject;
     }
     public static PowerUp Get(string powerTypeName)
@@ -314,11 +315,11 @@ public abstract class PowerUp
     public int MyID = -1;
     #endregion
     public static bool PickingPowerUps = false;
-    public static int RandomFromPool(float bonusChoiceChance = 0.2f)
+    public static int RandomFromPool(float bonusChoiceChance = 0.15f)
     {
         return PickRandomPower(0, bonusChoiceChance);
     }
-    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.2f)
+    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f)
     {
         if (Utils.RandFloat() < addedChoiceChance)
         {

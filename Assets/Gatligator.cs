@@ -10,7 +10,7 @@ public class Gatligator : Enemy
     public float direction = 1;
     private float ShootTimer = 0;
     private float ShootSpeed = 0.5f;
-    public override float PowerDropChance => 0.2f;
+    public override float PowerDropChance => 0.1f;
     public override float CostMultiplier => 5;
     public override void Init()
     {

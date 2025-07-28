@@ -33,6 +33,13 @@ Done:
 	2. +Save and Load!
 	3. +More button functionality
 9. Fix issue where popup powerup description queue was not appearing
+10. Slightly nerf scaling director item drop cost (5 -> 10)
+11. Nerf Gatligator power drop chance .2 -> .1
+12. Flamingos now take 2.4 -> 3.0 seconds before the first shot, than now requires somewhere between 0.6 to 3.0 seconds -> 2.0 to 3.0 seconds to fire additional shots (overall nerf). Flamingo movement is not as random and is now weighted to travel towards the player. Flamingo feathers homing factor reduced by 50%.
+13. Chance for luck-based item drops is reduced slightly for every power up spawned (at 300 powers, reduced to 10% of its usual rate)
+	1. Does not effect lucky star, but spawns from Lucky Star and Shop are included in this decreasing multiplier
+14. Fix lucky star erroneous description + nerf (6% starting -> 4% starting)
+15. Reduce flat chance of Choice Powerup 20% -> 15% drop rate
 
 7/21/25 to 7/24/25
 1. Primitive enemy scaling factors (starts slow at 5% per wave, then 10%, then 5% plus 5% multiplicative, then 10% multiplicative

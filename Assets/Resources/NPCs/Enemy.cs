@@ -161,10 +161,11 @@ public class Enemy : Entity
             rand *= Utils.RandFloat();
         }
         CoinManager.SpawnCoin(transform.position, (int)(MinCoins + MaxCoins * rand));
-        bool LuckyDrop = Utils.RandFloat(1) < PowerDropChance;
+        float reduceRelativeDropRates = Mathf.Max(0.1f, Mathf.Min(1, 0.1f + (300 - WaveDirector.TotalPowersSpawned) / 300f)); //At 300 powers, this number is 0.1, meaning power drop rates will be reduced
+        bool LuckyDrop = Utils.RandFloat(1) < PowerDropChance * reduceRelativeDropRates;
         WaveDirector.Point += (int)MaxCoins;
         if (WaveDirector.CanSpawnPower() || LuckyDrop)
-            PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 5));
+            PowerUp.Spawn(PowerUp.RandomFromPool(0.15f), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 10));
         Destroy(gameObject);
     }
     public virtual void AI()

@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyFlamingo : EnemyDuck
 {
     private float projectileSpeed = 3f;
-    private int projectileTimer = 240;
+    private int projectileTimer = 300;
     public override void Init()
     {
         Life = 10;
@@ -21,7 +21,7 @@ public class EnemyFlamingo : EnemyDuck
         if (projectileTimer <= 0)
         {
             ShootProjectile();
-            projectileTimer = Random.Range(60, 300);
+            projectileTimer = Random.Range(200, 300);
         }
         else
         {
@@ -32,6 +32,10 @@ public class EnemyFlamingo : EnemyDuck
         Vector2 projectileDirection = (Player.Position - (Vector2)this.transform.position).normalized * projectileSpeed;
         Projectile.NewProjectile<FlamingoFeather>(this.transform.position, projectileDirection.RotatedBy(Mathf.Deg2Rad * Utils.RandFloat(-15, 15)));
         AudioManager.PlaySound(SoundID.FlamingoShot.GetVariation(0), transform.position, 0.05f, 1.2f);
+    }
+    protected override Vector2 FindLocation()
+    {
+        return (Vector2)transform.position + new Vector2(Random.Range(-30f, 30f), Random.Range(-30f, 30f)) + (Player.Position - (Vector2)transform.position) * 0.2f;
     }
     public override void OnKill()
     {
