@@ -55,6 +55,7 @@ public partial class Player : Entity
 
     public int BubbleTrail = 0;
     public int Coalescence = 0;
+    public int OldCoalescence = 0;
     public int LuckyStar = 0;
 
     public int TrailOfThoughts = 0, Magnet = 0, LightSpear = 0, LightChainReact = 0, BrainBlast = 0, SnakeEyes = 0, Refraction = 0;
@@ -85,7 +86,7 @@ public partial class Player : Entity
     }
     private void ClearPowerBonuses()
     {
-        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = Coalescence = Magnet = LightSpear = 0;
+        ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = OldCoalescence = Magnet = LightSpear = 0;
         AttackSpeedModifier = AbilityRecoverySpeed = AbilityRecoverySpeedMult = MoveSpeedMod = ImmunityFrameMultiplier = ShieldImmunityFrameMultiplier = 1.0f;
         LuckyStar = TrailOfThoughts = LightChainReact = BrainBlast = SnakeEyes = Refraction = 0;
         PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = PassiveAttackSpeedModifier = 0;
@@ -94,7 +95,7 @@ public partial class Player : Entity
         ChipStacks = 2;
         TotalMaxShield = MaxShield;
         TotalMaxLife = MaxLife;
-        BubbleShields = 0;
+        BubbleShields = Coalescence = 0;
         RollDex = RollInit = RollChar = RollPerc = 0;
     }
     private void UpdatePowerUps()

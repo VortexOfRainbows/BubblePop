@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
+    public static int GameUpdateCount = 0;
     public const float SnakeEyeChance = 0.0278f;
     public static bool DebugCheats = false;
     public static bool PlayerNearPylon => PrevPylon != null;
@@ -13,9 +14,11 @@ public class Main : MonoBehaviour
     public GameObject PowerupCheatCanvas;
     public void FixedUpdate()
     {
+        GameUpdateCount++;
+        Projectile.StaticUpdate(); 
         PrevPylon = CurrentPylon;
         CurrentPylon = null;
-        if (DebugCheats && Input.GetKey(KeyCode.O))
+        if (DebugCheats && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.RightShift))
         {
             PlayerData.ResetAll();
         }
@@ -67,7 +70,7 @@ public class Main : MonoBehaviour
         Instance = this;
     }
     public static Main Instance;
-    public static GameObject Projectile => Instance.DefaultProjectile;
+    public static GameObject ProjPrefab => Instance.DefaultProjectile;
     public GameObject DefaultProjectile;
     public static Sprite SpikyProjectileSprite => Instance.SpikyProj;
     public Sprite SpikyProj;

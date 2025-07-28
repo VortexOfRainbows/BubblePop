@@ -201,7 +201,7 @@ public class EternalBubbles : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Increases lifespan of small bubbles by Y:[0.8 seconds] G:(+0.4 seconds per stack)");
+        description.WithDescription("Increases lifespan of Y:[small bubbles] by Y:[0.8 seconds] G:(+0.4 seconds per stack)");
         description.WithShortDescription("Increases lifespan of small bubbles");
     }
     public override Sprite GetAdornment()
@@ -253,18 +253,17 @@ public class Coalescence : PowerUp
 {
     public override void Init()
     {
-        Weighting = Rare;
+        Weighting = Legendary;
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Your Y:[secondary attack] may be charged Y:1 additional times " +
-            "\nIncreases Y:[secondary attack speed] by Y:5% G:(+5% per stack)");
-        description.WithShortDescription("Your secondary attack may be charged an additional time");
+        description.WithDescription("Y:[Small bubbles] may fuse with up to Y:1 G:(+1 per stack) other nearby Y:[small bubbles,] gaining Y:[+1 damage] and Y:[+1 pierce] each fusion");
+        description.WithShortDescription("Small bubbles may fuse with nearby bubbles for bonus damage and pierce");
     }
     public override void HeldEffect(Player p)
     {
         p.Coalescence += Stack;
-        p.SecondaryAttackSpeedModifier += 0.05f * Stack;
+        //p.SecondaryAttackSpeedModifier += 0.05f * Stack;
     }
 }
 public class LuckyStar : PowerUp

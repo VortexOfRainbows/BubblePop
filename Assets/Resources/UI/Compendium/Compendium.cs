@@ -111,6 +111,7 @@ public class Compendium : MonoBehaviour
     }
     public void CancelTierListChanges()
     {
+        ClearTierList();
         PlayerData.LoadTierList(TierList);
         UpdateSelectedType(-3);
         SetVisibility();
@@ -263,6 +264,7 @@ public class Compendium : MonoBehaviour
         {
             CompendiumPowerUpElement CPUE = childs[i];
             CPUE.transform.SetSiblingIndex(i);
+            CPUE.transform.localPosition = new Vector3(CPUE.transform.localPosition.x, CPUE.transform.localPosition.y, 0);
         }
     }
     public void Update()

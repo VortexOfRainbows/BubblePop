@@ -15,7 +15,8 @@ Need to do:
 4. More descriptive pause and select screen
 5. Fix resolution scaling issues across the board, such as with the compendium and tier list
 	1. Power display issue may be referencing the incorrect resolution values
-6. Coalescence and Bubble Staff rework
+6. Rework Snake Eyes
+7. Integrate Settings and compendium into the default pause stuff
 
 Done: 
 
@@ -40,6 +41,8 @@ Done:
 	1. Does not effect lucky star, but spawns from Lucky Star and Shop are included in this decreasing multiplier
 14. Fix lucky star erroneous description + nerf (6% starting -> 4% starting)
 15. Reduce flat chance of Choice Powerup 20% -> 15% drop rate
+16. Rework Coalescence into a considerably better powerup
+	1. Not only is it incredibly powerful with great synergy, now it also reduced lag of certain end-game builds
 
 7/21/25 to 7/24/25
 1. Primitive enemy scaling factors (starts slow at 5% per wave, then 10%, then 5% plus 5% multiplicative, then 10% multiplicative

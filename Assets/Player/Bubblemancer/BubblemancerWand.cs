@@ -128,7 +128,7 @@ public class BubblemancerWand : Weapon
         {
             if ((Input.GetMouseButton(1) || AttackRight < 100) && AttackRight >= 50)
             {
-                int maxCharge = 250 + 100 * player.Coalescence;
+                int maxCharge = 250 + 100 * player.OldCoalescence;
                 if (AttackRight == 50)
                 {
                     AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.5f);

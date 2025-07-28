@@ -1,9 +1,23 @@
-using System;
-using UnityEditor;
+using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public static void StaticUpdate()
+    {
+        if(Main.GameUpdateCount % 2 == 0 && Player.Instance != null)
+        {
+            float absorptionMaxTime = Player.Instance.Coalescence + 19;
+            for (int i = RecentlySpawnedSmallBubbles.Count - 1; i >= 0; --i)
+            {
+                SmallBubble otherBubbles = RecentlySpawnedSmallBubbles[i];
+                if (otherBubbles == null || otherBubbles.timer2 > absorptionMaxTime )
+                    RecentlySpawnedSmallBubbles.RemoveAt(i);
+            }
+        }
+    }
+    public static List<SmallBubble> RecentlySpawnedSmallBubbles = new();
     public ProjComponents cmp;
     public SpriteRenderer SpriteRendererGlow => cmp.spriteRendererGlow;
     public SpriteRenderer SpriteRenderer => cmp.spriteRenderer;
@@ -27,11 +41,45 @@ public class Projectile : MonoBehaviour
     public Vector2 startPos = Vector2.zero;
     public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, params float[] data) where T : Projectile
     {
-        GameObject Proj = Instantiate(Main.Projectile, pos, Quaternion.identity);
+        bool hasMerged = true;
+        if(Player.Instance.Coalescence > 0 && typeof(T) == typeof(SmallBubble))
+        {
+            hasMerged = false;
+            for(int i = RecentlySpawnedSmallBubbles.Count - 1; i >= 0; --i)
+            {
+                SmallBubble otherBubbles = RecentlySpawnedSmallBubbles[i];
+                if (otherBubbles == null)
+                {
+                    RecentlySpawnedSmallBubbles.RemoveAt(i);
+                    continue;
+                }
+                float absorbRange = 0.5f + otherBubbles.transform.localScale.x;
+                float distToOtherBubble = otherBubbles.transform.position.Distance(pos + velo * Time.fixedDeltaTime);
+                //Debug.Log(distToOtherBubble);
+                if (distToOtherBubble < absorbRange)
+                {
+                    otherBubbles.Damage += 1;
+                    otherBubbles.Penetrate += 1;
+                    otherBubbles.Data1 += 1;
+                    float startingSpeed = otherBubbles.RB.velocity.magnitude;
+                    otherBubbles.RB.velocity = Vector2.Lerp(otherBubbles.RB.velocity * 1.5f, velo, 3f / (otherBubbles.Data1 + 3f)).normalized * startingSpeed;
+                    if(otherBubbles.Data1 >= Player.Instance.Coalescence)
+                        RecentlySpawnedSmallBubbles.RemoveAt(i);
+                    return null;
+                }
+            }
+        }
+        GameObject Proj = Instantiate(Main.ProjPrefab, pos, Quaternion.identity);
         Projectile proj = Proj.AddComponent<T>();
         proj.cmp = Proj.GetComponent<ProjComponents>();
         proj.RB.velocity = velo;
-        proj.Data = data;
+        if(!hasMerged)
+        {
+            proj.Data = new float[] { 0 };
+            RecentlySpawnedSmallBubbles.Add(proj as SmallBubble);
+        }
+        else
+            proj.Data = data;
         proj.Init();
         return Proj;
     }

@@ -16,6 +16,7 @@ public class Bubblemancer : Body
         powerPool.Add<BubbleTrail>();
         powerPool.Add<Overclock>();
         powerPool.Add<BubbleMitosis>();
+        powerPool.Add<Coalescence>();
     }
     protected override string Description()
     {

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SmallBubble : Projectile
@@ -9,20 +11,34 @@ public class SmallBubble : Projectile
         SpriteRenderer.color = c;
         SpriteRenderer.sprite = Main.BubbleSmall;
         timer += Utils.RandInt(41);
+        timer2 = 0;
+        if(Data.Length > 0)
+            Data1 = 0;
         transform.localScale *= 0.3f;
         Damage = 1;
-        Friendly = true;
+        Penetrate = 1;
+        Friendly = false;
         SpriteRendererGlow.gameObject.SetActive(false);
     }
     public override void AI()
     {
-        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 0.66f, 0.085f);
-
+        if (++timer2 > 3)
+            Friendly = true;
         Vector2 velo = RB.velocity;
         velo *= 1 - 0.008f / (2 + Player.Instance.FasterBulletSpeed) - timer / 5000f;
         velo.y += 0.005f;
         RB.velocity = velo;
-        RB.rotation += Mathf.Sqrt(RB.velocity.magnitude) * Mathf.Sign(RB.velocity.x);
+        float speed = RB.velocity.magnitude;
+        float rtSpeed = Mathf.Sqrt(speed);
+        RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x);
+        float targetScale = 0.66f;
+        if(Data.Length > 0)
+        {
+            float rtData1 = 0.1f * Data1 + Mathf.Sqrt(Data1);
+            rtSpeed += rtData1;
+            targetScale += rtData1 * 0.4f;
+        }
+        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
 
         float deathTime = 180;
         if (Player.Instance.EternalBubbles > 0)
@@ -54,10 +70,11 @@ public class SmallBubble : Projectile
     }
     public override void OnKill()
     {
-        for (int i = 0; i < 3; i++)
+        int c = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
+        for (int i = 0; i < c; i++)
         {
             Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-            ParticleManager.NewParticle((Vector2)transform.position, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
+            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
         }
         AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
     }
@@ -106,7 +123,7 @@ public class BigBubble : Projectile
         Vector2 toMouse = Utils.MouseWorld - Player.Position;
         if (attackRight >= 50 && timer <= 0)
         {
-            int maximumTarget = Player.Instance.Coalescence + 2;
+            int maximumTarget = Player.Instance.OldCoalescence + 2;
             float maximumSize = 0.8f + maximumTarget * .3f;
 
             int target = (int)(attackRight - 50) / 100;
