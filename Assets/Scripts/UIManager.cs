@@ -55,8 +55,8 @@ public class UIManager : MonoBehaviour
         deadHighscoreText.text = scoreText.text;
 
         if(Main.WavesUnleashed)
-            enemyScaleText.text = $"ES: {WaveDirector.EnemyScalingFactor:#.#}";
-        enemyScaleText.enabled = Main.WavesUnleashed;
+            enemyScaleText.text = $"{WaveDirector.EnemyScalingFactor:#.#}";
+        enemyScaleText.gameObject.SetActive(Main.WavesUnleashed);
 
         int money = CoinManager.Current; // : CoinManager.Savings;
         moneyText.text = $"${money}";
