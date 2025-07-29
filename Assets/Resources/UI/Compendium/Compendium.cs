@@ -292,6 +292,7 @@ public class Compendium : MonoBehaviour
     public void FixedUpdate()
     {
         Vector2 startingPosition = new Vector3(-screenResolution, 0);
+        UpdateSizing();
         if (Active)
         {
             if (!HasInit)
@@ -360,6 +361,18 @@ public class Compendium : MonoBehaviour
         return target.localPosition;
     }
     private bool hasSnappedTierList = false;
+    public void UpdateSizing()
+    {
+        float currentSize = ContentLayout.GetComponent<RectTransform>().rect.width;
+        currentSize -= 22; //Padding
+        float spacing = 31;
+        float spaceForPowers = 160;
+        float bonusSize = currentSize - spaceForPowers; //Spacing is not utilized on the first powerup of the layout
+        spaceForPowers += spacing;
+        bonusSize %= spaceForPowers;
+        int halfBonus = (int)(bonusSize / 2f);
+        ContentLayout.padding = new RectOffset(11 + halfBonus, 11 + halfBonus, 10, 10);
+    }
     public void TierListUpdate()
     {
         UpdateContentSize();
