@@ -58,8 +58,8 @@ public partial class Player : Entity
     public int OldCoalescence = 0;
     public int LuckyStar = 0;
 
-    public int TrailOfThoughts = 0, Magnet = 0, LightSpear = 0, LightChainReact = 0, BrainBlast = 0, SnakeEyes = 0, Refraction = 0;
-    public int RollDex = 0, RollInit = 0, RollChar = 0, RollPerc = 0;
+    public int TrailOfThoughts = 0, Magnet = 0, LightSpear = 0, LightChainReact = 0, BrainBlast = 0, RecursiveSubspaceLightning = 0, Refraction = 0;
+    public int RollDex = 0, RollInit = 0, RollChar = 0, RollPerc = 0, SnakeEyes = 0;
     public float TrailOfThoughtsRecoverySpeed => AbilityRecoverySpeed;
     public float AbilityRecoverySpeed = 1.0f, AbilityRecoverySpeedMult = 1.0f, MoveSpeedMod = 1.0f;
     public float BlueChipChance = 0.0f;
@@ -88,7 +88,7 @@ public partial class Player : Entity
     {
         ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = OldCoalescence = Magnet = LightSpear = 0;
         AttackSpeedModifier = AbilityRecoverySpeed = AbilityRecoverySpeedMult = MoveSpeedMod = ImmunityFrameMultiplier = ShieldImmunityFrameMultiplier = 1.0f;
-        LuckyStar = TrailOfThoughts = LightChainReact = BrainBlast = SnakeEyes = Refraction = 0;
+        LuckyStar = TrailOfThoughts = LightChainReact = BrainBlast = RecursiveSubspaceLightning = Refraction = 0;
         PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = PassiveAttackSpeedModifier = 0;
         BlueChipChance = HomingRange = 0.0f;
         ChipHeight = 5;
@@ -96,7 +96,7 @@ public partial class Player : Entity
         TotalMaxShield = MaxShield;
         TotalMaxLife = MaxLife;
         BubbleShields = Coalescence = 0;
-        RollDex = RollInit = RollChar = RollPerc = 0;
+        RollDex = RollInit = RollChar = RollPerc = SnakeEyes = 0;
     }
     private void UpdatePowerUps()
     {

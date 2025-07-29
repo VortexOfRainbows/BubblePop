@@ -38,15 +38,6 @@ public partial class Entity : MonoBehaviour
     {
 
     }
-    public void InjureNPC(int damage, bool specialColor = false)
-    {
-        Life -= damage;
-        DamageTaken += damage;
-        BoxCollider2D c2D = GetComponent<BoxCollider2D>();
-        Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
-        Color c = !specialColor ? new Color(1f, 0.5f, 0.4f) : new Color(1f, 0.9f, 0.3f);
-        PopupText.NewPopupText(randPos, Utils.RandCircle(3) + Vector2.up * 2, c, damage.ToString(), specialColor);
-    }
     public void HurtByNPC()
     {
         if (this is Player p && !p.IsDead && p.UniversalImmuneFrames <= 0)

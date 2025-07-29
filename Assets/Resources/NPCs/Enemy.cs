@@ -115,14 +115,14 @@ public class Enemy : Entity
                     if (initiative >= 81 || Utils.RandFloat(1) < 0.19f + initiative * 0.01f)
                     {
                         float minIncrease = 1.45f + 0.05f * initiative;
-                        float maxIncrease = 2.80f + 0.20f * initiative;
+                        float maxIncrease = 2.70f + 0.30f * initiative;
                         float increase = Utils.RandFloat(minIncrease, maxIncrease);
                         damage += (int)(damage * increase + 0.5f);
                         crit = true;
                     }
                 }
             }
-            InjureNPC(damage, crit);
+            Injure(damage, crit ? 1 : 0, crit ? new Color(1f, 0.9f, 0.3f) : default);
             proj.HitTarget(this);
             if (proj.Penetrate != -1)
             {
@@ -130,13 +130,29 @@ public class Enemy : Entity
                 if (proj.Penetrate <= 0)
                     proj.Kill();
             }
-            if (Life < 0)
-                Life = 0;
             if (piercingProjectile)
             {
                 SpecializedImmuneFrames.Add(new ImmunityData(proj, proj.immunityFrames));
             }
         }
+    }
+    public void Injure(int damage, int damageType = 0, Color popupTextColor = default)
+    {
+        Life -= damage;
+        DamageTaken += damage;
+        BoxCollider2D c2D = GetComponent<BoxCollider2D>();
+        Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
+        if (popupTextColor == default)
+            popupTextColor = new Color(1f, 0.5f, 0.4f);
+        Vector2 velo = Utils.RandCircle(3) + Vector2.up * 2;
+        if (damageType == 2)
+        {
+            velo.x *= 0.5f;
+            velo.y += 0.5f;
+        }
+        GameObject g = PopupText.NewPopupText(randPos, velo, popupTextColor, damage.ToString(), damageType == 1, damageType == 2 ? 0.8f : 1f);
+        if (Life < 0)
+            Life = 0;
         if (Life <= 0 && !AlreadyDead)
         {
             SetDead();

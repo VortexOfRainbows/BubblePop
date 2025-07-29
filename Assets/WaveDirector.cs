@@ -287,15 +287,20 @@ public static class WaveDirector
         CreditsSpent = 0;
         if(WaveNum > 10)
         {
-            if(WaveNum <= 20)
+            if(WaveNum <= 15)
                 EnemyScalingFactor += 0.1f;
-            else if(WaveNum <= 50)
+            else if(WaveNum <= 40)
             {
                 EnemyScalingFactor *= 1.05f;
                 EnemyScalingFactor += 0.05f;
             }
-            else
-                EnemyScalingFactor *= 1.1f;
+            else 
+            {
+                if (WaveNum <= 50)
+                    EnemyScalingFactor *= 1.1f;
+                else
+                    EnemyScalingFactor *= 1.15f;
+            }
         }
         else if(WaveNum > 5)
         {

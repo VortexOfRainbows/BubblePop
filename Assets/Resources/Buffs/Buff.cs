@@ -85,3 +85,24 @@ public class SpeedBoost : Buff
         }
     }
 }
+public class Poison : Buff
+{
+    public float dot = 0;
+    public override Color BackgroundColor()
+    {
+        return new Color(0.9f, 0.7f, 0.6f);
+    }
+    public override void Apply(Entity e)
+    {
+        if (e is Enemy enemy)
+        {
+            dot += Time.fixedDeltaTime;
+            while(dot >= 0.25f)
+            {
+                if(enemy.Life > 1)
+                    enemy.Injure(1, 2, new Color(0.8f, 0.27f, 0.9f));
+                dot -= 0.75f;
+            }
+        }
+    }
+}

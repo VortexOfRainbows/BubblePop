@@ -15,13 +15,19 @@ Need to do:
 4. More descriptive pause and select screen
 5. Fix resolution scaling issues across the board, such as with the compendium and tier list
 	1. Power display issue may be referencing the incorrect resolution values
-6. Rework Snake Eyes
-7. Integrate Settings and compendium into the default pause stuff
+6. Integrate Settings and compendium into the default pause stuff
+7. Overhaul damage system to support decimals
 
 Done: 
 
+7/28/25
+1. Roll for initiative has increased scaling
+2. Rework Snake Eyes to now apply poison (very OP)
+3. Change transform logic on SOAP, changing shadows a bit, but also allowing debuff icons
+4. Enemy scaling is faster after wave 15
+
 7/25/25 to 7/28/25
-1. Lowered size of Leonard 3 -> 2
+1. Lowered size of Leonard 3 -> 2.5
 2. Added Buff Icons!
 3. Make snake eyes not effected by homing
 4. WIP Compendium

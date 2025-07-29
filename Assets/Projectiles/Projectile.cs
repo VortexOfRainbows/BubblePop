@@ -123,9 +123,9 @@ public class Projectile : MonoBehaviour
     }
     public void HitTarget(Entity target)
     {
-        if(Player.Instance.SnakeEyes > 0)
+        if(Player.Instance.RecursiveSubspaceLightning > 0)
         {
-            int eyes = Player.Instance.SnakeEyes + 2;
+            int eyes = Player.Instance.RecursiveSubspaceLightning + 2;
             float recursiveDepth = 1;
             if (this is SnakeLightning)
             {
@@ -134,6 +134,18 @@ public class Projectile : MonoBehaviour
             float chanceOfSuccess = Main.SnakeEyeChance * (eyes - recursiveDepth);
             if(Utils.RandFloat() < chanceOfSuccess)
                 NewProjectile<SnakeLightning>(transform.position, (target.transform.position - transform.position).normalized * 2.5f, recursiveDepth);
+        }
+        if(Player.Instance.SnakeEyes > 0)
+        {
+            int poison = Player.Instance.SnakeEyes;
+            if (poison > 0)
+            {
+                if (poison >= 81 || Utils.RandFloat(1) < 0.19f + poison * 0.01f)
+                {
+                    float duration = 0.75f + 0.75f * poison;
+                    target.AddBuff<Poison>(duration);
+                }
+            }
         }
         OnHitTarget(target);
     }
