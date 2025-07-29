@@ -45,7 +45,7 @@ public class PowerUpLayout : MonoBehaviour
         int powerupSize = 130;
         int padding = 20;
         layout.padding = new RectOffset(padding, padding, padding, padding);
-        float resolution = Screen.width - padding * 2;
+        float resolution = layout.GetComponent<RectTransform>().rect.width - padding * 2;
         int amountFittable = (int)(resolution / powerupSize);
         int amountINeedToFit = (PowerUpElems.Count + rowCount - 1) / rowCount;
         if (amountINeedToFit < amountFittable)

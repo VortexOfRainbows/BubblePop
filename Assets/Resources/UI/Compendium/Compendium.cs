@@ -47,7 +47,6 @@ public class Compendium : MonoBehaviour
     public RectTransform ContentLayoutRect;
     private bool Active = false;
     private bool HasInit = false;
-    private Vector3 StartingPosition;
     public int SortMode = 0;
     public static bool ShowOnlyUnlocked, ShowCounts;
     public Button SortButton, UnlockButton, CountButton, TierListButton, OpenButton, AutoButton;
@@ -134,7 +133,6 @@ public class Compendium : MonoBehaviour
         //Instance = this;
         SelectedType = 0;
         ShowOnlyUnlocked = ShowCounts = TierListActive = MouseInCompendiumArea = AutoNextTierList = false;
-        StartingPosition = transform.position;
     }
     public void ToggleActive()
     {
@@ -248,7 +246,8 @@ public class Compendium : MonoBehaviour
     public void Sort()
     {
         List<CompendiumPowerUpElement> childs = GetCPUEChildren(out int c);
-        if(SortMode == ArbitrarySort)
+        ContentLayout.transform.DetachChildren();
+        if (SortMode == ArbitrarySort)
         {
             childs.Sort(CompareID);
         }
@@ -263,12 +262,16 @@ public class Compendium : MonoBehaviour
         for (int i = 0; i < c; ++i)
         {
             CompendiumPowerUpElement CPUE = childs[i];
-            CPUE.transform.SetSiblingIndex(i);
+            CPUE.transform.SetParent(ContentLayout.transform);
             CPUE.transform.localPosition = new Vector3(CPUE.transform.localPosition.x, CPUE.transform.localPosition.y, 0);
         }
     }
+    private static float screenResolution;
+    private static float halfResolution;
     public void Update()
     {
+        screenResolution = MyCanvas.GetComponent<RectTransform>().rect.width; //1920 in most cases
+        halfResolution = screenResolution / 2f;
         MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
         if (Control.RightMouseClick)
         {
@@ -288,6 +291,7 @@ public class Compendium : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        Vector2 startingPosition = new Vector3(-screenResolution, 0);
         if (Active)
         {
             if (!HasInit)
@@ -303,8 +307,8 @@ public class Compendium : MonoBehaviour
         else
         {
             if (transform.position.x < -1919.9f)
-                transform.position = StartingPosition;
-            else transform.position = transform.position.Lerp(StartingPosition, 0.1f);
+                transform.localPosition = startingPosition;
+            else transform.localPosition = transform.localPosition.Lerp(startingPosition, 0.1f);
         }
         TierListUpdate();
     }
@@ -361,9 +365,9 @@ public class Compendium : MonoBehaviour
         UpdateContentSize();
         OpenButton.interactable = !TierListActive;
         Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, 540f) : new Vector2(0, 740f);
-        Vector2 newSideBarPosition = !TierListActive ? new Vector2(960f, 340f) : new Vector2(960f, 540f);
-        Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-934.5f, 515f) : new Vector2(-934.5f, 715f);
-        Vector2 targetViewport = !TierListActive ? new Vector2(-760f, 390f) : new Vector2(-760f, 590f);
+        Vector2 newSideBarPosition = !TierListActive ? new Vector2(halfResolution, 340f) : new Vector2(halfResolution, 540f);
+        Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-halfResolution + 25.5f, 515f) : new Vector2(-halfResolution + 25.5f, 715f);
+        Vector2 targetViewport = !TierListActive ? new Vector2(-halfResolution + 200, 390f) : new Vector2(-halfResolution + 200, 590f);
         Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);
 
         LerpSnap(TopBar.transform, newTopBarPositon);

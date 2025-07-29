@@ -16,13 +16,17 @@ Need to do:
 5. Integrate Settings and compendium into the default pause stuff
 6. Overhaul damage system to support decimals
 
-Urgent:
+Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
-	1. Power display issue may be referencing the incorrect resolution values
 
 Done: 
 
-7/28/25
+7/29/25
+1. Fix issue where powerup pool bar would scale strangely with screen size (now it should scale properly!)
+2. Small coalescence buffs
+3. Mostly fix UI scaling issues with compendium (should be good)
+
+7/28/25 to 7/29/25
 1. Roll for initiative has increased scaling
 2. Rework Snake Eyes to now apply poison (very OP)
 3. Change transform logic on SOAP, changing shadows a bit, but also allowing debuff icons

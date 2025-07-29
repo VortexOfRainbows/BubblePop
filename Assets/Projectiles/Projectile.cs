@@ -57,7 +57,7 @@ public class Projectile : MonoBehaviour
                 //Debug.Log(distToOtherBubble);
                 if (distToOtherBubble < absorbRange)
                 {
-                    otherBubbles.Damage += 1;
+                    otherBubbles.Damage += 2;
                     otherBubbles.Penetrate += 1;
                     otherBubbles.Data1 += 1;
                     float startingSpeed = otherBubbles.RB.velocity.magnitude;
