@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
-using UnityEngine.Experimental.AI;
 
 public static class PlayerData
 {

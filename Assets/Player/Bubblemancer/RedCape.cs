@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class RedCape : BubblemancerCape
 {
-    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<BubbleBirbUnlock10>();
     protected override string Description()
     {
-        return "Increases movement speed\nAdditionally increases movement speed each time you resurrect";
+        return "Increases movement speed by 20%\nAdditionally increases movement speed by 10% each time you resurrect";
     }
     public override void EquipUpdate()
     {

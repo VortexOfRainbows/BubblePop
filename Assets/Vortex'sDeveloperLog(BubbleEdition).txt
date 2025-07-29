@@ -13,10 +13,12 @@ Need to do:
 2. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
 3. Thought Bubble Weapon (spell book)
 4. More descriptive pause and select screen
-5. Fix resolution scaling issues across the board, such as with the compendium and tier list
+5. Integrate Settings and compendium into the default pause stuff
+6. Overhaul damage system to support decimals
+
+Urgent:
+1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 	1. Power display issue may be referencing the incorrect resolution values
-6. Integrate Settings and compendium into the default pause stuff
-7. Overhaul damage system to support decimals
 
 Done: 
 
@@ -25,6 +27,8 @@ Done:
 2. Rework Snake Eyes to now apply poison (very OP)
 3. Change transform logic on SOAP, changing shadows a bit, but also allowing debuff icons
 4. Enemy scaling is faster after wave 15
+5. Small changes to the unlock system to prevent things from being double locked (you no longer have to unlock the character and the equipment to use the equipment on other characters)
+6. Adds some unlock conditions for the red bubblemancer variants (pick up 10 bubblebirbs across multiple runs)
 
 7/25/25 to 7/28/25
 1. Lowered size of Leonard 3 -> 2.5

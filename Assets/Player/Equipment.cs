@@ -70,13 +70,13 @@ public class Equipment : MonoBehaviour
     /// <summary>
     /// Essentially which character this equipment should be unlocked by default under. For bodies, this unlock condition should be the same as the normal unlock condition
     /// </summary>
-    protected virtual UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<StartsUnlocked>();
     public bool SameUnlockAsBody(Body b)
     {
-        return b.CategoryUnlockCondition == CategoryUnlockCondition && this is not Body;
+        return b.UnlockCondition == UnlockCondition && this is not Body;
     }
-    public bool CategoryUnlocked => CategoryUnlockCondition.Unlocked || this is Body || isSubEquipment;
-    public bool IsUnlocked => (UnlockCondition.Unlocked && CategoryUnlocked) || (SameUnlockAsBody(Player.Instance.Body) && !isSubEquipment);
+    //protected virtual UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<StartsUnlocked>();
+    //public bool CategoryUnlocked => CategoryUnlockCondition.Unlocked || this is Body || isSubEquipment;
+    public bool IsUnlocked => UnlockCondition.Unlocked /*&& CategoryUnlocked) || (SameUnlockAsBody(Player.Instance.Body) && !isSubEquipment)*/;
     public virtual void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
 
@@ -89,10 +89,10 @@ public class Equipment : MonoBehaviour
     {
         if (IsUnlocked) //If fully unlocked
             return Description();
-        if (CategoryUnlocked && !UnlockCondition.Unlocked) //If only the character is unlocked
+        if (!UnlockCondition.Unlocked) //If only the character is unlocked
             return "Unlock by:\n" + UnlockCondition.LockedText();
-        if (!CategoryUnlocked && UnlockCondition.Unlocked) //If only the equipment is unlocked
-            return "Unlock by:\n" + CategoryUnlockCondition.LockedText();
+        //if (UnlockCondition.Unlocked) //If only the equipment is unlocked
+        //    return "Unlock by:\n" + CategoryUnlockCondition.LockedText();
         return "Play more to discover this equipment";
     }
     protected virtual string Name()

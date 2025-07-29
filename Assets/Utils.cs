@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 using static Enemy;
-using static UnityEditor.PlayerSettings;
-
 public static class Utils
 {
     public static List<PowerUp> Add<T>(this List<PowerUp> list) where T : PowerUp

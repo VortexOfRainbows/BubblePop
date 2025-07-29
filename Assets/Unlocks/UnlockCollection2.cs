@@ -6,10 +6,9 @@ public class BubblemancerUnlock : UnlockCondition
 {
     public override string LockedText()
     {
-        return "Reach a Highscore of 5000\n" +
-            $"Current best: {UIManager.highscore}";
+        return "Unlocked by default!";
     }
-    protected override bool IsUnlocked => true; //UIManager.highscore >= 5000;
+    protected override bool IsUnlocked => true;
 }
 public class ThoughtBubbleUnlock : UnlockCondition
 {

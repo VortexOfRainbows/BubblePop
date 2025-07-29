@@ -68,3 +68,12 @@ public class PlayerDeathUnlock100 : UnlockCondition
     }
     protected override bool IsUnlocked => PlayerData.PlayerDeaths >= 100;
 }
+public class BubbleBirbUnlock10 : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<BubbleBirb>();
+    public override string LockedText()
+    {
+        return $"Pick up 10 {Power.UnlockedName} across multiple runs";
+    }
+    protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 10;
+}

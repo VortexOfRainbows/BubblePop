@@ -12,7 +12,6 @@ public class ThoughtBubble : Body
         Life += 2;
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
-    protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     public const float TailRegenTime = 0.3f;
     public const float TailTravelTime = 4f;
     public GameObject TailPrefab;

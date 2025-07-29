@@ -143,7 +143,6 @@ public class Gachapon : Body
     }
     public Sprite[] altFaces;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
-    protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     public override void Init()
     {
         PrimaryColor = new Color(0.95f, 1f, 0.6f);

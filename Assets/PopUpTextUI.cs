@@ -153,13 +153,13 @@ public class PopUpTextUI : MonoBehaviour
             {
                 if (FollowMouse)
                 {
-                    transform.position = new Vector3(1920, transform.position.y, 0);
+                    transform.position = new Vector3(30000, transform.position.y, 0);
                     SnapToScreen(true);
                     Visual.SetActive(true);
                 }
                 else
                 {
-                    transform.position = new Vector3(1920, transform.position.y, 0);
+                    transform.position = new Vector3(30000, transform.position.y, 0);
                     Visual.SetActive(true);
                 }
             }

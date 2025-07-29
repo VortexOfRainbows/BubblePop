@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BubblemancerHat : Hat
 {
-    protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<Dash>();
