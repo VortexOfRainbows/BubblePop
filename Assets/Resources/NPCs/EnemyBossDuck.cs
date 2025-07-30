@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyBossDuck : EnemyDuck
 {
     private float projectileSpeed = 3f;
-    private int projectileTimer;
+    private int projectileTimer = -50;
     public override float CostMultiplier => 10;
     public override float PowerDropChance => 1f;
     public override void Init()
@@ -29,7 +29,7 @@ public class EnemyBossDuck : EnemyDuck
         }
         else
         {
-            if(projectileTimer % 30 == 0 && projectileTimer >= 0)
+            if(projectileTimer % 33 == 0 && projectileTimer >= 0)
             {
                 int c = 1;
                 ShootProjectile(c);

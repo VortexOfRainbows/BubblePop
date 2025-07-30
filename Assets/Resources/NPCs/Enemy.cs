@@ -114,8 +114,8 @@ public class Enemy : Entity
                 {
                     if (initiative >= 81 || Utils.RandFloat(1) < 0.19f + initiative * 0.01f)
                     {
-                        float minIncrease = 1.45f + 0.05f * initiative;
-                        float maxIncrease = 2.70f + 0.30f * initiative;
+                        float minIncrease = 2.25f + 0.25f * initiative;
+                        float maxIncrease = 4.50f + 0.50f * initiative;
                         float increase = Utils.RandFloat(minIncrease, maxIncrease);
                         damage += (int)(damage * increase + 0.5f);
                         crit = true;

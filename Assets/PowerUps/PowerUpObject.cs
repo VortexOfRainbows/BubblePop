@@ -87,7 +87,7 @@ public class PowerUpObject : MonoBehaviour
                     if(Player.Instance.Life < Player.Instance.MaxLife)
                         Player.Instance.SetLife(Player.Instance.Life + 1);
                     else
-                        CoinManager.SpawnCoin(transform.position, 5 + charisma * 5, 0.5f);
+                        CoinManager.SpawnCoin(transform.position, charisma * 25, 0.5f);
                 }
             }
         }

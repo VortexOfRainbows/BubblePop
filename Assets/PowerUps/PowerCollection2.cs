@@ -29,7 +29,7 @@ public class RollForCharisma : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Roll For Persuasion");
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to Y:heal after Y:[purchasing a power] or gain Y:10 G:(+5 per stack) Y:coins if uninjured");
+        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to Y:heal after Y:[purchasing a power] or gain Y:25 G:(+25 per stack) Y:coins if uninjured");
         description.WithShortDescription("Chance to heal or refund a portion of money spent when purchasing power");
     } 
     public override void HeldEffect(Player p)
@@ -77,7 +77,7 @@ public class RollForInitiative : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to deal 150% G:(+5% per stack) to 300% G:(+30% per stack) Y:[bonus damage] on Y:[first strike]");
+        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to deal 250% G:(+25% per stack) to 500% G:(+50% per stack) Y:[bonus damage] on Y:[first strike]");
         description.WithShortDescription("Chance for first hit to deal additional damage");
     }
     public override void HeldEffect(Player p)
