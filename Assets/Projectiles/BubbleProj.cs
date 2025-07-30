@@ -1,5 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class SmallBubble : Projectile
@@ -225,5 +225,149 @@ public class BigBubble : Projectile
     public override bool OnInsideTile()
     {
         return timer > 12;
+    }
+}
+public class ThunderBubble : Projectile
+{
+    private Color ColorVar;
+    public bool Recalled = false;
+    public override void Init()
+    {
+        ColorVar = Color.Lerp(Player.ProjectileColor, Color.blue, 0.5f);
+        SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f);
+        SpriteRenderer.sprite = Main.BubbleSmall;
+        SpriteRendererGlow.sprite = Resources.Load<Sprite>("Glow");
+        SpriteRendererGlow.color = ColorVar * 0.6f;
+        float scaleFactor = 2.0f;
+        SpriteRendererGlow.transform.localScale *= scaleFactor;
+        cmp.c2D.radius = scaleFactor;
+        timer2 = 0;
+        transform.localScale *= 0.3f;
+        Damage = 1;
+        Penetrate = -1;
+        Friendly = true;
+        immunityFrames = 25;
+    }
+    public override void AI()
+    {
+        Vector2 velo = RB.velocity;
+        float speed = velo.magnitude;
+        float percent = Mathf.Max(0, 2 - timer / 50f);
+        if(!Recalled && percent > 0)
+           transform.position += percent * Time.fixedDeltaTime * (Vector3)velo;
+
+
+        float deathTime = 10800; //Only really times out when you stop recall
+        float FadeOutTime = 60;
+        if (timer > deathTime + FadeOutTime)
+        {
+            Kill();
+        }
+        float targetScale = 1.1f;
+        if(Book.InClosingAnimation && timer <= deathTime)
+        {
+            if(!Recalled)
+            {
+                Damage *= 3;
+                Recalled = true;
+            }
+            timer = deathTime;
+            Vector2 weaponPos = Player.Instance.Weapon.transform.position;
+            Vector2 toWeapon = weaponPos - (Vector2)transform.position;
+            float perc = Book.ClosingPercent;
+            perc = perc * perc;
+            velo = toWeapon * 0.2f;
+            transform.position = Vector2.Lerp(transform.position, weaponPos, perc);
+            float iPer = 1 - Mathf.Max(0, (perc - 0.8f) * 5f);
+            SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f * iPer);
+            SpriteRendererGlow.color = ColorVar * 0.6f * iPer;
+            transform.localScale = iPer * targetScale * Vector3.one;
+        }
+        else
+        {
+            if (Recalled)
+            {
+                Kill();
+                return;
+            }
+            if (Recalled && timer <= deathTime)
+                timer = deathTime + 1;
+            if (timer > deathTime)
+            {
+                float alphaOut = 1 - (timer - deathTime) / FadeOutTime;
+                SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f * alphaOut);
+                SpriteRendererGlow.color = ColorVar * 0.6f * alphaOut;
+                transform.localScale = alphaOut * targetScale * Vector3.one;
+            }
+            else
+            {
+                float rtSpeed = Mathf.Sqrt(speed);
+                RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x);
+                transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
+            }
+            timer++;
+        }
+        if ((int)++timer2 % 6 != 0)
+        {
+            float perc = (1 - Book.ClosingPercent) * 0.1f;
+            ParticleManager.NewParticle(RB.position + velo * Time.fixedDeltaTime * 2f, transform.localScale.x * 2.3f, velo * 0.5f, 2f, Recalled ? perc : Utils.RandFloat(0.1f, 0.15f), 2,
+                SpriteRendererGlow.color.WithAlphaMultiplied(.6f));
+        }
+        else if (timer <= deathTime)
+        {
+            Vector2 norm = velo.normalized;
+            Vector2 targetPos = Recalled ? Player.Instance.Weapon.transform.position : RB.position - norm * transform.localScale.x * 2.5f;
+            Pylon.SummonLightning2(transform.position, targetPos, ColorVar, 0.15f);
+        }
+        RB.velocity = velo;
+    }
+    public override bool CanBeAffectedByHoming()
+    {
+        return !Book.InClosingAnimation;
+    }
+    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
+    {
+        float currentSpeed = RB.velocity.magnitude + Player.Instance.HomingRangeSqrt * 0.01f;
+        float modAmt = 0.04f + Player.Instance.HomingRangeSqrt * 0.04f;
+        RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm * currentSpeed, modAmt).normalized * currentSpeed;
+        return false;
+    }
+    public override void OnKill()
+    {
+        //int c = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
+        //for (int i = 0; i < c; i++)
+        //{
+        //    Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+        //    ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
+        //}
+        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
+    }
+    public override bool OnInsideTile()
+    {
+        return !Recalled;
+    }
+    public override bool OnTileCollide(Collider2D collision)
+    {
+        if (Recalled)
+            return false;
+        Vector2 closest = collision.ClosestPoint(transform.position);
+        Vector2 diff = closest - RB.position;
+        if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+        {
+            bool goingInThatDirection = Mathf.Sign(RB.velocity.x) == Mathf.Sign(diff.x);
+            if(goingInThatDirection)
+                RB.velocity = new Vector2(RB.velocity.x * -1.1f, RB.velocity.y);
+        }
+        else
+        {
+            bool goingInThatDirection = Mathf.Sign(RB.velocity.y) == Mathf.Sign(diff.y);
+            if(goingInThatDirection)
+                RB.velocity = new Vector2(RB.velocity.x, RB.velocity.y * -1.1f);
+        }
+        return false;
+    }
+    public override void OnHitTarget(Entity target)
+    {
+        Pylon.SummonLightning2(transform.position, target.transform.position, ColorVar, 0.6f);
     }
 }

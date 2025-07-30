@@ -103,6 +103,10 @@ public class Projectile : MonoBehaviour
     {
         return true;
     }
+    /// <summary>
+    /// Return true to allow the projectile to die while inside a tile. True by default.
+    /// </summary>
+    /// <returns></returns>
     public virtual bool OnInsideTile()
     {
         return true;

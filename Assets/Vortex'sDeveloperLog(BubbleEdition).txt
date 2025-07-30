@@ -14,13 +14,21 @@ Need to do:
 3. Thought Bubble Weapon (spell book)
 4. More descriptive pause and select screen
 5. Integrate Settings and compendium into the default pause stuff
-6. Overhaul damage system to support decimals
+6. Overhaul damage system to support decimals <- real
 7. Compendium to showcase description variants
 8. Light bulb breaks on tiles (Should not do that)
 9. Fix Leonard swarm wave 15 and 20
-	1. Nerf other director leonard spawns, and nerf scaling rate in general
+	1. Nerf other director leonard spawns, and nerf scaling rate in general (maybe just nerf leonard)
 10. Make calculator homing snappier
-11. Rework damage to be floating point (and adjust snake-eyes thereafter)
+11. Rework damage to be floating point (and adjust snake-eyes, thought bubble thunder, thereafter)
+
+Ideas for Thunder Primary on Thought Bubble:
+	1. Power up that increases their size (white)
+	2. Power up that increases their return damage (uncommon)
+	3. Power up that increases the amount allowed on field at a time (blue)
+	4. Possibly rework it so that the return hit can ignore I frames.
+	Right now it gets stuffed out occasionally (maybe make it not trigger immunity at all, but only attack at certain intervals)
+
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list

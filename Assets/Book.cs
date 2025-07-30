@@ -53,6 +53,8 @@ public class Book : Weapon
     private float AttackCooldown => 0;
     public override void StartAttack(bool alternate)
     {
+        if (InClosingAnimation)
+            return;
         if (AttackLeft < -AttackCooldown && AttackRight < 0)
         {
             if (!alternate)
@@ -69,6 +71,8 @@ public class Book : Weapon
             }
         }
     }
+    public static bool InClosingAnimation = false;
+    public static float ClosingPercent = 0.0f;
     public bool WantsOpen = false;
     public bool Open = false;
     public float OpeningAnimationTimer = 0;
@@ -95,7 +99,7 @@ public class Book : Weapon
         p.MoveOffset = -5 * bodyDir * p.squash;
         p.DashOffset = 20 * dir * (1 - p.squash);
 
-        WantsOpen = AttackLeft >= 0 || AttackRight >= 0;
+        WantsOpen = AttackLeft >= 0 || AttackRight >= 0 || (!InClosingAnimation && (Control.LeftMouseHold || Control.RightMouseHold));
         Vector2 awayFromWand = new Vector2(-0.05f, 0.2f * dir).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
         Vector2 shootSpot = (Vector2)transform.position + awayFromWand;
         if(WantsOpen == Open)
@@ -110,11 +114,11 @@ public class Book : Weapon
                 {
                     AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1f);
 
-                    for (int i = 0; i < 10; ++i)
-                        ParticleManager.NewParticle(shootSpot, 1, Utils.RandCircle(5), 0.2f, 0.5f, 2, Color.blue);
+                    //for (int i = 0; i < 10; ++i)
+                    //    ParticleManager.NewParticle(shootSpot, 1, Utils.RandCircle(5), 0.2f, 0.5f, 2, Color.blue);
 
-                    float speed = 24;
-                    Projectile.NewProjectile<SmallBubble>(shootSpot, toMouse.normalized * speed + awayFromWand);
+                    float speed = 6 + player.FasterBulletSpeed * 0.6f;
+                    Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand);
                 }
                 bonusPDirOffset += 5 * dir * p.squash - 15 * sin * dir;
                 targetScale = new Vector3(1 + sin * 0.1f, 1 - sin * 0.2f, 1);
@@ -125,15 +129,18 @@ public class Book : Weapon
         }
         else
         {
+            if (Open)
+                InClosingAnimation = true;
             OpeningAnimationTimer++;
+            float timeToOpenClose = 80f * (0.6f + 0.4f * player.AttackSpeedModifier);
             float dir2 = Open ? -1 : 1;
-            float percent = OpeningAnimationTimer / 80f;
+            float percent = ClosingPercent = OpeningAnimationTimer / timeToOpenClose;
             float iPer = 1 - percent;
             float sin = MathF.Sin(percent * MathF.PI) * dir2;
             targetScale = new Vector3(1 + percent * 0.1f * iPer * dir2, 1 + sin * 0.4f * dir2 - percent * 0.4f * iPer * dir2, 1);
             attemptedPosition.y += sin * (Open ? .5f : 1.5f);
             bonusPDirOffset += 52 * Mathf.Min(1, 2 * percent) * dir * p.squash;
-            if (OpeningAnimationTimer >= 80)
+            if (OpeningAnimationTimer >= timeToOpenClose)
             {
                 for (int i = 0; i < 36; ++i)
                 {
@@ -145,6 +152,8 @@ public class Book : Weapon
                 }
                 Open = WantsOpen;
                 OpeningAnimationTimer = 0;
+                InClosingAnimation = false;
+                ClosingPercent = 0;
             }
         }
         spriteRender.sprite = Open ? OpenBook : ClosedBook;
