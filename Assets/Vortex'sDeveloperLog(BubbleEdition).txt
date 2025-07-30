@@ -18,14 +18,16 @@ Need to do:
 7. Compendium to showcase description variants
 8. Light bulb breaks on tiles (Should not do that)
 9. Fix Leonard swarm wave 15 and 20
-	1. Nerf other director leonard spawns
+	1. Nerf other director leonard spawns, and nerf scaling rate in general
+10. Make calculator homing snappier
+11. Rework damage to be floating point (and adjust snake-eyes thereafter)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 
 Done: 
 
-7/29/25
+7/29/25 to 7/30/25
 1. Fix issue where powerup pool bar would scale strangely with screen size (now it should scale properly!)
 2. Small coalescence buffs
 3. Mostly fix UI scaling issues with compendium (should be good)
@@ -33,6 +35,7 @@ Done:
 5. Slightly buff power drop rates from the initial nerfs
 6. Buff scaling rates on Roll for Persuasion and Roll for Initiative
 7. Leonard now takes half a second before his projectile timer starts and shoots 10% slower overall
+8. Some animations for the bubble book
 
 7/28/25 to 7/29/25
 1. Roll for initiative has increased scaling
