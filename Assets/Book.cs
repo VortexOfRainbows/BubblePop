@@ -111,7 +111,7 @@ public class Book : Weapon
             if (AttackLeft >= 0)
             {
                 percent = AttackLeft / 80f;
-                bool canAttack = AttackLeft == 75;
+                bool canAttack = AttackLeft == 75 && TotalBalls < AllowedBalls;
                 if (canAttack)
                 {
                     AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1f);
