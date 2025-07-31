@@ -7,6 +7,8 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class Book : Weapon
 {
+    public static int AllowedBalls = 3;
+    public static int TotalBalls = 0;
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         offset = new Vector2(0.05f, 0);
@@ -18,8 +20,8 @@ public class Book : Weapon
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        //powerPool.Add<EternalBubbles>();
-        //powerPool.Add<Shotgun>();
+        powerPool.Add<EternalBubbles>();
+        powerPool.Add<Shotgun>();
         //powerPool.Add<ChargeShot>();
         //powerPool.Add<BubbleBlast>();
         //powerPool.Add<SoapySoap>();
@@ -28,11 +30,11 @@ public class Book : Weapon
     }
     protected override string Name()
     {
-        return "Guide to Bubble Physics";
+        return "Electrodynamics Grimoire";
     }
     protected override string Description()
     {
-        return "A grimoire detailing the wonderful world of bubble sorcery";
+        return "Thought Bubble's trusty tome, 'only used for self defense'";
     }
     protected override void AnimationUpdate()
     {
@@ -138,7 +140,7 @@ public class Book : Weapon
             else if (AttackRight >= 0)
             {
                 percent = AttackRight / 80f;
-                bool canAttack = AttackRight == 75;
+                bool canAttack = AttackRight == 75 && TotalBalls < AllowedBalls;
                 if (canAttack)
                 {
                     AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1f);
@@ -159,7 +161,7 @@ public class Book : Weapon
                     }
                     else
                         JustOpened = false;
-
+                    ++TotalBalls;
                     float speed = 4 + player.FasterBulletSpeed * 0.4f;
                     Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand);
                 }
@@ -203,6 +205,7 @@ public class Book : Weapon
                     AudioManager.PlaySound(SoundID.BubblePop, transform.position, 1f, 0.9f);
                 else
                     JustOpened = true;
+                TotalBalls = 0;
             }
         }
         spriteRender.sprite = Open ? OpenBook : ClosedBook;
@@ -214,5 +217,31 @@ public class Book : Weapon
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, lerpAmt);
         transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
         transform.LerpLocalScale(targetScale, 0.5f);
+    }
+    protected override void DeathAnimation()
+    {
+        transform.position += (Vector3)velocity;
+        float toBody = transform.localPosition.y - p.Body.transform.localPosition.y;
+        if (p.DeathKillTimer <= 0)
+        {
+            Open = false;
+            velocity *= 0.0f;
+            velocity.y += !Open ? 0.1f : 0.05f;
+            velocity.x += 0.01f * p.Direction;
+        }
+        else if (toBody < -0.25f && p.DeathKillTimer > 10)
+        {
+            spriteRender.sprite = OpenBook;
+            velocity *= 0.1f;
+            transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.transform.eulerAngles.z, spriteRender.flipY ? 200 : -20, 0.05f));
+        }
+        else
+        {
+            velocity.x *= 0.96f;
+            velocity.y -= 0.005f;
+        }
+        AttackLeft = 0;
+        AttackRight = 0;
+        transform.LerpLocalScale(Vector2.one, 0.1f);
     }
 }

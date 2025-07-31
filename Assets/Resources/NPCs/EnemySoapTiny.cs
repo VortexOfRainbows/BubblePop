@@ -5,7 +5,7 @@ public class EnemySoapTiny : EnemySoap
     {
         Life = 3;
         timer = 60;
-        UniversalImmuneFrames = 80;
+        UniversalImmuneFrames = 45;
         MaxCoins = 5;
     }
     public override void OnKill()

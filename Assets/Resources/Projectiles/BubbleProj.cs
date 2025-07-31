@@ -208,7 +208,7 @@ public class BigBubble : Projectile
             Kill();
         else
         {
-            int c = 5 + Damage * 3;
+            int c = 5 + (int)Damage * 3;
             for (int i = 0; i < c; i++)
                 ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .4f), RB.velocity.normalized * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.4f, .8f), 0, default);
         }
@@ -334,6 +334,8 @@ public class ThunderBubble : Projectile
     }
     public override void OnKill()
     {
+        if(Book.TotalBalls > 0)
+            Book.TotalBalls--;
         //int c = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
         //for (int i = 0; i < c; i++)
         //{

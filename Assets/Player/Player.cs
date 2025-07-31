@@ -16,11 +16,13 @@ public static class Control
 }
 public partial class Player : Entity
 {
-    #region Animator References
     private int Shield = 0;
     private int MaxShield = 0;
+    public new int Life = 0;
+    public new int MaxLife = 0;
     public int GetShield() => Shield;
     public PowerUp MostRecentPower = null;
+    #region Animator References
     public Body Body { get => Animator.Body; set => Animator.Body = value; }
     public Weapon Weapon { get => Animator.Weapon; set => Animator.Weapon = value; }
     public Hat Hat { get => Animator.Hat; set => Animator.Hat = value; }

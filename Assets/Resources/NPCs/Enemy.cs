@@ -104,7 +104,7 @@ public class Enemy : Entity
             return;
         if (proj.Friendly && !AlreadyDead)
         {
-            int damage = proj.Damage;
+            float damage = proj.Damage;
             bool crit = false;
             if(FirstStrike)
             {
@@ -117,7 +117,7 @@ public class Enemy : Entity
                         float minIncrease = 2.25f + 0.25f * initiative;
                         float maxIncrease = 4.50f + 0.50f * initiative;
                         float increase = Utils.RandFloat(minIncrease, maxIncrease);
-                        damage += (int)(damage * increase + 0.5f);
+                        damage += damage * increase;
                         crit = true;
                     }
                 }
@@ -136,7 +136,7 @@ public class Enemy : Entity
             }
         }
     }
-    public void Injure(int damage, int damageType = 0, Color popupTextColor = default)
+    public void Injure(float damage, int damageType = 0, Color popupTextColor = default)
     {
         Life -= damage;
         DamageTaken += damage;
@@ -150,7 +150,7 @@ public class Enemy : Entity
             velo.x *= 0.5f;
             velo.y += 0.5f;
         }
-        GameObject g = PopupText.NewPopupText(randPos, velo, popupTextColor, damage.ToString(), damageType == 1, damageType == 2 ? 0.8f : 1f);
+        GameObject g = PopupText.NewPopupText(randPos, velo, popupTextColor, damage.ToString("0.#"), damageType == 1, damageType == 2 ? 0.8f : 1f);
         if (Life < 0)
             Life = 0;
         if (Life <= 0 && !AlreadyDead)

@@ -14,14 +14,13 @@ Need to do:
 3. Thought Bubble Weapon (spell book)
 4. More descriptive pause and select screen
 5. Integrate Settings and compendium into the default pause stuff
-6. Overhaul damage system to support decimals <- real
-7. Compendium to showcase description variants
-8. Light bulb breaks on tiles (Should not do that)
-9. Fix Leonard swarm wave 15 and 20
+6. Compendium to showcase description variants
+7. Light bulb breaks on tiles (Should not do that)
+8. Fix Leonard swarm wave 15 and 20
 	1. Nerf other director leonard spawns, and nerf scaling rate in general (maybe just nerf leonard)
-10. Make calculator homing snappier
-11. Rework damage to be floating point (and adjust snake-eyes, thought bubble thunder, thereafter)
-12. Make light beams only hit specifically the enemy it was meant to target
+9. Make calculator homing snappier
+10. Rework damage to be floating point (and adjust snake-eyes, thought bubble thunder, thereafter)
+11. Make light beams only hit specifically the enemy it was meant to target
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their size (white)
@@ -29,13 +28,20 @@ Ideas for Thunder Primary on Thought Bubble:
 	3. Power up that increases the amount allowed on field at a time (blue)
 	4. Possibly rework it so that the return hit can ignore I frames.
 	Right now it gets stuffed out occasionally (maybe make it not trigger immunity at all, but only attack at certain intervals)
-	5. Needs death animation (falls open)
+	5. Alternative ideas for primary/altfire: tiny lightning bubbles with no closing book interaction or one click mode launches the same projectiles but at varied velocity.
+	6. Power up that makes lightning jump between enemies (purple)
 
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 
 Done: 
+
+7/30/25 to 7/31/25
+1. Decimal damage added
+2. Not sure I like it, but now there's 2 attacks on TB's book
+3. Book death animation (swag)
+4. Reduce I-frames granted to soap children 80 -> 45
 
 7/30/25
 1. Reflection rarity is now legendary

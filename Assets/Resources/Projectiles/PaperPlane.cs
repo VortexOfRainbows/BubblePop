@@ -53,16 +53,12 @@ public class PaperPlane : Projectile
         {
             if(Recalled)
             {
-                float r = velo.ToRotation();
+                Vector2 norm = velo.normalized;
                 int shotCount = 5 + Player.Instance.bonusBubbles;
-                float spreadAmt = (5f + shotCount * 0.5f) / shotCount;
                 for (int i = 0; i < shotCount; ++i)
                 {
-                    float spread = spreadAmt * (i - (shotCount - 1) * 0.5f);
-                    float sin = MathF.Sin((i + 0.5f) / shotCount * MathF.PI);
-                    speed = 0.5f + 0.5f * sin;
-                    Vector2 shotSpread = new Vector2(12 * speed, spread * 0.25f).RotatedBy(r);
-                    NewProjectile<SmallBubble>((Vector2)transform.position, shotSpread);
+                    float sp = i * 2 + 12;
+                    NewProjectile<SmallBubble>((Vector2)transform.position, norm * sp);
                 }
                 Kill();
                 return;

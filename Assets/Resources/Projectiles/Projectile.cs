@@ -28,7 +28,7 @@ public class Projectile : MonoBehaviour
     public float[] Data;
     public float Data1 { get => Data[0]; set => Data[0] = value; }
     public float Data2 { get => Data[1]; set => Data[1] = value; }
-    public int Damage = 0;
+    public float Damage = 0;
     /// <summary>
     /// How many enemies this projectile can hit
     /// </summary>

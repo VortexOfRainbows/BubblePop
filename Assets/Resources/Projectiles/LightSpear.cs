@@ -22,11 +22,7 @@ public class LightSpear : Projectile
             SpriteRenderer.color *= c;
             SpriteRendererGlow.color *= c;
         }
-        Damage = 3;
-        if(Player.Instance.LightSpear > 0)
-        {
-            Damage = (int)(2.0f + Player.Instance.LightSpear * 0.5f);
-        }
+        Damage = 2.0f + Player.Instance.LightSpear * 0.5f;
         Friendly = true;
         Hostile = false;
         cmp.c2D.offset = new Vector2(1, 0);

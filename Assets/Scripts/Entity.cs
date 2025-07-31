@@ -8,8 +8,8 @@ public partial class Entity : MonoBehaviour
     //public static int NextUniqueID = 0;
     //public int UniqueID = NextUniqueID++;
     public float UniversalImmuneFrames = 0;
-    public int Life = 10;
-    public int MaxLife = -1;
+    public float Life { get; set; } = 10f;
+    public float MaxLife { get; set; } = -1;
     public float DamageTaken = 0;
     public bool SpawnedIn = false;
     public static readonly string PlayerTag = "Player";
