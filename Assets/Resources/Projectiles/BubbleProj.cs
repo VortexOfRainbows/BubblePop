@@ -278,9 +278,9 @@ public class ThunderBubble : Projectile
             perc = perc * perc;
             velo = toWeapon * 0.2f;
             transform.position = Vector2.Lerp(transform.position, weaponPos, perc);
-            float iPer = 1 - Mathf.Max(0, (perc - 0.8f) * 5f);
+            float iPer = 1 - Mathf.Max(0, (perc - 0.7f) / 0.3f);
             SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f * iPer);
-            SpriteRendererGlow.color = ColorVar * 0.6f * iPer;
+            SpriteRendererGlow.color = ColorVar.WithAlphaMultiplied(iPer * iPer) * 0.6f * iPer;
             transform.localScale = iPer * targetScale * Vector3.one;
         }
         else
@@ -340,7 +340,6 @@ public class ThunderBubble : Projectile
         //    Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
         //    ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
         //}
-        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
     }
     public override bool OnInsideTile()
     {

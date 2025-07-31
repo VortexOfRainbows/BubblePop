@@ -291,15 +291,20 @@ public static class WaveDirector
                 EnemyScalingFactor += 0.1f;
             else if(WaveNum <= 40)
             {
-                EnemyScalingFactor *= 1.05f;
-                EnemyScalingFactor += 0.05f;
+                EnemyScalingFactor *= 1.04f;
+                EnemyScalingFactor += 0.06f;
             }
             else 
             {
                 if (WaveNum <= 50)
-                    EnemyScalingFactor *= 1.1f;
+                {
+                    EnemyScalingFactor *= 1.08f;
+                    EnemyScalingFactor += 0.02f;
+                }
                 else
-                    EnemyScalingFactor *= 1.15f;
+                {
+                    EnemyScalingFactor *= 1.12f;
+                }
             }
         }
         else if(WaveNum > 5)

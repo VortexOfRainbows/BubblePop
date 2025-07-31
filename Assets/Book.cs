@@ -59,7 +59,7 @@ public class Book : Weapon
         {
             if (!alternate)
             {
-                AttackLeft = 80;
+                AttackLeft = 50;
                 player.bonusBubbles = player.ShotgunPower;
             }
         }
@@ -76,6 +76,7 @@ public class Book : Weapon
     public bool WantsOpen = false;
     public bool Open = false;
     public float OpeningAnimationTimer = 0;
+    public bool JustOpened = false;
     private void AttackUpdate()
     {
         //if(Input.GetKeyDown(KeyCode.V))
@@ -104,12 +105,11 @@ public class Book : Weapon
         Vector2 shootSpot = (Vector2)transform.position + awayFromWand;
         if(WantsOpen == Open)
         {
+            float percent = 0f;
             if (AttackLeft >= 0)
             {
-                float percent = AttackLeft / 80f;
-                float sin = Mathf.Abs(MathF.Sin(percent * Mathf.PI));
-                sin *= sin;
-                bool canAttack = AttackLeft == 75;
+                percent = AttackLeft / 50f;
+                bool canAttack = AttackLeft == 40;
                 if (canAttack)
                 {
                     AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1f);
@@ -117,13 +117,58 @@ public class Book : Weapon
                     //for (int i = 0; i < 10; ++i)
                     //    ParticleManager.NewParticle(shootSpot, 1, Utils.RandCircle(5), 0.2f, 0.5f, 2, Color.blue);
 
-                    float speed = 6 + player.FasterBulletSpeed * 0.6f;
+                    if (!JustOpened)
+                    {
+                        for (int i = 0; i < 20; ++i)
+                        {
+                            Vector2 circular = new Vector2(Utils.RandFloat(7, 8), 0).RotatedBy(i / 10f * Mathf.PI);
+                            circular.y *= 0.5f;
+                            circular = circular.RotatedBy(25 * dir * Mathf.Deg2Rad);
+                            Vector2 pos = (Vector2)transform.position;
+                            ParticleManager.NewParticle(pos, 0.5f, circular + awayFromWand * 5 + player.rb.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, Color.gray * 0.5f);
+                        }
+                    }
+                    else
+                        JustOpened = false;
+
+                    float speed = 10 + player.FasterBulletSpeed * 1.1f;
+                    Projectile.NewProjectile<PaperPlane>(shootSpot, toMouse.normalized * speed + awayFromWand);
+                }
+            }
+            else if (AttackRight >= 0)
+            {
+                percent = AttackRight / 80f;
+                bool canAttack = AttackRight == 75;
+                if (canAttack)
+                {
+                    AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1f);
+
+                    //for (int i = 0; i < 10; ++i)
+                    //    ParticleManager.NewParticle(shootSpot, 1, Utils.RandCircle(5), 0.2f, 0.5f, 2, Color.blue);
+                    if (!JustOpened)
+                    {
+                        Color c = Color.Lerp(player.Body.PrimaryColor, Color.blue, 0.75f);
+                        for (int i = 0; i < 20; ++i)
+                        {
+                            Vector2 circular = new Vector2(Utils.RandFloat(7, 8), 0).RotatedBy(i / 10f * Mathf.PI);
+                            circular.y *= 0.5f;
+                            circular = circular.RotatedBy(25 * dir * Mathf.Deg2Rad);
+                            Vector2 pos = (Vector2)transform.position;
+                            ParticleManager.NewParticle(pos, 0.5f, circular + awayFromWand * 5 + player.rb.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, c * 0.6f);
+                        }
+                    }
+                    else
+                        JustOpened = false;
+
+                    float speed = 4 + player.FasterBulletSpeed * 0.4f;
                     Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand);
                 }
-                bonusPDirOffset += 5 * dir * p.squash - 15 * sin * dir;
-                targetScale = new Vector3(1 + sin * 0.1f, 1 - sin * 0.2f, 1);
-                attemptedPosition.y += sin * 0.1f;
             }
+            float sin = Mathf.Abs(MathF.Sin(percent * Mathf.PI));
+            sin *= sin;
+            bonusPDirOffset += 5 * dir * p.squash - 15 * sin * dir;
+            targetScale = new Vector3(1 + sin * 0.1f, 1 - sin * 0.2f, 1);
+            attemptedPosition.y += sin * 0.1f;
             AttackRight--;
             AttackLeft--;
         }
@@ -154,6 +199,10 @@ public class Book : Weapon
                 OpeningAnimationTimer = 0;
                 InClosingAnimation = false;
                 ClosingPercent = 0;
+                if (!Open)
+                    AudioManager.PlaySound(SoundID.BubblePop, transform.position, 1f, 0.9f);
+                else
+                    JustOpened = true;
             }
         }
         spriteRender.sprite = Open ? OpenBook : ClosedBook;
