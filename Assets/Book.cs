@@ -141,7 +141,7 @@ public class Book : Weapon
                     }
                     else
                         JustOpened = false;
-
+                    ++TotalBalls;
                     float speed = 4 + player.FasterBulletSpeed * 0.4f;
                     Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand);
                 }
