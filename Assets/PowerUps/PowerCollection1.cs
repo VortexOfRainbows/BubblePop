@@ -337,7 +337,7 @@ public class NeuronActivation : PowerUp
 {
     public override void Init()
     {
-        Weighting = SuperRare;
+        Weighting = Legendary;
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

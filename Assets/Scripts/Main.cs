@@ -48,6 +48,7 @@ public class Main : MonoBehaviour
     }
     public void Awake()
     {
+        Shadow = Resources.Load<Sprite>("Shadow");
         BuffIcon.Load();
         OnGameOpen();
     }
@@ -94,4 +95,5 @@ public class Main : MonoBehaviour
     public Sprite LaserProj;
     public static Sprite Sparkle => Instance.sparkle;
     public Sprite sparkle;
+    public static Sprite Shadow;
 }

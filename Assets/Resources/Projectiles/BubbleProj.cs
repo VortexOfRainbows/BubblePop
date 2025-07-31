@@ -236,7 +236,7 @@ public class ThunderBubble : Projectile
         ColorVar = Color.Lerp(Player.ProjectileColor, Color.blue, 0.5f);
         SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f);
         SpriteRenderer.sprite = Main.BubbleSmall;
-        SpriteRendererGlow.sprite = Resources.Load<Sprite>("Glow");
+        SpriteRendererGlow.sprite = Main.Shadow;
         SpriteRendererGlow.color = ColorVar * 0.6f;
         float scaleFactor = 2.0f;
         SpriteRendererGlow.transform.localScale *= scaleFactor;
