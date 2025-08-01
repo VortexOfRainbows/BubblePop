@@ -251,10 +251,14 @@ public static class WaveDirector
             if (WaveNum % 5 == 0)
             {
                 Deck[MaxCards - 3] = WaveDeck.DrawMultiSpawn(WaveDeck.RandomEdgeLocation(), 6, 7, 0, 0.75f, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken);
-                if(WaveNum > 10)
+                if(WaveNum > 20)
                 {
                     Deck[MaxCards - 3].Patterns[0].Location = Vector2.zero;
-                    Deck[MaxCards - 3] = Deck[MaxCards - 2].ToSwarmCircle(3, 5, 0, 0.5f);
+                    Deck[MaxCards - 3] = Deck[MaxCards - 2].ToSwarmCircle(3, 6, 0.5f, 0.5f);
+                }
+                if(WaveNum >= 10)
+                {
+                    Credits += WaveNum * 2;
                 }
             }
             if (WaveNum == 6)
