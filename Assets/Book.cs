@@ -55,7 +55,7 @@ public class Book : Weapon
     private float AttackCooldown => 0;
     public override void StartAttack(bool alternate)
     {
-        if (InClosingAnimation)
+        if (InClosingAnimation || !hasDoneSelectAnimation)
             return;
         if (AttackLeft < -AttackCooldown && AttackRight < 0)
         {
@@ -75,10 +75,11 @@ public class Book : Weapon
     }
     public static bool InClosingAnimation = false;
     public static float ClosingPercent = 0.0f;
-    public bool WantsOpen = false;
-    public bool Open = false;
+    private bool WantsOpen = false;
+    private bool Open = true;
     public float OpeningAnimationTimer = 0;
     public bool JustOpened = false;
+    private bool hasDoneSelectAnimation = false;
     private void AttackUpdate()
     {
         //if(Input.GetKeyDown(KeyCode.V))
@@ -102,10 +103,10 @@ public class Book : Weapon
         p.MoveOffset = -5 * bodyDir * p.squash;
         p.DashOffset = 20 * dir * (1 - p.squash);
 
-        WantsOpen = AttackLeft >= 0 || AttackRight >= 0 || (!InClosingAnimation && (Control.LeftMouseHold || Control.RightMouseHold));
+        WantsOpen = (AttackLeft >= 0 || AttackRight >= 0 || (!InClosingAnimation && (Control.LeftMouseHold || Control.RightMouseHold))) && hasDoneSelectAnimation;
         Vector2 awayFromWand = new Vector2(-0.05f, 0.2f * dir).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
         Vector2 shootSpot = (Vector2)transform.position + awayFromWand;
-        if(WantsOpen == Open)
+        if(WantsOpen == Open && hasDoneSelectAnimation)
         {
             float percent = 0f;
             if (AttackLeft >= 0)
@@ -211,10 +212,14 @@ public class Book : Weapon
                 InClosingAnimation = false;
                 ClosingPercent = 0;
                 if (!Open)
+                {
+                    AttackLeft = AttackRight = -1;
                     AudioManager.PlaySound(SoundID.BubblePop, transform.position, 1f, 0.9f);
+                }
                 else
                     JustOpened = true;
                 TotalBalls = 0;
+                hasDoneSelectAnimation = true;
             }
         }
         spriteRender.sprite = Open ? OpenBook : ClosedBook;

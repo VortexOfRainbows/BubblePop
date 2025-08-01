@@ -259,7 +259,7 @@ public class ThunderBubble : Projectile
 
         float deathTime = 10800; //Only really times out when you stop recall
         float FadeOutTime = 60;
-        if (timer > deathTime + FadeOutTime)
+        if (timer > deathTime + FadeOutTime || Player.Instance.Weapon is not Book)
         {
             Kill();
         }
