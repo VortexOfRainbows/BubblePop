@@ -77,8 +77,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Visual: {fileID: 8646482693813849268}
   UniversalImmuneFrames: 0
-  Life: 10
-  MaxLife: -1
   DamageTaken: 0
   SpawnedIn: 0
   lastPos: {x: 0, y: 0}
@@ -117,7 +115,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06421542, y: -0.5039612}
+  m_Offset: {x: -0.047791064, y: -0.6189317}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -128,7 +126,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.0901105, y: 1.5193851}
+  m_Size: {x: 1.7616233, y: 1.2894441}
   m_EdgeRadius: 0
 --- !u!1 &8646482693813849268
 GameObject:
