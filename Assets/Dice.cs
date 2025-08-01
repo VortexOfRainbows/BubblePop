@@ -6,17 +6,17 @@ public class Dice : Hat
 {
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
-        offset = new Vector2(0.52f, -0.6f);
-        scale = 1.4f;
+        offset = new Vector2(0.6f, -0.8f);
+        scale = 1.5f;
         rotation = 15f;
     }
     protected override string Name()
     {
-        return "Dice Bow";
+        return "Plush Dice";
     }
     protected override string Description()
     {
-        return "Strategically superglued dice";
+        return "Gachapon thinks it's always valuable to keep a pair of dice nearby";
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
@@ -37,8 +37,8 @@ public class Dice : Hat
         transform.localScale = new Vector3(p.Body.transform.localScale.x * (p.Body.Flipped ? -1 : 1), p.Body.transform.localScale.y, p.Body.transform.localScale.z);
         transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, r, 0.1f) * Vector3.forward;
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
-            new Vector2(0, (-1.5f + 1.5f * p.Bobbing * p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
-            0.25f) + velocity;
+            new Vector2(0, (-1.15f + 1.1f * p.Bobbing * p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
+            0.1f) + velocity;
         bounceCount = 0.7f;
         velocity *= 0.9f;
     }

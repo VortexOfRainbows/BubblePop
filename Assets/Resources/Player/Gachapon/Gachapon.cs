@@ -183,7 +183,7 @@ public class Gachapon : Body
             else
                 FaceR.sprite = altFaces[0];
         }
-        toMouse2.x += Mathf.Sign(toMouse2.x) * 4;
+        toMouse2.x += Mathf.Sign(toMouse2.x) * 6;
         float toMouseR = toMouse2.ToRotation();
         Vector2 looking = new Vector2(0.16f, 0).RotatedBy(toMouseR);
         looking.y *= 0.8f;

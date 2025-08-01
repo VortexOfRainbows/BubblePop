@@ -13,11 +13,11 @@ public class Crystal : Accessory
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         offset = Vector2.zero;
-        scale = 2f;
+        scale = 2.4f;
     }
     protected override string Name()
     {
-        return "Chaotic Emeralds";
+        return "Wishing Emerald";
     }
     protected override string Description()
     {
@@ -35,7 +35,7 @@ public class Crystal : Accessory
     protected override void AnimationUpdate()
     {
         transform.localScale = new Vector3(p.Body.transform.localScale.x * (p.Body.Flipped ? -1 : 1), p.Body.transform.localScale.y, p.Body.transform.localScale.z);
-        transform.localPosition = Vector3.Lerp(transform.localPosition, p.Body.transform.localPosition, 0.3f);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, p.Body.transform.localPosition + new Vector3(0, .06f, 0), 0.3f);
         transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, Vector3.zero, 0.05f);
         bounceCount = 0.7f;
         velocity *= 0.9f;
