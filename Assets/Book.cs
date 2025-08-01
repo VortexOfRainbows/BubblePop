@@ -20,8 +20,8 @@ public class Book : Weapon
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<EternalBubbles>();
-        powerPool.Add<Shotgun>();
+        //powerPool.Add<EternalBubbles>();
+        //powerPool.Add<Shotgun>();
         //powerPool.Add<ChargeShot>();
         //powerPool.Add<BubbleBlast>();
         //powerPool.Add<SoapySoap>();
@@ -142,7 +142,7 @@ public class Book : Weapon
                     else
                         JustOpened = false;
                     ++TotalBalls;
-                    float speed = 4 + player.FasterBulletSpeed * 0.4f;
+                    float speed = 3.3f + player.FasterBulletSpeed * 0.33f;
                     Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand);
                 }
             }
@@ -171,7 +171,7 @@ public class Book : Weapon
                     else
                         JustOpened = false;
                     ++TotalBalls;
-                    float speed = 12 + player.FasterBulletSpeed * 1.2f;
+                    float speed = 12.5f + player.FasterBulletSpeed * 1.25f;
                     Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand);
                 }
             }

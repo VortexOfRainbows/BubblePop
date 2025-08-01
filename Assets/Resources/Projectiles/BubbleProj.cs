@@ -246,7 +246,7 @@ public class ThunderBubble : Projectile
         Damage = 1;
         Penetrate = -1;
         Friendly = true;
-        immunityFrames = 25;
+        immunityFrames = 22;
     }
     public override void AI()
     {

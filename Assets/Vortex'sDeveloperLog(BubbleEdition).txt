@@ -11,16 +11,15 @@ Need to do:
 1. Improve UI and add UNLOCK SCREEN *** (maximum importance)
 	1. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 2. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
-3. Thought Bubble Weapon (spell book)
-4. More descriptive pause and select screen
-5. Integrate Settings and compendium into the default pause stuff
-6. Compendium to showcase description variants
-7. Light bulb breaks on tiles (Should not do that)
-8. Fix Leonard swarm wave 15 and 20
+3. More descriptive pause and select screen
+4. Integrate Settings and compendium into the default pause stuff
+5. Compendium to showcase description variants
+6. Light bulb breaks on tiles (Should not do that)
+7. Fix Leonard swarm wave 15 and 20
 	1. Nerf other director leonard spawns, and nerf scaling rate in general (maybe just nerf leonard)
-9. Make calculator homing snappier
-10. Rework damage to be floating point (and adjust snake-eyes, thought bubble thunder, thereafter)
-11. Make light beams only hit specifically the enemy it was meant to target
+8. Make calculator homing snappier
+9. Rework damage to be floating point (and adjust snake-eyes, thought bubble thunder, thereafter)
+10. Make light beams only hit specifically the enemy it was meant to target
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their size (white)
@@ -30,7 +29,7 @@ Ideas for Thunder Primary on Thought Bubble:
 	Right now it gets stuffed out occasionally (maybe make it not trigger immunity at all, but only attack at certain intervals)
 	5. Alternative ideas for primary/altfire: tiny lightning bubbles with no closing book interaction or one click mode launches the same projectiles but at varied velocity.
 	6. Power up that makes lightning jump between enemies (purple)
-
+	7. Power up that surrounds the lightning with solar orbs that fire beams at nearby enemies (yellow)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
