@@ -16,9 +16,8 @@ Need to do:
 5. Compendium to showcase description variants
 6. Light bulb breaks on tiles (Should not do that)
 7. Make calculator homing snappier
-8. Rework damage to be floating point (and adjust snake-eyes, thought bubble thunder, thereafter)
-9. Make light beams only hit specifically the enemy it was meant to target
-10. Put in refreshed character art by Sam
+8. Make light beams only hit specifically the enemy it was meant to target
+9. Put in refreshed character art by Sam
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their size (white)
@@ -43,6 +42,8 @@ Done:
 5. Director now gains 2 * (wave num) bonus credits on rounds that are multiplies of 5, and swarm cards are only converted on rounds 25+ and only have a cost multiplier of 0 -> 0.5. This should keep those waves special, but make it not as luck based.
 6. Slight nerfs to enemy scaling rates
 7. Some more book animation changes and file reorganization
+8. Snake eyes now increases damage of poison by stacking, rather than duration
+	1. It may also deal the killing blow now
 
 7/30/25
 1. Reflection rarity is now legendary

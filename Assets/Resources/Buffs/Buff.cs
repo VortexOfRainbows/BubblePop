@@ -96,12 +96,13 @@ public class Poison : Buff
     {
         if (e is Enemy enemy)
         {
+            float damage = 4 + e.MaxLife * 0.05f + Player.Instance.SnakeEyes;
+            float tickRate = Mathf.Min(1, Mathf.Max(0.25f, 20f / damage));
             dot += Time.fixedDeltaTime;
-            while(dot >= 0.25f)
+            while (dot >= tickRate / 2f)
             {
-                if(enemy.Life > 1)
-                    enemy.Injure(1, 2, new Color(0.8f, 0.27f, 0.9f));
-                dot -= 0.75f;
+                enemy.Injure(damage / initiallyAppliedDuration * tickRate, 2, new Color(0.8f, 0.27f, 0.9f));
+                dot -= tickRate;
             }
         }
     }

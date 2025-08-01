@@ -145,7 +145,7 @@ public class Projectile : MonoBehaviour
             {
                 if (poison >= 81 || Utils.RandFloat(1) < 0.19f + poison * 0.01f)
                 {
-                    float duration = 0.75f + 0.75f * poison;
+                    float duration = 10;
                     target.AddBuff<Poison>(duration);
                 }
             }
