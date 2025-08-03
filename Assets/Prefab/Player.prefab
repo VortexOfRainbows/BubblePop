@@ -112,17 +112,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Visual: {fileID: 2904879408648245512}
   UniversalImmuneFrames: 0
-  Life: 10
-  MaxLife: -1
   DamageTaken: 0
   SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 0}
-  BuffIconParent: {fileID: 0}
-  Animator: {fileID: 6147547588852434854}
-  bonusBubbles: 0
-  MainCamera: {fileID: 0}
-  abilityTimer: 0
   ChargeShotDamage: 0
   ShotgunPower: 0
   DashSparkle: 0
@@ -142,18 +135,20 @@ MonoBehaviour:
   SpentBonusLives: 0
   BubbleTrail: 0
   Coalescence: 0
+  OldCoalescence: 0
   LuckyStar: 0
   TrailOfThoughts: 0
   Magnet: 0
   LightSpear: 0
   LightChainReact: 0
   BrainBlast: 0
-  SnakeEyes: 0
+  RecursiveSubspaceLightning: 0
   Refraction: 0
   RollDex: 0
   RollInit: 0
   RollChar: 0
   RollPerc: 0
+  SnakeEyes: 0
   AbilityRecoverySpeed: 1
   AbilityRecoverySpeedMult: 1
   MoveSpeedMod: 1
@@ -165,6 +160,12 @@ MonoBehaviour:
   BubbleShields: 0
   ImmunityFrameMultiplier: 1
   ShieldImmunityFrameMultiplier: 1
+  Life: 10
+  MaxLife: -1
+  Animator: {fileID: 6147547588852434854}
+  bonusBubbles: 0
+  MainCamera: {fileID: 0}
+  abilityTimer: 0
 --- !u!50 &3216590746651522342
 Rigidbody2D:
   serializedVersion: 4
@@ -423,10 +424,6 @@ PrefabInstance:
     - target: {fileID: 822516308599803311, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 822516308599803311, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 822516308599803311, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
       propertyPath: m_LocalPosition.z
