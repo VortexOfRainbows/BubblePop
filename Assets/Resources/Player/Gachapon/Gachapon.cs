@@ -185,11 +185,11 @@ public class Gachapon : Body
         }
         toMouse2.x += Mathf.Sign(toMouse2.x) * 6;
         float toMouseR = toMouse2.ToRotation();
-        Vector2 looking = new Vector2(0.16f, 0).RotatedBy(toMouseR);
-        looking.y *= 0.8f;
+        Vector2 looking = new Vector2(0.15f, 0).RotatedBy(toMouseR);
+        looking.y *= 0.75f;
         if (looking.x < 0)
             toMouseR += Mathf.PI;
-        Vector2 pos = new Vector2(0.08f * p.Direction, 0.3f) + looking;
+        Vector2 pos = new Vector2(0.08f * p.Direction, 0.35f) + looking;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
         FaceR.flipX = toMouse.x > 0;

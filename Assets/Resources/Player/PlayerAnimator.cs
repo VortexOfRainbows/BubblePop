@@ -27,6 +27,8 @@ public class PlayerAnimator : MonoBehaviour
         Bobbing = BobbingUpdate();
         if (Mathf.Abs(rb.velocity.x) > 0.1f)
             lastVelo.x = rb.velocity.x;
+        else if (lastVelo.x == 0)
+            lastVelo.x = 0.01f;
         lastVelo.y = rb.velocity.y;
     }
     public float BobbingUpdate()

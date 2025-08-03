@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class BubblemancerHat : Hat
 {
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        offset = new Vector2(0.24f, -0.2f);
+        scale = 0.925f;
+        rotation = 15f;
+    }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
@@ -18,11 +24,11 @@ public class BubblemancerHat : Hat
     protected override void AnimationUpdate()
     {
         spriteRender.flipX = !p.Body.Flipped;
-        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, p.MoveDashRotation(), 0.2f));
+        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, p.MoveDashRotation(), 0.1f));
         velocity = Vector2.Lerp(velocity, Vector2.zero, 0.2f);
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition, 
-            new Vector2(0, (-0.3f + 0.8f * p.Bobbing * p.squash - 0.2f * (1 - p.squash))).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
-            0.06f) + velocity;
+            new Vector2(0, (-0.3f + 0.8f * p.Bobbing * p.squash - 0.1f * (1 - p.squash))).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
+            0.1f) + velocity;
     }
     protected override void DeathAnimation()
     {

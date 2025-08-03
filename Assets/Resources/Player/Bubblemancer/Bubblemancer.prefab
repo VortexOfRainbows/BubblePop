@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 9ad5c53aa74f86f4c83da60ea77f89e6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.9490196}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
@@ -224,5 +224,5 @@ MonoBehaviour:
   LastSelectedHat: -1
   LastSelectedAcc: -1
   LastSelectedWep: -1
-  PrimaryColor: {r: 1, g: 1, b: 1, a: 0.8}
+  PrimaryColor: {r: 1, g: 1, b: 1, a: 0.9019608}
   FaceR: {fileID: 4116895871933785455}

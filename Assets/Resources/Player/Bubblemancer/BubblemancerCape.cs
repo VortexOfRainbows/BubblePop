@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class BubblemancerCape : Accessory
 {
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        offset = new Vector2(0.1f, 0.9f);
+        scale *= 0.85f;
+    }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
     public override void Init()
     {
@@ -11,7 +16,7 @@ public class BubblemancerCape : Accessory
     }
     protected Vector3 RightCapeDefaultPos;
     protected Vector3 LeftCapeDefaultPos;
-    protected virtual Vector2 CapeScale => new Vector2(0.73f, 0.67f);
+    protected virtual Vector2 CapeScale => new Vector2(0.925f, 0.975f);
     protected float RightInwardAnimDuringDash = 0.3f;
     protected float LeftInwardAnimDuringDash = 0.425f;
     protected float DashStretchAmt = 0.875f;
@@ -40,15 +45,15 @@ public class BubblemancerCape : Accessory
 
         float dashFactorL = 0.8f - p.squash + p.Bobbing * 0.2f;
         float dashFactorR = 0.8f - p.squash + p.Bobbing * 0.3f;
-        CapeR.transform.localPosition = new Vector3((RightCapeDefaultPos.x + RightInwardAnimDuringDash * dashFactorR) * facingDir, RightCapeDefaultPos.y);// + toMouse.x, 0, 0);
-        CapeR.transform.localScale = new Vector3(0.9f + toMouse.x * 0.75f + 0.1f * toMouse.x * facingDir, 1, 1);
-        CapeL.transform.localPosition = new Vector3((LeftCapeDefaultPos.x - LeftInwardAnimDuringDash * dashFactorL) * facingDir, LeftCapeDefaultPos.y);// + toMouse.x + facingDir, 0, 0);
-        CapeL.transform.localScale = new Vector3(0.9f - toMouse.x * 0.9f + 0.1f * toMouse.x * facingDir, 1, 1);
+        CapeR.transform.localPosition = new Vector3((RightCapeDefaultPos.x + RightInwardAnimDuringDash * dashFactorR) * facingDir + 0.05f * toMouse.x * facingDir, RightCapeDefaultPos.y);// + toMouse.x, 0, 0);
+        CapeR.transform.localScale = new Vector3(1.05f + toMouse.x * 0.3f, 1, 1);
+        CapeL.transform.localPosition = new Vector3((LeftCapeDefaultPos.x - LeftInwardAnimDuringDash * dashFactorL) * facingDir + 0.05f * facingDir, LeftCapeDefaultPos.y);// + toMouse.x + facingDir, 0, 0);
+        CapeL.transform.localScale = new Vector3(1.1f - toMouse.x * 0.45f, 1, 1);
 
         //float addedXOffset = 0.4f * Mathf.Sin(MimicHatEulerZ * Mathf.Deg2Rad);
         CapeL.transform.eulerAngles = new Vector3(0, 0, 15f * dashFactorL * facingDir);
         CapeR.transform.eulerAngles = new Vector3(0, 0, -25 * dashFactorR * facingDir);
-        CapeB.transform.localPosition = new Vector2(Mathf.Lerp(-0.2f, 0.6f, 1 - p.squash) * toMouse.x * facingDir, -.25f);
+        CapeB.transform.localPosition = new Vector2(-0.05f * facingDir -0.05f * toMouse.x * facingDir, -.125f);
         //Debug.Log(CapeB.transform.localPosition.x);
         Vector2 scale = new Vector2((1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash);
         //if its 90% or 270%, we want the x scale reduced

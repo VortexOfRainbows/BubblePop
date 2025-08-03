@@ -29,7 +29,7 @@ public partial class Player : Entity
     public Accessory Accessory { get => Animator.Accessory; set => Animator.Accessory = value; }
     public PlayerAnimator Animator;
     public Rigidbody2D rb => Animator.rb;
-    public float SquashAmt { get; private set; } = 0.45f;
+    public float SquashAmt { get; private set; } = 0.6f;
     private float DeathKillTimer { get => Animator.DeathKillTimer; set => Animator.DeathKillTimer = value; }
     #endregion
     public bool IsDead => DeathKillTimer > 0;

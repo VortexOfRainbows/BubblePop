@@ -28,11 +28,6 @@ public class Bubblemancer : Body
         {
             Dash(ref playerVelo, moveSpeed);
         }
-        if (playerVelo.magnitude <= player.MaxSpeed + 12f)
-        {
-            float r = Mathf.LerpAngle(FaceR.transform.eulerAngles.z, 0, 0.04f);
-            FaceR.transform.eulerAngles = new Vector3(0, 0, r);
-        }
     }
     public void Dash(ref Vector2 velocity, Vector2 moveSpeed)
     {
@@ -41,16 +36,31 @@ public class Bubblemancer : Body
         velocity = velocity * player.MaxSpeed + moveSpeed * speed;
         p.squash = player.SquashAmt;
         spriteRender.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
-        FaceR.transform.eulerAngles = new Vector3(0, 0, p.Direction < 0 ? (Mathf.PI +velocity.ToRotation()) * Mathf.Rad2Deg : velocity.ToRotation() * Mathf.Rad2Deg);
+        FaceR.transform.eulerAngles = new Vector3(0, 0, p.Direction < 0 ? (Mathf.PI + velocity.ToRotation()) * Mathf.Rad2Deg : velocity.ToRotation() * Mathf.Rad2Deg);
         AudioManager.PlaySound(SoundID.Dash.GetVariation(3), transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
         player.OnDash(velocity);
     }
     public override void FaceUpdate()
     {
         Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
-        Vector2 pos = new Vector2(0.2f * p.Direction, 0) + toMouse.normalized * 0.2f;
+        Vector2 pos = new Vector2(0.175f * p.Direction, 0) + toMouse.normalized * 0.175f;
         pos.y *= 0.7f;
-        Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.05f);
+        pos *= p.squash;
+
+        if (player.rb.velocity.magnitude < player.MaxSpeed + 11.5f * player.MoveSpeedMod)
+        {
+            float r = Mathf.LerpAngle(FaceR.transform.eulerAngles.z, 0, 0.0425f);
+            FaceR.transform.eulerAngles = new Vector3(0, 0, r);
+        }
+        else
+        {
+            float r = player.rb.velocity.ToRotation();
+            FaceR.transform.eulerAngles = new Vector3(0, 0, p.Direction < 0 ? (Mathf.PI + r) * Mathf.Rad2Deg : r * Mathf.Rad2Deg);
+            pos *= 0.5f;
+            pos += new Vector2(0.0f, -0.3f * p.Direction).RotatedBy(r);
+        }
+
+        Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.065f);
         FaceR.flipX = !spriteRender.flipY;
     }
 }
