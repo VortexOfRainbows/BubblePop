@@ -5,6 +5,7 @@ public class Bulb : Hat
     public Sprite OnBulb;
     public Sprite OffBulb;
     public SpriteRenderer light2d;
+    protected float bounceCount = 0.7f;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
@@ -43,7 +44,6 @@ public class Bulb : Hat
             0.25f);
         bounceCount = 0.7f;
     }
-    private float bounceCount = 0.7f;
     protected override void DeathAnimation()
     {
         float toBody = transform.localPosition.y - p.Body.transform.localPosition.y;

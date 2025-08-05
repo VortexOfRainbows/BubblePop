@@ -19,6 +19,11 @@ public class Equipment : MonoBehaviour
     private static List<PowerUp> PowerPool = new();
     private string InternalName = null;
     public List<GameObject> SubEquipment = new();
+    /// <summary>
+    /// Only used for equipment UI boxes to help match their values to their original prefab after the original prefabs generates some values during runtime.
+    /// The most obvious example of this is the index in the all-equipment pool
+    /// If this is changed for default prefabs, equips may have trouble saving.
+    /// </summary>
     public Equipment OriginalPrefab = null;
     public SpriteRenderer spriteRender;
     public Vector2 velocity;

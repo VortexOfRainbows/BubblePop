@@ -120,12 +120,14 @@ public class CharacterSelect : MonoBehaviour
             {
                 Equipment equip = PrimaryEquipments[j][i].GetComponent<Equipment>();
                 equip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
+                Debug.Log($"Equipment: <color=#FFFF00>{equip.GetName()}</color> has been added into the pool at index {equip.IndexInTheAllEquipPool}");
                 AllEquipmentsList.Add(equip.gameObject);
                 if (equip.SubEquipment != null)
                 {
                     for(int k = 0; k < equip.SubEquipment.Count; k++)
                     {
                         equip.SubEquipment[k].GetComponent<Equipment>().IndexInTheAllEquipPool = AllEquipmentsList.Count;
+                        Debug.Log($"Equipment: <color=#FF0000>{equip.SubEquipment[k].GetComponent<Equipment>().GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
                         AllEquipmentsList.Add(equip.SubEquipment[k]);
                     }
                 }
