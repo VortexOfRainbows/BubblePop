@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: e160e06f6faaa1d41bef273fd4a86171, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 32.756836, y: 17.609999}
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b0dd6bf309c082478df45be4e4e133f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  p: {fileID: 0}
   SubEquipment: []
   OriginalPrefab: {fileID: 0}
   spriteRender: {fileID: 8016481760766100851}
@@ -106,7 +107,7 @@ MonoBehaviour:
   isSubEquipment: 0
   OnBulb: {fileID: 21300000, guid: e160e06f6faaa1d41bef273fd4a86171, type: 3}
   OffBulb: {fileID: 21300000, guid: 1307fb9504737084b8ef9c5138c73d45, type: 3}
-  light2d: {fileID: 5303305937045357482}
+  light2d: {fileID: 6957408242439119121}
 --- !u!1001 &1366926845445200623
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121,11 +122,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1401233514221441667, guid: 1e9ee62f9eec24c40a97716decb42181, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.6
+      value: 0.66
       objectReference: {fileID: 0}
     - target: {fileID: 1401233514221441667, guid: 1e9ee62f9eec24c40a97716decb42181, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1401233514221441667, guid: 1e9ee62f9eec24c40a97716decb42181, type: 3}
       propertyPath: m_LocalRotation.w
@@ -169,14 +170,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1401233514221441667, guid: 1e9ee62f9eec24c40a97716decb42181, type: 3}
   m_PrefabInstance: {fileID: 1366926845445200623}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5303305937045357482 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6584663013016197445, guid: 1e9ee62f9eec24c40a97716decb42181, type: 3}
+--- !u!212 &6957408242439119121 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8247746054217382910, guid: 1e9ee62f9eec24c40a97716decb42181, type: 3}
   m_PrefabInstance: {fileID: 1366926845445200623}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

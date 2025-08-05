@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -102,22 +103,22 @@ public class LightSpearCaster : Projectile
     {
         return false;
     }
-    public Light2D Glow;
     public Enemy ignore;
     public override void Init()
     {
-        Destroy(SpriteRendererGlow);
-        Glow = Instantiate(Resources.Load<GameObject>("Projectiles/LightBulbGlow"), transform).GetComponent<Light2D>();
-        Glow.transform.localPosition = new Vector3(0, 0.6f, 0);
-        Glow.transform.localScale = new Vector3(1, 1, 1);
-        Glow.intensity = 0;
+        SpriteRendererGlow.transform.localPosition = new Vector3(0, 0.66f, -1);
+        SpriteRendererGlow.transform.localScale = Vector3.one * 1.6f;
+        SpriteRendererGlow.color = new Color(0.9960784f, 0.9764706f, 0.2313726f, 0f);
+        SpriteRendererGlow.sprite = Main.Shadow;
+        SpriteRendererGlow.sortingOrder = 5;
+        SpriteRendererGlow.material = Resources.Load<Material>("Materials/Additive");
         transform.localScale = Vector3.zero;
         SpriteRenderer.color = new Color(1, 1, 1, 0);
 
         transform.localScale = Vector3.one;
-        RB.rotation = -20f;
+        RB.rotation = 20f;
         SpriteRenderer.sprite = Player.Instance.Hat.spriteRender.sprite;
-        SpriteRendererGlow.enabled = false;
+        SpriteRenderer.flipX = false;
         Damage = 0;
         Friendly = false;
         Hostile = false;
@@ -136,13 +137,13 @@ public class LightSpearCaster : Projectile
             {
                 if (!HasShot)
                 {
-                    Vector2 shootFromPos = Glow.transform.position;
+                    Vector2 shootFromPos = SpriteRendererGlow.transform.position;
                     if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new List<Enemy> { ignore }, (int)Data1 - 1, bonusRange: 5 + 1f * Player.Instance.LightChainReact))
                         RB.velocity -= norm * 6;
                     HasShot = true;
                 }
                 float percent = (timer - speed) / speed * 5;
-                Glow.intensity = 0.9f * (1 - percent);
+                SpriteRendererGlow.color = SpriteRendererGlow.color.WithAlpha(0.9f * (1 - percent) * 0.2f);
                 SpriteRenderer.color = new Color(1, 1, 1, 1 - percent);
                 transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 0.03f);
                 if (percent >= 1)
@@ -153,16 +154,17 @@ public class LightSpearCaster : Projectile
         }
         if (timer < speed)
         {
-            Glow.intensity = Mathf.Lerp(Glow.intensity, 0.9f, 0.06f);
+            SpriteRendererGlow.color = SpriteRendererGlow.color.WithAlpha(Mathf.Lerp(SpriteRendererGlow.color.a, 0.18f, 0.06f));
             SpriteRenderer.color = new Color(1, 1, 1, Mathf.Lerp(SpriteRenderer.color.a, 1, 0.06f));
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.06f);
         }
     }
     public override void OnKill()
     {
+        Color c = new(1, 1, .9f, 0.5f);
         for (int j = 0; j < 15; ++j)
         {
-            ParticleManager.NewParticle(Glow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, Glow.color * 0.5f);
+            ParticleManager.NewParticle(SpriteRendererGlow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, c);
         }
     }
 }

@@ -1,20 +1,16 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using static UnityEngine.GraphicsBuffer;
 public class Bulb : Hat
 {
     public Sprite OnBulb;
     public Sprite OffBulb;
-    public Light2D light2d;
+    public SpriteRenderer light2d;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
         scale *= 2.2f;
-        offset.y -= 0.25f;
+        offset.y -= 0.3f;
         offset.x = 0.075f;
         light2d.gameObject.SetActive(false);
     }
@@ -36,9 +32,9 @@ public class Bulb : Hat
     protected override void AnimationUpdate()
     {
         float r = p.MoveDashRotation();
-        spriteRender.flipX = p.Body.Flipped;
+        spriteRender.flipX = !p.Body.Flipped;
         spriteRender.sprite = OnBulb;
-        light2d.intensity = Mathf.Lerp(light2d.intensity, 1, 0.08f);
+        light2d.color = light2d.color.WithAlpha(Mathf.Lerp(light2d.color.a, 0.2f, 0.08f));
         light2d.gameObject.SetActive(true);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r - 10 * p.Direction, 0.2f));
         velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
@@ -70,9 +66,9 @@ public class Bulb : Hat
         }
         bool on = Mathf.Abs(velocity.y) > 0.032f;
         if (on)
-            light2d.intensity = Mathf.Lerp(light2d.intensity, 1, 0.08f);
+            light2d.color = light2d.color.WithAlpha(Mathf.Lerp(light2d.color.a, 0.2f, 0.08f));
         if (!on)
-            light2d.intensity = Mathf.Lerp(light2d.intensity, 0, 0.08f);
+            light2d.color = light2d.color.WithAlpha(Mathf.Lerp(light2d.color.a, 0.0f, 0.08f));
         spriteRender.sprite = on ? OnBulb : OffBulb;
         light2d.gameObject.SetActive(on);
         transform.localPosition = (Vector2)transform.localPosition + velocity;

@@ -13,7 +13,7 @@ public class Crystal : Accessory
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         offset = Vector2.zero;
-        scale = 2.4f;
+        scale = 2.0f;
     }
     protected override string Name()
     {

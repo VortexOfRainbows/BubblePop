@@ -13,6 +13,8 @@ public class BubblemancerCape : Accessory
     {
         RightCapeDefaultPos = CapeR.transform.localPosition;
         LeftCapeDefaultPos = CapeL.transform.localPosition;
+        DeathLeftMult = 1.25f;
+        DeathRightMult = 1.15f;
     }
     protected Vector3 RightCapeDefaultPos;
     protected Vector3 LeftCapeDefaultPos;
@@ -21,6 +23,8 @@ public class BubblemancerCape : Accessory
     protected float LeftInwardAnimDuringDash = 0.425f;
     protected float DashStretchAmt = 0.875f;
     protected float LookingAtMouseScale = 0.5f;
+    protected float DeathLeftMult = 1f;
+    protected float DeathRightMult = 1f;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<Magnet>();
@@ -38,6 +42,7 @@ public class BubblemancerCape : Accessory
     public SpriteRenderer CapeRRend;
     protected override void AnimationUpdate()
     {
+        CapeB.transform.localScale = new Vector3(Mathf.Abs(CapeB.transform.localScale.x), CapeB.transform.localScale.y, CapeB.transform.localScale.z);
         //Time.timeScale = 0.2f;
         Vector2 toMouse = Utils.MouseWorld - (Vector2)p.Body.transform.position;
         float facingDir = p.Direction;
@@ -45,9 +50,9 @@ public class BubblemancerCape : Accessory
 
         float dashFactorL = 0.8f - p.squash + p.Bobbing * 0.2f;
         float dashFactorR = 0.8f - p.squash + p.Bobbing * 0.3f;
-        CapeR.transform.localPosition = new Vector3((RightCapeDefaultPos.x + RightInwardAnimDuringDash * dashFactorR) * facingDir + 0.05f * toMouse.x * facingDir, RightCapeDefaultPos.y);// + toMouse.x, 0, 0);
+        CapeR.transform.localPosition = new Vector3((RightCapeDefaultPos.x + RightInwardAnimDuringDash * dashFactorR) + 0.05f * toMouse.x, RightCapeDefaultPos.y);// + toMouse.x, 0, 0);
         CapeR.transform.localScale = new Vector3(1.05f + toMouse.x * 0.3f, 1, 1);
-        CapeL.transform.localPosition = new Vector3((LeftCapeDefaultPos.x - LeftInwardAnimDuringDash * dashFactorL) * facingDir + 0.05f * facingDir, LeftCapeDefaultPos.y);// + toMouse.x + facingDir, 0, 0);
+        CapeL.transform.localPosition = new Vector3((LeftCapeDefaultPos.x - LeftInwardAnimDuringDash * dashFactorL), LeftCapeDefaultPos.y);// + toMouse.x + facingDir, 0, 0);
         CapeL.transform.localScale = new Vector3(1.1f - toMouse.x * 0.45f, 1, 1);
 
         //float addedXOffset = 0.4f * Mathf.Sin(MimicHatEulerZ * Mathf.Deg2Rad);
@@ -61,43 +66,20 @@ public class BubblemancerCape : Accessory
         scale.x += 1;
         CapeB.transform.localScale = Vector2.Lerp(CapeB.transform.localScale, scale * CapeScale, 0.5f);
         CapeB.transform.eulerAngles = new Vector3(0, 0, 0);
-
-        if (facingDir < 0)
-        {
-            CapeRRend.flipX = false;
-            CapeLRend.flipX = false;
-            CapeBRend.flipX = false;
-        }
-        else
-        {
-            CapeRRend.flipX = true;
-            CapeLRend.flipX = true;
-            CapeBRend.flipX = true;
-        }
+        CapeB.transform.localScale = new Vector3(Mathf.Abs(CapeB.transform.localScale.x) * facingDir, CapeB.transform.localScale.y, CapeB.transform.localScale.z);
     }
     protected override void DeathAnimation()
     {
+        CapeB.transform.localScale = new Vector3(Mathf.Abs(CapeB.transform.localScale.x), CapeB.transform.localScale.y, CapeB.transform.localScale.z);
         float facingDir = p.Direction;
-        CapeL.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(CapeL.transform.eulerAngles.z, 15 * facingDir, 0.1f));
-        CapeR.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(CapeR.transform.eulerAngles.z, -25 * facingDir, 0.1f));
-        CapeR.transform.localPosition = Vector3.Lerp(CapeR.transform.localPosition, new Vector3(-0.8f * facingDir, 0), 0.1f);
-        CapeL.transform.localPosition = Vector3.Lerp(CapeL.transform.localPosition, new Vector3(1f * facingDir, 0), 0.1f);
-        CapeL.transform.localScale = Vector3.Lerp(CapeL.transform.localScale, new Vector3(1f, .9f, 1), 0.1f);
-        CapeR.transform.localScale = Vector3.Lerp(CapeR.transform.localScale, new Vector3(1f, .9f, 1), 0.1f);
-        CapeB.transform.localScale = Vector3.Lerp(CapeB.transform.localScale, new Vector3(1.3f, .4f, 1) * 0.9f, 0.1f);
+        CapeL.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(CapeL.transform.eulerAngles.z, 15, 0.1f));
+        CapeR.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(CapeR.transform.eulerAngles.z, -25, 0.1f));
+        CapeR.transform.localPosition = Vector3.Lerp(CapeR.transform.localPosition, new Vector3(-DeathRightMult, 0), 0.1f);
+        CapeL.transform.localPosition = Vector3.Lerp(CapeL.transform.localPosition, new Vector3(DeathLeftMult, 0), 0.1f);
+        CapeL.transform.localScale = Vector3.Lerp(CapeL.transform.localScale, Vector3.one, 0.1f);
+        CapeR.transform.localScale = Vector3.Lerp(CapeR.transform.localScale, Vector3.one, 0.1f);
+        CapeB.transform.localScale = Vector3.Lerp(CapeB.transform.localScale, new Vector3(1.25f, .55f, 1) * 0.9f, 0.1f);
         CapeB.transform.localPosition = Vector3.Lerp(CapeB.transform.localPosition, new Vector3(0f, CapeB.transform.localPosition.y, 0), 0.1f);
-
-        if (facingDir < 0)
-        {
-            CapeRRend.flipX = false;
-            CapeLRend.flipX = false;
-            CapeBRend.flipX = false;
-        }
-        else
-        {
-            CapeRRend.flipX = true;
-            CapeLRend.flipX = true;
-            CapeBRend.flipX = true;
-        }
+        CapeB.transform.localScale = new Vector3(Mathf.Abs(CapeB.transform.localScale.x) * facingDir, CapeB.transform.localScale.y, CapeB.transform.localScale.z);
     }
 }

@@ -15,7 +15,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] public Hat Hat;
     [SerializeField] public Accessory Accessory;
     public SpriteRenderer BodyR => Body.spriteRender;
-    public float Direction => Mathf.Sign(lastVelo.x);
+    public float Direction => Utils.SignNoZero(lastVelo.x);
     public Vector2 lastVelo;
     private float walkTimer = 0;
     public float DeathKillTimer = 0;

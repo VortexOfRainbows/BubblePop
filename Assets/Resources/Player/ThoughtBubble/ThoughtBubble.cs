@@ -28,7 +28,6 @@ public class ThoughtBubble : Body
         PrimaryColor = new Color(1.00f, 1.05f, 1.1f);
         Tails = null;
     }
-    public SpriteRenderer MouthR;
     protected override float AngleMultiplier => 0.1f;
     protected override float RotationSpeed => 1f;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
@@ -50,15 +49,14 @@ public class ThoughtBubble : Body
         Vector2 toMouse2 = toMouse.normalized;
         toMouse2.x += Mathf.Sign(toMouse2.x) * 4;
         float toMouseR = toMouse2.ToRotation();
-        Vector2 looking = new Vector2(0.2f, 0).RotatedBy(toMouseR);
+        Vector2 looking = new Vector2(0.18f, 0).RotatedBy(toMouseR);
         looking.y *= 0.8f;
         if (looking.x < 0)
             toMouseR += Mathf.PI;
-        Vector2 pos = new Vector2(0.1f * p.Direction, 0.16f) + looking;
+        Vector2 pos = new Vector2(0.16f * p.Direction, 0.02f) + looking;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
-        FaceR.flipX = toMouse.x < 0;
-        MouthR.flipX = FaceR.flipX;
+        FaceR.flipX = toMouse.x > 0;
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {

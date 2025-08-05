@@ -157,6 +157,11 @@ public static class Utils
         color.a *= alphaMultiplier;
         return color;
     }
+    public static Color WithAlpha(this Color color, float alphaMultiplier)
+    {
+        color.a = alphaMultiplier;
+        return color;
+    }
     public static Transform LerpLocalScale(this Transform transform, Vector2 newScale, float t)
     {
         transform.localScale = Vector3.Lerp(transform.localScale, new Vector3( newScale.x, newScale.y, transform.localScale.z), t);
@@ -212,5 +217,11 @@ public static class Utils
         if (v.y > top)
             v.y = top;
         return v;
+    }
+    public static float SignNoZero(this float x)
+    {
+        if (x < 0)
+            return -1;
+        return 1;
     }
 }
