@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class PopUpTextUI : MonoBehaviour
 {
     public const int DefaultPopupDuration = 400;
@@ -167,7 +166,9 @@ public class PopUpTextUI : MonoBehaviour
             {
                 ReadyToRenderNormal = true;
                 if(!FollowMouse)
-                    transform.localPosition = new Vector3(1035, -150, 0);
+                {
+                    transform.localPosition = new Vector3(MainGameCanvas.GetComponent<RectTransform>().rect.width / 2 + 75, -150, 0);
+                }
             }
         }
         if(FollowMouse)

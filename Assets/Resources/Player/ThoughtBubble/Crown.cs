@@ -29,12 +29,11 @@ public class Crown : Bulb
     }
     protected override string Description()
     {
-        return "Start with 5 mitosis (temporary effect)";
+        return "Choice powers have 2 more options";
     }
-    public override void OnStartWith()
+    public override void EquipUpdate()
     {
-        for(int i = 0; i < 5; ++i)
-            PowerUp.Spawn<BubbleMitosis>(player.transform.position, 0);
+        player.BonusChoices = true;
     }
     private float AnimationTimer = 0;
     protected override void AnimationUpdate()
@@ -50,7 +49,7 @@ public class Crown : Bulb
             0.25f);
         bounceCount = 0.7f;
         UpdateShards();
-        velocity *= 0.75f;
+        velocity *= 0.5f;
     }
     public void UpdateShards(float lerp = 0.1f)
     {
@@ -70,7 +69,7 @@ public class Crown : Bulb
             Shards[i].transform.localEulerAngles = Mathf.LerpAngle(Shards[i].transform.localEulerAngles.z, circular.x * -15, lerp) * Vector3.forward;
             Shards[i].transform.LerpLocalScale(Vector2.one * scale, lerp);
             Glows[i].color = Glows[i].color.WithAlpha(Mathf.Lerp(Glows[i].color.a, 1f, 0.08f));
-            velocities[i] = Vector2.Lerp(velocities[i], Vector2.zero, lerp);
+            velocities[i] *= 1 - lerp;
         }
     }
     protected override void DeathAnimation()

@@ -27,6 +27,7 @@ public partial class Player : Entity
     public Weapon Weapon { get => Animator.Weapon; set => Animator.Weapon = value; }
     public Hat Hat { get => Animator.Hat; set => Animator.Hat = value; }
     public Accessory Accessory { get => Animator.Accessory; set => Animator.Accessory = value; }
+    public Equipment[] Equips = new Equipment[4];
     public PlayerAnimator Animator;
     public Rigidbody2D rb => Animator.rb;
     public float SquashAmt { get; private set; } = 0.6f;
@@ -123,16 +124,22 @@ public partial class Player : Entity
         Animator.PostUpdate();
     }
     private float AttackUpdateTimer = 0;
+    public void FillEquipArray()
+    {
+        Equips[0] = Hat;
+        Equips[1] = Accessory;
+        Equips[2] = Weapon;
+        Equips[3] = Body;
+    }
     public override void OnFixedUpdate()
     {
+        FillEquipArray();
         if (Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.N))
             Main.DebugCheats = true;
         if (!HasRunStartingGear && !UIManager.StartingScreen)
         {
-            Hat.OnStartWith();
-            Accessory.OnStartWith();
-            Weapon.OnStartWith();
-            Body.OnStartWith();
+            foreach(Equipment e in Equips)
+                e.OnStartWith();
             HasRunStartingGear = true;
         }
         if (Main.DebugCheats)
@@ -147,10 +154,8 @@ public partial class Player : Entity
         if (!HasRunStartingGear)
         {
             MaxLife = Life = Shield = MaxShield = 0;
-            Body.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
-            Accessory.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
-            Weapon.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
-            Hat.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
+            foreach (Equipment e in Equips)
+                e.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
             PlayerStatUI.SetHeartsToPlayerLife();
         }
         UpdatePowerUps();
@@ -173,15 +178,12 @@ public partial class Player : Entity
                     Shield = TotalMaxShield;
                 PlayerStatUI.UpdateHearts(this);
             }
-            Hat.EquipUpdate();
-            Accessory.EquipUpdate();
-            Weapon.EquipUpdate();
-            Body.EquipUpdate();
+            BonusChoices = false;
+            foreach (Equipment e in Equips)
+                e.EquipUpdate();
             PostEquipUpdate();
-            Hat.PostEquipUpdate();
-            Accessory.PostEquipUpdate();
-            Weapon.PostEquipUpdate();
-            Body.PostEquipUpdate();
+            foreach (Equipment e in Equips)
+                e.PostEquipUpdate();
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 15f, 0.03f);
             MovementUpdate();
             if (Input.GetMouseButton(0))

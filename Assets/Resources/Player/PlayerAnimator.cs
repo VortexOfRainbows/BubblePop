@@ -10,10 +10,14 @@ public class PlayerAnimator : MonoBehaviour
     public float squash = 1f;
     public float Bobbing = 1f;
     public Rigidbody2D rb;
-    [SerializeField] public Body Body;
-    [SerializeField] public Weapon Weapon;
-    [SerializeField] public Hat Hat;
-    [SerializeField] public Accessory Accessory;
+    //[SerializeField] 
+    public Body Body;
+    //[SerializeField] 
+    public Weapon Weapon;
+    //[SerializeField] 
+    public Hat Hat;
+    //[SerializeField] 
+    public Accessory Accessory;
     public SpriteRenderer BodyR => Body.spriteRender;
     public float Direction => Utils.SignNoZero(lastVelo.x);
     public Vector2 lastVelo;

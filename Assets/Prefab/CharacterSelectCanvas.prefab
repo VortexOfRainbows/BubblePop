@@ -765,7 +765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1846035805060091531, guid: 2ce9c71ccaff46d4ab572289a6e2a847, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 75
+      value: 74.999756
       objectReference: {fileID: 0}
     - target: {fileID: 1846035805060091531, guid: 2ce9c71ccaff46d4ab572289a6e2a847, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -783,6 +783,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4678305020032328297, guid: 2ce9c71ccaff46d4ab572289a6e2a847, type: 3}
+      propertyPath: MainGameCanvas
+      value: 
+      objectReference: {fileID: 7563945110523091720}
     - target: {fileID: 8074187782986943187, guid: 2ce9c71ccaff46d4ab572289a6e2a847, type: 3}
       propertyPath: m_Name
       value: PowerupPopupDescriptionUI
@@ -1059,6 +1063,10 @@ PrefabInstance:
       propertyPath: myCanvas
       value: 
       objectReference: {fileID: 7563945110523091720}
+    - target: {fileID: 1950379708346814637, guid: 74c7df59d13d3104d9fe4eeeb3bbcb3b, type: 3}
+      propertyPath: myCanvas
+      value: 
+      objectReference: {fileID: 7563945110523091720}
     - target: {fileID: 2999316889034227654, guid: 74c7df59d13d3104d9fe4eeeb3bbcb3b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1167,11 +1175,23 @@ PrefabInstance:
       propertyPath: m_Name
       value: SelectPowerUpButtons
       objectReference: {fileID: 0}
+    - target: {fileID: 6307602000482024522, guid: 74c7df59d13d3104d9fe4eeeb3bbcb3b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7533545143721466830, guid: 74c7df59d13d3104d9fe4eeeb3bbcb3b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7596335114649352075, guid: 74c7df59d13d3104d9fe4eeeb3bbcb3b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8221130745503949892, guid: 74c7df59d13d3104d9fe4eeeb3bbcb3b, type: 3}
+      propertyPath: myCanvas
+      value: 
+      objectReference: {fileID: 7563945110523091720}
+    - target: {fileID: 9062230895734468521, guid: 74c7df59d13d3104d9fe4eeeb3bbcb3b, type: 3}
       propertyPath: myCanvas
       value: 
       objectReference: {fileID: 7563945110523091720}

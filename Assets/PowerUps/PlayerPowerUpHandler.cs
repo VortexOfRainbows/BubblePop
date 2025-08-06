@@ -73,6 +73,7 @@ public partial class Player : Entity
     public int TotalMaxLife { get; set; }
     public float ImmunityFrameMultiplier = 1.0f;
     public float ShieldImmunityFrameMultiplier = 1.0f;
+    public bool BonusChoices = false;
 
     private List<int> powers;
     private void PowerInit()
