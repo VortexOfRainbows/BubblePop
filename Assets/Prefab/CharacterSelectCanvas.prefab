@@ -683,6 +683,7 @@ MonoBehaviour:
   PowerUI: {fileID: 2147650587448257862}
   index: 0
   IsCheatButton: 1
+  HotkeyText: {fileID: 0}
 --- !u!1001 &801643889681841683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1544,6 +1545,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7558895275838473008, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
+      propertyPath: MyCanvas
+      value: 
+      objectReference: {fileID: 7563945110523091720}
     - target: {fileID: 8980551393198275346, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
       propertyPath: m_Name
       value: StartButton

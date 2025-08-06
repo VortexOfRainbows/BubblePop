@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
+    public static bool MouseHoveringOverButton { get; set; }
     public static int GameUpdateCount = 0;
     public const float SnakeEyeChance = 0.0278f;
     public static bool DebugCheats = false;

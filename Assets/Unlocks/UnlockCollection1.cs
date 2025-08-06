@@ -77,3 +77,25 @@ public class BubbleBirbUnlock10 : UnlockCondition
     }
     protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 10;
 }
+public class ThoughtBubbleWave15NoAttack : UnlockCondition
+{
+    public bool Completed = false;
+    public void SetComplete()
+    {
+        Completed = true;
+        SaveData();
+    }
+    public override string LockedText()
+    {
+        return $"Reach and complete wave 15 as Thought Bubble without using your weapon";
+    }
+    protected override bool IsUnlocked => Completed;
+    public override void SaveData()
+    {
+        PlayerData.SaveBool("ThoughtBubbleWave15NoAttack", Completed);
+    }
+    public override void LoadData()
+    {
+        Completed = PlayerData.GetBool("ThoughtBubbleWave15NoAttack");
+    }
+}

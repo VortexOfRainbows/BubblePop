@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PowerUpButton : MonoBehaviour
 {
@@ -11,6 +9,8 @@ public class PowerUpButton : MonoBehaviour
     [SerializeField] private int index = 0;
     public bool IsCheatButton = false;
     public bool Active => gameObject.activeSelf;
+    public TextMeshProUGUI HotkeyText;
+    private KeyCode Hotkey;
     public void Start()
     {
         if(!IsCheatButton)
@@ -28,6 +28,7 @@ public class PowerUpButton : MonoBehaviour
     public void OnButtonPress()
     {
         GrantPower();
+        Main.MouseHoveringOverButton = true;
     }
     public void GrantPower()
     {
@@ -38,6 +39,13 @@ public class PowerUpButton : MonoBehaviour
     public void FixedUpdate()
     {
         PowerUI.PickerElement = true;
+    }
+    public void Update()
+    {
+        if (Input.GetKeyDown(Hotkey) && PowerUp.PickingPowerUps)
+        {
+            GrantPower();
+        }
     }
     private bool SameTypeAsOthers()
     {
@@ -71,6 +79,7 @@ public class PowerUpButton : MonoBehaviour
                     break;
             }
         }
+        UpdateHotkey();
         PowerUI.TurnedOn();
         gameObject.SetActive(true);
     }
@@ -83,5 +92,57 @@ public class PowerUpButton : MonoBehaviour
     public void SetType(int type)
     {
         PowerUI.Index = type;
+    }
+    public void UpdateHotkey()
+    {
+        if(HotkeyText != null)
+        {
+            if (Player.Instance.BonusChoices)
+            {
+                if (index == 0)
+                {
+                    Hotkey = KeyCode.Alpha2;
+                    HotkeyText.text = "2";
+                }
+                if (index == 1)
+                {
+                    Hotkey = KeyCode.Alpha3;
+                    HotkeyText.text = "3";
+                }
+                if (index == 2)
+                {
+                    Hotkey = KeyCode.Alpha4;
+                    HotkeyText.text = "4";
+                }
+                if (index == 3)
+                {
+                    Hotkey = KeyCode.Alpha1;
+                    HotkeyText.text = "1";
+                }
+                if (index == 4)
+                {
+                    Hotkey = KeyCode.Alpha5;
+                    HotkeyText.text = "5";
+                }
+            }
+            else
+            {
+                if (index == 0)
+                {
+                    Hotkey = KeyCode.Alpha1;
+                    HotkeyText.text = "1";
+                }
+                if (index == 1)
+                {
+                    Hotkey = KeyCode.Alpha2;
+                    HotkeyText.text = "2";
+                }
+                if (index == 2)
+                {
+                    Hotkey = KeyCode.Alpha3;
+                    HotkeyText.text = "3";
+                }
+            }
+        }
     }
 }

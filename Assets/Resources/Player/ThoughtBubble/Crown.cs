@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UnityEditor.Timeline;
 using UnityEngine;
+
 public class Crown : Bulb
 {
     public override void Init()
@@ -11,7 +11,7 @@ public class Crown : Bulb
     public GameObject[] Shards;
     public SpriteRenderer[] Glows;
     private Vector2[] velocities;
-    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleWave15NoAttack>();
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         scale *= 1.4f;

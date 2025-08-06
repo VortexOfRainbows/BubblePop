@@ -315,6 +315,14 @@ public static class WaveDirector
         {
             EnemyScalingFactor += 0.05f;
         }
+        if(WaveNum >= 16)
+        {
+            if(Player.Instance.Body is ThoughtBubble && !Player.HasAttacked)
+            {
+                ThoughtBubbleWave15NoAttack t = UnlockCondition.Get<ThoughtBubbleWave15NoAttack>() as ThoughtBubbleWave15NoAttack;
+                t.SetComplete();
+            }
+        }
     }
     public static void GatherCredits()
     {

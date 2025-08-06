@@ -46,6 +46,7 @@ public partial class Player : Entity
     public float MaxSpeed => MoveSpeedMod * 6f;
     private bool HasRunStartingGear = false;
     public const float DashDefault = 25f;
+    public static bool HasAttacked = false;
     /// <summary>
     /// Shorthand for abilityTimer <= 0;
     /// </summary>
@@ -141,6 +142,7 @@ public partial class Player : Entity
             foreach(Equipment e in Equips)
                 e.OnStartWith();
             HasRunStartingGear = true;
+            HasAttacked = false;
         }
         if (Main.DebugCheats)
         {
@@ -186,10 +188,21 @@ public partial class Player : Entity
                 e.PostEquipUpdate();
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 15f, 0.03f);
             MovementUpdate();
-            if (Input.GetMouseButton(0))
-                Weapon.StartAttack(false);
-            else if (Input.GetMouseButton(1))
-                Weapon.StartAttack(true);
+            if(!Main.MouseHoveringOverButton)
+            {
+                if (Input.GetMouseButton(0))
+                {
+                    HasAttacked = true;
+                    Weapon.StartAttack(false);
+                }
+                else if (Input.GetMouseButton(1))
+                {
+                    HasAttacked = true;
+                    Weapon.StartAttack(true);
+                }
+            }
+            if (Main.GameUpdateCount % 100 == 0)
+                Debug.Log($"Has Attacked: {HasAttacked}");
             if (Weapon.IsAttacking())
             {
                 if(Weapon.IsPrimaryAttacking())
@@ -211,6 +224,7 @@ public partial class Player : Entity
         }
         MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
         ImmuneFlashing();
+        Main.MouseHoveringOverButton = false;
     }
     new public void Update()
     {
@@ -333,7 +347,7 @@ public partial class Player : Entity
     public void OnUseAbility()
     {
         int dex = RollDex;
-        Debug.Log(dex);
+        //Debug.Log(dex);
         if (dex > 0)
         {
             if (dex >= 81 || Utils.RandFloat(1) < 0.19f + dex * 0.01f)

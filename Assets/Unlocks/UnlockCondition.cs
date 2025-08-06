@@ -5,14 +5,6 @@ public abstract class UnlockCondition
 {
     public static bool ForceUnlockAll = false; //For the playtest, we will have everything unlocked
     public virtual PowerUp Power => null;
-    public static void SaveInt(string tag, int value)
-    {
-        PlayerData.SaveInt(tag, value);
-    }
-    public static int LoadInt(string tag)
-    {
-        return PlayerData.GetInt(tag);
-    }
     public static void SaveAllData()
     {
         if (Unlocks == null)

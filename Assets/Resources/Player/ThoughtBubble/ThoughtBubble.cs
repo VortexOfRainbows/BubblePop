@@ -154,10 +154,11 @@ public class ThoughtBubble : Body
         AudioManager.PlaySound(SoundID.Teleport, pos, 2f, 1);
         FinishedTeleport = true;
         int amt = (int)BrainBlastNum;
-        while (BrainBlastNum-- >= 1)
+        while (BrainBlastNum >= 1)
         {
             float speed = 5f + Player.Instance.FasterBulletSpeed * 2.5f + player.BrainBlast * Utils.RandFloat(1.5f, 2.5f);
-            Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.5f)), 0).RotatedBy((BrainBlastNum + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f));
+            Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.5f)), 0).RotatedBy((BrainBlastNum + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f)); 
+            --BrainBlastNum;
         }
     }
     public void UpdateTailPos(int i, ref Vector3 previousPos)

@@ -9,6 +9,7 @@ public class PricedButton : MonoBehaviour
     public GameObject StartButtonCoinVisual;
     public TextMeshProUGUI Text;
     public Image PylonVisual;
+    public Canvas MyCanvas;
     public bool CanAfford => (CoinManager.TotalEquipCost <= CoinManager.Savings || CoinManager.TotalEquipCost <= 0);
     public bool CanUse => (PylonVisual == null || Main.PlayerNearPylon);
     public void Update()
@@ -27,6 +28,11 @@ public class PricedButton : MonoBehaviour
         PylonUpdate();
         StartButtonCoinVisual.SetActive(CoinManager.TotalEquipCost > 0);
         Text.text = $"${CoinManager.TotalEquipCost}";
+    }
+    public void FixedUpdate()
+    {
+        if (Utils.IsMouseHoveringOverThis(true, StartButton.GetComponent<RectTransform>(), 0, MyCanvas))
+            Main.MouseHoveringOverButton = true;
     }
     public void PylonUpdate()
     {
