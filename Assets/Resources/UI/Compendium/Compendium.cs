@@ -405,7 +405,7 @@ public class Compendium : MonoBehaviour
 
         bool hasSelectedPower = SelectedType >= 0 && PowerUp.Get(SelectedType).PickedUpCountAllRuns > 0;
         HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
-        if(TierListActive)
+        if (TierListActive)
         {
             Vector3 targetPosition = Utils.MouseWorld + new Vector2(2, 1);
             Rect boundingRect = r.rect;
