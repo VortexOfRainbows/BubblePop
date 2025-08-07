@@ -100,5 +100,25 @@ public class Compendium : MonoBehaviour
         CurrentlySelectedPage.AutoNextTierList = !CurrentlySelectedPage.AutoNextTierList;
         AutoButton.targetGraphic.color = CurrentlySelectedPage.AutoNextTierList ? Color.yellow : Color.white;
     }
+    public void CancelTierListChanges()
+    {
+        ClearTierList();
+        PlayerData.LoadTierList(CurrentlySelectedPage.TierList);
+        CurrentlySelectedPage.UpdateSelectedType(-3);
+        CurrentlySelectedPage.SetVisibility();
+        CurrentlySelectedPage.Sort();
+    }
+    public void ClearTierList()
+    {
+        TierList.ReadingFromSave = true;
+        for (int i = TierList.Powers.Count - 1; i >= 0; --i)
+        {
+            CurrentlySelectedPage.TierList.RemovePower(TierList.Powers[i].PowerID, false);
+        }
+        TierList.ReadingFromSave = false;
+        CurrentlySelectedPage.UpdateSelectedType(-3);
+        CurrentlySelectedPage.SetVisibility();
+        CurrentlySelectedPage.Sort();
+    }
     #endregion
 }

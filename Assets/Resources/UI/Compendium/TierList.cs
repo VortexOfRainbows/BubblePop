@@ -11,7 +11,7 @@ public class TierList : MonoBehaviour
 {
     public static bool ReadingFromSave = false;
     public static int QueueRemoval = -1;
-    public TierListCompendiumPage Owner;
+    public PowerUpPage Owner;
     public static float TotalDistanceCovered = 800f;
     public static readonly Dictionary<int, bool> OnTierList = new();
     public static readonly List<CompendiumPowerUpElement> Powers = new();

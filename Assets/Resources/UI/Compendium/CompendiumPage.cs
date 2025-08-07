@@ -109,26 +109,6 @@ public abstract class TierListCompendiumPage : CompendiumPage
         ShowCounts = !ShowCounts;
         CountButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
     }
-    public void CancelTierListChanges()
-    {
-        ClearTierList();
-        PlayerData.LoadTierList(TierList);
-        UpdateSelectedType(-3);
-        SetVisibility();
-        Sort();
-    }
-    public void ClearTierList()
-    {
-        TierList.ReadingFromSave = true;
-        for (int i = TierList.Powers.Count - 1; i >= 0; --i)
-        {
-            TierList.RemovePower(TierList.Powers[i].PowerID, false);
-        }
-        TierList.ReadingFromSave = false;
-        UpdateSelectedType(-3);
-        SetVisibility();
-        Sort();
-    }
     public void Start()
     {
         //Instance = this;
