@@ -16,43 +16,6 @@ public class Choice : PowerUp
     }
     public override int Cost => 25;
 }
-public class WeaponUpgrade : PowerUp
-{
-    public override void Init()
-    {
-        Weighting = Uncommon;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Haste");
-        description.WithDescription("Increases Y:[attack speed] by Y:10% G:(+10% per stack)");
-        description.WithShortDescription("Increases attack speed");
-    }
-    public override void HeldEffect(Player p)
-    {
-        p.AttackSpeedModifier += Stack * 0.1f;
-    }
-    public override Sprite GetTexture()
-    {
-        return Resources.Load<Sprite>("PowerUps/Haste");
-    }
-}
-public class Overclock : PowerUp
-{
-    public override void Init()
-    {
-        Weighting = Uncommon;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Reduces Y:[ability cooldown] by Y:20% G:(+20% per stack)");
-        description.WithShortDescription("Reduces ability cooldown");
-    }
-    public override void HeldEffect(Player p)
-    {
-        p.AbilityRecoverySpeed += 0.2f * Stack;
-    }
-}
 public class ChargeShot : PowerUp
 {
     public override void InitializeDescription(ref DetailedDescription description)
@@ -175,6 +138,27 @@ public class Starshot : PowerUp
     {
         p.Starshot += Stack;
         p.ShotgunPower += Stack;
+    }
+}
+public class WeaponUpgrade : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Haste");
+        description.WithDescription("Increases Y:[attack speed] by Y:10% G:(+10% per stack)");
+        description.WithShortDescription("Increases attack speed");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.AttackSpeedModifier += Stack * 0.1f;
+    }
+    public override Sprite GetTexture()
+    {
+        return Resources.Load<Sprite>("PowerUps/Haste");
     }
 }
 public class BinaryStars : PowerUp
@@ -331,6 +315,22 @@ public class SpearOfLight : PowerUp
     public override void HeldEffect(Player p)
     {
         p.LightSpear += Stack;
+    }
+}
+public class Overclock : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription("Reduces Y:[ability cooldown] by Y:20% G:(+20% per stack)");
+        description.WithShortDescription("Reduces ability cooldown");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.AbilityRecoverySpeed += 0.2f * Stack;
     }
 }
 public class NeuronActivation : PowerUp
