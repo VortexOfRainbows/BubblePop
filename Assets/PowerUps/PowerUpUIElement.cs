@@ -97,9 +97,9 @@ public class PowerUpUIElement : MonoBehaviour
         else if(!CompendiumElement)
             Count.text = MyPower.Stack.ToString();
         else
-            Count.gameObject.SetActive(!AppearLocked && Compendium.ShowCounts && !PreventHovering);
+            Count.gameObject.SetActive(!AppearLocked && Compendium.Instance.PowerPage.ShowCounts && !PreventHovering);
         bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering);
-        if(CompendiumElement && !Compendium.MouseInCompendiumArea)
+        if(CompendiumElement && !Compendium.Instance.PowerPage.MouseInCompendiumArea)
             canHover = false;
         float size = CompendiumElement ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
         bool rectangular = CompendiumElement;
@@ -116,7 +116,7 @@ public class PowerUpUIElement : MonoBehaviour
             if(CompendiumElement)
             {
                 if (Control.LeftMouseClick)
-                    Compendium.SelectedType = Index;
+                    Compendium.Instance.PowerPage.SelectedType = Index;
                 else if (Control.RightMouseClick)
                     TierList.QueueRemoval = Index;
             }

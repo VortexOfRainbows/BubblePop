@@ -224,4 +224,12 @@ public static class Utils
             return -1;
         return 1;
     }
+    public static Vector2 LerpSnap(Transform target, Vector2 position, float amt = 0.1f, float tolerance = 0.5f)
+    {
+        if (target.localPosition.Distance(position) < tolerance)
+            target.localPosition = position;
+        else
+            target.localPosition = target.localPosition.Lerp(position, amt);
+        return target.localPosition;
+    }
 }

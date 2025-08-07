@@ -1568,8 +1568,9 @@ GameObject:
   m_Component:
   - component: {fileID: 861732847}
   - component: {fileID: 861732849}
+  - component: {fileID: 861732850}
   m_Layer: 5
-  m_Name: DisplaySection
+  m_Name: PowerUpPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1582,19 +1583,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 861732846}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2141046445}
   - {fileID: 1305752784}
-  m_Father: {fileID: 1179315243}
+  m_Father: {fileID: 880643324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -300}
-  m_SizeDelta: {x: -400, y: -300}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &861732849
 CanvasRenderer:
@@ -1604,6 +1605,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 861732846}
   m_CullTransparentMesh: 1
+--- !u!114 &861732850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861732846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 182ac8a3f66e4b24ab56f450ca365853, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HoverCPUE: {fileID: 1518264332}
+  SelectionArea: {fileID: 177081124}
+  PowerUpLayoutGroup: {fileID: 231594333}
+  ContentRectangle: {fileID: 393991588}
+  UnlockButton: {fileID: 1154043324}
+  CountButton: {fileID: 1000212029}
+  SortText: {fileID: 1282252595}
+  TierListText: {fileID: 808725788}
+  ContentScrollRect: {fileID: 2141046446}
+  SortBar: {fileID: 1305752784}
+  TierListParent: {fileID: 614172722}
+  ViewPort: {fileID: 177081124}
+  TierList: {fileID: 1485683842}
+--- !u!1 &880643323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 880643324}
+  m_Layer: 5
+  m_Name: DisplaySection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &880643324
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880643323}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 861732847}
+  m_Father: {fileID: 1179315243}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -300}
+  m_SizeDelta: {x: -400, y: -300}
+  m_Pivot: {x: 0, y: 1}
 --- !u!1 &947941609
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,7 +1825,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957027012}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2835,7 +2897,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 957027013}
-  - {fileID: 861732847}
+  - {fileID: 880643324}
   - {fileID: 2133538417}
   - {fileID: 1515259658}
   m_Father: {fileID: 1900657726}
@@ -2935,37 +2997,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a61300fae7322c4b81bb46b45983141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PrimaryCPUE: {fileID: 845340618}
-  HoverCPUE: {fileID: 1518264332}
-  PrimaryCPUEDescription: {fileID: 1867782600}
-  SelectionArea: {fileID: 177081124}
-  DescriptionScrollArea: {fileID: 428053961}
   MyCanvas: {fileID: 1900657725}
-  ContentLayout: {fileID: 231594333}
-  ContentLayoutRect: {fileID: 393991588}
-  SortMode: 0
-  SortButton: {fileID: 2028602917}
-  UnlockButton: {fileID: 1154043324}
-  CountButton: {fileID: 1000212029}
-  TierListButton: {fileID: 975448364}
-  OpenButton: {fileID: 754256735}
-  AutoButton: {fileID: 1709634764}
-  SortText: {fileID: 1282252595}
-  TierListText: {fileID: 808725788}
+  Pages: []
+  PowerPage: {fileID: 861732850}
+  OpenCompendiumButton: {fileID: 754256735}
+  TopBar: {fileID: 2133538417}
+  SideBar: {fileID: 1515259658}
+  DisplayCPUE: {fileID: 845340618}
+  DisplayPortDescription: {fileID: 1867782600}
+  DescriptionContentRect: {fileID: 428053961}
   Stars:
   - {fileID: 1538863443}
   - {fileID: 1603188723}
   - {fileID: 1063305873}
   - {fileID: 1323480951}
   - {fileID: 1618055100}
-  ContentScrollRect: {fileID: 2141046446}
-  TopBar: {fileID: 2133538416}
-  SideBar: {fileID: 1515259657}
-  SortBar: {fileID: 1305752783}
-  ViewPort: {fileID: 177081123}
-  ContentTierList: {fileID: 614172721}
-  TierListActive: 0
-  TierList: {fileID: 1485683842}
+  AutoButton: {fileID: 1709634764}
 --- !u!224 &1182055240 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8102947865901628746, guid: 609e4b1b209058848b0de70aaff5355b, type: 3}
@@ -5920,7 +5967,7 @@ PrefabInstance:
     - target: {fileID: 5024856524399782131, guid: e33f9eea7eaee984493c391e1484d67a, type: 3}
       propertyPath: Owner
       value: 
-      objectReference: {fileID: 1179315249}
+      objectReference: {fileID: 0}
     - target: {fileID: 5024856524399782131, guid: e33f9eea7eaee984493c391e1484d67a, type: 3}
       propertyPath: MyCanvas
       value: 

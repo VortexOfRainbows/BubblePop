@@ -11,7 +11,7 @@ public class TierList : MonoBehaviour
 {
     public static bool ReadingFromSave = false;
     public static int QueueRemoval = -1;
-    public Compendium Owner;
+    public TierListCompendiumPage Owner;
     public static float TotalDistanceCovered = 800f;
     public static readonly Dictionary<int, bool> OnTierList = new();
     public static readonly List<CompendiumPowerUpElement> Powers = new();
@@ -76,7 +76,7 @@ public class TierList : MonoBehaviour
         {
             RemovePower(Owner.HoverCPUE.PowerID);
         }
-        bool preventHovering = Compendium.HoldingAPower && !Compendium.HoldingALockedPower;
+        bool preventHovering = Owner.HoldingAPower && !Owner.HoldingALockedPower;
         foreach (CompendiumPowerUpElement cpue in Powers)
         {
             cpue.MyElem.PreventHovering = preventHovering;
@@ -121,7 +121,7 @@ public class TierList : MonoBehaviour
         {
             return;
         }
-        List<CompendiumPowerUpElement> childs = Compendium.GetCPUEChildren(parentGrid, out c);
+        List<CompendiumPowerUpElement> childs = TierListCompendiumPage.GetCPUEChildren(parentGrid, out c);
         childs.Remove(newestCPU);
         --c;
         bool autoSelectPosition = position == -1;
@@ -248,7 +248,7 @@ public class TierList : MonoBehaviour
             if (!prevVal && val) //Place power
             {
                 CompendiumPowerUpElement nextElem = Owner.NextSlot();
-                if (nextElem != null && !nextElem.GrayOut && Compendium.AutoNextTierList)
+                if (nextElem != null && !nextElem.GrayOut && Owner.AutoNextTierList)
                 {
                     Owner.UpdateSelectedType(nextElem.PowerID);
                 }

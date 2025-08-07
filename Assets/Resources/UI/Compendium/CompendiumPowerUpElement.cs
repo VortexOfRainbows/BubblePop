@@ -37,7 +37,7 @@ public class CompendiumPowerUpElement : MonoBehaviour
         MyElem.OnUpdate();
         if(!MyElem.PreventHovering)
         {
-            Selected = PowerID == Compendium.SelectedType;
+            Selected = PowerID == Compendium.Instance.PowerPage.SelectedType;
             if (Style != 2)
             {
                 Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
