@@ -3,39 +3,6 @@ using UnityEngine.UI;
 
 public class CompendiumPowerUpElement : MonoBehaviour
 {
-    public static int CompareID(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
-    {
-        int id1 = e1.PowerID;
-        int id2 = e2.PowerID;
-        if (e1.GrayOut)
-            id1 += 10000;
-        if (e2.GrayOut)
-            id2 += 10000;
-        int num = id1 - id2;
-        return num;
-    }
-    public static int CompareRare(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
-    {
-        int rare1 = PowerUp.Get(e1.PowerID).GetRarity();
-        int rare2 = PowerUp.Get(e2.PowerID).GetRarity();
-        if (e1.GrayOut)
-            rare1 += 10;
-        if (e2.GrayOut)
-            rare2 += 10;
-        int num = rare1 - rare2;
-        return num == 0 ? CompareID(e1, e2) : num;
-    }
-    public static int CompareFav(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
-    {
-        int count1 = PowerUp.Get(e1.PowerID).PickedUpCountAllRuns;
-        int count2 = PowerUp.Get(e2.PowerID).PickedUpCountAllRuns;
-        if (e1.GrayOut)
-            count1 = (int.MinValue >> 1) + count1;
-        if (e2.GrayOut)
-            count2 = (int.MinValue >> 1) + count2;
-        int num = count2 - count1;
-        return num == 0 ? CompareRare(e1, e2) : num;
-    }
     public static GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumPowerUpElement");
     public RectTransform rectTransform;
     public Image BG;
