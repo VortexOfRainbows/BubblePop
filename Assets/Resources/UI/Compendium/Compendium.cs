@@ -48,86 +48,12 @@ public class Compendium : MonoBehaviour
     private bool Active = false;
     private bool HasInit = false;
     public int SortMode = 0;
-    public static bool ShowOnlyUnlocked, ShowCounts;
-    public Button SortButton, UnlockButton, CountButton, TierListButton, OpenButton, AutoButton;
+    public Button OpenButton, AutoButton;
     public TextMeshProUGUI SortText;
     public TextMeshProUGUI TierListText;
     public GameObject[] Stars;
     public static bool HoldingAPower { get => SelectedType >= 0; } // set => SelectedType = value ? SelectedType : -3; }
     public static bool HoldingALockedPower { get => HoldingAPower && PowerUp.Get(SelectedType).PickedUpCountAllRuns <= 0; }
-    public void ToggleSort()
-    {
-        SortMode = (SortMode + 1) % 3;
-        UpdateSort();
-    }
-    public void ToggleTierList()
-    {
-        if (TierListActive) //Save
-        {
-            PlayerData.SaveTierList(TierList);
-        }
-        else //Load
-        {
-            PlayerData.LoadTierList(TierList);
-        }
-        UpdateSelectedType(-4);
-        TierListActive = !TierListActive;
-        TierListText.text = TierListActive ? "Save Tier List" : "Make Tier List";
-        SetVisibility();
-        Sort();
-    }
-    public void UpdateSort()
-    {
-        if (SortMode == ArbitrarySort) //Arbitrary / ID
-        {
-            SortText.text = "Sort: ID";
-        }
-        if (SortMode == RaritySort) //By rarity
-        {
-            SortText.text = "Sort: Rarity";
-        }
-        if (SortMode == FavSort) //By count
-        {
-            SortText.text = "Sort: Favorite";
-        }
-        Sort();
-    }
-    public void ToggleUnlock()
-    {
-        ShowOnlyUnlocked = !ShowOnlyUnlocked;
-        UnlockButton.targetGraphic.color = ShowOnlyUnlocked ? Color.yellow : Color.white;
-        SetVisibility();
-    }
-    public void ToggleCount()
-    {
-        ShowCounts = !ShowCounts;
-        CountButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
-    }
-    public void ToggleAuto()
-    {
-        AutoNextTierList = !AutoNextTierList;
-        AutoButton.targetGraphic.color = AutoNextTierList ? Color.yellow : Color.white;
-    }
-    public void CancelTierListChanges()
-    {
-        ClearTierList();
-        PlayerData.LoadTierList(TierList);
-        UpdateSelectedType(-3);
-        SetVisibility();
-        Sort();
-    }
-    public void ClearTierList()
-    {
-        TierList.ReadingFromSave = true;
-        for(int i = TierList.Powers.Count - 1; i >= 0; --i)
-        {
-            TierList.RemovePower(TierList.Powers[i].PowerID, false);
-        }
-        TierList.ReadingFromSave = false;
-        UpdateSelectedType(-3);
-        SetVisibility();
-        Sort();
-    }
     public void Start()
     {
         //Instance = this;
@@ -196,82 +122,12 @@ public class Compendium : MonoBehaviour
         }
         return cpue;
     }
-    public void SetVisibility()
-    {
-        List<CompendiumPowerUpElement> childs = GetCPUEChildren(out int c);
-        foreach(CompendiumPowerUpElement cpue in childs)
-        {
-            bool locked = cpue.MyElem.AppearLocked;
-            cpue.gameObject.SetActive(!locked || !ShowOnlyUnlocked);
-            if (!TierListActive)
-                cpue.GrayOut = false;
-            else
-                cpue.GrayOut = TierList.PowerHasBeenPlaced(cpue.PowerID);
-            cpue.transform.localPosition = new Vector3(0, 0, 0); //Failsafe for repositioning elements as disabling them sometimes has weird behavior with layout group
-        }
-    }
-    public int CompareID(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
-    {
-        int id1 = e1.PowerID;
-        int id2 = e2.PowerID;
-        if (e1.GrayOut)
-            id1 += 10000;
-        if (e2.GrayOut)
-            id2 += 10000;
-        int num = id1 - id2;
-        return num;
-    }
-    public int CompareRare(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
-    {
-        int rare1 = PowerUp.Get(e1.PowerID).GetRarity();
-        int rare2 = PowerUp.Get(e2.PowerID).GetRarity();
-        if (e1.GrayOut)
-            rare1 += 10;
-        if (e2.GrayOut)
-            rare2 += 10;
-        int num = rare1 - rare2;
-        return num == 0 ? CompareID(e1, e2) : num;
-    }
-    public int CompareFav(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
-    {
-        int count1 = PowerUp.Get(e1.PowerID).PickedUpCountAllRuns;
-        int count2 = PowerUp.Get(e2.PowerID).PickedUpCountAllRuns;
-        if (e1.GrayOut)
-            count1 = (int.MinValue >> 1) + count1;
-        if (e2.GrayOut)
-            count2 = (int.MinValue >> 1) + count2;
-        int num = count2 - count1;
-        return num == 0 ? CompareRare(e1, e2) : num;
-    }
-    public void Sort()
-    {
-        List<CompendiumPowerUpElement> childs = GetCPUEChildren(out int c);
-        ContentLayout.transform.DetachChildren();
-        if (SortMode == ArbitrarySort)
-        {
-            childs.Sort(CompareID);
-        }
-        if (SortMode == RaritySort)
-        {
-            childs.Sort(CompareRare);
-        }
-        if (SortMode == FavSort)
-        {
-            childs.Sort(CompareFav);
-        }
-        for (int i = 0; i < c; ++i)
-        {
-            CompendiumPowerUpElement CPUE = childs[i];
-            CPUE.transform.SetParent(ContentLayout.transform);
-            CPUE.transform.localPosition = new Vector3(CPUE.transform.localPosition.x, CPUE.transform.localPosition.y, 0);
-        }
-    }
-    private static float screenResolution;
-    private static float halfResolution;
+    public static float ScreenResolution { get; set; }
+    public static float HalfResolution { get; set; }
     public void Update()
     {
-        screenResolution = MyCanvas.GetComponent<RectTransform>().rect.width; //1920 in most cases
-        halfResolution = screenResolution / 2f;
+        ScreenResolution = MyCanvas.GetComponent<RectTransform>().rect.width; //1920 in most cases
+        HalfResolution = ScreenResolution / 2f;
         MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
         if (Control.RightMouseClick)
         {
@@ -291,7 +147,7 @@ public class Compendium : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        Vector2 startingPosition = new Vector3(-screenResolution, 0);
+        Vector2 startingPosition = new Vector3(-ScreenResolution, 0);
         UpdateSizing();
         if (Active)
         {
@@ -379,9 +235,9 @@ public class Compendium : MonoBehaviour
         UpdateContentSize();
         OpenButton.interactable = !TierListActive;
         Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, 540f) : new Vector2(0, 740f);
-        Vector2 newSideBarPosition = !TierListActive ? new Vector2(halfResolution, 340f) : new Vector2(halfResolution, 540f);
-        Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-halfResolution + 25.5f, 515f) : new Vector2(-halfResolution + 25.5f, 715f);
-        Vector2 targetViewport = !TierListActive ? new Vector2(-halfResolution + 200, 390f) : new Vector2(-halfResolution + 200, 590f);
+        Vector2 newSideBarPosition = !TierListActive ? new Vector2(HalfResolution, 340f) : new Vector2(HalfResolution, 540f);
+        Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-HalfResolution + 25.5f, 515f) : new Vector2(-HalfResolution + 25.5f, 715f);
+        Vector2 targetViewport = !TierListActive ? new Vector2(-HalfResolution + 200, 390f) : new Vector2(-HalfResolution + 200, 590f);
         Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);
         Vector2 sortBarTarget = !TierListActive ? new Vector2(0, 00) : new Vector2(0, 200f);
 
