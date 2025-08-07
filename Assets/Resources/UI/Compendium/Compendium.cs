@@ -349,6 +349,7 @@ public class Compendium : MonoBehaviour
     public ScrollRect ContentScrollRect;
     public GameObject TopBar;
     public GameObject SideBar;
+    public GameObject SortBar;
     public GameObject ViewPort, ContentTierList;
     public bool TierListActive = false;
     public TierList TierList;
@@ -382,12 +383,14 @@ public class Compendium : MonoBehaviour
         Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-halfResolution + 25.5f, 515f) : new Vector2(-halfResolution + 25.5f, 715f);
         Vector2 targetViewport = !TierListActive ? new Vector2(-halfResolution + 200, 390f) : new Vector2(-halfResolution + 200, 590f);
         Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);
+        Vector2 sortBarTarget = !TierListActive ? new Vector2(0, 00) : new Vector2(0, 200f);
 
         LerpSnap(TopBar.transform, newTopBarPositon);
         LerpSnap(SideBar.transform, newSideBarPosition);
         LerpSnap(OpenButton.gameObject.transform, newOpenButtonPosition);
         LerpSnap(ViewPort.transform, targetViewport);
         LerpSnap(ContentTierList.transform, targetTierList);
+        LerpSnap(SortBar.transform, sortBarTarget);
         RectTransform r = ViewPort.GetComponent<RectTransform>();
         r.sizeDelta = Vector2.Lerp(r.sizeDelta, new Vector2(0, TierListActive ? 200 : 0), 0.1f);
 
