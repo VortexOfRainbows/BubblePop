@@ -30,15 +30,13 @@ public abstract class TierListCompendiumPage : CompendiumPage
     private int SortMode { get; set; } //could be made into a field
     private bool TierListActive { get; set; } //could be made into a field
     private bool HasSnappedTierList { get; set; } //could be made into a field
-    private bool HasInit { get; set; } //could be made into a field
+    public bool HasInit { get; set; }
     public CompendiumPowerUpElement HoverCPUE;
     public RectTransform SelectionArea;
     public GridLayoutGroup PowerUpLayoutGroup;
     public RectTransform ContentRectangle;
-    public Button UnlockButton, CountButton;
-    public TextMeshProUGUI SortText, TierListText;
     public ScrollRect ContentScrollRect;
-    public Transform SortBar, TierListParent;
+    public Transform TierListParent;
     public RectTransform ViewPort;
     public TierList TierList;
     public bool HoldingAPower => SelectedType >= 0; // set => SelectedType = value ? SelectedType : -3; }
@@ -61,12 +59,12 @@ public abstract class TierListCompendiumPage : CompendiumPage
             HoverCPUE.Init(SelectedType, MyCanvas);
         }
     }
-    public void ToggleSort()
+    public void ToggleSort(TextMeshProUGUI sortText)
     {
         SortMode = (SortMode + 1) % 3;
-        UpdateSort();
+        UpdateSort(sortText);
     }
-    public void ToggleTierList()
+    public void ToggleTierList(TextMeshProUGUI tierListText)
     {
         if (TierListActive) //Save
         {
@@ -78,36 +76,30 @@ public abstract class TierListCompendiumPage : CompendiumPage
         }
         UpdateSelectedType(-4);
         TierListActive = !TierListActive;
-        TierListText.text = TierListActive ? "Save Tier List" : "Make Tier List";
+        tierListText.text = TierListActive ? "Save Tier List" : "Make Tier List";
         SetVisibility();
         Sort();
     }
-    public void UpdateSort()
+    public void UpdateSort(TextMeshProUGUI sortText)
     {
         if (SortMode == ArbitrarySort) //Arbitrary / ID
-        {
-            SortText.text = "Sort: ID";
-        }
-        if (SortMode == RaritySort) //By rarity
-        {
-            SortText.text = "Sort: Rarity";
-        }
-        if (SortMode == FavSort) //By count
-        {
-            SortText.text = "Sort: Favorite";
-        }
+            sortText.text = "Sort: ID";
+        else if (SortMode == RaritySort) //By rarity
+            sortText.text = "Sort: Rarity";
+        else if (SortMode == FavSort) //By count
+            sortText.text = "Sort: Favorite";
         Sort();
     }
-    public void ToggleUnlock()
+    public void ToggleUnlock(Button unlockButton)
     {
         ShowOnlyUnlocked = !ShowOnlyUnlocked;
-        UnlockButton.targetGraphic.color = ShowOnlyUnlocked ? Color.yellow : Color.white;
+        unlockButton.targetGraphic.color = ShowOnlyUnlocked ? Color.yellow : Color.white;
         SetVisibility();
     }
-    public void ToggleCount()
+    public void ToggleCount(Button countButton)
     {
         ShowCounts = !ShowCounts;
-        CountButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
+        countButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
     }
     public void Start()
     {
@@ -115,7 +107,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         SelectedType = 0;
         ShowOnlyUnlocked = ShowCounts = TierListActive = MouseInCompendiumArea = AutoNextTierList = false;
     }
-    public void Init()
+    public void Init(Button countButton, TextMeshProUGUI sortText)
     {
         for (int i = 0; i < PowerUp.Reverses.Count; ++i)
         {
@@ -125,9 +117,9 @@ public abstract class TierListCompendiumPage : CompendiumPage
         }
         UpdateContentSize();
         ShowCounts = true;
-        ToggleCount(); //OFF by default
+        ToggleCount(countButton); //OFF by default
         SortMode = ArbitrarySort;
-        ToggleSort(); //default sort is rare
+        ToggleSort(sortText); //default sort is rare
 
         Owner.UpdateDisplay(SelectedType);
         Owner.UpdateDescription(true, SelectedType);
@@ -261,11 +253,6 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public void OnFixedUpdate()
     {
         UpdateSizing();
-        if (!HasInit)
-        {
-            Init();
-            HasInit = true;
-        }
         UpdateSelectedType(SelectedType);
         TierListUpdate();
     }
@@ -290,14 +277,14 @@ public abstract class TierListCompendiumPage : CompendiumPage
         Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-Compendium.HalfResolution + 25.5f, 515f) : new Vector2(-Compendium.HalfResolution + 25.5f, 715f);
         Vector2 targetViewport = !TierListActive ? new Vector2(-Compendium.HalfResolution + 200, 390f) : new Vector2(-Compendium.HalfResolution + 200, 590f);
         Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);
-        Vector2 sortBarTarget = !TierListActive ? new Vector2(0, 00) : new Vector2(0, 200f);
+        //Vector2 sortBarTarget = !TierListActive ? new Vector2(0, 00) : new Vector2(0, 200f);
 
         Utils.LerpSnap(Owner.TopBar, newTopBarPositon);
         Utils.LerpSnap(Owner.SideBar, newSideBarPosition);
         Utils.LerpSnap(Owner.OpenCompendiumButton.gameObject.transform, newOpenButtonPosition);
         Utils.LerpSnap(ViewPort.transform, targetViewport);
         Utils.LerpSnap(TierListParent.transform, targetTierList);
-        Utils.LerpSnap(SortBar.transform, sortBarTarget);
+        //Utils.LerpSnap(SortBar.transform, sortBarTarget);
         ViewPort.sizeDelta = Vector2.Lerp(ViewPort.sizeDelta, new Vector2(0, TierListActive ? 200 : 0), 0.1f);
 
         if (HasSnappedTierList != TierListActive)

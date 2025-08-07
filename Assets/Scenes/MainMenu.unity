@@ -1589,7 +1589,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2141046445}
-  - {fileID: 1305752784}
   m_Father: {fileID: 880643324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1621,12 +1620,7 @@ MonoBehaviour:
   SelectionArea: {fileID: 177081124}
   PowerUpLayoutGroup: {fileID: 231594333}
   ContentRectangle: {fileID: 393991588}
-  UnlockButton: {fileID: 1154043324}
-  CountButton: {fileID: 1000212029}
-  SortText: {fileID: 1282252595}
-  TierListText: {fileID: 808725788}
   ContentScrollRect: {fileID: 2141046446}
-  SortBar: {fileID: 1305752784}
   TierListParent: {fileID: 614172722}
   ViewPort: {fileID: 177081124}
   TierList: {fileID: 1485683842}
@@ -1958,9 +1952,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 861732850}
-        m_TargetAssemblyTypeName: TierListCompendiumPage, Assembly-CSharp
-        m_MethodName: ToggleTierList
+      - m_Target: {fileID: 1179315249}
+        m_TargetAssemblyTypeName: Compendium, Assembly-CSharp
+        m_MethodName: OnTierListButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2358,9 +2352,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 861732850}
-        m_TargetAssemblyTypeName: TierListCompendiumPage, Assembly-CSharp
-        m_MethodName: ToggleCount
+      - m_Target: {fileID: 1179315249}
+        m_TargetAssemblyTypeName: Compendium, Assembly-CSharp
+        m_MethodName: OnCountButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2813,9 +2807,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 861732850}
-        m_TargetAssemblyTypeName: TierListCompendiumPage, Assembly-CSharp
-        m_MethodName: ToggleUnlock
+      - m_Target: {fileID: 1179315249}
+        m_TargetAssemblyTypeName: Compendium, Assembly-CSharp
+        m_MethodName: OnLockButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3013,6 +3007,10 @@ MonoBehaviour:
   - {fileID: 1323480951}
   - {fileID: 1618055100}
   AutoButton: {fileID: 1709634764}
+  UnlockButton: {fileID: 1154043324}
+  CountButton: {fileID: 1000212029}
+  SortText: {fileID: 1282252595}
+  TierListText: {fileID: 808725788}
 --- !u!224 &1182055240 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8102947865901628746, guid: 609e4b1b209058848b0de70aaff5355b, type: 3}
@@ -3186,12 +3184,12 @@ RectTransform:
   - {fileID: 975448363}
   - {fileID: 1000212028}
   - {fileID: 1154043323}
-  m_Father: {fileID: 861732847}
+  m_Father: {fileID: 2133538417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchoredPosition: {x: 0, y: -299.99997}
+  m_SizeDelta: {x: -400, y: 100}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1305752785
 MonoBehaviour:
@@ -4960,9 +4958,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 861732850}
-        m_TargetAssemblyTypeName: TierListCompendiumPage, Assembly-CSharp
-        m_MethodName: ToggleSort
+      - m_Target: {fileID: 1179315249}
+        m_TargetAssemblyTypeName: Compendium, Assembly-CSharp
+        m_MethodName: OnSortButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5422,6 +5420,7 @@ RectTransform:
   m_Children:
   - {fileID: 2117116280}
   - {fileID: 1515101897}
+  - {fileID: 1305752784}
   m_Father: {fileID: 1179315243}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}

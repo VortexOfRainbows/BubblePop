@@ -45,7 +45,14 @@ public class Compendium : MonoBehaviour
     {
         Vector2 startingPosition = new Vector3(-ScreenResolution, 0);
         if(PowerPage != null && Active)
+        {
+            if (!PowerPage.HasInit)
+            {
+                PowerPage.Init(CountButton, SortText);
+                PowerPage.HasInit = true;
+            }
             PowerPage.OnFixedUpdate();
+        }
         Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, 0.1f, 0.1f);
     }
 
@@ -94,7 +101,8 @@ public class Compendium : MonoBehaviour
     #endregion
 
     #region Tier List Universal Buttons
-    public Button AutoButton;
+    public Button AutoButton, UnlockButton, CountButton;
+    public TextMeshProUGUI SortText, TierListText;
     public void ToggleAuto()
     {
         CurrentlySelectedPage.AutoNextTierList = !CurrentlySelectedPage.AutoNextTierList;
@@ -119,6 +127,22 @@ public class Compendium : MonoBehaviour
         CurrentlySelectedPage.UpdateSelectedType(-3);
         CurrentlySelectedPage.SetVisibility();
         CurrentlySelectedPage.Sort();
+    }
+    public void OnSortButtonPressed()
+    {
+        CurrentlySelectedPage.ToggleSort(SortText);
+    }
+    public void OnLockButtonPressed()
+    { 
+        CurrentlySelectedPage.ToggleUnlock(UnlockButton);
+    }
+    public void OnTierListButtonPressed()
+    {
+        CurrentlySelectedPage.ToggleTierList(TierListText);
+    }
+    public void OnCountButtonPressed()
+    {
+        CurrentlySelectedPage.ToggleCount(CountButton);
     }
     #endregion
 }
