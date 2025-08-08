@@ -87,7 +87,6 @@ public class CharacterSelect : MonoBehaviour
     public EquipmentUIElement EquipmentUISlotPrefab;
     public PowerUpLayout PowerLayout;
     public GameObject visual;
-    public const int UILayer = 5;
     public EquipmentUIElement[] DisplayBoxes;
     public List<GameObject>[] PrimaryEquipments => Main.Instance.EquipData.PrimaryEquipments;
     public List<GameObject> Hats => Main.Instance.EquipData.Hats;
@@ -347,17 +346,6 @@ public class CharacterSelect : MonoBehaviour
     {
         if(uiElem.ActiveEquipment != null)
             Destroy(uiElem.ActiveEquipment.gameObject);
-        uiElem.ActiveEquipment = GenerateEquipment(equipmentToRender, uiElem.Visual);
-        uiElem.UpdateOrientation();
-    }
-    public Equipment GenerateEquipment(Equipment prefab, GameObject parent)
-    {
-        Equipment obj = Instantiate(prefab, parent.transform);
-        obj.gameObject.layer = UILayer;
-        obj.transform.localPosition = Vector3.zero;
-        obj.OriginalPrefab = prefab;
-        foreach(Transform t in obj.GetComponentsInChildren<Transform>())
-            t.gameObject.layer = UILayer;
-        return obj;
+        uiElem.UpdateEquipment(equipmentToRender);
     }
 }

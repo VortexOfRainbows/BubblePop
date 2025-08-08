@@ -8,8 +8,19 @@ public class CompendiumEquipmentElement : CompendiumElement
     public int Style { get; set; }
     protected bool Selected { get; set; }
     public bool GrayOut { get; set; } = false;
+    private bool TempHasRun = false;
+    public void LateUpdate()
+    {
+        if(!TempHasRun)
+        {
+            TempHasRun = true;
+            Init(TypeID, Compendium.Instance.MyCanvas);
+        }
+    }
     public void Init(int i, Canvas canvas)
     {
+        MyElem.UpdateEquipment(Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>());
+        MyElem.UpdateLayering(canvas.sortingLayerID, 20); //2 = UICamera, 20 = compendium canvas size
         //MyElem.SetPowerType(TypeID = i);
         //MyElem.myCanvas = canvas;
         //MyElem.Count.text = PowerUp.Get(TypeID).PickedUpCountAllRuns.ToString();

@@ -1,13 +1,15 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EquipmentUIElement : MonoBehaviour
 {
+    public const int UILayer = 5;
     private Color actualColor = default;
     private Color slotColor = default;
     public GameObject Visual;
-    public Equipment ActiveEquipment;
+    public Equipment ActiveEquipment { get; private set; }
     public TextMeshPro Text;
     public GameObject PriceVisual;
     public GameObject Self => gameObject;
@@ -16,6 +18,21 @@ public class EquipmentUIElement : MonoBehaviour
     public bool Unlocked => ActiveEquipment.IsUnlocked || DisplayOnly;
     public bool CanAfford => true; // CoinManager.Savings >= ActiveEquipment.GetPrice() || ActiveEquipment.GetPrice() <= 0;
     public bool DisplayOnly = false;
+    public void UpdateEquipment(Equipment equip)
+    {
+        ActiveEquipment = GenerateEquipment(equip, Visual.transform);
+        UpdateOrientation();
+    }
+    public Equipment GenerateEquipment(Equipment prefab, Transform parent)
+    {
+        Equipment obj = Instantiate(prefab, parent);
+        obj.gameObject.layer = UILayer;
+        obj.transform.localPosition = Vector3.zero;
+        obj.OriginalPrefab = prefab;
+        foreach (Transform t in obj.GetComponentsInChildren<Transform>())
+            t.gameObject.layer = UILayer;
+        return obj;
+    }
     public void UpdateOrientation()
     {
         Vector2 offset = Vector2.zero;
@@ -57,6 +74,16 @@ public class EquipmentUIElement : MonoBehaviour
         ActiveEquipment.spriteRender.color = c;
         foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
             s.color = c;
+    }
+    public void UpdateLayering(int ID, int offset)
+    {
+        ActiveEquipment.spriteRender.sortingLayerID = ID;
+        ActiveEquipment.spriteRender.sortingOrder += offset;
+        foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
+        {
+            s.sortingLayerID = ID;
+            s.sortingOrder += offset;
+        }
     }
     public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked)
     {

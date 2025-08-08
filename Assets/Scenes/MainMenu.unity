@@ -5354,6 +5354,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4738155741289112532, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738155741289112532, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_Cameras.Array.data[1]
       value: 
       objectReference: {fileID: 410043210}
@@ -5381,6 +5385,10 @@ PrefabInstance:
       propertyPath: m_CameraType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6185994675814609966, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6571955641980583806, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5388,19 +5396,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8647957983226922074, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 792634436828259440, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 3787569734089078933, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5999250951651569690, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
 --- !u!1 &2117116279
 GameObject:

@@ -11,7 +11,7 @@ public class Equipment : MonoBehaviour
     }
     public void Start()
     {
-        if(p == null)
+        if(p == null && Player.Instance != null)
             p = Player.Instance.Animator;
     }
     public static Player player => Player.Instance;
