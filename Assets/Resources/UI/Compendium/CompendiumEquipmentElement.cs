@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CompendiumPowerUpElement : CompendiumElement
+public class CompendiumEquipmentElement : CompendiumElement
 {
-    public static GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumPowerUpElement");
+    public static GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumEquipmentElement");
     public PowerUpUIElement MyElem;
     public int Style { get; set; }
     protected bool Selected { get; set; }

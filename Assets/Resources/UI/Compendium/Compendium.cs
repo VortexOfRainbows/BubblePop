@@ -121,7 +121,7 @@ public class Compendium : MonoBehaviour
         TierList.ReadingFromSave = true;
         for (int i = TierList.Powers.Count - 1; i >= 0; --i)
         {
-            CurrentlySelectedPage.TierList.RemovePower(TierList.Powers[i].PowerID, false);
+            CurrentlySelectedPage.TierList.RemovePower(TierList.Powers[i].TypeID, false);
         }
         TierList.ReadingFromSave = false;
         CurrentlySelectedPage.UpdateSelectedType(-3);

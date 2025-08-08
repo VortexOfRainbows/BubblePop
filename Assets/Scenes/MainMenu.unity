@@ -1530,6 +1530,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8746676491823318425, guid: 609e4b1b209058848b0de70aaff5355b, type: 3}
+      propertyPath: TypeID
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8746676491823318425, guid: 609e4b1b209058848b0de70aaff5355b, type: 3}
       propertyPath: PowerID
       value: 0
       objectReference: {fileID: 0}
@@ -5584,6 +5588,10 @@ PrefabInstance:
     - target: {fileID: 1678115981468528834, guid: 402fe829c2fb8d74e9341fbe3fe13d9a, type: 3}
       propertyPath: m_Name
       value: HoverPreviewElement
+      objectReference: {fileID: 0}
+    - target: {fileID: 6037011954703061037, guid: 402fe829c2fb8d74e9341fbe3fe13d9a, type: 3}
+      propertyPath: TypeID
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6545662827828095230, guid: 402fe829c2fb8d74e9341fbe3fe13d9a, type: 3}
       propertyPath: m_Pivot.x

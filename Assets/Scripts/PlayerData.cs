@@ -94,7 +94,7 @@ public static class PlayerData
                 CompendiumPowerUpElement cpue = l[j];
                 if(cpue != null)
                 {
-                    CSV += cpue.PowerID;
+                    CSV += cpue.TypeID;
                     CSV += ",";
                 }
             }

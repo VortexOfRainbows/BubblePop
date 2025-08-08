@@ -72,9 +72,9 @@ public class TierList : MonoBehaviour
             RemovePower(QueueRemoval, false);
             QueueRemoval = -1;
         }
-        if(SelectedCat == null && Owner.HoverCPUE.PowerID >= 0)
+        if(SelectedCat == null && Owner.HoverCPUE.TypeID >= 0)
         {
-            RemovePower(Owner.HoverCPUE.PowerID);
+            RemovePower(Owner.HoverCPUE.TypeID);
         }
         bool preventHovering = Owner.HoldingAPower && !Owner.HoldingALockedPower;
         foreach (CompendiumPowerUpElement cpue in Powers)
@@ -190,7 +190,7 @@ public class TierList : MonoBehaviour
         if (SelectedCat == null)
             return;
         int insertPos = ReadingFromSave ? 10000 : -1;
-        CompendiumPowerUpElement cpue = Powers.Find(g => g.PowerID == i);
+        CompendiumPowerUpElement cpue = Powers.Find(g => g.TypeID == i);
         if (PowerUp.Get(i).PickedUpCountAllRuns <= 0)
             return;
         if (!OnTierList[i])
@@ -227,7 +227,7 @@ public class TierList : MonoBehaviour
     }
     public void RemovePower(int i, bool OnlyIfGray = true)
     {
-        CompendiumPowerUpElement existingCPUE = Powers.Find(g => g.PowerID == i);
+        CompendiumPowerUpElement existingCPUE = Powers.Find(g => g.TypeID == i);
         if (existingCPUE != null && existingCPUE.GrayOut == OnlyIfGray)
         {
             Powers.Remove(existingCPUE);
@@ -250,7 +250,7 @@ public class TierList : MonoBehaviour
                 CompendiumPowerUpElement nextElem = Owner.NextSlot();
                 if (nextElem != null && !nextElem.GrayOut && Owner.AutoNextTierList)
                 {
-                    Owner.UpdateSelectedType(nextElem.PowerID);
+                    Owner.UpdateSelectedType(nextElem.TypeID);
                 }
                 else
                 {

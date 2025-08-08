@@ -44,16 +44,16 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public void UpdateSelectedType(int i)
     {
         SelectedType = i;
-        if (Owner.DisplayCPUE.PowerID != SelectedType && SelectedType >= 0)
+        if (Owner.DisplayCPUE.TypeID != SelectedType && SelectedType >= 0)
         {
             Owner.UpdateDisplay(SelectedType);
             Owner.UpdateDescription(true, SelectedType);
         }
         else
             Owner.UpdateDescription(false, SelectedType);
-        if (HoverCPUE.PowerID != SelectedType && SelectedType >= 0)
+        if (HoverCPUE.TypeID != SelectedType && SelectedType >= 0)
         {
-            TierList.RemovePower(HoverCPUE.PowerID);
+            TierList.RemovePower(HoverCPUE.TypeID);
             bool hasSelectedPower = PowerUp.Get(SelectedType).PickedUpCountAllRuns > 0;
             HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
             HoverCPUE.Init(SelectedType, MyCanvas);
@@ -171,14 +171,14 @@ public abstract class TierListCompendiumPage : CompendiumPage
             if (!TierListActive)
                 cpue.GrayOut = false;
             else
-                cpue.GrayOut = TierList.PowerHasBeenPlaced(cpue.PowerID);
+                cpue.GrayOut = TierList.PowerHasBeenPlaced(cpue.TypeID);
             cpue.transform.localPosition = new Vector3(0, 0, 0); //Failsafe for repositioning elements as disabling them sometimes has weird behavior with layout group
         }
     }
     public int CompareID(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
     {
-        int id1 = e1.PowerID;
-        int id2 = e2.PowerID;
+        int id1 = e1.TypeID;
+        int id2 = e2.TypeID;
         if (e1.GrayOut)
             id1 += 10000;
         if (e2.GrayOut)
@@ -188,8 +188,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public int CompareRare(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
     {
-        int rare1 = PowerUp.Get(e1.PowerID).GetRarity();
-        int rare2 = PowerUp.Get(e2.PowerID).GetRarity();
+        int rare1 = PowerUp.Get(e1.TypeID).GetRarity();
+        int rare2 = PowerUp.Get(e2.TypeID).GetRarity();
         if (e1.GrayOut)
             rare1 += 10;
         if (e2.GrayOut)
@@ -199,8 +199,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public int CompareFav(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
     {
-        int count1 = PowerUp.Get(e1.PowerID).PickedUpCountAllRuns;
-        int count2 = PowerUp.Get(e2.PowerID).PickedUpCountAllRuns;
+        int count1 = PowerUp.Get(e1.TypeID).PickedUpCountAllRuns;
+        int count2 = PowerUp.Get(e2.TypeID).PickedUpCountAllRuns;
         if (e1.GrayOut)
             count1 = (int.MinValue >> 1) + count1;
         if (e2.GrayOut)
@@ -240,13 +240,13 @@ public abstract class TierListCompendiumPage : CompendiumPage
         }
         if (TierListActive && MouseInCompendiumArea)
         {
-            if (HoverCPUE.PowerID == SelectedType)
+            if (HoverCPUE.TypeID == SelectedType)
             {
-                TierList.PlacePower(HoverCPUE.PowerID, !Control.LeftMouseClick);
+                TierList.PlacePower(HoverCPUE.TypeID, !Control.LeftMouseClick);
             }
             else if (SelectedType == -3)
             {
-                TierList.RemovePower(HoverCPUE.PowerID);
+                TierList.RemovePower(HoverCPUE.TypeID);
             }
         }
     }
