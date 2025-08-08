@@ -10226,6 +10226,23 @@ MonoBehaviour:
   FlamigoFeater: {fileID: 21300000, guid: 45cdfc3633408b24d8f55ab83cb0a278, type: 3}
   LaserProj: {fileID: 21300000, guid: 283e526a1d532af4caa3e466e6fdddc3, type: 3}
   sparkle: {fileID: 21300000, guid: e9282e0ba09cd794e8216c6381123777, type: 3}
+  EquipData:
+    Hats:
+    - {fileID: 4047993882583738873, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
+    - {fileID: 4987507766819511455, guid: c9fd0f25799129940b9a38681da4e576, type: 3}
+    - {fileID: 4047993882583738873, guid: c17fea09cdb9d4944af6301bb7994abd, type: 3}
+    Accessories:
+    - {fileID: 1946491136762909545, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
+    - {fileID: 1946491136762909545, guid: 4fde2b21b6a1f7d43aa0129cf6aa80c6, type: 3}
+    - {fileID: 4047993882583738873, guid: f4344909818e21e4c9b6665c9df39ec6, type: 3}
+    Weapons:
+    - {fileID: 7462284700642931094, guid: e7d67ac7adef0454a96cab6df826ac8e, type: 3}
+    - {fileID: 7462284700642931094, guid: 5a60e697bacaee34ba1bb0518c537b5d, type: 3}
+    Characters:
+    - {fileID: 8132037870103020878, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
+    - {fileID: 8132037870103020878, guid: 82c5e4272ac2b6141bc30d305bdeef47, type: 3}
+    - {fileID: 8132037870103020878, guid: 5dfc561c07e1d8047b19db590b668868, type: 3}
+    AllEquipmentsList: []
 --- !u!114 &4056103149566074873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25599,7 +25616,7 @@ PrefabInstance:
       objectReference: {fileID: 4242500441801080254}
     - target: {fileID: 1350636881185566872, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 74.99982
+      value: 74.999756
       objectReference: {fileID: 0}
     - target: {fileID: 5118935506534612164, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_Pivot.x

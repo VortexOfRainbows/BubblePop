@@ -89,12 +89,12 @@ public class CharacterSelect : MonoBehaviour
     public GameObject visual;
     public const int UILayer = 5;
     public EquipmentUIElement[] DisplayBoxes;
-    public List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
-    public List<GameObject> Hats;
-    public List<GameObject> Accessories;
-    public List<GameObject> Weapons;
-    public List<GameObject> Characters;
-    public List<GameObject> AllEquipmentsList = new List<GameObject>();
+    public List<GameObject>[] PrimaryEquipments => Main.Instance.EquipData.PrimaryEquipments;
+    public List<GameObject> Hats => Main.Instance.EquipData.Hats;
+    public List<GameObject> Accessories => Main.Instance.EquipData.Accessories;
+    public List<GameObject> Weapons => Main.Instance.EquipData.Weapons;
+    public List<GameObject> Characters => Main.Instance.EquipData.Characters;
+    public List<GameObject> AllEquipmentsList => Main.Instance.EquipData.AllEquipmentsList;
     private Canvas myCanvas;
     private EquipmentPage SecondaryPage;
     private EquipmentPage PrimaryPage;
@@ -102,37 +102,18 @@ public class CharacterSelect : MonoBehaviour
     private bool PowerUpPageIsOpen = false;
     public bool HasLoaded = false;
     public static CharacterSelect Instance;
+    public void Awake()
+    {
+
+    }
     public void Start()
     {
         Instance = this;
         SecondaryPage = new EquipmentPage(this, false);
         PrimaryPage = new EquipmentPage(this, true);
         PowerUpLayout.MenuLayout = PowerLayout;
-        PrimaryEquipments[0] = Hats;
-        PrimaryEquipments[1] = Accessories;
-        PrimaryEquipments[2] = Weapons;
-        PrimaryEquipments[3] = Characters;
         myCanvas = GetComponent<Canvas>();
         HasLoaded = false;
-        for(int j = 0; j < PrimaryEquipments.Length; j++)
-        {
-            for(int i = 0; i < PrimaryEquipments[j].Count; ++i)
-            {
-                Equipment equip = PrimaryEquipments[j][i].GetComponent<Equipment>();
-                equip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
-                Debug.Log($"Equipment: <color=#FFFF00>{equip.GetName()}</color> has been added into the pool at index {equip.IndexInTheAllEquipPool}");
-                AllEquipmentsList.Add(equip.gameObject);
-                if (equip.SubEquipment != null)
-                {
-                    for(int k = 0; k < equip.SubEquipment.Count; k++)
-                    {
-                        equip.SubEquipment[k].GetComponent<Equipment>().IndexInTheAllEquipPool = AllEquipmentsList.Count;
-                        Debug.Log($"Equipment: <color=#FF0000>{equip.SubEquipment[k].GetComponent<Equipment>().GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
-                        AllEquipmentsList.Add(equip.SubEquipment[k]);
-                    }
-                }
-            }
-        }
         InitializeMainButtons();
     }
     public void Update()

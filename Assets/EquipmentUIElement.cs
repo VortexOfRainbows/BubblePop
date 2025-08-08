@@ -62,7 +62,8 @@ public class EquipmentUIElement : MonoBehaviour
     {
         int cost = 0; // ActiveEquipment.GetPrice();
         Text.text = $"${cost}";
-        PriceVisual.SetActive(cost != 0 && Unlocked);
+        if(PriceVisual != null)
+            PriceVisual.SetActive(cost != 0 && Unlocked);
 
         hovering = clicked = false;
         UpdateUnlockRelated();

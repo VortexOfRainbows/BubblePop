@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Main : MonoBehaviour
@@ -52,6 +54,7 @@ public class Main : MonoBehaviour
         Shadow = Resources.Load<Sprite>("Shadow");
         BuffIcon.Load();
         OnGameOpen();
+        EquipData.LoadAllEquipList();
     }
     public void OnDestroy()
     {
@@ -97,4 +100,43 @@ public class Main : MonoBehaviour
     public static Sprite Sparkle => Instance.sparkle;
     public Sprite sparkle;
     public static Sprite Shadow;
+
+    public GlobalEquipData EquipData;
+    [Serializable]
+    public class GlobalEquipData
+    {
+        public List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
+        public List<GameObject> Hats;
+        public List<GameObject> Accessories;
+        public List<GameObject> Weapons;
+        public List<GameObject> Characters;
+        public List<GameObject> AllEquipmentsList = new();
+        public void LoadAllEquipList()
+        {
+            AllEquipmentsList.Clear();
+            PrimaryEquipments[0] = Hats;
+            PrimaryEquipments[1] = Accessories;
+            PrimaryEquipments[2] = Weapons;
+            PrimaryEquipments[3] = Characters;
+            for (int j = 0; j < PrimaryEquipments.Length; j++)
+            {
+                for (int i = 0; i < PrimaryEquipments[j].Count; ++i)
+                {
+                    Equipment equip = PrimaryEquipments[j][i].GetComponent<Equipment>();
+                    equip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
+                    Debug.Log($"Equipment: <color=#FFFF00>{equip.GetName()}</color> has been added into the pool at index {equip.IndexInTheAllEquipPool}");
+                    AllEquipmentsList.Add(equip.gameObject);
+                    if (equip.SubEquipment != null)
+                    {
+                        for (int k = 0; k < equip.SubEquipment.Count; k++)
+                        {
+                            equip.SubEquipment[k].GetComponent<Equipment>().IndexInTheAllEquipPool = AllEquipmentsList.Count;
+                            Debug.Log($"Equipment: <color=#FF0000>{equip.SubEquipment[k].GetComponent<Equipment>().GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
+                            AllEquipmentsList.Add(equip.SubEquipment[k]);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

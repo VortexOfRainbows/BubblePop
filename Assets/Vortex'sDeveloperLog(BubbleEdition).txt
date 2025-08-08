@@ -37,6 +37,7 @@ Done:
 8/6/25 to 8/7/25
 1. WIP Compendium refactor and decoupling of tier list logic
 2. Move haste and overclock to be back to their actual ID positions (order of implementation)
+3. Move some data structures to main instead of character select, as it should be loaded immediately and consistent
 
 8/3/25 to 8/6/25
 1. Bubblemancer art refresh! Yay!
