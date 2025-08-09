@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public static class PlayerData
@@ -81,7 +82,7 @@ public static class PlayerData
     }
     public static void SaveTierList(TierList list)
     {
-        string CSV = "";
+        string CSV = string.Empty;
         for(int i = 0; i < list.Categories.Length; ++i)
         {
             char tier = TierList.TierNames[i];
@@ -101,20 +102,20 @@ public static class PlayerData
         }
         //Output should look something like this:
         /*
+         *0
          *S:1,2,3,4,5,
          *A:6,7,8,9,10,
          *B:11,12,13,14,15,
          *etc.
          */
         Debug.Log(CSV);
-        SaveString("TierList", CSV);
+        string tag = list.TierListType == 1 ? "TierList1" : "TierList";
+        SaveString(tag, CSV);
     }
     public static void LoadTierList(TierList list)
     {
-        string CSV = GetString("TierList");
-        Debug.Log(CSV);
-        if (CSV.Length <= 0)
-            return;
+        string tag = list.TierListType == 1 ? "TierList1" : "TierList";
+        string CSV = GetString(tag);
         TierList.ReadingFromSave = true;
         string[] words = CSV.Split(',', ':');
         int CurrentCategory = -1;

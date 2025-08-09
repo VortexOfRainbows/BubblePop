@@ -12,19 +12,20 @@ public class TierList : MonoBehaviour
     public static bool ReadingFromSave = false;
     public static int QueueRemoval = -1;
     public TierListCompendiumPage Owner;
-    public static float TotalDistanceCovered = 800f;
-    public static readonly Dictionary<int, bool> OnTierList = new();
-    public static readonly List<CompendiumElement> Powers = new();
+    public float TotalDistanceCovered = 800f;
+    public readonly Dictionary<int, bool> OnTierList = new();
+    public readonly List<CompendiumElement> Elems = new();
     public static readonly string TierNames = "SABCDF";
     public TierCategory[] Categories;
     private TierCategory SelectedCat;
+    public int TierListType = 0;
     public CompendiumElement CurrentlyHoveredElement => Owner.HoverCPUE;
     public void SetSelectedCategory(int i)
     {
         SelectedCat = Categories[i];
     }
     public Canvas MyCanvas;
-    public static bool PowerHasBeenPlaced(int i)
+    public bool HasBeenPlaced(int i)
     {
         if (i <= -1)
             return false;
@@ -33,7 +34,7 @@ public class TierList : MonoBehaviour
     public void Start()
     {
         OnTierList.Clear();
-        Powers.Clear();
+        Elems.Clear();
         TotalDistanceCovered = 800f;
         InitializeCategories();
     }
@@ -68,7 +69,7 @@ public class TierList : MonoBehaviour
             {
                 cat.TierRect.color = Color.Lerp(cat.TierRect.color, unselectColor, 0.25f);
             }
-            cat.CalculateSizeNeededToHousePowerups();
+            cat.CalculateSizeNeededToHousePowerups(this);
         }
         if(QueueRemoval >= 0)
         {
@@ -80,7 +81,7 @@ public class TierList : MonoBehaviour
             RemovePower(Owner.HoverCPUE.TypeID);
         }
         bool preventHovering = Owner.HoldingAPower && !Owner.HoldingALockedPower;
-        foreach (CompendiumElement cpue in Powers)
+        foreach (CompendiumElement cpue in Elems)
             cpue.SetHovering(!preventHovering);
     }
     public List<float> UniqueYValues(List<CompendiumElement> childs, float bonus)
@@ -191,15 +192,17 @@ public class TierList : MonoBehaviour
         if (SelectedCat == null)
             return;
         int insertPos = ReadingFromSave ? 10000 : -1;
-        CompendiumElement cpue = Powers.Find(g => g.TypeID == i);
-        if (PowerUp.Get(i).PickedUpCountAllRuns <= 0)
+        CompendiumElement cpue = Elems.Find(g => g.TypeID == i);
+        if (TierListType == 0 && PowerUp.Get(i).PickedUpCountAllRuns <= 0)
+            return;
+        if (TierListType == 1 && !Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
             return;
         if (!OnTierList[i])
         {
             if (cpue == null)
             {
                 cpue = CurrentlyHoveredElement.Instantiate(this, SelectedCat, MyCanvas, i, insertPos);
-                Powers.Add(cpue);
+                Elems.Add(cpue);
             }
             else
             {
@@ -224,10 +227,10 @@ public class TierList : MonoBehaviour
     }
     public void RemovePower(int i, bool OnlyIfGray = true)
     {
-        CompendiumElement existingCPUE = Powers.Find(g => g.TypeID == i);
+        CompendiumElement existingCPUE = Elems.Find(g => g.TypeID == i);
         if (existingCPUE != null && existingCPUE.GrayOut == OnlyIfGray)
         {
-            Powers.Remove(existingCPUE);
+            Elems.Remove(existingCPUE);
             Destroy(existingCPUE.gameObject);
             ModifyOnTierList(i, false);
         }

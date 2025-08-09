@@ -12,12 +12,12 @@ public class TierCategory : MonoBehaviour
     public Image TierSlot;
     public Image TierRect;
     public TextMeshProUGUI Text;
-    public void CalculateSizeNeededToHousePowerups()
+    public void CalculateSizeNeededToHousePowerups(TierList list)
     {
         int c = Grid.transform.childCount;
         if (c <= 0)
         {
-            TierList.TotalDistanceCovered += DefaultDist;
+            list.TotalDistanceCovered += DefaultDist;
             RectTransform.sizeDelta = new Vector2(RectTransform.sizeDelta.x, DefaultDist);
             return;
         }
@@ -25,6 +25,6 @@ public class TierCategory : MonoBehaviour
         float paddingBonus = lastElement.GetComponent<RectTransform>().rect.height / 2f;
         float dist = -lastElement.localPosition.y + paddingBonus + (DefaultDist - Grid.cellSize.y) / 2f;
         RectTransform.sizeDelta = new Vector2(RectTransform.sizeDelta.x, Mathf.Max(DefaultDist, dist));
-        TierList.TotalDistanceCovered += RectTransform.sizeDelta.y;
+        list.TotalDistanceCovered += RectTransform.sizeDelta.y;
     }
 }

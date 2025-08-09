@@ -191,9 +191,9 @@ public class Compendium : MonoBehaviour
     public void ClearTierList()
     {
         TierList.ReadingFromSave = true;
-        for (int i = TierList.Powers.Count - 1; i >= 0; --i)
+        for (int i = CurrentlySelectedPage.TierList.Elems.Count - 1; i >= 0; --i)
         {
-            CurrentlySelectedPage.TierList.RemovePower(TierList.Powers[i].TypeID, false);
+            CurrentlySelectedPage.TierList.RemovePower(CurrentlySelectedPage.TierList.Elems[i].TypeID, false);
         }
         TierList.ReadingFromSave = false;
         CurrentlySelectedPage.UpdateSelectedType(-3);

@@ -364,6 +364,10 @@ PrefabInstance:
       propertyPath: SpriteMaskRectangle
       value: 
       objectReference: {fileID: 2413189998029661887}
+    - target: {fileID: 8653697175324885045, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
+      propertyPath: TierListType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8697551238660860734, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -424,16 +428,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 717631917021210586, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
       insertIndex: 0
       addedObject: {fileID: 2413189998029661887}
-    - targetCorrespondingSourceObject: {fileID: 4145879945252348832, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 717631917021210586, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7212670875736996056}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
---- !u!224 &1398280626752573281 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4145879945252348832, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
-  m_PrefabInstance: {fileID: 3093602453678681281}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2529656741524884251 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 717631917021210586, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
@@ -445,7 +444,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1398280626752573281}
+    m_TransformParent: {fileID: 2529656741524884251}
     m_Modifications:
     - target: {fileID: 1136041916412800093, guid: ce16d5bffb99fd8478e92cd1bd93abc4, type: 3}
       propertyPath: m_AnchorMax.x
@@ -470,6 +469,14 @@ PrefabInstance:
     - target: {fileID: 1136041916412800093, guid: ce16d5bffb99fd8478e92cd1bd93abc4, type: 3}
       propertyPath: m_SizeDelta.y
       value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 1136041916412800093, guid: ce16d5bffb99fd8478e92cd1bd93abc4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 1136041916412800093, guid: ce16d5bffb99fd8478e92cd1bd93abc4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8999999
       objectReference: {fileID: 0}
     - target: {fileID: 1136041916412800093, guid: ce16d5bffb99fd8478e92cd1bd93abc4, type: 3}
       propertyPath: m_LocalPosition.x

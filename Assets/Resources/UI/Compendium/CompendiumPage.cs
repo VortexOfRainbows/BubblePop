@@ -42,7 +42,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public RectTransform ViewPort;
     public TierList TierList;
     public bool HoldingAPower => SelectedType >= 0; // set => SelectedType = value ? SelectedType : -3; }
-    public bool HoldingALockedPower => HoldingAPower && PowerUp.Get(SelectedType).PickedUpCountAllRuns <= 0;
+    public bool HoldingALockedPower => HoldingAPower && HoverCPUE.IsLocked();
     public void UpdateSelectedType(int i)
     {
         SelectedType = i;
@@ -56,9 +56,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
         if (HoverCPUE.TypeID != SelectedType && SelectedType >= 0)
         {
             TierList.RemovePower(HoverCPUE.TypeID);
-            bool hasSelectedPower = PowerUp.Get(SelectedType).PickedUpCountAllRuns > 0;
-            HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
             HoverCPUE.Init(SelectedType, MyCanvas);
+            HoverCPUE.gameObject.SetActive(!HoverCPUE.IsLocked() && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
         }
     }
     public void ToggleSort(TextMeshProUGUI sortText)
@@ -144,6 +143,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             {
                 CompendiumEquipmentElement CPUE = Instantiate(CompendiumEquipmentElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumEquipmentElement>();
                 CPUE.Init(i, MyCanvas);
+                TierList.OnTierList[i] = false;
             }
         }
         UpdateContentSize();
@@ -205,7 +205,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             if (!TierListActive)
                 cpue.SetGrayOut(false);
             else
-                cpue.SetGrayOut(TierList.PowerHasBeenPlaced(cpue.TypeID));
+                cpue.SetGrayOut(TierList.HasBeenPlaced(cpue.TypeID));
             cpue.transform.localPosition = new Vector3(0, 0, 0); //Failsafe for repositioning elements as disabling them sometimes has weird behavior with layout group
         }
     }
@@ -345,7 +345,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         }
         ContentScrollRect.vertical = HasSnappedTierList == TierListActive;
 
-        bool hasSelectedPower = SelectedType >= 0 && PowerUp.Get(SelectedType).PickedUpCountAllRuns > 0;
+        bool hasSelectedPower = SelectedType >= 0 && !HoverCPUE.IsLocked();
         HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
         if (TierListActive)
         {

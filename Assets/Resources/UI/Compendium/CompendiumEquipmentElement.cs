@@ -10,7 +10,7 @@ public class CompendiumEquipmentElement : CompendiumElement
     public Canvas CountCanvas;
     public TextMeshProUGUI count;
     private Canvas MyCanvas { get; set; }
-    public int Style { get; set; }
+    public int Style = 0;
     protected bool Selected { get; set; }
     public override void Init(int i, Canvas canvas)
     {
@@ -22,10 +22,6 @@ public class CompendiumEquipmentElement : CompendiumElement
         CountCanvas.sortingLayerID = canvas.sortingLayerID;
         MyCanvas = canvas;
         MyElem.CompendiumElement = true;
-        //MyElem.SetPowerType(TypeID = i);
-        //MyElem.myCanvas = canvas;
-        //MyElem.Count.text = PowerUp.Get(TypeID).PickedUpCountAllRuns.ToString();
-        //MyElem.GrayOut = GrayOut;
         int forceInitUpdates = 1;
         //if (Style == 2)
         //{
