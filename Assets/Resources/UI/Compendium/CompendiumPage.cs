@@ -24,7 +24,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     /// -3: Empty hand, with special delete logic for elements temporarily on the tier list
     /// -4: Empty hand, with special logic for after you have placed all available elements
     /// </summary>
-    public int SelectedType { get; set; }
+    public int SelectedType { get; private set; }
     public bool ShowOnlyUnlocked { get; set; }
     public bool ShowCounts { get; set; }
     private int SortMode { get; set; } //could be made into a field

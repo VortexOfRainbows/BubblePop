@@ -15,9 +15,10 @@ public class EquipmentUIElement : MonoBehaviour
     public GameObject Self => gameObject;
     public Vector3 targetScale = Vector3.one;
     public Image Slot;
-    public bool Unlocked => ActiveEquipment.IsUnlocked || DisplayOnly;
+    public bool Unlocked => ActiveEquipment.IsUnlocked || (DisplayOnly && !CompendiumElement);
     public bool CanAfford => true; // CoinManager.Savings >= ActiveEquipment.GetPrice() || ActiveEquipment.GetPrice() <= 0;
     public bool DisplayOnly = false;
+    public bool CompendiumElement = false;
     public void UpdateEquipment(Equipment equip)
     {
         ActiveEquipment = GenerateEquipment(equip, Visual.transform);
@@ -50,19 +51,20 @@ public class EquipmentUIElement : MonoBehaviour
             slotColor = Slot.color;
             actualColor = ActiveEquipment.spriteRender.color;
         }
-        Text.color = Color.white;
+        if(Text != null)
+            Text.color = Color.white;
         if (Unlocked)
         {
-            if (CanAfford)
-            {
-                Slot.color = slotColor;
-            }
-            else
-            {
-                //UpdateColor(Color.Lerp(actualColor, Color.red, 0.1f));
-                Text.color = Color.red;
-                Slot.color = Color.Lerp(slotColor, new Color(0.9f, 0.0f, 0.0f, slotColor.a), 0.5f);
-            }
+            //if (CanAfford)
+            //{
+            //    Slot.color = slotColor;
+            //}
+            //else
+            //{
+            //    //UpdateColor(Color.Lerp(actualColor, Color.red, 0.1f));
+            //    Text.color = Color.red;
+            //    Slot.color = Color.Lerp(slotColor, new Color(0.9f, 0.0f, 0.0f, slotColor.a), 0.5f);
+            //}
         }
         else
         {
@@ -75,7 +77,7 @@ public class EquipmentUIElement : MonoBehaviour
         foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
             s.color = c;
     }
-    public void SetCompendiumLayering(int ID, int offset)
+    public void SetCompendiumLayering(int ID, int offset, int maskBehavior = 1)
     {
         //ActiveEquipment.spriteRender.sortingLayerID = ID;
         //ActiveEquipment.spriteRender.sortingOrder += offset;
@@ -83,15 +85,17 @@ public class EquipmentUIElement : MonoBehaviour
         {
             s.sortingLayerID = ID;
             s.sortingOrder += offset;
-            s.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            s.maskInteraction = (SpriteMaskInteraction)maskBehavior;
         }
     }
     public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked)
     {
-        int cost = 0; // ActiveEquipment.GetPrice();
-        Text.text = $"${cost}";
-        if(PriceVisual != null)
+        if(PriceVisual != null && Text != null)
+        {
+            int cost = 0; // ActiveEquipment.GetPrice();
+            Text.text = $"${cost}";
             PriceVisual.SetActive(cost != 0 && Unlocked);
+        }
 
         hovering = clicked = false;
         UpdateUnlockRelated();
@@ -99,7 +103,8 @@ public class EquipmentUIElement : MonoBehaviour
 
         if (Utils.IsMouseHoveringOverThis(true, Self.GetComponent<RectTransform>(), 0, canvas))
         {
-            PopUpTextUI.Enable(ActiveEquipment.GetName(), ActiveEquipment.GetDescription());
+            string desc = CompendiumElement ? "" : ActiveEquipment.GetDescription();
+            PopUpTextUI.Enable(ActiveEquipment.GetName(), desc);
             float scaleUp = 1.1f;
             if (!DisplayOnly)
             {

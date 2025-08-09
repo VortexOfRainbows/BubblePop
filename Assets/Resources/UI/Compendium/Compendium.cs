@@ -13,7 +13,21 @@ public class Compendium : MonoBehaviour
     private static Compendium m_Instance;
     public static float ScreenResolution { get; set; }
     public static float HalfResolution { get; set; }
-    public static PowerUpPage CurrentlySelectedPage => Instance.Pages.First(g => g.isActiveAndEnabled) as PowerUpPage;
+    public int PageNumber
+    { 
+        get
+        {
+            return m_PageNumber;
+        }
+        set
+        {
+            m_PageNumber = value;
+            for(int i = 0; i < Pages.Length; ++i)
+                Pages[i].gameObject.SetActive(i == value);
+        }
+    }
+    private int m_PageNumber = 1;
+    public static PowerUpPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber] as PowerUpPage;
     public Canvas MyCanvas;
     public RectTransform MyCanvasRectTransform => MyCanvas.GetComponent<RectTransform>();
     public CompendiumPage[] Pages;
@@ -66,40 +80,72 @@ public class Compendium : MonoBehaviour
     }
 
     #region Display and description on the right side of the compendium
+    public CompendiumElement ActiveElement => CurrentlySelectedPage == Pages[1] ? DisplayCEE : DisplayCPUE;
     public CompendiumPowerUpElement DisplayCPUE;
+    public CompendiumEquipmentElement DisplayCEE;
     public TextMeshProUGUI DisplayPortDescription;
     public RectTransform DescriptionContentRect;
     public GameObject[] Stars;
     public void UpdateDisplay(int SelectedType)
     {
-        DisplayCPUE.Init(SelectedType, MyCanvas);
+        if (PageNumber == 0)
+        {
+            DisplayCPUE.Init(SelectedType, MyCanvas);
+            DisplayCPUE.gameObject.SetActive(true);
+            DisplayCEE.gameObject.SetActive(false);
+        }
+        else
+        {
+            DisplayCEE.Style = 3;
+            DisplayCEE.Init(SelectedType, MyCanvas);
+            DisplayCPUE.gameObject.SetActive(false);
+            DisplayCEE.gameObject.SetActive(true);
+        }
     }
     public void UpdateDescription(bool reset, int SelectedType)
     {
         if (reset && SelectedType >= 0)
         {
-            PowerUp p = PowerUp.Get(SelectedType);
             string shortLineBreak = "<size=12>\n\n</size>";
-            int rare = p.GetRarity() - 1;
-            string concat = $"<size=42>{p.UnlockedName}</size>" + shortLineBreak;
-            concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n")}</size>";
-            concat += p.ShortDescription + shortLineBreak;
-            concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Detailed\n")}</size>";
-            concat += p.TrueFullDescription;
-            if (!DisplayCPUE.MyElem.AppearLocked)
+            int rare = 0;
+            if (PageNumber == 0)
             {
-                concat += shortLineBreak;
-                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n")}</size>";
-                concat += p.PickedUpCountAllRuns + shortLineBreak;
-                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n")}</size>";
-                concat += p.PickedUpBestAllRuns + shortLineBreak;
+                PowerUp p = PowerUp.Get(SelectedType);
+                rare = p.GetRarity() - 1;
+                string concat = $"<size=42>{p.UnlockedName}</size>" + shortLineBreak;
+                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n")}</size>";
+                concat += p.ShortDescription + shortLineBreak;
+                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Detailed\n")}</size>";
+                concat += p.TrueFullDescription;
+                if (!DisplayCPUE.IsLocked())
+                {
+                    concat += shortLineBreak;
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n")}</size>";
+                    concat += p.PickedUpCountAllRuns + shortLineBreak;
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n")}</size>";
+                    concat += p.PickedUpBestAllRuns + shortLineBreak;
+                }
+                DisplayPortDescription.text = DisplayCPUE.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
             }
-            DisplayPortDescription.text = DisplayCPUE.MyElem.AppearLocked ? DetailedDescription.BastardizeText(concat, '?') : concat;
+            else
+            {
+                Equipment e = DisplayCEE.MyElem.ActiveEquipment;
+                string concat = $"<size=42>{e.GetName()}</size>" + shortLineBreak;
+                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n")}</size>";
+                concat += e.GetDescription() + shortLineBreak;
+                if (!DisplayCEE.IsLocked())
+                {
+                    concat += shortLineBreak;
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Used\n")}</size>";
+                    concat += "0" + shortLineBreak;
+                }
+                DisplayPortDescription.text = DisplayCEE.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
+            }
             UpdateStars(rare);
         }
         Vector2 target = DisplayPortDescription.GetRenderedValues();
         float minW = 361;
-        float minH = 480;
+        float minH = 460;
         DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + 40));
     }
     public void UpdateStars(int rare)
