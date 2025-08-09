@@ -7,7 +7,6 @@ public class CompendiumPowerUpElement : CompendiumElement
     public PowerUpUIElement MyElem;
     public int Style { get; set; }
     protected bool Selected { get; set; }
-    public bool GrayOut { get; set; } = false;
     public void Init(int i, Canvas canvas)
     {
         MyElem.SetPowerType(TypeID = i);
@@ -41,5 +40,24 @@ public class CompendiumPowerUpElement : CompendiumElement
                 BG.color = Color.Lerp(BG.color, target, 0.125f);
             }
         }
+    }
+    public override void SetHovering(bool canHover)
+    {
+        MyElem.PreventHovering = !canHover;
+    }
+    public override CompendiumElement Instantiate(TierList parent, TierCategory cat, Canvas canvas, int i, int position)
+    {
+        CompendiumPowerUpElement cpue = Instantiate(Prefab).GetComponent<CompendiumPowerUpElement>();
+        parent.InsertIntoTransform(cat.Grid.transform, cpue, position);
+        cpue.Style = 2;
+        cpue.MyElem.PreventHovering = true;
+        cpue.SetGrayOut(true);
+        cpue.MyElem.HoverRadius = 0;
+        cpue.Init(i, canvas);
+        return cpue;
+    }
+    public override bool IsLocked()
+    {
+        return MyElem.AppearLocked;
     }
 }

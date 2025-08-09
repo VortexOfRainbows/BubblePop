@@ -139,15 +139,15 @@ public abstract class TierListCompendiumPage : CompendiumPage
 
         PowerUpLayoutGroup.transform.localPosition = new Vector3(0, Mathf.Min(0, 600 - defaultDist), 0);
     }
-    public static List<CompendiumPowerUpElement> GetCPUEChildren(Transform parent, out int count)
+    public static List<CompendiumElement> GetCPUEChildren(Transform parent, out int count)
     {
         count = parent.childCount;
-        List<CompendiumPowerUpElement> childs = new();
+        List<CompendiumElement> childs = new();
         for (int i = 0; i < count; ++i)
-            childs.Add(parent.GetChild(i).GetComponent<CompendiumPowerUpElement>());
+            childs.Add(parent.GetChild(i).GetComponent<CompendiumElement>());
         return childs;
     }
-    public List<CompendiumPowerUpElement> GetCPUEChildren(out int count)
+    public List<CompendiumElement> GetCPUEChildren(out int count)
     {
         return GetCPUEChildren(PowerUpLayoutGroup.transform, out count);
     }
@@ -163,19 +163,19 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public void SetVisibility()
     {
-        List<CompendiumPowerUpElement> childs = GetCPUEChildren(out int c);
-        foreach (CompendiumPowerUpElement cpue in childs)
+        List<CompendiumElement> childs = GetCPUEChildren(out int c);
+        foreach (CompendiumElement cpue in childs)
         {
-            bool locked = cpue.MyElem.AppearLocked;
+            bool locked = cpue.IsLocked();
             cpue.gameObject.SetActive(!locked || !ShowOnlyUnlocked);
             if (!TierListActive)
-                cpue.GrayOut = false;
+                cpue.SetGrayOut(false);
             else
-                cpue.GrayOut = TierList.PowerHasBeenPlaced(cpue.TypeID);
+                cpue.SetGrayOut(TierList.PowerHasBeenPlaced(cpue.TypeID));
             cpue.transform.localPosition = new Vector3(0, 0, 0); //Failsafe for repositioning elements as disabling them sometimes has weird behavior with layout group
         }
     }
-    public int CompareID(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
+    public int CompareID(CompendiumElement e1, CompendiumElement e2)
     {
         int id1 = e1.TypeID;
         int id2 = e2.TypeID;
@@ -186,8 +186,10 @@ public abstract class TierListCompendiumPage : CompendiumPage
         int num = id1 - id2;
         return num;
     }
-    public int CompareRare(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
+    public int CompareRare(CompendiumElement e1, CompendiumElement e2)
     {
+        if (e1 is CompendiumEquipmentElement || e2 is CompendiumEquipmentElement)
+            return CompareID(e1, e2);
         int rare1 = PowerUp.Get(e1.TypeID).GetRarity();
         int rare2 = PowerUp.Get(e2.TypeID).GetRarity();
         if (e1.GrayOut)
@@ -197,8 +199,10 @@ public abstract class TierListCompendiumPage : CompendiumPage
         int num = rare1 - rare2;
         return num == 0 ? CompareID(e1, e2) : num;
     }
-    public int CompareFav(CompendiumPowerUpElement e1, CompendiumPowerUpElement e2)
+    public int CompareFav(CompendiumElement e1, CompendiumElement e2)
     {
+        if (e1 is CompendiumEquipmentElement || e2 is CompendiumEquipmentElement)
+            return CompareID(e1, e2);
         int count1 = PowerUp.Get(e1.TypeID).PickedUpCountAllRuns;
         int count2 = PowerUp.Get(e2.TypeID).PickedUpCountAllRuns;
         if (e1.GrayOut)
@@ -210,7 +214,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public void Sort()
     {
-        List<CompendiumPowerUpElement> childs = GetCPUEChildren(out int c);
+        List<CompendiumElement> childs = GetCPUEChildren(out int c);
         PowerUpLayoutGroup.transform.DetachChildren();
         if (SortMode == ArbitrarySort)
         {
@@ -226,7 +230,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         }
         for (int i = 0; i < c; ++i)
         {
-            CompendiumPowerUpElement CPUE = childs[i];
+            CompendiumElement CPUE = childs[i];
             CPUE.transform.SetParent(PowerUpLayoutGroup.transform);
             CPUE.transform.localPosition = new Vector3(CPUE.transform.localPosition.x, CPUE.transform.localPosition.y, 0);
         }

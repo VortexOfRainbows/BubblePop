@@ -14,10 +14,11 @@ public class TierList : MonoBehaviour
     public PowerUpPage Owner;
     public static float TotalDistanceCovered = 800f;
     public static readonly Dictionary<int, bool> OnTierList = new();
-    public static readonly List<CompendiumPowerUpElement> Powers = new();
+    public static readonly List<CompendiumElement> Powers = new();
     public static readonly string TierNames = "SABCDF";
     public TierCategory[] Categories;
     private TierCategory SelectedCat;
+    public CompendiumElement CurrentlyHoveredElement => Owner.HoverCPUE;
     public void SetSelectedCategory(int i)
     {
         SelectedCat = Categories[i];
@@ -77,15 +78,13 @@ public class TierList : MonoBehaviour
             RemovePower(Owner.HoverCPUE.TypeID);
         }
         bool preventHovering = Owner.HoldingAPower && !Owner.HoldingALockedPower;
-        foreach (CompendiumPowerUpElement cpue in Powers)
-        {
-            cpue.MyElem.PreventHovering = preventHovering;
-        }
+        foreach (CompendiumElement cpue in Powers)
+            cpue.SetHovering(!preventHovering);
     }
-    public List<float> UniqueYValues(List<CompendiumPowerUpElement> childs, float bonus)
+    public List<float> UniqueYValues(List<CompendiumElement> childs, float bonus)
     {
         List<float> unique = new();
-        foreach(CompendiumPowerUpElement cpue in childs)
+        foreach(CompendiumElement cpue in childs)
         {
             if (!unique.Contains(cpue.rectTransform.position.y))
             {
@@ -111,7 +110,7 @@ public class TierList : MonoBehaviour
         }
         return uniqueYVals[best];
     }
-    public void InsertIntoTransform(Transform parentGrid, CompendiumPowerUpElement newestCPU, int position = -1)
+    public void InsertIntoTransform(Transform parentGrid, CompendiumElement newestCPU, int position = -1)
     {
         float currentPosX = newestCPU.rectTransform.position.x;
         float currentPosY = newestCPU.rectTransform.position.y;
@@ -121,7 +120,7 @@ public class TierList : MonoBehaviour
         {
             return;
         }
-        List<CompendiumPowerUpElement> childs = TierListCompendiumPage.GetCPUEChildren(parentGrid, out c);
+        List<CompendiumElement> childs = TierListCompendiumPage.GetCPUEChildren(parentGrid, out c);
         childs.Remove(newestCPU);
         --c;
         bool autoSelectPosition = position == -1;
@@ -137,7 +136,7 @@ public class TierList : MonoBehaviour
             float best = float.MaxValue;
             for (int i = 0; i < c; ++i)
             {
-                CompendiumPowerUpElement CPUE = childs[i];
+                CompendiumElement CPUE = childs[i];
                 Vector2 pos = new(CPUE.rectTransform.position.x + offset, CPUE.rectTransform.position.y + 0.025f);
                 //Debug.Log($"{pos}, {mousePos}");
                 float d = pos.Distance(mousePos, 1, 100f);
@@ -177,7 +176,7 @@ public class TierList : MonoBehaviour
         int counter = 0;
         for (int i = 0; i < c; ++i)
         {
-            CompendiumPowerUpElement CPUE = childs[i];
+            CompendiumElement CPUE = childs[i];
             if (position == i)
                 newestCPU.transform.SetSiblingIndex(counter++);
             CPUE.transform.SetSiblingIndex(counter++);
@@ -190,20 +189,14 @@ public class TierList : MonoBehaviour
         if (SelectedCat == null)
             return;
         int insertPos = ReadingFromSave ? 10000 : -1;
-        CompendiumPowerUpElement cpue = Powers.Find(g => g.TypeID == i);
+        CompendiumElement cpue = Powers.Find(g => g.TypeID == i);
         if (PowerUp.Get(i).PickedUpCountAllRuns <= 0)
             return;
         if (!OnTierList[i])
         {
             if (cpue == null)
             {
-                cpue = Instantiate(CompendiumPowerUpElement.Prefab).GetComponent<CompendiumPowerUpElement>();
-                InsertIntoTransform(SelectedCat.Grid.transform, cpue, insertPos);
-                cpue.Style = 2;
-                cpue.MyElem.PreventHovering = true;
-                cpue.GrayOut = true;
-                cpue.MyElem.HoverRadius = 0;
-                cpue.Init(i, MyCanvas);
+                cpue = CurrentlyHoveredElement.Instantiate(this, SelectedCat, MyCanvas, i, insertPos);
                 Powers.Add(cpue);
             }
             else
@@ -218,16 +211,16 @@ public class TierList : MonoBehaviour
             cpue.transform.SetParent(SelectedCat.Grid.transform);
         }
         if (preview && !OnTierList[i] && cpue != null)
-            cpue.GrayOut = true;
+            cpue.SetGrayOut(true);
         else
         {
-            cpue.GrayOut = false;
+            cpue.SetGrayOut(false);
             ModifyOnTierList(i, true);
         }
     }
     public void RemovePower(int i, bool OnlyIfGray = true)
     {
-        CompendiumPowerUpElement existingCPUE = Powers.Find(g => g.TypeID == i);
+        CompendiumElement existingCPUE = Powers.Find(g => g.TypeID == i);
         if (existingCPUE != null && existingCPUE.GrayOut == OnlyIfGray)
         {
             Powers.Remove(existingCPUE);
@@ -247,7 +240,7 @@ public class TierList : MonoBehaviour
             Owner.Sort();
             if (!prevVal && val) //Place power
             {
-                CompendiumPowerUpElement nextElem = Owner.NextSlot();
+                CompendiumElement nextElem = Owner.NextSlot();
                 if (nextElem != null && !nextElem.GrayOut && Owner.AutoNextTierList)
                 {
                     Owner.UpdateSelectedType(nextElem.TypeID);

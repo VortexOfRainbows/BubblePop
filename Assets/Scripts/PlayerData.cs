@@ -88,10 +88,10 @@ public static class PlayerData
             CSV += tier;
             CSV += ":";
             TierCategory cat = list.Categories[i];
-            List<CompendiumPowerUpElement> l = TierListCompendiumPage.GetCPUEChildren(cat.Grid.transform, out int c);
+            List<CompendiumElement> l = TierListCompendiumPage.GetCPUEChildren(cat.Grid.transform, out int c);
             for(int j = 0; j < l.Count; ++j)
             {
-                CompendiumPowerUpElement cpue = l[j];
+                CompendiumElement cpue = l[j];
                 if(cpue != null)
                 {
                     CSV += cpue.TypeID;

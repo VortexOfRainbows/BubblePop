@@ -7,7 +7,6 @@ public class CompendiumEquipmentElement : CompendiumElement
     public EquipmentUIElement MyElem;
     public int Style { get; set; }
     protected bool Selected { get; set; }
-    public bool GrayOut { get; set; } = false;
     private bool TempHasRun = false;
     public void LateUpdate()
     {
