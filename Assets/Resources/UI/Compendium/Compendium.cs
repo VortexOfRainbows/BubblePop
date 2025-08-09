@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using TMPro;
 using Unity.VisualScripting;
@@ -12,11 +13,12 @@ public class Compendium : MonoBehaviour
     private static Compendium m_Instance;
     public static float ScreenResolution { get; set; }
     public static float HalfResolution { get; set; }
-    public static PowerUpPage CurrentlySelectedPage => Instance.PowerPage;
+    public static PowerUpPage CurrentlySelectedPage => Instance.Pages.First(g => g.isActiveAndEnabled) as PowerUpPage;
     public Canvas MyCanvas;
     public RectTransform MyCanvasRectTransform => MyCanvas.GetComponent<RectTransform>();
     public CompendiumPage[] Pages;
-    public PowerUpPage PowerPage;
+    public PowerUpPage PowerPage { get; private set; }
+    public PowerUpPage EquipPage { get; private set; }
     private bool Active { get; set; }
     public Button OpenCompendiumButton;
     public Transform TopBar;
@@ -31,6 +33,8 @@ public class Compendium : MonoBehaviour
     }
     public void Start()
     {
+        PowerPage = Pages[0] as PowerUpPage;
+        EquipPage = Pages[1] as PowerUpPage;
         m_Instance = this;
     }
     public void Update()
@@ -41,18 +45,23 @@ public class Compendium : MonoBehaviour
         if(PowerPage != null)
             PowerPage.OnUpdate();
     }
+    public void UpdatePage(PowerUpPage page)
+    {
+        if (page != null && Active && page.isActiveAndEnabled)
+        {
+            if (!page.HasInit)
+            {
+                page.Init(CountButton, SortText);
+                page.HasInit = true;
+            }
+            page.OnFixedUpdate();
+        }
+    }
     public void FixedUpdate()
     {
         Vector2 startingPosition = new Vector3(-ScreenResolution, 0);
-        if(PowerPage != null && Active)
-        {
-            if (!PowerPage.HasInit)
-            {
-                PowerPage.Init(CountButton, SortText);
-                PowerPage.HasInit = true;
-            }
-            PowerPage.OnFixedUpdate();
-        }
+        UpdatePage(PowerPage);
+        UpdatePage(EquipPage);
         Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, 0.1f, 0.1f);
     }
 

@@ -30,8 +30,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     private int SortMode { get; set; } //could be made into a field
     private bool TierListActive { get; set; } //could be made into a field
     private bool HasSnappedTierList { get; set; } //could be made into a field
-    public bool HasInit { get; set; }
-    public CompendiumPowerUpElement HoverCPUE;
+    public bool HasInit { get; set; } = false;
+    public CompendiumElement HoverCPUE;
     public RectTransform SelectionArea;
     public GridLayoutGroup PowerUpLayoutGroup;
     public RectTransform ContentRectangle;
@@ -109,11 +109,22 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public void Init(Button countButton, TextMeshProUGUI sortText)
     {
-        for (int i = 0; i < PowerUp.Reverses.Count; ++i)
+        if (HoverCPUE is CompendiumPowerUpElement)
         {
-            CompendiumPowerUpElement CPUE = Instantiate(CompendiumPowerUpElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumPowerUpElement>();
-            CPUE.Init(i, MyCanvas);
-            TierList.OnTierList[i] = false;
+            for (int i = 0; i < PowerUp.Reverses.Count; ++i)
+            {
+                CompendiumPowerUpElement CPUE = Instantiate(CompendiumPowerUpElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumPowerUpElement>();
+                CPUE.Init(i, MyCanvas);
+                TierList.OnTierList[i] = false;
+            }
+        }
+        else if(HoverCPUE is CompendiumEquipmentElement)
+        {
+            for(int i = 0; i < Main.Instance.EquipData.AllEquipmentsList.Count; ++i)
+            {
+                CompendiumEquipmentElement CPUE = Instantiate(CompendiumEquipmentElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumEquipmentElement>();
+                CPUE.Init(i, MyCanvas);
+            }
         }
         UpdateContentSize();
         ShowCounts = true;
@@ -133,9 +144,9 @@ public abstract class TierListCompendiumPage : CompendiumPage
         RectTransform r = PowerUpLayoutGroup.GetComponent<RectTransform>();
         float defaultDist = TierList.TotalDistanceCovered - 200;
         float paddingBonus = PowerUpLayoutGroup.padding.bottom + PowerUpLayoutGroup.cellSize.y;
-        float dist = -lastElement.y + paddingBonus;
+        float dist = -lastElement.y;
         r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(defaultDist, dist));
-        ContentRectangle.sizeDelta = Vector2.Lerp(ContentRectangle.sizeDelta, new Vector2(0, paddingBonus / 2f + (TierListActive ? defaultDist : 0)), 0.1f);
+        ContentRectangle.sizeDelta = Vector2.Lerp(ContentRectangle.sizeDelta, new Vector2(0, dist - defaultDist + (TierListActive ? defaultDist : 0)), 0.1f);
 
         PowerUpLayoutGroup.transform.localPosition = new Vector3(0, Mathf.Min(0, 600 - defaultDist), 0);
     }
@@ -188,10 +199,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public int CompareRare(CompendiumElement e1, CompendiumElement e2)
     {
-        if (e1 is CompendiumEquipmentElement || e2 is CompendiumEquipmentElement)
-            return CompareID(e1, e2);
-        int rare1 = PowerUp.Get(e1.TypeID).GetRarity();
-        int rare2 = PowerUp.Get(e2.TypeID).GetRarity();
+        int rare1 = e1.GetRare();
+        int rare2 = e2.GetRare();
         if (e1.GrayOut)
             rare1 += 10;
         if (e2.GrayOut)
@@ -201,10 +210,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public int CompareFav(CompendiumElement e1, CompendiumElement e2)
     {
-        if (e1 is CompendiumEquipmentElement || e2 is CompendiumEquipmentElement)
-            return CompareID(e1, e2);
-        int count1 = PowerUp.Get(e1.TypeID).PickedUpCountAllRuns;
-        int count2 = PowerUp.Get(e2.TypeID).PickedUpCountAllRuns;
+        int count1 = e1.GetCount();
+        int count2 = e2.GetCount();
         if (e1.GrayOut)
             count1 = (int.MinValue >> 1) + count1;
         if (e2.GrayOut)

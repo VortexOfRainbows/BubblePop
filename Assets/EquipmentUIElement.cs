@@ -77,8 +77,8 @@ public class EquipmentUIElement : MonoBehaviour
     }
     public void UpdateLayering(int ID, int offset)
     {
-        ActiveEquipment.spriteRender.sortingLayerID = ID;
-        ActiveEquipment.spriteRender.sortingOrder += offset;
+        //ActiveEquipment.spriteRender.sortingLayerID = ID;
+        //ActiveEquipment.spriteRender.sortingOrder += offset;
         foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
         {
             s.sortingLayerID = ID;

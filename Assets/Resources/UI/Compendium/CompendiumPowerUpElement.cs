@@ -7,7 +7,7 @@ public class CompendiumPowerUpElement : CompendiumElement
     public PowerUpUIElement MyElem;
     public int Style { get; set; }
     protected bool Selected { get; set; }
-    public void Init(int i, Canvas canvas)
+    public override void Init(int i, Canvas canvas)
     {
         MyElem.SetPowerType(TypeID = i);
         MyElem.myCanvas = canvas;
@@ -59,5 +59,13 @@ public class CompendiumPowerUpElement : CompendiumElement
     public override bool IsLocked()
     {
         return MyElem.AppearLocked;
+    }
+    public override int GetRare()
+    {
+        return PowerUp.Get(TypeID).GetRarity();
+    }
+    public override int GetCount()
+    {
+        return PowerUp.Get(TypeID).PickedUpCountAllRuns;
     }
 }

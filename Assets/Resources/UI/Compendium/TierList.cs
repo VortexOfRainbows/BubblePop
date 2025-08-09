@@ -11,7 +11,7 @@ public class TierList : MonoBehaviour
 {
     public static bool ReadingFromSave = false;
     public static int QueueRemoval = -1;
-    public PowerUpPage Owner;
+    public TierListCompendiumPage Owner;
     public static float TotalDistanceCovered = 800f;
     public static readonly Dictionary<int, bool> OnTierList = new();
     public static readonly List<CompendiumElement> Powers = new();
@@ -26,6 +26,8 @@ public class TierList : MonoBehaviour
     public Canvas MyCanvas;
     public static bool PowerHasBeenPlaced(int i)
     {
+        if (i <= -1)
+            return false;
         return OnTierList[i];
     }
     public void Start()
@@ -210,12 +212,14 @@ public class TierList : MonoBehaviour
             ModifyOnTierList(i, false);
             cpue.transform.SetParent(SelectedCat.Grid.transform);
         }
-        if (preview && !OnTierList[i] && cpue != null)
-            cpue.SetGrayOut(true);
-        else
-        {
-            cpue.SetGrayOut(false);
-            ModifyOnTierList(i, true);
+        if(cpue != null) {
+            if (preview && !OnTierList[i])
+                cpue.SetGrayOut(true);
+            else
+            {
+                cpue.SetGrayOut(false);
+                ModifyOnTierList(i, true);
+            }
         }
     }
     public void RemovePower(int i, bool OnlyIfGray = true)

@@ -7,19 +7,11 @@ public class CompendiumEquipmentElement : CompendiumElement
     public EquipmentUIElement MyElem;
     public int Style { get; set; }
     protected bool Selected { get; set; }
-    private bool TempHasRun = false;
-    public void LateUpdate()
+    public override void Init(int i, Canvas canvas)
     {
-        if(!TempHasRun)
-        {
-            TempHasRun = true;
-            Init(TypeID, Compendium.Instance.MyCanvas);
-        }
-    }
-    public void Init(int i, Canvas canvas)
-    {
+        TypeID = i;
         MyElem.UpdateEquipment(Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>());
-        MyElem.UpdateLayering(canvas.sortingLayerID, 20); //2 = UICamera, 20 = compendium canvas size
+        MyElem.UpdateLayering(canvas.sortingLayerID, 50); //2 = UICamera, 20 = compendium canvas size
         //MyElem.SetPowerType(TypeID = i);
         //MyElem.myCanvas = canvas;
         //MyElem.Count.text = PowerUp.Get(TypeID).PickedUpCountAllRuns.ToString();
