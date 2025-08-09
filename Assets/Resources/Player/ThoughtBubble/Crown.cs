@@ -99,4 +99,8 @@ public class Crown : Bulb
             t.localPosition = new Vector3(t.localPosition.x, t.localPosition.y, z);
         }
     }
+    public override int GetRarity()
+    {
+        return 4;
+    }
 }

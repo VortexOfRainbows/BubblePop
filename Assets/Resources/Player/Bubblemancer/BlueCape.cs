@@ -14,4 +14,8 @@ public class BlueCape : BubblemancerCape
         player.AbilityRecoverySpeed += 0.6f;
         player.AttackSpeedModifier += 0.1f;
     }
+    public override int GetRarity()
+    {
+        return 3;
+    }
 }

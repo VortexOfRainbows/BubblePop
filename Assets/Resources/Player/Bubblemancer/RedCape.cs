@@ -13,4 +13,8 @@ public class RedCape : BubblemancerCape
     {
         player.MoveSpeedMod += 0.2f + 0.1f * player.SpentBonusLives;
     }
+    public override int GetRarity()
+    {
+        return 4;
+    }
 }

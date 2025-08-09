@@ -13,4 +13,8 @@ public class BlueblemancerHat : BubblemancerHat
     {
         PowerUp.Spawn<Choice>(Player.Position, 0);
     }
+    public override int GetRarity()
+    {
+        return 3;
+    }
 }

@@ -141,4 +141,8 @@ public class Body : Equipment
 
     }
     public virtual float AbilityCD => 0.5f;
+    public override int GetRarity()
+    {
+        return 5;
+    }
 }

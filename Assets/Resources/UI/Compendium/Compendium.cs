@@ -33,6 +33,7 @@ public class Compendium : MonoBehaviour
             UpdateDisplay(ActiveElement.TypeID);
             UpdateDescription(true, ActiveElement.TypeID);
         }
+        CurrentlySelectedPage.UpdateAllButtons(SortText, UnlockButton, CountButton, ReverseButton);
     }
     private int m_PageNumber = 1;
     public static PowerUpPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber] as PowerUpPage;
@@ -172,7 +173,7 @@ public class Compendium : MonoBehaviour
     #endregion
 
     #region Tier List Universal Buttons
-    public Button AutoButton, UnlockButton, CountButton;
+    public Button AutoButton, UnlockButton, CountButton, ReverseButton;
     public TextMeshProUGUI SortText, TierListText;
     public void ToggleAuto()
     {
@@ -214,6 +215,10 @@ public class Compendium : MonoBehaviour
     public void OnCountButtonPressed()
     {
         CurrentlySelectedPage.ToggleCount(CountButton);
+    }
+    public void OnReverseButtonPressed()
+    {
+        CurrentlySelectedPage.ToggleReverse(ReverseButton);
     }
     #endregion
 }

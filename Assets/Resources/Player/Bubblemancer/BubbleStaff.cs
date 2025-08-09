@@ -14,4 +14,8 @@ public class BubbleStaff : BubblemancerWand
     {
         description.WithName("Bubble Staff").WithDescription("An expertly crafted bubble-tech weapon");
     }
+    public override int GetRarity()
+    {
+        return 2;
+    }
 }

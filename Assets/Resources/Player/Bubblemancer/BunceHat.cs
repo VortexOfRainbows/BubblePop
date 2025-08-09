@@ -44,4 +44,8 @@ public class BunceHat : BubblemancerHat
             velocity *= 0.1f;
         base.DeathAnimation();
     }
+    public override int GetRarity()
+    {
+        return 2;
+    }
 }

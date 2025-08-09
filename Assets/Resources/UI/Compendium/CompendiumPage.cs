@@ -27,6 +27,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public int SelectedType { get; private set; }
     public bool ShowOnlyUnlocked { get; set; }
     public bool ShowCounts { get; set; }
+    public bool ReverseSort { get; set; }
     private int SortMode { get; set; } //could be made into a field
     private bool TierListActive { get; set; } //could be made into a field
     private bool HasSnappedTierList { get; set; } //could be made into a field
@@ -101,6 +102,24 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         ShowCounts = !ShowCounts;
         countButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
+    }
+    public void ToggleReverse(Button reverseButton)
+    {
+        ReverseSort = !ReverseSort;
+        reverseButton.targetGraphic.color = ReverseSort ? Color.yellow : Color.white;
+        Sort();
+    }
+    public void UpdateAllButtons(TextMeshProUGUI sortText, Button unlockButton, Button countButton, Button reverseButton)
+    {
+        if (SortMode == ArbitrarySort) //Arbitrary / ID
+            sortText.text = "Sort: ID";
+        else if (SortMode == RaritySort) //By rarity
+            sortText.text = "Sort: Rarity";
+        else if (SortMode == FavSort) //By count
+            sortText.text = "Sort: Favorite";
+        unlockButton.targetGraphic.color = ShowOnlyUnlocked ? Color.yellow : Color.white;
+        countButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
+        reverseButton.targetGraphic.color = ReverseSort ? Color.yellow : Color.white;
     }
     public void Start()
     {
@@ -239,11 +258,23 @@ public abstract class TierListCompendiumPage : CompendiumPage
         {
             childs.Sort(CompareFav);
         }
-        for (int i = 0; i < c; ++i)
+        if(!ReverseSort)
         {
-            CompendiumElement CPUE = childs[i];
-            CPUE.transform.SetParent(PowerUpLayoutGroup.transform);
-            CPUE.transform.localPosition = new Vector3(CPUE.transform.localPosition.x, CPUE.transform.localPosition.y, 0);
+            for (int i = 0; i < c; ++i)
+            {
+                CompendiumElement CPUE = childs[i];
+                CPUE.transform.SetParent(PowerUpLayoutGroup.transform);
+                CPUE.transform.localPosition = new Vector3(CPUE.transform.localPosition.x, CPUE.transform.localPosition.y, 0);
+            }
+        }
+        else
+        {
+            for (int i = c - 1; i >= 0; --i)
+            {
+                CompendiumElement CPUE = childs[i];
+                CPUE.transform.SetParent(PowerUpLayoutGroup.transform);
+                CPUE.transform.localPosition = new Vector3(CPUE.transform.localPosition.x, CPUE.transform.localPosition.y, 0);
+            }
         }
     }
     public void OnUpdate()

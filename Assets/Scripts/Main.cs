@@ -132,11 +132,11 @@ public class Main : MonoBehaviour
                     {
                         for (int k = 0; k < equip.SubEquipment.Count; k++)
                         {
-                            equip = equip.SubEquipment[k].GetComponent<Equipment>();
-                            equip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
-                            equip.SetUpDesc();
-                            Debug.Log($"Equipment: <color=#FF0000>{equip.GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
-                            AllEquipmentsList.Add(equip.gameObject);
+                            Equipment subEquip = equip.SubEquipment[k].GetComponent<Equipment>();
+                            subEquip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
+                            subEquip.SetUpDesc();
+                            Debug.Log($"Equipment: <color=#FF0000>{subEquip.GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
+                            AllEquipmentsList.Add(subEquip.gameObject);
                         }
                     }
                 }

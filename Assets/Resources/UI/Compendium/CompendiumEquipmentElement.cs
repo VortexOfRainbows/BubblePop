@@ -42,7 +42,7 @@ public class CompendiumEquipmentElement : CompendiumElement
     {
         if (TypeID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
-        count.gameObject.SetActive(Compendium.Instance.EquipPage.ShowCounts);
+        count.gameObject.SetActive(Compendium.Instance.EquipPage.ShowCounts && !MyElem.DisplayOnly && !IsLocked());
         if(MyElem.ActiveEquipment != null)
         {
             MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
@@ -73,6 +73,6 @@ public class CompendiumEquipmentElement : CompendiumElement
     }
     public override int GetRare()
     {
-        return 0;
+        return MyElem.ActiveEquipment.GetRarity();
     }
 }
