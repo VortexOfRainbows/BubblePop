@@ -17,9 +17,9 @@ public class BubblemancerHat : Hat
         powerPool.Add<BinaryStars>();
         powerPool.Add<Starbarbs>();
     }
-    protected override string Description()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "A stylish hat fashioned with wool from his precious sheep";
+        description.WithName("Bubblemancy Hat").WithDescription("A stylish hat fashioned with wool from his precious sheep");
     }
     protected override void AnimationUpdate()
     {

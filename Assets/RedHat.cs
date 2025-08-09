@@ -3,9 +3,9 @@ using System.Linq;
 public class RedHat : BubblemancerHat
 {
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<BubbleBirbUnlock10>();
-    protected override string Description()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Start with the rarest powerup in the availability pool";
+        description.WithName("Red Bubblemancy Hat").WithDescription("Start with the rarest powerup in the availability pool");
     }
     public override void OnStartWith()
     {

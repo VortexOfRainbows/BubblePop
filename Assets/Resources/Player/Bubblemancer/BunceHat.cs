@@ -10,9 +10,9 @@ public class BunceHat : BubblemancerHat
         scale *= 1.33f;
         offset.y -= 0.1f;
     }
-    protected override string Description()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Grants an additional heart\nYou stupid!";
+        description.WithName("Bunce Cap").WithDescription("Grants an additional heart\n You stupid!");
     }
     public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int MaxShield, ref int Shield)
     {

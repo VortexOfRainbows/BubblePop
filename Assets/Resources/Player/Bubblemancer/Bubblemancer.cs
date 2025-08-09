@@ -18,9 +18,9 @@ public class Bubblemancer : Body
         powerPool.Add<BubbleMitosis>();
         powerPool.Add<Coalescence>();
     }
-    protected override string Description()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "A humble shepard from the quaint Bubble Fields.";
+        description.WithName("Bubblemancer").WithDescription("A humble shepard from the quaint Bubble Fields");
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {

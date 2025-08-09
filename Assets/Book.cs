@@ -28,13 +28,9 @@ public class Book : Weapon
         //powerPool.Add<ShotSpeed>();
         //powerPool.Add<Starshot>();
     }
-    protected override string Name()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Electrodynamics Grimoire";
-    }
-    protected override string Description()
-    {
-        return "Thought Bubble's trusty tome, 'only used for self defense'";
+        description.WithName("Electrodynamics Grimoire").WithDescription("Thought Bubble's trusty tome, 'only used for self defense'");
     }
     protected override void AnimationUpdate()
     {

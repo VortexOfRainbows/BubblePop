@@ -5,12 +5,9 @@ using UnityEngine;
 public class BlueblemancerHat : BubblemancerHat
 {
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ScoreUnlock1000>();
-    protected override string Description()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "A suspiciously blue variation of Bubblemancer's classic hat\n" +
-            "Nobody knows where it came from...\n" +
-            "\n" +
-            "Start with Choice";
+        description.WithName("Bluebblemancy Cape").WithDescription("Start with Choice");
     }
     public override void OnStartWith()
     {

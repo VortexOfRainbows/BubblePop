@@ -45,7 +45,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public void UpdateSelectedType(int i)
     {
         SelectedType = i;
-        if (Owner.DisplayCPUE.TypeID != SelectedType && SelectedType >= 0)
+        if (Owner.ActiveElement.TypeID != SelectedType && SelectedType >= 0)
         {
             Owner.UpdateDisplay(SelectedType);
             Owner.UpdateDescription(true, SelectedType);

@@ -160,9 +160,9 @@ public class Gachapon : Body
         powerPool.Add<AllIn>();
         powerPool.Add<BubbleMitosis>();
     }
-    protected override string Description()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "A greedy shopkeeper? No! I'm the most honest gal around!";
+        description.WithName("Gachapon").WithDescription("A greedy shopkeeper? No! I'm the most honest gal around!");
     }
     public GameObject top;
     public override void FaceUpdate()

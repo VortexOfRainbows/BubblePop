@@ -25,13 +25,9 @@ public class BubbleGun : BubblemancerWand
         powerPool.Add<ShotSpeed>();
         powerPool.Add<WeaponUpgrade>();
     }
-    protected override string Name()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Bubble Gun";
-    }
-    protected override string Description()
-    {
-        return "The right to bare bubble shall not be infringed";
+        description.WithName("Bubble Gun").WithDescription("The right to bare bubble shall not be infringed");
     }
     public override void EquipUpdate()
     {

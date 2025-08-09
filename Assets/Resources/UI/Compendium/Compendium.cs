@@ -1,9 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,9 +16,22 @@ public class Compendium : MonoBehaviour
         }
         set
         {
-            m_PageNumber = value;
-            for(int i = 0; i < Pages.Length; ++i)
-                Pages[i].gameObject.SetActive(i == value);
+            SetPage(value);
+        }
+    }
+    public void SetPage(int value)
+    {
+        m_PageNumber = value;
+        for (int i = 0; i < Pages.Length; ++i)
+        {
+            bool isSelectedPage = i == value;
+            Pages[i].gameObject.SetActive(isSelectedPage);
+            PageButtons[i].targetGraphic.color = isSelectedPage ? Color.yellow : Color.white;
+        }
+        if(ActiveElement.TypeID >= 0)
+        {
+            UpdateDisplay(ActiveElement.TypeID);
+            UpdateDescription(true, ActiveElement.TypeID);
         }
     }
     private int m_PageNumber = 1;
@@ -31,6 +39,7 @@ public class Compendium : MonoBehaviour
     public Canvas MyCanvas;
     public RectTransform MyCanvasRectTransform => MyCanvas.GetComponent<RectTransform>();
     public CompendiumPage[] Pages;
+    public Button[] PageButtons;
     public PowerUpPage PowerPage { get; private set; }
     public PowerUpPage EquipPage { get; private set; }
     private bool Active { get; set; }
@@ -50,6 +59,7 @@ public class Compendium : MonoBehaviour
         PowerPage = Pages[0] as PowerUpPage;
         EquipPage = Pages[1] as PowerUpPage;
         m_Instance = this;
+        SetPage(0);
     }
     public void Update()
     {
@@ -107,15 +117,20 @@ public class Compendium : MonoBehaviour
         if (reset && SelectedType >= 0)
         {
             string shortLineBreak = "<size=12>\n\n</size>";
-            int rare = 0;
+            int rare;
             if (PageNumber == 0)
             {
                 PowerUp p = PowerUp.Get(SelectedType);
                 rare = p.GetRarity() - 1;
                 string concat = $"<size=42>{p.UnlockedName}</size>" + shortLineBreak;
-                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n")}</size>";
-                concat += p.ShortDescription + shortLineBreak;
-                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Detailed\n")}</size>";
+                if (p.HasBriefDescription)
+                {
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n")}</size>";
+                    concat += p.ShortDescription + shortLineBreak;
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Detailed\n")}</size>";
+                }
+                else
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n")}</size>";
                 concat += p.TrueFullDescription;
                 if (!DisplayCPUE.IsLocked())
                 {
@@ -130,6 +145,7 @@ public class Compendium : MonoBehaviour
             else
             {
                 Equipment e = DisplayCEE.MyElem.ActiveEquipment;
+                rare = e.GetRarity() - 1;
                 string concat = $"<size=42>{e.GetName()}</size>" + shortLineBreak;
                 concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n")}</size>";
                 concat += e.GetDescription() + shortLineBreak;

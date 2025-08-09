@@ -45,12 +45,12 @@ public class CompendiumEquipmentElement : CompendiumElement
         count.gameObject.SetActive(Compendium.Instance.EquipPage.ShowCounts);
         if(MyElem.ActiveEquipment != null)
         {
-            MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked);
+            MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
             if (clicked)
             {
                 Compendium.Instance.EquipPage.UpdateSelectedType(TypeID);
             }
-            if (Style != 2)
+            if (Style != 3)
             {
                 Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
                 BG.color = Color.Lerp(BG.color, target, 0.125f);

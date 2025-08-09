@@ -88,7 +88,7 @@ public class EquipmentUIElement : MonoBehaviour
             s.maskInteraction = (SpriteMaskInteraction)maskBehavior;
         }
     }
-    public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked)
+    public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked, RectTransform hoverArea)
     {
         if(PriceVisual != null && Text != null)
         {
@@ -96,25 +96,25 @@ public class EquipmentUIElement : MonoBehaviour
             Text.text = $"${cost}";
             PriceVisual.SetActive(cost != 0 && Unlocked);
         }
-
+        
         hovering = clicked = false;
         UpdateUnlockRelated();
         UpdateOrientation();
-
-        if (Utils.IsMouseHoveringOverThis(true, Self.GetComponent<RectTransform>(), 0, canvas))
+        if (Utils.IsMouseHoveringOverThis(true, hoverArea, 0, canvas) && (!CompendiumElement || !DisplayOnly))
         {
-            string desc = CompendiumElement ? "" : ActiveEquipment.GetDescription();
-            PopUpTextUI.Enable(ActiveEquipment.GetName(), desc);
+            string name = Unlocked ? ActiveEquipment.GetName() : DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???");
+            string desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
+            PopUpTextUI.Enable(name, desc);
             float scaleUp = 1.1f;
             if (!DisplayOnly)
             {
                 clicked = Input.GetMouseButtonDown(0);
                 scaleUp = 1.2f;
             }
-            transform.localScale = Vector3.Lerp(transform.localScale, targetScale * scaleUp, 0.15f);
+            transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
             hovering = true;
         }
         else
-            transform.localScale = Vector3.Lerp(transform.localScale, targetScale * 1.0f, 0.1f);
+            transform.LerpLocalScale(targetScale * 1.0f, 0.1f);
     }
 }

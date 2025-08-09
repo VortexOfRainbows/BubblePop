@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour
@@ -41,18 +42,6 @@ public class Equipment : MonoBehaviour
         }
     }
     private int myIndexInAllEquipPool;
-    public string TypeName { 
-        get
-        {
-            if (InternalName == null)
-                InternalName = this.GetType().Name;
-            return InternalName;
-        }
-        set
-        {
-            InternalName = value;
-        }
-    }
     public static void ModifyPowerPoolAll()
     {
         PowerUp.ResetPowerAvailability();
@@ -85,28 +74,6 @@ public class Equipment : MonoBehaviour
     public virtual void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
 
-    }
-    public string GetName()
-    {
-        return IsUnlocked ? Name() : "???";
-    }
-    public string GetDescription()
-    {
-        if (IsUnlocked) //If fully unlocked
-            return Description();
-        if (!UnlockCondition.Unlocked) //If only the character is unlocked
-            return "Unlock by:\n" + UnlockCondition.LockedText();
-        //if (UnlockCondition.Unlocked) //If only the equipment is unlocked
-        //    return "Unlock by:\n" + CategoryUnlockCondition.LockedText();
-        return "Play more to discover this equipment";
-    }
-    protected virtual string Name()
-    {
-        return TypeName.ToSpacedString();
-    }
-    protected virtual string Description()
-    {
-        return "Temporary Equipment Description";
     }
     public void AliveUpdate()
     {
@@ -145,12 +112,8 @@ public class Equipment : MonoBehaviour
     {
 
     }
-    /// <summary>
-    /// Equipment is at 0
-    /// </summary>
-    /// <returns></returns>
-    [Obsolete]
-    public int GetPrice() => 0;
+    //[Obsolete]
+    //public int GetPrice() => 0;
     /// <summary>
     /// Ran while the player has this equipment equipped.
     /// Runs after the powerup-reset code, meaning that any adjustments to powerup related states will take effect.
@@ -170,4 +133,52 @@ public class Equipment : MonoBehaviour
     {
 
     }
+
+
+
+    #region DescriptionStuff
+    public string GetName()
+    {
+        return GetMyDescription().GetName();
+    }
+    public string GetDescription()
+    {
+        return GetMyDescription().FullDescription();
+    }
+    public string GetUnlockReq()
+    {
+        return "Unlock by:\n" + UnlockCondition.LockedText();
+    }
+    public string TypeName
+    {
+        get
+        {
+            InternalName ??= this.GetType().Name;
+            return InternalName;
+        }
+        set
+        {
+            InternalName = value;
+        }
+    }
+    public void SetUpDesc()
+    {
+        DetailedDescription descData = new(GetRarity() - 1, TypeName.ToSpacedString());
+        InitializeDescription(ref descData);
+        DescriptionData.Add(descData);
+    }
+    public virtual int GetRarity()
+    {
+        return 1;
+    }
+    public static List<DetailedDescription> DescriptionData = new();
+    public DetailedDescription GetMyDescription()
+    {
+        return DescriptionData[IndexInTheAllEquipPool];
+    }
+    public virtual void InitializeDescription(ref DetailedDescription description)
+    {
+
+    }
+    #endregion
 }

@@ -10,12 +10,8 @@ public class BubbleStaff : BubblemancerWand
         base.ModifyPowerPool(powerPool);
         powerPool.Add<Coalescence>();
     }
-    protected override string Name()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Bubble Staff";
-    }
-    protected override string Description()
-    {
-        return "An expertly crafted bubble-tech weapon";
+        description.WithName("Bubble Staff").WithDescription("An expertly crafted bubble-tech weapon");
     }
 }

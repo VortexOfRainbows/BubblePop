@@ -15,13 +15,9 @@ public class BubblemancerWand : Weapon
         powerPool.Add<Starshot>();
         //powerPool.Add<Coalescence>();
     }
-    protected override string Name()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Bubble Wand";
-    }
-    protected override string Description()
-    {
-        return "A magical bubble-blowing wand given to The Bubblemancer by a suspicious scientist";
+        description.WithName("Bubble Wand").WithDescription("A magical bubble-blowing wand given to The Bubblemancer by a suspicious scientist");
     }
     protected override void AnimationUpdate()
     {

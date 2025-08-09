@@ -5,11 +5,9 @@ using UnityEngine;
 public class BlueCape : BubblemancerCape
 {
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<StarbarbUnlock5>();
-    protected override string Description()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "A fashionable robe styled with wool from Bubblemancer's elite blue sheep" +
-            "\n" +
-            "Greatly reduces ability cooldown and slightly increases attack speed";
+        description.WithName("Bluebblemancy Cape").WithDescription("Reduces ability cooldown by 60% and increases attack speed by 10%");
     }
     public override void EquipUpdate()
     {

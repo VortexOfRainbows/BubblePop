@@ -39,9 +39,9 @@ public class ThoughtBubble : Body
         powerPool.Add<BrainBlast>();
         powerPool.Add<BubbleMitosis>();
     }
-    protected override string Description()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "A mysterious Bubbletech Scientist. His origin is unknown. He appeared before Bubblemancer shortly after the first waves... why was he there?";
+        description.WithName("Thought Bubble").WithDescription("A mysterious Bubbletech Scientist. His origin is unknown. He appeared before Bubblemancer shortly after the first waves... why was he there?");
     }
     public override void FaceUpdate()
     {

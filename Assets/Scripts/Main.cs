@@ -113,6 +113,7 @@ public class Main : MonoBehaviour
         public List<GameObject> AllEquipmentsList = new();
         public void LoadAllEquipList()
         {
+            Equipment.DescriptionData.Clear();
             AllEquipmentsList.Clear();
             PrimaryEquipments[0] = Hats;
             PrimaryEquipments[1] = Accessories;
@@ -123,6 +124,7 @@ public class Main : MonoBehaviour
                 for (int i = 0; i < PrimaryEquipments[j].Count; ++i)
                 {
                     Equipment equip = PrimaryEquipments[j][i].GetComponent<Equipment>();
+                    equip.SetUpDesc();
                     equip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
                     Debug.Log($"Equipment: <color=#FFFF00>{equip.GetName()}</color> has been added into the pool at index {equip.IndexInTheAllEquipPool}");
                     AllEquipmentsList.Add(equip.gameObject);
@@ -130,9 +132,11 @@ public class Main : MonoBehaviour
                     {
                         for (int k = 0; k < equip.SubEquipment.Count; k++)
                         {
-                            equip.SubEquipment[k].GetComponent<Equipment>().IndexInTheAllEquipPool = AllEquipmentsList.Count;
-                            Debug.Log($"Equipment: <color=#FF0000>{equip.SubEquipment[k].GetComponent<Equipment>().GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
-                            AllEquipmentsList.Add(equip.SubEquipment[k]);
+                            equip = equip.SubEquipment[k].GetComponent<Equipment>();
+                            equip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
+                            equip.SetUpDesc();
+                            Debug.Log($"Equipment: <color=#FF0000>{equip.GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
+                            AllEquipmentsList.Add(equip.gameObject);
                         }
                     }
                 }

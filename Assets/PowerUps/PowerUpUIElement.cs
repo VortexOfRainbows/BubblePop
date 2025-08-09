@@ -107,7 +107,7 @@ public class PowerUpUIElement : MonoBehaviour
         {
             if(myLayout != null)
                 myLayout.isHovering = true;
-            string name = AppearLocked ? PowerUp.LockedName : MyPower.UnlockedName;
+            string name = AppearLocked ? DetailedDescription.TextBoundedByRarityColor(MyPower.GetRarity() - 1, PowerUp.LockedName) : MyPower.UnlockedName;
             string desc = AppearLocked ? PowerUp.LockedDescription : CompendiumElement ? "" : MyPower.FullDescription;
             PopUpTextUI.Enable(name, desc);
             float scaleUP = 1.125f;

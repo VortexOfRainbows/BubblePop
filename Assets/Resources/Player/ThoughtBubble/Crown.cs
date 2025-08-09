@@ -22,13 +22,9 @@ public class Crown : Bulb
     {
         base.ModifyPowerPool(powerPool);
     }
-    protected override string Name()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Crown of Command";
-    }
-    protected override string Description()
-    {
-        return "Choice powers have 2 more options";
+        description.WithName("Crown of Command").WithDescription("Choice powers have 2 more options");
     }
     public override void EquipUpdate()
     {

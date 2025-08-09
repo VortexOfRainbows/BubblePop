@@ -15,13 +15,9 @@ public class Crystal : Accessory
         offset = Vector2.zero;
         scale = 2.0f;
     }
-    protected override string Name()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Wishing Emerald";
-    }
-    protected override string Description()
-    {
-        return "Grants an additional heart";
+        description.WithName("Wishing Emerald").WithDescription("Grants an additional heart");
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)

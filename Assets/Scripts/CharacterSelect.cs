@@ -168,7 +168,7 @@ public class CharacterSelect : MonoBehaviour
     }
     public bool UISlotUpdate(EquipmentUIElement slot, EquipmentPage page, int index, bool AllowOpeningPage)
     {
-        slot.UpdateActive(myCanvas, out bool hovering, out bool clicked);
+        slot.UpdateActive(myCanvas, out bool hovering, out bool clicked, slot.GetComponent<RectTransform>());
         bool openPage = page == PrimaryPage ? clicked : false;
         bool justClosedFromDragOff = false;
         if (page != null)
