@@ -75,7 +75,7 @@ public class EquipmentUIElement : MonoBehaviour
         foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
             s.color = c;
     }
-    public void UpdateLayering(int ID, int offset)
+    public void SetCompendiumLayering(int ID, int offset)
     {
         //ActiveEquipment.spriteRender.sortingLayerID = ID;
         //ActiveEquipment.spriteRender.sortingOrder += offset;
@@ -83,6 +83,7 @@ public class EquipmentUIElement : MonoBehaviour
         {
             s.sortingLayerID = ID;
             s.sortingOrder += offset;
+            s.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
         }
     }
     public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked)

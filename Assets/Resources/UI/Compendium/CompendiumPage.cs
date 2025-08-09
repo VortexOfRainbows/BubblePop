@@ -35,6 +35,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public RectTransform SelectionArea;
     public GridLayoutGroup PowerUpLayoutGroup;
     public RectTransform ContentRectangle;
+    public RectTransform SpriteMaskRectangle;
     public ScrollRect ContentScrollRect;
     public Transform TierListParent;
     public RectTransform ViewPort;
@@ -147,7 +148,10 @@ public abstract class TierListCompendiumPage : CompendiumPage
         float dist = -lastElement.y;
         r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(defaultDist, dist));
         ContentRectangle.sizeDelta = Vector2.Lerp(ContentRectangle.sizeDelta, new Vector2(0, dist - defaultDist + (TierListActive ? defaultDist : 0)), 0.1f);
-
+        if(SpriteMaskRectangle != null)
+        {
+            SpriteMaskRectangle.localScale = new Vector3(ViewPort.rect.width, ViewPort.rect.height, 1);
+        }
         PowerUpLayoutGroup.transform.localPosition = new Vector3(0, Mathf.Min(0, 600 - defaultDist), 0);
     }
     public static List<CompendiumElement> GetCPUEChildren(Transform parent, out int count)

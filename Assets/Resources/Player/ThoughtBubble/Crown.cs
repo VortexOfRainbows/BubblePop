@@ -17,7 +17,6 @@ public class Crown : Bulb
         scale *= 1.4f;
         offset.y = -0.5f;
         offset.x = 0f;
-        light2d.gameObject.SetActive(false);
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

@@ -5,7 +5,7 @@ public class BubblemancerHat : Hat
 {
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
-        offset = new Vector2(0.24f, -0.2f);
+        offset = new Vector2(0.22f, -0.2f);
         scale = 0.925f;
         rotation = 15f;
     }

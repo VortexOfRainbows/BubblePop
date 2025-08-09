@@ -10,10 +10,9 @@ public class Bulb : Hat
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
-        scale *= 2.2f;
-        offset.y -= 0.3f;
-        offset.x = 0.075f;
-        light2d.gameObject.SetActive(false);
+        scale *= 2.1f;
+        offset.y -= 0.33f;
+        offset.x = 0.078f;
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

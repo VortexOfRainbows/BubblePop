@@ -11,7 +11,7 @@ public class CompendiumEquipmentElement : CompendiumElement
     {
         TypeID = i;
         MyElem.UpdateEquipment(Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>());
-        MyElem.UpdateLayering(canvas.sortingLayerID, 50); //2 = UICamera, 20 = compendium canvas size
+        MyElem.SetCompendiumLayering(canvas.sortingLayerID, 50); //2 = UICamera, 20 = compendium canvas size
         //MyElem.SetPowerType(TypeID = i);
         //MyElem.myCanvas = canvas;
         //MyElem.Count.text = PowerUp.Get(TypeID).PickedUpCountAllRuns.ToString();
