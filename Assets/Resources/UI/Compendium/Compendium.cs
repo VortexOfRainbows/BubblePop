@@ -34,6 +34,7 @@ public class Compendium : MonoBehaviour
             UpdateDescription(true, ActiveElement.TypeID);
         }
         CurrentlySelectedPage.UpdateAllButtons(SortText, UnlockButton, CountButton, ReverseButton);
+        AutoButton.targetGraphic.color = CurrentlySelectedPage.AutoNextTierList ? Color.yellow : Color.white;
     }
     private int m_PageNumber = 1;
     public static PowerUpPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber] as PowerUpPage;
@@ -69,6 +70,8 @@ public class Compendium : MonoBehaviour
         HalfResolution = ScreenResolution / 2f;
         if(PowerPage != null)
             PowerPage.OnUpdate();
+        if (EquipPage != null)
+            EquipPage.OnUpdate();
     }
     public void UpdatePage(PowerUpPage page)
     {

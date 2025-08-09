@@ -2,6 +2,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using System.Collections.Generic;
+using System.Linq;
 
 public class EquipmentUIElement : MonoBehaviour
 {
@@ -26,6 +28,7 @@ public class EquipmentUIElement : MonoBehaviour
     }
     public Equipment GenerateEquipment(Equipment prefab, Transform parent)
     {
+        originalColors.Clear();
         Equipment obj = Instantiate(prefab, parent);
         obj.gameObject.layer = UILayer;
         obj.transform.localPosition = Vector3.zero;
@@ -66,16 +69,45 @@ public class EquipmentUIElement : MonoBehaviour
             //    Slot.color = Color.Lerp(slotColor, new Color(0.9f, 0.0f, 0.0f, slotColor.a), 0.5f);
             //}
         }
-        else
+        else if(!CompendiumElement)
         {
             UpdateColor(Color.black);
         }
     }
-    private void UpdateColor(Color c)
+    private readonly List<Color> originalColors = new();
+    public void PrepareOriginalColors(SpriteRenderer[] childs)
     {
-        ActiveEquipment.spriteRender.color = c;
-        foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
+        foreach (SpriteRenderer s in childs)
+            originalColors.Add(s.color);
+    }
+    public void UpdateColor(Color c)
+    {
+        // ActiveEquipment.spriteRender.color = c;
+        SpriteRenderer[] childs = ActiveEquipment.GetComponentsInChildren<SpriteRenderer>(true);
+        if (originalColors.Count < childs.Length)
+            PrepareOriginalColors(childs);
+        foreach (SpriteRenderer s in childs)
             s.color = c;
+    }
+    public void SetColorToOriginal()
+    {
+        SpriteRenderer[] childs = ActiveEquipment.GetComponentsInChildren<SpriteRenderer>(true);
+        if (originalColors.Count < childs.Length)
+            PrepareOriginalColors(childs);
+        else
+            for(int i = 0; i < childs.Length; ++i)
+                childs[i].color = originalColors[i];
+    }
+    public void LerpColor(Color c, float t)
+    {
+        SpriteRenderer[] childs = ActiveEquipment.GetComponentsInChildren<SpriteRenderer>(true);
+        if (originalColors.Count < childs.Length)
+            PrepareOriginalColors(childs);
+        else
+        {
+            for (int i = 0; i < childs.Length; ++i)
+                childs[i].color = Color.Lerp(originalColors[i], c, t);
+        }
     }
     public void SetCompendiumLayering(int ID, int offset, int maskBehavior = 1)
     {

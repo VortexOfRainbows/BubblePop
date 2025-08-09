@@ -185,13 +185,13 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         return GetCPUEChildren(PowerUpLayoutGroup.transform, out count);
     }
-    public CompendiumPowerUpElement NextSlot()
+    public CompendiumElement NextSlot()
     {
         int i = 0;
-        CompendiumPowerUpElement cpue = PowerUpLayoutGroup.transform.GetChild(i).GetComponent<CompendiumPowerUpElement>();
-        while (cpue != null && cpue.MyElem.AppearLocked)
+        CompendiumElement cpue = PowerUpLayoutGroup.transform.GetChild(i).GetComponent<CompendiumElement>();
+        while (cpue != null && cpue.IsLocked())
         {
-            cpue = PowerUpLayoutGroup.transform.GetChild(++i).GetComponent<CompendiumPowerUpElement>();
+            cpue = PowerUpLayoutGroup.transform.GetChild(++i).GetComponent<CompendiumElement>();
         }
         return cpue;
     }

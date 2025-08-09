@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -18,19 +19,19 @@ public class CompendiumEquipmentElement : CompendiumElement
         if (MyElem.ActiveEquipment != null)
             Destroy(MyElem.ActiveEquipment.gameObject);
         MyElem.UpdateEquipment(Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>());
-        MyElem.SetCompendiumLayering(canvas.sortingLayerID, 50, Style == 3 ? 0 : 1); //2 = UICamera, 20 = compendium canvas size
+        MyElem.SetCompendiumLayering(canvas.sortingLayerID, Style == 4 ? 65 : 45, Style == 3 ? 0 : 1); //2 = UICamera, 20 = compendium canvas size
         CountCanvas.sortingLayerID = canvas.sortingLayerID;
         MyCanvas = canvas;
         MyElem.CompendiumElement = true;
         int forceInitUpdates = 1;
-        //if (Style == 2)
-        //{
-        //    BG.enabled = false;
-        //    MyElem.ForceHideCount = true;
-        //    transform.localScale = Vector3.one * 0.8f;
-        //    transform.GetComponent<RectTransform>().pivot = Vector2.one * 0.5f;
-        //    forceInitUpdates += 2;
-        //}
+        if (Style == 2)
+        {
+            BG.enabled = false;
+            //MyElem.ForceHideCount = true;
+            transform.localScale = Vector3.one * 0.8f;
+            transform.GetComponent<RectTransform>().pivot = Vector2.one * 0.5f;
+            forceInitUpdates += 2;
+        }
         for(int a = 0; a < forceInitUpdates; ++a)
             Update();
     }
@@ -46,14 +47,28 @@ public class CompendiumEquipmentElement : CompendiumElement
             {
                 Compendium.Instance.EquipPage.UpdateSelectedType(TypeID);
             }
-            if (Style != 3)
+            if(hovering && Control.RightMouseClick)
+            {
+                Compendium.Instance.EquipPage.TierList.QueueRemoval = TypeID;
+            }    
+            if (Style <= 1)
             {
                 Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
                 BG.color = Color.Lerp(BG.color, target, 0.125f);
             }
             Selected = TypeID == Compendium.Instance.EquipPage.SelectedType;
+            if (IsLocked())
+            {
+                MyElem.UpdateColor(Color.black);
+            }
+            else
+            {
+                if (GrayOut)
+                    MyElem.LerpColor(PowerUpUIElement.GrayColor, 0.7f);
+                else
+                    MyElem.SetColorToOriginal();
+            }
         }
-        //MyElem.GrayOut = GrayOut;
     }
     public override void SetHovering(bool canHover)
     {
@@ -70,5 +85,15 @@ public class CompendiumEquipmentElement : CompendiumElement
     public override int GetRare()
     {
         return MyElem.ActiveEquipment.GetRarity();
+    }
+    public override CompendiumElement Instantiate(TierList parent, TierCategory cat, Canvas canvas, int i, int position)
+    {
+        CompendiumEquipmentElement cpue = Instantiate(Prefab).GetComponent<CompendiumEquipmentElement>();
+        parent.InsertIntoTransform(cat.Grid.transform, cpue, position);
+        cpue.Style = 2;
+        cpue.MyElem.DisplayOnly = true;
+        cpue.SetGrayOut(true);
+        cpue.Init(i, canvas);
+        return cpue;
     }
 }

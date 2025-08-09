@@ -10,9 +10,9 @@ public class Bulb : Hat
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
-        scale *= 2.1f;
-        offset.y -= 0.33f;
-        offset.x = 0.078f;
+        scale *= 2.0f;
+        offset.y -= 0.4f;
+        offset.x = 0.085f;
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

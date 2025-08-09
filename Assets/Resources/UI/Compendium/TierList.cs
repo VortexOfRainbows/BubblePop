@@ -10,7 +10,7 @@ using UnityEngine.Timeline;
 public class TierList : MonoBehaviour
 {
     public static bool ReadingFromSave = false;
-    public static int QueueRemoval = -1;
+    public int QueueRemoval { get; set; } = -1;
     public TierListCompendiumPage Owner;
     public float TotalDistanceCovered = 800f;
     public readonly Dictionary<int, bool> OnTierList = new();
