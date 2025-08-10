@@ -318,6 +318,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         UpdateContentSize();
         Owner.OpenCompendiumButton.interactable = !TierListActive;
+        foreach(Button b in Owner.PageButtons)
+            b.interactable = !TierListActive;
         Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, 540f) : new Vector2(0, 740f);
         Vector2 newSideBarPosition = !TierListActive ? new Vector2(Compendium.HalfResolution, 340f) : new Vector2(Compendium.HalfResolution, 540f);
         Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-Compendium.HalfResolution + 25.5f, 515f) : new Vector2(-Compendium.HalfResolution + 25.5f, 715f);

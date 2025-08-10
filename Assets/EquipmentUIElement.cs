@@ -32,7 +32,6 @@ public class EquipmentUIElement : MonoBehaviour
         Equipment obj = Instantiate(prefab, parent);
         obj.gameObject.layer = UILayer;
         obj.transform.localPosition = Vector3.zero;
-        obj.OriginalPrefab = prefab;
         foreach (Transform t in obj.GetComponentsInChildren<Transform>())
             t.gameObject.layer = UILayer;
         return obj;

@@ -18,7 +18,7 @@ Need to do:
 7. Make calculator homing snappier
 8. Make light beams only hit specifically the enemy it was meant to target
 9. Integrate character select into the compendium
-10. Equipments to save how many times you've used them (and apply this to the compendium appropriately)
+10. Compendium sort to put locked elements at the end behind everything else
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their size (white)
@@ -36,13 +36,14 @@ Mostly done but might need to keep an eye out:
 Done: 
 
 8/6/25 to 8/9/25
-1. WIP Compendium refactor and decoupling of tier list logic
+1. Compendium refactor and decoupling of tier list logic
 2. Move haste and overclock to be back to their actual ID positions (order of implementation)
 3. Move some data structures to main instead of character select, as it should be loaded immediately and consistent
-4. WIP Equipment/Character compendium
-	1. Favorite/count/used is not implemented right now
+4. Add Equipment/Character compendium
 5. More advanced description capacity for equipment
 6. Equipment rarities and additional sorting option (reverse)
+7. Some reworks to Equipment data structure
+8. Equipments now keep track of how often you have used them
 
 8/3/25 to 8/6/25
 1. Bubblemancer art refresh! Yay!

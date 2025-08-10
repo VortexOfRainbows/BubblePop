@@ -35,10 +35,10 @@ public class Body : Equipment
             if (e.SameUnlockAsBody(this))
             {
                 //Debug.Log(e.name);
-                return e.IndexInTheAllEquipPool;
+                return e.IndexInAllEquipPool;
             }
         }
-        return equipList[0].GetComponent<Equipment>().IndexInTheAllEquipPool;
+        return equipList[0].GetComponent<Equipment>().IndexInAllEquipPool;
     }
     public int LastSelectedHat = -1;
     public int LastSelectedAcc = -1;

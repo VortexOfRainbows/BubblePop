@@ -105,6 +105,10 @@ public class Main : MonoBehaviour
     [Serializable]
     public class GlobalEquipData
     {
+        public static Dictionary<Type, int> EquipTypeToIndex = new();
+        public static List<DetailedDescription> DescriptionData = new();
+        public static List<GameObject> AllEquipList => Instance.EquipData.AllEquipmentsList;
+        public static List<int> TimesUsedList = new();
         public List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
         public List<GameObject> Hats;
         public List<GameObject> Accessories;
@@ -113,7 +117,9 @@ public class Main : MonoBehaviour
         public List<GameObject> AllEquipmentsList = new();
         public void LoadAllEquipList()
         {
-            Equipment.DescriptionData.Clear();
+            EquipTypeToIndex.Clear();
+            TimesUsedList.Clear();
+            DescriptionData.Clear();
             AllEquipmentsList.Clear();
             PrimaryEquipments[0] = Hats;
             PrimaryEquipments[1] = Accessories;
@@ -124,17 +130,15 @@ public class Main : MonoBehaviour
                 for (int i = 0; i < PrimaryEquipments[j].Count; ++i)
                 {
                     Equipment equip = PrimaryEquipments[j][i].GetComponent<Equipment>();
-                    equip.SetUpDesc();
-                    equip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
-                    Debug.Log($"Equipment: <color=#FFFF00>{equip.GetName()}</color> has been added into the pool at index {equip.IndexInTheAllEquipPool}");
+                    equip.SetUpData(AllEquipmentsList.Count);
+                    Debug.Log($"Equipment: <color=#FFFF00>{equip.GetName()}</color> has been added into the pool at index {equip.IndexInAllEquipPool}");
                     AllEquipmentsList.Add(equip.gameObject);
                     if (equip.SubEquipment != null)
                     {
                         for (int k = 0; k < equip.SubEquipment.Count; k++)
                         {
                             Equipment subEquip = equip.SubEquipment[k].GetComponent<Equipment>();
-                            subEquip.IndexInTheAllEquipPool = AllEquipmentsList.Count;
-                            subEquip.SetUpDesc();
+                            subEquip.SetUpData(AllEquipmentsList.Count);
                             Debug.Log($"Equipment: <color=#FF0000>{subEquip.GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
                             AllEquipmentsList.Add(subEquip.gameObject);
                         }

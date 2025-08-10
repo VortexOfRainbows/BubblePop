@@ -39,9 +39,10 @@ public class CompendiumEquipmentElement : CompendiumElement
     {
         if (TypeID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
-        count.gameObject.SetActive(Compendium.Instance.EquipPage.ShowCounts && !MyElem.DisplayOnly && !IsLocked());
-        if(MyElem.ActiveEquipment != null)
+        count.gameObject.SetActive(Compendium.Instance.EquipPage.ShowCounts && !MyElem.DisplayOnly && !IsLocked() && Style <= 1);
+        if (MyElem.ActiveEquipment != null)
         {
+            count.text = GetCount().ToString();
             MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
             if (clicked)
             {
@@ -74,10 +75,6 @@ public class CompendiumEquipmentElement : CompendiumElement
     {
         MyElem.DisplayOnly = !canHover;
     }
-    public override void SetGrayOut(bool value)
-    {
-        base.SetGrayOut(value);
-    }
     public override bool IsLocked()
     {
         return !MyElem.Unlocked;
@@ -85,6 +82,10 @@ public class CompendiumEquipmentElement : CompendiumElement
     public override int GetRare()
     {
         return MyElem.ActiveEquipment.GetRarity();
+    }
+    public override int GetCount()
+    {
+        return MyElem.ActiveEquipment.TotalTimesUsed;
     }
     public override CompendiumElement Instantiate(TierList parent, TierCategory cat, Canvas canvas, int i, int position)
     {

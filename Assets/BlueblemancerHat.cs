@@ -7,7 +7,7 @@ public class BlueblemancerHat : BubblemancerHat
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ScoreUnlock1000>();
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Bluebblemancy Cape").WithDescription("Start with Choice");
+        description.WithName("Bluebblemancy Hat").WithDescription("Start with Choice");
     }
     public override void OnStartWith()
     {

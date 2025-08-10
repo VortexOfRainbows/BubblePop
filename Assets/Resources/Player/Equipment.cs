@@ -25,23 +25,19 @@ public class Equipment : MonoBehaviour
     /// The most obvious example of this is the index in the all-equipment pool
     /// If this is changed for default prefabs, equips may have trouble saving.
     /// </summary>
-    public Equipment OriginalPrefab = null;
     public SpriteRenderer spriteRender;
     public Vector2 velocity;
     public bool hasInit = false;
     public bool isSubEquipment = false; 
-    public int IndexInTheAllEquipPool
+    public int IndexInAllEquipPool
     {
         get
         {
-            return OriginalPrefab == null ? myIndexInAllEquipPool : OriginalPrefab.IndexInTheAllEquipPool;
-        }
-        set
-        {
-            myIndexInAllEquipPool = value;
+            return Main.GlobalEquipData.EquipTypeToIndex[GetType()];
         }
     }
-    private int myIndexInAllEquipPool;
+    public Equipment OriginalPrefab => Main.GlobalEquipData.AllEquipList[IndexInAllEquipPool].GetComponent<Equipment>();
+    private int m_LocalIndexInAllEquipPool;
     public static void ModifyPowerPoolAll()
     {
         PowerUp.ResetPowerAvailability();
@@ -153,7 +149,8 @@ public class Equipment : MonoBehaviour
     {
         get
         {
-            InternalName ??= this.GetType().Name;
+            if(InternalName == null || InternalName.Length <= 0)
+                InternalName = GetType().Name;
             return InternalName;
         }
         set
@@ -161,20 +158,47 @@ public class Equipment : MonoBehaviour
             InternalName = value;
         }
     }
-    public void SetUpDesc()
+    public void SetUpData(int index)
     {
+        Main.GlobalEquipData.EquipTypeToIndex.Add(GetType(), index);
         DetailedDescription descData = new(GetRarity() - 1, TypeName.ToSpacedString());
         InitializeDescription(ref descData);
-        DescriptionData.Add(descData);
+        Main.GlobalEquipData.DescriptionData.Add(descData);
+        Main.GlobalEquipData.TimesUsedList.Add(0);
+        LoadGlobalData();
+        //LoadGlobalData();
+    }
+    public int TotalTimesUsed
+    {
+        get
+        {
+            //Debug.Log($"Fetched {IndexInAllEquipPool}: {Main.GlobalEquipData.TimesUsedList[IndexInAllEquipPool]}");
+            return Main.GlobalEquipData.TimesUsedList[IndexInAllEquipPool];
+        }
+        set
+        {
+            Main.GlobalEquipData.TimesUsedList[IndexInAllEquipPool] = value;
+            SaveGlobalData();
+            //Debug.Log($"Saved {IndexInAllEquipPool}: {TotalTimesUsed}");
+        }
+    }
+    public void LoadGlobalData()
+    {
+        //Debug.Log("Load Tag: " + $"{TypeName}UsedTotal");
+        TotalTimesUsed = PlayerData.GetInt($"{TypeName}UsedTotal", 0);
+    }
+    public void SaveGlobalData()
+    {
+        //Debug.Log("Save Tag: " + $"{TypeName}UsedTotal");
+        PlayerData.SaveInt($"{TypeName}UsedTotal", TotalTimesUsed);
     }
     public virtual int GetRarity()
     {
         return 1;
     }
-    public static List<DetailedDescription> DescriptionData = new();
     public DetailedDescription GetMyDescription()
     {
-        return DescriptionData[IndexInTheAllEquipPool];
+        return Main.GlobalEquipData.DescriptionData[IndexInAllEquipPool];
     }
     public virtual void InitializeDescription(ref DetailedDescription description)
     {

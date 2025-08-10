@@ -293,24 +293,22 @@ public class CharacterSelect : MonoBehaviour
 
         GameObject oldEquipment = equip.gameObject;
         equip = Instantiate(equipPrefab, Player.Instance.Visual.transform).GetComponent<Equipment>();
-        equip.OriginalPrefab = equipPrefab;
         equip.p = Player.Instance.Animator;
         equip.AliveUpdate();
-        //Debug.Log(equip);
         if (i == 0)
         {
             Player.Instance.Hat = equip as Hat;
-            Player.Instance.Body.LastSelectedHat = equip.IndexInTheAllEquipPool;
+            Player.Instance.Body.LastSelectedHat = equip.IndexInAllEquipPool;
         }
         if (i == 1)
         {
             Player.Instance.Accessory = equip as Accessory;
-            Player.Instance.Body.LastSelectedAcc = equip.IndexInTheAllEquipPool;
+            Player.Instance.Body.LastSelectedAcc = equip.IndexInAllEquipPool;
         }
         if (i == 2)
         {
             Player.Instance.Weapon = equip as Weapon;
-            Player.Instance.Body.LastSelectedWep = equip.IndexInTheAllEquipPool;
+            Player.Instance.Body.LastSelectedWep = equip.IndexInAllEquipPool;
         }
         if (i == 3)
         {
@@ -327,7 +325,7 @@ public class CharacterSelect : MonoBehaviour
         UpdateSelectedEquipmentBox(newBody.LastSelectedHat);
         UpdateSelectedEquipmentBox(newBody.LastSelectedAcc);
         UpdateSelectedEquipmentBox(newBody.LastSelectedWep);
-        LastSelectedBody = newBody.IndexInTheAllEquipPool;
+        LastSelectedBody = newBody.IndexInAllEquipPool;
         SaveCurrentSelects();
     }
     public void SaveCurrentSelects()

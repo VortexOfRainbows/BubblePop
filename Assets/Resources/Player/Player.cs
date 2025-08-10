@@ -140,7 +140,10 @@ public partial class Player : Entity
         if (!HasRunStartingGear && !UIManager.StartingScreen)
         {
             foreach(Equipment e in Equips)
+            {
                 e.OnStartWith();
+                e.TotalTimesUsed = e.TotalTimesUsed + 1;
+            }
             HasRunStartingGear = true;
             HasAttacked = false;
         }
