@@ -97,7 +97,6 @@ public class DetailedDescription
     }
     public DetailedDescription(PowerUp p)
     {
-        Rarity = p.GetRarity() - 1;
         Name = p.GetType().FullName.ToSpacedString();
         Description = "N/A";
     }

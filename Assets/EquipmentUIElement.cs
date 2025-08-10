@@ -1,10 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 using System.Collections.Generic;
-using System.Linq;
-
 public class EquipmentUIElement : MonoBehaviour
 {
     public const int UILayer = 5;

@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
-
 public class Book : Weapon
 {
     public static int AllowedBalls = 3;

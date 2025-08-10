@@ -225,6 +225,7 @@ public abstract class PowerUp
         sprite = GetTexture();
         AddToDictionary(this);
         Init();
+        TrueDescription.Rarity = GetRarity() - 1;
     }
     public virtual Sprite GetTexture()
     {

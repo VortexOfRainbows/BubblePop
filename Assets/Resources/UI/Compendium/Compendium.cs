@@ -157,7 +157,7 @@ public class Compendium : MonoBehaviour
                 {
                     concat += shortLineBreak;
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Used\n")}</size>";
-                    concat += "0" + shortLineBreak;
+                    concat += e.TotalTimesUsed + shortLineBreak;
                 }
                 DisplayPortDescription.text = DisplayCEE.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
             }
