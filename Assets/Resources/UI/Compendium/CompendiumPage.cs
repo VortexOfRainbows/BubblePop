@@ -213,10 +213,14 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         int id1 = e1.TypeID;
         int id2 = e2.TypeID;
+        if (e1.IsLocked())
+            id1 += (ReverseSort ? -1 : 1) * 20000;
         if (e1.GrayOut)
-            id1 += 10000;
+            id1 += (ReverseSort ? -1 : 1) * 10000;
+        if (e2.IsLocked())
+            id2 += (ReverseSort ? -1 : 1) * 20000;
         if (e2.GrayOut)
-            id2 += 10000;
+            id2 += (ReverseSort ? -1 : 1) * 10000;
         int num = id1 - id2;
         return num;
     }
@@ -224,10 +228,14 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         int rare1 = e1.GetRare();
         int rare2 = e2.GetRare();
-        if (e1.GrayOut)
-            rare1 += 10;
-        if (e2.GrayOut)
-            rare2 += 10;
+        if (e1.IsLocked())
+            rare1 += (ReverseSort ? -1 : 1) * 20;
+        else if (e1.GrayOut)
+            rare1 += (ReverseSort ? -1 : 1) * 10;
+        if (e2.IsLocked())
+            rare2 += (ReverseSort ? -1 : 1) * 20;
+        else if (e2.GrayOut)
+            rare2 += (ReverseSort ? -1 : 1) * 10;
         int num = rare1 - rare2;
         return num == 0 ? CompareID(e1, e2) : num;
     }
@@ -235,10 +243,14 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         int count1 = e1.GetCount();
         int count2 = e2.GetCount();
-        if (e1.GrayOut)
-            count1 = (int.MinValue >> 1) + count1;
-        if (e2.GrayOut)
-            count2 = (int.MinValue >> 1) + count2;
+        if (e1.IsLocked())
+            count1 += (ReverseSort ? -1 : 1) * (int.MinValue >> 1);
+        else if (e1.GrayOut)
+            count1 += (ReverseSort ? -1 : 1) * (int.MinValue >> 2);
+        if (e2.IsLocked())
+            count2 += (ReverseSort ? -1 : 1) * (int.MinValue >> 1);
+        else if (e2.GrayOut)
+            count2 += (ReverseSort ? -1 : 1) * (int.MinValue >> 2);
         int num = count2 - count1;
         return num == 0 ? CompareRare(e1, e2) : num;
     }
