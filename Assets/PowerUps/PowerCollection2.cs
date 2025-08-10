@@ -141,3 +141,19 @@ public class BubbleShield : PowerUp
         p.ShieldImmunityFrameMultiplier += 0.2f + 0.2f * Stack;
     }
 }
+public class ZapRadius : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription("Increases Y:[thunder bubble radius] by Y:7% G:(+7% per stack)");
+        description.WithShortDescription("Increases thunder bubble radius");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ZapRadiusMult += 0.07f * Stack;
+    }
+}

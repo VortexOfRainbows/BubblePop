@@ -238,15 +238,19 @@ public class ThunderBubble : Projectile
         SpriteRenderer.sprite = Main.BubbleSmall;
         SpriteRendererGlow.sprite = Main.Shadow;
         SpriteRendererGlow.color = ColorVar * 0.6f;
-        float scaleFactor = 2.0f;
-        SpriteRendererGlow.transform.localScale *= scaleFactor;
-        cmp.c2D.radius = scaleFactor;
         timer2 = 0;
         transform.localScale *= 0.3f;
         Damage = 1;
         Penetrate = -1;
         Friendly = true;
         immunityFrames = 22;
+        UpdateSize();
+    }
+    public void UpdateSize()
+    {
+        float scaleFactor = 2.0f * Player.Instance.ZapRadiusMult;
+        SpriteRendererGlow.transform.localScale = scaleFactor * Vector3.one * 2f;
+        cmp.c2D.radius = scaleFactor;
     }
     public override void AI()
     {
@@ -280,11 +284,13 @@ public class ThunderBubble : Projectile
             transform.position = Vector2.Lerp(transform.position, weaponPos, perc);
             float iPer = 1 - Mathf.Max(0, (perc - 0.7f) / 0.3f);
             SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f * iPer);
-            SpriteRendererGlow.color = ColorVar.WithAlphaMultiplied(iPer * iPer) * 0.6f * iPer;
+            SpriteRendererGlow.color = ColorVar.WithAlphaMultiplied(iPer * iPer) * 0.6f * iPer * (1 - perc);
             transform.localScale = iPer * targetScale * Vector3.one;
+            SpriteRendererGlow.transform.localScale = iPer * ((1 - perc) * 0.5f + 0.5f) * 4.0f * Player.Instance.ZapRadiusMult * Vector3.one;
         }
         else
         {
+            UpdateSize();
             if (Recalled)
             {
                 Kill();
@@ -353,6 +359,8 @@ public class ThunderBubble : Projectile
             return false;
         Vector2 closest = collision.ClosestPoint(transform.position);
         Vector2 diff = closest - RB.position;
+        if (diff.magnitude > 1)
+            return false;
         if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
         {
             bool goingInThatDirection = Mathf.Sign(RB.velocity.x) == Mathf.Sign(diff.x);

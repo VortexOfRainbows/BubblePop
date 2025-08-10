@@ -20,19 +20,21 @@ Need to do:
 9. Integrate character select into the compendium
 
 Ideas for Thunder Primary on Thought Bubble:
-	1. Power up that increases their size (white)
-	2. Power up that increases their return damage (uncommon)
-	3. Power up that increases the amount allowed on field at a time (blue)
-	4. Possibly rework it so that the return hit can ignore I frames.
+	1. Power up that increases their return damage (uncommon)
+	2. Power up that increases the amount allowed on field at a time (blue)
+	3. Possibly rework it so that the return hit can ignore I frames.
 	Right now it gets stuffed out occasionally (maybe make it not trigger immunity at all, but only attack at certain intervals)
-	5. Alternative ideas for primary/altfire: tiny lightning bubbles with no closing book interaction or one click mode launches the same projectiles but at varied velocity.
-	6. Power up that makes lightning jump between enemies (purple)
-	7. Power up that surrounds the lightning with solar orbs that fire beams at nearby enemies (yellow)
+	4. Alternative ideas for primary/altfire: tiny lightning bubbles with no closing book interaction or one click mode launches the same projectiles but at varied velocity.
+	5. Power up that makes lightning jump between enemies (purple)
+	6. Power up that surrounds the lightning with solar orbs that fire beams at nearby enemies (yellow)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 
 Done: 
+
+8/9/25
+1. Add Zap Radius power + changes to thunder bubble tile collide behavior and some animation changes
 
 8/6/25 to 8/9/25
 1. Compendium refactor and decoupling of tier list logic

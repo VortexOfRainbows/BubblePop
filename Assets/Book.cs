@@ -22,7 +22,7 @@ public class Book : Weapon
     {
         //powerPool.Add<EternalBubbles>();
         //powerPool.Add<Shotgun>();
-        //powerPool.Add<ChargeShot>();
+        powerPool.Add<ZapRadius>();
         //powerPool.Add<BubbleBlast>();
         //powerPool.Add<SoapySoap>();
         //powerPool.Add<ShotSpeed>();
