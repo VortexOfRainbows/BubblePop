@@ -116,7 +116,7 @@ public partial class Player : Entity
             if (currentSpeed > MaxSpeed + 15f * MoveSpeedMod)
             {
                 for (float i = 0; i < 1; i += 0.5f)
-                    ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f);
+                    ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, Body.PrimaryColor);
             }
         }
         rb.velocity = velocity;

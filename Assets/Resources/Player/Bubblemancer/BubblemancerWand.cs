@@ -2,6 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 public class BubblemancerWand : Weapon
 {
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
+        offset.y -= 0.02f;
+        offset.x -= 0.02f;
+    }
     // protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
@@ -75,13 +81,14 @@ public class BubblemancerWand : Weapon
         float dir = Mathf.Sign(toMouse.x);
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
         Vector2 attemptedPosition = new Vector2(0.8f, 0.2f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.velocity.normalized * 0.1f;
-
+        attemptedPosition.y -= 0.1f;
         //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
 
         p.PointDirOffset = -45 * dir * p.squash;
         p.MoveOffset = -5 * bodyDir * p.squash;
         p.DashOffset = 100 * dir * (1 - p.squash);
 
+        float bonusPointDirOffset = 0;
         Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
         if (AttackLeft > 0)
         {
@@ -118,7 +125,7 @@ public class BubblemancerWand : Weapon
                 }
             }
             float percent = AttackLeft / 50f;
-            p.PointDirOffset += 165 * percent * dir * p.squash;
+            bonusPointDirOffset += 165 * percent * dir * p.squash;
         }
         if (AttackRight > 0)
         {
@@ -148,7 +155,7 @@ public class BubblemancerWand : Weapon
                         AudioManager.PlaySound(SoundID.ChargePoint.GetVariation((int)scale % 3), Player.Position, 0.7f + Mathf.Sqrt(scale) * 0.1f, 1f);
                     }
                 }
-                p.PointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * p.squash;
+                bonusPointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * p.squash;
             }
             else
             {
@@ -156,14 +163,14 @@ public class BubblemancerWand : Weapon
                     AttackRight = 50;
                 AttackRight--;
                 float percent = AttackRight / 50f;
-                p.PointDirOffset += 125 * percent * dir * p.squash;
+                bonusPointDirOffset += 125 * percent * dir * p.squash;
             }
         }
         else
             AttackRight--;
 
         //Final Stuff
-        float r = attemptedPosition.ToRotation() * Mathf.Rad2Deg - p.PointDirOffset - p.MoveOffset + p.DashOffset;
+        float r = attemptedPosition.ToRotation() * Mathf.Rad2Deg - p.PointDirOffset - bonusPointDirOffset - p.MoveOffset + p.DashOffset;
         transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition, 0.08f);
         gameObject.GetComponent<SpriteRenderer>().flipY = p.PointDirOffset < 0;
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
