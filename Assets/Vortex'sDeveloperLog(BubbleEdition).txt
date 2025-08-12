@@ -14,10 +14,9 @@ Need to do:
 3. More descriptive pause and select screen
 4. Integrate Settings and compendium into the default pause stuff
 5. Compendium to showcase description variants
-6. Light bulb breaks on tiles (Should not do that)
-7. Make calculator homing snappier
-8. Make light beams only hit specifically the enemy it was meant to target
-9. Integrate character select into the compendium
+6. Make calculator homing snappier
+7. Make light beams only hit specifically the enemy it was meant to target
+8. Integrate character select into the compendium
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their return damage (uncommon)
@@ -26,7 +25,6 @@ Ideas for Thunder Primary on Thought Bubble:
 	Right now it gets stuffed out occasionally (maybe make it not trigger immunity at all, but only attack at certain intervals)
 	4. Alternative ideas for primary/altfire: tiny lightning bubbles with no closing book interaction or one click mode launches the same projectiles but at varied velocity.
 	5. Power up that makes lightning jump between enemies (purple)
-	6. Power up that surrounds the lightning with solar orbs that fire beams at nearby enemies (yellow)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -37,6 +35,10 @@ Done:
 1. Reduced spread and increased base velocity of Bubble Gun projectiles
 2. Bubble gun art refresh by sam!
 3. Import electroluminescence sprite and adjust some descriptions
+4. Light caster and spears do not break on tiles
+5. Electroluminescence effect (probably the most powerful powerup yet...)
+6. Add basic framework for spawning trails on objects
+7. 
 
 8/10/25
 1. Bubblemancer Wand art refresh by sam + fixed some animation consistency with flipping

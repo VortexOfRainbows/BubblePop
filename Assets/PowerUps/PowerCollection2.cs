@@ -165,7 +165,7 @@ public class Electroluminescence : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:[Thunder bubbles] fire Y:1 G:(+1 per stack) Y:[beams of light] at enemies within Y:5 G:(+2 per stack) Y:units of the Y:[thunder bubble radius]");
+        description.WithDescription("Y:[Thunder bubbles] fire Y:1 G:(+1 per stack) Y:[beams of light] at enemies within Y:3 G:(+0.5 per stack) Y:units of the Y:[thunder bubble radius] for Y:[2 damage]");
         description.WithShortDescription("Thunder bubbles fire beams of light at nearby enemies");
     }
     public override void HeldEffect(Player p)

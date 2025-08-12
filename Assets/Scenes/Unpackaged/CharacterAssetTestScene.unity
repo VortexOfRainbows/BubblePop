@@ -174,6 +174,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gachapon
       objectReference: {fileID: 0}
+    - target: {fileID: 8132037870103020878, guid: 5dfc561c07e1d8047b19db590b668868, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -190,6 +194,10 @@ PrefabInstance:
     - target: {fileID: 4047993882583738873, guid: f4344909818e21e4c9b6665c9df39ec6, type: 3}
       propertyPath: m_Name
       value: Emerald
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047993882583738873, guid: f4344909818e21e4c9b6665c9df39ec6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8187517550139534184, guid: f4344909818e21e4c9b6665c9df39ec6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -288,6 +296,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ThoughtBubble (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8132037870103020878, guid: 82c5e4272ac2b6141bc30d305bdeef47, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -344,6 +356,10 @@ PrefabInstance:
     - target: {fileID: 1946491136762909545, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
       propertyPath: m_Name
       value: BubblemancerCape (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946491136762909545, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -402,6 +418,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LabCoat (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1946491136762909545, guid: 4fde2b21b6a1f7d43aa0129cf6aa80c6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -458,6 +478,10 @@ PrefabInstance:
     - target: {fileID: 8132037870103020878, guid: 5dfc561c07e1d8047b19db590b668868, type: 3}
       propertyPath: m_Name
       value: Gachapon (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8132037870103020878, guid: 5dfc561c07e1d8047b19db590b668868, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -516,6 +540,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ThoughtBubble
       objectReference: {fileID: 0}
+    - target: {fileID: 8132037870103020878, guid: 82c5e4272ac2b6141bc30d305bdeef47, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -572,6 +600,10 @@ PrefabInstance:
     - target: {fileID: 1946491136762909545, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
       propertyPath: m_Name
       value: BubblemancerCape
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946491136762909545, guid: 6c246c0729873004888bb1759c807e3f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -651,6 +683,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dice (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4047993882583738873, guid: c17fea09cdb9d4944af6301bb7994abd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8187517550139534184, guid: c17fea09cdb9d4944af6301bb7994abd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.9189167
@@ -707,6 +743,10 @@ PrefabInstance:
     - target: {fileID: 4047993882583738873, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
       propertyPath: m_Name
       value: BubblemancerHat (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047993882583738873, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8187517550139534184, guid: b715e0fef9b78534792ca9df95ab0315, type: 3}
       propertyPath: m_LocalPosition.x
@@ -805,6 +845,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bubblemancer
       objectReference: {fileID: 0}
+    - target: {fileID: 8132037870103020878, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -862,6 +906,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bubblemancer (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8132037870103020878, guid: f4060a27aca78ab4eaa284bcea0a4b36, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -918,6 +966,10 @@ PrefabInstance:
     - target: {fileID: 1946491136762909545, guid: 4fde2b21b6a1f7d43aa0129cf6aa80c6, type: 3}
       propertyPath: m_Name
       value: LabCoat
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946491136762909545, guid: 4fde2b21b6a1f7d43aa0129cf6aa80c6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -997,6 +1049,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Emerald (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4047993882583738873, guid: f4344909818e21e4c9b6665c9df39ec6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8187517550139534184, guid: f4344909818e21e4c9b6665c9df39ec6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.655114
@@ -1057,6 +1113,10 @@ PrefabInstance:
     - target: {fileID: 4047993882583738873, guid: 1f63ba17f8dbc15439ae06b7a750dd20, type: 3}
       propertyPath: m_Name
       value: Crown
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047993882583738873, guid: 1f63ba17f8dbc15439ae06b7a750dd20, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8187517550139534184, guid: 1f63ba17f8dbc15439ae06b7a750dd20, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1155,11 +1215,72 @@ PrefabInstance:
       propertyPath: m_Name
       value: LightBulb
       objectReference: {fileID: 0}
+    - target: {fileID: 4987507766819511455, guid: c9fd0f25799129940b9a38681da4e576, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9fd0f25799129940b9a38681da4e576, type: 3}
+--- !u!1001 &6377479556800855029
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2368668468331035816, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_Name
+      value: FollowerTrail
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1182,3 +1303,4 @@ SceneRoots:
   - {fileID: 988934789}
   - {fileID: 3540695669674694184}
   - {fileID: 2088618716}
+  - {fileID: 6377479556800855029}

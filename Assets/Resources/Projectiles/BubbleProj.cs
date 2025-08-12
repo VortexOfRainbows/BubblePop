@@ -228,6 +228,7 @@ public class ThunderBubble : Projectile
 {
     private Color ColorVar;
     public bool Recalled = false;
+    public float ScaleFactor => 2.0f * Player.Instance.ZapRadiusMult;
     public override void Init()
     {
         ColorVar = Color.Lerp(Player.ProjectileColor, Color.blue, 0.5f);
@@ -242,10 +243,17 @@ public class ThunderBubble : Projectile
         Friendly = true;
         immunityFrames = 22;
         UpdateSize();
+
+        float total = Player.Instance.Electroluminescence;
+        for(int i = 0; i < total; ++i)
+        {
+            ThunderLightSpearCaster TLSC = NewProjectile<ThunderLightSpearCaster>(transform.position, Vector2.zero, i, total, ScaleFactor * 1.1f, Utils.SignNoZero(RB.velocity.x)).GetComponent<ThunderLightSpearCaster>();
+            TLSC.FakeParent = transform;
+        }
     }
     public void UpdateSize()
     {
-        float scaleFactor = 2.0f * Player.Instance.ZapRadiusMult;
+        float scaleFactor = ScaleFactor;
         SpriteRendererGlow.transform.localScale = scaleFactor * Vector3.one * 2f;
         cmp.c2D.radius = scaleFactor;
     }
@@ -256,7 +264,6 @@ public class ThunderBubble : Projectile
         float percent = Mathf.Max(0, 2 - timer / 50f);
         if(!Recalled && percent > 0)
            transform.position += percent * Time.fixedDeltaTime * (Vector3)velo;
-
 
         float deathTime = 10800; //Only really times out when you stop recall
         float FadeOutTime = 60;

@@ -97,11 +97,11 @@ public class Bulb : Hat
             }
         }
     }
-    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, List<Enemy> ignore, int BounceNum = 0, float bonusRange = 0)
+    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, List<Enemy> ignore, int BounceNum = 0, float bonusRange = 0, float defaultRangeMult = 1f)
     {
         float speedMod = SpeedModifier;
         float spearSpeed = 5 + speedMod * 0.015f; // this only matters for visuals as the spear is hitscan
-        float spearRange = (player.LightSpear + 3) * 2.25f + bonusRange; //starts at 3 * 3 = 9, +2.25 range per stack
+        float spearRange = ((player.LightSpear + 3) * 2.25f) * defaultRangeMult + bonusRange; //starts at 3 * 3 = 9, +2.25 range per stack
         if (spearRange > MaxRange)
             spearRange = MaxRange;
         norm = Vector2.zero;

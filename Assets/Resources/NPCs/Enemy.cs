@@ -42,7 +42,7 @@ public class Enemy : Entity
             //Debug.Log(e.tag);
             if (dist <= searchDistance && (!requireNonImmune || e.UniversalImmuneFrames <= 0))
             {
-                bool blackListed = ignore.Contains(e);
+                bool blackListed = ignore != null && ignore.Contains(e);
                 if (!blackListed)
                 {
                     best = e;

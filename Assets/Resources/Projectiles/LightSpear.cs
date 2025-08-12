@@ -1,10 +1,16 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class LightSpear : Projectile
 {
+    public override bool OnInsideTile()
+    {
+        return false;
+    }
+    public override bool OnTileCollide(Collider2D collision)
+    {
+        return false;
+    }
     public override bool CanBeAffectedByHoming()
     {
         return false;
@@ -108,6 +114,14 @@ public class LightSpear : Projectile
 }
 public class LightSpearCaster : Projectile
 {
+    public override bool OnInsideTile()
+    {
+        return false;
+    }
+    public override bool OnTileCollide(Collider2D collision)
+    {
+        return false;
+    }
     public override bool CanBeAffectedByHoming()
     {
         return false;
@@ -181,6 +195,100 @@ public class LightSpearCaster : Projectile
     }
     public override void OnKill()
     {
+        Color c = Player.Instance.Hat is Crown ? new(1, 0, 0, 1f) : new(1, 1, .9f, 0.5f);
+        for (int j = 0; j < 15; ++j)
+        {
+            ParticleManager.NewParticle(SpriteRendererGlow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, c);
+        }
+    }
+}
+public class ThunderLightSpearCaster : Projectile
+{
+    public override bool OnInsideTile()
+    {
+        return false;
+    }
+    public override bool OnTileCollide(Collider2D collision)
+    {
+        return false;
+    }
+    public override bool CanBeAffectedByHoming()
+    {
+        return false;
+    }
+    public SpecialTrail MyTrail;
+    public Transform FakeParent;
+    public float alphaScale = 0.2f;
+    public override void Init()
+    {
+        SpriteRendererGlow.transform.localScale = Vector3.one * 1.5f;
+        SpriteRendererGlow.sprite = SpriteRenderer.sprite = Main.Shadow;
+        SpriteRendererGlow.sortingOrder = 0;
+        SpriteRendererGlow.material = SpriteRenderer.material = Resources.Load<Material>("Materials/Additive");
+        alphaScale = 1f;
+        if (Player.Instance.Hat is Crown)
+            SpriteRendererGlow.color = new Color(1f, 0f, 0f, 0.5f);
+        else
+            SpriteRendererGlow.color = new Color(0.996f, 0.9765f, 0.2314f, 0.5f);
+        Damage = 0;
+        Friendly = false;
+        Hostile = false;
+        transform.localScale *= 0.75f;
+        MyTrail = SpecialTrail.NewTrail(transform, SpriteRendererGlow.color * 0.9f, 1f, 0.2f);
+    }
+    public bool HasShot = false;
+    public bool HasClosed = false;
+    public override void AI()
+    {
+        if(FakeParent != null && !HasShot)
+        {
+            float myNum = Data[0];
+            float total = Data[1];
+            float dir = Data[3];
+            float r = myNum / total * Mathf.PI * 2f;
+            timer2 += Time.fixedDeltaTime;
+            float percentStarted = Mathf.Min(1, timer2 * 2);
+            float maxDist = 1.5f + total * 0.025f;
+            float iPer = 1;
+            if (Book.InClosingAnimation)
+            {
+                iPer -= Book.ClosingPercent;
+                maxDist *= iPer;
+                HasClosed = true;
+                if (MyTrail != null)
+                {
+                    MyTrail.Trail.startColor = MyTrail.Trail.startColor.WithAlpha(iPer);
+                    SpriteRendererGlow.color = SpriteRendererGlow.color.WithAlpha(0.5f * iPer);
+                    SpriteRenderer.color = SpriteRenderer.color.WithAlpha(iPer);
+                }
+            }
+            float max = Mathf.Max(8, Mathf.Min(8, total), total > 32 ? (int)(Mathf.Sqrt(total) * 4) : total > 16 ? (int)(Mathf.Sqrt(total) * 2) : 0);
+            Vector2 circular = new(0, maxDist * percentStarted + maxDist * 0.4f * Mathf.Sin(r * max + timer2 * Mathf.Deg2Rad * 120));
+            circular = circular.RotatedBy((timer2 * Mathf.Deg2Rad * 240 + r) * dir);
+            transform.position = transform.position.Lerp((Vector2)FakeParent.position + circular, 0.7f);
+
+            float startUpTime = (1.5f + total * .1f) * (myNum / total);
+            float speed = 0.5f;
+            float speedMod = Bulb.SpeedModifier;
+            timer += (0.5f + 0.5f * speedMod) * Time.fixedDeltaTime * iPer;
+            if (timer > speed + startUpTime)
+            {
+                float rangeBonus = Data[2];
+                Vector2 shootFromPos = SpriteRendererGlow.transform.position;
+                if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new(), Player.Instance.LightChainReact, bonusRange: 3 + total * 0.5f + rangeBonus, 0f))
+                    HasShot = true;
+                timer -= speed;
+            }
+        }
+        else
+        {
+            Kill();
+        }
+    }
+    public override void OnKill()
+    {
+        if (HasClosed)
+            return;
         Color c = Player.Instance.Hat is Crown ? new(1, 0, 0, 1f) : new(1, 1, .9f, 0.5f);
         for (int j = 0; j < 15; ++j)
         {
