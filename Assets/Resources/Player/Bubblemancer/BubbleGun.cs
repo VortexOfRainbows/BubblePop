@@ -6,14 +6,9 @@ public class BubbleGun : BubblemancerWand
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
-        offset.x += 0.01f;
-        offset.y -= 0.01f;
-        scale *= 1.05f;
-        if (isBubble)
-        {
-            scale *= 1.05f;
-            offset *= 1.11f;
-        }
+        offset.x -= 0.05f;
+        offset.y -= 0.05f;
+        scale *= 1.025f;
     }
     public SpriteRenderer Upper;
     public SpriteRenderer Lower;
@@ -89,7 +84,7 @@ public class BubbleGun : BubblemancerWand
         Vector2 awayFromWand = new Vector2(2, 0.1f * dir).RotatedBy(playerToMouse.ToRotation());
         Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)transform.position - awayFromWand;
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
-        Vector2 attemptedPosition = playerToMouse.normalized + p.rb.velocity.normalized * 0.1f;
+        Vector2 attemptedPosition = playerToMouse.normalized * 1.1f + p.rb.velocity.normalized * 0.1f;
 
         //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
 
@@ -113,11 +108,11 @@ public class BubbleGun : BubblemancerWand
                 float spreadAmt = (25f + shotCount * 0.5f) / shotCount;
                 for(int i = 0; i < shotCount; ++i)
                 {
-                    float speed = Utils.RandFloat(14.5f, 15) + 2.1f * player.FasterBulletSpeed;
+                    float speed = Utils.RandFloat(16.5f, 17) + 2.1f * player.FasterBulletSpeed;
                     float spread = spreadAmt * (i - (shotCount - 1) * 0.5f);
                     Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand,
                         toMouse.normalized.RotatedBy(spread * Mathf.Deg2Rad)
-                        * speed + Utils.RandCircle(0.2f));
+                        * speed + Utils.RandCircle(0.15f));
                     TryDoingStarShot(ref starshotNum);
                 }
                 player.bonusBubbles %= 5;
