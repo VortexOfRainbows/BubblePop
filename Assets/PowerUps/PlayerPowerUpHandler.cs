@@ -57,6 +57,7 @@ public partial class Player : Entity
     public int Coalescence = 0;
     public int OldCoalescence = 0;
     public int LuckyStar = 0;
+    public int Electroluminescence = 0;
 
     public int TrailOfThoughts = 0, Magnet = 0, LightSpear = 0, LightChainReact = 0, BrainBlast = 0, RecursiveSubspaceLightning = 0, Refraction = 0;
     public int RollDex = 0, RollInit = 0, RollChar = 0, RollPerc = 0, SnakeEyes = 0;
@@ -101,6 +102,7 @@ public partial class Player : Entity
         BubbleShields = Coalescence = 0;
         RollDex = RollInit = RollChar = RollPerc = SnakeEyes = 0;
         ZapRadiusMult = 1.0f;
+        Electroluminescence = 0;
     }
     private void UpdatePowerUps()
     {

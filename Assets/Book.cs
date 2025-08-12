@@ -22,7 +22,7 @@ public class Book : Weapon
         //powerPool.Add<BubbleBlast>();
         //powerPool.Add<SoapySoap>();
         //powerPool.Add<ShotSpeed>();
-        //powerPool.Add<Starshot>();
+        powerPool.Add<Electroluminescence>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

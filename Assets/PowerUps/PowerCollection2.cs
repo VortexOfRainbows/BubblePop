@@ -157,3 +157,19 @@ public class ZapRadius : PowerUp
         p.ZapRadiusMult += 0.07f * Stack;
     }
 }
+public class Electroluminescence : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription("Y:[Thunder bubbles] fire Y:1 G:(+1 per stack) Y:[beams of light] at enemies within Y:5 G:(+2 per stack) Y:units of the Y:[thunder bubble radius]");
+        description.WithShortDescription("Thunder bubbles fire beams of light at nearby enemies");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.Electroluminescence += Stack;
+    }
+}

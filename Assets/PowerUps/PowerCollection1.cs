@@ -309,7 +309,7 @@ public class SpearOfLight : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Spear of Light");
-        description.WithDescription("Fire beams of light at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2.5 damage] G:(+0.5 per stack) every Y:[2.2 seconds]");
+        description.WithDescription("Fire Y:[beams of light] at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2.5 damage] G:(+0.5 per stack) every Y:[2.2 seconds]");
         description.WithShortDescription("Periodically fire beams of light at nearby enemies");
     }
     public override void HeldEffect(Player p)
@@ -342,7 +342,7 @@ public class NeuronActivation : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Reflection");
-        description.WithDescription("Enemies Y:[struck by beams of light] fire beams of light at nearby enemies up to Y:1 G:(+1 per stack) additional times");
+        description.WithDescription("Enemies Y:[struck by beams of light] fire Y:[beams of light] at nearby enemies up to Y:1 G:(+1 per stack) additional times");
         description.WithShortDescription("Enemies struck by beams of light fire beams of light at nearby enemies");
     }
     public override void HeldEffect(Player p)
@@ -428,7 +428,7 @@ public class Refraction : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Beams of light target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units");
+        description.WithDescription("Y:[Beams of light] target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units");
         description.WithShortDescription("Beams of light can target an additional enemy");
     }
     public override void HeldEffect(Player p)
