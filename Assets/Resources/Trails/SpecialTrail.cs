@@ -9,9 +9,10 @@ public class SpecialTrail : MonoBehaviour
     {
         SpecialTrail t = Instantiate(TrailPrefab).GetComponent<SpecialTrail>();
         t.Trail.startColor = c;
+        t.originalAlpha = c.a;
         t.Trail.endColor = c.WithAlpha(0);
         t.Trail.time = length;
-        t.Trail.widthMultiplier = width;
+        t.Trail.textureScale = new Vector2(1, 1f / width);
         //t.Trail.startWidth = 1f;
         //t.Trail.endWidth = 1f;
         t.FakeParent = parent;
@@ -20,11 +21,16 @@ public class SpecialTrail : MonoBehaviour
     }
     public Transform FakeParent;
     public TrailRenderer Trail;
+    public float timer;
+    public float originalAlpha;
     public void FixedUpdate()
     {
         if(FakeParent == null)
         {
             Trail.autodestruct = true;
+            timer += Time.fixedDeltaTime;
+            float iPer = (1 - timer / Trail.time);
+            Trail.startColor = Trail.startColor.WithAlpha(originalAlpha * iPer * iPer);
         }
         else
         {

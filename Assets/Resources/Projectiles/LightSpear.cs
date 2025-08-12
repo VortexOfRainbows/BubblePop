@@ -234,7 +234,7 @@ public class ThunderLightSpearCaster : Projectile
         Friendly = false;
         Hostile = false;
         transform.localScale *= 0.75f;
-        MyTrail = SpecialTrail.NewTrail(transform, SpriteRendererGlow.color * 0.9f, 1f, 0.2f);
+        MyTrail = SpecialTrail.NewTrail(transform, SpriteRendererGlow.color * 0.9f, 5f, 0.2f);
     }
     public bool HasShot = false;
     public bool HasClosed = false;
@@ -257,7 +257,8 @@ public class ThunderLightSpearCaster : Projectile
                 HasClosed = true;
                 if (MyTrail != null)
                 {
-                    MyTrail.Trail.startColor = MyTrail.Trail.startColor.WithAlpha(iPer);
+                    MyTrail.Trail.startColor = MyTrail.Trail.startColor.WithAlpha(iPer * 0.9f);
+                    MyTrail.originalAlpha = iPer * 0.9f;
                     SpriteRendererGlow.color = SpriteRendererGlow.color.WithAlpha(0.5f * iPer);
                     SpriteRenderer.color = SpriteRenderer.color.WithAlpha(iPer);
                 }
