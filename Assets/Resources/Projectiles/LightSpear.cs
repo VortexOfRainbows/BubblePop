@@ -110,6 +110,7 @@ public class LightSpear : Projectile
             Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), Data[2]).GetComponent<LightSpearCaster>().ignore = e;
             HasFiredLaser = true;
         }
+        Damage = 0;
     }
 }
 public class LightSpearCaster : Projectile

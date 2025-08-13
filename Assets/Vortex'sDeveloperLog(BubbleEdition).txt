@@ -13,10 +13,10 @@ Need to do:
 2. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
 3. More descriptive pause and select screen
 4. Integrate Settings and compendium into the default pause stuff
-5. Compendium to showcase description variants
-6. Make calculator homing snappier
-7. Make light beams only hit specifically the enemy it was meant to target
-8. Integrate character select into the compendium
+5. Make calculator homing snappier
+6. Integrate character select into the compendium
+7. Add Crow and Ent
+8. Add tall grass
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their return damage (Barbed Lightning) (white)
@@ -29,6 +29,10 @@ Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 
 Done: 
+
+8/13/25
+1. Light spears only hit one enemy per spear now, no longer piercing enemies that are layered on top of each other
+2. Basic compendium support for alternative descriptions (for powerups that have different effects on different characters)
 
 8/12/25
 1. Reduced spread and increased base velocity of Bubble Gun projectiles

@@ -133,9 +133,9 @@ public class Equipment : MonoBehaviour
 
 
     #region DescriptionStuff
-    public string GetName()
+    public string GetName(bool noColor = false)
     {
-        return GetMyDescription().GetName();
+        return GetMyDescription().GetName(noColor);
     }
     public string GetDescription()
     {

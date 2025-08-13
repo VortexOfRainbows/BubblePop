@@ -271,6 +271,7 @@ public abstract class PowerUp
 
     }
     private DetailedDescription TrueDescription;
+    public DetailedDescription DetailedDescription => TrueDescription;
     public virtual void InitializeDescription(ref DetailedDescription description)
     {
 

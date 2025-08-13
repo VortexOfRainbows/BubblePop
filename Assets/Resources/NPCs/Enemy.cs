@@ -97,7 +97,7 @@ public class Enemy : Entity
     public bool FirstStrike = true;
     public sealed override void OnHurtByProjectile(Projectile proj)
     {
-        if (SpecializedImmuneFrames.Contains(proj) || proj.Penetrate == 0 || !SpawnedIn)
+        if (SpecializedImmuneFrames.Contains(proj) || proj.Penetrate == 0 || !SpawnedIn || proj.Damage <= 0)
             return;
         bool piercingProjectile = proj.Penetrate > 1 || proj.Penetrate == -1;
         if (piercingProjectile && UniversalImmuneFrames > 0)

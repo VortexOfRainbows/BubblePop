@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -126,16 +127,26 @@ public class Compendium : MonoBehaviour
             {
                 PowerUp p = PowerUp.Get(SelectedType);
                 rare = p.GetRarity() - 1;
-                string concat = $"<size=42>{p.UnlockedName}</size>" + shortLineBreak;
+                var AltDescriptions = p.DetailedDescription.LoadAllAlternativeDescriptions();
+                bool hasAlt = AltDescriptions.Count > 0;
+                float size = 42;
+                if (p is Electroluminescence)
+                    size = 39.9f;
+                string concat = $"<size={size}>{p.UnlockedName}</size>" + shortLineBreak;
                 if (p.HasBriefDescription)
                 {
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n")}</size>";
                     concat += p.ShortDescription + shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Detailed\n")}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, hasAlt ? "Detailed (Default)\n" : "Detailed\n")}</size>";
                 }
                 else
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n")}</size>";
                 concat += p.TrueFullDescription;
+                foreach(Type t in AltDescriptions.Keys)
+                {
+                    concat += shortLineBreak + $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, $"Detailed ({Main.GlobalEquipData.EquipFromType(t).GetName(true)})\n")}</size>";
+                    concat += AltDescriptions[t];
+                }
                 if (!DisplayCPUE.IsLocked())
                 {
                     concat += shortLineBreak;

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Main : MonoBehaviour
@@ -109,6 +111,7 @@ public class Main : MonoBehaviour
         public static List<DetailedDescription> DescriptionData = new();
         public static List<GameObject> AllEquipList => Instance.EquipData.AllEquipmentsList;
         public static List<int> TimesUsedList = new();
+        public static Dictionary<Type, Equipment> TypeToEquipPrefab = new();
         public List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
         public List<GameObject> Hats;
         public List<GameObject> Accessories;
@@ -117,6 +120,7 @@ public class Main : MonoBehaviour
         public List<GameObject> AllEquipmentsList = new();
         public void LoadAllEquipList()
         {
+            TypeToEquipPrefab.Clear();
             EquipTypeToIndex.Clear();
             TimesUsedList.Clear();
             DescriptionData.Clear();
@@ -133,6 +137,7 @@ public class Main : MonoBehaviour
                     equip.SetUpData(AllEquipmentsList.Count);
                     Debug.Log($"Equipment: <color=#FFFF00>{equip.GetName()}</color> has been added into the pool at index {equip.IndexInAllEquipPool}");
                     AllEquipmentsList.Add(equip.gameObject);
+                    TypeToEquipPrefab.Add(equip.GetType(), equip);
                     if (equip.SubEquipment != null)
                     {
                         for (int k = 0; k < equip.SubEquipment.Count; k++)
@@ -141,10 +146,19 @@ public class Main : MonoBehaviour
                             subEquip.SetUpData(AllEquipmentsList.Count);
                             Debug.Log($"Equipment: <color=#FF0000>{subEquip.GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
                             AllEquipmentsList.Add(subEquip.gameObject);
+                            TypeToEquipPrefab.Add(subEquip.GetType(), subEquip);
                         }
                     }
                 }
             }
+        }
+        public static Equipment FindBaseEquipFromType<T>() where T: Equipment
+        {
+            return EquipFromType(typeof(T));
+        }
+        public static Equipment EquipFromType(Type t)
+        {
+            return TypeToEquipPrefab[t];
         }
     }
 }

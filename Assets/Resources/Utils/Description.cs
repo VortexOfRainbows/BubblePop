@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.Rendering;
 
 public class DetailedDescription
 {
@@ -177,8 +178,23 @@ public class DetailedDescription
     {
         return TextBoundedByRarityColor(Rarity, text);
     }
-    public string GetName()
+    public string GetName(bool noColor = false)
     {
+        if (noColor)
+            return Name;
         return TextBoundedByRarityColor(Name);
+    }
+    private bool hasLoaded = false;
+    public Dictionary<Type, string> LoadAllAlternativeDescriptions()
+    {
+        if(hasLoaded)
+            return CompleteAltDescriptions;
+        foreach (Type t in AltDescriptions.Keys)
+        {
+            if (AltDescriptions.TryGetValue(t, out string lines) && !CompleteAltDescriptions.TryGetValue(t, out string lines2))
+                CompleteAltDescriptions[t] = ToRichText(lines);
+        }
+        hasLoaded = true;
+        return CompleteAltDescriptions;
     }
 }
