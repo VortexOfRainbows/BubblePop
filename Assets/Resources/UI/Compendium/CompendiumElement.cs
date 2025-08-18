@@ -32,7 +32,7 @@ public class CompendiumElement : MonoBehaviour
     {
         return 0;
     }
-    public virtual int GetRare()
+    public virtual int GetRare(bool reverse = false)
     {
         return 1;
     }

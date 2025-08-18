@@ -36,6 +36,8 @@ public abstract class PowerUp
     public static readonly Material BlueOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderBlueThin");
     public static readonly Material PurpleOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderPurpleThin");
     public static readonly Material GoldOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderGoldThin");
+    public static readonly Material RedOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderRed");
+    public static readonly Material RedOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderRedThin");
     public int PickedUpCountAllRuns => AmountPickedUpAcrossAllRuns;
     public int PickedUpBestAllRuns => HighestAmountPickedUpInASingleRun;
     protected int AmountPickedUpAcrossAllRuns = 0;
@@ -65,13 +67,20 @@ public abstract class PowerUp
         HighestAmountPickedUpInASingleRun = PlayerData.GetInt(InternalName + "Best");
     }
     public static List<int> AvailablePowers = new();
+    public static List<int> AvailableBlackMarketPowers = new();
     public static void ResetPowerAvailability()
     {
         AvailablePowers.Clear();
+        AvailableBlackMarketPowers.Clear();
     }
     public static void AddPowerUpToAvailability(PowerUp power)
     {
-        for(int i = 0; i < AvailablePowers.Count; ++i)
+        if (power.IsBlackMarket())
+        { 
+            AvailableBlackMarketPowers.Add(power.MyID);
+            return;
+        }
+        for (int i = 0; i < AvailablePowers.Count; ++i)
         {
             PowerUp currentPower = Get(AvailablePowers[i]);
             if (power.Weighting > currentPower.Weighting)
@@ -152,18 +161,19 @@ public abstract class PowerUp
     public int MyID = -1;
     #endregion
     public static bool PickingPowerUps = false;
-    public static int RandomFromPool(float bonusChoiceChance = 0.15f)
+    public static int RandomFromPool(float bonusChoiceChance = 0.15f, float blackMarketChance = -1f)
     {
-        return PickRandomPower(0, bonusChoiceChance);
+        return PickRandomPower(0, bonusChoiceChance, Utils.RandFloat(1) < blackMarketChance);
     }
-    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f)
+    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false)
     {
-        if (Utils.RandFloat() < addedChoiceChance)
+        if (Utils.RandFloat() < addedChoiceChance && !BlackMarket)
         {
             return Get<Choice>().MyID;
         }
+        List<int> avail = BlackMarket ? AvailableBlackMarketPowers : AvailablePowers;
         float weightMult = 1.0f + recursionDepth * 0.1f;
-        int type = AvailablePowers[Utils.RandInt(AvailablePowers.Count)];
+        int type = avail[Utils.RandInt(avail.Count)];
         if (Player.Instance.RollPerc > 0)
         {
             int rare = PowerUps[type].GetRarity();
@@ -185,7 +195,7 @@ public abstract class PowerUp
             return type;
         }
         else
-            return PickRandomPower(recursionDepth + 1, addedChoiceChance + 0.02f);
+            return PickRandomPower(recursionDepth + 1, addedChoiceChance + 0.02f, BlackMarket);
     }
     public static void TurnOnPowerUpSelectors()
     {
@@ -278,7 +288,7 @@ public abstract class PowerUp
     }
     public static readonly string LockedName = "???";
     public static readonly string LockedDescription = "Powerup not yet discovered";
-    public string UnlockedName => TrueDescription.GetName();
+    public string UnlockedName => TrueDescription.GetName(false, IsBlackMarket());
     public string ShortDescription => TrueDescription.BriefDescription();
     public bool HasBriefDescription => TrueDescription.HasBriefDescription;
     public string TrueFullDescription => TrueDescription.FullDescription();
@@ -328,6 +338,8 @@ public abstract class PowerUp
     }
     public virtual Material GetBorder(bool thin = false)
     {
+        if (IsBlackMarket())
+            return thin ? RedOutlineThin : RedOutline;
         int rare = GetRarity();
         if (rare == 5)
             return thin ? GoldOutlineThin : GoldOutline;
@@ -338,5 +350,9 @@ public abstract class PowerUp
         if (rare == 2)
             return thin ? GreenOutlineThin : GreenOutline;
         return thin ? WhiteOutlineThin : WhiteOutline;
+    }
+    public virtual bool IsBlackMarket()
+    {
+        return false;
     }
 }

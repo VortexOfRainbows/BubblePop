@@ -130,7 +130,7 @@ public class EquipmentUIElement : MonoBehaviour
         UpdateOrientation();
         if (Utils.IsMouseHoveringOverThis(true, hoverArea, 0, canvas) && (!CompendiumElement || !DisplayOnly))
         {
-            string name = Unlocked ? ActiveEquipment.GetName() : DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???");
+            string name = Unlocked ? ActiveEquipment.GetName() : DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???", false);
             string desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
             PopUpTextUI.Enable(name, desc);
             float scaleUp = 1.1f;

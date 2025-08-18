@@ -173,3 +173,26 @@ public class Electroluminescence : PowerUp
         p.Electroluminescence += Stack;
     }
 }
+public class Burger : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription("Increases Y:[attack speed, movement speed, and damage] by Y:10% G:(+10% per stack)");
+        description.WithShortDescription("Burger!?");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.AttackSpeedModifier += Stack * 0.1f;
+        p.MoveSpeedMod += Mathf.Sqrt(Stack) * 0.1f;
+        p.DamageMultiplier += Stack * 0.1f;
+    }
+    public override bool IsBlackMarket()
+    {
+        return true;
+    }
+    public override int Cost => 30;
+}

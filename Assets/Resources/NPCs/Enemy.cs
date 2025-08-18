@@ -104,7 +104,7 @@ public class Enemy : Entity
             return;
         if (proj.Friendly && !AlreadyDead)
         {
-            float damage = proj.Damage;
+            float damage = proj.Damage * Player.Instance.DamageMultiplier;
             bool crit = false;
             if(FirstStrike)
             {

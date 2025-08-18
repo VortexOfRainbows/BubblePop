@@ -79,7 +79,7 @@ public class CompendiumEquipmentElement : CompendiumElement
     {
         return !MyElem.Unlocked;
     }
-    public override int GetRare()
+    public override int GetRare(bool reverse = false)
     {
         return MyElem.ActiveEquipment.GetRarity();
     }

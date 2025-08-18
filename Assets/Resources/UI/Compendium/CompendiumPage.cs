@@ -226,8 +226,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public int CompareRare(CompendiumElement e1, CompendiumElement e2)
     {
-        int rare1 = e1.GetRare();
-        int rare2 = e2.GetRare();
+        int rare1 = e1.GetRare(ReverseSort);
+        int rare2 = e2.GetRare(ReverseSort);
         if (e1.IsLocked())
             rare1 += (ReverseSort ? -1 : 1) * 20;
         else if (e1.GrayOut)

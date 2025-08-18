@@ -60,9 +60,10 @@ public class CompendiumPowerUpElement : CompendiumElement
     {
         return MyElem.AppearLocked;
     }
-    public override int GetRare()
+    public override int GetRare(bool reverse = false)
     {
-        return PowerUp.Get(TypeID).GetRarity();
+        var p = PowerUp.Get(TypeID);
+        return p.GetRarity() + (p.IsBlackMarket() ? (reverse ? -5 : 5) : 0);
     }
     public override int GetCount()
     {

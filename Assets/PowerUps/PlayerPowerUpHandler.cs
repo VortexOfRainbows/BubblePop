@@ -77,7 +77,7 @@ public partial class Player : Entity
     public bool BonusChoices = false;
 
     public float ZapRadiusMult = 1.0f;
-
+    public float DamageMultiplier = 1.0f;
     private List<int> powers;
     private void PowerInit()
     {
@@ -101,7 +101,7 @@ public partial class Player : Entity
         TotalMaxLife = MaxLife;
         BubbleShields = Coalescence = 0;
         RollDex = RollInit = RollChar = RollPerc = SnakeEyes = 0;
-        ZapRadiusMult = 1.0f;
+        ZapRadiusMult = DamageMultiplier = 1.0f;
         Electroluminescence = 0;
     }
     private void UpdatePowerUps()

@@ -30,7 +30,7 @@ public class DetailedDescription
         return ret;
     }
     public int Rarity;
-    private static readonly string[] Rares = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934" };
+    private static readonly string[] Rares = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934", "#FFAAAA" };
     private static readonly string Yellow = "#FFED75";
     private static readonly string Gray = "#999999";
     private static readonly string TabForMoreDetail = " <size=24><color=#CB8A8A>(TAB for more detail)</color></size>";
@@ -170,19 +170,19 @@ public class DetailedDescription
             CompleteShortDescription = ToRichText(ShortDescription);
         return CompleteShortDescription + (withDetails ? TabForMoreDetail : string.Empty);
     }
-    public static string TextBoundedByRarityColor(int rare, string text)
+    public static string TextBoundedByRarityColor(int rare, string text, bool blackMarket)
     {
-        return $"<color={Rares[rare]}>{text}</color>";
+        return $"<color={Rares[blackMarket ? 5 : rare]}>{text}</color>";
     }
     public string TextBoundedByRarityColor(string text)
     {
-        return TextBoundedByRarityColor(Rarity, text);
+        return TextBoundedByRarityColor(Rarity, text, false);
     }
-    public string GetName(bool noColor = false)
+    public string GetName(bool noColor = false, bool blackMarket = false)
     {
         if (noColor)
             return Name;
-        return TextBoundedByRarityColor(Name);
+        return TextBoundedByRarityColor(Rarity, Name, blackMarket);
     }
     private bool hasLoaded = false;
     public Dictionary<Type, string> LoadAllAlternativeDescriptions()

@@ -135,24 +135,24 @@ public class Compendium : MonoBehaviour
                 string concat = $"<size={size}>{p.UnlockedName}</size>" + shortLineBreak;
                 if (p.HasBriefDescription)
                 {
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n")}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n", p.IsBlackMarket())}</size>";
                     concat += p.ShortDescription + shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, hasAlt ? "Detailed (Default)\n" : "Detailed\n")}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, hasAlt ? "Detailed (Default)\n" : "Detailed\n", p.IsBlackMarket())}</size>";
                 }
                 else
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n")}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n", p.IsBlackMarket())}</size>";
                 concat += p.TrueFullDescription;
                 foreach(Type t in AltDescriptions.Keys)
                 {
-                    concat += shortLineBreak + $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, $"Detailed ({Main.GlobalEquipData.EquipFromType(t).GetName(true)})\n")}</size>";
+                    concat += shortLineBreak + $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, $"Detailed ({Main.GlobalEquipData.EquipFromType(t).GetName(true)})\n", p.IsBlackMarket())}</size>";
                     concat += AltDescriptions[t];
                 }
                 if (!DisplayCPUE.IsLocked())
                 {
                     concat += shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n")}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n", p.IsBlackMarket())}</size>";
                     concat += p.PickedUpCountAllRuns + shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n")}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n", p.IsBlackMarket())}</size>";
                     concat += p.PickedUpBestAllRuns + shortLineBreak;
                 }
                 DisplayPortDescription.text = DisplayCPUE.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
@@ -162,12 +162,12 @@ public class Compendium : MonoBehaviour
                 Equipment e = DisplayCEE.MyElem.ActiveEquipment;
                 rare = e.GetRarity() - 1;
                 string concat = $"<size=42>{e.GetName()}</size>" + shortLineBreak;
-                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n")}</size>";
+                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n", false)}</size>";
                 concat += e.GetDescription() + shortLineBreak;
                 if (!DisplayCEE.IsLocked())
                 {
                     concat += shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Used\n")}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Used\n", false)}</size>";
                     concat += e.TotalTimesUsed + shortLineBreak;
                 }
                 DisplayPortDescription.text = DisplayCEE.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;

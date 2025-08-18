@@ -54,6 +54,12 @@ public class Equipment : MonoBehaviour
         {
             PowerUp.AddPowerUpToAvailability(PowerPool[i]);
         }
+        for (int i = 0; i < PowerUp.Reverses.Count; ++i)
+        {
+            PowerUp p = PowerUp.Get(i);
+            if (p.IsBlackMarket())
+                PowerUp.AddPowerUpToAvailability(p);
+        }
         PowerPool.Clear();
     }
     protected virtual UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
