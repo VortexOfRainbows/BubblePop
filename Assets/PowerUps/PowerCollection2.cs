@@ -196,3 +196,19 @@ public class Burger : PowerUp
     }
     public override int Cost => 30;
 }
+public class BonusBatteries : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription("Increases the number of Y:[thunder bubbles] you can cast by Y:1 G:(+1 per stack)");
+        description.WithShortDescription("Increases the number of thunder bubbles you can cast");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.AllowedThunderBalls += Stack;
+    }
+}

@@ -78,6 +78,7 @@ public partial class Player : Entity
 
     public float ZapRadiusMult = 1.0f;
     public float DamageMultiplier = 1.0f;
+    public int AllowedThunderBalls = 3;
     private List<int> powers;
     private void PowerInit()
     {
@@ -103,6 +104,7 @@ public partial class Player : Entity
         RollDex = RollInit = RollChar = RollPerc = SnakeEyes = 0;
         ZapRadiusMult = DamageMultiplier = 1.0f;
         Electroluminescence = 0;
+        AllowedThunderBalls = 3;
     }
     private void UpdatePowerUps()
     {

@@ -20,19 +20,21 @@ Need to do:
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their return damage (Barbed Lightning) (white)
-	2. Power up that increases the amount allowed on field at a time (Bonus Batteries) (blue)
-	3. Power up that makes lightning jump between enemies (Arc Lightning) (purple)
-	4. Power up that spawns bubble in the areas where the lightning was recalled from after a delay (Echo Bubbles?) (green)
-	5. After killing 10 enemies, has a 50% chance to become a choice power (consumed on use). Otherwise gain 25 coins (consumed on use) plus bonus coins equal to the number of other powers (Research Notes) (white)
+	2. Power up that spawns bubble in the areas where the lightning was recalled from after a delay (Echo Bubbles?) (green)
+	3. After killing 10 enemies, become a choice power with two additional options (Research Notes) (white or green)
+	4. After killing 10 enemies, gain 25 coins +coins equal to the amount of powers you own (Research Grants) (white or green)
+	5. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 
 Done: 
 
-8/18/25
+8/18/25 to 8/20/25
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)
 	1. Chance to be sold in the shop (~1/200) at a flat rate, at a different price
+2. Add Bonus Batteries
+3. Import crow assets for future use
 
 8/13/25
 1. Light spears only hit one enemy per spear now, no longer piercing enemies that are layered on top of each other

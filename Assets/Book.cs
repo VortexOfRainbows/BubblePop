@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Book : Weapon
 {
-    public static int AllowedBalls = 3;
+    public static int AllowedBalls => player.AllowedThunderBalls;
     public static int TotalBalls = 0;
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
@@ -20,7 +20,7 @@ public class Book : Weapon
         //powerPool.Add<Shotgun>();
         powerPool.Add<ZapRadius>();
         //powerPool.Add<BubbleBlast>();
-        //powerPool.Add<SoapySoap>();
+        powerPool.Add<BonusBatteries>();
         //powerPool.Add<ShotSpeed>();
         powerPool.Add<Electroluminescence>();
     }
