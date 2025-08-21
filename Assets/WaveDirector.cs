@@ -236,7 +236,7 @@ public static class WaveDirector
             {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
                 Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(new EnemyPattern(Vector2.zero, 0.5f, 0f, EnemyID.OldDuck), 2, 5, 0).ToSwarmCircle(3, 10, 0);
-                //Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
+                Deck[MaxCards - 3] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Crow, 15, 2, 0);
             }
             if (WaveNum == 3)
             {

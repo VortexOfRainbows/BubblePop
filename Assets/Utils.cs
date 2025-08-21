@@ -167,6 +167,11 @@ public static class Utils
         transform.localScale = Vector3.Lerp(transform.localScale, new Vector3( newScale.x, newScale.y, transform.localScale.z), t);
         return transform;
     }
+    public static Transform LerpLocalEulerZ(this Transform transform, float r, float t)
+    {
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, Mathf.LerpAngle(transform.localEulerAngles.z, r, t));
+        return transform;
+    }
     public static Vector3 SetXY(this Vector3 v, float x, float y)
     {
         v.x = x;

@@ -5,6 +5,7 @@ Maybe Do:
 2. Add cloud particles
 3. Quadrant system UI
 4. Potentially enemy health bars
+5. Day/Night system (so we can have cooler lighting)
 
 Need to do:
 
@@ -15,8 +16,22 @@ Need to do:
 4. Integrate Settings and compendium into the default pause stuff
 5. Make calculator homing snappier
 6. Integrate character select into the compendium
-7. Add Crow and Ent
+7. Add Ent
 8. Add tall grass
+9. Rework pylon and wave director to allow:
+	1. Pause between waves
+	2. Choose which enemies are added to the pool (cards when starting waves)
+		1. Cards also have associated rewards
+		2. Mix up the order enemies spawn in (player has some agency)
+		3. Cards also come with associated director cards to immediately add to the play queue (which the player can't necessarily see)
+	3. Fix when positions are determined for cards by adding presets (like nearby, edge, random, etc.), which are then generated on spawn rather than on draw (to fix border spawning issue)
+10. Enemy page on the compendium
+11. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
+	1. TBD: Strength...
+12. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
+	1. Contains loot with higher chances of good loot based on the rarity of the chest
+13. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
+	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their return damage (Barbed Lightning) (white)
@@ -34,7 +49,7 @@ Done:
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)
 	1. Chance to be sold in the shop (~1/200) at a flat rate, at a different price
 2. Add Bonus Batteries
-3. Import crow assets for future use and WIP crow
+3. Add new enemy: Crow, which has a ranged attack that it hops to a certain range to use
 4. Refresh to Bubble Staff art (sam)
 
 8/13/25
