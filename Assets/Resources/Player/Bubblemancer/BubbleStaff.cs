@@ -5,6 +5,13 @@ using UnityEngine;
 public class BubbleStaff : BubblemancerWand
 {
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ChargeShot10>();
+    public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
+    {
+        base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
+        offset.x -= 0.04f;
+        offset.y -= 0.04f;
+        scale *= 1.01f;
+    }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         base.ModifyPowerPool(powerPool);
@@ -17,5 +24,10 @@ public class BubbleStaff : BubblemancerWand
     public override int GetRarity()
     {
         return 2;
+    }
+    protected override void AnimationUpdate()
+    {
+        base.AnimationUpdate();
+        spriteRender.flipY = !spriteRender.flipY;
     }
 }
