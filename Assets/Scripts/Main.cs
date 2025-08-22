@@ -53,6 +53,7 @@ public class Main : MonoBehaviour
     }
     public void Awake()
     {
+        Instance = this;
         Shadow = Resources.Load<Sprite>("Shadow");
         BuffIcon.Load();
         OnGameOpen();
