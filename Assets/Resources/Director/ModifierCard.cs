@@ -18,12 +18,6 @@ public class ModifierCard : MonoBehaviour
     {
         Modifiers.UpdateSizing();
         Rewards.UpdateSizing();
-
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            GenerateCardData();
-            UpdateText();
-        }
     }
     public void UpdateText()
     {
@@ -71,5 +65,6 @@ public class ModifierCard : MonoBehaviour
     public void GenerateCardData()
     {
         cardData.Generate();
+        UpdateText();
     }
 }

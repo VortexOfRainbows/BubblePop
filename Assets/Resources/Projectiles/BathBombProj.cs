@@ -150,7 +150,7 @@ public class BathBomb : Projectile
             }
         }
         bool LuckyDrop = Utils.RandFloat(1) < 0.04f;
-        if (WaveDirector.CanSpawnPower() || LuckyDrop)
+        if (LuckyDrop)
             PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : 100);
     }
 }

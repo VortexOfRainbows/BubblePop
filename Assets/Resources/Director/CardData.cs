@@ -26,13 +26,12 @@ public class CardData
     public void Generate()
     {
         GetPointsAllowed();
-        Generate<EnemyClause>(AvailablePoints);
-        Generate<ModifierClause>(AvailablePoints);
-        Generate<RewardClause>(SpentPoints);
+        RegisterClause(new EnemyClause(AvailablePoints));
+        RegisterClause(new ModifierClause(AvailablePoints));
+        RegisterClause(new RewardClause(SpentPoints));
     }
-    public T Generate<T>(float points) where T : CardClause, new()
+    public void RegisterClause(CardClause c)
     {
-        T c = CardClause.Generate<T>(points);
         if (c is EnemyClause e)
             EnemyClause = e;
         else if (c is ModifierClause m)
@@ -47,7 +46,6 @@ public class CardData
             SpentPoints += AvailablePoints - c.Points;
             AvailablePoints = c.Points;
         }
-        return c;
     }
     public string CardName()
     {
@@ -61,14 +59,12 @@ public abstract class CardClause
     /// Modifier cards cost points to add
     /// Based on the amount of points spent, reward cards are added
     /// </summary>
-    public float Points { get; set; }
-    public static T Generate<T>(float AvailablePoints) where T : CardClause, new()
+    public CardClause(float points)
     {
-        T clause = new();
-        clause.Points = AvailablePoints;
-        clause.GenerateData();
-        return clause;
+        Points = points;
+        GenerateData();
     }
+    public float Points { get; set; }
     public override string ToString()
     {
         return "";
@@ -78,6 +74,10 @@ public abstract class CardClause
 public class EnemyClause : CardClause
 {
     public EnemyPoolAddition Enemy;
+    public EnemyClause(float points) : base(points)
+    {
+
+    }
     public bool EnemyAlreadyInPool(EnemyPoolAddition p)
     {
         return false; //temp
@@ -111,6 +111,10 @@ public class ModifierClause : CardClause
     public List<DirectorModifier> PermanentModifiers = new();
     public List<DirectorModifier> Modifiers = new();
     public int ModifiersToAllow = 1;
+    public ModifierClause(float points) : base(points)
+    {
+
+    }
     protected void InitializePossibleModifiers()
     {
         if (Points > 10)
@@ -164,6 +168,10 @@ public class RewardClause : CardClause
 {
     public List<Reward> PreRewards = new();
     public List<Reward> PostRewards = new();
+    public RewardClause(float points) : base(points)
+    {
+
+    }
     public void AddPowerReward(PowerReward r, List<Reward> list)
     {
         bool cloneExists = false;

@@ -113,9 +113,6 @@ public class EnemyPattern
             }
             return true;
         }
-        else
-        {
-            return WaveDirector.InsideBathtub(location);
-        }
+        return true;
     }
 }
