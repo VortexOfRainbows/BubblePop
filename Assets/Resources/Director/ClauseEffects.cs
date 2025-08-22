@@ -31,12 +31,12 @@ public abstract class ClauseEffect
         return "";
     }
 }
-public class EnemyPoolAddition : ClauseEffect
+public class EnemyCard : ClauseEffect
 {
     public float PermanentMultiplier => 2f;
     public bool IsPermanent { get; set; } = false;
     public Enemy EnemyToAdd;
-    public EnemyPoolAddition(Enemy prefabToAdd)
+    public EnemyCard(Enemy prefabToAdd)
     {
         EnemyToAdd = prefabToAdd;
     }

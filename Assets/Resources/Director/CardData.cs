@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class CardData
@@ -62,7 +63,6 @@ public abstract class CardClause
     public CardClause(float points)
     {
         Points = points;
-        GenerateData();
     }
     public float Points { get; set; }
     public override string ToString()
@@ -73,24 +73,25 @@ public abstract class CardClause
 }
 public class EnemyClause : CardClause
 {
-    public EnemyPoolAddition Enemy;
-    public EnemyClause(float points) : base(points)
+    public EnemyCard Enemy;
+    public EnemyClause(float points, EnemyCard newCard = null) : base(points)
     {
-
+        Enemy = newCard;
+        GenerateData();
     }
-    public bool EnemyAlreadyInPool(EnemyPoolAddition p)
+    public bool EnemyAlreadyInPool(EnemyCard p)
     {
         return false; //temp
     }
     public override void GenerateData()
     {
-        Enemy = GenRandomEnemyPoolAddition();
+        Enemy ??= GenRandomEnemyPoolAddition();
         if (!EnemyAlreadyInPool(Enemy))
             Points -= Enemy.GetCost();
     }
-    public EnemyPoolAddition GenRandomEnemyPoolAddition()
+    public EnemyCard GenRandomEnemyPoolAddition()
     {
-        EnemyPoolAddition newEnemy = null;
+        EnemyCard newEnemy = null;
         while(newEnemy == null)
         {
             Enemy e = EnemyID.AllEnemyList[Utils.RandInt(EnemyID.Max)].GetComponent<Enemy>();
@@ -111,9 +112,19 @@ public class ModifierClause : CardClause
     public List<DirectorModifier> PermanentModifiers = new();
     public List<DirectorModifier> Modifiers = new();
     public int ModifiersToAllow = 1;
-    public ModifierClause(float points) : base(points)
+    public ModifierClause(float points, int modifiersAllowed = 1, params DirectorModifier[] mods) : base(points)
     {
-
+        InitializePossibleModifiers(); //Need to change this to not allow repeats with the manually inputted modifiers
+        ModifiersToAllow = modifiersAllowed;
+        foreach(DirectorModifier modifier in mods)
+        {
+            if (modifier.IsPermanent)
+                PermanentModifiers.Add(modifier);
+            else
+                Modifiers.Add(modifier);
+            Points -= modifier.GetCost();
+        }
+        GenerateData();
     }
     protected void InitializePossibleModifiers()
     {
@@ -130,10 +141,6 @@ public class ModifierClause : CardClause
     }
     public override void GenerateData()
     {
-        InitializePossibleModifiers();
-        ModifiersToAllow = 1 + (int)(Points / 50f);
-        if (ModifiersToAllow > 5)
-            ModifiersToAllow = 5;
         float percent = 1f / ModifiersToAllow;
         float originalPoints = Points;
         while (Points >= 1 && PossibleModifiers.Count > 0)
@@ -168,54 +175,60 @@ public class RewardClause : CardClause
 {
     public List<Reward> PreRewards = new();
     public List<Reward> PostRewards = new();
-    public RewardClause(float points) : base(points)
+    public int RewardsAllowed = -1;
+    public int RewardsAdded = 0;
+    public RewardClause(float points, int rewardsAllowed = -1, params Reward[] rewards) : base(points)
     {
-
+        RewardsAllowed = rewardsAllowed;
+        foreach(Reward r in rewards)
+        {
+            Points -= r.GetCost();
+            var listType = r.BeforeWaveEndReward ? PreRewards : PostRewards;
+            if (r is PowerReward p)
+                AddPowerReward(p, listType);
+            else if (r is CoinReward c)
+                AddCashReward(c, listType);
+        }
+        GenerateData();
     }
     public void AddPowerReward(PowerReward r, List<Reward> list)
     {
-        bool cloneExists = false;
         Reward SameType = list.Find(g => g is PowerReward g2 && g2.PowerType == r.PowerType);
         if (SameType != null && SameType is PowerReward r3)
         {
             r3.Amt++;
-            cloneExists = true;
+            ++RewardsAdded;
         }
-        if (!cloneExists)
+        else
+        {
             list.Add(r);
+            ++RewardsAdded;
+        }
     }
     public void AddCashReward(CoinReward r, List<Reward> list)
     {
-        bool cloneExists = false;
         Reward SameType = list.Find(g => g is CoinReward g2);
         if (SameType != null && SameType is CoinReward g2)
         {
             g2.coins += r.coins;
-            cloneExists = true;
         }
-        if (!cloneExists)
+        else //clone does not exists
+        {
             list.Add(r);
+            ++RewardsAdded;
+        }
     }
     public override void GenerateData()
     {
-        while (Points >= 1)
+        while (Points >= 1 && (RewardsAdded < RewardsAllowed || RewardsAllowed == -1))
         {
             Reward r = GenRandomReward();
             Points -= r.GetCost();
-            if (r.BeforeWaveEndReward)
-            {
-                if (r is PowerReward p)
-                    AddPowerReward(p, PreRewards);
-                else if (r is CoinReward c)
-                    AddCashReward(c, PostRewards);
-            }
-            else
-            {
-                if (r is PowerReward p)
-                    AddPowerReward(p, PostRewards);
-                else if(r is CoinReward c)
-                    AddCashReward(c, PostRewards);
-            }
+            var listType = r.BeforeWaveEndReward ? PreRewards : PostRewards;
+            if (r is PowerReward p)
+                AddPowerReward(p, listType);
+            else if (r is CoinReward c)
+                AddCashReward(c, listType);
         }
     }
     private Reward GenRandomReward()
