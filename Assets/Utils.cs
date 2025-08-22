@@ -237,4 +237,8 @@ public static class Utils
             target.localPosition = target.localPosition.Lerp(position, amt);
         return target.localPosition;
     }
+    public static string WithSizeAndColor(this string s, int size, string color)
+    {
+        return $"<size={size}><color={color}>{s}</color></size>";
+    }
 }

@@ -69,4 +69,8 @@ public class EnemySoap : Enemy
         float offsetY = Random.Range(-5f, 5f);
         return new Vector2 (Player.Position.x + offsetX, Player.Position.y + offsetY);
     }
+    public override string Name()
+    {
+        return "Soap";
+    }
 }

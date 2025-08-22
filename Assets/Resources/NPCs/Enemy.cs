@@ -197,4 +197,8 @@ public class Enemy : Entity
     {
         Enemies.Remove(this);
     }
+    public virtual string Name()
+    {
+        return Utils.ToSpacedString(name);
+    }
 }

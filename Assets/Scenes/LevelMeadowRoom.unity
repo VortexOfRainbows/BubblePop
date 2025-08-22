@@ -2560,7 +2560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3116137268182922335, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.0012512199
       objectReference: {fileID: 0}
     - target: {fileID: 3914301646772711725, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2625,6 +2625,10 @@ PrefabInstance:
     - target: {fileID: 4212781573717827716, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 75.00006
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625244730472549140, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4658453889914574222, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_SizeDelta.x

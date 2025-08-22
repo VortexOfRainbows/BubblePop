@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,9 +11,9 @@ public class CardData
      */
     public float AvailablePoints;
     public float SpentPoints = 0;
-    public EnemyClause Enemies;
-    public ModifierClause Modifiers;
-    public RewardClause Rewards;
+    public EnemyClause EnemyClause;
+    public ModifierClause ModifierClause;
+    public RewardClause RewardClause;
     public void GetPointsAllowed()
     {
         AvailablePoints = 100; //This should be tied to the wave number in some way
@@ -30,12 +29,12 @@ public class CardData
     {
         T c = CardClause.Generate<T>(points);
         if (c is EnemyClause e)
-            Enemies = e;
+            EnemyClause = e;
         else if (c is ModifierClause m)
-            Modifiers = m;
+            ModifierClause = m;
         if (c is RewardClause r)
         {
-            Rewards = r;
+            RewardClause = r;
             SpentPoints = c.Points;
         }
         else
@@ -44,6 +43,10 @@ public class CardData
             AvailablePoints = c.Points;
         }
         return c;
+    }
+    public string CardName()
+    {
+        return EnemyClause.Enemy.EnemyToAdd.Name() + " Wave";
     }
 }
 public abstract class CardClause
@@ -82,64 +85,124 @@ public class EnemyClause : CardClause
     }
     public EnemyPoolAddition GenRandomEnemyPoolAddition()
     {
-        return new EnemyPoolAddition(EnemyID.OldDuck.GetComponent<Enemy>());
+        EnemyPoolAddition newEnemy = new EnemyPoolAddition(EnemyID.OldDuck.GetComponent<Enemy>());
+        if(Points > newEnemy.GetCost() / newEnemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
+        {
+            newEnemy.IsPermanent = true;
+        }
+        return newEnemy;
     }
 }
 public class ModifierClause : CardClause
 {
+    private List<DirectorModifier> PossibleModifiers = new();
+    public List<DirectorModifier> PermanentModifiers = new();
     public List<DirectorModifier> Modifiers = new();
     public int ModifiersToAllow = 1;
+    protected void InitializePossibleModifiers()
+    {
+        PossibleModifiers.Add(new EnemyStrengthModifier());
+        PossibleModifiers.Add(new DirectorCreditModifier());
+        if (Points > 20)
+        {
+            PossibleModifiers.Add(new DirectorInitialWaveBonusModifier());
+            //PossibleModifiers.Add(new DirectorCardCooldownModifier());
+        }
+    }
     public override void GenerateData()
     {
-        ModifiersToAllow = 1 + (int)(Points / 20f);
+        InitializePossibleModifiers();
+        ModifiersToAllow = 1 + (int)(Points / 50f);
         if (ModifiersToAllow > 5)
             ModifiersToAllow = 5;
         float percent = 1f / ModifiersToAllow;
         float originalPoints = Points;
-        while (Points > 0)
+        while (Points >= 1 && PossibleModifiers.Count > 0)
         {
-            float spendingRange = Mathf.Min(Utils.RandFloat(percent, 1), Utils.RandFloat(percent, 1));
+            float spendingRange = (Mathf.Min(Utils.RandInt(ModifiersToAllow), Utils.RandInt(ModifiersToAllow)) + 1) * percent;
             DirectorModifier m = GenRandomModifier(spendingRange * originalPoints);
             Points -= m.GetCost();
-            Modifiers.Add(m);
+            if (m.IsPermanent)
+                PermanentModifiers.Add(m);
+            else
+                Modifiers.Add(m);
         }
     }
     public DirectorModifier GenRandomModifier(float pointsSpent)
     {
-        List<DirectorModifier> PossibleModifiers = new()
-        {
-            new EnemyStrengthModifier(),
-            new DirectorCreditModifier(),
-        };
-        if (Points > 10)
-        {
-            PossibleModifiers.Add(new DirectorInitialWaveBonusModifier());
-            PossibleModifiers.Add(new DirectorCardCooldownModifier());
-        }
-        var chosen = PossibleModifiers[Utils.RandInt(PossibleModifiers.Count)];
+        int i = Utils.RandInt(PossibleModifiers.Count);
+        var chosen = PossibleModifiers[i];
         chosen.ApplicationStrength = pointsSpent;
+        PossibleModifiers.RemoveAt(i);
+        if(pointsSpent > 10)
+        {
+            float chanceForPermanent = 0.8f * Mathf.Clamp(pointsSpent / 100f, 0, 1);
+            if(chanceForPermanent > Utils.RandFloat())
+            {
+                chosen.IsPermanent = true;
+            }
+        }
         return chosen;
     }
 }
 public class RewardClause : CardClause
 {
-    public List<Reward> Rewards = new();
+    public List<Reward> PreRewards = new();
+    public List<Reward> PostRewards = new();
+    public void AddPowerReward(PowerReward r, List<Reward> list)
+    {
+        bool cloneExists = false;
+        Reward SameType = list.Find(g => g is PowerReward g2 && g2.PowerType == r.PowerType);
+        if (SameType != null && SameType is PowerReward r3)
+        {
+            r3.Amt++;
+            cloneExists = true;
+        }
+        if (!cloneExists)
+            list.Add(r);
+    }
+    public void AddCashReward(CoinReward r, List<Reward> list)
+    {
+        bool cloneExists = false;
+        Reward SameType = list.Find(g => g is CoinReward g2);
+        if (SameType != null && SameType is CoinReward g2)
+        {
+            g2.coins += r.coins;
+            cloneExists = true;
+        }
+        if (!cloneExists)
+            list.Add(r);
+    }
     public override void GenerateData()
     {
-        while (Points > 0)
+        while (Points >= 1)
         {
             Reward r = GenRandomReward();
             Points -= r.GetCost();
-            Rewards.Add(r);
+            if (r.BeforeWaveEndReward)
+            {
+                if (r is PowerReward p)
+                    AddPowerReward(p, PreRewards);
+                else if (r is CoinReward c)
+                    AddCashReward(c, PostRewards);
+            }
+            else
+            {
+                if (r is PowerReward p)
+                    AddPowerReward(p, PostRewards);
+                else if(r is CoinReward c)
+                    AddCashReward(c, PostRewards);
+            }
         }
     }
     private Reward GenRandomReward()
     {
         float PointsAvailable = Points;
+        bool beforeWaveReward = Utils.RandFloat(1) > 0.5f;
         Reward reward = null;
         if(Utils.RandFloat(1) < 0.5f)
         {
-            reward = new CoinReward((int)PointsAvailable);
+            reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.4f) : (int)(PointsAvailable + 0.4f));
         }
         else
         {
@@ -150,6 +213,7 @@ public class RewardClause : CardClause
                 PointsAvailable += 5;
             }
         }
+        reward.BeforeWaveEndReward = beforeWaveReward;
         return reward;
     }
 }

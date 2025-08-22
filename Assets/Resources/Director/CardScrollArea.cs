@@ -9,7 +9,7 @@ public class CardScrollArea : MonoBehaviour
     public RectTransform ContentRect;
     public void UpdateSizing()
     {
-        float defaultHeight = 142;
+        float defaultHeight = 217;
         Vector2 textBoxSize = TextBox.GetRenderedValues();
         ContentRect.sizeDelta = new Vector2(ContentRect.sizeDelta.x, Mathf.Max(defaultHeight, textBoxSize.y + 14));
     }

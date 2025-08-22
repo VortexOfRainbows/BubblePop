@@ -31,9 +31,10 @@ public class DetailedDescription
     }
     public int Rarity;
     private static readonly string[] Rares = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934", "#FFAAAA" };
-    private static readonly string Yellow = "#FFED75";
-    private static readonly string Gray = "#999999";
-    private static readonly string TabForMoreDetail = " <size=24><color=#CB8A8A>(TAB for more detail)</color></size>";
+    public static readonly string Yellow = "#FFED75";
+    public static readonly string Gray = "#999999";
+    public static readonly string LesserGray = "#DDDDDD";
+    private static readonly string TabForMoreDetail = "(TAB for more detail)".WithSizeAndColor(24, "#CB8A8A");
     private static readonly int NormalTextSize = 28;
     private static readonly int GrayTextSize = 24;
     public string ToRichText(string t)
@@ -170,9 +171,13 @@ public class DetailedDescription
             CompleteShortDescription = ToRichText(ShortDescription);
         return CompleteShortDescription + (withDetails ? TabForMoreDetail : string.Empty);
     }
+    public static string TextBoundedByColor(string color, string text)
+    {
+        return $"<color={color}>{text}</color>";
+    }
     public static string TextBoundedByRarityColor(int rare, string text, bool blackMarket)
     {
-        return $"<color={Rares[blackMarket ? 5 : rare]}>{text}</color>";
+        return TextBoundedByColor(Rares[blackMarket ? 5 : rare], text);
     }
     public string TextBoundedByRarityColor(string text)
     {
