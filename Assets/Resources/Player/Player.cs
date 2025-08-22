@@ -204,8 +204,8 @@ public partial class Player : Entity
                     Weapon.StartAttack(true);
                 }
             }
-            if (Main.GameUpdateCount % 100 == 0)
-                Debug.Log($"Has Attacked: {HasAttacked}");
+            //if (Main.GameUpdateCount % 100 == 0)
+            //    Debug.Log($"Has Attacked: {HasAttacked}");
             if (Weapon.IsAttacking())
             {
                 if(Weapon.IsPrimaryAttacking())

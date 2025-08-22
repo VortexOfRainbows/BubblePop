@@ -69,26 +69,56 @@ public abstract class CardClause
 }
 public class EnemyClause : CardClause
 {
-    public EnemyPoolAddition EnemyPoolChange;
-    public ModifierClause AlternateModifier;
+    public EnemyPoolAddition Enemy;
+    public bool EnemyAlreadyInPool(EnemyPoolAddition p)
+    {
+        return false; //temp
+    }
     public override void GenerateData()
     {
-        AlternateModifier = Generate<ModifierClause>(Points);
+        Enemy = GenRandomEnemyPoolAddition();
+        if (!EnemyAlreadyInPool(Enemy))
+            Points -= Enemy.GetCost();
     }
-    //public override string ToString()
-    //{
-    //    return $"Adds {EnemyPoolChange.ToString()} to the enemy pool";
-    //}
+    public EnemyPoolAddition GenRandomEnemyPoolAddition()
+    {
+        return new EnemyPoolAddition(EnemyID.OldDuck.GetComponent<Enemy>());
+    }
 }
 public class ModifierClause : CardClause
 {
     public List<DirectorModifier> Modifiers = new();
+    public int ModifiersToAllow = 1;
     public override void GenerateData()
     {
-        while(Points > 0)
+        ModifiersToAllow = 1 + (int)(Points / 20f);
+        if (ModifiersToAllow > 5)
+            ModifiersToAllow = 5;
+        float percent = 1f / ModifiersToAllow;
+        float originalPoints = Points;
+        while (Points > 0)
         {
-            --Points;
+            float spendingRange = Mathf.Min(Utils.RandFloat(percent, 1), Utils.RandFloat(percent, 1));
+            DirectorModifier m = GenRandomModifier(spendingRange * originalPoints);
+            Points -= m.GetCost();
+            Modifiers.Add(m);
         }
+    }
+    public DirectorModifier GenRandomModifier(float pointsSpent)
+    {
+        List<DirectorModifier> PossibleModifiers = new()
+        {
+            new EnemyStrengthModifier(),
+            new DirectorCreditModifier(),
+        };
+        if (Points > 10)
+        {
+            PossibleModifiers.Add(new DirectorInitialWaveBonusModifier());
+            PossibleModifiers.Add(new DirectorCardCooldownModifier());
+        }
+        var chosen = PossibleModifiers[Utils.RandInt(PossibleModifiers.Count)];
+        chosen.ApplicationStrength = pointsSpent;
+        return chosen;
     }
 }
 public class RewardClause : CardClause
@@ -98,7 +128,28 @@ public class RewardClause : CardClause
     {
         while (Points > 0)
         {
-            --Points;
+            Reward r = GenRandomReward();
+            Points -= r.GetCost();
+            Rewards.Add(r);
         }
+    }
+    private Reward GenRandomReward()
+    {
+        float PointsAvailable = Points;
+        Reward reward = null;
+        if(Utils.RandFloat(1) < 0.5f)
+        {
+            reward = new CoinReward((int)PointsAvailable);
+        }
+        else
+        {
+            reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
+            while(reward.GetCost() > PointsAvailable)
+            {
+                reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
+                PointsAvailable += 5;
+            }
+        }
+        return reward;
     }
 }

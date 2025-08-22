@@ -26,6 +26,10 @@ public abstract class ClauseEffect
 public class EnemyPoolAddition : ClauseEffect
 {
     public Enemy EnemyToAdd;
+    public EnemyPoolAddition(Enemy prefabToAdd)
+    {
+        EnemyToAdd = prefabToAdd;
+    }
     public override void Apply()
     {
         //Unimplemented right now
@@ -37,11 +41,15 @@ public class EnemyPoolAddition : ClauseEffect
 }
 public abstract class DirectorModifier : ClauseEffect
 {
-
+    public float ApplicationStrength { get; set; }
+    public override float GetCost()
+    {
+        return ApplicationStrength;
+    }
 }
 public class EnemyStrengthModifier : DirectorModifier
 {
-
+    
 }
 public class DirectorCreditModifier : DirectorModifier
 {

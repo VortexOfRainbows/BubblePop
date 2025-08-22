@@ -11,12 +11,18 @@ public class ModifierCard : MonoBehaviour
     public void Start()
     {
         cardData = new();
-        GenerateCardData();
     }
     public void Update()
     {
         Modifiers.UpdateSizing();
         Rewards.UpdateSizing();
+
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            GenerateCardData();
+            Modifiers.SetText(cardData.Modifiers.Modifiers.Count.ToString());
+            Rewards.SetText(cardData.Rewards.Rewards.Count.ToString());
+        }
     }
     public void GenerateCardData()
     {
