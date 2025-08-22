@@ -33,7 +33,7 @@ public abstract class ClauseEffect
 }
 public class EnemyPoolAddition : ClauseEffect
 {
-    public float PermanentMultiplier => 0.5f;
+    public float PermanentMultiplier => 2f;
     public bool IsPermanent { get; set; } = false;
     public Enemy EnemyToAdd;
     public EnemyPoolAddition(Enemy prefabToAdd)

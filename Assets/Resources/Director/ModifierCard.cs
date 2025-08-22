@@ -9,9 +9,10 @@ public class ModifierCard : MonoBehaviour
     public TextMeshProUGUI TitleText;
     public CardScrollArea Modifiers;
     public CardScrollArea Rewards;
+    public float DifficultyMultiplier = 1f;
     public void Start()
     {
-        cardData = new();
+        cardData = new(this);
     }
     public void Update()
     {

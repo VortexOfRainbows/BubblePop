@@ -3,12 +3,17 @@ using UnityEngine;
 
 public class CardData
 {
+    public CardData(ModifierCard owner)
+    {
+        Owner = owner;
+    }
     /* 
      * CardData ought to contain
      * 1. Information on the enemy that it adds to the pool
      * 2. Information on other effects if the enemy is already added
      * 3. Information on the rewards the card provides
      */
+    public ModifierCard Owner;
     public float AvailablePoints;
     public float SpentPoints = 0;
     public EnemyClause EnemyClause;
@@ -16,7 +21,7 @@ public class CardData
     public RewardClause RewardClause;
     public void GetPointsAllowed()
     {
-        AvailablePoints = 100; //This should be tied to the wave number in some way
+        AvailablePoints = 20 * Owner.DifficultyMultiplier; //This should be tied to the wave number in some way
     }
     public void Generate()
     {
@@ -85,7 +90,14 @@ public class EnemyClause : CardClause
     }
     public EnemyPoolAddition GenRandomEnemyPoolAddition()
     {
-        EnemyPoolAddition newEnemy = new EnemyPoolAddition(EnemyID.OldDuck.GetComponent<Enemy>());
+        EnemyPoolAddition newEnemy = null;
+        while(newEnemy == null)
+        {
+            Enemy e = EnemyID.AllEnemyList[Utils.RandInt(EnemyID.Max)].GetComponent<Enemy>();
+            newEnemy = new(e);
+            if(newEnemy.GetCost() > Points)
+                newEnemy = null;
+        }
         if(Points > newEnemy.GetCost() / newEnemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
         {
             newEnemy.IsPermanent = true;
@@ -101,8 +113,11 @@ public class ModifierClause : CardClause
     public int ModifiersToAllow = 1;
     protected void InitializePossibleModifiers()
     {
-        PossibleModifiers.Add(new EnemyStrengthModifier());
-        PossibleModifiers.Add(new DirectorCreditModifier());
+        if (Points > 10)
+        {
+            PossibleModifiers.Add(new EnemyStrengthModifier());
+            PossibleModifiers.Add(new DirectorCreditModifier());
+        }
         if (Points > 20)
         {
             PossibleModifiers.Add(new DirectorInitialWaveBonusModifier());
@@ -200,7 +215,7 @@ public class RewardClause : CardClause
         float PointsAvailable = Points;
         bool beforeWaveReward = Utils.RandFloat(1) > 0.5f;
         Reward reward = null;
-        if(Utils.RandFloat(1) < 0.5f)
+        if(Utils.RandFloat(1) < 0.5f || Points < 10)
         {
             reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.4f) : (int)(PointsAvailable + 0.4f));
         }
