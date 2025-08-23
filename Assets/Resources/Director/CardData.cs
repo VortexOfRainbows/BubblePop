@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class CardData
@@ -16,7 +17,6 @@ public class CardData
      */
     public ModifierCard Owner;
     public float AvailablePoints;
-    public float SpentPoints = 0;
     public EnemyClause EnemyClause;
     public ModifierClause ModifierClause;
     public RewardClause RewardClause;
@@ -24,17 +24,18 @@ public class CardData
     //private CardClause[] Clauses => new CardClause[] { EnemyClause, ModifierClause, RewardClause };
     public void GetPointsAllowed()
     {
-        AvailablePoints = 20 * DifficultyMult; //This should be tied to the wave number in some way
+        AvailablePoints = (18 + WaveDirector.WaveNum * 2) * DifficultyMult; //This should be tied to the wave number in some way
     }
     public void Generate()
     {
         GetPointsAllowed();
+        float originalAvailablePoints = AvailablePoints;
         AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r);
         e ??= new EnemyClause(AvailablePoints);
-        m ??= new ModifierClause(AvailablePoints);
-        r ??= new RewardClause(AvailablePoints);
         RegisterClause(e);
+        m ??= new ModifierClause(AvailablePoints);
         RegisterClause(m);
+        r ??= new RewardClause(originalAvailablePoints);
         RegisterClause(r);
     }
     public void AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r)
@@ -48,8 +49,6 @@ public class CardData
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldDuck) { IsPermanent = true });
             if(DifficultyMult == 1)
                 m = new ModifierClause(AvailablePoints, 0);
-            else
-                m = new ModifierClause(AvailablePoints - 20, 1);
         }
     }
     public void RegisterClause(CardClause c)
@@ -59,15 +58,8 @@ public class CardData
         else if (c is ModifierClause m)
             ModifierClause = m;
         if (c is RewardClause r)
-        {
             RewardClause = r;
-            SpentPoints = c.Points;
-        }
-        else
-        {
-            SpentPoints += AvailablePoints - c.Points;
-            AvailablePoints = c.Points;
-        }
+        AvailablePoints = c.Points;
     }
     public string CardName()
     {
@@ -121,20 +113,23 @@ public abstract class CardClause
 public class EnemyClause : CardClause
 {
     public EnemyCard Enemy;
+    public bool AlreadyInPool = false;
     public EnemyClause(float points, EnemyCard newCard = null) : base(points)
     {
         Enemy = newCard;
         GenerateData();
     }
-    public bool EnemyAlreadyInPool(EnemyCard p)
+    private bool EnemyAlreadyInPool(EnemyCard p)
     {
-        return false; //temp
+        return WaveDirector.PossibleEnemies().Find(g => g.GetComponent<Enemy>().GetType() == p.EnemyToAdd.GetType()) != null;
     }
     public override void GenerateData()
     {
         Enemy ??= GenRandomEnemyPoolAddition();
         if (!EnemyAlreadyInPool(Enemy))
             Points -= Enemy.GetCost();
+        else
+            AlreadyInPool = true;
     }
     public EnemyCard GenRandomEnemyPoolAddition()
     {
@@ -146,7 +141,7 @@ public class EnemyClause : CardClause
             if(newEnemy.GetCost() > Points)
                 newEnemy = null;
         }
-        if(Points > newEnemy.GetCost() / newEnemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
+        if(Points > newEnemy.GetCost() * newEnemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
         {
             newEnemy.IsPermanent = true;
         }

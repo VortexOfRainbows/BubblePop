@@ -5,23 +5,23 @@ public static class WaveDeck
     public static readonly float minXBound = -30, maxXBound = 30, minYBound = -18, maxYBound = 18;
     public static List<GameObject> GetPossibleEnemies()
     {
-        List<GameObject> possibleEnemies = new()
-        {
-            EnemyID.OldDuck
-        };
-        if (WaveDirector.WaveNum > 1 || WaveDirector.CardsPlayed > 5)
-            possibleEnemies.Add(EnemyID.OldSoap);
-        if (WaveDirector.WaveNum > 1)
-            possibleEnemies.Add(EnemyID.Chicken);
-        if (WaveDirector.WaveNum > 2)
-            possibleEnemies.Add(EnemyID.Crow);
-        if (WaveDirector.WaveNum > 3)
-            possibleEnemies.Add(EnemyID.OldFlamingo);
-        if (WaveDirector.WaveNum > 5 && WaveDirector.CardsPlayed > 5)
-            possibleEnemies.Add(EnemyID.Gatligator);
-        if (WaveDirector.WaveNum > 7 && WaveDirector.CardsPlayed > 2)
-            possibleEnemies.Add(EnemyID.OldLeonard);
-        return possibleEnemies;
+        //List<GameObject> possibleEnemies = new()
+        //{
+        //    EnemyID.OldDuck
+        //};
+        //if (WaveDirector.WaveNum > 1 || WaveDirector.CardsPlayed > 5)
+        //    possibleEnemies.Add(EnemyID.OldSoap);
+        //if (WaveDirector.WaveNum > 1)
+        //    possibleEnemies.Add(EnemyID.Chicken);
+        //if (WaveDirector.WaveNum > 2)
+        //    possibleEnemies.Add(EnemyID.Crow);
+        //if (WaveDirector.WaveNum > 3)
+        //    possibleEnemies.Add(EnemyID.OldFlamingo);
+        //if (WaveDirector.WaveNum > 5 && WaveDirector.CardsPlayed > 5)
+        //    possibleEnemies.Add(EnemyID.Gatligator);
+        //if (WaveDirector.WaveNum > 7 && WaveDirector.CardsPlayed > 2)
+        //    possibleEnemies.Add(EnemyID.OldLeonard);
+        return WaveDirector.PossibleEnemies();
     }
     public static GameObject DrawEnemy(List<GameObject> possibleEnemies)
     {

@@ -19,12 +19,11 @@ Need to do:
 7. Add Ent
 8. Add tall grass
 9. Rework pylon and wave director to allow:
-	1. Pause between waves
+	1. Pause between waves (sorta done)
 	2. Choose which enemies are added to the pool (cards when starting waves)
-		1. Cards also have associated rewards
-		2. Mix up the order enemies spawn in (player has some agency)
-		3. Cards also come with associated director cards to immediately add to the play queue (which the player can't necessarily see)
+		1. Cards also come with associated director cards to immediately add to the play queue (which the player can't necessarily see), use a special card queue
 	3. Fix when positions are determined for cards by adding presets (like nearby, edge, random, etc.), which are then generated on spawn rather than on draw (to fix border spawning issue)
+	4. Wave bar on the top that shows current wave, wave progress, enemies remaining, and potentially current wave card + modifier information
 10. Enemy page on the compendium
 11. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
 	1. TBD: Strength...
@@ -55,6 +54,7 @@ Done:
 	1. Working on the player-card system, which allows the player to choose which wave they want to face, with rewards and modifiers
 	2. Primitive wave-card generation
 	3. Remove legacy wave-spawner (beyond obsolete)
+	4. Add ability to pick wave-cards which effect the upcoming waves (missing: pause, associated ambush cards)
 
 8/13/25
 1. Light spears only hit one enemy per spear now, no longer piercing enemies that are layered on top of each other

@@ -33,6 +33,7 @@ public abstract class ClauseEffect
 }
 public class EnemyCard : ClauseEffect
 {
+    public WaveDirector.WaveModifiers MyModifier => IsPermanent ? WaveDirector.PermanentModifiers : WaveDirector.TemporaryModifiers;
     public float PermanentMultiplier => 2f;
     public bool IsPermanent { get; set; } = false;
     public Enemy EnemyToAdd;
@@ -46,7 +47,7 @@ public class EnemyCard : ClauseEffect
     }
     public override void Apply()
     {
-        //Unimplemented right now
+        MyModifier.WaveSpecialBonusEnemy = EnemyToAdd.gameObject;
     }
     public override float GetCost()
     {
@@ -59,13 +60,14 @@ public class EnemyCard : ClauseEffect
 }
 public abstract class DirectorModifier : ClauseEffect
 {
+    public WaveDirector.WaveModifiers MyModifier => IsPermanent ? WaveDirector.PermanentModifiers : WaveDirector.TemporaryModifiers;
     public float ApplicationStrength { get; set; }
     public virtual float PointToPercentRatio => 100f;
     public bool IsPermanent { get; set; } = false;
     public virtual float PermanentMultiplier => 0.1f;
     public float Percent => ApplicationStrength / PointToPercentRatio * (IsPermanent ? PermanentMultiplier : 1);
     public string PercentAsText => $"+{Percent * 100:#.#}%";
-    public string NumberText => $"+{(int)(Percent * 100)}";
+    public string NumberText => $"+{(int)Percent}";
     public override float GetCost()
     {
         return ApplicationStrength;
@@ -77,6 +79,10 @@ public abstract class DirectorModifier : ClauseEffect
 }
 public class EnemyStrengthModifier : DirectorModifier
 {
+    public override void Apply()
+    {
+        MyModifier.EnemyScaling += Percent;
+    }
     public override string Description()
     {
         return $"{"Enemy health:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
@@ -84,6 +90,10 @@ public class EnemyStrengthModifier : DirectorModifier
 }
 public class DirectorCreditModifier : DirectorModifier
 {
+    public override void Apply()
+    {
+        MyModifier.CreditGatherScaling += Percent;
+    }
     public override string Description()
     {
         return $"{"Enemy spawns:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
@@ -106,6 +116,11 @@ public class DirectorCardCooldownModifier : DirectorModifier
 }
 public class DirectorInitialWaveBonusModifier : DirectorModifier
 {
+    public override float PointToPercentRatio => 1f;
+    public override void Apply()
+    {
+        MyModifier.InitialAmbush += Percent;
+    }
     public override string Description()
     {
         return $"{"Initial Ambush:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(NumberText)}";
@@ -175,7 +190,7 @@ public class CoinReward : Reward
     }
     public override void GrantReward()
     {
-        CoinManager.SpawnCoin(Player.Instance.transform.position, coins, 0.5f);
+        CoinManager.SpawnCoin(Player.Instance.transform.position, coins, 0.05f);
     }
     public override string Description()
     {

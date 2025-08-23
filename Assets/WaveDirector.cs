@@ -178,6 +178,8 @@ public static class WaveDirector
         CardsPlayed = 0;
         Credits = TemporaryModifiers.InitialAmbush;
         CreditsSpent = 0;
+        if(WaveNum != 1)
+            MulliganAllCards();
     }
     public static void EndWave()
     {
@@ -223,6 +225,11 @@ public static class WaveDirector
         int rand = Utils.RandInt(Deck.Count);
         if (Deck[rand].Cost > 0 && Deck[rand].mulliganDelay <= 0)
             Deck[rand] = WaveDeck.DrawCard();
+    }
+    public static void MulliganAllCards()
+    {
+        for(int i = 0; i < Deck.Count; ++i)
+            Deck[i] = WaveDeck.DrawCard();
     }
     public static void TryPlayingCard()
     {

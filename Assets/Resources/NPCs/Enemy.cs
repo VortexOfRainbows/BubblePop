@@ -7,10 +7,11 @@ public static class EnemyID
 {
     public static List<GameObject> AllEnemyList = new();
     public static int Max => AllEnemyList.Count;
-    public static GameObject LoadNPC(string str)
+    public static GameObject LoadNPC(string str, bool addToList = true)
     {
         GameObject prefab = Resources.Load<GameObject>($"NPCs/{str}");
-        AllEnemyList.Add(prefab);
+        if(addToList)
+            AllEnemyList.Add(prefab);
         return prefab;
     }
     public static GameObject PortalPrefab = Resources.Load<GameObject>("NPCs/Portal");
@@ -18,7 +19,7 @@ public static class EnemyID
     public static GameObject OldLeonard = LoadNPC("Old/EnemyLaserDuck");
     public static GameObject OldFlamingo = LoadNPC("Old/EnemyFlamingo");
     public static GameObject OldSoap = LoadNPC("Old/EnemySoap");
-    public static GameObject OldSmallSoap = LoadNPC("Old/EnemySoapTiny");
+    public static GameObject OldSmallSoap = LoadNPC("Old/EnemySoapTiny", false);
     public static GameObject Chicken = LoadNPC("Chicken/Chicken");
     public static GameObject Gatligator = LoadNPC("Gatligator/Gatligator");
     public static GameObject Crow = LoadNPC("Crow/Crow");

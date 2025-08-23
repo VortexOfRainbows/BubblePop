@@ -16,20 +16,20 @@ public class ModifierCard : MonoBehaviour
     {
         string shortLineBreak = "<size=12>\n</size>";
         string concat = string.Empty;
-        if (cardData.ModifierClause.PermanentModifiers.Count > 0 || cardData.EnemyClause.Enemy.IsPermanent)
+        if (cardData.ModifierClause.PermanentModifiers.Count > 0 || (!cardData.EnemyClause.AlreadyInPool && cardData.EnemyClause.Enemy.IsPermanent))
         {
             concat = "Permanently: \n".WithSizeAndColor(28, "#FFAAAA");
-            if(cardData.EnemyClause.Enemy.IsPermanent)
+            if(!cardData.EnemyClause.AlreadyInPool && cardData.EnemyClause.Enemy.IsPermanent)
                 concat += cardData.EnemyClause.Enemy.Description() + '\n';
             foreach (DirectorModifier mod in cardData.ModifierClause.PermanentModifiers)
                 concat += mod.Description() + '\n';
             if (cardData.ModifierClause.TemporaryModifiers.Count > 0)
                 concat += shortLineBreak;
         }
-        if (cardData.ModifierClause.TemporaryModifiers.Count > 0 || !cardData.EnemyClause.Enemy.IsPermanent)
+        if (cardData.ModifierClause.TemporaryModifiers.Count > 0 || (!cardData.EnemyClause.AlreadyInPool && !cardData.EnemyClause.Enemy.IsPermanent))
         {
             concat += "This Wave Only: \n".WithSizeAndColor(28, "#FFAAAA");
-            if (!cardData.EnemyClause.Enemy.IsPermanent)
+            if (!cardData.EnemyClause.AlreadyInPool && !cardData.EnemyClause.Enemy.IsPermanent)
                 concat += cardData.EnemyClause.Enemy.Description() + '\n';
             foreach (DirectorModifier mod in cardData.ModifierClause.TemporaryModifiers)
                 concat += mod.Description() + '\n';
