@@ -20,6 +20,7 @@ public class CardData
     public EnemyClause EnemyClause;
     public ModifierClause ModifierClause;
     public RewardClause RewardClause;
+    //private CardClause[] Clauses => new CardClause[] { EnemyClause, ModifierClause, RewardClause };
     public void GetPointsAllowed()
     {
         AvailablePoints = 20 * Owner.DifficultyMultiplier; //This should be tied to the wave number in some way
@@ -51,6 +52,32 @@ public class CardData
     public string CardName()
     {
         return EnemyClause.Enemy.EnemyToAdd.Name() + " Wave";
+    }
+    public void ApplyPermanentModifiers()
+    {
+        if (EnemyClause.Enemy.IsPermanent)
+            EnemyClause.Apply();
+        ModifierClause.ApplyPermanent();
+    }
+    public void ApplyTemporaryModifiers()
+    {
+        if (!EnemyClause.Enemy.IsPermanent)
+            EnemyClause.Apply();
+        ModifierClause.ApplyTemporary();
+    }
+    public void GrantImmediateRewards()
+    {
+        RewardClause.Apply();
+    }
+    public void GrantCompletionRewards()
+    {
+        RewardClause.Resolve();
+    }
+    public void ResolveModifiers()
+    {
+        EnemyClause.Resolve();
+        ModifierClause.ResolvePermanent();
+        ModifierClause.ResolveTemporary();
     }
 }
 public abstract class CardClause
@@ -105,12 +132,14 @@ public class EnemyClause : CardClause
         }
         return newEnemy;
     }
+    public void Apply() => Enemy.Apply();
+    public void Resolve() => Enemy.Resolve();
 }
 public class ModifierClause : CardClause
 {
-    private List<DirectorModifier> PossibleModifiers = new();
+    private readonly List<DirectorModifier> PossibleModifiers = new();
     public List<DirectorModifier> PermanentModifiers = new();
-    public List<DirectorModifier> Modifiers = new();
+    public List<DirectorModifier> TemporaryModifiers = new();
     public int ModifiersToAllow = 1;
     public ModifierClause(float points, int modifiersAllowed = 1, params DirectorModifier[] mods) : base(points)
     {
@@ -121,7 +150,7 @@ public class ModifierClause : CardClause
             if (modifier.IsPermanent)
                 PermanentModifiers.Add(modifier);
             else
-                Modifiers.Add(modifier);
+                TemporaryModifiers.Add(modifier);
             Points -= modifier.GetCost();
         }
         GenerateData();
@@ -151,7 +180,7 @@ public class ModifierClause : CardClause
             if (m.IsPermanent)
                 PermanentModifiers.Add(m);
             else
-                Modifiers.Add(m);
+                TemporaryModifiers.Add(m);
         }
     }
     public DirectorModifier GenRandomModifier(float pointsSpent)
@@ -169,6 +198,26 @@ public class ModifierClause : CardClause
             }
         }
         return chosen;
+    }
+    public void ApplyPermanent()
+    {
+        foreach (DirectorModifier r in PermanentModifiers)
+            r.Apply();
+    }
+    public void ApplyTemporary()
+    {
+        foreach (DirectorModifier r in TemporaryModifiers)
+            r.Apply();
+    }
+    public void ResolvePermanent()
+    {
+        foreach (DirectorModifier r in PermanentModifiers)
+            r.Resolve();
+    }
+    public void ResolveTemporary()
+    {
+        foreach (DirectorModifier r in TemporaryModifiers)
+            r.Resolve();
     }
 }
 public class RewardClause : CardClause
@@ -251,5 +300,15 @@ public class RewardClause : CardClause
         }
         reward.BeforeWaveEndReward = beforeWaveReward;
         return reward;
+    }
+    public void Apply()
+    {
+        foreach(Reward r in PreRewards)
+            r.Apply();
+    }
+    public void Resolve()
+    {
+        foreach (Reward r in PostRewards)
+            r.Resolve();
     }
 }

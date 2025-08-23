@@ -211,18 +211,6 @@ public static class WaveDirector
         #region wave card updates
         //---- Start of resolve ----
 
-        //Run previous wave card rewards (on completion rewards)
-        // NOT YET IMPLEMENTED
-
-        //Resolve previous wave cards (on resolutions)
-        // NOT YET IMPLEMENTED
-
-        //Update enemy pool and reset temporary modifiers
-        if (PermanentModifiers.WaveSpecialBonusEnemy != null) //If it was permanent, add the previous wave's special enemy to the enemy pool
-        {
-            EnemyPool.Add(PermanentModifiers.WaveSpecialBonusEnemy);
-            PermanentModifiers.WaveSpecialBonusEnemy = null;
-        }
 
         //Draw new wave cards
         // NOT YET IMPLEMENTED
@@ -232,25 +220,6 @@ public static class WaveDirector
 
         //Due to player input required, these two sections will likely be split into different places in this code as the rework continues!
 
-
-        //---- Start of apply ----
-
-        //select new wave cards
-        // NOT YET IMPLEMENTED
-
-        TemporaryModifiers.CloneValues(PermanentModifiers); //Reset the temporary modifiers to the permanent modifiers
-        //Apply wave cards
-        // NOT YET IMPLEMENTED
-        /* Order
-         * 1. Permanent modifiers
-         * 2. Apply permanent modifiers to temporary modifiers
-         * 3. Apply temporary modifiers
-         */
-
-        //Run current wave card rewards (immediate rewards)
-        // NOT YET IMPLEMENTED
-
-        //---- End of apply ----
         #endregion
     }
     public static void GatherCredits()
