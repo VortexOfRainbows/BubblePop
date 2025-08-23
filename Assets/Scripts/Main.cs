@@ -14,7 +14,7 @@ public class Main : MonoBehaviour
     public static Pylon CurrentPylon = null;
     private static Pylon PrevPylon = null;
     public static bool GamePaused => Time.timeScale == 0;
-    public static bool WavesUnleashed = false;
+    public static bool WavesUnleashed { get; set; } = false;
     public GameObject DirectorCanvas;
     public GameObject PowerupCheatCanvas;
     public void FixedUpdate()
@@ -38,6 +38,7 @@ public class Main : MonoBehaviour
         Time.timeScale = 1f;
         CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
         WavesUnleashed = true;
+        CardManager.DrawCards();
     }
     public static void PauseGame()
     {

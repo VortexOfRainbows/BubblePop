@@ -40,6 +40,10 @@ public class EnemyCard : ClauseEffect
     {
         EnemyToAdd = prefabToAdd;
     }
+    public EnemyCard(GameObject prefabToAdd)
+    {
+        EnemyToAdd = prefabToAdd.GetComponent<Enemy>();
+    }
     public override void Apply()
     {
         //Unimplemented right now

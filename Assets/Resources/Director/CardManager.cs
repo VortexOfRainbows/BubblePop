@@ -16,10 +16,21 @@ public class CardManager : MonoBehaviour
     public void Update()
     {
         Instance = this;
-        if (Input.GetKeyDown(KeyCode.R))
-        {
+        if (Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
             GenerateCards();
-        }
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+            ChosenCardIndex = 0;
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+            ChosenCardIndex = 1;
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+            ChosenCardIndex = 2;
+        foreach (ModifierCard card in Cards)
+            card.UpdateSizing();
+    }
+    public void FixedUpdate()
+    {
+        for(int i = 0; i < Cards.Length; ++i)
+            Cards[i].UpdateSelectVisuals(i == ChosenCardIndex, false);
     }
     public static void GenerateNewCards()
     {
@@ -28,6 +39,7 @@ public class CardManager : MonoBehaviour
     public static void DrawCards()
     {
         Instance.Visual.SetActive(true);
+        GenerateNewCards();
     }
     public static void ChooseCard(int i)
     {
@@ -67,8 +79,6 @@ public class CardManager : MonoBehaviour
     public void GenerateCards()
     {
         foreach(ModifierCard card in Cards)
-        {
             card.GenerateCardData();
-        }
     }
 }

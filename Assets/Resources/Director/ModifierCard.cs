@@ -1,11 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ModifierCard : MonoBehaviour
 {
     public CardData cardData = null;
+    public Image BG;
     public TextMeshProUGUI TitleText;
     public CardScrollArea Modifiers;
     public CardScrollArea Rewards;
@@ -13,11 +14,6 @@ public class ModifierCard : MonoBehaviour
     public void Start()
     {
         cardData = new(this);
-    }
-    public void Update()
-    {
-        Modifiers.UpdateSizing();
-        Rewards.UpdateSizing();
     }
     public void UpdateText()
     {
@@ -67,5 +63,17 @@ public class ModifierCard : MonoBehaviour
         cardData ??= new(this);
         cardData.Generate();
         UpdateText();
+    }
+    public void UpdateSizing()
+    {
+        Modifiers.UpdateSizing();
+        Rewards.UpdateSizing();
+    }
+    public void UpdateSelectVisuals(bool selected = false, bool hovering = false)
+    {
+        if (selected)
+            hovering = selected;
+        transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, 0.2f);
+        BG.color = Color.Lerp(BG.color, selected ? Color.yellow : Color.white, 0.2f);
     }
 }

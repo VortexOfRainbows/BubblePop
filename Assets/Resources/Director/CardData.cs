@@ -28,9 +28,22 @@ public class CardData
     public void Generate()
     {
         GetPointsAllowed();
-        RegisterClause(new EnemyClause(AvailablePoints));
-        RegisterClause(new ModifierClause(AvailablePoints));
-        RegisterClause(new RewardClause(SpentPoints));
+        AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r);
+        e ??= new EnemyClause(AvailablePoints);
+        m ??= new ModifierClause(AvailablePoints);
+        r ??= new RewardClause(AvailablePoints);
+        RegisterClause(e);
+        RegisterClause(m);
+        RegisterClause(r);
+    }
+    public void AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r)
+    {
+        e = null;
+        m = null;
+        r = null;
+        int waveNum = WaveDirector.WaveNum;
+        if(waveNum == 1)
+            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldDuck) { IsPermanent = true });
     }
     public void RegisterClause(CardClause c)
     {

@@ -71,11 +71,12 @@ public static class WaveDirector
     public static int CardsPlayed = 0;
     public static int WaveNum = 1;
     public static float WaveMult = 1.0f;
-    public static float EnemyScalingFactor = 1.0f;
+    public static float EnemyScalingFactor => TemporaryModifiers.EnemyScaling;
+    public static bool WaveActive = false;
     public static void Reset()
     {
         WaveNum = 1;
-        WaveMult = EnemyScalingFactor = 1.0f;
+        WaveMult = 1.0f;
         CardsPlayed = 0;
         CreditsSpent = 0;
         Deck.Clear();
@@ -91,6 +92,10 @@ public static class WaveDirector
         if (!Main.WavesUnleashed)
         {
             Reset();
+            return;
+        }
+        else if(!WaveActive)
+        {
             return;
         }
         PointUpdate();
@@ -115,8 +120,8 @@ public static class WaveDirector
         }
         else if(Board.Count <= 0) //All played cards have finish processing
         {
-            ProgressToNextWave();
-            if(WaveNum == 2)
+            EndWave();
+            /*if(WaveNum == 2)
             {
                 Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
                 Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(new EnemyPattern(Vector2.zero, 0.5f, 0f, EnemyID.OldDuck), 2, 5, 0).ToSwarmCircle(3, 10, 0);
@@ -160,45 +165,25 @@ public static class WaveDirector
                     Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 15, 5, 0);
                 if (WaveNum % 4 == 1)
                     Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Gatligator, 15, 5, 0);
-            }
+            }*/
         }
         ProcessPlayedCards();
         if (PlayRecoil > 0)
             PlayRecoil -= Time.fixedDeltaTime * WaveMult;
     }
-    public static void ProgressToNextWave()
+    public static void StartWave()
     {
+        WaveActive = true;
+        CardManager.ApplyChosenCard(); //Applies permanent modifiers, updates temp modifiers, spawns loot
         CardsPlayed = 0;
-        Player.Instance.OnWaveEnd(WaveNum, WaveNum + 1);
-        ++WaveNum;
-        WaveMult += 0.1f;
+        Credits = TemporaryModifiers.InitialAmbush;
         CreditsSpent = 0;
-        if(WaveNum > 10)
-        {
-            if(WaveNum <= 15)
-                EnemyScalingFactor += 0.1f;
-            else if(WaveNum <= 40)
-            {
-                EnemyScalingFactor *= 1.04f;
-                EnemyScalingFactor += 0.06f;
-            }
-            else 
-            {
-                if (WaveNum <= 50)
-                {
-                    EnemyScalingFactor *= 1.08f;
-                    EnemyScalingFactor += 0.02f;
-                }
-                else
-                {
-                    EnemyScalingFactor *= 1.12f;
-                }
-            }
-        }
-        else if(WaveNum > 5)
-        {
-            EnemyScalingFactor += 0.05f;
-        }
+    }
+    public static void EndWave()
+    {
+        WaveActive = false;
+        Player.Instance.OnWaveEnd(WaveNum, WaveNum + 1);
+        WaveMult += 0.1f;
         if(WaveNum >= 16)
         {
             if(Player.Instance.Body is ThoughtBubble && !Player.HasAttacked)
@@ -207,21 +192,12 @@ public static class WaveDirector
                 t.SetComplete();
             }
         }
-
-        #region wave card updates
-        CardManager.ResolveChosenCard();
-
-        //Draw new wave cards
-        // NOT YET IMPLEMENTED
-        CardManager.ApplyChosenCard();
-
-        //Due to player input required, these two sections will likely be split into different places in this code as the rework continues!
-
-        #endregion
+        CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
+        ++WaveNum;
     }
     public static void GatherCredits()
     {
-        Credits += 1.15f * Time.fixedDeltaTime * WaveMult;
+        Credits += 1.15f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
     }
     public static void DrawNewCards()
     {
