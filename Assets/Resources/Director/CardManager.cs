@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ModifierCardPopup : MonoBehaviour
+public class CardManager : MonoBehaviour
 {
-    public static ModifierCardPopup Instance { get; private set; }
+    public GameObject Visual;
+    public static CardManager Instance { get; private set; }
     public void Start()
     {
         Instance = this;
+        Instance.Visual.SetActive(false);
     }
     public ModifierCard[] Cards;
     public static ModifierCard[] Card => Instance.Cards;
@@ -21,9 +21,13 @@ public class ModifierCardPopup : MonoBehaviour
             GenerateCards();
         }
     }
-    public static void DrawCards()
+    public static void GenerateNewCards()
     {
         Instance.GenerateCards();
+    }
+    public static void DrawCards()
+    {
+        Instance.Visual.SetActive(true);
     }
     public static void ChooseCard(int i)
     {
@@ -46,6 +50,8 @@ public class ModifierCardPopup : MonoBehaviour
             WaveDirector.PermanentModifiers.WaveSpecialBonusEnemy = null;
         }
         WaveDirector.TemporaryModifiers.CloneValues(WaveDirector.PermanentModifiers); //Apply permanent modifiers to temporary modifiers
+
+        ChosenCardIndex = -1;
     }
     public static void ApplyChosenCard()
     {

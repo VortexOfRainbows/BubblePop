@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ModifierCard : MonoBehaviour
 {
-    public CardData cardData;
+    public CardData cardData = null;
     public TextMeshProUGUI TitleText;
     public CardScrollArea Modifiers;
     public CardScrollArea Rewards;
@@ -64,6 +64,7 @@ public class ModifierCard : MonoBehaviour
     }
     public void GenerateCardData()
     {
+        cardData ??= new(this);
         cardData.Generate();
         UpdateText();
     }

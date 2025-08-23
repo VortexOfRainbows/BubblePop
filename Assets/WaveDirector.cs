@@ -209,14 +209,11 @@ public static class WaveDirector
         }
 
         #region wave card updates
-        //---- Start of resolve ----
-
+        CardManager.ResolveChosenCard();
 
         //Draw new wave cards
         // NOT YET IMPLEMENTED
-
-        //---- End of resolve ----
-
+        CardManager.ApplyChosenCard();
 
         //Due to player input required, these two sections will likely be split into different places in this code as the rework continues!
 
