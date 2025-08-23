@@ -11,10 +11,7 @@ public class ModifierCard : MonoBehaviour
     public CardScrollArea Modifiers;
     public CardScrollArea Rewards;
     public float DifficultyMultiplier = 1f;
-    public void Start()
-    {
-        cardData = new(this);
-    }
+    public void Start() => cardData ??= new(this);
     public void UpdateText()
     {
         string shortLineBreak = "<size=12>\n</size>";
@@ -74,6 +71,6 @@ public class ModifierCard : MonoBehaviour
         if (selected)
             hovering = selected;
         transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, 0.2f);
-        BG.color = Color.Lerp(BG.color, selected ? Color.yellow : Color.white, 0.2f);
+        BG.color = Color.Lerp(BG.color, selected ? Color.yellow : (hovering ? Color.Lerp(Color.yellow, Color.white, 0.9f) : Color.white), 0.2f);
     }
 }

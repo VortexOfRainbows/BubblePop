@@ -20,10 +20,11 @@ public class CardData
     public EnemyClause EnemyClause;
     public ModifierClause ModifierClause;
     public RewardClause RewardClause;
+    public float DifficultyMult => Owner.DifficultyMultiplier;
     //private CardClause[] Clauses => new CardClause[] { EnemyClause, ModifierClause, RewardClause };
     public void GetPointsAllowed()
     {
-        AvailablePoints = 20 * Owner.DifficultyMultiplier; //This should be tied to the wave number in some way
+        AvailablePoints = 20 * DifficultyMult; //This should be tied to the wave number in some way
     }
     public void Generate()
     {
@@ -43,7 +44,13 @@ public class CardData
         r = null;
         int waveNum = WaveDirector.WaveNum;
         if(waveNum == 1)
+        {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldDuck) { IsPermanent = true });
+            if(DifficultyMult == 1)
+                m = new ModifierClause(AvailablePoints, 0);
+            else
+                m = new ModifierClause(AvailablePoints - 20, 1);
+        }
     }
     public void RegisterClause(CardClause c)
     {
@@ -183,6 +190,8 @@ public class ModifierClause : CardClause
     }
     public override void GenerateData()
     {
+        if (ModifiersToAllow == 0)
+            return;
         float percent = 1f / ModifiersToAllow;
         float originalPoints = Points;
         while (Points >= 1 && PossibleModifiers.Count > 0)

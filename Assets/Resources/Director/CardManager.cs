@@ -1,8 +1,13 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardManager : MonoBehaviour
 {
+    public Canvas MyCanvas;
     public GameObject Visual;
+    public Image ConfirmButton;
+    public TextMeshProUGUI ConfirmButtonText;
     public static CardManager Instance { get; private set; }
     public void Start()
     {
@@ -16,21 +21,57 @@ public class CardManager : MonoBehaviour
     public void Update()
     {
         Instance = this;
+        if (!Visual.activeSelf)
+            return;
         if (Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
             GenerateCards();
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-            ChosenCardIndex = 0;
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            ChosenCardIndex = 1;
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-            ChosenCardIndex = 2;
+        bool isClickingOnACard = false;
+        for (int i = 0; i < Cards.Length; ++i)
+        {
+            bool Hovered = Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
+            if(Hovered && Control.LeftMouseClick)
+            {
+                ChosenCardIndex = ChosenCardIndex != i ? i : -1;
+                isClickingOnACard = true;
+                break;
+            }
+        }
+        if(!isClickingOnACard)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+                ChosenCardIndex = ChosenCardIndex != 0 ? 0 : -1;
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+                ChosenCardIndex = ChosenCardIndex != 1 ? 1 : -1;
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+                ChosenCardIndex = ChosenCardIndex != 2 ? 2 : -1;
+        }
         foreach (ModifierCard card in Cards)
             card.UpdateSizing();
+        bool cardSelected = ChosenCardIndex != -1;
+        bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected && Control.LeftMouseClick;
+        if(confirmButtonHovered || (Input.GetKeyDown(KeyCode.Space) && cardSelected))
+            ConfirmCard();
     }
     public void FixedUpdate()
     {
+        if (!Visual.activeSelf)
+            return;
         for(int i = 0; i < Cards.Length; ++i)
-            Cards[i].UpdateSelectVisuals(i == ChosenCardIndex, false);
+        {
+            bool Hovered = Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
+            Cards[i].UpdateSelectVisuals(i == ChosenCardIndex, Hovered);
+        }
+
+        bool cardSelected = ChosenCardIndex != -1;
+        bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected;
+        Color c = cardSelected ? (confirmButtonHovered ? Color.yellow : Color.white) : Color.gray;
+        ConfirmButton.color = Color.Lerp(ConfirmButton.color, c, 0.2f);
+        ConfirmButtonText.color = Color.white;
+    }
+    public static void ConfirmCard()
+    {
+        Instance.Visual.SetActive(false);
+        WaveDirector.StartWave();
     }
     public static void GenerateNewCards()
     {

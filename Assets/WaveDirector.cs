@@ -194,6 +194,7 @@ public static class WaveDirector
         }
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         ++WaveNum;
+        CardManager.DrawCards(); //This ought to moved some place else so waves don't start instantly
     }
     public static void GatherCredits()
     {
