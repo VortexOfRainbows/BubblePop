@@ -136,7 +136,7 @@ public class DirectorMultiPortalSpeedModifier : DirectorModifier
 }
 public abstract class Reward : ClauseEffect
 {
-    public static Vector2 RewardPosition() => Main.PylonPositon +new Vector2(0, 1).RotatedBy(Utils.RandFloat(Mathf.PI / 4f, Mathf.PI * 7f / 4f)) * 5;
+    public static Vector2 RewardPosition() => Main.PylonPositon + new Vector2(0, 1).RotatedBy(Utils.RandFloat(Mathf.PI / 4f, Mathf.PI * 7f / 4f)) * 5;
     public bool BeforeWaveEndReward = false;
     public sealed override void Apply()
     {

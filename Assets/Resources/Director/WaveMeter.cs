@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class WaveMeter : MonoBehaviour
 {
+    public static WaveMeter Instance;
     public float FillAmt { get; set; } = 1;
     public float StartTimer { get; set; } = 0;
     public float AnimationTimer { get; set; } = 0;
@@ -13,12 +14,15 @@ public class WaveMeter : MonoBehaviour
     public TextMeshProUGUI HighscoreWaveText;
     public RectTransform Meter;
     public TextMeshProUGUI WaveNumber;
+    public Transform DeckPosition;
     public void Update()
     {
+        Instance = this;
         AnimationTimer += Time.deltaTime;
     }
     public void Start()
     {
+        Instance = this;
         Meter.sizeDelta = new Vector2(25, Meter.sizeDelta.y);
         AnimationTimer = StartTimer = 0;
         transform.localPosition = new Vector2(transform.localPosition.x, 150);
@@ -55,19 +59,32 @@ public class WaveMeter : MonoBehaviour
     {
         bool AwaitingNextCard = (!WaveDirector.WaveActive && WaveDirector.WaitingForCard);
         float defaultPosition = 200;
-        Utils.LerpSnap(NextWaveButton, new Vector2(NextWaveButton.localPosition.x, AwaitingNextCard ? -50 : defaultPosition), 0.05f, 0.1f);
-        NextWaveBG.color = Color.Lerp(NextWaveBG.color, !Main.PlayerNearPylon ? new Color(0.9f, 0.5f, 0.5f, 1f) : Color.white, 0.2f);
-        if(Main.PlayerNearPylon)
+        Utils.LerpSnap(NextWaveButton, new Vector2(NextWaveButton.localPosition.x, AwaitingNextCard ? -50 : defaultPosition), 0.1f, 0.1f);
+        Color targetColor = !Main.PlayerNearPylon ? new Color(0.9f, 0.5f, 0.5f, 1f) : Color.white;
+        if (Main.PlayerNearPylon)
         {
-            if(Control.Interact && !WaveDirector.WaveActive && WaveDirector.WaitingForCard)
+            if(!WaveDirector.WaveActive && WaveDirector.WaitingForCard)
             {
-                CardManager.DrawCards();
-                WaveDirector.WaitingForCard = false;
+                bool press = Control.Interact;
+                if(Utils.IsMouseHoveringOverThis(true, NextWaveBG.rectTransform, 0, CardManager.Instance.MyCanvas))
+                {
+                    if (Control.LeftMouseClick)
+                    {
+                        press = true;
+                    }
+                    targetColor = Color.yellow;
+                }
+                if(press)
+                {
+                    CardManager.DrawCards();
+                    WaveDirector.WaitingForCard = false;
+                }
             }
         }
         if (!AwaitingNextCard || Main.PlayerNearPylon)
             Pylon.color = Color.Lerp(Pylon.color, Color.white, 0.2f);
         else
             Pylon.color = Color.Lerp(Pylon.color, new Color(0.75f, 0.75f, 0.75f, 0.75f), 0.2f);
+        NextWaveBG.color = Color.Lerp(NextWaveBG.color, targetColor, 0.2f);
     }
 }

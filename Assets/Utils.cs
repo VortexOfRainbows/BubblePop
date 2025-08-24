@@ -237,6 +237,14 @@ public static class Utils
             target.localPosition = target.localPosition.Lerp(position, amt);
         return target.localPosition;
     }
+    public static Vector2 LerpSnapNotLocal(Transform target, Vector2 position, float amt = 0.1f, float tolerance = 0.5f)
+    {
+        if (target.position.Distance(position) < tolerance)
+            target.position = position;
+        else
+            target.position = target.position.Lerp(position, amt);
+        return target.position;
+    }
     public static string WithSizeAndColor(this string s, int size, string color)
     {
         return $"<size={size}><color={color}>{s}</color></size>";

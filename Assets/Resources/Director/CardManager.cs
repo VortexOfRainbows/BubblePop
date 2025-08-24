@@ -61,13 +61,16 @@ public class CardManager : MonoBehaviour
         {
             bool Hovered = Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
             Cards[i].UpdateSelectVisuals(i == ChosenCardIndex, Hovered);
+            Cards[i].SpawnAnimation();
         }
-
         bool cardSelected = ChosenCardIndex != -1;
         bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected;
-        Color c = cardSelected ? (confirmButtonHovered ? Color.yellow : Color.white) : Color.gray;
+        Color c = confirmButtonHovered ? Color.yellow : Color.white;
         ConfirmButton.color = Color.Lerp(ConfirmButton.color, c, 0.2f);
         ConfirmButtonText.color = Color.white;
+        ConfirmButton.gameObject.SetActive(cardSelected);
+        if(cardSelected)
+            ConfirmButton.transform.localPosition = new Vector3(ChosenCard.transform.localPosition.x, ConfirmButton.transform.localPosition.y, ConfirmButton.transform.localPosition.z);
     }
     public static void ConfirmCard()
     {

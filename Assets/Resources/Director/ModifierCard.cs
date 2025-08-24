@@ -1,10 +1,11 @@
 using TMPro;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ModifierCard : MonoBehaviour
 {
+    public Vector3 RestPosition;
+    public GameObject BackSide;
     public CardData cardData = null;
     public Image BG;
     public TextMeshProUGUI TitleText;
@@ -60,6 +61,7 @@ public class ModifierCard : MonoBehaviour
         cardData ??= new(this);
         cardData.Generate();
         UpdateText();
+        ResetAnimation();
     }
     public void UpdateSizing()
     {
@@ -70,7 +72,49 @@ public class ModifierCard : MonoBehaviour
     {
         if (selected)
             hovering = selected;
-        transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, 0.2f);
+        float growSpeed = 0.06f * FlipTimer + (HasBeenFlipped ? 0.08f : 0f);
+        transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
         BG.color = Color.Lerp(BG.color, selected ? Color.yellow : (hovering ? Color.Lerp(Color.yellow, Color.white, 0.8f) : Color.white), 0.2f);
+    }
+    public bool HasBeenFlipped { get; set; } = false;
+    private float FlipTimer = 0;
+    private float SpawnTimer = 0;
+    public void ResetAnimation()
+    {
+        HasBeenFlipped = false;
+        FlipTimer = SpawnTimer = 0;
+        transform.position = WaveMeter.Instance.DeckPosition.position;
+        transform.localPosition = transform.localPosition + new Vector3(200, 0);
+        transform.localScale = new Vector3(0.5f, 0.3f, 1.0f);
+        transform.localEulerAngles = Vector3.zero;
+        BackSide.SetActive(true);
+    }
+    public void SpawnAnimation()
+    {
+        if(SpawnTimer < 0.35f)
+        {
+            Utils.LerpSnapNotLocal(transform, WaveMeter.Instance.DeckPosition.position, 0.1f, 1f);
+        }
+        else
+        {
+            Utils.LerpSnap(transform, RestPosition, 0.1f, 1f);
+        }
+        SpawnTimer += Time.fixedDeltaTime;
+        if (!HasBeenFlipped && SpawnTimer > 0.45f)
+        {
+            FlipTimer += Time.fixedDeltaTime * 4.5f;
+            if (FlipTimer > 2)
+            {
+                HasBeenFlipped = true;
+                FlipTimer = 2;
+            }
+            BackSide.SetActive(FlipTimer < 1);
+            Vector3 angle = transform.localEulerAngles;
+            if (FlipTimer < 1)
+                angle.y = FlipTimer * 90;
+            else
+                angle.y = 180 - FlipTimer * 90;
+            transform.localEulerAngles = angle;
+        }
     }
 }

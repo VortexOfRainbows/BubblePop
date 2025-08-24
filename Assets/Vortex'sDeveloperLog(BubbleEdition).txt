@@ -19,10 +19,11 @@ Need to do:
 7. Add Ent
 8. Add tall grass
 9. Rework pylon and wave director to allow:
-	1. Choose which enemies are added to the pool (cards when starting waves)
-		1. Cards also come with associated director cards to immediately add to the play queue (which the player can't necessarily see), use a special card queue
+	1. Cards also come with associated director cards to immediately add to the play queue (which the player can't necessarily see), use a special card queue
 	2. Fix when positions are determined for cards by adding presets (like nearby, edge, random, etc.), which are then generated on spawn rather than on draw (to fix border spawning issue)
-	3. Wave bar on the top that shows current wave, wave progress, enemies remaining, and potentially current wave card + modifier information
+	3. Wave bar on the top that shows enemies remaining, and potentially current wave card + modifier information
+	4. Needs some more animations for after a card is selected
+	5. Needs pause functionality (and corresponding animation compatibility)
 10. Enemy page on the compendium
 11. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
 	1. TBD: Strength...
@@ -43,7 +44,7 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-8/18/25 to 8/23/25
+8/18/25 to 8/24/25
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)
 	1. Chance to be sold in the shop (~1/200) at a flat rate, at a different price
 2. Add Bonus Batteries
@@ -57,7 +58,8 @@ Done:
 6. WIP UI reworks related to the director
 	1. Remove SCORE and HIGHSCORE. Replaced with WAVE NUMBERS!
 7. Some unlock requirement changes
-8. Waves don't start again until the player manually starts them after a wave-end!
+8. Waves don't start again until the player manually starts them after a wave-end! (mouse or hotkey)
+9. Some animations for the card deck
 
 8/13/25
 1. Light spears only hit one enemy per spear now, no longer piercing enemies that are layered on top of each other
