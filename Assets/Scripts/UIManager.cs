@@ -20,12 +20,7 @@ public class UIManager : MonoBehaviour
     public TMPro.TextMeshProUGUI scoreText;
     public TMPro.TextMeshProUGUI highscoreText;
     public TMPro.TextMeshProUGUI deadHighscoreText;
-    public TMPro.TextMeshProUGUI moneyText;
-    public TMPro.TextMeshProUGUI waveText;
     public TMPro.TextMeshProUGUI enemyScaleText;
-    public GameObject CurrencyIcon;
-    public GameObject SavingsIcon;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -51,18 +46,11 @@ public class UIManager : MonoBehaviour
 
         scoreText.text = "Score: " + Mathf.FloorToInt(score);
         highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
-        waveText.text = "Wave: " + Mathf.FloorToInt(WaveDirector.WaveNum);
         deadHighscoreText.text = scoreText.text;
 
         if(Main.WavesUnleashed)
             enemyScaleText.text = $"{WaveDirector.EnemyScalingFactor:0.0}";
         enemyScaleText.gameObject.SetActive(Main.WavesUnleashed);
-
-        int money = CoinManager.Current; // : CoinManager.Savings;
-        moneyText.text = $"${money}";
-        moneyText.enabled = true;
-        CurrencyIcon.SetActive(false);
-        SavingsIcon.SetActive(true);
 
         if (score > highscore)
         {

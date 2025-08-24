@@ -206,14 +206,14 @@ public class ModifierClause : CardClause
         var chosen = PossibleModifiers[i];
         chosen.ApplicationStrength = pointsSpent;
         PossibleModifiers.RemoveAt(i);
-        if(pointsSpent > 10)
-        {
-            float chanceForPermanent = 0.8f * Mathf.Clamp(pointsSpent / 100f, 0, 1);
-            if(chanceForPermanent > Utils.RandFloat())
-            {
-                chosen.IsPermanent = true;
-            }
-        }
+        //if(pointsSpent > 10)
+        //{
+        //    float chanceForPermanent = 0.8f * Mathf.Clamp(pointsSpent / 100f, 0, 1);
+        //    if(chanceForPermanent > Utils.RandFloat())
+        //    {
+        //        chosen.IsPermanent = true;
+        //    }
+        //}
         return chosen;
     }
     public void ApplyPermanent()

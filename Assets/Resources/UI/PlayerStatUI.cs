@@ -13,6 +13,8 @@ public class PlayerStatUI : MonoBehaviour
     private static int MaxShield = 0;
     private static PlayerStatUI Instance { get => s_Instance == null ? s_Instance = FindFirstObjectByType<PlayerStatUI>() : s_Instance; set => s_Instance = value; }
     private static PlayerStatUI s_Instance;
+    public TMPro.TextMeshProUGUI moneyText;
+    public GameObject Money;
     public static void ClearHearts()
     {
         foreach (PlayerHeartUI heart in Hearts)
@@ -29,6 +31,17 @@ public class PlayerStatUI : MonoBehaviour
         Instance = this;
         ClearHearts();
         CurrentLife = MaxLife = 0;
+        Money.SetActive(false);
+    }
+    public void Update()
+    {
+        if(Main.WavesUnleashed)
+        {
+            Money.SetActive(true);
+            int money = CoinManager.Current; // : CoinManager.Savings;
+            moneyText.text = $"${money}";
+            moneyText.enabled = true;
+        }
     }
     public static void SetHeartsToPlayerLife()
     {

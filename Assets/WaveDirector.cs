@@ -38,6 +38,7 @@ public static class WaveDirector
     public static readonly WaveModifiers TemporaryModifiers = new(); //Permanent modifiers, but with bonuses applied after cloning values
     public static float PointsSpent = 0;
     private static float PointTimer = 0;
+    public static float WaveProgressPercent { get; set; } = 0f;
     public static int Point
     {
         get => UIManager.score;
@@ -82,7 +83,7 @@ public static class WaveDirector
         Deck.Clear();
         Board.Clear();
         PointsSpent = PointTimer = PityPowersSpawned = TotalPowersSpawned = 0;
-
+        WaveProgressPercent = 0;
         EnemyPool.Clear();
         PermanentModifiers.Reset();
         TemporaryModifiers.CloneValues(PermanentModifiers);
@@ -99,16 +100,12 @@ public static class WaveDirector
             return;
         }
         PointUpdate();
-        //if ((int)Credits % 100 == 0)
-        //{
-        //    Debug.Log("Card Status: ");
-        //    foreach(WaveCard c in Deck)
-        //    {
-        //        Debug.Log(c);
-        //    }
-        //    Debug.Log("-------------");
-        //}
-        if (CardsPlayed < 10 || CreditsSpent < ((50 + WaveNum) * WaveMult))
+        float cardsPlayedPercent = Mathf.Min(1, CardsPlayed / 10f);
+        float creditsSpentPercent = Mathf.Min(1, CreditsSpent / ((50 + WaveNum) * WaveMult));
+        float percentWaveComplete = cardsPlayedPercent * 0.2f + 0.8f * cardsPlayedPercent * creditsSpentPercent;
+        WaveProgressPercent = Mathf.Min(1, percentWaveComplete);
+        bool waveComplete = percentWaveComplete >= 1;
+        if (!waveComplete)
         {
             DrawNewCards();
             UpdateMulligans();
