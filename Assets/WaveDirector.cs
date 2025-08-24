@@ -73,7 +73,7 @@ public static class WaveDirector
     public static int HighScoreWaveNum = 1;
     public static float WaveMult = 1.0f;
     public static float EnemyScalingFactor => TemporaryModifiers.EnemyScaling;
-    public static bool WaveActive = false;
+    public static bool WaveActive = false, WaitingForCard = false;
     public static void Reset()
     {
         WaveNum = 1;
@@ -87,7 +87,7 @@ public static class WaveDirector
         EnemyPool.Clear();
         PermanentModifiers.Reset();
         TemporaryModifiers.CloneValues(PermanentModifiers);
-        WaveActive = false;
+        WaveActive = WaitingForCard = false;
     }
     public static void FixedUpdate()
     {
@@ -199,7 +199,7 @@ public static class WaveDirector
             HighScoreWaveNum = WaveNum;
             PlayerData.SaveInt("HighscoreWave", HighScoreWaveNum);
         }
-        CardManager.DrawCards(); //This ought to moved some place else so waves don't start instantly
+        WaitingForCard = true;
     }
     public static void GatherCredits()
     {

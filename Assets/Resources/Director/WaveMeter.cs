@@ -47,5 +47,27 @@ public class WaveMeter : MonoBehaviour
             HighscoreWaveText.text = $"Highscore: {WaveDirector.HighScoreWaveNum}";
             StartTimer = 0;
         }
+        UpdateNextWaveButton();
+    }
+    public RectTransform NextWaveButton;
+    public Image NextWaveBG, Pylon;
+    public void UpdateNextWaveButton()
+    {
+        bool AwaitingNextCard = (!WaveDirector.WaveActive && WaveDirector.WaitingForCard);
+        float defaultPosition = 200;
+        Utils.LerpSnap(NextWaveButton, new Vector2(NextWaveButton.localPosition.x, AwaitingNextCard ? -50 : defaultPosition), 0.05f, 0.1f);
+        NextWaveBG.color = Color.Lerp(NextWaveBG.color, !Main.PlayerNearPylon ? new Color(0.9f, 0.5f, 0.5f, 1f) : Color.white, 0.2f);
+        if(Main.PlayerNearPylon)
+        {
+            if(Control.Interact && !WaveDirector.WaveActive && WaveDirector.WaitingForCard)
+            {
+                CardManager.DrawCards();
+                WaveDirector.WaitingForCard = false;
+            }
+        }
+        if (!AwaitingNextCard || Main.PlayerNearPylon)
+            Pylon.color = Color.Lerp(Pylon.color, Color.white, 0.2f);
+        else
+            Pylon.color = Color.Lerp(Pylon.color, new Color(0.75f, 0.75f, 0.75f, 0.75f), 0.2f);
     }
 }

@@ -10,7 +10,8 @@ public class Main : MonoBehaviour
     public static int GameUpdateCount = 0;
     public const float SnakeEyeChance = 0.0278f;
     public static bool DebugCheats = false;
-    public static bool PlayerNearPylon => PrevPylon != null;
+    public static bool PlayerNearPylon => PrevPylon != null && Player.Position.Distance(PrevPylon.transform.position) < 11;
+    public static Vector2 PylonPositon => CurrentPylon != null ? CurrentPylon.transform.position : PrevPylon != null ? PrevPylon.transform.position : Player.Position;
     public static Pylon CurrentPylon = null;
     private static Pylon PrevPylon = null;
     public static bool GamePaused => Time.timeScale == 0;

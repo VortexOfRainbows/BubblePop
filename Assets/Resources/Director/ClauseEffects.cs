@@ -136,6 +136,7 @@ public class DirectorMultiPortalSpeedModifier : DirectorModifier
 }
 public abstract class Reward : ClauseEffect
 {
+    public static Vector2 RewardPosition() => Main.PylonPositon +new Vector2(0, 1).RotatedBy(Utils.RandFloat(Mathf.PI / 4f, Mathf.PI * 7f / 4f)) * 5;
     public bool BeforeWaveEndReward = false;
     public sealed override void Apply()
     {
@@ -166,7 +167,8 @@ public class PowerReward : Reward
     }
     public override void GrantReward()
     {
-        PowerUp.Get(PowerType).PickUp(Amt);
+        for(int i = 0; i < Amt; ++i)
+            PowerUp.Spawn(PowerType, RewardPosition(), 0);
     }
     public override string Description()
     {
@@ -190,7 +192,7 @@ public class CoinReward : Reward
     }
     public override void GrantReward()
     {
-        CoinManager.SpawnCoin(Player.Instance.transform.position, coins, 0.05f);
+        CoinManager.SpawnCoin(RewardPosition, coins, 0.5f);
     }
     public override string Description()
     {

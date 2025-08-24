@@ -1,6 +1,5 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
-
 public static class CoinManager
 {
     public static void InitCoinPrefabs()
@@ -31,6 +30,18 @@ public static class CoinManager
             Spawn(Silver, pos, collectDelay);
         for (; gold > 0; --gold)
             Spawn(Gold, pos, collectDelay);
+    }
+    public static void SpawnCoin(Func<Vector2> func, int value = 1, float collectDelay = 0f)
+    {
+        int bronze = value % 5;
+        int silver = value / 5 % 5;
+        int gold = value / 25;
+        for (; bronze > 0; --bronze)
+            Spawn(Bronze, func.Invoke(), collectDelay);
+        for (; silver > 0; --silver)
+            Spawn(Silver, func.Invoke(), collectDelay);
+        for (; gold > 0; --gold)
+            Spawn(Gold, func.Invoke(), collectDelay);
     }
     private static void Spawn(GameObject coinType, Vector2 pos, float collectDelay)
     {

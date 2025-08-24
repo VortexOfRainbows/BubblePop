@@ -12,7 +12,7 @@ public class Pylon : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if ((Player.Position - (Vector2)transform.position).magnitude < 11 || Main.WavesUnleashed)
+        if (Player.Position.Distance(transform.position) < 11 || Main.WavesUnleashed)
         {
             if(!Active)
                 AudioManager.PlaySound(SoundID.PylonDrone, transform.position, 1f, 1, 0);
