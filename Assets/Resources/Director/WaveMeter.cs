@@ -9,6 +9,8 @@ public class WaveMeter : MonoBehaviour
     public float FillAmt { get; set; } = 1;
     public float StartTimer { get; set; } = 0;
     public float AnimationTimer { get; set; } = 0;
+    public RectTransform NonMeterStats;
+    public TextMeshProUGUI HighscoreWaveText;
     public RectTransform Meter;
     public TextMeshProUGUI WaveNumber;
     public void Update()
@@ -24,8 +26,10 @@ public class WaveMeter : MonoBehaviour
     public void FixedUpdate()
     {
         float targetPosition = -50 + Mathf.Sin(AnimationTimer * Mathf.Deg2Rad * 40) * 5;
-        Utils.LerpSnap(transform, new Vector2(transform.localPosition.x, Main.WavesUnleashed ? targetPosition : 150), 0.05f, 0.1f);
-        if(Main.WavesUnleashed && WaveDirector.WaveActive)
+        float defaultPosition = 150;
+        Utils.LerpSnap(transform, new Vector2(transform.localPosition.x, Main.WavesUnleashed ? targetPosition : defaultPosition), 0.02f, 0.1f);
+        Utils.LerpSnap(NonMeterStats.transform, new Vector2(NonMeterStats.transform.localPosition.x, Main.WavesUnleashed ? defaultPosition : targetPosition), 0.02f, 0.1f);
+        if (Main.WavesUnleashed && WaveDirector.WaveActive)
         {
             if (StartTimer > 0.5f)
             {
@@ -40,6 +44,7 @@ public class WaveMeter : MonoBehaviour
         }
         else
         {
+            HighscoreWaveText.text = $"Highscore: {WaveDirector.HighScoreWaveNum}";
             StartTimer = 0;
         }
     }

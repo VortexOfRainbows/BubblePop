@@ -6,16 +6,15 @@ public class StartsUnlocked : UnlockCondition
     }
     protected override bool IsUnlocked => true;
 }
-public class ScoreUnlock1000 : UnlockCondition
+public class WaveUnlock10 : UnlockCondition
 {
     public override string LockedText()
     {
-        return "Reach a Highscore of 1000\n" +
-            $"Current best: {UIManager.highscore}";
+        return "Surpass wave 10\n" +
+            $"Current best: {WaveDirector.HighScoreWaveNum}";
     }
-    protected override bool IsUnlocked => UIManager.highscore >= 1000;
+    protected override bool IsUnlocked => WaveDirector.HighScoreWaveNum > 10;
 }
-
 public class ChargeShot10 : UnlockCondition
 {
     public override PowerUp Power => PowerUp.Get<ChargeShot>();
@@ -58,15 +57,15 @@ public class ChoiceUnlock200 : UnlockCondition
     }
     protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 200;
 }
-public class PlayerDeathUnlock100 : UnlockCondition
+public class PlayerDeathUnlock20 : UnlockCondition
 {
     public override PowerUp Power => PowerUp.Get<Starbarbs>();
     public override string LockedText()
     {
-        return $"Die 100 times\n" +
+        return $"Die 20 times\n" +
             $"Current best: {PlayerData.PlayerDeaths}";
     }
-    protected override bool IsUnlocked => PlayerData.PlayerDeaths >= 100;
+    protected override bool IsUnlocked => PlayerData.PlayerDeaths >= 20;
 }
 public class BubbleBirbUnlock10 : UnlockCondition
 {
@@ -87,7 +86,7 @@ public class ThoughtBubbleWave15NoAttack : UnlockCondition
     }
     public override string LockedText()
     {
-        return $"Reach and complete wave 15 as Thought Bubble without using your weapon";
+        return $"Surpass wave 15 as Thought Bubble without using your weapon";
     }
     protected override bool IsUnlocked => Completed;
     public override void SaveData()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlueblemancerHat : BubblemancerHat
 {
-    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ScoreUnlock1000>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<WaveUnlock10>();
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bluebblemancy Hat").WithDescription("Start with Choice");

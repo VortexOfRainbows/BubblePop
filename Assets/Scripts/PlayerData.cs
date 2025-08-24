@@ -32,6 +32,7 @@ public static class PlayerData
         UnlockCondition.SaveAllData();
         PowerUp.SaveAllData();
         CoinManager.Save();
+        SaveInt("HighscoreWave", WaveDirector.HighScoreWaveNum);
     }
     public static void LoadAll()
     {
@@ -43,6 +44,7 @@ public static class PlayerData
         UnlockCondition.LoadAllData();
         PowerUp.LoadAllData();
         CoinManager.Load();
+        WaveDirector.HighScoreWaveNum = GetInt("HighscoreWave", 1);
     }
     public static void Clear()
     {

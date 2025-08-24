@@ -14,19 +14,11 @@ public class UIManager : MonoBehaviour
     public static bool Paused => Main.GamePaused;
     public static bool StartingScreen = false;
 
-    public static int highscore;
-    public static int score;
-
-    public TMPro.TextMeshProUGUI scoreText;
-    public TMPro.TextMeshProUGUI highscoreText;
     public TMPro.TextMeshProUGUI deadHighscoreText;
-    public TMPro.TextMeshProUGUI enemyScaleText;
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
-        score = 0;
-        highscore = PlayerData.GetInt("Highscore");
         StartingScreen = true;
         Main.WavesUnleashed = false;
     }
@@ -44,19 +36,11 @@ public class UIManager : MonoBehaviour
                 Pause();
         }
 
-        scoreText.text = "Score: " + Mathf.FloorToInt(score);
-        highscoreText.text = "Highscore: " + Mathf.FloorToInt(highscore);
-        deadHighscoreText.text = scoreText.text;
+        deadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
 
-        if(Main.WavesUnleashed)
-            enemyScaleText.text = $"{WaveDirector.EnemyScalingFactor:0.0}";
-        enemyScaleText.gameObject.SetActive(Main.WavesUnleashed);
-
-        if (score > highscore)
-        {
-            highscore = score;
-            PlayerData.SaveInt("Highscore", (int)highscore);
-        }
+        //if(Main.WavesUnleashed)
+        //    enemyScaleText.text = $"{WaveDirector.EnemyScalingFactor:0.0}";
+        //enemyScaleText.gameObject.SetActive(Main.WavesUnleashed);
     }
     public void Pause()
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public static class WaveDirector
 {
@@ -31,6 +32,8 @@ public static class WaveDirector
         List<GameObject> result = new(EnemyPool);
         if (TemporaryModifiers.WaveSpecialBonusEnemy != null)
             result.Add(TemporaryModifiers.WaveSpecialBonusEnemy);
+        //if (result.Count < 0)
+        //    result.Add(EnemyID.OldDuck);
         return result;
     }
     public static readonly List<GameObject> EnemyPool = new();
@@ -39,11 +42,7 @@ public static class WaveDirector
     public static float PointsSpent = 0;
     private static float PointTimer = 0;
     public static float WaveProgressPercent { get; set; } = 0f;
-    public static int Point
-    {
-        get => UIManager.score;
-        set => UIManager.score = value;
-    }
+    public static int Point { get; set; }
     public static void PointUpdate()
     {
         PointTimer += Time.deltaTime;
@@ -71,6 +70,7 @@ public static class WaveDirector
     public static readonly List<WaveCard> Board = new();
     public static int CardsPlayed = 0;
     public static int WaveNum = 1;
+    public static int HighScoreWaveNum = 1;
     public static float WaveMult = 1.0f;
     public static float EnemyScalingFactor => TemporaryModifiers.EnemyScaling;
     public static bool WaveActive = false;
@@ -82,11 +82,12 @@ public static class WaveDirector
         CreditsSpent = 0;
         Deck.Clear();
         Board.Clear();
-        PointsSpent = PointTimer = PityPowersSpawned = TotalPowersSpawned = 0;
+        PointsSpent = PointTimer = PityPowersSpawned = TotalPowersSpawned = Point = 0;
         WaveProgressPercent = 0;
         EnemyPool.Clear();
         PermanentModifiers.Reset();
         TemporaryModifiers.CloneValues(PermanentModifiers);
+        WaveActive = false;
     }
     public static void FixedUpdate()
     {
@@ -193,6 +194,11 @@ public static class WaveDirector
         }
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         ++WaveNum;
+        if (WaveNum > HighScoreWaveNum)
+        {
+            HighScoreWaveNum = WaveNum;
+            PlayerData.SaveInt("HighscoreWave", HighScoreWaveNum);
+        }
         CardManager.DrawCards(); //This ought to moved some place else so waves don't start instantly
     }
     public static void GatherCredits()
