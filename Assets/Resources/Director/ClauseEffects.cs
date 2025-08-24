@@ -96,7 +96,7 @@ public class DirectorCreditModifier : DirectorModifier
     }
     public override string Description()
     {
-        return $"{"Enemy spawns:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
+        return $"{"Wave Speed:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
     }
 }
 public class DirectorSwarmModifier : DirectorModifier
