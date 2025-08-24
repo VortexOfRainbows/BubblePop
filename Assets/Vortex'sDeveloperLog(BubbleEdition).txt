@@ -22,8 +22,7 @@ Need to do:
 	1. Cards also come with associated director cards to immediately add to the play queue (which the player can't necessarily see), use a special card queue
 	2. Fix when positions are determined for cards by adding presets (like nearby, edge, random, etc.), which are then generated on spawn rather than on draw (to fix border spawning issue)
 	3. Wave bar on the top that shows enemies remaining, and potentially current wave card + modifier information
-	4. Needs some more animations for after a card is selected
-	5. Needs pause functionality (and corresponding animation compatibility)
+	4. Needs pause functionality (and corresponding animation compatibility)
 10. Enemy page on the compendium
 11. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
 	1. TBD: Strength...

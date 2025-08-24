@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class CardManager : MonoBehaviour
 {
+    public static bool DespawningCards { get; set; } = false;
+    public static float DespawnTimer = 0;
     public Canvas MyCanvas;
     public GameObject Visual;
     public Image ConfirmButton;
@@ -22,7 +24,7 @@ public class CardManager : MonoBehaviour
     public void Update()
     {
         Instance = this;
-        if (!Visual.activeSelf)
+        if (!Visual.activeSelf || DespawningCards)
             return;
         if (Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
             GenerateCards();
@@ -55,7 +57,9 @@ public class CardManager : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if (!Visual.activeSelf)
+        if(DespawningCards)
+            DespawnCards();
+        if (!Visual.activeSelf || DespawningCards)
             return;
         for(int i = 0; i < Cards.Length; ++i)
         {
@@ -72,9 +76,23 @@ public class CardManager : MonoBehaviour
         if(cardSelected)
             ConfirmButton.transform.localPosition = new Vector3(ChosenCard.transform.localPosition.x, ConfirmButton.transform.localPosition.y, ConfirmButton.transform.localPosition.z);
     }
+    public void DespawnCards()
+    {
+        for (int i = 0; i < Cards.Length; ++i)
+            Cards[i].DespawnAnimation();
+        ConfirmButton.gameObject.SetActive(false);
+        DespawnTimer += Time.fixedDeltaTime;
+        if (DespawnTimer > 1.5f)
+        {
+            DespawnTimer = 0;
+            DespawningCards = false;
+            Instance.Visual.SetActive(false);
+        }
+    }
     public static void ConfirmCard()
     {
-        Instance.Visual.SetActive(false);
+        DespawnTimer = 0;
+        DespawningCards = true;
         WaveDirector.StartWave();
     }
     public static void GenerateNewCards()

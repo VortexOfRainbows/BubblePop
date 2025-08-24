@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class ModifierCard : MonoBehaviour
 {
+    public static readonly Vector3 backScale = new(0.5f, 0.3f, 1.0f);
     public Vector3 RestPosition;
     public GameObject BackSide;
     public CardData cardData = null;
@@ -83,9 +84,9 @@ public class ModifierCard : MonoBehaviour
     {
         HasBeenFlipped = false;
         FlipTimer = SpawnTimer = 0;
-        transform.position = WaveMeter.Instance.DeckPosition.position;
-        transform.localPosition = transform.localPosition + new Vector3(200, 0);
-        transform.localScale = new Vector3(0.5f, 0.3f, 1.0f);
+        transform.position = WaveMeter.Instance.DeckPosition.position + new Vector3(200 * WaveMeter.Instance.DeckPosition.lossyScale.x, 0);
+        transform.localPosition = transform.localPosition;
+        transform.localScale = backScale;
         transform.localEulerAngles = Vector3.zero;
         BackSide.SetActive(true);
     }
@@ -108,13 +109,34 @@ public class ModifierCard : MonoBehaviour
                 HasBeenFlipped = true;
                 FlipTimer = 2;
             }
-            BackSide.SetActive(FlipTimer < 1);
-            Vector3 angle = transform.localEulerAngles;
-            if (FlipTimer < 1)
-                angle.y = FlipTimer * 90;
-            else
-                angle.y = 180 - FlipTimer * 90;
-            transform.localEulerAngles = angle;
+            UpdateFlippage();
+        }
+    }
+    public void UpdateFlippage()
+    {
+        BackSide.SetActive(FlipTimer < 1);
+        Vector3 angle = transform.localEulerAngles;
+        if (FlipTimer < 1)
+            angle.y = FlipTimer * 90;
+        else
+            angle.y = 180 - FlipTimer * 90;
+        transform.localEulerAngles = angle;
+    }
+    public void DespawnAnimation()
+    {
+        float growSpeed = 0.1f * (2 - FlipTimer);
+        transform.LerpLocalScale(backScale, growSpeed);
+        if (FlipTimer < 0.5f)
+            Utils.LerpSnapNotLocal(transform, new Vector2(WaveMeter.Instance.DeckPosition.position.x + 200 * WaveMeter.Instance.DeckPosition.lossyScale.x, transform.position.y), 0.1f, 1f);
+        if (HasBeenFlipped)
+        {
+            FlipTimer -= Time.fixedDeltaTime * 4.5f;
+            if (FlipTimer < 0)
+            {
+                HasBeenFlipped = false;
+                FlipTimer = 0;
+            }
+            UpdateFlippage();
         }
     }
 }
