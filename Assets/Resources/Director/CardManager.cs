@@ -11,6 +11,7 @@ public class CardManager : MonoBehaviour
     public static CardManager Instance { get; private set; }
     public void Start()
     {
+        ChosenCardIndex = -1;
         Instance = this;
         Instance.Visual.SetActive(false);
     }
@@ -49,7 +50,7 @@ public class CardManager : MonoBehaviour
             card.UpdateSizing();
         bool cardSelected = ChosenCardIndex != -1;
         bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected && Control.LeftMouseClick;
-        if(confirmButtonHovered || (Input.GetKeyDown(KeyCode.Space) && cardSelected))
+        if(confirmButtonHovered || (Control.Interact && cardSelected))
             ConfirmCard();
     }
     public void FixedUpdate()

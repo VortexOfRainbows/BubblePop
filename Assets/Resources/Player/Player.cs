@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.XR;
 public static class Control
 {
+    public static bool Interact => Input.GetKeyDown(KeyCode.E);
     public static bool Ability => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.Space);
     public static bool LastAbility = false;
     public static bool Up => Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
