@@ -85,7 +85,7 @@ public class EnemyStrengthModifier : DirectorModifier
     }
     public override string Description()
     {
-        return $"{"Enemy health:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
+        return $"{"Enemy Health:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
     }
 }
 public class DirectorCreditModifier : DirectorModifier
@@ -96,7 +96,7 @@ public class DirectorCreditModifier : DirectorModifier
     }
     public override string Description()
     {
-        return $"{"Wave Speed:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
+        return $"{"Wave Power:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
     }
 }
 public class DirectorSwarmModifier : DirectorModifier

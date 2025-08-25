@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class WaveCard 
 {
@@ -58,45 +59,88 @@ public class WaveCard
         Resolved = true;
     }
 }
-public class EnemyPattern
+public abstract class EnemySpawnPattern
 {
-    public EnemyPattern(Vector2 location, float endDelay, float betweenEnemyDelay, params GameObject[] prefabs)
+    public virtual float MinimumDistanceToPlayer => 12;
+    public Player Target => Player.Instance;
+    public virtual Vector2 GenerateLocation()
+    {
+        return Target.transform.position;
+    }
+    /// <summary>
+    /// How regenerating the location should be handled if the location was invalid, such as it was in a tile
+    /// </summary>
+    /// <returns></returns>
+    public virtual Vector2 RegenerateLocation(int attemptNumber, bool finalGeneration = false)
+    {
+        return GenerateLocation();
+    }
+}
+public class ArbitrarySpawnPattern : EnemySpawnPattern
+{
+    public Func<Vector2> locationFunction = null;
+    public Vector2 Location;
+    public ArbitrarySpawnPattern(Func<Vector2> location)
+    {
+        locationFunction = location;
+    }
+    public ArbitrarySpawnPattern(Vector2 location)
     {
         Location = location;
+    }
+    public override Vector2 GenerateLocation()
+    {
+        return locationFunction != null ? Location = locationFunction.Invoke() : Location;
+    }
+    public override Vector2 RegenerateLocation(int attemptNumber, bool finalGeneration = false)
+    {
+        if(locationFunction == null)
+        {
+            Vector2 toPlayer = (Player.Position - Location).normalized;
+            Location += toPlayer * 1.25f + Utils.RandCircle(2f);
+            if (finalGeneration)
+                return Location;
+        }
+        return GenerateLocation();
+    }
+}
+public class EnemyPattern
+{
+    public EnemySpawnPattern SpawnPattern;
+    public EnemyPattern(EnemySpawnPattern location, float endDelay, float betweenEnemyDelay, params GameObject[] prefabs)
+    {
+        SpawnPattern = location;
         EndDelay = endDelay;
         BetweenEnemyDelay = betweenEnemyDelay;
         EnemyPrefabs = prefabs;
     }
     public bool RelativeLocationToPlayer = true;
     public GameObject[] EnemyPrefabs;
-    public Vector2 Location;
     public float EndDelay = 0.50f;
     public float BetweenEnemyDelay = 0.2f;
     public void Release()
     {
-        Vector2 spawnPos = ShiftLocationIfOutOfBounds(RelativeLocationToPlayer ? Location + Player.Position : Location);
+        Vector2 spawnPos = ShiftLocationIfOutOfBounds(SpawnPattern.GenerateLocation());
         Wormhole.Spawn(spawnPos, EnemyPrefabs, BetweenEnemyDelay / Time.fixedDeltaTime);
     }
-    public Vector2 ShiftLocationIfOutOfBounds(Vector2 stuff)
+    public Vector2 ShiftLocationIfOutOfBounds(Vector2 location)
     {
-        Vector2 toPlayer = Player.Position - stuff;
+        Vector2 toPlayer = Player.Position - location;
         float dist = toPlayer.magnitude;
         toPlayer = toPlayer.normalized;
-        if (dist < 12)
+        float minDist = SpawnPattern.MinimumDistanceToPlayer;
+        if (dist < minDist)
         {
-            stuff = Player.Position - toPlayer * 12;
+            location = Player.Position - toPlayer * minDist;
         }
-        int att = 0;
-        while (!InWorld(stuff))
+        int att = -1;
+        while (!ValidLocation(location) && ++att <= 200)
         {
-            toPlayer = (Player.Position - stuff).normalized;
-            stuff += toPlayer * 1.25f + Utils.RandCircle(2f);
-            if (++att > 200)
-                return stuff;
+            location = SpawnPattern.RegenerateLocation(att, att == 200);
         }
-        return stuff;
+        return location;
     }
-    public bool InWorld(Vector2 location)
+    public bool ValidLocation(Vector2 location)
     {
         bool hasWorldMap = World.RealTileMap != null && World.RealTileMap.Map != null;
         if(hasWorldMap)

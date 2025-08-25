@@ -81,37 +81,44 @@ public static class WaveDeck
                 enemies[i] = enemyType;
             }
             float time = 1.25f;
-            var card = DrawMultiSpawn(RandomEdgeLocation(), 10, 5, 1 + TotalDudes * enemyType.GetComponent<Enemy>().CostMultiplier, time, enemies);
+            var card = DrawMultiSpawn(RandomPositionOnPlayerEdge(), 10, 5, 1 + TotalDudes * enemyType.GetComponent<Enemy>().CostMultiplier, time, enemies);
             if(isSwarm)
             {
                 if (Utils.RandFloat() < 0.5f)
-                    card.Patterns[0].Location = Vector2.zero;
+                    card.Patterns[0].SpawnPattern = RightOnPlayer(); //Circle center is on the player
                 card = card.ToSwarmCircle(swarmCount, 10, 1.0f, 0.5f);
             }
             return card;
         }
-        var card2 = DrawSingleSpawn(RandomEdgeLocation(), DrawEnemy(GetPossibleEnemies()));
+        var card2 = DrawSingleSpawn(RandomPositionOnPlayerEdge(), DrawEnemy(GetPossibleEnemies()));
         if (isSwarm)
         {
             if (Utils.RandFloat() < 0.5f)
-                card2.Patterns[0].Location = Vector2.zero;
+                card2.Patterns[0].SpawnPattern = RightOnPlayer(); //Circle center is on the player
             card2 = card2.ToSwarmCircle(swarmCount, 10, 1.0f, 0.5f);
         }
         return card2;
     }
-    public static Vector2 RandomEdgeLocation()
+    public static ArbitrarySpawnPattern RandomPositionOnPlayerEdge()
     {
-        return new(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
+        return new ArbitrarySpawnPattern(delegate() 
+        { 
+            return Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
+        });
+    }
+    public static ArbitrarySpawnPattern RightOnPlayer()
+    {
+        return new ArbitrarySpawnPattern(Player.Position);
     }
     public static WaveCard DrawSingleSpawn(GameObject enemy)
     {
-        return DrawSingleSpawn(RandomEdgeLocation(), enemy);
+        return DrawSingleSpawn(RandomPositionOnPlayerEdge(), enemy);
     }
-    public static WaveCard DrawSingleSpawn(Vector2 location, GameObject enemy)
+    public static WaveCard DrawSingleSpawn(EnemySpawnPattern location, GameObject enemy)
     {
         return DrawSingleSpawn(location, enemy, Utils.RandFloat(4, 10), Utils.RandFloat(1, 2), 1 + 2 * enemy.GetComponent<Enemy>().CostMultiplier);
     }
-    public static WaveCard DrawSingleSpawn(Vector2 location, GameObject enemy, float charge, float delay, float cost)
+    public static WaveCard DrawSingleSpawn(EnemySpawnPattern location, GameObject enemy, float charge, float delay, float cost)
     {
         return new WaveCard(
             cost,
@@ -127,7 +134,7 @@ public static class WaveDeck
             delay,
             p);
     }
-    public static WaveCard DrawMultiSpawn(Vector2 location, float charge, float delay, float cost, float interval, params GameObject[] enemy)
+    public static WaveCard DrawMultiSpawn(EnemySpawnPattern location, float charge, float delay, float cost, float interval, params GameObject[] enemy)
     {
         return new WaveCard(
             cost,
@@ -146,7 +153,7 @@ public static class WaveDeck
         for(int i = 0; i < count; ++i)
         {
             Vector2 circular = new Vector2(0, radius).RotatedBy(i / (float)count * Mathf.PI * 2f);
-            card.Patterns[i] = new(original.Location + circular, original.EndDelay, original.BetweenEnemyDelay, original.EnemyPrefabs);
+            card.Patterns[i] = new(new ArbitrarySpawnPattern(original.SpawnPattern.GenerateLocation() + circular), original.EndDelay, original.BetweenEnemyDelay, original.EnemyPrefabs);
         }
         card.Cost = (1 + card.Cost + count) * costMult;
         return card;
