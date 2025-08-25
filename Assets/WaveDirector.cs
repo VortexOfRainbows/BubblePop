@@ -36,11 +36,13 @@ public static class WaveDirector
         //    result.Add(EnemyID.OldDuck);
         return result;
     }
+    public static List<WaveCard> AssociatedWaveCards;
     public static readonly List<GameObject> EnemyPool = new();
     public static readonly WaveModifiers PermanentModifiers = new();
     public static readonly WaveModifiers TemporaryModifiers = new(); //Permanent modifiers, but with bonuses applied after cloning values
     public static float PointsSpent = 0;
     private static float PointTimer = 0;
+    private static int CurrentAssociatedWaveCardNumber = 0;
     public static float WaveProgressPercent { get; set; } = 0f;
     public static int Point { get; set; }
     public static void PointUpdate()
@@ -76,6 +78,7 @@ public static class WaveDirector
     public static bool WaveActive = false, WaitingForCard = false;
     public static void Reset()
     {
+        CurrentAssociatedWaveCardNumber = 0;
         WaveNum = 1;
         WaveMult = 1.0f;
         CardsPlayed = 0;
@@ -112,6 +115,8 @@ public static class WaveDirector
             UpdateMulligans();
             if (Utils.RandInt(1000) == 0) //roughly 10 seconds to mulligan a random card
                 MulliganRandomCard();
+            if (PlayRecoil <= 0)
+                TryPlayingAssociatedWaveCards(WaveProgressPercent);
             if (PlayRecoil <= 0)
                 TryPlayingCard();
             GatherCredits();
@@ -171,6 +176,7 @@ public static class WaveDirector
     }
     public static void StartWave()
     {
+        Player.Instance.OnWaveStart(WaveNum);
         WaveActive = true;
         CardManager.ApplyChosenCard(); //Applies permanent modifiers, updates temp modifiers, spawns loot
         CardsPlayed = 0;
@@ -178,11 +184,12 @@ public static class WaveDirector
         CreditsSpent = 0;
         if(WaveNum != 1)
             MulliganAllCards();
+        CurrentAssociatedWaveCardNumber = 0;
     }
     public static void EndWave()
     {
+        Player.Instance.OnWaveEnd(WaveNum);
         WaveActive = false;
-        Player.Instance.OnWaveEnd(WaveNum, WaveNum + 1);
         WaveMult += 0.1f;
         if(WaveNum >= 16)
         {
@@ -199,6 +206,7 @@ public static class WaveDirector
             HighScoreWaveNum = WaveNum;
             PlayerData.SaveInt("HighscoreWave", HighScoreWaveNum);
         }
+        CurrentAssociatedWaveCardNumber = 0;
         WaitingForCard = true;
     }
     public static void GatherCredits()
@@ -243,14 +251,34 @@ public static class WaveDirector
             bool canAfford = card.Cost <= Credits;
             if(canPlay && canAfford)
             {
-                Board.Add(card);
+                PlayCard(card);
                 Deck[i] = WaveDeck.DrawCard();
-                PlayRecoil += card.postPlayDelay;
-                Credits -= card.Cost;
-                CreditsSpent += card.Cost;
-                CardsPlayed++;
                 return;
             }
+        }
+    }
+    public static void TryPlayingAssociatedWaveCards(float waveProgress)
+    {
+        if(AssociatedWaveCards != null && AssociatedWaveCards.Count > 0 && CurrentAssociatedWaveCardNumber < AssociatedWaveCards.Count)
+        {
+            float interval = (CurrentAssociatedWaveCardNumber + 1f) / (AssociatedWaveCards.Count + 1f);
+            if(waveProgress > interval)
+            {
+                var card = AssociatedWaveCards[CurrentAssociatedWaveCardNumber++];
+                PlayCard(card, false, 1.25f);
+                Debug.Log($"Played Special Wave Card At: [{interval * 100:##}%], {DetailedDescription.TextBoundedByColor("#FF0000",card.Patterns[0].EnemyPrefabs[0].GetComponent<Enemy>().Name())}");
+            }
+        }
+    }
+    public static void PlayCard(WaveCard card, bool incrementCardsPlayed = true, float overridePlayDelay = -1)
+    {
+        Board.Add(card);
+        PlayRecoil += overridePlayDelay > 0 ? overridePlayDelay : card.postPlayDelay;
+        Credits -= card.Cost;
+        CreditsSpent += card.Cost;
+        if(incrementCardsPlayed)
+        {
+            CardsPlayed++;
         }
     }
     public static void ProcessPlayedCards()

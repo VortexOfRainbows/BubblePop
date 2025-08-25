@@ -19,15 +19,16 @@ Need to do:
 6. Integrate character select into the compendium
 7. Add Ent
 8. Add tall grass
-9. Rework pylon and wave director to allow:
-	1. Cards also come with associated director cards to immediately add to the play queue (which the player can't necessarily see), use a special card queue
-10. Enemy page on the compendium
-11. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
+9. Enemy page on the compendium
+10. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
 	1. TBD: Strength...
-12. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
+11. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
 	1. Contains loot with higher chances of good loot based on the rarity of the chest
-13. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
+12. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
 	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
+13. Balance things related to pylon cards, such as adding permanent scaling.
+	1. Make wave bar show where associated wave-cards from the pylon card are played using ticks with skulls on them (animated nicely)
+	2. A way for cheaper enemies to get stronger when on wave card, such as guaranteed associated swarm
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their return damage (Barbed Lightning) (white)
@@ -41,7 +42,7 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-8/18/25 to 8/24/25
+8/18/25 to 8/25/25
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)
 	1. Chance to be sold in the shop (~1/200) at a flat rate, at a different price
 2. Add Bonus Batteries
@@ -58,6 +59,9 @@ Done:
 8. Waves don't start again until the player manually starts them after a wave-end! (mouse or hotkey)
 9. Some animations for the card deck + pause functionality works with the animations
 10. EnemyCard/Director card locations are now generated on spawn rather than pre-emptively, mostly preventing situations where enemies spawn on top of you
+11. Fix some wavecard locations being determined erroneously
+12. Pylon cards now come with accompanying wave cards that are played at intervals during the round relative to the round completion percent
+13. Fix bubbleshield interaction with new pylon system
 
 8/13/25
 1. Light spears only hit one enemy per spear now, no longer piercing enemies that are layered on top of each other

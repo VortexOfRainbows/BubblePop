@@ -366,9 +366,13 @@ public partial class Player : Entity
             }
         }
     }
-    public void OnWaveEnd(int oldWaveNumber, int newWaveNumber)
+    public void OnWaveEnd(int oldWaveNumber)
     {
-        if(newWaveNumber % 2 == 0)
+
+    }
+    public void OnWaveStart(int newWaveNumber)
+    {
+        if (newWaveNumber % 2 == 0)
         {
             if (HasBubbleShield && Shield < TotalMaxShield)
                 SetShield(Shield + 1);

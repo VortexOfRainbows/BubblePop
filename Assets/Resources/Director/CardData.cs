@@ -53,13 +53,17 @@ public class CardData
     }
     public void RegisterClause(CardClause c)
     {
+        AvailablePoints = c.Points;
+        c.Owner = this;
         if (c is EnemyClause e)
+        {
             EnemyClause = e;
+            EnemyClause.PrepareWaveCards();
+        }
         else if (c is ModifierClause m)
             ModifierClause = m;
         if (c is RewardClause r)
             RewardClause = r;
-        AvailablePoints = c.Points;
     }
     public string CardName()
     {
@@ -94,6 +98,7 @@ public class CardData
 }
 public abstract class CardClause
 {
+    public CardData Owner { get; set; }
     /// <summary>
     /// Enemy cards cost points to spawn
     /// Modifier cards cost points to add
@@ -112,6 +117,7 @@ public abstract class CardClause
 }
 public class EnemyClause : CardClause
 {
+    public readonly List<WaveCard> AssociatedWaveCards = new();
     public EnemyCard Enemy;
     public bool AlreadyInPool = false;
     public EnemyClause(float points, EnemyCard newCard = null) : base(points)
@@ -134,21 +140,41 @@ public class EnemyClause : CardClause
     public EnemyCard GenRandomEnemyPoolAddition()
     {
         EnemyCard newEnemy = null;
-        while(newEnemy == null)
+        while (newEnemy == null)
         {
             Enemy e = EnemyID.AllEnemyList[Utils.RandInt(EnemyID.Max)].GetComponent<Enemy>();
             newEnemy = new(e);
-            if(newEnemy.GetCost() > Points)
+            if (newEnemy.GetCost() > Points)
                 newEnemy = null;
         }
-        if(Points > newEnemy.GetCost() * newEnemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
+        if (Points > newEnemy.GetCost() * newEnemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
         {
             newEnemy.IsPermanent = true;
         }
         return newEnemy;
     }
-    public void Apply() => Enemy.Apply();
+    public void Apply()
+    {
+        WaveDirector.AssociatedWaveCards = AssociatedWaveCards;
+        Enemy.Apply();
+    }
     public void Resolve() => Enemy.Resolve();
+    public void PrepareWaveCards()
+    {
+        AssociatedWaveCards.Clear();
+        float difficultMult = 1 + Owner.DifficultyMult; //2 mid-waves by default
+        if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator) //1 mid-wave by default for bossese, 3 at max card difficulty
+            difficultMult -= 1;
+        for(int i = 0; i < difficultMult; ++i)
+        {
+            var card = WaveDeck.DrawSingleSpawn(WaveDeck.RandomPositionOnPlayerEdge(), Enemy.EnemyToAdd.gameObject, 0, 0.5f, 0);
+            float chance = i * (0.05f * difficultMult * WaveDirector.WaveNum);
+            if(i > 1 && chance > Utils.RandFloat()) {
+                card.ToSwarmCircle(1 + i, 10, 0, 0.5f);
+            }
+            AssociatedWaveCards.Add(card);
+        }
+    }
 }
 public class ModifierClause : CardClause
 {

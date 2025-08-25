@@ -104,11 +104,11 @@ public static class WaveDeck
         return new ArbitrarySpawnPattern(delegate() 
         { 
             return Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
-        });
+        }, true);
     }
     public static ArbitrarySpawnPattern RightOnPlayer()
     {
-        return new ArbitrarySpawnPattern(Player.Position);
+        return new ArbitrarySpawnPattern(() => Player.Position);
     }
     public static WaveCard DrawSingleSpawn(GameObject enemy)
     {
@@ -150,10 +150,10 @@ public static class WaveDeck
             original.EndDelay = endDelay;
         }
         card.Patterns = new EnemyPattern[count];
-        for(int i = 0; i < count; ++i)
+        for (int i = 0; i < count; ++i)
         {
             Vector2 circular = new Vector2(0, radius).RotatedBy(i / (float)count * Mathf.PI * 2f);
-            card.Patterns[i] = new(new ArbitrarySpawnPattern(original.SpawnPattern.GenerateLocation() + circular), original.EndDelay, original.BetweenEnemyDelay, original.EnemyPrefabs);
+            card.Patterns[i] = new(new CircleSpawnPattern(original.SpawnPattern.GenerateLocation, circular), original.EndDelay, original.BetweenEnemyDelay, original.EnemyPrefabs);
         }
         card.Cost = (1 + card.Cost + count) * costMult;
         return card;

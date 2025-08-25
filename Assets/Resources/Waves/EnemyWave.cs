@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static UnityEditor.FilePathAttribute;
+using Unity.VisualScripting;
 
 public class WaveCard 
 {
@@ -79,10 +81,12 @@ public abstract class EnemySpawnPattern
 public class ArbitrarySpawnPattern : EnemySpawnPattern
 {
     public Func<Vector2> locationFunction = null;
-    public Vector2 Location;
-    public ArbitrarySpawnPattern(Func<Vector2> location)
+    public Vector2? Location = null;
+    private readonly bool OnlyGenOnce;
+    public ArbitrarySpawnPattern(Func<Vector2> location, bool onlyGenerateOnce = false)
     {
         locationFunction = location;
+        OnlyGenOnce = onlyGenerateOnce;
     }
     public ArbitrarySpawnPattern(Vector2 location)
     {
@@ -90,18 +94,48 @@ public class ArbitrarySpawnPattern : EnemySpawnPattern
     }
     public override Vector2 GenerateLocation()
     {
-        return locationFunction != null ? Location = locationFunction.Invoke() : Location;
+        if(OnlyGenOnce)
+        {
+            if(Location == null)
+                Location = locationFunction.Invoke();
+            return Location.Value;
+        }
+        return locationFunction != null ? (Location = locationFunction.Invoke()).Value : Location.Value;
     }
     public override Vector2 RegenerateLocation(int attemptNumber, bool finalGeneration = false)
     {
         if(locationFunction == null)
         {
-            Vector2 toPlayer = (Player.Position - Location).normalized;
+            Vector2 toPlayer = (Player.Position - Location.Value).normalized;
             Location += toPlayer * 1.25f + Utils.RandCircle(2f);
             if (finalGeneration)
-                return Location;
+                return Location.Value;
         }
+        Location = null; //Since the location was invalid, we regenerate
         return GenerateLocation();
+    }
+}
+public class CircleSpawnPattern : EnemySpawnPattern
+{
+    public Vector2 CircularOffset;
+    public Func<Vector2> CircularCenter;
+    public Vector2 Location;
+    public CircleSpawnPattern(Func<Vector2> center, Vector2 offset)
+    {
+        CircularCenter = center;
+        CircularOffset = offset;
+    }
+    public override Vector2 GenerateLocation()
+    {
+        return Location = CircularCenter.Invoke() + CircularOffset;
+    }
+    public override Vector2 RegenerateLocation(int attemptNumber, bool finalGeneration = false)
+    {
+        Vector2 toPlayer = (Player.Position - Location).normalized;
+        Location += toPlayer * 1.25f + Utils.RandCircle(2f);
+        if (finalGeneration)
+            return Location;
+        return Location;
     }
 }
 public class EnemyPattern
