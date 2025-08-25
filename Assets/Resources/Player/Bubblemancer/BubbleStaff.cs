@@ -10,7 +10,6 @@ public class BubbleStaff : BubblemancerWand
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
         offset.x -= 0.04f;
         offset.y -= 0.04f;
-        scale *= 1.01f;
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

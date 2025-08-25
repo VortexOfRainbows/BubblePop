@@ -74,8 +74,8 @@ public class ModifierCard : MonoBehaviour
         if (selected)
             hovering = selected;
         float growSpeed = 0.06f * FlipTimer + (HasBeenFlipped ? 0.08f : 0f);
-        transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
-        BG.color = Color.Lerp(BG.color, selected ? Color.yellow : (hovering ? Color.Lerp(Color.yellow, Color.white, 0.8f) : Color.white), 0.2f);
+        transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, Utils.DeltaTimeLerpFactor(growSpeed));
+        BG.color = Color.Lerp(BG.color, selected ? Color.yellow : (hovering ? Color.Lerp(Color.yellow, Color.white, 0.8f) : Color.white), Utils.DeltaTimeLerpFactor(0.2f));
     }
     public bool HasBeenFlipped { get; set; } = false;
     private float FlipTimer = 0;
@@ -94,16 +94,16 @@ public class ModifierCard : MonoBehaviour
     {
         if(SpawnTimer < 0.35f)
         {
-            Utils.LerpSnapNotLocal(transform, WaveMeter.Instance.DeckPosition.position, 0.1f, 1f);
+            Utils.LerpSnapNotLocal(transform, WaveMeter.Instance.DeckPosition.position, Utils.DeltaTimeLerpFactor(0.1f), 1f);
         }
         else
         {
-            Utils.LerpSnap(transform, RestPosition, 0.1f, 1f);
+            Utils.LerpSnap(transform, RestPosition, Utils.DeltaTimeLerpFactor(0.1f), 1f);
         }
-        SpawnTimer += Time.fixedDeltaTime;
+        SpawnTimer += Time.unscaledDeltaTime;
         if (!HasBeenFlipped && SpawnTimer > 0.45f)
         {
-            FlipTimer += Time.fixedDeltaTime * 4.5f;
+            FlipTimer += Time.unscaledDeltaTime * 4.5f;
             if (FlipTimer > 2)
             {
                 HasBeenFlipped = true;
@@ -125,12 +125,12 @@ public class ModifierCard : MonoBehaviour
     public void DespawnAnimation()
     {
         float growSpeed = 0.1f * (2 - FlipTimer);
-        transform.LerpLocalScale(backScale, growSpeed);
+        transform.LerpLocalScale(backScale, Utils.DeltaTimeLerpFactor(growSpeed));
         if (FlipTimer < 0.5f)
-            Utils.LerpSnapNotLocal(transform, new Vector2(WaveMeter.Instance.DeckPosition.position.x + 200 * WaveMeter.Instance.DeckPosition.lossyScale.x, transform.position.y), 0.1f, 1f);
+            Utils.LerpSnapNotLocal(transform, new Vector2(WaveMeter.Instance.DeckPosition.position.x + 200 * WaveMeter.Instance.DeckPosition.lossyScale.x, transform.position.y), Utils.DeltaTimeLerpFactor(0.1f), 1f);
         if (HasBeenFlipped)
         {
-            FlipTimer -= Time.fixedDeltaTime * 4.5f;
+            FlipTimer -= Time.unscaledDeltaTime * 4.5f;
             if (FlipTimer < 0)
             {
                 HasBeenFlipped = false;

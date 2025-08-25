@@ -19,6 +19,7 @@ public class WaveMeter : MonoBehaviour
     {
         Instance = this;
         AnimationTimer += Time.deltaTime;
+        AnimationUpdate();
     }
     public void Start()
     {
@@ -27,24 +28,24 @@ public class WaveMeter : MonoBehaviour
         AnimationTimer = StartTimer = 0;
         transform.localPosition = new Vector2(transform.localPosition.x, 150);
     }
-    public void FixedUpdate()
+    public void AnimationUpdate()
     {
         float targetPosition = -50 + Mathf.Sin(AnimationTimer * Mathf.Deg2Rad * 40) * 5;
         float defaultPosition = 150;
-        Utils.LerpSnap(transform, new Vector2(transform.localPosition.x, Main.WavesUnleashed ? targetPosition : defaultPosition), 0.02f, 0.1f);
-        Utils.LerpSnap(NonMeterStats.transform, new Vector2(NonMeterStats.transform.localPosition.x, Main.WavesUnleashed ? defaultPosition : targetPosition), 0.02f, 0.1f);
+        Utils.LerpSnap(transform, new Vector2(transform.localPosition.x, Main.WavesUnleashed ? targetPosition : defaultPosition), Utils.DeltaTimeLerpFactor(0.02f), 0.1f);
+        Utils.LerpSnap(NonMeterStats.transform, new Vector2(NonMeterStats.transform.localPosition.x, Main.WavesUnleashed ? defaultPosition : targetPosition), Utils.DeltaTimeLerpFactor(0.02f), 0.1f);
         if (Main.WavesUnleashed && WaveDirector.WaveActive)
         {
             if (StartTimer > 0.5f)
             {
                 WaveNumber.text = WaveDirector.WaveNum.ToString();
-                FillAmt = Mathf.Lerp(FillAmt, WaveDirector.WaveProgressPercent, 0.025f);
+                FillAmt = Mathf.Lerp(FillAmt, WaveDirector.WaveProgressPercent, Utils.DeltaTimeLerpFactor(0.025f));
                 float iFill = 1 - FillAmt;
                 float defaultSize = 400;
                 Meter.sizeDelta = new Vector2(defaultSize * iFill + 25, Meter.sizeDelta.y);
             }
             else
-                StartTimer += Time.fixedDeltaTime;
+                StartTimer += Time.deltaTime;
         }
         else
         {
@@ -59,7 +60,7 @@ public class WaveMeter : MonoBehaviour
     {
         bool AwaitingNextCard = (!WaveDirector.WaveActive && WaveDirector.WaitingForCard);
         float defaultPosition = 200;
-        Utils.LerpSnap(NextWaveButton, new Vector2(NextWaveButton.localPosition.x, AwaitingNextCard ? -50 : defaultPosition), 0.1f, 0.1f);
+        Utils.LerpSnap(NextWaveButton, new Vector2(NextWaveButton.localPosition.x, AwaitingNextCard ? -50 : defaultPosition), Utils.DeltaTimeLerpFactor(0.1f), 0.1f);
         Color targetColor = !Main.PlayerNearPylon ? new Color(0.9f, 0.5f, 0.5f, 1f) : Color.white;
         if (Main.PlayerNearPylon)
         {
@@ -69,9 +70,7 @@ public class WaveMeter : MonoBehaviour
                 if(Utils.IsMouseHoveringOverThis(true, NextWaveBG.rectTransform, 0, CardManager.Instance.MyCanvas))
                 {
                     if (Control.LeftMouseClick)
-                    {
                         press = true;
-                    }
                     targetColor = Color.yellow;
                 }
                 if(press)
@@ -82,9 +81,9 @@ public class WaveMeter : MonoBehaviour
             }
         }
         if (!AwaitingNextCard || Main.PlayerNearPylon)
-            Pylon.color = Color.Lerp(Pylon.color, Color.white, 0.2f);
+            Pylon.color = Color.Lerp(Pylon.color, Color.white, Utils.DeltaTimeLerpFactor(0.2f));
         else
-            Pylon.color = Color.Lerp(Pylon.color, new Color(0.75f, 0.75f, 0.75f, 0.75f), 0.2f);
-        NextWaveBG.color = Color.Lerp(NextWaveBG.color, targetColor, 0.2f);
+            Pylon.color = Color.Lerp(Pylon.color, new Color(0.75f, 0.75f, 0.75f, 0.75f), Utils.DeltaTimeLerpFactor(0.2f));
+        NextWaveBG.color = Color.Lerp(NextWaveBG.color, targetColor, Utils.DeltaTimeLerpFactor(0.2f));
     }
 }

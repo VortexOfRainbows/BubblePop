@@ -139,6 +139,8 @@ public class EquipmentUIElement : MonoBehaviour
                 clicked = Input.GetMouseButtonDown(0);
                 scaleUp = 1.2f;
             }
+            if (CompendiumElement)
+                scaleUp = 1.125f;
             transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
             hovering = true;
         }

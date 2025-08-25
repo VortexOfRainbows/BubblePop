@@ -15,6 +15,8 @@ public class SettingsToggle : MonoBehaviour
             Toggle.isOn = PlayerData.PauseDuringPowerSelect;
         if (Type == 1)
             Toggle.isOn = PlayerData.BriefDescriptionsByDefault;
+        if (Type == 2)
+            Toggle.isOn = PlayerData.PauseDuringCardSelect;
     }
     public void UpdateSetting(bool value)
     {
@@ -26,6 +28,11 @@ public class SettingsToggle : MonoBehaviour
         if (Type == 1)
         {
             PlayerData.BriefDescriptionsByDefault = value;
+            PlayerData.SaveSettings();
+        }
+        if (Type == 2)
+        {
+            PlayerData.PauseDuringCardSelect = value;
             PlayerData.SaveSettings();
         }
     }

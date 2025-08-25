@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -55,12 +56,12 @@ public class UIManager : MonoBehaviour
     public void Resume()
     {
         pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
+        Main.UnpauseGame();
     }
     public void MainMenu()
     {
         CoinManager.AfterDeathTransfer();
-        Time.timeScale = 1f;
+        Main.UnpauseGame();
         SceneManager.LoadScene("MainMenu");
     }
     public void GameOver()
@@ -71,7 +72,7 @@ public class UIManager : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Time.timeScale = 1f;
+        Main.UnpauseGame();
     }
     public void PlaySound()
     {

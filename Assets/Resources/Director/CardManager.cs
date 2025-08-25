@@ -24,6 +24,8 @@ public class CardManager : MonoBehaviour
     public void Update()
     {
         Instance = this;
+        if (DespawningCards)
+            DespawnCards();
         if (!Visual.activeSelf || DespawningCards)
             return;
         if (Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
@@ -54,13 +56,10 @@ public class CardManager : MonoBehaviour
         bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected && Control.LeftMouseClick;
         if(confirmButtonHovered || (Control.Interact && cardSelected))
             ConfirmCard();
+        VisualUpdate();
     }
-    public void FixedUpdate()
+    public void VisualUpdate()
     {
-        if(DespawningCards)
-            DespawnCards();
-        if (!Visual.activeSelf || DespawningCards)
-            return;
         for(int i = 0; i < Cards.Length; ++i)
         {
             bool Hovered = Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
@@ -70,7 +69,7 @@ public class CardManager : MonoBehaviour
         bool cardSelected = ChosenCardIndex != -1;
         bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected;
         Color c = confirmButtonHovered ? Color.yellow : Color.white;
-        ConfirmButton.color = Color.Lerp(ConfirmButton.color, c, 0.2f);
+        ConfirmButton.color = Color.Lerp(ConfirmButton.color, c, Utils.DeltaTimeLerpFactor(0.2f));
         ConfirmButtonText.color = Color.white;
         ConfirmButton.gameObject.SetActive(cardSelected);
         if(cardSelected)
@@ -81,12 +80,14 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < Cards.Length; ++i)
             Cards[i].DespawnAnimation();
         ConfirmButton.gameObject.SetActive(false);
-        DespawnTimer += Time.fixedDeltaTime;
-        if (DespawnTimer > 1.5f)
+        DespawnTimer += Time.unscaledDeltaTime;
+        if (DespawnTimer > 1.0f)
         {
             DespawnTimer = 0;
             DespawningCards = false;
             Instance.Visual.SetActive(false);
+            if(PlayerData.PauseDuringCardSelect)
+                Main.UnpauseGame();
         }
     }
     public static void ConfirmCard()
@@ -101,6 +102,8 @@ public class CardManager : MonoBehaviour
     }
     public static void DrawCards()
     {
+        if (PlayerData.PauseDuringCardSelect)
+            Main.PauseGame();
         Instance.Visual.SetActive(true);
         GenerateNewCards();
     }

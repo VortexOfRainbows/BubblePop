@@ -8,10 +8,12 @@ public static class PlayerData
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
     public static bool PauseDuringPowerSelect = true;
+    public static bool PauseDuringCardSelect = true;
     public static bool BriefDescriptionsByDefault = true;
     public static void SaveSettings()
     {
         SaveBool("PauseDuringPowerSelect", PauseDuringPowerSelect);
+        SaveBool("PauseDuringCardSelect", PauseDuringCardSelect);
         SaveBool("BriefDescriptionsByDefault", BriefDescriptionsByDefault);
     }
     public static void SaveSound()
@@ -37,6 +39,7 @@ public static class PlayerData
     public static void LoadAll()
     {
         PauseDuringPowerSelect = GetBool("PauseDuringPowerSelect", true);
+        PauseDuringCardSelect = GetBool("PauseDuringCardSelect", true);
         BriefDescriptionsByDefault = GetBool("BriefDescriptionsByDefault", true);
         PlayerDeaths = GetInt("Deaths");
         SFXVolume = GetFloat("SFX", 1);

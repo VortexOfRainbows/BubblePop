@@ -4,6 +4,16 @@ using UnityEngine;
 using static Enemy;
 public static class Utils
 {
+    /// <summary>
+    /// Lerps adjusted for delta time so it can be used consistently in Update(), rather than FixedUpdate()
+    /// </summary>
+    /// <param name="originalNumber">The lerp factor</param>
+    /// <param name="intendedApplicationRate">How many times per frame it is inteded to be applied. Default is 100, as the fixed delta time is 0.01.</param>
+    /// <returns></returns>
+    public static float DeltaTimeLerpFactor(float originalNumber, float intendedApplicationRate = 100f)
+    {
+        return 1 - Mathf.Pow(1 - originalNumber, Time.unscaledDeltaTime * intendedApplicationRate);
+    }
     public static List<PowerUp> Add<T>(this List<PowerUp> list) where T : PowerUp
     {
         list.Add(PowerUp.Get<T>());

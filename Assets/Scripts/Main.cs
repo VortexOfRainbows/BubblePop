@@ -36,7 +36,7 @@ public class Main : MonoBehaviour
     }
     public static void StartGame()
     {
-        Time.timeScale = 1f;
+        UnpauseGame();
         CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
         WavesUnleashed = true;
         CardManager.DrawCards();

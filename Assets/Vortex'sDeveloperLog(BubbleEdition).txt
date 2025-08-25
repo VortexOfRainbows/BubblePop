@@ -6,6 +6,7 @@ Maybe Do:
 3. Quadrant system UI
 4. Potentially enemy health bars
 5. Day/Night system (so we can have cooler lighting)
+6. Wave bar on the top shows enemies remaining, potentially current wave card + modifier information
 
 Need to do:
 
@@ -21,8 +22,6 @@ Need to do:
 9. Rework pylon and wave director to allow:
 	1. Cards also come with associated director cards to immediately add to the play queue (which the player can't necessarily see), use a special card queue
 	2. Fix when positions are determined for cards by adding presets (like nearby, edge, random, etc.), which are then generated on spawn rather than on draw (to fix border spawning issue)
-	3. Wave bar on the top that shows enemies remaining, and potentially current wave card + modifier information
-	4. Needs pause functionality (and corresponding animation compatibility)
 10. Enemy page on the compendium
 11. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
 	1. TBD: Strength...
@@ -58,7 +57,7 @@ Done:
 	1. Remove SCORE and HIGHSCORE. Replaced with WAVE NUMBERS!
 7. Some unlock requirement changes
 8. Waves don't start again until the player manually starts them after a wave-end! (mouse or hotkey)
-9. Some animations for the card deck
+9. Some animations for the card deck + pause functionality works with the animations
 
 8/13/25
 1. Light spears only hit one enemy per spear now, no longer piercing enemies that are layered on top of each other
