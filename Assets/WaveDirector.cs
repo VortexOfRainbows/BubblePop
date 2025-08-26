@@ -74,15 +74,15 @@ public static class WaveDirector
     public static readonly List<WaveCard> Deck = new();
     public static readonly List<WaveCard> Board = new();
     public static int CardsPlayed = 0;
-    public static int WaveNum = 1;
-    public static int HighScoreWaveNum = 1;
+    public static int WaveNum = 0;
+    public static int HighScoreWaveNum = 0;
     public static float WaveMult = 1.0f;
     public static float EnemyScalingFactor => TemporaryModifiers.EnemyScaling;
     public static bool WaveActive = false, WaitingForCard = false;
     public static void Reset()
     {
         CurrentAssociatedWaveCardNumber = 0;
-        WaveNum = 1;
+        WaveNum = 0;
         WaveMult = 1.0f;
         CardsPlayed = 0;
         CreditsSpent = 0;
@@ -179,6 +179,12 @@ public static class WaveDirector
     }
     public static void StartWave()
     {
+        ++WaveNum;
+        if (WaveNum > HighScoreWaveNum)
+        {
+            HighScoreWaveNum = WaveNum;
+            PlayerData.SaveInt("HighscoreWave", HighScoreWaveNum);
+        }
         Player.Instance.OnWaveStart(WaveNum);
         WaveActive = true;
         CardManager.ApplyChosenCard(); //Applies permanent modifiers, updates temp modifiers, spawns loot
@@ -194,7 +200,7 @@ public static class WaveDirector
         Player.Instance.OnWaveEnd(WaveNum);
         WaveActive = false;
         WaveMult += 0.1f;
-        if(WaveNum >= 16)
+        if(WaveNum >= 15)
         {
             if(Player.Instance.Body is ThoughtBubble && !Player.HasAttacked)
             {
@@ -203,12 +209,6 @@ public static class WaveDirector
             }
         }
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
-        ++WaveNum;
-        if (WaveNum > HighScoreWaveNum)
-        {
-            HighScoreWaveNum = WaveNum;
-            PlayerData.SaveInt("HighscoreWave", HighScoreWaveNum);
-        }
         CurrentAssociatedWaveCardNumber = 0;
         WaitingForCard = true;
     }

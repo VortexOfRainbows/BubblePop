@@ -34,7 +34,7 @@ public class DetailedDescription
     public static readonly string Yellow = "#FFED75";
     public static readonly string Gray = "#999999";
     public static readonly string LesserGray = "#DDDDDD";
-    private static readonly string TabForMoreDetail = "(TAB for more detail)".WithSizeAndColor(24, "#CB8A8A");
+    private static readonly string TabForMoreDetail = " (TAB for more detail)".WithSizeAndColor(24, "#CB8A8A");
     private static readonly int NormalTextSize = 28;
     private static readonly int GrayTextSize = 24;
     public string ToRichText(string t)

@@ -48,7 +48,7 @@ public class CardData
         e = null;
         m = null;
         r = null;
-        int waveNum = WaveDirector.WaveNum;
+        int waveNum = WaveDirector.WaveNum + 1;
         if(waveNum == 1)
         {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldDuck) { IsPermanent = true });
