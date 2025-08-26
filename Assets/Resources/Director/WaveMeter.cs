@@ -15,6 +15,8 @@ public class WaveMeter : MonoBehaviour
     public RectTransform Meter;
     public TextMeshProUGUI WaveNumber;
     public Transform DeckPosition;
+    public Transform Mask;
+    public GameObject SkullTick => Resources.Load<GameObject>("Director/SkullTick");
     public void Update()
     {
         Instance = this;
@@ -24,7 +26,7 @@ public class WaveMeter : MonoBehaviour
     public void Start()
     {
         Instance = this;
-        Meter.sizeDelta = new Vector2(25, Meter.sizeDelta.y);
+        Meter.sizeDelta = new Vector2(20, Meter.sizeDelta.y);
         AnimationTimer = StartTimer = 0;
         transform.localPosition = new Vector2(transform.localPosition.x, 150);
     }
@@ -42,7 +44,7 @@ public class WaveMeter : MonoBehaviour
                 FillAmt = Mathf.Lerp(FillAmt, WaveDirector.WaveProgressPercent, Utils.DeltaTimeLerpFactor(0.025f));
                 float iFill = 1 - FillAmt;
                 float defaultSize = 400;
-                Meter.sizeDelta = new Vector2(defaultSize * iFill + 25, Meter.sizeDelta.y);
+                Meter.sizeDelta = new Vector2(defaultSize * iFill + 20, Meter.sizeDelta.y);
             }
             else
                 StartTimer += Time.deltaTime;
@@ -53,6 +55,7 @@ public class WaveMeter : MonoBehaviour
             StartTimer = 0;
         }
         UpdateNextWaveButton();
+        UpdateTicks();
     }
     public RectTransform NextWaveButton;
     public Image NextWaveBG, Pylon;
@@ -85,5 +88,32 @@ public class WaveMeter : MonoBehaviour
         else
             Pylon.color = Color.Lerp(Pylon.color, new Color(0.75f, 0.75f, 0.75f, 0.75f), Utils.DeltaTimeLerpFactor(0.2f));
         NextWaveBG.color = Color.Lerp(NextWaveBG.color, targetColor, Utils.DeltaTimeLerpFactor(0.2f));
+    }
+
+    public List<SkullTick> SkullTicks = new();
+    public void SetTicks(int amt = 0)
+    {
+        foreach(SkullTick g in SkullTicks)
+        {
+            if (g != null)
+                Destroy(g.gameObject);
+        }
+        SkullTicks.Clear();
+        for (int i = 0; i < amt; ++i)
+        {
+            float interval = (i + 1f) / (amt + 1f);
+            var tick = Instantiate(SkullTick, Mask).GetComponent<SkullTick>();
+            tick.transform.localPosition = new Vector3(-400 * interval, 25);
+            tick.MyPercent = interval;
+            SkullTicks.Add(tick);
+        }
+    }
+    public void UpdateTicks()
+    {
+        for(int i = 0; i < SkullTicks.Count; ++i)
+        {
+            SkullTick tick = SkullTicks[i];
+            tick.UpdateSkull(1 - FillAmt);
+        }
     }
 }

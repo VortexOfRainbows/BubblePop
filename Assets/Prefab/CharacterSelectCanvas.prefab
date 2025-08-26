@@ -2049,9 +2049,11 @@ MonoBehaviour:
   Meter: {fileID: 7331455460424656341}
   WaveNumber: {fileID: 7348025573708789016}
   DeckPosition: {fileID: 4774558543233560029}
+  Mask: {fileID: 5546590541973611487}
   NextWaveButton: {fileID: 1321181565847145164}
   NextWaveBG: {fileID: 4611573387400126471}
   Pylon: {fileID: 3908213961785439066}
+  SkullTicks: []
 --- !u!1 &7232868146980737598
 GameObject:
   m_ObjectHideFlags: 0

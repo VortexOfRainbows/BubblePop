@@ -156,6 +156,7 @@ public class EnemyClause : CardClause
     public void Apply()
     {
         WaveDirector.AssociatedWaveCards = AssociatedWaveCards;
+        WaveMeter.Instance.SetTicks(AssociatedWaveCards.Count);
         Enemy.Apply();
     }
     public void Resolve() => Enemy.Resolve();

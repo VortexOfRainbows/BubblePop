@@ -108,7 +108,7 @@ public static class WaveDeck
     }
     public static ArbitrarySpawnPattern RightOnPlayer()
     {
-        return new ArbitrarySpawnPattern(() => Player.Position);
+        return new ArbitrarySpawnPattern(() => Player.Position, true);
     }
     public static WaveCard DrawSingleSpawn(GameObject enemy)
     {
@@ -153,7 +153,7 @@ public static class WaveDeck
         for (int i = 0; i < count; ++i)
         {
             Vector2 circular = new Vector2(0, radius).RotatedBy(i / (float)count * Mathf.PI * 2f);
-            card.Patterns[i] = new(new CircleSpawnPattern(original.SpawnPattern.GenerateLocation, circular), original.EndDelay, original.BetweenEnemyDelay, original.EnemyPrefabs);
+            card.Patterns[i] = new(new CircleSpawnPattern(original.SpawnPattern, circular), original.EndDelay, original.BetweenEnemyDelay, original.EnemyPrefabs);
         }
         card.Cost = (1 + card.Cost + count) * costMult;
         return card;

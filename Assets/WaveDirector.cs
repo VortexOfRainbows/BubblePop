@@ -30,7 +30,7 @@ public static class WaveDirector
     public static List<GameObject> PossibleEnemies()
     {
         List<GameObject> result = new(EnemyPool);
-        if (TemporaryModifiers.WaveSpecialBonusEnemy != null)
+        if (TemporaryModifiers.WaveSpecialBonusEnemy != null && result.Count <= 0)
             result.Add(TemporaryModifiers.WaveSpecialBonusEnemy);
         //if (result.Count < 0)
         //    result.Add(EnemyID.OldDuck);
@@ -105,7 +105,7 @@ public static class WaveDirector
         }
         PointUpdate();
         float cardsPlayedPercent = Mathf.Min(1, CardsPlayed / 10f);
-        float creditsSpentPercent = Mathf.Min(1, CreditsSpent / ((50 + WaveNum) * WaveMult));
+        float creditsSpentPercent = Mathf.Min(1, CreditsSpent / ((40 + WaveNum * 0.5f) * (0.5f * WaveMult + 0.5f * TemporaryModifiers.CreditGatherScaling)));
         float percentWaveComplete = cardsPlayedPercent * 0.2f + 0.8f * cardsPlayedPercent * creditsSpentPercent;
         WaveProgressPercent = Mathf.Min(1, percentWaveComplete);
         bool waveComplete = percentWaveComplete >= 1;
@@ -211,7 +211,7 @@ public static class WaveDirector
     }
     public static void GatherCredits()
     {
-        Credits += 1.15f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
+        Credits += 1.0f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
     }
     public static void DrawNewCards()
     {

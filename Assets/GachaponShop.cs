@@ -34,7 +34,7 @@ public class GachaponShop : MonoBehaviour
     public void Restock()
     {
         FillStockTimer += Time.fixedDeltaTime;
-        if (FillStockTimer > 2)
+        if (FillStockTimer > 1.5f)
         {
             ++TotalPowersPurchased;
             FillStockTimer = 0; 

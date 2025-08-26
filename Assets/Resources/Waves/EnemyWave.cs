@@ -117,17 +117,18 @@ public class ArbitrarySpawnPattern : EnemySpawnPattern
 }
 public class CircleSpawnPattern : EnemySpawnPattern
 {
+    public override float MinimumDistanceToPlayer => 0;
     public Vector2 CircularOffset;
-    public Func<Vector2> CircularCenter;
+    public EnemySpawnPattern CircularCenter;
     public Vector2 Location;
-    public CircleSpawnPattern(Func<Vector2> center, Vector2 offset)
+    public CircleSpawnPattern(EnemySpawnPattern center, Vector2 offset)
     {
         CircularCenter = center;
         CircularOffset = offset;
     }
     public override Vector2 GenerateLocation()
     {
-        return Location = CircularCenter.Invoke() + CircularOffset;
+        return Location = CircularCenter.GenerateLocation() + CircularOffset;
     }
     public override Vector2 RegenerateLocation(int attemptNumber, bool finalGeneration = false)
     {
