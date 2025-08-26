@@ -13,11 +13,13 @@ public static class WaveDirector
         public float EnemyScaling { get; set; } = 1.0f;
         public float CreditGatherScaling { get; set; } = 1.0f;
         public float InitialAmbush { get; set; } = 0.0f;
+        public int BonusSkullWaves { get; set; } = 0;
         public void Reset()
         {
             WaveSpecialBonusEnemy = null;
             EnemyScaling = CreditGatherScaling = 1;
             InitialAmbush = 0.0f;
+            BonusSkullWaves = 0;
         }
         public void CloneValues(WaveModifiers other)
         {
@@ -25,6 +27,7 @@ public static class WaveDirector
             EnemyScaling = other.EnemyScaling;
             CreditGatherScaling = other.CreditGatherScaling;
             InitialAmbush = other.InitialAmbush;
+            BonusSkullWaves = other.BonusSkullWaves;
         }
     }
     public static List<GameObject> PossibleEnemies()
@@ -228,8 +231,16 @@ public static class WaveDirector
     }
     public static void UpdateMulligans()
     {
+        float ambushMult = 1f;
+        if(TemporaryModifiers.InitialAmbush > CreditsSpent)
+        {
+            float bonusSpeed = (TemporaryModifiers.InitialAmbush - CreditsSpent) / 100f;
+            ambushMult += bonusSpeed;
+        }
         foreach(WaveCard card in Deck)
-            card.mulliganDelay -= Time.fixedDeltaTime;
+        {
+            card.mulliganDelay -= Time.fixedDeltaTime * ambushMult;
+        }
     }
     public static void MulliganRandomCard()
     {

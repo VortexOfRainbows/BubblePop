@@ -60,6 +60,7 @@ public class EnemyCard : ClauseEffect
 }
 public abstract class DirectorModifier : ClauseEffect
 {
+    public virtual bool CanBeApplied => true;
     public WaveDirector.WaveModifiers MyModifier => IsPermanent ? WaveDirector.PermanentModifiers : WaveDirector.TemporaryModifiers;
     public float ApplicationStrength { get; set; }
     public virtual float PointToPercentRatio => 100f;
@@ -88,7 +89,7 @@ public class EnemyStrengthModifier : DirectorModifier
         return $"{"Enemy Health:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
     }
 }
-public class DirectorCreditModifier : DirectorModifier
+public class DirectorCreditPowerModifier : DirectorModifier
 {
     public override void Apply()
     {
@@ -114,7 +115,7 @@ public class DirectorCardCooldownModifier : DirectorModifier
         return $"Enemy spawns: {RedText(PercentAsText)}";
     }
 }
-public class DirectorInitialWaveBonusModifier : DirectorModifier
+public class DirectorAmbushBonusModifier : DirectorModifier
 {
     public override float PointToPercentRatio => 1f;
     public override void Apply()
@@ -133,6 +134,20 @@ public class DirectorSwarmSpeedModifier : DirectorModifier
 public class DirectorMultiPortalSpeedModifier : DirectorModifier
 {
 
+}
+public class DirectorSkullWaveModifier : DirectorModifier
+{
+    public override float PermanentMultiplier => 1f;
+    public override bool CanBeApplied => Percent >= 1;
+    public override float PointToPercentRatio => 50;
+    public override void Apply()
+    {
+        MyModifier.BonusSkullWaves += (int)Percent;
+    }
+    public override string Description()
+    {
+        return $"{"Skull Waves:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(NumberText)}";
+    }
 }
 public abstract class Reward : ClauseEffect
 {

@@ -139,7 +139,10 @@ public class CardManager : MonoBehaviour
         WaveDirector.TemporaryModifiers.CloneValues(WaveDirector.PermanentModifiers); //Apply permanent modifiers to temporary modifiers
         ChosenCard.cardData.ApplyTemporaryModifiers(); //Apply temporary modifiers
 
-        //Run current wave card rewards (immediate rewards)
+        ChosenCard.cardData.ApplyEnemies(); //Enemies has to applied after the modifiers so they take full effect on the enemies
+        if (WaveDirector.TemporaryModifiers.WaveSpecialBonusEnemy == null)//If there are no temporary enemies...
+            WaveDirector.TemporaryModifiers.WaveSpecialBonusEnemy = WaveDirector.PermanentModifiers.WaveSpecialBonusEnemy; //set it to the permanent enemy
+
         ChosenCard.cardData.GrantImmediateRewards();
     }
     public void GenerateCards()

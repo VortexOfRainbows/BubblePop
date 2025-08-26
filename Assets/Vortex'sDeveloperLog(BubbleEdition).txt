@@ -9,6 +9,7 @@ Maybe Do:
 6. Wave bar on the top shows enemies remaining, potentially current wave card + modifier information
 7. A way for cheaper enemies to get stronger when on wave card, such as guaranteed associated swarm
 	1. This would be especially good for recurrence waves (after you already have the enemy in the pool), and for enemies like duck and chicken
+8. Designated Skull enemies to have special UI + Health to make them required to kill before starting a new wave!
 
 Need to do:
 
@@ -28,8 +29,6 @@ Need to do:
 	1. Contains loot with higher chances of good loot based on the rarity of the chest
 12. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
 	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
-13. Balance things related to pylon cards, such as adding permanent scaling.
-
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their return damage (Barbed Lightning) (white)
@@ -48,6 +47,8 @@ Done:
 2. Adjustments to the rate at enemies are spawned, the length of waves, and make it so enemies can only be spawned as part of associated cards during their first appearance, unless they are the first enemy in the deck (Ducks, right now).
 3. Gachapon shop restocks a fair bit faster
 4. Fix some more portal positioning issues
+5. Some permanent scaling factors in the pylon card pool (health, credit scaling, skull wave scaling)
+6. Some preset wave orders, such as designated Leonard waves.
 
 8/18/25 to 8/25/25
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)

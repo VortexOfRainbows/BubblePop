@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using UnityEditor.Build;
 using UnityEditor.Rendering;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ public class CardData
     //private CardClause[] Clauses => new CardClause[] { EnemyClause, ModifierClause, RewardClause };
     public void GetPointsAllowed()
     {
-        AvailablePoints = (18 + WaveDirector.WaveNum * 2) * DifficultyMult; //This should be tied to the wave number in some way
+        AvailablePoints = 10 + (5 + WaveDirector.WaveNum * 5) * DifficultyMult; //This should be tied to the wave number in some way
     }
     public void Generate()
     {
@@ -32,14 +33,18 @@ public class CardData
         float originalAvailablePoints = AvailablePoints;
         AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r);
         e ??= new EnemyClause(AvailablePoints);
-        RegisterClause(e);
-        m ??= new ModifierClause(AvailablePoints);
-        RegisterClause(m);
+        m ??= new ModifierClause(AvailablePoints - 20);
         r ??= new RewardClause(originalAvailablePoints);
+        RegisterClause(e);
+        RegisterClause(m);
         RegisterClause(r);
     }
     public void AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r)
     {
+        int difficultyNum = (int)DifficultyMult;
+        bool MinDifficultyCard = difficultyNum == 1;
+        bool MidDifficulty = difficultyNum == 2;
+        bool MaxDifficultyCard = difficultyNum == 3;
         e = null;
         m = null;
         r = null;
@@ -47,18 +52,63 @@ public class CardData
         if(waveNum == 1)
         {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldDuck) { IsPermanent = true });
-            if(DifficultyMult == 1)
-                m = new ModifierClause(AvailablePoints, 0);
+        }
+        if(waveNum == 3)
+        {
+            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldSoap));
+        }
+        if (waveNum == 4)
+        {
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Chicken : MidDifficulty ? EnemyID.Crow : EnemyID.OldFlamingo) { IsPermanent = true });
+        }
+        if (waveNum == 5)
+        {
+            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Crow));
+        }
+        if(waveNum == 7)
+        {
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Crow : EnemyID.OldFlamingo));
+        }
+        if (waveNum == 8)
+        {
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MaxDifficultyCard ? EnemyID.Gatligator : EnemyID.OldFlamingo));
+        }
+        if (waveNum == 9)
+        {
+            e = new EnemyClause(AvailablePoints, new EnemyCard(!MaxDifficultyCard ? EnemyID.Gatligator : EnemyID.OldLeonard));
+        }
+        if (waveNum == 10)
+        {
+            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = !MinDifficultyCard });
+        }
+        if (waveNum >= 15 && waveNum % 5 == 0)
+        {
+            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = true });
+            float strength = waveNum >= 25 ? 200 : 50;
+            m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum});
+        }
+        if(waveNum >= 5 && m == null)
+        {
+            if (waveNum % 3 == 0) //Previously, there was a 10% power boost with each wave number, so this should mimic the old system
+                m = new ModifierClause(AvailablePoints + 300, 1, new DirectorCreditPowerModifier() { ApplicationStrength = 300, IsPermanent = true });
+            else if (waveNum % 3 == 1) //Previously, there was a 5% health boost with each wave number, so this should mimic the old system (with some changed scaling)
+            {
+                float strength = 10 + 5 * (int)(waveNum / 5);
+                m = new ModifierClause(AvailablePoints + strength * 10, 1, new EnemyStrengthModifier() { ApplicationStrength = strength * 10, IsPermanent = true });
+            }
+            else if (waveNum % 3 == 2 && waveNum >= 17)
+            {
+                m = new ModifierClause(AvailablePoints + 50, 1, new DirectorSkullWaveModifier() { ApplicationStrength = 50, IsPermanent = true});
+            }
         }
     }
     public void RegisterClause(CardClause c)
     {
-        AvailablePoints = c.Points;
+        //AvailablePoints = c.Points;
         c.Owner = this;
         if (c is EnemyClause e)
         {
             EnemyClause = e;
-            EnemyClause.PrepareWaveCards();
         }
         else if (c is ModifierClause m)
             ModifierClause = m;
@@ -71,15 +121,15 @@ public class CardData
     }
     public void ApplyPermanentModifiers()
     {
-        if (EnemyClause.Enemy.IsPermanent)
-            EnemyClause.Apply();
         ModifierClause.ApplyPermanent();
     }
     public void ApplyTemporaryModifiers()
     {
-        if (!EnemyClause.Enemy.IsPermanent)
-            EnemyClause.Apply();
         ModifierClause.ApplyTemporary();
+    }
+    public void ApplyEnemies()
+    {
+        EnemyClause.Apply();
     }
     public void GrantImmediateRewards()
     {
@@ -132,10 +182,17 @@ public class EnemyClause : CardClause
     public override void GenerateData()
     {
         Enemy ??= GenRandomEnemyPoolAddition();
+        if (!Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
+        {
+            Enemy.IsPermanent = true;
+        }
         if (!EnemyAlreadyInPool(Enemy))
             Points -= Enemy.GetCost();
         else
+        {
             AlreadyInPool = true;
+            //Increase difficulty if already in pool instead
+        }
     }
     public EnemyCard GenRandomEnemyPoolAddition()
     {
@@ -147,14 +204,11 @@ public class EnemyClause : CardClause
             if (newEnemy.GetCost() > Points)
                 newEnemy = null;
         }
-        if (Points > newEnemy.GetCost() * newEnemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
-        {
-            newEnemy.IsPermanent = true;
-        }
         return newEnemy;
     }
     public void Apply()
     {
+        PrepareWaveCards();
         WaveDirector.AssociatedWaveCards = AssociatedWaveCards;
         WaveMeter.Instance.SetTicks(AssociatedWaveCards.Count);
         Enemy.Apply();
@@ -163,8 +217,8 @@ public class EnemyClause : CardClause
     public void PrepareWaveCards()
     {
         AssociatedWaveCards.Clear();
-        float difficultMult = 1 + Owner.DifficultyMult; //2 mid-waves by default
-        if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator) //1 mid-wave by default for bossese, 3 at max card difficulty
+        float difficultMult = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
+        if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator) //1 mid-wave by default for bosses, 3 at max card difficulty
             difficultMult -= 1;
         for(int i = 0; i < difficultMult; ++i)
         {
@@ -185,30 +239,32 @@ public class ModifierClause : CardClause
     public int ModifiersToAllow = 1;
     public ModifierClause(float points, int modifiersAllowed = 1, params DirectorModifier[] mods) : base(points)
     {
-        InitializePossibleModifiers(); //Need to change this to not allow repeats with the manually inputted modifiers
+        InitializePossibleModifiers();
         ModifiersToAllow = modifiersAllowed;
-        foreach(DirectorModifier modifier in mods)
+        foreach (DirectorModifier modifier in mods)
         {
             if (modifier.IsPermanent)
                 PermanentModifiers.Add(modifier);
             else
                 TemporaryModifiers.Add(modifier);
+            for(int i = PossibleModifiers.Count - 1; i >= 0; --i)
+                if (PossibleModifiers[i].GetType() == modifier.GetType())
+                    PossibleModifiers.RemoveAt(i);
             Points -= modifier.GetCost();
         }
         GenerateData();
     }
     protected void InitializePossibleModifiers()
     {
-        if (Points > 10)
+        if (Points >= 10)
         {
             PossibleModifiers.Add(new EnemyStrengthModifier());
-            PossibleModifiers.Add(new DirectorCreditModifier());
+            PossibleModifiers.Add(new DirectorCreditPowerModifier());
         }
-        if (Points > 20)
-        {
-            PossibleModifiers.Add(new DirectorInitialWaveBonusModifier());
-            //PossibleModifiers.Add(new DirectorCardCooldownModifier());
-        }
+        if (Points >= 20)
+            PossibleModifiers.Add(new DirectorAmbushBonusModifier());
+        if (Points >= 50)
+            PossibleModifiers.Add(new DirectorSkullWaveModifier());
     }
     public override void GenerateData()
     {
@@ -220,6 +276,8 @@ public class ModifierClause : CardClause
         {
             float spendingRange = (Mathf.Min(Utils.RandInt(ModifiersToAllow), Utils.RandInt(ModifiersToAllow)) + 1) * percent;
             DirectorModifier m = GenRandomModifier(spendingRange * originalPoints);
+            if (m == null)
+                return;
             Points -= m.GetCost();
             if (m.IsPermanent)
                 PermanentModifiers.Add(m);
@@ -229,10 +287,16 @@ public class ModifierClause : CardClause
     }
     public DirectorModifier GenRandomModifier(float pointsSpent)
     {
+        if(PossibleModifiers.Count <= 0)
+        {
+            return null;
+        }
         int i = Utils.RandInt(PossibleModifiers.Count);
         var chosen = PossibleModifiers[i];
         chosen.ApplicationStrength = pointsSpent;
         PossibleModifiers.RemoveAt(i);
+        if(!chosen.CanBeApplied)
+            return GenRandomModifier(pointsSpent);
         //if(pointsSpent > 10)
         //{
         //    float chanceForPermanent = 0.8f * Mathf.Clamp(pointsSpent / 100f, 0, 1);

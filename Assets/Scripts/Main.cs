@@ -77,6 +77,8 @@ public class Main : MonoBehaviour
             PowerupCheatCanvas.SetActive(!PowerupCheatCanvas.activeSelf);
         if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
             UnlockCondition.ForceUnlockAll = true;
+        if (DebugCheats && Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.RightShift))
+            WaveDirector.WaveNum += 1;
         Instance = this;
     }
     public static Main Instance;
