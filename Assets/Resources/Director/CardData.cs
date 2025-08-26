@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -217,15 +218,23 @@ public class EnemyClause : CardClause
     public void PrepareWaveCards()
     {
         AssociatedWaveCards.Clear();
+        int maxSwarmDifficulty = 4;
         float difficultMult = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
         if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator) //1 mid-wave by default for bosses, 3 at max card difficulty
+        {
             difficultMult -= 1;
-        for(int i = 0; i < difficultMult; ++i)
+            if (Enemy.EnemyToAdd is EnemyBossDuck)
+                maxSwarmDifficulty -= 3;
+            else
+                maxSwarmDifficulty -= 1;
+        }
+        for (int i = 0; i < difficultMult; ++i)
         {
             var card = WaveDeck.DrawSingleSpawn(WaveDeck.RandomPositionOnPlayerEdge(), Enemy.EnemyToAdd.gameObject, 0, 0.5f, 0);
+            card.Patterns[0].Skull = true;
             float chance = i * (0.05f * difficultMult * WaveDirector.WaveNum);
-            if(i > 1 && chance > Utils.RandFloat()) {
-                card.ToSwarmCircle(1 + i, 10, 0, 0.5f);
+            if (i > 1 && chance > Utils.RandFloat()) {
+                card.ToSwarmCircle(Mathf.Min(maxSwarmDifficulty, 1 + i), 10, 0, 0.5f);
             }
             AssociatedWaveCards.Add(card);
         }

@@ -42,13 +42,16 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-8/25/25
+8/25/25 to 8/26/25
 1. Add skull ticks + animations to the pylon meter to show when associated card waves will be spawned.
 2. Adjustments to the rate at enemies are spawned, the length of waves, and make it so enemies can only be spawned as part of associated cards during their first appearance, unless they are the first enemy in the deck (Ducks, right now).
 3. Gachapon shop restocks a fair bit faster
 4. Fix some more portal positioning issues
 5. Some permanent scaling factors in the pylon card pool (health, credit scaling, skull wave scaling)
 6. Some preset wave orders, such as designated Leonard waves.
+7. Leonard no longer spawns ducks and base health decreased 80 -> 40 (This is to make up for the fact that SKULL enemies now exist (preliminary champion enemy)
+8. Gatligator base health 40 -> 25
+9. Adjust size and hitboxes of all enemies to make them more standardized for purpose of buff application and other additional ui elements
 
 8/18/25 to 8/25/25
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)

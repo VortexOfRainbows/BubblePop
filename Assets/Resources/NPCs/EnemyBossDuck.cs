@@ -8,7 +8,7 @@ public class EnemyBossDuck : EnemyDuck
     public override float PowerDropChance => 1f;
     public override void Init()
     {
-        Life = 80;
+        Life = 40;
         MaxCoins = 50;
     }
     public override void AI()
@@ -24,7 +24,7 @@ public class EnemyBossDuck : EnemyDuck
         {
             AudioManager.PlaySound(SoundID.LenardNoise, transform.position, 0.6f, 0.9f);
             ShootProjectile(8);
-            GameObject.Instantiate(EnemyID.OldDuck, transform.position, Quaternion.identity);
+            //GameObject.Instantiate(EnemyID.OldDuck, transform.position, Quaternion.identity);
             projectileTimer = -200;
         }
         else

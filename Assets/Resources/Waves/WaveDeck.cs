@@ -124,7 +124,7 @@ public static class WaveDeck
             cost,
             charge,
             delay,
-            new EnemyPattern(location, 0, 0, enemy));
+            new EnemyPattern(location, 0, 0, false, enemy));
     }
     public static WaveCard DrawSingleSpawn(EnemyPattern p, float charge, float delay, float cost)
     {
@@ -140,7 +140,7 @@ public static class WaveDeck
             cost,
             charge,
             delay,
-            new EnemyPattern(location, 0, interval, enemy));
+            new EnemyPattern(location, 0, interval, false, enemy));
     }
     public static WaveCard ToSwarmCircle(this WaveCard card, int count, float radius = 10f, float costMult = 1f, float endDelay = -1f)
     {
@@ -153,7 +153,7 @@ public static class WaveDeck
         for (int i = 0; i < count; ++i)
         {
             Vector2 circular = new Vector2(0, radius).RotatedBy(i / (float)count * Mathf.PI * 2f);
-            card.Patterns[i] = new(new CircleSpawnPattern(original.SpawnPattern, circular), original.EndDelay, original.BetweenEnemyDelay, original.EnemyPrefabs);
+            card.Patterns[i] = new(new CircleSpawnPattern(original.SpawnPattern, circular), original.EndDelay, original.BetweenEnemyDelay, original.Skull, original.EnemyPrefabs);
         }
         card.Cost = (1 + card.Cost + count) * costMult;
         return card;

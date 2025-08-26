@@ -142,21 +142,23 @@ public class CircleSpawnPattern : EnemySpawnPattern
 public class EnemyPattern
 {
     public EnemySpawnPattern SpawnPattern;
-    public EnemyPattern(EnemySpawnPattern location, float endDelay, float betweenEnemyDelay, params GameObject[] prefabs)
+    public EnemyPattern(EnemySpawnPattern location, float endDelay, float betweenEnemyDelay, bool isSkull, params GameObject[] prefabs)
     {
         SpawnPattern = location;
         EndDelay = endDelay;
         BetweenEnemyDelay = betweenEnemyDelay;
         EnemyPrefabs = prefabs;
+        Skull = isSkull;
     }
     public bool RelativeLocationToPlayer = true;
     public GameObject[] EnemyPrefabs;
     public float EndDelay = 0.50f;
     public float BetweenEnemyDelay = 0.2f;
+    public bool Skull { get; set; } = false;
     public void Release()
     {
         Vector2 spawnPos = ShiftLocationIfOutOfBounds(SpawnPattern.GenerateLocation());
-        Wormhole.Spawn(spawnPos, EnemyPrefabs, BetweenEnemyDelay / Time.fixedDeltaTime);
+        Wormhole.Spawn(spawnPos, EnemyPrefabs, Skull, BetweenEnemyDelay / Time.fixedDeltaTime);
     }
     public Vector2 ShiftLocationIfOutOfBounds(Vector2 location)
     {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class EnemyID
@@ -26,7 +27,13 @@ public static class EnemyID
 }
 public class Enemy : Entity
 {
-    public static HashSet<Enemy> Enemies = new HashSet<Enemy>();
+    public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false)
+    {
+        Enemy e = Instantiate(EnemyPrefab, position, Quaternion.identity).GetComponent<Enemy>();
+        e.SetSkullEnemy(skull);
+        return e;
+    }
+    public static HashSet<Enemy> Enemies = new();
     public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, bool requireNonImmune = true, params Enemy[] ignore)
     {
         Enemy e = FindClosest(position, searchDistance, out Vector2 newNorm, ignore.ToList(), requireNonImmune);
@@ -66,7 +73,7 @@ public class Enemy : Entity
         public Projectile attacker;
         public int immuneFrames;
     }
-    public List<ImmunityData> SpecializedImmuneFrames = new List<ImmunityData>();
+    public List<ImmunityData> SpecializedImmuneFrames = new();
     public void DeathParticles(int count = 10, float size = 0, Color c = default)
     {
         BoxCollider2D c2D = GetComponent<BoxCollider2D>();
@@ -201,5 +208,10 @@ public class Enemy : Entity
     public virtual string Name()
     {
         return Utils.ToSpacedString(name);
+    }
+    public bool IsCrown { get; private set; } = false;
+    public void SetSkullEnemy(bool value = true)
+    {
+        IsCrown = value;
     }
 }

@@ -14,7 +14,7 @@ public class Gatligator : Enemy
     public override float CostMultiplier => 5;
     public override void Init()
     {
-        Life = 40;
+        Life = 25;
         MaxCoins = 40;
         ShootTimer = -3f;
         ShootSpeed = 0.38f;

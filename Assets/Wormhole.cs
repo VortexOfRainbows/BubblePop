@@ -3,18 +3,17 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 public class Wormhole : MonoBehaviour
 {
-    public static Wormhole Spawn(Vector2 location, GameObject[] EnemyPrefabs, float spawnDelay = 20)
+    public static Wormhole Spawn(Vector2 location, GameObject[] EnemyPrefabs, bool skullPortal = false, float spawnDelay = 20)
     {
         Wormhole w = Instantiate(EnemyID.PortalPrefab, location, Quaternion.identity).GetComponent<Wormhole>();
         w.QueuedEnemies = EnemyPrefabs;
         w.SpawnDelay = spawnDelay;
+        w.IsSkullPortal = skullPortal;
         return w;
     }
-
     public GameObject[] QueuedEnemies;
     public int enemyNum = 0;
     public float SpawnDelay = 0;
-
     public Light2D Light;
     public List<GameObject> Rings;
     public GameObject Visual;
@@ -27,6 +26,7 @@ public class Wormhole : MonoBehaviour
     public float Scale = 0;
     public bool Closing = false;
     public bool StayOpen = false;
+    public bool IsSkullPortal { get; set; } = false;
     public void Start()
     {
         Visual.transform.localScale = new Vector3(ScaleMultiplier, ScaleMultiplier, 1);
@@ -77,7 +77,7 @@ public class Wormhole : MonoBehaviour
                 }
                 if(enemyNum < QueuedEnemies.Length)
                 {
-                    Instantiate(QueuedEnemies[enemyNum++], transform.position, Quaternion.identity);
+                    Enemy.Spawn(QueuedEnemies[enemyNum++], transform.position, IsSkullPortal);
                 }
                 if (enemyNum >= QueuedEnemies.Length)
                 {

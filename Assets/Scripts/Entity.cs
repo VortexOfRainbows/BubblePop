@@ -59,8 +59,10 @@ public partial class Entity : MonoBehaviour
     public void Start()
     {
         Init();
-        if(this is Enemy)
-            EnemyHealthScaling();
+        if(this is Enemy e)
+        {
+            EnemyHealthScaling(e);
+        }
         if (MaxLife < Life)
             MaxLife = Life;
         SpawnedIn = true;
@@ -69,9 +71,13 @@ public partial class Entity : MonoBehaviour
     {
 
     }
-    public void EnemyHealthScaling()
+    public void EnemyHealthScaling(Enemy e)
     {
         Life = (int)(Life * WaveDirector.EnemyScalingFactor + 0.5f);
+        if(e.IsCrown)
+        {
+            Life *= 2;
+        }
     }
     public void Update()
     {
