@@ -60,8 +60,8 @@ public class EnemySoap : Enemy
         DeathParticles(15, 0.5f, new Color(1, 0.85f, 0.99f));
         if(this is not EnemySoapTiny)
         {
-            Instantiate(EnemyID.OldSmallSoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap1;
-            Instantiate(EnemyID.OldSmallSoap, transform.position, Quaternion.identity).GetComponent<EnemySoapTiny>().sRender.sprite = Soap2;
+            Spawn(EnemyID.OldSmallSoap, transform.position, IsSkull).GetComponent<EnemySoapTiny>().sRender.sprite = Soap1;
+            Spawn(EnemyID.OldSmallSoap, transform.position, IsSkull).GetComponent<EnemySoapTiny>().sRender.sprite = Soap2;
         }
     }
     private Vector2 FindTargetedPlayerPosition() {

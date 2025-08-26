@@ -117,7 +117,8 @@ public class DirectorCardCooldownModifier : DirectorModifier
 }
 public class DirectorAmbushBonusModifier : DirectorModifier
 {
-    public override float PointToPercentRatio => 1f;
+    public override bool CanBeApplied => Percent >= 1;
+    public override float PointToPercentRatio => 2f;
     public override void Apply()
     {
         MyModifier.InitialAmbush += Percent;

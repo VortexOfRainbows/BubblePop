@@ -16,8 +16,8 @@ public class EnemyDuck : Enemy
     public override float CostMultiplier => 1;
     public override void Init()
     {
-        Life = 12;
-        MaxCoins = 10;
+        Life = 10;
+        MaxCoins = 8;
     }
 
     // Update is called once per frame

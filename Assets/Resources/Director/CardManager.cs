@@ -92,6 +92,8 @@ public class CardManager : MonoBehaviour
     }
     public static void ConfirmCard()
     {
+        if (!ChosenCard.HasBeenFlipped)
+            return;
         DespawnTimer = 0;
         DespawningCards = true;
         WaveDirector.StartWave();

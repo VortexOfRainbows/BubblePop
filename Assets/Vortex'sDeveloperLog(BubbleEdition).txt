@@ -4,12 +4,11 @@ Maybe Do:
 1. GameObject Request system (in order to somewhat replicate manual spritebatch)
 2. Add cloud particles
 3. Quadrant system UI
-4. Potentially enemy health bars
-5. Day/Night system (so we can have cooler lighting)
-6. Wave bar on the top shows enemies remaining, potentially current wave card + modifier information
-7. A way for cheaper enemies to get stronger when on wave card, such as guaranteed associated swarm
+4. Day/Night system (so we can have cooler lighting)
+5. Wave bar on the top shows SKULL enemies remaining, potentially current wave card + modifier information
+6. A way for cheaper enemies to get stronger when a Skull card, such as guaranteed Skull swarm
 	1. This would be especially good for recurrence waves (after you already have the enemy in the pool), and for enemies like duck and chicken
-8. Designated Skull enemies to have special UI + Health to make them required to kill before starting a new wave!
+7. Designated Skull enemies required to kill before starting a new wave!
 
 Need to do:
 
@@ -29,6 +28,7 @@ Need to do:
 	1. Contains loot with higher chances of good loot based on the rarity of the chest
 12. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
 	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
+13. Indiana Jones Crystal Skull equip for Gachapon, which makes all waves have an additional skull: Unlock "Or Bust: Complete wave 15 whilst taking only 3-skull cards"
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their return damage (Barbed Lightning) (white)
@@ -49,9 +49,11 @@ Done:
 4. Fix some more portal positioning issues
 5. Some permanent scaling factors in the pylon card pool (health, credit scaling, skull wave scaling)
 6. Some preset wave orders, such as designated Leonard waves.
-7. Leonard no longer spawns ducks and base health decreased 80 -> 40 (This is to make up for the fact that SKULL enemies now exist (preliminary champion enemy)
+7. Leonard no longer spawns ducks and base health decreased 80 -> 45 (This is to make up for the fact that SKULL enemies now exist (preliminary champion enemy)
 8. Gatligator base health 40 -> 25
 9. Adjust size and hitboxes of all enemies to make them more standardized for purpose of buff application and other additional ui elements
+10. Skull Enemies (a champion variant of enemies spawned at wave checkpoints). They have 2x hp, 1.14x size, and a cool health bar!
+11. Duck base health 12 -> 10, max coins 10 -> 8
 
 8/18/25 to 8/25/25
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)

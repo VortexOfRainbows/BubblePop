@@ -107,8 +107,9 @@ public static class WaveDirector
             return;
         }
         PointUpdate();
+        float creditsNeededToPassWave = ((40 + WaveNum * 0.5f) * (0.5f * WaveMult + 0.5f * TemporaryModifiers.CreditGatherScaling)) + TemporaryModifiers.InitialAmbush * 0.5f;
         float cardsPlayedPercent = Mathf.Min(1, CardsPlayed / 10f);
-        float creditsSpentPercent = Mathf.Min(1, CreditsSpent / ((40 + WaveNum * 0.5f) * (0.5f * WaveMult + 0.5f * TemporaryModifiers.CreditGatherScaling)));
+        float creditsSpentPercent = Mathf.Min(1, CreditsSpent / creditsNeededToPassWave);
         float percentWaveComplete = cardsPlayedPercent * 0.2f + 0.8f * cardsPlayedPercent * creditsSpentPercent;
         WaveProgressPercent = Mathf.Min(1, percentWaveComplete);
         bool waveComplete = percentWaveComplete >= 1;

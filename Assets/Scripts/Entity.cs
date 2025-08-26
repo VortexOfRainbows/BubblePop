@@ -74,7 +74,7 @@ public partial class Entity : MonoBehaviour
     public void EnemyHealthScaling(Enemy e)
     {
         Life = (int)(Life * WaveDirector.EnemyScalingFactor + 0.5f);
-        if(e.IsCrown)
+        if(e.IsSkull)
         {
             Life *= 2;
         }

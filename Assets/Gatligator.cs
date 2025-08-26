@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Gatligator : Enemy
 {
+    public override float HealthBarOffset => -0.25f;
     public Transform GunTip;
     public GameObject Gun;
     private Vector2 targetedLocation;

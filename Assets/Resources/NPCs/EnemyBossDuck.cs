@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class EnemyBossDuck : EnemyDuck
 {
+    public override float HealthBarOffset => -3f;
     private float projectileSpeed = 3f;
     private int projectileTimer = -50;
     public override float CostMultiplier => 10;
     public override float PowerDropChance => 1f;
     public override void Init()
     {
-        Life = 40;
+        Life = 45;
         MaxCoins = 50;
     }
     public override void AI()

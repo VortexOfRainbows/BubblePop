@@ -8,7 +8,11 @@ public class Wormhole : MonoBehaviour
         Wormhole w = Instantiate(EnemyID.PortalPrefab, location, Quaternion.identity).GetComponent<Wormhole>();
         w.QueuedEnemies = EnemyPrefabs;
         w.SpawnDelay = spawnDelay;
-        w.IsSkullPortal = skullPortal;
+        if(skullPortal)
+        {
+            w.IsSkullPortal = skullPortal;
+            w.ScaleMultiplier = 6f;
+        }
         return w;
     }
     public GameObject[] QueuedEnemies;

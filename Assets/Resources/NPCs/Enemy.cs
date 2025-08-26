@@ -88,6 +88,13 @@ public class Enemy : Entity
     {
         if(JustSpawnedIn)
         {
+            if(IsSkull)
+            {
+                MinCoins += 5;
+                MaxCoins += 5;
+                transform.localScale = new Vector3(1.14f, 1.14f, transform.localScale.z);
+                BossHealthBar.Spawn(this);
+            }
             Enemies.Add(this);
             UpdateRendererColor(new Color(1, 0, 0, 0), 1);
             JustSpawnedIn = false;
@@ -169,8 +176,8 @@ public class Enemy : Entity
         }
     }
     public virtual float PowerDropChance => 0.04f;
-    protected float MaxCoins = 0;
-    protected float MinCoins = 1;
+    protected float MaxCoins { get; set; } = 0;
+    protected float MinCoins { get; set; } = 1;
     protected int CoinRandomizationAggressiveness = 3;
     /// <summary>
     /// The cost multiplier to spawn this specific enemy by the director
@@ -209,9 +216,10 @@ public class Enemy : Entity
     {
         return Utils.ToSpacedString(name);
     }
-    public bool IsCrown { get; private set; } = false;
+    public bool IsSkull { get; private set; } = false;
     public void SetSkullEnemy(bool value = true)
     {
-        IsCrown = value;
+        IsSkull = value;
     }
+    public virtual float HealthBarOffset => 0;
 }
