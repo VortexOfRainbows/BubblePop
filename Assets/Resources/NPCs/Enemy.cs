@@ -94,6 +94,8 @@ public class Enemy : Entity
                 MaxCoins += 5;
                 transform.localScale = new Vector3(1.14f, 1.14f, transform.localScale.z);
                 BossHealthBar.Spawn(this);
+                if (IsSkull)
+                    WaveDirector.SkullEnemiesActive += 1;
             }
             Enemies.Add(this);
             UpdateRendererColor(new Color(1, 0, 0, 0), 1);
@@ -185,6 +187,8 @@ public class Enemy : Entity
     public virtual float CostMultiplier => 1;
     public sealed override void Kill()
     {
+        if (IsSkull)
+            WaveDirector.SkullEnemiesActive -= 1;
         Enemies.Remove(this);
         OnKill();
         float rand = 1;

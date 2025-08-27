@@ -1,9 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 
 public class Gachapon : Body
 {
@@ -171,7 +167,7 @@ public class Gachapon : Body
         Vector2 toMouse2 = toMouse.normalized;
         if (p.IsMainPlayerAnimator)
         {
-            if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && Player.Instance.Weapon.IsAttacking())
+            if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && (Player.Instance.Weapon.IsAttacking() || Player.Instance.Weapon is BubbleGun || Player.Instance.Weapon is Book))
                 FaceR.sprite = altFaces[1];
             else
                 FaceR.sprite = altFaces[0];

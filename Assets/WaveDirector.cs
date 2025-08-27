@@ -79,6 +79,7 @@ public static class WaveDirector
     public static float WaveMult = 1.0f;
     public static float EnemyScalingFactor => TemporaryModifiers.EnemyScaling;
     public static bool WaveActive = false, WaitingForCard = false;
+    public static int SkullEnemiesActive { get; set; } = 0;
     public static void Reset()
     {
         CurrentAssociatedWaveCardNumber = 0;
@@ -94,6 +95,7 @@ public static class WaveDirector
         PermanentModifiers.Reset();
         TemporaryModifiers.CloneValues(PermanentModifiers);
         WaveActive = WaitingForCard = false;
+        SkullEnemiesActive = 0;
     }
     public static void FixedUpdate()
     {
@@ -104,6 +106,7 @@ public static class WaveDirector
         }
         else if(!WaveActive)
         {
+            WaitingForCard = SkullEnemiesActive <= 0;
             return;
         }
         PointUpdate();
@@ -128,51 +131,6 @@ public static class WaveDirector
         else if(Board.Count <= 0) //All played cards have finish processing
         {
             EndWave();
-            /*if(WaveNum == 2)
-            {
-                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldSoap, 10, 2, 0);
-                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(new EnemyPattern(Vector2.zero, 0.5f, 0f, EnemyID.OldDuck), 2, 5, 0).ToSwarmCircle(3, 10, 0);
-                Deck[MaxCards - 3] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Crow, 15, 2, 0);
-            }
-            if (WaveNum == 3)
-            {
-                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldFlamingo, 10, 2, 0);
-                //Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldFlamingo, 10, 2, 0);
-            }
-            if (WaveNum == 4)
-            {
-                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
-                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Chicken, 0, 1, 0);
-            }
-            if (WaveNum % 5 == 0)
-            {
-                Deck[MaxCards - 3] = WaveDeck.DrawMultiSpawn(WaveDeck.RandomEdgeLocation(), 6, 7, 0, 0.75f, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken, EnemyID.Chicken);
-                if(WaveNum > 20)
-                {
-                    Deck[MaxCards - 3].Patterns[0].Location = Vector2.zero;
-                    Deck[MaxCards - 3] = Deck[MaxCards - 2].ToSwarmCircle(3, 6, 0.5f, 0.5f);
-                }
-                if(WaveNum >= 10)
-                {
-                    Credits += WaveNum * 2;
-                }
-            }
-            if (WaveNum == 6)
-            {
-                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Gatligator, 10, 5, 0);
-                Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Gatligator, 25, 2, 0);
-            }
-            if (WaveNum == 7)
-            {
-                Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 20, 5, 0);
-            }
-            if (WaveNum >= 10)
-            {
-                if(WaveNum % 3 == 0)
-                    Deck[MaxCards - 1] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.OldLeonard, 15, 5, 0);
-                if (WaveNum % 4 == 1)
-                    Deck[MaxCards - 2] = WaveDeck.DrawSingleSpawn(WaveDeck.RandomEdgeLocation(), EnemyID.Gatligator, 15, 5, 0);
-            }*/
         }
         ProcessPlayedCards();
         if (PlayRecoil > 0)
@@ -194,7 +152,7 @@ public static class WaveDirector
         CreditsSpent = 0;
         if(WaveNum != 1)
             MulliganAllCards();
-        CurrentAssociatedWaveCardNumber = 0;
+        CurrentAssociatedWaveCardNumber = SkullEnemiesActive = 0;
     }
     public static void EndWave()
     {
@@ -211,7 +169,6 @@ public static class WaveDirector
         }
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         CurrentAssociatedWaveCardNumber = 0;
-        WaitingForCard = true;
     }
     public static void GatherCredits()
     {

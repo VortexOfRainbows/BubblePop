@@ -8,7 +8,7 @@ Maybe Do:
 5. Wave bar on the top shows SKULL enemies remaining, potentially current wave card + modifier information
 6. A way for cheaper enemies to get stronger when a Skull card, such as guaranteed Skull swarm
 	1. This would be especially good for recurrence waves (after you already have the enemy in the pool), and for enemies like duck and chicken
-7. Designated Skull enemies required to kill before starting a new wave!
+7. Designated Skull enemies location shown during wave (potentially doable by just shifting the skull around)
 
 Need to do:
 
@@ -54,6 +54,7 @@ Done:
 9. Adjust size and hitboxes of all enemies to make them more standardized for purpose of buff application and other additional ui elements
 10. Skull Enemies (a champion variant of enemies spawned at wave checkpoints). They have 2x hp, 1.14x size, and a cool health bar!
 11. Duck base health 12 -> 10, max coins 10 -> 8
+12. Skull enemies must be killed before a wave ends
 
 8/18/25 to 8/25/25
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)

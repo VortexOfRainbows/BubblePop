@@ -16,6 +16,7 @@ public class WaveMeter : MonoBehaviour
     public TextMeshProUGUI WaveNumber;
     public Transform DeckPosition;
     public Transform Mask;
+
     public GameObject SkullTick => Resources.Load<GameObject>("Director/SkullTick");
     public void Update()
     {
@@ -54,20 +55,31 @@ public class WaveMeter : MonoBehaviour
             HighscoreWaveText.text = $"Highscore: {WaveDirector.HighScoreWaveNum}";
             StartTimer = 0;
         }
+        UpdateSkullsRemaining();
         UpdateNextWaveButton();
         UpdateTicks();
     }
     public RectTransform NextWaveButton;
     public Image NextWaveBG, Pylon;
+    public RectTransform SkullEnemyRemaining;
+    public TextMeshProUGUI SkullEnemyRemainingText;
+    public bool SkullEnemiesActive { get; set; } = false;
+    public void UpdateSkullsRemaining()
+    {
+        SkullEnemiesActive = WaveDirector.SkullEnemiesActive > 0;
+        float defaultPosition = 50;
+        Utils.LerpSnap(SkullEnemyRemaining, new Vector2(SkullEnemyRemaining.localPosition.x, SkullEnemiesActive ? (Mathf.Sin(AnimationTimer * Mathf.Deg2Rad * 60) * 4 -80) : defaultPosition), Utils.DeltaTimeLerpFactor(0.05f), 0.1f);
+        SkullEnemyRemainingText.text = WaveDirector.SkullEnemiesActive.ToString();
+    }
     public void UpdateNextWaveButton()
     {
-        bool AwaitingNextCard = (!WaveDirector.WaveActive && WaveDirector.WaitingForCard);
+        bool AwaitingNextCard = !WaveDirector.WaveActive && WaveDirector.WaitingForCard;
         float defaultPosition = 200;
-        Utils.LerpSnap(NextWaveButton, new Vector2(NextWaveButton.localPosition.x, AwaitingNextCard ? -50 : defaultPosition), Utils.DeltaTimeLerpFactor(0.1f), 0.1f);
+        Utils.LerpSnap(NextWaveButton, new Vector2(NextWaveButton.localPosition.x, AwaitingNextCard ? -50 : defaultPosition), Utils.DeltaTimeLerpFactor(0.05f), 0.1f);
         Color targetColor = !Main.PlayerNearPylon ? new Color(0.9f, 0.5f, 0.5f, 1f) : Color.white;
         if (Main.PlayerNearPylon)
         {
-            if(!WaveDirector.WaveActive && WaveDirector.WaitingForCard)
+            if(AwaitingNextCard)
             {
                 bool press = Control.Interact;
                 if(Utils.IsMouseHoveringOverThis(true, NextWaveBG.rectTransform, 0, CardManager.Instance.MyCanvas))
