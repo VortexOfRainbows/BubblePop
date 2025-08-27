@@ -5,12 +5,9 @@ Maybe Do:
 2. Add cloud particles
 3. Quadrant system UI
 4. Day/Night system (so we can have cooler lighting)
-5. Wave bar on the top shows SKULL enemies remaining, potentially current wave card + modifier information
-6. A way for cheaper enemies to get stronger when a Skull card, such as guaranteed Skull swarm
-	1. This would be especially good for recurrence waves (after you already have the enemy in the pool), and for enemies like duck and chicken
+5. Wave bar on the top shows current wave card + modifier information
 
 Need to do:
-
 1. Improve UI and add UNLOCK SCREEN *** (maximum importance)
 	1. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 2. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
@@ -55,6 +52,7 @@ Done:
 11. Duck base health 12 -> 10, max coins 10 -> 8
 12. Skull enemies must be killed before a wave properly ends
 13. At the end of a wave, but before skull enemies are killed, indicators will show the general direction skull enemies are in (so they are easier to kill to end a wave)
+14. Skull swarm modifier that multiplies enemies spawned during boss waves
 
 8/18/25 to 8/25/25
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)

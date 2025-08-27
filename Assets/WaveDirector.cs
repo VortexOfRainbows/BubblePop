@@ -14,12 +14,14 @@ public static class WaveDirector
         public float CreditGatherScaling { get; set; } = 1.0f;
         public float InitialAmbush { get; set; } = 0.0f;
         public int BonusSkullWaves { get; set; } = 0;
+        public Dictionary<Type, int> BonusSkullSwarm { get; set; } = new();
         public void Reset()
         {
             WaveSpecialBonusEnemy = null;
             EnemyScaling = CreditGatherScaling = 1;
             InitialAmbush = 0.0f;
             BonusSkullWaves = 0;
+            BonusSkullSwarm.Clear();
         }
         public void CloneValues(WaveModifiers other)
         {
@@ -28,6 +30,7 @@ public static class WaveDirector
             CreditGatherScaling = other.CreditGatherScaling;
             InitialAmbush = other.InitialAmbush;
             BonusSkullWaves = other.BonusSkullWaves;
+            BonusSkullSwarm = new(other.BonusSkullSwarm);
         }
     }
     public static List<GameObject> PossibleEnemies()

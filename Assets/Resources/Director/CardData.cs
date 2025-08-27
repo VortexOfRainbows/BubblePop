@@ -37,6 +37,13 @@ public class CardData
         e ??= new EnemyClause(AvailablePoints);
         m ??= new ModifierClause(AvailablePoints - 20);
         r ??= new RewardClause(originalAvailablePoints);
+        if(e.AlternativeModifier != null)
+        {
+            if (e.AlternativeModifier.IsPermanent)
+                m.PermanentModifiers.Insert(0, e.AlternativeModifier);
+            else
+                m.TemporaryModifiers.Insert(0, e.AlternativeModifier);
+        }
         RegisterClause(e);
         RegisterClause(m);
         RegisterClause(r);
@@ -59,17 +66,18 @@ public class CardData
         {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldSoap));
         }
-        if (waveNum == 4)
+        if (waveNum == 4 || waveNum == 5)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Chicken : MidDifficulty ? EnemyID.Crow : EnemyID.OldFlamingo) { IsPermanent = true });
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Chicken : MidDifficulty ? EnemyID.Crow : EnemyID.OldFlamingo));
         }
-        if (waveNum == 5)
+        if (waveNum == 6)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Crow));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MaxDifficultyCard ? EnemyID.Crow : EnemyID.Chicken));
+            m = new(AvailablePoints, 1, new DirectorSkullSwarmModifier(e.Enemy) { ApplicationStrength = MaxDifficultyCard ? 1 : 2, IsPermanent = false });
         }
-        if(waveNum == 7)
+        if (waveNum == 7)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Crow : EnemyID.OldFlamingo));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Crow : EnemyID.OldFlamingo) { IsPermanent = MaxDifficultyCard });
         }
         if (waveNum == 8)
         {
@@ -81,7 +89,7 @@ public class CardData
         }
         if (waveNum == 10)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = !MinDifficultyCard });
+            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = false });
         }
         if (waveNum >= 15 && waveNum % 5 == 0)
         {
@@ -109,9 +117,7 @@ public class CardData
         //AvailablePoints = c.Points;
         c.Owner = this;
         if (c is EnemyClause e)
-        {
             EnemyClause = e;
-        }
         else if (c is ModifierClause m)
             ModifierClause = m;
         if (c is RewardClause r)
@@ -172,6 +178,7 @@ public class EnemyClause : CardClause
     public readonly List<WaveCard> AssociatedWaveCards = new();
     public EnemyCard Enemy;
     public bool AlreadyInPool = false;
+    public DirectorSkullSwarmModifier AlternativeModifier = null;
     public EnemyClause(float points, EnemyCard newCard = null) : base(points)
     {
         Enemy = newCard;
@@ -193,7 +200,11 @@ public class EnemyClause : CardClause
         else
         {
             AlreadyInPool = true;
-            //Increase difficulty if already in pool instead
+            AlternativeModifier = new(Enemy)
+            {
+                ApplicationStrength = 1,
+                IsPermanent = Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier //In order for the alternative modifier to be permanent, it needs to pass the permanency cost check twice
+            };
         }
     }
     public EnemyCard GenRandomEnemyPoolAddition()
@@ -231,7 +242,14 @@ public class EnemyClause : CardClause
         }
         for (int i = 0; i < difficultMult; ++i)
         {
-            var card = WaveDeck.DrawSingleSpawn(WaveDeck.RandomPositionOnPlayerEdge(), Enemy.EnemyToAdd.gameObject, 0, 0.5f, 0);
+            GameObject enemyType = Enemy.EnemyToAdd.gameObject;
+            int TotalDudes = 1;
+            if (WaveDirector.TemporaryModifiers.BonusSkullSwarm.TryGetValue(Enemy.EnemyToAdd.GetType(), out int bonus))
+                TotalDudes += bonus;
+            GameObject[] enemies = new GameObject[TotalDudes];
+            for (int j = 0; j < TotalDudes; ++j)
+                enemies[j] = enemyType;
+            var card = WaveDeck.DrawMultiSpawn(WaveDeck.RandomPositionOnPlayerEdge(), 0, 0.5f, 0, 1.75f, enemies);
             card.Patterns[0].Skull = true;
             float chance = i * (0.05f * difficultMult * WaveDirector.WaveNum);
             if (i > 1 && chance > Utils.RandFloat()) {

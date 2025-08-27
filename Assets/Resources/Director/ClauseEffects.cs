@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -110,10 +111,7 @@ public class DirectorMultiPortalModifier : DirectorModifier
 }
 public class DirectorCardCooldownModifier : DirectorModifier
 {
-    public override string Description()
-    {
-        return $"Enemy spawns: {RedText(PercentAsText)}";
-    }
+
 }
 public class DirectorAmbushBonusModifier : DirectorModifier
 {
@@ -148,6 +146,30 @@ public class DirectorSkullWaveModifier : DirectorModifier
     public override string Description()
     {
         return $"{"Skull Waves:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(NumberText)}";
+    }
+}
+public class DirectorSkullSwarmModifier : DirectorModifier
+{
+    public override float PermanentMultiplier => 1f;
+    public EnemyCard Parent { get; private set; }
+    public override float PointToPercentRatio => 1;
+    public DirectorSkullSwarmModifier(EnemyCard parent)
+    {
+        Parent = parent;
+    }
+    public override void Apply()
+    {
+        Type enemyType = Parent.EnemyToAdd.GetType();
+        if (MyModifier.BonusSkullSwarm.ContainsKey(enemyType))
+            MyModifier.BonusSkullSwarm[enemyType] += (int)Percent;
+        else
+            MyModifier.BonusSkullSwarm[enemyType] = (int)Percent;
+    }
+    public override string Description()
+    {
+        return $"{$"Skull Swarm (".WithSizeAndColor(28, DetailedDescription.LesserGray)}" +
+            $"{Parent.EnemyToAdd.Name().WithSizeAndColor(28, DetailedDescription.Rares[5])}" +
+            $"{"):".WithSizeAndColor(28, DetailedDescription.LesserGray)} {RedText(NumberText)}";
     }
 }
 public abstract class Reward : ClauseEffect

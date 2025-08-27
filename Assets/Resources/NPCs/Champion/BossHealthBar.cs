@@ -78,9 +78,8 @@ public class BossHealthBar : MonoBehaviour
         Vector2 toMyPos = myPos - middle;
         float currentDistanceX = Mathf.Abs(toMyPos.x);
         float currentDistanceY = Mathf.Abs(toMyPos.y);
-        float ratioX = targetDistanceX / currentDistanceX;
-        float ratioY = targetDistanceY / currentDistanceY;
-        float angle = toMyPos.ToRotation();
+        float ratioX = currentDistanceX == 0 ? 1 : targetDistanceX / currentDistanceX;
+        float ratioY = currentDistanceY == 0 ? 1 : targetDistanceY / currentDistanceY;
 
         Vector2 relativePosition = toMyPos;
         if (ratioX < 1 && ratioY < 1)

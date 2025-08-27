@@ -30,7 +30,7 @@ public class DetailedDescription
         return ret;
     }
     public int Rarity;
-    private static readonly string[] Rares = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934", "#FFAAAA" };
+    public static readonly string[] Rares = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934", "#FFAAAA" };
     public static readonly string Yellow = "#FFED75";
     public static readonly string Gray = "#999999";
     public static readonly string LesserGray = "#DDDDDD";
