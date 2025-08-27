@@ -1,14 +1,13 @@
 Vortex'sDeveloperLog(BubbleEdition)
 
 Maybe Do:
-1. GameObject Request system (in order to somewhat replicate manual spritebatch)
+1. Organize layers better for rendering
 2. Add cloud particles
 3. Quadrant system UI
 4. Day/Night system (so we can have cooler lighting)
 5. Wave bar on the top shows SKULL enemies remaining, potentially current wave card + modifier information
 6. A way for cheaper enemies to get stronger when a Skull card, such as guaranteed Skull swarm
 	1. This would be especially good for recurrence waves (after you already have the enemy in the pool), and for enemies like duck and chicken
-7. Designated Skull enemies location shown during wave (potentially doable by just shifting the skull around)
 
 Need to do:
 
@@ -42,7 +41,7 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-8/25/25 to 8/26/25
+8/25/25 to 8/27/25
 1. Add skull ticks + animations to the pylon meter to show when associated card waves will be spawned.
 2. Adjustments to the rate at enemies are spawned, the length of waves, and make it so enemies can only be spawned as part of associated cards during their first appearance, unless they are the first enemy in the deck (Ducks, right now).
 3. Gachapon shop restocks a fair bit faster
@@ -54,7 +53,8 @@ Done:
 9. Adjust size and hitboxes of all enemies to make them more standardized for purpose of buff application and other additional ui elements
 10. Skull Enemies (a champion variant of enemies spawned at wave checkpoints). They have 2x hp, 1.14x size, and a cool health bar!
 11. Duck base health 12 -> 10, max coins 10 -> 8
-12. Skull enemies must be killed before a wave ends
+12. Skull enemies must be killed before a wave properly ends
+13. At the end of a wave, but before skull enemies are killed, indicators will show the general direction skull enemies are in (so they are easier to kill to end a wave)
 
 8/18/25 to 8/25/25
 1. Add Burger Powerup and black market powerup basics (right now very primitive system)
