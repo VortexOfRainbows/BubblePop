@@ -157,6 +157,10 @@ public class DirectorSkullSwarmModifier : DirectorModifier
     {
         Parent = parent;
     }
+    public override float GetCost()
+    {
+        return 0;
+    }
     public override void Apply()
     {
         Type enemyType = Parent.EnemyToAdd.GetType();
@@ -167,9 +171,13 @@ public class DirectorSkullSwarmModifier : DirectorModifier
     }
     public override string Description()
     {
-        return $"{$"Skull Swarm (".WithSizeAndColor(28, DetailedDescription.LesserGray)}" +
+        if(IsPermanent)
+            return $"{$"Skull Swarm (".WithSizeAndColor(28, DetailedDescription.LesserGray)}" +
             $"{Parent.EnemyToAdd.Name().WithSizeAndColor(28, DetailedDescription.Rares[5])}" +
             $"{"):".WithSizeAndColor(28, DetailedDescription.LesserGray)} {RedText(NumberText)}";
+        else
+            return $"{$"Skull Swarm".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(NumberText)}";
+
     }
 }
 public abstract class Reward : ClauseEffect
