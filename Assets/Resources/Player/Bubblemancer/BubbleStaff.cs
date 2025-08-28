@@ -8,8 +8,8 @@ public class BubbleStaff : BubblemancerWand
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
-        offset.x -= 0.04f;
-        offset.y -= 0.04f;
+        offset.y -= 0.01f;
+        scale *= 0.99f;
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
