@@ -81,15 +81,20 @@ public class CardData
         }
         if (waveNum == 8)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MaxDifficultyCard ? EnemyID.Gatligator : EnemyID.OldFlamingo));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Ent : MaxDifficultyCard ? EnemyID.Gatligator : EnemyID.OldFlamingo));
         }
         if (waveNum == 9)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(!MaxDifficultyCard ? EnemyID.Gatligator : EnemyID.OldLeonard));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Ent : MaxDifficultyCard ? EnemyID.OldLeonard : EnemyID.Gatligator));
         }
         if (waveNum == 10)
         {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = false });
+        }
+        if (waveNum == 12)
+        {
+            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Ent) { IsPermanent = true });
+            m = new(AvailablePoints, 1, new DirectorSkullSwarmModifier(e.Enemy) { ApplicationStrength = 2, IsPermanent = false });
         }
         if (waveNum >= 15 && waveNum % 5 == 0)
         {

@@ -15,15 +15,16 @@ public static class EnemyID
             AllEnemyList.Add(prefab);
         return prefab;
     }
-    public static GameObject PortalPrefab = Resources.Load<GameObject>("NPCs/Portal");
-    public static GameObject OldDuck = LoadNPC("Old/EnemyDuck");
-    public static GameObject OldLeonard = LoadNPC("Old/EnemyLaserDuck");
-    public static GameObject OldFlamingo = LoadNPC("Old/EnemyFlamingo");
-    public static GameObject OldSoap = LoadNPC("Old/EnemySoap");
-    public static GameObject OldSmallSoap = LoadNPC("Old/EnemySoapTiny", false);
-    public static GameObject Chicken = LoadNPC("Chicken/Chicken");
-    public static GameObject Gatligator = LoadNPC("Gatligator/Gatligator");
-    public static GameObject Crow = LoadNPC("Crow/Crow");
+    public static readonly GameObject PortalPrefab = Resources.Load<GameObject>("NPCs/Portal");
+    public static readonly GameObject OldDuck = LoadNPC("Old/EnemyDuck");
+    public static readonly GameObject OldLeonard = LoadNPC("Old/EnemyLaserDuck");
+    public static readonly GameObject OldFlamingo = LoadNPC("Old/EnemyFlamingo");
+    public static readonly GameObject OldSoap = LoadNPC("Old/EnemySoap");
+    public static readonly GameObject OldSmallSoap = LoadNPC("Old/EnemySoapTiny", false);
+    public static readonly GameObject Chicken = LoadNPC("Chicken/Chicken");
+    public static readonly GameObject Gatligator = LoadNPC("Gatligator/Gatligator");
+    public static readonly GameObject Crow = LoadNPC("Crow/Crow");
+    public static readonly GameObject Ent = LoadNPC("Ent/Ent");
 }
 public class Enemy : Entity
 {
