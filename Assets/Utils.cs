@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using static Enemy;
 public static class Utils
 {
@@ -258,5 +259,9 @@ public static class Utils
     public static string WithSizeAndColor(this string s, int size, string color)
     {
         return $"<size={size}><color={color}>{s}</color></size>";
+    }
+    public static TileBase GetTile(this Tilemap map, int i, int j)
+    {
+        return map.GetTile(new Vector3Int(i, j));
     }
 }
