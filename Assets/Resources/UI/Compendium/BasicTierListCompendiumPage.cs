@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerUpPage : TierListCompendiumPage
+public class BasicTierListCompendiumPage
+    : TierListCompendiumPage
 {
 
 }

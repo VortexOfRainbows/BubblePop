@@ -38,13 +38,13 @@ public class Compendium : MonoBehaviour
         AutoButton.targetGraphic.color = CurrentlySelectedPage.AutoNextTierList ? Color.yellow : Color.white;
     }
     private int m_PageNumber = 1;
-    public static PowerUpPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber] as PowerUpPage;
+    public static BasicTierListCompendiumPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber] as BasicTierListCompendiumPage;
     public Canvas MyCanvas;
     public RectTransform MyCanvasRectTransform => MyCanvas.GetComponent<RectTransform>();
     public CompendiumPage[] Pages;
     public Button[] PageButtons;
-    public PowerUpPage PowerPage { get; private set; }
-    public PowerUpPage EquipPage { get; private set; }
+    public BasicTierListCompendiumPage PowerPage { get; private set; }
+    public BasicTierListCompendiumPage EquipPage { get; private set; }
     private bool Active { get; set; }
     public Button OpenCompendiumButton;
     public Transform TopBar;
@@ -59,8 +59,8 @@ public class Compendium : MonoBehaviour
     }
     public void Start()
     {
-        PowerPage = Pages[0] as PowerUpPage;
-        EquipPage = Pages[1] as PowerUpPage;
+        PowerPage = Pages[0] as BasicTierListCompendiumPage;
+        EquipPage = Pages[1] as BasicTierListCompendiumPage;
         m_Instance = this;
         SetPage(0);
     }
@@ -74,7 +74,7 @@ public class Compendium : MonoBehaviour
         if (EquipPage != null)
             EquipPage.OnUpdate();
     }
-    public void UpdatePage(PowerUpPage page)
+    public void UpdatePage(BasicTierListCompendiumPage page)
     {
         if (page != null && Active && page.isActiveAndEnabled)
         {
