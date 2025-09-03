@@ -8,6 +8,8 @@ public static class EnemyID
     {
         public Sprite CardBG;
         public Sprite Card;
+        public int TimesKilled { get; set; } = 0;
+        public int TimesKilledSkull { get; set; } = 0;
     }
     public static Dictionary<int, StaticEnemyData> EnemyData { get; set; } = new();
     public static List<Enemy> SpawnableEnemiesList { get; set; } = new();
@@ -22,7 +24,7 @@ public static class EnemyID
         var d = new StaticEnemyData();
         e.InitStatics(ref d);
         EnemyData.Add(CurrentIndex, d);
-        e.IndexInAllEnemyArray = CurrentIndex++;
+        e.SetIndexInAllEnemyArray(CurrentIndex++);
         AllEnemiesList.Add(e);
         if (SpawnList)
             SpawnableEnemiesList.Add(e);
@@ -41,7 +43,10 @@ public static class EnemyID
 }
 public class Enemy : Entity
 {
-    public int IndexInAllEnemyArray { get; set; } = -1;
+    public void SetIndexInAllEnemyArray(int i) => IndexInAllEnemyArray = i;
+    public int GetIndex() => IndexInAllEnemyArray;
+    [SerializeField]
+    private int IndexInAllEnemyArray = -1; //This must be a field, not a property, as fields are naturally cloned over from spawn from the initial prefab
     public EnemyID.StaticEnemyData StaticData => EnemyID.EnemyData[IndexInAllEnemyArray];
     public virtual void InitStatics(ref EnemyID.StaticEnemyData data)
     {
@@ -209,7 +214,12 @@ public class Enemy : Entity
     public sealed override void Kill()
     {
         if (IsSkull)
+        {
+            StaticData.TimesKilledSkull++;
             WaveDirector.SkullEnemiesActive -= 1;
+        }
+        StaticData.TimesKilled++;
+        Debug.Log($"[{IndexInAllEnemyArray}] Killed: {StaticData.TimesKilled}");
         Enemies.Remove(this);
         OnKill();
         float rand = 1;
