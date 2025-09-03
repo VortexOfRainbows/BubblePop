@@ -5,24 +5,28 @@ public class EnemyUIElement : MonoBehaviour
 {
     public Image CardGraphic;
     public Image CardGraphicBG;
-    public Enemy MyEnemy = null;
+    public Enemy MyEnemy { get; set; } = null;
+    public bool HasHoverVisual { get; set; } = false;
+    public bool Unlocked => false;
     public int MyID = 0;
-    public void SetEnemy(GameObject enemyBasePrefab)
+    public void SetEnemy(Enemy enemyBasePrefab)
     {
-        MyEnemy = enemyBasePrefab.GetComponent<Enemy>();
+        MyEnemy = enemyBasePrefab;
     }
-    public void Init(int type)
-    {
-        Init(EnemyID.AllEnemyList[MyID = type]);
-        Init();
-    }
-    public void Init(GameObject enemyBasePrefab)
+    public void Init(int type) => Init(EnemyID.SpawnableEnemiesList[MyID = type]);
+    public void Init(GameObject enemyBasePrefab) => Init(enemyBasePrefab.GetComponent<Enemy>());
+    public void Init(Enemy enemyBasePrefab)
     {
         SetEnemy(enemyBasePrefab);
         Init();
     }
     public void Init()
     {
-
+        CardGraphic.sprite = MyEnemy.StaticData.Card;
+        CardGraphicBG.sprite = MyEnemy.StaticData.CardBG;
+    }
+    public void Start()
+    {
+        Init(0);   
     }
 }

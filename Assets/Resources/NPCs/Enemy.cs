@@ -1,18 +1,31 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public static class EnemyID
 {
-    public static List<GameObject> AllEnemyList = new();
-    public static int Max => AllEnemyList.Count;
-    public static GameObject LoadNPC(string str, bool addToList = true)
+    public class StaticEnemyData
+    {
+        public Sprite CardBG;
+        public Sprite Card;
+    }
+    public static Dictionary<int, StaticEnemyData> EnemyData { get; set; } = new();
+    public static List<Enemy> SpawnableEnemiesList { get; set; } = new();
+    public static List<Enemy> AllEnemiesList { get; set; } = new();
+    public static int MaxRandom => SpawnableEnemiesList.Count;
+    public static int Max => CurrentIndex;
+    private static int CurrentIndex = 0;
+    public static GameObject LoadNPC(string str, bool SpawnList = true)
     {
         GameObject prefab = Resources.Load<GameObject>($"NPCs/{str}");
-        if(addToList)
-            AllEnemyList.Add(prefab);
+        Enemy e = prefab.GetComponent<Enemy>();
+        var d = new StaticEnemyData();
+        e.InitStatics(ref d);
+        EnemyData.Add(CurrentIndex, d);
+        e.IndexInAllEnemyArray = CurrentIndex++;
+        AllEnemiesList.Add(e);
+        if (SpawnList)
+            SpawnableEnemiesList.Add(e);
         return prefab;
     }
     public static readonly GameObject PortalPrefab = Resources.Load<GameObject>("NPCs/Portal");
@@ -28,6 +41,13 @@ public static class EnemyID
 }
 public class Enemy : Entity
 {
+    public int IndexInAllEnemyArray { get; set; } = -1;
+    public EnemyID.StaticEnemyData StaticData => EnemyID.EnemyData[IndexInAllEnemyArray];
+    public virtual void InitStatics(ref EnemyID.StaticEnemyData data)
+    {
+        data.Card = Resources.Load<Sprite>("NPCs/Old/rubber_duck");
+        data.CardBG = Resources.Load<Sprite>("UI/Background");
+    }
     public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false)
     {
         Enemy e = Instantiate(EnemyPrefab, position, Quaternion.identity).GetComponent<Enemy>();

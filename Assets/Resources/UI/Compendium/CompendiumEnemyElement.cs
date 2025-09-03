@@ -71,21 +71,21 @@ public class CompendiumEnemyElement : CompendiumElement
             //}
         //}
     }
-    //public override void SetHovering(bool canHover)
-    //{
-        //MyElem.DisplayOnly = !canHover;
-    //}
-    //public override bool IsLocked()
-    //{
-        //return !MyElem.Unlocked;
-    //}
+    public override void SetHovering(bool canHover)
+    {
+        MyElem.HasHoverVisual = canHover;
+    }
+    public override bool IsLocked()
+    {
+        return !MyElem.Unlocked;
+    }
     //public override int GetRare(bool reverse = false)
     //{
-        //return MyElem.ActiveEquipment.GetRarity();
+    //    return MyElem.ActiveEquipment.GetRarity();
     //}
     //public override int GetCount()
     //{
-        //return MyElem.ActiveEquipment.TotalTimesUsed;
+    //    return MyElem.ActiveEquipment.TotalTimesUsed;
     //}
     public override CompendiumElement Instantiate(TierList parent, TierCategory cat, Canvas canvas, int i, int position)
     {

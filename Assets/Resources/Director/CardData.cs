@@ -217,7 +217,7 @@ public class EnemyClause : CardClause
         EnemyCard newEnemy = null;
         while (newEnemy == null)
         {
-            Enemy e = EnemyID.AllEnemyList[Utils.RandInt(EnemyID.Max)].GetComponent<Enemy>();
+            Enemy e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
             newEnemy = new(e);
             if (newEnemy.GetCost() > Points)
                 newEnemy = null;
