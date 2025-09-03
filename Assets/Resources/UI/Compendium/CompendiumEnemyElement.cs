@@ -16,8 +16,7 @@ public class CompendiumEnemyElement : CompendiumElement
     public override void Init(int i, Canvas canvas)
     {
         TypeID = i;
-        //if (MyElem.ActiveEquipment != null)
-        //    Destroy(MyElem.ActiveEquipment.gameObject);
+        MyElem.Init(i);
         //MyElem.UpdateEquipment(Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>());
         //MyElem.SetCompendiumLayering(canvas.sortingLayerID, Style == 4 ? 65 : 45, Style == 3 ? 0 : 1); //2 = UICamera, 20 = compendium canvas size
         CountCanvas.sortingLayerID = canvas.sortingLayerID;
@@ -27,7 +26,7 @@ public class CompendiumEnemyElement : CompendiumElement
         if (Style == 2)
         {
             BG.enabled = false;
-            //MyElem.ForceHideCount = true;
+            MyElem.HasHoverVisual = false;
             transform.localScale = Vector3.one * 0.8f;
             transform.GetComponent<RectTransform>().pivot = Vector2.one * 0.5f;
             forceInitUpdates += 2;
@@ -39,37 +38,36 @@ public class CompendiumEnemyElement : CompendiumElement
     {
         if (TypeID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
-       // count.gameObject.SetActive(Compendium.Instance.EquipPage.ShowCounts && !MyElem.DisplayOnly && !IsLocked() && Style <= 1);
-        //if (MyElem.ActiveEquipment != null)
-        //{
-            //count.text = GetCount().ToString();
-            //MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
-            //if (clicked)
-            //{
-                //Compendium.Instance.EquipPage.UpdateSelectedType(TypeID);
-            //}
-            //if(hovering && Control.RightMouseClick)
-            //{
-                //Compendium.Instance.EquipPage.TierList.QueueRemoval = TypeID;
-            //}    
-            //if (Style <= 1)
-            //{
-                //Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
-                //BG.color = Color.Lerp(BG.color, target, 0.125f);
-            //}
-            //Selected = TypeID == Compendium.Instance.EquipPage.SelectedType;
-            //if (IsLocked())
-            //{
-                //MyElem.UpdateColor(Color.black);
-            //}
-            //else
-            //{
-                //if (GrayOut)
-                    //MyElem.LerpColor(PowerUpUIElement.GrayColor, 0.7f);
-                //else
-                    //MyElem.SetColorToOriginal();
-            //}
-        //}
+        count.gameObject.SetActive(Compendium.Instance.EquipPage.ShowCounts && MyElem.HasHoverVisual && !IsLocked() && Style <= 1);
+        count.text = GetCount().ToString();
+        //MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
+        bool clicked = false;
+        bool hovering = false;
+        if (clicked)
+        {
+            Compendium.Instance.EquipPage.UpdateSelectedType(TypeID);
+        }
+        if (hovering && Control.RightMouseClick)
+        {
+            Compendium.Instance.EquipPage.TierList.QueueRemoval = TypeID;
+        }
+        if (Style <= 1)
+        {
+            Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
+            BG.color = Color.Lerp(BG.color, target, 0.125f);
+        }
+        Selected = TypeID == Compendium.Instance.EquipPage.SelectedType;
+        if (IsLocked())
+        {
+            MyElem.UpdateColor(true, false);
+        }
+        else
+        {
+            if (GrayOut)
+                MyElem.UpdateColor(false, true);
+            else
+                MyElem.UpdateColor(false, false);
+        }
     }
     public override void SetHovering(bool canHover)
     {

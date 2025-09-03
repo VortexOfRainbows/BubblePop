@@ -25,8 +25,26 @@ public class EnemyUIElement : MonoBehaviour
         CardGraphic.sprite = MyEnemy.StaticData.Card;
         CardGraphicBG.sprite = MyEnemy.StaticData.CardBG;
     }
+    [SerializeField] private bool InitOnStart = false;
     public void Start()
     {
-        Init(0);   
+        if(InitOnStart)
+            Init(0);   
+    }
+    public void UpdateColor(bool locked, bool grayOut)
+    {
+        if(locked)
+        {
+            CardGraphic.color = Color.black;
+            CardGraphicBG.color = Color.gray; //Might wanna use grayscale shader here instead
+        }
+        else if (grayOut)
+        {
+            CardGraphic.color = CardGraphicBG.color = PowerUpUIElement.GrayColor;
+        }
+        else
+        {
+            CardGraphic.color = CardGraphicBG.color = Color.white;
+        }
     }
 }
