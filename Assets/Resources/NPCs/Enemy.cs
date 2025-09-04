@@ -11,6 +11,7 @@ public static class EnemyID
         public int TimesKilled { get; set; } = 0;
         public int TimesKilledSkull { get; set; } = 0;
         public int Rarity { get; set; } = 0;
+        public float Cost { get; set; } = 0;
     }
     public static Dictionary<int, StaticEnemyData> EnemyData { get; private set; } = new();
     public static List<Enemy> SpawnableEnemiesList { get; private set; } = new();
@@ -55,11 +56,12 @@ public class Enemy : Entity
     }
     public void InitStaticDefaults(ref EnemyID.StaticEnemyData data)
     {
-        data.Rarity = (int)Mathf.Clamp(CostMultiplier, 1, 5);
+        data.Cost = CostMultiplier;
+        data.Rarity = (int)Mathf.Clamp(data.Cost, 1, 5);
         InitStatics(ref data);
-        if(data.Card == null)
+        if (data.Card == null)
             data.Card = Resources.Load<Sprite>("NPCs/Old/rubber_duck");
-        if(data.CardBG == null)
+        if (data.CardBG == null)
             data.CardBG = Resources.Load<Sprite>("UI/Background");
     }
     public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false)
@@ -121,9 +123,9 @@ public class Enemy : Entity
     private bool JustSpawnedIn = true;
     public sealed override void OnFixedUpdate()
     {
-        if(JustSpawnedIn)
+        if (JustSpawnedIn)
         {
-            if(IsSkull)
+            if (IsSkull)
             {
                 MinCoins += 5;
                 MaxCoins += 5;
@@ -159,7 +161,7 @@ public class Enemy : Entity
         {
             float damage = proj.Damage * Player.Instance.DamageMultiplier;
             bool crit = false;
-            if(FirstStrike)
+            if (FirstStrike)
             {
                 FirstStrike = false;
                 int initiative = Player.Instance.RollInit;
@@ -232,7 +234,7 @@ public class Enemy : Entity
         Enemies.Remove(this);
         OnKill();
         float rand = 1;
-        for(int i = 0; i < CoinRandomizationAggressiveness; ++i)
+        for (int i = 0; i < CoinRandomizationAggressiveness; ++i)
         {
             rand *= Utils.RandFloat();
         }
@@ -266,4 +268,8 @@ public class Enemy : Entity
         IsSkull = value;
     }
     public virtual float HealthBarOffset => 0;
+    public int GetRarity()
+    {
+        return StaticData.Rarity;
+    }
 }

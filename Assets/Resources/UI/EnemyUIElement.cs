@@ -6,9 +6,9 @@ public class EnemyUIElement : MonoBehaviour
     public Image CardGraphic;
     public Image CardGraphicBG;
     public Enemy MyEnemy { get; set; } = null;
-    public bool HasHoverVisual { get; set; } = false;
+    public bool HasHoverVisual { get; set; } = true;
     public bool CompendiumElement { get; set; } = false;
-    public bool Unlocked => false;
+    public bool Unlocked => true;
     public int MyID = 0;
     public void SetEnemy(Enemy enemyBasePrefab)
     {
@@ -54,7 +54,8 @@ public class EnemyUIElement : MonoBehaviour
         hovering = clicked = false;
         if (Utils.IsMouseHoveringOverThis(true, hoverArea, 0, canvas) && (!CompendiumElement || HasHoverVisual))
         {
-            string name = Unlocked ? MyEnemy.Name() : DetailedDescription.TextBoundedByRarityColor(MyEnemy.StaticData.Rarity - 1, "???", false);
+            Debug.Log(MyEnemy.StaticData.Rarity);
+            string name = DetailedDescription.TextBoundedByRarityColor(MyEnemy.StaticData.Rarity - 1, Unlocked ? MyEnemy.Name() : "???", false);
             //string desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
             PopUpTextUI.Enable(name, "");
             float scaleUp = 1.1f;

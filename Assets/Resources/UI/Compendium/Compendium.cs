@@ -185,6 +185,13 @@ public class Compendium : MonoBehaviour
                 }
                 DisplayPortDescription.text = DisplayCEE.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
             }
+            else if(PageNumber == 2)
+            {
+                Enemy e = DisplayCPEnemy.MyElem.MyEnemy;
+                rare = e.GetRarity() - 1;
+                string concat = $"<size=42>{e.Name()}</size>" + shortLineBreak;
+                DisplayPortDescription.text = DisplayCPEnemy.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
+            }
             UpdateStars(rare);
         }
         Vector2 target = DisplayPortDescription.GetRenderedValues();

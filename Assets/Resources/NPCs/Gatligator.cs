@@ -13,6 +13,11 @@ public class Gatligator : Enemy
     private float ShootSpeed = 0.5f;
     public override float PowerDropChance => 0.1f;
     public override float CostMultiplier => 5;
+    public override void InitStatics(ref EnemyID.StaticEnemyData data)
+    {
+        data.Card = Resources.Load<Sprite>("NPCs/Gatligator/Alligator");
+        data.Rarity = 4;
+    }
     public override void Init()
     {
         Life = 25;
