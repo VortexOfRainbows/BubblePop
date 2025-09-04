@@ -45,6 +45,7 @@ public class Compendium : MonoBehaviour
     public Button[] PageButtons;
     public BasicTierListCompendiumPage PowerPage { get; private set; }
     public BasicTierListCompendiumPage EquipPage { get; private set; }
+    public BasicTierListCompendiumPage EnemyPage { get; private set; }
     private bool Active { get; set; }
     public Button OpenCompendiumButton;
     public Transform TopBar;
@@ -61,6 +62,7 @@ public class Compendium : MonoBehaviour
     {
         PowerPage = Pages[0] as BasicTierListCompendiumPage;
         EquipPage = Pages[1] as BasicTierListCompendiumPage;
+        EnemyPage = Pages[2] as BasicTierListCompendiumPage;
         m_Instance = this;
         SetPage(0);
     }
@@ -91,13 +93,15 @@ public class Compendium : MonoBehaviour
         Vector2 startingPosition = new Vector3(-ScreenResolution, 0);
         UpdatePage(PowerPage);
         UpdatePage(EquipPage);
+        UpdatePage(EnemyPage);
         Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, 0.1f, 0.1f);
     }
 
     #region Display and description on the right side of the compendium
-    public CompendiumElement ActiveElement => CurrentlySelectedPage == Pages[1] ? DisplayCEE : DisplayCPUE;
+    public CompendiumElement ActiveElement => CurrentlySelectedPage == Pages[2] ? DisplayCPEnemy : CurrentlySelectedPage == Pages[1] ? DisplayCEE : DisplayCPUE;
     public CompendiumPowerUpElement DisplayCPUE;
     public CompendiumEquipmentElement DisplayCEE;
+    public CompendiumEnemyElement DisplayCPEnemy;
     public TextMeshProUGUI DisplayPortDescription;
     public RectTransform DescriptionContentRect;
     public GameObject[] Stars;
@@ -108,13 +112,22 @@ public class Compendium : MonoBehaviour
             DisplayCPUE.Init(SelectedType, MyCanvas);
             DisplayCPUE.gameObject.SetActive(true);
             DisplayCEE.gameObject.SetActive(false);
+            DisplayCPEnemy.gameObject.SetActive(false);
         }
-        else
+        else if(PageNumber == 1)
         {
             DisplayCEE.Style = 3;
             DisplayCEE.Init(SelectedType, MyCanvas);
             DisplayCPUE.gameObject.SetActive(false);
             DisplayCEE.gameObject.SetActive(true);
+            DisplayCPEnemy.gameObject.SetActive(false);
+        }
+        else
+        {
+            DisplayCPEnemy.Init(SelectedType, MyCanvas);
+            DisplayCPUE.gameObject.SetActive(false);
+            DisplayCEE.gameObject.SetActive(false);
+            DisplayCPEnemy.gameObject.SetActive(true);
         }
     }
     public void UpdateDescription(bool reset, int SelectedType)
@@ -122,7 +135,7 @@ public class Compendium : MonoBehaviour
         if (reset && SelectedType >= 0)
         {
             string shortLineBreak = "<size=12>\n\n</size>";
-            int rare;
+            int rare = 0;
             if (PageNumber == 0)
             {
                 PowerUp p = PowerUp.Get(SelectedType);
@@ -157,7 +170,7 @@ public class Compendium : MonoBehaviour
                 }
                 DisplayPortDescription.text = DisplayCPUE.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
             }
-            else
+            else if (PageNumber == 1)
             {
                 Equipment e = DisplayCEE.MyElem.ActiveEquipment;
                 rare = e.GetRarity() - 1;

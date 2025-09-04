@@ -10,10 +10,11 @@ public static class EnemyID
         public Sprite Card;
         public int TimesKilled { get; set; } = 0;
         public int TimesKilledSkull { get; set; } = 0;
+        public int Rarity { get; set; } = 0;
     }
-    public static Dictionary<int, StaticEnemyData> EnemyData { get; set; } = new();
-    public static List<Enemy> SpawnableEnemiesList { get; set; } = new();
-    public static List<Enemy> AllEnemiesList { get; set; } = new();
+    public static Dictionary<int, StaticEnemyData> EnemyData { get; private set; } = new();
+    public static List<Enemy> SpawnableEnemiesList { get; private set; } = new();
+    public static List<Enemy> AllEnemiesList { get; private set; } = new();
     public static int MaxRandom => SpawnableEnemiesList.Count;
     public static int Max => CurrentIndex;
     private static int CurrentIndex = 0;
@@ -52,6 +53,7 @@ public class Enemy : Entity
     {
         data.Card = Resources.Load<Sprite>("NPCs/Old/rubber_duck");
         data.CardBG = Resources.Load<Sprite>("UI/Background");
+        data.Rarity = (int)Mathf.Clamp(CostMultiplier, 1, 5);
     }
     public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false)
     {
