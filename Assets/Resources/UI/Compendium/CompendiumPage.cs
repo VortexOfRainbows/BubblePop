@@ -146,6 +146,15 @@ public abstract class TierListCompendiumPage : CompendiumPage
                 TierList.OnTierList[i] = false;
             }
         }
+        else if (HoverCPUE is CompendiumEnemyElement)
+        {
+            for (int i = 0; i < EnemyID.AllEnemiesList.Count; ++i)
+            {
+                CompendiumEnemyElement CPUE = Instantiate(CompendiumEnemyElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumEnemyElement>();
+                CPUE.Init(i, MyCanvas);
+                TierList.OnTierList[i] = false;
+            }
+        }
         UpdateContentSize();
         ShowCounts = true;
         ToggleCount(countButton); //OFF by default

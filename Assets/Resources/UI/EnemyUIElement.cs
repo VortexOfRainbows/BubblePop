@@ -14,7 +14,7 @@ public class EnemyUIElement : MonoBehaviour
     {
         MyEnemy = enemyBasePrefab;
     }
-    public void Init(int type) => Init(EnemyID.SpawnableEnemiesList[MyID = type]);
+    public void Init(int type) => Init(EnemyID.AllEnemiesList[MyID = type]);
     public void Init(GameObject enemyBasePrefab) => Init(enemyBasePrefab.GetComponent<Enemy>());
     public void Init(Enemy enemyBasePrefab)
     {

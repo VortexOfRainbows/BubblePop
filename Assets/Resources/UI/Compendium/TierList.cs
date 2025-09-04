@@ -197,6 +197,8 @@ public class TierList : MonoBehaviour
             return;
         if (TierListType == 1 && !Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
             return;
+        if (TierListType == 2)// && !Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
+            return;
         if (!OnTierList[i])
         {
             if (cpue == null)

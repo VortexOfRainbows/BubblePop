@@ -23,7 +23,7 @@ public static class EnemyID
         GameObject prefab = Resources.Load<GameObject>($"NPCs/{str}");
         Enemy e = prefab.GetComponent<Enemy>();
         var d = new StaticEnemyData();
-        e.InitStatics(ref d);
+        e.InitStaticDefaults(ref d);
         EnemyData.Add(CurrentIndex, d);
         e.SetIndexInAllEnemyArray(CurrentIndex++);
         AllEnemiesList.Add(e);
@@ -51,9 +51,16 @@ public class Enemy : Entity
     public EnemyID.StaticEnemyData StaticData => EnemyID.EnemyData[IndexInAllEnemyArray];
     public virtual void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.Card = Resources.Load<Sprite>("NPCs/Old/rubber_duck");
-        data.CardBG = Resources.Load<Sprite>("UI/Background");
+
+    }
+    public void InitStaticDefaults(ref EnemyID.StaticEnemyData data)
+    {
         data.Rarity = (int)Mathf.Clamp(CostMultiplier, 1, 5);
+        InitStatics(ref data);
+        if(data.Card == null)
+            data.Card = Resources.Load<Sprite>("NPCs/Old/rubber_duck");
+        if(data.CardBG == null)
+            data.CardBG = Resources.Load<Sprite>("UI/Background");
     }
     public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false)
     {
