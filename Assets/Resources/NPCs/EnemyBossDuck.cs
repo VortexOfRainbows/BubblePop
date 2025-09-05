@@ -7,10 +7,10 @@ public class EnemyBossDuck : EnemyDuck
     private int projectileTimer = -50;
     public override float CostMultiplier => 10;
     public override float PowerDropChance => 1f;
-    public override void Init()
+    public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        Life = 45;
-        MaxCoins = 50;
+        data.BaseMaxLife = 45;
+        data.BaseMaxCoin = 50;
     }
     public override void AI()
     {

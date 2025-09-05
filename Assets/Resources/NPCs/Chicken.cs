@@ -7,10 +7,10 @@ public class Chicken : Enemy
     public float moveSpeed = 0.12f;
     public float inertiaMult = 0.96f;
     public override float CostMultiplier => 1;
-    public override void Init()
+    public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        Life = 7;
-        MaxCoins = 10;
+        data.BaseMaxLife = 7;
+        data.BaseMaxCoin = 10;
     }
     public void UpdateDirection(float i)
     {

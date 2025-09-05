@@ -14,12 +14,11 @@ public class EnemyDuck : Enemy
     private float moveSpeed = 0.1f;
     protected float bobbingTimer = 0;
     public override float CostMultiplier => 1;
-    public override void Init()
+    public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        Life = 10;
-        MaxCoins = 8;
+        data.BaseMaxCoin = 8;
+        data.BaseMaxLife = 10;
     }
-
     // Update is called once per frame
     public void MoveUpdate()
     {

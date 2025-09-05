@@ -1,12 +1,15 @@
 using UnityEngine;
 public class EnemySoapTiny : EnemySoap
 {
-    public override void Init()
+    public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        Life = 3;
+        data.BaseMaxLife = 3;
+        data.BaseMaxCoin = 5;
+    }
+    public override void OnSpawn()
+    {
         timer = 60;
         UniversalImmuneFrames = 45;
-        MaxCoins = 5;
     }
     public override void OnKill()
     {

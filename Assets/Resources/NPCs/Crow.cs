@@ -12,10 +12,13 @@ public class Crow : Enemy
     private float timer2 = 100;
     private float initialShootDelay = 100;
     public override float CostMultiplier => 2f;
-    public override void Init()
+    public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        Life = 10;
-        MaxCoins = 15;
+        data.BaseMaxLife = 10;
+        data.BaseMaxCoin = 15;
+    }
+    public override void OnSpawn()
+    {
         timer = 0;
     }
     public void UpdateDirection(float i)

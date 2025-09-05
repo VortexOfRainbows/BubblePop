@@ -6,12 +6,23 @@ public static class EnemyID
 {
     public class StaticEnemyData
     {
+        public void LoadData()
+        {
+
+        }
+        public void SaveData()
+        {
+
+        }
         public Sprite CardBG;
         public Sprite Card;
         public int TimesKilled { get; set; } = 0;
         public int TimesKilledSkull { get; set; } = 0;
         public int Rarity { get; set; } = 0;
         public float Cost { get; set; } = 0;
+        public float BaseMaxLife { get; set; } = 10;
+        public float BaseMinCoin { get; set; } = 1;
+        public float BaseMaxCoin { get; set; } = 1;
     }
     public static Dictionary<int, StaticEnemyData> EnemyData { get; private set; } = new();
     public static List<Enemy> SpawnableEnemiesList { get; private set; } = new();
@@ -63,6 +74,21 @@ public class Enemy : Entity
             data.Card = Resources.Load<Sprite>("NPCs/Old/rubber_duck");
         if (data.CardBG == null)
             data.CardBG = Resources.Load<Sprite>("UI/Background");
+    }
+    public sealed override void Init()
+    {
+        SetUpStats();
+        OnSpawn();
+    }
+    public virtual void OnSpawn()
+    {
+
+    }
+    public void SetUpStats()
+    {
+        Life = MaxLife = StaticData.BaseMaxLife;
+        MinCoins = StaticData.BaseMinCoin;
+        MaxCoins = StaticData.BaseMaxCoin;
     }
     public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false)
     {
@@ -215,7 +241,7 @@ public class Enemy : Entity
         }
     }
     public virtual float PowerDropChance => 0.04f;
-    protected float MaxCoins { get; set; } = 0;
+    protected float MaxCoins { get; set; } = 1;
     protected float MinCoins { get; set; } = 1;
     protected int CoinRandomizationAggressiveness = 3;
     /// <summary>

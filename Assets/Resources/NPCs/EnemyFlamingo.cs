@@ -4,10 +4,10 @@ public class EnemyFlamingo : EnemyDuck
 {
     private float projectileSpeed = 3f;
     private int projectileTimer = 300;
-    public override void Init()
+    public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        Life = 10;
-        MaxCoins = 15;
+        data.BaseMaxLife = 10;
+        data.BaseMaxCoin = 15;
     }
     public override float CostMultiplier => 3;
     public override void AI()

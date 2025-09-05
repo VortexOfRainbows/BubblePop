@@ -8,10 +8,10 @@ public class Ent : Enemy
     public float moveSpeed = 0.12f;
     public float inertiaMult = 0.96f;
     public override float CostMultiplier => 3.5f;
-    public override void Init()
+    public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        Life = 27;
-        MaxCoins = 18;
+        data.BaseMaxLife = 27;
+        data.BaseMaxCoin = 18;
     }
     public void UpdateDirection(float i)
     {

@@ -10,10 +10,10 @@ public class EnemySoap : Enemy
     protected float timer = 0;
     protected float moveSpeed = 3f;
     public override float CostMultiplier => 2;
-    public override void Init()
+    public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        Life = 5;
-        MaxCoins = 5;
+        data.BaseMaxLife = 5;
+        data.BaseMaxCoin = 5;
     }
     // Update is called once per frame
     public override void AI()

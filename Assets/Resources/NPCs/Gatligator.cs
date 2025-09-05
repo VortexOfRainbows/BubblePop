@@ -15,13 +15,13 @@ public class Gatligator : Enemy
     public override float CostMultiplier => 5;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
+        data.BaseMaxLife = 25;
+        data.BaseMaxCoin = 40;
         data.Card = Resources.Load<Sprite>("NPCs/Gatligator/Alligator");
         data.Rarity = 4;
     }
-    public override void Init()
+    public override void OnSpawn()
     {
-        Life = 25;
-        MaxCoins = 40;
         ShootTimer = -3f;
         ShootSpeed = 0.38f;
     }
