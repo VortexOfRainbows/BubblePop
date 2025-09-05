@@ -5,6 +5,7 @@ public class EnemySoapTiny : EnemySoap
     {
         data.BaseMaxLife = 3;
         data.BaseMaxCoin = 5;
+        data.Card = Resources.Load<Sprite>("NPCs/Old/soap_tiny_1");
     }
     public override void OnSpawn()
     {

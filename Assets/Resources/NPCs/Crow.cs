@@ -16,6 +16,7 @@ public class Crow : Enemy
     {
         data.BaseMaxLife = 10;
         data.BaseMaxCoin = 15;
+        data.Card = Resources.Load<Sprite>("NPCs/Crow/Crow");
     }
     public override void OnSpawn()
     {

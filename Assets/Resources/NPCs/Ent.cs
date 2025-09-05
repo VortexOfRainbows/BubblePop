@@ -12,6 +12,7 @@ public class Ent : Enemy
     {
         data.BaseMaxLife = 27;
         data.BaseMaxCoin = 18;
+        data.Card = Resources.Load<Sprite>("NPCs/Ent/Tier1TreeEnemy");
     }
     public void UpdateDirection(float i)
     {

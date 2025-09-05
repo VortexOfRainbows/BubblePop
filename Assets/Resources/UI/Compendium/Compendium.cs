@@ -189,7 +189,11 @@ public class Compendium : MonoBehaviour
             {
                 Enemy e = DisplayCPEnemy.MyElem.MyEnemy;
                 rare = e.GetRarity() - 1;
-                string concat = $"<size=42>{e.Name()}</size>" + shortLineBreak;
+                string concat = $"<size=42>{DetailedDescription.TextBoundedByRarityColor(rare, e.Name(), false)}</size>" + shortLineBreak;
+                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Stats\n", false)}</size>";
+                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], "Max Health: ")}{e.StaticData.BaseMaxLife}\n";
+                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, "Coin Range: ")}{e.StaticData.BaseMinCoin}-{e.StaticData.BaseMaxCoin}\n";
+
                 DisplayPortDescription.text = DisplayCPEnemy.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
             }
             UpdateStars(rare);

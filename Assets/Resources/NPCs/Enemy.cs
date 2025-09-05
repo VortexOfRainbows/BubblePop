@@ -264,7 +264,7 @@ public class Enemy : Entity
         {
             rand *= Utils.RandFloat();
         }
-        CoinManager.SpawnCoin(transform.position, (int)(MinCoins + MaxCoins * rand));
+        CoinManager.SpawnCoin(transform.position, (int)(MinCoins + (Mathf.Max(0, MaxCoins - MinCoins)) * rand + 0.5f));
         float reduceRelativeDropRates = Mathf.Max(0.25f, Mathf.Min(1, 0.25f + (400 - WaveDirector.TotalPowersSpawned) / 400f)); //At 400 powers, this number is 0.25, meaning power drop rates will be reduced
         bool LuckyDrop = Utils.RandFloat(1) < PowerDropChance * reduceRelativeDropRates;
         WaveDirector.Point += (int)MaxCoins;
