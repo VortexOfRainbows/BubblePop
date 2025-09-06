@@ -29,7 +29,7 @@ public class CompendiumEnemyElement : CompendiumElement
             transform.GetComponent<RectTransform>().pivot = Vector2.one * 0.5f;
             forceInitUpdates += 2;
         }
-        else if (Style == 1)
+        else if (Style == 3)
             MyElem.HasHoverVisual = false;
         for(int a = 0; a < forceInitUpdates; ++a)
             Update();

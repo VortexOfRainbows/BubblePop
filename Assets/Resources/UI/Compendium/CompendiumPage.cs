@@ -88,7 +88,12 @@ public abstract class TierListCompendiumPage : CompendiumPage
         else if (SortMode == RaritySort) //By rarity
             sortText.text = "Sort: Rarity";
         else if (SortMode == FavSort) //By count
-            sortText.text = "Sort: Favorite";
+        {
+            if(Compendium.CurrentlySelectedPage == Compendium.Instance.EnemyPage)
+                sortText.text = "Sort: Kill Count";
+            else
+                sortText.text = "Sort: Favorite";
+        }
         Sort();
     }
     public void ToggleUnlock(Button unlockButton)
