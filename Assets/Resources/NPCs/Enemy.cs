@@ -23,6 +23,7 @@ public static class EnemyID
         public float BaseMaxLife { get; set; } = 10;
         public float BaseMinCoin { get; set; } = 1;
         public float BaseMaxCoin { get; set; } = 1;
+        public bool Unlocked => true;// TimesKilled > 0;
     }
     public static Dictionary<int, StaticEnemyData> EnemyData { get; private set; } = new();
     public static List<Enemy> SpawnableEnemiesList { get; private set; } = new();

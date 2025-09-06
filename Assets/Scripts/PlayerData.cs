@@ -114,12 +114,12 @@ public static class PlayerData
          *etc.
          */
         Debug.Log(CSV);
-        string tag = list.TierListType == 1 ? "TierList1" : "TierList";
+        string tag = list.TierListType == 2 ? "TierList2" : list.TierListType == 1 ? "TierList1" : "TierList";
         SaveString(tag, CSV);
     }
     public static void LoadTierList(TierList list)
     {
-        string tag = list.TierListType == 1 ? "TierList1" : "TierList";
+        string tag = list.TierListType == 2 ? "TierList2" : list.TierListType == 1 ? "TierList1" : "TierList";
         string CSV = GetString(tag);
         TierList.ReadingFromSave = true;
         string[] words = CSV.Split(',', ':');

@@ -309,6 +309,10 @@ PrefabInstance:
       propertyPath: HoverCPUE
       value: 
       objectReference: {fileID: 5479282091666207969}
+    - target: {fileID: 8653697175324885045, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
+      propertyPath: TierListType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8796816379204366536, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

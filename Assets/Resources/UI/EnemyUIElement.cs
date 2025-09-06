@@ -8,7 +8,7 @@ public class EnemyUIElement : MonoBehaviour
     public Enemy MyEnemy { get; set; } = null;
     public bool HasHoverVisual { get; set; } = true;
     public bool CompendiumElement { get; set; } = false;
-    public bool Unlocked => true;
+    public bool Unlocked => MyEnemy.StaticData.Unlocked;
     public int MyID = 0;
     public void SetEnemy(Enemy enemyBasePrefab)
     {
