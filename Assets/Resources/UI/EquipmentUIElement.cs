@@ -116,6 +116,7 @@ public class EquipmentUIElement : MonoBehaviour
             s.maskInteraction = (SpriteMaskInteraction)maskBehavior;
         }
     }
+    public float HoverRadius { get; set; } = 64;
     public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked, RectTransform hoverArea)
     {
         if(PriceVisual != null && Text != null)
@@ -128,7 +129,8 @@ public class EquipmentUIElement : MonoBehaviour
         hovering = clicked = false;
         UpdateUnlockRelated();
         UpdateOrientation();
-        if (Utils.IsMouseHoveringOverThis(true, hoverArea, 0, canvas) && (!CompendiumElement || !DisplayOnly))
+        float size = CompendiumElement ? 96 + HoverRadius - hoverArea.rect.width : 0;
+        if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || !DisplayOnly))
         {
             string name = Unlocked ? ActiveEquipment.GetName() : DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???", false);
             string desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();

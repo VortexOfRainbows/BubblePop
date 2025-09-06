@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -71,10 +72,11 @@ public class Compendium : MonoBehaviour
         m_Instance = this;
         ScreenResolution = MyCanvasRectTransform.rect.width; //1920 in most cases
         HalfResolution = ScreenResolution / 2f;
-        if(PowerPage != null)
-            PowerPage.OnUpdate();
-        if (EquipPage != null)
-            EquipPage.OnUpdate();
+        foreach (BasicTierListCompendiumPage page in Pages.Cast<BasicTierListCompendiumPage>())
+        {
+            if (page != null)
+                page.OnUpdate();
+        }
     }
     public void UpdatePage(BasicTierListCompendiumPage page)
     {

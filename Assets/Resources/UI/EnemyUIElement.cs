@@ -48,13 +48,15 @@ public class EnemyUIElement : MonoBehaviour
             CardGraphic.color = CardGraphicBG.color = Color.white;
         }
     }
+    public float HoverRadius { get; set; } = 64;
     public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked, RectTransform hoverArea)
     {
         Vector2 targetScale = Vector2.one;
         hovering = clicked = false;
-        if (Utils.IsMouseHoveringOverThis(true, hoverArea, 0, canvas) && (!CompendiumElement || HasHoverVisual))
+        float size = CompendiumElement ? 96 + HoverRadius - hoverArea.rect.width : 0;
+        if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || HasHoverVisual))
         {
-            Debug.Log(MyEnemy.StaticData.Rarity);
+            //Debug.Log(MyEnemy.StaticData.Rarity);
             string name = DetailedDescription.TextBoundedByRarityColor(MyEnemy.StaticData.Rarity - 1, Unlocked ? MyEnemy.Name() : "???", false);
             //string desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
             PopUpTextUI.Enable(name, "");

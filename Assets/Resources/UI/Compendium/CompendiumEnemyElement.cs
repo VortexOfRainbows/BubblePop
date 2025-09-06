@@ -25,7 +25,7 @@ public class CompendiumEnemyElement : CompendiumElement
         {
             BG.enabled = false;
             MyElem.HasHoverVisual = false;
-            transform.localScale = Vector3.one * 0.8f;
+            transform.localScale = Vector3.one * 0.7f;
             transform.GetComponent<RectTransform>().pivot = Vector2.one * 0.5f;
             forceInitUpdates += 2;
         }
@@ -91,6 +91,7 @@ public class CompendiumEnemyElement : CompendiumElement
         cpue.MyElem.HasHoverVisual = false;
         cpue.SetGrayOut(true);
         cpue.Init(i, canvas);
+        cpue.MyElem.HoverRadius = 0;
         return cpue;
     }
 }

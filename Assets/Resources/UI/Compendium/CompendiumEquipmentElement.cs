@@ -95,6 +95,7 @@ public class CompendiumEquipmentElement : CompendiumElement
         cpue.MyElem.DisplayOnly = true;
         cpue.SetGrayOut(true);
         cpue.Init(i, canvas);
+        cpue.MyElem.HoverRadius = 0;
         return cpue;
     }
 }

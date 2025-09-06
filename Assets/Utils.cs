@@ -99,7 +99,7 @@ public static class Utils
         pos += UIManager.ActivePrimaryCanvas.transform.position;
         return pos;
     }
-    public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null)
+    public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null, bool ignoreScale = false)
     {
         if (UIManager.ActivePrimaryCanvas == null)
             return false;
@@ -114,7 +114,7 @@ public static class Utils
         if (rectangular)
         {
             //Debug.Log(pos);
-            scale *= transform.localScale.x;
+            scale *= ignoreScale ? 1 : transform.localScale.x;
             Rect rect = transform.rect;
             float width = (rect.width + radius) * scale;
             float height = (rect.height + radius) * scale ;
@@ -124,7 +124,7 @@ public static class Utils
         }
         else
         {
-            pos += new Vector3(1 - 2 * transform.pivot.x, 1 - 2 * transform.pivot.y) * scale * radius;
+            pos += radius * scale * new Vector3(1 - 2 * transform.pivot.x, 1 - 2 * transform.pivot.y);
             if (((Vector2)pos - (Vector2)Input.mousePosition).magnitude < radius * scale)
                 return true;
         }
