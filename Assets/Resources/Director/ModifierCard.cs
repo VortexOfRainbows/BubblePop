@@ -13,6 +13,8 @@ public class ModifierCard : MonoBehaviour
     public CardScrollArea Modifiers;
     public CardScrollArea Rewards;
     public float DifficultyMultiplier = 1f;
+    public EnemyUIElement CardVisual;
+    public Transform SkullAnchor;
     public void Start() => cardData ??= new(this);
     public void UpdateText()
     {
@@ -56,6 +58,7 @@ public class ModifierCard : MonoBehaviour
         Rewards.SetText(concat);
 
         TitleText.text = cardData.CardName();
+        CardVisual.Init(cardData.EnemyClause.Enemy.EnemyToAdd.GetIndex());
     }
     public void GenerateCardData()
     {
@@ -73,9 +76,10 @@ public class ModifierCard : MonoBehaviour
     {
         if (selected)
             hovering = selected;
-        float growSpeed = 0.06f * FlipTimer + (HasBeenFlipped ? 0.08f : 0f);
-        transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, Utils.DeltaTimeLerpFactor(growSpeed));
+        float growSpeed = Utils.DeltaTimeLerpFactor(0.06f * FlipTimer + (HasBeenFlipped ? 0.08f : 0f));
+        transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
         BG.color = Color.Lerp(BG.color, selected ? Color.yellow : (hovering ? Color.Lerp(Color.yellow, Color.white, 0.8f) : Color.white), Utils.DeltaTimeLerpFactor(0.2f));
+        CardVisual.CardGraphic.transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
     }
     public bool HasBeenFlipped { get; set; } = false;
     private float FlipTimer = 0;
@@ -111,6 +115,7 @@ public class ModifierCard : MonoBehaviour
             }
             UpdateFlippage();
         }
+        UpdateSkulls();
     }
     public void UpdateFlippage()
     {
@@ -138,5 +143,11 @@ public class ModifierCard : MonoBehaviour
             }
             UpdateFlippage();
         }
+        UpdateSkulls();
+    }
+    public void UpdateSkulls()
+    {
+        float height = 900f / 2;
+        Utils.LerpSnap(SkullAnchor, new Vector2(0, height + Mathf.Min(1, 1 - 2 * Mathf.Max(0, FlipTimer - 1.5f)) * -35 - 10), Utils.DeltaTimeLerpFactor(0.5f));
     }
 }
