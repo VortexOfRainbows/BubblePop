@@ -6,13 +6,21 @@ public static class EnemyID
 {
     public class StaticEnemyData
     {
-        public void LoadData()
+        public string SaveTag { get; set; }
+        public StaticEnemyData(string saveTag)
         {
-
+            SaveTag = saveTag;
+            LoadData();
         }
-        public void SaveData()
+        public void LoadData() //Only called on load
         {
-
+            TimesKilled = PlayerData.GetInt($"{SaveTag}_0", 0);
+            TimesKilledSkull = PlayerData.GetInt($"{SaveTag}_1", 0);
+        }
+        public void SaveData() //Called when an enemy is killed
+        {
+            PlayerData.SaveInt($"{SaveTag}_0", TimesKilled);
+            PlayerData.SaveInt($"{SaveTag}_1", TimesKilledSkull);
         }
         public Sprite CardBG;
         public Sprite Card;
@@ -23,7 +31,7 @@ public static class EnemyID
         public float BaseMaxLife { get; set; } = 10;
         public float BaseMinCoin { get; set; } = 1;
         public float BaseMaxCoin { get; set; } = 1;
-        public bool Unlocked => true;// TimesKilled > 0;
+        public bool Unlocked => TimesKilled > 0;
     }
     public static Dictionary<int, StaticEnemyData> EnemyData { get; private set; } = new();
     public static List<Enemy> SpawnableEnemiesList { get; private set; } = new();
@@ -35,7 +43,8 @@ public static class EnemyID
     {
         GameObject prefab = Resources.Load<GameObject>($"NPCs/{str}");
         Enemy e = prefab.GetComponent<Enemy>();
-        var d = new StaticEnemyData();
+        string saveTag = e.name;
+        var d = new StaticEnemyData(saveTag);
         e.InitStaticDefaults(ref d);
         EnemyData.Add(CurrentIndex, d);
         e.SetIndexInAllEnemyArray(CurrentIndex++);
@@ -257,7 +266,8 @@ public class Enemy : Entity
             WaveDirector.SkullEnemiesActive -= 1;
         }
         StaticData.TimesKilled++;
-        Debug.Log($"[{IndexInAllEnemyArray}] Killed: {StaticData.TimesKilled}");
+        StaticData.SaveData();
+        //Debug.Log($"[{IndexInAllEnemyArray}] Killed: {StaticData.TimesKilled}");
         Enemies.Remove(this);
         OnKill();
         float rand = 1;

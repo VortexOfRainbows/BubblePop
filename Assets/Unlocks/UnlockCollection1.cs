@@ -10,7 +10,7 @@ public class WaveUnlock10 : UnlockCondition
 {
     public override string LockedText()
     {
-        return "Reach wave 10\n" +
+        return "Complete wave 10\n" +
             $"Current best: {WaveDirector.HighScoreWaveNum}";
     }
     protected override bool IsUnlocked => WaveDirector.HighScoreWaveNum > 10;
@@ -86,7 +86,7 @@ public class ThoughtBubbleWave15NoAttack : UnlockCondition
     }
     public override string LockedText()
     {
-        return $"Reach the end of wave 15 as Thought Bubble without using your weapon";
+        return $"Reach and complete wave 15 as Thought Bubble without using your weapon";
     }
     protected override bool IsUnlocked => Completed;
     public override void SaveData()

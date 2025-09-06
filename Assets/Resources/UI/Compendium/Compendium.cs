@@ -197,6 +197,15 @@ public class Compendium : MonoBehaviour
                 concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, "Coin Range: ")}{e.StaticData.BaseMinCoin}-{e.StaticData.BaseMaxCoin}\n";
                 concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, "Summon Cost: ")}{e.CostMultiplier:#.0}\n";
 
+                if (!DisplayCPEnemy.IsLocked())
+                {
+                    concat += shortLineBreak;
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Kills\n", false)}</size>";
+                    concat += e.StaticData.TimesKilled + shortLineBreak;
+
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Skull Kills\n", false)}</size>";
+                    concat += e.StaticData.TimesKilledSkull + shortLineBreak;
+                }
                 DisplayPortDescription.text = DisplayCPEnemy.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
             }
             UpdateStars(rare);
