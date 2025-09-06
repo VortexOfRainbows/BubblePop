@@ -62,10 +62,7 @@ public class EnemyUIElement : MonoBehaviour
             PopUpTextUI.Enable(name, "");
             float scaleUp = 1.1f;
             if (HasHoverVisual)
-            {
                 clicked = Input.GetMouseButtonDown(0);
-                scaleUp = 1.125f;
-            }
             CardGraphic.transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
             hovering = true;
         }

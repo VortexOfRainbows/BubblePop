@@ -25,7 +25,7 @@ public class CompendiumEnemyElement : CompendiumElement
         {
             BG.enabled = false;
             MyElem.HasHoverVisual = false;
-            transform.localScale = Vector3.one * 0.7f;
+            transform.localScale = Vector3.one * 0.72f;
             transform.GetComponent<RectTransform>().pivot = Vector2.one * 0.5f;
             forceInitUpdates += 2;
         }

@@ -195,6 +195,7 @@ public class Compendium : MonoBehaviour
                 concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Stats\n", false)}</size>";
                 concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], "Base Health: ")}{e.StaticData.BaseMaxLife}\n";
                 concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, "Coin Range: ")}{e.StaticData.BaseMinCoin}-{e.StaticData.BaseMaxCoin}\n";
+                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, "Summon Cost: ")}{e.CostMultiplier:#.0}\n";
 
                 DisplayPortDescription.text = DisplayCPEnemy.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
             }
