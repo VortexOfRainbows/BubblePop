@@ -80,6 +80,10 @@ public partial class Player : Entity
     public float DamageMultiplier = 1.0f;
     public int AllowedThunderBalls = 3;
     private List<int> powers;
+
+    public bool HasResearchNotes = false;
+    public int ResearchNoteBonuses = 0;
+    public int ResearchNoteKillCounter = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -105,6 +109,13 @@ public partial class Player : Entity
         ZapRadiusMult = DamageMultiplier = 1.0f;
         Electroluminescence = 0;
         AllowedThunderBalls = 3;
+
+        if(!HasResearchNotes)
+        {
+            ResearchNoteBonuses = 0;
+            ResearchNoteKillCounter = 0;
+        }
+        HasResearchNotes = false;
     }
     private void UpdatePowerUps()
     {

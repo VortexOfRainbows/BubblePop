@@ -200,6 +200,11 @@ public abstract class PowerUp
     public static void TurnOnPowerUpSelectors()
     {
         int max = Player.Instance.BonusChoices ? 5 : 3;
+        if(Player.Instance.ResearchNoteBonuses > 0)
+        {
+            --Player.Instance.ResearchNoteBonuses;
+            max = 5;
+        }
         for (int i = 0; i < max; i++)
         {
             if (!PowerUpButton.buttons[i].Active)
@@ -212,7 +217,7 @@ public abstract class PowerUp
     }
     public static void TurnOffPowerUpSelectors()
     {
-        int max = Player.Instance.BonusChoices ? 5 : 3;
+        int max = 5;
         for (int i = 0; i < max; i++)
         {
             if (PowerUpButton.buttons[i].Active)
