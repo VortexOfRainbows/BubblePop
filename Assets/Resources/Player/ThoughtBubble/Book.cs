@@ -7,9 +7,9 @@ public class Book : Weapon
     public static int TotalBalls = 0;
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
-        offset = new Vector2(0.05f, 0);
-        rotation = 45;
-        scale = 1.4f;
+        offset = new Vector2(0, 0);
+        rotation = 0;
+        scale = 1.5f;
     }
     public Sprite OpenBook => Resources.Load<Sprite>("Player/ThoughtBubble/BookOpen");
     public Sprite ClosedBook => Resources.Load<Sprite>("Player/ThoughtBubble/BookClosed");
@@ -171,7 +171,7 @@ public class Book : Weapon
             float sin = Mathf.Abs(MathF.Sin(percent * Mathf.PI));
             sin *= sin;
             bonusPDirOffset += 5 * dir * p.squash - 15 * sin * dir;
-            targetScale = new Vector3(1 + sin * 0.1f, 1 - sin * 0.2f, 1);
+            targetScale = new Vector3(1 + sin * 0.1f, 1.1f - sin * 0.1f, 1);
             attemptedPosition.y += sin * 0.1f;
             AttackRight--;
             AttackLeft--;
