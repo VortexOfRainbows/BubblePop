@@ -221,7 +221,7 @@ public class ResearchNotes : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription($"Y:[After killing 3 Skull enemies,] become a <color={DetailedDescription.Rares[0]}>Choice</color> with 5 options G:(consumed on use)");
-        description.WithShortDescription("After killing 3 Skull enemies, become a choice power with 5 options");
+        description.WithShortDescription("After killing 3 Skull enemies, become a Choice with 5 options");
     }
     public override void HeldEffect(Player p)
     {
@@ -232,9 +232,9 @@ public class ResearchNotes : PowerUp
             if (Stack > 0 && !PowerUp.PickingPowerUps)
             {
                 p.RemovePower(Type);
-                p.PickUpPower(0); //Choice is ID 0
+                PowerUp.Get<Choice>().PickUp(); //Choice is ID 0
             }
-            p.ResearchNoteKillCounter -= 0;
+            p.ResearchNoteKillCounter -= 3;
         }
     }
 }

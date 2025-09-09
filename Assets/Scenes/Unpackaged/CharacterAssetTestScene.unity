@@ -1236,6 +1236,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FollowerTrail
       objectReference: {fileID: 0}
+    - target: {fileID: 2368668468331035816, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5154310864548847866, guid: 9ec4cfbcd89f05945a3e0442e3810ef0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

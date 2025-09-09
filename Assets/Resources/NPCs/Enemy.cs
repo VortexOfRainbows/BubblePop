@@ -264,6 +264,10 @@ public class Enemy : Entity
         {
             StaticData.TimesKilledSkull++;
             WaveDirector.SkullEnemiesActive -= 1;
+            if(Player.Instance.HasResearchNotes)
+            {
+                Player.Instance.ResearchNoteKillCounter += 1;
+            }
         }
         StaticData.TimesKilled++;
         StaticData.SaveData();

@@ -16,7 +16,7 @@ public class Book : Weapon
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        //powerPool.Add<EternalBubbles>();
+        powerPool.Add<ResearchNotes>();
         //powerPool.Add<Shotgun>();
         powerPool.Add<ZapRadius>();
         //powerPool.Add<BubbleBlast>();
