@@ -35,7 +35,7 @@ public class Compendium : MonoBehaviour
             UpdateDisplay(ActiveElement.TypeID);
             UpdateDescription(true, ActiveElement.TypeID);
         }
-        CurrentlySelectedPage.UpdateAllButtons(SortText, UnlockButton, CountButton, ReverseButton);
+        CurrentlySelectedPage.UpdateAllButtons(SortText, TierListText, UnlockButton, CountButton, ReverseButton);
         AutoButton.targetGraphic.color = CurrentlySelectedPage.AutoNextTierList ? Color.yellow : Color.white;
     }
     private int m_PageNumber = 1;
@@ -47,6 +47,7 @@ public class Compendium : MonoBehaviour
     public BasicTierListCompendiumPage PowerPage { get; private set; }
     public BasicTierListCompendiumPage EquipPage { get; private set; }
     public BasicTierListCompendiumPage EnemyPage { get; private set; }
+    public BasicTierListCompendiumPage AchievementPage { get; private set; }
     private bool Active { get; set; }
     public Button OpenCompendiumButton;
     public Transform TopBar;
@@ -64,6 +65,7 @@ public class Compendium : MonoBehaviour
         PowerPage = Pages[0] as BasicTierListCompendiumPage;
         EquipPage = Pages[1] as BasicTierListCompendiumPage;
         EnemyPage = Pages[2] as BasicTierListCompendiumPage;
+        AchievementPage = Pages[3] as BasicTierListCompendiumPage;
         m_Instance = this;
         SetPage(0);
     }
@@ -96,6 +98,7 @@ public class Compendium : MonoBehaviour
         UpdatePage(PowerPage);
         UpdatePage(EquipPage);
         UpdatePage(EnemyPage);
+        UpdatePage(AchievementPage);
         Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, 0.1f, 0.1f);
     }
 
@@ -124,7 +127,11 @@ public class Compendium : MonoBehaviour
             DisplayCEE.gameObject.SetActive(true);
             DisplayCPEnemy.gameObject.SetActive(false);
         }
-        else
+        else if(PageNumber == 3)
+        {
+
+        }
+        else if(PageNumber == 2)
         {
             DisplayCPEnemy.Init(SelectedType, MyCanvas);
             DisplayCPUE.gameObject.SetActive(false);
@@ -208,6 +215,10 @@ public class Compendium : MonoBehaviour
                 }
                 DisplayPortDescription.text = DisplayCPEnemy.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
             }
+            else if(PageNumber == 3)
+            {
+
+            }
             UpdateStars(rare);
         }
         Vector2 target = DisplayPortDescription.GetRenderedValues();
@@ -260,7 +271,10 @@ public class Compendium : MonoBehaviour
     }
     public void OnTierListButtonPressed()
     {
-        CurrentlySelectedPage.ToggleTierList(TierListText);
+        if (CurrentlySelectedPage.TierList != null)
+            CurrentlySelectedPage.ToggleTierList(TierListText);
+        else
+            CurrentlySelectedPage.ToggleDisplayMode(TierListText);
     }
     public void OnCountButtonPressed()
     {

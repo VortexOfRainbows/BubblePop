@@ -31,6 +31,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     private int SortMode { get; set; } //could be made into a field
     private bool TierListActive { get; set; } //could be made into a field
     private bool HasSnappedTierList { get; set; } //could be made into a field
+    private bool WideDisplayStyle { get; set; } = false;
     public bool HasInit { get; set; } = false;
     public CompendiumElement HoverCPUE;
     public RectTransform SelectionArea;
@@ -55,7 +56,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
             Owner.UpdateDescription(false, SelectedType);
         if (HoverCPUE.TypeID != SelectedType && SelectedType >= 0)
         {
-            TierList.RemovePower(HoverCPUE.TypeID);
+            if(TierList != null)
+                TierList.RemovePower(HoverCPUE.TypeID);
             HoverCPUE.Init(SelectedType, MyCanvas);
             HoverCPUE.gameObject.SetActive(!HoverCPUE.IsLocked() && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
         }
@@ -78,6 +80,13 @@ public abstract class TierListCompendiumPage : CompendiumPage
         UpdateSelectedType(-4);
         TierListActive = !TierListActive;
         tierListText.text = TierListActive ? "Save Tier List" : "Make Tier List";
+        SetVisibility();
+        Sort();
+    }
+    public void ToggleDisplayMode(TextMeshProUGUI tierListText)
+    {
+        WideDisplayStyle = !WideDisplayStyle;
+        tierListText.text = WideDisplayStyle ? "Display: Grid" : "Display: Line";
         SetVisibility();
         Sort();
     }
@@ -113,14 +122,21 @@ public abstract class TierListCompendiumPage : CompendiumPage
         reverseButton.targetGraphic.color = ReverseSort ? Color.yellow : Color.white;
         Sort();
     }
-    public void UpdateAllButtons(TextMeshProUGUI sortText, Button unlockButton, Button countButton, Button reverseButton)
+    public void UpdateAllButtons(TextMeshProUGUI sortText, TextMeshProUGUI tierListText, Button unlockButton, Button countButton, Button reverseButton)
     {
         if (SortMode == ArbitrarySort) //Arbitrary / ID
             sortText.text = "Sort: ID";
         else if (SortMode == RaritySort) //By rarity
             sortText.text = "Sort: Rarity";
         else if (SortMode == FavSort) //By count
-            sortText.text = "Sort: Favorite";
+        {
+            if (Compendium.CurrentlySelectedPage == Compendium.Instance.EnemyPage)
+                sortText.text = "Sort: Kill Count";
+            else
+                sortText.text = "Sort: Favorite";
+        }
+        WideDisplayStyle = !WideDisplayStyle;
+        tierListText.text = TierList != null ? "Make Tier List" : WideDisplayStyle ? "Display: Grid" : "Display: Line";
         unlockButton.targetGraphic.color = ShowOnlyUnlocked ? Color.yellow : Color.white;
         countButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
         reverseButton.targetGraphic.color = ReverseSort ? Color.yellow : Color.white;
@@ -144,11 +160,22 @@ public abstract class TierListCompendiumPage : CompendiumPage
         }
         else if(HoverCPUE is CompendiumEquipmentElement)
         {
-            for(int i = 0; i < Main.Instance.EquipData.AllEquipmentsList.Count; ++i)
+            if (HoverCPUE is CompendiumAchievementElement)
             {
-                CompendiumEquipmentElement CPUE = Instantiate(CompendiumEquipmentElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumEquipmentElement>();
-                CPUE.Init(i, MyCanvas);
-                TierList.OnTierList[i] = false;
+                for (int i = 0; i < Main.Instance.EquipData.AllEquipmentsList.Count; ++i)
+                {
+                    CompendiumAchievementElement CAE = Instantiate(CompendiumAchievementElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumAchievementElement>();
+                    CAE.Init(i, MyCanvas);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < Main.Instance.EquipData.AllEquipmentsList.Count; ++i)
+                {
+                    CompendiumEquipmentElement CPUE = Instantiate(CompendiumEquipmentElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumEquipmentElement>();
+                    CPUE.Init(i, MyCanvas);
+                    TierList.OnTierList[i] = false;
+                }
             }
         }
         else if (HoverCPUE is CompendiumEnemyElement)
@@ -176,7 +203,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             return;
         Vector3 lastElement = PowerUpLayoutGroup.transform.GetChild(c - 1).localPosition;
         RectTransform r = PowerUpLayoutGroup.GetComponent<RectTransform>();
-        float defaultDist = TierList.TotalDistanceCovered - 200;
+        float defaultDist = (TierList != null ? TierList.TotalDistanceCovered : 800f) - 200;
         float paddingBonus = PowerUpLayoutGroup.padding.bottom + PowerUpLayoutGroup.cellSize.y;
         float dist = -lastElement.y;
         r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(defaultDist, dist));
@@ -350,14 +377,15 @@ public abstract class TierListCompendiumPage : CompendiumPage
         Vector2 newSideBarPosition = !TierListActive ? new Vector2(Compendium.HalfResolution, 340f) : new Vector2(Compendium.HalfResolution, 540f);
         Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-Compendium.HalfResolution + 25.5f, 515f) : new Vector2(-Compendium.HalfResolution + 25.5f, 715f);
         Vector2 targetViewport = !TierListActive ? new Vector2(-Compendium.HalfResolution + 200, 390f) : new Vector2(-Compendium.HalfResolution + 200, 590f);
-        Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);
-        //Vector2 sortBarTarget = !TierListActive ? new Vector2(0, 00) : new Vector2(0, 200f);
-
+        if(TierList != null)
+        {
+            Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);
+            Utils.LerpSnap(TierListParent.transform, targetTierList);
+        }
         Utils.LerpSnap(Owner.TopBar, newTopBarPositon);
         Utils.LerpSnap(Owner.SideBar, newSideBarPosition);
         Utils.LerpSnap(Owner.OpenCompendiumButton.gameObject.transform, newOpenButtonPosition);
         Utils.LerpSnap(ViewPort.transform, targetViewport);
-        Utils.LerpSnap(TierListParent.transform, targetTierList);
         //Utils.LerpSnap(SortBar.transform, sortBarTarget);
         ViewPort.sizeDelta = Vector2.Lerp(ViewPort.sizeDelta, new Vector2(0, TierListActive ? 200 : 0), 0.1f);
 
