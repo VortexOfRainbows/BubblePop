@@ -8,7 +8,7 @@ public class BubblemancerUnlock : UnlockCondition
     {
         return "Unlocked by default!";
     }
-    protected override bool IsUnlocked => true;
+    protected override bool TryUnlockCondition => true;
 }
 public class ThoughtBubbleUnlock : UnlockCondition
 {
@@ -16,7 +16,7 @@ public class ThoughtBubbleUnlock : UnlockCondition
     {
         return "Reach a Highscore of 3000\n";
     }
-    protected override bool IsUnlocked => true; // UIManager.highscore >= 3000;
+    protected override bool TryUnlockCondition => true; // UIManager.highscore >= 3000;
 }
 public class GachaponUnlock : UnlockCondition
 {
@@ -24,5 +24,5 @@ public class GachaponUnlock : UnlockCondition
     {
         return "Reach a total coin count of $500\n";
     }
-    protected override bool IsUnlocked => true; // purchase 10 items from shops
+    protected override bool TryUnlockCondition => true; // purchase 10 items from shops
 }

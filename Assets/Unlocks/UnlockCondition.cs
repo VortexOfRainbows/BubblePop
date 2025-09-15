@@ -3,26 +3,7 @@ using UnityEngine;
 
 public abstract class UnlockCondition
 {
-    public static bool ForceUnlockAll = false; //For the playtest, we will have everything unlocked
-    public virtual PowerUp Power => null;
-    public static void SaveAllData()
-    {
-        if (Unlocks == null)
-            InitDict();
-        for (int i = 0; i < maximumTypes; ++i)
-        {
-            Unlocks[i].SaveData();
-        }
-    }
-    public static void LoadAllData()
-    {
-        if (Unlocks == null)
-            InitDict();
-        for (int i = 0; i < maximumTypes; ++i)
-        {
-            Unlocks[i].LoadData();
-        }
-    }
+    public virtual string SaveString => GetType().Name;
     #region UnlockCondition Datastructure Related Stuff
     private static int typeCounter = 0;
     private static int maximumTypes = 0;
@@ -61,22 +42,54 @@ public abstract class UnlockCondition
     }
     public int MyID = -1;
     #endregion
+    public static bool ForceUnlockAll = false; //For the playtest, we will have everything unlocked
+    public virtual PowerUp Power => null;
+    public static void SaveAllData()
+    {
+        if (Unlocks == null)
+            InitDict();
+        for (int i = 0; i < maximumTypes; ++i)
+        {
+            Unlocks[i].SaveData();
+        }
+    }
+    public static void LoadAllData()
+    {
+        if (Unlocks == null)
+            InitDict();
+        for (int i = 0; i < maximumTypes; ++i)
+        {
+            Unlocks[i].LoadData();
+        }
+    }
     protected UnlockCondition()
     {
         AddToDictionary(this);
     }
-    public virtual void SaveData()
+    public void SaveData()
     {
-
+        PlayerData.SaveBool(SaveString, Completed);
     }
-    public virtual void LoadData()
+    public void LoadData()
     {
-
+        Completed = PlayerData.GetBool(SaveString);
     }
-    public bool Unlocked => ForceUnlockAll || IsUnlocked;
-    protected virtual bool IsUnlocked => false;
+    public bool Unlocked => ForceUnlockAll || TryUnlock();
+    protected virtual bool TryUnlockCondition => false;
     public virtual string LockedText()
     {
         return "Unlocked by accomplishing *some* objective";
+    }
+    public bool Completed { get; set; } = false;
+    public void SetComplete()
+    {
+        Completed = true;
+        SaveData();
+    }
+    public bool TryUnlock()
+    {
+        if(TryUnlockCondition)
+            SetComplete();
+        return Completed;
     }
 }
