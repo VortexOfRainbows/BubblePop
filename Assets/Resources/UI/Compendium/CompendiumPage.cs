@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +32,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     private int SortMode { get; set; } //could be made into a field
     private bool TierListActive { get; set; } //could be made into a field
     private bool HasSnappedTierList { get; set; } //could be made into a field
-    private bool WideDisplayStyle { get; set; } = false;
+    public bool WideDisplayStyle { get; set; } = false;
     public bool HasInit { get; set; } = false;
     public CompendiumElement HoverCPUE;
     public RectTransform SelectionArea;
@@ -86,7 +87,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public void ToggleDisplayMode(TextMeshProUGUI tierListText)
     {
         WideDisplayStyle = !WideDisplayStyle;
-        tierListText.text = WideDisplayStyle ? "Display: Grid" : "Display: Line";
+        tierListText.text = WideDisplayStyle ? "Display: Line" : "Display: Grid";
         SetVisibility();
         Sort();
     }
@@ -135,8 +136,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             else
                 sortText.text = "Sort: Favorite";
         }
-        WideDisplayStyle = !WideDisplayStyle;
-        tierListText.text = TierList != null ? "Make Tier List" : WideDisplayStyle ? "Display: Grid" : "Display: Line";
+        tierListText.text = TierList != null ? "Make Tier List" : WideDisplayStyle ? "Display: Line" : "Display: Grid";
         unlockButton.targetGraphic.color = ShowOnlyUnlocked ? Color.yellow : Color.white;
         countButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
         reverseButton.targetGraphic.color = ReverseSort ? Color.yellow : Color.white;
@@ -357,7 +357,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public void UpdateSizing()
     {
-        float currentSize = PowerUpLayoutGroup.GetComponent<RectTransform>().rect.width;
+        RectTransform r = PowerUpLayoutGroup.GetComponent<RectTransform>();
+        float currentSize = r.rect.width;
         currentSize -= 22; //Padding
         float spacing = 31;
         float spaceForPowers = 160;
@@ -366,6 +367,11 @@ public abstract class TierListCompendiumPage : CompendiumPage
         bonusSize %= spaceForPowers;
         int halfBonus = (int)(bonusSize / 2f);
         PowerUpLayoutGroup.padding = new RectOffset(11 + halfBonus, 11 + halfBonus, 10, 10);
+        if (WideDisplayStyle)
+        {
+            spacing = r.rect.width;
+        }
+        PowerUpLayoutGroup.spacing = new Vector2(spacing, 10);
     }
     public void TierListUpdate()
     {
@@ -375,7 +381,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             b.interactable = !TierListActive;
         Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, 540f) : new Vector2(0, 740f);
         Vector2 newSideBarPosition = !TierListActive ? new Vector2(Compendium.HalfResolution, 340f) : new Vector2(Compendium.HalfResolution, 540f);
-        Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-Compendium.HalfResolution + 25.5f, 515f) : new Vector2(-Compendium.HalfResolution + 25.5f, 715f);
+        Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-Compendium.HalfResolution + 37f, 515f) : new Vector2(-Compendium.HalfResolution + 25.5f, 715f);
         Vector2 targetViewport = !TierListActive ? new Vector2(-Compendium.HalfResolution + 200, 390f) : new Vector2(-Compendium.HalfResolution + 200, 590f);
         if(TierList != null)
         {

@@ -28,7 +28,7 @@ public class Compendium : MonoBehaviour
         {
             bool isSelectedPage = i == value;
             Pages[i].gameObject.SetActive(isSelectedPage);
-            PageButtons[i].targetGraphic.color = isSelectedPage ? Color.yellow : Color.white;
+            PageButtons[i].targetGraphic.color = (isSelectedPage ? Color.yellow : Color.white).WithAlpha(0.8f);
         }
         if(ActiveElement.TypeID >= 0)
         {
@@ -66,6 +66,7 @@ public class Compendium : MonoBehaviour
         EquipPage = Pages[1] as BasicTierListCompendiumPage;
         EnemyPage = Pages[2] as BasicTierListCompendiumPage;
         AchievementPage = Pages[3] as BasicTierListCompendiumPage;
+        AchievementPage.ToggleDisplayMode(TierListText);
         m_Instance = this;
         SetPage(0);
     }
