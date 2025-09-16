@@ -39,10 +39,15 @@ public class CompendiumEquipmentElement : CompendiumElement
     {
         if (TypeID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
-        count.gameObject.SetActive(Compendium.Instance.EquipPage.ShowCounts && !MyElem.DisplayOnly && !IsLocked() && Style <= 1);
+        bool isAchieve = this is CompendiumAchievementElement;
+        bool isWithinMaskRange = Camera.main.WorldToScreenPoint(count.transform.position).y > 800;
+        count.gameObject.SetActive((isAchieve ? Compendium.Instance.AchievementPage.ShowCounts : Compendium.Instance.EquipPage.ShowCounts) && !MyElem.DisplayOnly && !IsLocked() && Style <= 1 && !isWithinMaskRange);
         if (MyElem.ActiveEquipment != null)
         {
-            count.text = GetCount().ToString();
+            if(isAchieve)
+                count.text = "#" + GetCount().ToString();
+            else
+                count.text = GetCount().ToString();
             MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
             if (clicked)
             {

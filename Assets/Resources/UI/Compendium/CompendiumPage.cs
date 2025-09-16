@@ -93,6 +93,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public void UpdateSort(TextMeshProUGUI sortText)
     {
+        if (SortMode == FavSort && HoverCPUE is CompendiumAchievementElement)
+            SortMode = ArbitrarySort;
         if (SortMode == ArbitrarySort) //Arbitrary / ID
             sortText.text = "Sort: ID";
         else if (SortMode == RaritySort) //By rarity
@@ -125,6 +127,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public void UpdateAllButtons(TextMeshProUGUI sortText, TextMeshProUGUI tierListText, Button unlockButton, Button countButton, Button reverseButton)
     {
+        if (SortMode == FavSort && HoverCPUE is CompendiumAchievementElement)
+            SortMode = ArbitrarySort;
         if (SortMode == ArbitrarySort) //Arbitrary / ID
             sortText.text = "Sort: ID";
         else if (SortMode == RaritySort) //By rarity

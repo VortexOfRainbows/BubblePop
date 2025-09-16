@@ -9,7 +9,6 @@ Maybe Do:
 
 Need to do:
 1. Improve UI and add UNLOCK SCREEN *** (maximum importance)
-	1. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 2. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
 3. More descriptive pause and select screen
 4. Integrate Settings and compendium into the default pause stuff
@@ -22,6 +21,7 @@ Need to do:
 9. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
 	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
 10. Indiana Jones Crystal Skull equip for Gachapon, which makes all waves have an additional skull: Unlock "Or Bust: Complete wave 15 whilst taking only 3-skull cards"
+11. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 
 Ideas for Thunder Primary on Thought Bubble:
 	1. Power up that increases their return damage (Barbed Lightning) (white)
@@ -40,6 +40,10 @@ Done:
 3. Unlock system refactors
 4. Compendium now loads all elements before they are displayed, which makes it feel more snappy
 5. Some new description and name logic for all unlocks
+6. Stuff still needed for Unlock Screen
+	1. Achievement display shows the name and stuff inherently, rather than on hover (and turns yellow when the achievement is complete)
+	2. When clicked, display comes up on the right, showing the associated unlocked
+7. Somewhat of a weird fix for equip compendium elements not masking the number correctly
 
 9/9/25
 1. Import some assets

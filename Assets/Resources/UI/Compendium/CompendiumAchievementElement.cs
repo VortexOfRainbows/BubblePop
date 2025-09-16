@@ -34,7 +34,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     }
     public override int GetCount()
     {
-        return 1;
+        return TypeID + 1;
     }
     public override bool IsLocked()
     {
