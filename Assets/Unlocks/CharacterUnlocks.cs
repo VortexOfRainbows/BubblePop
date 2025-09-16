@@ -4,25 +4,28 @@ using UnityEngine;
 
 public class BubblemancerUnlock : UnlockCondition
 {
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Unlocked by default!";
+        description.WithName("Bubblemancer: Awakening");
+        description.WithDescription("Starts unlocked");
     }
     protected override bool TryUnlockCondition => true;
 }
 public class ThoughtBubbleUnlock : UnlockCondition
 {
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Reach a Highscore of 3000\n";
+        description.WithName("Thought Bubble: Awakening");
+        description.WithDescription("Starts unlocked");
     }
     protected override bool TryUnlockCondition => true; // UIManager.highscore >= 3000;
 }
 public class GachaponUnlock : UnlockCondition
 {
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Reach a total coin count of $500\n";
+        description.WithName("Gachapon: Awakening");
+        description.WithDescription("Starts unlocked");
     }
     protected override bool TryUnlockCondition => true; // purchase 10 items from shops
 }

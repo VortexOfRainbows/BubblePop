@@ -79,9 +79,9 @@ public abstract class UnlockCondition
     }
     public bool Unlocked => ForceUnlockAll || TryUnlock();
     protected virtual bool TryUnlockCondition => false;
-    public virtual string LockedText()
+    public string LockedText()
     {
-        return "Unlocked by accomplishing *some* objective";
+        return Description.BriefDescription();
     }
     public bool Completed { get; set; } = false;
     public void SetComplete()

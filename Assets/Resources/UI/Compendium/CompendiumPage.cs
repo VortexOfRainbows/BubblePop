@@ -381,7 +381,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         PowerUpLayoutGroup.padding = new RectOffset(11 + halfBonus, 11 + halfBonus, 10, 10);
         if (WideDisplayStyle)
         {
-            spacing = r.rect.width;
+            spacing = (r.rect.width - PowerUpLayoutGroup.padding.left - PowerUpLayoutGroup.padding.right) / 2 - spaceForPowers;
         }
         PowerUpLayoutGroup.spacing = new Vector2(spacing, 10);
     }
