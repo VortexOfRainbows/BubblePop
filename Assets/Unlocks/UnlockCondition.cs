@@ -96,6 +96,14 @@ public abstract class UnlockCondition
         return Completed;
     }
     protected DetailedDescription Description;
+    public string GetName()
+    {
+        return DetailedDescription.TextBoundedByRarityColor(Rarity - 1, Description.GetName(true), false);
+    }
+    public string GetDescription(bool brief = false)
+    {
+        return brief ? Description.BriefDescription() : Description.FullDescription();
+    }
     public virtual int Rarity => AssociatedUnlocks.Count > 0 ? FrontPageUnlock().GetRarity() : 1;
     public virtual void InitializeDescription(ref DetailedDescription description)
     {

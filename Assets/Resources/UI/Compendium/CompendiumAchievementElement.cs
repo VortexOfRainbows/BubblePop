@@ -11,6 +11,8 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     {
         MyUnlock = UnlockCondition.Get(i);
         base.Init(MyUnlock.AssociatedUnlocks.Count > 0 ? MyUnlock.FrontPageUnlock().IndexInAllEquipPool : 0, canvas);
+        MyElem.AchievementElement = true;
+        TypeID = i;
     }
     ///// <summary>
     ///// Currently unused, as this element does not have a 

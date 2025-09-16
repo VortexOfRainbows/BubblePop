@@ -18,6 +18,7 @@ public class EquipmentUIElement : MonoBehaviour
     public bool CanAfford => true; // CoinManager.Savings >= ActiveEquipment.GetPrice() || ActiveEquipment.GetPrice() <= 0;
     public bool DisplayOnly = false;
     public bool CompendiumElement = false;
+    public bool AchievementElement = false;
     public void UpdateEquipment(Equipment equip)
     {
         ActiveEquipment = GenerateEquipment(equip, Visual.transform);
@@ -132,8 +133,18 @@ public class EquipmentUIElement : MonoBehaviour
         float size = CompendiumElement ? 96 + HoverRadius - hoverArea.rect.width : 0;
         if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || !DisplayOnly))
         {
-            string name = Unlocked ? ActiveEquipment.GetName() : DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???", false);
-            string desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
+            string name; 
+            string desc; 
+            if(AchievementElement)
+            {
+                name = ActiveEquipment.GetUnlockCondition().GetName();
+                desc = ActiveEquipment.GetUnlockCondition().GetDescription();
+            }
+            else
+            {
+                name = Unlocked ? ActiveEquipment.GetName() : DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???", false);
+                desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
+            }
             PopUpTextUI.Enable(name, desc);
             float scaleUp = 1.1f;
             if (!DisplayOnly)
