@@ -10,7 +10,7 @@ public class CompendiumEquipmentElement : CompendiumElement
     public EquipmentUIElement MyElem;
     public Canvas CountCanvas;
     public TextMeshProUGUI count;
-    private Canvas MyCanvas { get; set; }
+    protected Canvas MyCanvas { get; set; }
     public int Style = 0;
     protected bool Selected { get; set; }
     public override void Init(int i, Canvas canvas)

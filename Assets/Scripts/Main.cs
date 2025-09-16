@@ -156,6 +156,10 @@ public class Main : MonoBehaviour
                     }
                 }
             }
+            //foreach(GameObject g in AllEquipmentsList)
+            //{
+            //    Equipment equip = g.GetComponent<Equipment>();
+            //}
         }
         public static Equipment FindBaseEquipFromType<T>() where T: Equipment
         {

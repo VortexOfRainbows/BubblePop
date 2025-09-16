@@ -32,7 +32,7 @@ public abstract class UnlockCondition
         typeCounter++;
         maximumTypes++;
     }
-    private static Dictionary<int, UnlockCondition> Unlocks;
+    public static Dictionary<int, UnlockCondition> Unlocks { get; private set; }
     private static Dictionary<string, int> Reverses;
     public static void InitDict()
     {
@@ -64,6 +64,9 @@ public abstract class UnlockCondition
     }
     protected UnlockCondition()
     {
+        AssociatedUnlocks = new();
+        Description = new(Rarity, SaveString);
+        InitializeDescription(ref Description);
         AddToDictionary(this);
     }
     public void SaveData()
@@ -92,4 +95,24 @@ public abstract class UnlockCondition
             SetComplete();
         return Completed;
     }
+    protected DetailedDescription Description;
+    public virtual int Rarity => AssociatedUnlocks.Count > 0 ? FrontPageUnlock().GetRarity() : 1;
+    public virtual void InitializeDescription(ref DetailedDescription description)
+    {
+
+    }
+    public void AddAssociatedEquip(Equipment e)
+    {
+        AssociatedUnlocks.Add(e);
+    }
+    public Equipment FrontPageUnlock()
+    {
+        foreach(Equipment e in AssociatedUnlocks)
+        {
+            if (e is Body)
+                return e;
+        }
+        return AssociatedUnlocks[0];
+    }
+    public List<Equipment> AssociatedUnlocks;
 }

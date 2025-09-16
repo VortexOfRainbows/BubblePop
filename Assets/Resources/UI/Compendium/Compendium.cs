@@ -85,12 +85,15 @@ public class Compendium : MonoBehaviour
     {
         if (page != null && Active && page.isActiveAndEnabled)
         {
+            page.OnFixedUpdate();
+        }
+        else
+        {
             if (!page.HasInit)
             {
                 page.Init(CountButton, SortText);
                 page.HasInit = true;
             }
-            page.OnFixedUpdate();
         }
     }
     public void FixedUpdate()

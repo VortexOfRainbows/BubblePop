@@ -135,9 +135,6 @@ public class Equipment : MonoBehaviour
     {
 
     }
-
-
-
     #region DescriptionStuff
     public string GetName(bool noColor = false)
     {
@@ -172,6 +169,8 @@ public class Equipment : MonoBehaviour
         Main.GlobalEquipData.DescriptionData.Add(descData);
         Main.GlobalEquipData.TimesUsedList.Add(0);
         LoadGlobalData();
+
+        UnlockCondition.AddAssociatedEquip(this);
         //LoadGlobalData();
     }
     public int TotalTimesUsed

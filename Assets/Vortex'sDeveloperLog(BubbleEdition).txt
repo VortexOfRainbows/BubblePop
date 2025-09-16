@@ -38,6 +38,7 @@ Done:
 1. Some basic prep for unlock screen, though that may be unnecessary due to the character compendium page
 2. Prepare and fix some layout/orientation related compendium stuff
 3. Unlock system refactors
+4. Compendium now loads all elements before they are displayed, which makes it feel more snappy
 
 9/9/25
 1. Import some assets

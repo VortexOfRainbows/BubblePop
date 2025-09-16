@@ -162,10 +162,13 @@ public abstract class TierListCompendiumPage : CompendiumPage
         {
             if (HoverCPUE is CompendiumAchievementElement)
             {
-                for (int i = 0; i < Main.Instance.EquipData.AllEquipmentsList.Count; ++i)
+                for (int i = 0; i < UnlockCondition.Unlocks.Count; ++i)
                 {
-                    CompendiumAchievementElement CAE = Instantiate(CompendiumAchievementElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumAchievementElement>();
-                    CAE.Init(i, MyCanvas);
+                    if (UnlockCondition.Get(i).AssociatedUnlocks.Count > 0)
+                    {
+                        CompendiumAchievementElement CAE = Instantiate(CompendiumAchievementElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumAchievementElement>();
+                        CAE.Init(i, MyCanvas);
+                    }
                 }
             }
             else
@@ -190,8 +193,17 @@ public abstract class TierListCompendiumPage : CompendiumPage
         UpdateContentSize();
         ShowCounts = true;
         ToggleCount(countButton); //OFF by default
-        SortMode = ArbitrarySort;
-        ToggleSort(sortText); //default sort is rare
+
+        if(HoverCPUE is CompendiumAchievementElement)
+        {
+            SortMode = FavSort;
+            ToggleSort(sortText); //default sort is ID
+        }
+        else
+        {
+            SortMode = ArbitrarySort;
+            ToggleSort(sortText); //default sort is rare
+        }
 
         Owner.UpdateDisplay(SelectedType);
         Owner.UpdateDescription(true, SelectedType);
