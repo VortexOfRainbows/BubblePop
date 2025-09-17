@@ -145,7 +145,8 @@ public class EquipmentUIElement : MonoBehaviour
                 name = Unlocked ? ActiveEquipment.GetName() : DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???", false);
                 desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
             }
-            PopUpTextUI.Enable(name, desc);
+            if (!AchievementElement)
+                PopUpTextUI.Enable(name, desc);
             float scaleUp = 1.1f;
             if (!DisplayOnly)
             {

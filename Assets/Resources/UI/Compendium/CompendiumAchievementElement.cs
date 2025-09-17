@@ -7,6 +7,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
 {
     public static new GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumAchievementElement");
     public UnlockCondition MyUnlock { get; private set; }
+    public RectTransform DescriptionArea;
     public override void Init(int i, Canvas canvas)
     {
         MyUnlock = UnlockCondition.Get(i);
@@ -39,5 +40,11 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public override bool IsLocked()
     {
         return !MyUnlock.Completed;
+    }
+    public new void Update()
+    {
+        base.Update();
+        float x = Compendium.Instance.AchievementPage.PowerUpLayoutGroup.spacing.x - Compendium.Instance.AchievementPage.PowerUpLayoutGroup.padding.right;
+        DescriptionArea.sizeDelta = new Vector2(x, DescriptionArea.sizeDelta.y);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
@@ -378,15 +379,29 @@ public abstract class TierListCompendiumPage : CompendiumPage
         currentSize -= 22; //Padding
         float spacing = 31;
         float spaceForPowers = 160;
+
         float bonusSize = currentSize - spaceForPowers; //Spacing is not utilized on the first powerup of the layout
         spaceForPowers += spacing;
-        bonusSize %= spaceForPowers;
-        int halfBonus = (int)(bonusSize / 2f);
-        PowerUpLayoutGroup.padding = new RectOffset(11 + halfBonus, 11 + halfBonus, 10, 10);
+        if (!WideDisplayStyle)
+        {
+            bonusSize %= spaceForPowers;
+            int halfBonus = (int)(bonusSize / 2f);
+            PowerUpLayoutGroup.padding = new RectOffset(11 + halfBonus, 11 + halfBonus, 10, 10);
+        }
+        else
+        {
+            PowerUpLayoutGroup.padding = new RectOffset(11, 11, 10, 10);
+        }
+
         if (WideDisplayStyle)
         {
-            spacing = (r.rect.width - PowerUpLayoutGroup.padding.left - PowerUpLayoutGroup.padding.right) / 2 - spaceForPowers;
+            spacing += (r.rect.width - spaceForPowers * 2 - PowerUpLayoutGroup.padding.left) / 2;
         }
+        else if (this == Compendium.Instance.AchievementPage)
+        {
+            spacing = 31;
+        }
+
         PowerUpLayoutGroup.spacing = new Vector2(spacing, 10);
     }
     public void TierListUpdate()
