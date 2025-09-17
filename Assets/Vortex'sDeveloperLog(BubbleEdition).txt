@@ -34,15 +34,15 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-9/11/25 (o7) and 9/14/25 to 9/16/25
+9/11/25 (o7) and 9/14/25 to 9/17/25
 1. Some basic prep for unlock screen, though that may be unnecessary due to the character compendium page
 2. Prepare and fix some layout/orientation related compendium stuff
 3. Unlock system refactors
 4. Compendium now loads all elements before they are displayed, which makes it feel more snappy
 5. Some new description and name logic for all unlocks
 6. Stuff still needed for Unlock Screen
-	1. Achievement display shows the name and stuff inherently, rather than on hover (and turns yellow when the achievement is complete)
-	2. When clicked, display comes up on the right, showing the associated unlocked
+	1. Turns yellow when the achievement is complete or selected
+	2. When clicked, display comes up on the right, showing the associated unlocks
 7. Somewhat of a weird fix for equip compendium elements not masking the number correctly
 
 9/9/25

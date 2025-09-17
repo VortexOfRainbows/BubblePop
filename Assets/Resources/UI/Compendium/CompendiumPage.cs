@@ -267,18 +267,19 @@ public abstract class TierListCompendiumPage : CompendiumPage
             cpue.transform.localPosition = new Vector3(0, 0, 0); //Failsafe for repositioning elements as disabling them sometimes has weird behavior with layout group
         }
     }
+    public int SortMultiplier => ReverseSort ? -1 : 1;
     public int CompareID(CompendiumElement e1, CompendiumElement e2)
     {
         int id1 = e1.TypeID;
         int id2 = e2.TypeID;
         if (e1.IsLocked())
-            id1 += (ReverseSort ? -1 : 1) * 20000;
+            id1 += SortMultiplier * 20000;
         if (e1.GrayOut)
-            id1 += (ReverseSort ? -1 : 1) * 10000;
+            id1 += SortMultiplier * 10000;
         if (e2.IsLocked())
-            id2 += (ReverseSort ? -1 : 1) * 20000;
+            id2 += SortMultiplier * 20000;
         if (e2.GrayOut)
-            id2 += (ReverseSort ? -1 : 1) * 10000;
+            id2 += SortMultiplier * 10000;
         int num = id1 - id2;
         return num;
     }
@@ -287,13 +288,13 @@ public abstract class TierListCompendiumPage : CompendiumPage
         int rare1 = e1.GetRare(ReverseSort);
         int rare2 = e2.GetRare(ReverseSort);
         if (e1.IsLocked())
-            rare1 += (ReverseSort ? -1 : 1) * 20;
+            rare1 += SortMultiplier * 20;
         else if (e1.GrayOut)
-            rare1 += (ReverseSort ? -1 : 1) * 10;
+            rare1 += SortMultiplier * 10;
         if (e2.IsLocked())
-            rare2 += (ReverseSort ? -1 : 1) * 20;
+            rare2 += SortMultiplier * 20;
         else if (e2.GrayOut)
-            rare2 += (ReverseSort ? -1 : 1) * 10;
+            rare2 += SortMultiplier * 10;
         int num = rare1 - rare2;
         return num == 0 ? CompareID(e1, e2) : num;
     }
@@ -302,13 +303,13 @@ public abstract class TierListCompendiumPage : CompendiumPage
         int count1 = e1.GetCount();
         int count2 = e2.GetCount();
         if (e1.IsLocked())
-            count1 += (ReverseSort ? -1 : 1) * (int.MinValue >> 1);
+            count1 += SortMultiplier * (int.MinValue >> 1);
         else if (e1.GrayOut)
-            count1 += (ReverseSort ? -1 : 1) * (int.MinValue >> 2);
+            count1 += SortMultiplier * (int.MinValue >> 2);
         if (e2.IsLocked())
-            count2 += (ReverseSort ? -1 : 1) * (int.MinValue >> 1);
+            count2 += SortMultiplier * (int.MinValue >> 1);
         else if (e2.GrayOut)
-            count2 += (ReverseSort ? -1 : 1) * (int.MinValue >> 2);
+            count2 += SortMultiplier * (int.MinValue >> 2);
         int num = count2 - count1;
         return num == 0 ? CompareRare(e1, e2) : num;
     }

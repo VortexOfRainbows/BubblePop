@@ -138,14 +138,15 @@ public class EquipmentUIElement : MonoBehaviour
             if(AchievementElement)
             {
                 name = ActiveEquipment.GetUnlockCondition().GetName();
-                desc = ActiveEquipment.GetUnlockCondition().GetDescription();
+                desc = string.Empty;
+                //desc = ActiveEquipment.GetUnlockCondition().GetDescription();
             }
             else
             {
                 name = Unlocked ? ActiveEquipment.GetName() : DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???", false);
                 desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
             }
-            if (!AchievementElement)
+            if (!AchievementElement || !Compendium.Instance.AchievementPage.WideDisplayStyle)
                 PopUpTextUI.Enable(name, desc);
             float scaleUp = 1.1f;
             if (!DisplayOnly)

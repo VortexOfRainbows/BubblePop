@@ -267,6 +267,7 @@ MonoBehaviour:
   TierListParent: {fileID: 1638019002782474195}
   ViewPort: {fileID: 1538878206394837804}
   TierList: {fileID: 0}
+  ReverseSortMultiplier: 1
 --- !u!1 &4771065887816185655
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,6 +364,7 @@ MonoBehaviour:
   Slot: {fileID: 6380617933322207805}
   DisplayOnly: 0
   CompendiumElement: 1
+  AchievementElement: 0
 --- !u!1 &6124010483879933641
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,6 +462,9 @@ MonoBehaviour:
   CountCanvas: {fileID: 1236569277288222145}
   count: {fileID: 3467048124301120007}
   Style: 0
+  DescriptionArea: {fileID: 0}
+  NameText: {fileID: 0}
+  DescriptionText: {fileID: 0}
 --- !u!1 &6309879127798733291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,6 +1066,7 @@ MonoBehaviour:
   Slot: {fileID: 8493391866621718944}
   DisplayOnly: 0
   CompendiumElement: 1
+  AchievementElement: 0
 --- !u!1 &8439893544169002631
 GameObject:
   m_ObjectHideFlags: 0
@@ -1352,6 +1358,9 @@ MonoBehaviour:
   CountCanvas: {fileID: 4358140731125710428}
   count: {fileID: 2112040019121316250}
   Style: 0
+  DescriptionArea: {fileID: 0}
+  NameText: {fileID: 0}
+  DescriptionText: {fileID: 0}
 --- !u!1 &8845955264560360054
 GameObject:
   m_ObjectHideFlags: 0

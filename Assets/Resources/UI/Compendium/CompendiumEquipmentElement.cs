@@ -41,7 +41,7 @@ public class CompendiumEquipmentElement : CompendiumElement
             Destroy(gameObject);
         bool isAchieve = this is CompendiumAchievementElement;
         bool isWithinMaskRange = Camera.main.WorldToScreenPoint(count.transform.position).y > 800;
-        count.gameObject.SetActive((isAchieve ? Compendium.Instance.AchievementPage.ShowCounts : Compendium.Instance.EquipPage.ShowCounts) && !MyElem.DisplayOnly && !IsLocked() && Style <= 1 && !isWithinMaskRange);
+        count.gameObject.SetActive((isAchieve ? Compendium.Instance.AchievementPage.ShowCounts : Compendium.Instance.EquipPage.ShowCounts) && !MyElem.DisplayOnly && (!IsLocked() || isAchieve) && Style <= 1 && !isWithinMaskRange);
         if (MyElem.ActiveEquipment != null)
         {
             if(isAchieve)
@@ -63,7 +63,8 @@ public class CompendiumEquipmentElement : CompendiumElement
                 BG.color = Color.Lerp(BG.color, target, 0.125f);
             }
             Selected = TypeID == Compendium.Instance.EquipPage.SelectedType;
-            if (IsLocked())
+            bool locked = isAchieve ? !IsLocked() : IsLocked();
+            if (locked)
             {
                 MyElem.UpdateColor(Color.black);
             }

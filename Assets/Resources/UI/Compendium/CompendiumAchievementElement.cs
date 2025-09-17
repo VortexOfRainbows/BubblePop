@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 
 public class CompendiumAchievementElement : CompendiumEquipmentElement
@@ -8,6 +6,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public static new GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumAchievementElement");
     public UnlockCondition MyUnlock { get; private set; }
     public RectTransform DescriptionArea;
+    public TextMeshProUGUI NameText, DescriptionText;
     public override void Init(int i, Canvas canvas)
     {
         MyUnlock = UnlockCondition.Get(i);
@@ -39,12 +38,19 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     }
     public override bool IsLocked()
     {
-        return !MyUnlock.Completed;
+        return MyUnlock.Completed; //In this case, more like it is completed
     }
     public new void Update()
     {
         base.Update();
         float x = Compendium.Instance.AchievementPage.PowerUpLayoutGroup.spacing.x - Compendium.Instance.AchievementPage.PowerUpLayoutGroup.padding.right;
         DescriptionArea.sizeDelta = new Vector2(x, DescriptionArea.sizeDelta.y);
+        DescriptionArea.gameObject.SetActive(Compendium.Instance.AchievementPage.WideDisplayStyle);
+        UpdateText();
+    }
+    public void UpdateText()
+    {
+        NameText.text = MyUnlock.GetName();
+        DescriptionText.text = /*MyUnlock.Completed ? "Completed!" :*/ MyUnlock.GetDescription();
     }
 }
