@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,6 +66,10 @@ public class Compendium : MonoBehaviour
         EquipPage = Pages[1] as BasicTierListCompendiumPage;
         EnemyPage = Pages[2] as BasicTierListCompendiumPage;
         AchievementPage = Pages[3] as BasicTierListCompendiumPage;
+        DisplayCPUE = Elements[0] as CompendiumPowerUpElement;
+        DisplayCEE = Elements[1] as CompendiumEquipmentElement;
+        DisplayCPEnemy = Elements[2] as CompendiumEnemyElement;
+        DisplayCPAchievement = Elements[3] as CompendiumAchievementElement;
         AchievementPage.ToggleDisplayMode(TierListText);
         m_Instance = this;
         SetPage(0);
@@ -110,10 +113,10 @@ public class Compendium : MonoBehaviour
     #region Display and description on the right side of the compendium
     public CompendiumElement ActiveElement => Elements[PageNumber];
     public CompendiumElement[] Elements;
-    public CompendiumPowerUpElement DisplayCPUE => Elements[0] as CompendiumPowerUpElement;
-    public CompendiumEquipmentElement DisplayCEE => Elements[1] as CompendiumEquipmentElement;
-    public CompendiumEnemyElement DisplayCPEnemy => Elements[2] as CompendiumEnemyElement;
-    public CompendiumAchievementElement DisplayCPAchievement => Elements[3] as CompendiumAchievementElement;
+    public CompendiumPowerUpElement DisplayCPUE;
+    public CompendiumEquipmentElement DisplayCEE;
+    public CompendiumEnemyElement DisplayCPEnemy;
+    public CompendiumAchievementElement DisplayCPAchievement; 
     public TextMeshProUGUI DisplayPortDescription;
     public RectTransform DescriptionContentRect;
     public GameObject[] Stars;
@@ -178,7 +181,14 @@ public class Compendium : MonoBehaviour
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Used\n", false)}</size>";
                     concat += e.TotalTimesUsed + shortLineBreak;
                 }
-                DisplayPortDescription.text = DisplayCEE.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
+                else
+                {
+                    concat = DetailedDescription.BastardizeText(concat, '?');
+                }
+                concat += shortLineBreak;
+                concat += "Associated Achievement: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
+                concat += e.GetUnlockCondition().GetName();
+                DisplayPortDescription.text = concat;
             }
             else if(PageNumber == 2)
             {
@@ -199,11 +209,21 @@ public class Compendium : MonoBehaviour
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Skull Kills\n", false)}</size>";
                     concat += e.StaticData.TimesKilledSkull + shortLineBreak;
                 }
-                DisplayPortDescription.text = DisplayCPEnemy.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
+                concat = DisplayCPEnemy.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
+                DisplayPortDescription.text = concat;
             }
             else if(PageNumber == 3)
             {
-
+                rare = DisplayCPAchievement.GetRare() - 1;
+                string concat = $"<size=42>{DisplayCPAchievement.MyUnlock.GetName()}</size>" + shortLineBreak;
+                concat += DisplayCPAchievement.MyUnlock.GetDescription() + shortLineBreak;
+                concat += "Associated Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
+                foreach(Equipment e in DisplayCPAchievement.MyUnlock.AssociatedUnlocks)
+                {
+                    string name = e.IsUnlocked ? e.GetName() : DetailedDescription.BastardizeText(e.GetName(), '?');
+                    concat += " *" + name + '\n';
+                }
+                DisplayPortDescription.text = concat;
             }
             UpdateStars(rare);
         }
