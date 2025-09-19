@@ -113,7 +113,7 @@ public abstract class UnlockCondition
     {
         AssociatedUnlocks.Add(e);
     }
-    public Equipment FrontPageUnlock()
+    public virtual Equipment FrontPageUnlock()
     {
         foreach(Equipment e in AssociatedUnlocks)
         {

@@ -150,6 +150,10 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         //Instance = this;
         SelectedType = 0;
+        if(this == Compendium.Instance.AchievementPage)
+        {
+            SelectedType = GetCPUEChildren(out int i)[0].TypeID;
+        }
         ShowOnlyUnlocked = ShowCounts = TierListActive = MouseInCompendiumArea = AutoNextTierList = false;
     }
     public void Init(Button countButton, TextMeshProUGUI sortText)

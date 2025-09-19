@@ -1,11 +1,13 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CompendiumAchievementElement : CompendiumEquipmentElement
 {
     public static new GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumAchievementElement");
     public UnlockCondition MyUnlock { get; private set; }
     public RectTransform DescriptionArea;
+    public Image DescriptionImage;
     public TextMeshProUGUI NameText, DescriptionText;
     public override void Init(int i, Canvas canvas)
     {
@@ -43,13 +45,14 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public new void Update()
     {
         base.Update();
-        float x = Compendium.Instance.AchievementPage.PowerUpLayoutGroup.spacing.x - Compendium.Instance.AchievementPage.PowerUpLayoutGroup.padding.right;
-        DescriptionArea.sizeDelta = new Vector2(x, DescriptionArea.sizeDelta.y);
-        DescriptionArea.gameObject.SetActive(Compendium.Instance.AchievementPage.WideDisplayStyle);
-        UpdateText();
+        if(Style != 3)
+            UpdateText();
     }
     public void UpdateText()
     {
+        float x = Compendium.Instance.AchievementPage.PowerUpLayoutGroup.spacing.x - Compendium.Instance.AchievementPage.PowerUpLayoutGroup.padding.right;
+        DescriptionArea.sizeDelta = new Vector2(x, DescriptionArea.sizeDelta.y);
+        DescriptionArea.gameObject.SetActive(Compendium.Instance.AchievementPage.WideDisplayStyle);
         NameText.text = MyUnlock.GetName();
         DescriptionText.text = /*MyUnlock.Completed ? "Completed!" :*/ MyUnlock.GetDescription();
     }

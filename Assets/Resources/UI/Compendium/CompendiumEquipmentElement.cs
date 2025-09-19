@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -51,18 +52,27 @@ public class CompendiumEquipmentElement : CompendiumElement
             MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
             if (clicked)
             {
-                Compendium.Instance.EquipPage.UpdateSelectedType(TypeID);
+                if (!isAchieve)
+                    Compendium.Instance.EquipPage.UpdateSelectedType(TypeID);
+                else
+                    Compendium.Instance.AchievementPage.UpdateSelectedType(TypeID);
             }
-            if(hovering && Control.RightMouseClick)
+            if (hovering && Control.RightMouseClick)
             {
-                Compendium.Instance.EquipPage.TierList.QueueRemoval = TypeID;
+                if (!isAchieve)
+                    Compendium.Instance.EquipPage.TierList.QueueRemoval = TypeID;
             }    
             if (Style <= 1)
             {
                 Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
                 BG.color = Color.Lerp(BG.color, target, 0.125f);
+
+                if (this is CompendiumAchievementElement achieve && achieve.DescriptionImage != null)
+                {
+                    achieve.DescriptionImage.color = Color.Lerp(achieve.DescriptionImage.color, target, 0.125f);
+                }
             }
-            Selected = TypeID == Compendium.Instance.EquipPage.SelectedType;
+            Selected = isAchieve ? TypeID == Compendium.Instance.AchievementPage.SelectedType : TypeID == Compendium.Instance.EquipPage.SelectedType;
             bool locked = isAchieve ? !IsLocked() : IsLocked();
             if (locked)
             {

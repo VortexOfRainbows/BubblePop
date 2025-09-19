@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -107,41 +108,22 @@ public class Compendium : MonoBehaviour
     }
 
     #region Display and description on the right side of the compendium
-    public CompendiumElement ActiveElement => CurrentlySelectedPage == Pages[2] ? DisplayCPEnemy : CurrentlySelectedPage == Pages[1] ? DisplayCEE : DisplayCPUE;
-    public CompendiumPowerUpElement DisplayCPUE;
-    public CompendiumEquipmentElement DisplayCEE;
-    public CompendiumEnemyElement DisplayCPEnemy;
+    public CompendiumElement ActiveElement => Elements[PageNumber];
+    public CompendiumElement[] Elements;
+    public CompendiumPowerUpElement DisplayCPUE => Elements[0] as CompendiumPowerUpElement;
+    public CompendiumEquipmentElement DisplayCEE => Elements[1] as CompendiumEquipmentElement;
+    public CompendiumEnemyElement DisplayCPEnemy => Elements[2] as CompendiumEnemyElement;
+    public CompendiumAchievementElement DisplayCPAchievement => Elements[3] as CompendiumAchievementElement;
     public TextMeshProUGUI DisplayPortDescription;
     public RectTransform DescriptionContentRect;
     public GameObject[] Stars;
     public void UpdateDisplay(int SelectedType)
     {
-        if (PageNumber == 0)
-        {
-            DisplayCPUE.Init(SelectedType, MyCanvas);
-            DisplayCPUE.gameObject.SetActive(true);
-            DisplayCEE.gameObject.SetActive(false);
-            DisplayCPEnemy.gameObject.SetActive(false);
-        }
-        else if(PageNumber == 1)
-        {
+        if(PageNumber == 1)
             DisplayCEE.Style = 3;
-            DisplayCEE.Init(SelectedType, MyCanvas);
-            DisplayCPUE.gameObject.SetActive(false);
-            DisplayCEE.gameObject.SetActive(true);
-            DisplayCPEnemy.gameObject.SetActive(false);
-        }
-        else if(PageNumber == 3)
-        {
-
-        }
-        else if(PageNumber == 2)
-        {
-            DisplayCPEnemy.Init(SelectedType, MyCanvas);
-            DisplayCPUE.gameObject.SetActive(false);
-            DisplayCEE.gameObject.SetActive(false);
-            DisplayCPEnemy.gameObject.SetActive(true);
-        }
+        Elements[PageNumber].Init(SelectedType, MyCanvas);
+        for (int i = 0; i < 4; ++i)
+            Elements[i].gameObject.SetActive(i == PageNumber);
     }
     public void UpdateDescription(bool reset, int SelectedType)
     {
