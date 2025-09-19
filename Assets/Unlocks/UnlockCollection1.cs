@@ -1,100 +1,89 @@
 public class StartsUnlocked : UnlockCondition
 {
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Starts unlocked by default";
+        description.WithName("Into the Bubblebath");
+        description.WithDescription("Launch the game for the first time");
+        //description.WithShortDescription("");
     }
-    protected override bool IsUnlocked => true;
+    protected override bool TryUnlockCondition => true;
 }
 public class WaveUnlock10 : UnlockCondition
 {
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Complete wave 10\n" +
-            $"Current best: {WaveDirector.HighScoreWaveNum}";
+        description.WithName("You birds don't scare me!");
+        description.WithDescription("Complete wave 10");
+        //description.WithShortDescription("");
     }
-    protected override bool IsUnlocked => WaveDirector.HighScoreWaveNum > 10;
+    protected override bool TryUnlockCondition => WaveDirector.HighScoreWaveNum > 10;
 }
 public class ChargeShot10 : UnlockCondition
 {
-    public override PowerUp Power => PowerUp.Get<ChargeShot>();
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return $"Possess 10 {Power.UnlockedName} in a single run\n" +
-            $"Current best: {Power.PickedUpBestAllRuns}";
+        description.WithName("Bubblemancer: Kamehameha");
+        description.WithDescription($"Possess 10 {Power.UnlockedName} in a single run");
     }
-    protected override bool IsUnlocked => Power.PickedUpBestAllRuns >= 10;
+    public override PowerUp Power => PowerUp.Get<ChargeShot>();
+    protected override bool TryUnlockCondition => Power.PickedUpBestAllRuns >= 10;
 }
-
 public class ShotSpeed10 : UnlockCondition
 {
-    public override PowerUp Power => PowerUp.Get<ShotSpeed>();
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return $"Possess 10 {Power.UnlockedName} in a single run\n" +
-            $"Current best: {Power.PickedUpBestAllRuns}";
+        description.WithName("Bubblemancer: Gas-Operated");
+        description.WithDescription($"Possess 10 {Power.UnlockedName} in a single run");
     }
-    protected override bool IsUnlocked => Power.PickedUpBestAllRuns >= 10;
+    public override PowerUp Power => PowerUp.Get<ShotSpeed>();
+    protected override bool TryUnlockCondition => Power.PickedUpBestAllRuns >= 10;
 }
 
 public class StarbarbUnlock5 : UnlockCondition
 {
-    public override PowerUp Power => PowerUp.Get<Starbarbs>();
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return $"Possess 5 {Power.UnlockedName} in a single run or pick up 50 {Power.UnlockedName} across multiple runs\n" +
-            $"Current best: {Power.PickedUpBestAllRuns} / {Power.PickedUpCountAllRuns}";
+        description.WithName("Bubblemancer: Superstar");
+        description.WithDescription($"Possess 5 {Power.UnlockedName} in a single run");
     }
-    protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 50 || Power.PickedUpBestAllRuns >= 5;
+    public override PowerUp Power => PowerUp.Get<Starbarbs>();
+    protected override bool TryUnlockCondition => Power.PickedUpBestAllRuns >= 5;
 }
 public class ChoiceUnlock200 : UnlockCondition
 {
     public override PowerUp Power => PowerUp.Get<Choice>();
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return $"Pick up 200 {Power.UnlockedName} across multiple runs\n" +
-            $"Current best: {Power.PickedUpCountAllRuns}";
+        description.WithName("Thought Bubble: Decisions, Decisions");
+        description.WithDescription($"Pick up 200 {Power.UnlockedName} across multiple runs");
     }
-    protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 200;
+    protected override bool TryUnlockCondition => Power.PickedUpCountAllRuns >= 200;
 }
 public class PlayerDeathUnlock20 : UnlockCondition
 {
-    public override PowerUp Power => PowerUp.Get<Starbarbs>();
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return $"Die 20 times\n" +
-            $"Current best: {PlayerData.PlayerDeaths}";
+        description.WithName("Bubblemancer: First Steps");
+        description.WithDescription("Die 20 times");
     }
-    protected override bool IsUnlocked => PlayerData.PlayerDeaths >= 20;
+    public override PowerUp Power => PowerUp.Get<Starbarbs>();
+    protected override bool TryUnlockCondition => PlayerData.PlayerDeaths >= 20;
 }
 public class BubbleBirbUnlock10 : UnlockCondition
 {
-    public override PowerUp Power => PowerUp.Get<BubbleBirb>();
-    public override string LockedText()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return $"Pick up 10 {Power.UnlockedName} across multiple runs";
+        description.WithName("Bubblemancer: From the Dead");
+        description.WithDescription($"Pick up 10 {Power.UnlockedName} across multiple runs");
     }
-    protected override bool IsUnlocked => Power.PickedUpCountAllRuns >= 10;
+    public override PowerUp Power => PowerUp.Get<BubbleBirb>();
+    protected override bool TryUnlockCondition => Power.PickedUpCountAllRuns >= 10;
 }
 public class ThoughtBubbleWave15NoAttack : UnlockCondition
 {
-    public bool Completed = false;
-    public void SetComplete()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        Completed = true;
-        SaveData();
-    }
-    public override string LockedText()
-    {
-        return $"Reach and complete wave 15 as Thought Bubble without using your weapon";
-    }
-    protected override bool IsUnlocked => Completed;
-    public override void SaveData()
-    {
-        PlayerData.SaveBool("ThoughtBubbleWave15NoAttack", Completed);
-    }
-    public override void LoadData()
-    {
-        Completed = PlayerData.GetBool("ThoughtBubbleWave15NoAttack");
+        description.WithName("Thought Bubble: Calculated");
+        description.WithDescription("Reach and complete wave 15 as Y:[Thought Bubble] without using your weapon");
     }
 }

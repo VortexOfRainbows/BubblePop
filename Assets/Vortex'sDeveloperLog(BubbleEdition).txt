@@ -8,20 +8,19 @@ Maybe Do:
 5. Wave bar on the top shows current wave card + modifier information
 
 Need to do:
-1. Improve UI and add UNLOCK SCREEN *** (maximum importance)
-	1. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
-2. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too)
-3. More descriptive pause and select screen
-4. Integrate Settings and compendium into the default pause stuff
-5. Make calculator homing snappier
-6. Integrate character select into the compendium
-7. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
+1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden)
+2. More descriptive pause and select screen
+3. Integrate Settings and compendium into the default pause stuff
+4. Make calculator homing snappier
+5. Integrate character select into the compendium
+6. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
 	1. TBD: Strength...
-8. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
+7. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
 	1. Contains loot with higher chances of good loot based on the rarity of the chest
-9. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
+8. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
 	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
-10. Indiana Jones Crystal Skull equip for Gachapon, which makes all waves have an additional skull: Unlock "Or Bust: Complete wave 15 whilst taking only 3-skull cards"
+9. Indiana Jones Crystal Skull equip for Gachapon, which makes all waves have an additional skull: Unlock "Or Bust: Complete wave 15 whilst taking only 3-skull cards"
+10. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 
 
 Ideas for Thunder Primary on Thought Bubble:
@@ -32,10 +31,21 @@ Ideas for Thunder Primary on Thought Bubble:
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
+2. Improve UI
 
 Done: 
 
-9/9/25 to 9/11/25
+9/11/25 (o7) and 9/14/25 to 9/19/25
+1. Some basic prep for unlock screen, though that may be unnecessary due to the character compendium page
+2. Prepare and fix some layout/orientation related compendium stuff
+3. Unlock system refactors
+4. Compendium now loads all elements before they are displayed, which makes it feel more snappy
+5. Some new description and name logic for all unlocks
+6. Finish compendium unlock screen
+7. Somewhat of a weird fix for equip compendium elements not masking the number correctly
+8. Set up some documents for Bubblemancer development
+
+9/9/25
 1. Import some assets
 2. Add Research Notes!
 3. Book art refresh! Very swag!

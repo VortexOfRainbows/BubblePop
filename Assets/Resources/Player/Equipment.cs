@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -63,6 +64,7 @@ public class Equipment : MonoBehaviour
         PowerPool.Clear();
     }
     protected virtual UnlockCondition UnlockCondition => UnlockCondition.Get<StartsUnlocked>();
+    public UnlockCondition GetUnlockCondition() => UnlockCondition;
     /// <summary>
     /// Essentially which character this equipment should be unlocked by default under. For bodies, this unlock condition should be the same as the normal unlock condition
     /// </summary>
@@ -135,9 +137,6 @@ public class Equipment : MonoBehaviour
     {
 
     }
-
-
-
     #region DescriptionStuff
     public string GetName(bool noColor = false)
     {
@@ -172,6 +171,8 @@ public class Equipment : MonoBehaviour
         Main.GlobalEquipData.DescriptionData.Add(descData);
         Main.GlobalEquipData.TimesUsedList.Add(0);
         LoadGlobalData();
+
+        UnlockCondition.AddAssociatedEquip(this);
         //LoadGlobalData();
     }
     public int TotalTimesUsed

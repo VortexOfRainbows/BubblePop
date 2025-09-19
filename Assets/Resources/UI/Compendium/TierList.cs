@@ -29,7 +29,9 @@ public class TierList : MonoBehaviour
     {
         if (i <= -1)
             return false;
-        return OnTierList[i];
+        if (OnTierList.TryGetValue(i, out bool val))
+            return val;
+        return false;
     }
     public void Start()
     {
@@ -198,6 +200,8 @@ public class TierList : MonoBehaviour
         if (TierListType == 1 && !Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
             return;
         if (TierListType == 2 && !EnemyID.EnemyData[i].Unlocked)// && !Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
+            return;
+        if (TierListType == 3)
             return;
         if (!OnTierList[i])
         {
