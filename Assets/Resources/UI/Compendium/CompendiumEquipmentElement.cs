@@ -71,9 +71,18 @@ public class CompendiumEquipmentElement : CompendiumElement
             if (Style <= 1)
             {
                 Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
-                BG.color = Color.Lerp(BG.color, target, 0.125f);
                 if (this is CompendiumAchievementElement achieve2 && achieve2.DescriptionImage != null)
+                {
+                    if(achieve2.MyUnlock.Completed && !Selected)
+                    {
+                        target = new Color(.1f, .7f, .1f, 0.431372549f);
+                    }
                     achieve2.DescriptionImage.color = Color.Lerp(achieve2.DescriptionImage.color, target, 0.125f);
+                    BG.color = Color.Lerp(BG.color, target, 0.125f);
+                }
+                else
+                    BG.color = Color.Lerp(BG.color, target, 0.125f);
+
             }
             Selected = isAchieve ? TypeID == Compendium.Instance.AchievementPage.SelectedType : TypeID == Compendium.Instance.EquipPage.SelectedType;
             bool locked = isAchieve ? !IsLocked() : IsLocked();

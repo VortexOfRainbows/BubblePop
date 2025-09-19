@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class CompendiumAchievementElement : CompendiumEquipmentElement
 {
@@ -15,6 +16,12 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         base.Init(MyUnlock.AssociatedUnlocks.Count > 0 ? MyUnlock.FrontPageUnlock().IndexInAllEquipPool : 0, canvas);
         MyElem.AchievementElement = true;
         TypeID = i;
+        if (MyUnlock.Completed && !Selected && Style != 3)
+        {
+            Color c = new Color(.1f, .7f, .1f, 0.431372549f);
+            DescriptionImage.color = c;
+            BG.color =c;
+        }
     }
     ///// <summary>
     ///// Currently unused, as this element does not have a 
