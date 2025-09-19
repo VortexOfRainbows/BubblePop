@@ -130,7 +130,7 @@ public class EquipmentUIElement : MonoBehaviour
         hovering = clicked = false;
         UpdateUnlockRelated();
         UpdateOrientation();
-        float size = CompendiumElement ? 96 + HoverRadius - hoverArea.rect.width : 0;
+        float size = CompendiumElement ? 96 + HoverRadius - hoverArea.rect.height : 0;
         if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || !DisplayOnly))
         {
             string name; 

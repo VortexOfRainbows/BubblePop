@@ -40,7 +40,13 @@ public class CompendiumEquipmentElement : CompendiumElement
     {
         if (TypeID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
-        bool isAchieve = this is CompendiumAchievementElement;
+        RectTransform hoverTransform = rectTransform;
+        bool isAchieve = false;
+        if (this is CompendiumAchievementElement achieve)
+        {
+            isAchieve = true;
+            hoverTransform = achieve.CombinedRect;
+        }
         bool isWithinMaskRange = Camera.main.WorldToScreenPoint(count.transform.position).y > 800;
         count.gameObject.SetActive((isAchieve ? Compendium.Instance.AchievementPage.ShowCounts : Compendium.Instance.EquipPage.ShowCounts) && !MyElem.DisplayOnly && (!IsLocked() || isAchieve) && Style <= 1 && !isWithinMaskRange);
         if (MyElem.ActiveEquipment != null)
@@ -49,7 +55,7 @@ public class CompendiumEquipmentElement : CompendiumElement
                 count.text = "#" + GetCount().ToString();
             else
                 count.text = GetCount().ToString();
-            MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
+            MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, hoverTransform);
             if (clicked)
             {
                 if (!isAchieve)
@@ -66,11 +72,8 @@ public class CompendiumEquipmentElement : CompendiumElement
             {
                 Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
                 BG.color = Color.Lerp(BG.color, target, 0.125f);
-
-                if (this is CompendiumAchievementElement achieve && achieve.DescriptionImage != null)
-                {
-                    achieve.DescriptionImage.color = Color.Lerp(achieve.DescriptionImage.color, target, 0.125f);
-                }
+                if (this is CompendiumAchievementElement achieve2 && achieve2.DescriptionImage != null)
+                    achieve2.DescriptionImage.color = Color.Lerp(achieve2.DescriptionImage.color, target, 0.125f);
             }
             Selected = isAchieve ? TypeID == Compendium.Instance.AchievementPage.SelectedType : TypeID == Compendium.Instance.EquipPage.SelectedType;
             bool locked = isAchieve ? !IsLocked() : IsLocked();

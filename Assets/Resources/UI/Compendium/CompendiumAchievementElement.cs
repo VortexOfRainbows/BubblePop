@@ -6,7 +6,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
 {
     public static new GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumAchievementElement");
     public UnlockCondition MyUnlock { get; private set; }
-    public RectTransform DescriptionArea;
+    public RectTransform DescriptionArea, CombinedRect;
     public Image DescriptionImage;
     public TextMeshProUGUI NameText, DescriptionText;
     public override void Init(int i, Canvas canvas)
@@ -55,5 +55,6 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         DescriptionArea.gameObject.SetActive(Compendium.Instance.AchievementPage.WideDisplayStyle);
         NameText.text = MyUnlock.GetName();
         DescriptionText.text = /*MyUnlock.Completed ? "Completed!" :*/ MyUnlock.GetDescription();
+        CombinedRect.sizeDelta = new Vector2(DescriptionArea.sizeDelta.x, 0);
     }
 }
