@@ -22,7 +22,7 @@ public class CardData
     public EnemyClause EnemyClause;
     public ModifierClause ModifierClause;
     public RewardClause RewardClause;
-    public float DifficultyMult => Owner.DifficultyMultiplier;
+    public float DifficultyMult => Owner.DifficultyMultiplier + Player.Instance.PersonalWaveCardBonus;
     public static int UpcomingWave => WaveDirector.WaveNum + 1;
     //private CardClause[] Clauses => new CardClause[] { EnemyClause, ModifierClause, RewardClause };
     public void GetPointsAllowed()
@@ -50,7 +50,7 @@ public class CardData
     }
     public void AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r)
     {
-        int difficultyNum = (int)DifficultyMult;
+        int difficultyNum = (int)Owner.DifficultyMultiplier;
         bool MinDifficultyCard = difficultyNum == 1;
         bool MidDifficulty = difficultyNum == 2;
         bool MaxDifficultyCard = difficultyNum == 3;
@@ -235,7 +235,7 @@ public class EnemyClause : CardClause
     public void PrepareWaveCards()
     {
         AssociatedWaveCards.Clear();
-        int maxSwarmDifficulty = 4;
+        int maxSwarmDifficulty = 6;
         float difficultMult = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
         if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator) //1 mid-wave by default for bosses, 3 at max card difficulty
         {
@@ -245,7 +245,9 @@ public class EnemyClause : CardClause
             else
                 maxSwarmDifficulty -= 1;
         }
-        for (int i = 0; i < difficultMult; ++i)
+        int wavesWithoutSwarm = 0;
+        int max = (int)difficultMult;
+        for (int i = 0; i < max; ++i)
         {
             GameObject enemyType = Enemy.EnemyToAdd.gameObject;
             int TotalDudes = 1;
@@ -256,9 +258,15 @@ public class EnemyClause : CardClause
                 enemies[j] = enemyType;
             var card = WaveDeck.DrawMultiSpawn(WaveDeck.RandomPositionOnPlayerEdge(), 0, 0.5f, 0, 1.75f, enemies);
             card.Patterns[0].Skull = true;
-            float chance = i * (0.05f * difficultMult * WaveDirector.WaveNum);
-            if (i > 1 && chance > Utils.RandFloat()) {
-                card.ToSwarmCircle(Mathf.Min(maxSwarmDifficulty, 1 + i), 10, 0, 0.5f);
+            float chance = wavesWithoutSwarm * (0.05f * difficultMult * WaveDirector.WaveNum);
+            if ((wavesWithoutSwarm >= 1 && chance > Utils.RandFloat()) || i == max)
+            {
+                wavesWithoutSwarm = 0;
+                card.ToSwarmCircle(Mathf.Min(maxSwarmDifficulty, 1 + wavesWithoutSwarm), 10, 0, 0.5f);
+            }
+            else
+            {
+                ++wavesWithoutSwarm;
             }
             AssociatedWaveCards.Add(card);
         }

@@ -146,6 +146,9 @@ public class CardManager : MonoBehaviour
             WaveDirector.TemporaryModifiers.WaveSpecialBonusEnemy = WaveDirector.PermanentModifiers.WaveSpecialBonusEnemy; //set it to the permanent enemy
 
         ChosenCard.cardData.GrantImmediateRewards();
+
+        if(ChosenCard.cardData.DifficultyMult <= 2)
+            Player.PickedLowerDifficultyWaveCard = true;
     }
     public void GenerateCards()
     {

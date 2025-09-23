@@ -87,3 +87,12 @@ public class ThoughtBubbleWave15NoAttack : UnlockCondition
         description.WithDescription("Reach and complete wave 15 as Y:[Thought Bubble] without using your weapon");
     }
 }
+public class GachaponWave15AllSkullWaves : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Gachapon: Triple Down");
+        description.WithDescription("Reach and complete wave 15 as Y:[Gachapon] while choosing only max-difficulty Y:[Wave Cards]");
+    }
+}
+

@@ -29,7 +29,6 @@ public class Equipment : MonoBehaviour
     public SpriteRenderer spriteRender;
     public Vector2 velocity;
     public bool hasInit = false;
-    public bool isSubEquipment = false; 
     public int IndexInAllEquipPool
     {
         get

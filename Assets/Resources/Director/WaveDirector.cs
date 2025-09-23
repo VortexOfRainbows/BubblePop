@@ -85,6 +85,7 @@ public static class WaveDirector
     public static int SkullEnemiesActive { get; set; } = 0;
     public static void Reset()
     {
+        Player.PickedLowerDifficultyWaveCard = false;
         CurrentAssociatedWaveCardNumber = 0;
         WaveNum = 0;
         WaveMult = 1.0f;
@@ -166,8 +167,11 @@ public static class WaveDirector
         {
             if(Player.Instance.Body is ThoughtBubble && !Player.HasAttacked)
             {
-                ThoughtBubbleWave15NoAttack t = UnlockCondition.Get<ThoughtBubbleWave15NoAttack>() as ThoughtBubbleWave15NoAttack;
-                t.SetComplete();
+                UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
+            }
+            if(Player.Instance.Body is Gachapon && !Player.PickedLowerDifficultyWaveCard)
+            {
+                UnlockCondition.Get<GachaponWave15AllSkullWaves>().SetComplete();
             }
         }
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1

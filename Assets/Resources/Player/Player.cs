@@ -48,6 +48,7 @@ public partial class Player : Entity
     private bool HasRunStartingGear = false;
     public const float DashDefault = 25f;
     public static bool HasAttacked = false;
+    public static bool PickedLowerDifficultyWaveCard = false;
     /// <summary>
     /// Shorthand for abilityTimer <= 0;
     /// </summary>
@@ -206,7 +207,7 @@ public partial class Player : Entity
                 }
             }
             if (Main.GameUpdateCount % 200 == 0)
-                Debug.Log($"Has Attacked: {HasAttacked}");
+                Debug.Log($"Has Attacked: {HasAttacked}, Picked Lower Card: {PickedLowerDifficultyWaveCard}");
             if (Weapon.IsAttacking())
             {
                 if(Weapon.IsPrimaryAttacking())

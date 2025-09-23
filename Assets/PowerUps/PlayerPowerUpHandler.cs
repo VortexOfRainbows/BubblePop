@@ -84,6 +84,7 @@ public partial class Player : Entity
     public bool HasResearchNotes = false;
     public int ResearchNoteBonuses = 0;
     public int ResearchNoteKillCounter = 0;
+    public float PersonalWaveCardBonus = 1.0f;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -116,6 +117,7 @@ public partial class Player : Entity
             ResearchNoteKillCounter = 0;
         }
         HasResearchNotes = false;
+        PersonalWaveCardBonus = 0.0f;
     }
     private void UpdatePowerUps()
     {
