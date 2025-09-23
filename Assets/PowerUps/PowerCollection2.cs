@@ -238,3 +238,52 @@ public class ResearchNotes : PowerUp
         }
     }
 }
+public class ResearchGrants : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Y:[Skull enemies] drop Y:3 G:(+2 per stack) additional Y:coins");
+        description.WithShortDescription("Skull enemies drop additional coins");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.FlatSkullCoinBonus += 1 + 2 * Stack;
+    }
+}
+public class Boomerang : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Increases Y:[thunder bubble] recall damage by Y:25% G:(+25% per stack)");
+        description.WithShortDescription("Increases thunder bubble recall damage");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ThunderBubbleReturnDamageBonus += Stack * 0.5f;
+    }
+}
+public class ThunderBubbles : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Charged Bubbles");
+        description.WithDescription($"When recalled, Y:[thunder bubbles] leave behind a Y:[latent charge] that dissipates into Y:3 G:(+1 per stack) bubbles after Y:[thunder bubbles] are fully recalled");
+        description.WithShortDescription("Thunder bubbles release bubbles when recalled");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.EchoBubbles += 2 + Stack;
+    }
+}

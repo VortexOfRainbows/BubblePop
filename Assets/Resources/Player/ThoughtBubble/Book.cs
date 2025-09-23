@@ -17,11 +17,11 @@ public class Book : Weapon
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<ResearchNotes>();
-        //powerPool.Add<Shotgun>();
+        powerPool.Add<Boomerang>();
         powerPool.Add<ZapRadius>();
-        //powerPool.Add<BubbleBlast>();
+        powerPool.Add<ResearchGrants>();
         powerPool.Add<BonusBatteries>();
-        //powerPool.Add<ShotSpeed>();
+        powerPool.Add<ThunderBubbles>();
         powerPool.Add<Electroluminescence>();
     }
     public override void InitializeDescription(ref DetailedDescription description)

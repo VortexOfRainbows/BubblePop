@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -85,6 +86,9 @@ public partial class Player : Entity
     public int ResearchNoteBonuses = 0;
     public int ResearchNoteKillCounter = 0;
     public float PersonalWaveCardBonus = 1.0f;
+    public float FlatSkullCoinBonus = 0.0f;
+    public float ThunderBubbleReturnDamageBonus = 0;
+    public float EchoBubbles = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -118,6 +122,9 @@ public partial class Player : Entity
         }
         HasResearchNotes = false;
         PersonalWaveCardBonus = 0.0f;
+        FlatSkullCoinBonus = 0.0f;
+        ThunderBubbleReturnDamageBonus = 0.0f;
+        EchoBubbles = 0.0f;
     }
     private void UpdatePowerUps()
     {

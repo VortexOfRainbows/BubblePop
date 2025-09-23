@@ -125,6 +125,10 @@ public class Main : MonoBehaviour
         public List<GameObject> AllEquipmentsList = new();
         public void LoadAllEquipList()
         {
+            foreach(UnlockCondition unlock in UnlockCondition.Unlocks.Values)
+            {
+                unlock.AssociatedUnlocks.Clear();
+            }
             TypeToEquipPrefab.Clear();
             EquipTypeToIndex.Clear();
             TimesUsedList.Clear();

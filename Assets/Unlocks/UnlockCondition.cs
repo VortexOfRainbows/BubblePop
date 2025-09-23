@@ -66,6 +66,7 @@ public abstract class UnlockCondition
     {
         AssociatedUnlocks = new();
         Description = new(Rarity, SaveString);
+        Description.WithoutSizeAugments();
         InitializeDescription(ref Description);
         AddToDictionary(this);
     }

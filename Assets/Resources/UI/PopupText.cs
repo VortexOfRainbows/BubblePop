@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +14,12 @@ public class PopupText : MonoBehaviour
     {
         GameObject obj = Instantiate(PopupTextPrefab, pos, Quaternion.identity);
         TextMeshPro tmp = obj.GetComponent<TextMeshPro>();
+        int indexOfDot = text.IndexOf('.');
+        if(indexOfDot >= 0)
+        {
+            text = text.Insert(indexOfDot, "<size=11>");
+            text += "</size>";
+        }
         tmp.text = text;
         tmp.color = clr;
         tmp.fontStyle = bold ? (FontStyles)FontStyle.Bold : 0;

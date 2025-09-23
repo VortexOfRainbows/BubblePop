@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 public class PaperPlane : Projectile
 {
     public override void Init()
@@ -108,5 +109,86 @@ public class PaperPlane : Projectile
             Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
         }
+    }
+}
+public class LatentCharge : Projectile
+{
+    private Color ColorVar;
+    public override void Init()
+    {
+        ColorVar = Color.Lerp(Player.ProjectileColor, Color.blue, 0.5f);
+        SpriteRenderer.sprite = Main.BubbleSmall;
+        SpriteRendererGlow.sprite = Main.Shadow;
+        SpriteRenderer.color = Color.clear;
+        SpriteRendererGlow.color = Color.clear;
+        Color c = Color.Lerp(Color.white, Player.ProjectileColor, 0.5f);
+        c.a = 0.8f;
+        Damage = 0;
+        Penetrate = -1;
+        transform.localScale *= 0.1f;
+        Friendly = false;
+    }
+    public override bool CanBeAffectedByHoming()
+    {
+        return true;
+    }
+    public bool Recalled = false;
+    public override void AI()
+    {
+        SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, ColorVar.WithAlphaMultiplied(0.5f), 0.1f);
+        SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, ColorVar * 1f, 0.1f);
+        transform.localScale = transform.localScale.Lerp(Vector3.one * 0.85f, 0.2f);
+        RB.velocity *= 0.5f;
+        RB.rotation = Utils.WrapAngle(RB.velocity.ToRotation()) * Mathf.Rad2Deg;
+        if (Book.InClosingAnimation)
+        {
+            if (!Recalled)
+            {
+                Friendly = false;
+                Recalled = true;
+            }
+            else
+            {
+                float percent = Book.ClosingPercent;
+                int total = (int)Mathf.Pow(Data1 + 1, 0.75f) + 1;
+                timer2 += total;
+                float size = 1.9f + total * 0.1f;
+                for(; timer2 >= 3; timer2 -= 3)
+                {
+                    int i = (int)timer % total;
+                    float offset = i / (float)total * Mathf.PI * 2f;
+                    Vector2 circular = new Vector2(0, size - percent * size).RotatedBy(percent * Mathf.PI * 1 + offset);
+                    ParticleManager.NewParticle(RB.position + circular, transform.localScale.x * 2.2f * percent, circular * 0.5f, 0.2f, Utils.RandFloat(0.1f, 0.15f), 2,
+                        SpriteRendererGlow.color.WithAlphaMultiplied(.6f - percent * 0.3f));
+                    timer++;
+                }
+                //Pylon.SummonLightning2(RB.position + circular, RB.position - circular.normalized.RotatedBy(Mathf.PI * 0.5f), ColorVar, 0.1f);
+            }
+        }
+        else
+        {
+            if (Recalled)
+            {
+                Kill();
+                return;
+            }
+        }
+    }
+    public override void OnKill()
+    {
+        float amt = Data1;
+        float speed = (4.0f + Player.Instance.FasterBulletSpeed * 2.0f + amt * 1.0f) * Player.Instance.ZapRadiusMult;
+        for (int i = 0; i < Data1; i++)
+            NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f));
+        int c = Data.Length > 0 ? (int)Mathf.Sqrt(Data1 + 6) * 2 + 3 : 3;
+        for (int i = 0; i < c; i++)
+        {
+            Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.5f, 0.6f), circular * Utils.RandFloat(4, 6), 4f, Utils.RandFloat(0.5f, 0.6f), 2, SpriteRendererGlow.color);
+        }
+    }
+    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
+    {
+        return false;
     }
 }

@@ -37,6 +37,11 @@ public class DetailedDescription
     private static readonly string TabForMoreDetail = " (TAB for more detail)".WithSizeAndColor(24, "#CB8A8A");
     private static readonly int NormalTextSize = 28;
     private static readonly int GrayTextSize = 24;
+    public void WithoutSizeAugments()
+    {
+        WithSizeAugments = false;
+    }
+    private bool WithSizeAugments = true;
     public string ToRichText(string t)
     {
         string[] segments = t.Split(' ');
@@ -65,15 +70,15 @@ public class DetailedDescription
             string end = string.Empty;
             string contents = t;
             if (first2 == "G:")
-                start = $"<size={GrayTextSize}><color={Gray}>";
+                start = WithSizeAugments ? $"<size={GrayTextSize}><color={Gray}>" : $"<color={Gray}>";
             else if (first2 == "Y:")
-                start = $"<size={NormalTextSize}><color={Yellow}>";
+                start = WithSizeAugments ? $"<size={NormalTextSize}><color={Yellow}>" : $"<color={Yellow}>";
             if (isEnding && waitingForEnding && !isOpening) //If this string ends with a ']' and we have previously seen a '['
             {
                 waitingForEnding = false;
                 if (last != ')')
                     contents = t[..^1];
-                end = "</color></size>";
+                end = WithSizeAugments ? "</color></size>" : "</color>";
             }
             else if (isOpening && !waitingForEnding && !isEnding) //If this string starts with a '[' and we have not seen a ']'
             {
@@ -91,7 +96,7 @@ public class DetailedDescription
                 }
                 else
                     contents = t[2..];
-                end = "</color></size>";
+                end = WithSizeAugments ? "</color></size>" : "</color>";
             }
             return $"{start}{contents}{end}";
         }

@@ -241,7 +241,7 @@ public class ThunderBubble : Projectile
         Damage = 1;
         Penetrate = -1;
         Friendly = true;
-        immunityFrames = 22;
+        immunityFrames = 25;
         UpdateSize();
 
         float total = Player.Instance.Electroluminescence;
@@ -276,7 +276,11 @@ public class ThunderBubble : Projectile
         {
             if(!Recalled)
             {
-                Damage *= 3;
+                if(Player.Instance.EchoBubbles > 0)
+                {
+                    NewProjectile<LatentCharge>(transform.position, Vector2.zero, Player.Instance.EchoBubbles);
+                }
+                Damage *= 2 + Player.Instance.ThunderBubbleReturnDamageBonus;
                 Recalled = true;
             }
             timer = deathTime;
