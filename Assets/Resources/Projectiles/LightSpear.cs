@@ -25,7 +25,7 @@ public class LightSpear : Projectile
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/LaserSquare");
         bool isCrown = Player.Instance.Hat is Crown;
         float specialColorMult = .75f;
-        if(Data.Length > 3)
+        if(Data.Length > 3 && Data[3] >= 0)
         {
             Color c = Utils.PastelRainbow(Data[3] + (isCrown ? 2f : 0), 0.67f) * 1.2f;
             SpriteRenderer.color *= c;
@@ -38,6 +38,10 @@ public class LightSpear : Projectile
             SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, new Color(1f, 0, 0, 0.5f), specialColorMult);
         }
         Damage = 2.0f + Player.Instance.LightSpear * 0.5f;
+        if (Data.Length > 4)
+        {
+            Damage *= Data[4];
+        }
         Friendly = true;
         Hostile = false;
         cmp.c2D.offset = new Vector2(1, 0);
@@ -107,7 +111,7 @@ public class LightSpear : Projectile
     {
         if(Player.Instance.LightChainReact > 0 && !HasFiredLaser && Data[2] > 0 && target is Enemy e)
         {
-            Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), Data[2]).GetComponent<LightSpearCaster>().ignore = e;
+            Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), Data[2], Data[4]).GetComponent<LightSpearCaster>().ignore = e;
             HasFiredLaser = true;
         }
         Damage = 0;
@@ -174,7 +178,7 @@ public class LightSpearCaster : Projectile
                 if (!HasShot)
                 {
                     Vector2 shootFromPos = SpriteRendererGlow.transform.position;
-                    if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new List<Enemy> { ignore }, (int)Data1 - 1, bonusRange: 5 + 1f * Player.Instance.LightChainReact))
+                    if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new List<Enemy> { ignore }, (int)Data1 - 1, bonusRange: 5 + 1f * Player.Instance.LightChainReact, 1, Data2 * 0.8f))
                         RB.velocity -= norm * 6;
                     HasShot = true;
                 }

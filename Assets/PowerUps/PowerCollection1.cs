@@ -342,7 +342,7 @@ public class NeuronActivation : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Reflection");
-        description.WithDescription("Enemies Y:[struck by beams of light] fire Y:[beams of light] at nearby enemies up to Y:1 G:(+1 per stack) additional times");
+        description.WithDescription("Enemies Y:[struck by beams of light] bounce Y:[beams of light] to nearby enemies up to Y:1 G:(+1 per stack) times, but bounced Y:[beams of light lose 20% damage]");
         description.WithShortDescription("Enemies struck by beams of light fire beams of light at nearby enemies");
     }
     public override void HeldEffect(Player p)
@@ -428,7 +428,7 @@ public class Refraction : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:[Beams of light] target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units");
+        description.WithDescription("Y:[Beams of light] target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units, but they Y:[lose 20% damage] each hit after the first");
         description.WithShortDescription("Beams of light can target an additional enemy");
     }
     public override void HeldEffect(Player p)

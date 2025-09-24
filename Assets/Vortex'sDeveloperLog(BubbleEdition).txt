@@ -21,6 +21,7 @@ Need to do:
 	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
 9. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
+11. Rework Projectiles to have damage initiated on NewProjectile(params) rather than in Init() (fix the really awkward math with reflection/refraction damage nerfs)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -35,6 +36,7 @@ Done:
 4. Reduce stacking effect of Charged Bubbles
 5. Remove redundancy where tier list would clear data when not necessary
 6. Attempt fixing bug where number display would sometimes not work in Equip or Achievement Menu
+7. Huge nerfs to Refraction and Reflection, reducing damage each time they refract or reflect
 
 9/22/25 to 9/23/25
 1. Blue Bubblemancer equip art refresh! YAY (sam)

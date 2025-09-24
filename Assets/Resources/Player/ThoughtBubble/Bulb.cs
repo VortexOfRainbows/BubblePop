@@ -97,7 +97,7 @@ public class Bulb : Hat
             }
         }
     }
-    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, List<Enemy> ignore, int BounceNum = 0, float bonusRange = 0, float defaultRangeMult = 1f)
+    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, List<Enemy> ignore, int BounceNum = 0, float bonusRange = 0, float defaultRangeMult = 1f, float damageMultiplier = 1.0f)
     {
         float speedMod = SpeedModifier;
         float spearSpeed = 5 + speedMod * 0.015f; // this only matters for visuals as the spear is hitscan
@@ -117,7 +117,7 @@ public class Bulb : Hat
                 if (++enemiesFound == 1) //refraction targetting
                 {
                     norm = norm2;
-                    Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, target.transform.position.x, target.transform.position.y, BounceNum);
+                    Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, target.transform.position.x, target.transform.position.y, BounceNum, -1, damageMultiplier);
                     searchPosition = target.transform.position;
                     spearRange = 7 + player.Refraction * 2; //Starts at 7 + 2 = 9, scales by + 2 per stack
                 }
@@ -132,7 +132,8 @@ public class Bulb : Hat
             float radians = Mathf.PI * percent * 2f;
             Enemy target = ignore[index];
             Vector2 newNorm = (Vector2)target.transform.position - shootFromPos;
-            Projectile.NewProjectile<LightSpear>(shootFromPos, newNorm.normalized * spearSpeed, target.transform.position.x, target.transform.position.y, BounceNum, radians);
+            damageMultiplier *= 0.8f;
+            Projectile.NewProjectile<LightSpear>(shootFromPos, newNorm.normalized * spearSpeed, target.transform.position.x, target.transform.position.y, BounceNum, radians, damageMultiplier);
         }
         return hitTarget;
     }

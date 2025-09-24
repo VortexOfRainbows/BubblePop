@@ -81,7 +81,7 @@ public static class WaveDirector
     public static int HighScoreWaveNum = 0;
     public static float WaveMult = 1.0f;
     public static float EnemyScalingFactor => TemporaryModifiers.EnemyScaling;
-    public static bool WaveActive = false, WaitingForCardDraw = false, WaitingForCardSelection = false;
+    public static bool WaveActive = false, WaitingForCardDraw = false;
     public static int SkullEnemiesActive { get; set; } = 0;
     public static void Reset()
     {
@@ -98,7 +98,7 @@ public static class WaveDirector
         EnemyPool.Clear();
         PermanentModifiers.Reset();
         TemporaryModifiers.CloneValues(PermanentModifiers);
-        WaveActive = WaitingForCardDraw = WaitingForCardSelection = false;
+        WaveActive = WaitingForCardDraw =false;
         SkullEnemiesActive = 0;
     }
     public static void FixedUpdate()
@@ -110,7 +110,6 @@ public static class WaveDirector
         }
         else if(!WaveActive)
         {
-            WaitingForCardDraw = WaitingForCardSelection = SkullEnemiesActive <= 0;
             return;
         }
         PointUpdate();
@@ -176,6 +175,7 @@ public static class WaveDirector
         }
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         CurrentAssociatedWaveCardNumber = 0;
+        WaitingForCardDraw = true;
     }
     public static void GatherCredits()
     {
