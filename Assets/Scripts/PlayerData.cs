@@ -124,21 +124,25 @@ public static class PlayerData
         TierList.ReadingFromSave = true;
         string[] words = CSV.Split(',', ':');
         int CurrentCategory = -1;
-        for(int i = 0; i < words.Length; ++i)
+        try
         {
-            string word = words[i];
-            if(TierList.TierNames.Contains(word)) //SABCDE
+            for (int i = 0; i < words.Length; ++i)
             {
-                ++CurrentCategory;
-            }
-            else //Nums
-            {
-                list.SetSelectedCategory(CurrentCategory);
-                int PowerID = int.Parse(word);
-                if(PowerID >= 0)
-                    list.PlacePower(PowerID, false);
+                string word = words[i];
+                if (TierList.TierNames.Contains(word)) //SABCDE
+                {
+                    ++CurrentCategory;
+                }
+                else //Nums
+                {
+                    list.SetSelectedCategory(CurrentCategory);
+                    int PowerID = int.Parse(word);
+                    if (PowerID >= 0)
+                        list.PlacePower(PowerID, false);
+                }
             }
         }
+        catch { }
         TierList.ReadingFromSave = false;
     }
 }

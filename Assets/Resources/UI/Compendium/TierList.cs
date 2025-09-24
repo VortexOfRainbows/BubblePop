@@ -35,7 +35,7 @@ public class TierList : MonoBehaviour
     }
     public void Start()
     {
-        OnTierList.Clear();
+        //OnTierList.Clear();
         Elems.Clear();
         TotalDistanceCovered = 800f;
         InitializeCategories();
