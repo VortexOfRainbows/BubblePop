@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
     public bool Hostile = false;
     public int immunityFrames = 100;
     public Vector2 startPos = Vector2.zero;
-    public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, params float[] data) where T : Projectile
+    public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, float damage = 1, params float[] data) where T : Projectile
     {
         bool hasMerged = true;
         if(Player.Instance.Coalescence > 0 && typeof(T) == typeof(SmallBubble))
@@ -79,6 +79,7 @@ public class Projectile : MonoBehaviour
         }
         else
             proj.Data = data;
+        proj.Damage = damage;
         proj.Init();
         return Proj;
     }
@@ -136,7 +137,7 @@ public class Projectile : MonoBehaviour
             }
             float chanceOfSuccess = Main.SnakeEyeChance * (eyes - recursiveDepth);
             if(Utils.RandFloat() < chanceOfSuccess)
-                NewProjectile<SnakeLightning>(transform.position, (target.transform.position - transform.position).normalized * 2.5f, recursiveDepth);
+                NewProjectile<SnakeLightning>(transform.position, (target.transform.position - transform.position).normalized * 2.5f, 10, recursiveDepth);
         }
         if(Player.Instance.SnakeEyes > 0)
         {
@@ -322,7 +323,6 @@ public class PhoenixFire : Projectile
         SpriteRendererGlow.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         SpriteRendererGlow.color = new Color(1f, 0.45f, .25f);
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/PhoenixFire");
-        Damage = 15;
         immunityFrames = 100;
         Penetrate = 3;
         Friendly = true;

@@ -84,7 +84,7 @@ public class BathBomb : Projectile
                 {
                     float r = (j * 8 + i / 14f * 360) + rand;
                     Vector2 circular = new Vector2(1, 0).RotatedBy(r * Mathf.Deg2Rad);
-                    NewProjectile<Spike>((Vector2)transform.position + circular * (j * 2f), circular * 2.0f, Mathf.Sign(j % 2 * 2 - 1) * (1 + j * 0.5f), Data2 + r / 2.5f);
+                    NewProjectile<Spike>((Vector2)transform.position + circular * (j * 2f), circular * 2.0f, 1, Mathf.Sign(j % 2 * 2 - 1) * (1 + j * 0.5f), Data2 + r / 2.5f);
                 }
             }
         }
@@ -94,7 +94,7 @@ public class BathBomb : Projectile
             {
                 float r = Mathf.PI * i / 5f;
                 Vector2 circular = new Vector2(1, 0).RotatedBy(r);
-                NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 0, Data2);
+                NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 1, 0, Data2);
             }
         }
         if (Data2 == 1)
@@ -104,7 +104,7 @@ public class BathBomb : Projectile
                 for (int i = 0; i < 4; i++)
                 {
                     Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f);
-                    NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 0, Data2);
+                    NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 1, 0, Data2);
                 }
             }
         }
@@ -113,7 +113,7 @@ public class BathBomb : Projectile
             for (int i = 0; i < 24; i++)
             {
                 Vector2 circular = Utils.RandCircle(3);
-                NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 1.5f, 0, Data2);
+                NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 1.5f, 1, 0, Data2);
             }
         }
         if (Data2 == 3)
@@ -124,7 +124,7 @@ public class BathBomb : Projectile
             {
                 float sin = Mathf.Sin(i * Mathf.PI / 36f * petals);
                 Vector2 circular = new Vector2(0.7f + 0.3f * sin, 0).RotatedBy(r + Mathf.PI * i / 18f);
-                NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 0, Data2);
+                NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 1, 0, Data2);
             }
         }
         if (Data2 == 4)
@@ -134,7 +134,7 @@ public class BathBomb : Projectile
                 for (int i = 0; i < 10; i++)
                 {
                     Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 5f);
-                    NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 2.0f, j * 1f, Data2);
+                    NewProjectile<Spike>((Vector2)transform.position + circular * 0.5f, circular * 2.0f, 1, j * 1f, Data2);
                 }
             }
         }
@@ -145,7 +145,7 @@ public class BathBomb : Projectile
                 for (int i = 0; i < 4; i++)
                 {
                     Vector2 circular = new Vector2(j, 0).RotatedBy(Mathf.PI * i / 2f + j * -25 * Mathf.Deg2Rad);
-                    NewProjectile<Spike>((Vector2)transform.position + circular * 0.25f, circular * 1.7f, 1, Data2);
+                    NewProjectile<Spike>((Vector2)transform.position + circular * 0.25f, circular * 1.7f, 1, 1, Data2);
                 }
             }
         }

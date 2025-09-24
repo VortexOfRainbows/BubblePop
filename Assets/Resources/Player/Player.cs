@@ -254,7 +254,7 @@ public partial class Player : Entity
                 float velocity = 2;
                 int amt = 16 + 8 * BubbleShields;
                 for (int i = 0; i < amt; ++i)
-                    Projectile.NewProjectile<SmallBubble>(transform.position, Random.insideUnitCircle * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f));
+                    Projectile.NewProjectile<SmallBubble>(transform.position, Random.insideUnitCircle * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1);
             }
         }
         else
@@ -308,7 +308,7 @@ public partial class Player : Entity
     {
         for(int i = 0; i < 30; i++)
         {
-            Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI));
+            Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 15);
         }
         UniversalImmuneFrames = 200 * ImmunityFrameMultiplier;
         SpentBonusLives++;

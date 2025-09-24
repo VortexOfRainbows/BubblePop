@@ -66,7 +66,7 @@ public class BubbleGun : BubblemancerWand
             float speed = Utils.RandFloat(16, 17) + 2.4f * player.FasterBulletSpeed;
             Vector2 velocity = toMouse.normalized * speed + awayFromWand * 4;
             Vector2 norm = velocity.normalized * (12 + player.FasterBulletSpeed * 0.5f) + Utils.RandCircle(4) * (10f / (10f + player.FasterBulletSpeed));
-            Projectile.NewProjectile<StarProj>((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), transform.position.x + norm.x, transform.position.y + norm.y);
+            Projectile.NewProjectile<StarProj>((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), 2, transform.position.x + norm.x, transform.position.y + norm.y);
             --starshotNum;
         }
     }
@@ -112,7 +112,7 @@ public class BubbleGun : BubblemancerWand
                     float spread = spreadAmt * (i - (shotCount - 1) * 0.5f);
                     Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand,
                         toMouse.normalized.RotatedBy(spread * Mathf.Deg2Rad)
-                        * speed + Utils.RandCircle(0.15f));
+                        * speed + Utils.RandCircle(0.15f), 1);
                     TryDoingStarShot(ref starshotNum);
                 }
                 player.bonusBubbles %= 5;
@@ -129,7 +129,7 @@ public class BubbleGun : BubblemancerWand
                 {
                     AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.5f);
                     AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(0), Player.Position, 0.6f, 1f);
-                    Projectile.NewProjectile<BigBubble>((Vector2)transform.position + awayFromWand, Vector2.zero, 149, 0);
+                    Projectile.NewProjectile<BigBubble>((Vector2)transform.position + awayFromWand, Vector2.zero, 1, 149, 0);
                 }
                 if (AttackRight < maxCharge)
                 {

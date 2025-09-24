@@ -9,7 +9,6 @@ public class PokerChip : Projectile
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/RedChip");
         timer += Utils.RandInt(41);
         HomingNum = Utils.RandInt(10);
-        Damage = 3;
         Friendly = true;
         SpriteRendererGlow.gameObject.SetActive(true);
         SpriteRendererGlow.color = new Color(0.7137f, 0.2352f, 0.2588f);
@@ -72,7 +71,6 @@ public class BlueChip : PokerChip
         base.Init();
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/BlueChip");
         SpriteRendererGlow.color = new Color(0.1764706f, .6f, 0.6941177f);
-        Damage = 6;
         HomingRate = 20.0f;
     }
 }

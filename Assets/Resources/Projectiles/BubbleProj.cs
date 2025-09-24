@@ -98,7 +98,7 @@ public class BigBubble : Projectile
             float amt = 1 + (3 + Data2) * Player.Instance.BubbleBlast;
             float speed = 3.5f + (Data2 * 1.25f + Player.Instance.FasterBulletSpeed * 1.75f + Player.Instance.ChargeShotDamage * 0.75f);
             for (int i = 0; i < amt; i++)
-                NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f));
+                NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1);
         }
         for (int i = 0; i < 30; i++)
         {
@@ -183,7 +183,7 @@ public class BigBubble : Projectile
                 {
                     Vector2 norm = RB.velocity.normalized;
                     float veloMult = Utils.RandFloat(0.75f * Player.Instance.FasterBulletSpeed, 3f + Player.Instance.FasterBulletSpeed * 1.25f);
-                    NewProjectile<SmallBubble>((Vector2)transform.position + Utils.RandCircle(transform.lossyScale.x * 0.5f), Utils.RandCircle(2) - norm * veloMult);
+                    NewProjectile<SmallBubble>((Vector2)transform.position + Utils.RandCircle(transform.lossyScale.x * 0.5f), Utils.RandCircle(2) - norm * veloMult, 1);
                 }
             }
             if (timer > 160)
@@ -247,7 +247,7 @@ public class ThunderBubble : Projectile
         float total = Player.Instance.Electroluminescence;
         for(int i = 0; i < total; ++i)
         {
-            ThunderLightSpearCaster TLSC = NewProjectile<ThunderLightSpearCaster>(transform.position, Vector2.zero, i, total, ScaleFactor * 1.1f, Utils.SignNoZero(RB.velocity.x)).GetComponent<ThunderLightSpearCaster>();
+            ThunderLightSpearCaster TLSC = NewProjectile<ThunderLightSpearCaster>(transform.position, Vector2.zero, 2.0f + Player.Instance.LightSpear * 0.5f, i, total, ScaleFactor * 1.1f, Utils.SignNoZero(RB.velocity.x)).GetComponent<ThunderLightSpearCaster>();
             TLSC.FakeParent = transform;
         }
     }
@@ -278,7 +278,7 @@ public class ThunderBubble : Projectile
             {
                 if(Player.Instance.EchoBubbles > 0)
                 {
-                    NewProjectile<LatentCharge>(transform.position, Vector2.zero, Player.Instance.EchoBubbles);
+                    NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, Player.Instance.EchoBubbles);
                 }
                 Damage *= 2 + Player.Instance.ThunderBubbleReturnDamageBonus;
                 Recalled = true;

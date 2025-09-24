@@ -6,7 +6,8 @@ public class StarProj : Projectile
     {
         SpriteRenderer.sprite = Main.Sparkle;
         SpriteRenderer.color = SpriteRendererGlow.color = new Color(1f, 1f, 0.2f, 0.6f);
-        Damage = 2;
+        if(Damage <= 0)
+            Damage = 2;
         Friendly = true;
         MyTrail = SpecialTrail.NewTrail(transform, Color.Lerp(Color.blue * 0.85f, Player.Instance.Body.PrimaryColor, 0.75f).WithAlpha(0.4f), 3f, 0.25f);
     }
@@ -86,7 +87,7 @@ public class StarProj : Projectile
                 for (; stars > 0; --stars)
                 {
                     Vector2 targetPos = (Vector2)target.transform.position + norm * 9 + Utils.RandCircle(7);
-                    NewProjectile<StarProj>(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), targetPos.x, targetPos.y);
+                    NewProjectile<StarProj>(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, targetPos.x, targetPos.y);
                 }
             }
             if (Player.Instance.LuckyStar > 0)

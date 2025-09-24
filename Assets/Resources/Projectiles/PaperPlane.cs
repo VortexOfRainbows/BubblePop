@@ -56,7 +56,7 @@ public class PaperPlane : Projectile
                 for (int i = 0; i < shotCount; ++i)
                 {
                     float sp = i * 2 + 12;
-                    NewProjectile<SmallBubble>((Vector2)transform.position, norm * sp);
+                    NewProjectile<SmallBubble>((Vector2)transform.position, norm * sp, 1);
                 }
                 Kill();
                 return;
@@ -179,7 +179,7 @@ public class LatentCharge : Projectile
         float amt = Data1;
         float speed = (4.0f + Player.Instance.FasterBulletSpeed * 2.0f + amt * 0.6f) * (0.8f + 0.2f * Player.Instance.ZapRadiusMult);
         for (int i = 0; i < Data1; i++)
-            NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f));
+            NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1);
         int c = Data.Length > 0 ? (int)Mathf.Sqrt(Data1 + 6) * 2 + 3 : 3;
         for (int i = 0; i < c; i++)
         {

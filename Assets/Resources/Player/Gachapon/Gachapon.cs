@@ -76,9 +76,9 @@ public class Gachapon : Body
             float lerp = totalCount == 1 ? 0 : (float)i / (totalCount - 1);
             Vector2 rot = toMouse.RotatedBy(Mathf.Deg2Rad * Mathf.Lerp(-rotation, rotation, lerp));
             if(blue && blueCount-- > 0)
-                Projectile.NewProjectile<BlueChip>(transform.position, rot);
+                Projectile.NewProjectile<BlueChip>(transform.position, rot, 6);
             else
-                Projectile.NewProjectile<PokerChip>(transform.position, rot);
+                Projectile.NewProjectile<PokerChip>(transform.position, rot, 3);
             int sparkle = player.DashSparkle;
             if(sparkle > 0)
             {
@@ -89,12 +89,12 @@ public class Gachapon : Body
                 for (int j = 0; j < whole; ++j)
                 {
                     Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
-                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
                 }
                 if(Utils.RandFloat(1) < approximate)
                 {
                     Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
-                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
                 }
             }
         }

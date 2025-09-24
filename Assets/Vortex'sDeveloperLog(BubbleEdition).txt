@@ -21,9 +21,8 @@ Need to do:
 	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
 9. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
-11. Rework Projectiles to have damage initiated on NewProjectile(params) rather than in Init() (fix the really awkward math with reflection/refraction damage nerfs)
-12. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
-13. Heart drop from waves
+11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
+12. Heart drop from waves
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -34,6 +33,8 @@ Done:
 9/24/25
 1. Changes to equipment loading that should speed up the game a little bit
 2. Store internal version number implementation to reset some data 
+3. Some additional checks to prevent excessive < 0.1 damage light spears
+4. Damage is now a passed parameter in projectile instantiation
 
 9/23/25 to 9/24/25
 1. Fixed bug where you could prematurely redraw cards
