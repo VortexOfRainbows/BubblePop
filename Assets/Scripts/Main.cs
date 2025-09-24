@@ -59,7 +59,7 @@ public class Main : MonoBehaviour
         Shadow = Resources.Load<Sprite>("Shadow");
         BuffIcon.Load();
         OnGameOpen();
-        EquipData.LoadAllEquipList();
+        GlobalEquipData.LoadAllEquipList();
     }
     public void OnDestroy()
     {
@@ -107,28 +107,23 @@ public class Main : MonoBehaviour
     public static Sprite Sparkle => Instance.sparkle;
     public Sprite sparkle;
     public static Sprite Shadow;
-
-    public GlobalEquipData EquipData;
-    [Serializable]
-    public class GlobalEquipData
+    public static class GlobalEquipData
     {
         public static Dictionary<Type, int> EquipTypeToIndex = new();
         public static List<DetailedDescription> DescriptionData = new();
-        public static List<GameObject> AllEquipList => Instance.EquipData.AllEquipmentsList;
+        public static List<GameObject> AllEquipList => AllEquipmentsList;
         public static List<int> TimesUsedList = new();
         public static Dictionary<Type, Equipment> TypeToEquipPrefab = new();
-        public List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
-        public List<GameObject> Hats;
-        public List<GameObject> Accessories;
-        public List<GameObject> Weapons;
-        public List<GameObject> Characters;
-        public List<GameObject> AllEquipmentsList = new();
-        public void LoadAllEquipList()
+        public static List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
+        public static List<GameObject> Hats = new();
+        public static List<GameObject> Accessories = new();
+        public static List<GameObject> Weapons = new();
+        public static List<GameObject> Characters = new();
+        public static List<GameObject> AllEquipmentsList = new();
+        public static void LoadAllEquipList()
         {
             foreach(UnlockCondition unlock in UnlockCondition.Unlocks.Values)
-            {
                 unlock.AssociatedUnlocks.Clear();
-            }
             TypeToEquipPrefab.Clear();
             EquipTypeToIndex.Clear();
             TimesUsedList.Clear();
@@ -172,6 +167,40 @@ public class Main : MonoBehaviour
         public static Equipment EquipFromType(Type t)
         {
             return TypeToEquipPrefab[t];
+        }
+
+        public static Queue<GameObject> EquipmentLoadQueue;
+        public static readonly GameObject Bubblemancer = LoadEquipment("Bubblemancer/Bubblemancer");
+        public static readonly GameObject BubblemancerHat = LoadEquipment("Bubblemancer/BubblemancerHat");
+        public static readonly GameObject BubblemancerCape = LoadEquipment("Bubblemancer/BubblemancerCape");
+        public static readonly GameObject BubblemancerWeapon = LoadEquipment("Bubblemancer/BubblemancerWand");
+        public static readonly GameObject ThoughtBubble = LoadEquipment("ThoughtBubble/ThoughtBubble");
+        public static readonly GameObject ThoughtBubbleHat = LoadEquipment("ThoughtBubble/LightBulb");
+        public static readonly GameObject ThoughtBubbleCape = LoadEquipment("ThoughtBubble/LabCoat");
+        public static readonly GameObject ThoughtBubbleWeapon = LoadEquipment("ThoughtBubble/Book");
+        public static readonly GameObject Gachapon = LoadEquipment("Gachapon/Gachapon");
+        public static readonly GameObject GachaponHat = LoadEquipment("Gachapon/Dice");
+        public static readonly GameObject GachaponCape = LoadEquipment("Gachapon/Emerald");
+        public static GameObject LoadEquipment(string path)
+        {
+            return LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
+        }
+        public static GameObject LoadEquipment(GameObject Prefab)
+        {
+            Equipment EquipType = Prefab.GetComponent<Equipment>();
+            if(EquipType is Hat)
+                Hats.Add(Prefab);
+            else if(EquipType is Accessory)
+                Accessories.Add(Prefab);
+            else if(EquipType is Weapon)
+                Weapons.Add(Prefab);
+            else if(EquipType is Body)
+                Characters.Add(Prefab);
+            return Prefab;
+        }
+        public static void DefineSubequipRelationships()
+        {
+
         }
     }
 }

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class PlayerData
 {
+    public static readonly float CurrentPlayerVersion = 1.1f;
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
@@ -38,6 +40,12 @@ public static class PlayerData
     }
     public static void LoadAll()
     {
+        float PreviousPlayerVersion = GetFloat("VersionNumber", 1.0f);
+        if(CurrentPlayerVersion != PreviousPlayerVersion)
+        {
+            SaveFloat("VersionNumber", CurrentPlayerVersion);
+            VersionResetProcedure();
+        }
         PauseDuringPowerSelect = GetBool("PauseDuringPowerSelect", true);
         PauseDuringCardSelect = GetBool("PauseDuringCardSelect", true);
         BriefDescriptionsByDefault = GetBool("BriefDescriptionsByDefault", true);
@@ -144,5 +152,17 @@ public static class PlayerData
         }
         catch { }
         TierList.ReadingFromSave = false;
+    }
+    public static void VersionResetProcedure()
+    {
+        PlayerPrefs.DeleteKey("LastSelectedChar");
+        string TypeName;
+        for(int i = 0; i < Main.GlobalEquipData.Characters.Count; ++i)
+        {
+            TypeName = Main.GlobalEquipData.Characters[i].GetComponent<Equipment>().TypeName;
+            PlayerPrefs.DeleteKey($"{TypeName}Hat");
+            PlayerPrefs.DeleteKey($"{TypeName}Acc");
+            PlayerPrefs.DeleteKey($"{TypeName}Wep");
+        }
     }
 }

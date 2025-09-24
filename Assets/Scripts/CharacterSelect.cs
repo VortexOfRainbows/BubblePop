@@ -88,12 +88,12 @@ public class CharacterSelect : MonoBehaviour
     public PowerUpLayout PowerLayout;
     public GameObject visual;
     public EquipmentUIElement[] DisplayBoxes;
-    public List<GameObject>[] PrimaryEquipments => Main.Instance.EquipData.PrimaryEquipments;
-    public List<GameObject> Hats => Main.Instance.EquipData.Hats;
-    public List<GameObject> Accessories => Main.Instance.EquipData.Accessories;
-    public List<GameObject> Weapons => Main.Instance.EquipData.Weapons;
-    public List<GameObject> Characters => Main.Instance.EquipData.Characters;
-    public List<GameObject> AllEquipmentsList => Main.Instance.EquipData.AllEquipmentsList;
+    public List<GameObject>[] PrimaryEquipments => Main.GlobalEquipData.PrimaryEquipments;
+    public List<GameObject> Hats => Main.GlobalEquipData.Hats;
+    public List<GameObject> Accessories => Main.GlobalEquipData.Accessories;
+    public List<GameObject> Weapons => Main.GlobalEquipData.Weapons;
+    public List<GameObject> Characters => Main.GlobalEquipData.Characters;
+    public List<GameObject> AllEquipmentsList => Main.GlobalEquipData.AllEquipmentsList;
     private Canvas myCanvas;
     private EquipmentPage SecondaryPage;
     private EquipmentPage PrimaryPage;

@@ -182,7 +182,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             }
             else
             {
-                for (int i = 0; i < Main.Instance.EquipData.AllEquipmentsList.Count; ++i)
+                for (int i = 0; i < Main.GlobalEquipData.AllEquipmentsList.Count; ++i)
                 {
                     CompendiumEquipmentElement CPUE = Instantiate(CompendiumEquipmentElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumEquipmentElement>();
                     CPUE.Init(i, MyCanvas);
