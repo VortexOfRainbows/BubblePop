@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 public class PaperPlane : Projectile
 {
     public override void Init()
@@ -150,7 +150,7 @@ public class LatentCharge : Projectile
             else
             {
                 float percent = Book.ClosingPercent;
-                int total = (int)Mathf.Pow(Data1 + 1, 0.75f) + 1;
+                int total = Math.Min(15, (int)Mathf.Pow(Data1 + 1, 0.75f) + 1);
                 timer2 += total;
                 float size = 1.9f + total * 0.1f;
                 for(; timer2 >= 3; timer2 -= 3)

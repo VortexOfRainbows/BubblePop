@@ -96,6 +96,7 @@ public class CardManager : MonoBehaviour
             return;
         DespawnTimer = 0;
         DespawningCards = true;
+        WaveDirector.WaitingForCardSelection = false;
         WaveDirector.StartWave();
     }
     public static void GenerateNewCards()

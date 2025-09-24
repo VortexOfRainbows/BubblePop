@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using static UnityEditor.FilePathAttribute;
-using Unity.VisualScripting;
-
 public class WaveCard 
 {
     public override string ToString()

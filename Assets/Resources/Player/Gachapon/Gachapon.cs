@@ -206,14 +206,6 @@ public class Gachapon : Body
             AddStack();
         while (stacks.Count > player.ChipStacks)
             RemoveStack();
-        if (Main.WavesUnleashed)
-        {
-            while(player.AbilityReady)
-            {
-                player.abilityTimer += AbilityCD;
-                AddChip();
-            }
-        }
         if(Control.Ability && !Control.LastAbility)
         {
             if (RemoveChip())

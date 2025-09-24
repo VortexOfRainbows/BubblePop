@@ -73,7 +73,7 @@ public class WaveMeter : MonoBehaviour
     }
     public void UpdateNextWaveButton()
     {
-        bool AwaitingNextCard = !WaveDirector.WaveActive && WaveDirector.WaitingForCard;
+        bool AwaitingNextCard = !WaveDirector.WaveActive && WaveDirector.WaitingForCardDraw && !WaveDirector.WaitingForCardSelection;
         float defaultPosition = 200;
         Utils.LerpSnap(NextWaveButton, new Vector2(NextWaveButton.localPosition.x, AwaitingNextCard ? -50 : defaultPosition), Utils.DeltaTimeLerpFactor(0.05f), 0.1f);
         Color targetColor = !Main.PlayerNearPylon ? new Color(0.9f, 0.5f, 0.5f, 1f) : Color.white;
@@ -91,7 +91,7 @@ public class WaveMeter : MonoBehaviour
                 if(press)
                 {
                     CardManager.DrawCards();
-                    WaveDirector.WaitingForCard = false;
+                    WaveDirector.WaitingForCardDraw = false;
                 }
             }
         }
