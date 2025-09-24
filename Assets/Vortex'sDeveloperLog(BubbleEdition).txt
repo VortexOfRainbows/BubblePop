@@ -13,7 +13,7 @@ Need to do:
 3. Integrate Settings and compendium into the default pause stuff
 4. Make calculator homing snappier
 5. Integrate character select into the compendium
-6. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more...
+6. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more... Crits, Discounts
 	1. TBD: Strength...
 7. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
 	1. Contains loot with higher chances of good loot based on the rarity of the chest
@@ -23,6 +23,7 @@ Need to do:
 10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 11. Rework Projectiles to have damage initiated on NewProjectile(params) rather than in Init() (fix the really awkward math with reflection/refraction damage nerfs)
 12. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
+13. Heart drop from waves
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
