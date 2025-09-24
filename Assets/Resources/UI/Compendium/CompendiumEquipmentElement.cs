@@ -47,7 +47,7 @@ public class CompendiumEquipmentElement : CompendiumElement
             isAchieve = true;
             hoverTransform = achieve.CombinedRect;
         }
-        bool isWithinMaskRange = Camera.main.WorldToScreenPoint(count.transform.position).y > 800;
+        bool isWithinMaskRange = count.transform.position.y > Compendium.Instance.SortBar.position.y + Compendium.Instance.SortBar.sizeDelta.y * 0.5f * Compendium.Instance.SortBar.lossyScale.y;
         count.gameObject.SetActive((isAchieve ? Compendium.Instance.AchievementPage.ShowCounts : Compendium.Instance.EquipPage.ShowCounts) && !MyElem.DisplayOnly && (!IsLocked() || isAchieve) && Style <= 1 && !isWithinMaskRange);
         if (MyElem.ActiveEquipment != null)
         {

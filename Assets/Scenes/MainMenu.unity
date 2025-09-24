@@ -3042,10 +3042,10 @@ RectTransform:
   - {fileID: 506863232}
   m_Father: {fileID: 1515259658}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -10, y: -10}
-  m_SizeDelta: {x: -20, y: -500}
+  m_SizeDelta: {x: -20, y: 381}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1139604810
 MonoBehaviour:
@@ -3500,11 +3500,16 @@ MonoBehaviour:
   OpenCompendiumButton: {fileID: 754256735}
   TopBar: {fileID: 2133538417}
   SideBar: {fileID: 1515259658}
+  SortBar: {fileID: 1305752784}
   Elements:
   - {fileID: 845340618}
   - {fileID: 804261058}
   - {fileID: 2058729469}
   - {fileID: 374931718}
+  DisplayCPUE: {fileID: 0}
+  DisplayCEE: {fileID: 0}
+  DisplayCPEnemy: {fileID: 0}
+  DisplayCPAchievement: {fileID: 0}
   DisplayPortDescription: {fileID: 1867782600}
   DescriptionContentRect: {fileID: 428053961}
   Stars:

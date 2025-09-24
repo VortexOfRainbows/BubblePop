@@ -52,6 +52,7 @@ public class Compendium : MonoBehaviour
     public Button OpenCompendiumButton;
     public Transform TopBar;
     public Transform SideBar;
+    public RectTransform SortBar;
     public void ToggleActive()
     {
         ToggleActive(!Active);
