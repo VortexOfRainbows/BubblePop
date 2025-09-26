@@ -423,6 +423,8 @@ public class RewardClause : CardClause
                 AddPowerReward(p, listType);
             else if (r is CoinReward c)
                 AddCashReward(c, listType);
+            else
+                listType.Add(r);
         }
     }
     private Reward GenRandomReward()
@@ -430,7 +432,11 @@ public class RewardClause : CardClause
         float PointsAvailable = Points;
         bool beforeWaveReward = Utils.RandFloat(1) > 0.5f;
         Reward reward = null;
-        if(Utils.RandFloat(1) < 0.5f || Points < 10)
+        if(Utils.RandFloat(1) < 0.12f && PreRewards.Count <= 0)
+        {
+            reward = new HealReward((int)(PointsAvailable + 0.4f));
+        }
+        else if(Utils.RandFloat(1) < 0.5f || Points < 10)
         {
             reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.4f) : (int)(PointsAvailable + 0.4f));
         }

@@ -238,6 +238,8 @@ public partial class Player : Entity
     }
     public void SetLife(int num)
     {
+        if (num > TotalMaxLife)
+            num = TotalMaxLife;
         Life = num;
         OnSetLife(Life);
     }

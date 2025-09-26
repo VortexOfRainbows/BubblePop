@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 public static class CoinManager
 {
     public static void InitCoinPrefabs()
@@ -7,6 +8,7 @@ public static class CoinManager
         Bronze = Resources.Load<GameObject>("Money/BronzeCoin");
         Silver = Resources.Load<GameObject>("Money/SilverCoin");
         Gold = Resources.Load<GameObject>("Money/GoldCoin");
+        Heart = Resources.Load<GameObject>("Money/HeartPickup");
     }
     public static void Load()
     {
@@ -19,6 +21,7 @@ public static class CoinManager
     public static GameObject Bronze;
     public static GameObject Silver;
     public static GameObject Gold;
+    public static GameObject Heart;
     public static void SpawnCoin(Vector2 pos, int value = 1, float collectDelay = 0f)
     {
         int bronze = value % 5;
@@ -47,6 +50,18 @@ public static class CoinManager
     {
         GameObject obj = GameObject.Instantiate(coinType, pos, Quaternion.identity);
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(8);
+        obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
+    }
+    public static void SpawnHeart(Func<Vector2> func, float collectDelay)
+    {
+        GameObject obj = GameObject.Instantiate(Heart, func.Invoke(), Quaternion.identity);
+        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
+        obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
+    }
+    public static void SpawnHeart(Vector2 pos, float collectDelay)
+    {
+        GameObject obj = GameObject.Instantiate(Heart, pos, Quaternion.identity);
+        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
         obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
     }
     public static int Current { get; private set; }

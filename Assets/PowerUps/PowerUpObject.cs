@@ -85,7 +85,7 @@ public class PowerUpObject : MonoBehaviour
                 if (charisma >= 81 || Utils.RandFloat(1) < 0.19f + charisma * 0.01f)
                 {
                     if(Player.Instance.Life < Player.Instance.MaxLife)
-                        Player.Instance.SetLife(Player.Instance.Life + 1);
+                        CoinManager.SpawnHeart(transform.position, 0.2f);
                     else
                         CoinManager.SpawnCoin(transform.position, charisma * 25, 0.5f);
                 }

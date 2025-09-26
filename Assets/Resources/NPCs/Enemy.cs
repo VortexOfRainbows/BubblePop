@@ -183,8 +183,8 @@ public class Enemy : Entity
         UpdateBuffs();
         AI();
     }
-    public bool AlreadyDead => Life <= -50;
-    private void SetDead() => Life = -50;
+    public bool AlreadyDead = false;
+    private void SetDead() => AlreadyDead = true;
     public bool FirstStrike = true;
     public sealed override void OnHurtByProjectile(Projectile proj)
     {
@@ -242,8 +242,6 @@ public class Enemy : Entity
             velo.y += 0.5f;
         }
         GameObject g = PopupText.NewPopupText(randPos, velo, popupTextColor, damage.ToString("0.#"), damageType == 1, damageType == 2 ? 0.8f : 1f);
-        if (Life < 0)
-            Life = 0;
         if (Life <= 0 && !AlreadyDead)
         {
             SetDead();

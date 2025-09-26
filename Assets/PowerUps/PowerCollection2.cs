@@ -28,7 +28,7 @@ public class RollForCharisma : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Roll For Persuasion");
+        description.WithName("Roll For Charisma");
         description.WithDescription("Y:20% G:(+1% per stack) Y:chance to Y:heal after Y:[purchasing a power] or gain Y:25 G:(+25 per stack) Y:coins if uninjured");
         description.WithShortDescription("Chance to heal or refund a portion of money spent when purchasing power");
     } 

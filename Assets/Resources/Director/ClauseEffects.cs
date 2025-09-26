@@ -245,3 +245,23 @@ public class CoinReward : Reward
         return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, $"{coins} coins")}";
     }
 }
+public class HealReward : Reward
+{
+    public HealReward(int value)
+    {
+        coins = value;
+    }
+    public int coins;
+    public override float GetCost()
+    {
+        return coins * (BeforeWaveEndReward ? 1 : 0.5f);
+    }
+    public override void GrantReward()
+    {
+        CoinManager.SpawnHeart(RewardPosition, 0.5f);
+    }
+    public override string Description()
+    {
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], $"1 heart")}";
+    }
+}
