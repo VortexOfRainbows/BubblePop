@@ -254,8 +254,8 @@ public class ThoughtBubble : Body
             while (sparkleSparkleNum > 1f)
             {
                 Vector2 target = Utils.RandCircle(1).normalized * 20;
-                Vector2 target2 = Utils.RandCircle(1).normalized * 10;
-                Projectile.NewProjectile<StarProj>(current.transform.position, target2, 2, current.transform.position.x + target.x, current.transform.position.y + target.y);
+                Vector2 target2 = Utils.RandCircle(1).normalized * (14 + 0.5f * player.FasterBulletSpeed);
+                Projectile.NewProjectile<StarProj>(current.transform.position, target2, 2, current.transform.position.x + target.x, current.transform.position.y + target.y, Utils.RandInt(2) * 2 - 1);
                 sparkleSparkleNum -= 1.0f;
             }
         }

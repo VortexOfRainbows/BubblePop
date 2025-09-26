@@ -22,6 +22,7 @@ Need to do:
 9. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
+12. Thought bubble lightning zap trail
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -36,6 +37,9 @@ Done:
 4. Damage is now a passed parameter in projectile instantiation
 5. Fix bug where enemies are dying multiple times at once
 6. Add heart pickup, may rarely appear as a wave reward
+7. Improve calculator homing for stars
+8. Bluebblemancy equips (blue variants) now have unique effects
+9. Blue Hat to make stars rotate around you instead of travel normally (this might be very op but we'll see how it turns out), blue cape starts with a blue item
 
 9/23/25 to 9/24/25
 1. Fixed bug where you could prematurely redraw cards

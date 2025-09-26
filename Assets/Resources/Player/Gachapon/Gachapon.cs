@@ -89,12 +89,12 @@ public class Gachapon : Body
                 for (int j = 0; j < whole; ++j)
                 {
                     Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
-                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5), Utils.RandInt(2) * 2 - 1);
                 }
                 if(Utils.RandFloat(1) < approximate)
                 {
                     Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
-                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5), Utils.RandInt(2) * 2 - 1);
                 }
             }
         }

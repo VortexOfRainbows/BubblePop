@@ -66,7 +66,7 @@ public class BubbleGun : BubblemancerWand
             float speed = Utils.RandFloat(16, 17) + 2.4f * player.FasterBulletSpeed;
             Vector2 velocity = toMouse.normalized * speed + awayFromWand * 4;
             Vector2 norm = velocity.normalized * (12 + player.FasterBulletSpeed * 0.5f) + Utils.RandCircle(4) * (10f / (10f + player.FasterBulletSpeed));
-            Projectile.NewProjectile<StarProj>((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), 2, transform.position.x + norm.x, transform.position.y + norm.y);
+            Projectile.NewProjectile<StarProj>((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), 2, transform.position.x + norm.x, transform.position.y + norm.y, Utils.RandInt(2) * 2 - 1);
             --starshotNum;
         }
     }

@@ -87,6 +87,7 @@ public partial class Player : Entity
     public float FlatSkullCoinBonus = 0.0f;
     public float ThunderBubbleReturnDamageBonus = 0;
     public float EchoBubbles = 0;
+    public bool OrbitalStars = false;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -123,6 +124,7 @@ public partial class Player : Entity
         FlatSkullCoinBonus = 0.0f;
         ThunderBubbleReturnDamageBonus = 0.0f;
         EchoBubbles = 0.0f;
+        OrbitalStars = false;
     }
     private void UpdatePowerUps()
     {
@@ -163,7 +165,7 @@ public partial class Player : Entity
                 {
                     circular = circular.RotatedBy(spreadAmt);
                     Vector2 target = (Vector2)transform.position + circular * (16 + FasterBulletSpeed);
-                    Projectile.NewProjectile<StarProj>(transform.position, circular.RotatedBy(Mathf.PI * 0.55f) * speedMax, 2, target.x, target.y);
+                    Projectile.NewProjectile<StarProj>(transform.position, circular.RotatedBy(Mathf.PI * 0.55f) * speedMax, 2, target.x, target.y, -1);
                 }
             }
         }
@@ -197,7 +199,7 @@ public partial class Player : Entity
             for (; stars > 0; --stars)
             {
                 Vector2 target = (Vector2)transform.position + norm * 14 + Utils.RandCircle(6);
-                Projectile.NewProjectile<StarProj>(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, target.x, target.y);
+                Projectile.NewProjectile<StarProj>(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, target.x, target.y, Utils.RandInt(2) * 2 - 1);
             }
         }
     }

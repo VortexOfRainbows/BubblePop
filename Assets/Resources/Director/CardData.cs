@@ -32,7 +32,7 @@ public class CardData
         AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r);
         e ??= new EnemyClause(AvailablePoints);
         m ??= new ModifierClause(AvailablePoints - 20);
-        r ??= new RewardClause(originalAvailablePoints);
+        r ??= new RewardClause(originalAvailablePoints, -1, DifficultyMult * 0.065f);
         if(e.AlternativeModifier != null)
         {
             if (e.AlternativeModifier.IsPermanent)
@@ -371,7 +371,8 @@ public class RewardClause : CardClause
     public List<Reward> PostRewards = new();
     public int RewardsAllowed = -1;
     public int RewardsAdded = 0;
-    public RewardClause(float points, int rewardsAllowed = -1, params Reward[] rewards) : base(points)
+    public float HealingChance = 0.05f;
+    public RewardClause(float points, int rewardsAllowed = -1, float healingChance = 0.05f, params Reward[] rewards) : base(points)
     {
         RewardsAllowed = rewardsAllowed;
         foreach(Reward r in rewards)
@@ -383,6 +384,7 @@ public class RewardClause : CardClause
             else if (r is CoinReward c)
                 AddCashReward(c, listType);
         }
+        HealingChance = healingChance;
         GenerateData();
     }
     public void AddPowerReward(PowerReward r, List<Reward> list)
@@ -432,7 +434,7 @@ public class RewardClause : CardClause
         float PointsAvailable = Points;
         bool beforeWaveReward = Utils.RandFloat(1) > 0.5f;
         Reward reward = null;
-        if(Utils.RandFloat(1) < 0.12f && PreRewards.Count <= 0)
+        if (Utils.RandFloat(1) < HealingChance && PreRewards.Count <= 0)
         {
             reward = new HealReward((int)(PointsAvailable + 0.4f));
         }

@@ -203,7 +203,7 @@ public class Projectile : MonoBehaviour
     {
         return true;
     }
-    private int homingCounter = 0;
+    public int homingCounter = 0;
     public void HomingBehavior()
     {
         if(homingCounter++ % 4 == 0)
