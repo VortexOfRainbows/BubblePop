@@ -388,3 +388,60 @@ public class ThunderBubble : Projectile
         Pylon.SummonLightning2(transform.position, target.transform.position, ColorVar, 0.6f);
     }
 }
+public class ThoughtBubbleThunderAura : Projectile
+{
+    private Color c;
+    public override void Init()
+    {
+        c = Player.Instance.Hat is Crown ? new Color(1, 0, 0, 0.7f) : new Color(1, 0.9f, .5f, 0.5f) * 0.9f;
+        SpriteRenderer.enabled = false;
+        transform.localScale *= 1.5f;
+        Penetrate = -1;
+        immunityFrames = 50;
+        Friendly = false;
+        c2D.radius *= 4 * (Player.Instance.TrailOfThoughts / 10f + 1);
+        SpriteRendererGlow.transform.localScale = Vector3.one * 2f;
+        SpriteRendererGlow.color = Color.black;
+        SpriteRendererGlow.sprite = Main.Shadow;
+    }
+    public override void AI()
+    {
+        if (timer2++ < 8)
+        {
+            SpriteRendererGlow.transform.LerpLocalScale(Vector2.one * 2, 0.3f);
+            SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, c, 0.2f);
+        }
+        else
+        {
+            SpriteRendererGlow.transform.LerpLocalScale(Vector2.one, 0.06f);
+            if(Data1 == 1)
+                Friendly = true;
+            SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, Color.black, 0.12f);
+        }
+        if(timer2 > 25)
+        {
+            Kill();
+        }
+    }
+    public override void OnKill()
+    {
+        int count = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
+        for (int i = 0; i < count; i++)
+        {
+            Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 2, c.WithAlphaMultiplied(0.8f));
+        }
+    }
+    public override bool OnInsideTile()
+    {
+        return false;
+    }
+    public override bool OnTileCollide(Collider2D collision)
+    {
+        return false;
+    }
+    public override void OnHitTarget(Entity target)
+    {
+        Pylon.SummonLightning2(transform.position, target.transform.position, c, 0.6f);
+    }
+}

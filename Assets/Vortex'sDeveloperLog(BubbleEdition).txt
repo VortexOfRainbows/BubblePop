@@ -22,7 +22,7 @@ Need to do:
 9. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
-12. Thought bubble lightning zap trail
+12. Look into stacking thunder bubbles causing lag (rather than just having them out). It seems to be related to collision, as it only happens when they are stacked...
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -30,7 +30,7 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-9/24/25 to 9/26/25
+9/24/25 to 9/27/25
 1. Changes to equipment loading that should speed up the game a little bit
 2. Store internal version number implementation to reset some data 
 3. Some additional checks to prevent excessive < 0.1 damage light spears
@@ -40,6 +40,8 @@ Done:
 7. Improve calculator homing for stars
 8. Bluebblemancy equips (blue variants) now have unique effects
 9. Blue Hat to make stars rotate around you instead of travel normally (this might be very op but we'll see how it turns out), blue cape starts with a blue item
+10. Thought bubble trail now has zapping potential (plus buffs to the powerups)
+	1. Also comes with 7 frames of immunity, potentially allowing some cleanup from Brain Blast before you can be hit again
 
 9/23/25 to 9/24/25
 1. Fixed bug where you could prematurely redraw cards

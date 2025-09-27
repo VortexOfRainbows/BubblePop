@@ -276,8 +276,8 @@ public class TrailOfThoughts : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Trail of Thoughts");
-        description.WithDescription("Increases the maximum length of your Y:[thought trail] by Y:3 G:(+3 per stacK)");
-        description.WithShortDescription("Increases the maximum length of your thought trail");
+        description.WithDescription("Increases the Y:[maximum length] of your Y:[thought trail] by Y:3 G:(+3 per stacK) and Y:[zap radius] of your Y:[thought trail] by Y:10% G:(+10 per stack)");
+        description.WithShortDescription("Increases thought trail length and zap radius");
     }
     public override void HeldEffect(Player p)
     {
@@ -358,8 +358,9 @@ public class BrainBlast : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Release Y:30% G:(+10% per stack) more bubbles when Y:[channeling recall] and explode into Y:1 G:(+0.5 per stack) additional bubbles per segment Y:[after recall]");
-        description.WithShortDescription("Release additional bubbles when recalling");
+        description.WithDescription("Release Y:20% G:(+10% per stack) more bubbles when Y:[channeling recall] and explode into Y:1 G:(+0.5 per stack) additional bubbles per segment Y:[after recall] \n" +
+            "Increase Y:[thought trail zap damage] by Y:20% G:(+20% per stack)");
+        description.WithShortDescription("Release additional bubbles when recalling and increase thought trail zap damage");
     }
     public override void HeldEffect(Player p)
     {
