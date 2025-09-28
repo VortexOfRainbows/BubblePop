@@ -96,7 +96,7 @@ public class Poison : Buff
     {
         if (e is Enemy enemy)
         {
-            float damage = 4 + e.MaxLife * 0.05f + Player.Instance.SnakeEyes;
+            float damage = 3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes;
             float tickRate = Mathf.Min(1, Mathf.Max(0.25f, 20f / damage));
             dot += Time.fixedDeltaTime;
             while (dot >= tickRate / 2f)

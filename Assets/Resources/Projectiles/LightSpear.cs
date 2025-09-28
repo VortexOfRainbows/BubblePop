@@ -107,7 +107,7 @@ public class LightSpear : Projectile
         if(Player.Instance.LightChainReact > 0 && !HasFiredLaser && Data[2] > 0 && target is Enemy e)
         {
             float damage = Damage * 0.8f;
-            if(damage >= 0.1f)
+            if(damage >= 0.5f)
                 Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), damage, Data[2]).GetComponent<LightSpearCaster>().ignore = e;
             HasFiredLaser = true;
         }

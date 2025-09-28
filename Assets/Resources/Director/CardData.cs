@@ -96,20 +96,30 @@ public class CardData
         {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = true });
             float strength = waveNum >= 25 ? 200 : 50;
-            m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum});
+            if(waveNum % 10 == 0)
+                m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { 
+                    ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, 
+                    new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum },
+                    new EnemyStrengthModifier() { ApplicationStrength = 1000, IsPermanent = true, Free = true });
+            else
+                m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum });
+
         }
-        if(waveNum >= 5 && m == null)
+        if (waveNum >= 5 && m == null)
         {
             if (waveNum % 3 == 0) //Previously, there was a 10% power boost with each wave number, so this should mimic the old system
-                m = new ModifierClause(AvailablePoints + 300, 1, new DirectorCreditPowerModifier() { ApplicationStrength = 300, IsPermanent = true });
+            {
+                float strength = 240 + 20 * (int)(waveNum / 3);
+                m = new ModifierClause(AvailablePoints, 1, new DirectorCreditPowerModifier() { ApplicationStrength = strength, IsPermanent = true, Free = true });
+            }
             else if (waveNum % 3 == 1) //Previously, there was a 5% health boost with each wave number, so this should mimic the old system (with some changed scaling)
             {
                 float strength = 10 + 5 * (int)(waveNum / 5);
-                m = new ModifierClause(AvailablePoints + strength * 10, 1, new EnemyStrengthModifier() { ApplicationStrength = strength * 10, IsPermanent = true });
+                m = new ModifierClause(AvailablePoints, 1, new EnemyStrengthModifier() { ApplicationStrength = strength * 10, IsPermanent = true, Free = true });
             }
             else if (waveNum % 3 == 2 && waveNum >= 17)
             {
-                m = new ModifierClause(AvailablePoints + 50, 1, new DirectorSkullWaveModifier() { ApplicationStrength = 50, IsPermanent = true});
+                m = new ModifierClause(AvailablePoints, 1, new DirectorSkullWaveModifier() { ApplicationStrength = 50, IsPermanent = true, Free = true });
             }
         }
     }

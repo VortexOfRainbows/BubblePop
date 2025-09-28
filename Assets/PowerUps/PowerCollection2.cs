@@ -77,7 +77,7 @@ public class RollForInitiative : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to deal 250% G:(+25% per stack) to 500% G:(+50% per stack) Y:[bonus damage] on Y:[first strike]");
+        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to deal Y:250% G:(+25% per stack) to Y:500% G:(+50% per stack) Y:[bonus damage] on Y:[first strike]");
         description.WithShortDescription("Chance for first hit to deal additional damage");
     }
     public override void HeldEffect(Player p)
@@ -149,12 +149,12 @@ public class ZapRadius : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Increases Y:[thunder bubble radius] by Y:7% G:(+7% per stack)");
+        description.WithDescription("Increases Y:[thunder bubble radius] by Y:10% G:(+10% per stack)");
         description.WithShortDescription("Increases thunder bubble radius");
     }
     public override void HeldEffect(Player p)
     {
-        p.ZapRadiusMult += 0.07f * Stack;
+        p.ZapRadiusMult += 0.10f * Stack;
     }
 }
 public class Electroluminescence : PowerUp
@@ -237,12 +237,13 @@ public class ResearchNotes : PowerUp
             p.ResearchNoteKillCounter -= 3;
         }
     }
+    public override int Cost => 25;
 }
 public class ResearchGrants : PowerUp
 {
     public override void Init()
     {
-        Weighting = Uncommon;
+        Weighting = Rare;
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -262,12 +263,12 @@ public class Boomerang : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription($"Increases Y:[thunder bubble] recall damage by Y:25% G:(+25% per stack)");
+        description.WithDescription($"Increases Y:[thunder bubble] recall damage by Y:50% G:(+50% per stack)");
         description.WithShortDescription("Increases thunder bubble recall damage");
     }
     public override void HeldEffect(Player p)
     {
-        p.ThunderBubbleReturnDamageBonus += Stack * 0.5f;
+        p.ThunderBubbleReturnDamageBonus += Stack * 1f;
     }
 }
 public class ThunderBubbles : PowerUp

@@ -30,10 +30,24 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
+9/27/25 to 9/28/25
+1. Nerfs:
+	1. Research Grants rarity: 2-star -> 3-star
+	2. Research Notes shop cost: 15 -> 25
+	3. Snake Eyes damage base 5 -> 4, damage percent 5% -> 4%
+	4. Base coins dropped by skull enemies +5 -> +4
+	5. Lucky star stacking rate +2% -> +1%
+2. Buffs:
+	1. Boomerang damage scaling: 25% -> 50%
+	2. Zap radius scaling: 7% -> 10%
+	3. Wave 20, 30, etc. come with 100% enemy health permanent increase factors
+	4. Permanent wave power on every 3rd round after wave 8 now has some scaling (+2% per occurrence)
+3. Fix some bugs with selecting wave cards being possible before they flip
+
 9/24/25 to 9/27/25
 1. Changes to equipment loading that should speed up the game a little bit
 2. Store internal version number implementation to reset some data 
-3. Some additional checks to prevent excessive < 0.1 damage light spears
+3. Some additional checks to prevent excessive < 0.5 damage light spears
 4. Damage is now a passed parameter in projectile instantiation
 5. Fix bug where enemies are dying multiple times at once
 6. Add heart pickup, may rarely appear as a wave reward

@@ -259,7 +259,7 @@ public class LuckyStar : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:4% G:(+2% per stack) Y:chance to Y:[drop powers]");
+        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:4% G:(+1% per stack) Y:chance to Y:[drop powers]");
         description.WithShortDescription("Enemies killed by stars have an additional chance to drop powers");
     }
     public override void HeldEffect(Player p)
@@ -413,7 +413,7 @@ public class SnakeEyes : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:[5 damage] G:(+1 per stack) plus Y:damage equal to Y:5% of the Y:[victim's max life] over Y:[10 seconds]");
+        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:[4 damage] G:(+1 per stack) plus Y:damage equal to Y:4% of the Y:[victim's max life] over Y:[10 seconds]");
         description.WithShortDescription("Chance to poison enemies on hit");
     }
     public override void HeldEffect(Player p)

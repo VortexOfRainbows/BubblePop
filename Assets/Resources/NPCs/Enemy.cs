@@ -163,8 +163,8 @@ public class Enemy : Entity
         {
             if (IsSkull)
             {
-                MinCoins += 5;
-                MaxCoins += 5;
+                MinCoins += 4;
+                MaxCoins += 4;
                 transform.localScale = new Vector3(1.14f, 1.14f, transform.localScale.z);
                 BossHealthBar.Spawn(this);
                 if (IsSkull)

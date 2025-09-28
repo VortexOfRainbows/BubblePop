@@ -134,7 +134,7 @@ public class Bulb : Hat
             Enemy target = ignore[index];
             Vector2 newNorm = (Vector2)target.transform.position - shootFromPos;
             Damage *= 0.8f;
-            if (Damage < 0.1f)
+            if (Damage < 0.5f)
                 return hitTarget;
             Projectile.NewProjectile<LightSpear>(shootFromPos, newNorm.normalized * spearSpeed, Damage, target.transform.position.x, target.transform.position.y, BounceNum, radians);
         }

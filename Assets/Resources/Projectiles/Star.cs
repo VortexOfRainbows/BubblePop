@@ -116,7 +116,7 @@ public class StarProj : Projectile
             }
             if (Player.Instance.LuckyStar > 0)
             {
-                float chance = 0.02f + Player.Instance.LuckyStar * 0.02f;
+                float chance = 0.03f + Player.Instance.LuckyStar * 0.01f;
                 if (Utils.RandFloat(1) < chance)
                 {
                     PowerUp.Spawn(PowerUp.RandomFromPool(), (Vector2)target.transform.position, 0);

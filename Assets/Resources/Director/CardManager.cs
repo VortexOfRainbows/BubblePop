@@ -31,17 +31,18 @@ public class CardManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
             GenerateCards();
         bool isClickingOnACard = false;
+        bool cardsCurrentlySpawning = !Card[0].HasBeenFlipped;
         for (int i = 0; i < Cards.Length; ++i)
         {
             bool Hovered = Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
-            if(Hovered && Control.LeftMouseClick)
+            if(Hovered && Control.LeftMouseClick && !cardsCurrentlySpawning)
             {
                 ChosenCardIndex = ChosenCardIndex != i ? i : -1;
                 isClickingOnACard = true;
                 break;
             }
         }
-        if(!isClickingOnACard)
+        if(!isClickingOnACard && !cardsCurrentlySpawning)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
                 ChosenCardIndex = ChosenCardIndex != 0 ? 0 : -1;
@@ -132,7 +133,7 @@ public class CardManager : MonoBehaviour
         }
         WaveDirector.TemporaryModifiers.CloneValues(WaveDirector.PermanentModifiers); //Apply permanent modifiers to temporary modifiers
 
-        ChosenCardIndex = -1;
+        ChooseCard(-1);
     }
     public static void ApplyChosenCard()
     {
@@ -155,5 +156,6 @@ public class CardManager : MonoBehaviour
     {
         foreach(ModifierCard card in Cards)
             card.GenerateCardData();
+        ChosenCardIndex = -1;
     }
 }

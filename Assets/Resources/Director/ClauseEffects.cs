@@ -16,7 +16,7 @@ public abstract class ClauseEffect
     {
 
     }
-    public virtual float GetCost()
+    protected virtual float Cost()
     {
         return 0;
     }
@@ -30,6 +30,11 @@ public abstract class ClauseEffect
     public virtual string Description()
     {
         return "";
+    }
+    public bool Free = false;
+    public float GetCost()
+    {
+        return Free ? 0 : Cost();
     }
 }
 public class EnemyCard : ClauseEffect
@@ -50,7 +55,7 @@ public class EnemyCard : ClauseEffect
     {
         MyModifier.WaveSpecialBonusEnemy = EnemyToAdd.gameObject;
     }
-    public override float GetCost()
+    protected override float Cost()
     {
         return EnemyToAdd.CostMultiplier * 10 * (IsPermanent ? PermanentMultiplier : 1);
     }
@@ -70,7 +75,7 @@ public abstract class DirectorModifier : ClauseEffect
     public float Percent => ApplicationStrength / PointToPercentRatio * (IsPermanent ? PermanentMultiplier : 1);
     public string PercentAsText => $"+{Percent * 100:#.#}%";
     public string NumberText => $"+{(int)Percent}";
-    public override float GetCost()
+    protected override float Cost()
     {
         return ApplicationStrength;
     }
@@ -157,7 +162,7 @@ public class DirectorSkullSwarmModifier : DirectorModifier
     {
         Parent = parent;
     }
-    public override float GetCost()
+    protected override float Cost()
     {
         return 0;
     }
@@ -207,7 +212,7 @@ public class PowerReward : Reward
     }
     public int PowerType;
     public int Amt { get; set; } = 1;
-    public override float GetCost()
+    protected override float Cost()
     {
         return PowerUp.Get(PowerType).Cost * (BeforeWaveEndReward ? 2 : 1);
     }
@@ -232,7 +237,7 @@ public class CoinReward : Reward
         coins = value;
     }
     public int coins;
-    public override float GetCost()
+    protected override float Cost()
     {
         return coins * (BeforeWaveEndReward ? 2 : 1);
     }
@@ -252,7 +257,7 @@ public class HealReward : Reward
         coins = value;
     }
     public int coins;
-    public override float GetCost()
+    protected override float Cost()
     {
         return coins * (BeforeWaveEndReward ? 1 : 0.5f);
     }
