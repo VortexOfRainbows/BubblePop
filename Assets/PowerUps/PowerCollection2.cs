@@ -263,6 +263,7 @@ public class Boomerang : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
+        description.WithName("Electric Boomerang");
         description.WithDescription($"Increases Y:[thunder bubble] recall damage by Y:50% G:(+50% per stack)");
         description.WithShortDescription("Increases thunder bubble recall damage");
     }
