@@ -280,7 +280,7 @@ public class ThunderBubbles : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Charged Bubbles");
+        description.WithName("Echo Bubbles");
         description.WithDescription($"When recalled, Y:[thunder bubbles] leave behind a Y:[latent charge] that dissipates into Y:3 G:(+1 per stack) bubbles after Y:[thunder bubbles] are fully recalled");
         description.WithShortDescription("Thunder bubbles release bubbles when recalled");
     }

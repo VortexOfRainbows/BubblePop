@@ -1,0 +1,421 @@
+Vortex'sDeveloperLog(BubbleEdition)
+
+Maybe Do:
+1. Organize layers better for rendering
+2. Add cloud particles
+3. Quadrant system UI
+4. Day/Night system (so we can have cooler lighting)
+5. Wave bar on the top shows current wave card + modifier information
+
+Need to do:
+1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden)
+2. More descriptive pause and select screen
+3. Integrate Settings and compendium into the default pause stuff
+4. Make calculator homing snappier
+5. Integrate character select into the compendium
+6. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more... Crits, Discounts
+	1. TBD: Strength...
+7. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
+	1. Contains loot with higher chances of good loot based on the rarity of the chest
+8. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
+	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
+9. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
+10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
+11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
+12. Look into stacking thunder bubbles causing lag (rather than just having them out). It seems to be related to collision, as it only happens when they are stacked...
+
+Mostly done but might need to keep an eye out:
+1. Fix resolution scaling issues across the board, such as with the compendium and tier list
+2. Improve UI
+
+Done: 
+
+10/3/25
+1. Add art for Echo Bubbles
+
+9/27/25 to 9/29/25
+1. Nerfs:
+	1. Research Grants rarity: 2-star -> 3-star
+	2. Research Notes shop cost: 15 -> 25
+	3. Snake Eyes damage base 5 -> 4, damage percent 5% -> 4%
+	4. Base coins dropped by skull enemies +5 -> +4
+	5. Lucky star stacking rate +2% -> +1%
+2. Buffs:
+	1. Boomerang damage scaling: 25% -> 50%
+	2. Zap radius scaling: 7% -> 10%
+	3. Wave 20, 30, etc. come with 100% enemy health permanent increase factors
+	4. Permanent wave power on every 3rd round after wave 8 now has some scaling (+2% per occurrence)
+3. Fix some bugs with selecting wave cards being possible before they flip
+4. Art for Electric Boomerang
+
+9/24/25 to 9/27/25
+1. Changes to equipment loading that should speed up the game a little bit
+2. Store internal version number implementation to reset some data 
+3. Some additional checks to prevent excessive < 0.5 damage light spears
+4. Damage is now a passed parameter in projectile instantiation
+5. Fix bug where enemies are dying multiple times at once
+6. Add heart pickup, may rarely appear as a wave reward
+7. Improve calculator homing for stars
+8. Bluebblemancy equips (blue variants) now have unique effects
+9. Blue Hat to make stars rotate around you instead of travel normally (this might be very op but we'll see how it turns out), blue cape starts with a blue item
+10. Thought bubble trail now has zapping potential (plus buffs to the powerups)
+	1. Also comes with 7 frames of immunity, potentially allowing some cleanup from Brain Blast before you can be hit again
+
+9/23/25 to 9/24/25
+1. Fixed bug where you could prematurely redraw cards
+2. Fix bug where gachapon couldn't hold ability at some milestones in ability refresh speed (hopefully)
+3. Lower particles spawned by charged bubbles when at high stack
+4. Reduce stacking effect of Charged Bubbles
+5. Remove redundancy where tier list would clear data when not necessary
+6. Attempt fixing bug where number display would sometimes not work in Equip or Achievement Menu
+7. Huge nerfs to Refraction and Reflection, reducing damage each time they refract or reflect
+
+9/22/25 to 9/23/25
+1. Blue Bubblemancer equip art refresh! YAY (sam)
+2. Cryskull equip and unlock for Gachapon!
+3. Add Research Grants powerup
+3. Decimal number popups now have smaller text post decimal
+4. Add Boomerang and Charged Bubble powers, though with temporary "artwork" 
+5. Adjusted wave formula
+6. Fix bug where associated unlock list would repeat
+7. Make compendium achievements text more consistent
+
+9/11/25 (o7) and 9/14/25 to 9/19/25
+1. Some basic prep for unlock screen, though that may be unnecessary due to the character compendium page
+2. Prepare and fix some layout/orientation related compendium stuff
+3. Unlock system refactors
+4. Compendium now loads all elements before they are displayed, which makes it feel more snappy
+5. Some new description and name logic for all unlocks
+6. Finish compendium unlock screen
+7. Somewhat of a weird fix for equip compendium elements not masking the number correctly
+8. Set up some documents for Bubblemancer development
+
+9/9/25
+1. Import some assets
+2. Add Research Notes!
+3. Book art refresh! Very swag!
+
+9/1/25 to 9/5/25
+1. Add Enemies in the compendium (Bestiary, should be complete for now)
+2. Add basic system for static enemy data
+3. Start working on enemy page in the compendium
+4. Move some enemy stats to be static; they now display in the compendium
+5. Tier list consistency fixes and make bestiary tier-list-compatible
+6. Enemy cards show card art (placeholder in most cases)
+7. Save data on enemies killed
+
+8/31/25
+1. A small amount of file/directory reorganization
+2. Extremely basic flower spawning and ordering
+
+8/27/25 and 8/29/25
+1. Red bubblemancer variants refresh
+	1. Also redid the effects to be simpler
+2. Add Ent enemy, basically a tankier chicken that also explodes into bullets
+
+8/25/25 to 8/27/25
+1. Add skull ticks + animations to the pylon meter to show when associated card waves will be spawned.
+2. Adjustments to the rate at enemies are spawned, the length of waves, and make it so enemies can only be spawned as part of associated cards during their first appearance, unless they are the first enemy in the deck (Ducks, right now).
+3. Gachapon shop restocks a fair bit faster
+4. Fix some more portal positioning issues
+5. Some permanent scaling factors in the pylon card pool (health, credit scaling, skull wave scaling)
+6. Some preset wave orders, such as designated Leonard waves.
+7. Leonard no longer spawns ducks and base health decreased 80 -> 45 (This is to make up for the fact that SKULL enemies now exist (preliminary champion enemy)
+8. Gatligator base health 40 -> 25
+9. Adjust size and hitboxes of all enemies to make them more standardized for purpose of buff application and other additional ui elements
+10. Skull Enemies (a champion variant of enemies spawned at wave checkpoints). They have 2x hp, 1.14x size, and a cool health bar!
+11. Duck base health 12 -> 10, max coins 10 -> 8
+12. Skull enemies must be killed before a wave properly ends
+13. At the end of a wave, but before skull enemies are killed, indicators will show the general direction skull enemies are in (so they are easier to kill to end a wave)
+14. Skull swarm modifier that multiplies enemies spawned during boss waves
+
+8/18/25 to 8/25/25
+1. Add Burger Powerup and black market powerup basics (right now very primitive system)
+	1. Chance to be sold in the shop (~1/200) at a flat rate, at a different price
+2. Add Bonus Batteries
+3. Add new enemy: Crow, which has a ranged attack that it hops to a certain range to use
+4. Refresh to Bubble Staff art (sam)
+5. Very WIP director reworks (somewhat working now)
+	1. Working on the player-card system, which allows the player to choose which wave they want to face, with rewards and modifiers
+	2. Primitive wave-card generation
+	3. Remove legacy wave-spawner (beyond obsolete)
+	4. Add ability to pick wave-cards which effect the upcoming waves (missing: pause, associated ambush cards)
+6. WIP UI reworks related to the director
+	1. Remove SCORE and HIGHSCORE. Replaced with WAVE NUMBERS!
+7. Some unlock requirement changes
+8. Waves don't start again until the player manually starts them after a wave-end! (mouse or hotkey)
+9. Some animations for the card deck + pause functionality works with the animations
+10. EnemyCard/Director card locations are now generated on spawn rather than pre-emptively, mostly preventing situations where enemies spawn on top of you
+11. Fix some wavecard locations being determined erroneously
+12. Pylon cards now come with accompanying wave cards that are played at intervals during the round relative to the round completion percent
+13. Fix bubbleshield interaction with new pylon system
+
+8/13/25
+1. Light spears only hit one enemy per spear now, no longer piercing enemies that are layered on top of each other
+2. Basic compendium support for alternative descriptions (for powerups that have different effects on different characters)
+
+8/12/25
+1. Reduced spread and increased base velocity of Bubble Gun projectiles
+2. Bubble gun art refresh by sam!
+3. Import electroluminescence sprite and adjust some descriptions
+4. Light caster and spears do not break on tiles
+5. Electroluminescence effect (probably the most powerful powerup yet...)
+6. Add basic framework for spawning trails on objects
+7. Rework to Sparkle/Star proj visuals, including incorporating the new trails (as this is something I've wanted to do for a while)
+
+8/10/25
+1. Bubblemancer Wand art refresh by sam + fixed some animation consistency with flipping
+2. Change bubblemancer bubble color to be more in-line with new aesthetic
+
+8/9/25 to 8/10/25
+1. Add Zap Radius power + changes to thunder bubble tile collide behavior and some animation changes
+2. Fix power up rarity colors (I broke it sometime during the compendium changes)
+3. Fix small compendium issue where equipment page descriptions didn't show times used
+4. Buildable
+
+8/6/25 to 8/9/25
+1. Compendium refactor and decoupling of tier list logic
+2. Move haste and overclock to be back to their actual ID positions (order of implementation)
+3. Move some data structures to main instead of character select, as it should be loaded immediately and consistent
+4. Add Equipment/Character compendium
+5. More advanced description capacity for equipment
+6. Equipment rarities and additional sorting option (reverse)
+7. Some reworks to Equipment data structure
+8. Equipments now keep track of how often you have used them
+9. Compendium sorting now groups Unlocked, Locked, and Grayed elements with elements of the same type
+
+8/3/25 to 8/6/25
+1. Bubblemancer art refresh! Yay!
+2. Bubblemancer cape death animation fixes
+3. Thought bubble art refresh and animation fixes
+4. Changed cape animation to make more sense internally
+5. Added a equip variant for the lightbulb: Crown of Command
+6. Fix issue with resolution scaling on item popup description
+7. Crown of command effect
+8. Unlock condition for Crown of Command and fix bug with Brain Blast not working if you use too many teleports before you obtain it
+	1. This unlock is extremely difficult. At best, I made it to wave 12. It requires wave 16
+9. Fix small compendium bug
+
+7/30/25 to 8/1/25
+1. Decimal damage added
+2. Not sure I like it, but now there's 2 attacks on TB's book
+3. Book death animation (swag)
+4. Reduce I-frames granted to soap children 80 -> 45
+5. Director now gains 2 * (wave num) bonus credits on rounds that are multiplies of 5, and swarm cards are only converted on rounds 25+ and only have a cost multiplier of 0 -> 0.5. This should keep those waves special, but make it not as luck based.
+6. Slight nerfs to enemy scaling rates
+7. Some more book animation changes and file reorganization
+8. Snake eyes now increases damage of poison by stacking, rather than duration
+	1. It may also deal the killing blow now
+9. Gachapon new artwork implementation (sam swag)
+
+7/30/25
+1. Reflection rarity is now legendary
+2. Some file reorganization + airplane art
+
+7/29/25 to 7/30/25
+1. Fix issue where powerup pool bar would scale strangely with screen size (now it should scale properly!)
+2. Small coalescence buffs
+3. Mostly fix UI scaling issues with compendium (should be good)
+4. On wider resolutions, Compendium layout for powers in now centered
+5. Slightly buff power drop rates from the initial nerfs
+6. Buff scaling rates on Roll for Persuasion and Roll for Initiative
+7. Leonard now takes half a second before his projectile timer starts and shoots 10% slower overall
+8. Some animations for the bubble book
+
+7/28/25 to 7/29/25
+1. Roll for initiative has increased scaling
+2. Rework Snake Eyes to now apply poison (very OP)
+3. Change transform logic on SOAP, changing shadows a bit, but also allowing debuff icons
+4. Enemy scaling is faster after wave 15
+5. Small changes to the unlock system to prevent things from being double locked (you no longer have to unlock the character and the equipment to use the equipment on other characters)
+6. Adds some unlock conditions for the red bubblemancer variants (pick up 10 bubblebirbs across multiple runs)
+
+7/25/25 to 7/28/25
+1. Lowered size of Leonard 3 -> 2.5
+2. Added Buff Icons!
+3. Make snake eyes not effected by homing
+4. WIP Compendium
+	1. Added star rarities
+5. Add some delay on popup text to allow proper resizing
+6. Fix issue where some empty lines appear inside locked powerups
+7. Resize some powerups so their border sizes are more consistent (Propulsion and Starbarbs)
+8. WIP Tier List functionality (Yes, really), + a lot more of this
+	1. Extremely intuitive drag and drop (kill me)
+	2. +Save and Load!
+	3. +More button functionality
+9. Fix issue where popup powerup description queue was not appearing
+10. Slightly nerf scaling director item drop cost (5 -> 10)
+11. Nerf Gatligator power drop chance .2 -> .1
+12. Flamingos now take 2.4 -> 3.0 seconds before the first shot, than now requires somewhere between 0.6 to 3.0 seconds -> 2.0 to 3.0 seconds to fire additional shots (overall nerf). Flamingo movement is not as random and is now weighted to travel towards the player. Flamingo feathers homing factor reduced by 50%.
+13. Chance for luck-based item drops is reduced slightly for every power up spawned (at 300 powers, reduced to 10% of its usual rate)
+	1. Does not effect lucky star, but spawns from Lucky Star and Shop are included in this decreasing multiplier
+14. Fix lucky star erroneous description + nerf (6% starting -> 4% starting)
+15. Reduce flat chance of Choice Powerup 20% -> 15% drop rate
+16. Rework Coalescence into a considerably better powerup
+	1. Not only is it incredibly powerful with great synergy, now it also reduced lag of certain end-game builds
+
+7/21/25 to 7/24/25
+1. Primitive enemy scaling factors (starts slow at 5% per wave, then 10%, then 5% plus 5% multiplicative, then 10% multiplicative
+	1. Really needs playtesting to understand
+2. Decrease Leonard base health 100 -> 80, and decrease laser burst proj shot 12 -> 8 (in order to compensate for difficulty scaling)
+3. Projectiles are killed when hitting walls properly, even at high speeds
+4. Fix some erroneous powerup scaling descriptions
+5. Bunce Hat no longer modifies the power pool, instead granting an additional heart
+6. Small nerf to Brain Blast scaling
+7. Increase base firerate for bubble gun (100% -> 120%)
+8. add display number for difficulty scaling
+9. Remove extra choice from Dice Bow
+10. Add Bubble Shield and shield slots in general
+
+7/17/25 and 7/19/25 and 7/21/25
+1. Fix issue where Gachapon ability would prevent holding after reaching a certain speed
+2. Add Mitosis (power), currently a default pool power
+3. Fix bug where popup text behaves weirdly before the game starts
+4. Soapy Soap generates around the bubble instead of straight in the center
+5. Bubbles spawn less particles, smaller particles, and lower life particles, and particles are more transparent (for clarity and less lag)
+6. The first stack of eternal bubbles now grants 0.7 -> 0.8 seconds, but subsequent stacks only grant 0.5 -> 0.4
+7. Add the four gachapon dice powers
+8. Sparkle sparkle scaling nerfed on gachapon + heuristic
+9. Slight diminishing returns on eternal bubbles (at stack 10, its effect is dramatically reduced)
+10. Improved calculator stack rate (but reduced frequency of homing calls in order to improve performance), and other improvements to performance
+11. Performance improvements with projectile collision detection and bubble trail effected by shotspeed more
+
+7/14/25 to 7/16/25
+1. Health system + hurt effects
+2. Fix bunce cap animation
+3. Bubblebirb is now legendary
+4. Emeralds now grant health instead of another bubblebirb
+5. Experimental layering changes tested on Chicken
+	1. Having the same rendering layer (-1) across all parts, but different relative z access
+6. Fix bug where small bubbles sometimes hit twice
+7. Cost adjustments that should make powerup prices more consistent and overall cheaper
+8. Resize powerup canvases to be consistently 3000x3000 (should help a bit with consistency of borders)
+9. Setting for pausing the game during choice powerup
+10. Add Star rarities
+11. Starting damage for spear of light is now 2, becomes 3 on second pickup
+12. Prevent enemies from being hit until their health is properly assigned. Should prevent some issues where Leonard was dying too easily
+13. Make some UI more consistent and change standard font to Little Bubble
+14. Soapy soap scaling nerfed slightly to make description numbers more discrete
+15. More colorful and descriptive powerup descriptions
+
+7/11/25
+1. Rework some item rarities
+2. Add calculator powerup
+3. Change coin text and icons as equipment doesn't cost anything anymore
+4. Import heart assets
+
+7/4/25 to 7/9/25
+1. Popup UI for when powers are snatched (helps tell people what powerups do)
+2. Import Little Bubble font for future use
+3. Border shader + some sprite size changes
+4. Rework and reorganize UI hierarchies
+5. Add rarity values and colors to items
+6. Decrease ambient sound volume for crystal
+7. Adjust some anchorings for powerups
+8. Remove costs from equips
+
+6/26/25
+1. Added the unbalanced mess that is the Refraction powerup
+
+6/16/25
+1. Light bulb now increases in attack speed from the haste powerup, to increase consistency. 
+	1. Stacking now increases range and damage instead
+2. Binary star stacking now increases the number of stars shot instead of the firerate
+	1. Haste and other attack speed boosts now buff its firerate
+3. Firerate of bubble trail is now boosted by haste in addition to itself
+4. Fix some firerate related bugs
+5. Add cheat menu for testing powerups (cheat in any powerup using debug code (IAN) + P)
+6. Optimizations to homing related code (should make stuff like pokerchips less laggy
+
+6/1/25
+1. Rework tile system a bit + add dirt tile from Keira
+2. Nerf duck hp 15 -> 12
+
+5/12/25 to 5/23/25
+1. Import some sprites and begin work on Gachapon
+2. More Gachapon equips + gachapon death animations
+3. Sounds for thought bubble teleport
+4. Fix some coloring issues with character select menu
+5. Add cobblestone tiles and fix tile layering
+6. Add Gachapon Shop!
+7. Add Powerups! "Brain Blast", "Raise", "All-In", "Snake-Eyes"
+8. Expand world loading zones and import Keira's new stone tiles!
+9. Red Bubblemancer Equips
+10. Enemy Wave System
+11. Gatligator
+12. Starbarbs scaling => 5, 7, 9, etc -> 3, 4, 5, etc.
+13. Environment object layering
+14. Pylon
+15. Lightning and more particles
+16. Gachapon only has 50% chance to proc sparkle-sparkle per stack
+17. Meadows music from Natham!
+
+4/25/25 to 4/26/25 and 5/4/25
+1. Portal and some tile map changes
+2. Change haste sprite
+
+4/17/25 and 4/19/25
+1. WIP Dual Grid system (still has some problems Im figuring out how to handle)
+
+3/31/25 and 4/4/25 and 4/9/25
+1. Cost icons now use dollar sign consistently.
+2. Ability for cost icons to appear on powerups in-world. For use in shops later.
+3. Reworked Projectile data to be an array
+4. Added Neuron Activation powerup
+5. Some changes to spear of light max distance 
+6. Add setting sliders (not pretty rn, but they work)
+
+3/22/25 and 3/24/25 to 3/29/25
+1. Add Magnet power + shift star powers to the Bubblemancer Hat line
+2. Coins now collide with walls
+3. Simplify UI and add money UI icon with some details
+4. More WIP UI and popup text (damage and money)
+5. PopupUI can now be used in paused mode (might have to change how pause works to make this more intuitive)
+6. Title screen animations!
+7. WIP Spear of light powerup
+8. Projectiles now have specialized immunity frames, meaning that piercing projectiles can now coexist, and phoenix fire is nerfed!
+9. Slightly improved thought bubble tail visuals and added sound to coins and laser
+
+3/20/25
+1. Various bug fixes related to player visuals, thought bubble trail, and character select
+2. add Ability cooldown power
+3. Modify Blue Cape effect to reduce ability timer and increase attack speed
+
+3/12/25 to 3/14/25
+1. Start work on money system
+2. Characters show their currently selected equipment before equipping
+3. Changes to the unlock system (now character equipment is default locked for other characters, until certain goals are accomplished)
+4. Certain equips no longer effect starting score
+5. Add equipment prices and spending money on equipments
+6. Player can now move in character select + rename and reorganize some internals
+
+3/1/25 to 3/5/25
+1. Add bubble trail, coalescence, lucky star
+2. Added Bubble Gun (may be slightly underpowered)
+3. Coalescence only available on bubble staff (which no longer removes shotgun powers)
+4. WIP Thought Bubble Trail
+
+2/28/25
+1. Character selection internal overhaul and allow support for subcategories
+	1. Overall the code is vastly improved in terms of clarity and readability as well
+2. Character should now probably save what was last equipped on them (like a loadout)
+
+2/27/25
+1. Small rework to the projectile class to make it better
+2. WIP Saving what a character has selected
+
+2/25/25 to 2/26/25
+1. Light Bulb cosmetic + glow
+2. Fix death animation centering (slight consistency improvements)
+3. WIP Thought Bubble body and ability changes
+4. Character colors
+5. WIP Particle system reworking (right now figuring out how particle system works in Unity)
+
+2/24/25
+1. Added unlock condition to lab coat (temp) and changes some names
+2. Improve audio system
+3. Starbarb sound (marcos)
+4. Fix bug where player sometimes wasn't getting IFrames after Bubble Birb
+
+2/22/25
+1. Added BubbleBirb power up

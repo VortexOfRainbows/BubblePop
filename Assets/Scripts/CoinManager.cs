@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 public static class CoinManager
 {
     public static void InitCoinPrefabs()
