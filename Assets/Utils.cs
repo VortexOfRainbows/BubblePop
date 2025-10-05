@@ -95,18 +95,18 @@ public static class Utils
         pos.x -= canvas.transform.position.x;
         pos.y -= canvas.transform.position.y;
         pos /= canvas.GetComponent<RectTransform>().lossyScale.x;
-        pos *= UIManager.ActivePrimaryCanvas.scaleFactor;
-        pos += UIManager.ActivePrimaryCanvas.transform.position;
+        pos *= Main.ActivePrimaryCanvas.scaleFactor;
+        pos += Main.ActivePrimaryCanvas.transform.position;
         return pos;
     }
     public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null, bool ignoreScale = false)
     {
-        if (UIManager.ActivePrimaryCanvas == null)
+        if (Main.ActivePrimaryCanvas == null)
             return false;
         Vector3 pos = transform.position;
-        float scale = UIManager.ActivePrimaryCanvas.scaleFactor;
+        float scale = Main.ActivePrimaryCanvas.scaleFactor;
         if (canvas == null)
-            canvas = UIManager.ActivePrimaryCanvas;
+            canvas = Main.ActivePrimaryCanvas;
         else
         {
             pos = PositionAdjustedByCanvas(pos, canvas);

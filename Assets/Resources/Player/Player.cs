@@ -139,7 +139,7 @@ public partial class Player : Entity
         FillEquipArray();
         if (Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.N))
             Main.DebugCheats = true;
-        if (!HasRunStartingGear && !UIManager.StartingScreen)
+        if (!HasRunStartingGear && Main.WavesUnleashed)
         {
             foreach(Equipment e in Equips)
             {
@@ -304,7 +304,7 @@ public partial class Player : Entity
             return;
         }
         CoinManager.AfterDeathTransfer();
-        UIManager.Instance.GameOver();
+        Main.UIManager.GameOver();
     }
     public void Rebirth()
     {

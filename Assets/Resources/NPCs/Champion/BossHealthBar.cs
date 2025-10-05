@@ -67,7 +67,7 @@ public class BossHealthBar : MonoBehaviour
     }
     public void UpdatePosition()
     {
-        Vector2 screenSize = UIManager.ActivePrimaryCanvas.pixelRect.size;
+        Vector2 screenSize = Main.ActivePrimaryCanvas.pixelRect.size;
         Vector2 middle = screenSize / 2;
         Camera main = Camera.main;
         Vector2 myPos = main.WorldToScreenPoint(transform.position);

@@ -15,8 +15,8 @@ public class PricedButton : MonoBehaviour
     public bool CanUse => (PylonVisual == null || Main.PlayerNearPylon);
     public void SimulatePress()
     {
-        UIManager.Instance.UnleashWaves();
-        UIManager.StaticPlaySound();
+        Main.StartGame();
+        Main.CanvasManager.StaticPlaySound();
     }
     public void Update()
     {

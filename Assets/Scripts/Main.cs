@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public partial class Main : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public partial class Main : MonoBehaviour
         CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
         WavesUnleashed = true;
         CardManager.DrawCards();
+        CanvasManager.StaticPlaySound();
     }
     public static void PauseGame()
     {
@@ -65,10 +67,13 @@ public partial class Main : MonoBehaviour
     }
     public void Start()
     {
+        Main.WavesUnleashed = false; //Basically this needs to run at the start of each scene. If/once main is made persistent, the way this is handled may have to be changed
         Instance = this;
+        UIManager.AddListeners();
     }
     public void Update()
     {
+        Instance = this;
         if (Input.GetKeyDown(KeyCode.F) && DebugCheats)
             DirectorCanvas.SetActive(!DirectorCanvas.activeSelf);
         if (Input.GetKeyDown(KeyCode.P) && DebugCheats)
@@ -77,7 +82,15 @@ public partial class Main : MonoBehaviour
             UnlockCondition.ForceUnlockAll = true;
         if (DebugCheats && Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.RightShift))
             WaveDirector.WaveNum += 1;
-        Instance = this;
+
+        if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            if (GamePaused)
+                UIManager.Resume();
+            else
+                UIManager.Pause();
+        }
+        UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
     }
     public static Main Instance;
     public static GameObject ProjPrefab => Instance.DefaultProjectile;

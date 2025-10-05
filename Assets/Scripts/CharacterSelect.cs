@@ -83,7 +83,6 @@ public class CharacterSelect : MonoBehaviour
         LastSelectedBody = PlayerData.GetInt("LastSelectedChar");
     }
     public int LastSelectedBody = 0;
-    public GameObject topCanvas;
     public EquipmentUIElement EquipmentUISlotPrefab;
     public PowerUpLayout PowerLayout;
     public GameObject visual;
@@ -124,16 +123,14 @@ public class CharacterSelect : MonoBehaviour
             LoadData();
             UpdateSelectedEquipmentBox(LastSelectedBody);
         }
-        if (UIManager.StartingScreen)
+        if (!Main.WavesUnleashed)
         {
-            //topCanvas.SetActive(false);
             visual.SetActive(true);
         }
         else
         {
             if(visual.activeSelf)
             {
-                //topCanvas.SetActive(true);
                 visual.SetActive(false);
                 SaveData();
                 Player.Instance.Body.SaveData();

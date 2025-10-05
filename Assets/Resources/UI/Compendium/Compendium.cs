@@ -104,10 +104,10 @@ public class Compendium : MonoBehaviour
     public void FixedUpdate()
     {
         Vector2 startingPosition = new Vector3(-ScreenResolution, 0);
-        UpdatePage(PowerPage);
         UpdatePage(EquipPage);
         UpdatePage(EnemyPage);
         UpdatePage(AchievementPage);
+        UpdatePage(PowerPage); //Init this one last!
         Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, 0.1f, 0.1f);
     }
 
