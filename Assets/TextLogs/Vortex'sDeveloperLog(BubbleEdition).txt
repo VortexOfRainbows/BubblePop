@@ -23,6 +23,7 @@ Need to do:
 10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
 12. Look into stacking thunder bubbles causing lag (rather than just having them out). It seems to be related to collision, as it only happens when they are stacked...
+13. Make compendium and settings UI accessible in game
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -33,6 +34,8 @@ Done:
 10/5/25
 1. Some organization changes in main in preparation for persistent UI
 2. Make UIManager a class of Main, in order to improve organization and prepare for persistent UI
+
+-- A1.1 --
 
 10/3/25
 1. Add art for Echo Bubbles
