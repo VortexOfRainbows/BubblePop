@@ -5,7 +5,7 @@ public class Bullet : Projectile
     public override void Init()
     {
         SpriteRendererGlow.color = new Color(245 / 255f, 191 / 255f, 7 / 255f);
-        SpriteRenderer.sprite = Main.Shadow;
+        SpriteRenderer.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.transform.localScale *= 1.1f;
         SpriteRendererGlow.color = new Color(1, 0.1f, 0.1f, 1f);
         SpriteRenderer.color = new Color(1, 1f, 1f, 5f);

@@ -117,8 +117,8 @@ public class LatentCharge : Projectile
     public override void Init()
     {
         ColorVar = Color.Lerp(Player.ProjectileColor, Color.blue, 0.5f);
-        SpriteRenderer.sprite = Main.BubbleSmall;
-        SpriteRendererGlow.sprite = Main.Shadow;
+        SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
+        SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRenderer.color = Color.clear;
         SpriteRendererGlow.color = Color.clear;
         Color c = Color.Lerp(Color.white, Player.ProjectileColor, 0.5f);

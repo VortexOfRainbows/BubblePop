@@ -137,7 +137,7 @@ public class LightSpearCaster : Projectile
             SpriteRendererGlow.transform.localPosition = new Vector3(0, 0.44f, -1);
             SpriteRendererGlow.transform.localScale = new Vector3(1.1f, 1.35f, 1f);
             SpriteRendererGlow.color = new Color(0.8f, 0f, 0f, 1f);
-            SpriteRendererGlow.sprite = Main.Shadow;
+            SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
             SpriteRendererGlow.sortingOrder = 0;
             SpriteRendererGlow.material = Resources.Load<Material>("Materials/Additive");
             alphaScale = 1f;
@@ -148,7 +148,7 @@ public class LightSpearCaster : Projectile
             SpriteRendererGlow.transform.localPosition = new Vector3(0, 0.66f, -1);
             SpriteRendererGlow.transform.localScale = Vector3.one * 1.6f;
             SpriteRendererGlow.color = new Color(0.9960784f, 0.9764706f, 0.2313726f, 0f);
-            SpriteRendererGlow.sprite = Main.Shadow;
+            SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
             SpriteRendererGlow.sortingOrder = 5;
             SpriteRendererGlow.material = Resources.Load<Material>("Materials/Additive");
             transform.localScale = Vector3.one;
@@ -223,7 +223,7 @@ public class ThunderLightSpearCaster : Projectile
     public override void Init()
     {
         SpriteRendererGlow.transform.localScale = Vector3.one * 1.5f;
-        SpriteRendererGlow.sprite = SpriteRenderer.sprite = Main.Shadow;
+        SpriteRendererGlow.sprite = SpriteRenderer.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.sortingOrder = 0;
         SpriteRendererGlow.material = SpriteRenderer.material = Resources.Load<Material>("Materials/Additive");
         alphaScale = 1f;

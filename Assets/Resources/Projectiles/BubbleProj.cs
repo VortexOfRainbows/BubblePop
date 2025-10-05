@@ -6,7 +6,7 @@ public class SmallBubble : Projectile
         Color c = Player.ProjectileColor;
         c.a = 0.68f;
         SpriteRenderer.color = c;
-        SpriteRenderer.sprite = Main.BubbleSmall;
+        SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
         timer += Utils.RandInt(41);
         timer2 = 0;
         if(Data.Length > 0)
@@ -80,7 +80,7 @@ public class BigBubble : Projectile
 {
     public override void Init()
     {
-        SpriteRenderer.sprite = Main.BubbleSprite;
+        SpriteRenderer.sprite = Main.TextureAssets.BubbleSprite;
         Color c = Player.ProjectileColor;
         c.a = 0.68f;
         SpriteRenderer.color = c;
@@ -233,8 +233,8 @@ public class ThunderBubble : Projectile
     {
         ColorVar = Color.Lerp(Player.ProjectileColor, Color.blue, 0.5f);
         SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f);
-        SpriteRenderer.sprite = Main.BubbleSmall;
-        SpriteRendererGlow.sprite = Main.Shadow;
+        SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
+        SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = ColorVar * 0.6f;
         timer2 = 0;
         transform.localScale *= 0.3f;
@@ -402,7 +402,7 @@ public class ThoughtBubbleThunderAura : Projectile
         c2D.radius *= 4 * (Player.Instance.TrailOfThoughts / 10f + 1);
         SpriteRendererGlow.transform.localScale = Vector3.one * 2f;
         SpriteRendererGlow.color = Color.black;
-        SpriteRendererGlow.sprite = Main.Shadow;
+        SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
     }
     public override void AI()
     {

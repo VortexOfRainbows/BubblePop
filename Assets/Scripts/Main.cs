@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Main : MonoBehaviour
+public partial class Main : MonoBehaviour
 {
     public static bool MouseHoveringOverButton { get; set; }
     public static int GameUpdateCount = 0;
@@ -56,7 +54,7 @@ public class Main : MonoBehaviour
     public void Awake()
     {
         Instance = this;
-        Shadow = Resources.Load<Sprite>("Shadow");
+        TextureAssets.Load();
         BuffIcon.Load();
         OnGameOpen();
         GlobalEquipData.LoadAllEquipList();
@@ -84,29 +82,6 @@ public class Main : MonoBehaviour
     public static Main Instance;
     public static GameObject ProjPrefab => Instance.DefaultProjectile;
     public GameObject DefaultProjectile;
-    public static Sprite SpikyProjectileSprite => Instance.SpikyProj;
-    public Sprite SpikyProj;
-    public static Sprite BathBombSprite => Instance.BathBomb;
-    public Sprite BathBomb;
-    public static Sprite BubbleSprite => Instance.BigBubble;
-    public Sprite BigBubble;
-    public static Sprite BubbleSmall => Instance.BubbleParticle;
-    public Sprite BubbleParticle;
-    public static Sprite SquareBubble => Instance.SqrParticle;
-    public Sprite SqrParticle;
-    public static Sprite[] bathBombShards => Instance.bathbombShards;
-    public Sprite[] bathbombShards;
-    public static Sprite BubblePower1 => Instance.PowerBubble1;
-    public Sprite PowerBubble1;
-    public static Sprite BubblePower2 => Instance.PowerBubble2;
-    public Sprite PowerBubble2;
-    public static Sprite Feather => Instance.FlamigoFeater;
-    public Sprite FlamigoFeater;
-    public static Sprite Laser => Instance.LaserProj;
-    public Sprite LaserProj;
-    public static Sprite Sparkle => Instance.sparkle;
-    public Sprite sparkle;
-    public static Sprite Shadow;
     public static class GlobalEquipData
     {
         public static Dictionary<Type, int> EquipTypeToIndex = new();

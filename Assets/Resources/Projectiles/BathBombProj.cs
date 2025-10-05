@@ -4,7 +4,7 @@ public class BathBomb : Projectile
 {
     public override void Init()
     {
-        SpriteRenderer.sprite = Main.BathBombSprite;
+        SpriteRenderer.sprite = Main.TextureAssets.BathBombSprite;
     }
     public override void AI()
     {
@@ -158,7 +158,7 @@ public class Spike : Projectile
 {
     public override void Init()
     {
-        SpriteRenderer.sprite = Main.bathBombShards[Utils.RandInt(4)];
+        SpriteRenderer.sprite = Main.TextureAssets.BathBombShards[Utils.RandInt(4)];
         SpriteRenderer.color = PickColor(Mathf.Min(Data2, 6), Data2 - 6);
         SpriteRendererGlow.transform.localScale = new Vector3(1, 1, 1) * 1.4f;
         SpriteRendererGlow.color = SpriteRenderer.color;

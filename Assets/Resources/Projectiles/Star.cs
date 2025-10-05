@@ -1,12 +1,10 @@
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 public class StarProj : Projectile
 {
     public SpecialTrail MyTrail;
     public override void Init()
     {
-        SpriteRenderer.sprite = Main.Sparkle;
+        SpriteRenderer.sprite = Main.TextureAssets.Sparkle;
         SpriteRenderer.color = SpriteRendererGlow.color = new Color(1f, 1f, 0.2f, 0.6f);
         if(Damage <= 0)
             Damage = 2;

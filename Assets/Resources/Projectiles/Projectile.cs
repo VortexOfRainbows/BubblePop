@@ -230,7 +230,7 @@ public class FlamingoFeather : Projectile
         transform.localScale = new Vector3(0.65f, 0.45f, 1);
         SpriteRendererGlow.transform.localScale = new Vector3(1.5f, 4f, 1);
         SpriteRendererGlow.color = new Color(253 / 255f, 181 / 255f, 236 / 255f, 0.5f);
-        SpriteRenderer.sprite = Main.Feather;
+        SpriteRenderer.sprite = Main.TextureAssets.Feather;
         Hostile = true;
     }
     public override void AI()
@@ -278,7 +278,7 @@ public class Laser : Projectile
         transform.localScale = new Vector3(0.9f, 0.8f, 1);
         SpriteRendererGlow.transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
         SpriteRendererGlow.color = new Color(168f / 255f, 62f / 255f, 70f / 255f, 0.4f);
-        SpriteRenderer.sprite = Main.Laser;
+        SpriteRenderer.sprite = Main.TextureAssets.Laser;
         Hostile = true;
     }
     public override void AI()
