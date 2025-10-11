@@ -306,3 +306,20 @@ public class Supernova: PowerUp
         p.Supernova += Stack;
     }
 }
+public class ResonanceRuby : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Increases the Y:quality of Y:[wave rewards] by Y:20% G:(+20% per stack) \n" +
+            $"<color={DetailedDescription.Yellow}>Wave end</color> gains an additional Y:10% G:(+10% per stack) Y:chance to contain a Y:[bonus power reward]");
+        description.WithShortDescription("Improves wave rewards");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.Ruby += Stack;
+    }
+}

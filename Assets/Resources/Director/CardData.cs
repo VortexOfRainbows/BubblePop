@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class CardData
 {
@@ -32,7 +33,9 @@ public class CardData
         AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r);
         e ??= new EnemyClause(AvailablePoints);
         m ??= new ModifierClause(AvailablePoints - 20);
-        r ??= new RewardClause(originalAvailablePoints, -1, DifficultyMult * 0.065f);
+        float bonusMult = Player.Instance.Ruby * 0.2f + 1f;
+        float pointsAllocatedToPowers = originalAvailablePoints * bonusMult;
+        r ??= new RewardClause(pointsAllocatedToPowers, -1, DifficultyMult);
         if(e.AlternativeModifier != null)
         {
             if (e.AlternativeModifier.IsPermanent)
@@ -381,8 +384,8 @@ public class RewardClause : CardClause
     public List<Reward> PostRewards = new();
     public int RewardsAllowed = -1;
     public int RewardsAdded = 0;
-    public float HealingChance = 0.05f;
-    public RewardClause(float points, int rewardsAllowed = -1, float healingChance = 0.05f, params Reward[] rewards) : base(points)
+    public float HealingChance = 1f;
+    public RewardClause(float points, int rewardsAllowed = -1, float healingChance = 1f, params Reward[] rewards) : base(points)
     {
         RewardsAllowed = rewardsAllowed;
         foreach(Reward r in rewards)
@@ -426,6 +429,16 @@ public class RewardClause : CardClause
     }
     public override void GenerateData()
     {
+        float Rubies = Player.Instance.Ruby * 0.1f * Mathf.Sqrt(HealingChance);
+        while (Utils.RandFloat(1) < Rubies)
+        {
+            float FreePowerPoint = 100;
+            PowerReward reward = GeneratePower(ref FreePowerPoint, 10);
+            reward.Free = true;
+            reward.BeforeWaveEndReward = false;
+            Rubies -= 1;
+            AddPowerReward(reward, PostRewards);
+        }
         while (Points >= 1 && (RewardsAdded < RewardsAllowed || RewardsAllowed == -1))
         {
             Reward r = GenRandomReward();
@@ -439,26 +452,34 @@ public class RewardClause : CardClause
                 listType.Add(r);
         }
     }
+    private PowerReward GeneratePower(ref float PointsAvailable, float BonusOnReroll = 5)
+    {
+        PowerReward reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
+        while (reward.GetCost() > PointsAvailable)
+        {
+            reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
+            PointsAvailable += BonusOnReroll;
+        }
+        return reward;
+    }
     private Reward GenRandomReward()
     {
         float PointsAvailable = Points;
         bool beforeWaveReward = Utils.RandFloat(1) > 0.5f;
         Reward reward = null;
-        if (Utils.RandFloat(1) < HealingChance && PreRewards.Count <= 0)
+        if(reward == null)
         {
-            reward = new HealReward((int)(PointsAvailable + 0.4f));
-        }
-        else if(Utils.RandFloat(1) < 0.5f || Points < 10)
-        {
-            reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.4f) : (int)(PointsAvailable + 0.4f));
-        }
-        else
-        {
-            reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
-            while(reward.GetCost() > PointsAvailable)
+            if (Utils.RandFloat(1) < HealingChance * 0.065f && PreRewards.Count <= 0)
             {
-                reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
-                PointsAvailable += 5;
+                reward = new HealReward((int)(PointsAvailable + 0.4f));
+            }
+            else if (Utils.RandFloat(1) < 0.5f || Points < 10)
+            {
+                reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.4f) : (int)(PointsAvailable + 0.4f));
+            }
+            else
+            {
+                reward = GeneratePower(ref PointsAvailable);
             }
         }
         reward.BeforeWaveEndReward = beforeWaveReward;

@@ -23,6 +23,7 @@ public class Crystal : Accessory
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<Magnet>();
+        powerPool.Add<ResonanceRuby>();
     }
     protected override void ReducePowerPool(List<PowerUp> powerPool)
     {
