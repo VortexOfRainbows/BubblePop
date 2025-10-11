@@ -16,6 +16,7 @@ public class BubblemancerHat : Hat
         powerPool.Add<LuckyStar>();
         powerPool.Add<BinaryStars>();
         powerPool.Add<Starbarbs>();
+        powerPool.Add<Supernova>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

@@ -289,3 +289,20 @@ public class ThunderBubbles : PowerUp
         p.EchoBubbles += 2 + Stack;
     }
 }
+public class Supernova: PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Legendary;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Stars have a Y:[20% chance] to Y:detonate on hit for Y:10 G:(+5 per stack) Y:damage " +
+            $"\nActivates <color=#BAE3FE>Starbarbs</color> and <color=#BAE3FE>Lucky Star</color>");
+        description.WithShortDescription("Stars have a chance to explode");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.Supernova += Stack;
+    }
+}

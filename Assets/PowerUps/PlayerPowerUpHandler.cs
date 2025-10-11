@@ -88,6 +88,7 @@ public partial class Player : Entity
     public float ThunderBubbleReturnDamageBonus = 0;
     public float EchoBubbles = 0;
     public bool OrbitalStars = false;
+    public int Supernova = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -125,6 +126,7 @@ public partial class Player : Entity
         ThunderBubbleReturnDamageBonus = 0.0f;
         EchoBubbles = 0.0f;
         OrbitalStars = false;
+        Supernova = 0;
     }
     private void UpdatePowerUps()
     {

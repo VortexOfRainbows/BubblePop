@@ -21,7 +21,7 @@ public class ParticleManager : MonoBehaviour
             startColor = color,
             velocity = new Vector2(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)) * randomizeFactor + velo,
             startLifetime = lifeTime,
-            startSize = Instance.thisSystem[type].main.startSizeMultiplier * size * Utils.RandFloat(0.9f, 1.1f)
+            startSize = Instance.thisSystem[type].main.startSizeMultiplier * size * Utils.RandFloat(0.9f, 1.1f),
         };
         Instance.thisSystem[type].Emit(style, 1);
     }

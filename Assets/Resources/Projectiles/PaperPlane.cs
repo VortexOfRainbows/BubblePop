@@ -121,8 +121,6 @@ public class LatentCharge : Projectile
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRenderer.color = Color.clear;
         SpriteRendererGlow.color = Color.clear;
-        Color c = Color.Lerp(Color.white, Player.ProjectileColor, 0.5f);
-        c.a = 0.8f;
         Damage = 0;
         Penetrate = -1;
         transform.localScale *= 0.1f;

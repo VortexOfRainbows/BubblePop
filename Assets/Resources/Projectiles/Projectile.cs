@@ -119,7 +119,7 @@ public class Projectile : MonoBehaviour
     public void FixedUpdate()
     {
         AI();
-        if(CanBeAffectedByHoming() && Friendly && Player.Instance.HomingRange > 0)
+        if(CanBeAffectedByHoming() && (Friendly || this is SupernovaProj) && Player.Instance.HomingRange > 0)
             HomingBehavior();
         if(World.ColliderTileMap.Map.HasTile(World.ColliderTileMap.Map.WorldToCell(transform.position)))
             if(OnInsideTile())
@@ -156,6 +156,40 @@ public class Projectile : MonoBehaviour
     public virtual void OnHitTarget(Entity target)
     {
 
+    }
+    public void OnHitByStar(Entity target)
+    {
+        if (target.Life <= 0)
+        {
+            if (Player.Instance.Starbarbs > 0)
+            {
+                Vector2 norm = RB.velocity.normalized;
+                if(this is SupernovaExplode || this is SupernovaProj)
+                    norm = Utils.RandCircle(1).normalized;
+                float randRot = norm.ToRotation();
+                for (int i = 0; i < 30; i++)
+                {
+                    Vector2 randPos = new Vector2(3.5f, 0).RotatedBy(i / 15f * Mathf.PI);
+                    randPos.x *= Utils.RandFloat(0.5f, 0.7f);
+                    randPos = randPos.RotatedBy(randRot);
+                    ParticleManager.NewParticle(target.transform.position, Utils.RandFloat(0.95f, 1.05f), -norm * 4.5f + randPos * Utils.RandFloat(4, 5) + Utils.RandCircle(.3f), 0.1f, .6f, 0, SpriteRenderer.color);
+                }
+                int stars = 2 + Player.Instance.Starbarbs;
+                for (; stars > 0; --stars)
+                {
+                    Vector2 targetPos = (Vector2)target.transform.position + norm * 9 + Utils.RandCircle(7);
+                    NewProjectile<StarProj>(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, targetPos.x, targetPos.y, Utils.RandInt(2) * 2 - 1);
+                }
+            }
+            if (Player.Instance.LuckyStar > 0)
+            {
+                float chance = 0.03f + Player.Instance.LuckyStar * 0.01f;
+                if (Utils.RandFloat(1) < chance)
+                {
+                    PowerUp.Spawn(PowerUp.RandomFromPool(), (Vector2)target.transform.position, 0);
+                }
+            }
+        }
     }
     public virtual void AI()
     {
