@@ -41,7 +41,7 @@ public class PlayerAnimator : MonoBehaviour
         walkTimer += abs + (IsMainPlayerAnimator ? 1 : 0.5f);
         walkTimer %= 100f;
         float sin = Mathf.Sin(walkTimer / 50f * Mathf.PI);
-        float bobbing = 0.9f + 0.1f * sin;
+        float bobbing = 0.925f + 0.075f * sin;
         return bobbing;
     }
     public float MoveDashRotation()

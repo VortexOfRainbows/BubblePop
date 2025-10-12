@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
-
 public class LabCoat : BubblemancerCape
 {
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
@@ -42,6 +40,8 @@ public class LabCoat : BubblemancerCape
     protected override void AnimationUpdate()
     {
         base.AnimationUpdate();
+        if (this is ShadyCoat)
+            return;
         Vector2 toMouse = Utils.MouseWorld - (Vector2)p.Body.transform.position;
         float facingDir = p.Direction;
         toMouse = facingDir * LookingAtMouseScale * toMouse.normalized;
@@ -53,12 +53,12 @@ public class LabCoat : BubblemancerCape
         //ArmL.transform.localScale = new Vector3(1f / CapeL.transform.localScale.x, ArmL.transform.localScale.y);
         //ArmR.transform.localScale = new Vector3(1f / CapeR.transform.localScale.x, ArmR.transform.localScale.y);
     }
-    public void MoveArm(SpriteRenderer arm, float dir = 1)
+    public void MoveArm(SpriteRenderer arm, float dir = 1, float bonus = 0)
     {
         float veloX = 8 * Mathf.Sqrt(Mathf.Abs(p.rb.velocity.x));
         float veloY = 4 * Mathf.Sqrt(Mathf.Abs(p.rb.velocity.y)) * Mathf.Sign(p.rb.velocity.y) * dir;
         veloX -= veloY;
-        //arm.transform.localPosition = new Vector3(Mathf.Abs(arm.transform.localPosition.x) , arm.transform.localPosition.y);
-        arm.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(arm.transform.eulerAngles.z, veloX * -p.Direction, 0.2f));
+        bonus *= p.Direction;
+        arm.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(arm.transform.eulerAngles.z - bonus, veloX * -p.Direction, 0.2f) + bonus);
     }
 }

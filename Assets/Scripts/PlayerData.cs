@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class PlayerData
 {
-    public static readonly float CurrentPlayerVersion = 1.1f;
+    public static readonly float CurrentPlayerVersion = 1.2f;
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;

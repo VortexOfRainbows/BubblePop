@@ -24,6 +24,7 @@ Need to do:
 11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
 12. Look into stacking thunder bubbles causing lag (rather than just having them out). It seems to be related to collision, as it only happens when they are stacked...
 13. Make compendium and settings UI accessible in game
+14. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -36,6 +37,7 @@ Done:
 2. Add Chicken card art (very cool)
 3. Add Resonance Ruby powerup (very cool!)
 4. Bunce hat art refresh!
+5. WIP implementation of Gachapon shady equips!
 
 10/5/25
 1. Some organization changes in main in preparation for persistent UI
