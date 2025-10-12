@@ -100,6 +100,10 @@ public class Body : Equipment
         transform.localPosition = squashReAlign;
         gameObject.SetActive(true);
         FaceUpdate();
+        if(player.Accessory is ShadyCoat && player.Body is not ThoughtBubble)
+            player.Body.Face.SetActive(false);
+        else
+            player.Body.Face.SetActive(true);
     }
     protected override void DeathAnimation()
     {

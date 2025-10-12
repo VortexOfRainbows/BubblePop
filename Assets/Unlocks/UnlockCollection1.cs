@@ -95,4 +95,16 @@ public class GachaponWave15AllSkullWaves : UnlockCondition
         description.WithDescription("Reach and complete wave 15 as Y:[Gachapon] while choosing only max-difficulty Y:[Wave Cards]");
     }
 }
+public class GachaponBurger : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Gachapon: Yummy!");
+        description.WithDescription($"Possess 3 {Power.UnlockedName} in a single run");
+    }
+    public override PowerUp Power => PowerUp.Get<Burger>();
+    protected override bool TryUnlockCondition => Power.PickedUpBestAllRuns >= 3;
+}
+
+
 

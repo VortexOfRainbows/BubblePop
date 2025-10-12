@@ -22,7 +22,7 @@ public class BunceHat : BubblemancerHat
     }
     protected override void AnimationUpdate()
     {
-        float bonus = 0.09f;
+        float bonus = 0.12f;
         if (player.Body is Bubblemancer)
         {
             if (player.abilityTimer > 0)
@@ -34,12 +34,13 @@ public class BunceHat : BubblemancerHat
                 velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
         }
         else if (player.Body is Gachapon)
-            bonus = 0.12f;
+            bonus = 0.16f;
+        bonus -= 0.23f;
         spriteRender.flipX = !p.Body.Flipped;
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, p.MoveDashRotation() - 12 * p.Direction, 0.2f));
         velocity = Vector2.Lerp(velocity, Vector2.zero, 0.2f);
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
-            new Vector2(-0.12f * p.Direction, (bonus + 0.37f * p.Bobbing * p.squash - 0.2f * (1 - p.squash))).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
+            new Vector2(-0.12f * p.Direction, (bonus + 0.6f * p.Bobbing * p.squash - 0.2f * (1 - p.squash))).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
             0.2f) + velocity;
     }
     protected override void DeathAnimation()
