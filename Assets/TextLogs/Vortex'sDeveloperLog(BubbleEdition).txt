@@ -13,8 +13,11 @@ Need to do:
 3. Integrate Settings and compendium into the default pause stuff
 4. Make calculator homing snappier
 5. Integrate character select into the compendium
-6. Make a distinct "Generic Power" pool, which contains: Haste, Magnet, Choice, Mitosis, Overclock, and more... Crits, Discounts
-	1. TBD: Strength...
+6. Make a distinct "Generic Power" pool, which contains: 
+	1. Stats  : Overclock, Haste, Crits, Speed (cap speed at 2x)
+	2. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round
+	3. Powers : Choice, Special Delivery (gives only special pool powers), Mitosis, Black Market delivery
+	4. Special: Bubblebirb, Midas Touch (gold is worth more), Shard of Power (after being scrapped, choose an existing power to add onto)
 7. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
 	1. Contains loot with higher chances of good loot based on the rarity of the chest
 8. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
@@ -24,7 +27,8 @@ Need to do:
 11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
 12. Look into stacking thunder bubbles causing lag (rather than just having them out). It seems to be related to collision, as it only happens when they are stacked...
 13. Make compendium and settings UI accessible in game
-14. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots
+14. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
+15. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
