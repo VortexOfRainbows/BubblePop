@@ -54,7 +54,7 @@ public class ChoiceUnlock200 : UnlockCondition
     public override PowerUp Power => PowerUp.Get<Choice>();
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Thought Bubble: Decisions, Decisions");
+        description.WithName("Decisions, Decisions");
         description.WithDescription($"Pick up 200 {Power.UnlockedName} across multiple runs");
     }
     protected override bool TryUnlockCondition => Power.PickedUpCountAllRuns >= 200;

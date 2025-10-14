@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -223,6 +224,10 @@ public class Compendium : MonoBehaviour
                 {
                     string name = e.IsUnlocked ? e.GetName() : DetailedDescription.BastardizeText(e.GetName(), '?');
                     concat += " *" + name + '\n';
+                }
+                if(DisplayCPAchievement.MyUnlock.AchievementStar)
+                {
+                    concat += " +1 Sheep\n".WithColor(DetailedDescription.Rares[4]);
                 }
                 DisplayPortDescription.text = concat;
             }

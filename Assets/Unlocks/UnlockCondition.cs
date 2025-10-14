@@ -62,6 +62,15 @@ public abstract class UnlockCondition
             Unlocks[i].LoadData();
         }
     }
+    public static void PrepareStatics()
+    {
+        for (int i = 0; i < maximumTypes; ++i)
+        {
+            UnlockCondition u = Unlocks[i];
+            if (u.AchievementStar)
+                PlayerData.AchievementStars += 1;
+        }
+    }
     protected UnlockCondition()
     {
         AssociatedUnlocks = new();
@@ -76,7 +85,9 @@ public abstract class UnlockCondition
     }
     public void LoadData()
     {
-        Completed = PlayerData.GetBool(SaveString);
+        bool complete = PlayerData.GetBool(SaveString);
+        if(complete)
+            SetComplete(true);
     }
     public bool Unlocked => ForceUnlockAll || TryUnlock();
     protected virtual bool TryUnlockCondition => false;
@@ -85,10 +96,16 @@ public abstract class UnlockCondition
         return Description.BriefDescription();
     }
     public bool Completed { get; set; } = false;
-    public void SetComplete()
+    public void SetComplete(bool skipSave = false)
     {
-        Completed = true;
-        SaveData();
+        if(!Completed)
+        {
+            Completed = true;
+            if(!skipSave)
+                SaveData();
+            if(AchievementStar)
+                PlayerData.AchievementStars += 1;
+        }
     }
     public bool TryUnlock()
     {
@@ -105,6 +122,7 @@ public abstract class UnlockCondition
     {
         return brief ? Description.BriefDescription() : Description.FullDescription();
     }
+    public virtual bool AchievementStar => AssociatedUnlocks.Count <= 0;
     public virtual int Rarity => AssociatedUnlocks.Count > 0 ? FrontPageUnlock().GetRarity() : 1;
     public virtual void InitializeDescription(ref DetailedDescription description)
     {

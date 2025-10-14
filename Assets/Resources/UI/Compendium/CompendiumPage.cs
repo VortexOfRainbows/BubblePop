@@ -173,11 +173,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
             {
                 for (int i = 0; i < UnlockCondition.Unlocks.Count; ++i)
                 {
-                    if (UnlockCondition.Get(i).AssociatedUnlocks.Count > 0)
-                    {
-                        CompendiumAchievementElement CAE = Instantiate(CompendiumAchievementElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumAchievementElement>();
-                        CAE.Init(i, MyCanvas);
-                    }
+                    CompendiumAchievementElement CAE = Instantiate(CompendiumAchievementElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumAchievementElement>();
+                    CAE.Init(i, MyCanvas);
                 }
             }
             else

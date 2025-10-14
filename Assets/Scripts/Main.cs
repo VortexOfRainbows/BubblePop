@@ -60,6 +60,7 @@ public partial class Main : MonoBehaviour
         BuffIcon.Load();
         OnGameOpen();
         GlobalEquipData.LoadAllEquipList();
+        UnlockCondition.PrepareStatics();
     }
     public void OnDestroy()
     {

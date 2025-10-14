@@ -14,6 +14,14 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     {
         MyUnlock = UnlockCondition.Get(i);
         base.Init(MyUnlock.AssociatedUnlocks.Count > 0 ? MyUnlock.FrontPageUnlock().IndexInAllEquipPool : 0, canvas);
+        if(MyUnlock.AssociatedUnlocks.Count <= 0)
+        {
+            if (MyUnlock.AchievementStar)
+            {
+                MyElem.ActiveEquipment.spriteRender.sprite = Resources.Load<Sprite>("UI/Sheep");
+                MyElem.ResetOrientation();
+            }
+        }
         MyElem.AchievementElement = true;
         TypeID = i;
         if (MyUnlock.Completed && !Selected && Style != 3)

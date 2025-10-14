@@ -260,6 +260,10 @@ public static class Utils
     {
         return $"<size={size}><color={color}>{s}</color></size>";
     }
+    public static string WithColor(this string s, string color)
+    {
+        return $"<color={color}>{s}</color>";
+    }
     public static TileBase GetTile(this Tilemap map, int i, int j)
     {
         return map.GetTile(new Vector3Int(i, j));

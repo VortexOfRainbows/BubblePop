@@ -34,6 +34,15 @@ public class EquipmentUIElement : MonoBehaviour
             t.gameObject.layer = UILayer;
         return obj;
     }
+    public void ResetOrientation()
+    {
+        Vector2 offset = Vector2.zero;
+        float rot = 0f;
+        float scale = 1f;
+        ActiveEquipment.transform.localPosition = offset;
+        ActiveEquipment.transform.eulerAngles = new Vector3(0, 0, rot);
+        Visual.transform.localScale = Vector3.one * 50f * scale;
+    }
     public void UpdateOrientation()
     {
         Vector2 offset = Vector2.zero;

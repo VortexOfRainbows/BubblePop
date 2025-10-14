@@ -6,6 +6,8 @@ using UnityEngine;
 public static class PlayerData
 {
     public static readonly float CurrentPlayerVersion = 1.2f;
+    public static int AchievementStars { get; set; } = 0;
+    public static int TotalAchievementStars { get; set; } = 0;
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
