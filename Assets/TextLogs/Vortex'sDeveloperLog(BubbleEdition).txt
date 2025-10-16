@@ -29,6 +29,11 @@ Need to do:
 13. Make compendium and settings UI accessible in game
 14. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 15. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
+	1. Achievement chains, to hide achievements that are currently unobtainable
+	2. Hide unlocks from char select until they are unlocked, including subequipments
+	3. Achievements that come without unlocks should use the 6-star icon with, but with an emphasis on the two colors of the achievement categories it is part of (the other categories are slightly transparent, for example).
+	4. Progress display for achievements
+16. Overhaul savedata system
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -38,6 +43,8 @@ Done:
 
 10/14/25 to 10/15/25
 1. WIP stat achievements
+2. Achievement categories
+3. Change unlock conditions for Gachapon and Thought Bubble
 
 10/10/25 to 10/11/25
 1. Add Supernova powerup (very cool)

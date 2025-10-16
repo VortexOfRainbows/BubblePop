@@ -19,7 +19,6 @@ public class EquipmentUIElement : MonoBehaviour
     public bool DisplayOnly = false;
     public bool CompendiumElement = false;
     public bool AchievementElement = false;
-    private bool LockOrientation = false;
     public void UpdateEquipment(Equipment equip)
     {
         ActiveEquipment = GenerateEquipment(equip, Visual.transform);
@@ -35,20 +34,8 @@ public class EquipmentUIElement : MonoBehaviour
             t.gameObject.layer = UILayer;
         return obj;
     }
-    public void ResetOrientation()
-    {
-        Vector2 offset = Vector2.zero;
-        float rot = 0f;
-        float scale = 1f;
-        ActiveEquipment.transform.localPosition = offset;
-        ActiveEquipment.transform.eulerAngles = new Vector3(0, 0, rot);
-        Visual.transform.localScale = Vector3.one * 50f * scale;
-        LockOrientation = true;
-    }
     public void UpdateOrientation()
     {
-        if (LockOrientation)
-            return;
         Vector2 offset = Vector2.zero;
         float rot = 0f;
         float scale = 1f;

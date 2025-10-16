@@ -45,8 +45,10 @@ public class ShadyCoat : LabCoat
         }
         Vector2 voffset = toMouse.normalized * 1f * facingDir;
         voffset.y *= 0.2f;
-        Vector2 targetMaskPos = (Vector2)player.Body.transform.position + voffset * 0.04f;
-        Mask.transform.position = Vector2.Lerp(Mask.transform.position, targetMaskPos, 0.1f);
+
+        Vector3 targetMaskPos = (Vector2)player.Body.transform.position + voffset * 0.08f;
+        Mask.transform.position = Vector3.Lerp(Mask.transform.position, targetMaskPos, 0.1f);
+        Mask.transform.localPosition = new Vector3(Mask.transform.localPosition.x, Mask.transform.localPosition.y, 1);
         Mask.transform.LerpLocalEulerZ(voffset.y * 35, 0.1f);
         //Mask.GetComponent<SpriteRenderer>().flipX = player.Body.FaceR.flipX;
         ArmL.flipX = !CapeLRend.flipX;

@@ -9,8 +9,10 @@ public static class PlayerData
     {
         public static int AchievementStars { get; set; } = 0;
         public static int TotalAchievementStars { get; set; } = 0;
+        public static int MeadowsStars { get; set; } = 0;
+        public static int TotalMeadowsStars { get; set; } = 0;
     }
-    public static readonly float CurrentPlayerVersion = 1.2f;
+    public static readonly float CurrentPlayerVersion = 1.15f;
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
@@ -42,6 +44,7 @@ public static class PlayerData
         PowerUp.SaveAllData();
         CoinManager.Save();
         SaveInt("HighscoreWave", WaveDirector.HighScoreWaveNum);
+        SaveInt("PlayerGoldSpent", Player.GoldSpentTotal);
     }
     public static void LoadAll()
     {
@@ -57,6 +60,7 @@ public static class PlayerData
         PlayerDeaths = GetInt("Deaths");
         SFXVolume = GetFloat("SFX", 1);
         MusicVolume = GetFloat("Music", 1);
+        Player.GoldSpentTotal = GetInt("PlayerGoldSpent", 0);
         UnlockCondition.LoadAllData();
         PowerUp.LoadAllData();
         CoinManager.Load();
@@ -169,5 +173,7 @@ public static class PlayerData
             PlayerPrefs.DeleteKey($"{TypeName}Acc");
             PlayerPrefs.DeleteKey($"{TypeName}Wep");
         }
+        UnlockCondition.Get<GachaponUnlock>().SetComplete(false, false);
+        UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete(false, false);
     }
 }

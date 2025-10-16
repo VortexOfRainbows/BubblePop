@@ -49,6 +49,7 @@ public partial class Player : Entity
     public const float DashDefault = 25f;
     public static bool HasAttacked = false;
     public static bool PickedLowerDifficultyWaveCard = false;
+    public static int GoldSpentTotal = 0;
     /// <summary>
     /// Shorthand for abilityTimer <= 0;
     /// </summary>

@@ -219,16 +219,29 @@ public class Compendium : MonoBehaviour
                 rare = DisplayCPAchievement.GetRare() - 1;
                 string concat = $"<size=42>{DisplayCPAchievement.MyUnlock.GetName()}</size>" + shortLineBreak;
                 concat += DisplayCPAchievement.MyUnlock.GetDescription() + shortLineBreak;
-                concat += "Associated Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
-                foreach(Equipment e in DisplayCPAchievement.MyUnlock.AssociatedUnlocks)
+                if(DisplayCPAchievement.MyUnlock.AssociatedUnlocks.Count > 0)
                 {
-                    string name = e.IsUnlocked ? e.GetName() : DetailedDescription.BastardizeText(e.GetName(), '?');
-                    concat += " *" + name + '\n';
+                    concat += "Associated Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
+                    foreach (Equipment e in DisplayCPAchievement.MyUnlock.AssociatedUnlocks)
+                    {
+                        string name = e.IsUnlocked ? e.GetName() : DetailedDescription.BastardizeText(e.GetName(), '?');
+                        concat += "  " + name + '\n';
+                    }
                 }
-                if(DisplayCPAchievement.MyUnlock.AchievementStar)
-                {
-                    concat += " +1 Sheep\n".WithColor(DetailedDescription.Rares[4]);
-                }
+                concat += shortLineBreak;
+                concat += "Achievement Category: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
+                if(DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.Meadows)
+                    concat += "  Meadows\n".WithColor(DetailedDescription.Rares[1]);
+                else if (DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.City)
+                    concat += "  City\n".WithColor(DetailedDescription.Rares[2]);
+                else if(DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.Lab)
+                    concat += "  Lab\n".WithColor(DetailedDescription.Rares[3]);
+                if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Completionist)
+                    concat += "  Completionist\n".WithColor(DetailedDescription.Rares[4]);
+                else if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Challenge)
+                    concat += "  Challenge\n".WithColor(DetailedDescription.Rares[5]);
+                else if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Secret)
+                    concat += "  Secret\n".WithColor(DetailedDescription.Rares[0]);
                 DisplayPortDescription.text = concat;
             }
             UpdateStars(rare);

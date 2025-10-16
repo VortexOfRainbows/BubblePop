@@ -3,6 +3,19 @@ using UnityEngine;
 
 public abstract class UnlockCondition
 {
+    public const int RegularAchievement = 0;
+    public const int Meadows = 1;
+    public const int City = 2;
+    public const int Lab = 3;
+    public const int Completionist = 4;
+    public const int Challenge = 5;
+    public const int Secret = 6;
+    public int AchievementZone = RegularAchievement;
+    public int AchievementCategory = Completionist;
+    public virtual void SetAchievementCategories(ref int zone, ref int category)
+    {
+
+    }
     public virtual string SaveString => GetType().Name;
     #region UnlockCondition Datastructure Related Stuff
     private static int typeCounter = 0;
@@ -68,6 +81,8 @@ public abstract class UnlockCondition
         for (int i = 0; i < maximumTypes; ++i)
         {
             UnlockCondition u = Unlocks[i];
+            if(u.AchievementZone == Meadows)
+                PlayerData.MetaProgression.TotalMeadowsStars += 1;
             PlayerData.MetaProgression.TotalAchievementStars += 1;
         }
     }
@@ -77,6 +92,7 @@ public abstract class UnlockCondition
         Description = new(Rarity, SaveString);
         Description.WithoutSizeAugments();
         InitializeDescription(ref Description);
+        SetAchievementCategories(ref AchievementZone, ref AchievementCategory);
         AddToDictionary(this);
     }
     public void SaveData()
@@ -96,14 +112,22 @@ public abstract class UnlockCondition
         return Description.BriefDescription();
     }
     public bool Completed { get; set; } = false;
-    public void SetComplete(bool skipSave = false)
+    public void SetComplete(bool skipSave = false, bool completeStatus = true)
     {
-        if(!Completed)
+        if(!Completed && completeStatus)
         {
             Completed = true;
             if(!skipSave)
                 SaveData();
+            if (AchievementZone == Meadows)
+                PlayerData.MetaProgression.MeadowsStars += 1;
             PlayerData.MetaProgression.AchievementStars += 1;
+        }
+        else if(!completeStatus)
+        {
+            Completed = false;
+            if (!skipSave)
+                SaveData();
         }
     }
     public bool TryUnlock()
@@ -121,7 +145,6 @@ public abstract class UnlockCondition
     {
         return brief ? Description.BriefDescription() : Description.FullDescription();
     }
-    public virtual bool AchievementStar => AssociatedUnlocks.Count <= 0;
     public virtual int Rarity => AssociatedUnlocks.Count > 0 ? FrontPageUnlock().GetRarity() : 1;
     public virtual void InitializeDescription(ref DetailedDescription description)
     {

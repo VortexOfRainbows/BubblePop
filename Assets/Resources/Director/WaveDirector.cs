@@ -173,6 +173,8 @@ public static class WaveDirector
                 UnlockCondition.Get<GachaponWave15AllSkullWaves>().SetComplete();
             }
         }
+        if(WaveNum >= 25)
+            UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         CurrentAssociatedWaveCardNumber = 0;
         WaitingForCardDraw = true;

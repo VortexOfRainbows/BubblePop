@@ -1,4 +1,6 @@
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
@@ -13,14 +15,10 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public override void Init(int i, Canvas canvas)
     {
         MyUnlock = UnlockCondition.Get(i);
-        base.Init(MyUnlock.AssociatedUnlocks.Count > 0 ? MyUnlock.FrontPageUnlock().IndexInAllEquipPool : 0, canvas);
+        base.Init(MyUnlock.AssociatedUnlocks.Count > 0 ? MyUnlock.FrontPageUnlock().IndexInAllEquipPool : Main.GlobalEquipData.Bubblemancer.GetComponent<Equipment>().IndexInAllEquipPool, canvas);
         if(MyUnlock.AssociatedUnlocks.Count <= 0)
         {
-            if (MyUnlock.AchievementStar)
-            {
-                MyElem.ActiveEquipment.spriteRender.sprite = Resources.Load<Sprite>("UI/StarAch");
-                MyElem.ResetOrientation();
-            }
+            MyElem.ActiveEquipment.spriteRender.sprite = Resources.Load<Sprite>("UI/StarAch");
         }
         MyElem.AchievementElement = true;
         TypeID = i;
@@ -30,6 +28,8 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
             DescriptionImage.color = c;
             BG.color =c;
         }
+        if (Style == 3)
+            MyElem.DisplayOnly = true;
     }
     ///// <summary>
     ///// Currently unused, as this element does not have a 

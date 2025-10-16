@@ -78,5 +78,13 @@ public static class CoinManager
     public static void ModifyCurrent(int amt)
     {
         Current += amt;
+        if (amt < 0)
+        {
+            Player.GoldSpentTotal -= amt;
+            if(Player.GoldSpentTotal >= 6480)
+            {
+                UnlockCondition.Get<GachaponUnlock>().SetComplete();
+            }
+        }
     }
 }
