@@ -18,7 +18,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         {
             if (MyUnlock.AchievementStar)
             {
-                MyElem.ActiveEquipment.spriteRender.sprite = Resources.Load<Sprite>("UI/Sheep");
+                MyElem.ActiveEquipment.spriteRender.sprite = Resources.Load<Sprite>("UI/StarAch");
                 MyElem.ResetOrientation();
             }
         }

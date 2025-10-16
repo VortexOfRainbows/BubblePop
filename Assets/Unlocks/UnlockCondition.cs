@@ -64,11 +64,11 @@ public abstract class UnlockCondition
     }
     public static void PrepareStatics()
     {
+        PlayerData.MetaProgression.TotalAchievementStars = 0;
         for (int i = 0; i < maximumTypes; ++i)
         {
             UnlockCondition u = Unlocks[i];
-            if (u.AchievementStar)
-                PlayerData.AchievementStars += 1;
+            PlayerData.MetaProgression.TotalAchievementStars += 1;
         }
     }
     protected UnlockCondition()
@@ -103,8 +103,7 @@ public abstract class UnlockCondition
             Completed = true;
             if(!skipSave)
                 SaveData();
-            if(AchievementStar)
-                PlayerData.AchievementStars += 1;
+            PlayerData.MetaProgression.AchievementStars += 1;
         }
     }
     public bool TryUnlock()
