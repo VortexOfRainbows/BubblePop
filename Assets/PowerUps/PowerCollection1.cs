@@ -309,7 +309,7 @@ public class SpearOfLight : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Spear of Light");
-        description.WithDescription("Fire Y:[beams of light] at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2 damage] every Y:[2.2 seconds] and increase Y:[beam of light] damage by Y:0.5 G:(+0.5 per stack)");
+        description.WithDescription("Fire Y:[beams of light] at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2 damage] every Y:[2.2 seconds] and increase Y:[beam of light damage] by Y:0.5 G:(+0.5 per stack)");
         description.WithShortDescription("Periodically fire beams of light at nearby enemies");
     }
     public override void HeldEffect(Player p)

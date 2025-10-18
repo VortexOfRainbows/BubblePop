@@ -90,6 +90,7 @@ public partial class Player : Entity
     public bool OrbitalStars = false;
     public int Supernova = 0;
     public int Ruby = 0;
+    public int DoubleDownChip = 0;
     public float BlackmarketMult = 1.0f;
     private void PowerInit()
     {
@@ -128,7 +129,7 @@ public partial class Player : Entity
         ThunderBubbleReturnDamageBonus = 0.0f;
         EchoBubbles = 0.0f;
         OrbitalStars = false;
-        Supernova = Ruby = 0;
+        Supernova = Ruby = DoubleDownChip = 0;
         BlackmarketMult = 1.0f;
     }
     private void UpdatePowerUps()

@@ -76,9 +76,9 @@ public class Gachapon : Body
             float lerp = totalCount == 1 ? 0 : (float)i / (totalCount - 1);
             Vector2 rot = toMouse.RotatedBy(Mathf.Deg2Rad * Mathf.Lerp(-rotation, rotation, lerp));
             if(blue && blueCount-- > 0)
-                Projectile.NewProjectile<BlueChip>(transform.position, rot, 6);
+                Projectile.NewProjectile<BlueChip>(transform.position, rot, 6 + 2 * Player.Instance.DoubleDownChip);
             else
-                Projectile.NewProjectile<PokerChip>(transform.position, rot, 3);
+                Projectile.NewProjectile<PokerChip>(transform.position, rot, 3 + 1 * Player.Instance.DoubleDownChip);
             int sparkle = player.DashSparkle;
             if(sparkle > 0)
             {
@@ -155,6 +155,7 @@ public class Gachapon : Body
         powerPool.Add<Raise>();
         powerPool.Add<AllIn>();
         powerPool.Add<BubbleMitosis>();
+        powerPool.Add<DoubleDown>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

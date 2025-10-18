@@ -323,3 +323,19 @@ public class ResonanceRuby : PowerUp
         p.Ruby += Stack;
     }
 }
+public class DoubleDown : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Enemies Y:[killed by chips] drop additional Y:coins equal to the Y:[overkill damage dealt] and increases Y:[chip damage] by Y:1 G:(+1 per stack)");
+        description.WithShortDescription("Enemies killed by chips drop additional coins and increases chip damage");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.DoubleDownChip += Stack;
+    }
+}
