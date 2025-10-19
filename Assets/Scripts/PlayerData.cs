@@ -1,10 +1,11 @@
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public static class PlayerData
 {
+    private static readonly SaveData SaveData = SaveData.LoadFromJson();
     public static class MetaProgression
     {
         public static int AchievementStars { get; set; } = 0;
@@ -12,7 +13,7 @@ public static class PlayerData
         public static int MeadowsStars { get; set; } = 0;
         public static int TotalMeadowsStars { get; set; } = 0;
     }
-    public static readonly float CurrentPlayerVersion = 1.15f;
+    public static readonly float CurrentPlayerVersion = 1.2f;
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
@@ -32,7 +33,7 @@ public static class PlayerData
     }
     public static void ResetAll()
     {
-        PlayerPrefs.DeleteAll(); //Reset all save data persistently for the purposes of the playtest
+        SaveData.DeleteAll();
         LoadAll();
         SaveAll();
     }
@@ -45,9 +46,11 @@ public static class PlayerData
         CoinManager.Save();
         SaveInt("HighscoreWave", WaveDirector.HighScoreWaveNum);
         SaveInt("PlayerGoldSpent", Player.GoldSpentTotal);
+        SaveData.SaveToJson();
     }
     public static void LoadAll()
     {
+        SaveData.LoadFromJson();
         float PreviousPlayerVersion = GetFloat("VersionNumber", 1.0f);
         if(CurrentPlayerVersion != PreviousPlayerVersion)
         {
@@ -66,42 +69,14 @@ public static class PlayerData
         CoinManager.Load();
         WaveDirector.HighScoreWaveNum = GetInt("HighscoreWave", 0);
     }
-    public static void Clear()
-    {
-        PlayerPrefs.DeleteAll();
-    }
-    public static void SaveInt(string tag, int value)
-    {
-        PlayerPrefs.SetInt(tag, value);
-    }
-    public static int GetInt(string tag, int defaultValue = 0)
-    {
-        return PlayerPrefs.GetInt(tag, defaultValue);
-    }
-    public static void SaveFloat(string tag, float value)
-    {
-        PlayerPrefs.SetFloat(tag, value);
-    }
-    public static float GetFloat(string tag, float defaultValue = 0)
-    {
-        return PlayerPrefs.GetFloat(tag, defaultValue);
-    }
-    public static void SaveBool(string tag, bool value)
-    {
-        PlayerPrefs.SetInt(tag, value ? 1 : 0);
-    }
-    public static bool GetBool(string tag, bool defaultValue = false)
-    {
-        return PlayerPrefs.GetInt(tag, defaultValue ? 1 : 0) == 1;
-    }
-    public static void SaveString(string tag, string value)
-    {
-        PlayerPrefs.SetString(tag, value);
-    }
-    public static string GetString(string tag)
-    {
-        return PlayerPrefs.GetString(tag, string.Empty);
-    }
+    public static void SaveInt(string tag, int value) => SaveData.Write(tag, value);
+    public static int GetInt(string tag, int defaultValue = 0) => SaveData.Read(tag, defaultValue);
+    public static void SaveFloat(string tag, float value) => SaveData.Write(tag, value);
+    public static float GetFloat(string tag, float defaultValue = 0) => SaveData.Read(tag, defaultValue);
+    public static void SaveBool(string tag, bool value) => SaveData.Write(tag, value);
+    public static bool GetBool(string tag, bool defaultValue = false) => SaveData.Read(tag, defaultValue);
+    public static void SaveString(string tag, string value) => SaveData.Write(tag, value);
+    public static string GetString(string tag) => SaveData.Read(tag, string.Empty);
     public static void SaveTierList(TierList list)
     {
         string CSV = string.Empty;
@@ -164,16 +139,84 @@ public static class PlayerData
     }
     public static void VersionResetProcedure()
     {
-        PlayerPrefs.DeleteKey("LastSelectedChar");
+        PlayerPrefs.DeleteAll();
+        SaveData.DeleteKey<int>("LastSelectedChar");
         string TypeName;
         for(int i = 0; i < Main.GlobalEquipData.Characters.Count; ++i)
         {
             TypeName = Main.GlobalEquipData.Characters[i].GetComponent<Equipment>().TypeName;
-            PlayerPrefs.DeleteKey($"{TypeName}Hat");
-            PlayerPrefs.DeleteKey($"{TypeName}Acc");
-            PlayerPrefs.DeleteKey($"{TypeName}Wep");
+            SaveData.DeleteKey<int>($"{TypeName}Hat");
+            SaveData.DeleteKey<int>($"{TypeName}Acc");
+            SaveData.DeleteKey<int>($"{TypeName}Wep");
         }
         UnlockCondition.Get<GachaponUnlock>().SetComplete(false, false);
         UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete(false, false);
+    }
+}
+[Serializable]
+public class SaveData
+{
+    public static readonly string FileName = "SaveData.json";
+    public static readonly string SaveDirectory = Application.persistentDataPath + $"/{FileName}";
+    public Dictionary<string, int> IntData = new();
+    public Dictionary<string, bool> BoolData = new();
+    public Dictionary<string, float> FloatData = new();
+    public Dictionary<string, string> StringData = new();
+    public void DeleteAll()
+    {
+        IntData.Clear();
+        BoolData.Clear();
+        FloatData.Clear();
+        StringData.Clear();
+    }
+    public void Write<T>(string tag, T data)
+    {
+        if(data is int)
+            IntData[tag] = (int)(object)data;
+        else if(data is bool)
+            BoolData[tag] = (bool)(object)data;
+        else if(data is float)
+            FloatData[tag] = (float)(object)data;
+        else if(data is string)
+            StringData[tag] = (string)(object)data;
+        else
+            throw new Exception("Tried to write data of improper type. Data must be int, bool, float, or string");
+    }
+    public T Read<T>(string tag, T defaultValue = default)
+    {
+        if (typeof(T) == typeof(int))
+            return IntData.TryGetValue(tag, out int r) ? (T)(object)r : defaultValue;
+        else if (typeof(T) == typeof(bool))
+            return BoolData.TryGetValue(tag, out bool r) ? (T)(object)r : defaultValue;
+        else if (typeof(T) == typeof(float))
+            return FloatData.TryGetValue(tag, out float r) ? (T)(object)r : defaultValue;
+        else if (typeof(T) == typeof(string))
+            return StringData.TryGetValue(tag, out string r) ? (T)(object)r : defaultValue;
+        else
+            throw new Exception("Tried to read data of improper type. Data must be int, bool, float, or string");
+    }
+    public void DeleteKey<T>(string tag, T resetValue = default)
+    {
+        Write(tag, resetValue);
+    }
+    //For now, it is okay for savedata to be unencrypted.
+    public void SaveToJson()
+    { 
+        string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+        Debug.Log($"Saved data to: {SaveDirectory}");
+        System.IO.File.WriteAllText(SaveDirectory, json);
+    }
+    /// <summary>
+    /// Returns a new savedata object if it cannot be loaded
+    /// </summary>
+    /// <returns></returns>
+    public static SaveData LoadFromJson()
+    {
+        if(System.IO.File.Exists(SaveDirectory))
+        {
+            string json = System.IO.File.ReadAllText(SaveDirectory);
+            return (SaveData)JsonConvert.DeserializeObject(json, typeof(SaveData));
+        }
+        return new();
     }
 }

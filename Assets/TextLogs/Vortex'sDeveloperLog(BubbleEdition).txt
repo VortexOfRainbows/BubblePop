@@ -32,7 +32,6 @@ Need to do:
 	2. Hide unlocks from char select until they are unlocked, including subequipments
 	3. Achievements that come without unlocks should use the 6-star icon with, but with an emphasis on the two colors of the achievement categories it is part of (the other categories are slightly transparent, for example).
 	4. Progress display for achievements
-15. Overhaul savedata system
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -41,7 +40,7 @@ Mostly done but might need to keep an eye out:
 Done: 
 
 10/19/25
-1. 
+1. Rework savedata to use a JSON system instead of storing stuff in the registry
 
 -- A1.15 --
 

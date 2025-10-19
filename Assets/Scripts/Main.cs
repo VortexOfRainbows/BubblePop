@@ -53,6 +53,10 @@ public partial class Main : MonoBehaviour
     {
         PlayerData.SaveAll();
     }
+    public void OnDestroy()
+    {
+        OnGameClose();
+    }
     public void Awake()
     {
         Instance = this;
@@ -62,7 +66,7 @@ public partial class Main : MonoBehaviour
         GlobalEquipData.LoadAllEquipList();
         UnlockCondition.PrepareStatics();
     }
-    public void OnDestroy()
+    public void OnApplicationQuit()
     {
         OnGameClose();
     }
