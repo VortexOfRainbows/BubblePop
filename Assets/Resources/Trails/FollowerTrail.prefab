@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5154310864548847866}
   - component: {fileID: 8557949999318105890}
   - component: {fileID: -9092719846856069292}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FollowerTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,3 +160,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FakeParent: {fileID: 0}
   Trail: {fileID: 8557949999318105890}
+  timer: 0
+  originalAlpha: 0

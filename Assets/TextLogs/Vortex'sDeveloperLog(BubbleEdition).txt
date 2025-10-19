@@ -25,15 +25,14 @@ Need to do:
 9. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
-12. Look into stacking thunder bubbles causing lag (rather than just having them out). It seems to be related to collision, as it only happens when they are stacked...
-13. Make compendium and settings UI accessible in game
-14. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-15. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
+12. Make compendium and settings UI accessible in game
+13. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
+14. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
 	1. Achievement chains, to hide achievements that are currently unobtainable
 	2. Hide unlocks from char select until they are unlocked, including subequipments
 	3. Achievements that come without unlocks should use the 6-star icon with, but with an emphasis on the two colors of the achievement categories it is part of (the other categories are slightly transparent, for example).
 	4. Progress display for achievements
-16. Overhaul savedata system
+15. Overhaul savedata system
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -46,6 +45,8 @@ Done:
 2. Achievement categories
 3. Change unlock conditions for Gachapon and Thought Bubble
 4. Add Double Down powerup (maybe overpowered?)
+5. Thunder bubbles light followers have changed collision properties to reduce lag (light has no collider)
+6. Starbarbs and some electricity audio
 
 10/10/25 to 10/11/25
 1. Add Supernova powerup (very cool)

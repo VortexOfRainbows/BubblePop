@@ -276,12 +276,14 @@ public class ThunderBubble : Projectile
         {
             if(!Recalled)
             {
+                AudioManager.PlaySound(SoundID.ElectricZap, transform.position, 0.3f, 0.66f);
                 if(Player.Instance.EchoBubbles > 0)
                 {
                     NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, Player.Instance.EchoBubbles);
                 }
                 Damage *= 2 + Player.Instance.ThunderBubbleReturnDamageBonus;
                 Recalled = true;
+                //cmp.c2D.enabled = false;
             }
             timer = deathTime;
             Vector2 weaponPos = Player.Instance.Weapon.transform.position;
@@ -385,6 +387,8 @@ public class ThunderBubble : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
+        float recalled = Recalled ? 0.8f : 1.2f;
+        AudioManager.PlaySound(SoundID.ElectricZap, target.transform.position, 0.2f, recalled);
         Pylon.SummonLightning2(transform.position, target.transform.position, ColorVar, 0.6f);
     }
 }

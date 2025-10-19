@@ -163,6 +163,7 @@ public class Projectile : MonoBehaviour
         {
             if (Player.Instance.Starbarbs > 0)
             {
+                AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, 1);
                 Vector2 norm = RB.velocity.normalized;
                 if(this is SupernovaExplode || this is SupernovaProj)
                     norm = Utils.RandCircle(1).normalized;

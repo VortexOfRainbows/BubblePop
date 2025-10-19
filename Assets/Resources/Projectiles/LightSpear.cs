@@ -235,6 +235,7 @@ public class ThunderLightSpearCaster : Projectile
         Hostile = false;
         transform.localScale *= 0.75f;
         MyTrail = SpecialTrail.NewTrail(transform, SpriteRendererGlow.color * 0.9f, 5f, 0.2f);
+        cmp.c2D.enabled = false;
     }
     public bool HasShot = false;
     public bool HasClosed = false;

@@ -18,6 +18,7 @@ public class ThoughtBubbleUnlock : UnlockCondition
         description.WithName("Gatekeeper");
         description.WithDescription("Reach and complete wave 25");
     }
+    protected override bool TryUnlockCondition => WaveDirector.HighScoreWaveNum > 25;
 }
 public class GachaponUnlock : UnlockCondition
 {

@@ -2,67 +2,74 @@ using System.Collections.Generic;
 using UnityEngine;
 public static class SoundID
 {
-    public static SoundClip BubblePop = new SoundClip("BubblePop/", 
+    public static SoundClip BubblePop = new("BubblePop/", 
         "BubblePop1", "BubblePop2", "BubblePop3", "BubblePop4", "BubblePop5", "BubblePop6", "BubblePop7", "BubblePop8");
 
-    public static SoundClip Dash = new SoundClip("Player/",
+    public static SoundClip Dash = new("Player/",
         "Dash1", "Dash2", "Dash3", "Dash4");
-    public static SoundClip Death = new SoundClip("Player/",
+    public static SoundClip Death = new("Player/",
         "BubbleDeath1", "BubbleDeath2");
 
-    public static SoundClip DuckDeath = new SoundClip("NPCs/Duck/",
+    public static SoundClip DuckDeath = new("NPCs/Duck/",
         "DuckDeath");
-    public static SoundClip DuckNoise = new SoundClip("NPCs/Duck/",
+    public static SoundClip DuckNoise = new("NPCs/Duck/",
         "DuckNoise");
-    public static SoundClip LenardNoise = new SoundClip("NPCs/Duck/",
+    public static SoundClip LenardNoise = new("NPCs/Duck/",
         "BigDuckSound1", "BigDuckSound2");
-    public static SoundClip LenardLaser = new SoundClip("NPCs/Duck/",
+    public static SoundClip LenardLaser = new("NPCs/Duck/",
         "LaserShot", "LongLaserBlast");
 
-    public static SoundClip FlamingoNoise = new SoundClip("NPCs/Flamingo/",
+    public static SoundClip FlamingoNoise = new("NPCs/Flamingo/",
         "Honk1", "Honk2", "Honk3");
-    public static SoundClip FlamingoShot = new SoundClip("NPCs/Flamingo/",
+    public static SoundClip FlamingoShot = new("NPCs/Flamingo/",
         "Shot1", "Shot2");
 
-    public static SoundClip SoapDie = new SoundClip("NPCs/Soap/",
+    public static SoundClip SoapDie = new("NPCs/Soap/",
         "Break1", "Break2", "Break3");
-    public static SoundClip SoapSlide = new SoundClip("NPCs/Soap/",
+    public static SoundClip SoapSlide = new("NPCs/Soap/",
         "Slide1", "Slide2", "Slide3", "Slide4");
 
-    public static SoundClip BathBombSizzle = new SoundClip("BathBomb/",
+    public static SoundClip BathBombSizzle = new("BathBomb/",
         "Sizzle");
-    public static SoundClip BathBombBurst = new SoundClip("BathBomb/",
+    public static SoundClip BathBombBurst = new("BathBomb/",
         "Break");
-    public static SoundClip BathBombSplash = new SoundClip("BathBomb/",
+    public static SoundClip BathBombSplash = new("BathBomb/",
         "WaterSplash");
 
-    public static SoundClip ChargePoint = new SoundClip("Player/",
+    public static SoundClip ChargePoint = new("Player/",
         "ChargePoint1", "ChargePoint2", "ChargePoint3");
-    public static SoundClip ChargeWindup = new SoundClip("Player/",
+    public static SoundClip ChargeWindup = new("Player/",
         "ChargeWindup");
-    public static SoundClip ShootBubbles = new SoundClip("Player/",
+    public static SoundClip ShootBubbles = new("Player/",
         "Shoot");
 
-    public static SoundClip PickupPower = new SoundClip("Powerup/",
+    public static SoundClip PickupPower = new("Powerup/",
         "Pickup");
-    public static SoundClip StarbarbImpact = new SoundClip("Projectile/",
+    public static SoundClip StarbarbImpact = new("Projectile/",
         "StarbarbImpact1", "StarbarbImpact2", "StarbarbImpact3");
 
-    public static SoundClip CoinPickup = new SoundClip("Coin/",
+    public static SoundClip CoinPickup = new("Coin/",
         "CoinTier1", "CoinTier2", "CoinTier3");
 
-    public static SoundClip Teleport = new SoundClip("ThoughtBubble/",
+    public static SoundClip Teleport = new("ThoughtBubble/",
         "Teleport");
-    public static SoundClip TeleportCharge = new SoundClip("ThoughtBubble/",
+    public static SoundClip TeleportCharge = new("ThoughtBubble/",
         "TeleportCharge");
-    public static SoundClip TeleportSustain = new SoundClip("ThoughtBubble/",
+    public static SoundClip TeleportSustain = new("ThoughtBubble/",
         "TeleportSustain");
 
-    public static SoundClip PylonDrone = new SoundClip("Pylon/",
+    public static SoundClip PylonDrone = new("Pylon/",
         "DroningPylon");
 
-    public static SoundClip PylonStart = new SoundClip("Pylon/",
+    public static SoundClip PylonStart = new("Pylon/",
         "PylonThunder");
+
+    public static SoundClip ElectricZap = new("ThoughtBubble/",
+        "ElectricReturn");
+    public static SoundClip Starbarbs = new("Projectile/",
+        "Starbarb");
+    public static SoundClip ElectricCast = new("ThoughtBubble/",
+        "ElectricAttack1", "ElectricAttack2");
 }
 public class SoundClip
 {
