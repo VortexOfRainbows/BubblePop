@@ -1,10 +1,6 @@
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
-
 public class CompendiumAchievementElement : CompendiumEquipmentElement
 {
     public static new GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumAchievementElement");
@@ -22,7 +18,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         }
         MyElem.AchievementElement = true;
         TypeID = i;
-        if (MyUnlock.Completed && !Selected && Style != 3)
+        if (MyUnlock.Unlocked && !Selected && Style != 3)
         {
             Color c = new Color(.1f, .7f, .1f, 0.431372549f);
             DescriptionImage.color = c;
@@ -55,7 +51,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     }
     public override bool IsLocked()
     {
-        return MyUnlock.Completed; //In this case, more like it is completed
+        return MyUnlock.Unlocked; //In this case, more like it is completed
     }
     public new void Update()
     {

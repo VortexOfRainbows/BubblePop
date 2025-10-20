@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LayerOffset: -3
   RealTileMapVariant: {fileID: 11400000, guid: 45ac33884c3b5964ab51fa406b495bab, type: 2}
-  TilesThatCountForBlending: []
+  TilesThatCountForBlending:
+  - {fileID: 11400000, guid: 6d8561fb24b9e1c47b359e542b96a75d, type: 2}
   DisplayTileVariants:
   - {fileID: 11400000, guid: 3cd3d05d5caabaf40882baa9004b4287, type: 2}
   - {fileID: 11400000, guid: 47c57eb94bc493e4b81edb817d02ef81, type: 2}

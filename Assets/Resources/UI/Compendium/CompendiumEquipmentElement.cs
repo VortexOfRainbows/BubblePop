@@ -73,7 +73,7 @@ public class CompendiumEquipmentElement : CompendiumElement
                 Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
                 if (this is CompendiumAchievementElement achieve2 && achieve2.DescriptionImage != null)
                 {
-                    if(achieve2.MyUnlock.Completed && !Selected)
+                    if(achieve2.MyUnlock.Unlocked && !Selected)
                     {
                         target = new Color(.1f, .7f, .1f, 0.431372549f);
                     }

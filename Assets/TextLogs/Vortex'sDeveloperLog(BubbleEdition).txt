@@ -25,6 +25,7 @@ Need to do:
 9. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
+	1. The tier list kinda randomizes after update because of this right now...
 12. Make compendium and settings UI accessible in game
 13. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 14. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
@@ -32,6 +33,7 @@ Need to do:
 	2. Hide unlocks from char select until they are unlocked, including subequipments
 	3. Achievements that come without unlocks should use the 6-star icon with, but with an emphasis on the two colors of the achievement categories it is part of (the other categories are slightly transparent, for example).
 	4. Progress display for achievements
+15. Projectile opacity toggle
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -41,6 +43,8 @@ Done:
 
 10/19/25
 1. Rework savedata to use a JSON system instead of storing stuff in the registry
+2. Fix issue where some unlocks were not registering
+3. More optimization with killing light beams that are low on damage (previously only killed refraction beams < 0.5f, now normal beams < 0.5f are also killed)  
 
 -- A1.15 --
 

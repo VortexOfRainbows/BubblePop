@@ -118,6 +118,8 @@ public class Bulb : Hat
                 if (++enemiesFound == 1) //refraction targetting
                 {
                     norm = norm2;
+                    if (Damage < 0.5f)
+                        return true;
                     Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, Damage, target.transform.position.x, target.transform.position.y, BounceNum, -1);
                     searchPosition = target.transform.position;
                     spearRange = 7 + player.Refraction * 2; //Starts at 7 + 2 = 9, scales by + 2 per stack

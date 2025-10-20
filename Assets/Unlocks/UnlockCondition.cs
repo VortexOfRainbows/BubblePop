@@ -111,7 +111,7 @@ public abstract class UnlockCondition
     {
         return Description.BriefDescription();
     }
-    public bool Completed { get; set; } = false;
+    protected bool Completed { get; set; } = false;
     public void SetComplete(bool skipSave = false, bool completeStatus = true)
     {
         if(!Completed && completeStatus)
