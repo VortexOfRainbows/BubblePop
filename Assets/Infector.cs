@@ -1,7 +1,14 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Infector : Enemy
 {
+    public SpriteRenderer DropShadow;
+    public GameObject Head;
+    public Enemy Host;
+    private float ImplantAnimation = 0;
+    private bool FinishedImplanting = false;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.Card = Resources.Load<Sprite>("NPCs/Infectors/Infector");
@@ -19,7 +26,6 @@ public class Infector : Enemy
     public float ShotRecoil = 1;
     private float Counter = -280;
     private float Counter2 = 0;
-
     private Vector2 TargetPos = Vector2.zero;
     private Vector2 PrevPlayerPos = Vector2.zero;
     public void UpdateShards(float lerp = 0.1f)
@@ -47,14 +53,36 @@ public class Infector : Enemy
     {
         Vector2 toPlayer = Player.Position - (Vector2)transform.position;
         Vector2 norm = toPlayer.normalized;
-        Eye.transform.localPosition = Eye.transform.localPosition.Lerp(norm * 0.175f * ShotRecoil, 0.11f);
-
+        float f = 1;
+        if (Host != null)
+        {
+            f = 0;
+        }
+        float percent = Mathf.Clamp(ImplantAnimation / 90f, 0, 1f);
+        Vector3 e = Eye.transform.localEulerAngles;
+        Eye.transform.localEulerAngles = new Vector3(e.x, Mathf.LerpAngle(e.y, 360 * (percent * 0.5f + 0.5f * percent * percent), 0.2f), e.z);
+        Eye.transform.localPosition = Eye.transform.localPosition.Lerp(norm * 0.175f * ShotRecoil * f, 0.11f);
         float bobbing = Mathf.Deg2Rad + AnimationTimer * Mathf.PI / 90f;
         Visual.transform.localPosition = Visual.transform.localPosition.Lerp(new Vector3(0, 0.25f + Mathf.Sin(bobbing) * 0.05f, 0), 0.1f);
         ShotRecoil = Mathf.Lerp(ShotRecoil, 1, 0.09f);
 
         Crown.transform.LerpLocalEulerZ(RB.velocity.x, 0.25f);
         Visual.transform.LerpLocalEulerZ(RB.velocity.x * 0.5f, 0.15f);
+    }
+    public bool FindHost()
+    {
+        if (Host != null)
+        {
+            return true;
+        }
+        Enemy target = FindClosest(transform.position, 20, out Vector2 norm, new(), false, true);
+        if(target != null)
+        {
+            Host = target;
+            Host.InfectionTarget = true;
+            return true;
+        }
+        return false;
     }
     public override void AI()
     {
@@ -65,42 +93,106 @@ public class Infector : Enemy
         UpdateShards();
         UpdateEye();
         RB.velocity *= 0.925f;
+        if(FindHost())
+            Counter = -120;
+        if (Host == null)
+        {
+            if (ImplantAnimation > 90)
+                ImplantAnimation = 90;
+            else if (ImplantAnimation > 0)
+                ImplantAnimation--;
+        }
         if (Counter < -120)
         {
             Counter++;
             return;
         }
-        if (TargetPos == Vector2.zero)
+        if (Host != null)
         {
-            Vector2 circular = new Vector2(-Mathf.Clamp(dist - 3, 10, 14.5f), 0).RotatedBy(toPlayer.ToRotation() + Utils.RandFloat(Mathf.PI / 2f, Mathf.PI) * Utils.Rand1Or0());
-            TargetPos = Player.Position + circular;
-            PrevPlayerPos = Player.Position;
-            AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.7f, 0.8f, 0);
-        }
-        else
-        {
-            Vector2 toTarget = PrevPlayerPos - TargetPos;
-            float targetMagnitude = toTarget.magnitude;
-            float a = Utils.LerpAngleRadians((PrevPlayerPos - (Vector2)transform.position).ToRotation(), toTarget.ToRotation(), 0.09f);
-
-            Vector2 interTarget = PrevPlayerPos + new Vector2(-targetMagnitude, 0).RotatedBy(a);
-            Vector2 playerToInter = interTarget - playerPos;
-            float diff = playerToInter.magnitude - 6;
-            if (diff < 0 && Counter < 0) 
+            Vector2 target = Host.Visual.transform.position;
+            target.y += 3;
+            Vector2 toTarget = target - (Vector2)transform.position;
+            if (toTarget.magnitude > 0.1f && ImplantAnimation <= 0)
             {
-                interTarget -= playerToInter.normalized * diff;
-            }
-            toTarget = interTarget - (Vector2)transform.position;
-            if(toTarget.magnitude > 0.5f)
-            {
-                RB.velocity += toTarget.normalized * 4f;
+                RB.velocity += toTarget.normalized * 5f;
                 Vector2 veloNorm = RB.velocity.normalized;
-                if (Counter <= 0)
-                    ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1) - veloNorm * 0.6f, 2.5f, Utils.RandCircle(1, 4) - veloNorm * 5, 0f, Utils.RandFloat(0.6f, 0.7f), ParticleManager.ID.Pixel, Color.red);
+                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1) - veloNorm * 0.6f, 2.5f, Utils.RandCircle(1, 4) - veloNorm * 5, 0f, Utils.RandFloat(0.6f, 0.7f), ParticleManager.ID.Pixel, Color.red);
+                RB.velocity *= 0.9f;
             }
             else
             {
-                transform.position = transform.position.Lerp(interTarget, 0.1f);
+                ImplantAnimation++;
+                if (ImplantAnimation > 150)
+                {
+                    if (!FinishedImplanting)
+                    {
+                        Host.ImplantChampion(this);
+                        Head.SetActive(false);
+                        DropShadow.gameObject.SetActive(false);
+                        FinishedImplanting = true;
+                    }
+                    ImplantAnimation = 150f;
+                }
+                float percent = ImplantAnimation / 150f;
+                float sqrPercent = percent * percent * percent * 0.5f;
+                if (percent > 0.5f)
+                    sqrPercent += percent - 0.5f;
+                float sin = Mathf.Sin(Mathf.PI * sqrPercent * 3 / 2f);
+                target.y += sin * Mathf.Sqrt(percent) * 4 + percent;
+                transform.position = target;
+            }
+            GetComponent<CircleCollider2D>().enabled = false;
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
+        else
+        {
+            if (FinishedImplanting)
+            {
+                for (int i = 0; i < 30; i++)
+                {
+                    Vector2 circular = new Vector2(6, 0).RotatedBy(Mathf.PI * i / 15f);
+                    ParticleManager.NewParticle(transform.position, 0.5f, circular, 0.3f, 0.75f, ParticleManager.ID.Trail, Color.red);
+                    ParticleManager.NewParticle(transform.position, Utils.RandFloat(4, 7), circular * Utils.RandFloat(2), 0.5f, 1f, ParticleManager.ID.Pixel, Color.red);
+                }
+                Counter = -300;
+                FinishedImplanting = false;
+            }
+            DropShadow.gameObject.SetActive(true);
+            Head.SetActive(true);
+            GetComponent<CircleCollider2D>().enabled = true;
+            GetComponent<BoxCollider2D>().enabled = true;
+            if (TargetPos == Vector2.zero)
+            {
+                Vector2 circular = new Vector2(-Mathf.Clamp(dist - 3, 10, 14.5f), 0).RotatedBy(toPlayer.ToRotation() + Utils.RandFloat(Mathf.PI / 2f, Mathf.PI) * Utils.Rand1Or0());
+                TargetPos = Player.Position + circular;
+                PrevPlayerPos = Player.Position;
+                AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.7f, 0.7875f, 0);
+            }
+            else
+            {
+                Vector2 toTarget = PrevPlayerPos - TargetPos;
+                float targetMagnitude = toTarget.magnitude;
+                float a = Utils.LerpAngleRadians((PrevPlayerPos - (Vector2)transform.position).ToRotation(), toTarget.ToRotation(), 0.09f);
+
+                Vector2 interTarget = PrevPlayerPos + new Vector2(-targetMagnitude, 0).RotatedBy(a);
+                Vector2 playerToInter = interTarget - playerPos;
+                float diff = playerToInter.magnitude - 6;
+                if (diff < 0 && Counter < 0)
+                {
+                    interTarget -= playerToInter.normalized * diff;
+                }
+                toTarget = interTarget - (Vector2)transform.position;
+                if (toTarget.magnitude > 0.5f)
+                {
+                    RB.velocity += toTarget.normalized * 4f;
+                    Vector2 veloNorm = RB.velocity.normalized;
+                    if (Counter <= 0)
+                        ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1) - veloNorm * 0.6f, 2.5f, Utils.RandCircle(1, 4) - veloNorm * 5, 0f, Utils.RandFloat(0.6f, 0.7f), ParticleManager.ID.Pixel, Color.red);
+                }
+                else
+                {
+                    transform.position = transform.position.Lerp(interTarget, 0.1f);
+                }
             }
         }
         if (dist < 30 || Counter2 > 0)

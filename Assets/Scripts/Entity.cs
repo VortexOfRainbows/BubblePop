@@ -85,13 +85,13 @@ public partial class Entity : MonoBehaviour
         {
             if (DamageTaken > 0)
             {
-                UpdateRendererColor(Color.Lerp(Color.white, Color.red, 0.8f), 0.05f + DamageTaken / 500f); 
+                UpdateRendererColor(Color.Lerp(Color.white, Color.red, 0.8f), Utils.DeltaTimeLerpFactor(0.05f + DamageTaken / 500f)); 
                 DamageTaken -= 20f * Time.deltaTime;
             }
             else
             {
                 DamageTaken = 0;
-                UpdateRendererColorToDefault(.15f);
+                UpdateRendererColorToDefault(Utils.DeltaTimeLerpFactor(0.1f));
             }
         }
         //if (Utils.RandFloat(1) < 0.5f && lastPos != (Vector2)transform.position)

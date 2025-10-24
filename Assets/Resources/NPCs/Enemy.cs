@@ -67,6 +67,24 @@ public static class EnemyID
 }
 public class Enemy : Entity
 {
+    #region Champion
+    public float ChampionBonusActionsCounter { get; set; } = 0;
+    public float ChampionSpeedBonus { get; set; } = 0;
+    public int ChampionType { get; set; } = -1;
+    public bool InfectionTarget { get; set; } = false;
+    public void ImplantChampion(Infector Infector)
+    {
+        for(int i = 0; i < 30; i++)
+        {
+            Vector2 circular = new Vector2(6, 0).RotatedBy(Mathf.PI * i / 15f);
+            ParticleManager.NewParticle(Infector.transform.position, 0.5f, circular, 0.3f, 0.75f, ParticleManager.ID.Trail, Color.red);
+            ParticleManager.NewParticle(Infector.transform.position, Utils.RandFloat(4, 7), circular * Utils.RandFloat(2), 0.5f, 1f, ParticleManager.ID.Pixel, Color.red);
+        }
+        UpdateRendererColor(Color.red, 1);
+        ChampionType = 0;
+        ChampionSpeedBonus = 1f;
+    }
+    #endregion
     public void SetIndexInAllEnemyArray(int i) => IndexInAllEnemyArray = i;
     public int GetIndex() => IndexInAllEnemyArray;
     [SerializeField]
@@ -114,7 +132,7 @@ public class Enemy : Entity
         norm = newNorm;
         return e;
     }
-    public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, List<Enemy> ignore, bool requireNonImmune = true)
+    public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, List<Enemy> ignore, bool requireNonImmune = true, bool requireNonHost = false)
     {
         norm = Vector2.zero;
         Enemy best = null;
@@ -123,7 +141,9 @@ public class Enemy : Entity
             Vector2 toDest = e.transform.position - position;
             float dist = toDest.magnitude;
             //Debug.Log(e.tag);
-            if (dist <= searchDistance && (!requireNonImmune || e.UniversalImmuneFrames <= 0))
+            if (dist <= searchDistance && 
+                (!requireNonImmune || e.UniversalImmuneFrames <= 0) && 
+                (!requireNonHost || (!e.InfectionTarget && e is not Infector)))
             {
                 bool blackListed = ignore != null && ignore.Contains(e);
                 if (!blackListed)
@@ -181,8 +201,19 @@ public class Enemy : Entity
                 if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
                     SpecializedImmuneFrames.RemoveAt(i);
         }
+        if(ChampionType != -1)
+        {
+            UpdateRendererColor(Color.red, 0.1f);
+            ChampionBonusActionsCounter += ChampionSpeedBonus;
+        }
         UpdateBuffs();
         AI();
+        while(ChampionBonusActionsCounter >= 1)
+        {
+            RB.position += RB.velocity * Time.fixedDeltaTime;
+            AI();
+            ChampionBonusActionsCounter -= 1;
+        }
     }
     public bool AlreadyDead = false;
     private void SetDead() => AlreadyDead = true;

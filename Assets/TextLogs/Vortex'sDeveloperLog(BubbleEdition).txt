@@ -37,7 +37,6 @@ Need to do:
 16. Potentially replace card art (at least in bestiary for now)
 17. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
 18. Disable money colliders for performance
-19. Infectors need to infect enemies
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -45,9 +44,12 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-10/21/25 and 10/23/25
+10/21/25 and 10/23/25 to 10/24/25
 1. WIP Infectors
-	1. They have attack and some movement patterns set up, but still need to work on the infection system
+	Needs: 
+	1. Infector shards to change position based on enemy size
+	2. Infectors to become noticeably vulnerable and dizzy after being hit out of an enemy
+	3. Infected enemy shaders for color
 
 10/19/25
 1. Rework savedata to use a JSON system instead of storing stuff in the registry

@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7512149297769614564}
-  m_Father: {fileID: 5424352063800870481}
+  m_Father: {fileID: 8834784418929156382}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &677406368770910981
 GameObject:
@@ -182,7 +182,6 @@ Transform:
   m_Children:
   - {fileID: 1096446030339522597}
   - {fileID: 5401405121486538171}
-  - {fileID: 2364177477414269099}
   - {fileID: 7733201797464718430}
   m_Father: {fileID: 8834784418929156382}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -403,6 +402,9 @@ MonoBehaviour:
   IndexInAllEnemyArray: 9
   AlreadyDead: 0
   FirstStrike: 1
+  DropShadow: {fileID: 1880261701788409856}
+  Head: {fileID: 1221448422571217975}
+  Host: {fileID: 0}
   Shards:
   - {fileID: 6607709189189615028}
   - {fileID: 8892728830550173730}
@@ -415,8 +417,6 @@ MonoBehaviour:
   Crown: {fileID: 2364177477414269099}
   Eye: {fileID: 5401405121486538171}
   ShotRecoil: 1
-  Counter: 0
-  Counter2: 0
 --- !u!1 &2024422474379572582
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,6 +531,7 @@ Transform:
   m_LocalScale: {x: 1.45, y: 1.45, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2364177477414269099}
   - {fileID: 5424352063800870481}
   m_Father: {fileID: 596844600625620372}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -592,7 +593,7 @@ Transform:
   m_GameObject: {fileID: 6277167571967523691}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.44000015, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0.44000015, z: 0.001}
   m_LocalScale: {x: 0.59999996, y: 1.090909, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -677,7 +678,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1.2, z: 0}
-  m_LocalScale: {x: 2.5, y: 0.9, z: 1}
+  m_LocalScale: {x: 2, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 596844600625620372}
@@ -724,7 +725,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -50
   m_Sprite: {fileID: 21300000, guid: 2245f8b46850f954f80c2080056629ca, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.69803923}
+  m_Color: {r: 0.4, g: 0, b: 0, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
