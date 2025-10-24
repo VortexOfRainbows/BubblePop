@@ -97,7 +97,10 @@ public class CardData
         }
         if (waveNum >= 15 && waveNum % 5 == 0)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = true });
+            if(waveNum == 20)
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = true });
+            else
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = true });
             float strength = waveNum >= 25 ? 200 : 50;
             if(waveNum % 10 == 0)
                 m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { 
@@ -106,7 +109,6 @@ public class CardData
                     new EnemyStrengthModifier() { ApplicationStrength = 1000, IsPermanent = true, Free = true });
             else
                 m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum });
-
         }
         if (waveNum >= 5 && m == null)
         {
@@ -227,6 +229,11 @@ public class EnemyClause : CardClause
         while (newEnemy == null)
         {
             Enemy e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+            if (WaveDirector.WaveNum < 5) //Temporary. Replace with special tiered getter later which does different stuff depending on wave number
+            {
+                while(e is Infector)
+                    e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+            }
             newEnemy = new(e);
             if (newEnemy.GetCost() > Points)
                 newEnemy = null;
@@ -254,6 +261,8 @@ public class EnemyClause : CardClause
             else
                 maxSwarmDifficulty -= 1;
         }
+        if (Enemy.EnemyToAdd is Infector)
+            maxSwarmDifficulty = 1;
         int wavesWithoutSwarm = 0;
         int max = (int)difficultMult;
         for (int i = 0; i < max; ++i)

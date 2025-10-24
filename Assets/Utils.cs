@@ -276,4 +276,17 @@ public static class Utils
     {
         return map.GetTile(new Vector3Int(i, j));
     }
+    public static float LerpAngleRadians(float a, float b, float t)
+    {
+        float num = Mathf.Repeat(b - a, MathF.PI * 2);
+        if (num > MathF.PI)
+        {
+            num -= MathF.PI * 2;
+        }
+        return a + num * Mathf.Clamp01(t);
+    }
+    public static int Rand1Or0()
+    {
+        return RandInt(2) * 2 - 1;
+    }
 }
