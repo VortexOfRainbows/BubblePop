@@ -91,7 +91,7 @@ public partial class Entity : MonoBehaviour
             else
             {
                 DamageTaken = 0;
-                UpdateRendererColor(Color.white, 0.15f);
+                UpdateRendererColorToDefault(.15f);
             }
         }
         //if (Utils.RandFloat(1) < 0.5f && lastPos != (Vector2)transform.position)
@@ -103,13 +103,30 @@ public partial class Entity : MonoBehaviour
         lastPos = transform.position;
     }
     private SpriteRenderer[] childrenRenderers = null;
+    private Color[] defaultColors = null;
     public void UpdateRendererColor(Color c, float lerp)
     {
         childrenRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer r in childrenRenderers)
+        if(defaultColors == null)
         {
-            r.color = Color.Lerp(r.color, c, lerp);
+            defaultColors = new Color[childrenRenderers.Length];
+            for (int i = 0; i < defaultColors.Length; ++i)
+                defaultColors[i] = childrenRenderers[i].color;
         }
+        foreach (SpriteRenderer r in childrenRenderers)
+            r.color = Color.Lerp(r.color, c, lerp);
+    }
+    public void UpdateRendererColorToDefault(float lerp)
+    {
+        childrenRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
+        if (defaultColors == null)
+        {
+            defaultColors = new Color[childrenRenderers.Length];
+            for (int i = 0; i < defaultColors.Length; ++i)
+                defaultColors[i] = childrenRenderers[i].color;
+        }
+        for (int i = 0; i < defaultColors.Length; ++i)
+            childrenRenderers[i].color = Color.Lerp(childrenRenderers[i].color, defaultColors[i], lerp);
     }
     public virtual void Kill()
     {

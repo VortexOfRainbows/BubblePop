@@ -63,6 +63,7 @@ public static class EnemyID
     public static readonly GameObject Gatligator = LoadNPC("Gatligator/Gatligator");
     public static readonly GameObject Crow = LoadNPC("Crow/Crow");
     public static readonly GameObject Ent = LoadNPC("Ent/Ent");
+    public static readonly GameObject Infector = LoadNPC("Infectors/Infector");
 }
 public class Enemy : Entity
 {
