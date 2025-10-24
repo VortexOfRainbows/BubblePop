@@ -65,7 +65,7 @@ public static class SoundID
         "PylonThunder");
 
     public static SoundClip ElectricZap = new("ThoughtBubble/",
-        "ElectricReturn");
+        "ElectricReturn", "Electric2");
     public static SoundClip Starbarbs = new("Projectile/",
         "Starbarb");
     public static SoundClip ElectricCast = new("ThoughtBubble/",

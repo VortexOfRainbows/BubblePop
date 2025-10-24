@@ -228,10 +228,15 @@ public class Enemy : Entity
             }
         }
     }
+    public virtual void OnInjured(float damage, int damageType)
+    {
+
+    }
     public void Injure(float damage, int damageType = 0, Color popupTextColor = default)
     {
         Life -= damage;
         DamageTaken += damage;
+        OnInjured(damage, damageType);
         BoxCollider2D c2D = GetComponent<BoxCollider2D>();
         Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
         if (popupTextColor == default)

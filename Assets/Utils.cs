@@ -84,9 +84,17 @@ public static class Utils
     {
         return UnityEngine.Random.Range(min, maxExclusive);
     }
-    public static Vector2 RandCircle(float r)
+    public static Vector2 RandCircle(float r = 1)
     {
         return UnityEngine.Random.insideUnitCircle * r;
+    }
+    public static Vector2 RandCircleEdge(float r = 1)
+    {
+        return UnityEngine.Random.insideUnitCircle.normalized * r;
+    }
+    public static Vector2 RandCircle(float min, float max)
+    {
+        return RandCircleEdge(RandFloat(min, max));
     }
     public const int AlternativeCameraPosX = 5000;
     public const int AlternativeCameraPosY = 1000;
