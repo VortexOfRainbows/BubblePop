@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: a6b3b7f638ac25b49bae47793697e8e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -134,12 +134,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Visual: {fileID: 1261876276035928885}
   UniversalImmuneFrames: 0
-  Life: 10
-  MaxLife: -1
   DamageTaken: 0
   SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 3570339127071526783}
+  IndexInAllEnemyArray: -1
+  AlreadyDead: 0
   FirstStrike: 1
   sRender: {fileID: 7062404367078637764}
   Soap1: {fileID: 21300000, guid: f29463e0e8b3fdd4883c2e8afacab820, type: 3}

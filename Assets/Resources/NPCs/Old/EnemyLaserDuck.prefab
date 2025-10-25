@@ -126,6 +126,8 @@ MonoBehaviour:
   SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 3394753933866938757}
+  IndexInAllEnemyArray: -1
+  AlreadyDead: 0
   FirstStrike: 1
   sRender: {fileID: 7870486419755120067}
 --- !u!1 &979492237864127347
@@ -200,7 +202,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: cdca58444c0acff47927da7cce06a2e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

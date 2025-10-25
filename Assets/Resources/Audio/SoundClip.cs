@@ -70,6 +70,8 @@ public static class SoundID
         "Starbarb");
     public static SoundClip ElectricCast = new("ThoughtBubble/",
         "ElectricAttack1", "ElectricAttack2");
+    public static SoundClip Infect = new("NPCs/",
+        "Infect");
 }
 public class SoundClip
 {
