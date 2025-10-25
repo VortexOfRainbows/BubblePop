@@ -64,8 +64,12 @@ public class DetailedDescription
             string first2 = t[..2];
             char third = t[2];
             char last = t[^1];
+            char last2 = t[^2];
             bool isOpening = third == '[' || third == '(';
             bool isEnding = last == ']' || last == ')';
+            //bool commaEnding = last == ',' && (last2 == ']' || last2 == ')');
+            //if (commaEnding)
+            //    isEnding = true;
             string start = string.Empty;
             string end = string.Empty;
             string contents = t;

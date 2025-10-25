@@ -68,6 +68,7 @@ public class PokerChip : Projectile
         if (target.Life <= 0 && Player.Instance.DoubleDownChip > 0)
         {
             int bonusCoins = (int)(-target.Life + 0.5f);
+            bonusCoins = Mathf.Min(bonusCoins, Player.Instance.DoubleDownChip * 3 + 2);
             CoinManager.SpawnCoin(transform.position, bonusCoins, 0.1f);
         }
     }

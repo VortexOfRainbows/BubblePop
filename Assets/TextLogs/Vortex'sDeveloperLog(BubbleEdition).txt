@@ -49,6 +49,10 @@ Done:
 	Needs: 
 	1. Infector shards to change position based on enemy size
 	2. Infected enemy shaders for color
+2. Double down rarity blue -> purple
+	1. Now has a cap on money gains: 5 (+3 per stack)
+3. Roll for initiative scaling is now consistent
+	2. +20% damage per stack, rather than +25-50%
 
 10/19/25
 1. Rework savedata to use a JSON system instead of storing stuff in the registry

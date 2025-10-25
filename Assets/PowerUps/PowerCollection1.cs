@@ -292,7 +292,7 @@ public class Magnet : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Extends the distance coins are collected from by Y:75% G:(+75% per stack)");
+        description.WithDescription("Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack)");
         description.WithShortDescription("Collect coins from farther away");
     }
     public override void HeldEffect(Player p)

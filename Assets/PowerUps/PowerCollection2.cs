@@ -77,7 +77,7 @@ public class RollForInitiative : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to deal Y:250% G:(+25% per stack) to Y:500% G:(+50% per stack) Y:[bonus damage] on Y:[first strike]");
+        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to deal Y:200% G:(+20% per stack) Y:[bonus damage] on Y:[first strike]");
         description.WithShortDescription("Chance for first hit to deal additional damage");
     }
     public override void HeldEffect(Player p)
@@ -289,7 +289,7 @@ public class ThunderBubbles : PowerUp
         p.EchoBubbles += 2 + Stack;
     }
 }
-public class Supernova: PowerUp
+public class Supernova : PowerUp
 {
     public override void Init()
     {
@@ -327,11 +327,11 @@ public class DoubleDown : PowerUp
 {
     public override void Init()
     {
-        Weighting = Rare;
+        Weighting = SuperRare;
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription($"Enemies Y:[killed by chips] drop additional Y:coins equal to the Y:[overkill damage dealt] and increases Y:[chip damage] by Y:1 G:(+1 per stack)");
+        description.WithDescription($"Enemies Y:[killed by chips] drop additional Y:coins equal to the Y:[overkill damage dealt] up to a Y:[max of 5 coins] G:(+3 per stack) \nIncreases Y:[chip damage] by Y:1 G:(+1 per stack)");
         description.WithShortDescription("Enemies killed by chips drop additional coins and increases chip damage");
     }
     public override void HeldEffect(Player p)
