@@ -9,6 +9,7 @@ public class Infector : Enemy
     public Enemy Host;
     private float ImplantAnimation = 0;
     private bool FinishedImplanting = false;
+    private bool DizzyAnimation = false;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.Card = Resources.Load<Sprite>("NPCs/Infectors/Infector");
@@ -54,14 +55,15 @@ public class Infector : Enemy
         Vector2 toPlayer = Player.Position - (Vector2)transform.position;
         Vector2 norm = toPlayer.normalized;
         float f = 1;
-        if (Host != null)
+        float percent = Mathf.Clamp(ImplantAnimation / 90f, 0, 1f);
+        if (Host != null || percent != 0)
         {
             f = 0;
         }
-        float percent = Mathf.Clamp(ImplantAnimation / 90f, 0, 1f);
         Vector3 e = Eye.transform.localEulerAngles;
-        Eye.transform.localEulerAngles = new Vector3(e.x, Mathf.LerpAngle(e.y, 360 * (percent * 0.5f + 0.5f * percent * percent), 0.2f), e.z);
-        Eye.transform.localPosition = Eye.transform.localPosition.Lerp(norm * 0.175f * ShotRecoil * f, 0.11f);
+        Visual.transform.LerpLocalEulerZ(Mathf.Sin(percent * Mathf.PI * 2f) * (DizzyAnimation ? 20 : 12), 0.1f);
+        Eye.transform.localEulerAngles = new Vector3(e.x, Mathf.LerpAngle(e.y, 360 * percent, 0.2f), e.z);
+        Eye.transform.localPosition = Eye.transform.localPosition.Lerp(0.175f * f * ShotRecoil * norm, 0.11f);
         float bobbing = Mathf.Deg2Rad + AnimationTimer * Mathf.PI / 90f;
         Visual.transform.localPosition = Visual.transform.localPosition.Lerp(new Vector3(0, 0.25f + Mathf.Sin(bobbing) * 0.05f, 0), 0.1f);
         ShotRecoil = Mathf.Lerp(ShotRecoil, 1, 0.09f);
@@ -71,10 +73,10 @@ public class Infector : Enemy
     }
     public bool FindHost()
     {
+        if (Counter2 > 0)
+            return false;
         if (Host != null)
-        {
             return true;
-        }
         Enemy target = FindClosest(transform.position, 20, out Vector2 norm, new(), false, true);
         if(target != null)
         {
@@ -93,7 +95,7 @@ public class Infector : Enemy
         UpdateShards();
         UpdateEye();
         RB.velocity *= 0.925f;
-        if(FindHost())
+        if(!DizzyAnimation && FindHost())
             Counter = -120;
         if (Host == null)
         {
@@ -101,12 +103,15 @@ public class Infector : Enemy
                 ImplantAnimation = 90;
             else if (ImplantAnimation > 0)
                 ImplantAnimation--;
+            else if(Counter < -180)
+                ImplantAnimation = 90;
         }
         if (Counter < -120)
         {
             Counter++;
             return;
         }
+        DizzyAnimation = false;
         if (Host != null)
         {
             Vector2 target = Host.Visual.transform.position;
@@ -137,8 +142,8 @@ public class Infector : Enemy
                 float sqrPercent = percent * percent * percent * 0.5f;
                 if (percent > 0.5f)
                     sqrPercent += percent - 0.5f;
-                float sin = Mathf.Sin(Mathf.PI * sqrPercent * 3 / 2f);
-                target.y += sin * Mathf.Sqrt(percent) * 4 + percent;
+                float sin = Mathf.Sin(Mathf.PI * sqrPercent);
+                target.y += sin * Mathf.Sqrt(percent) * 5 - 3 * percent;
                 transform.position = target;
             }
             GetComponent<CircleCollider2D>().enabled = false;
@@ -154,8 +159,9 @@ public class Infector : Enemy
                     ParticleManager.NewParticle(transform.position, 0.5f, circular, 0.3f, 0.75f, ParticleManager.ID.Trail, Color.red);
                     ParticleManager.NewParticle(transform.position, Utils.RandFloat(4, 7), circular * Utils.RandFloat(2), 0.5f, 1f, ParticleManager.ID.Pixel, Color.red);
                 }
-                Counter = -300;
+                Counter = -540;
                 FinishedImplanting = false;
+                DizzyAnimation = true;
             }
             DropShadow.gameObject.SetActive(true);
             Head.SetActive(true);
