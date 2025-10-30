@@ -92,6 +92,7 @@ public partial class Player : Entity
     public int Ruby = 0;
     public int DoubleDownChip = 0;
     public float BlackmarketMult = 1.0f;
+    public float CriticalStrikeChance = 0.05f;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -131,6 +132,8 @@ public partial class Player : Entity
         OrbitalStars = false;
         Supernova = Ruby = DoubleDownChip = 0;
         BlackmarketMult = 1.0f;
+
+        CriticalStrikeChance = 0.05f;
     }
     private void UpdatePowerUps()
     {

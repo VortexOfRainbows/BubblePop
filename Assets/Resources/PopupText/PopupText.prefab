@@ -187,6 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tmp: {fileID: 9218074679072898217}
   rb: {fileID: 5636529558460853973}
+  targetScale: {x: 1, y: 1, z: 1}
 --- !u!50 &5636529558460853973
 Rigidbody2D:
   serializedVersion: 4

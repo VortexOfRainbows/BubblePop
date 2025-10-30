@@ -149,12 +149,8 @@ public class Gachapon : Body
     protected override float RotationSpeed => 1f;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Choice>();
-        powerPool.Add<BubbleBirb>();
-        powerPool.Add<Overclock>();
         powerPool.Add<Raise>();
         powerPool.Add<AllIn>();
-        powerPool.Add<BubbleMitosis>();
         powerPool.Add<DoubleDown>();
     }
     public override void InitializeDescription(ref DetailedDescription description)

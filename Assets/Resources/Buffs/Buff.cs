@@ -101,7 +101,7 @@ public class Poison : Buff
             dot += Time.fixedDeltaTime;
             while (dot >= tickRate / 2f)
             {
-                enemy.Injure(damage / initiallyAppliedDuration * tickRate, 2, new Color(0.8f, 0.27f, 0.9f));
+                enemy.Injure(damage / initiallyAppliedDuration * tickRate, -1, new Color(0.8f, 0.27f, 0.9f));
                 dot -= tickRate;
             }
         }

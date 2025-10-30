@@ -32,12 +32,8 @@ public class ThoughtBubble : Body
     protected override float RotationSpeed => 1f;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Choice>();
         powerPool.Add<TrailOfThoughts>();
-        powerPool.Add<BubbleBirb>();
-        powerPool.Add<Overclock>();
         powerPool.Add<BrainBlast>();
-        powerPool.Add<BubbleMitosis>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

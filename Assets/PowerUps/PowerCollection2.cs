@@ -339,3 +339,19 @@ public class DoubleDown : PowerUp
         p.DoubleDownChip += Stack;
     }
 }
+public class FocusFizz : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Increases Y:[critical strike chance] by Y:5% G:(+5% per stack)");
+        description.WithShortDescription("Increases critical strike chance");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.CriticalStrikeChance += 0.05f * Stack;
+    }
+}

@@ -71,6 +71,7 @@ public class Enemy : Entity
     public float ChampionBonusActionsCounter { get; set; } = 0;
     public float ChampionSpeedBonus { get; set; } = 0;
     public int ChampionType { get; set; } = -1;
+    public float ChampionDefenseBonus { get; set; } = 0;
     public bool InfectionTarget { get; set; } = false;
     public void ImplantChampion(Infector Infector)
     {
@@ -82,7 +83,11 @@ public class Enemy : Entity
         }
         UpdateRendererColor(Color.red, 1);
         ChampionType = 0;
-        ChampionSpeedBonus = 1f;
+        ChampionSpeedBonus = 1;
+        //Basically heal after being implanted
+        float originalMax = MaxLife;
+        MaxLife += originalMax;
+        Life += originalMax;
     }
     #endregion
     public void SetIndexInAllEnemyArray(int i) => IndexInAllEnemyArray = i;
@@ -203,7 +208,7 @@ public class Enemy : Entity
         }
         if(ChampionType != -1)
         {
-            UpdateRendererColor(Color.red, 0.1f);
+            UpdateRendererColor(Color.red, 0.5f); //temporary visual
             ChampionBonusActionsCounter += ChampionSpeedBonus;
         }
         UpdateBuffs();
@@ -228,7 +233,12 @@ public class Enemy : Entity
         if (proj.Friendly && !AlreadyDead)
         {
             float damage = proj.Damage * Player.Instance.DamageMultiplier;
-            bool crit = false;
+            bool rollForInitiative = false;
+            float critChance = Player.Instance.CriticalStrikeChance;
+            int crit = (int)critChance;
+            critChance -= crit;
+            if(Utils.RandFloat() < critChance)
+                crit++;
             if (FirstStrike)
             {
                 FirstStrike = false;
@@ -239,11 +249,20 @@ public class Enemy : Entity
                     {
                         float increase = 1.80f + 0.2f * initiative;
                         damage += damage * increase;
-                        crit = true;
+                        rollForInitiative = true;
                     }
                 }
             }
-            Injure(damage, crit ? 1 : 0, crit ? new Color(1f, 0.9f, 0.3f) : default);
+            Color c = PickCriticalStrikeColor(crit);
+            if(rollForInitiative)
+                c = Color.Lerp(c, new Color(1, 0.5f, 0.0f), 1f / (1f + crit));
+
+            float finalDamage = damage * (1 + crit);
+            if (ChampionDefenseBonus > 0)
+            {
+                finalDamage *= (1 - ChampionDefenseBonus);
+            }
+            Injure(finalDamage, crit, c);
             proj.HitTarget(this);
             if (proj.Penetrate != -1)
             {
@@ -257,26 +276,39 @@ public class Enemy : Entity
             }
         }
     }
-    public virtual void OnInjured(float damage, int damageType)
+    private Color PickCriticalStrikeColor(int critValue)
+    {
+        if (critValue >= 1)
+        {
+            return Color.Lerp(new Color(1f, 0.85f, 0.15f), new Color(1f, 0.1f, 1.0f), (critValue - 1) /  10f);
+        }
+        return new(1f, 0.5f, 0.4f);
+    }
+    public virtual void OnInjured(float damage, int critLevel)
     {
 
     }
-    public void Injure(float damage, int damageType = 0, Color popupTextColor = default)
+    public void Injure(float damage, int critLevel = 0, Color popupTextColor = default)
     {
         Life -= damage;
         DamageTaken += damage;
-        OnInjured(damage, damageType);
+        OnInjured(damage, critLevel);
         BoxCollider2D c2D = GetComponent<BoxCollider2D>();
         Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
         if (popupTextColor == default)
             popupTextColor = new Color(1f, 0.5f, 0.4f);
         Vector2 velo = Utils.RandCircle(3) + Vector2.up * 2;
-        if (damageType == 2)
+        if (critLevel == -1)
         {
             velo.x *= 0.5f;
             velo.y += 0.5f;
         }
-        GameObject g = PopupText.NewPopupText(randPos, velo, popupTextColor, damage.ToString("0.#"), damageType == 1, damageType == 2 ? 0.8f : 1f);
+        float scale = critLevel == -1 ? 0.8f : 1f;
+        if (critLevel > 0)
+        {
+            scale = 1f + 0.1f * Mathf.Sqrt(critLevel - 1);
+        }
+        GameObject g = PopupText.NewPopupText(randPos, velo, popupTextColor, damage.ToString("0.#"), critLevel >= 1, scale, critLevel >= 1 ? 100 : 80);
         if (Life <= 0 && !AlreadyDead)
         {
             SetDead();

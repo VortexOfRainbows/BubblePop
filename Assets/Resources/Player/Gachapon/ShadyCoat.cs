@@ -16,7 +16,6 @@ public class ShadyCoat : LabCoat
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Magnet>();
         powerPool.Add<ResonanceRuby>();
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponBurger>();

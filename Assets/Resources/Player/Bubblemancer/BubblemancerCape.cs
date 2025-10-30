@@ -27,7 +27,6 @@ public class BubblemancerCape : Accessory
     protected float DeathRightMult = 1f;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Magnet>();
         powerPool.Add<BubbleShield>();
     }
     public override void InitializeDescription(ref DetailedDescription description)

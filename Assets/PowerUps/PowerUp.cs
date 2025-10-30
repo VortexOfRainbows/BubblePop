@@ -72,7 +72,26 @@ public abstract class PowerUp
     {
         AvailablePowers.Clear();
         AvailableBlackMarketPowers.Clear();
+        AddUniversalPowerups();
     }
+    public static void AddUniversalPowerups()
+    {
+        //Stats
+        //Haste will be added here eventually (when I feel like the time is right)
+        AddPowerUpToAvailability<Overclock>();
+        AddPowerUpToAvailability<FocusFizz>();
+
+        //Economy
+        AddPowerUpToAvailability<Magnet>();
+
+        //Powers
+        AddPowerUpToAvailability<Choice>();
+        AddPowerUpToAvailability<BubbleMitosis>();
+
+        //Special
+        AddPowerUpToAvailability<BubbleBirb>();
+    }
+    private static void AddPowerUpToAvailability<T>() where T: PowerUp => AddPowerUpToAvailability(Get<T>());
     public static void AddPowerUpToAvailability(PowerUp power)
     {
         if (power.IsBlackMarket())

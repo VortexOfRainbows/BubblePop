@@ -1,5 +1,6 @@
 using System.Linq;
 using TMPro;
+using UnityEditor.Purchasing;
 using UnityEngine;
 
 public class PopupText : MonoBehaviour
@@ -8,9 +9,10 @@ public class PopupText : MonoBehaviour
     private static GameObject m_popupTextPrefab;
     public TextMeshPro tmp;
     private float timeLeft = 100;
+    private float MaxTimeLeft = 100;
     public Rigidbody2D rb;
     public Vector3 targetScale = Vector3.one;
-    public static GameObject NewPopupText(Vector3 pos, Vector3 velo, Color clr, string text, bool bold = false, float size = 1f)
+    public static GameObject NewPopupText(Vector3 pos, Vector3 velo, Color clr, string text, bool bold = false, float size = 1f, int time = 100)
     {
         GameObject obj = Instantiate(PopupTextPrefab, pos, Quaternion.identity);
         TextMeshPro tmp = obj.GetComponent<TextMeshPro>();
@@ -24,22 +26,20 @@ public class PopupText : MonoBehaviour
         tmp.color = clr;
         tmp.fontStyle = bold ? (FontStyles)FontStyle.Bold : 0;
         obj.GetComponent<Rigidbody2D>().velocity = velo;
-        obj.GetComponent<PopupText>().targetScale = obj.transform.localScale * size;
+        PopupText p = obj.GetComponent<PopupText>();
+        p.targetScale = obj.transform.localScale * size;
+        p.timeLeft = p.MaxTimeLeft = time;
         obj.transform.localScale = Vector3.zero;
         return obj;
     }
     public void FixedUpdate()
     {
-        if(timeLeft == 100)
-        {
-            transform.localScale = Vector3.zero;
-        }
         if(timeLeft <= 0)
         {
             Destroy(gameObject);
             return;
         }
-        float percent = timeLeft / 100f;
+        float percent = timeLeft / MaxTimeLeft;
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale * (0.5f + 0.5f * Mathf.Sin(percent * Mathf.PI / 3)), 0.1f);
         if(percent < 0.5f)
             tmp.color = new Color(tmp.color.r, tmp.color.g, tmp.color.b, 2 * percent);

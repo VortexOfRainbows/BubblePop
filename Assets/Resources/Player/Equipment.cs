@@ -54,6 +54,7 @@ public class Equipment : MonoBehaviour
         {
             PowerUp.AddPowerUpToAvailability(PowerPool[i]);
         }
+        //This imports all black market powers, but it would be better to do this elsewhere most likely
         for (int i = 0; i < PowerUp.Reverses.Count; ++i)
         {
             PowerUp p = PowerUp.Get(i);

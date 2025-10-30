@@ -45,7 +45,7 @@ public class Infector : Enemy
                 size.y = 0;
             Crown.transform.localPosition = Utils.LerpSnap(Crown.transform, new Vector3(0, 0.3f + size.y * 1.1f, 0), 0.05f, 0.001f);
         }
-        AnimationTimer++;
+        AnimationTimer += FinishedImplanting ? 1.5f : 1;
         int c = Shards.Length;
         float rad = Mathf.PI / c * 2f;
         for (int i = 0; i < c; ++i)
@@ -250,8 +250,12 @@ public class Infector : Enemy
             GetComponent<BoxCollider2D>().enabled = true;
         }
 
+        //if (Host != null && FoundHost && !FinishedImplanting)
+        //  return;
+
         if (Host != null || FoundHost)
             return;
+
 
         if (dist < 30 || Counter2 > 0)
         {
@@ -260,13 +264,13 @@ public class Infector : Enemy
             {
                 Counter = 0;
                 AudioManager.PlaySound(SoundID.ElectricZap, Eye.transform.position, 0.8f, 1.7f, 0);
-                int c = (int)Counter2 % 2 + 2;
+                int c = FinishedImplanting ? 1 : (int)Counter2 % 2 + 2;
                 for(int i = 0; i < c; i++)
                 {
                     float otherMult = (i + 0.5f - c / 2f);
                     float j = otherMult * 25f;
                     Vector2 spread = norm.RotatedBy(j * Mathf.Deg2Rad);
-                    Projectile.NewProjectile<Bullet>((Vector2)Eye.transform.position + spread * 0.5f, spread * (10 - Mathf.Abs(otherMult) * 2), 1, 1.3f);
+                    Projectile.NewProjectile<Bullet>((Vector2)Eye.transform.position + spread * 0.5f, spread * (FinishedImplanting ? 7.5f : 10 - Mathf.Abs(otherMult) * 2), 1, 1.3f);
                 }
                 ShotRecoil = -0.6f;
                 RB.velocity -= norm * 2.0f;
@@ -275,8 +279,15 @@ public class Infector : Enemy
             if (Counter2 > 2 && Counter > 105)
             {
                 Counter2 = 0;
-                Counter = -120;
-                TargetPos = Vector2.zero;
+                if(!FinishedImplanting)
+                {
+                    Counter = -120;
+                    TargetPos = Vector2.zero;
+                }
+                else
+                {
+                    Counter = 0;
+                }
             }
         }
         else if (dist < 40)
@@ -285,7 +296,8 @@ public class Infector : Enemy
             {
                 Counter2 = 0;
                 Counter = 0;
-                TargetPos = Vector2.zero;
+                if(!FinishedImplanting)
+                    TargetPos = Vector2.zero;
             }
         }
     }

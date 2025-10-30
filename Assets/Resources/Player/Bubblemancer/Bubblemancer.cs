@@ -11,11 +11,7 @@ public class Bubblemancer : Body
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Choice>();
-        powerPool.Add<BubbleBirb>();
         powerPool.Add<BubbleTrail>();
-        powerPool.Add<Overclock>();
-        powerPool.Add<BubbleMitosis>();
         powerPool.Add<Coalescence>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
