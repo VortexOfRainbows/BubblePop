@@ -13,20 +13,27 @@ public class Coin : MonoBehaviour
     {
         return Player.Instance.Life < Player.Instance.TotalMaxLife;
     }
-    public void OnTriggerStay2D(Collider2D collision)
+    public void TryCollecting()
     {
-        if (gameObject.activeSelf && collision.CompareTag("Player") && BeforeCollectableTimer <= 0)
+        float radius = Heal > 0 ? 0.35f : 0.7025f;
+        radius *= transform.localScale.x;
+        radius += Player.Instance.transform.localScale.x * 0.7f;
+        if (transform.position.Distance(Player.Position) < radius)
         {
-            if(Heal > 0 && !CanCollectHeart())
+            if (Heal > 0 && !CanCollectHeart())
                 return;
             OnCollected();
             gameObject.SetActive(false);
             Destroy(gameObject);
         }
     }
+    //public void OnTriggerStay2D(Collider2D collision)
+    //{
+    //}
     private float timer;
     public void FixedUpdate()
     {
+        TryCollecting();
         Player p = Player.Instance;
         bool isHeart = Heal > 0;
         if (!isHeart)

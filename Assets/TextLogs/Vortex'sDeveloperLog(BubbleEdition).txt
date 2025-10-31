@@ -36,8 +36,7 @@ Need to do:
 15. Projectile opacity toggle
 16. Potentially replace card art (at least in bestiary for now)
 17. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
-18. Disable money colliders for performance
-19. Grass shader to make grass more interesting and potentially slightly vary in the wind
+18. Grass shader to make grass more interesting and potentially slightly vary in the wind
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -45,11 +44,12 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-10/29/25
+10/29/25 and 10/31/25
 1. Add Focus Fizz
 2. Modify critical strike system + popup numbers fade more quickly when not critically striking
 3. Generic power pool powers are now added during power pool setup rather than during equipment loading (mostly organizational, but it means they will be in the pool regardless of equipment)
 4. Infector adjustments
+5. Disable money colliders to reduce lag
 
 10/21/25 and 10/23/25 to 10/24/25
 1. WIP Infectors
