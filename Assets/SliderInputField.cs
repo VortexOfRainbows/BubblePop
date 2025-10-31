@@ -30,9 +30,14 @@ public class SliderInputField : MonoBehaviour
             Debug.Log("Failed to parse text input into num");
         }
     }
-    public void Start()
+    private bool Loaded = false;
+    public void FixedUpdate()
     {
-        LoadSetting();
+        if(!Loaded)
+        {
+            LoadSetting();
+            Loaded = true;
+        }
     }
     public void LoadSetting()
     {
@@ -40,9 +45,13 @@ public class SliderInputField : MonoBehaviour
         {
             TryParseSlider(PlayerData.SFXVolume);
         }
-        if (Type == 1)
+        else if (Type == 1)
         {
             TryParseSlider(PlayerData.MusicVolume);
+        }
+        else if (Type == 2)
+        {
+            TryParseSlider(PlayerData.SpecialVisualOpacity);
         }
     }
     public void UpdateSetting(float value)
@@ -50,12 +59,25 @@ public class SliderInputField : MonoBehaviour
         if(Type == 0)
         {
             PlayerData.SFXVolume = value;
-            PlayerData.SaveSound();
+            PlayerData.SaveSettingSliders();
         }
-        if (Type == 1)
+        else if (Type == 1)
         {
             PlayerData.MusicVolume = value;
-            PlayerData.SaveSound();
+            PlayerData.SaveSettingSliders();
+        }
+        else if (Type == 2)
+        {
+            if (value < 0.2f)
+            {
+                value = 0.2f;
+                TryParseSlider(value);
+            }
+            else
+            {
+                PlayerData.SpecialVisualOpacity = value;
+                PlayerData.SaveSettingSliders();
+            }
         }
     }
 }

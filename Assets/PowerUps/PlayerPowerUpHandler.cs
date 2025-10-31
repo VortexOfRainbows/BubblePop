@@ -133,7 +133,7 @@ public partial class Player : Entity
         Supernova = Ruby = DoubleDownChip = 0;
         BlackmarketMult = 1.0f;
 
-        CriticalStrikeChance = 0.05f;
+        CriticalStrikeChance = 0.01f;
     }
     private void UpdatePowerUps()
     {

@@ -17,19 +17,21 @@ public static class PlayerData
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
+    public static float SpecialVisualOpacity = 1;
     public static bool PauseDuringPowerSelect = true;
     public static bool PauseDuringCardSelect = true;
     public static bool BriefDescriptionsByDefault = true;
-    public static void SaveSettings()
+    public static void SaveSettingsToggles()
     {
         SaveBool("PauseDuringPowerSelect", PauseDuringPowerSelect);
         SaveBool("PauseDuringCardSelect", PauseDuringCardSelect);
         SaveBool("BriefDescriptionsByDefault", BriefDescriptionsByDefault);
     }
-    public static void SaveSound()
+    public static void SaveSettingSliders()
     {
         SaveFloat("SFX", SFXVolume);
         SaveFloat("Music", MusicVolume);
+        SaveFloat("SpecialOpacity", SpecialVisualOpacity);
     }
     public static void ResetAll()
     {
@@ -40,7 +42,7 @@ public static class PlayerData
     public static void SaveAll()
     {
         SaveInt("Deaths", PlayerDeaths);
-        SaveSound();
+        SaveSettingSliders();
         UnlockCondition.SaveAllData();
         PowerUp.SaveAllData();
         CoinManager.Save();
@@ -63,6 +65,7 @@ public static class PlayerData
         PlayerDeaths = GetInt("Deaths");
         SFXVolume = GetFloat("SFX", 1);
         MusicVolume = GetFloat("Music", 1);
+        SpecialVisualOpacity = GetFloat("SpecialOpacity", 1);
         Player.GoldSpentTotal = GetInt("PlayerGoldSpent", 0);
         UnlockCondition.LoadAllData();
         PowerUp.LoadAllData();

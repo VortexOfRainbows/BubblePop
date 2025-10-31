@@ -39,6 +39,7 @@ public class Gachapon : Body
         if (Utils.RandFloat() < player.BlueChipChance){
             r.sprite = BlueChip;
         }
+        r.color = r.color.WithAlphaMultiplied(PlayerData.SpecialVisualOpacity);
         r.gameObject.transform.localScale = Vector3.zero;
         notYetResizedCips.Add(r.gameObject);
         stack.Chips.Add(r.gameObject);

@@ -23,17 +23,17 @@ public class SettingsToggle : MonoBehaviour
         if (Type == 0)
         {
             PlayerData.PauseDuringPowerSelect = value;
-            PlayerData.SaveSettings();
+            PlayerData.SaveSettingsToggles();
         }
         if (Type == 1)
         {
             PlayerData.BriefDescriptionsByDefault = value;
-            PlayerData.SaveSettings();
+            PlayerData.SaveSettingsToggles();
         }
         if (Type == 2)
         {
             PlayerData.PauseDuringCardSelect = value;
-            PlayerData.SaveSettings();
+            PlayerData.SaveSettingsToggles();
         }
     }
 }
