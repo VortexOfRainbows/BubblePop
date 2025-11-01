@@ -12,6 +12,7 @@ public partial class Main : MonoBehaviour
         public static Sprite Laser;
         public static Sprite Sparkle;
         public static Sprite Shadow;
+        public static Material InfectorShader;
         public static void Load()
         {
             BubbleSmall = Resources.Load<Sprite>("Projectiles/SmallBubble");
@@ -23,6 +24,7 @@ public partial class Main : MonoBehaviour
             Laser = Resources.Load<Sprite>("Projectiles/Laser");
             Sparkle = Resources.Load<Sprite>("Projectiles/Sparkle");
             Shadow = Resources.Load<Sprite>("Shadow");
+            InfectorShader = Resources.Load<Material>("Materials/InfectionShader/Infection");
         }
     }
 }

@@ -102,7 +102,7 @@ public partial class Entity : MonoBehaviour
         //}
         lastPos = transform.position;
     }
-    private SpriteRenderer[] childrenRenderers = null;
+    protected SpriteRenderer[] childrenRenderers = null;
     private Color[] defaultColors = null;
     public void UpdateRendererColor(Color c, float lerp)
     {

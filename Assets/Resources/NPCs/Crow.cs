@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Crow : Enemy
 {
+    public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize)
+    {
+        inlineThreshold = 0.02f;
+        inlineColor.r *= 2f;
+    }
     public JumpMotion JumpAnimation;
     private Vector2 targetedLocation;
     public float moveSpeed = 0.15f;

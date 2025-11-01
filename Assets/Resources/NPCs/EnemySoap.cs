@@ -1,6 +1,10 @@
 using UnityEngine;
 public class EnemySoap : Enemy
 {
+    public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize)
+    {
+        inlineThreshold = 0.3f;
+    }
     public SpriteRenderer sRender;
     public Sprite Soap1;
     public Sprite Soap2;
