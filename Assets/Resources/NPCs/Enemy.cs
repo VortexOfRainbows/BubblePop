@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public static class EnemyID
 {
@@ -74,6 +75,7 @@ public class Enemy : Entity
     public int ChampionType { get; set; } = -1;
     public float ChampionDefenseBonus { get; set; } = 0;
     public bool InfectionTarget { get; set; } = false;
+    private float outlineThreshold = 0.0125f;
     public void ImplantChampion(Infector Infector)
     {
         for(int i = 0; i < 30; i++)
@@ -82,6 +84,7 @@ public class Enemy : Entity
             ParticleManager.NewParticle(Infector.transform.position, 0.5f, circular, 0.3f, 0.75f, ParticleManager.ID.Trail, Color.red);
             ParticleManager.NewParticle(Infector.transform.position, Utils.RandFloat(4, 7), circular * Utils.RandFloat(2), 0.5f, 1f, ParticleManager.ID.Pixel, Color.red);
         }
+        ImplantTimer = 1;
         ChampionType = 0;
         ChampionSpeedBonus = 1;
         //Basically heal after being implanted
@@ -90,7 +93,7 @@ public class Enemy : Entity
         Life += originalMax;
         ImplantShader();
     }
-    public virtual void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize)
+    public virtual void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
 
     }
@@ -101,18 +104,33 @@ public class Enemy : Entity
             Color outlineColor = new Color(1, 0, 0);
             Color inlineColor = new Color(0.275f, 0, 0);
             float inlineThreshold = 0.2f;
-            float outlineThreshold = 0.0125f;
-            ModifyInfectionShaderProperties(ref outlineColor, ref inlineColor, ref inlineThreshold, ref outlineThreshold);
+            float additiveColorPower = 0.1f;
+            ModifyInfectionShaderProperties(ref outlineColor, ref inlineColor, ref inlineThreshold, ref outlineThreshold, ref additiveColorPower);
             foreach(SpriteRenderer renderer in childrenRenderers)
             {
                 renderer.material = Main.TextureAssets.InfectorShader;
                 renderer.material.SetColor("_OutlineColor", outlineColor);
                 renderer.material.SetColor("_InnerColor", inlineColor);
                 renderer.material.SetFloat("_InlineThreshold", inlineThreshold);
-                renderer.material.SetFloat("_OutlineSize", outlineThreshold);
-                renderer.material.SetFloat("_AdditivePower", 0.1f);
+                renderer.material.SetFloat("_OutlineSize", 0.5f);
+                renderer.material.SetFloat("_AdditivePower", additiveColorPower);
             }
         }
+    }
+    private float ImplantTimer = 1f;
+    public void UpdateImplantShader()
+    {
+        if (ImplantTimer == -1)
+            return;
+        ImplantTimer -= Time.fixedDeltaTime * 8f;
+        if (ImplantTimer < 0)
+            ImplantTimer = 0;
+        foreach (SpriteRenderer renderer in childrenRenderers)
+        {
+            renderer.material.SetFloat("_OutlineSize", Mathf.Lerp(outlineThreshold, 0.5f, ImplantTimer * ImplantTimer));
+        }
+        if (ImplantTimer <= 0)
+            ImplantTimer = -1;
     }
     #endregion
     public void SetIndexInAllEnemyArray(int i) => IndexInAllEnemyArray = i;
@@ -232,7 +250,10 @@ public class Enemy : Entity
                     SpecializedImmuneFrames.RemoveAt(i);
         }
         if(ChampionType != -1)
+        {
+            UpdateImplantShader();
             ChampionBonusActionsCounter += ChampionSpeedBonus;
+        }
         UpdateBuffs();
         AI();
         while(ChampionBonusActionsCounter >= 1)

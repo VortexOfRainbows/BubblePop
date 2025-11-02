@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class Gatligator : Enemy
 {
+    public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
+    {
+        inlineThreshold = 0.05f;
+        additiveColorPower = 0.5f;
+    }
     public override float HealthBarOffset => -0.25f;
     public Transform GunTip;
     public GameObject Gun;
