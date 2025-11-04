@@ -102,12 +102,16 @@ public partial class Entity : MonoBehaviour
         //}
         lastPos = transform.position;
     }
+    public SpriteRenderer[] ChildrenRenders()
+    {
+        return childrenRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
+    }
     protected SpriteRenderer[] childrenRenderers = null;
     private Color[] defaultColors = null;
     public void UpdateRendererColor(Color c, float lerp)
     {
-        childrenRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
-        if(defaultColors == null)
+        ChildrenRenders();
+        if (defaultColors == null)
         {
             defaultColors = new Color[childrenRenderers.Length];
             for (int i = 0; i < defaultColors.Length; ++i)
@@ -118,7 +122,7 @@ public partial class Entity : MonoBehaviour
     }
     public void UpdateRendererColorToDefault(float lerp)
     {
-        childrenRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
+        ChildrenRenders();
         if (defaultColors == null)
         {
             defaultColors = new Color[childrenRenderers.Length];

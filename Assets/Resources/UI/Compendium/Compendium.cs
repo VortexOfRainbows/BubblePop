@@ -194,22 +194,22 @@ public class Compendium : MonoBehaviour
             }
             else if(PageNumber == 2)
             {
-                Enemy e = DisplayCPEnemy.MyElem.MyEnemy;
-                rare = e.GetRarity() - 1;
-                string concat = $"<size=42>{DetailedDescription.TextBoundedByRarityColor(rare, e.Name(), false)}</size>" + shortLineBreak;
+                EnemyID.StaticEnemyData e = DisplayCPEnemy.MyElem.StaticData;
+                rare = e.Rarity - 1;
+                string concat = $"<size=42>{DetailedDescription.TextBoundedByRarityColor(rare, DisplayCPEnemy.MyElem.MyEnemyPrefab.Name(), false)}</size>" + shortLineBreak;
                 concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Stats\n", false)}</size>";
-                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], "Base Health: ")}{e.StaticData.BaseMaxLife}\n";
-                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, "Coin Range: ")}{e.StaticData.BaseMinCoin}-{e.StaticData.BaseMaxCoin}\n";
-                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, "Summon Cost: ")}{e.CostMultiplier:#.0}\n";
+                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], "Base Health: ")}{e.BaseMaxLife}\n";
+                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, "Coin Range: ")}{e.BaseMinCoin}-{e.BaseMaxCoin}\n";
+                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, "Summon Cost: ")}{e.Cost:#.0}\n";
 
                 if (!DisplayCPEnemy.IsLocked())
                 {
                     concat += shortLineBreak;
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Kills\n", false)}</size>";
-                    concat += e.StaticData.TimesKilled + shortLineBreak;
+                    concat += e.TimesKilled + shortLineBreak;
 
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Skull Kills\n", false)}</size>";
-                    concat += e.StaticData.TimesKilledSkull + shortLineBreak;
+                    concat += e.TimesKilledSkull + shortLineBreak;
                 }
                 concat = DisplayCPEnemy.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
                 DisplayPortDescription.text = concat;

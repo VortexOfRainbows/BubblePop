@@ -38,7 +38,8 @@ public class CompendiumEnemyElement : CompendiumElement
     {
         if (TypeID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
-        count.gameObject.SetActive(Compendium.Instance.EnemyPage.ShowCounts && MyElem.HasHoverVisual && !IsLocked() && Style <= 1);
+        bool showActive = Compendium.Instance.EnemyPage.ShowCounts && MyElem.HasHoverVisual && !IsLocked() && Style <= 1;
+        count.gameObject.SetActive(showActive);
         count.text = GetCount().ToString();
         MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
         if (clicked)
@@ -77,11 +78,13 @@ public class CompendiumEnemyElement : CompendiumElement
     }
     public override int GetRare(bool reverse = false)
     {
-        return MyElem.MyEnemy.StaticData.Rarity;
+        return MyElem.StaticData.Rarity;
     }
     public override int GetCount()
     {
-        return MyElem.MyEnemy.StaticData.TimesKilled;
+        if(MyElem.MyEnemyPrefab == null)
+            return 0;
+        return MyElem.StaticData.TimesKilled;
     }
     public override CompendiumElement Instantiate(TierList parent, TierCategory cat, Canvas canvas, int i, int position)
     {

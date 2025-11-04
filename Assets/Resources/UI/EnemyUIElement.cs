@@ -1,18 +1,48 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EnemyUIElement : MonoBehaviour
 {
+    public const int UILayer = 5;
     public Image CardGraphic;
     public Image CardGraphicBG;
-    public Enemy MyEnemy { get; set; } = null;
+    public EnemyID.StaticEnemyData StaticData => MyEnemyPrefab.StaticData;
+    public Enemy MyEnemyPrefab { get; private set; } = null;
+    private Enemy MyEnemy { get; set; } = null;
     public bool HasHoverVisual { get; set; } = true;
     public bool CompendiumElement { get; set; } = false;
     public bool Unlocked => MyEnemy.StaticData.Unlocked;
     public int MyID = 0;
     public void SetEnemy(Enemy enemyBasePrefab)
     {
-        MyEnemy = enemyBasePrefab;
+        MyEnemyPrefab = enemyBasePrefab;
+        if (MyEnemy != null)
+        {
+            Destroy(MyEnemy.gameObject);
+            MyEnemy = null;
+        }
+        if (MyEnemy == null)
+        {
+            MyEnemy = Enemy.Spawn(MyEnemyPrefab.gameObject, transform.position, false);
+            MyEnemy.SetDummy();
+            MyEnemy.transform.SetParent(this.transform);
+
+            var obj = MyEnemy.gameObject;
+            obj.gameObject.layer = UILayer;
+            obj.transform.localPosition = Vector3.zero;
+            foreach (Transform t in obj.GetComponentsInChildren<Transform>())
+                t.gameObject.layer = UILayer;
+            int layer = SortingLayer.NameToID("UICamera");
+            foreach (SpriteRenderer r in MyEnemy.GetComponentsInChildren<SpriteRenderer>())
+            {
+                if(r.sortingOrder <= -50) //This is shadow
+                    r.sortingOrder = 30;
+                else
+                    r.sortingOrder += 40;
+                r.sortingLayerID =layer; //UI camera layer
+            }
+        }
     }
     public void Init(int type) => Init(EnemyID.AllEnemiesList[MyID = type]);
     public void Init(GameObject enemyBasePrefab) => Init(enemyBasePrefab.GetComponent<Enemy>());
@@ -23,8 +53,8 @@ public class EnemyUIElement : MonoBehaviour
     }
     public void Init()
     {
-        CardGraphic.sprite = MyEnemy.StaticData.Card;
-        CardGraphicBG.sprite = MyEnemy.StaticData.CardBG;
+        CardGraphic.sprite = StaticData.Card;
+        CardGraphicBG.sprite = StaticData.CardBG;
     }
     [SerializeField] private bool InitOnStart = false;
     public void Start()
@@ -57,7 +87,7 @@ public class EnemyUIElement : MonoBehaviour
         if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || HasHoverVisual))
         {
             //Debug.Log(MyEnemy.StaticData.Rarity);
-            string name = DetailedDescription.TextBoundedByRarityColor(MyEnemy.StaticData.Rarity - 1, Unlocked ? MyEnemy.Name() : "???", false);
+            string name = DetailedDescription.TextBoundedByRarityColor(StaticData.Rarity - 1, Unlocked ? MyEnemy.Name() : "???", false);
             //string desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
             PopUpTextUI.Enable(name, "");
             float scaleUp = 1.1f;

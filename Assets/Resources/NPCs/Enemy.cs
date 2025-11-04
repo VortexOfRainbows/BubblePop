@@ -226,8 +226,12 @@ public class Enemy : Entity
         }
     }
     private bool JustSpawnedIn = true;
+    public void SetDummy() => IsDummy = true;
+    private bool IsDummy = false;
     public sealed override void OnFixedUpdate()
     {
+        if(IsDummy)
+            return;
         if (JustSpawnedIn)
         {
             if (IsSkull)
