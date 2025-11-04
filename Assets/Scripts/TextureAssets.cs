@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public partial class Main : MonoBehaviour
 {
@@ -25,6 +26,16 @@ public partial class Main : MonoBehaviour
             Sparkle = Resources.Load<Sprite>("Projectiles/Sparkle");
             Shadow = Resources.Load<Sprite>("Shadow");
             InfectorShader = Resources.Load<Material>("Materials/InfectionShader/Infection");
+        }
+    }
+    public static class PrefabAssets
+    {
+        public static GameObject DefaultProjectile;
+        public static PowerUpObject PowerUpObj;
+        public static void Load()
+        {
+            DefaultProjectile = Resources.Load<GameObject>("Projectiles/Projectile");
+            PowerUpObj = Resources.Load<GameObject>("PowerUps/Prefabs/PowerUpObj").GetComponent<PowerUpObject>();
         }
     }
 }

@@ -21,6 +21,8 @@ public partial class Main : MonoBehaviour
         public List<Button> ReturnToMenuButtons;
         public List<Button> RestartButtons;
         public List<Button> UnleashWaveButton;
+        public List<Button> SettingsButton;
+        public TextMeshProUGUI PauseMenuTopText;
         public void AddListeners()
         {
             foreach(Button b in ResumeButtons)
@@ -31,10 +33,11 @@ public partial class Main : MonoBehaviour
                 b.onClick.AddListener(Restart);
             foreach (Button b in UnleashWaveButton)
                 b.onClick.AddListener(StartGame);
+            foreach (Button b in SettingsButton)
+                b.onClick.AddListener(ToggleSettings);
         }
         public Canvas MainCanvas;
-        public GameObject PauseMenu;
-        public GameObject GameOverScreen;
+        public GameObject PauseMenu, SettingsMenu;
         public TextMeshProUGUI DeadHighscoreText;
         public void Pause()
         {
@@ -45,8 +48,11 @@ public partial class Main : MonoBehaviour
         public void Resume()
         {
             PauseMenu.SetActive(false);
+            if (SettingsMenu.activeSelf)
+                ToggleSettings();
+            else
+                StaticPlaySound();
             UnpauseGame();
-            StaticPlaySound();
         }
         public void MainMenu()
         {
@@ -57,13 +63,38 @@ public partial class Main : MonoBehaviour
         }
         public void GameOver()
         {
-            GameOverScreen.SetActive(true);
+            Button resumeButton = null;
+            foreach (Button b in SettingsButton)
+                b.gameObject.SetActive(false);
+            foreach (Button b in ResumeButtons)
+            {
+                b.gameObject.SetActive(false);
+                resumeButton = b;
+            }
+            foreach (Button b in RestartButtons)
+            {
+                if(resumeButton != null)
+                {
+                    b.GetComponent<RectTransform>().sizeDelta = resumeButton.GetComponent<RectTransform>().sizeDelta;
+                    b.GetComponent<RectTransform>().pivot = resumeButton.GetComponent<RectTransform>().pivot;
+                    b.transform.localPosition = resumeButton.transform.localPosition;
+                }
+                b.GetComponentInChildren<TextMeshProUGUI>().text = "Try Again";
+            }
+            PauseMenuTopText.text = "Game Over";
+
+            PauseMenu.SetActive(true);
             PauseGame();
         }
         public void Restart()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             UnpauseGame();
+            StaticPlaySound();
+        }
+        public void ToggleSettings()
+        {
+            SettingsMenu.SetActive(!SettingsMenu.activeSelf);
             StaticPlaySound();
         }
         public void PlaySound()

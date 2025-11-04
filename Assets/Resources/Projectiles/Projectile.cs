@@ -68,7 +68,7 @@ public class Projectile : MonoBehaviour
                 }
             }
         }
-        GameObject Proj = Instantiate(Main.ProjPrefab, pos, Quaternion.identity);
+        GameObject Proj = Instantiate(Main.PrefabAssets.DefaultProjectile, pos, Quaternion.identity);
         Projectile proj = Proj.AddComponent<T>();
         proj.cmp = Proj.GetComponent<ProjComponents>();
         proj.RB.velocity = velo;

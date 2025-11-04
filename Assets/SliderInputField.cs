@@ -31,7 +31,7 @@ public class SliderInputField : MonoBehaviour
         }
     }
     private bool Loaded = false;
-    public void FixedUpdate()
+    public void Update()
     {
         if(!Loaded)
         {

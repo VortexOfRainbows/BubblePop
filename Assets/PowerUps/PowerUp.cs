@@ -131,7 +131,7 @@ public abstract class PowerUp
     }
     public static GameObject Spawn(int powerUpID, Vector2 pos, int pointCost = 100)
     {
-        PowerUpObject obj = GameObject.Instantiate(PowerDefinitions.PowerUpObj, pos, Quaternion.identity);
+        PowerUpObject obj = GameObject.Instantiate(Main.PrefabAssets.PowerUpObj, pos, Quaternion.identity);
         obj.Type = powerUpID;
         WaveDirector.PointsSpent += pointCost;
         WaveDirector.PityPowersSpawned += pointCost / 100f;

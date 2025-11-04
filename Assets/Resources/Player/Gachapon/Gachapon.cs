@@ -123,6 +123,7 @@ public class Gachapon : Body
         }
         stacks.RemoveAt(stacks.Count - 1);
     }
+    public float PreviousSpecial = 1;
     public void ResizeChips()
     {
         for(int i = notYetResizedCips.Count - 1; i >= 0; --i)
@@ -136,6 +137,18 @@ public class Gachapon : Body
             }
             else
                 chip.transform.localScale = Vector3.Lerp(chip.transform.localScale * 1.01f, Vector3.one, 0.08f);
+        }
+        if(PreviousSpecial != PlayerData.SpecialVisualOpacity)
+        {
+            PreviousSpecial = PlayerData.SpecialVisualOpacity;
+            foreach(ChipStack stack in stacks)
+            {
+                foreach(GameObject chip in stack.Chips)
+                {
+                    var sp = chip.GetComponent<SpriteRenderer>();
+                    sp.color = sp.color.WithAlpha(PreviousSpecial);
+                }
+            }
         }
     }
     public Sprite[] altFaces;

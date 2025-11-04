@@ -9,39 +9,42 @@ Maybe Do:
 
 Need to do:
 1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden)
-2. More descriptive pause and select screen
-3. Integrate Settings and compendium into the default pause stuff
-4. Make calculator homing snappier
-5. Integrate character select into the compendium
-6. Make a distinct "Generic Power" pool, which contains: 
+2. More descriptive pause and select screen (pause screen should show powerups and change powerups default display to right side vertical)
+3. Make calculator homing snappier
+4. Integrate character select into the compendium
+5. Make a distinct "Generic Power" pool, which contains: 
 	1. Stats  : Overclock, Haste, Crits, Speed (cap speed at 2x)
 	2. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round
 	3. Powers : Choice, Special Delivery (gives only special pool powers), Mitosis, Black Market delivery
 	4. Special: Bubblebirb, Midas Touch (gold is worth more), Shard of Power (after being scrapped, choose an existing power to add onto)
-7. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
+6. Add Chests! These can spawn on the world naturally, be placed by designer, or spawned by wave rewards!
 	1. Contains loot with higher chances of good loot based on the rarity of the chest
-8. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
+7. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
 	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
-9. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
-10. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
-11. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
+8. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
+9. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
+10. Make relationships between equipment prefabs defined internally so that an ID system can be made consistent (and also help organize the character compendium menu)
 	1. The tier list kinda randomizes after update because of this right now...
-12. Make compendium and settings UI accessible in game
-13. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-14. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
+11. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
+12. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
 	1. Achievement chains, to hide achievements that are currently unobtainable
 	2. Hide unlocks from char select until they are unlocked, including subequipments
 	3. Achievements that come without unlocks should use the 6-star icon with, but with an emphasis on the two colors of the achievement categories it is part of (the other categories are slightly transparent, for example).
 	4. Progress display for achievements
-15. Potentially replace card art (at least in bestiary for now)
-16. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
-17. Grass shader to make grass more interesting and potentially slightly vary in the wind
+13. Potentially replace card art (at least in bestiary for now)
+14. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
+15. Grass shader to make grass more interesting and potentially slightly vary in the wind
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 2. Improve UI
+3. Integrate Compendium into the pause menu
 
 Done: 
+
+11/3/25
+1. Change Pause and Game Over UI objects to be shared.
+2. Add settings to the pause menu
 
 10/29/25 to 11/2/25
 1. Add Focus Fizz

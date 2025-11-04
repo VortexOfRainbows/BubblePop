@@ -61,6 +61,7 @@ public partial class Main : MonoBehaviour
     {
         Instance = this;
         TextureAssets.Load();
+        PrefabAssets.Load();
         BuffIcon.Load();
         OnGameOpen();
         GlobalEquipData.LoadAllEquipList();
@@ -91,15 +92,22 @@ public partial class Main : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex != 0)
         {
             if (GamePaused)
-                UIManager.Resume();
+            {
+                if (UIManager.SettingsMenu.activeSelf)
+                {
+                    UIManager.ToggleSettings();
+                }
+                else
+                {
+                    UIManager.Resume();
+                }
+            }
             else
                 UIManager.Pause();
         }
         UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
     }
     public static Main Instance;
-    public static GameObject ProjPrefab => Instance.DefaultProjectile;
-    public GameObject DefaultProjectile;
     public static class GlobalEquipData
     {
         public static Dictionary<Type, int> EquipTypeToIndex = new();
