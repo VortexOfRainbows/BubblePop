@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
@@ -5,7 +6,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class EnemyUIElement : MonoBehaviour
 {
     public const int UILayer = 5;
-    public Image CardGraphic;
+    public Transform Mask;
     public Image CardGraphicBG;
     public EnemyID.StaticEnemyData StaticData => MyEnemyPrefab.StaticData;
     public Enemy MyEnemyPrefab { get; private set; } = null;
@@ -26,7 +27,8 @@ public class EnemyUIElement : MonoBehaviour
         {
             MyEnemy = Enemy.Spawn(MyEnemyPrefab.gameObject, transform.position, false);
             MyEnemy.SetDummy();
-            MyEnemy.transform.SetParent(this.transform);
+            MyEnemy.transform.SetParent(Mask);
+            MyEnemy.transform.localScale = Vector3.one * 40;
 
             var obj = MyEnemy.gameObject;
             obj.gameObject.layer = UILayer;
@@ -36,10 +38,13 @@ public class EnemyUIElement : MonoBehaviour
             int layer = SortingLayer.NameToID("UICamera");
             foreach (SpriteRenderer r in MyEnemy.GetComponentsInChildren<SpriteRenderer>())
             {
-                if(r.sortingOrder <= -50) //This is shadow
-                    r.sortingOrder = 30;
+                if (r.sortingOrder <= -50) //This is shadow
+                    r.enabled = false; //disable shadow
                 else
+                {
+                    r.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                     r.sortingOrder += 40;
+                }
                 r.sortingLayerID =layer; //UI camera layer
             }
         }
@@ -53,7 +58,6 @@ public class EnemyUIElement : MonoBehaviour
     }
     public void Init()
     {
-        CardGraphic.sprite = StaticData.Card;
         CardGraphicBG.sprite = StaticData.CardBG;
     }
     [SerializeField] private bool InitOnStart = false;
@@ -66,16 +70,19 @@ public class EnemyUIElement : MonoBehaviour
     {
         if(locked)
         {
-            CardGraphic.color = Color.black;
+            //Need to make a question mark visual here!
+            //CardGraphic.color = Color.black;
             CardGraphicBG.color = Color.gray; //Might wanna use grayscale shader here instead
         }
         else if (grayOut)
         {
-            CardGraphic.color = CardGraphicBG.color = PowerUpUIElement.GrayColor;
+            //Need to make a question gray visual here!
+            //CardGraphic.color = CardGraphicBG.color = PowerUpUIElement.GrayColor;
         }
         else
         {
-            CardGraphic.color = CardGraphicBG.color = Color.white;
+            //Need to make a question white visual here!
+            //CardGraphic.color = CardGraphicBG.color = Color.white;
         }
     }
     public float HoverRadius { get; set; } = 64;
@@ -93,10 +100,10 @@ public class EnemyUIElement : MonoBehaviour
             float scaleUp = 1.1f;
             if (HasHoverVisual)
                 clicked = Input.GetMouseButtonDown(0);
-            CardGraphic.transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
+            Mask.transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
             hovering = true;
         }
         else
-            CardGraphic.transform.LerpLocalScale(targetScale * 1.0f, 0.1f);
+            Mask.transform.LerpLocalScale(targetScale * 1.0f, 0.1f);
     }
 }

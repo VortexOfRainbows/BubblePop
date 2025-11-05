@@ -15,7 +15,6 @@ public class Chicken : Enemy
     {
         data.BaseMaxLife = 7;
         data.BaseMaxCoin = 10;
-        data.Card = Resources.Load<Sprite>("NPCs/Card/Chicken");
     }
     public void UpdateDirection(float i)
     {

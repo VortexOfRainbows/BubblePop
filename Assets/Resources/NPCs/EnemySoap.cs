@@ -18,7 +18,6 @@ public class EnemySoap : Enemy
     {
         data.BaseMaxLife = 5;
         data.BaseMaxCoin = 5;
-        data.Card = Resources.Load<Sprite>("NPCs/Old/Wsoap");
     }
     // Update is called once per frame
     public override void AI()

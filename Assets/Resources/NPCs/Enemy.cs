@@ -25,7 +25,6 @@ public static class EnemyID
             PlayerData.SaveInt($"{SaveTag}_1", TimesKilledSkull);
         }
         public Sprite CardBG;
-        public Sprite Card;
         public int TimesKilled { get; set; } = 0;
         public int TimesKilledSkull { get; set; } = 0;
         public int Rarity { get; set; } = 0;
@@ -147,8 +146,6 @@ public class Enemy : Entity
         data.Cost = CostMultiplier;
         data.Rarity = (int)Mathf.Clamp(data.Cost, 1, 5);
         InitStatics(ref data);
-        if (data.Card == null)
-            data.Card = Resources.Load<Sprite>("NPCs/Old/rubber_duck");
         if (data.CardBG == null)
             data.CardBG = Resources.Load<Sprite>("UI/Background");
     }

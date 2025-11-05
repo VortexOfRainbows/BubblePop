@@ -12,7 +12,6 @@ public class Infector : Enemy
     private bool StartedMoving = false;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.Card = Resources.Load<Sprite>("NPCs/Infectors/Infector");
         data.BaseMinCoin = 5;
         data.BaseMaxCoin = 25;
         data.BaseMaxLife = 20;

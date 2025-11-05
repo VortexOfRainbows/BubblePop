@@ -22,7 +22,6 @@ public class Gatligator : Enemy
     {
         data.BaseMaxLife = 25;
         data.BaseMaxCoin = 40;
-        data.Card = Resources.Load<Sprite>("NPCs/Gatligator/Alligator");
         data.Rarity = 4;
     }
     public override void OnSpawn()

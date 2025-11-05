@@ -8,7 +8,6 @@ public class EnemyFlamingo : EnemyDuck
     {
         data.BaseMaxLife = 10;
         data.BaseMaxCoin = 15;
-        data.Card = Resources.Load<Sprite>("NPCs/Old/flamingo");
     }
     public override float CostMultiplier => 3;
     public override void AI()

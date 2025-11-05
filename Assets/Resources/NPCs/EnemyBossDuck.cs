@@ -11,7 +11,6 @@ public class EnemyBossDuck : EnemyDuck
     {
         data.BaseMaxLife = 45;
         data.BaseMaxCoin = 50;
-        data.Card = Resources.Load<Sprite>("NPCs/Old/bird_boss");
     }
     public override void AI()
     {
