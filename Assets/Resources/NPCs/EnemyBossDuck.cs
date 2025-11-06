@@ -6,6 +6,11 @@ public class EnemyBossDuck : EnemyDuck
     {
         description.WithName("Leonard");
     }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        //scale *= 2;
+        //offset = Vector2.one * -1.25f;
+    }
     public override float HealthBarOffset => -3f;
     private float projectileSpeed = 3f;
     private int projectileTimer = -50;

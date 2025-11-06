@@ -15,6 +15,7 @@ public class ModifierCard : MonoBehaviour
     public float DifficultyMultiplier = 1f;
     public EnemyUIElement CardVisual;
     public Transform SkullAnchor;
+    public Transform RotateFaker;
     public void Start() => cardData ??= new(this);
     public void UpdateText()
     {
@@ -59,6 +60,7 @@ public class ModifierCard : MonoBehaviour
 
         TitleText.text = cardData.CardName();
         CardVisual.Init(cardData.EnemyClause.Enemy.EnemyToAdd.GetIndex());
+        CardVisual.MaskActive(false);
     }
     public void GenerateCardData()
     {
@@ -86,6 +88,7 @@ public class ModifierCard : MonoBehaviour
     private float SpawnTimer = 0;
     public void ResetAnimation()
     {
+        CardVisual.MaskActive(false);
         HasBeenFlipped = false;
         FlipTimer = SpawnTimer = 0;
         transform.position = WaveMeter.Instance.DeckPosition.position + new Vector3(200 * WaveMeter.Instance.DeckPosition.lossyScale.x, 0);
@@ -113,19 +116,22 @@ public class ModifierCard : MonoBehaviour
                 HasBeenFlipped = true;
                 FlipTimer = 2;
             }
-            UpdateFlippage();
         }
+        UpdateFlippage();
         UpdateSkulls();
     }
+    private float previousScaleX = 0;
     public void UpdateFlippage()
     {
+        CardVisual.MaskActive(FlipTimer > 1);
         BackSide.SetActive(FlipTimer < 1);
-        Vector3 angle = transform.localEulerAngles;
+        float angle = 0;
         if (FlipTimer < 1)
-            angle.y = FlipTimer * 90;
+            angle = FlipTimer * 90;
         else
-            angle.y = 180 - FlipTimer * 90;
-        transform.localEulerAngles = angle;
+            angle = 180 - FlipTimer * 90;
+        float toScaleX = Mathf.Cos(angle * Mathf.Deg2Rad);
+        RotateFaker.localScale = new Vector3(toScaleX, 1, 1);
     }
     public void DespawnAnimation()
     {

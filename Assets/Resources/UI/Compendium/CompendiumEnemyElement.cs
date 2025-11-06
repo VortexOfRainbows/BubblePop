@@ -32,8 +32,11 @@ public class CompendiumEnemyElement : CompendiumElement
             forceInitUpdates += 2;
         }
         else if (Style == 3)
+        {
             MyElem.HasHoverVisual = false;
-        for(int a = 0; a < forceInitUpdates; ++a)
+            MyElem.MaskActive(true);
+        }
+        for (int a = 0; a < forceInitUpdates; ++a)
             Update();
     }
     public void Update()

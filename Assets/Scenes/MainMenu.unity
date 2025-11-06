@@ -5270,6 +5270,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3442587211541928404, guid: 3be9e9f3d2eccd8428060b1f5290a877, type: 3}
   m_PrefabInstance: {fileID: 1603188721}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &1616560661 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7637604408401702411, guid: abf61b3700054144381c949754810a15, type: 3}
+  m_PrefabInstance: {fileID: 3004834247045283208}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1618055098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7434,6 +7439,10 @@ PrefabInstance:
       propertyPath: MyCanvas
       value: 
       objectReference: {fileID: 1900657725}
+    - target: {fileID: 8312508432611384787, guid: abf61b3700054144381c949754810a15, type: 3}
+      propertyPath: SpriteMaskRectangle
+      value: 
+      objectReference: {fileID: 1616560661}
     - target: {fileID: 8994075083838560558, guid: abf61b3700054144381c949754810a15, type: 3}
       propertyPath: m_IsActive
       value: 0

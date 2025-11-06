@@ -243,11 +243,14 @@ public class Enemy : Entity
     }
     private bool JustSpawnedIn = true;
     public void SetDummy() => IsDummy = true;
-    private bool IsDummy = false;
+    public bool IsDummy { get; private set; }
     public sealed override void OnFixedUpdate()
     {
         if(IsDummy)
+        {
+            UIAI();
             return;
+        }
         if (JustSpawnedIn)
         {
             if (IsSkull)
@@ -439,5 +442,9 @@ public class Enemy : Entity
     public int GetRarity()
     {
         return StaticData.Rarity;
+    }
+    public virtual void UIAI()
+    {
+
     }
 }

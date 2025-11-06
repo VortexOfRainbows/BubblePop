@@ -84,4 +84,9 @@ public class EnemyDuck : Enemy
     {
         description.WithName("Duck");
     }
+    public override void UIAI()
+    {
+        if (this is not EnemyFlamingo)
+            sRender.flipX = true;
+    }
 }

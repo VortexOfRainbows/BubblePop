@@ -3,9 +3,16 @@ using UnityEngine.UI;
 
 public class EnemyUIElement : MonoBehaviour
 {
+    public void MaskActive(bool active)
+    {
+        Mask.gameObject.SetActive(active);
+        SpriteMask.gameObject.SetActive(active); //potentially erroneous
+    }
     public const int UILayer = 5;
     public Transform Mask;
+    public Transform SpriteMask;
     public Image CardGraphicBG;
+    private Vector3 originalMaskScale = Vector3.zero;
     public EnemyID.StaticEnemyData StaticData => MyEnemyPrefab.StaticData;
     public Enemy MyEnemyPrefab { get; private set; } = null;
     private Enemy MyEnemy { get; set; } = null;
@@ -15,6 +22,8 @@ public class EnemyUIElement : MonoBehaviour
     public int MyID = 0;
     public void SetEnemy(Enemy enemyBasePrefab)
     {
+        if(originalMaskScale == Vector3.zero)
+            originalMaskScale = SpriteMask.transform.localScale;
         MyEnemyPrefab = enemyBasePrefab;
         if (MyEnemy != null)
         {
@@ -24,9 +33,11 @@ public class EnemyUIElement : MonoBehaviour
         if (MyEnemy == null)
         {
             float size = CardGraphicBG.rectTransform.rect.width / 130f; //The default UI box is 130, so that is what we change the scale factor by
-            //Debug.Log(size);
+            SpriteMask.transform.localScale = originalMaskScale * size;
             MyEnemy = Enemy.Spawn(MyEnemyPrefab.gameObject, transform.position, false);
             MyEnemy.SetDummy();
+            MyEnemy.Animate();
+            MyEnemy.UIAI();
             MyEnemy.transform.SetParent(Mask);
             Vector2 offset = Vector2.zero;
             float scale = 40f / (MyEnemy.Visual.transform.localScale.x) * size;
