@@ -8,6 +8,7 @@ public class CompendiumEnemyElement : CompendiumElement
 {
     public static GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumEnemyElement");
     public EnemyUIElement MyElem;
+    public Canvas CountCanvas;
     public TextMeshProUGUI count;
     private Canvas MyCanvas { get; set; }
     public int Style = 0;
@@ -20,6 +21,7 @@ public class CompendiumEnemyElement : CompendiumElement
         //MyElem.SetCompendiumLayering(canvas.sortingLayerID, Style == 4 ? 65 : 45, Style == 3 ? 0 : 1); //2 = UICamera, 20 = compendium canvas size
         MyCanvas = canvas;
         MyElem.CompendiumElement = true;
+        CountCanvas.sortingLayerID = canvas.sortingLayerID;
         int forceInitUpdates = 1;
         if (Style == 2)
         {
@@ -38,7 +40,8 @@ public class CompendiumEnemyElement : CompendiumElement
     {
         if (TypeID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
-        bool showActive = Compendium.Instance.EnemyPage.ShowCounts && MyElem.HasHoverVisual && !IsLocked() && Style <= 1;
+        bool isWithinMaskRange = count.transform.position.y > Compendium.Instance.SortBar.position.y + Compendium.Instance.SortBar.sizeDelta.y * 0.5f * Compendium.Instance.SortBar.lossyScale.y;
+        bool showActive = Compendium.Instance.EnemyPage.ShowCounts && MyElem.HasHoverVisual && !IsLocked() && Style <= 1 && !isWithinMaskRange;
         count.gameObject.SetActive(showActive);
         count.text = GetCount().ToString();
         MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);

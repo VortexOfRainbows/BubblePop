@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class EnemyBossDuck : EnemyDuck
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Leonard");
+    }
     public override float HealthBarOffset => -3f;
     private float projectileSpeed = 3f;
     private int projectileTimer = -50;
@@ -56,9 +60,5 @@ public class EnemyBossDuck : EnemyDuck
         DeathParticles(40, 0.7f, new Color(0.1f, 0.1f, 0.1f));
         DeathParticles(80, 0.9f, new Color(1, .97f, .52f));
         AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.3f, 0.5f);
-    }
-    public override string Name()
-    {
-        return "Leonard";
     }
 }

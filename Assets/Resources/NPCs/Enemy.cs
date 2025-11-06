@@ -12,6 +12,7 @@ public static class EnemyID
         public StaticEnemyData(string saveTag)
         {
             SaveTag = saveTag;
+            Description = new(Rarity, "UnnamedEnemy");
             LoadData();
         }
         public void LoadData() //Only called on load
@@ -33,6 +34,8 @@ public static class EnemyID
         public float BaseMinCoin { get; set; } = 1;
         public float BaseMaxCoin { get; set; } = 1;
         public bool Unlocked => TimesKilled > 0;
+        public DetailedDescription Description;
+        public GameObject OriginalPrefab;
     }
     public static Dictionary<int, StaticEnemyData> EnemyData { get; private set; } = new();
     public static List<Enemy> SpawnableEnemiesList { get; private set; } = new();
@@ -47,11 +50,14 @@ public static class EnemyID
         string saveTag = e.name;
         var d = new StaticEnemyData(saveTag);
         e.InitStaticDefaults(ref d);
+        d.Description.Rarity = d.Rarity - 1;
+        e.InitializeDescription(ref d.Description);
         EnemyData.Add(CurrentIndex, d);
         e.SetIndexInAllEnemyArray(CurrentIndex++);
         AllEnemiesList.Add(e);
         if (SpawnList)
             SpawnableEnemiesList.Add(e);
+        d.OriginalPrefab = prefab;
         return prefab;
     }
     public static readonly GameObject PortalPrefab = Resources.Load<GameObject>("NPCs/Portal");
@@ -68,6 +74,15 @@ public static class EnemyID
 }
 public class Enemy : Entity
 {
+    public DetailedDescription MyDescription => StaticData.Description;
+    public virtual void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName(StaticData.OriginalPrefab.name);
+    }
+    public string Name()
+    {
+        return MyDescription.GetName(false, this is Infector);
+    }
     #region Champion
     public float ChampionBonusActionsCounter { get; set; } = 0;
     public float ChampionSpeedBonus { get; set; } = 0;
@@ -155,6 +170,10 @@ public class Enemy : Entity
         OnSpawn();
     }
     public virtual void OnSpawn()
+    {
+
+    }
+    public virtual void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
 
     }
@@ -410,10 +429,6 @@ public class Enemy : Entity
     public void OnDestroy()
     {
         Enemies.Remove(this);
-    }
-    public virtual string Name()
-    {
-        return Utils.ToSpacedString(name);
     }
     public bool IsSkull { get; private set; } = false;
     public void SetSkullEnemy(bool value = true)

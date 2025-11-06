@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class Chicken : Enemy
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Chicken");
+    }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.1f;
@@ -15,6 +19,10 @@ public class Chicken : Enemy
     {
         data.BaseMaxLife = 7;
         data.BaseMaxCoin = 10;
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        scale *= 1.1f;
     }
     public void UpdateDirection(float i)
     {

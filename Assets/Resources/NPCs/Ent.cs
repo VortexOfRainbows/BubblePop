@@ -1,6 +1,10 @@
 using UnityEngine;
 public class Ent : Enemy
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Ent");
+    }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.06f; //This is intentionally very precise
@@ -14,6 +18,10 @@ public class Ent : Enemy
     {
         data.BaseMaxLife = 27;
         data.BaseMaxCoin = 18;
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        scale *= 1.4f;
     }
     public void UpdateDirection(float i)
     {

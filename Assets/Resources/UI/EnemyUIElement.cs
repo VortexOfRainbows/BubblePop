@@ -28,11 +28,15 @@ public class EnemyUIElement : MonoBehaviour
             MyEnemy = Enemy.Spawn(MyEnemyPrefab.gameObject, transform.position, false);
             MyEnemy.SetDummy();
             MyEnemy.transform.SetParent(Mask);
-            MyEnemy.transform.localScale = Vector3.one * 40;
+            Vector2 offset = Vector2.zero;
+            float scale = 40f / (MyEnemy.Visual.transform.localScale.x);
+            MyEnemy.ModifyUIOffsets(ref offset, ref scale);
+            MyEnemy.transform.localScale = Vector3.one;
+            MyEnemy.transform.localScale *= scale;
 
             var obj = MyEnemy.gameObject;
             obj.gameObject.layer = UILayer;
-            obj.transform.localPosition = Vector3.zero;
+            obj.transform.localPosition = (Vector3)offset * scale;
             foreach (Transform t in obj.GetComponentsInChildren<Transform>())
                 t.gameObject.layer = UILayer;
             int layer = SortingLayer.NameToID("UICamera");

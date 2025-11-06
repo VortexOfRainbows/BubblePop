@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class EnemyFlamingo : EnemyDuck
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Flamingo");
+    }
     private float projectileSpeed = 3f;
     private int projectileTimer = 300;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
@@ -41,9 +45,5 @@ public class EnemyFlamingo : EnemyDuck
     {
         DeathParticles(30, 0.6f, new Color(1, 0.85f, 0.99f));
         AudioManager.PlaySound(SoundID.FlamingoShot.GetVariation(1), transform.position, 0.7f, 1.2f);
-    }
-    public override string Name()
-    {
-        return "Flamingo";
     }
 }

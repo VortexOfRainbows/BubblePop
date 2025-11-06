@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Gatligator : Enemy
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Gatligator");
+    }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.05f;
@@ -23,6 +27,11 @@ public class Gatligator : Enemy
         data.BaseMaxLife = 25;
         data.BaseMaxCoin = 40;
         data.Rarity = 4;
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        offset.x -= 0.1f;
+        scale *= 0.45f;
     }
     public override void OnSpawn()
     {

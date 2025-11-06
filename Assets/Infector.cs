@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Infector : Enemy
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Infector (Command)");
+    }
     public SpriteRenderer DropShadow;
     public GameObject Head;
     public Enemy Host;
@@ -17,6 +21,11 @@ public class Infector : Enemy
         data.BaseMaxLife = 20;
         data.Rarity = 5;
         data.Cost = 8f;
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        offset.y -= 0.7f;
+        scale *= 1.00f;
     }
     public SpriteRenderer[] Shards;
     public SpriteRenderer[] Glows;

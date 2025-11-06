@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Crow : Enemy
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Crow");
+    }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.02f;
@@ -23,6 +27,11 @@ public class Crow : Enemy
         data.BaseMaxLife = 10;
         data.BaseMaxCoin = 15;
         data.CardBG = Resources.Load<Sprite>("NPCs/Card/CrowB");
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        offset.y += 0.2f;
+        scale *= 1.2f;
     }
     public override void OnSpawn()
     {

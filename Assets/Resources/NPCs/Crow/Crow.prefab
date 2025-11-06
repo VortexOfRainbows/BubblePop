@@ -493,6 +493,8 @@ MonoBehaviour:
   SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 3840899534818641878}
+  IndexInAllEnemyArray: -1
+  AlreadyDead: 0
   FirstStrike: 1
   JumpAnimation: {fileID: 2649602840955921877}
   moveSpeed: 0.15
