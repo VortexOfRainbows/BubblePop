@@ -47,8 +47,7 @@ Done:
 2. Add settings to the pause menu
 3. NPC displays now use live NPCs instead of static card art.
 	1. Needs: Fix opacity interaction in areas such as the compendium tier list. Add way to black out the npc textures.
-	2. Needs: Fix layering on cards to appear below text
-	3. NOTES (obsolete-ish): Fix enemies appearing over UI when the tier list is closed. Right now I'm disabling the box-individual mask, also for other reasons (it can't work how I want it to)...
+	2. NOTES (obsolete-ish): Fix enemies appearing over UI when the tier list is closed. Right now I'm disabling the box-individual mask, also for other reasons (it can't work how I want it to)...
 		1. One way to do this is with a mask, if you can double layer masks.
 		2. The second way is to just make the UI appear over it.
 		3. The third way is to hide the enemy after passing a UI threshold, like the way numbers are hidden (this is questionable depending on UI spacing, but maybe the best option)

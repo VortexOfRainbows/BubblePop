@@ -16,6 +16,8 @@ public class ModifierCard : MonoBehaviour
     public EnemyUIElement CardVisual;
     public Transform SkullAnchor;
     public Transform RotateFaker;
+    public Canvas SkullAnchorCanvas;
+    public Canvas TextCanvas;
     public void Start() => cardData ??= new(this);
     public void UpdateText()
     {
@@ -89,6 +91,9 @@ public class ModifierCard : MonoBehaviour
     public void ResetAnimation()
     {
         CardVisual.MaskActive(false);
+        SkullAnchorCanvas.gameObject.SetActive(false);
+        TextCanvas.gameObject.SetActive(false);
+        SkullAnchorCanvas.sortingLayerID = TextCanvas.sortingLayerID = SortingLayer.NameToID("UICamera");
         HasBeenFlipped = false;
         FlipTimer = SpawnTimer = 0;
         transform.position = WaveMeter.Instance.DeckPosition.position + new Vector3(200 * WaveMeter.Instance.DeckPosition.lossyScale.x, 0);
@@ -120,10 +125,11 @@ public class ModifierCard : MonoBehaviour
         UpdateFlippage();
         UpdateSkulls();
     }
-    private float previousScaleX = 0;
     public void UpdateFlippage()
     {
-        CardVisual.MaskActive(FlipTimer > 1);
+        CardVisual.MaskActive(FlipTimer >= 1);
+        SkullAnchorCanvas.gameObject.SetActive(FlipTimer >= 1);
+        TextCanvas.gameObject.SetActive(FlipTimer >= 1);
         BackSide.SetActive(FlipTimer < 1);
         float angle = 0;
         if (FlipTimer < 1)

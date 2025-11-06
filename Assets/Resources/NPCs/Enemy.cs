@@ -136,7 +136,7 @@ public class Enemy : Entity
     {
         if (ImplantTimer == -1)
             return;
-        ImplantTimer -= Time.fixedDeltaTime * 8f;
+        ImplantTimer -= Time.fixedDeltaTime * 7f;
         if (ImplantTimer < 0)
             ImplantTimer = 0;
         foreach (SpriteRenderer renderer in childrenRenderers)
