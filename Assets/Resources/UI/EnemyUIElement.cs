@@ -1,7 +1,5 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EnemyUIElement : MonoBehaviour
 {
@@ -25,11 +23,13 @@ public class EnemyUIElement : MonoBehaviour
         }
         if (MyEnemy == null)
         {
+            float size = CardGraphicBG.rectTransform.rect.width / 130f; //The default UI box is 130, so that is what we change the scale factor by
+            //Debug.Log(size);
             MyEnemy = Enemy.Spawn(MyEnemyPrefab.gameObject, transform.position, false);
             MyEnemy.SetDummy();
             MyEnemy.transform.SetParent(Mask);
             Vector2 offset = Vector2.zero;
-            float scale = 40f / (MyEnemy.Visual.transform.localScale.x);
+            float scale = 40f / (MyEnemy.Visual.transform.localScale.x) * size;
             MyEnemy.ModifyUIOffsets(ref offset, ref scale);
             MyEnemy.transform.localScale = Vector3.one;
             MyEnemy.transform.localScale *= scale;
