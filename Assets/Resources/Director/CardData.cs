@@ -90,14 +90,24 @@ public class CardData
         {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = false });
         }
+        if(waveNum == 11)
+        {
+            if(Utils.RandFloat(1) < 0.5f)
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = false });
+        }
         if (waveNum == 12)
         {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Ent) { IsPermanent = true });
             m = new(AvailablePoints, 1, new DirectorSkullSwarmModifier(e.Enemy) { ApplicationStrength = 2, IsPermanent = false });
         }
+        if (waveNum == 13 || waveNum == 14)
+        {
+            if (Utils.RandFloat(1) < (waveNum == 13 ? 0.5f : 0.66f))
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = true });
+        }
         if (waveNum >= 15 && waveNum % 5 == 0)
         {
-            if(waveNum == 20)
+            if(waveNum % 10 == 0 && Utils.RandFloat(1) < 0.5f)
                 e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = true });
             else
                 e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = true });

@@ -381,7 +381,8 @@ public class Enemy : Entity
             Kill();
         }
     }
-    public virtual float PowerDropChance => 0.04f;
+    public virtual float SkullPowerDropChance => 0.1f;
+    public virtual float PowerDropChance => 0;
     protected float MaxCoins { get; set; } = 1;
     protected float MinCoins { get; set; } = 1;
     protected int CoinRandomizationAggressiveness = 3;
@@ -414,8 +415,8 @@ public class Enemy : Entity
         if(IsSkull)
             coins += Player.Instance.FlatSkullCoinBonus;
         CoinManager.SpawnCoin(transform.position, (int)coins);
-        float reduceRelativeDropRates = Mathf.Max(0.25f, Mathf.Min(1, 0.25f + (400 - WaveDirector.TotalPowersSpawned) / 400f)); //At 400 powers, this number is 0.25, meaning power drop rates will be reduced
-        bool LuckyDrop = Utils.RandFloat(1) < PowerDropChance * reduceRelativeDropRates;
+        float reduceRelativeDropRates = Mathf.Max(0.25f, Mathf.Min(1, 0.25f + (200 - WaveDirector.TotalPowersSpawned) / 200f)); //At 200 powers, this number is 0.25, meaning power drop rates will be reduced
+        bool LuckyDrop = Utils.RandFloat(1) < (IsSkull ? SkullPowerDropChance : PowerDropChance) * reduceRelativeDropRates;
         WaveDirector.Point += (int)MaxCoins;
         if (/*WaveDirector.CanSpawnPower() ||*/ LuckyDrop)
             PowerUp.Spawn(PowerUp.RandomFromPool(0.15f), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 8));

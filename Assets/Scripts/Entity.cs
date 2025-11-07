@@ -82,7 +82,7 @@ public partial class Entity : MonoBehaviour
     }
     public void Update()
     {
-        if (this is not Player)
+        if (this is not Player && (this is not Enemy e || !e.IsDummy))
         {
             if (DamageTaken > 0)
             {
@@ -132,6 +132,18 @@ public partial class Entity : MonoBehaviour
         }
         for (int i = 0; i < defaultColors.Length; ++i)
             childrenRenderers[i].color = Color.Lerp(childrenRenderers[i].color, defaultColors[i], lerp);
+    }
+    public void AdjustRenderColorFromDefault(Color other, float lerp)
+    {
+        ChildrenRenders();
+        if (defaultColors == null)
+        {
+            defaultColors = new Color[childrenRenderers.Length];
+            for (int i = 0; i < defaultColors.Length; ++i)
+                defaultColors[i] = childrenRenderers[i].color;
+        }
+        for (int i = 0; i < defaultColors.Length; ++i)
+            childrenRenderers[i].color = Color.Lerp(defaultColors[i], other, lerp);
     }
     public virtual void Kill()
     {

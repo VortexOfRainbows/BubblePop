@@ -17,6 +17,7 @@ public partial class Main : MonoBehaviour
     public static bool WavesUnleashed { get; set; } = false;
     public GameObject DirectorCanvas;
     public GameObject PowerupCheatCanvas;
+    public static int UICameraLayerID { get; private set; } = -1;
     public void FixedUpdate()
     {
         GameUpdateCount++;
@@ -60,6 +61,7 @@ public partial class Main : MonoBehaviour
     public void Awake()
     {
         Instance = this;
+        UICameraLayerID = SortingLayer.NameToID("UICamera");
         TextureAssets.Load();
         PrefabAssets.Load();
         BuffIcon.Load();

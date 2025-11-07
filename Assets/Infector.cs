@@ -4,7 +4,7 @@ public class Infector : Enemy
 {
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Infector (Command)");
+        description.WithName("Infector");
     }
     public SpriteRenderer DropShadow;
     public GameObject Head;
@@ -14,6 +14,8 @@ public class Infector : Enemy
     private bool FinishedImplanting = false;
     private bool DizzyAnimation = false;
     private bool StartedMoving = false;
+    public override float SkullPowerDropChance => 0.12f;
+    public override float PowerDropChance => 0.08f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMinCoin = 5;

@@ -15,7 +15,15 @@ public class CompendiumEnemyElement : CompendiumElement
     protected bool Selected { get; set; }
     public override void Init(int i, Canvas canvas)
     {
+        MyElem.SpriteMask.localScale *= 1.05f;
         TypeID = i;
+        if (Style == 4)
+        {
+            MyElem.MaskActive(true);
+            MyElem.Mask.GetComponent<Canvas>().sortingOrder = 46;
+            MyElem.Mask.GetComponent<Canvas>().sortingLayerID = Main.UICameraLayerID;
+            MyElem.AddedDrawOrder = 50;
+        }
         MyElem.Init(i);
         //MyElem.UpdateEquipment(Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>());
         //MyElem.SetCompendiumLayering(canvas.sortingLayerID, Style == 4 ? 65 : 45, Style == 3 ? 0 : 1); //2 = UICamera, 20 = compendium canvas size
@@ -23,7 +31,7 @@ public class CompendiumEnemyElement : CompendiumElement
         MyElem.CompendiumElement = true;
         CountCanvas.sortingLayerID = canvas.sortingLayerID;
         int forceInitUpdates = 1;
-        if (Style == 2)
+        if (Style == 2 || Style == 4)
         {
             BG.enabled = false;
             MyElem.HasHoverVisual = false;

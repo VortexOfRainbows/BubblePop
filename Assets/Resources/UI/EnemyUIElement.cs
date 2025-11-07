@@ -20,9 +20,10 @@ public class EnemyUIElement : MonoBehaviour
     public bool CompendiumElement { get; set; } = false;
     public bool Unlocked => MyEnemy.StaticData.Unlocked;
     public int MyID = 0;
+    public int AddedDrawOrder { get; set; } = 40;
     public void SetEnemy(Enemy enemyBasePrefab)
     {
-        if(originalMaskScale == Vector3.zero)
+        if (originalMaskScale == Vector3.zero)
             originalMaskScale = SpriteMask.transform.localScale;
         MyEnemyPrefab = enemyBasePrefab;
         if (MyEnemy != null)
@@ -38,7 +39,7 @@ public class EnemyUIElement : MonoBehaviour
             MyEnemy.SetDummy();
             MyEnemy.Animate();
             MyEnemy.UIAI();
-            MyEnemy.transform.SetParent(Mask);
+            MyEnemy.transform.SetParent(transform);
             Vector2 offset = Vector2.zero;
             float scale = 40f / (MyEnemy.Visual.transform.localScale.x) * size;
             MyEnemy.ModifyUIOffsets(ref offset, ref scale);
@@ -50,15 +51,16 @@ public class EnemyUIElement : MonoBehaviour
             obj.transform.localPosition = (Vector3)offset * scale;
             foreach (Transform t in obj.GetComponentsInChildren<Transform>())
                 t.gameObject.layer = UILayer;
-            int layer = SortingLayer.NameToID("UICamera");
+            int layer = Main.UICameraLayerID;
             foreach (SpriteRenderer r in MyEnemy.GetComponentsInChildren<SpriteRenderer>())
             {
                 if (r.sortingOrder <= -50) //This is shadow
                     r.enabled = false; //disable shadow
                 else
                 {
-                    r.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-                    r.sortingOrder += 40;
+                    if (AddedDrawOrder != 50)
+                        r.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                    r.sortingOrder += AddedDrawOrder;
                 }
                 r.sortingLayerID =layer; //UI camera layer
             }
@@ -86,18 +88,22 @@ public class EnemyUIElement : MonoBehaviour
         if(locked)
         {
             //Need to make a question mark visual here!
-            //CardGraphic.color = Color.black;
+            MyEnemy.UpdateRendererColor(Color.black, 1f);
             CardGraphicBG.color = Color.gray; //Might wanna use grayscale shader here instead
         }
         else if (grayOut)
         {
             //Need to make a question gray visual here!
-            //CardGraphic.color = CardGraphicBG.color = PowerUpUIElement.GrayColor;
+            //CardGraphic.color =
+            MyEnemy.AdjustRenderColorFromDefault(Color.black, 0.5f);
+            CardGraphicBG.color = PowerUpUIElement.GrayColor;
         }
         else
         {
             //Need to make a question white visual here!
-            //CardGraphic.color = CardGraphicBG.color = Color.white;
+            //CardGraphic.color =
+            MyEnemy.UpdateRendererColorToDefault(1f);
+            CardGraphicBG.color = Color.white;
         }
     }
     public float HoverRadius { get; set; } = 64;

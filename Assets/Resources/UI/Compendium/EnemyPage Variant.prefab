@@ -136,7 +136,7 @@ SpriteMask:
   m_BackSortingLayerID: 622996367
   m_FrontSortingLayer: 2
   m_BackSortingLayer: 2
-  m_FrontSortingOrder: 80
+  m_FrontSortingOrder: 45
   m_BackSortingOrder: 30
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
@@ -228,9 +228,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5214466816939816873, guid: 914d7111016032f4a8141aec911382b9, type: 3}
-      propertyPath: Style
+    - target: {fileID: 2999855626657229438, guid: 914d7111016032f4a8141aec911382b9, type: 3}
+      propertyPath: m_SortingLayer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6333841916486493514, guid: 914d7111016032f4a8141aec911382b9, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8684783256891923046, guid: 914d7111016032f4a8141aec911382b9, type: 3}
       propertyPath: m_Name
@@ -511,10 +515,10 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 717631917021210586, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
       insertIndex: 0
-      addedObject: {fileID: 7637604408401702411}
-    - targetCorrespondingSourceObject: {fileID: 717631917021210586, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1230202647114108154}
+    - targetCorrespondingSourceObject: {fileID: 717631917021210586, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 7637604408401702411}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7521a89a799b39b4295d95448cdaf16e, type: 3}
 --- !u!224 &2322397487103964969 stripped

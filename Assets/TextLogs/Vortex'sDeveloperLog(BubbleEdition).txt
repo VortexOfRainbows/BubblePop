@@ -31,9 +31,8 @@ Need to do:
 	2. Hide unlocks from char select until they are unlocked, including subequipments
 	3. Achievements that come without unlocks should use the 6-star icon with, but with an emphasis on the two colors of the achievement categories it is part of (the other categories are slightly transparent, for example).
 	4. Progress display for achievements
-13. Potentially replace card art (at least in bestiary for now)
-14. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
-15. Grass shader to make grass more interesting and potentially slightly vary in the wind
+13. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
+14. Grass shader to make grass more interesting and potentially slightly vary in the wind
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -46,12 +45,12 @@ Done:
 1. Change Pause and Game Over UI objects to be shared.
 2. Add settings to the pause menu
 3. NPC displays now use live NPCs instead of static card art.
-	1. Needs: Fix opacity interaction in areas such as the compendium tier list. Add way to black out the npc textures.
-	2. NOTES (obsolete-ish): Fix enemies appearing over UI when the tier list is closed. Right now I'm disabling the box-individual mask, also for other reasons (it can't work how I want it to)...
+	1. NOTES (obsolete-ish): Fix enemies appearing over UI when the tier list is closed. Right now I'm disabling the box-individual mask, also for other reasons (it can't work how I want it to)...
 		1. One way to do this is with a mask, if you can double layer masks.
 		2. The second way is to just make the UI appear over it.
 		3. The third way is to hide the enemy after passing a UI threshold, like the way numbers are hidden (this is questionable depending on UI spacing, but maybe the best option)
 4. Adjust naming for enemies to be done with detailed description system. Will expand for future use giving NPCs flavor text
+5. Seriously reduce power up drop rates from non-skull enemies (0.04 -> 0.0), with some exceptions among certain enemies
 
 10/29/25 to 11/2/25
 1. Add Focus Fizz

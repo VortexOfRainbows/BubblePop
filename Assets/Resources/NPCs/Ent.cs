@@ -21,7 +21,7 @@ public class Ent : Enemy
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
-        offset.y += 0.2f;
+        offset.y += 0.15f;
         scale *= 1.4f;
     }
     public void UpdateDirection(float i)
