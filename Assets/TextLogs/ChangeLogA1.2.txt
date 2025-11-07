@@ -1,0 +1,23 @@
+Alpha 1.20 (tentative version number)
+
+New:
+1. Savedata now uses JSON instead of Registry. This means all your data was reset! Hooray!
+	1. There is no way to get it back :D
+2. Power: Focus Fizz
+3. Setting: Projectile Opacity setting for chips
+4. New wood tiles!
+5. Menus: Pause and Game Over UI have been somewhat merged with additional features
+	1. You can now restart a run from pause and access settings
+6. Adjust enemy naming, stylization in compendium and card art
+7. Enemy: The Infector
+8. Champion Variant: Command Infection
+
+Balance:
+1. Double down now has a cap on money gains + shifted rarity blue -> purple
+2. Roll for initiative scaling is now consistent +25-50% -> +20%
+3. Remove power drops from most non-skull enemies
+
+Fixes:
+1. Fix issues where some unlocks were not registering
+2. More optimizations with light synergy lag
+3. Money no longer collides with terrain, reducing lag
