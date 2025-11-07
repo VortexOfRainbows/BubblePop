@@ -79,10 +79,12 @@ public abstract class PowerUp
         //Stats
         //Haste will be added here eventually (when I feel like the time is right)
         AddPowerUpToAvailability<Overclock>();
+        //AddPowerUpToAvailability<WeaponUpgrade>();
         AddPowerUpToAvailability<FocusFizz>();
 
         //Economy
         AddPowerUpToAvailability<Magnet>();
+        AddPowerUpToAvailability<Coupons>();
 
         //Powers
         AddPowerUpToAvailability<Choice>();

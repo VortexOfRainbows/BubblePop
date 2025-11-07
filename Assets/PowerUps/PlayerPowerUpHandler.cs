@@ -93,6 +93,7 @@ public partial class Player : Entity
     public int DoubleDownChip = 0;
     public float BlackmarketMult = 1.0f;
     public float CriticalStrikeChance = 0.05f;
+    public float ShopDiscount = 0.0f;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -134,6 +135,7 @@ public partial class Player : Entity
         BlackmarketMult = 1.0f;
 
         CriticalStrikeChance = 0.01f;
+        ShopDiscount = 0.0f;
     }
     private void UpdatePowerUps()
     {
