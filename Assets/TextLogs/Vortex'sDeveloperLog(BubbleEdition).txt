@@ -33,6 +33,7 @@ Need to do:
 	4. Progress display for achievements
 13. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
 14. Grass shader to make grass more interesting and potentially slightly vary in the wind
+15. Infector sometimes makes enemies invisible??
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -40,6 +41,13 @@ Mostly done but might need to keep an eye out:
 3. Integrate Compendium into the pause menu
 
 Done: 
+
+11/6/25
+1. Fix bug where choice no longer showed popup tooltip while game was paused
+2. Fix issue where your character equips would not start correctly by default and saving failed
+
+-- A1.20 --
+
 
 11/3/25 to 11/6/25
 1. Change Pause and Game Over UI objects to be shared.

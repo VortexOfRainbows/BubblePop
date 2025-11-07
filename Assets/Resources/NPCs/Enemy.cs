@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.Rendering;
-
 public static class EnemyID
 {
     public class StaticEnemyData
@@ -144,7 +141,11 @@ public class Enemy : Entity
             renderer.material.SetFloat("_OutlineSize", Mathf.Lerp(outlineThreshold, 0.5f, ImplantTimer * ImplantTimer));
         }
         if (ImplantTimer <= 0)
+        {
+            foreach (SpriteRenderer renderer in childrenRenderers)
+                renderer.material.SetFloat("_OutlineSize", outlineThreshold);
             ImplantTimer = -1;
+        }
     }
     #endregion
     public void SetIndexInAllEnemyArray(int i) => IndexInAllEnemyArray = i;

@@ -36,8 +36,8 @@ public static class PlayerData
     public static void ResetAll()
     {
         SaveData.DeleteAll();
-        LoadAll();
         SaveAll();
+        LoadAll();
     }
     public static void SaveAll()
     {

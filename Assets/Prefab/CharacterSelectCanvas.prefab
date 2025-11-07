@@ -379,15 +379,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LastSelectedBody: 0
-  topCanvas: {fileID: 0}
   EquipmentUISlotPrefab: {fileID: 827946258357719481, guid: 8b6a7577c1446004b8a72cbbc03174c7, type: 3}
   PowerLayout: {fileID: 7175752992377758916}
   visual: {fileID: 8072074900162673644}
   DisplayBoxes:
+  - {fileID: 3856447319907767268}
   - {fileID: 2217727480356087716}
   - {fileID: 7909803367287900046}
   - {fileID: 5932755871299263339}
-  - {fileID: 3856447319907767268}
   HasLoaded: 0
 --- !u!1 &1211352584235921436
 GameObject:

@@ -16,15 +16,15 @@ public class Body : Equipment
     }
     public void LoadData()
     {
-        LastSelectedHat = PlayerData.GetInt($"{TypeName}Hat", -1);
-        LastSelectedAcc = PlayerData.GetInt($"{TypeName}Acc", -1);
-        LastSelectedWep = PlayerData.GetInt($"{TypeName}Wep", -1);
-        //Debug.Log($"{LastSelectedHat}, {LastSelectedAcc}, {LastSelectedWep}");
-        if (LastSelectedHat < 0)
+        LastSelectedHat = PlayerData.GetInt($"{TypeName}Hat");
+        LastSelectedAcc = PlayerData.GetInt($"{TypeName}Acc");
+        LastSelectedWep = PlayerData.GetInt($"{TypeName}Wep");
+        //Debug.Log($"{LastSelectedHat}{LastSelectedAcc}{LastSelectedWep}");
+        if (LastSelectedHat <= 0)
             LastSelectedHat = GetDefaultEquip(CharacterSelect.Instance.Hats);
-        if (LastSelectedAcc < 0)
+        if (LastSelectedAcc <= 0)
             LastSelectedAcc = GetDefaultEquip(CharacterSelect.Instance.Accessories);
-        if (LastSelectedWep < 0)
+        if (LastSelectedWep <= 0)
             LastSelectedWep = GetDefaultEquip(CharacterSelect.Instance.Weapons);
     }
     public int GetDefaultEquip(List<GameObject> equipList)
@@ -40,9 +40,9 @@ public class Body : Equipment
         }
         return equipList[0].GetComponent<Equipment>().IndexInAllEquipPool;
     }
-    public int LastSelectedHat = -1;
-    public int LastSelectedAcc = -1;
-    public int LastSelectedWep = -1;
+    public int LastSelectedHat { get; set; } = -1;
+    public int LastSelectedAcc { get; set; } = -1;
+    public int LastSelectedWep { get; set; } = -1;
     public Color PrimaryColor = ParticleManager.DefaultColor;
     public GameObject Face => FaceR.gameObject;
     public SpriteRenderer FaceR;

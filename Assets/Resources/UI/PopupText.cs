@@ -1,8 +1,5 @@
-using System.Linq;
 using TMPro;
-using UnityEditor.Purchasing;
 using UnityEngine;
-
 public class PopupText : MonoBehaviour
 {
     public static GameObject PopupTextPrefab => m_popupTextPrefab == null ? (m_popupTextPrefab = Resources.Load<GameObject>("PopupText/PopupText")) : m_popupTextPrefab;

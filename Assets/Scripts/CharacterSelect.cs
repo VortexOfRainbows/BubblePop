@@ -238,13 +238,13 @@ public class CharacterSelect : MonoBehaviour
     {
         int i = -1;
         if (equipPrefab is Hat)
-            i = 0;
-        else if (equipPrefab is Accessory)
             i = 1;
-        else if (equipPrefab is Weapon)
+        else if (equipPrefab is Accessory)
             i = 2;
-        else if (equipPrefab is Body)
+        else if (equipPrefab is Weapon)
             i = 3;
+        else if (equipPrefab is Body)
+            i = 0;
         SwapPlayerEquipment(equipPrefab);
         RenderBox(DisplayBoxes[i], equipPrefab);
     }
@@ -253,13 +253,13 @@ public class CharacterSelect : MonoBehaviour
         Equipment equipPrefab = AllEquipmentsList[AllIndex].GetComponent<Equipment>();
         int i = -1;
         if (equipPrefab is Hat)
-            i = 0;
-        else if (equipPrefab is Accessory)
             i = 1;
-        else if (equipPrefab is Weapon)
+        else if (equipPrefab is Accessory)
             i = 2;
-        else if (equipPrefab is Body)
+        else if (equipPrefab is Weapon)
             i = 3;
+        else if (equipPrefab is Body)
+            i = 0;
         SwapPlayerEquipment(equipPrefab);
         RenderBox(DisplayBoxes[i], equipPrefab);
     }
@@ -269,22 +269,22 @@ public class CharacterSelect : MonoBehaviour
         int i = -1;
         if (equipPrefab is Hat)
         {
-            i = 0;
+            i = 1;
             equip = Player.Instance.Hat;
         }
         else if (equipPrefab is Accessory)
         {
-            i = 1;
+            i = 2;
             equip = Player.Instance.Accessory;
         }
         else if (equipPrefab is Weapon)
         {
-            i = 2;
+            i = 3;
             equip = Player.Instance.Weapon;
         }
         else if (equipPrefab is Body)
         {
-            i = 3;
+            i = 0;
             equip = Player.Instance.Body;
         }
 
@@ -292,22 +292,22 @@ public class CharacterSelect : MonoBehaviour
         equip = Instantiate(equipPrefab, Player.Instance.Visual.transform).GetComponent<Equipment>();
         equip.p = Player.Instance.Animator;
         equip.AliveUpdate();
-        if (i == 0)
+        if (i == 1)
         {
             Player.Instance.Hat = equip as Hat;
             Player.Instance.Body.LastSelectedHat = equip.IndexInAllEquipPool;
         }
-        if (i == 1)
+        if (i == 2)
         {
             Player.Instance.Accessory = equip as Accessory;
             Player.Instance.Body.LastSelectedAcc = equip.IndexInAllEquipPool;
         }
-        if (i == 2)
+        if (i == 3)
         {
             Player.Instance.Weapon = equip as Weapon;
             Player.Instance.Body.LastSelectedWep = equip.IndexInAllEquipPool;
         }
-        if (i == 3)
+        if (i == 0)
         {
             SwapBody(oldEquipment.GetComponent<Equipment>() as Body, equip as Body);
         }

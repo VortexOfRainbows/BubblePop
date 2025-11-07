@@ -276,7 +276,7 @@ public class ThunderBubble : Projectile
         {
             if(!Recalled)
             {
-                AudioManager.PlaySound(SoundID.ElectricZap, transform.position, 0.3f, 0.66f);
+                AudioManager.PlaySound(SoundID.ElectricZap.GetVariation(0), transform.position, 0.3f, 0.66f);
                 if(Player.Instance.EchoBubbles > 0)
                 {
                     NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, Player.Instance.EchoBubbles);

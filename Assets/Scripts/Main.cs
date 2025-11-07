@@ -132,10 +132,10 @@ public partial class Main : MonoBehaviour
             TimesUsedList.Clear();
             DescriptionData.Clear();
             AllEquipmentsList.Clear();
-            PrimaryEquipments[0] = Hats;
-            PrimaryEquipments[1] = Accessories;
-            PrimaryEquipments[2] = Weapons;
-            PrimaryEquipments[3] = Characters;
+            PrimaryEquipments[0] = Characters;
+            PrimaryEquipments[1] = Hats;
+            PrimaryEquipments[2] = Accessories;
+            PrimaryEquipments[3] = Weapons;
             for (int j = 0; j < PrimaryEquipments.Length; j++)
             {
                 for (int i = 0; i < PrimaryEquipments[j].Count; ++i)
