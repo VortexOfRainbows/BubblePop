@@ -27,8 +27,11 @@ public class LegMotion : Animator
     public float WalkSizeXMult = 0.25f;
     public float WalkTiltAngle = 10;
     public bool SqrtSpeed = true;
+    public float ResetRate = 0.0f;
+    private float WalkMultiplier = 1.0f;
     public void Animate()
     {
+        float rRate = 1 - ResetRate;
         float walkMotion = WalkSize;
         float walkDirection = 1f;
         //if (Entity.Velocity.y < -0.0 && MathF.Abs(Entity.Velocity.y) > 0.001f && MathF.Abs(Entity.Velocity.x) < 0.001f)
@@ -38,7 +41,14 @@ public class LegMotion : Animator
         WalkCounter += walkDirection * velocity * Mathf.Deg2Rad * Mathf.Clamp(walkSpeedMultiplier * 9, 0, 1);
         WalkCounter = WalkCounter.WrapAngle();
 
-        Vector2 circularMotion = new Vector2(walkMotion, 0).RotatedBy(-WalkCounter + AngleOffset * Mathf.Deg2Rad) * walkSpeedMultiplier;
+        if(rRate != 1)
+        {
+            WalkMultiplier += Mathf.Abs(velocity) * ResetRate * 2.5f;
+            WalkMultiplier *= rRate;
+            WalkMultiplier = Math.Clamp(WalkMultiplier, 0, 1);
+        }
+
+        Vector2 circularMotion = new Vector2(walkMotion * WalkMultiplier, 0).RotatedBy(-WalkCounter + AngleOffset * Mathf.Deg2Rad) * walkSpeedMultiplier;
         circularMotion.x *= WalkSizeXMult;
         Vector2 inverse = -circularMotion;
         if (circularMotion.y < 0)

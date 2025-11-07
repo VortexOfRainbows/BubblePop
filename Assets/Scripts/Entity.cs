@@ -50,7 +50,7 @@ public partial class Entity : MonoBehaviour
     {
         UniversalImmuneFrames--;
         OnFixedUpdate();
-        if(this is not Enemy e || !e.IsDummy)
+        if(this is not Enemy e)
             Animate();
     }
     public virtual void OnFixedUpdate()
