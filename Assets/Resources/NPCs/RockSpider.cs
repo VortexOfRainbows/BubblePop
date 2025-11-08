@@ -1,7 +1,4 @@
-using System.Threading;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class RockSpider : Enemy
 {
@@ -21,12 +18,16 @@ public class RockSpider : Enemy
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 8;
-        data.BaseMaxCoin = 5;
+        data.BaseMaxCoin = 6;
         data.Cost = 1f;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
-        scale *= 1.1f;
+        scale *= 1.4f;
+    }
+    public override void UIAI()
+    {
+        UpdateDirection(-1);
     }
     public void UpdateDirection(float i)
     {
@@ -39,6 +40,7 @@ public class RockSpider : Enemy
     protected float Timer = 150;
     public Transform Eye;
     public float ShotRecoil = 1;
+    public int MoveCounter = 0;
     public void UpdateEye()
     {
         Vector2 toPlayer = Player.Position - (Vector2)transform.position;
@@ -57,7 +59,7 @@ public class RockSpider : Enemy
         Timer++;
         if (Timer > 160)
         {
-            if(Utils.RandFloat(1) < 0.4f)
+            if(MoveCounter > 1 && Utils.RandFloat(1) < MoveCounter * 0.2f)
             {
                 AudioManager.PlaySound(SoundID.ElectricZap, Eye.transform.position, 0.7f, 1.7f, 0);
                 int c = 1;
@@ -69,7 +71,9 @@ public class RockSpider : Enemy
                     Projectile.NewProjectile<Bullet>((Vector2)Eye.transform.position + spread * 0.5f, spread * 5.5f, 1, 1.15f);
                 }
                 ShotRecoil = -1.7f;
+                MoveCounter = 0;
             }
+            ++MoveCounter;
             Timer = 0;
             targetedLocation = FindTargetedPlayerPosition();
         }

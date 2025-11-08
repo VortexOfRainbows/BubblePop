@@ -11,6 +11,7 @@ public class EnemyUIElement : MonoBehaviour
     public const int UILayer = 5;
     public Transform Mask;
     public Transform SpriteMask;
+    public Transform EnemyScaler;
     public Image CardGraphicBG;
     private Vector3 originalMaskScale = Vector3.zero;
     public EnemyID.StaticEnemyData StaticData => MyEnemyPrefab.StaticData;
@@ -39,7 +40,7 @@ public class EnemyUIElement : MonoBehaviour
             MyEnemy.SetDummy();
             MyEnemy.Animate();
             MyEnemy.UIAI();
-            MyEnemy.transform.SetParent(transform);
+            MyEnemy.transform.SetParent(EnemyScaler);
             Vector2 offset = Vector2.zero;
             float scale = 40f / (MyEnemy.Visual.transform.localScale.x) * size;
             MyEnemy.ModifyUIOffsets(ref offset, ref scale);
@@ -122,9 +123,13 @@ public class EnemyUIElement : MonoBehaviour
             if (HasHoverVisual)
                 clicked = Input.GetMouseButtonDown(0);
             Mask.transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
+            EnemyScaler.LerpLocalScale(targetScale * scaleUp, 0.15f);
             hovering = true;
         }
         else
+        { 
             Mask.transform.LerpLocalScale(targetScale * 1.0f, 0.1f);
+            EnemyScaler.LerpLocalScale(targetScale * 1.0f, 0.1f);
+        }
     }
 }

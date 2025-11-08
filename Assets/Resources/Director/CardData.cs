@@ -57,9 +57,14 @@ public class CardData
         m = null;
         r = null;
         int waveNum = UpcomingWave;
-        if(waveNum == 1)
+        if ((waveNum == 1 || waveNum == 2) && !WaveDirector.EnemyPool.Contains(EnemyID.RockSpider))
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldDuck) { IsPermanent = true });
+            if (Utils.RandFloat(1) < 0.12f * waveNum * difficultyNum)
+                e ??= new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.RockSpider) { IsPermanent = true });
+        }
+        if (waveNum == 1)
+        {
+            e ??= new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldDuck) { IsPermanent = true });
         }
         if(waveNum == 3)
         {
@@ -239,10 +244,18 @@ public class EnemyClause : CardClause
         while (newEnemy == null)
         {
             Enemy e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+            Enemy secondChoice = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
             if (WaveDirector.WaveNum < 5) //Temporary. Replace with special tiered getter later which does different stuff depending on wave number
             {
                 while(e is Infector)
                     e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+            }
+            else if(WaveDirector.WaveNum > 10)
+            {
+                if(WaveDirector.EnemyPool.Contains(e.gameObject))
+                    e = secondChoice;
+                if (secondChoice.CostMultiplier > e.CostMultiplier)
+                    e = secondChoice;
             }
             newEnemy = new(e);
             if (newEnemy.GetCost() > Points)

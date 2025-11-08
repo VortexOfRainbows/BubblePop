@@ -181,20 +181,12 @@ public static class WaveDirector
     }
     public static void GatherCredits()
     {
-        Credits += 1.0f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
+        Credits += 1.1f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
     }
     public static void DrawNewCards()
     {
-        if(Deck.Count < MaxCards - 2)
-        {
-            Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomPositionOnPlayerEdge(), EnemyID.OldDuck, 0, 1, 0));
-            Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomPositionOnPlayerEdge(), EnemyID.OldDuck, 0, 1, 0));
-            //Deck.Add(WaveDeck.DrawSingleSpawn(new EnemyPattern(Vector2.zero, 0.5f, 0f, EnemyID.OldDuck), 2, 5, 0).ToSwarmCircle(3, 10, 0));
-        }
         while (Deck.Count < MaxCards)
-        {
             Deck.Add(WaveDeck.DrawCard());
-        }
     }
     public static void UpdateMulligans()
     {

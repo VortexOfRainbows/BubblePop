@@ -18,7 +18,10 @@ public class ModifierCard : MonoBehaviour
     public Transform RotateFaker;
     public Canvas SkullAnchorCanvas;
     public Canvas TextCanvas;
-    public void Start() => cardData ??= new(this);
+    public void Start()
+    {
+        cardData ??= new(this);
+    }
     public void UpdateText()
     {
         string shortLineBreak = "<size=12>\n</size>";
@@ -101,6 +104,7 @@ public class ModifierCard : MonoBehaviour
         transform.localScale = backScale;
         transform.localEulerAngles = Vector3.zero;
         BackSide.SetActive(true);
+        CardVisual.UpdateColor(CardVisual.StaticData.TimesKilled <= 0, false);
     }
     public void SpawnAnimation()
     {
