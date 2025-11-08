@@ -1,0 +1,18 @@
+Alpha 1.25 (tentative version number)
+
+New:
+1. Add two new powers
+2. Add one new enemy
+3. Enemy card enemies appear black before you've killed the enemy before
+
+Balance:
+1. Increase director credit rate by 10%
+2. Lucky star now caps the amount of powers it can grant you per wave
+3. Burger now decreases movement speed by 10%
+4. Cap movement speed bonus at 0.1x-2.0x
+5. Haste bonus 10% -> 7%, but is now available by default (it has NOT been removed from equips, though)
+
+Fixes:
+1. Fix bug where choice no longer showed popup tooltip while game was paused
+2. Fix issue where your character equips would not start correctly by default and saving failed
+3. Fix some scaling issues in the bestiary

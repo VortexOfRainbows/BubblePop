@@ -149,12 +149,12 @@ public class WeaponUpgrade : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Haste");
-        description.WithDescription("Increases Y:[attack speed] by Y:10% G:(+10% per stack)");
+        description.WithDescription("Increases Y:[attack speed] by Y:7% G:(+7% per stack)");
         description.WithShortDescription("Increases attack speed");
     }
     public override void HeldEffect(Player p)
     {
-        p.AttackSpeedModifier += Stack * 0.1f;
+        p.AttackSpeedModifier += Stack * 0.07f;
     }
     public override Sprite GetTexture()
     {

@@ -42,6 +42,10 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
+
+-- A1.25 --
+
+
 11/6/25 to 11/7/25
 1. Fix bug where choice no longer showed popup tooltip while game was paused
 2. Fix issue where your character equips would not start correctly by default and saving failed
@@ -51,6 +55,11 @@ Done:
 6. Increase director credit rate by 10%
 7. Enemy cards appear black before you've killed the enemy before
 8. Lucky star now caps the amount of powers it can grant you per wave
+9. Burger now decreases movement speed by 10% instead of increasing it (logarithmic)
+10. Add Cloud Walkers, a movement speed increasing item (logarithmic)
+11. Cap movement speed bonus at 0.1x-2.0x
+12. Haste bonus 10% -> 7%, but is now available by default (it has NOT been removed from equips, though)
+
 
 -- A1.20 --
 

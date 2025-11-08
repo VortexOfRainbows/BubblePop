@@ -81,7 +81,7 @@ public class SpeedBoost : Buff
         float boost = 0.15f * timeLeft / initiallyAppliedDuration;
         if(e is Player p)
         {
-            p.MoveSpeedMod += boost;
+            p.TrueMoveModifier += boost;
         }
     }
 }

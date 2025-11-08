@@ -181,13 +181,13 @@ public class Burger : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Increases Y:[attack speed, movement speed, and damage] by Y:10% G:(+10% per stack)");
+        description.WithDescription("Increases Y:[attack speed] and Y:damage by Y:10% G:(+10% per stack) \nReduces Y:[movement speed] by Y:10% G:(+10% per stack)");
         description.WithShortDescription("Burger!?");
     }
     public override void HeldEffect(Player p)
     {
         p.AttackSpeedModifier += Stack * 0.1f;
-        p.MoveSpeedMod += Mathf.Sqrt(Stack) * 0.1f;
+        p.TrueMoveModifier -= Stack / (9f + Stack);
         p.DamageMultiplier += Stack * 0.1f;
     }
     public override bool IsBlackMarket()
@@ -379,5 +379,22 @@ public class Coupons : PowerUp
     public override void HeldEffect(Player p)
     {
         p.ShopDiscount += 0.1f * Stack;
+    }
+}
+public class CloudWalker : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Cloud Walkers");
+        description.WithDescription($"Increases Y:[movement speed] by Y:10% G:(+10% per stack)");
+        description.WithShortDescription("Increases movement speed");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.TrueMoveModifier += Stack / (9f + Stack);
     }
 }
