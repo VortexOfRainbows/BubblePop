@@ -182,12 +182,13 @@ public class Projectile : MonoBehaviour
                     NewProjectile<StarProj>(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, targetPos.x, targetPos.y, Utils.RandInt(2) * 2 - 1);
                 }
             }
-            if (Player.Instance.LuckyStar > 0)
+            if (Player.Instance.LuckyStar > 0 && Player.Instance.LuckyStarItemsAcquiredThisWave < Player.Instance.LuckyStarItemsAllowedPerWave)
             {
                 float chance = 0.03f + Player.Instance.LuckyStar * 0.01f;
                 if (Utils.RandFloat(1) < chance)
                 {
                     PowerUp.Spawn(PowerUp.RandomFromPool(), (Vector2)target.transform.position, 0);
+                    Player.Instance.LuckyStarItemsAcquiredThisWave++;
                 }
             }
         }

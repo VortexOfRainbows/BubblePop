@@ -259,12 +259,13 @@ public class LuckyStar : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:4% G:(+1% per stack) Y:chance to Y:[drop powers]");
+        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:4% G:(+1% per stack) Y:chance to Y:[drop powers] \nThis effect can only happen Y:3 G:(+1 per stack) Y:times per Y:wave");
         description.WithShortDescription("Enemies killed by stars have an additional chance to drop powers");
     }
     public override void HeldEffect(Player p)
     {
         p.LuckyStar += Stack;
+        p.LuckyStarItemsAllowedPerWave += 2 + Stack;
     }
 }
 public class TrailOfThoughts : PowerUp

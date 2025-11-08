@@ -381,5 +381,6 @@ public partial class Player : Entity
             if (HasBubbleShield && Shield < TotalMaxShield)
                 SetShield(Shield + 1);
         }
+        LuckyStarItemsAcquiredThisWave = 0;
     }
 }

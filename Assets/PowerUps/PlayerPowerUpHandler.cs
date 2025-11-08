@@ -94,6 +94,8 @@ public partial class Player : Entity
     public float BlackmarketMult = 1.0f;
     public float CriticalStrikeChance = 0.05f;
     public float ShopDiscount = 0.0f;
+    public int LuckyStarItemsAllowedPerWave = 0;
+    public int LuckyStarItemsAcquiredThisWave = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -136,6 +138,7 @@ public partial class Player : Entity
 
         CriticalStrikeChance = 0.01f;
         ShopDiscount = 0.0f;
+        LuckyStarItemsAllowedPerWave = 0;
     }
     private void UpdatePowerUps()
     {
