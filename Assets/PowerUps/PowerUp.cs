@@ -137,6 +137,7 @@ public abstract class PowerUp
     {
         PowerUpObject obj = GameObject.Instantiate(Main.PrefabAssets.PowerUpObj, pos, Quaternion.identity);
         obj.Type = powerUpID;
+        obj.finalPosition = pos;
         WaveDirector.PointsSpent += pointCost;
         WaveDirector.PityPowersSpawned += pointCost / 100f;
         WaveDirector.TotalPowersSpawned += 1;
@@ -184,20 +185,29 @@ public abstract class PowerUp
     public int MyID = -1;
     #endregion
     public static bool PickingPowerUps = false;
-    public static int RandomFromPool(float bonusChoiceChance = 0.15f, float blackMarketChance = -1f)
+    public static int RandomFromPool(float bonusChoiceChance = 0.15f, float blackMarketChance = -1f, int rarity = -1)
     {
-        return PickRandomPower(0, bonusChoiceChance, Utils.RandFloat(1) < blackMarketChance);
+        return PickRandomPower(0, bonusChoiceChance, Utils.RandFloat(1) < blackMarketChance, rarity);
     }
-    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false)
+    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false, int rarity = -1)
     {
-        if (Utils.RandFloat() < addedChoiceChance && !BlackMarket)
+        if (Utils.RandFloat() < addedChoiceChance && !BlackMarket && (rarity == -1 || rarity == 1))
         {
             return Get<Choice>().MyID;
         }
         List<int> avail = BlackMarket ? AvailableBlackMarketPowers : AvailablePowers;
+        if(rarity != -1)
+        {
+            List<int> temp = new();
+            foreach(int i in avail)
+                if(PowerUps[i].GetRarity() == rarity)
+                    temp.Add(i);
+            if(temp.Count > 0)
+                avail = temp;
+        }
         float weightMult = 1.0f + recursionDepth * 0.1f;
         int type = avail[Utils.RandInt(avail.Count)];
-        if (Player.Instance.RollPerc > 0)
+        if (rarity == -1 && Player.Instance.RollPerc > 0)
         {
             int rare = PowerUps[type].GetRarity();
             if (rare >= 3) //Increase odds of seeing blue, purple, yellow
@@ -213,7 +223,7 @@ public abstract class PowerUp
             }
         }
         float powerupWeighting = PowerUps[type].Weighting * weightMult;
-        if (powerupWeighting > Utils.RandFloat(1))
+        if (rarity != -1 || powerupWeighting > Utils.RandFloat(1))
         {
             return type;
         }

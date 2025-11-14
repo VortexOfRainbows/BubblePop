@@ -16,6 +16,10 @@ public class PowerUpObject : MonoBehaviour
     public Sprite Sprite => MyPower.sprite;
     private int timer;
     private bool PickedUp = false;
+
+    public float VeloEndTimer = 0.0f;
+    public Vector2 velocity = Vector2.zero;
+    public Vector2 finalPosition;
     public void Start()
     {
         inner.sprite = Sprite;
@@ -44,7 +48,19 @@ public class PowerUpObject : MonoBehaviour
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
         timer++;
         float scale = 1.0f + 0.1f * Mathf.Sin(Mathf.Deg2Rad * timer * 2f);
-        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.1f);
+        if (velocity != Vector2.zero)
+        {
+            VeloEndTimer += Time.fixedDeltaTime;
+            if (VeloEndTimer > 1)
+                VeloEndTimer = 1;
+            transform.position += (Vector3)velocity * Time.fixedDeltaTime;
+            transform.position = transform.position.Lerp(finalPosition, VeloEndTimer);
+            transform.localScale = Vector3.Lerp(transform.localScale, (0.25f + 0.75f * Mathf.Sqrt(Mathf.Min(1, VeloEndTimer * 2f))) * Vector3.one, 0.1f);
+        }
+        else
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.1f);
+        }
         outer.transform.localScale = Vector3.Lerp(outer.transform.localScale, new Vector3(2f / scale, 2f * scale, 2), 0.1f);
         if (Utils.RandFloat(1) < 0.4f)
         {
@@ -66,9 +82,9 @@ public class PowerUpObject : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision) => OnTrigger(collision);
     private void OnTrigger(Collider2D collision)
     {
-        if(collision.tag == "Player" && !PickedUp)
+        if(collision.CompareTag("Player") && !PickedUp)
         {
-            if(CoinManager.Current >= Cost && transform.lossyScale.x > 0.8f)
+            if(CoinManager.Current >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))
             {
                 PickUp();
             }
@@ -104,6 +120,5 @@ public class PowerUpObject : MonoBehaviour
         }
         AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.2f, 0.9f);
         Destroy(gameObject);
-        //Debug.Log($"Player has picked up {MyPower.Name()}");
     }
 }

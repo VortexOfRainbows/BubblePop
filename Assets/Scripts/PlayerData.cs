@@ -152,8 +152,8 @@ public static class PlayerData
             SaveData.DeleteKey<int>($"{TypeName}Acc");
             SaveData.DeleteKey<int>($"{TypeName}Wep");
         }
-        UnlockCondition.Get<GachaponUnlock>().SetComplete(false, false);
-        UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete(false, false);
+        //UnlockCondition.Get<GachaponUnlock>().SetComplete(false, false);
+        //UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete(false, false);
     }
 }
 [Serializable]
