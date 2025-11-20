@@ -8,31 +8,60 @@ public class Chest : MonoBehaviour
     public SpriteRenderer SpriteRenderer;
     public SpriteRenderer SpriteRendererKey;
     public SpriteRenderer SpriteRendererShadow;
+    public SpriteRenderer Bubble;
     private float OGShadowAlpha = 0.0f;
     public Sprite ClosedSprite { get; private set; }
     public Sprite OpenSprite { get; private set; }
+    public int BounceCount = 0;
+    public Vector2 Velocity;
     public int ChestType = 0;
     public int StarsAllocated = 3;
+    public int Direction => (BounceCount % 2 * 2 - 1);
+    public float BounceHeight = 0.75f;
+    public bool OpenVertically = false;
     public void Init(int type)
     {
         ClosedSprite = Main.TextureAssets.T3Chest;
         OpenSprite = Main.TextureAssets.T3ChestOpen;
-        SpriteRendererKey.enabled = false;
+        SpriteRendererKey.enabled = OpenVertically = false;
         SpriteRendererKey.color = SpriteRendererKey.color.WithAlpha(0);
         ChestType = type;
         if (ChestType == 0)
         {
-            ClosedSprite = Main.TextureAssets.T2Chest;
-            OpenSprite = Main.TextureAssets.T2ChestOpen;
-            StarsAllocated = 5;
-        }
-        if (ChestType == 1)
-        {
             ClosedSprite = Main.TextureAssets.T3Chest;
             OpenSprite = Main.TextureAssets.T3ChestOpen;
+            StarsAllocated = 1;
+            BounceHeight = 0.7f;
+            Bubble.transform.localPosition = new Vector3(0, 0.95f, -1f);
+            OpenVertically = true;
+        }
+        else if (ChestType == 1)
+        {
+            ClosedSprite = Main.TextureAssets.T2Chest;
+            OpenSprite = Main.TextureAssets.T2ChestOpen;
+            StarsAllocated = 2;
+            Bubble.transform.localPosition = new Vector3(0, 1.1f, -1f);
+        }
+        else if (ChestType == 2)
+        {
+            ClosedSprite = Main.TextureAssets.T1Chest;
+            OpenSprite = Main.TextureAssets.T1ChestOpen;
             StarsAllocated = 3;
+            BounceHeight = 0.6f;
+            Bubble.transform.localPosition = new Vector3(0, 1.025f, -1f);
         }
         OGShadowAlpha = SpriteRendererShadow.color.a;
+        Visual.transform.localScale = Vector3.one * 0.1f;
+        SpriteRendererShadow.transform.localScale = new Vector3(Visual.transform.localScale.x * 3, Visual.transform.localScale.y, 1);
+
+        SpriteRenderer.sprite = ClosedSprite;
+        AudioManager.PlaySound(SoundID.SoapSlide, transform.position, 0.5f, 0.9f, 0);
+        SpawnAnimation = SpawnAnimation = OpenAnimation = EndAnimation = 0;
+        HasSpawned = false;
+        HasOpened = false;
+        BounceCount = 2;
+        BounceCount += Utils.RandInt(2);
+        Visual.transform.LerpLocalEulerZ(12 * Direction, 1);
     }
     public void Start()
     {
@@ -40,18 +69,87 @@ public class Chest : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if(Control.Tab || OpenAnimation > 0)
+        if (Input.GetKey(KeyCode.R))
         {
-            Open();
+            Init(ChestType);
+        }
+        if (HasSpawned)
+        {
+            Visual.transform.LerpLocalEulerZ(0, 0.1f);
+            Visual.transform.localPosition = Visual.transform.localPosition * 0.9f;
+            if (Control.Tab || OpenAnimation > 0)
+            {
+                Open();
+            }
+            else
+            {
+                Close();
+            }
         }
         else
         {
-            Close();
+            SpawnAnimation += Time.fixedDeltaTime;
+            float sqrt = MathF.Min(1, Mathf.Sqrt(SpawnAnimation));
+
+            if (SpawnAnimation * SpawnAnimation >= 4)
+            {
+                float animation = SpawnAnimation - 2;
+                if(Bubble.enabled)
+                {
+                    AudioManager.PlaySound(SoundID.BubblePop, transform.position, 1.15f, 1.0f, 0);
+                    Velocity = new Vector2(0, 1);
+                    Bubble.enabled = false;
+                    for(int i = 0; i < 14; ++i)
+                    {
+                        ParticleManager.NewParticle(Visual.transform.position + new Vector3(Utils.RandFloat(-2, 2), Utils.RandFloat(0, 2.5f)), Utils.RandFloat(0.5f, 1.0f), Vector2.zero, 2, Utils.RandFloat(0.4f, 0.5f), 0);
+                    }
+                }
+                Velocity.y -= 0.25f;
+                if (Visual.transform.localPosition.y <= 0)
+                {
+                    Visual.transform.localPosition = new Vector3(0, 0, 0);
+                    if (BounceCount > 0)
+                    {
+                        AudioManager.PlaySound(SoundID.SoapDie, transform.position, 0.7f, 0.8f, 0);
+                        Velocity.y = Mathf.Max(0, (Velocity.y + 0.3f) * -BounceHeight);
+                        BounceCount--;
+                    }
+                    else
+                        Velocity.y = 0;
+                }
+                if (Velocity.y != 0 || BounceCount > 0)
+                    Visual.transform.LerpLocalEulerZ(Mathf.Lerp(0, (11 + BounceCount) * Direction, Mathf.Max(0, Velocity.y * 1.2f)), Mathf.Abs(Velocity.y) * Time.fixedDeltaTime * 1.25f);
+                else
+                {
+                    HasSpawned = true;
+                }
+                Visual.transform.localPosition += (Vector3)Velocity * Time.fixedDeltaTime;
+
+            }
+            else
+            {
+                float initPercent = Mathf.Clamp(sqrt * 1.0f + 0.5f * MathF.Sin(sqrt * MathF.PI), 0.1f, 1.5f);
+                Visual.transform.localScale = Vector3.one * initPercent;
+                SpriteRendererShadow.color = SpriteRendererShadow.color.WithAlpha(MathF.Min(1, SpawnAnimation) * 0.8f);
+
+                float squeezeSin = 0.08f * MathF.Sin(SpawnAnimation * MathF.PI);
+                Visual.transform.localScale = new Vector3(Visual.transform.localScale.x + squeezeSin, Visual.transform.localScale.y - squeezeSin, 0.6f);
+
+                Visual.transform.localPosition = new Vector3(MathF.Sin(SpawnAnimation * 4f) * SpawnAnimation * 0.5f * Mathf.Max(0, 2 - SpawnAnimation) * Direction,
+                    5 - Mathf.Min(5, SpawnAnimation * SpawnAnimation), 0);
+                Bubble.enabled = true;
+
+                if(initPercent < 0.8f)
+                    ParticleManager.NewParticle(Visual.transform.position + new Vector3(Utils.RandFloat(-2, 2), Utils.RandFloat(0, 2.5f)), Utils.RandFloat(0.5f, 1.0f), Utils.RandCircleEdge(initPercent) * 4 + Vector2.up * 2, initPercent, 1.0f - 0.5f * initPercent, 0);
+            }
+
+            SpriteRendererShadow.transform.localScale = new Vector3(Visual.transform.localScale.x * 3, sqrt, 1);
+            SpriteRendererShadow.transform.localPosition = new Vector3(Visual.transform.localPosition.x * 0.5f, 0, 1);
         }
     }
     public bool HasOpened = false;
-    public float OpenAnimation = 0;
-    public float EndAnimation = 0;
+    public bool HasSpawned = false;
+    public float SpawnAnimation = 0, OpenAnimation = 0, EndAnimation = 0;
     public float OpenDir = 0;
     public void Open()
     {
@@ -66,6 +164,7 @@ public class Chest : MonoBehaviour
             }
             if(OpenAnimation >= 1)
             {
+                AudioManager.PlaySound(SoundID.PickupPower, transform.position, 0.75f, 0.6f, 0);
                 SpriteRenderer.sprite = OpenSprite;
                 HasOpened = true;
                 GenerateLoot();
@@ -82,10 +181,14 @@ public class Chest : MonoBehaviour
                 else
                 {
                     float dir = OpenDir;
-                    SpriteRendererKey.transform.localScale = new Vector3(ChestType == 1 ? -1 : dir, 1) * (1 + 0.25f * MathF.Sin(MathF.PI * Mathf.Min(1, OpenAnimation * 4)));
-                    SpriteRendererKey.transform.LerpLocalEulerZ((ChestType == 1 ? 90 : dir * -90), 1f);
-                    SpriteRendererKey.enabled = true;
-                    if(ChestType == 1)
+                    SpriteRendererKey.transform.localScale = new Vector3(OpenVertically ? -1 : dir, 1) * (1 + 0.25f * MathF.Sin(MathF.PI * Mathf.Min(1, OpenAnimation * 4)));
+                    SpriteRendererKey.transform.LerpLocalEulerZ((OpenVertically ? 90 : dir * -90), 1f);
+                    if(!SpriteRendererKey.enabled)
+                    {
+                        AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.5f, 1.4f, 0);
+                        SpriteRendererKey.enabled = true;
+                    }
+                    if (OpenVertically)
                         SpriteRendererKey.transform.localPosition = new Vector3(0, 1 + 1.6f * (1 - cubed), 0);
                     else
                         SpriteRendererKey.transform.localPosition = new Vector3(dir * 1.6f * (1 - cubed), 1, 0);

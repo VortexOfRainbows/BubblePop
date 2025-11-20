@@ -1,7 +1,7 @@
 Vortex'sDeveloperLog(BubbleEdition)
 
 Maybe Do:
-1. Organize layers better for rendering
+1. Organize layers better for rendering, so player and enemies can be in front of stuff like trees, chests, etc. But also can be behind them depending on y position...
 2. Add cloud particles
 3. Quadrant system UI
 4. Day/Night system (so we can have cooler lighting)
@@ -45,13 +45,11 @@ Mostly done but might need to keep an eye out:
 Done: 
 
 
-11/14/24
+11/14/24 and 11/20/24
 1. WIP Chests!
 	STILL NEEDS: 
 	1. Key currency required to unlock
 	2. Colliders for unlocking
-	3. Animation for spawning in (like a chest dropping onto the floor with some shake)
-	4. Loot table adjustments
 
 11/8/25
 1. Fixed bug where savedata reset character unlocks on update :)

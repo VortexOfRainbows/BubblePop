@@ -218,7 +218,9 @@ public class SaveData
         if(System.IO.File.Exists(SaveDirectory))
         {
             string json = System.IO.File.ReadAllText(SaveDirectory);
-            return (SaveData)JsonConvert.DeserializeObject(json, typeof(SaveData));
+            var data = (SaveData)JsonConvert.DeserializeObject(json, typeof(SaveData));
+            if (data != null)
+                return data;
         }
         return new();
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public static class ReflectiveEnumerator
@@ -195,19 +196,28 @@ public abstract class PowerUp
         {
             return Get<Choice>().MyID;
         }
+        if (rarity == 1)
+            rarity = -1;
         List<int> avail = BlackMarket ? AvailableBlackMarketPowers : AvailablePowers;
+        float highestWeight = 1.0f;
+        float highestSeen = 0.0f;
         if(rarity != -1)
         {
             List<int> temp = new();
             foreach(int i in avail)
-                if(PowerUps[i].GetRarity() == rarity)
+                if(PowerUps[i].GetRarity() >= rarity)
+                {
+                    highestSeen = PowerUps[i].Weighting > highestSeen ? PowerUps[i].Weighting : highestSeen;
                     temp.Add(i);
-            if(temp.Count > 0)
+                }
+            if (temp.Count > 0)
                 avail = temp;
         }
-        float weightMult = 1.0f + recursionDepth * 0.1f;
+        if (highestSeen != 0)
+            highestWeight = highestSeen;
+        float weightMult = 1.0f / highestWeight + recursionDepth * 0.1f;
         int type = avail[Utils.RandInt(avail.Count)];
-        if (rarity == -1 && Player.Instance.RollPerc > 0)
+        if (Player.Instance.RollPerc > 0)
         {
             int rare = PowerUps[type].GetRarity();
             if (rare >= 3) //Increase odds of seeing blue, purple, yellow

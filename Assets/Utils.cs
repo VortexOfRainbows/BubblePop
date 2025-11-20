@@ -285,7 +285,7 @@ public static class Utils
         }
         return a + num * Mathf.Clamp01(t);
     }
-    public static int Rand1Or0()
+    public static int Rand1OrMinus1()
     {
         return RandInt(2) * 2 - 1;
     }

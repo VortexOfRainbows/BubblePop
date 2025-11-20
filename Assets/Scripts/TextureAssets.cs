@@ -14,7 +14,7 @@ public partial class Main : MonoBehaviour
         public static Sprite Sparkle;
         public static Sprite Shadow;
         public static Material InfectorShader;
-        public static Sprite T3Chest, T3ChestOpen, T2Chest, T2ChestOpen;
+        public static Sprite T3Chest, T3ChestOpen, T2Chest, T2ChestOpen, T1Chest, T1ChestOpen;
         public static void Load()
         {
             BubbleSmall = Resources.Load<Sprite>("Projectiles/SmallBubble");
@@ -32,6 +32,8 @@ public partial class Main : MonoBehaviour
             T3ChestOpen = Resources.Load<Sprite>("Chests/T3ChestOpen");
             T2Chest = Resources.Load<Sprite>("Chests/T2ChestClosed");
             T2ChestOpen = Resources.Load<Sprite>("Chests/T2ChestOpen");
+            T1Chest = Resources.Load<Sprite>("Chests/T1ChestClosed");
+            T1ChestOpen = Resources.Load<Sprite>("Chests/T1ChestOpen");
         }
     }
     public static class PrefabAssets
