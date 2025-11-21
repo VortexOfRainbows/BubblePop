@@ -6,6 +6,7 @@ Maybe Do:
 3. Quadrant system UI
 4. Day/Night system (so we can have cooler lighting)
 5. Wave bar on the top shows current wave card + modifier information
+6. Make it so all enemies are BLACKED until picked in a run, rather than unlocked.
 
 Need to do:
 1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden)
@@ -36,7 +37,6 @@ Need to do:
 15. Infector sometimes makes enemies invisible?
 16. Last killed skull enemy should always drop an item
 
-
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 2. Improve UI
@@ -45,11 +45,10 @@ Mostly done but might need to keep an eye out:
 Done: 
 
 
-11/14/24 and 11/20/24
-1. WIP Chests!
+11/14/24 and 11/20/24 to 11/21/25
+1. Add Chests and Keys!
 	STILL NEEDS: 
-	1. Key currency required to unlock
-	2. Colliders for unlocking
+	1. Spawning from waves as rewards! And modify loot table for other reasons
 
 11/8/25
 1. Fixed bug where savedata reset character unlocks on update :)

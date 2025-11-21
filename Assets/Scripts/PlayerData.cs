@@ -45,7 +45,7 @@ public static class PlayerData
         SaveSettingSliders();
         UnlockCondition.SaveAllData();
         PowerUp.SaveAllData();
-        CoinManager.Save();
+        //CoinManager.Save();
         SaveInt("HighscoreWave", WaveDirector.HighScoreWaveNum);
         SaveInt("PlayerGoldSpent", Player.GoldSpentTotal);
         SaveData.SaveToJson();
@@ -69,7 +69,7 @@ public static class PlayerData
         Player.GoldSpentTotal = GetInt("PlayerGoldSpent", 0);
         UnlockCondition.LoadAllData();
         PowerUp.LoadAllData();
-        CoinManager.Load();
+        //CoinManager.Load();
         WaveDirector.HighScoreWaveNum = GetInt("HighscoreWave", 0);
     }
     public static void SaveInt(string tag, int value) => SaveData.Write(tag, value);

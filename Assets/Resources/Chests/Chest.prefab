@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3370868798499610869}
   - component: {fileID: 8361452190670891223}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 969107278400903733}
   - component: {fileID: 5271805256940191291}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4277827807745363044}
   - component: {fileID: 2571342407110386136}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7283554516986598860}
   - component: {fileID: 2797293488491232329}
-  m_Layer: 0
+  - component: {fileID: 3228053052441750097}
+  - component: {fileID: 4549134885520105398}
+  m_Layer: 10
   m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,19 +302,97 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf0fb0e2b4e3f24dadf52d894c67876, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Collider: {fileID: 3228053052441750097}
+  RB: {fileID: 4549134885520105398}
   Visual: {fileID: 3370868798499610869}
   SpriteRenderer: {fileID: 8361452190670891223}
   SpriteRendererKey: {fileID: 2571342407110386136}
   SpriteRendererShadow: {fileID: 5766202410119973329}
   Bubble: {fileID: 5271805256940191291}
+  BounceCount: 0
+  Velocity: {x: 0, y: 0}
   ChestType: 0
   StarsAllocated: 3
+  BounceHeight: 0.75
+  OpenVertically: 0
   HasOpened: 0
   HasSpawned: 0
   SpawnAnimation: 0
   OpenAnimation: 0
   EndAnimation: 0
   OpenDir: 0
+--- !u!61 &3228053052441750097
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8683841448164062862}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 1160
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 887
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 2.7503426, y: 2.1433334}
+    newSize: {x: 24.75308, y: 19.289999}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.2, y: 1.7}
+  m_EdgeRadius: 0
+--- !u!50 &4549134885520105398
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8683841448164062862}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 4
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: d62baf5a88e6d5a4cb903ffac62401e6, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 1160
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 887
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1001 &4609154013081802018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -324,6 +404,10 @@ PrefabInstance:
     - target: {fileID: 1144901140795138515, guid: 30544e680addbcc45a0caaa43438ef51, type: 3}
       propertyPath: m_Name
       value: DropShadow
+      objectReference: {fileID: 0}
+    - target: {fileID: 1144901140795138515, guid: 30544e680addbcc45a0caaa43438ef51, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3257128257595176495, guid: 30544e680addbcc45a0caaa43438ef51, type: 3}
       propertyPath: m_LocalScale.x

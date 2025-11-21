@@ -18,7 +18,8 @@ public class RockSpider : Enemy
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 8;
-        data.BaseMaxCoin = 6;
+        data.BaseMaxCoin = 10;
+        data.BaseMinCoin = 2;
         data.Cost = 1f;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)

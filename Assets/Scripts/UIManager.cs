@@ -56,7 +56,7 @@ public partial class Main : MonoBehaviour
         }
         public void MainMenu()
         {
-            CoinManager.AfterDeathTransfer();
+            CoinManager.AfterDeathReset();
             UnpauseGame();
             StaticPlaySound();
             SceneManager.LoadScene("MainMenu");

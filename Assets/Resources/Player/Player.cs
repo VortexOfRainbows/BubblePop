@@ -304,7 +304,7 @@ public partial class Player : Entity
             Rebirth();
             return;
         }
-        CoinManager.AfterDeathTransfer();
+        CoinManager.AfterDeathReset();
         Main.UIManager.GameOver();
     }
     public void Rebirth()

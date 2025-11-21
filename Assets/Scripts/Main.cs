@@ -37,7 +37,7 @@ public partial class Main : MonoBehaviour
     public static void StartGame()
     {
         UnpauseGame();
-        CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
+        //CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
         WavesUnleashed = true;
         CardManager.DrawCards();
         CanvasManager.StaticPlaySound();

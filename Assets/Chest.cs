@@ -4,6 +4,25 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
+    public void OnCollisionEnter2D(Collision2D collision) => OnTriggerStay2D(collision.collider);
+    public void OnCollisionStay2D(Collision2D collision) => OnTriggerStay2D(collision.collider);
+    public void OnTriggerEnter2D(Collider2D collision) => OnTriggerStay2D(collision);
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+            TryOpening();
+    }
+    public void TryOpening()
+    {
+        if(OpenAnimation <= 0 && CoinManager.CurrentKeys >= 1)
+        {
+            RB.velocity *= 0.0f;
+            CoinManager.ModifyKeys(-1);
+            Open();
+        }
+    }
+    public BoxCollider2D Collider;
+    public Rigidbody2D RB;
     public Transform Visual;
     public SpriteRenderer SpriteRenderer;
     public SpriteRenderer SpriteRendererKey;
@@ -12,12 +31,12 @@ public class Chest : MonoBehaviour
     private float OGShadowAlpha = 0.0f;
     public Sprite ClosedSprite { get; private set; }
     public Sprite OpenSprite { get; private set; }
-    public int BounceCount = 0;
+    public int BounceCount { get; private set; }
     public Vector2 Velocity;
     public int ChestType = 0;
-    public int StarsAllocated = 3;
+    public int StarsAllocated { get; private set; }
     public int Direction => (BounceCount % 2 * 2 - 1);
-    public float BounceHeight = 0.75f;
+    public float BounceHeight { get; private set; } = 0.75f;
     public bool OpenVertically = false;
     public void Init(int type)
     {
@@ -51,17 +70,28 @@ public class Chest : MonoBehaviour
             Bubble.transform.localPosition = new Vector3(0, 1.025f, -1f);
         }
         OGShadowAlpha = SpriteRendererShadow.color.a;
-        Visual.transform.localScale = Vector3.one * 0.1f;
-        SpriteRendererShadow.transform.localScale = new Vector3(Visual.transform.localScale.x * 3, Visual.transform.localScale.y, 1);
 
         SpriteRenderer.sprite = ClosedSprite;
-        AudioManager.PlaySound(SoundID.SoapSlide, transform.position, 0.5f, 0.9f, 0);
         SpawnAnimation = SpawnAnimation = OpenAnimation = EndAnimation = 0;
         HasSpawned = false;
         HasOpened = false;
         BounceCount = 2;
         BounceCount += Utils.RandInt(2);
-        Visual.transform.LerpLocalEulerZ(12 * Direction, 1);
+
+        if(SkipSpawnAnimation)
+        {
+            Bubble.enabled = false;
+            Collider.enabled = true;
+            HasSpawned = true;
+        }
+        else
+        {
+            Collider.enabled = false;
+            Visual.transform.localScale = Vector3.one * 0.1f;
+            SpriteRendererShadow.transform.localScale = new Vector3(Visual.transform.localScale.x * 3, Visual.transform.localScale.y, 1);
+            Visual.transform.LerpLocalEulerZ(12 * Direction, 1);
+            AudioManager.PlaySound(SoundID.SoapSlide, transform.position, 0.5f, 0.9f, 0);
+        }
     }
     public void Start()
     {
@@ -69,7 +99,8 @@ public class Chest : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.R))
+        //Collider.isTrigger = CoinManager.CurrentKeys > 0;
+        if (Input.GetKey(KeyCode.R) && Main.DebugCheats)
         {
             Init(ChestType);
         }
@@ -77,7 +108,7 @@ public class Chest : MonoBehaviour
         {
             Visual.transform.LerpLocalEulerZ(0, 0.1f);
             Visual.transform.localPosition = Visual.transform.localPosition * 0.9f;
-            if (Control.Tab || OpenAnimation > 0)
+            if ((Control.Tab && Main.DebugCheats) || OpenAnimation > 0)
             {
                 Open();
             }
@@ -146,14 +177,18 @@ public class Chest : MonoBehaviour
             SpriteRendererShadow.transform.localScale = new Vector3(Visual.transform.localScale.x * 3, sqrt, 1);
             SpriteRendererShadow.transform.localPosition = new Vector3(Visual.transform.localPosition.x * 0.5f, 0, 1);
         }
+        RB.velocity *= 0.95f;
     }
-    public bool HasOpened = false;
-    public bool HasSpawned = false;
+    public bool SkipSpawnAnimation = false;
+    public bool HasOpened { get; private set; } = false;
+    public bool HasSpawned { get; private set; } = false;
     public float SpawnAnimation = 0, OpenAnimation = 0, EndAnimation = 0;
     public float OpenDir = 0;
     public void Open()
     {
-        if(!HasOpened)
+        if (OpenAnimation >= 1)
+            Collider.enabled = false;
+        if (!HasOpened)
         {
             if(OpenDir == 0)
             {
@@ -217,6 +252,7 @@ public class Chest : MonoBehaviour
     }
     public void Close()
     {
+        Collider.enabled = true;
         OpenAnimation = 0;
         SpriteRenderer.sprite = ClosedSprite;
         HasOpened = false;
