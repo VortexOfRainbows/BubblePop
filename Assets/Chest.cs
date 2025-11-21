@@ -270,6 +270,8 @@ public class Chest : MonoBehaviour
         }
         float c = powers.Count;
         float yOffset = 1.3f;
+        int spentPowers = 0;
+
         for (int i = 0; i < c; i++)
         {
             float otherMult = (i + 0.5f - c / 2f);
@@ -279,6 +281,18 @@ public class Chest : MonoBehaviour
             PowerUpObject power = PowerUp.Spawn(powers[i], (Vector2)transform.position + new Vector2(0, yOffset * 0.6f), 0).GetComponent<PowerUpObject>();
             power.velocity = circular * 3.5f;
             power.finalPosition = new Vector2(transform.position.x + circular.x, transform.position.y + yOffset);
+            spentPowers += power.Cost;
+        }
+
+        Vector2 pos = transform.position + new Vector3(0, yOffset);
+        if(spentPowers <= StarsAllocated + 2)
+        {
+            if(Utils.RandFloat(1) < 0.2f * StarsAllocated)
+                CoinManager.SpawnHeart(pos, 1);
+            else if(Utils.RandFloat(1) < 0.2f * StarsAllocated)
+                CoinManager.SpawnKey(pos, 1);
+            else
+                CoinManager.SpawnCoin(pos, (int)(StarsAllocated * Utils.RandFloat(10, 31) * WaveDirector.WaveMult), 1);
         }
     }
 }
