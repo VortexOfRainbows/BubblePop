@@ -61,7 +61,7 @@ public class Coin : MonoBehaviour
         }
         else
         {
-            rb.velocity *= isHeart ? 0.925f : 0.985f;
+            rb.velocity *= YieldType == 2 ? 0.9725f : isHeart ? 0.935f : 0.985f;
             AttractTimer = 0;
         }
         BeforeCollectableTimer -= Time.fixedDeltaTime;

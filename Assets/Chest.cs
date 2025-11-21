@@ -52,7 +52,12 @@ public class Chest : MonoBehaviour
             StarsAllocated = 1;
             BounceHeight = 0.7f;
             Bubble.transform.localPosition = new Vector3(0, 0.95f, -1f);
-            OpenVertically = true;
+            if(Utils.RandFloat(1) < 0.05f)
+            {
+                ClosedSprite = Main.TextureAssets.T3ChestUma;
+                OpenSprite = Main.TextureAssets.T3ChestUmaOpen;
+                OpenVertically = true;
+            }
         }
         else if (ChestType == 1)
         {
@@ -264,7 +269,7 @@ public class Chest : MonoBehaviour
         while(s > 0)
         {
             int rare = Math.Max(1, Utils.RandInt(1, Math.Min(s + 1, 6)));
-            int power = PowerUp.RandomFromPool(0.05f, -1f, rare);
+            int power = PowerUp.RandomFromPool(0.05f, OpenVertically ? 1f : -1, rare);
             powers.Add(power);
             s -= rare;
         }
