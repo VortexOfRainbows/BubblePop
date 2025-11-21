@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class RockSpider : Enemy
 {
+    public SpriteRenderer Head;
+    public SpriteRenderer[] LegConnectors;
+    public SpriteRenderer[] LegPoints;
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Rock Spider");
@@ -25,6 +28,27 @@ public class RockSpider : Enemy
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
         scale *= 1.4f;
+    }
+    public override void OnSpawn()
+    {
+        bool mossy = false;
+        if(Utils.RandFloat() < 0.66f)
+        {
+            mossy = Utils.RandFloat() < 0.5f;
+            Head.sprite = mossy ? Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyBody3") : Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyBody2");
+        }
+        foreach (var p in LegConnectors)
+        {
+            if (mossy)
+                p.sprite = Utils.RandFloat() < 0.5f ? Resources.Load<Sprite>("NPCs/BabyRockEnemy/LegConnector3") : 
+                    Resources.Load<Sprite>("NPCs/BabyRockEnemy/LegConnector2");
+        }
+        foreach (var p in LegPoints)
+        {
+            if (mossy)
+                p.sprite = Utils.RandFloat() < 0.5f ? Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyRightLeg3") :
+                    Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyRightLeg4");
+        }
     }
     public override void UIAI()
     {

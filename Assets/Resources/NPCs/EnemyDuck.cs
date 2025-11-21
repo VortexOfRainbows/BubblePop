@@ -19,7 +19,6 @@ public class EnemyDuck : Enemy
         data.BaseMaxCoin = 8;
         data.BaseMaxLife = 10;
     }
-    // Update is called once per frame
     public void MoveUpdate()
     {
         if (aiState == 0)
@@ -43,7 +42,7 @@ public class EnemyDuck : Enemy
             sRender.flipX = toTarget.x > 0;
             if (this is EnemyFlamingo)
                 sRender.flipX = !sRender.flipX;
-            transform.position = Vector2.Lerp(transform.position, targetedLocation, moveSpeed * Time.deltaTime);
+            transform.position = Vector2.Lerp(transform.position, targetedLocation, moveSpeed * Time.fixedDeltaTime);
             if (movingTimer <= 0)
             {
                 movingTimer = baseMovingTimer;
@@ -73,7 +72,7 @@ public class EnemyDuck : Enemy
         MoveUpdate();
     }
     protected virtual Vector2 FindLocation() {
-        return (Vector2)transform.position + new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f));
+        return (Vector2)(transform.position.Lerp(Player.Position, 0.5f)) + new Vector2(Random.Range(-40f, 40f), Random.Range(-40f, 40f));
     }
     public override void OnKill()
     {
