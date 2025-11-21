@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 public abstract class ClauseEffect
 {
@@ -188,6 +189,7 @@ public class DirectorSkullSwarmModifier : DirectorModifier
 public abstract class Reward : ClauseEffect
 {
     public static Vector2 RewardPosition() => Main.PylonPositon + new Vector2(0, 1).RotatedBy(Utils.RandFloat(Mathf.PI / 4f, Mathf.PI * 7f / 4f)) * 5;
+    public static Vector2 RewardPositionChest() => Main.PylonPositon + new Vector2(0, -1).RotatedBy(Utils.RandFloat(Mathf.PI / 4f, Mathf.PI * 7f / 4f)) * 7;
     public bool BeforeWaveEndReward = false;
     public sealed override void Apply()
     {
@@ -228,7 +230,31 @@ public class PowerReward : Reward
 }
 public class ChestReward : Reward
 {
-    //Currently unimplemented
+    public int ChestQuantity = 1;
+    public int ChestType = 1;
+    public ChestReward(int value, int chestType = 0)
+    {
+        this.ChestType = chestType;
+        coins = value;
+    }
+    public int coins;
+    protected override float Cost()
+    {
+        return coins;
+    }
+    public override void GrantReward()
+    {
+        for(int i = 0; i < ChestQuantity; i++)
+            CoinManager.SpawnChest(RewardPositionChest, ChestType);
+    }
+    public override string Description()
+    {
+        if(ChestType == 2)
+            return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], ChestQuantity > 1 ? $"{ChestQuantity} Gem Chests" : $"{ChestQuantity} Gem Chest")}";
+        if (ChestType == 1)
+            return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[2], ChestQuantity > 1 ? $"{ChestQuantity} Blue Chests" : $"{ChestQuantity} Blue Chest")}";
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[0], ChestQuantity > 1 ? $"{ChestQuantity} Chests" : $"{ChestQuantity} Chest")}";
+    }
 }
 public class CoinReward : Reward
 {
@@ -247,26 +273,55 @@ public class CoinReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, $"{coins} coins")}";
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, coins > 1 ? $"{coins} coins" : $"{coins} coin")}";
     }
 }
 public class HealReward : Reward
 {
-    public HealReward(int value)
+    public HealReward(int value, int heals = 1)
     {
+        this.heals = heals;
         coins = value;
     }
     public int coins;
+    public int heals = 1;
     protected override float Cost()
     {
-        return coins * (BeforeWaveEndReward ? 1 : 0.5f);
+        return coins;
     }
     public override void GrantReward()
     {
-        CoinManager.SpawnHeart(RewardPosition, 0.5f);
+        for(int i = 0; i < heals; ++i)
+        {
+            CoinManager.SpawnHeart(RewardPosition, 0.5f);
+        }
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], $"1 heart")}";
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], heals > 1 ? $"{heals} hearts" : $"{heals} heart")}";
     }
 }
+public class KeyReward : Reward
+{
+    public KeyReward(int value, int keys = 1)
+    {
+        this.keys = keys;
+        coins = value;
+    }
+    public int coins;
+    public int keys = 1;
+    protected override float Cost()
+    {
+        return coins;
+    }
+    public override void GrantReward()
+    {
+        for (int i = 0; i < keys; ++i)
+            CoinManager.SpawnKey(RewardPosition, 0.5f);
+    }
+    public override string Description()
+    {
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, keys > 1 ? $"{keys} keys" : $"{keys} key")}";
+    }
+}
+

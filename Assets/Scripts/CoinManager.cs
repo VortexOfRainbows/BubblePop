@@ -10,6 +10,7 @@ public static class CoinManager
         Gold = Resources.Load<GameObject>("Money/GoldCoin");
         Heart = Resources.Load<GameObject>("Money/HeartPickup");
         Key = Resources.Load<GameObject>("Money/KeyPickup");
+        Chest = Resources.Load<GameObject>("Chests/Chest");
     }
     //public static void Load()
     //{
@@ -24,6 +25,7 @@ public static class CoinManager
     public static GameObject Gold;
     public static GameObject Heart;
     public static GameObject Key;
+    public static GameObject Chest;
     public static void SpawnCoin(Vector2 pos, int value = 1, float collectDelay = 0f)
     {
         int bronze = value % 5;
@@ -73,6 +75,15 @@ public static class CoinManager
         GameObject obj = GameObject.Instantiate(Key, pos, Quaternion.identity);
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
         obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
+    }
+    public static void SpawnChest(Func<Vector2> func, int type)
+    {
+        SpawnChest(func.Invoke(), type);
+    }
+    public static void SpawnChest(Vector2 pos, int type)
+    {
+        Chest obj = GameObject.Instantiate(Chest, pos, Quaternion.identity).GetComponent<Chest>();
+        obj.Init(type);
     }
     public static int Current { get; private set; } = 0;
     public static int CurrentKeys { get; private set; } = 0;

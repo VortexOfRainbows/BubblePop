@@ -428,6 +428,8 @@ public class RewardClause : CardClause
                 AddPowerReward(p, listType);
             else if (r is CoinReward c)
                 AddCashReward(c, listType);
+            else if (r is ChestReward ch)
+                AddChestReward(ch, listType);
         }
         HealingChance = healingChance;
         GenerateData();
@@ -459,6 +461,19 @@ public class RewardClause : CardClause
             ++RewardsAdded;
         }
     }
+    public void AddChestReward(ChestReward r, List<Reward> list)
+    {
+        Reward SameType = list.Find(g => g is ChestReward g2);
+        if (SameType != null && SameType is ChestReward g2 && g2.ChestType == r.ChestType)
+        {
+            g2.ChestQuantity += r.ChestQuantity;
+        }
+        else //clone does not exists
+        {
+            list.Add(r);
+            ++RewardsAdded;
+        }
+    }
     public override void GenerateData()
     {
         float Rubies = Player.Instance.Ruby * 0.1f * Mathf.Sqrt(HealingChance);
@@ -480,13 +495,15 @@ public class RewardClause : CardClause
                 AddPowerReward(p, listType);
             else if (r is CoinReward c)
                 AddCashReward(c, listType);
+            else if (r is ChestReward ch)
+                AddChestReward(ch, listType);
             else
                 listType.Add(r);
         }
     }
     private PowerReward GeneratePower(ref float PointsAvailable, float BonusOnReroll = 5)
     {
-        PowerReward reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
+        PowerReward reward = new(PowerUp.RandomFromPool(0, -1));
         while (reward.GetCost() > PointsAvailable)
         {
             reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
@@ -494,6 +511,34 @@ public class RewardClause : CardClause
         }
         return reward;
     }
+    private ChestReward GenerateChest(ref float PointsAvailable)
+    {
+        int chestQuantity = 1;
+        int chestQuality = 0;
+        if (Utils.RandFloat(PointsAvailable) > 35)
+        {
+            chestQuality++;
+            if (Utils.RandFloat(PointsAvailable) > 85)
+                chestQuality++;
+        }
+        int chestSpawnCost = 25;
+        if (chestQuality == 1)
+            chestSpawnCost = 40;
+        if (chestQuality == 2)
+            chestSpawnCost = 90;
+
+        float spendablePoints = PointsAvailable - chestSpawnCost;
+        while (Utils.RandFloat(spendablePoints) > chestSpawnCost)
+        {
+            chestQuantity++;
+            spendablePoints -= chestSpawnCost;
+        }
+
+        ChestReward reward = new(chestSpawnCost * chestQuantity, chestQuality);
+        reward.ChestQuantity = chestQuantity;
+        return reward;
+    }
+    public int RewardType = -1;
     private Reward GenRandomReward()
     {
         float PointsAvailable = Points;
@@ -501,17 +546,34 @@ public class RewardClause : CardClause
         Reward reward = null;
         if(reward == null)
         {
-            if (Utils.RandFloat(1) < HealingChance * 0.065f && PreRewards.Count <= 0)
+            if (RewardType == -1 && Utils.RandFloat(1) < HealingChance * 0.05f && PreRewards.Count <= 0)
             {
-                reward = new HealReward((int)(PointsAvailable + 0.4f));
+                RewardType = 1;
+                reward = new HealReward(beforeWaveReward ? (int)(PointsAvailable + 0.5f) : (int)(PointsAvailable * 0.75f + 0.5f));
             }
-            else if (Utils.RandFloat(1) < 0.5f || Points < 10)
+            else if (RewardType == -1 && Utils.RandFloat(1) < 0.35f)
             {
-                reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.4f) : (int)(PointsAvailable + 0.4f));
+                RewardType = 2;
+                float conversionRate = (beforeWaveReward ? 15 : 10) + WaveDirector.WaveNum;
+                int possibleMaxKeys = (int)Mathf.Max(1, PointsAvailable / conversionRate);
+                possibleMaxKeys = (int)Mathf.Max(1, (possibleMaxKeys + 1) * Utils.RandFloat() * Utils.RandFloat());
+                reward = new KeyReward((int)(possibleMaxKeys * conversionRate), possibleMaxKeys);
             }
-            else
+            else if (Utils.RandFloat(1) < 0.4f || Points < 10)
             {
-                reward = GeneratePower(ref PointsAvailable);
+                reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.5f) : (int)(PointsAvailable + 0.5f));
+            }
+            if(reward == null)
+            {
+                if(Utils.RandFloat() < 0.3f)
+                {
+                    reward = GeneratePower(ref PointsAvailable);
+                }
+                else
+                {
+                    //RewardType = 3;
+                    reward = GenerateChest(ref PointsAvailable);
+                }
             }
         }
         reward.BeforeWaveEndReward = beforeWaveReward;
