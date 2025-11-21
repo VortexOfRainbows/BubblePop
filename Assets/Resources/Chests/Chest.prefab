@@ -309,14 +309,10 @@ MonoBehaviour:
   SpriteRendererKey: {fileID: 2571342407110386136}
   SpriteRendererShadow: {fileID: 5766202410119973329}
   Bubble: {fileID: 5271805256940191291}
-  BounceCount: 0
   Velocity: {x: 0, y: 0}
   ChestType: 0
-  StarsAllocated: 3
-  BounceHeight: 0.75
   OpenVertically: 0
-  HasOpened: 0
-  HasSpawned: 0
+  SkipSpawnAnimation: 0
   SpawnAnimation: 0
   OpenAnimation: 0
   EndAnimation: 0
@@ -378,7 +374,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 4
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0

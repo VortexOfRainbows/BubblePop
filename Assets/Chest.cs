@@ -177,7 +177,7 @@ public class Chest : MonoBehaviour
             SpriteRendererShadow.transform.localScale = new Vector3(Visual.transform.localScale.x * 3, sqrt, 1);
             SpriteRendererShadow.transform.localPosition = new Vector3(Visual.transform.localPosition.x * 0.5f, 0, 1);
         }
-        RB.velocity *= 0.95f;
+        RB.velocity *= 0.94f;
     }
     public bool SkipSpawnAnimation = false;
     public bool HasOpened { get; private set; } = false;
@@ -291,8 +291,8 @@ public class Chest : MonoBehaviour
                 CoinManager.SpawnHeart(pos, 1);
             else if(Utils.RandFloat(1) < 0.2f * StarsAllocated)
                 CoinManager.SpawnKey(pos, 1);
-            else
-                CoinManager.SpawnCoin(pos, (int)(StarsAllocated * Utils.RandFloat(10, 31) * WaveDirector.WaveMult), 1);
+            else if (Utils.RandFloat(1) < 0.1f + 0.1f * StarsAllocated)
+                CoinManager.SpawnCoin(pos, (int)(StarsAllocated * Utils.RandFloat(10, 21) * WaveDirector.WaveMult), 1);
         }
     }
 }

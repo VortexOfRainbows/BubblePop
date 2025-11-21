@@ -67,4 +67,9 @@ public class EnemyBossDuck : EnemyDuck
         DeathParticles(80, 0.9f, new Color(1, .97f, .52f));
         AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.3f, 0.5f);
     }
+    new public void Update()
+    {
+        base.Update();
+        AudioManager.TargetTheme = AudioManager.LeonardTheme;
+    }
 }

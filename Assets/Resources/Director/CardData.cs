@@ -43,6 +43,8 @@ public class CardData
             else
                 m.TemporaryModifiers.Insert(0, e.AlternativeModifier);
         }
+        if(UpcomingWave == 1)
+            r.AddKeyReward(new KeyReward(0, 1), r.PreRewards);
         RegisterClause(e);
         RegisterClause(m);
         RegisterClause(r);
@@ -430,6 +432,8 @@ public class RewardClause : CardClause
                 AddCashReward(c, listType);
             else if (r is ChestReward ch)
                 AddChestReward(ch, listType);
+            else if(r is KeyReward k)
+                AddKeyReward(k, listType);
         }
         HealingChance = healingChance;
         GenerateData();
@@ -456,6 +460,19 @@ public class RewardClause : CardClause
             g2.coins += r.coins;
         }
         else //clone does not exists
+        {
+            list.Add(r);
+            ++RewardsAdded;
+        }
+    }
+    public void AddKeyReward(KeyReward r, List<Reward> list)
+    {
+        Reward SameType = list.Find(g => g is KeyReward g2);
+        if (SameType != null && SameType is KeyReward g2)
+        {
+            g2.keys += r.keys;
+        }
+        else
         {
             list.Add(r);
             ++RewardsAdded;
@@ -497,6 +514,8 @@ public class RewardClause : CardClause
                 AddCashReward(c, listType);
             else if (r is ChestReward ch)
                 AddChestReward(ch, listType);
+            else if (r is KeyReward k)
+                AddKeyReward(k, listType);
             else
                 listType.Add(r);
         }
@@ -556,7 +575,7 @@ public class RewardClause : CardClause
                 RewardType = 2;
                 float conversionRate = (beforeWaveReward ? 15 : 10) + WaveDirector.WaveNum;
                 int possibleMaxKeys = (int)Mathf.Max(1, PointsAvailable / conversionRate);
-                possibleMaxKeys = (int)Mathf.Max(1, (possibleMaxKeys + 1) * Utils.RandFloat() * Utils.RandFloat());
+                possibleMaxKeys = (int)Mathf.Max(1, (possibleMaxKeys + 1) * Utils.RandFloat(0.5f, 1.0f) * Utils.RandFloat());
                 reward = new KeyReward((int)(possibleMaxKeys * conversionRate), possibleMaxKeys);
             }
             else if (Utils.RandFloat(1) < 0.4f || Points < 10)
