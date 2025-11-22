@@ -1,13 +1,14 @@
 using UnityEngine;
 public class SmallBubble : Projectile
 {
+    public int RandomLifeShorten = 0;
     public override void Init()
     {
         Color c = Player.ProjectileColor;
         c.a = 0.68f;
         SpriteRenderer.color = c;
         SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
-        timer += Utils.RandInt(41);
+        RandomLifeShorten = Utils.RandInt(41);
         timer2 = 0;
         if(Data.Length > 0)
             Data1 = 0;
@@ -16,14 +17,31 @@ public class SmallBubble : Projectile
         Penetrate = 1;
         Friendly = false;
         SpriteRendererGlow.gameObject.SetActive(false);
+        RB.velocity *= 1 + 0.1f * Player.Instance.FasterBulletSpeed;
     }
     public override void AI()
     {
+        float deathTime = 180;
+        if (Player.Instance.EternalBubbles > 0)
+        {
+            int bonus = Player.Instance.EternalBubbles;
+            if (bonus > 9)
+            {
+                deathTime += 10 * (bonus - 9);
+                bonus = 9;
+            }
+            deathTime += 40 + 40 * bonus;
+        }
+        deathTime -= RandomLifeShorten;
         if (++timer2 > 3)
             Friendly = true;
         Vector2 velo = RB.velocity;
-        velo *= 1 - 0.008f / (2 + Player.Instance.FasterBulletSpeed) - timer / 5000f;
-        velo.y += 0.005f;
+        if (timer > deathTime - 100 + RandomLifeShorten)
+            velo *= 0.95f;
+        else if (timer > deathTime - 130 + RandomLifeShorten)
+            velo *= 0.9725f;
+        else if (timer > deathTime - 160 + RandomLifeShorten)
+            velo *= 0.99f;
         RB.velocity = velo;
         float speed = RB.velocity.magnitude;
         float rtSpeed = Mathf.Sqrt(speed);
@@ -37,17 +55,6 @@ public class SmallBubble : Projectile
         }
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
 
-        float deathTime = 180;
-        if (Player.Instance.EternalBubbles > 0)
-        {
-            int bonus = Player.Instance.EternalBubbles;
-            if (bonus > 9)
-            {
-                deathTime += 10 * (bonus - 9);
-                bonus = 9;
-            }
-            deathTime += 40 + 40 * bonus;
-        }
         float FadeOutTime = 20;
         if (timer > deathTime + FadeOutTime)
         {
@@ -96,7 +103,7 @@ public class BigBubble : Projectile
         if (Player.Instance.BubbleBlast > 0)
         {
             float amt = 1 + (3 + Data2) * Player.Instance.BubbleBlast;
-            float speed = 3.5f + (Data2 * 1.25f + Player.Instance.FasterBulletSpeed * 1.75f + Player.Instance.ChargeShotDamage * 0.75f);
+            float speed = 3.5f + (Data2 * 1.25f + Player.Instance.ChargeShotDamage * 0.75f);
             for (int i = 0; i < amt; i++)
                 NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1);
         }
@@ -157,7 +164,7 @@ public class BigBubble : Projectile
                 toMouse = toMouse.normalized * 6;
             Vector2 mouse = Player.Position + toMouse;
             toMouse = mouse - (Vector2)transform.position;
-            RB.velocity = toMouse * 0.1f + toMouse.normalized * (10f + Player.Instance.FasterBulletSpeed + Mathf.Min(24, 24f * (timer + 50) / -200f));
+            RB.velocity = toMouse * 0.1f + toMouse.normalized * (10f + Mathf.Min(24, 24f * (timer + 50) / -200f));
             timer = 1;
 
             for (int i = 0; i < 30; i++)
@@ -171,7 +178,7 @@ public class BigBubble : Projectile
             if (Utils.RandFloat(1) < 0.15f)
                 ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x * 0.5f), Utils.RandFloat(.3f, .4f), RB.velocity * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.3f, .6f), 0, Player.ProjectileColor);
             Friendly = true;
-            RB.velocity *= 1 - 0.007f / (2 + Player.Instance.FasterBulletSpeed) - timer / 4000f;
+            RB.velocity *= 1 - 0.0035f - timer / 4000f;
             timer++;
             if (Player.Instance.SoapySoap > 0 && timer <= 120)
             {
@@ -182,7 +189,7 @@ public class BigBubble : Projectile
                 if (timer % interval == 0)
                 {
                     Vector2 norm = RB.velocity.normalized;
-                    float veloMult = Utils.RandFloat(0.75f * Player.Instance.FasterBulletSpeed, 3f + Player.Instance.FasterBulletSpeed * 1.25f);
+                    float veloMult = Utils.RandFloat(0.25f, 3f + Player.Instance.FasterBulletSpeed * 1.25f);
                     NewProjectile<SmallBubble>((Vector2)transform.position + Utils.RandCircle(transform.lossyScale.x * 0.5f), Utils.RandCircle(2) - norm * veloMult, 1);
                 }
             }

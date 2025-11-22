@@ -108,7 +108,7 @@ public class BubbleGun : BubblemancerWand
                 float spreadAmt = (25f + shotCount * 0.5f) / shotCount;
                 for(int i = 0; i < shotCount; ++i)
                 {
-                    float speed = Utils.RandFloat(16.5f, 17) + 2.1f * player.FasterBulletSpeed;
+                    float speed = Utils.RandFloat(25f, 27f);
                     float spread = spreadAmt * (i - (shotCount - 1) * 0.5f);
                     Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand,
                         toMouse.normalized.RotatedBy(spread * Mathf.Deg2Rad)

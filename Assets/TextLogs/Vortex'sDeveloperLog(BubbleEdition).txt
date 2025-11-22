@@ -34,8 +34,7 @@ Need to do:
 13. Grass shader to make grass more interesting and potentially slightly vary in the wind
 14. Infector sometimes makes enemies invisible?
 15. Last killed skull enemy should always drop an item
-16. Change bubble propulsion and bubble movement ai to be more linear-like
-17. Change duck ai to be improved (this will also apply to leonard and flamingo)
+16. Change duck ai to be improved (this will also apply to leonard and flamingo)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -44,6 +43,13 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
+11/21/25
+1. Binary stars and sparkle-sparkle is no longer effected by bubble propulsion
+2. Simplified movement logic on small bubbles:
+	1. Remove slight anti-gravity on small bubbles 
+	2. Remove scaling de-acceleration factor
+	3. De-acceleration factor now only applies at certain intervals
+3. Fixed bug where Key was not dropping from first wave reward
 
 11/14/24 and 11/20/24 to 11/21/25
 1. Add Chests and Keys! Spawns from waves as rewards! Also loot table modifications!

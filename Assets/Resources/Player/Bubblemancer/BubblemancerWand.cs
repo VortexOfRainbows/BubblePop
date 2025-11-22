@@ -102,8 +102,8 @@ public class BubblemancerWand : Weapon
             if (canAttack)
             {
                 int starshotNum = player.Starshot;
-                float speed = Utils.RandFloat(9, 15) + 1.5f * player.FasterBulletSpeed;
-                float spread = 12 + Mathf.Sqrt(player.ShotgunPower) * (10f / (10f + player.FasterBulletSpeed));
+                float speed = Utils.RandFloat(9, 15);
+                float spread = 12 + Mathf.Sqrt(player.ShotgunPower);
                 Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2,
                     toMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad)
                     * speed + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)), 1);
@@ -114,7 +114,7 @@ public class BubblemancerWand : Weapon
                 {
                     if (Utils.RandFloat(1) <= odds)
                     {
-                        speed = Utils.RandFloat(9, 15) + 1.5f * player.FasterBulletSpeed;
+                        speed = Utils.RandFloat(9, 15);
                         Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2,
                             toMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad)
                             * speed + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)), 1);

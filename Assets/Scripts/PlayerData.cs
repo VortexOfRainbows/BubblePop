@@ -142,7 +142,6 @@ public static class PlayerData
     }
     public static void VersionResetProcedure()
     {
-        PlayerPrefs.DeleteAll();
         SaveData.DeleteKey<int>("LastSelectedChar");
         string TypeName;
         for(int i = 0; i < Main.GlobalEquipData.Characters.Count; ++i)

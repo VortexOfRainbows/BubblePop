@@ -152,7 +152,7 @@ public class ThoughtBubble : Body
         int amt = (int)BrainBlastNum;
         while (BrainBlastNum >= 1)
         {
-            float speed = 5f + Player.Instance.FasterBulletSpeed * 2.5f + player.BrainBlast * Utils.RandFloat(1.5f, 2.5f);
+            float speed = 5f + player.BrainBlast * Utils.RandFloat(1.5f, 2.5f);
             Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.5f)), 0).RotatedBy((BrainBlastNum + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1); 
             --BrainBlastNum;
         }
@@ -246,7 +246,7 @@ public class ThoughtBubble : Body
             while (sparkleSparkleNum > 1f)
             {
                 Vector2 target = Utils.RandCircle(1).normalized * 20;
-                Vector2 target2 = Utils.RandCircle(1).normalized * (14 + 0.5f * player.FasterBulletSpeed);
+                Vector2 target2 = Utils.RandCircle(1).normalized * 14;
                 Projectile.NewProjectile<StarProj>(current.transform.position, target2, 2, current.transform.position.x + target.x, current.transform.position.y + target.y, Utils.RandInt(2) * 2 - 1);
                 sparkleSparkleNum -= 1.0f;
             }

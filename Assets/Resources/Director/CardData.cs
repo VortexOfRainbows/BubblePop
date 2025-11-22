@@ -43,8 +43,6 @@ public class CardData
             else
                 m.TemporaryModifiers.Insert(0, e.AlternativeModifier);
         }
-        if(UpcomingWave == 1)
-            r.AddKeyReward(new KeyReward(0, 1), r.PreRewards);
         RegisterClause(e);
         RegisterClause(m);
         RegisterClause(r);
@@ -503,6 +501,8 @@ public class RewardClause : CardClause
             Rubies -= 1;
             AddPowerReward(reward, PostRewards);
         }
+        if (CardData.UpcomingWave == 1)
+            AddKeyReward(new KeyReward(0, 1) { BeforeWaveEndReward = true }, PreRewards);
         while (Points >= 1 && (RewardsAdded < RewardsAllowed || RewardsAllowed == -1))
         {
             Reward r = GenRandomReward();

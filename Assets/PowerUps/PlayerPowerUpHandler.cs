@@ -180,13 +180,13 @@ public partial class Player : Entity
             {
                 BinaryStarTimer += 1.5f / PassiveAttackSpeedModifier; //1.0, 1.25, 1.5, 1.75, 2.0
                 Vector2 circular = Utils.RandCircle(1).normalized;
-                float speedMax = 18 + FasterBulletSpeed;
+                float speedMax = 18;
                 int c = BinaryStars + 1;
                 float spreadAmt = Mathf.PI * 2f / (float)c;
                 for (int i = 0; i < c; i++)
                 {
                     circular = circular.RotatedBy(spreadAmt);
-                    Vector2 target = (Vector2)transform.position + circular * (16 + FasterBulletSpeed);
+                    Vector2 target = (Vector2)transform.position + circular * 16;
                     Projectile.NewProjectile<StarProj>(transform.position, circular.RotatedBy(Mathf.PI * 0.55f) * speedMax, 2, target.x, target.y, -1);
                 }
             }
@@ -202,8 +202,7 @@ public partial class Player : Entity
             {
                 BubbleTrailTimer += 2f / (PassiveAttackSpeedModifier * (BubbleTrail + 2f)); //.5, 2/5, 2/6, 2/7, 1/4
                 Vector2 circular = (Utils.RandCircle(1.3f) - Animator.lastVelo * 0.4f).normalized;
-                float speedMax = 2 + FasterBulletSpeed * 0.2f;
-                Projectile.NewProjectile<SmallBubble>(transform.position, circular * speedMax, 1);
+                Projectile.NewProjectile<SmallBubble>(transform.position, circular * 2, 1);
             }
         }
         else
