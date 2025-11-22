@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 public class DualGridTilemap : MonoBehaviour
 {
     public static GameObject Flower => Resources.Load<GameObject>("World/Decor/Nature/WhiteFlower");
+    public static GameObject Mushroom => Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
     public static readonly int WorldSize = 100;
     public static Vector3Int[] NEIGHBOURS => DualGridTile.NEIGHBOURS;
     public Tilemap Map => m_RealTileMap;
@@ -26,6 +27,8 @@ public class DualGridTilemap : MonoBehaviour
         RefreshDisplayTilemap();
         if(orderOffset == -50)
             AddDecor(c, -20);
+        if (orderOffset == -49)
+            AddDecor(new Color(0.8f, 0.8f, 0.8f), -30);
         m_RealTileMap.GetComponent<TilemapRenderer>().enabled = false;
     }
     //public void Update()
@@ -62,21 +65,40 @@ public class DualGridTilemap : MonoBehaviour
     }
     public void AddDecor(Color c, int order)
     {
+        bool mushroom = false;
+        float mult = 1.0f;
+        if (order == -30)
+        {
+            mushroom = true;
+            mult = 0.5f;
+        }
         int grassLayer = 2;
+        int dirtLayer = 1;
         Tile grassTile = World.Instance.Tiles[grassLayer].RealTileMapVariant; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
+        Tile dirtTile = World.Instance.Tiles[dirtLayer].RealTileMapVariant; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
         for (int i = -WorldSize; i <= WorldSize; i++)
         {
             for (int j = -WorldSize; j <= WorldSize; j++)
             {
-                if(m_RealTileMap.GetTile(i, j) == grassTile)
+                bool isGrassTile = m_RealTileMap.GetTile(i, j) == grassTile;
+                if (isGrassTile && Utils.RandFloat() < 0.05f * mult)
                 {
-                    if(Utils.RandFloat() < 0.05f)
+                    var g = Instantiate(Flower, Visual.transform).GetComponent<SpriteRenderer>();
+                    g.transform.localPosition = new Vector3(i + 1, j + 1, 0);
+                    g.color = c;
+                    g.sortingOrder = order;
+                    continue;
+                }
+                if (mushroom && (isGrassTile || m_RealTileMap.GetTile(i, j) == dirtTile))
+                {
+                    if (Utils.RandFloat() < 0.05f)
                     {
-                        var g = Instantiate(Flower, Visual.transform).GetComponent<SpriteRenderer>();
-                        g.transform.localPosition = new Vector3(i + 1, j + 1, 0);
+                        var g = Instantiate(Mushroom, Visual.transform).GetComponent<SpriteRenderer>();
+                        g.transform.localPosition = new Vector3(i + 1, j + 1, 0) + (Vector3)Utils.RandCircle(0.2f);
                         g.color = c;
                         g.sortingOrder = order;
                     }
+                    continue;
                 }
             }
         }

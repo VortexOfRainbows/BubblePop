@@ -32,9 +32,9 @@ public class RockSpider : Enemy
     public override void OnSpawn()
     {
         bool mossy = false;
-        if(Utils.RandFloat() < 0.66f)
+        if(Utils.RandFloat() < 0.5f)
         {
-            mossy = Utils.RandFloat() < 0.5f;
+            mossy = true;
             Head.sprite = mossy ? Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyBody3") : Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyBody2");
         }
         foreach (var p in LegConnectors)
