@@ -34,7 +34,6 @@ Need to do:
 13. Grass shader to make grass more interesting and potentially slightly vary in the wind
 14. Infector sometimes makes enemies invisible?
 15. Last killed skull enemy should always drop an item
-16. Change duck ai to be improved (this will also apply to leonard and flamingo)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -42,6 +41,17 @@ Mostly done but might need to keep an eye out:
 3. Integrate Compendium into the pause menu
 
 Done: 
+
+
+-- A1.30 --
+
+
+11/24/25
+1. Fix bug with Leonard soundtrack playing when it shouldn't (at least, this should be fixed, but not guaranteed)
+2. Added Perpetual Bubble Machine to the Black Market Pool, seems to work OK
+3. Chicken now appears in the first wave instead of the duck often
+4. Duck, Flamingo, and Leonard movement AI adjusted to be somewhat more aggressive
+5. Adjust bestiary a bit more: Crow card art changed, and hovering enemies only increases the enemy size rather than the size and bg size
 
 11/21/25
 1. Binary stars and sparkle-sparkle is no longer effected by bubble propulsion

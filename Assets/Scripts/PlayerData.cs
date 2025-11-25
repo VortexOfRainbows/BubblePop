@@ -13,7 +13,7 @@ public static class PlayerData
         public static int MeadowsStars { get; set; } = 0;
         public static int TotalMeadowsStars { get; set; } = 0;
     }
-    public static readonly float CurrentPlayerVersion = 1.25f;
+    public static readonly float CurrentPlayerVersion = 1.30f;
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
@@ -151,8 +151,6 @@ public static class PlayerData
             SaveData.DeleteKey<int>($"{TypeName}Acc");
             SaveData.DeleteKey<int>($"{TypeName}Wep");
         }
-        //UnlockCondition.Get<GachaponUnlock>().SetComplete(false, false);
-        //UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete(false, false);
     }
 }
 [Serializable]

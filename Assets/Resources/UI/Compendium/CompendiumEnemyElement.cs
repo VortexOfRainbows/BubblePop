@@ -31,7 +31,7 @@ public class CompendiumEnemyElement : CompendiumElement
         MyElem.CompendiumElement = true;
         CountCanvas.sortingLayerID = canvas.sortingLayerID;
         int forceInitUpdates = 1;
-        if (Style == 2 || Style == 4)
+        if (Style == 2 || Style == 4) //Hover element
         {
             BG.enabled = false;
             MyElem.HasHoverVisual = false;
@@ -43,6 +43,7 @@ public class CompendiumEnemyElement : CompendiumElement
         {
             MyElem.HasHoverVisual = false;
             MyElem.MaskActive(true);
+            MyElem.IsMainSelectedInCompendium = true;
         }
         for (int a = 0; a < forceInitUpdates; ++a)
             Update();

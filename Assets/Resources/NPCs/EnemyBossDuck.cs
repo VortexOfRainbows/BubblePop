@@ -24,6 +24,7 @@ public class EnemyBossDuck : EnemyDuck
     }
     public override void AI()
     {
+        PlayMusic = true;
         int soundChance = Random.Range(1, 400);
         if (soundChance == 1)
         {
@@ -57,19 +58,21 @@ public class EnemyBossDuck : EnemyDuck
         }
         AudioManager.PlaySound(SoundID.LenardLaser.GetVariation(0), transform.position, 0.3f, 1.5f);
     }
-    protected override Vector2 FindLocation()
-    {
-        return (Vector2)transform.position + new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f)) + (Player.Position - (Vector2)transform.position) * 0.1f;
-    }
     public override void OnKill()
     {
         DeathParticles(40, 0.7f, new Color(0.1f, 0.1f, 0.1f));
         DeathParticles(80, 0.9f, new Color(1, .97f, .52f));
         AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.3f, 0.5f);
     }
+    protected override Vector2 FindLocation()
+    {
+        return (Vector2)transform.position.Lerp(Player.Position, Utils.RandFloat(0.1f, 0.5f)) + Utils.RandCircleEdge(Utils.RandFloat(5f, 15f));
+    }
+    public bool PlayMusic = false;
     new public void Update()
     {
         base.Update();
-        AudioManager.TargetTheme = AudioManager.LeonardTheme;
+        if(PlayMusic)
+            AudioManager.SetMusic(AudioManager.LeonardTheme, 1);
     }
 }

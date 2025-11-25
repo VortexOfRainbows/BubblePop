@@ -22,6 +22,7 @@ public class EnemyUIElement : MonoBehaviour
     public bool Unlocked => MyEnemy.StaticData.Unlocked;
     public int MyID = 0;
     public int AddedDrawOrder { get; set; } = 40;
+    public bool IsMainSelectedInCompendium = false;
     public void SetEnemy(Enemy enemyBasePrefab)
     {
         if (originalMaskScale == Vector3.zero)
@@ -46,6 +47,11 @@ public class EnemyUIElement : MonoBehaviour
             MyEnemy.ModifyUIOffsets(ref offset, ref scale);
             MyEnemy.transform.localScale = Vector3.one;
             MyEnemy.transform.localScale *= scale;
+
+            if(IsMainSelectedInCompendium && MyEnemy is EnemyBossDuck leonard)
+            {
+                leonard.PlayMusic = true;
+            }
 
             var obj = MyEnemy.gameObject;
             obj.gameObject.layer = UILayer;
@@ -122,13 +128,13 @@ public class EnemyUIElement : MonoBehaviour
             float scaleUp = 1.1f;
             if (HasHoverVisual)
                 clicked = Input.GetMouseButtonDown(0);
-            Mask.transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
+            //Mask.transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
             EnemyScaler.LerpLocalScale(targetScale * scaleUp, 0.15f);
             hovering = true;
         }
         else
         { 
-            Mask.transform.LerpLocalScale(targetScale * 1.0f, 0.1f);
+            //Mask.transform.LerpLocalScale(targetScale * 1.0f, 0.1f);
             EnemyScaler.LerpLocalScale(targetScale * 1.0f, 0.1f);
         }
     }

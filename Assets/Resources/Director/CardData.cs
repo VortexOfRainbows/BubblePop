@@ -64,7 +64,7 @@ public class CardData
         }
         if (waveNum == 1)
         {
-            e ??= new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldDuck) { IsPermanent = true });
+            e ??= new EnemyClause(AvailablePoints, new EnemyCard(Utils.RandFloat(1) < 0.3f ? EnemyID.OldDuck : EnemyID.Chicken) { IsPermanent = true });
         }
         if(waveNum == 3)
         {
@@ -72,11 +72,11 @@ public class CardData
         }
         if (waveNum == 4 || waveNum == 5)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Chicken : MidDifficulty ? EnemyID.Crow : EnemyID.OldFlamingo));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? (Utils.RandFloat(1) < 0.3f ? EnemyID.Chicken : EnemyID.OldDuck) : MidDifficulty ? EnemyID.Crow : EnemyID.OldFlamingo));
         }
         if (waveNum == 6)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MaxDifficultyCard ? EnemyID.Crow : EnemyID.Chicken));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MaxDifficultyCard ? EnemyID.Crow : (Utils.RandFloat(1) < 0.7f ? EnemyID.Chicken : EnemyID.OldDuck)));
             m = new(AvailablePoints, 1, new DirectorSkullSwarmModifier(e.Enemy) { ApplicationStrength = MaxDifficultyCard ? 1 : 2, IsPermanent = false });
         }
         if (waveNum == 7)
@@ -89,7 +89,7 @@ public class CardData
         }
         if (waveNum == 9)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Ent : MaxDifficultyCard ? EnemyID.OldLeonard : EnemyID.Gatligator));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(Utils.RandFloat(1) < 0.15f ? EnemyID.Infector : MinDifficultyCard ? EnemyID.Ent : MaxDifficultyCard ? EnemyID.OldLeonard : EnemyID.Gatligator));
         }
         if (waveNum == 10)
         {
@@ -491,6 +491,16 @@ public class RewardClause : CardClause
     }
     public override void GenerateData()
     {
+        int choices = Player.Instance.PerpetualBubble;
+        while (choices-- > 0)
+        {
+            PowerReward reward = new(PowerUp.Get<Choice>().MyID)
+            {
+                Free = true,
+                BeforeWaveEndReward = true
+            };
+            AddPowerReward(reward, PreRewards);
+        }
         float Rubies = Player.Instance.Ruby * 0.1f * Mathf.Sqrt(HealingChance);
         while (Utils.RandFloat(1) < Rubies)
         {

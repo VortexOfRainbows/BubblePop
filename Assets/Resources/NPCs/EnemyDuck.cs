@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class EnemyDuck : Enemy
 {
+    public const int baseAimingTimer = 240;
     public SpriteRenderer sRender;
-    //aiState 0 = choosing location
-    //aiState 1 = going to location
     private int aiState = 0;
     private Vector2 targetedLocation;
-    private int aimingTimer;
-    const int baseAimingTimer = 240;
+    private int aimingTimer = baseAimingTimer;
     private int movingTimer;
     const int baseMovingTimer = 300;
-    private float moveSpeed = 0.1f;
     protected float bobbingTimer = 0;
     public override float CostMultiplier => 1;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
@@ -35,6 +32,8 @@ public class EnemyDuck : Enemy
             }
         }
 
+        float inertia = 0.12f;
+        RB.velocity *= 1 - inertia;
         if (aiState == 1)
         {
             Vector2 toTarget = targetedLocation - (Vector2)transform.position;
@@ -42,16 +41,15 @@ public class EnemyDuck : Enemy
             sRender.flipX = toTarget.x > 0;
             if (this is EnemyFlamingo)
                 sRender.flipX = !sRender.flipX;
-            transform.position = Vector2.Lerp(transform.position, targetedLocation, moveSpeed * Time.fixedDeltaTime);
+            float speed = Mathf.Min(1.0f + 0.1f * toTarget.magnitude, toTarget.magnitude);
+            RB.velocity += toTarget.normalized * speed * inertia;// * Time.fixedDeltaTime;
             if (movingTimer <= 0)
             {
                 movingTimer = baseMovingTimer;
                 aiState = 0;
             }
             else
-            {
                 movingTimer--;
-            }
         }
         bobbingTimer++;
         float bobSpeed = 80f;
@@ -72,7 +70,7 @@ public class EnemyDuck : Enemy
         MoveUpdate();
     }
     protected virtual Vector2 FindLocation() {
-        return (Vector2)(transform.position.Lerp(Player.Position, 0.5f)) + new Vector2(Random.Range(-40f, 40f), Random.Range(-40f, 40f));
+        return (Vector2)transform.position.Lerp(Player.Position, Utils.RandFloat(0.25f, 0.75f)) + Utils.RandCircleEdge(Utils.RandFloat(2.5f, 10f));
     }
     public override void OnKill()
     {

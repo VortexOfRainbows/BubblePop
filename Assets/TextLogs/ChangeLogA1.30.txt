@@ -1,0 +1,20 @@
+Dev Build 1.30 (tentative version number)
+
+New:
+1. Add Chests and Keys! Spawns from waves as rewards! Also loot table modifications!
+2. Add alternate arts for the rock spider to add some variation
+3. Leonard Boss theme
+4. Added Perpetual Bubble Machine (POWER) to the Black Market Pool
+
+Changes:
+1. Simplified movement logic on small bubbles:
+	1. Remove slight anti-gravity on small bubbles 
+	2. Remove scaling de-acceleration factor
+	3. De-acceleration factor now only applies at certain intervals
+2. Binary stars and sparkle-sparkle is no longer effected by bubble propulsion
+3. Duck, Flamingo, and Leonard movement AI adjusted to be somewhat more aggressive
+4. Chicken now often appears in the first wave instead of the duck
+
+Fixes:
+1. Fixed bug where savedata reset character unlocks on update
+2. 

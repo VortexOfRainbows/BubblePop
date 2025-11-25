@@ -10,8 +10,6 @@ public partial class Main : MonoBehaviour
 {
     public static Canvas ActivePrimaryCanvas => UIManager.MainCanvas;
     public static CanvasManager UIManager => Instance.MyUIManager;
-    public static bool StartingScreen = false;
-
     [SerializeField]
     private CanvasManager MyUIManager = new();
     [Serializable]

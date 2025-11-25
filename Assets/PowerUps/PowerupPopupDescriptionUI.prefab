@@ -112,8 +112,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -16}
-  m_SizeDelta: {x: 600, y: 50}
+  m_AnchoredPosition: {x: 0, y: -11}
+  m_SizeDelta: {x: 600, y: 55}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5701223886380182025
 CanvasRenderer:
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -494,6 +494,7 @@ MonoBehaviour:
   Description: {fileID: 3586809203737096695}
   myRect: {fileID: 1846035805060091531}
   FollowMouse: 0
+  ReadyToRenderNormal: 0
   stars:
   - {fileID: 7382055916821127081}
   - {fileID: 8394254865555263010}

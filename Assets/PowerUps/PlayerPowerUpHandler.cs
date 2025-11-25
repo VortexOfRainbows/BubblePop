@@ -104,6 +104,7 @@ public partial class Player : Entity
     public float ShopDiscount = 0.0f;
     public int LuckyStarItemsAllowedPerWave = 0;
     public int LuckyStarItemsAcquiredThisWave = 0;
+    public int PerpetualBubble = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -146,7 +147,7 @@ public partial class Player : Entity
 
         CriticalStrikeChance = 0.01f;
         ShopDiscount = 0.0f;
-        LuckyStarItemsAllowedPerWave = 0;
+        LuckyStarItemsAllowedPerWave = PerpetualBubble = 0;
     }
     private void UpdatePowerUps()
     {

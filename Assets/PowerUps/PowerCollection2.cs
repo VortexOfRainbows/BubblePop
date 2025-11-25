@@ -398,3 +398,24 @@ public class CloudWalker : PowerUp
         p.TrueMoveModifier += Stack / (9f + Stack);
     }
 }
+public class PerpetualBubbleMachine : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Adds Y:1 G:(+1 per stack) <color={DetailedDescription.Rares[0]}>Choice</color> to Y:[wave start]");
+        description.WithShortDescription("The key to infinite bubble forever");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.PerpetualBubble += Stack;
+    }
+    public override bool IsBlackMarket()
+    {
+        return true;
+    }
+    public override int Cost => 75;
+}

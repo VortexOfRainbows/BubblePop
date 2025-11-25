@@ -26,7 +26,7 @@ public class Crow : Enemy
     {
         data.BaseMaxLife = 10;
         data.BaseMaxCoin = 15;
-        data.CardBG = Resources.Load<Sprite>("NPCs/Card/CrowB");
+        //data.CardBG = Resources.Load<Sprite>("NPCs/Card/CrowB");
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

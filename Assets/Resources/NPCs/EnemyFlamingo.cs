@@ -39,7 +39,7 @@ public class EnemyFlamingo : EnemyDuck
     }
     protected override Vector2 FindLocation()
     {
-        return (Vector2)transform.position + new Vector2(Random.Range(-30f, 30f), Random.Range(-30f, 30f)) + (Player.Position - (Vector2)transform.position) * 0.2f;
+        return (Vector2)transform.position.Lerp(Player.Position, Utils.RandFloat(0.3f, 0.5f)) + Utils.RandCircleEdge(Utils.RandFloat(4f, 8f));
     }
     public override void OnKill()
     {

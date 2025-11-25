@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -42,32 +43,40 @@ public class AudioManager : MonoBehaviour
         m_Instance = this;
     }
 
-    public static AudioClip TargetTheme = null;
+    private static AudioClip CurrentTheme = null;
+    public static AudioClip MenuTheme = null;
     public static AudioClip MeadowTheme = null;
     public static AudioClip LeonardTheme = null;
     private static float MusicTransition = 0f;
+    private static int MusicPriority = 0;
     private void Update()
     {
+        MenuTheme = MenuTheme != null ? MenuTheme : Resources.Load<AudioClip>("Audio/Music/BubbleBathBonanza");
         MeadowTheme = MeadowTheme != null ? MeadowTheme : Resources.Load<AudioClip>("Audio/Music/Meadow");
         LeonardTheme = LeonardTheme != null ? LeonardTheme : Resources.Load<AudioClip>("Audio/Music/Leonard");
 
-        if(MusicSource.clip != TargetTheme)
+
+        if (MusicSource.clip != CurrentTheme)
         {
-            MusicTransition += Time.deltaTime * 0.4f;
+            MusicTransition += Time.deltaTime * 0.5f;
             if(MusicTransition >= 1)
             {
-                var temp = MusicSource;
-                MusicSource = SecondaryMusicSource;
-                SecondaryMusicSource = temp;
+                (SecondaryMusicSource, MusicSource) = (MusicSource, SecondaryMusicSource);
                 MusicTransition = 0;
             }
+        }
+        else
+        {
+            MusicTransition -= Time.deltaTime * 0.5f;
+            if (MusicTransition <= 0)
+                MusicTransition = 0;
         }
         if(MusicTransition != 0)
         {
             SecondaryMusicSource.enabled = true;
             if(SecondaryMusicSource.clip == null)
             {
-                SecondaryMusicSource.clip = TargetTheme;
+                SecondaryMusicSource.clip = CurrentTheme;
                 SecondaryMusicSource.time = 0;
                 SecondaryMusicSource.Play();
             }
@@ -89,11 +98,15 @@ public class AudioManager : MonoBehaviour
         //    //print("Playing: " + MusicSource.clip.name);
         //    MusicSource.Play();
         //}
-        TargetTheme = MeadowTheme;
+        CurrentTheme = SceneManager.GetActiveScene().buildIndex == 0 ? MenuTheme : MeadowTheme;
+        MusicPriority = 0;
     }
-
-    private void SwapMusic()
+    public static void SetMusic(AudioClip Music, int Priority = 1)
     {
-
+        if(MusicPriority < Priority)
+        {
+            MusicPriority = Priority;
+            CurrentTheme = Music;
+        }
     }
 }
