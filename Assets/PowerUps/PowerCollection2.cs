@@ -187,8 +187,7 @@ public class Burger : PowerUp
     public override void HeldEffect(Player p)
     {
         p.AttackSpeedModifier += Stack * 0.1f;
-        p.TrueMoveModifier -= Stack / (9f + Stack);
-        p.DamageMultiplier += Stack * 0.1f;
+        p.TrueMoveModifier -= Stack * 0.1f;
     }
     public override bool IsBlackMarket()
     {
@@ -395,7 +394,7 @@ public class CloudWalker : PowerUp
     }
     public override void HeldEffect(Player p)
     {
-        p.TrueMoveModifier += Stack / (9f + Stack);
+        p.TrueMoveModifier += Stack * 0.1f;
     }
 }
 public class PerpetualBubbleMachine : PowerUp

@@ -67,7 +67,18 @@ public partial class Player : Entity
     {   
         get
         {
-            return Mathf.Clamp(TrueMoveModifier, 0.1f, 2.0f);
+            float baseline = 1.0f;
+            if(TrueMoveModifier > baseline)
+            {
+                float amountAbove = (TrueMoveModifier - baseline) * 10;
+                baseline += amountAbove / (9 + amountAbove);
+            }
+            else if(baseline > TrueMoveModifier)
+            {
+                float amountBelow = (baseline - TrueMoveModifier) * 10;
+                baseline -= amountBelow / (9 + amountBelow);
+            }
+            return Mathf.Clamp(baseline, 0.01f, 2.0f);
         }
     }
     public float BlueChipChance = 0.0f;

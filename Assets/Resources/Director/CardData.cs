@@ -478,8 +478,8 @@ public class RewardClause : CardClause
     }
     public void AddChestReward(ChestReward r, List<Reward> list)
     {
-        Reward SameType = list.Find(g => g is ChestReward g2);
-        if (SameType != null && SameType is ChestReward g2 && g2.ChestType == r.ChestType)
+        Reward SameType = list.Find(g => g is ChestReward g2 && g2.ChestType == r.ChestType);
+        if (SameType != null && SameType is ChestReward g2)
         {
             g2.ChestQuantity += r.ChestQuantity;
         }
