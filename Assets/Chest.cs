@@ -105,15 +105,15 @@ public class Chest : MonoBehaviour
     public void FixedUpdate()
     {
         //Collider.isTrigger = CoinManager.CurrentKeys > 0;
-        if (Input.GetKey(KeyCode.R) && Main.DebugCheats)
-        {
-            Init(ChestType);
-        }
+        //if (Input.GetKey(KeyCode.R) && Main.DebugCheats)
+        //{
+            //Init(ChestType);
+        //}
         if (HasSpawned)
         {
             Visual.transform.LerpLocalEulerZ(0, 0.1f);
             Visual.transform.localPosition = Visual.transform.localPosition * 0.9f;
-            if ((Control.Tab && Main.DebugCheats) || OpenAnimation > 0)
+            if ((Input.GetKey(KeyCode.LeftControl) && Control.Tab && Main.DebugCheats) || OpenAnimation > 0)
             {
                 Open();
             }
@@ -292,12 +292,12 @@ public class Chest : MonoBehaviour
         Vector2 pos = transform.position + new Vector3(0, yOffset);
         if(spentPowers <= StarsAllocated + 2)
         {
-            if(Utils.RandFloat(1) < 0.2f * StarsAllocated)
-                CoinManager.SpawnHeart(pos, 1);
-            else if(Utils.RandFloat(1) < 0.2f * StarsAllocated)
-                CoinManager.SpawnKey(pos, 1);
-            else if (Utils.RandFloat(1) < 0.1f + 0.1f * StarsAllocated)
+            if (Utils.RandFloat(1) < 0.25f + 0.125f * StarsAllocated)
                 CoinManager.SpawnCoin(pos, (int)(StarsAllocated * Utils.RandFloat(10, 21) * WaveDirector.WaveMult), 1);
+            else if(Utils.RandFloat(1) < 0.05f + 0.05f * StarsAllocated)
+                CoinManager.SpawnHeart(pos, 1);
+            else if(Utils.RandFloat(1) < 0.05f + 0.0125f * StarsAllocated)
+                CoinManager.SpawnKey(pos, 1);
         }
     }
 }

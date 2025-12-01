@@ -453,6 +453,7 @@ public class RewardClause : CardClause
     public void AddCashReward(CoinReward r, List<Reward> list)
     {
         Reward SameType = list.Find(g => g is CoinReward g2);
+        r.coins = ((r.coins + 4) / 5) * 5;
         if (SameType != null && SameType is CoinReward g2)
         {
             g2.coins += r.coins;
@@ -544,23 +545,27 @@ public class RewardClause : CardClause
     {
         int chestQuantity = 1;
         int chestQuality = 0;
-        if (Utils.RandFloat(PointsAvailable) > 35)
+        if (Utils.RandFloat(PointsAvailable) > 45 && Utils.RandFloat() < 0.6f)
         {
             chestQuality++;
-            if (Utils.RandFloat(PointsAvailable) > 85)
+            if (Utils.RandFloat(PointsAvailable) > 95 && Utils.RandFloat() < 0.6f)
                 chestQuality++;
         }
         int chestSpawnCost = 25;
         if (chestQuality == 1)
-            chestSpawnCost = 40;
+            chestSpawnCost = 50;
         if (chestQuality == 2)
-            chestSpawnCost = 90;
+            chestSpawnCost = 100;
 
         float spendablePoints = PointsAvailable - chestSpawnCost;
         while (Utils.RandFloat(spendablePoints) > chestSpawnCost)
         {
-            chestQuantity++;
-            spendablePoints -= chestSpawnCost;
+            if (Utils.RandFloat() < 0.33f)
+            {
+                chestQuantity++;
+                spendablePoints -= chestSpawnCost;
+            }
+            else break;
         }
 
         ChestReward reward = new(chestSpawnCost * chestQuantity, chestQuality);
@@ -580,12 +585,14 @@ public class RewardClause : CardClause
                 RewardType = 1;
                 reward = new HealReward(beforeWaveReward ? (int)(PointsAvailable + 0.5f) : (int)(PointsAvailable * 0.75f + 0.5f));
             }
-            else if (RewardType == -1 && Utils.RandFloat(1) < 0.35f)
+            else if (RewardType == -1 && Utils.RandFloat(1) < 0.40f)
             {
                 RewardType = 2;
-                float conversionRate = (beforeWaveReward ? 15 : 10) + WaveDirector.WaveNum;
+                float conversionRate = (beforeWaveReward ? 18 : 12) + WaveDirector.WaveNum;
                 int possibleMaxKeys = (int)Mathf.Max(1, PointsAvailable / conversionRate);
-                possibleMaxKeys = (int)Mathf.Max(1, (possibleMaxKeys + 1) * Utils.RandFloat(0.5f, 1.0f) * Utils.RandFloat());
+                possibleMaxKeys = (int)Mathf.Max(1, (possibleMaxKeys + 1) * Utils.RandFloat());
+                int otherKeyValue = (int)Mathf.Max(1, (possibleMaxKeys + 1) * Utils.RandFloat(0.5f, 1.0f) * Utils.RandFloat(0.25f, 1.0f));
+                possibleMaxKeys = Mathf.Min(possibleMaxKeys, otherKeyValue);
                 reward = new KeyReward((int)(possibleMaxKeys * conversionRate), possibleMaxKeys);
             }
             else if (Utils.RandFloat(1) < 0.4f || Points < 10)

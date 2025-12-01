@@ -129,13 +129,13 @@ public class EnemyUIElement : MonoBehaviour
             if (HasHoverVisual)
                 clicked = Input.GetMouseButtonDown(0);
             //Mask.transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
-            EnemyScaler.LerpLocalScale(targetScale * scaleUp, 0.15f);
+            EnemyScaler.LerpLocalScale(targetScale * scaleUp, Utils.DeltaTimeLerpFactor(0.15f));
             hovering = true;
         }
         else
         { 
             //Mask.transform.LerpLocalScale(targetScale * 1.0f, 0.1f);
-            EnemyScaler.LerpLocalScale(targetScale * 1.0f, 0.1f);
+            EnemyScaler.LerpLocalScale(targetScale * 1.0f, Utils.DeltaTimeLerpFactor(0.1f));
         }
     }
 }

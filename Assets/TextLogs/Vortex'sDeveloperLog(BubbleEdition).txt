@@ -40,12 +40,27 @@ Mostly done but might need to keep an eye out:
 2. Improve UI
 3. Integrate Compendium into the pause menu
 
-NEED TO DO FOR SHOWCASE RIGHT AWAY:
-1. Debug menu in the bottom left of main menu for enabling debug features
-2. Debug Feature: Wave Skip
-3. Debug Feature: Game Accelerator
-
 Done: 
+
+11/30/25 to 12/1/25
+1. Lots of internal UI reworks to streamline UI processes
+2. Added DEBUG UI and Upgraded WAVE SKIP functionality to allow better* gameplay simulation
+3. Fixed bug where enemy ui scaling updates were framerate dependent
+4. Fixed bug where cards were selectable while paused
+5. Coins are now first priority for secondary chest loot, coins->hearts->keys, rather than hearts->keys->coin
+	1. Additionally, the rates for the loot was changed like this:
+		1. Coins: (10%, 20%, 30%) -> (25%, 37.5%, 50%)
+		2. Hearts: (20%, 40%, 60%) -> (5%, 10%, 15%)
+		3. Keys: (20%, 40%, 60%) -> (5%, 6.25%, 7.5%)
+6. Increased cost and decreased appearance rate of higher tier chest rewards (costs go up by around 10%)
+	1. Added a flat 40% chance to fail a chest upgrade, compounding for gem chests (meaning that even if they can be afforded, the chance is now 36% for them to appear compared to the other chests).
+	2. Greatly decreased the average size of chest rewards by giving a 67% chance to fail a quantity increase roll
+7. Increased cost of keys for purpose of director spawning by 20%, but rate of appearance increased by about 14%
+	1. Keys now have a disadvantage roll for the quantity to spawn (it will roll twice and pick the lower spawn value)
+8. Coupons now decreases shop prices by 10% -> 12% (this should realistically not improve the item whatsoever, but is funny)
+9. Immediate Coin rewards point cost multiplier 2.0 -> 1.5, meaning coins are more plentiful in immediate wave rewards
+	1. Coins spawned by wave rewards are now rounded to multiplies of 5
+10. Fix bug where coins and keys were preserved on pressing the RESTART button
 
 11/25/25
 1. Movespeed augments now all receive a LOGARITHMIC (?) POST-PROCESSING curve, rather than just burger and cloudwalkers

@@ -138,8 +138,6 @@ public partial class Player : Entity
     public override void OnFixedUpdate()
     {
         FillEquipArray();
-        if (Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.N))
-            Main.DebugCheats = true;
         if (!HasRunStartingGear && Main.WavesUnleashed)
         {
             foreach(Equipment e in Equips)

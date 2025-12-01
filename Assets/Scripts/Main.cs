@@ -82,27 +82,17 @@ public partial class Main : MonoBehaviour
     public void Update()
     {
         Instance = this;
-        if (Input.GetKeyDown(KeyCode.F) && DebugCheats)
-            DirectorCanvas.SetActive(!DirectorCanvas.activeSelf);
-        if (Input.GetKeyDown(KeyCode.P) && DebugCheats)
-            PowerupCheatCanvas.SetActive(!PowerupCheatCanvas.activeSelf);
-        if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
-            UnlockCondition.ForceUnlockAll = true;
-        if (DebugCheats && Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.RightShift))
-            WaveDirector.WaveNum += 1;
-
+        DebugSettings.Update(this);
         if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex != 0)
         {
             if (GamePaused)
             {
                 if (UIManager.SettingsMenu.activeSelf)
-                {
                     UIManager.ToggleSettings();
-                }
+                else if (UIManager.DebugMenu.activeSelf)
+                    UIManager.OpenDebugMenu();
                 else
-                {
                     UIManager.Resume();
-                }
             }
             else
                 UIManager.Pause();
@@ -205,5 +195,34 @@ public partial class Main : MonoBehaviour
         {
 
         }
+    }
+    public static class DebugSettings
+    {
+        public static ref bool DebugCheats => ref Main.DebugCheats;
+        public static void Update(Main instance)
+        {
+            if (/*Input.GetKey(KeyCode.R) &&*/Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.N))
+            {
+                UIManager.EnableDebugButtons();
+                DebugCheats = true;
+            }
+            if(DebugCheats)
+                UIManager.EnableDebugButtons();
+            if (Input.GetKeyDown(KeyCode.F) && DebugCheats)
+                DirectorView = !DirectorView;
+            if (Input.GetKeyDown(KeyCode.P) && DebugCheats)
+                PowerUpCheat = !PowerUpCheat;
+            if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
+                UnlockCondition.ForceUnlockAll = true;
+            if (Input.GetKeyDown(KeyCode.L) && DebugCheats)
+                SkipWaves = !SkipWaves;
+
+            instance.PowerupCheatCanvas.SetActive(PowerUpCheat);
+            instance.DirectorCanvas.SetActive(DirectorView);
+        }
+        public static bool DirectorView = false;
+        public static bool PowerUpCheat = false;
+        public static bool SkipWaves = false;
+        public static ref bool ForceUnlockAll => ref UnlockCondition.ForceUnlockAll;
     }
 }

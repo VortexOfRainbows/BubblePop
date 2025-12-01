@@ -265,7 +265,7 @@ public class CoinReward : Reward
     public int coins;
     protected override float Cost()
     {
-        return coins * (BeforeWaveEndReward ? 2 : 1);
+        return coins * (BeforeWaveEndReward ? 1.5f : 1);
     }
     public override void GrantReward()
     {

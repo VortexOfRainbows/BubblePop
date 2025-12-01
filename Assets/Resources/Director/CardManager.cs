@@ -34,7 +34,7 @@ public class CardManager : MonoBehaviour
         bool cardsCurrentlySpawning = !Card[0].HasBeenFlipped;
         for (int i = 0; i < Cards.Length; ++i)
         {
-            bool Hovered = Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
+            bool Hovered = !Main.UIManager.PauseMenu.activeSelf && Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
             if(Hovered && Control.LeftMouseClick && !cardsCurrentlySpawning)
             {
                 ChosenCardIndex = ChosenCardIndex != i ? i : -1;
@@ -54,7 +54,7 @@ public class CardManager : MonoBehaviour
         foreach (ModifierCard card in Cards)
             card.UpdateSizing();
         bool cardSelected = ChosenCardIndex != -1;
-        bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected && Control.LeftMouseClick;
+        bool confirmButtonHovered = !Main.UIManager.PauseMenu.activeSelf && Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected && Control.LeftMouseClick;
         if(confirmButtonHovered || (Control.Interact && cardSelected))
             ConfirmCard();
         VisualUpdate();
@@ -63,12 +63,14 @@ public class CardManager : MonoBehaviour
     {
         for(int i = 0; i < Cards.Length; ++i)
         {
-            bool Hovered = Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
+            bool Hovered = !Main.UIManager.PauseMenu.activeSelf && Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
             Cards[i].UpdateSelectVisuals(i == ChosenCardIndex, Hovered);
-            Cards[i].SpawnAnimation();
+            float updateSpeed = Main.DebugSettings.SkipWaves ? 2.0f : 1.0f;
+            for (int j = 0; j < updateSpeed; ++j)
+                Cards[i].SpawnAnimation();
         }
         bool cardSelected = ChosenCardIndex != -1;
-        bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected;
+        bool confirmButtonHovered = !Main.UIManager.PauseMenu.activeSelf && Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected;
         Color c = confirmButtonHovered ? Color.yellow : Color.white;
         ConfirmButton.color = Color.Lerp(ConfirmButton.color, c, Utils.DeltaTimeLerpFactor(0.2f));
         ConfirmButtonText.color = Color.white;
@@ -81,7 +83,7 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < Cards.Length; ++i)
             Cards[i].DespawnAnimation();
         ConfirmButton.gameObject.SetActive(false);
-        DespawnTimer += Time.unscaledDeltaTime;
+        DespawnTimer += Time.unscaledDeltaTime * (Main.DebugSettings.SkipWaves ? 2.0f : 1.0f);
         if (DespawnTimer > 1.0f)
         {
             DespawnTimer = 0;
@@ -105,6 +107,8 @@ public class CardManager : MonoBehaviour
     }
     public static void DrawCards()
     {
+        DespawnTimer = 20.0f; 
+        Instance.DespawnCards();
         if (PlayerData.PauseDuringCardSelect)
             Main.PauseGame();
         WaveDirector.WaitingForCardDraw = false;

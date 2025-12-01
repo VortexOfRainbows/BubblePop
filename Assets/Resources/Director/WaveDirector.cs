@@ -117,6 +117,8 @@ public static class WaveDirector
         float cardsPlayedPercent = Mathf.Min(1, CardsPlayed / 10f);
         float creditsSpentPercent = Mathf.Min(1, CreditsSpent / creditsNeededToPassWave);
         float percentWaveComplete = cardsPlayedPercent * 0.2f + 0.8f * cardsPlayedPercent * creditsSpentPercent;
+        if (Main.DebugSettings.SkipWaves)
+            percentWaveComplete = 2;
         WaveProgressPercent = Mathf.Min(1, percentWaveComplete);
         bool waveComplete = percentWaveComplete >= 1;
         if (!waveComplete)
@@ -131,7 +133,7 @@ public static class WaveDirector
                 TryPlayingCard();
             GatherCredits();
         }
-        else if(Board.Count <= 0) //All played cards have finish processing
+        else if(Board.Count <= 0 || Main.DebugSettings.SkipWaves) //All played cards have finish processing
         {
             EndWave();
         }

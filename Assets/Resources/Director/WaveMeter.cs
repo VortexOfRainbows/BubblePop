@@ -37,11 +37,12 @@ public class WaveMeter : MonoBehaviour
         float defaultPosition = 150;
         Utils.LerpSnap(transform, new Vector2(transform.localPosition.x, Main.WavesUnleashed ? targetPosition : defaultPosition), Utils.DeltaTimeLerpFactor(0.02f), 0.1f);
         Utils.LerpSnap(NonMeterStats.transform, new Vector2(NonMeterStats.transform.localPosition.x, Main.WavesUnleashed ? defaultPosition : targetPosition), Utils.DeltaTimeLerpFactor(0.02f), 0.1f);
-        if (Main.WavesUnleashed && WaveDirector.WaveActive)
+        if ((Main.WavesUnleashed && WaveDirector.WaveActive) || Main.DebugSettings.SkipWaves)
         {
             if (StartTimer > 0.5f)
             {
-                WaveNumber.text = WaveDirector.WaveNum.ToString();
+                if (WaveDirector.WaveNum >= 1)
+                    WaveNumber.text = WaveDirector.WaveNum.ToString();
                 FillAmt = Mathf.Lerp(FillAmt, WaveDirector.WaveProgressPercent, Utils.DeltaTimeLerpFactor(0.025f));
                 float iFill = 1 - FillAmt;
                 float defaultSize = 400;
@@ -52,6 +53,10 @@ public class WaveMeter : MonoBehaviour
         }
         else
         {
+            if(WaveDirector.WaveNum > 1)
+                WaveNumber.text = WaveDirector.WaveNum.ToString();
+            else
+                WaveNumber.text = "1";
             HighscoreWaveText.text = $"Highscore: {WaveDirector.HighScoreWaveNum}";
             StartTimer = 0;
         }

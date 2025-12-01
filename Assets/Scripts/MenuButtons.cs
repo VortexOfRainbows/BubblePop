@@ -7,10 +7,6 @@ public class MenuButtons : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
     public void MenuSound()
     {
         Main.CanvasManager.StaticPlaySound();

@@ -15,11 +15,13 @@ public partial class Main : MonoBehaviour
     [Serializable]
     public class CanvasManager
     {
-        public List<Button> ResumeButtons;
-        public List<Button> ReturnToMenuButtons;
-        public List<Button> RestartButtons;
-        public List<Button> UnleashWaveButton;
-        public List<Button> SettingsButton;
+        public List<Button> ResumeButtons = new();
+        public List<Button> ReturnToMenuButtons = new();
+        public List<Button> RestartButtons = new();
+        public List<Button> UnleashWaveButton = new();
+        public List<Button> SettingsButton = new();
+        public List<Button> QuitButtons = new();
+        public List<Button> DebugButtons = new();
         public TextMeshProUGUI PauseMenuTopText;
         public void AddListeners()
         {
@@ -33,9 +35,13 @@ public partial class Main : MonoBehaviour
                 b.onClick.AddListener(StartGame);
             foreach (Button b in SettingsButton)
                 b.onClick.AddListener(ToggleSettings);
+            foreach (Button b in QuitButtons)
+                b.onClick.AddListener(QuitGame);
+            foreach (Button b in DebugButtons)
+                b.onClick.AddListener(OpenDebugMenu);
         }
         public Canvas MainCanvas;
-        public GameObject PauseMenu, SettingsMenu;
+        public GameObject PauseMenu, SettingsMenu, DebugMenu;
         public TextMeshProUGUI DeadHighscoreText;
         public void Pause()
         {
@@ -48,6 +54,8 @@ public partial class Main : MonoBehaviour
             PauseMenu.SetActive(false);
             if (SettingsMenu.activeSelf)
                 ToggleSettings();
+            else if(DebugMenu.activeSelf)
+                OpenDebugMenu();
             else
                 StaticPlaySound();
             UnpauseGame();
@@ -86,12 +94,15 @@ public partial class Main : MonoBehaviour
         }
         public void Restart()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            CoinManager.AfterDeathReset();
+            SceneManager.LoadScene(1);
             UnpauseGame();
             StaticPlaySound();
         }
         public void ToggleSettings()
         {
+            if (!SettingsMenu.activeSelf)
+                DebugMenu.SetActive(false);
             SettingsMenu.SetActive(!SettingsMenu.activeSelf);
             StaticPlaySound();
         }
@@ -105,6 +116,28 @@ public partial class Main : MonoBehaviour
             if (Player.Instance != null)
                 pos = Player.Position;
             AudioManager.PlaySound(SoundID.BubblePop, Vector3.zero, 1f, 1.0f);
+        }
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
+        public void EnableDebugButtons()
+        {
+            if(Main.DebugCheats)
+            {
+                foreach(Button b in DebugButtons)
+                {
+                    b.interactable = true;
+                    b.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
+                }
+            }
+        }
+        public void OpenDebugMenu()
+        {
+            if (!DebugMenu.activeSelf)
+                SettingsMenu.SetActive(false);
+            DebugMenu.SetActive(!DebugMenu.activeSelf);
+            StaticPlaySound();
         }
     }
 }

@@ -362,7 +362,7 @@ public class Coupons : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription($"Reduces the cost of Y:powers in the Y:shop by Y:10% G:(+10% per stack)");
+        description.WithDescription($"Reduces the cost of Y:powers in the Y:shop by Y:12% G:(+12% per stack)");
         description.WithShortDescription("Reduces the cost of powers in the shop");
     }
     public override void OnPickup(int count)
@@ -371,13 +371,13 @@ public class Coupons : PowerUp
         {
             foreach (PowerUpObject p in GachaponShop.Instance.Stock)
             {
-                p.Cost = (int)(p.Cost - p.MyPower.Cost * 0.1f);
+                p.Cost = (int)(p.Cost - p.MyPower.Cost * 0.12f);
             }
         }
     }
     public override void HeldEffect(Player p)
     {
-        p.ShopDiscount += 0.1f * Stack;
+        p.ShopDiscount += 0.12f * Stack;
     }
 }
 public class CloudWalker : PowerUp
