@@ -187,7 +187,8 @@ public class Burger : PowerUp
     public override void HeldEffect(Player p)
     {
         p.AttackSpeedModifier += Stack * 0.1f;
-        p.TrueMoveModifier -= Stack * 0.1f;
+        p.TrueMoveModifier -= Stack * 0.1f; 
+        p.DamageMultiplier += Stack * 0.1f;
     }
     public override bool IsBlackMarket()
     {
