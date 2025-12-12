@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public partial class Main : MonoBehaviour
 {
+    private static bool GameFinishedLoading = false;
     public static bool MouseHoveringOverButton { get; set; }
     public static int GameUpdateCount = 0;
     public const float SnakeEyeChance = 0.0278f;
@@ -60,14 +62,19 @@ public partial class Main : MonoBehaviour
     }
     public void Awake()
     {
-        Instance = this;
-        UICameraLayerID = SortingLayer.NameToID("UICamera");
-        TextureAssets.Load();
-        PrefabAssets.Load();
-        BuffIcon.Load();
-        OnGameOpen();
-        GlobalEquipData.LoadAllEquipList();
-        UnlockCondition.PrepareStatics();
+        if(!GameFinishedLoading)
+        {
+            Debug.Log("<color=#00FF00>Game Awoke!</color>");
+            Instance = this;
+            UICameraLayerID = SortingLayer.NameToID("UICamera");
+            TextureAssets.Load();
+            PrefabAssets.Load();
+            BuffIcon.Load();
+            OnGameOpen();
+            GlobalEquipData.LoadAllEquipList();
+            UnlockCondition.PrepareStatics();
+            GameFinishedLoading = true;
+        }
     }
     public void OnApplicationQuit()
     {
@@ -102,17 +109,16 @@ public partial class Main : MonoBehaviour
     public static Main Instance;
     public static class GlobalEquipData
     {
-        public static Dictionary<Type, int> EquipTypeToIndex = new();
-        public static List<DetailedDescription> DescriptionData = new();
-        public static List<GameObject> AllEquipList => AllEquipmentsList;
-        public static List<int> TimesUsedList = new();
-        public static Dictionary<Type, Equipment> TypeToEquipPrefab = new();
-        public static List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
-        public static List<GameObject> Hats = new();
-        public static List<GameObject> Accessories = new();
-        public static List<GameObject> Weapons = new();
-        public static List<GameObject> Characters = new();
-        public static List<GameObject> AllEquipmentsList = new();
+        public static readonly Dictionary<Type, int> EquipTypeToIndex = new();
+        public static readonly List<DetailedDescription> DescriptionData = new();
+        public static readonly List<int> TimesUsedList = new();
+        public static readonly Dictionary<Type, Equipment> TypeToEquipPrefab = new();
+        public static readonly List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
+        public static readonly List<GameObject> Hats = new();
+        public static readonly List<GameObject> Accessories = new();
+        public static readonly List<GameObject> Weapons = new();
+        public static readonly List<GameObject> Characters = new();
+        public static readonly List<GameObject> AllEquipmentsList = new();
         public static void LoadAllEquipList()
         {
             foreach(UnlockCondition unlock in UnlockCondition.Unlocks.Values)
@@ -126,32 +132,29 @@ public partial class Main : MonoBehaviour
             PrimaryEquipments[1] = Hats;
             PrimaryEquipments[2] = Accessories;
             PrimaryEquipments[3] = Weapons;
-            for (int j = 0; j < PrimaryEquipments.Length; j++)
+            while(EquipmentAddQueue.TryDequeue(out GameObject g))
             {
-                for (int i = 0; i < PrimaryEquipments[j].Count; ++i)
-                {
-                    Equipment equip = PrimaryEquipments[j][i].GetComponent<Equipment>();
-                    equip.SetUpData(AllEquipmentsList.Count);
-                    Debug.Log($"Equipment: <color=#FFFF00>{equip.GetName()}</color> has been added into the pool at index {equip.IndexInAllEquipPool}");
-                    AllEquipmentsList.Add(equip.gameObject);
-                    TypeToEquipPrefab.Add(equip.GetType(), equip);
-                    if (equip.SubEquipment != null)
-                    {
-                        for (int k = 0; k < equip.SubEquipment.Count; k++)
-                        {
-                            Equipment subEquip = equip.SubEquipment[k].GetComponent<Equipment>();
-                            subEquip.SetUpData(AllEquipmentsList.Count);
-                            Debug.Log($"Equipment: <color=#FF0000>{subEquip.GetName()}</color> has been added into the pool at index {AllEquipmentsList.Count}");
-                            AllEquipmentsList.Add(subEquip.gameObject);
-                            TypeToEquipPrefab.Add(subEquip.GetType(), subEquip);
-                        }
-                    }
-                }
+                AddEquip(g);
             }
-            //foreach(GameObject g in AllEquipmentsList)
-            //{
-            //    Equipment equip = g.GetComponent<Equipment>();
-            //}
+        }
+        private static void AddEquip(GameObject g)
+        {
+            Equipment e = g.GetComponent<Equipment>();
+            if (!e.IsSubEquip)
+            {
+                if (e is Hat)
+                    Hats.Add(g);
+                else if (e is Accessory)
+                    Accessories.Add(g);
+                else if (e is Weapon)
+                    Weapons.Add(g);
+                else if (e is Body)
+                    Characters.Add(g);
+            }
+            e.SetUpData(AllEquipmentsList.Count);
+            AllEquipmentsList.Add(g);
+            TypeToEquipPrefab.Add(e.GetType(), e);
+            Debug.Log($"Equipment: <color=#FFFF00>{e.GetName()}</color> has been added into the pool at index {e.IndexInAllEquipPool}: [{AllEquipmentsList.Count}]");
         }
         public static Equipment FindBaseEquipFromType<T>() where T: Equipment
         {
@@ -161,8 +164,7 @@ public partial class Main : MonoBehaviour
         {
             return TypeToEquipPrefab[t];
         }
-
-        public static Queue<GameObject> EquipmentLoadQueue;
+        public static readonly Queue<GameObject> EquipmentAddQueue = new();
         public static readonly GameObject Bubblemancer = LoadEquipment("Bubblemancer/Bubblemancer");
         public static readonly GameObject BubblemancerHat = LoadEquipment("Bubblemancer/BubblemancerHat");
         public static readonly GameObject BubblemancerCape = LoadEquipment("Bubblemancer/BubblemancerCape");
@@ -174,26 +176,34 @@ public partial class Main : MonoBehaviour
         public static readonly GameObject Gachapon = LoadEquipment("Gachapon/Gachapon");
         public static readonly GameObject GachaponHat = LoadEquipment("Gachapon/Dice");
         public static readonly GameObject GachaponCape = LoadEquipment("Gachapon/Emerald");
+        public static readonly GameObject BlueHat = LoadSubEquipment(BubblemancerHat, "Bubblemancer/BlueHat");
+        public static readonly GameObject BlueCape = LoadSubEquipment(BubblemancerCape, "Bubblemancer/BlueCape");
+        public static readonly GameObject BubbleStaff = LoadSubEquipment(BubblemancerWeapon, "Bubblemancer/BigWand");
+        public static readonly GameObject BubbleGun = LoadSubEquipment(BubblemancerWeapon, "Bubblemancer/BubbleGun");
+        public static readonly GameObject BunceHat = LoadSubEquipment(BubblemancerHat, "Bubblemancer/BunceHat");
+        public static readonly GameObject RedHat = LoadSubEquipment(BubblemancerHat, "Bubblemancer/RedHat");
+        public static readonly GameObject RedCape = LoadSubEquipment(BubblemancerCape, "Bubblemancer/RedCape");
+        public static readonly GameObject CrownOfCommand = LoadSubEquipment(ThoughtBubbleHat, "ThoughtBubble/Crown/Crown");
+        public static readonly GameObject CrystalSkull = LoadSubEquipment(GachaponCape, "Gachapon/Cryskull");
+        public static readonly GameObject SusCape = LoadSubEquipment(GachaponCape, "Gachapon/ShadyCoat");
         public static GameObject LoadEquipment(string path)
         {
             return LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
         }
         public static GameObject LoadEquipment(GameObject Prefab)
         {
-            Equipment EquipType = Prefab.GetComponent<Equipment>();
-            if(EquipType is Hat)
-                Hats.Add(Prefab);
-            else if(EquipType is Accessory)
-                Accessories.Add(Prefab);
-            else if(EquipType is Weapon)
-                Weapons.Add(Prefab);
-            else if(EquipType is Body)
-                Characters.Add(Prefab);
+            EquipmentAddQueue.Enqueue(Prefab);
             return Prefab;
         }
-        public static void DefineSubequipRelationships()
+        public static GameObject LoadSubEquipment(GameObject ParentReference, string path)
         {
-
+            return LoadSubEquipment(ParentReference, Resources.Load<GameObject>($"Player/{path}"));
+        }
+        public static GameObject LoadSubEquipment(GameObject ParentReference, GameObject Prefab)
+        {
+            ParentReference.GetComponent<Equipment>().SubEquipment.Add(Prefab);
+            Prefab.GetComponent<Equipment>().IsSubEquip = true;
+            return LoadEquipment(Prefab);
         }
     }
     public static class DebugSettings

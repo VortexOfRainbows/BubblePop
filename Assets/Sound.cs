@@ -4,6 +4,7 @@ public class Sound : MonoBehaviour
 {
     [SerializeField]
     public AudioSource Source;
+    private bool HasEnded = false;
     public void Init(AudioClip clip, float volume = 1, float pitch = 1)
     {
         Source.clip = clip;
@@ -39,10 +40,13 @@ public class Sound : MonoBehaviour
         }
         if(Source.clip == SoundID.PylonDrone.GetVariation(0))
         {
-            if (Main.PlayerNearPylon || Main.WavesUnleashed)
+            if (!HasEnded && (Main.PlayerNearPylon || Main.WavesUnleashed))
                 Source.loop = true;
             else
+            {
+                HasEnded = true;
                 Source.loop = false;
+            }
             float dist = Vector2.Distance(transform.position, Player.Position) - 2;
             if (dist < 0)
                 dist = 0;

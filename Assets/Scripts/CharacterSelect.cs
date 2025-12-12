@@ -92,7 +92,7 @@ public class CharacterSelect : MonoBehaviour
     public List<GameObject> Accessories => Main.GlobalEquipData.Accessories;
     public List<GameObject> Weapons => Main.GlobalEquipData.Weapons;
     public List<GameObject> Characters => Main.GlobalEquipData.Characters;
-    public List<GameObject> AllEquipmentsList => Main.GlobalEquipData.AllEquipmentsList;
+    public static List<GameObject> AllEquipmentsList => Main.GlobalEquipData.AllEquipmentsList;
     private Canvas myCanvas;
     private EquipmentPage SecondaryPage;
     private EquipmentPage PrimaryPage;
@@ -250,6 +250,7 @@ public class CharacterSelect : MonoBehaviour
     }
     public void UpdateSelectedEquipmentBox(int AllIndex)
     {
+        //Debug.Log($"Tried Accessing Equip Index: {AllEquipmentsList}, {AllIndex}");
         Equipment equipPrefab = AllEquipmentsList[AllIndex].GetComponent<Equipment>();
         int i = -1;
         if (equipPrefab is Hat)

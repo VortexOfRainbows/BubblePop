@@ -18,10 +18,7 @@ public class SmallBubble : Projectile
         Friendly = false;
         SpriteRendererGlow.gameObject.SetActive(false);
         RB.velocity *= 1 + 0.1f * Player.Instance.FasterBulletSpeed;
-    }
-    public override void AI()
-    {
-        float deathTime = 180;
+
         if (Player.Instance.EternalBubbles > 0)
         {
             int bonus = Player.Instance.EternalBubbles;
@@ -32,6 +29,10 @@ public class SmallBubble : Projectile
             }
             RandomLifeShorten -= 40 + 40 * bonus;
         }
+    }
+    public override void AI()
+    {
+        float deathTime = 180;
         deathTime -= RandomLifeShorten;
         if (++timer2 > 3)
             Friendly = true;

@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Runtime.Serialization;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour
@@ -20,7 +16,8 @@ public class Equipment : MonoBehaviour
     public PlayerAnimator p;
     private static List<PowerUp> PowerPool = new();
     private string InternalName = null;
-    public List<GameObject> SubEquipment = new();
+    public List<GameObject> SubEquipment { get; set; } = new();
+    public bool IsSubEquip { get; set; }
     /// <summary>
     /// Only used for equipment UI boxes to help match their values to their original prefab after the original prefabs generates some values during runtime.
     /// The most obvious example of this is the index in the all-equipment pool
@@ -36,7 +33,7 @@ public class Equipment : MonoBehaviour
             return Main.GlobalEquipData.EquipTypeToIndex[GetType()];
         }
     }
-    public Equipment OriginalPrefab => Main.GlobalEquipData.AllEquipList[IndexInAllEquipPool].GetComponent<Equipment>();
+    public Equipment OriginalPrefab => Main.GlobalEquipData.AllEquipmentsList[IndexInAllEquipPool].GetComponent<Equipment>();
     private int m_LocalIndexInAllEquipPool;
     public static void ModifyPowerPoolAll()
     {
