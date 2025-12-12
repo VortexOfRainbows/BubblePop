@@ -86,12 +86,12 @@ public class ChoiceUnlock200 : UnlockCondition
     }
     protected override bool TryUnlockCondition => Power.PickedUpCountAllRuns >= 200;
 }
-public class PlayerDeathUnlock20 : UnlockCondition
+public class PlayerDeathUnlock10 : UnlockCondition
 {
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bubblemancer: First Steps");
-        description.WithDescription("Die 20 times");
+        description.WithDescription("Die 10 times");
     }
     public override void SetAchievementCategories(ref int zone, ref int category)
     {
@@ -99,7 +99,7 @@ public class PlayerDeathUnlock20 : UnlockCondition
         category = Completionist;
     }
     public override PowerUp Power => PowerUp.Get<Starbarbs>();
-    protected override bool TryUnlockCondition => PlayerData.PlayerDeaths >= 20;
+    protected override bool TryUnlockCondition => PlayerData.PlayerDeaths >= 10;
 }
 public class BubbleBirbUnlock10 : UnlockCondition
 {
