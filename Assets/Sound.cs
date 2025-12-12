@@ -47,7 +47,7 @@ public class Sound : MonoBehaviour
             if (dist < 0)
                 dist = 0;
             float vol = 1 - Mathf.Min(1, Mathf.Pow(dist / 8f, 2));
-            Source.volume = vol * 0.8f;
+            Source.volume = vol * 0.8f * PlayerData.SFXVolume;
         }
         if (!Source.isPlaying && !Source.loop)
         {

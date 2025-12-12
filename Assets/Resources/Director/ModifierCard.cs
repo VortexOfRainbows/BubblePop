@@ -104,7 +104,7 @@ public class ModifierCard : MonoBehaviour
         transform.localScale = backScale;
         transform.localEulerAngles = Vector3.zero;
         BackSide.SetActive(true);
-        CardVisual.UpdateColor(CardVisual.StaticData.TimesKilled <= 0, false);
+        CardVisual.UpdateColor(!WaveDirector.EnemyPool.Contains(CardVisual.MyEnemyPrefab.gameObject), false);
     }
     public void SpawnAnimation()
     {

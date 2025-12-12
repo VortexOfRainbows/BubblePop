@@ -27,10 +27,10 @@ public class SmallBubble : Projectile
             int bonus = Player.Instance.EternalBubbles;
             if (bonus > 9)
             {
-                deathTime += 10 * (bonus - 9);
+                RandomLifeShorten -= 10 * (bonus - 9);
                 bonus = 9;
             }
-            deathTime += 40 + 40 * bonus;
+            RandomLifeShorten -= 40 + 40 * bonus;
         }
         deathTime -= RandomLifeShorten;
         if (++timer2 > 3)

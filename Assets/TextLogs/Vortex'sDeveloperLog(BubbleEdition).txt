@@ -6,8 +6,6 @@ Maybe Do:
 3. Quadrant system UI
 4. Day/Night system (so we can have cooler lighting)
 5. Wave bar on the top shows current wave card + modifier information
-6. Make it so all enemies are BLACKED until picked in a run, rather than unlocked.
-7. Make crystal ambient sound in the middle quieter
 
 Need to do:
 1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden)
@@ -34,6 +32,7 @@ Need to do:
 12. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
 13. Grass shader to make grass more interesting and potentially slightly vary in the wind
 14. Infector sometimes makes enemies invisible? (I struggle to replicate this)
+	1. Infector can die to poison while in an enemy (bug)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -41,6 +40,15 @@ Mostly done but might need to keep an eye out:
 3. Integrate Compendium into the pause menu
 
 Done: 
+
+12/11/25
+1. Make it so all enemies are BLACKED until picked in a run, rather than unlocked.
+2. Crystal ambient sound is now effected by your sound setting
+3. Fix bug where Eternal Bubbles accidentally increased bubble range
+
+
+-- A1.35 --
+
 
 11/30/25 to 12/1/25
 1. Lots of internal UI reworks to streamline UI processes
