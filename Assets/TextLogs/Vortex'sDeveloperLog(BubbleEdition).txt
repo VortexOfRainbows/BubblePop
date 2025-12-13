@@ -12,26 +12,26 @@ Need to do:
 1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden)
 2. More descriptive pause and select screen (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make calculator homing snappier
-4. Integrate character select into the compendium
-5. Make a distinct "Generic Power" pool, which contains: 
+4. Make a distinct "Generic Power" pool, which contains: 
 	1. Stats  : Overclock, Haste, Crits, Speed (cap speed at 2x)
 	2. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round
 	3. Powers : Choice, Pirate's Booty, Mitosis, Black Market delivery
 	4. Special: Bubblebirb, Midas Touch (gold is worth more), Shard of Power (after being scrapped, choose an existing power to add onto)
-6. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
+5. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
 	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
-7. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
-8. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
-9. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-10. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
+6. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
+7. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
+8. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
+9. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
 	1. Achievement chains, to hide achievements that are currently unobtainable
 	2. Hide unlocks from char select until they are unlocked, including subequipments
 	3. Achievements that come without unlocks should use the 6-star icon with, but with an emphasis on the two colors of the achievement categories it is part of (the other categories are slightly transparent, for example).
 	4. Progress display for achievements
-11. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
-12. Grass shader to make grass more interesting and potentially slightly vary in the wind
-13. Infector sometimes makes enemies invisible? (I struggle to replicate this)
+10. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
+11. Grass shader to make grass more interesting and potentially slightly vary in the wind
+12. Infector sometimes makes enemies invisible? (I struggle to replicate this)
 	1. Infector can die to poison while in an enemy (bug)
+13. Make power display on the bottom smaller
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -40,7 +40,8 @@ Mostly done but might need to keep an eye out:
 Done: 
 
 12/12/25 to 12/13/25
-1. WIP Character Select UI changes
+1. WIP Character Select UI changes: as it stands now, this is generally just a small fidelity improvement...
+	1. Need To Do: Make the clotheshanger start in the bottom left and grow up, rather than dropping the settings down (this can help fix some scaling issues and make the UI more symmetrical)
 
 12/11/25
 1. Make it so all enemies are BLACKED until picked in a run, rather than unlocked.

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,7 @@ public class CharacterSelect : MonoBehaviour
 {
     public class EquipmentPage
     {
+        public int Index = -1;
         public bool IsPrimary = false;
         public int Count => Equips.Count;
         public EquipmentPage(CharacterSelect charSelect, bool isPrimary)
@@ -21,7 +23,7 @@ public class CharacterSelect : MonoBehaviour
         public bool NewHovering => hoveringElement != prevHoveringElement;
         /// </summary>
         /// <param name="equipmentType"></param>
-        public void Open(EquipmentUIElement parent, List<GameObject> Equipments)
+        public void Open(EquipmentUIElement parent, List<GameObject> Equipments, int newIndex)
         {
             Close();
             int start = this == charSelect.PrimaryPage ? 0 : 1;
@@ -33,10 +35,11 @@ public class CharacterSelect : MonoBehaviour
                     bool sortSoCurrentCharacterEquipmentShowsFirst = (i == 0 && e.SameUnlockAsBody(Player.Instance.Body)) || (i == 1 && !e.SameUnlockAsBody(Player.Instance.Body));
                     if (start == 1 || sortSoCurrentCharacterEquipmentShowsFirst)
                     {
-                        Add(parent, Equipments[j].GetComponent<Equipment>());
+                        AddEquipToPage(parent, Equipments[j].GetComponent<Equipment>());
                     }
                 }
             }
+            Index = newIndex;
             IsOpen = true;
         }
         /// <summary>
@@ -44,6 +47,7 @@ public class CharacterSelect : MonoBehaviour
         /// </summary>
         public void Close()
         {
+            Index = -1;
             for (int i = Equips.Count - 1; i >= 0; --i)
             {
                 Destroy(Equips[i].gameObject);
@@ -55,24 +59,25 @@ public class CharacterSelect : MonoBehaviour
                 charSelect.SecondaryPage.Close();
             }
         }
-        public void Add(EquipmentUIElement parent, Equipment equipment)
+        public void AddEquipToPage(EquipmentUIElement parent, Equipment equipment)
         {
             EquipmentUIElement ui = Instantiate(charSelect.EquipmentUISlotPrefab, parent.transform);
-            ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
+            ui.GetComponent<Image>().maskable = false;
+            ui.targetScale = new Vector3(0.875f, 0.875f, 0.875f);
             if(IsPrimary)
             {
-                ui.transform.localPosition = new Vector3(210 + 180 * Count, 0);
-                ui.transform.localScale *= 0.85f;
+                ui.transform.localPosition = new Vector3(150 + 150 * Count, 0);
+                ui.transform.localScale *= 0.875f;
             }
             else if(parent.ActiveEquipment is Body)
             {
                 ui.DisplayOnly = true;
                 ui.transform.localPosition = new Vector3(0, 150 + 125 * Count);
-                ui.targetScale *= 0.625f / 0.75f;
-                ui.transform.localScale *= 0.65f;
+                ui.targetScale *= 0.875f;
+                ui.transform.localScale *= 0.875f;
             }
             else
-                ui.transform.localPosition = new Vector3(180 * Count, -180);
+                ui.transform.localPosition = new Vector3(150 * Count, -150);
             charSelect.RenderBox(ui,  equipment);
             Equips.Add(ui);
         }
@@ -97,8 +102,8 @@ public class CharacterSelect : MonoBehaviour
     public List<GameObject> Characters => Main.GlobalEquipData.Characters;
     public static List<GameObject> AllEquipmentsList => Main.GlobalEquipData.AllEquipmentsList;
     private Canvas myCanvas;
-    private EquipmentPage SecondaryPage;
-    private EquipmentPage PrimaryPage;
+    public EquipmentPage SecondaryPage { get; private set; }
+    public EquipmentPage PrimaryPage { get; private set; }
     private bool PowerUpPageIsOpen = false;
     public bool HasLoaded = false;
     public static CharacterSelect Instance;
@@ -145,6 +150,11 @@ public class CharacterSelect : MonoBehaviour
         {
             if(Control.LeftMouseClick)
                 selectMenuOpen = !selectMenuOpen;
+            if(!selectMenuOpen)
+            {
+                PrimaryPage.Close();
+                SecondaryPage.Close();
+            }
             HangerIcon.transform.LerpLocalScale(new Vector2(1.375f, 1.55f) * 1.1f, lerpFactor);
         }
         else
@@ -194,7 +204,8 @@ public class CharacterSelect : MonoBehaviour
     }
     public bool UISlotUpdate(EquipmentUIElement slot, EquipmentPage page, int index, bool AllowOpeningPage)
     {
-        slot.UpdateActive(myCanvas, out bool hovering, out bool clicked, slot.GetComponent<RectTransform>());
+        bool pageIsCurrentlyOpen = page != null && page.IsOpen && page.Index == index;
+        slot.UpdateActive(myCanvas, out bool hovering, out bool clicked, slot.GetComponent<RectTransform>(), pageIsCurrentlyOpen ? 1.05f : 1.0f);
         bool openPage = page == PrimaryPage ? clicked : false;
         bool justClosedFromDragOff = false;
         if (page != null)
@@ -229,7 +240,7 @@ public class CharacterSelect : MonoBehaviour
                 if (((slot.Unlocked && slot.CanAfford) || page == PrimaryPage) && (!justClosed || index != page.PreviousType))
                 {
                     if (page == PrimaryPage)
-                        page.Open(slot, PrimaryEquipments[index]);
+                        page.Open(slot, PrimaryEquipments[index], index);
                     else
                     {
                         if(slot.ActiveEquipment is Body b)
@@ -241,11 +252,11 @@ public class CharacterSelect : MonoBehaviour
                                 AllEquipmentsList[b.LastSelectedAcc],
                                 AllEquipmentsList[b.LastSelectedHat]
                             };
-                            page.Open(slot, bodyPrevSelectedEquips);
+                            page.Open(slot, bodyPrevSelectedEquips, index);
                         }
                         else
                         {
-                            page.Open(slot, slot.ActiveEquipment.OriginalPrefab.SubEquipment);
+                            page.Open(slot, slot.ActiveEquipment.OriginalPrefab.SubEquipment, index);
                         }
                     }
                 }

@@ -98,7 +98,7 @@ public class EquipmentUIElement : MonoBehaviour
         }
     }
     public float HoverRadius { get; set; } = 64;
-    public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked, RectTransform hoverArea)
+    public void UpdateActive(Canvas canvas, out bool hovering, out bool clicked, RectTransform hoverArea, float defaultScaleUp = 1)
     {
         if(PriceVisual != null && Text != null)
         {
@@ -139,6 +139,6 @@ public class EquipmentUIElement : MonoBehaviour
             hovering = true;
         }
         else
-            transform.LerpLocalScale(targetScale * 1.0f, Utils.DeltaTimeLerpFactor(0.1f));
+            transform.LerpLocalScale(targetScale * defaultScaleUp, Utils.DeltaTimeLerpFactor(0.1f));
     }
 }

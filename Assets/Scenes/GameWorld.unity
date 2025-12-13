@@ -3098,19 +3098,7 @@ PrefabInstance:
     - {fileID: 5849819550690237674, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
     - {fileID: 2800049420932517051, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8647957983226922074, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 792634436828259440, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 3787569734089078933, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5999250951651569690, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
 --- !u!20 &754807492 stripped
 Camera:
