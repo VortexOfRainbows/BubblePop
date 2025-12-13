@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class CharacterSelect : MonoBehaviour
 {
@@ -31,7 +30,8 @@ public class CharacterSelect : MonoBehaviour
                 for (int j = 0; j < Equipments.Count; j++)
                 {
                     Equipment e = Equipments[j].GetComponent<Equipment>();
-                    if (start == 1 || (i == 0 && e.SameUnlockAsBody(Player.Instance.Body)) || (i == 1 && !e.SameUnlockAsBody(Player.Instance.Body)))
+                    bool sortSoCurrentCharacterEquipmentShowsFirst = (i == 0 && e.SameUnlockAsBody(Player.Instance.Body)) || (i == 1 && !e.SameUnlockAsBody(Player.Instance.Body));
+                    if (start == 1 || sortSoCurrentCharacterEquipmentShowsFirst)
                     {
                         Add(parent, Equipments[j].GetComponent<Equipment>());
                     }
@@ -57,19 +57,22 @@ public class CharacterSelect : MonoBehaviour
         }
         public void Add(EquipmentUIElement parent, Equipment equipment)
         {
-            EquipmentUIElement ui = Instantiate(charSelect.EquipmentUISlotPrefab, charSelect.visual.transform);
+            EquipmentUIElement ui = Instantiate(charSelect.EquipmentUISlotPrefab, parent.transform);
             ui.targetScale = new Vector3(0.75f, 0.75f, 0.75f);
             if(IsPrimary)
-                ui.transform.localPosition = parent.transform.localPosition + new Vector3(210 + 180 * Count, 0);
+            {
+                ui.transform.localPosition = new Vector3(210 + 180 * Count, 0);
+                ui.transform.localScale *= 0.85f;
+            }
             else if(parent.ActiveEquipment is Body)
             {
                 ui.DisplayOnly = true;
-                ui.transform.localPosition = parent.transform.localPosition + new Vector3(0, 150 + 125 * Count);
+                ui.transform.localPosition = new Vector3(0, 150 + 125 * Count);
                 ui.targetScale *= 0.625f / 0.75f;
                 ui.transform.localScale *= 0.65f;
             }
             else
-                ui.transform.localPosition = parent.transform.localPosition + new Vector3(180 * Count, -180);
+                ui.transform.localPosition = new Vector3(180 * Count, -180);
             charSelect.RenderBox(ui,  equipment);
             Equips.Add(ui);
         }
@@ -96,14 +99,12 @@ public class CharacterSelect : MonoBehaviour
     private Canvas myCanvas;
     private EquipmentPage SecondaryPage;
     private EquipmentPage PrimaryPage;
-    private List<PowerUpUIElement> AvailablePowersUI = new();
     private bool PowerUpPageIsOpen = false;
     public bool HasLoaded = false;
     public static CharacterSelect Instance;
-    public void Awake()
-    {
-
-    }
+    public RectTransform HangerButton, Slider, HoverMask;
+    public Image HangerIcon;
+    public bool selectMenuOpen = false;
     public void Start()
     {
         Instance = this;
@@ -112,6 +113,7 @@ public class CharacterSelect : MonoBehaviour
         PowerUpLayout.MenuLayout = PowerLayout;
         myCanvas = GetComponent<Canvas>();
         HasLoaded = false;
+        Utils.LerpSnap(Slider.transform, new Vector2(0, 720), 1f);
         InitializeMainButtons();
     }
     public void Update()
@@ -137,31 +139,58 @@ public class CharacterSelect : MonoBehaviour
             }
             return;
         }
+        //hangarButtonImage = hangarButtonImage != null ? hangarButtonImage : HangerButton.GetComponent<Image>();
+        float lerpFactor = Utils.DeltaTimeLerpFactor(0.1f);
+        if (Utils.IsMouseHoveringOverThis(true, HangerButton, 0, myCanvas))
+        {
+            if(Control.LeftMouseClick)
+                selectMenuOpen = !selectMenuOpen;
+            HangerIcon.transform.LerpLocalScale(new Vector2(1.375f, 1.55f) * 1.1f, lerpFactor);
+        }
+        else
+        {
+            HangerIcon.transform.LerpLocalScale(new Vector2(1.375f, 1.55f), lerpFactor);
+        }
+        if(selectMenuOpen)
+        {
+            Utils.LerpSnap(Slider.transform, new Vector2(0, 55), lerpFactor);
+        }
+        else
+        {
+            Utils.LerpSnap(Slider.transform, new Vector2(0, 720), lerpFactor);
+        }
+        if (selectMenuOpen)
+        {
+            SelectEquipUpdate();
+        }
+    }
+    public void SelectEquipUpdate()
+    {
         bool hasOpenPageAlready = false;
-        for (int i = 0; i < 4; i++) 
-        {
-            if (UISlotUpdate(DisplayBoxes[i], PrimaryPage, i, !hasOpenPageAlready))
+        for (int i = 0; i < 4; i++)
+            if (IsWithinMaskRange(DisplayBoxes[i]) && UISlotUpdate(DisplayBoxes[i], PrimaryPage, i, !hasOpenPageAlready))
                 hasOpenPageAlready = true;
-        }
-        for(int i = 0; i < PrimaryPage.Count; i++)
-        {
-            if (UISlotUpdate(PrimaryPage.Equips[i], SecondaryPage, i, !hasOpenPageAlready))
+        for (int i = 0; i < PrimaryPage.Count; i++)
+            if (IsWithinMaskRange(PrimaryPage.Equips[i]) && UISlotUpdate(PrimaryPage.Equips[i], SecondaryPage, i, !hasOpenPageAlready))
                 hasOpenPageAlready = true;
-        }
         for (int i = 0; i < SecondaryPage.Count; i++)
-        {
-            if (UISlotUpdate(SecondaryPage.Equips[i], null, i, false))
+            if (IsWithinMaskRange(SecondaryPage.Equips[i]) && UISlotUpdate(SecondaryPage.Equips[i], null, i, false))
                 hasOpenPageAlready = true;
-        }
         PrimaryPage.prevHoveringElement = PrimaryPage.hoveringElement;
         SecondaryPage.prevHoveringElement = SecondaryPage.hoveringElement;
-        if(!PowerUpPageIsOpen)
+        if (!PowerUpPageIsOpen)
         {
             PowerLayout.Generate(PowerUp.AvailablePowers);
             PowerUpPageIsOpen = true;
         }
         if (Player.Instance != null)
             CoinManager.TotalEquipCost = 0; //Player.Instance.Hat.GetPrice() + Player.Instance.Accessory.GetPrice() + Player.Instance.Weapon.GetPrice() + Player.Instance.Body.GetPrice(); 
+    }
+    public bool IsWithinMaskRange(EquipmentUIElement t)
+    {
+        float relativeMaskPosition = HoverMask.transform.position.y;
+        var r = t.GetComponent<RectTransform>();
+        return relativeMaskPosition > r.position.y + r.sizeDelta.y * 0.5f * r.lossyScale.y;
     }
     public bool UISlotUpdate(EquipmentUIElement slot, EquipmentPage page, int index, bool AllowOpeningPage)
     {
@@ -343,5 +372,6 @@ public class CharacterSelect : MonoBehaviour
         if(uiElem.ActiveEquipment != null)
             Destroy(uiElem.ActiveEquipment.gameObject);
         uiElem.UpdateEquipment(equipmentToRender);
+        uiElem.SetCompendiumLayering(Main.UICameraLayerID, 45);
     }
 }

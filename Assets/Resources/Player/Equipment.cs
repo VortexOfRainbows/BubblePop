@@ -14,9 +14,9 @@ public class Equipment : MonoBehaviour
     }
     public static Player player => Player.Instance;
     public PlayerAnimator p;
-    private static List<PowerUp> PowerPool = new();
+    private static readonly List<PowerUp> PowerPool = new();
     private string InternalName = null;
-    public List<GameObject> SubEquipment { get; set; } = new();
+    public readonly List<GameObject> SubEquipment = new();
     public bool IsSubEquip { get; set; }
     /// <summary>
     /// Only used for equipment UI boxes to help match their values to their original prefab after the original prefabs generates some values during runtime.

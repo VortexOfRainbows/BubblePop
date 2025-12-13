@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -192,6 +191,7 @@ public partial class Main : MonoBehaviour
         }
         public static GameObject LoadEquipment(GameObject Prefab)
         {
+            Prefab.GetComponent<Equipment>().SubEquipment.Clear();
             EquipmentAddQueue.Enqueue(Prefab);
             return Prefab;
         }

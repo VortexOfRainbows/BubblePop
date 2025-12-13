@@ -5,8 +5,6 @@ using System.Collections.Generic;
 public class EquipmentUIElement : MonoBehaviour
 {
     public const int UILayer = 5;
-    private Color actualColor = default;
-    private Color slotColor = default;
     public GameObject Visual;
     public Equipment ActiveEquipment { get; private set; }
     public TextMeshPro Text;
@@ -42,31 +40,13 @@ public class EquipmentUIElement : MonoBehaviour
         ActiveEquipment.ModifyUIOffsets(false, ref offset, ref rot, ref scale);
         ActiveEquipment.transform.localPosition = offset;
         ActiveEquipment.transform.eulerAngles = new Vector3(0, 0, rot);
-        Visual.transform.localScale = Vector3.one * 50f * scale;
+        Visual.transform.localScale = (CompendiumElement ? 50f : 45f) * scale * Vector3.one;
     }
     private void UpdateUnlockRelated()
     {
-        if (actualColor == default)
-        {
-            slotColor = Slot.color;
-            actualColor = ActiveEquipment.spriteRender.color;
-        }
         if(Text != null)
             Text.color = Color.white;
-        if (Unlocked)
-        {
-            //if (CanAfford)
-            //{
-            //    Slot.color = slotColor;
-            //}
-            //else
-            //{
-            //    //UpdateColor(Color.Lerp(actualColor, Color.red, 0.1f));
-            //    Text.color = Color.red;
-            //    Slot.color = Color.Lerp(slotColor, new Color(0.9f, 0.0f, 0.0f, slotColor.a), 0.5f);
-            //}
-        }
-        else if(!CompendiumElement)
+        if(!Unlocked && !CompendiumElement)
         {
             UpdateColor(Color.black);
         }
@@ -152,14 +132,13 @@ public class EquipmentUIElement : MonoBehaviour
             if (!DisplayOnly)
             {
                 clicked = Input.GetMouseButtonDown(0);
-                scaleUp = 1.2f;
             }
             if (CompendiumElement)
                 scaleUp = 1.125f;
-            transform.LerpLocalScale(targetScale * scaleUp, 0.15f);
+            transform.LerpLocalScale(targetScale * scaleUp, Utils.DeltaTimeLerpFactor(0.15f));
             hovering = true;
         }
         else
-            transform.LerpLocalScale(targetScale * 1.0f, 0.1f);
+            transform.LerpLocalScale(targetScale * 1.0f, Utils.DeltaTimeLerpFactor(0.1f));
     }
 }
