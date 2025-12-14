@@ -86,7 +86,7 @@ public class ModifierCard : MonoBehaviour
         float growSpeed = Utils.DeltaTimeLerpFactor(0.06f * FlipTimer + (HasBeenFlipped ? 0.08f : 0f));
         transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
         BG.color = Color.Lerp(BG.color, selected ? Color.yellow : (hovering ? Color.Lerp(Color.yellow, Color.white, 0.8f) : Color.white), Utils.DeltaTimeLerpFactor(0.2f));
-        CardVisual.Mask.transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
+        CardVisual.EnemyScaler.transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
     }
     public bool HasBeenFlipped { get; set; } = false;
     private float FlipTimer = 0;

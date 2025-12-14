@@ -163,7 +163,7 @@ public class CharacterSelect : MonoBehaviour
         }
         if(selectMenuOpen)
         {
-            Utils.LerpSnap(Slider.transform, new Vector2(0, 55), lerpFactor);
+            Utils.LerpSnap(Slider.transform, new Vector2(0, 50), lerpFactor);
         }
         else
         {

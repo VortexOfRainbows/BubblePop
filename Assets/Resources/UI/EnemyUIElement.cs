@@ -36,7 +36,7 @@ public class EnemyUIElement : MonoBehaviour
         if (MyEnemy == null)
         {
             float size = CardGraphicBG.rectTransform.rect.width / 130f; //The default UI box is 130, so that is what we change the scale factor by
-            SpriteMask.transform.localScale = originalMaskScale * size;
+            SpriteMask.transform.localScale = new Vector3(originalMaskScale.x * size * 1.0864f, originalMaskScale.y * size * .97083f, 1f);
             MyEnemy = Enemy.Spawn(MyEnemyPrefab.gameObject, transform.position, false);
             MyEnemy.SetDummy();
             MyEnemy.Animate();
