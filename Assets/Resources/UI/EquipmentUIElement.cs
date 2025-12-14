@@ -40,7 +40,7 @@ public class EquipmentUIElement : MonoBehaviour
         ActiveEquipment.ModifyUIOffsets(false, ref offset, ref rot, ref scale);
         ActiveEquipment.transform.localPosition = offset;
         ActiveEquipment.transform.eulerAngles = new Vector3(0, 0, rot);
-        Visual.transform.localScale = (CompendiumElement ? 50f : 45f) * scale * Vector3.one;
+        Visual.transform.localScale = (CompendiumElement ? 50f : 42.5f) * scale * Vector3.one;
     }
     private void UpdateUnlockRelated()
     {

@@ -63,18 +63,18 @@ public class CharacterSelect : MonoBehaviour
         {
             EquipmentUIElement ui = Instantiate(charSelect.EquipmentUISlotPrefab, parent.transform);
             ui.GetComponent<Image>().maskable = false;
-            ui.targetScale = new Vector3(0.875f, 0.875f, 0.875f);
+            ui.targetScale = new Vector3(0.85f, 0.85f, 0.85f);
             if(IsPrimary)
             {
                 ui.transform.localPosition = new Vector3(150 + 150 * Count, 0);
-                ui.transform.localScale *= 0.875f;
+                ui.transform.localScale *= 0.85f;
             }
             else if(parent.ActiveEquipment is Body)
             {
                 ui.DisplayOnly = true;
-                ui.transform.localPosition = new Vector3(0, 150 + 125 * Count);
-                ui.targetScale *= 0.875f;
-                ui.transform.localScale *= 0.875f;
+                ui.transform.localPosition = new Vector3(0, 130 + 110 * Count);
+                ui.targetScale *= 0.85f;
+                ui.transform.localScale *= 0.85f;
             }
             else
                 ui.transform.localPosition = new Vector3(150 * Count, -150);
@@ -118,7 +118,7 @@ public class CharacterSelect : MonoBehaviour
         PowerUpLayout.MenuLayout = PowerLayout;
         myCanvas = GetComponent<Canvas>();
         HasLoaded = false;
-        Utils.LerpSnap(Slider.transform, new Vector2(0, 720), 1f);
+        Utils.LerpSnap(Slider.transform, new Vector2(0, 645), 1f);
         InitializeMainButtons();
     }
     public void Update()
@@ -144,6 +144,10 @@ public class CharacterSelect : MonoBehaviour
             }
             return;
         }
+        if(Main.GamePaused)
+        {
+            return;
+        }
         //hangarButtonImage = hangarButtonImage != null ? hangarButtonImage : HangerButton.GetComponent<Image>();
         float lerpFactor = Utils.DeltaTimeLerpFactor(0.1f);
         if (Utils.IsMouseHoveringOverThis(true, HangerButton, 0, myCanvas))
@@ -154,6 +158,8 @@ public class CharacterSelect : MonoBehaviour
             {
                 PrimaryPage.Close();
                 SecondaryPage.Close();
+                PrimaryPage.hoveringElement = PrimaryPage.prevHoveringElement = null;
+                SecondaryPage.hoveringElement = SecondaryPage.prevHoveringElement = null;
             }
             HangerIcon.transform.LerpLocalScale(new Vector2(1.375f, 1.55f) * 1.1f, lerpFactor);
         }
@@ -163,11 +169,13 @@ public class CharacterSelect : MonoBehaviour
         }
         if(selectMenuOpen)
         {
-            Utils.LerpSnap(Slider.transform, new Vector2(0, 50), lerpFactor);
+            Utils.LerpSnap(HangerButton.transform, new Vector2(0, 600), lerpFactor);
+            Utils.LerpSnap(Slider.transform, new Vector2(0, 45), lerpFactor);
         }
         else
         {
-            Utils.LerpSnap(Slider.transform, new Vector2(0, 720), lerpFactor);
+            Utils.LerpSnap(HangerButton.transform, new Vector2(0, 0), lerpFactor);
+            Utils.LerpSnap(Slider.transform, new Vector2(0, 645), lerpFactor);
         }
         if (selectMenuOpen)
         {
