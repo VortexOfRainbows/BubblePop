@@ -1,0 +1,19 @@
+Dev Build 1.40 (tentative version number)
+
+New:
+1. Character Select UI changes: as it stands now, this is generally just a small fidelity improvement, but more will come later!
+
+Misc:
+1. Make it so all enemies are BLACKED until picked in a run, rather than unlocked.
+2. Relationships between equipment prefabs is now defined internally and with an exact ordering
+	1. Now it has a consistent ID system
+	2. For future updates, this should fix the randomizing of previously equipped equips and tier list when new equips are added
+
+Fixes:
+1. Crystal ambient sound is now effected by your sound setting
+	1. It should also no longer permanently play twice
+2. Fix bug where Eternal Bubbles accidentally increased bubble range
+3. Fix bug where game reloaded large amounts of data upon restart
+	1. This should generally improve loading times
+4. Give Burger the damage up back (I accidentally removed it for some reason)
+5. Fix some wave card scaling UI issues
