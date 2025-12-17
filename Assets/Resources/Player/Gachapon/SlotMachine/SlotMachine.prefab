@@ -654,7 +654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &235304966714088935
 Transform:
   m_ObjectHideFlags: 0
@@ -668,9 +668,7 @@ Transform:
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4286967787636020622}
-  - {fileID: 2761086398307903414}
-  - {fileID: 2784957395662976130}
+  - {fileID: 8755043147084324720}
   m_Father: {fileID: 5971252943124798424}
   m_LocalEulerAnglesHint: {x: 0, y: 15, z: 0}
 --- !u!1 &3422669846224450024
@@ -757,6 +755,40 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &4666221530016357575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8755043147084324720}
+  m_Layer: 0
+  m_Name: Coin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8755043147084324720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4666221530016357575}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4286967787636020622}
+  - {fileID: 2761086398307903414}
+  - {fileID: 2784957395662976130}
+  m_Father: {fileID: 235304966714088935}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4894482846190200380
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,12 +849,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5022485273943819061}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 235304966714088935}
+  m_Father: {fileID: 8755043147084324720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1145878619223688362
 SpriteRenderer:
@@ -1270,12 +1302,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6067217033834415331}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.24}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.24000011}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 235304966714088935}
+  m_Father: {fileID: 8755043147084324720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4018575029374243829
 SpriteRenderer:
@@ -1354,12 +1386,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7148412964747582666}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.12}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.12000006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 235304966714088935}
+  m_Father: {fileID: 8755043147084324720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &911693411220739265
 SpriteRenderer:
@@ -1604,18 +1636,26 @@ MonoBehaviour:
   AttackRight: 0
   WandEulerAngles: {x: 0, y: 0, z: 0}
   LeverArm: {fileID: 2170206517195861192}
+  Coin: {fileID: 8755043147084324720}
   AttackGamble: 0
   GambleOutcome: 1
+  FakeAttack: 0
   GambleSlots:
   - DefaultX: -1.115
     Transform: {fileID: 7323088345382849318}
     Renderer: {fileID: 2462606321152218623}
+    SpriteNum1: 0
     RendererSecond: {fileID: 4894749316264985197}
+    SpriteNum2: 0
   - DefaultX: -0.775
     Transform: {fileID: 2665096380580744236}
     Renderer: {fileID: 3033609077636061883}
+    SpriteNum1: 0
     RendererSecond: {fileID: 6211979282279964769}
+    SpriteNum2: 0
   - DefaultX: -0.435
     Transform: {fileID: 3987822393084468626}
     Renderer: {fileID: 4961534075817892465}
+    SpriteNum1: 0
     RendererSecond: {fileID: 4829616773630234707}
+    SpriteNum2: 0
