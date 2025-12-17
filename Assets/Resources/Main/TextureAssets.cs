@@ -16,6 +16,7 @@ public partial class Main : MonoBehaviour
         public static Material InfectorShader;
         public static Sprite T3ChestUma, T3ChestUmaOpen, T3Chest, T3ChestOpen, T2Chest, T2ChestOpen, T1Chest, T1ChestOpen;
         public static Sprite[] SlotSymbol = new Sprite[4];
+        public static Sprite GoldProj, CoinProj, GemProj;
         public static void Load()
         {
             BubbleSmall = Resources.Load<Sprite>("Projectiles/SmallBubble");
@@ -41,6 +42,10 @@ public partial class Main : MonoBehaviour
             SlotSymbol[1] = Resources.Load<Sprite>("Player/Gachapon/SlotMachine/Symbol2");
             SlotSymbol[2] = Resources.Load<Sprite>("Player/Gachapon/SlotMachine/Symbol3");
             SlotSymbol[3] = Resources.Load<Sprite>("Player/Gachapon/SlotMachine/Symbol4");
+
+            CoinProj = Resources.Load<Sprite>("Projectiles/SlotMachine/CoinProj");
+            GoldProj = Resources.Load<Sprite>("Projectiles/SlotMachine/GoldProj");
+            GemProj = Resources.Load<Sprite>("Projectiles/SlotMachine/GemProj");
         }
     }
     public static class PrefabAssets

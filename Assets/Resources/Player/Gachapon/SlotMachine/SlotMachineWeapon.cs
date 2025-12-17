@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class SlotMachineWeapon : Weapon
@@ -47,7 +45,7 @@ public class SlotMachineWeapon : Weapon
         Vector2 norm = toMouse.normalized;
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
         Vector2 attemptedPosition = playerToMouse.normalized * 1.05f + p.rb.velocity.normalized * 0.1f;
-        attemptedPosition.y *= 0.8f;
+        attemptedPosition.y *= 0.9f;
 
         p.PointDirOffset = 2 * dir * p.squash;
         p.DashOffset = 100 * dir * (1 - p.squash);
@@ -76,18 +74,24 @@ public class SlotMachineWeapon : Weapon
                             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 2.4f, 1.5f - 0.25f * GambleOutcome, 2);
                             PopupText.NewPopupText(Player.Position + new Vector2(0, 2), Vector3.up * 5f, ColorHelper.RarityColors[GambleOutcome - 1], GambleText[GambleOutcome - 1], true, 0.66f, 130);
                         }
-                        if (GambleOutcome == 5)
+                        if (AttackGamble == 50 || AttackGamble == 30 || AttackGamble == 10)
                         {
-
-                        }
-                        else
-                        {
-                            if (AttackGamble == 40 || AttackGamble == 25 || AttackGamble == 10)
+                            velocity -= norm * 1f;
+                            int num = GambleOutcome == 5 ? 3 : 0;
+                            int type = GambleOutcome != 5 ? GambleOutcome - 1 : AttackGamble == 50 ? 3 : AttackGamble == 30 ? 2 : 1;
+                            for (int i = -num; i <= num; i += 1)
                             {
-                                velocity -= norm * 1f;
-                                for (int i = -1; i <= 1; i += 1)
+                                Projectile.NewProjectile<GachaProj>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * 3.5f * i) * (23 - Mathf.Abs(i) * 1f), 2, type);
+                                if(i == 0)
                                 {
-                                    Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * 15 * i) * (20 - Mathf.Abs(i) * 4), 1);
+                                    if(type == 0 || GambleOutcome == 5)
+                                        AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1.0f, 1.0f, 0);
+                                    if (type == 1 || GambleOutcome == 5)
+                                        AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.0f, 0.5f, 0);
+                                    if (type == 2 || GambleOutcome == 5)
+                                        AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.0f, 0.4f, 1);
+                                    if (type == 3 || GambleOutcome == 5)
+                                        AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.0f, 0.3f, 2);
                                 }
                             }
                         }
@@ -169,6 +173,8 @@ public class SlotMachineWeapon : Weapon
             }
             else
             {
+                if (Main.WavesUnleashed)
+                    CoinManager.ModifyCurrent(-1);
                 AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.5f, 1.2f, 1);
                 AttackLeft = AttackCooldownLeft;
             }
@@ -182,9 +188,10 @@ public class SlotMachineWeapon : Weapon
     {
         AttackLeft = 0;
         AttackRight = 0;
-        transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, -0.5f), 0.1f);
-        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.transform.eulerAngles.z,
-             spriteRender.flipY ? 190 : - 10, 0.1f));
+        AttackGamble = 0;
+        //transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, -0.5f), 0.1f);
+        //transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.transform.eulerAngles.z,
+        //     spriteRender.flipY ? 190 : - 10, 0.1f));
     }
     public override int GetRarity()
     {
@@ -195,23 +202,23 @@ public class SlotMachineWeapon : Weapon
     {
         float n = Utils.RollWithLuckRaw();
         //Best Match
-        //JACKPOT! Should be EXTREMELY rare ~1%
-        if (n < 0.01f) //should give ~15 coins back MAX
+        //JACKPOT! Should be EXTREMELY rare ~0.6%
+        if ((n -= 0.006f) < 0) //Can give a lot of coins back
             return 5;
 
         //Good Match
-        //Huge Win! Should be very rare ~3%
-        if (n < 0.04f) //should give ~9 coins back MAX
+        //Huge Win! Should be very rare ~2.7%
+        if ((n -= 0.027f) < 0) //should give ~15 coins back MAX (0.027 * 15 ~= 0.405)
             return 4;
 
         //Variant Match
-        //Small Win! ~10%
-        if (n < 0.14f) //should give ~6 coins back MAX
+        //Small Win! ~6.7%
+        if ((n -= 0.067f) < 0) //should give ~9 coins back MAX (0.067 * 9 ~= 0.603)
             return 3;
 
         //Weak Variant Match
-        //Break Even! ~21%
-        if (n < 0.35f) //should give ~3 coins back MAX
+        //Break Even! ~20%
+        if ((n -= 0.2f) < 0) //should give ~3 coins back MAX (0.2 * 3 = 0.6)
             return 2;
 
         //No Matches
@@ -235,7 +242,7 @@ public class SlotMachineWeapon : Weapon
     {
         if(AttackGamble == GambleAnimationFrames + GambleAttackFrames - 1)
         {
-            AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1.5f, 0.65f, 0);
+            AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1.5f, 0.65f * player.PrimaryAttackSpeedModifier, 0);
         }
         int offsetAmt = 20;
         float totalFrames = GambleAnimationFrames - offsetAmt * 2;
