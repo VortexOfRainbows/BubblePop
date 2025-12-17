@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 
@@ -43,7 +45,6 @@ public class SlotMachineWeapon : Weapon
         attemptedPosition.y *= 0.8f;
 
         p.PointDirOffset = 2 * dir * p.squash;
-        p.MoveOffset = -0 * bodyDir * p.squash;
         p.DashOffset = 100 * dir * (1 - p.squash);
 
         if (AttackLeft > 0 || AttackGamble > 0)
@@ -54,7 +55,7 @@ public class SlotMachineWeapon : Weapon
                 AttackLeft = 0;
                 if (AttackGamble > 100) //Spin Slots animation
                 {
-
+                    GambleAnimation();
                 }
                 else //Actual attack portion
                 {
@@ -158,5 +159,29 @@ public class SlotMachineWeapon : Weapon
         //No Matches
         //Lose Money! Should be most cases ~55%
         return 1;
+    }
+
+    public Slot[] GambleSlots = { };
+    [Serializable]
+    public class Slot
+    {
+        public float DefaultX;
+        public Transform Transform;
+        public SpriteRenderer Renderer;
+        public SpriteRenderer RendererSecond;
+    }
+    public void GambleAnimation()
+    {
+        float counter = AttackGamble - 100;
+        float percent = 1 - counter / 100f;
+
+        for(int i = 0; i < 3; ++i)
+        {
+            float intensity = MathF.Sin(percent * MathF.PI);
+            Slot s = GambleSlots[i];
+
+            float jiggle = Utils.RandFloat(-intensity, intensity);
+            s.Transform.localPosition = new Vector3(s.DefaultX + 0.01f * jiggle, 0.03f * jiggle, s.Transform.localPosition.z);
+        }
     }
 }

@@ -311,7 +311,7 @@ Transform:
   m_GameObject: {fileID: 806370041176957089}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.09, y: -0.0058, z: 0}
+  m_LocalPosition: {x: -0.085, y: -0.0058, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -343,7 +343,7 @@ Transform:
   m_GameObject: {fileID: 1638739470588411605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.09, y: -0.0058, z: 0}
+  m_LocalPosition: {x: -0.085, y: -0.0058, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -376,7 +376,7 @@ Transform:
   m_GameObject: {fileID: 1671094333447092713}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.44, y: 0, z: 1}
+  m_LocalPosition: {x: -0.435, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -460,7 +460,7 @@ Transform:
   m_GameObject: {fileID: 2440757794835060591}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.09, y: -0.0058, z: 0}
+  m_LocalPosition: {x: -0.086, y: -0.0058, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -493,7 +493,7 @@ Transform:
   m_GameObject: {fileID: 2919199022288502331}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.11, y: 0, z: 3}
+  m_LocalPosition: {x: -1.115, y: 0, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -847,7 +847,7 @@ Transform:
   m_GameObject: {fileID: 5901172387399336822}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.79, y: 0, z: 2}
+  m_LocalPosition: {x: -0.775, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1349,3 +1349,18 @@ MonoBehaviour:
   AttackRight: 0
   WandEulerAngles: {x: 0, y: 0, z: 0}
   LeverArm: {fileID: 2170206517195861192}
+  AttackGamble: 0
+  GambleOutcome: 1
+  GambleSlots:
+  - DefaultX: -1.115
+    Transform: {fileID: 7323088345382849318}
+    Renderer: {fileID: 2462606321152218623}
+    RendererSecond: {fileID: 0}
+  - DefaultX: -0.775
+    Transform: {fileID: 2665096380580744236}
+    Renderer: {fileID: 3033609077636061883}
+    RendererSecond: {fileID: 0}
+  - DefaultX: -0.435
+    Transform: {fileID: 3987822393084468626}
+    Renderer: {fileID: 4961534075817892465}
+    RendererSecond: {fileID: 0}
