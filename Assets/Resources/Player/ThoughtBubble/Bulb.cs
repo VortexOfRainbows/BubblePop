@@ -16,7 +16,7 @@ public class Bulb : Hat
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<WeaponUpgrade>();
+        //powerPool.Add<WeaponUpgrade>();
         powerPool.Add<SpearOfLight>();
         powerPool.Add<NeuronActivation>();
         powerPool.Add<Refraction>();

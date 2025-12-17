@@ -5,6 +5,22 @@ using UnityEngine.Tilemaps;
 using static Enemy;
 public static class Utils
 {
+    public static Unity.Mathematics.Random rand = InitRandSeed();
+    private static Unity.Mathematics.Random InitRandSeed()
+    {
+        Unity.Mathematics.Random r = new();
+        r.InitState((uint)UnityEngine.Random.Range(0, int.MaxValue));
+        return r;
+    }
+    public static bool RollWithLuck(float odds)
+    {
+        float n = RollWithLuckRaw();
+        return n < odds;
+    }
+    public static float RollWithLuckRaw()
+    {
+        return rand.NextFloat();
+    }
     /// <summary>
     /// Lerps adjusted for delta time so it can be used consistently in Update(), rather than FixedUpdate()
     /// </summary>
@@ -181,6 +197,11 @@ public static class Utils
         color.a = alphaMultiplier;
         return color;
     }
+    public static Transform LerpLocalPosition(this Transform transform, Vector2 newPosition, float t)
+    {
+        transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(newPosition.x, newPosition.y, transform.localPosition.z), t);
+        return transform;
+    }
     public static Transform LerpLocalScale(this Transform transform, Vector2 newScale, float t)
     {
         transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(newScale.x, newScale.y, transform.localScale.z), t);
@@ -189,6 +210,11 @@ public static class Utils
     public static Transform LerpLocalEulerZ(this Transform transform, float r, float t)
     {
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, Mathf.LerpAngle(transform.localEulerAngles.z, r, t));
+        return transform;
+    }
+    public static Transform SetEulerZ(this Transform transform, float r)
+    {
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, r);
         return transform;
     }
     public static Vector3 SetXY(this Vector3 v, float x, float y)

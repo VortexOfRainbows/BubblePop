@@ -232,13 +232,10 @@ public class Gachapon : Body
                     break;
             }
         }
-        if (Main.WavesUnleashed)
+        while(player.AbilityReady)
         {
-            while(player.AbilityReady)
-            {
-                player.abilityTimer += AbilityCD;
-                AddChip();
-            }
+            player.abilityTimer += AbilityCD;
+            AddChip();
         }
         //if (p.AbilityReady && Control.Ability && !Control.LastAbility)
         //{

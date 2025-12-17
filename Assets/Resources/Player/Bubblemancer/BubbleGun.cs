@@ -17,8 +17,6 @@ public class BubbleGun : BubblemancerWand
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         base.ModifyPowerPool(powerPool);
-        powerPool.Add<ShotSpeed>();
-        powerPool.Add<WeaponUpgrade>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
