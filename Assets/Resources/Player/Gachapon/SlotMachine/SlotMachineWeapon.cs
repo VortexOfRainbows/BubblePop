@@ -37,7 +37,7 @@ public class SlotMachineWeapon : Weapon
 
         transform.localScale = transform.localScale.SetXY(-dir, 1);
 
-        Vector2 awayFromWand = new Vector2(1.5f, 0.25f * dir).RotatedBy(playerToMouse.ToRotation());
+        Vector2 awayFromWand = new Vector2(1.5f, 0.45f * dir).RotatedBy(playerToMouse.ToRotation());
         Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)transform.position - awayFromWand;
         Vector2 norm = toMouse.normalized;
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
@@ -53,13 +53,13 @@ public class SlotMachineWeapon : Weapon
             {
                 AttackGamble--;
                 AttackLeft = 0;
-                if (AttackGamble > 100) //Spin Slots animation
+                if (AttackGamble >= GambleAttackFrames) //Spin Slots animation
                 {
                     GambleAnimation();
                 }
                 else //Actual attack portion
                 {
-                    if (AttackGamble == 100)
+                    if (AttackGamble == 99)
                         PopupText.NewPopupText(Player.Position + new Vector2(0, 2), Vector3.up * 5f, ColorHelper.RarityColors[GambleOutcome - 1], GambleText[GambleOutcome - 1], true, 0.66f, 130);
                     if(GambleOutcome == 5)
                     {
@@ -86,7 +86,7 @@ public class SlotMachineWeapon : Weapon
             LeverArm.transform.LerpLocalEulerZ(armDefaultRotation, 0.2f);
             if(AttackLeft == 1)
             {
-                AttackGamble = 200;
+                AttackGamble = GambleAnimationFrames + GambleAttackFrames;
                 GambleOutcome = DetermineGambleOutcome();
             }
         }
@@ -108,6 +108,8 @@ public class SlotMachineWeapon : Weapon
     }
     private float AttackCooldownLeft => 60;
     private float AttackCooldownRight => 60;
+    private float GambleAnimationFrames => 120;
+    private float GambleAttackFrames => 100;
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft <= 0 && AttackGamble <= 0 && AttackRight < 0 && !alternate)
@@ -168,20 +170,104 @@ public class SlotMachineWeapon : Weapon
         public float DefaultX;
         public Transform Transform;
         public SpriteRenderer Renderer;
+        public int SpriteNum1;
         public SpriteRenderer RendererSecond;
+        public int SpriteNum2;
+        public bool ReadyToSwitchSprite1 { get; set; } = false;
+        public bool ReadyToSwitchSprite2 { get; set; } = false;
     }
     public void GambleAnimation()
     {
-        float counter = AttackGamble - 100;
-        float percent = 1 - counter / 100f;
-
+        int offsetAmt = 20;
+        float totalFrames = GambleAnimationFrames - offsetAmt * 2;
         for(int i = 0; i < 3; ++i)
         {
-            float intensity = MathF.Sin(percent * MathF.PI);
-            Slot s = GambleSlots[i];
+            float offset = offsetAmt * i;
+            float counter = AttackGamble - GambleAttackFrames - offset;
+            float percent = 1 - counter / totalFrames;
+            if(percent >= 0 && percent <= 1)
+            {
+                float intensity = MathF.Sin(percent * MathF.PI);
+                Slot s = GambleSlots[i];
 
-            float jiggle = Utils.RandFloat(-intensity, intensity);
-            s.Transform.localPosition = new Vector3(s.DefaultX + 0.01f * jiggle, 0.03f * jiggle, s.Transform.localPosition.z);
+                float jiggle = Utils.RandFloat(-intensity, intensity);
+                s.Transform.localPosition = new Vector3(s.DefaultX + 0.008f * jiggle, 0.025f * jiggle, s.Transform.localPosition.z);
+                SlotAnimation(s, percent);
+            }
         }
+    }
+    public void SlotAnimation(Slot s, float percent)
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            float slotPercent = (MathF.Sin(percent * percent * MathF.PI * 0.5f) * 3 + i * 0.5f);
+            bool final = slotPercent > 3;
+            slotPercent %= 1;
+            float yPos = -slotPercent;
+            if (yPos < -0.5f)
+                yPos += 1;
+            SpriteRenderer r = i == 0 ? s.Renderer : s.RendererSecond;
+            r.transform.localPosition = new Vector3(0.09f - 0.09f * MathF.Cos(yPos * MathF.PI), yPos, -0.1f);
+            r.transform.localScale = new Vector3(1, 1 - Math.Abs(yPos) * 1.25f, 1);
+
+            bool outOfScreen = yPos > 0.45f || yPos < -0.45f;
+            if (outOfScreen)
+            {
+                if (s.ReadyToSwitchSprite1 && i == 0)
+                {
+                    SwapSlotSprite(s, i, true);
+                    s.ReadyToSwitchSprite1 = false;
+                }
+                else if (s.ReadyToSwitchSprite2 && i == 1)
+                {
+                    SwapSlotSprite(s, i);
+                    s.ReadyToSwitchSprite2 = false;
+                }
+            }
+            else if (i == 0)
+                s.ReadyToSwitchSprite1 = true;
+            else if (i == 1)
+                s.ReadyToSwitchSprite2 = true;
+        }
+    }
+    public void SwapSlotSprite(Slot s, int i, bool final = false)
+    {
+        if (final && i == 0)
+        {
+            if(GambleOutcome == 5)
+                s.SpriteNum1 = 0;
+            else if(GambleOutcome == 4)
+                s.SpriteNum1 = 3;
+            else if (GambleOutcome == 3)
+                s.SpriteNum1 = 1;
+            else if (GambleOutcome == 2)
+                s.SpriteNum1 = 2;
+            else
+            {
+                if(s == GambleSlots[1])
+                {
+                    while (s.SpriteNum1 == GambleSlots[0].SpriteNum1)
+                        s.SpriteNum1 = Utils.RandInt(4);
+                }
+                else if(s == GambleSlots[2])
+                {
+                    while (s.SpriteNum1 == GambleSlots[1].SpriteNum1 || s.SpriteNum1 == GambleSlots[0].SpriteNum1)
+                        s.SpriteNum1 = Utils.RandInt(4);
+                }
+            }
+        }
+        else
+        {
+            ref int num = ref s.SpriteNum2;
+            if(i == 0)
+                num = ref s.SpriteNum1;
+            int previousSprite = num;
+            while(num == previousSprite)
+                num = Utils.RandInt(4);
+            if (i == 1 && s.SpriteNum1 == num)
+                num = Utils.RandInt(4);
+        }
+        s.Renderer.sprite = Main.TextureAssets.SlotSymbol[s.SpriteNum1];
+        s.RendererSecond.sprite = Main.TextureAssets.SlotSymbol[s.SpriteNum2];
     }
 }
