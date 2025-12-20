@@ -46,7 +46,7 @@ TrailRenderer:
   m_ReceiveShadows: 1
   m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
-  m_MotionVectors: 0
+  m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
@@ -134,8 +134,8 @@ TrailRenderer:
       m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 1
-    numCapVertices: 0
+    numCornerVertices: 0
+    numCapVertices: 4
     alignment: 0
     textureMode: 0
     textureScale: {x: 1, y: 0.2}
@@ -162,3 +162,6 @@ MonoBehaviour:
   Trail: {fileID: 8557949999318105890}
   timer: 0
   originalAlpha: 0
+  ManuallyUpdated: 0
+  decayMultiplier: 1
+  positions: []

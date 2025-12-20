@@ -23,7 +23,13 @@ public class SlotMachineWeapon : Weapon
     }
     public override void EquipUpdate()
     {
-
+        if(runOnce)
+        {
+            runOnce = false;
+            SwapSlotSprite(GambleSlots[0], 0, false);
+            SwapSlotSprite(GambleSlots[1], 0, false);
+            SwapSlotSprite(GambleSlots[2], 0, false);
+        }
     }
     public override bool IsPrimaryAttacking()
     {
@@ -35,21 +41,30 @@ public class SlotMachineWeapon : Weapon
     public Transform Coin, GeoCenter;
     public float AttackGamble = 0;
     public int GambleOutcome = 1;
+    public Vector3 previousAttemptedPosition = Vector3.zero;
+    float dir = 1;
+    private bool runOnce = true;
+    private bool hasDoneSelectAnimation = false;
     protected override void AnimationUpdate()
     {
         Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
         Vector2 mouseAdjustedFromPlayer = playerToMouse.magnitude < 4 ? playerToMouse.normalized * 4 + (Vector2)p.transform.position : Utils.MouseWorld;
-        float dir = Mathf.Sign(playerToMouse.x);
         float scaleUp = 0.95f;
-
+        if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20)
+            dir = Mathf.Sign(playerToMouse.x);
         Vector2 awayFromWand = new Vector2(1.5f, 0.25f * dir).RotatedBy(playerToMouse.ToRotation());
         Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)transform.position - awayFromWand;
         Vector2 norm = toMouse.normalized;
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
-        Vector2 attemptedPosition = playerToMouse.normalized * 1.05f + p.rb.velocity.normalized * 0.1f;
-        attemptedPosition.y *= 0.95f;
-        Vector2 originalPosition = attemptedPosition;
 
+        Vector2 attemptedPosition = previousAttemptedPosition;
+        if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20)
+        {
+            attemptedPosition = playerToMouse.normalized * 1.05f + p.rb.velocity.normalized * 0.1f;
+            attemptedPosition.y *= 0.95f;
+        }
+        Vector2 originalPosition = attemptedPosition;
+        previousAttemptedPosition = attemptedPosition;
         p.PointDirOffset = 2 * dir * p.squash;
         p.DashOffset = 100 * dir * (1 - p.squash);
         float armDefaultRotation = 0;
@@ -77,7 +92,7 @@ public class SlotMachineWeapon : Weapon
                             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 2.4f, 1.5f - 0.25f * GambleOutcome, 2);
                             PopupText.NewPopupText(Player.Position + new Vector2(0, 2), Vector3.up * 5f, ColorHelper.RarityColors[GambleOutcome - 1], GambleText[GambleOutcome - 1], true, 0.66f, 130);
                         }
-                        if (AttackGamble == 50 || AttackGamble == 30 || AttackGamble == 10)
+                        if ((AttackGamble == 50 || AttackGamble == 30 || AttackGamble == 10) && hasDoneSelectAnimation)
                         {
                             velocity -= norm * 1f;
                             int num = GambleOutcome == 5 ? 3 : 0;
@@ -100,7 +115,10 @@ public class SlotMachineWeapon : Weapon
                         }
                     }
                     if (AttackGamble <= 1)
+                    {
+                        hasDoneSelectAnimation = true;
                         FakeAttack = false;
+                    }
                 }
             }
             float percent = AttackLeft / AttackCooldownLeft;
@@ -140,8 +158,8 @@ public class SlotMachineWeapon : Weapon
         }
         if (AttackRight > 0)
         {
-            if (Hitbox == null)
-                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 5, 0).GetComponent<MeleeHitbox>();
+            if (Hitbox == null && AttackRight == AttackCooldownRight)
+                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 10, 0).GetComponent<MeleeHitbox>();
             float percent = (AttackRight - WindUpTime) / (AttackCooldownRight - WindUpTime);
             percent = Mathf.Clamp(percent, 0, 1);
             float iPer = 1 - percent * percent * percent * percent;
@@ -149,31 +167,40 @@ public class SlotMachineWeapon : Weapon
             float angleOffset = 120 * iPer * Mathf.Deg2Rad * dir;
             attemptedPosition *= 1 + iPer * 0.6f;
             float lerp = 0;
-            if(AttackRight <= WindUpTime && AttackRight > RightClickCooldown)
+            if(AttackRight <= WindUpTime && AttackRight > RightClickEndLag)
             {
-                percent = (AttackRight - RightClickCooldown) / (WindUpTime - RightClickCooldown);
+                percent = (AttackRight - RightClickEndLag) / (WindUpTime - RightClickEndLag);
                 iPer = 1 - percent * percent;
-                angleOffset += -220 * iPer * Mathf.Deg2Rad * dir;
+                angleOffset += -225 * iPer * Mathf.Deg2Rad * dir;
                 float sin = Mathf.Sin((iPer * 0.33f + 0.67f * iPer * iPer) * Mathf.PI);
-                attemptedPosition *= 1.0f + 1.15f * sin * sin;
+                attemptedPosition *= 1.0f + 1.25f * sin * sin;
                 scaleUp += sin * 0.3f;
                 if(Hitbox != null && !Hitbox.Friendly)
                 {
                     Hitbox.Friendly = true;
                     if(Trail == null)
-                        Trail = SpecialTrail.NewTrail(Hitbox.transform, Color.white, 2, 0.2f * (WindUpTime - RightClickCooldown) * Time.fixedDeltaTime / player.SecondaryAttackSpeedModifier);
+                    {
+                        Trail = SpecialTrail.NewTrail(Hitbox.transform, ColorHelper.RarityColors[4] * 0.6f, 1.9f, 0.25f * (WindUpTime - RightClickEndLag) * Time.fixedDeltaTime / MathF.Sqrt(player.SecondaryAttackSpeedModifier), 0.1f, true);
+                        Trail.Trail.sortingOrder = 2;
+                    }
                 }
             }
-            else if(AttackRight <= RightClickCooldown)
+            else if(AttackRight <= RightClickEndLag)
             {
-                percent = AttackRight / RightClickCooldown;
+                percent = AttackRight / RightClickEndLag;
                 iPer = 1 - percent;
-                angleOffset += -220 * Mathf.Deg2Rad * dir;
+                angleOffset += -225 * Mathf.Deg2Rad * dir;
                 lerp = 0.5f * iPer + 0.5f * iPer * iPer;
                 if (Hitbox != null)
-                    Hitbox.Friendly = false;
+                {
+                    Hitbox.Kill();
+                    Hitbox = null;
+                }
                 if (Trail != null)
+                {
                     Trail.FakeParent = null;
+                    Trail = null;
+                }
             }
             else
             {
@@ -189,14 +216,8 @@ public class SlotMachineWeapon : Weapon
                 Hitbox.transform.SetEulerZ(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
                 Hitbox.c2D.radius = 1.5f;
             }
-        }
-        else
-        {
-            if(Hitbox != null)
-            {
-                Hitbox.Kill();
-                Hitbox = null;
-            }
+            if (Trail != null)
+                Trail.AIUpdate();
         }
         AttackRight--;
 
@@ -215,11 +236,11 @@ public class SlotMachineWeapon : Weapon
         velocity *= 0.8f;
     }
     private float AttackCooldownLeft => 80;
-    private float AttackCooldownRight => 245;
+    private float AttackCooldownRight => 120 + WindUpTime + RightClickEndLag;
     private float GambleAnimationFrames => 112;
     private float GambleAttackFrames => 55;
-    private float RightClickCooldown => 50;
-    private float WindUpTime => 100;
+    private float RightClickEndLag => 70;
+    private float WindUpTime => (int)(RightClickEndLag + 50 * Mathf.Sqrt(player.SecondaryAttackSpeedModifier));
     public bool FakeAttack = false;
     public override void StartAttack(bool alternate)
     {
@@ -261,6 +282,10 @@ public class SlotMachineWeapon : Weapon
     public static readonly string[] GambleText = { "Try Again!", "Small Win!", "Medium Win!", "Huge Win!", "Jackpot!"};
     public int DetermineGambleOutcome()
     {
+        if(!hasDoneSelectAnimation)
+        {
+            return 5;
+        }
         float n = Utils.RollWithLuckRaw();
         //Best Match
         //JACKPOT! Should be EXTREMELY rare ~0.6%

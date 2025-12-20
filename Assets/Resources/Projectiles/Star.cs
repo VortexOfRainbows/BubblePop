@@ -9,7 +9,7 @@ public class StarProj : Projectile
         if(Damage <= 0)
             Damage = 2;
         Friendly = true;
-        MyTrail = SpecialTrail.NewTrail(transform, Color.Lerp(Color.blue * 0.85f, Player.Instance.Body.PrimaryColor, 0.75f).WithAlpha(0.4f), 3f, 0.25f);
+        MyTrail = SpecialTrail.NewTrail(transform, Color.Lerp(Color.blue * 0.85f, Player.Instance.Body.PrimaryColor, 0.75f).WithAlpha(0.4f), 1, 0.25f, 0.3f);
     }
     public override void AI()
     {
