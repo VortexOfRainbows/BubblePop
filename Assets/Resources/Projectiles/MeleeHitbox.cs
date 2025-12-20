@@ -31,6 +31,7 @@ public class MeleeHitbox : Projectile
     {
         if (Type == 0)
         {
+            CoinManager.SpawnCoin(target.transform.position, 1, 1);
             AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 0.6f, 0.475f, 0);
             AudioManager.PlaySound(SoundID.SoapDie, transform.position, 2, 1.7f, 0);
             for (int i = 0; i < 35; ++i)

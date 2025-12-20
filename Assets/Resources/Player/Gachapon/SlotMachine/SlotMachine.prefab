@@ -929,7 +929,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: d27c5d4b2cd67994894d15c0cf549c98, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eba674c3867ac984b9616ac3e925efa7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1382,7 +1382,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: d27c5d4b2cd67994894d15c0cf549c98, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eba674c3867ac984b9616ac3e925efa7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1466,7 +1466,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: d27c5d4b2cd67994894d15c0cf549c98, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eba674c3867ac984b9616ac3e925efa7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1672,6 +1672,7 @@ MonoBehaviour:
   GeoCenter: {fileID: 1361859759897841772}
   AttackGamble: 0
   GambleOutcome: 1
+  previousAttemptedPosition: {x: 0, y: 0, z: 0}
   FakeAttack: 0
   GambleSlots:
   - DefaultX: -1.115

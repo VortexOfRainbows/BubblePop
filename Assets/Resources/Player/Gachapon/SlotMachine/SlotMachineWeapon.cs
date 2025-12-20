@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -95,11 +96,15 @@ public class SlotMachineWeapon : Weapon
                         if ((AttackGamble == 50 || AttackGamble == 30 || AttackGamble == 10) && hasDoneSelectAnimation)
                         {
                             velocity -= norm * 1f;
-                            int num = GambleOutcome == 5 ? 3 : 0;
+                            int num = GambleOutcome == 5 ? 3 : 2;
                             int type = GambleOutcome != 5 ? GambleOutcome - 1 : AttackGamble == 50 ? 3 : AttackGamble == 30 ? 2 : 1;
+                            float separation = GambleOutcome == 5 ? 4.5f : 9f;
                             for (int i = -num; i <= num; i += 1)
                             {
-                                Projectile.NewProjectile<GachaProj>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * 3.5f * i) * (23 - Mathf.Abs(i) * 1f), 2, type);
+                                if(num == 2 && i != 0)
+                                    Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 1);
+                                else
+                                    Projectile.NewProjectile<GachaProj>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 2, type);
                                 if(i == 0)
                                 {
                                     if(type == 0 || GambleOutcome == 5)
@@ -164,7 +169,7 @@ public class SlotMachineWeapon : Weapon
         {
             if (Hitbox == null && AttackRight == AttackCooldownRight)
             {
-                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 10, 0).GetComponent<MeleeHitbox>();
+                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 12, 0).GetComponent<MeleeHitbox>();
                 AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.75f, 0.825f * player.SecondaryAttackSpeedModifier, 0);
             }
             float percent = (AttackRight - WindUpTime) / (AttackCooldownRight - WindUpTime);
@@ -260,7 +265,7 @@ public class SlotMachineWeapon : Weapon
     {
         if (AttackLeft <= 0 && AttackGamble <= 0 && AttackRight < 0 && !alternate)
         {
-            bool hasMoney = CoinManager.Current > 0 || !Main.WavesUnleashed;
+            bool hasMoney = CoinManager.Current > 4 || !Main.WavesUnleashed;
             if(!hasMoney)
             {
                 AudioManager.PlaySound(SoundID.SoapDie, transform.position, 1.5f, 1.0f, 1);
@@ -270,7 +275,7 @@ public class SlotMachineWeapon : Weapon
             else
             {
                 if (Main.WavesUnleashed)
-                    CoinManager.ModifyCurrent(-1);
+                    CoinManager.ModifyCurrent(-5);
                 AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.5f, 1.2f, 1);
                 AttackLeft = AttackCooldownLeft;
             }
@@ -302,27 +307,27 @@ public class SlotMachineWeapon : Weapon
         }
         float n = Utils.RollWithLuckRaw();
         //Best Match
-        //JACKPOT! Should be EXTREMELY rare ~0.6%
-        if ((n -= 0.006f) < 0) //Can give a lot of coins back
+        //JACKPOT! ~0.6%
+        if ((n -= 0.006f) < 0)
             return 5;
 
         //Good Match
-        //Huge Win! Should be very rare ~2.7%
-        if ((n -= 0.027f) < 0) //should give ~15 coins back MAX (0.027 * 15 ~= 0.405)
+        //Huge Win! ~2.7%
+        if ((n -= 0.027f) < 0) 
             return 4;
 
         //Variant Match
         //Small Win! ~6.7%
-        if ((n -= 0.067f) < 0) //should give ~9 coins back MAX (0.067 * 9 ~= 0.603)
+        if ((n -= 0.067f) < 0) 
             return 3;
 
         //Weak Variant Match
         //Break Even! ~20%
-        if ((n -= 0.2f) < 0) //should give ~3 coins back MAX (0.2 * 3 = 0.6)
+        if ((n -= 0.2f) < 0) 
             return 2;
 
         //No Matches
-        //Lose Money! Should be most cases ~65%
+        //Lose Money! Should be most cases ~70%
         return 1;
     }
     public Slot[] GambleSlots = { };

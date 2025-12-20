@@ -11,26 +11,28 @@ public class GachaProj : Projectile
         SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
         timer2 = 0;
         transform.localScale *= 0.5f;
-        Damage = 3;
+        Damage = 5;
         Penetrate = 1;
         Friendly = true;
         if (Data1 == 1)
         {
-            Damage = 5;
+            Damage = 10;
             SpriteRenderer.sprite = Main.TextureAssets.CoinProj;
             c = ColorHelper.RarityColors[0];
         }
         else if (Data1 == 2)
         {
-            Damage = 10;
+            Damage = 20;
             SpriteRenderer.sprite = Main.TextureAssets.GoldProj;
             c = ColorHelper.RarityColors[4];
+            Penetrate = 2;
         }
         else if (Data1 == 3)
         {
-            Damage = 20;
+            Damage = 40;
             SpriteRenderer.sprite = Main.TextureAssets.GemProj;
             c = ColorHelper.RarityColors[1];
+            Penetrate = -1;
         }
         RB.velocity *= 1 + 0.1f * Player.Instance.FasterBulletSpeed;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
@@ -40,9 +42,6 @@ public class GachaProj : Projectile
     public override void AI()
     {
         float deathTime = 180;
-        Vector2 velo = RB.velocity;
-        velo *= 0.9945f;
-        RB.velocity = velo;
         float speed = RB.velocity.magnitude;
         float rtSpeed = Mathf.Sqrt(speed);
         RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x) * 1.4f;
@@ -69,11 +68,11 @@ public class GachaProj : Projectile
     public override void OnHitTarget(Entity target)
     {
         if(Data1 == 1)
-            CoinManager.SpawnCoin(transform.position, 1, 1);
-        else if(Data1 == 2)
             CoinManager.SpawnCoin(transform.position, 3, 1);
-        else if (Data1 == 3)
+        else if(Data1 == 2)
             CoinManager.SpawnCoin(transform.position, 5, 1);
+        else if (Data1 == 3)
+            CoinManager.SpawnCoin(transform.position, 25, 1);
     }
     public override void OnKill()
     {
