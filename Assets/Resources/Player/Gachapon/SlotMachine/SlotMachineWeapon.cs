@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class SlotMachineWeapon : Weapon
 {
@@ -37,15 +38,15 @@ public class SlotMachineWeapon : Weapon
         Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
         Vector2 mouseAdjustedFromPlayer = playerToMouse.magnitude < 4 ? playerToMouse.normalized * 4 + (Vector2)p.transform.position : Utils.MouseWorld;
         float dir = Mathf.Sign(playerToMouse.x);
-
-        transform.localScale = transform.localScale.SetXY(-dir * 0.95f, 0.95f);
+        float scaleUp = 0.95f;
 
         Vector2 awayFromWand = new Vector2(1.5f, 0.25f * dir).RotatedBy(playerToMouse.ToRotation());
         Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)transform.position - awayFromWand;
         Vector2 norm = toMouse.normalized;
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
         Vector2 attemptedPosition = playerToMouse.normalized * 1.05f + p.rb.velocity.normalized * 0.1f;
-        attemptedPosition.y *= 0.9f;
+        attemptedPosition.y *= 0.95f;
+        Vector2 originalPosition = attemptedPosition;
 
         p.PointDirOffset = 2 * dir * p.squash;
         p.DashOffset = 100 * dir * (1 - p.squash);
@@ -137,7 +138,37 @@ public class SlotMachineWeapon : Weapon
         }
         if (AttackRight > 0)
         {
-
+            float percent = (AttackRight - WindUpTime) / (AttackCooldownRight - WindUpTime);
+            percent = Mathf.Clamp(percent, 0, 1);
+            float iPer = 1 - percent * percent * percent * percent;
+            iPer = iPer * iPer;
+            float angleOffset = 120 * iPer * Mathf.Deg2Rad * dir;
+            attemptedPosition *= 1 + iPer * 0.6f;
+            float lerp = 0;
+            if(AttackRight <= WindUpTime && AttackRight > RightClickCooldown)
+            {
+                percent = (AttackRight - RightClickCooldown) / (WindUpTime - RightClickCooldown);
+                iPer = 1 - percent * percent;
+                angleOffset += -220 * iPer * Mathf.Deg2Rad * dir;
+                float sin = Mathf.Sin((iPer * 0.33f + 0.67f * iPer * iPer) * Mathf.PI);
+                attemptedPosition *= 1.0f + 1.15f * sin * sin;
+                scaleUp += sin * 0.3f;
+            }
+            else if(AttackRight <= RightClickCooldown)
+            {
+                percent = AttackRight / RightClickCooldown;
+                iPer = 1 - percent;
+                angleOffset += -220 * Mathf.Deg2Rad * dir;
+                lerp = 0.5f * iPer + 0.5f * iPer * iPer;
+            }
+            else
+            {
+                attemptedPosition += Utils.RandCircle() * iPer * 0.2f;
+            }
+            attemptedPosition = attemptedPosition.RotatedBy(angleOffset);
+            if(lerp > 0)
+                attemptedPosition = Vector2.Lerp(attemptedPosition, originalPosition, lerp);
+            AttackRight--;
         }
         else
             AttackRight--;
@@ -145,20 +176,23 @@ public class SlotMachineWeapon : Weapon
         float lerpFactor = FakeAttack ? 0.2f : 0.145f;
         LeverArm.transform.LerpLocalPosition(armDefaultPosition, lerpFactor);
         LeverArm.transform.LerpLocalEulerZ(armDefaultRotation, lerpFactor);
-
+        lerpFactor = IsSecondaryAttacking() ? 0.35f : 0.1f;
         //Final Stuff
         float r = attemptedPosition.ToRotation() * Mathf.Rad2Deg - p.PointDirOffset - p.MoveOffset + p.DashOffset;
-        transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition + velocity, 0.08f);
+        transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition + velocity, lerpFactor);
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
         transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z + (dir == -1 ? 180 : 0));
+        transform.localScale = transform.localScale.SetXY(-dir * scaleUp, scaleUp);
         AttackLeft--;
 
         velocity *= 0.8f;
     }
     private float AttackCooldownLeft => 80;
-    private float AttackCooldownRight => 80;
+    private float AttackCooldownRight => 245;
     private float GambleAnimationFrames => 112;
     private float GambleAttackFrames => 55;
+    private float RightClickCooldown => 50;
+    private float WindUpTime => 100;
     public bool FakeAttack = false;
     public override void StartAttack(bool alternate)
     {
@@ -179,7 +213,7 @@ public class SlotMachineWeapon : Weapon
                 AttackLeft = AttackCooldownLeft;
             }
         }
-        if (AttackRight <= 0 && AttackLeft < 0 && AttackGamble < 0 && alternate)
+        if (AttackRight <= 0 && AttackLeft < 0 && AttackGamble <= 0 && alternate)
         {
             AttackRight = AttackCooldownRight;
         }
