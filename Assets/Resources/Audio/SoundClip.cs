@@ -72,6 +72,10 @@ public static class SoundID
         "ElectricAttack1", "ElectricAttack2");
     public static SoundClip Infect = new("NPCs/",
         "Infect");
+    public static SoundClip ChestSpawn = new("Chest/",
+        "Spawn");
+    public static SoundClip ChestDrop = new("Chest/",
+        "Drop");
 }
 public class SoundClip
 {

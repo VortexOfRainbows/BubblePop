@@ -96,6 +96,7 @@ public class Chest : MonoBehaviour
             SpriteRendererShadow.transform.localScale = new Vector3(Visual.transform.localScale.x * 3, Visual.transform.localScale.y, 1);
             Visual.transform.LerpLocalEulerZ(12 * Direction, 1);
             AudioManager.PlaySound(SoundID.SoapSlide, transform.position, 0.5f, 0.9f, 0);
+            AudioManager.PlaySound(SoundID.ChestSpawn, transform.position, 0.5f, 1.2f, 0);
         }
     }
     public void Start()
@@ -147,6 +148,8 @@ public class Chest : MonoBehaviour
                     if (BounceCount > 0)
                     {
                         AudioManager.PlaySound(SoundID.SoapDie, transform.position, 0.7f, 0.8f, 0);
+                        //I think this sound is a little too drawn out. Maybe I'm just used to the current one
+                        //AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 0.5f, 2f, 0);
                         Velocity.y = Mathf.Max(0, (Velocity.y + 0.3f) * -BounceHeight);
                         BounceCount--;
                     }

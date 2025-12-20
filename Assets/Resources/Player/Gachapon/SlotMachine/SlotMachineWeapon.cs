@@ -156,10 +156,17 @@ public class SlotMachineWeapon : Weapon
                 Coin.gameObject.SetActive(false);
             }
         }
-        if (AttackRight > 0)
+        else if(!hasDoneSelectAnimation)
+        {
+            StartAttack(false);
+        }
+        else if (AttackRight > 0)
         {
             if (Hitbox == null && AttackRight == AttackCooldownRight)
+            {
                 Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 10, 0).GetComponent<MeleeHitbox>();
+                AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.75f, 0.825f * player.SecondaryAttackSpeedModifier, 0);
+            }
             float percent = (AttackRight - WindUpTime) / (AttackCooldownRight - WindUpTime);
             percent = Mathf.Clamp(percent, 0, 1);
             float iPer = 1 - percent * percent * percent * percent;
@@ -177,8 +184,10 @@ public class SlotMachineWeapon : Weapon
                 scaleUp += sin * 0.3f;
                 if(Hitbox != null && !Hitbox.Friendly)
                 {
+                    AudioManager.PlaySound(SoundID.Teleport, transform.position, 1, 1.5f * player.SecondaryAttackSpeedModifier, 0);
+                    //AudioManager.PlaySound(SoundID.SoapDie, transform.position, 2, 2f * player.SecondaryAttackSpeedModifier, 0);
                     Hitbox.Friendly = true;
-                    if(Trail == null)
+                    if (Trail == null)
                     {
                         Trail = SpecialTrail.NewTrail(Hitbox.transform, ColorHelper.RarityColors[4] * 0.6f, 1.9f, 0.25f * (WindUpTime - RightClickEndLag) * Time.fixedDeltaTime / MathF.Sqrt(player.SecondaryAttackSpeedModifier), 0.1f, true);
                         Trail.Trail.sortingOrder = 2;
@@ -211,13 +220,18 @@ public class SlotMachineWeapon : Weapon
                 attemptedPosition = Vector2.Lerp(attemptedPosition, originalPosition, lerp);
             if (Hitbox != null)
             {
+                Hitbox.RB.velocity = attemptedPosition.normalized * 10;
+                if(Hitbox.Friendly && Utils.RandFloat(1) < 0.5f)
+                    ParticleManager.NewParticle(Hitbox.transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f), Utils.RandFloat(-0.3f, 0.3f)), Utils.RandFloat(2f, 2.25f), Hitbox.RB.velocity * Utils.RandFloat(0.25f, 0.5f), 2, Utils.RandFloat(0.7f, 0.8f), 3, ColorHelper.RarityColors[4] * 0.85f);
                 Hitbox.transform.position = GeoCenter.position;
                 Hitbox.transform.localScale = transform.localScale;
                 Hitbox.transform.SetEulerZ(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
-                Hitbox.c2D.radius = 1.5f;
+                Hitbox.c2D.radius = 1.65f;
             }
             if (Trail != null)
+            {
                 Trail.AIUpdate();
+            }
         }
         AttackRight--;
 
