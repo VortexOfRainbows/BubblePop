@@ -29,8 +29,10 @@ public class SlotMachineWeapon : Weapon
     {
         return base.IsPrimaryAttacking() || GambleAttackFrames > 0;
     }
+    public MeleeHitbox Hitbox { get; set; }
+    public SpecialTrail Trail { get; set; }
     public Transform LeverArm;
-    public Transform Coin;
+    public Transform Coin, GeoCenter;
     public float AttackGamble = 0;
     public int GambleOutcome = 1;
     protected override void AnimationUpdate()
@@ -138,6 +140,8 @@ public class SlotMachineWeapon : Weapon
         }
         if (AttackRight > 0)
         {
+            if (Hitbox == null)
+                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 5, 0).GetComponent<MeleeHitbox>();
             float percent = (AttackRight - WindUpTime) / (AttackCooldownRight - WindUpTime);
             percent = Mathf.Clamp(percent, 0, 1);
             float iPer = 1 - percent * percent * percent * percent;
@@ -153,6 +157,12 @@ public class SlotMachineWeapon : Weapon
                 float sin = Mathf.Sin((iPer * 0.33f + 0.67f * iPer * iPer) * Mathf.PI);
                 attemptedPosition *= 1.0f + 1.15f * sin * sin;
                 scaleUp += sin * 0.3f;
+                if(Hitbox != null && !Hitbox.Friendly)
+                {
+                    Hitbox.Friendly = true;
+                    if(Trail == null)
+                        Trail = SpecialTrail.NewTrail(Hitbox.transform, Color.white, 2, 0.2f * (WindUpTime - RightClickCooldown) * Time.fixedDeltaTime / player.SecondaryAttackSpeedModifier);
+                }
             }
             else if(AttackRight <= RightClickCooldown)
             {
@@ -160,6 +170,10 @@ public class SlotMachineWeapon : Weapon
                 iPer = 1 - percent;
                 angleOffset += -220 * Mathf.Deg2Rad * dir;
                 lerp = 0.5f * iPer + 0.5f * iPer * iPer;
+                if (Hitbox != null)
+                    Hitbox.Friendly = false;
+                if (Trail != null)
+                    Trail.FakeParent = null;
             }
             else
             {
@@ -168,10 +182,23 @@ public class SlotMachineWeapon : Weapon
             attemptedPosition = attemptedPosition.RotatedBy(angleOffset);
             if(lerp > 0)
                 attemptedPosition = Vector2.Lerp(attemptedPosition, originalPosition, lerp);
-            AttackRight--;
+            if (Hitbox != null)
+            {
+                Hitbox.transform.position = GeoCenter.position;
+                Hitbox.transform.localScale = transform.localScale;
+                Hitbox.transform.SetEulerZ(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
+                Hitbox.c2D.radius = 1.5f;
+            }
         }
         else
-            AttackRight--;
+        {
+            if(Hitbox != null)
+            {
+                Hitbox.Kill();
+                Hitbox = null;
+            }
+        }
+        AttackRight--;
 
         float lerpFactor = FakeAttack ? 0.2f : 0.145f;
         LeverArm.transform.LerpLocalPosition(armDefaultPosition, lerpFactor);

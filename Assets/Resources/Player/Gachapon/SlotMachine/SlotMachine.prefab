@@ -143,7 +143,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 754421586789276775}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0, w: 1}
   m_LocalPosition: {x: -0.765, y: 0.392, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -318,6 +318,37 @@ Transform:
   - {fileID: 1910790404298984241}
   - {fileID: 6521863562287858082}
   m_Father: {fileID: 2665096380580744236}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &928232061751934477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1361859759897841772}
+  m_Layer: 0
+  m_Name: GeometricCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1361859759897841772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928232061751934477}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.8, y: 0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2171613590460809747}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1638739470588411605
 GameObject:
@@ -819,6 +850,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6002968745880740469}
+  - {fileID: 1361859759897841772}
   - {fileID: 7767930965840069680}
   - {fileID: 831411453708133922}
   - {fileID: 4229502152139317897}
@@ -1637,6 +1669,7 @@ MonoBehaviour:
   WandEulerAngles: {x: 0, y: 0, z: 0}
   LeverArm: {fileID: 2170206517195861192}
   Coin: {fileID: 8755043147084324720}
+  GeoCenter: {fileID: 1361859759897841772}
   AttackGamble: 0
   GambleOutcome: 1
   FakeAttack: 0
