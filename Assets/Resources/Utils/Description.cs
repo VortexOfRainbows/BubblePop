@@ -132,6 +132,11 @@ public class DetailedDescription
         AltDescriptions.Add(typeof(T), lines);
         return this;
     }
+    public DetailedDescription WithShortDescriptionVariant<T>(string lines) where T : Equipment
+    {
+        ShortAltDescriptions.Add(typeof(T), lines);
+        return this;
+    }
     public DetailedDescription WithName(string name)
     {
         Name = name;
@@ -139,6 +144,8 @@ public class DetailedDescription
     }
     private readonly Dictionary<Type, string> AltDescriptions = new();
     private readonly Dictionary<Type, string> CompleteAltDescriptions = new();
+    private readonly Dictionary<Type, string> ShortAltDescriptions = new();
+    private readonly Dictionary<Type, string> CompleteShortAltDescriptions = new();
     private string Name;
     private string Description;
     private string ShortDescription = null;
@@ -178,6 +185,27 @@ public class DetailedDescription
             return FullDescription();
         if (CompleteShortDescription == string.Empty)
             CompleteShortDescription = ToRichText(ShortDescription);
+        if (Player.Instance != null)
+        {
+            Type[] equipTypes = new Type[] {
+                Player.Instance.Body.GetType(),
+                Player.Instance.Hat.GetType(),
+                Player.Instance.Weapon.GetType(),
+                Player.Instance.Accessory.GetType()
+            };
+            foreach (Type t in equipTypes)
+            {
+                if (ShortAltDescriptions.TryGetValue(t, out string lines))
+                {
+                    if (!CompleteShortAltDescriptions.TryGetValue(t, out string lines2))
+                    {
+                        CompleteShortAltDescriptions[t] = ToRichText(lines);
+                    }
+                    else
+                        return lines2;
+                }
+            }
+        }
         return CompleteShortDescription + (withDetails ? TabForMoreDetail : string.Empty);
     }
     public static string TextBoundedByColor(string color, string text)

@@ -103,6 +103,8 @@ public class RollForPerception : PowerUp
     {
         description.WithDescription("Increases weights of Y:[rare powers] in the Y:[power pool] by Y:20% G:(+20% per stack)");
         description.WithShortDescription("Chance of seeing rare powers increased");
+        description.WithDescriptionVariant<SlotMachineWeapon>("Increases weights of Y:[rare powers] in the Y:[power pool] by Y:20% G:(+20% per stack) \nIncreases the likelihood of Y:[high-rarity spins] by Y:20% G:(+20% per stack)");
+        description.WithShortDescriptionVariant<SlotMachineWeapon>("Chance of seeing rare powers and rare spins increased");
     }
     public override void HeldEffect(Player p)
     {
@@ -461,12 +463,29 @@ public class TokenPouch : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Token Pouch");
-        description.WithDescription("Increases the maximum number of Y:Tokens you can hold by Y:3 G:(+2 per stack) \nAdds Y:1 G:(+1 per stack) Y:Token to Y:[wave start]");
+        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:3 G:(+2 per stack) \nAdds Y:1 G:(+1 per stack) Y:Token to Y:[wave start]");
         description.WithShortDescription("Hold more Tokens and get Tokens at the start of every wave");
     }
     public override void HeldEffect(Player p)
     {
         p.MaxTokens += 1 + Stack * 2;
         p.TokensPerWave += Stack;
+    }
+}
+public class BOGOSpin : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Bonus Spin");
+        description.WithDescription("Get a Y:[Bonus spin] on Y:10% G:(+10% per stack) of Y:spins \nEach Y:[Bonus spin] has Y:77.7% increased Y:[attack speed] for Y:[every spin that came before it]");
+        description.WithShortDescription("Get a Bonus spin for free ever-so-often");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BuyOneGetOneMult += 0.1f * Stack;
     }
 }

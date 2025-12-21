@@ -226,9 +226,9 @@ public abstract class PowerUp
             {
                 float decreaseMult = rare == 1 ? 0.02f : 0.01f;
                 weightMult -= decreaseMult * Player.Instance.RollPerc;
-                if(weightMult < 0.2f)
+                if(weightMult < 0.5f)
                 {
-                    weightMult = 0.2f;
+                    weightMult = 0.5f;
                 }
             }
         }

@@ -19,11 +19,11 @@ public class SlotMachineWeapon : Weapon
         //base.ModifyPowerPool(powerPool);
         powerPool.Add<Pity>(); //White
         powerPool.Add<ConsolationPrize>(); //Green
-        //powerPool.Add<ChargeShot>(); //White
+        powerPool.Add<BOGOSpin>(); //White, Bonus Spin
         powerPool.Add<TokenPouch>(); //Green
-        //powerPool.Add<SoapySoap>(); //Blue
-        //powerPool.Add<ShotSpeed>(); //White
-        //powerPool.Add<Starshot>(); //Purple
+        //powerPool.Add<SoapySoap>(); //Blue, Philosopher's Stone (more damage and money)
+        //powerPool.Add<ShotSpeed>(); //Purple, Roulette Wheel (Keep that ball rolling!
+        //powerPool.Add<Starshot>(); //Purple, Batter Up
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -38,6 +38,7 @@ public class SlotMachineWeapon : Weapon
             SwapSlotSprite(GambleSlots[1], 0, false);
             SwapSlotSprite(GambleSlots[2], 0, false);
         }
+        player.PrimaryAttackSpeedModifier += 0.777f * BonusAttackNumber;
     }
     public override bool IsPrimaryAttacking()
     {
@@ -53,8 +54,10 @@ public class SlotMachineWeapon : Weapon
     float dir = 1;
     private bool runOnce = true;
     private bool hasDoneSelectAnimation = false;
+    public float BonusAttackNumber = 0;
     private float PityBonus = 0.0f;
     private int PityCount = 0;
+    private float BonusCount = 0;
     protected override void AnimationUpdate()
     {
         Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
@@ -132,9 +135,22 @@ public class SlotMachineWeapon : Weapon
                                 }
                             }
                         }
+                        if(AttackGamble == 5)
+                        {
+                            if(BonusCount > 1)
+                            {
+                                BonusCount -= 1;
+                                BonusAttackNumber++;
+                                AttackGamble = GambleAnimationFrames + GambleAttackFrames;
+                                GambleOutcome = DetermineGambleOutcome();
+                            }
+                            else
+                                BonusCount += player.BuyOneGetOneMult;
+                        }
                     }
                     if (AttackGamble <= 1)
                     {
+                        BonusAttackNumber = 0;
                         hasDoneSelectAnimation = true;
                         FakeAttack = false;
                     }
@@ -345,10 +361,11 @@ public class SlotMachineWeapon : Weapon
         {
             return 5;
         }
+        float cutOffMultiplier = 1.0f + 0.2f * player.RollPerc;
         float n = Utils.RollWithLuckRaw();
         //Best Match
         //JACKPOT! ~0.6%
-        float chanceForJackpot = 0.006f;
+        float chanceForJackpot = 0.006f * cutOffMultiplier;
         if(player.PityGrowthAmount != 0)
         {
             chanceForJackpot *= 1 + PityBonus;
@@ -371,15 +388,15 @@ public class SlotMachineWeapon : Weapon
         }
         //Good Match
         //Huge Win! ~2.7%
-        if ((n -= 0.027f) < 0) 
+        if ((n -= 0.027f * cutOffMultiplier) < 0) 
             return 4;
         //Variant Match
         //Small Win! ~6.7%
-        if ((n -= 0.067f) < 0) 
+        if ((n -= 0.067f * cutOffMultiplier) < 0) 
             return 3;
         //Weak Variant Match
         //Break Even! ~20%
-        if ((n -= 0.2f) < 0) 
+        if ((n -= 0.2f * cutOffMultiplier) < 0) 
             return 2;
         //No Matches
         //Lose Money! Should be most cases ~70%
