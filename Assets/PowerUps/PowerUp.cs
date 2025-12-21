@@ -357,16 +357,16 @@ public abstract class PowerUp
     {
         int rare = GetRarity();
         if (rare == 5)
-            return 100;
+            return 250;
         if (rare == 4)
-            return 50;
+            return 100;
         if (rare == 3)
-            return 25;
+            return 50;
         if (rare == 2)
-            return 15;
+            return 25;
         if (rare == 1)
-            return 10;
-        return (int)(10 / Weighting);
+            return 15;
+        return (int)(20 / Weighting);
     }
     public int CalculateRarity()
     {

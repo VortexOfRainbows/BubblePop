@@ -194,7 +194,7 @@ public class Burger : PowerUp
     {
         return true;
     }
-    public override int Cost => 30;
+    public override int Cost => 60;
 }
 public class BonusBatteries : PowerUp
 {
@@ -237,7 +237,7 @@ public class ResearchNotes : PowerUp
             p.ResearchNoteKillCounter -= 3;
         }
     }
-    public override int Cost => 25;
+    public override int Cost => 50;
 }
 public class ResearchGrants : PowerUp
 {
@@ -417,5 +417,38 @@ public class PerpetualBubbleMachine : PowerUp
     {
         return true;
     }
-    public override int Cost => 75;
+    public override int Cost => 125;
+}
+public class ConsolationPrize : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription("Increases Y:[non-winning spin's Main Bubble damage] and Y:[secondary attack damage] by Y:20% G:(+20% per stack)");
+        description.WithShortDescription("Increases non-winning spin damage and secondary attack damage");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ConsolationPrize += Stack;
+    }
+}
+public class Pity : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Pity Charm");
+        description.WithDescription("Each consecutive Y:[non-Jackpot spin] increases Y:[Jackpot chance] by Y:4% G:(+2% per stack)");
+        description.WithShortDescription("Increases Jackpot chance after consecutive spins without a Jackpot");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.PityGrowthAmount = 0.02f + 0.02f * Stack;
+    }
 }

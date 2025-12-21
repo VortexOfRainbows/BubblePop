@@ -11,7 +11,7 @@ public class GachaProj : Projectile
         SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
         timer2 = 0;
         transform.localScale *= 0.5f;
-        Damage = 5;
+        Damage = 5 + Player.Instance.ConsolationPrize;
         Penetrate = 1;
         Friendly = true;
         if (Data1 == 1)
@@ -68,11 +68,11 @@ public class GachaProj : Projectile
     public override void OnHitTarget(Entity target)
     {
         if(Data1 == 1)
-            CoinManager.SpawnCoin(transform.position, 3, 1);
+            CoinManager.SpawnCoin(transform.position, 1, 1);
         else if(Data1 == 2)
-            CoinManager.SpawnCoin(transform.position, 5, 1);
+            CoinManager.SpawnCoin(transform.position, 3, 1);
         else if (Data1 == 3)
-            CoinManager.SpawnCoin(transform.position, 25, 1);
+            CoinManager.SpawnCoin(transform.position, 5, 1);
     }
     public override void OnKill()
     {

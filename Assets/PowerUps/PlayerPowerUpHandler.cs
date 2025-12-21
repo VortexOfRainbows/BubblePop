@@ -116,6 +116,8 @@ public partial class Player : Entity
     public int LuckyStarItemsAllowedPerWave = 0;
     public int LuckyStarItemsAcquiredThisWave = 0;
     public int PerpetualBubble = 0;
+    public float PityGrowthAmount = 0f;
+    public int ConsolationPrize = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -159,6 +161,8 @@ public partial class Player : Entity
         CriticalStrikeChance = 0.01f;
         ShopDiscount = 0.0f;
         LuckyStarItemsAllowedPerWave = PerpetualBubble = 0;
+        PityGrowthAmount = 0f;
+        ConsolationPrize = 0;
     }
     private void UpdatePowerUps()
     {

@@ -17,6 +17,13 @@ public class SlotMachineWeapon : Weapon
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         //base.ModifyPowerPool(powerPool);
+        powerPool.Add<Pity>();
+        powerPool.Add<ConsolationPrize>();
+        //powerPool.Add<ChargeShot>();
+        //powerPool.Add<BubbleBlast>();
+        //powerPool.Add<SoapySoap>();
+        //powerPool.Add<ShotSpeed>();
+        //powerPool.Add<Starshot>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -46,6 +53,8 @@ public class SlotMachineWeapon : Weapon
     float dir = 1;
     private bool runOnce = true;
     private bool hasDoneSelectAnimation = false;
+    private float PityBonus = 0.0f;
+    private int PityCount = 0;
     protected override void AnimationUpdate()
     {
         Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
@@ -91,17 +100,22 @@ public class SlotMachineWeapon : Weapon
                         if (AttackGamble == GambleAttackFrames - 1)
                         {
                             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 2.4f, 1.5f - 0.25f * GambleOutcome, 2);
-                            PopupText.NewPopupText(Player.Position + new Vector2(0, 2), Vector3.up * 5f, ColorHelper.RarityColors[GambleOutcome - 1], GambleText[GambleOutcome - 1], true, 0.66f, 130);
+                            string text = GambleText[GambleOutcome - 1];
+                            if(PityCount != 0)
+                            {
+                                text = $"({PityCount}) {text}";
+                            }
+                            PopupText.NewPopupText(Player.Position + new Vector2(0, 2), Vector3.up * 5f, ColorHelper.RarityColors[GambleOutcome - 1], text, true, 0.6f + GambleOutcome * 0.06f, 130);
                         }
                         if ((AttackGamble == 50 || AttackGamble == 30 || AttackGamble == 10) && hasDoneSelectAnimation)
                         {
                             velocity -= norm * 1f;
-                            int num = GambleOutcome == 5 ? 3 : 2;
+                            int num = GambleOutcome == 5 ? 3 : 1;
                             int type = GambleOutcome != 5 ? GambleOutcome - 1 : AttackGamble == 50 ? 3 : AttackGamble == 30 ? 2 : 1;
                             float separation = GambleOutcome == 5 ? 4.5f : 9f;
                             for (int i = -num; i <= num; i += 1)
                             {
-                                if(num == 2 && i != 0)
+                                if(num == 1 && i != 0)
                                     Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 1);
                                 else
                                     Projectile.NewProjectile<GachaProj>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 2, type);
@@ -169,7 +183,7 @@ public class SlotMachineWeapon : Weapon
         {
             if (Hitbox == null && AttackRight == AttackCooldownRight)
             {
-                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 12, 0).GetComponent<MeleeHitbox>();
+                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 10 * (1 + 0.2f * Player.Instance.ConsolationPrize), 0).GetComponent<MeleeHitbox>();
                 AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.75f, 0.85f, 0);
             }
             float percent = (AttackRight - WindUpTime) / (AttackCooldownRight - WindUpTime);
@@ -218,7 +232,7 @@ public class SlotMachineWeapon : Weapon
             }
             else
             {
-                attemptedPosition += Utils.RandCircle() * iPer * 0.2f;
+                attemptedPosition += Utils.RandCircle() * iPer * 0.26f;
             }
             attemptedPosition = attemptedPosition.RotatedBy(angleOffset);
             if(lerp > 0)
@@ -328,8 +342,28 @@ public class SlotMachineWeapon : Weapon
         float n = Utils.RollWithLuckRaw();
         //Best Match
         //JACKPOT! ~0.6%
-        if ((n -= 0.006f) < 0)
+        float chanceForJackpot = 0.006f;
+        if(player.PityGrowthAmount != 0)
+        {
+            chanceForJackpot *= 1 + PityBonus;
+        }
+        if ((n -= chanceForJackpot) < 0)
+        {
+            PityCount = 0;
+            PityBonus = 0;
             return 5;
+        }
+        if(player.PityGrowthAmount != 0)
+        {
+            PityCount++;
+            PityBonus += player.PityGrowthAmount;
+        }
+        else
+        {
+            PityCount = 0;
+            PityBonus = 0;
+        }
+
 
         //Good Match
         //Huge Win! ~2.7%

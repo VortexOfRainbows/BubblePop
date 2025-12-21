@@ -14,7 +14,7 @@ public class Choice : PowerUp
             PowerUp.TurnOnPowerUpSelectors();
         }
     }
-    public override int Cost => 25;
+    public override int Cost => 50;
 }
 public class ChargeShot : PowerUp
 {

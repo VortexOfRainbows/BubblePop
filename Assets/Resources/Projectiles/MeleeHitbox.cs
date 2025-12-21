@@ -31,7 +31,12 @@ public class MeleeHitbox : Projectile
     {
         if (Type == 0)
         {
-            CoinManager.SpawnCoin(target.transform.position, 1, 1);
+            //float coinValue = Damage / 12;
+            //coinValue = Mathf.Clamp(coinValue, 0, 1 + Player.Instance.ConsolationPrize * 0.1f);
+            //float bonus = coinValue - (int)coinValue;
+            //if (Utils.RandFloat() < bonus)
+            //    coinValue++;
+            //CoinManager.SpawnCoin(target.transform.position, (int)coinValue, 1);
             AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 0.6f, 0.475f, 0);
             AudioManager.PlaySound(SoundID.SoapDie, transform.position, 2, 1.7f, 0);
             for (int i = 0; i < 35; ++i)

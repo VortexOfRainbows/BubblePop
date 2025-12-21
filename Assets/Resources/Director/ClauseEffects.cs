@@ -216,7 +216,7 @@ public class PowerReward : Reward
     public int Amt { get; set; } = 1;
     protected override float Cost()
     {
-        return PowerUp.Get(PowerType).Cost * (BeforeWaveEndReward ? 2 : 1);
+        return PowerUp.Get(PowerType).Cost * (BeforeWaveEndReward ? 1.5f : 1);
     }
     public override void GrantReward()
     {
