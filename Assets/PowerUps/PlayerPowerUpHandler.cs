@@ -117,10 +117,11 @@ public partial class Player : Entity
     public int LuckyStarItemsAcquiredThisWave = 0;
     public int PerpetualBubble = 0;
     public float PityGrowthAmount = 0f;
-    public int ConsolationPrize = 0;
+    public int ConsolationPrize = 0, PhilosophersStone = 0;
     public int MaxTokens = 3;
     public int TokensPerWave = 0;
     public float BuyOneGetOneMult = 0.0f;
+    public float SpinPriceIncrease = 0.0f;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -162,10 +163,10 @@ public partial class Player : Entity
         BlackmarketMult = 1.0f;
 
         CriticalStrikeChance = 0.01f;
-        ShopDiscount = 0.0f;
+        ShopDiscount = SpinPriceIncrease = 0.0f;
         LuckyStarItemsAllowedPerWave = PerpetualBubble = TokensPerWave = 0;
         PityGrowthAmount = BuyOneGetOneMult = 0.0f;
-        ConsolationPrize = 0;
+        ConsolationPrize = PhilosophersStone = 0;
         MaxTokens = 3;
     }
     private void UpdatePowerUps()

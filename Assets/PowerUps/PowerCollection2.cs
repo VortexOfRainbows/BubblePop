@@ -429,12 +429,14 @@ public class ConsolationPrize : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Increases Y:[non-winning spin's Main Bubble damage] and Y:[secondary attack damage] by Y:20% G:(+20% per stack)");
-        description.WithShortDescription("Increases non-winning spin damage and secondary attack damage");
+        description.WithDescription("Increases Y:[non-winning spin damage] and Y:[secondary attack damage] by Y:20% G:(+20% per stack) \nY:7.77% chance to gain Y:2 G:(+2 per stack) Y:coins on Y:[non-winning spins] " +
+            "\nR:[But... increases spin price by 0.25] G:(+0.25 per stack) R:coins");
+        description.WithShortDescription("Increases non-winning spin damage, secondary attack damage, and gives a chance for consolation coins");
     }
     public override void HeldEffect(Player p)
     {
         p.ConsolationPrize += Stack;
+        p.SpinPriceIncrease += 0.25f * Stack;
     }
 }
 public class Pity : PowerUp
@@ -446,12 +448,14 @@ public class Pity : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Pity Charm");
-        description.WithDescription("Each consecutive Y:[non-Jackpot spin] increases Y:[Jackpot chance] by Y:4% G:(+2% per stack)");
+        description.WithDescription("Each consecutive Y:[non-Jackpot spin] increases Y:[Jackpot chance] by Y:4% G:(+2% per stack) " +
+            "\nR:[But... increases spin price by 0.25] G:(+0.25 per stack) R:coins");
         description.WithShortDescription("Increases Jackpot chance after consecutive spins without a Jackpot");
     }
     public override void HeldEffect(Player p)
     {
         p.PityGrowthAmount = 0.02f + 0.02f * Stack;
+        p.SpinPriceIncrease += 0.25f * Stack;
     }
 }
 public class TokenPouch : PowerUp
@@ -463,13 +467,15 @@ public class TokenPouch : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Token Pouch");
-        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:3 G:(+2 per stack) \nAdds Y:1 G:(+1 per stack) Y:Token to Y:[wave start]");
+        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:3 G:(+2 per stack) \nAdds Y:1 G:(+1 per stack) Y:Token to Y:[wave start] " +
+            "\nR:[But... increases spin price by 0.5] G:(+0.5 per stack) R:coins");
         description.WithShortDescription("Hold more Tokens and get Tokens at the start of every wave");
     }
     public override void HeldEffect(Player p)
     {
         p.MaxTokens += 1 + Stack * 2;
         p.TokensPerWave += Stack;
+        p.SpinPriceIncrease += 0.5f * Stack;
     }
 }
 public class BOGOSpin : PowerUp
@@ -481,11 +487,32 @@ public class BOGOSpin : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bonus Spin");
-        description.WithDescription("Get a Y:[Bonus spin] on Y:10% G:(+10% per stack) of Y:spins \nEach Y:[Bonus spin] has Y:77.7% increased Y:[attack speed] for Y:[every spin that came before it]");
-        description.WithShortDescription("Get a Bonus spin for free ever-so-often");
+        description.WithDescription("Get a Y:[Bonus spin] on Y:10% G:(+10% per stack) of Y:spins \nEach Y:[Bonus spin] has Y:77.7% increased Y:[attack speed] for Y:[every spin that came before it] " +
+            "\nR:[But... increases spin price by] R:1 G:(+1 per stack) R:coins");
+        description.WithShortDescription("Sometimes get a Bonus spin for free");
     }
     public override void HeldEffect(Player p)
     {
         p.BuyOneGetOneMult += 0.1f * Stack;
+        p.SpinPriceIncrease += 1 * Stack;
+    }
+}
+public class PhilosophersStone : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Philosopher's Stone");
+        description.WithDescription("Increases Y:damage of Y:[high-rarity spins] by Y:10% G:(+10% per stack) and Y:[high-rarity spins] drop Y:50% G:(+50% per stack) more Y:coins on hit " +
+            "\nR:[But... increases spin price by] R:2 G:(+2 per stack) R:coins");
+        description.WithShortDescription("Increases the damage dealt and coins dropped by high-rarity spins");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.PhilosophersStone += Stack;
+        p.SpinPriceIncrease += 2 * Stack;
     }
 }

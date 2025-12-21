@@ -48,7 +48,7 @@ public class Body : Equipment
     public SpriteRenderer FaceR;
     protected virtual float AngleMultiplier => 1f;
     protected virtual float RotationSpeed => 0.12f;
-    protected int flipDir = 1;
+    protected int flipDir = -1;
     public bool Flipped => flipDir == -1;
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
@@ -84,7 +84,6 @@ public class Body : Equipment
                 flipDir = 1;
             if (legacyRotation)
             {
-                spriteRender.flipY = flipDir == -1;
                 spriteRender.transform.eulerAngles = new Vector3(0, 0, r);
             }
             else
@@ -92,6 +91,8 @@ public class Body : Equipment
                 spriteRender.transform.eulerAngles = new Vector3(0, 0, r);
             }
         }
+        if (legacyRotation)
+            spriteRender.flipY = flipDir == -1;
         gameObject.transform.localScale = new Vector3(1 + 0.1f * (1 - p.Bobbing), p.Bobbing, 1);
         spriteRender.transform.localScale = 
             FaceR.transform.localScale = new Vector3(1 + (1 - p.squash) * 2.5f, p.squash, 1);

@@ -295,6 +295,8 @@ public class Magnet : PowerUp
     {
         description.WithDescription("Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack)");
         description.WithShortDescription("Collect coins from farther away");
+        description.WithDescriptionVariant<SlotMachineWeapon>("Extends the distance Y:coins and Y:tokens are collected from by Y:75% G:(+75% per stack)");
+        description.WithShortDescriptionVariant<SlotMachineWeapon>("Collect coins and tokens from farther away");
     }
     public override void HeldEffect(Player p)
     {

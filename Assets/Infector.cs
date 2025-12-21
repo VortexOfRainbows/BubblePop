@@ -217,7 +217,7 @@ public class Infector : Enemy
             {
                 if (TargetPos == Vector2.zero)
                 {
-                    Vector2 circular = new Vector2(-Mathf.Clamp(dist - 3, 10, 14.5f), 0).RotatedBy(toPlayer.ToRotation() + Utils.RandFloat(Mathf.PI / 2f, Mathf.PI) * Utils.Rand1OrMinus1());
+                    Vector2 circular = new Vector2(-Mathf.Clamp(dist - 4, 10, 14.5f), 0).RotatedBy(toPlayer.ToRotation() + Utils.RandFloat(Mathf.PI / 2f, Mathf.PI) * Utils.Rand1OrMinus1());
                     TargetPos = Player.Position + circular;
                     PrevPlayerPos = Player.Position;
                     if(!StartedMoving)

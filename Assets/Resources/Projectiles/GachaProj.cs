@@ -16,20 +16,20 @@ public class GachaProj : Projectile
         Friendly = true;
         if (Data1 == 1)
         {
-            Damage = 10;
+            Damage = 10 + Player.Instance.PhilosophersStone;
             SpriteRenderer.sprite = Main.TextureAssets.CoinProj;
             c = ColorHelper.RarityColors[0];
         }
         else if (Data1 == 2)
         {
-            Damage = 20;
+            Damage = 20 + Player.Instance.PhilosophersStone * 2;
             SpriteRenderer.sprite = Main.TextureAssets.GoldProj;
             c = ColorHelper.RarityColors[4];
             Penetrate = 2;
         }
         else if (Data1 == 3)
         {
-            Damage = 40;
+            Damage = 40 + Player.Instance.PhilosophersStone * 4;
             SpriteRenderer.sprite = Main.TextureAssets.GemProj;
             c = ColorHelper.RarityColors[1];
             Penetrate = -1;
@@ -67,12 +67,18 @@ public class GachaProj : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        if(Data1 == 1)
-            CoinManager.SpawnCoin(transform.position, 1, 1);
-        else if(Data1 == 2)
-            CoinManager.SpawnCoin(transform.position, 3, 1);
+        if (Data1 == 0)
+            return;
+        float count = 1;
+        if (Data1 == 2)
+            count += 2;
         else if (Data1 == 3)
-            CoinManager.SpawnCoin(transform.position, 5, 1);
+            count += 2;
+        count *= 1.0f + 0.5f * Player.Instance.PhilosophersStone;
+        float bonus = count - (int)count;
+        if (Utils.RandFloat() < bonus)
+            count++;
+        CoinManager.SpawnCoin(transform.position, (int)count, 1);
     }
     public override void OnKill()
     {

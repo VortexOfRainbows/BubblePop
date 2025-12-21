@@ -21,7 +21,7 @@ public class SlotMachineWeapon : Weapon
         powerPool.Add<ConsolationPrize>(); //Green
         powerPool.Add<BOGOSpin>(); //White, Bonus Spin
         powerPool.Add<TokenPouch>(); //Green
-        //powerPool.Add<SoapySoap>(); //Blue, Philosopher's Stone (more damage and money)
+        powerPool.Add<PhilosophersStone>(); //Blue, Philosopher's Stone (more damage and money)
         //powerPool.Add<ShotSpeed>(); //Purple, Roulette Wheel (Keep that ball rolling!
         //powerPool.Add<Starshot>(); //Purple, Batter Up
     }
@@ -133,6 +133,13 @@ public class SlotMachineWeapon : Weapon
                                     if (type == 3 || GambleOutcome == 5)
                                         AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.0f, 0.3f, 2);
                                 }
+                            }
+                        }
+                        if(AttackGamble == 10)
+                        {
+                            if(GambleOutcome == 1 && player.ConsolationPrize > 0 && Utils.RollWithLuck(0.0777f))
+                            {
+                                CoinManager.SpawnCoin(Player.Position, player.ConsolationPrize * 2, 0.1f);
                             }
                         }
                         if(AttackGamble == 5)
@@ -293,7 +300,7 @@ public class SlotMachineWeapon : Weapon
     private float WindUpTime => (int)(RightClickEndLag + 50 * Mathf.Sqrt(player.SecondaryAttackSpeedModifier));
     public bool FakeAttack = false;
     protected float bounceCount = 0.7f;
-    public static int CoinCost => Mathf.Max(5, 4 + WaveDirector.WaveNum);
+    public static int CoinCost => (int)Mathf.Max(5, 4 + WaveDirector.WaveNum + player.SpinPriceIncrease);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft <= 0 && AttackGamble <= 0 && AttackRight < 0 && !alternate)

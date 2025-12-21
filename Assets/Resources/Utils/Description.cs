@@ -59,12 +59,17 @@ public class DetailedDescription
     }
     public string SegmentToRichRext(string t, ref bool waitingForEnding)
     {
+        string start2 = "";
+        if (t[0] == '\n')
+        {
+            start2 += "\n";
+            t = t[1..];
+        }    
         if (t.Length > 2)
         {
             string first2 = t[..2];
             char third = t[2];
             char last = t[^1];
-            char last2 = t[^2];
             bool isOpening = third == '[' || third == '(';
             bool isEnding = last == ']' || last == ')';
             //bool commaEnding = last == ',' && (last2 == ']' || last2 == ')');
@@ -77,6 +82,8 @@ public class DetailedDescription
                 start = WithSizeAugments ? $"<size={GrayTextSize}><color={Gray}>" : $"<color={Gray}>";
             else if (first2 == "Y:")
                 start = WithSizeAugments ? $"<size={NormalTextSize}><color={Yellow}>" : $"<color={Yellow}>";
+            else if (first2 == "R:")
+                start = WithSizeAugments ? $"<size={NormalTextSize}><color={Rares[5]}>" : $"<color={Rares[5]}>";
             if (isEnding && waitingForEnding && !isOpening) //If this string ends with a ']' and we have previously seen a '['
             {
                 waitingForEnding = false;
@@ -102,7 +109,7 @@ public class DetailedDescription
                     contents = t[2..];
                 end = WithSizeAugments ? "</color></size>" : "</color>";
             }
-            return $"{start}{contents}{end}";
+            return start2 + $"{start}{contents}{end}";
         }
         return t;
     }
