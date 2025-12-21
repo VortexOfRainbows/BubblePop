@@ -170,7 +170,7 @@ public class SlotMachineWeapon : Weapon
             if (Hitbox == null && AttackRight == AttackCooldownRight)
             {
                 Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 12, 0).GetComponent<MeleeHitbox>();
-                AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.75f, 0.825f * player.SecondaryAttackSpeedModifier, 0);
+                AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.75f, 0.85f, 0);
             }
             float percent = (AttackRight - WindUpTime) / (AttackCooldownRight - WindUpTime);
             percent = Mathf.Clamp(percent, 0, 1);
@@ -189,7 +189,7 @@ public class SlotMachineWeapon : Weapon
                 scaleUp += sin * 0.3f;
                 if(Hitbox != null && !Hitbox.Friendly)
                 {
-                    AudioManager.PlaySound(SoundID.Teleport, transform.position, 1, 1.5f * player.SecondaryAttackSpeedModifier, 0);
+                    AudioManager.PlaySound(SoundID.Teleport, transform.position, 1, 1.6f, 0);
                     //AudioManager.PlaySound(SoundID.SoapDie, transform.position, 2, 2f * player.SecondaryAttackSpeedModifier, 0);
                     Hitbox.Friendly = true;
                     if (Trail == null)
@@ -253,14 +253,16 @@ public class SlotMachineWeapon : Weapon
         AttackLeft--;
 
         velocity *= 0.8f;
+        bounceCount = 0.7f;
     }
     private float AttackCooldownLeft => 80;
-    private float AttackCooldownRight => 120 + WindUpTime + RightClickEndLag;
+    private float AttackCooldownRight => 100 + 20 * Mathf.Sqrt(player.SecondaryAttackSpeedModifier) + WindUpTime + RightClickEndLag;
     private float GambleAnimationFrames => 112;
     private float GambleAttackFrames => 55;
     private float RightClickEndLag => 70;
     private float WindUpTime => (int)(RightClickEndLag + 50 * Mathf.Sqrt(player.SecondaryAttackSpeedModifier));
     public bool FakeAttack = false;
+    protected float bounceCount = 0.7f;
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft <= 0 && AttackGamble <= 0 && AttackRight < 0 && !alternate)
@@ -290,9 +292,27 @@ public class SlotMachineWeapon : Weapon
         AttackLeft = 0;
         AttackRight = 0;
         AttackGamble = 0;
+        float toBody = transform.localPosition.y - p.Body.transform.localPosition.y;
+        if (p.DeathKillTimer <= 0)
+        {
+            velocity *= 0.0f;
+            velocity.y += 0.075f;
+            velocity.x += 0.06f * p.Direction;
+        }
+        if (toBody < -0.4f)
+        {
+            velocity *= -bounceCount;
+            transform.localPosition = (Vector2)transform.localPosition + new Vector2(0, -0.4f - toBody);
+            bounceCount *= 0.6f;
+        }
+        else
+        {
+            velocity.x *= 0.998f;
+            velocity.y -= 0.006f;
+        }
+        transform.localPosition = (Vector2)transform.localPosition + velocity;
         //transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, -0.5f), 0.1f);
-        //transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.transform.eulerAngles.z,
-        //     spriteRender.flipY ? 190 : - 10, 0.1f));
+        transform.LerpLocalEulerZ(90 * dir, 0.05f);
     }
     public override int GetRarity()
     {
