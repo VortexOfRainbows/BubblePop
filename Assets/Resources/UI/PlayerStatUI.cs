@@ -57,8 +57,9 @@ public class PlayerStatUI : MonoBehaviour
             if(usingGachaSlots)
             {
                 int tokens = CoinManager.CurrentTokens; // : CoinManager.Savings;
-                string text = tokens > 0 ? $"<color={DetailedDescription.Rares[0]}>{tokens}</color>" : $"<color={(CoinManager.Current >= SlotMachineWeapon.CoinCost ? DetailedDescription.Rares[4] : "#FF4455")}>${SlotMachineWeapon.CoinCost}</color>";
-                tokenText.text = $"{text}<color={DetailedDescription.Rares[0]}>/{Player.Instance.MaxTokens}</color>";
+                string hex = ColorHelper.TokenColor.ToHexString();
+                string text = tokens > 0 ? $"{tokens}" : $"<color={(CoinManager.Current >= SlotMachineWeapon.CoinCost ? "#FFFFFF" : "#FF4455")}>${SlotMachineWeapon.CoinCost}</color>";
+                tokenText.text = $"<color={hex}>{text}/{Player.Instance.MaxTokens}</color>";
                 tokenText.enabled = true;
             }
         }

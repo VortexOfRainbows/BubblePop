@@ -87,7 +87,6 @@ public static class CoinManager
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
         var c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;
-        c.PopupColor = ColorHelper.RarityColors[0];
     }
     public static void SpawnChest(Func<Vector2> func, int type)
     {

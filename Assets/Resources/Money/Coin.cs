@@ -75,6 +75,7 @@ public class Coin : MonoBehaviour
 
         if(IsToken)
         {
+            transform.LerpLocalScale(Vector3.one * 0.9f, 0.1f);
             timer++;
             float percent = timer / 400f;
             float deathPercent = 0.75f;
@@ -124,7 +125,7 @@ public class Coin : MonoBehaviour
         {
             CoinManager.ModifyTokens(Value);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.1f, 0.5f, 1);
-            PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"Token", true, 0.7f, 80);
+            PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"Token", true, 0.8f, 90);
             return;
         }
         else if(IsKey)

@@ -492,13 +492,23 @@ public class RewardClause : CardClause
     }
     public override void GenerateData()
     {
+        int tokens = Player.Instance.TokensPerWave;
+        if (tokens > 0)
+        {
+            TokenReward reward = new(tokens)
+            {
+                BeforeWaveEndReward = true
+            };
+            PreRewards.Add(reward);
+        }
         int choices = Player.Instance.PerpetualBubble;
-        while (choices-- > 0)
+        if (choices > 0)
         {
             PowerReward reward = new(PowerUp.Get<Choice>().MyID)
             {
                 Free = true,
-                BeforeWaveEndReward = true
+                BeforeWaveEndReward = true,
+                Amt = choices
             };
             AddPowerReward(reward, PreRewards);
         }

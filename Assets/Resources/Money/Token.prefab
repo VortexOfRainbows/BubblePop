@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: eba674c3867ac984b9616ac3e925efa7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5e679864ffe10334fb2f99078ab24a54, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -165,6 +165,6 @@ MonoBehaviour:
   YieldType: 3
   Value: 1
   AttractTimer: 0
-  PopupColor: {r: 0.8980392, g: 0.8980392, b: 1, a: 1}
+  PopupColor: {r: 0.6901961, g: 0.5764706, b: 0.227451, a: 1}
   BeforeCollectableTimer: 0
   HeartVisual: {fileID: 0}

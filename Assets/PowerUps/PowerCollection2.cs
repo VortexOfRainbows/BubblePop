@@ -331,7 +331,7 @@ public class DoubleDown : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription($"Enemies Y:[killed by chips] drop additional Y:coins equal to the Y:[overkill damage dealt] up to a Y:[max of 5 coins] G:(+3 per stack) \nIncreases Y:[chip damage] by Y:1 G:(+1 per stack)");
+        description.WithDescription($"Enemies Y:[killed by chips] drop additional Y:coins equal to the Y:[overkill damage dealt] up to a Y:[maximum of 5 coins] G:(+3 per stack) \nIncreases Y:[chip damage] by Y:1 G:(+1 per stack)");
         description.WithShortDescription("Enemies killed by chips drop additional coins and increases chip damage");
     }
     public override void HeldEffect(Player p)
@@ -450,5 +450,23 @@ public class Pity : PowerUp
     public override void HeldEffect(Player p)
     {
         p.PityGrowthAmount = 0.02f + 0.02f * Stack;
+    }
+}
+public class TokenPouch : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Token Pouch");
+        description.WithDescription("Increases the maximum number of Y:Tokens you can hold by Y:3 G:(+2 per stack) \nAdds Y:1 G:(+1 per stack) Y:Token to Y:[wave start]");
+        description.WithShortDescription("Hold more Tokens and get Tokens at the start of every wave");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.MaxTokens += 1 + Stack * 2;
+        p.TokensPerWave += Stack;
     }
 }

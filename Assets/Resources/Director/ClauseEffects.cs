@@ -324,4 +324,24 @@ public class KeyReward : Reward
         return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, keys > 1 ? $"{keys} keys" : $"{keys} key")}";
     }
 }
-
+public class TokenReward : Reward
+{
+    public TokenReward(int tokens = 1)
+    {
+        this.tokens = tokens;
+    }
+    public int tokens = 1;
+    protected override float Cost()
+    {
+        return 0;
+    }
+    public override void GrantReward()
+    {
+        for (int i = 0; i < tokens; ++i)
+            CoinManager.SpawnToken(RewardPosition, 0.5f);
+    }
+    public override string Description()
+    {
+        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.TokenColor.ToHexString(), tokens > 1 ? $"{tokens} Token" : $"{tokens} Token")}";
+    }
+}

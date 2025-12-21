@@ -17,13 +17,13 @@ public class SlotMachineWeapon : Weapon
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         //base.ModifyPowerPool(powerPool);
-        powerPool.Add<Pity>();
-        powerPool.Add<ConsolationPrize>();
-        //powerPool.Add<ChargeShot>();
-        //powerPool.Add<BubbleBlast>();
-        //powerPool.Add<SoapySoap>();
-        //powerPool.Add<ShotSpeed>();
-        //powerPool.Add<Starshot>();
+        powerPool.Add<Pity>(); //White
+        powerPool.Add<ConsolationPrize>(); //Green
+        //powerPool.Add<ChargeShot>(); //White
+        powerPool.Add<TokenPouch>(); //Green
+        //powerPool.Add<SoapySoap>(); //Blue
+        //powerPool.Add<ShotSpeed>(); //White
+        //powerPool.Add<Starshot>(); //Purple
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -160,7 +160,7 @@ public class SlotMachineWeapon : Weapon
                 if (iPer > 1)
                     iPer = 1;
                 Coin.gameObject.SetActive(true);
-                Coin.localScale = new Vector3(1, 1, 1) * (Mathf.Sin(iPer * Mathf.PI) * 0.5f + iPer);
+                Coin.localScale = new Vector3(1.1f, 1.1f, 1.1f) * (Mathf.Sin(iPer * Mathf.PI) * 0.5f + iPer);
                 Coin.transform.localPosition = new Vector2(0, MathF.Sin(Math.Min(MathF.PI, iPer * MathF.PI)) * 2f - iPer * 1.5f - 1);
             }
 
@@ -277,7 +277,7 @@ public class SlotMachineWeapon : Weapon
     private float WindUpTime => (int)(RightClickEndLag + 50 * Mathf.Sqrt(player.SecondaryAttackSpeedModifier));
     public bool FakeAttack = false;
     protected float bounceCount = 0.7f;
-    public static int CoinCost => 4 + WaveDirector.WaveNum;
+    public static int CoinCost => Mathf.Max(5, 4 + WaveDirector.WaveNum);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft <= 0 && AttackGamble <= 0 && AttackRight < 0 && !alternate)
