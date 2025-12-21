@@ -21,9 +21,13 @@ public class MoneyIcon : MonoBehaviour
             {
                 PopUpTextUI.Enable("Money", "Can be used to purchase fancy powerups");
             }
-            else
+            else if(Type == 1)
             {
                 PopUpTextUI.Enable("Key", "Can be used to open chests");
+            }
+            else
+            {
+                PopUpTextUI.Enable("Tokens", "Can be used to play Gacha Slots instead of money");
             }
             UpdateSparkle(Sparkle, true);
         }

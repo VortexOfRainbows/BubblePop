@@ -60,7 +60,7 @@ public class SlotMachineWeapon : Weapon
         Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
         Vector2 mouseAdjustedFromPlayer = playerToMouse.magnitude < 4 ? playerToMouse.normalized * 4 + (Vector2)p.transform.position : Utils.MouseWorld;
         float scaleUp = 0.95f;
-        if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20)
+        if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20 || AttackRight < RightClickEndLag)
             dir = Mathf.Sign(playerToMouse.x);
         Vector2 awayFromWand = new Vector2(1.5f, 0.25f * dir).RotatedBy(playerToMouse.ToRotation());
         Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)transform.position - awayFromWand;
@@ -68,13 +68,13 @@ public class SlotMachineWeapon : Weapon
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
 
         Vector2 attemptedPosition = previousAttemptedPosition;
-        if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20)
+        if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20 || AttackRight < RightClickEndLag)
         {
             attemptedPosition = playerToMouse.normalized * 1.05f + p.rb.velocity.normalized * 0.1f;
             attemptedPosition.y *= 0.95f;
         }
-        Vector2 originalPosition = attemptedPosition;
         previousAttemptedPosition = attemptedPosition;
+        Vector2 originalPosition = attemptedPosition;
         p.PointDirOffset = 2 * dir * p.squash;
         p.DashOffset = 100 * dir * (1 - p.squash);
         float armDefaultRotation = 0;
@@ -110,15 +110,15 @@ public class SlotMachineWeapon : Weapon
                         if ((AttackGamble == 50 || AttackGamble == 30 || AttackGamble == 10) && hasDoneSelectAnimation)
                         {
                             velocity -= norm * 1f;
-                            int num = GambleOutcome == 5 ? 3 : 1;
+                            int num = GambleOutcome == 5 ? 3 : 0;
                             int type = GambleOutcome != 5 ? GambleOutcome - 1 : AttackGamble == 50 ? 3 : AttackGamble == 30 ? 2 : 1;
                             float separation = GambleOutcome == 5 ? 4.5f : 9f;
                             for (int i = -num; i <= num; i += 1)
                             {
-                                if(num == 1 && i != 0)
-                                    Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 1);
-                                else
-                                    Projectile.NewProjectile<GachaProj>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 2, type);
+                                //if(num == 1 && i != 0)
+                                //    Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 1);
+                                //else
+                                Projectile.NewProjectile<GachaProj>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 2, type);
                                 if(i == 0)
                                 {
                                     if(type == 0 || GambleOutcome == 5)
@@ -277,11 +277,12 @@ public class SlotMachineWeapon : Weapon
     private float WindUpTime => (int)(RightClickEndLag + 50 * Mathf.Sqrt(player.SecondaryAttackSpeedModifier));
     public bool FakeAttack = false;
     protected float bounceCount = 0.7f;
+    public static int CoinCost => 4 + WaveDirector.WaveNum;
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft <= 0 && AttackGamble <= 0 && AttackRight < 0 && !alternate)
         {
-            bool hasMoney = CoinManager.Current > 4 || !Main.WavesUnleashed;
+            bool hasMoney = CoinManager.Current >= CoinCost || !Main.WavesUnleashed || CoinManager.CurrentTokens > 0;
             if(!hasMoney)
             {
                 AudioManager.PlaySound(SoundID.SoapDie, transform.position, 1.5f, 1.0f, 1);
@@ -291,7 +292,12 @@ public class SlotMachineWeapon : Weapon
             else
             {
                 if (Main.WavesUnleashed)
-                    CoinManager.ModifyCurrent(-5);
+                {
+                    if (CoinManager.CurrentTokens > 0)
+                        CoinManager.ModifyTokens(-1);
+                    else
+                        CoinManager.ModifyCoins(-CoinCost);
+                }
                 AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.5f, 1.2f, 1);
                 AttackLeft = AttackCooldownLeft;
             }
@@ -363,23 +369,18 @@ public class SlotMachineWeapon : Weapon
             PityCount = 0;
             PityBonus = 0;
         }
-
-
         //Good Match
         //Huge Win! ~2.7%
         if ((n -= 0.027f) < 0) 
             return 4;
-
         //Variant Match
         //Small Win! ~6.7%
         if ((n -= 0.067f) < 0) 
             return 3;
-
         //Weak Variant Match
         //Break Even! ~20%
         if ((n -= 0.2f) < 0) 
             return 2;
-
         //No Matches
         //Lose Money! Should be most cases ~70%
         return 1;

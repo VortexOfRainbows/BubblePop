@@ -2,6 +2,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 public class Coin : MonoBehaviour
 {
+    public bool IsCoin => YieldType == 0;
+    public bool IsHeart => YieldType == 1;
+    public bool IsKey => YieldType == 2;
+    public bool IsToken => YieldType == 3;
     public Rigidbody2D rb;
     public int YieldType = 0;
     public int Value;
@@ -9,24 +13,24 @@ public class Coin : MonoBehaviour
     public Color PopupColor;
     public float BeforeCollectableTimer = 0;
     public GameObject HeartVisual;
-    public bool CanCollectHeart()
+    public bool CanCollect()
     {
-        return Player.Instance.Life < Player.Instance.TotalMaxLife;
-    }
-    public bool CanCollectKey()
-    {
-        return Main.WavesUnleashed;
+        if (IsToken)
+            return Player.Instance.MaxTokens > CoinManager.CurrentTokens;
+        if (IsHeart)
+            return Player.Instance.Life < Player.Instance.TotalMaxLife;
+        if (IsKey)
+            return Main.WavesUnleashed;
+        return true;
     }
     public void TryCollecting()
     {
-        float radius = YieldType == 1 ? 0.35f : 0.7025f;
+        float radius = IsHeart ? 0.35f : 0.7025f;
         radius *= transform.localScale.x;
         radius += Player.Instance.transform.localScale.x * 0.7f;
         if (transform.position.Distance(Player.Position) < radius)
         {
-            if (YieldType == 1 && !CanCollectHeart())
-                return;
-            if(YieldType == 2 && !CanCollectKey())
+            if (!CanCollect())
                 return;
             OnCollected();
             gameObject.SetActive(false);
@@ -41,15 +45,18 @@ public class Coin : MonoBehaviour
     {
         TryCollecting();
         Player p = Player.Instance;
-        bool isHeart = YieldType == 1;
-        if (YieldType == 0)
+        if (IsCoin || IsToken)
             rb.rotation += rb.velocity.magnitude * 0.5f * -Mathf.Sign(rb.velocity.x);
-        float attractDist = isHeart || YieldType == 2 ? 3.5f : 4 + p.Magnet * 3f;
+        float attractDist = IsHeart || IsKey ? 3.5f : 4 + p.Magnet * 3f;
+        if(IsToken)
+            attractDist += 9;
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
-        if (length < attractDist && (BeforeCollectableTimer <= 0 || isHeart) && (!isHeart || CanCollectHeart()) && (YieldType != 2 || CanCollectKey()))
+        if (length < attractDist && (BeforeCollectableTimer <= 0 || IsHeart) && CanCollect())
         {
             float attractSpeed = 3 + p.Magnet + (++AttractTimer) / 30f;
+            if (IsToken)
+                attractSpeed += 6;
             float percent = length / attractDist;
             rb.velocity = Vector2.Lerp(rb.velocity, toPlayer.normalized * attractSpeed, (1 - percent) * 0.2f);
             float speed = rb.velocity.magnitude;
@@ -61,12 +68,30 @@ public class Coin : MonoBehaviour
         }
         else
         {
-            rb.velocity *= YieldType == 2 ? 0.9725f : isHeart ? 0.935f : 0.985f;
+            rb.velocity *= IsKey ? 0.9725f : IsHeart ? 0.935f : 0.985f;
             AttractTimer = 0;
         }
         BeforeCollectableTimer -= Time.fixedDeltaTime;
 
-        if (isHeart)
+        if(IsToken)
+        {
+            timer++;
+            float percent = timer / 400f;
+            float deathPercent = 0.75f;
+            if(percent > deathPercent)
+            {
+                percent = (percent - deathPercent) / (1 - deathPercent);
+                percent *= percent;
+                var renderer = GetComponent<SpriteRenderer>();
+                renderer.color = renderer.color.WithAlpha(1 - percent);
+                if (percent >= 1)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+            }
+        }
+        else if (IsHeart)
         {
             if (Utils.RandFloat(1) < 0.2f)
             {
@@ -77,7 +102,7 @@ public class Coin : MonoBehaviour
             }
             HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 225f) - 0.1f);
         }
-        else if(YieldType == 2)
+        else if(IsKey)
         {
             for(int i = -1; i <= 1; i += 2)
             {
@@ -95,14 +120,21 @@ public class Coin : MonoBehaviour
     }
     public void OnCollected()
     {
-        if(YieldType == 2)
+        if(IsToken)
+        {
+            CoinManager.ModifyTokens(Value);
+            AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.1f, 0.5f, 1);
+            PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"Token", true, 0.7f, 80);
+            return;
+        }
+        else if(IsKey)
         {
             CoinManager.ModifyKeys(Value);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.2f, 0.25f, 2);
             PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}");
             return;
         }
-        if (YieldType == 1)
+        else if (IsHeart)
         {
             Player.Instance.SetLife(Player.Instance.Life + Value);
             AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.1f, 0.76f, 0);
@@ -110,7 +142,7 @@ public class Coin : MonoBehaviour
             PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}");
             return;
         }
-        CoinManager.ModifyCurrent(Value);
+        CoinManager.ModifyCoins(Value);
         PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"${Value}");
         if (Value <= 1)
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 0);

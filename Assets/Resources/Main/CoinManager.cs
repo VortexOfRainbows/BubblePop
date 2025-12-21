@@ -11,6 +11,7 @@ public static class CoinManager
         Heart = Resources.Load<GameObject>("Money/HeartPickup");
         Key = Resources.Load<GameObject>("Money/KeyPickup");
         Chest = Resources.Load<GameObject>("Chests/Chest");
+        Token = Resources.Load<GameObject>("Money/Token");
     }
     //public static void Load()
     //{
@@ -25,7 +26,7 @@ public static class CoinManager
     public static GameObject Gold;
     public static GameObject Heart;
     public static GameObject Key;
-    public static GameObject Chest;
+    public static GameObject Chest, Token;
     public static void SpawnCoin(Vector2 pos, int value = 1, float collectDelay = 0f)
     {
         int bronze = value % 5;
@@ -76,6 +77,18 @@ public static class CoinManager
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
         obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
     }
+    public static void SpawnToken(Func<Vector2> func, float collectDelay)
+    {
+        SpawnToken(func.Invoke(), collectDelay);
+    }
+    public static void SpawnToken(Vector2 pos, float collectDelay)
+    {
+        GameObject obj = GameObject.Instantiate(Token, pos, Quaternion.identity);
+        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
+        var c = obj.GetComponent<Coin>();
+        c.BeforeCollectableTimer = collectDelay;
+        c.PopupColor = ColorHelper.RarityColors[0];
+    }
     public static void SpawnChest(Func<Vector2> func, int type)
     {
         SpawnChest(func.Invoke(), type);
@@ -87,19 +100,15 @@ public static class CoinManager
     }
     public static int Current { get; private set; } = 0;
     public static int CurrentKeys { get; private set; } = 0;
-    //public static int Savings { get; private set; }
+    public static int CurrentTokens { get; private set; } = 0;
     public static int TotalEquipCost;
     public static void AfterDeathReset()
     {
-        //ModifySavings(Current / 10);
+        CurrentTokens = 0;
         CurrentKeys = 0;
         Current = 0;
     }
-    //public static void ModifySavings(int amt)
-    //{
-    //    Savings += amt;
-    //}
-    public static void ModifyCurrent(int amt)
+    public static void ModifyCoins(int amt)
     {
         Current += amt;
         if (amt < 0)
@@ -114,5 +123,12 @@ public static class CoinManager
     public static void ModifyKeys(int amt)
     {
         CurrentKeys += amt;
+    }
+    public static void ModifyTokens(int amt)
+    {
+        int prevTokens = CurrentTokens;
+        CurrentTokens += amt;
+        if(CurrentTokens > Player.Instance.MaxTokens)
+            CurrentTokens = Mathf.Max(prevTokens, Player.Instance.MaxTokens);
     }
 }

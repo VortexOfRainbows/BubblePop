@@ -118,6 +118,7 @@ public partial class Player : Entity
     public int PerpetualBubble = 0;
     public float PityGrowthAmount = 0f;
     public int ConsolationPrize = 0;
+    public int MaxTokens = 3;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -163,6 +164,7 @@ public partial class Player : Entity
         LuckyStarItemsAllowedPerWave = PerpetualBubble = 0;
         PityGrowthAmount = 0f;
         ConsolationPrize = 0;
+        MaxTokens = 3;
     }
     private void UpdatePowerUps()
     {
@@ -171,10 +173,8 @@ public partial class Player : Entity
         {
             PowerUp power = PowerUp.Get(powers[i]);
             if(power.Stack > 0)
-            {
                 power.HeldEffect(this);
                 //Debug.Log($"Doing held effect for {power.Stack}");
-            }
         }
         AbilityRecoverySpeed = AbilityRecoverySpeed * AbilityRecoverySpeedMult;
     }

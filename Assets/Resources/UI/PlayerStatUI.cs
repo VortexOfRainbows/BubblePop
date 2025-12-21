@@ -17,6 +17,8 @@ public class PlayerStatUI : MonoBehaviour
     public GameObject Money;
     public TMPro.TextMeshProUGUI keyText;
     public GameObject Key;
+    public TMPro.TextMeshProUGUI tokenText;
+    public GameObject Tokens;
     public static void ClearHearts()
     {
         foreach (PlayerHeartUI heart in Hearts)
@@ -49,6 +51,16 @@ public class PlayerStatUI : MonoBehaviour
             int keys = CoinManager.CurrentKeys; // : CoinManager.Savings;
             keyText.text = $"{keys}";
             keyText.enabled = true;
+
+            bool usingGachaSlots = Player.Instance.Weapon != null && Player.Instance.Weapon is SlotMachineWeapon;
+            Tokens.SetActive(usingGachaSlots);
+            if(usingGachaSlots)
+            {
+                int tokens = CoinManager.CurrentTokens; // : CoinManager.Savings;
+                string text = tokens > 0 ? $"<color={DetailedDescription.Rares[0]}>{tokens}</color>" : $"<color={(CoinManager.Current >= SlotMachineWeapon.CoinCost ? DetailedDescription.Rares[4] : "#FF4455")}>${SlotMachineWeapon.CoinCost}</color>";
+                tokenText.text = $"{text}<color={DetailedDescription.Rares[0]}>/{Player.Instance.MaxTokens}</color>";
+                tokenText.enabled = true;
+            }
         }
     }
     public static void SetHeartsToPlayerLife()

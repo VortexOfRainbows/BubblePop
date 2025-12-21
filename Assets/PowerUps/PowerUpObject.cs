@@ -94,7 +94,7 @@ public class PowerUpObject : MonoBehaviour
     {
         if(Cost > 0)
         {
-            CoinManager.ModifyCurrent(-Cost);
+            CoinManager.ModifyCoins(-Cost);
             int charisma = Player.Instance.RollChar;
             if(charisma > 0)
             {

@@ -153,6 +153,10 @@ public class Projectile : MonoBehaviour
         }
         OnHitTarget(target);
     }
+    /// <summary>
+    /// Called after damage is registered on the enemy, including when the projectile would kill the enemy
+    /// </summary>
+    /// <param name="target"></param>
     public virtual void OnHitTarget(Entity target)
     {
 
