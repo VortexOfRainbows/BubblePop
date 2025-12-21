@@ -335,6 +335,8 @@ public class DoubleDown : PowerUp
     {
         description.WithDescription($"Enemies Y:[killed by chips] drop additional Y:coins equal to the Y:[overkill damage dealt] up to a Y:[maximum of 5 coins] G:(+3 per stack) \nIncreases Y:[chip damage] by Y:1 G:(+1 per stack)");
         description.WithShortDescription("Enemies killed by chips drop additional coins and increases chip damage");
+        //description.WithDescriptionVariant<SlotMachineWeapon>($"Enemies Y:[killed by chips] drop Y:1 G:(+1 per stack) token and additional Y:coins equal to the Y:[overkill damage dealt] up to a Y:[maximum of 5 coins] G:(+3 per stack) \nIncreases Y:[chip damage] by Y:1 G:(+1 per stack)");
+        //description.WithShortDescriptionVariant<SlotMachineWeapon>("Enemies killed by chips drop additional coins and a token, plus increases chip damage");
     }
     public override void HeldEffect(Player p)
     {
@@ -430,7 +432,7 @@ public class ConsolationPrize : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription("Increases Y:[non-winning spin damage] and Y:[secondary attack damage] by Y:20% G:(+20% per stack) \nY:7.77% chance to gain Y:2 G:(+2 per stack) Y:coins on Y:[non-winning spins] " +
-            "\nR:[But... increases spin price by 0.25] G:(+0.25 per stack) R:coins");
+            "\nR:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins");
         description.WithShortDescription("Increases non-winning spin damage, secondary attack damage, and gives a chance for consolation coins");
     }
     public override void HeldEffect(Player p)
@@ -449,7 +451,7 @@ public class Pity : PowerUp
     {
         description.WithName("Pity Charm");
         description.WithDescription("Each consecutive Y:[non-Jackpot spin] increases Y:[Jackpot chance] by Y:4% G:(+2% per stack) " +
-            "\nR:[But... increases spin price by 0.25] G:(+0.25 per stack) R:coins");
+            "\nR:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins");
         description.WithShortDescription("Increases Jackpot chance after consecutive spins without a Jackpot");
     }
     public override void HeldEffect(Player p)
@@ -467,8 +469,8 @@ public class TokenPouch : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Token Pouch");
-        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:3 G:(+2 per stack) \nAdds Y:1 G:(+1 per stack) Y:Token to Y:[wave start] " +
-            "\nR:[But... increases spin price by 0.5] G:(+0.5 per stack) R:coins");
+        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:3 G:(+2 per stack) and adds Y:1 G:(+1 per stack) Y:Token to Y:[wave start] " +
+            "\nR:[Increases spin price by 0.5] G:(+0.5 per stack) R:coins");
         description.WithShortDescription("Hold more Tokens and get Tokens at the start of every wave");
     }
     public override void HeldEffect(Player p)
@@ -488,7 +490,7 @@ public class BOGOSpin : PowerUp
     {
         description.WithName("Bonus Spin");
         description.WithDescription("Get a Y:[Bonus spin] on Y:10% G:(+10% per stack) of Y:spins \nEach Y:[Bonus spin] has Y:77.7% increased Y:[attack speed] for Y:[every spin that came before it] " +
-            "\nR:[But... increases spin price by] R:1 G:(+1 per stack) R:coins");
+            "\nR:[Increases spin price by] R:1 G:(+1 per stack) R:coins");
         description.WithShortDescription("Sometimes get a Bonus spin for free");
     }
     public override void HeldEffect(Player p)
@@ -507,7 +509,7 @@ public class PhilosophersStone : PowerUp
     {
         description.WithName("Philosopher's Stone");
         description.WithDescription("Increases Y:damage of Y:[high-rarity spins] by Y:10% G:(+10% per stack) and Y:[high-rarity spins] drop Y:50% G:(+50% per stack) more Y:coins on hit " +
-            "\nR:[But... increases spin price by] R:2 G:(+2 per stack) R:coins");
+            "\nR:[Increases spin price by] R:2 G:(+2 per stack) R:coins");
         description.WithShortDescription("Increases the damage dealt and coins dropped by high-rarity spins");
     }
     public override void HeldEffect(Player p)

@@ -159,7 +159,7 @@ public class Gachapon : Body
         stacks = new List<ChipStack>();
     }
     //public SpriteRenderer MouthR;
-    protected override float AngleMultiplier => 0.4f;
+    protected override float AngleMultiplier => 0.25f;
     protected override float RotationSpeed => 1f;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
@@ -196,7 +196,7 @@ public class Gachapon : Body
         looking.y *= 0.75f;
         if (looking.x < 0)
             toMouseR += Mathf.PI;
-        Vector2 pos = new Vector2(0.08f * p.Direction, 0.35f) + looking;
+        Vector2 pos = new Vector2(0.07f * p.Direction, 0.325f) + looking;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
         FaceR.flipX = toMouse.x > 0;
@@ -204,7 +204,7 @@ public class Gachapon : Body
         top.SetActive(true);
         //MouthR.flipX = FaceR.flipX;
     }
-    public override float AbilityCD => 2.5f;
+    public override float AbilityCD => 3.0f;
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
         ResizeChips();

@@ -71,9 +71,9 @@ public class GachaProj : Projectile
             return;
         float count = 1;
         if (Data1 == 2)
-            count += 2;
+            count = 3;
         else if (Data1 == 3)
-            count += 2;
+            count = 5;
         count *= 1.0f + 0.5f * Player.Instance.PhilosophersStone;
         float bonus = count - (int)count;
         if (Utils.RandFloat() < bonus)

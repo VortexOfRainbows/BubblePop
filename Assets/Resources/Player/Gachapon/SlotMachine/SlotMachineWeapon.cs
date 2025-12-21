@@ -22,7 +22,7 @@ public class SlotMachineWeapon : Weapon
         powerPool.Add<BOGOSpin>(); //White, Bonus Spin
         powerPool.Add<TokenPouch>(); //Green
         powerPool.Add<PhilosophersStone>(); //Blue, Philosopher's Stone (more damage and money)
-        //powerPool.Add<ShotSpeed>(); //Purple, Roulette Wheel (Keep that ball rolling!
+        //powerPool.Add<ShotSpeed>(); //Blue, Roulette Wheel (Keep that ball rolling!
         //powerPool.Add<Starshot>(); //Purple, Batter Up
     }
     public override void InitializeDescription(ref DetailedDescription description)
@@ -362,9 +362,10 @@ public class SlotMachineWeapon : Weapon
         return 1;
     }
     public static readonly string[] GambleText = { "Try Again!", "Small Win!", "Medium Win!", "Huge Win!", "Jackpot!"};
+    public static List<int> FailureNums = new();
     public int DetermineGambleOutcome()
     {
-        if(!hasDoneSelectAnimation)
+        if (!hasDoneSelectAnimation)
         {
             return 5;
         }
@@ -407,6 +408,7 @@ public class SlotMachineWeapon : Weapon
             return 2;
         //No Matches
         //Lose Money! Should be most cases ~70%
+        FailureNums = new() { 0, 1, 2, 3 };
         return 1;
     }
     public Slot[] GambleSlots = { };
@@ -448,10 +450,11 @@ public class SlotMachineWeapon : Weapon
     }
     public void SlotAnimation(Slot s, float percent)
     {
+        int cycleCount = 3;
         for (int i = 0; i < 2; ++i)
         {
-            float slotPercent = (MathF.Sin(percent * percent * MathF.PI * 0.5f) * 3 + i * 0.5f);
-            bool final = slotPercent > 3;
+            float slotPercent = (MathF.Sin(percent * percent * MathF.PI * 0.5f) * cycleCount + i * 0.5f);
+            bool final = slotPercent > cycleCount - 1;
             slotPercent %= 1;
             float yPos = -slotPercent;
             if (yPos < -0.5f)
@@ -465,7 +468,7 @@ public class SlotMachineWeapon : Weapon
             {
                 if (s.ReadyToSwitchSprite1 && i == 0)
                 {
-                    SwapSlotSprite(s, i, true);
+                    SwapSlotSprite(s, i, final);
                     s.ReadyToSwitchSprite1 = false;
                 }
                 else if (s.ReadyToSwitchSprite2 && i == 1)
@@ -494,16 +497,9 @@ public class SlotMachineWeapon : Weapon
                 s.SpriteNum1 = 2;
             else
             {
-                if(s == GambleSlots[1])
-                {
-                    while (s.SpriteNum1 == GambleSlots[0].SpriteNum1)
-                        s.SpriteNum1 = Utils.RandInt(4);
-                }
-                else if(s == GambleSlots[2])
-                {
-                    while (s.SpriteNum1 == GambleSlots[1].SpriteNum1 || s.SpriteNum1 == GambleSlots[0].SpriteNum1)
-                        s.SpriteNum1 = Utils.RandInt(4);
-                }
+                int rand = Utils.RandInt(FailureNums.Count);
+                s.SpriteNum1 = FailureNums[rand];
+                FailureNums.RemoveAt(rand);
             }
         }
         else

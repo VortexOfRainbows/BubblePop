@@ -32,8 +32,9 @@ Need to do:
 12. Infector can die to poison while in an enemy (bug)
 13. Make power display on the bottom smaller
 14. Make Gachapon Weapon!
-	1. Needs: powers, debuff instead of dropping coins outright
+	1. Needs: powers, debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for realestate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 15. Make Map NODE system
+16. Fix issue where hats start on the wrong side when facing left, standing still, and switching character or equipment
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -50,6 +51,7 @@ Done:
 	2. The Left-Click mechanics are mostly done, but it SERIOUSLY needs balancing... lol
 	3. Now has an equip animation (just rolls to jackpot)
 	4. Powers: Consolation Prize, Pity, Token Pouch, Bogo Spin.
+	5. It does somewhat compete with Chips for enemy min-maxing when combined with Double Down (which should people prefer?)
 5. Chests now come with some unique sounds! Kinda...
 6. Increased power up prices across the board, for both wave rewards and the shop: (10 -> 15, 15 -> 25, 25 -> 50, 50 -> 100, 100 -> 250)
 	1. Reduced rate of shop price inflation 10% -> 5%
@@ -57,6 +59,11 @@ Done:
 8. Roll for Perception now caps the reduced weight of rarity 1 and 2 powers at 0.2 -> 0.5
 	1. This means common items should no longer appear as infrequently with the power in high quantities
 9. When not seeking an implant (where their hitbox turns off anyways), Infectors now try to stay 3 -> 4 units away from the player
+10. Slight modifications to Gachapon's Moving and Facial Animations
+11. Fix issue where bunce hat would fly into the sky uncontrollably when switching from Gachapon to Bubblemancer in the equip menu where bunce hat was worn by Bubblemancer
+12. Slots loss animation is now more random
+13. Gachapon Chip recharge time 2.5 -> 3.0
+	1. This is meant to be a slight nerf to push Chips towards being the emergency burst option they were designed for, rather than a primary weapon (yes this change is targeted to YOU. YOU know who YOU are...)
 
 12/15/25
 1. Import Weapon Assets for Gachapon Weapon!
