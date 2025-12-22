@@ -1,13 +1,14 @@
 using UnityEngine;
 public class SmallBubble : Projectile
 {
+    public int RandomLifeShorten = 0;
     public override void Init()
     {
         Color c = Player.ProjectileColor;
         c.a = 0.68f;
         SpriteRenderer.color = c;
-        SpriteRenderer.sprite = Main.BubbleSmall;
-        timer += Utils.RandInt(41);
+        SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
+        RandomLifeShorten = Utils.RandInt(41);
         timer2 = 0;
         if(Data.Length > 0)
             Data1 = 0;
@@ -16,14 +17,32 @@ public class SmallBubble : Projectile
         Penetrate = 1;
         Friendly = false;
         SpriteRendererGlow.gameObject.SetActive(false);
+        RB.velocity *= 1 + 0.1f * Player.Instance.FasterBulletSpeed;
+
+        if (Player.Instance.EternalBubbles > 0)
+        {
+            int bonus = Player.Instance.EternalBubbles;
+            if (bonus > 9)
+            {
+                RandomLifeShorten -= 10 * (bonus - 9);
+                bonus = 9;
+            }
+            RandomLifeShorten -= 40 + 40 * bonus;
+        }
     }
     public override void AI()
     {
+        float deathTime = 180;
+        deathTime -= RandomLifeShorten;
         if (++timer2 > 3)
             Friendly = true;
         Vector2 velo = RB.velocity;
-        velo *= 1 - 0.008f / (2 + Player.Instance.FasterBulletSpeed) - timer / 5000f;
-        velo.y += 0.005f;
+        if (timer > deathTime - 100 + RandomLifeShorten)
+            velo *= 0.95f;
+        else if (timer > deathTime - 130 + RandomLifeShorten)
+            velo *= 0.9725f;
+        else if (timer > deathTime - 160 + RandomLifeShorten)
+            velo *= 0.99f;
         RB.velocity = velo;
         float speed = RB.velocity.magnitude;
         float rtSpeed = Mathf.Sqrt(speed);
@@ -37,17 +56,6 @@ public class SmallBubble : Projectile
         }
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
 
-        float deathTime = 180;
-        if (Player.Instance.EternalBubbles > 0)
-        {
-            int bonus = Player.Instance.EternalBubbles;
-            if (bonus > 9)
-            {
-                deathTime += 10 * (bonus - 9);
-                bonus = 9;
-            }
-            deathTime += 40 + 40 * bonus;
-        }
         float FadeOutTime = 20;
         if (timer > deathTime + FadeOutTime)
         {
@@ -80,7 +88,7 @@ public class BigBubble : Projectile
 {
     public override void Init()
     {
-        SpriteRenderer.sprite = Main.BubbleSprite;
+        SpriteRenderer.sprite = Main.TextureAssets.BubbleSprite;
         Color c = Player.ProjectileColor;
         c.a = 0.68f;
         SpriteRenderer.color = c;
@@ -96,9 +104,9 @@ public class BigBubble : Projectile
         if (Player.Instance.BubbleBlast > 0)
         {
             float amt = 1 + (3 + Data2) * Player.Instance.BubbleBlast;
-            float speed = 3.5f + (Data2 * 1.25f + Player.Instance.FasterBulletSpeed * 1.75f + Player.Instance.ChargeShotDamage * 0.75f);
+            float speed = 3.5f + (Data2 * 1.25f + Player.Instance.ChargeShotDamage * 0.75f);
             for (int i = 0; i < amt; i++)
-                NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f));
+                NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1);
         }
         for (int i = 0; i < 30; i++)
         {
@@ -157,7 +165,7 @@ public class BigBubble : Projectile
                 toMouse = toMouse.normalized * 6;
             Vector2 mouse = Player.Position + toMouse;
             toMouse = mouse - (Vector2)transform.position;
-            RB.velocity = toMouse * 0.1f + toMouse.normalized * (10f + Player.Instance.FasterBulletSpeed + Mathf.Min(24, 24f * (timer + 50) / -200f));
+            RB.velocity = toMouse * 0.1f + toMouse.normalized * (10f + Mathf.Min(24, 24f * (timer + 50) / -200f));
             timer = 1;
 
             for (int i = 0; i < 30; i++)
@@ -171,7 +179,7 @@ public class BigBubble : Projectile
             if (Utils.RandFloat(1) < 0.15f)
                 ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x * 0.5f), Utils.RandFloat(.3f, .4f), RB.velocity * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.3f, .6f), 0, Player.ProjectileColor);
             Friendly = true;
-            RB.velocity *= 1 - 0.007f / (2 + Player.Instance.FasterBulletSpeed) - timer / 4000f;
+            RB.velocity *= 1 - 0.0035f - timer / 4000f;
             timer++;
             if (Player.Instance.SoapySoap > 0 && timer <= 120)
             {
@@ -182,8 +190,8 @@ public class BigBubble : Projectile
                 if (timer % interval == 0)
                 {
                     Vector2 norm = RB.velocity.normalized;
-                    float veloMult = Utils.RandFloat(0.75f * Player.Instance.FasterBulletSpeed, 3f + Player.Instance.FasterBulletSpeed * 1.25f);
-                    NewProjectile<SmallBubble>((Vector2)transform.position + Utils.RandCircle(transform.lossyScale.x * 0.5f), Utils.RandCircle(2) - norm * veloMult);
+                    float veloMult = Utils.RandFloat(0.25f, 3f + Player.Instance.FasterBulletSpeed * 1.25f);
+                    NewProjectile<SmallBubble>((Vector2)transform.position + Utils.RandCircle(transform.lossyScale.x * 0.5f), Utils.RandCircle(2) - norm * veloMult, 1);
                 }
             }
             if (timer > 160)
@@ -233,21 +241,21 @@ public class ThunderBubble : Projectile
     {
         ColorVar = Color.Lerp(Player.ProjectileColor, Color.blue, 0.5f);
         SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f);
-        SpriteRenderer.sprite = Main.BubbleSmall;
-        SpriteRendererGlow.sprite = Main.Shadow;
+        SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
+        SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = ColorVar * 0.6f;
         timer2 = 0;
         transform.localScale *= 0.3f;
         Damage = 1;
         Penetrate = -1;
         Friendly = true;
-        immunityFrames = 22;
+        immunityFrames = 25;
         UpdateSize();
 
         float total = Player.Instance.Electroluminescence;
         for(int i = 0; i < total; ++i)
         {
-            ThunderLightSpearCaster TLSC = NewProjectile<ThunderLightSpearCaster>(transform.position, Vector2.zero, i, total, ScaleFactor * 1.1f, Utils.SignNoZero(RB.velocity.x)).GetComponent<ThunderLightSpearCaster>();
+            ThunderLightSpearCaster TLSC = NewProjectile<ThunderLightSpearCaster>(transform.position, Vector2.zero, 2.0f + Player.Instance.LightSpear * 0.5f, i, total, ScaleFactor * 1.1f, Utils.SignNoZero(RB.velocity.x)).GetComponent<ThunderLightSpearCaster>();
             TLSC.FakeParent = transform;
         }
     }
@@ -276,8 +284,14 @@ public class ThunderBubble : Projectile
         {
             if(!Recalled)
             {
-                Damage *= 3;
+                AudioManager.PlaySound(SoundID.ElectricZap.GetVariation(0), transform.position, 0.3f, 0.66f);
+                if(Player.Instance.EchoBubbles > 0)
+                {
+                    NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, Player.Instance.EchoBubbles);
+                }
+                Damage *= 2 + Player.Instance.ThunderBubbleReturnDamageBonus;
                 Recalled = true;
+                //cmp.c2D.enabled = false;
             }
             timer = deathTime;
             Vector2 weaponPos = Player.Instance.Weapon.transform.position;
@@ -381,6 +395,65 @@ public class ThunderBubble : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
+        float recalled = Recalled ? 0.8f : 1.2f;
+        AudioManager.PlaySound(SoundID.ElectricZap, target.transform.position, 0.2f, recalled);
         Pylon.SummonLightning2(transform.position, target.transform.position, ColorVar, 0.6f);
+    }
+}
+public class ThoughtBubbleThunderAura : Projectile
+{
+    private Color c;
+    public override void Init()
+    {
+        c = Player.Instance.Hat is Crown ? new Color(1, 0, 0, 0.7f) : new Color(1, 0.9f, .5f, 0.5f) * 0.9f;
+        SpriteRenderer.enabled = false;
+        transform.localScale *= 1.5f;
+        Penetrate = -1;
+        immunityFrames = 50;
+        Friendly = false;
+        c2D.radius *= 4 * (Player.Instance.TrailOfThoughts / 10f + 1);
+        SpriteRendererGlow.transform.localScale = Vector3.one * 2f;
+        SpriteRendererGlow.color = Color.black;
+        SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
+    }
+    public override void AI()
+    {
+        if (timer2++ < 8)
+        {
+            SpriteRendererGlow.transform.LerpLocalScale(Vector2.one * 2, 0.3f);
+            SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, c, 0.2f);
+        }
+        else
+        {
+            SpriteRendererGlow.transform.LerpLocalScale(Vector2.one, 0.06f);
+            if(Data1 == 1)
+                Friendly = true;
+            SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, Color.black, 0.12f);
+        }
+        if(timer2 > 25)
+        {
+            Kill();
+        }
+    }
+    public override void OnKill()
+    {
+        int count = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
+        for (int i = 0; i < count; i++)
+        {
+            Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 2, c.WithAlphaMultiplied(0.8f));
+        }
+    }
+    public override bool OnInsideTile()
+    {
+        return false;
+    }
+    public override bool OnTileCollide(Collider2D collision)
+    {
+        return false;
+    }
+    public override void OnHitTarget(Entity target)
+    {
+        Pylon.SummonLightning2(transform.position, target.transform.position, c, 0.6f);
     }
 }

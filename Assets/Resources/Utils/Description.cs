@@ -37,6 +37,11 @@ public class DetailedDescription
     private static readonly string TabForMoreDetail = " (TAB for more detail)".WithSizeAndColor(24, "#CB8A8A");
     private static readonly int NormalTextSize = 28;
     private static readonly int GrayTextSize = 24;
+    public void WithoutSizeAugments()
+    {
+        WithSizeAugments = false;
+    }
+    private bool WithSizeAugments = true;
     public string ToRichText(string t)
     {
         string[] segments = t.Split(' ');
@@ -54,6 +59,12 @@ public class DetailedDescription
     }
     public string SegmentToRichRext(string t, ref bool waitingForEnding)
     {
+        string start2 = "";
+        if (t.Length > 0 && t[0] == '\n')
+        {
+            start2 += "\n";
+            t = t[1..];
+        }    
         if (t.Length > 2)
         {
             string first2 = t[..2];
@@ -61,19 +72,24 @@ public class DetailedDescription
             char last = t[^1];
             bool isOpening = third == '[' || third == '(';
             bool isEnding = last == ']' || last == ')';
+            //bool commaEnding = last == ',' && (last2 == ']' || last2 == ')');
+            //if (commaEnding)
+            //    isEnding = true;
             string start = string.Empty;
             string end = string.Empty;
             string contents = t;
             if (first2 == "G:")
-                start = $"<size={GrayTextSize}><color={Gray}>";
+                start = WithSizeAugments ? $"<size={GrayTextSize}><color={Gray}>" : $"<color={Gray}>";
             else if (first2 == "Y:")
-                start = $"<size={NormalTextSize}><color={Yellow}>";
+                start = WithSizeAugments ? $"<size={NormalTextSize}><color={Yellow}>" : $"<color={Yellow}>";
+            else if (first2 == "R:")
+                start = WithSizeAugments ? $"<size={NormalTextSize}><color={Rares[5]}>" : $"<color={Rares[5]}>";
             if (isEnding && waitingForEnding && !isOpening) //If this string ends with a ']' and we have previously seen a '['
             {
                 waitingForEnding = false;
                 if (last != ')')
                     contents = t[..^1];
-                end = "</color></size>";
+                end = WithSizeAugments ? "</color></size>" : "</color>";
             }
             else if (isOpening && !waitingForEnding && !isEnding) //If this string starts with a '[' and we have not seen a ']'
             {
@@ -91,9 +107,9 @@ public class DetailedDescription
                 }
                 else
                     contents = t[2..];
-                end = "</color></size>";
+                end = WithSizeAugments ? "</color></size>" : "</color>";
             }
-            return $"{start}{contents}{end}";
+            return start2 + $"{start}{contents}{end}";
         }
         return t;
     }
@@ -123,6 +139,11 @@ public class DetailedDescription
         AltDescriptions.Add(typeof(T), lines);
         return this;
     }
+    public DetailedDescription WithShortDescriptionVariant<T>(string lines) where T : Equipment
+    {
+        ShortAltDescriptions.Add(typeof(T), lines);
+        return this;
+    }
     public DetailedDescription WithName(string name)
     {
         Name = name;
@@ -130,6 +151,8 @@ public class DetailedDescription
     }
     private readonly Dictionary<Type, string> AltDescriptions = new();
     private readonly Dictionary<Type, string> CompleteAltDescriptions = new();
+    private readonly Dictionary<Type, string> ShortAltDescriptions = new();
+    private readonly Dictionary<Type, string> CompleteShortAltDescriptions = new();
     private string Name;
     private string Description;
     private string ShortDescription = null;
@@ -169,6 +192,27 @@ public class DetailedDescription
             return FullDescription();
         if (CompleteShortDescription == string.Empty)
             CompleteShortDescription = ToRichText(ShortDescription);
+        if (Player.Instance != null)
+        {
+            Type[] equipTypes = new Type[] {
+                Player.Instance.Body.GetType(),
+                Player.Instance.Hat.GetType(),
+                Player.Instance.Weapon.GetType(),
+                Player.Instance.Accessory.GetType()
+            };
+            foreach (Type t in equipTypes)
+            {
+                if (ShortAltDescriptions.TryGetValue(t, out string lines))
+                {
+                    if (!CompleteShortAltDescriptions.TryGetValue(t, out string lines2))
+                    {
+                        CompleteShortAltDescriptions[t] = ToRichText(lines);
+                    }
+                    else
+                        return lines2;
+                }
+            }
+        }
         return CompleteShortDescription + (withDetails ? TabForMoreDetail : string.Empty);
     }
     public static string TextBoundedByColor(string color, string text)

@@ -1,0 +1,25 @@
+Dev Build 1.35 (tentative version number)
+
+New:
+1. Added DEBUG UI and Upgraded WAVE SKIP functionality to allow better* gameplay simulation
+
+Balance:
+1. Coins are now first priority for secondary chest loot, coins->hearts->keys, rather than hearts->keys->coin
+	1. Additionally, the rates for the loot was changed like this:
+		1. Coins: (10%, 20%, 30%) -> (25%, 37.5%, 50%)
+		2. Hearts: (20%, 40%, 60%) -> (5%, 10%, 15%)
+		3. Keys: (20%, 40%, 60%) -> (5%, 6.25%, 7.5%)
+2. Increased cost and decreased appearance rate of higher tier chest rewards (costs go up by around 10%)
+	1. Added a flat 40% chance to fail a chest upgrade, compounding for gem chests (meaning that even if they can be afforded, the chance is now 36% for them to appear compared to the other chests).
+	2. Greatly decreased the average size of chest rewards by giving a 67% chance to fail a quantity increase roll
+3. Increased cost of keys for purpose of director spawning by 20%, but rate of appearance increased by about 14%
+	1. Keys now have a disadvantage roll for the quantity to spawn (it will roll twice and pick the lower spawn value)
+4. Coupons now decreases shop prices by 10% -> 12% (this should realistically not improve the item whatsoever, but is funny)
+5. Immediate Coin rewards point cost multiplier 2.0 -> 1.5, meaning coins are more plentiful in immediate wave rewards
+	1. Coins spawned by wave rewards are now rounded to multiplies of 5
+
+Fixes:
+1. Streamlined some internal UI processes
+2. Fixed bug where Enemy UI scaling updates was framerate dependent
+3. Fixed bug where wave cards were selectable while in pause menu
+4. Fix bug where coins and keys were preserved on pressing the RESTART button

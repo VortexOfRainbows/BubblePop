@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Runtime.Serialization;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour
@@ -18,9 +14,10 @@ public class Equipment : MonoBehaviour
     }
     public static Player player => Player.Instance;
     public PlayerAnimator p;
-    private static List<PowerUp> PowerPool = new();
+    private static readonly List<PowerUp> PowerPool = new();
     private string InternalName = null;
-    public List<GameObject> SubEquipment = new();
+    public readonly List<GameObject> SubEquipment = new();
+    public bool IsSubEquip { get; set; }
     /// <summary>
     /// Only used for equipment UI boxes to help match their values to their original prefab after the original prefabs generates some values during runtime.
     /// The most obvious example of this is the index in the all-equipment pool
@@ -29,7 +26,6 @@ public class Equipment : MonoBehaviour
     public SpriteRenderer spriteRender;
     public Vector2 velocity;
     public bool hasInit = false;
-    public bool isSubEquipment = false; 
     public int IndexInAllEquipPool
     {
         get
@@ -37,7 +33,7 @@ public class Equipment : MonoBehaviour
             return Main.GlobalEquipData.EquipTypeToIndex[GetType()];
         }
     }
-    public Equipment OriginalPrefab => Main.GlobalEquipData.AllEquipList[IndexInAllEquipPool].GetComponent<Equipment>();
+    public Equipment OriginalPrefab => Main.GlobalEquipData.AllEquipmentsList[IndexInAllEquipPool].GetComponent<Equipment>();
     private int m_LocalIndexInAllEquipPool;
     public static void ModifyPowerPoolAll()
     {
@@ -55,6 +51,7 @@ public class Equipment : MonoBehaviour
         {
             PowerUp.AddPowerUpToAvailability(PowerPool[i]);
         }
+        //This imports all black market powers, but it would be better to do this elsewhere most likely
         for (int i = 0; i < PowerUp.Reverses.Count; ++i)
         {
             PowerUp p = PowerUp.Get(i);

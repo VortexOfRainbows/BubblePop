@@ -48,6 +48,8 @@ public partial class Player : Entity
     private bool HasRunStartingGear = false;
     public const float DashDefault = 25f;
     public static bool HasAttacked = false;
+    public static bool PickedLowerDifficultyWaveCard = false;
+    public static int GoldSpentTotal = 0;
     /// <summary>
     /// Shorthand for abilityTimer <= 0;
     /// </summary>
@@ -136,9 +138,7 @@ public partial class Player : Entity
     public override void OnFixedUpdate()
     {
         FillEquipArray();
-        if (Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.N))
-            Main.DebugCheats = true;
-        if (!HasRunStartingGear && !UIManager.StartingScreen)
+        if (!HasRunStartingGear && Main.WavesUnleashed)
         {
             foreach(Equipment e in Equips)
             {
@@ -206,7 +206,7 @@ public partial class Player : Entity
                 }
             }
             if (Main.GameUpdateCount % 200 == 0)
-                Debug.Log($"Has Attacked: {HasAttacked}");
+                Debug.Log($"Has Attacked: {HasAttacked}, Picked Lower Card: {PickedLowerDifficultyWaveCard}");
             if (Weapon.IsAttacking())
             {
                 if(Weapon.IsPrimaryAttacking())
@@ -237,6 +237,8 @@ public partial class Player : Entity
     }
     public void SetLife(int num)
     {
+        if (num > TotalMaxLife)
+            num = TotalMaxLife;
         Life = num;
         OnSetLife(Life);
     }
@@ -253,7 +255,7 @@ public partial class Player : Entity
                 float velocity = 2;
                 int amt = 16 + 8 * BubbleShields;
                 for (int i = 0; i < amt; ++i)
-                    Projectile.NewProjectile<SmallBubble>(transform.position, Random.insideUnitCircle * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f));
+                    Projectile.NewProjectile<SmallBubble>(transform.position, Random.insideUnitCircle * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1);
             }
         }
         else
@@ -300,14 +302,14 @@ public partial class Player : Entity
             Rebirth();
             return;
         }
-        CoinManager.AfterDeathTransfer();
-        UIManager.Instance.GameOver();
+        CoinManager.AfterDeathReset();
+        Main.UIManager.GameOver();
     }
     public void Rebirth()
     {
         for(int i = 0; i < 30; i++)
         {
-            Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI));
+            Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 15);
         }
         UniversalImmuneFrames = 200 * ImmunityFrameMultiplier;
         SpentBonusLives++;
@@ -377,5 +379,6 @@ public partial class Player : Entity
             if (HasBubbleShield && Shield < TotalMaxShield)
                 SetShield(Shield + 1);
         }
+        LuckyStarItemsAcquiredThisWave = 0;
     }
 }

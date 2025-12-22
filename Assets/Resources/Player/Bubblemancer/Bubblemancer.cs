@@ -7,15 +7,12 @@ public class Bubblemancer : Body
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
     public override void Init()
     {
+        player.abilityTimer = 0;
         PrimaryColor = new Color(0.8f, 0.85f, 0.9f, 0.45f);
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Choice>();
-        powerPool.Add<BubbleBirb>();
         powerPool.Add<BubbleTrail>();
-        powerPool.Add<Overclock>();
-        powerPool.Add<BubbleMitosis>();
         powerPool.Add<Coalescence>();
     }
     public override void InitializeDescription(ref DetailedDescription description)

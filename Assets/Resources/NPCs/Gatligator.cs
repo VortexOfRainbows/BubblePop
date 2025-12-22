@@ -2,6 +2,15 @@ using UnityEngine;
 
 public class Gatligator : Enemy
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Gatligator");
+    }
+    public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
+    {
+        inlineThreshold = 0.05f;
+        additiveColorPower = 0.5f;
+    }
     public override float HealthBarOffset => -0.25f;
     public Transform GunTip;
     public GameObject Gun;
@@ -11,14 +20,19 @@ public class Gatligator : Enemy
     public float direction = 1;
     private float ShootTimer = 0;
     private float ShootSpeed = 0.5f;
-    public override float PowerDropChance => 0.1f;
+    public override float SkullPowerDropChance => 0.2f;
+    public override float PowerDropChance => 0.05f;
     public override float CostMultiplier => 5;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 25;
         data.BaseMaxCoin = 40;
-        data.Card = Resources.Load<Sprite>("NPCs/Gatligator/Alligator");
         data.Rarity = 4;
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        offset.x -= 0.1f;
+        scale *= 0.45f;
     }
     public override void OnSpawn()
     {

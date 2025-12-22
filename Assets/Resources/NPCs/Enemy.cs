@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 public static class EnemyID
 {
     public class StaticEnemyData
@@ -10,6 +9,7 @@ public static class EnemyID
         public StaticEnemyData(string saveTag)
         {
             SaveTag = saveTag;
+            Description = new(Rarity, "UnnamedEnemy");
             LoadData();
         }
         public void LoadData() //Only called on load
@@ -23,7 +23,6 @@ public static class EnemyID
             PlayerData.SaveInt($"{SaveTag}_1", TimesKilledSkull);
         }
         public Sprite CardBG;
-        public Sprite Card;
         public int TimesKilled { get; set; } = 0;
         public int TimesKilledSkull { get; set; } = 0;
         public int Rarity { get; set; } = 0;
@@ -32,6 +31,8 @@ public static class EnemyID
         public float BaseMinCoin { get; set; } = 1;
         public float BaseMaxCoin { get; set; } = 1;
         public bool Unlocked => TimesKilled > 0;
+        public DetailedDescription Description;
+        public GameObject OriginalPrefab;
     }
     public static Dictionary<int, StaticEnemyData> EnemyData { get; private set; } = new();
     public static List<Enemy> SpawnableEnemiesList { get; private set; } = new();
@@ -46,11 +47,14 @@ public static class EnemyID
         string saveTag = e.name;
         var d = new StaticEnemyData(saveTag);
         e.InitStaticDefaults(ref d);
+        d.Description.Rarity = d.Rarity - 1;
+        e.InitializeDescription(ref d.Description);
         EnemyData.Add(CurrentIndex, d);
         e.SetIndexInAllEnemyArray(CurrentIndex++);
         AllEnemiesList.Add(e);
         if (SpawnList)
             SpawnableEnemiesList.Add(e);
+        d.OriginalPrefab = prefab;
         return prefab;
     }
     public static readonly GameObject PortalPrefab = Resources.Load<GameObject>("NPCs/Portal");
@@ -63,9 +67,88 @@ public static class EnemyID
     public static readonly GameObject Gatligator = LoadNPC("Gatligator/Gatligator");
     public static readonly GameObject Crow = LoadNPC("Crow/Crow");
     public static readonly GameObject Ent = LoadNPC("Ent/Ent");
+    public static readonly GameObject Infector = LoadNPC("Infectors/Infector");
+    public static readonly GameObject RockSpider = LoadNPC("BabyRockEnemy/RockSpider");
 }
 public class Enemy : Entity
 {
+    public DetailedDescription MyDescription => StaticData.Description;
+    public virtual void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName(StaticData.OriginalPrefab.name);
+    }
+    public string Name()
+    {
+        return MyDescription.GetName(false, this is Infector);
+    }
+    #region Champion
+    public float ChampionBonusActionsCounter { get; set; } = 0;
+    public float ChampionSpeedBonus { get; set; } = 0;
+    public int ChampionType { get; set; } = -1;
+    public float ChampionDefenseBonus { get; set; } = 0;
+    public bool InfectionTarget { get; set; } = false;
+    private float outlineThreshold = 0.0125f;
+    public void ImplantChampion(Infector Infector)
+    {
+        for(int i = 0; i < 30; i++)
+        {
+            Vector2 circular = new Vector2(6, 0).RotatedBy(Mathf.PI * i / 15f);
+            ParticleManager.NewParticle(Infector.transform.position, 0.5f, circular, 0.3f, 0.75f, ParticleManager.ID.Trail, Color.red);
+            ParticleManager.NewParticle(Infector.transform.position, Utils.RandFloat(4, 7), circular * Utils.RandFloat(2), 0.5f, 1f, ParticleManager.ID.Pixel, Color.red);
+        }
+        ImplantTimer = 1;
+        ChampionType = 0;
+        ChampionSpeedBonus = 1;
+        //Basically heal after being implanted
+        float originalMax = MaxLife;
+        MaxLife += originalMax;
+        Life += originalMax;
+        ImplantShader();
+    }
+    public virtual void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
+    {
+
+    }
+    public virtual void ImplantShader()
+    {
+        if(childrenRenderers != null)
+        {
+            Color outlineColor = new Color(1, 0, 0);
+            Color inlineColor = new Color(0.275f, 0, 0);
+            float inlineThreshold = 0.2f;
+            float additiveColorPower = 0.1f;
+            ModifyInfectionShaderProperties(ref outlineColor, ref inlineColor, ref inlineThreshold, ref outlineThreshold, ref additiveColorPower);
+            foreach(SpriteRenderer renderer in childrenRenderers)
+            {
+                renderer.material = Main.TextureAssets.InfectorShader;
+                renderer.material.SetColor("_OutlineColor", outlineColor);
+                renderer.material.SetColor("_InnerColor", inlineColor);
+                renderer.material.SetFloat("_InlineThreshold", inlineThreshold);
+                renderer.material.SetFloat("_OutlineSize", 0.5f);
+                renderer.material.SetFloat("_AdditivePower", additiveColorPower);
+            }
+        }
+    }
+    private float ImplantTimer = 1f;
+    public void UpdateImplantShader()
+    {
+        if (ImplantTimer == -1)
+            return;
+        ImplantTimer -= Time.fixedDeltaTime * 7f;
+        if (ImplantTimer < 0)
+            ImplantTimer = 0;
+        foreach (SpriteRenderer renderer in childrenRenderers)
+        {
+            renderer.material.SetFloat("_OutlineSize", Mathf.Lerp(outlineThreshold, 0.5f, ImplantTimer * ImplantTimer));
+        }
+        if (ImplantTimer <= 0)
+        {
+            foreach (SpriteRenderer renderer in childrenRenderers)
+                renderer.material.SetFloat("_OutlineSize", outlineThreshold);
+            ImplantTimer = -1;
+        }
+    }
+    #endregion
     public void SetIndexInAllEnemyArray(int i) => IndexInAllEnemyArray = i;
     public int GetIndex() => IndexInAllEnemyArray;
     [SerializeField]
@@ -80,8 +163,6 @@ public class Enemy : Entity
         data.Cost = CostMultiplier;
         data.Rarity = (int)Mathf.Clamp(data.Cost, 1, 5);
         InitStatics(ref data);
-        if (data.Card == null)
-            data.Card = Resources.Load<Sprite>("NPCs/Old/rubber_duck");
         if (data.CardBG == null)
             data.CardBG = Resources.Load<Sprite>("UI/Background");
     }
@@ -91,6 +172,10 @@ public class Enemy : Entity
         OnSpawn();
     }
     public virtual void OnSpawn()
+    {
+
+    }
+    public virtual void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
 
     }
@@ -113,7 +198,7 @@ public class Enemy : Entity
         norm = newNorm;
         return e;
     }
-    public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, List<Enemy> ignore, bool requireNonImmune = true)
+    public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, List<Enemy> ignore, bool requireNonImmune = true, bool requireNonHost = false)
     {
         norm = Vector2.zero;
         Enemy best = null;
@@ -122,7 +207,9 @@ public class Enemy : Entity
             Vector2 toDest = e.transform.position - position;
             float dist = toDest.magnitude;
             //Debug.Log(e.tag);
-            if (dist <= searchDistance && (!requireNonImmune || e.UniversalImmuneFrames <= 0))
+            if (dist <= searchDistance && 
+                (!requireNonImmune || e.UniversalImmuneFrames <= 0) && 
+                (!requireNonHost || (!e.InfectionTarget && e is not Infector)))
             {
                 bool blackListed = ignore != null && ignore.Contains(e);
                 if (!blackListed)
@@ -157,14 +244,23 @@ public class Enemy : Entity
         }
     }
     private bool JustSpawnedIn = true;
+    public void SetDummy() => IsDummy = true;
+    public bool IsDummy { get; private set; }
     public sealed override void OnFixedUpdate()
     {
+        if(IsDummy)
+        {
+            UIAI();
+            return;
+        }
+        else
+            Animate();
         if (JustSpawnedIn)
         {
             if (IsSkull)
             {
-                MinCoins += 5;
-                MaxCoins += 5;
+                MinCoins += 4;
+                MaxCoins += 4;
                 transform.localScale = new Vector3(1.14f, 1.14f, transform.localScale.z);
                 BossHealthBar.Spawn(this);
                 if (IsSkull)
@@ -180,11 +276,23 @@ public class Enemy : Entity
                 if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
                     SpecializedImmuneFrames.RemoveAt(i);
         }
+        if(ChampionType != -1)
+        {
+            UpdateImplantShader();
+            ChampionBonusActionsCounter += ChampionSpeedBonus;
+        }
         UpdateBuffs();
         AI();
+        while(ChampionBonusActionsCounter >= 1)
+        {
+            RB.position += RB.velocity * Time.fixedDeltaTime;
+            AI();
+            Animate();
+            ChampionBonusActionsCounter -= 1;
+        }
     }
-    public bool AlreadyDead => Life <= -50;
-    private void SetDead() => Life = -50;
+    public bool AlreadyDead = false;
+    private void SetDead() => AlreadyDead = true;
     public bool FirstStrike = true;
     public sealed override void OnHurtByProjectile(Projectile proj)
     {
@@ -196,7 +304,12 @@ public class Enemy : Entity
         if (proj.Friendly && !AlreadyDead)
         {
             float damage = proj.Damage * Player.Instance.DamageMultiplier;
-            bool crit = false;
+            bool rollForInitiative = false;
+            float critChance = Player.Instance.CriticalStrikeChance;
+            int crit = (int)critChance;
+            critChance -= crit;
+            if(Utils.RandFloat() < critChance)
+                crit++;
             if (FirstStrike)
             {
                 FirstStrike = false;
@@ -205,15 +318,22 @@ public class Enemy : Entity
                 {
                     if (initiative >= 81 || Utils.RandFloat(1) < 0.19f + initiative * 0.01f)
                     {
-                        float minIncrease = 2.25f + 0.25f * initiative;
-                        float maxIncrease = 4.50f + 0.50f * initiative;
-                        float increase = Utils.RandFloat(minIncrease, maxIncrease);
+                        float increase = 1.80f + 0.2f * initiative;
                         damage += damage * increase;
-                        crit = true;
+                        rollForInitiative = true;
                     }
                 }
             }
-            Injure(damage, crit ? 1 : 0, crit ? new Color(1f, 0.9f, 0.3f) : default);
+            Color c = PickCriticalStrikeColor(crit);
+            if(rollForInitiative)
+                c = Color.Lerp(c, new Color(1, 0.5f, 0.0f), 1f / (1f + crit));
+
+            float finalDamage = damage * (1 + crit);
+            if (ChampionDefenseBonus > 0)
+            {
+                finalDamage *= (1 - ChampionDefenseBonus);
+            }
+            Injure(finalDamage, crit, c);
             proj.HitTarget(this);
             if (proj.Penetrate != -1)
             {
@@ -227,30 +347,47 @@ public class Enemy : Entity
             }
         }
     }
-    public void Injure(float damage, int damageType = 0, Color popupTextColor = default)
+    private Color PickCriticalStrikeColor(int critValue)
+    {
+        if (critValue >= 1)
+        {
+            return Color.Lerp(new Color(1f, 0.85f, 0.15f), new Color(1f, 0.1f, 1.0f), (critValue - 1) /  10f);
+        }
+        return new(1f, 0.5f, 0.4f);
+    }
+    public virtual void OnInjured(float damage, int critLevel)
+    {
+
+    }
+    public void Injure(float damage, int critLevel = 0, Color popupTextColor = default)
     {
         Life -= damage;
         DamageTaken += damage;
+        OnInjured(damage, critLevel);
         BoxCollider2D c2D = GetComponent<BoxCollider2D>();
         Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
         if (popupTextColor == default)
             popupTextColor = new Color(1f, 0.5f, 0.4f);
         Vector2 velo = Utils.RandCircle(3) + Vector2.up * 2;
-        if (damageType == 2)
+        if (critLevel == -1)
         {
             velo.x *= 0.5f;
             velo.y += 0.5f;
         }
-        GameObject g = PopupText.NewPopupText(randPos, velo, popupTextColor, damage.ToString("0.#"), damageType == 1, damageType == 2 ? 0.8f : 1f);
-        if (Life < 0)
-            Life = 0;
+        float scale = critLevel == -1 ? 0.8f : 1f;
+        if (critLevel > 0)
+        {
+            scale = 1f + 0.1f * Mathf.Sqrt(critLevel - 1);
+        }
+        GameObject g = PopupText.NewPopupText(randPos, velo, popupTextColor, damage.ToString("0.#"), critLevel >= 1, scale, critLevel >= 1 ? 100 : 80);
         if (Life <= 0 && !AlreadyDead)
         {
             SetDead();
             Kill();
         }
     }
-    public virtual float PowerDropChance => 0.04f;
+    public virtual float SkullPowerDropChance => 0.1f;
+    public virtual float PowerDropChance => 0;
     protected float MaxCoins { get; set; } = 1;
     protected float MinCoins { get; set; } = 1;
     protected int CoinRandomizationAggressiveness = 3;
@@ -279,9 +416,12 @@ public class Enemy : Entity
         {
             rand *= Utils.RandFloat();
         }
-        CoinManager.SpawnCoin(transform.position, (int)(MinCoins + (Mathf.Max(0, MaxCoins - MinCoins)) * rand + 0.5f));
-        float reduceRelativeDropRates = Mathf.Max(0.25f, Mathf.Min(1, 0.25f + (400 - WaveDirector.TotalPowersSpawned) / 400f)); //At 400 powers, this number is 0.25, meaning power drop rates will be reduced
-        bool LuckyDrop = Utils.RandFloat(1) < PowerDropChance * reduceRelativeDropRates;
+        float coins = MinCoins + (Mathf.Max(0, MaxCoins - MinCoins)) * rand + 0.5f;
+        if(IsSkull)
+            coins += Player.Instance.FlatSkullCoinBonus;
+        CoinManager.SpawnCoin(transform.position, (int)coins);
+        float reduceRelativeDropRates = Mathf.Max(0.25f, Mathf.Min(1, 0.25f + (200 - WaveDirector.TotalPowersSpawned) / 200f)); //At 200 powers, this number is 0.25, meaning power drop rates will be reduced
+        bool LuckyDrop = Utils.RandFloat(1) < (IsSkull ? SkullPowerDropChance : PowerDropChance) * reduceRelativeDropRates;
         WaveDirector.Point += (int)MaxCoins;
         if (/*WaveDirector.CanSpawnPower() ||*/ LuckyDrop)
             PowerUp.Spawn(PowerUp.RandomFromPool(0.15f), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 8));
@@ -299,10 +439,6 @@ public class Enemy : Entity
     {
         Enemies.Remove(this);
     }
-    public virtual string Name()
-    {
-        return Utils.ToSpacedString(name);
-    }
     public bool IsSkull { get; private set; } = false;
     public void SetSkullEnemy(bool value = true)
     {
@@ -312,5 +448,9 @@ public class Enemy : Entity
     public int GetRarity()
     {
         return StaticData.Rarity;
+    }
+    public virtual void UIAI()
+    {
+
     }
 }

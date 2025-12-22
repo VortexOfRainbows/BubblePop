@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
     public bool Hostile = false;
     public int immunityFrames = 100;
     public Vector2 startPos = Vector2.zero;
-    public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, params float[] data) where T : Projectile
+    public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, float damage = 1, params float[] data) where T : Projectile
     {
         bool hasMerged = true;
         if(Player.Instance.Coalescence > 0 && typeof(T) == typeof(SmallBubble))
@@ -68,7 +68,7 @@ public class Projectile : MonoBehaviour
                 }
             }
         }
-        GameObject Proj = Instantiate(Main.ProjPrefab, pos, Quaternion.identity);
+        GameObject Proj = Instantiate(Main.PrefabAssets.DefaultProjectile, pos, Quaternion.identity);
         Projectile proj = Proj.AddComponent<T>();
         proj.cmp = Proj.GetComponent<ProjComponents>();
         proj.RB.velocity = velo;
@@ -79,6 +79,7 @@ public class Projectile : MonoBehaviour
         }
         else
             proj.Data = data;
+        proj.Damage = damage;
         proj.Init();
         return Proj;
     }
@@ -118,7 +119,7 @@ public class Projectile : MonoBehaviour
     public void FixedUpdate()
     {
         AI();
-        if(CanBeAffectedByHoming() && Friendly && Player.Instance.HomingRange > 0)
+        if(CanBeAffectedByHoming() && (Friendly || this is SupernovaProj) && Player.Instance.HomingRange > 0)
             HomingBehavior();
         if(World.ColliderTileMap.Map.HasTile(World.ColliderTileMap.Map.WorldToCell(transform.position)))
             if(OnInsideTile())
@@ -136,7 +137,7 @@ public class Projectile : MonoBehaviour
             }
             float chanceOfSuccess = Main.SnakeEyeChance * (eyes - recursiveDepth);
             if(Utils.RandFloat() < chanceOfSuccess)
-                NewProjectile<SnakeLightning>(transform.position, (target.transform.position - transform.position).normalized * 2.5f, recursiveDepth);
+                NewProjectile<SnakeLightning>(transform.position, (target.transform.position - transform.position).normalized * 2.5f, 10, recursiveDepth);
         }
         if(Player.Instance.SnakeEyes > 0)
         {
@@ -152,9 +153,49 @@ public class Projectile : MonoBehaviour
         }
         OnHitTarget(target);
     }
+    /// <summary>
+    /// Called after damage is registered on the enemy, including when the projectile would kill the enemy
+    /// </summary>
+    /// <param name="target"></param>
     public virtual void OnHitTarget(Entity target)
     {
 
+    }
+    public void OnHitByStar(Entity target)
+    {
+        if (target.Life <= 0)
+        {
+            if (Player.Instance.Starbarbs > 0)
+            {
+                AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, 1);
+                Vector2 norm = RB.velocity.normalized;
+                if(this is SupernovaExplode || this is SupernovaProj)
+                    norm = Utils.RandCircle(1).normalized;
+                float randRot = norm.ToRotation();
+                for (int i = 0; i < 30; i++)
+                {
+                    Vector2 randPos = new Vector2(3.5f, 0).RotatedBy(i / 15f * Mathf.PI);
+                    randPos.x *= Utils.RandFloat(0.5f, 0.7f);
+                    randPos = randPos.RotatedBy(randRot);
+                    ParticleManager.NewParticle(target.transform.position, Utils.RandFloat(0.95f, 1.05f), -norm * 4.5f + randPos * Utils.RandFloat(4, 5) + Utils.RandCircle(.3f), 0.1f, .6f, 0, SpriteRenderer.color);
+                }
+                int stars = 2 + Player.Instance.Starbarbs;
+                for (; stars > 0; --stars)
+                {
+                    Vector2 targetPos = (Vector2)target.transform.position + norm * 9 + Utils.RandCircle(7);
+                    NewProjectile<StarProj>(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, targetPos.x, targetPos.y, Utils.RandInt(2) * 2 - 1);
+                }
+            }
+            if (Player.Instance.LuckyStar > 0 && Player.Instance.LuckyStarItemsAcquiredThisWave < Player.Instance.LuckyStarItemsAllowedPerWave)
+            {
+                float chance = 0.03f + Player.Instance.LuckyStar * 0.01f;
+                if (Utils.RandFloat(1) < chance)
+                {
+                    PowerUp.Spawn(PowerUp.RandomFromPool(), (Vector2)target.transform.position, 0);
+                    Player.Instance.LuckyStarItemsAcquiredThisWave++;
+                }
+            }
+        }
     }
     public virtual void AI()
     {
@@ -202,7 +243,7 @@ public class Projectile : MonoBehaviour
     {
         return true;
     }
-    private int homingCounter = 0;
+    public int homingCounter = 0;
     public void HomingBehavior()
     {
         if(homingCounter++ % 4 == 0)
@@ -217,7 +258,7 @@ public class Projectile : MonoBehaviour
             }
         }
     }
-    public virtual bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
+    public virtual bool DoHomingBehavior(Enemy target, Vector2 norm, float range)
     {
         return true;
     }
@@ -229,7 +270,7 @@ public class FlamingoFeather : Projectile
         transform.localScale = new Vector3(0.65f, 0.45f, 1);
         SpriteRendererGlow.transform.localScale = new Vector3(1.5f, 4f, 1);
         SpriteRendererGlow.color = new Color(253 / 255f, 181 / 255f, 236 / 255f, 0.5f);
-        SpriteRenderer.sprite = Main.Feather;
+        SpriteRenderer.sprite = Main.TextureAssets.Feather;
         Hostile = true;
     }
     public override void AI()
@@ -277,7 +318,7 @@ public class Laser : Projectile
         transform.localScale = new Vector3(0.9f, 0.8f, 1);
         SpriteRendererGlow.transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
         SpriteRendererGlow.color = new Color(168f / 255f, 62f / 255f, 70f / 255f, 0.4f);
-        SpriteRenderer.sprite = Main.Laser;
+        SpriteRenderer.sprite = Main.TextureAssets.Laser;
         Hostile = true;
     }
     public override void AI()
@@ -322,7 +363,6 @@ public class PhoenixFire : Projectile
         SpriteRendererGlow.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         SpriteRendererGlow.color = new Color(1f, 0.45f, .25f);
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/PhoenixFire");
-        Damage = 15;
         immunityFrames = 100;
         Penetrate = 3;
         Friendly = true;

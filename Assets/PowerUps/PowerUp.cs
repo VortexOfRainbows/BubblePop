@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public static class ReflectiveEnumerator
@@ -25,6 +26,7 @@ public abstract class PowerUp
     public static readonly float Uncommon = 0.7f;
     public static readonly float Rare = 0.27f;
     public static readonly float SuperRare = 0.1f;
+    public static float Epic => SuperRare;
     public static readonly float Legendary = 0.05f;
     public static readonly Material WhiteOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderWhite");
     public static readonly Material GreenOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderGreen");
@@ -72,7 +74,29 @@ public abstract class PowerUp
     {
         AvailablePowers.Clear();
         AvailableBlackMarketPowers.Clear();
+        AddUniversalPowerups();
     }
+    public static void AddUniversalPowerups()
+    {
+        //Stats
+        //Haste will be added here eventually (when I feel like the time is right)
+        AddPowerUpToAvailability<Overclock>();
+        AddPowerUpToAvailability<WeaponUpgrade>();
+        AddPowerUpToAvailability<FocusFizz>();
+        AddPowerUpToAvailability<CloudWalker>();
+
+        //Economy
+        AddPowerUpToAvailability<Magnet>();
+        AddPowerUpToAvailability<Coupons>();
+
+        //Powers
+        AddPowerUpToAvailability<Choice>();
+        AddPowerUpToAvailability<BubbleMitosis>();
+
+        //Special
+        AddPowerUpToAvailability<BubbleBirb>();
+    }
+    private static void AddPowerUpToAvailability<T>() where T: PowerUp => AddPowerUpToAvailability(Get<T>());
     public static void AddPowerUpToAvailability(PowerUp power)
     {
         if (power.IsBlackMarket())
@@ -112,8 +136,9 @@ public abstract class PowerUp
     }
     public static GameObject Spawn(int powerUpID, Vector2 pos, int pointCost = 100)
     {
-        PowerUpObject obj = GameObject.Instantiate(PowerDefinitions.PowerUpObj, pos, Quaternion.identity);
+        PowerUpObject obj = GameObject.Instantiate(Main.PrefabAssets.PowerUpObj, pos, Quaternion.identity);
         obj.Type = powerUpID;
+        obj.finalPosition = pos;
         WaveDirector.PointsSpent += pointCost;
         WaveDirector.PityPowersSpawned += pointCost / 100f;
         WaveDirector.TotalPowersSpawned += 1;
@@ -161,18 +186,36 @@ public abstract class PowerUp
     public int MyID = -1;
     #endregion
     public static bool PickingPowerUps = false;
-    public static int RandomFromPool(float bonusChoiceChance = 0.15f, float blackMarketChance = -1f)
+    public static int RandomFromPool(float bonusChoiceChance = 0.15f, float blackMarketChance = -1f, int rarity = -1)
     {
-        return PickRandomPower(0, bonusChoiceChance, Utils.RandFloat(1) < blackMarketChance);
+        return PickRandomPower(0, bonusChoiceChance, Utils.RandFloat(1) < blackMarketChance, rarity);
     }
-    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false)
+    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false, int rarity = -1)
     {
-        if (Utils.RandFloat() < addedChoiceChance && !BlackMarket)
+        if (Utils.RandFloat() < addedChoiceChance && !BlackMarket && (rarity == -1 || rarity == 1))
         {
             return Get<Choice>().MyID;
         }
+        if (rarity == 1)
+            rarity = -1;
         List<int> avail = BlackMarket ? AvailableBlackMarketPowers : AvailablePowers;
-        float weightMult = 1.0f + recursionDepth * 0.1f;
+        float highestWeight = 1.0f;
+        float highestSeen = 0.0f;
+        if(rarity != -1)
+        {
+            List<int> temp = new();
+            foreach(int i in avail)
+                if(PowerUps[i].GetRarity() >= rarity)
+                {
+                    highestSeen = PowerUps[i].Weighting > highestSeen ? PowerUps[i].Weighting : highestSeen;
+                    temp.Add(i);
+                }
+            if (temp.Count > 0)
+                avail = temp;
+        }
+        if (highestSeen != 0)
+            highestWeight = highestSeen;
+        float weightMult = 1.0f / highestWeight + recursionDepth * 0.1f;
         int type = avail[Utils.RandInt(avail.Count)];
         if (Player.Instance.RollPerc > 0)
         {
@@ -183,14 +226,14 @@ public abstract class PowerUp
             {
                 float decreaseMult = rare == 1 ? 0.02f : 0.01f;
                 weightMult -= decreaseMult * Player.Instance.RollPerc;
-                if(weightMult < 0.2f)
+                if(weightMult < 0.5f)
                 {
-                    weightMult = 0.2f;
+                    weightMult = 0.5f;
                 }
             }
         }
         float powerupWeighting = PowerUps[type].Weighting * weightMult;
-        if (powerupWeighting > Utils.RandFloat(1))
+        if (rarity != -1 || powerupWeighting > Utils.RandFloat(1))
         {
             return type;
         }
@@ -314,16 +357,16 @@ public abstract class PowerUp
     {
         int rare = GetRarity();
         if (rare == 5)
-            return 100;
+            return 250;
         if (rare == 4)
-            return 50;
+            return 100;
         if (rare == 3)
-            return 25;
+            return 50;
         if (rare == 2)
-            return 15;
+            return 25;
         if (rare == 1)
-            return 10;
-        return (int)(10 / Weighting);
+            return 15;
+        return (int)(20 / Weighting);
     }
     public int CalculateRarity()
     {

@@ -1,0 +1,27 @@
+Alpha 1.1 (tentative version number)
+
+Balance:
+1. Nerfs:
+	1. Research Grants rarity: 2-star -> 3-star
+	2. Research Notes shop cost: 15 -> 25
+	3. Snake Eyes damage base 5 -> 4, damage percent 5% -> 4%
+	4. Base coins dropped by skull enemies +5 -> +4
+	5. Lucky star stacking rate +2% -> +1%
+2. Buffs:
+	1. Boomerang damage scaling: 25% -> 50%
+	2. Zap radius scaling: 7% -> 10%
+	3. Wave 20, 30, etc. come with 100% enemy health permanent increase factors
+	4. Permanent wave power on every 3rd round after wave 8 now has some scaling (+2% per occurrence)
+	5. Improve Star homing with Calculator
+
+New:
+1. Art for Echo Bubbles and Electric Boomerang
+2. Heart consumables
+3. Blue variants for Bubblemancer have new effects and slightly changed
+4. Thought Bubble recall now zaps nearby enemies, scales with both TB trail abilities
+
+Fix:
+1. Enemies can no longer die multiple times at once, leading to possible many item and coin drops
+2. Fixed bug where you could prematurely redraw cards
+3. Fix bug where gachapon couldn't hold ability at some milestones in ability refresh speed (hopefully)
+4. Attempt fixing bug where number display would sometimes not work in Equip or Achievement Menu

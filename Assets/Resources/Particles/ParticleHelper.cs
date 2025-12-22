@@ -4,6 +4,15 @@ using UnityEngine;
 //Fast reload hates this script for some reason
 public class ParticleManager : MonoBehaviour
 {
+    public static class ID
+    {
+        public const int Bubble = 0;
+        public const int Square = 1;
+        public const int Circle = 2;
+        public const int Pixel = 3;
+        public const int Line = 4;
+        public const int Trail = 5;
+    }
     public static readonly Color DefaultColor = new Color(0.89f, 206 / 255f, 240 / 255f, 0.5f);
     public static readonly Color BathColor = new Color(189 / 255f, 227 / 255f, 246 / 255f, 0.6f);
     public static ParticleManager Instance;
@@ -21,7 +30,7 @@ public class ParticleManager : MonoBehaviour
             startColor = color,
             velocity = new Vector2(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)) * randomizeFactor + velo,
             startLifetime = lifeTime,
-            startSize = Instance.thisSystem[type].main.startSizeMultiplier * size * Utils.RandFloat(0.9f, 1.1f)
+            startSize = Instance.thisSystem[type].main.startSizeMultiplier * size * Utils.RandFloat(0.9f, 1.1f),
         };
         Instance.thisSystem[type].Emit(style, 1);
     }

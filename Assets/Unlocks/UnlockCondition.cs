@@ -3,6 +3,19 @@ using UnityEngine;
 
 public abstract class UnlockCondition
 {
+    public const int RegularAchievement = 0;
+    public const int Meadows = 1;
+    public const int City = 2;
+    public const int Lab = 3;
+    public const int Completionist = 4;
+    public const int Challenge = 5;
+    public const int Secret = 6;
+    public int AchievementZone = RegularAchievement;
+    public int AchievementCategory = Completionist;
+    public virtual void SetAchievementCategories(ref int zone, ref int category)
+    {
+
+    }
     public virtual string SaveString => GetType().Name;
     #region UnlockCondition Datastructure Related Stuff
     private static int typeCounter = 0;
@@ -62,11 +75,24 @@ public abstract class UnlockCondition
             Unlocks[i].LoadData();
         }
     }
+    public static void PrepareStatics()
+    {
+        PlayerData.MetaProgression.TotalAchievementStars = 0;
+        for (int i = 0; i < maximumTypes; ++i)
+        {
+            UnlockCondition u = Unlocks[i];
+            if(u.AchievementZone == Meadows)
+                PlayerData.MetaProgression.TotalMeadowsStars += 1;
+            PlayerData.MetaProgression.TotalAchievementStars += 1;
+        }
+    }
     protected UnlockCondition()
     {
         AssociatedUnlocks = new();
         Description = new(Rarity, SaveString);
+        Description.WithoutSizeAugments();
         InitializeDescription(ref Description);
+        SetAchievementCategories(ref AchievementZone, ref AchievementCategory);
         AddToDictionary(this);
     }
     public void SaveData()
@@ -75,7 +101,9 @@ public abstract class UnlockCondition
     }
     public void LoadData()
     {
-        Completed = PlayerData.GetBool(SaveString);
+        bool complete = PlayerData.GetBool(SaveString);
+        if(complete)
+            SetComplete(true);
     }
     public bool Unlocked => ForceUnlockAll || TryUnlock();
     protected virtual bool TryUnlockCondition => false;
@@ -83,11 +111,24 @@ public abstract class UnlockCondition
     {
         return Description.BriefDescription();
     }
-    public bool Completed { get; set; } = false;
-    public void SetComplete()
+    protected bool Completed { get; set; } = false;
+    public void SetComplete(bool skipSave = false, bool completeStatus = true)
     {
-        Completed = true;
-        SaveData();
+        if(!Completed && completeStatus)
+        {
+            Completed = true;
+            if(!skipSave)
+                SaveData();
+            if (AchievementZone == Meadows)
+                PlayerData.MetaProgression.MeadowsStars += 1;
+            PlayerData.MetaProgression.AchievementStars += 1;
+        }
+        else if(!completeStatus)
+        {
+            Completed = false;
+            if (!skipSave)
+                SaveData();
+        }
     }
     public bool TryUnlock()
     {

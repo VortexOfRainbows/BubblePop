@@ -1,9 +1,15 @@
-using System.IO;
-using UnityEditor;
 using UnityEngine;
-
 public class Ent : Enemy
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Ent");
+    }
+    public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
+    {
+        inlineThreshold = 0.06f; //This is intentionally very precise
+        additiveColorPower = 0.4f;
+    }
     private Vector2 targetedLocation;
     public float moveSpeed = 0.12f;
     public float inertiaMult = 0.96f;
@@ -12,7 +18,11 @@ public class Ent : Enemy
     {
         data.BaseMaxLife = 27;
         data.BaseMaxCoin = 18;
-        data.Card = Resources.Load<Sprite>("NPCs/Ent/Tier1TreeEnemy");
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        offset.y += 0.15f;
+        scale *= 1.4f;
     }
     public void UpdateDirection(float i)
     {

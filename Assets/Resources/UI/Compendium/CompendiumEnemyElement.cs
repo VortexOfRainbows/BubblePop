@@ -8,20 +8,30 @@ public class CompendiumEnemyElement : CompendiumElement
 {
     public static GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumEnemyElement");
     public EnemyUIElement MyElem;
+    public Canvas CountCanvas;
     public TextMeshProUGUI count;
     private Canvas MyCanvas { get; set; }
     public int Style = 0;
     protected bool Selected { get; set; }
     public override void Init(int i, Canvas canvas)
     {
+        MyElem.SpriteMask.localScale *= 1.05f;
         TypeID = i;
+        if (Style == 4)
+        {
+            MyElem.MaskActive(true);
+            MyElem.Mask.GetComponent<Canvas>().sortingOrder = 46;
+            MyElem.Mask.GetComponent<Canvas>().sortingLayerID = Main.UICameraLayerID;
+            MyElem.AddedDrawOrder = 50;
+        }
         MyElem.Init(i);
         //MyElem.UpdateEquipment(Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>());
         //MyElem.SetCompendiumLayering(canvas.sortingLayerID, Style == 4 ? 65 : 45, Style == 3 ? 0 : 1); //2 = UICamera, 20 = compendium canvas size
         MyCanvas = canvas;
         MyElem.CompendiumElement = true;
+        CountCanvas.sortingLayerID = canvas.sortingLayerID;
         int forceInitUpdates = 1;
-        if (Style == 2)
+        if (Style == 2 || Style == 4) //Hover element
         {
             BG.enabled = false;
             MyElem.HasHoverVisual = false;
@@ -30,15 +40,21 @@ public class CompendiumEnemyElement : CompendiumElement
             forceInitUpdates += 2;
         }
         else if (Style == 3)
+        {
             MyElem.HasHoverVisual = false;
-        for(int a = 0; a < forceInitUpdates; ++a)
+            MyElem.MaskActive(true);
+            MyElem.IsMainSelectedInCompendium = true;
+        }
+        for (int a = 0; a < forceInitUpdates; ++a)
             Update();
     }
     public void Update()
     {
         if (TypeID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
-        count.gameObject.SetActive(Compendium.Instance.EnemyPage.ShowCounts && MyElem.HasHoverVisual && !IsLocked() && Style <= 1);
+        bool isWithinMaskRange = count.transform.position.y > Compendium.Instance.SortBar.position.y + Compendium.Instance.SortBar.sizeDelta.y * 0.5f * Compendium.Instance.SortBar.lossyScale.y;
+        bool showActive = Compendium.Instance.EnemyPage.ShowCounts && MyElem.HasHoverVisual && !IsLocked() && Style <= 1 && !isWithinMaskRange;
+        count.gameObject.SetActive(showActive);
         count.text = GetCount().ToString();
         MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
         if (clicked)
@@ -77,11 +93,13 @@ public class CompendiumEnemyElement : CompendiumElement
     }
     public override int GetRare(bool reverse = false)
     {
-        return MyElem.MyEnemy.StaticData.Rarity;
+        return MyElem.StaticData.Rarity;
     }
     public override int GetCount()
     {
-        return MyElem.MyEnemy.StaticData.TimesKilled;
+        if(MyElem.MyEnemyPrefab == null)
+            return 0;
+        return MyElem.StaticData.TimesKilled;
     }
     public override CompendiumElement Instantiate(TierList parent, TierCategory cat, Canvas canvas, int i, int position)
     {

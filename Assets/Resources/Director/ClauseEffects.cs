@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 public abstract class ClauseEffect
 {
@@ -16,7 +17,7 @@ public abstract class ClauseEffect
     {
 
     }
-    public virtual float GetCost()
+    protected virtual float Cost()
     {
         return 0;
     }
@@ -30,6 +31,11 @@ public abstract class ClauseEffect
     public virtual string Description()
     {
         return "";
+    }
+    public bool Free = false;
+    public float GetCost()
+    {
+        return Free ? 0 : Cost();
     }
 }
 public class EnemyCard : ClauseEffect
@@ -50,7 +56,7 @@ public class EnemyCard : ClauseEffect
     {
         MyModifier.WaveSpecialBonusEnemy = EnemyToAdd.gameObject;
     }
-    public override float GetCost()
+    protected override float Cost()
     {
         return EnemyToAdd.CostMultiplier * 10 * (IsPermanent ? PermanentMultiplier : 1);
     }
@@ -70,7 +76,7 @@ public abstract class DirectorModifier : ClauseEffect
     public float Percent => ApplicationStrength / PointToPercentRatio * (IsPermanent ? PermanentMultiplier : 1);
     public string PercentAsText => $"+{Percent * 100:#.#}%";
     public string NumberText => $"+{(int)Percent}";
-    public override float GetCost()
+    protected override float Cost()
     {
         return ApplicationStrength;
     }
@@ -157,7 +163,7 @@ public class DirectorSkullSwarmModifier : DirectorModifier
     {
         Parent = parent;
     }
-    public override float GetCost()
+    protected override float Cost()
     {
         return 0;
     }
@@ -183,6 +189,7 @@ public class DirectorSkullSwarmModifier : DirectorModifier
 public abstract class Reward : ClauseEffect
 {
     public static Vector2 RewardPosition() => Main.PylonPositon + new Vector2(0, 1).RotatedBy(Utils.RandFloat(Mathf.PI / 4f, Mathf.PI * 7f / 4f)) * 5;
+    public static Vector2 RewardPositionChest() => Main.PylonPositon + new Vector2(0, -1).RotatedBy(Utils.RandFloat(Mathf.PI / 4f, Mathf.PI * 7f / 4f)) * 7;
     public bool BeforeWaveEndReward = false;
     public sealed override void Apply()
     {
@@ -207,9 +214,9 @@ public class PowerReward : Reward
     }
     public int PowerType;
     public int Amt { get; set; } = 1;
-    public override float GetCost()
+    protected override float Cost()
     {
-        return PowerUp.Get(PowerType).Cost * (BeforeWaveEndReward ? 2 : 1);
+        return PowerUp.Get(PowerType).Cost * (BeforeWaveEndReward ? 1.5f : 1);
     }
     public override void GrantReward()
     {
@@ -223,7 +230,31 @@ public class PowerReward : Reward
 }
 public class ChestReward : Reward
 {
-    //Currently unimplemented
+    public int ChestQuantity = 1;
+    public int ChestType = 1;
+    public ChestReward(int value, int chestType = 0)
+    {
+        this.ChestType = chestType;
+        coins = value;
+    }
+    public int coins;
+    protected override float Cost()
+    {
+        return coins;
+    }
+    public override void GrantReward()
+    {
+        for(int i = 0; i < ChestQuantity; i++)
+            CoinManager.SpawnChest(RewardPositionChest, ChestType);
+    }
+    public override string Description()
+    {
+        if(ChestType == 2)
+            return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], ChestQuantity > 1 ? $"{ChestQuantity} Gem Chests" : $"{ChestQuantity} Gem Chest")}";
+        if (ChestType == 1)
+            return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[2], ChestQuantity > 1 ? $"{ChestQuantity} Blue Chests" : $"{ChestQuantity} Blue Chest")}";
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[0], ChestQuantity > 1 ? $"{ChestQuantity} Chests" : $"{ChestQuantity} Chest")}";
+    }
 }
 public class CoinReward : Reward
 {
@@ -232,9 +263,9 @@ public class CoinReward : Reward
         coins = value;
     }
     public int coins;
-    public override float GetCost()
+    protected override float Cost()
     {
-        return coins * (BeforeWaveEndReward ? 2 : 1);
+        return coins * (BeforeWaveEndReward ? 1.5f : 1);
     }
     public override void GrantReward()
     {
@@ -242,6 +273,75 @@ public class CoinReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, $"{coins} coins")}";
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, coins > 1 ? $"{coins} coins" : $"{coins} coin")}";
+    }
+}
+public class HealReward : Reward
+{
+    public HealReward(int value, int heals = 1)
+    {
+        this.heals = heals;
+        coins = value;
+    }
+    public int coins;
+    public int heals = 1;
+    protected override float Cost()
+    {
+        return coins;
+    }
+    public override void GrantReward()
+    {
+        for(int i = 0; i < heals; ++i)
+        {
+            CoinManager.SpawnHeart(RewardPosition, 0.5f);
+        }
+    }
+    public override string Description()
+    {
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], heals > 1 ? $"{heals} hearts" : $"{heals} heart")}";
+    }
+}
+public class KeyReward : Reward
+{
+    public KeyReward(int value, int keys = 1)
+    {
+        this.keys = keys;
+        coins = value;
+    }
+    public int coins;
+    public int keys = 1;
+    protected override float Cost()
+    {
+        return coins;
+    }
+    public override void GrantReward()
+    {
+        for (int i = 0; i < keys; ++i)
+            CoinManager.SpawnKey(RewardPosition, 0.5f);
+    }
+    public override string Description()
+    {
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, keys > 1 ? $"{keys} keys" : $"{keys} key")}";
+    }
+}
+public class TokenReward : Reward
+{
+    public TokenReward(int tokens = 1)
+    {
+        this.tokens = tokens;
+    }
+    public int tokens = 1;
+    protected override float Cost()
+    {
+        return 0;
+    }
+    public override void GrantReward()
+    {
+        for (int i = 0; i < tokens; ++i)
+            CoinManager.SpawnToken(RewardPosition, 0.5f);
+    }
+    public override string Description()
+    {
+        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.TokenColor.ToHexString(), tokens > 1 ? $"{tokens} Token" : $"{tokens} Token")}";
     }
 }

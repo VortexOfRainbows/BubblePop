@@ -9,7 +9,6 @@ public class PokerChip : Projectile
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/RedChip");
         timer += Utils.RandInt(41);
         HomingNum = Utils.RandInt(10);
-        Damage = 3;
         Friendly = true;
         SpriteRendererGlow.gameObject.SetActive(true);
         SpriteRendererGlow.color = new Color(0.7137f, 0.2352f, 0.2588f);
@@ -64,6 +63,15 @@ public class PokerChip : Projectile
         }
         AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 0.6f);
     }
+    public override void OnHitTarget(Entity target)
+    {
+        if (target.Life <= 0 && Player.Instance.DoubleDownChip > 0)
+        {
+            int bonusCoins = (int)(-target.Life + 0.5f);
+            bonusCoins = Mathf.Min(bonusCoins, Player.Instance.DoubleDownChip * 3 + 2);
+            CoinManager.SpawnCoin(transform.position, bonusCoins, 0.1f);
+        }
+    }
 }
 public class BlueChip : PokerChip
 {
@@ -72,7 +80,6 @@ public class BlueChip : PokerChip
         base.Init();
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/BlueChip");
         SpriteRendererGlow.color = new Color(0.1764706f, .6f, 0.6941177f);
-        Damage = 6;
         HomingRate = 20.0f;
     }
 }

@@ -67,6 +67,7 @@ MonoBehaviour:
   Description: {fileID: 4636412129008565710}
   myRect: {fileID: 7498300394331013810}
   FollowMouse: 1
+  ReadyToRenderNormal: 0
   stars: []
 --- !u!1 &2697765004524130178
 GameObject:
@@ -241,8 +242,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5, y: -16}
-  m_SizeDelta: {x: 600, y: 50}
+  m_AnchoredPosition: {x: 5, y: -11}
+  m_SizeDelta: {x: 600, y: 55}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4508084916355753520
 CanvasRenderer:
@@ -302,7 +303,7 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

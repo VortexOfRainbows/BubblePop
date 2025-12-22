@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public partial class Player : Entity
 {
@@ -62,7 +61,26 @@ public partial class Player : Entity
     public int TrailOfThoughts = 0, Magnet = 0, LightSpear = 0, LightChainReact = 0, BrainBlast = 0, RecursiveSubspaceLightning = 0, Refraction = 0;
     public int RollDex = 0, RollInit = 0, RollChar = 0, RollPerc = 0, SnakeEyes = 0;
     public float TrailOfThoughtsRecoverySpeed => AbilityRecoverySpeed;
-    public float AbilityRecoverySpeed = 1.0f, AbilityRecoverySpeedMult = 1.0f, MoveSpeedMod = 1.0f;
+    public float AbilityRecoverySpeed = 1.0f, AbilityRecoverySpeedMult = 1.0f;
+    public float TrueMoveModifier = 1.0f;
+    public float MoveSpeedMod 
+    {   
+        get
+        {
+            float baseline = 1.0f;
+            if(TrueMoveModifier > baseline)
+            {
+                float amountAbove = (TrueMoveModifier - baseline) * 10;
+                baseline += amountAbove / (9 + amountAbove);
+            }
+            else if(baseline > TrueMoveModifier)
+            {
+                float amountBelow = (baseline - TrueMoveModifier) * 10;
+                baseline -= amountBelow / (9 + amountBelow);
+            }
+            return Mathf.Clamp(baseline, 0.01f, 2.0f);
+        }
+    }
     public float BlueChipChance = 0.0f;
     public float HomingRange = 0;
     public float HomingRangeSqrt = 0;
@@ -84,6 +102,28 @@ public partial class Player : Entity
     public bool HasResearchNotes = false;
     public int ResearchNoteBonuses = 0;
     public int ResearchNoteKillCounter = 0;
+    public float PersonalWaveCardBonus = 1.0f;
+    public float FlatSkullCoinBonus = 0.0f;
+    public float ThunderBubbleReturnDamageBonus = 0;
+    public float EchoBubbles = 0;
+    public bool OrbitalStars = false;
+    public int Supernova = 0;
+    public int Ruby = 0;
+    public int DoubleDownChip = 0;
+    public float BlackmarketMult = 1.0f;
+    public float CriticalStrikeChance = 0.05f;
+    public float ShopDiscount = 0.0f;
+    public int LuckyStarItemsAllowedPerWave = 0;
+    public int LuckyStarItemsAcquiredThisWave = 0;
+    public int PerpetualBubble = 0;
+    public float PityGrowthAmount = 0f;
+    public int ConsolationPrize = 0, PhilosophersStone = 0;
+    public int MaxTokens = 3;
+    public int TokensPerWave = 0;
+    public float BuyOneGetOneMult = 0.0f;
+    public float SpinPriceIncrease = 0.0f;
+    public int ExtraGachaBurst = 0;
+    public int BatterUp = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -96,7 +136,7 @@ public partial class Player : Entity
     private void ClearPowerBonuses()
     {
         ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = OldCoalescence = Magnet = LightSpear = 0;
-        AttackSpeedModifier = AbilityRecoverySpeed = AbilityRecoverySpeedMult = MoveSpeedMod = ImmunityFrameMultiplier = ShieldImmunityFrameMultiplier = 1.0f;
+        AttackSpeedModifier = AbilityRecoverySpeed = AbilityRecoverySpeedMult = TrueMoveModifier = ImmunityFrameMultiplier = ShieldImmunityFrameMultiplier = 1.0f;
         LuckyStar = TrailOfThoughts = LightChainReact = BrainBlast = RecursiveSubspaceLightning = Refraction = 0;
         PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = PassiveAttackSpeedModifier = 0;
         BlueChipChance = HomingRange = 0.0f;
@@ -116,6 +156,21 @@ public partial class Player : Entity
             ResearchNoteKillCounter = 0;
         }
         HasResearchNotes = false;
+        PersonalWaveCardBonus = 0.0f;
+        FlatSkullCoinBonus = 0.0f;
+        ThunderBubbleReturnDamageBonus = 0.0f;
+        EchoBubbles = 0.0f;
+        OrbitalStars = false;
+        Supernova = Ruby = DoubleDownChip = 0;
+        BlackmarketMult = 1.0f;
+
+        CriticalStrikeChance = 0.01f;
+        ShopDiscount = SpinPriceIncrease = 0.0f;
+        LuckyStarItemsAllowedPerWave = PerpetualBubble = TokensPerWave = 0;
+        PityGrowthAmount = BuyOneGetOneMult = 0.0f;
+        ConsolationPrize = PhilosophersStone = ExtraGachaBurst = 0;
+        MaxTokens = 3;
+        BatterUp = 0;
     }
     private void UpdatePowerUps()
     {
@@ -124,10 +179,8 @@ public partial class Player : Entity
         {
             PowerUp power = PowerUp.Get(powers[i]);
             if(power.Stack > 0)
-            {
                 power.HeldEffect(this);
                 //Debug.Log($"Doing held effect for {power.Stack}");
-            }
         }
         AbilityRecoverySpeed = AbilityRecoverySpeed * AbilityRecoverySpeedMult;
     }
@@ -149,14 +202,14 @@ public partial class Player : Entity
             {
                 BinaryStarTimer += 1.5f / PassiveAttackSpeedModifier; //1.0, 1.25, 1.5, 1.75, 2.0
                 Vector2 circular = Utils.RandCircle(1).normalized;
-                float speedMax = 18 + FasterBulletSpeed;
+                float speedMax = 18;
                 int c = BinaryStars + 1;
                 float spreadAmt = Mathf.PI * 2f / (float)c;
                 for (int i = 0; i < c; i++)
                 {
                     circular = circular.RotatedBy(spreadAmt);
-                    Vector2 target = (Vector2)transform.position + circular * (16 + FasterBulletSpeed);
-                    Projectile.NewProjectile<StarProj>(transform.position, circular.RotatedBy(Mathf.PI * 0.55f) * speedMax, target.x, target.y);
+                    Vector2 target = (Vector2)transform.position + circular * 16;
+                    Projectile.NewProjectile<StarProj>(transform.position, circular.RotatedBy(Mathf.PI * 0.55f) * speedMax, 2, target.x, target.y, -1);
                 }
             }
         }
@@ -171,8 +224,7 @@ public partial class Player : Entity
             {
                 BubbleTrailTimer += 2f / (PassiveAttackSpeedModifier * (BubbleTrail + 2f)); //.5, 2/5, 2/6, 2/7, 1/4
                 Vector2 circular = (Utils.RandCircle(1.3f) - Animator.lastVelo * 0.4f).normalized;
-                float speedMax = 2 + FasterBulletSpeed * 0.2f;
-                Projectile.NewProjectile<SmallBubble>(transform.position, circular * speedMax);
+                Projectile.NewProjectile<SmallBubble>(transform.position, circular * 2, 1);
             }
         }
         else
@@ -190,7 +242,7 @@ public partial class Player : Entity
             for (; stars > 0; --stars)
             {
                 Vector2 target = (Vector2)transform.position + norm * 14 + Utils.RandCircle(6);
-                Projectile.NewProjectile<StarProj>(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), target.x, target.y);
+                Projectile.NewProjectile<StarProj>(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, target.x, target.y, Utils.RandInt(2) * 2 - 1);
             }
         }
     }

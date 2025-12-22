@@ -3,6 +3,14 @@ using UnityEngine;
 
 public class Chicken : Enemy
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Chicken");
+    }
+    public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
+    {
+        inlineThreshold = 0.1f;
+    }
     private Vector2 targetedLocation;
     public float moveSpeed = 0.12f;
     public float inertiaMult = 0.96f;
@@ -11,7 +19,10 @@ public class Chicken : Enemy
     {
         data.BaseMaxLife = 7;
         data.BaseMaxCoin = 10;
-        data.Card = Resources.Load<Sprite>("NPCs/Chicken/Body");
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        scale *= 1.1f;
     }
     public void UpdateDirection(float i)
     {

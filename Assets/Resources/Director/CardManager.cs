@@ -31,17 +31,18 @@ public class CardManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
             GenerateCards();
         bool isClickingOnACard = false;
+        bool cardsCurrentlySpawning = !Card[0].HasBeenFlipped;
         for (int i = 0; i < Cards.Length; ++i)
         {
-            bool Hovered = Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
-            if(Hovered && Control.LeftMouseClick)
+            bool Hovered = !Main.UIManager.PauseMenu.activeSelf && Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
+            if(Hovered && Control.LeftMouseClick && !cardsCurrentlySpawning)
             {
                 ChosenCardIndex = ChosenCardIndex != i ? i : -1;
                 isClickingOnACard = true;
                 break;
             }
         }
-        if(!isClickingOnACard)
+        if(!isClickingOnACard && !cardsCurrentlySpawning)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
                 ChosenCardIndex = ChosenCardIndex != 0 ? 0 : -1;
@@ -53,7 +54,7 @@ public class CardManager : MonoBehaviour
         foreach (ModifierCard card in Cards)
             card.UpdateSizing();
         bool cardSelected = ChosenCardIndex != -1;
-        bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected && Control.LeftMouseClick;
+        bool confirmButtonHovered = !Main.UIManager.PauseMenu.activeSelf && Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected && Control.LeftMouseClick;
         if(confirmButtonHovered || (Control.Interact && cardSelected))
             ConfirmCard();
         VisualUpdate();
@@ -62,12 +63,14 @@ public class CardManager : MonoBehaviour
     {
         for(int i = 0; i < Cards.Length; ++i)
         {
-            bool Hovered = Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
+            bool Hovered = !Main.UIManager.PauseMenu.activeSelf && Utils.IsMouseHoveringOverThis(true, Cards[i].BG.rectTransform, 0, MyCanvas);
             Cards[i].UpdateSelectVisuals(i == ChosenCardIndex, Hovered);
-            Cards[i].SpawnAnimation();
+            float updateSpeed = Main.DebugSettings.SkipWaves ? 2.0f : 1.0f;
+            for (int j = 0; j < updateSpeed; ++j)
+                Cards[i].SpawnAnimation();
         }
         bool cardSelected = ChosenCardIndex != -1;
-        bool confirmButtonHovered = Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected;
+        bool confirmButtonHovered = !Main.UIManager.PauseMenu.activeSelf && Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected;
         Color c = confirmButtonHovered ? Color.yellow : Color.white;
         ConfirmButton.color = Color.Lerp(ConfirmButton.color, c, Utils.DeltaTimeLerpFactor(0.2f));
         ConfirmButtonText.color = Color.white;
@@ -80,7 +83,7 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < Cards.Length; ++i)
             Cards[i].DespawnAnimation();
         ConfirmButton.gameObject.SetActive(false);
-        DespawnTimer += Time.unscaledDeltaTime;
+        DespawnTimer += Time.unscaledDeltaTime * (Main.DebugSettings.SkipWaves ? 2.0f : 1.0f);
         if (DespawnTimer > 1.0f)
         {
             DespawnTimer = 0;
@@ -104,8 +107,11 @@ public class CardManager : MonoBehaviour
     }
     public static void DrawCards()
     {
+        DespawnTimer = 20.0f; 
+        Instance.DespawnCards();
         if (PlayerData.PauseDuringCardSelect)
             Main.PauseGame();
+        WaveDirector.WaitingForCardDraw = false;
         Instance.Visual.SetActive(true);
         GenerateNewCards();
     }
@@ -131,7 +137,7 @@ public class CardManager : MonoBehaviour
         }
         WaveDirector.TemporaryModifiers.CloneValues(WaveDirector.PermanentModifiers); //Apply permanent modifiers to temporary modifiers
 
-        ChosenCardIndex = -1;
+        ChooseCard(-1);
     }
     public static void ApplyChosenCard()
     {
@@ -146,10 +152,14 @@ public class CardManager : MonoBehaviour
             WaveDirector.TemporaryModifiers.WaveSpecialBonusEnemy = WaveDirector.PermanentModifiers.WaveSpecialBonusEnemy; //set it to the permanent enemy
 
         ChosenCard.cardData.GrantImmediateRewards();
+
+        if(ChosenCard.cardData.DifficultyMult <= 2)
+            Player.PickedLowerDifficultyWaveCard = true;
     }
     public void GenerateCards()
     {
         foreach(ModifierCard card in Cards)
             card.GenerateCardData();
+        ChosenCardIndex = -1;
     }
 }

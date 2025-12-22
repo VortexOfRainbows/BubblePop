@@ -81,7 +81,7 @@ public class SpeedBoost : Buff
         float boost = 0.15f * timeLeft / initiallyAppliedDuration;
         if(e is Player p)
         {
-            p.MoveSpeedMod += boost;
+            p.TrueMoveModifier += boost;
         }
     }
 }
@@ -96,12 +96,12 @@ public class Poison : Buff
     {
         if (e is Enemy enemy)
         {
-            float damage = 4 + e.MaxLife * 0.05f + Player.Instance.SnakeEyes;
+            float damage = 3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes;
             float tickRate = Mathf.Min(1, Mathf.Max(0.25f, 20f / damage));
             dot += Time.fixedDeltaTime;
             while (dot >= tickRate / 2f)
             {
-                enemy.Injure(damage / initiallyAppliedDuration * tickRate, 2, new Color(0.8f, 0.27f, 0.9f));
+                enemy.Injure(damage / initiallyAppliedDuration * tickRate, -1, new Color(0.8f, 0.27f, 0.9f));
                 dot -= tickRate;
             }
         }

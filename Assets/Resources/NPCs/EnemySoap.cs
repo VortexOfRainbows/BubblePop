@@ -1,6 +1,10 @@
 using UnityEngine;
 public class EnemySoap : Enemy
 {
+    public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
+    {
+        inlineThreshold = 0.3f;
+    }
     public SpriteRenderer sRender;
     public Sprite Soap1;
     public Sprite Soap2;
@@ -14,7 +18,6 @@ public class EnemySoap : Enemy
     {
         data.BaseMaxLife = 5;
         data.BaseMaxCoin = 5;
-        data.Card = Resources.Load<Sprite>("NPCs/Old/Wsoap");
     }
     // Update is called once per frame
     public override void AI()
@@ -70,8 +73,8 @@ public class EnemySoap : Enemy
         float offsetY = Random.Range(-5f, 5f);
         return new Vector2 (Player.Position.x + offsetX, Player.Position.y + offsetY);
     }
-    public override string Name()
+    public override void InitializeDescription(ref DetailedDescription description)
     {
-        return "Soap";
+        description.WithName("Soap");
     }
 }

@@ -11,12 +11,12 @@ public class PricedButton : MonoBehaviour
     public Image PylonVisual;
     public Image InteractVisual;
     public Canvas MyCanvas;
-    public bool CanAfford => (CoinManager.TotalEquipCost <= CoinManager.Savings || CoinManager.TotalEquipCost <= 0);
+    public bool CanAfford => true; // (CoinManager.TotalEquipCost <= CoinManager.Savings || CoinManager.TotalEquipCost <= 0);
     public bool CanUse => (PylonVisual == null || Main.PlayerNearPylon);
     public void SimulatePress()
     {
-        UIManager.Instance.UnleashWaves();
-        UIManager.StaticPlaySound();
+        Main.StartGame();
+        Main.CanvasManager.StaticPlaySound();
     }
     public void Update()
     {

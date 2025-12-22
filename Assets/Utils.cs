@@ -5,6 +5,22 @@ using UnityEngine.Tilemaps;
 using static Enemy;
 public static class Utils
 {
+    public static Unity.Mathematics.Random rand = InitRandSeed();
+    private static Unity.Mathematics.Random InitRandSeed()
+    {
+        Unity.Mathematics.Random r = new();
+        r.InitState((uint)UnityEngine.Random.Range(0, int.MaxValue));
+        return r;
+    }
+    public static bool RollWithLuck(float odds)
+    {
+        float n = RollWithLuckRaw();
+        return n < odds;
+    }
+    public static float RollWithLuckRaw()
+    {
+        return rand.NextFloat();
+    }
     /// <summary>
     /// Lerps adjusted for delta time so it can be used consistently in Update(), rather than FixedUpdate()
     /// </summary>
@@ -84,9 +100,17 @@ public static class Utils
     {
         return UnityEngine.Random.Range(min, maxExclusive);
     }
-    public static Vector2 RandCircle(float r)
+    public static Vector2 RandCircle(float r = 1)
     {
         return UnityEngine.Random.insideUnitCircle * r;
+    }
+    public static Vector2 RandCircleEdge(float r = 1)
+    {
+        return UnityEngine.Random.insideUnitCircle.normalized * r;
+    }
+    public static Vector2 RandCircle(float min, float max)
+    {
+        return RandCircleEdge(RandFloat(min, max));
     }
     public const int AlternativeCameraPosX = 5000;
     public const int AlternativeCameraPosY = 1000;
@@ -95,18 +119,18 @@ public static class Utils
         pos.x -= canvas.transform.position.x;
         pos.y -= canvas.transform.position.y;
         pos /= canvas.GetComponent<RectTransform>().lossyScale.x;
-        pos *= UIManager.ActivePrimaryCanvas.scaleFactor;
-        pos += UIManager.ActivePrimaryCanvas.transform.position;
+        pos *= Main.ActivePrimaryCanvas.scaleFactor;
+        pos += Main.ActivePrimaryCanvas.transform.position;
         return pos;
     }
     public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null, bool ignoreScale = false)
     {
-        if (UIManager.ActivePrimaryCanvas == null)
+        if (Main.ActivePrimaryCanvas == null)
             return false;
         Vector3 pos = transform.position;
-        float scale = UIManager.ActivePrimaryCanvas.scaleFactor;
+        float scale = Main.ActivePrimaryCanvas.scaleFactor;
         if (canvas == null)
-            canvas = UIManager.ActivePrimaryCanvas;
+            canvas = Main.ActivePrimaryCanvas;
         else
         {
             pos = PositionAdjustedByCanvas(pos, canvas);
@@ -173,6 +197,11 @@ public static class Utils
         color.a = alphaMultiplier;
         return color;
     }
+    public static Transform LerpLocalPosition(this Transform transform, Vector2 newPosition, float t)
+    {
+        transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(newPosition.x, newPosition.y, transform.localPosition.z), t);
+        return transform;
+    }
     public static Transform LerpLocalScale(this Transform transform, Vector2 newScale, float t)
     {
         transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(newScale.x, newScale.y, transform.localScale.z), t);
@@ -181,6 +210,11 @@ public static class Utils
     public static Transform LerpLocalEulerZ(this Transform transform, float r, float t)
     {
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, Mathf.LerpAngle(transform.localEulerAngles.z, r, t));
+        return transform;
+    }
+    public static Transform SetEulerZ(this Transform transform, float r)
+    {
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, r);
         return transform;
     }
     public static Vector3 SetXY(this Vector3 v, float x, float y)
@@ -197,7 +231,7 @@ public static class Utils
     }
     public static string ToHexString(this Color color)
     {
-        return
+        return "#" +
             ((byte)(color.r * 255)).ToString("X2") +
             ((byte)(color.g * 255)).ToString("X2") +
             ((byte)(color.b * 255)).ToString("X2") +
@@ -260,8 +294,25 @@ public static class Utils
     {
         return $"<size={size}><color={color}>{s}</color></size>";
     }
+    public static string WithColor(this string s, string color)
+    {
+        return $"<color={color}>{s}</color>";
+    }
     public static TileBase GetTile(this Tilemap map, int i, int j)
     {
         return map.GetTile(new Vector3Int(i, j));
+    }
+    public static float LerpAngleRadians(float a, float b, float t)
+    {
+        float num = Mathf.Repeat(b - a, MathF.PI * 2);
+        if (num > MathF.PI)
+        {
+            num -= MathF.PI * 2;
+        }
+        return a + num * Mathf.Clamp01(t);
+    }
+    public static int Rand1OrMinus1()
+    {
+        return RandInt(2) * 2 - 1;
     }
 }

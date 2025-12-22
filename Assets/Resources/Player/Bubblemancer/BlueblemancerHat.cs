@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class BlueblemancerHat : BubblemancerHat
 {
-    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<WaveUnlock10>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<StarbarbUnlock5>();
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Bluebblemancy Hat").WithDescription("Start with Choice");
+        description.WithName("Bluebblemancy Hat").WithDescription("Stars last longer and orbit you");
     }
-    public override void OnStartWith()
+    public override void EquipUpdate()
     {
-        PowerUp.Spawn<Choice>(Player.Position, 0);
+        player.OrbitalStars = true;
     }
     public override int GetRarity()
     {

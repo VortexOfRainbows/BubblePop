@@ -81,10 +81,11 @@ public static class WaveDirector
     public static int HighScoreWaveNum = 0;
     public static float WaveMult = 1.0f;
     public static float EnemyScalingFactor => TemporaryModifiers.EnemyScaling;
-    public static bool WaveActive = false, WaitingForCard = false;
+    public static bool WaveActive = false, WaitingForCardDraw = false;
     public static int SkullEnemiesActive { get; set; } = 0;
     public static void Reset()
     {
+        Player.PickedLowerDifficultyWaveCard = false;
         CurrentAssociatedWaveCardNumber = 0;
         WaveNum = 0;
         WaveMult = 1.0f;
@@ -97,7 +98,7 @@ public static class WaveDirector
         EnemyPool.Clear();
         PermanentModifiers.Reset();
         TemporaryModifiers.CloneValues(PermanentModifiers);
-        WaveActive = WaitingForCard = false;
+        WaveActive = WaitingForCardDraw =false;
         SkullEnemiesActive = 0;
     }
     public static void FixedUpdate()
@@ -109,7 +110,6 @@ public static class WaveDirector
         }
         else if(!WaveActive)
         {
-            WaitingForCard = SkullEnemiesActive <= 0;
             return;
         }
         PointUpdate();
@@ -117,6 +117,8 @@ public static class WaveDirector
         float cardsPlayedPercent = Mathf.Min(1, CardsPlayed / 10f);
         float creditsSpentPercent = Mathf.Min(1, CreditsSpent / creditsNeededToPassWave);
         float percentWaveComplete = cardsPlayedPercent * 0.2f + 0.8f * cardsPlayedPercent * creditsSpentPercent;
+        if (Main.DebugSettings.SkipWaves)
+            percentWaveComplete = 2;
         WaveProgressPercent = Mathf.Min(1, percentWaveComplete);
         bool waveComplete = percentWaveComplete >= 1;
         if (!waveComplete)
@@ -131,7 +133,7 @@ public static class WaveDirector
                 TryPlayingCard();
             GatherCredits();
         }
-        else if(Board.Count <= 0) //All played cards have finish processing
+        else if(Board.Count <= 0 || Main.DebugSettings.SkipWaves) //All played cards have finish processing
         {
             EndWave();
         }
@@ -166,29 +168,27 @@ public static class WaveDirector
         {
             if(Player.Instance.Body is ThoughtBubble && !Player.HasAttacked)
             {
-                ThoughtBubbleWave15NoAttack t = UnlockCondition.Get<ThoughtBubbleWave15NoAttack>() as ThoughtBubbleWave15NoAttack;
-                t.SetComplete();
+                UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
+            }
+            if(Player.Instance.Body is Gachapon && !Player.PickedLowerDifficultyWaveCard)
+            {
+                UnlockCondition.Get<GachaponWave15AllSkullWaves>().SetComplete();
             }
         }
+        if(WaveNum >= 25)
+            UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         CurrentAssociatedWaveCardNumber = 0;
+        WaitingForCardDraw = true;
     }
     public static void GatherCredits()
     {
-        Credits += 1.0f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
+        Credits += 1.1f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
     }
     public static void DrawNewCards()
     {
-        if(Deck.Count < MaxCards - 2)
-        {
-            Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomPositionOnPlayerEdge(), EnemyID.OldDuck, 0, 1, 0));
-            Deck.Add(WaveDeck.DrawSingleSpawn(WaveDeck.RandomPositionOnPlayerEdge(), EnemyID.OldDuck, 0, 1, 0));
-            //Deck.Add(WaveDeck.DrawSingleSpawn(new EnemyPattern(Vector2.zero, 0.5f, 0f, EnemyID.OldDuck), 2, 5, 0).ToSwarmCircle(3, 10, 0));
-        }
         while (Deck.Count < MaxCards)
-        {
             Deck.Add(WaveDeck.DrawCard());
-        }
     }
     public static void UpdateMulligans()
     {

@@ -35,7 +35,7 @@ public class TierList : MonoBehaviour
     }
     public void Start()
     {
-        OnTierList.Clear();
+        //OnTierList.Clear();
         Elems.Clear();
         TotalDistanceCovered = 800f;
         InitializeCategories();
@@ -197,7 +197,7 @@ public class TierList : MonoBehaviour
         CompendiumElement cpue = Elems.Find(g => g.TypeID == i);
         if (TierListType == 0 && PowerUp.Get(i).PickedUpCountAllRuns <= 0)
             return;
-        if (TierListType == 1 && !Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
+        if (TierListType == 1 && !Main.GlobalEquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
             return;
         if (TierListType == 2 && !EnemyID.EnemyData[i].Unlocked)// && !Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
             return;

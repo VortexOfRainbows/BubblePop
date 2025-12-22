@@ -121,7 +121,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3179210699571088222}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -163,5 +163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 4797408319360335605}
   Value: 25
+  Heal: 0
   AttractTimer: 0
   PopupColor: {r: 1, g: 0.909804, b: 0.4666667, a: 1}
+  BeforeCollectableTimer: 0
+  HeartVisual: {fileID: 0}

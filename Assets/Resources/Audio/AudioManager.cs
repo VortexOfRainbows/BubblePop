@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class AudioManager : MonoBehaviour
     public AudioMixerGroup SFX;
     [SerializeField]
     private AudioSource MusicSource;
+    [SerializeField]
+    private AudioSource SecondaryMusicSource;
     [SerializeField]
     private GameObject AudioObject;
     private static AudioManager m_Instance;
@@ -39,14 +42,71 @@ public class AudioManager : MonoBehaviour
     {
         m_Instance = this;
     }
+
+    private static AudioClip CurrentTheme = null;
+    public static AudioClip MenuTheme = null;
+    public static AudioClip MeadowTheme = null;
+    public static AudioClip LeonardTheme = null;
+    private static float MusicTransition = 0f;
+    private static int MusicPriority = 0;
     private void Update()
     {
-        MusicSource.volume = PlayerData.MusicVolume;
+        MenuTheme = MenuTheme != null ? MenuTheme : Resources.Load<AudioClip>("Audio/Music/BubbleBathBonanza");
+        MeadowTheme = MeadowTheme != null ? MeadowTheme : Resources.Load<AudioClip>("Audio/Music/Meadow");
+        LeonardTheme = LeonardTheme != null ? LeonardTheme : Resources.Load<AudioClip>("Audio/Music/Leonard");
+
+
+        if (MusicSource.clip != CurrentTheme)
+        {
+            MusicTransition += Time.deltaTime * 0.5f;
+            if(MusicTransition >= 1)
+            {
+                (SecondaryMusicSource, MusicSource) = (MusicSource, SecondaryMusicSource);
+                MusicTransition = 0;
+            }
+        }
+        else
+        {
+            MusicTransition -= Time.deltaTime * 0.5f;
+            if (MusicTransition <= 0)
+                MusicTransition = 0;
+        }
+        if(MusicTransition != 0)
+        {
+            SecondaryMusicSource.enabled = true;
+            if(SecondaryMusicSource.clip == null)
+            {
+                SecondaryMusicSource.clip = CurrentTheme;
+                SecondaryMusicSource.time = 0;
+                SecondaryMusicSource.Play();
+            }
+        }
+        else
+        {
+            SecondaryMusicSource.enabled = false;
+            if (SecondaryMusicSource.clip != null)
+            {
+                SecondaryMusicSource.clip = null;
+                SecondaryMusicSource.time = 0;
+            }
+        }
+        MusicSource.volume = PlayerData.MusicVolume * (1 - MusicTransition);
+        SecondaryMusicSource.volume = PlayerData.MusicVolume * MusicTransition;
         //MusicSource.clip = null;
         //if (!MusicSource.isPlaying)
         //{
         //    //print("Playing: " + MusicSource.clip.name);
         //    MusicSource.Play();
         //}
+        CurrentTheme = SceneManager.GetActiveScene().buildIndex == 0 ? MenuTheme : MeadowTheme;
+        MusicPriority = 0;
+    }
+    public static void SetMusic(AudioClip Music, int Priority = 1)
+    {
+        if(MusicPriority < Priority)
+        {
+            MusicPriority = Priority;
+            CurrentTheme = Music;
+        }
     }
 }

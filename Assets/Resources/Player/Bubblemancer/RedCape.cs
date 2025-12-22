@@ -11,7 +11,7 @@ public class RedCape : BubblemancerCape
     }
     public override void EquipUpdate()
     {
-        player.MoveSpeedMod += 0.2f;// + 0.1f * player.SpentBonusLives;
+        player.TrueMoveModifier += 0.2f;// + 0.1f * player.SpentBonusLives;
     }
     public override int GetRarity()
     {

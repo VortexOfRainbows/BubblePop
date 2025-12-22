@@ -32,12 +32,8 @@ public class ThoughtBubble : Body
     protected override float RotationSpeed => 1f;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Choice>();
         powerPool.Add<TrailOfThoughts>();
-        powerPool.Add<BubbleBirb>();
-        powerPool.Add<Overclock>();
         powerPool.Add<BrainBlast>();
-        powerPool.Add<BubbleMitosis>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -71,7 +67,7 @@ public class ThoughtBubble : Body
             for (int i = 0; i < TailCount; ++i)
             {
                 int orig = (i + StartTail) % Tails.Count;
-                DetonateTail(Tails[orig]);
+                DetonateTail(Tails[orig], true);
             }
             for (int i = 0; i < Tails.Count; ++i)
                 TryTurningOffTail();
@@ -156,10 +152,13 @@ public class ThoughtBubble : Body
         int amt = (int)BrainBlastNum;
         while (BrainBlastNum >= 1)
         {
-            float speed = 5f + Player.Instance.FasterBulletSpeed * 2.5f + player.BrainBlast * Utils.RandFloat(1.5f, 2.5f);
-            Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.5f)), 0).RotatedBy((BrainBlastNum + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f)); 
+            float speed = 5f + player.BrainBlast * Utils.RandFloat(1.5f, 2.5f);
+            Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.5f)), 0).RotatedBy((BrainBlastNum + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1); 
             --BrainBlastNum;
         }
+        ThunderAuraNum = 0;
+        if (player.UniversalImmuneFrames < 7)
+            player.UniversalImmuneFrames = 7;
     }
     public void UpdateTailPos(int i, ref Vector3 previousPos)
     {
@@ -195,31 +194,21 @@ public class ThoughtBubble : Body
         int properIndex = orig % TailCount;
         float percent = 1f * properIndex / TailCount;
         Vector3 targetScale = new Vector3(1f, 1f) * (1f - 0.4f * percent);
-        Light2D l2D = Tails[i].GetComponentInChildren<Light2D>();
         SpriteRenderer sr = Tails[i].GetComponent<SpriteRenderer>();
         sr.enabled = true;
         sr.color = new Color(1, 1, 1, 0.6f - 0.2f * percent);
         Tails[i].transform.localScale = Vector3.Lerp(Tails[i].transform.localScale, targetScale, 0.05f);
-        if(CurrentMarkedTail >= 0 && CurrentTail == Tails[i])
-        {
-            l2D.intensity = Mathf.Lerp(l2D.intensity, 1.5f, 0.2f);
-        }
-        else
-        {
-            l2D.intensity = Mathf.Lerp(l2D.intensity, 0f, 0.1f);
-            if (l2D.intensity <= 0.05f)
-                l2D.intensity = 0;
-        }
-        l2D.pointLightOuterRadius = 1.0f + l2D.intensity;
+        //if(CurrentMarkedTail >= 0 && CurrentTail == Tails[i])
+        //{
+        //}
+        //else
+        //{
+        //}
     }
     public void UpdateTailOff(int i)
     {
-        Light2D l2D = Tails[i].GetComponentInChildren<Light2D>();
         Tails[i].transform.localScale = new Vector3(0f, 0f, 0f);
         Tails[i].GetComponent<SpriteRenderer>().enabled = false;
-        l2D.intensity = Mathf.Lerp(l2D.intensity, 0f, 0.1f);
-        if (l2D.intensity <= 0.05f)
-            l2D.intensity = 0;
     }
     public float sparkleSparkleNum = 0.0f;
     public void TravelDownTail()
@@ -230,7 +219,8 @@ public class ThoughtBubble : Body
     }
     public float BrainBlastNum = 0;
     public float BrainBlastTrailNum = 0;
-    public void DetonateTail(GameObject current)
+    public int ThunderAuraNum = 0;
+    public void DetonateTail(GameObject current, bool death = false)
     {
         for(int i = 0; i < 5; ++i)
         {
@@ -239,14 +229,16 @@ public class ThoughtBubble : Body
         int amt = 1 + (int)BrainBlastTrailNum;
         for(int i = 0; i < amt; ++i)
         {
-            Projectile.NewProjectile<SmallBubble>(current.transform.position, UnityEngine.Random.insideUnitCircle * Utils.RandFloat(0.1f + i * 0.05f, 1.0f + i * 0.2f));
+            Projectile.NewProjectile<SmallBubble>(current.transform.position, UnityEngine.Random.insideUnitCircle * Utils.RandFloat(0.1f + i * 0.05f, 1.0f + i * 0.2f), 1);
             if (i > 0)
                 BrainBlastTrailNum--;
         }
+        if(!death)
+            Projectile.NewProjectile<ThoughtBubbleThunderAura>(current.transform.position, Vector2.zero, 1.0f * (1 + player.BrainBlast * 0.2f), ++ThunderAuraNum % 3);
         if (player.BrainBlast > 0)
         {
             BrainBlastNum += 0.5f + player.BrainBlast * 0.5f;
-            BrainBlastTrailNum += 0.2f + player.BrainBlast * 0.1f;
+            BrainBlastTrailNum += 0.1f + player.BrainBlast * 0.1f;
         }
         if (player.DashSparkle > 0)
         {
@@ -254,8 +246,8 @@ public class ThoughtBubble : Body
             while (sparkleSparkleNum > 1f)
             {
                 Vector2 target = Utils.RandCircle(1).normalized * 20;
-                Vector2 target2 = Utils.RandCircle(1).normalized * 10;
-                Projectile.NewProjectile<StarProj>(current.transform.position, target2, current.transform.position.x + target.x, current.transform.position.y + target.y);
+                Vector2 target2 = Utils.RandCircle(1).normalized * 14;
+                Projectile.NewProjectile<StarProj>(current.transform.position, target2, 2, current.transform.position.x + target.x, current.transform.position.y + target.y, Utils.RandInt(2) * 2 - 1);
                 sparkleSparkleNum -= 1.0f;
             }
         }

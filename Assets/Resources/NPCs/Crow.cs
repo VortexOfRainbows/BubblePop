@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class Crow : Enemy
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Crow");
+    }
+    public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
+    {
+        inlineThreshold = 0.02f;
+        inlineColor.r *= 2f;
+        additiveColorPower = 0.4f;
+    }
     public JumpMotion JumpAnimation;
     private Vector2 targetedLocation;
     public float moveSpeed = 0.15f;
@@ -16,8 +26,12 @@ public class Crow : Enemy
     {
         data.BaseMaxLife = 10;
         data.BaseMaxCoin = 15;
-        data.Card = Resources.Load<Sprite>("NPCs/Card/CrowA");
-        data.CardBG = Resources.Load<Sprite>("NPCs/Card/CrowB");
+        //data.CardBG = Resources.Load<Sprite>("NPCs/Card/CrowB");
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        offset.y += 0.2f;
+        scale *= 1.2f;
     }
     public override void OnSpawn()
     {

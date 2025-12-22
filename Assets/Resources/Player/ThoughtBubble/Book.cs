@@ -17,11 +17,11 @@ public class Book : Weapon
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<ResearchNotes>();
-        //powerPool.Add<Shotgun>();
+        powerPool.Add<Boomerang>();
         powerPool.Add<ZapRadius>();
-        //powerPool.Add<BubbleBlast>();
+        powerPool.Add<ResearchGrants>();
         powerPool.Add<BonusBatteries>();
-        //powerPool.Add<ShotSpeed>();
+        powerPool.Add<ThunderBubbles>();
         powerPool.Add<Electroluminescence>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
@@ -136,7 +136,7 @@ public class Book : Weapon
                         JustOpened = false;
                     ++TotalBalls;
                     float speed = 3.3f + player.FasterBulletSpeed * 0.33f;
-                    Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand);
+                    Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand, 1);
                 }
             }
             else if (AttackRight >= 0)
@@ -165,7 +165,7 @@ public class Book : Weapon
                         JustOpened = false;
                     ++TotalBalls;
                     float speed = 12.0f + player.FasterBulletSpeed * 1.2f;
-                    Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand);
+                    Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand, 1);
                 }
             }
             float sin = Mathf.Abs(MathF.Sin(percent * Mathf.PI));

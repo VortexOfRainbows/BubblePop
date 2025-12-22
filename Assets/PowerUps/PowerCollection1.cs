@@ -14,7 +14,7 @@ public class Choice : PowerUp
             PowerUp.TurnOnPowerUpSelectors();
         }
     }
-    public override int Cost => 25;
+    public override int Cost => 50;
 }
 public class ChargeShot : PowerUp
 {
@@ -149,12 +149,12 @@ public class WeaponUpgrade : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Haste");
-        description.WithDescription("Increases Y:[attack speed] by Y:10% G:(+10% per stack)");
+        description.WithDescription("Increases Y:[attack speed] by Y:7% G:(+7% per stack)");
         description.WithShortDescription("Increases attack speed");
     }
     public override void HeldEffect(Player p)
     {
-        p.AttackSpeedModifier += Stack * 0.1f;
+        p.AttackSpeedModifier += Stack * 0.07f;
     }
     public override Sprite GetTexture()
     {
@@ -259,12 +259,13 @@ public class LuckyStar : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:4% G:(+2% per stack) Y:chance to Y:[drop powers]");
+        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:4% G:(+1% per stack) Y:chance to Y:[drop powers] \nThis effect can only happen Y:3 G:(+1 per stack) Y:times per Y:wave");
         description.WithShortDescription("Enemies killed by stars have an additional chance to drop powers");
     }
     public override void HeldEffect(Player p)
     {
         p.LuckyStar += Stack;
+        p.LuckyStarItemsAllowedPerWave += 2 + Stack;
     }
 }
 public class TrailOfThoughts : PowerUp
@@ -276,8 +277,8 @@ public class TrailOfThoughts : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Trail of Thoughts");
-        description.WithDescription("Increases the maximum length of your Y:[thought trail] by Y:3 G:(+3 per stacK)");
-        description.WithShortDescription("Increases the maximum length of your thought trail");
+        description.WithDescription("Increases the Y:[maximum length] of your Y:[thought trail] by Y:3 G:(+3 per stacK) and Y:[zap radius] of your Y:[thought trail] by Y:10% G:(+10 per stack)");
+        description.WithShortDescription("Increases thought trail length and zap radius");
     }
     public override void HeldEffect(Player p)
     {
@@ -292,8 +293,10 @@ public class Magnet : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Extends the distance coins are collected from by Y:75% G:(+75% per stack)");
+        description.WithDescription("Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack)");
         description.WithShortDescription("Collect coins from farther away");
+        description.WithDescriptionVariant<SlotMachineWeapon>("Extends the distance Y:coins and Y:tokens are collected from by Y:75% G:(+75% per stack)");
+        description.WithShortDescriptionVariant<SlotMachineWeapon>("Collect coins and tokens from farther away");
     }
     public override void HeldEffect(Player p)
     {
@@ -309,7 +312,7 @@ public class SpearOfLight : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Spear of Light");
-        description.WithDescription("Fire Y:[beams of light] at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2 damage] every Y:[2.2 seconds] and increase Y:[beam of light] damage by Y:0.5 G:(+0.5 per stack)");
+        description.WithDescription("Fire Y:[beams of light] at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2 damage] every Y:[2.2 seconds] and increase Y:[beam of light damage] by Y:0.5 G:(+0.5 per stack)");
         description.WithShortDescription("Periodically fire beams of light at nearby enemies");
     }
     public override void HeldEffect(Player p)
@@ -342,7 +345,7 @@ public class NeuronActivation : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Reflection");
-        description.WithDescription("Enemies Y:[struck by beams of light] fire Y:[beams of light] at nearby enemies up to Y:1 G:(+1 per stack) additional times");
+        description.WithDescription("Enemies Y:[struck by beams of light] bounce Y:[beams of light] to nearby enemies up to Y:1 G:(+1 per stack) times, but bounced Y:[beams of light lose 20% damage]");
         description.WithShortDescription("Enemies struck by beams of light fire beams of light at nearby enemies");
     }
     public override void HeldEffect(Player p)
@@ -358,8 +361,9 @@ public class BrainBlast : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Release Y:30% G:(+10% per stack) more bubbles when Y:[channeling recall] and explode into Y:1 G:(+0.5 per stack) additional bubbles per segment Y:[after recall]");
-        description.WithShortDescription("Release additional bubbles when recalling");
+        description.WithDescription("Release Y:20% G:(+10% per stack) more bubbles when Y:[channeling recall] and explode into Y:1 G:(+0.5 per stack) additional bubbles per segment Y:[after recall] \n" +
+            "Increase Y:[thought trail zap damage] by Y:20% G:(+20% per stack)");
+        description.WithShortDescription("Release additional bubbles when recalling and increase thought trail zap damage");
     }
     public override void HeldEffect(Player p)
     {
@@ -412,7 +416,7 @@ public class SnakeEyes : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:[5 damage] G:(+1 per stack) plus Y:damage equal to Y:5% of the Y:[victim's max life] over Y:[10 seconds]");
+        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:[4 damage] G:(+1 per stack) plus Y:damage equal to Y:4% of the Y:[victim's max life] over Y:[10 seconds]");
         description.WithShortDescription("Chance to poison enemies on hit");
     }
     public override void HeldEffect(Player p)
@@ -428,7 +432,7 @@ public class Refraction : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:[Beams of light] target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units");
+        description.WithDescription("Y:[Beams of light] target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units, but they Y:[lose 20% damage] each hit after the first");
         description.WithShortDescription("Beams of light can target an additional enemy");
     }
     public override void HeldEffect(Player p)

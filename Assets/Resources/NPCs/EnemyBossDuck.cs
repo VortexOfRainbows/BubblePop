@@ -2,19 +2,29 @@ using UnityEngine;
 
 public class EnemyBossDuck : EnemyDuck
 {
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Leonard");
+    }
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        //scale *= 2;
+        //offset = Vector2.one * -1.25f;
+    }
     public override float HealthBarOffset => -3f;
     private float projectileSpeed = 3f;
     private int projectileTimer = -50;
     public override float CostMultiplier => 10;
-    public override float PowerDropChance => 1f;
+    public override float SkullPowerDropChance => 1f;
+    public override float PowerDropChance => 0.2f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 45;
         data.BaseMaxCoin = 50;
-        data.Card = Resources.Load<Sprite>("NPCs/Old/bird_boss");
     }
     public override void AI()
     {
+        PlayMusic = true;
         int soundChance = Random.Range(1, 400);
         if (soundChance == 1)
         {
@@ -48,18 +58,21 @@ public class EnemyBossDuck : EnemyDuck
         }
         AudioManager.PlaySound(SoundID.LenardLaser.GetVariation(0), transform.position, 0.3f, 1.5f);
     }
-    protected override Vector2 FindLocation()
-    {
-        return (Vector2)transform.position + new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f)) + (Player.Position - (Vector2)transform.position) * 0.1f;
-    }
     public override void OnKill()
     {
         DeathParticles(40, 0.7f, new Color(0.1f, 0.1f, 0.1f));
         DeathParticles(80, 0.9f, new Color(1, .97f, .52f));
         AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.3f, 0.5f);
     }
-    public override string Name()
+    protected override Vector2 FindLocation()
     {
-        return "Leonard";
+        return (Vector2)transform.position.Lerp(Player.Position, Utils.RandFloat(0.1f, 0.5f)) + Utils.RandCircleEdge(Utils.RandFloat(5f, 15f));
+    }
+    public bool PlayMusic = false;
+    new public void Update()
+    {
+        base.Update();
+        if(PlayMusic)
+            AudioManager.SetMusic(AudioManager.LeonardTheme, 1);
     }
 }

@@ -1,8 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
-
 public class CompendiumAchievementElement : CompendiumEquipmentElement
 {
     public static new GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumAchievementElement");
@@ -13,15 +11,21 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public override void Init(int i, Canvas canvas)
     {
         MyUnlock = UnlockCondition.Get(i);
-        base.Init(MyUnlock.AssociatedUnlocks.Count > 0 ? MyUnlock.FrontPageUnlock().IndexInAllEquipPool : 0, canvas);
+        base.Init(MyUnlock.AssociatedUnlocks.Count > 0 ? MyUnlock.FrontPageUnlock().IndexInAllEquipPool : Main.GlobalEquipData.Bubblemancer.GetComponent<Equipment>().IndexInAllEquipPool, canvas);
+        if(MyUnlock.AssociatedUnlocks.Count <= 0)
+        {
+            MyElem.ActiveEquipment.spriteRender.sprite = Resources.Load<Sprite>("UI/StarAch");
+        }
         MyElem.AchievementElement = true;
         TypeID = i;
-        if (MyUnlock.Completed && !Selected && Style != 3)
+        if (MyUnlock.Unlocked && !Selected && Style != 3)
         {
             Color c = new Color(.1f, .7f, .1f, 0.431372549f);
             DescriptionImage.color = c;
             BG.color =c;
         }
+        if (Style == 3)
+            MyElem.DisplayOnly = true;
     }
     ///// <summary>
     ///// Currently unused, as this element does not have a 
@@ -47,7 +51,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     }
     public override bool IsLocked()
     {
-        return MyUnlock.Completed; //In this case, more like it is completed
+        return MyUnlock.Unlocked; //In this case, more like it is completed
     }
     public new void Update()
     {

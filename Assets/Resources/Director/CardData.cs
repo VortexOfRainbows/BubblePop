@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using UnityEditor;
-using UnityEditor.Build;
-using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class CardData
 {
@@ -22,7 +19,7 @@ public class CardData
     public EnemyClause EnemyClause;
     public ModifierClause ModifierClause;
     public RewardClause RewardClause;
-    public float DifficultyMult => Owner.DifficultyMultiplier;
+    public float DifficultyMult => Owner.DifficultyMultiplier + Player.Instance.PersonalWaveCardBonus;
     public static int UpcomingWave => WaveDirector.WaveNum + 1;
     //private CardClause[] Clauses => new CardClause[] { EnemyClause, ModifierClause, RewardClause };
     public void GetPointsAllowed()
@@ -36,7 +33,9 @@ public class CardData
         AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r);
         e ??= new EnemyClause(AvailablePoints);
         m ??= new ModifierClause(AvailablePoints - 20);
-        r ??= new RewardClause(originalAvailablePoints);
+        float bonusMult = Player.Instance.Ruby * 0.2f + 1f;
+        float pointsAllocatedToPowers = originalAvailablePoints * bonusMult;
+        r ??= new RewardClause(pointsAllocatedToPowers, -1, DifficultyMult);
         if(e.AlternativeModifier != null)
         {
             if (e.AlternativeModifier.IsPermanent)
@@ -50,7 +49,7 @@ public class CardData
     }
     public void AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r)
     {
-        int difficultyNum = (int)DifficultyMult;
+        int difficultyNum = (int)Owner.DifficultyMultiplier;
         bool MinDifficultyCard = difficultyNum == 1;
         bool MidDifficulty = difficultyNum == 2;
         bool MaxDifficultyCard = difficultyNum == 3;
@@ -58,9 +57,14 @@ public class CardData
         m = null;
         r = null;
         int waveNum = UpcomingWave;
-        if(waveNum == 1)
+        if ((waveNum == 1 || waveNum == 2) && !WaveDirector.EnemyPool.Contains(EnemyID.RockSpider))
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldDuck) { IsPermanent = true });
+            if (Utils.RandFloat(1) < 0.12f * waveNum * difficultyNum)
+                e ??= new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.RockSpider) { IsPermanent = true });
+        }
+        if (waveNum == 1)
+        {
+            e ??= new EnemyClause(AvailablePoints, new EnemyCard(Utils.RandFloat(1) < 0.3f ? EnemyID.OldDuck : EnemyID.Chicken) { IsPermanent = true });
         }
         if(waveNum == 3)
         {
@@ -68,11 +72,11 @@ public class CardData
         }
         if (waveNum == 4 || waveNum == 5)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Chicken : MidDifficulty ? EnemyID.Crow : EnemyID.OldFlamingo));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? (Utils.RandFloat(1) < 0.3f ? EnemyID.Chicken : EnemyID.OldDuck) : MidDifficulty ? EnemyID.Crow : EnemyID.OldFlamingo));
         }
         if (waveNum == 6)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MaxDifficultyCard ? EnemyID.Crow : EnemyID.Chicken));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(MaxDifficultyCard ? EnemyID.Crow : (Utils.RandFloat(1) < 0.7f ? EnemyID.Chicken : EnemyID.OldDuck)));
             m = new(AvailablePoints, 1, new DirectorSkullSwarmModifier(e.Enemy) { ApplicationStrength = MaxDifficultyCard ? 1 : 2, IsPermanent = false });
         }
         if (waveNum == 7)
@@ -85,35 +89,57 @@ public class CardData
         }
         if (waveNum == 9)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Ent : MaxDifficultyCard ? EnemyID.OldLeonard : EnemyID.Gatligator));
+            e = new EnemyClause(AvailablePoints, new EnemyCard(Utils.RandFloat(1) < 0.15f ? EnemyID.Infector : MinDifficultyCard ? EnemyID.Ent : MaxDifficultyCard ? EnemyID.OldLeonard : EnemyID.Gatligator));
         }
         if (waveNum == 10)
         {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = false });
+        }
+        if(waveNum == 11)
+        {
+            if(Utils.RandFloat(1) < 0.5f)
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = false });
         }
         if (waveNum == 12)
         {
             e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Ent) { IsPermanent = true });
             m = new(AvailablePoints, 1, new DirectorSkullSwarmModifier(e.Enemy) { ApplicationStrength = 2, IsPermanent = false });
         }
+        if (waveNum == 13 || waveNum == 14)
+        {
+            if (Utils.RandFloat(1) < (waveNum == 13 ? 0.5f : 0.66f))
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = true });
+        }
         if (waveNum >= 15 && waveNum % 5 == 0)
         {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = true });
+            if(waveNum % 10 == 0 && Utils.RandFloat(1) < 0.5f)
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = true });
+            else
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = true });
             float strength = waveNum >= 25 ? 200 : 50;
-            m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum});
+            if(waveNum % 10 == 0)
+                m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { 
+                    ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, 
+                    new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum },
+                    new EnemyStrengthModifier() { ApplicationStrength = 1000, IsPermanent = true, Free = true });
+            else
+                m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum });
         }
-        if(waveNum >= 5 && m == null)
+        if (waveNum >= 5 && m == null)
         {
             if (waveNum % 3 == 0) //Previously, there was a 10% power boost with each wave number, so this should mimic the old system
-                m = new ModifierClause(AvailablePoints + 300, 1, new DirectorCreditPowerModifier() { ApplicationStrength = 300, IsPermanent = true });
+            {
+                float strength = 240 + 20 * (int)(waveNum / 3);
+                m = new ModifierClause(AvailablePoints, 1, new DirectorCreditPowerModifier() { ApplicationStrength = strength, IsPermanent = true, Free = true });
+            }
             else if (waveNum % 3 == 1) //Previously, there was a 5% health boost with each wave number, so this should mimic the old system (with some changed scaling)
             {
                 float strength = 10 + 5 * (int)(waveNum / 5);
-                m = new ModifierClause(AvailablePoints + strength * 10, 1, new EnemyStrengthModifier() { ApplicationStrength = strength * 10, IsPermanent = true });
+                m = new ModifierClause(AvailablePoints, 1, new EnemyStrengthModifier() { ApplicationStrength = strength * 10, IsPermanent = true, Free = true });
             }
             else if (waveNum % 3 == 2 && waveNum >= 17)
             {
-                m = new ModifierClause(AvailablePoints + 50, 1, new DirectorSkullWaveModifier() { ApplicationStrength = 50, IsPermanent = true});
+                m = new ModifierClause(AvailablePoints, 1, new DirectorSkullWaveModifier() { ApplicationStrength = 50, IsPermanent = true, Free = true });
             }
         }
     }
@@ -218,6 +244,19 @@ public class EnemyClause : CardClause
         while (newEnemy == null)
         {
             Enemy e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+            Enemy secondChoice = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+            if (WaveDirector.WaveNum < 5) //Temporary. Replace with special tiered getter later which does different stuff depending on wave number
+            {
+                while(e is Infector)
+                    e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+            }
+            else if(WaveDirector.WaveNum > 10)
+            {
+                if(WaveDirector.EnemyPool.Contains(e.gameObject))
+                    e = secondChoice;
+                if (secondChoice.CostMultiplier > e.CostMultiplier)
+                    e = secondChoice;
+            }
             newEnemy = new(e);
             if (newEnemy.GetCost() > Points)
                 newEnemy = null;
@@ -235,7 +274,7 @@ public class EnemyClause : CardClause
     public void PrepareWaveCards()
     {
         AssociatedWaveCards.Clear();
-        int maxSwarmDifficulty = 4;
+        int maxSwarmDifficulty = 6;
         float difficultMult = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
         if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator) //1 mid-wave by default for bosses, 3 at max card difficulty
         {
@@ -245,7 +284,11 @@ public class EnemyClause : CardClause
             else
                 maxSwarmDifficulty -= 1;
         }
-        for (int i = 0; i < difficultMult; ++i)
+        if (Enemy.EnemyToAdd is Infector)
+            maxSwarmDifficulty = 1;
+        int wavesWithoutSwarm = 0;
+        int max = (int)difficultMult;
+        for (int i = 0; i < max; ++i)
         {
             GameObject enemyType = Enemy.EnemyToAdd.gameObject;
             int TotalDudes = 1;
@@ -256,9 +299,15 @@ public class EnemyClause : CardClause
                 enemies[j] = enemyType;
             var card = WaveDeck.DrawMultiSpawn(WaveDeck.RandomPositionOnPlayerEdge(), 0, 0.5f, 0, 1.75f, enemies);
             card.Patterns[0].Skull = true;
-            float chance = i * (0.05f * difficultMult * WaveDirector.WaveNum);
-            if (i > 1 && chance > Utils.RandFloat()) {
-                card.ToSwarmCircle(Mathf.Min(maxSwarmDifficulty, 1 + i), 10, 0, 0.5f);
+            float chance = wavesWithoutSwarm * (0.05f * difficultMult * WaveDirector.WaveNum);
+            if ((wavesWithoutSwarm >= 1 && chance > Utils.RandFloat()) || i == max)
+            {
+                wavesWithoutSwarm = 0;
+                card.ToSwarmCircle(Mathf.Min(maxSwarmDifficulty, 1 + wavesWithoutSwarm), 10, 0, 0.5f);
+            }
+            else
+            {
+                ++wavesWithoutSwarm;
             }
             AssociatedWaveCards.Add(card);
         }
@@ -367,7 +416,8 @@ public class RewardClause : CardClause
     public List<Reward> PostRewards = new();
     public int RewardsAllowed = -1;
     public int RewardsAdded = 0;
-    public RewardClause(float points, int rewardsAllowed = -1, params Reward[] rewards) : base(points)
+    public float HealingChance = 1f;
+    public RewardClause(float points, int rewardsAllowed = -1, float healingChance = 1f, params Reward[] rewards) : base(points)
     {
         RewardsAllowed = rewardsAllowed;
         foreach(Reward r in rewards)
@@ -378,7 +428,12 @@ public class RewardClause : CardClause
                 AddPowerReward(p, listType);
             else if (r is CoinReward c)
                 AddCashReward(c, listType);
+            else if (r is ChestReward ch)
+                AddChestReward(ch, listType);
+            else if(r is KeyReward k)
+                AddKeyReward(k, listType);
         }
+        HealingChance = healingChance;
         GenerateData();
     }
     public void AddPowerReward(PowerReward r, List<Reward> list)
@@ -398,6 +453,7 @@ public class RewardClause : CardClause
     public void AddCashReward(CoinReward r, List<Reward> list)
     {
         Reward SameType = list.Find(g => g is CoinReward g2);
+        r.coins = ((r.coins + 4) / 5) * 5;
         if (SameType != null && SameType is CoinReward g2)
         {
             g2.coins += r.coins;
@@ -408,8 +464,66 @@ public class RewardClause : CardClause
             ++RewardsAdded;
         }
     }
+    public void AddKeyReward(KeyReward r, List<Reward> list)
+    {
+        Reward SameType = list.Find(g => g is KeyReward g2);
+        if (SameType != null && SameType is KeyReward g2)
+        {
+            g2.keys += r.keys;
+        }
+        else
+        {
+            list.Add(r);
+            ++RewardsAdded;
+        }
+    }
+    public void AddChestReward(ChestReward r, List<Reward> list)
+    {
+        Reward SameType = list.Find(g => g is ChestReward g2 && g2.ChestType == r.ChestType);
+        if (SameType != null && SameType is ChestReward g2)
+        {
+            g2.ChestQuantity += r.ChestQuantity;
+        }
+        else //clone does not exists
+        {
+            list.Add(r);
+            ++RewardsAdded;
+        }
+    }
     public override void GenerateData()
     {
+        int tokens = Player.Instance.TokensPerWave;
+        if (tokens > 0)
+        {
+            TokenReward reward = new(tokens)
+            {
+                BeforeWaveEndReward = true
+            };
+            PreRewards.Add(reward);
+        }
+        int choices = Player.Instance.PerpetualBubble;
+        if (choices > 0)
+        {
+            PowerReward reward = new(PowerUp.Get<Choice>().MyID)
+            {
+                Free = true,
+                BeforeWaveEndReward = true,
+                Amt = choices
+            };
+            AddPowerReward(reward, PreRewards);
+        }
+        float Rubies = Player.Instance.Ruby * 0.1f * Mathf.Sqrt(HealingChance);
+        while (Utils.RandFloat(1) < Rubies)
+        {
+            float FreePowerPoint = 100;
+            PowerReward reward = GeneratePower(ref FreePowerPoint, 10);
+            reward.Free = true;
+            reward.BeforeWaveEndReward = false;
+            Rubies -= 1;
+            AddPowerReward(reward, PostRewards);
+        }
+        if (CardData.UpcomingWave == 1)
+            AddKeyReward(new KeyReward(0, 1) { BeforeWaveEndReward = true }, PreRewards);
         while (Points >= 1 && (RewardsAdded < RewardsAllowed || RewardsAllowed == -1))
         {
             Reward r = GenRandomReward();
@@ -419,24 +533,93 @@ public class RewardClause : CardClause
                 AddPowerReward(p, listType);
             else if (r is CoinReward c)
                 AddCashReward(c, listType);
+            else if (r is ChestReward ch)
+                AddChestReward(ch, listType);
+            else if (r is KeyReward k)
+                AddKeyReward(k, listType);
+            else
+                listType.Add(r);
         }
     }
+    private PowerReward GeneratePower(ref float PointsAvailable, float BonusOnReroll = 5)
+    {
+        PowerReward reward = new(PowerUp.RandomFromPool(0, -1));
+        while (reward.GetCost() > PointsAvailable)
+        {
+            reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
+            PointsAvailable += BonusOnReroll;
+        }
+        return reward;
+    }
+    private ChestReward GenerateChest(ref float PointsAvailable)
+    {
+        int chestQuantity = 1;
+        int chestQuality = 0;
+        if (Utils.RandFloat(PointsAvailable) > 45 && Utils.RandFloat() < 0.6f)
+        {
+            chestQuality++;
+            if (Utils.RandFloat(PointsAvailable) > 95 && Utils.RandFloat() < 0.6f)
+                chestQuality++;
+        }
+        int chestSpawnCost = 25;
+        if (chestQuality == 1)
+            chestSpawnCost = 50;
+        if (chestQuality == 2)
+            chestSpawnCost = 100;
+
+        float spendablePoints = PointsAvailable - chestSpawnCost;
+        while (Utils.RandFloat(spendablePoints) > chestSpawnCost)
+        {
+            if (Utils.RandFloat() < 0.33f)
+            {
+                chestQuantity++;
+                spendablePoints -= chestSpawnCost;
+            }
+            else break;
+        }
+
+        ChestReward reward = new(chestSpawnCost * chestQuantity, chestQuality);
+        reward.ChestQuantity = chestQuantity;
+        return reward;
+    }
+    public int RewardType = -1;
     private Reward GenRandomReward()
     {
         float PointsAvailable = Points;
         bool beforeWaveReward = Utils.RandFloat(1) > 0.5f;
         Reward reward = null;
-        if(Utils.RandFloat(1) < 0.5f || Points < 10)
+        if(reward == null)
         {
-            reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.4f) : (int)(PointsAvailable + 0.4f));
-        }
-        else
-        {
-            reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
-            while(reward.GetCost() > PointsAvailable)
+            if (RewardType == -1 && Utils.RandFloat(1) < HealingChance * 0.05f && PreRewards.Count <= 0)
             {
-                reward = new PowerReward(PowerUp.RandomFromPool(0, -1));
-                PointsAvailable += 5;
+                RewardType = 1;
+                reward = new HealReward(beforeWaveReward ? (int)(PointsAvailable + 0.5f) : (int)(PointsAvailable * 0.75f + 0.5f));
+            }
+            else if (RewardType == -1 && Utils.RandFloat(1) < 0.40f)
+            {
+                RewardType = 2;
+                float conversionRate = (beforeWaveReward ? 18 : 12) + WaveDirector.WaveNum;
+                int possibleMaxKeys = (int)Mathf.Max(1, PointsAvailable / conversionRate);
+                possibleMaxKeys = (int)Mathf.Max(1, (possibleMaxKeys + 1) * Utils.RandFloat());
+                int otherKeyValue = (int)Mathf.Max(1, (possibleMaxKeys + 1) * Utils.RandFloat(0.5f, 1.0f) * Utils.RandFloat(0.25f, 1.0f));
+                possibleMaxKeys = Mathf.Min(possibleMaxKeys, otherKeyValue);
+                reward = new KeyReward((int)(possibleMaxKeys * conversionRate), possibleMaxKeys);
+            }
+            else if (Utils.RandFloat(1) < 0.4f || Points < 10)
+            {
+                reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.5f) : (int)(PointsAvailable + 0.5f));
+            }
+            if(reward == null)
+            {
+                if(Utils.RandFloat() < 0.3f)
+                {
+                    reward = GeneratePower(ref PointsAvailable);
+                }
+                else
+                {
+                    //RewardType = 3;
+                    reward = GenerateChest(ref PointsAvailable);
+                }
             }
         }
         reward.BeforeWaveEndReward = beforeWaveReward;

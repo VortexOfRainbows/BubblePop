@@ -4,15 +4,17 @@ using UnityEngine.Rendering.UI;
 
 public class GachaponShop : MonoBehaviour
 {
+    public static GachaponShop Instance;
     public GameObject[] Pedastal;
-    protected PowerUpObject[] Stock;
+    public PowerUpObject[] Stock { get; private set; }
     public int TotalPowersPurchased;
     public float PriceMultiplier = 1f;
     public float FillStockTimer = 0;
     public int NextToFillUp = -1;
     public void FixedUpdate()
     {
-        if(Main.WavesUnleashed)
+        Instance = this;
+        if (Main.WavesUnleashed)
         {
             if(Stock == null)
             {
@@ -58,9 +60,9 @@ public class GachaponShop : MonoBehaviour
     }
     public void AddStock(int i)
     {
-        float mult = PriceMultiplier * (1.0f + 0.1f * TotalPowersPurchased);
-        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, .005f), Pedastal[i].transform.position + new Vector3(0, 1.5f), 0).GetComponent<PowerUpObject>();
-        obj.Cost = (int)(obj.MyPower.Cost * mult);
+        float mult = PriceMultiplier * (1.0f + 0.05f * TotalPowersPurchased - Player.Instance.ShopDiscount);
+        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, .005f * Player.Instance.BlackmarketMult), Pedastal[i].transform.position + new Vector3(0, 1.5f), 0).GetComponent<PowerUpObject>();
+        obj.Cost = Mathf.Max(0, (int)(obj.MyPower.Cost * mult));
         Stock[i] = obj;
     }
 }

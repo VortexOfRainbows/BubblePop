@@ -6,7 +6,7 @@ public class BubblemancerUnlock : UnlockCondition
 {
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Bubblemancer: Awakening");
+        description.WithName("Unlikely Hero");
         description.WithDescription("Starts unlocked");
     }
     protected override bool TryUnlockCondition => true;
@@ -15,17 +15,16 @@ public class ThoughtBubbleUnlock : UnlockCondition
 {
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Thought Bubble: Awakening");
-        description.WithDescription("Starts unlocked");
+        description.WithName("Gatekeeper");
+        description.WithDescription("Reach and complete wave 25");
     }
-    protected override bool TryUnlockCondition => true; // UIManager.highscore >= 3000;
+    protected override bool TryUnlockCondition => WaveDirector.HighScoreWaveNum > 25;
 }
 public class GachaponUnlock : UnlockCondition
 {
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Gachapon: Awakening");
-        description.WithDescription("Starts unlocked");
+        description.WithName("In For A Penny");
+        description.WithDescription("Spend Y:[6480 coins] across multiple runs");
     }
-    protected override bool TryUnlockCondition => true; // purchase 10 items from shops
 }

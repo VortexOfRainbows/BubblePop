@@ -50,12 +50,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Visual: {fileID: 7193143893330720848}
   UniversalImmuneFrames: 0
-  Life: 10
-  MaxLife: -1
   DamageTaken: 0
   SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 1561463213389821838}
+  IndexInAllEnemyArray: -1
+  AlreadyDead: 0
   FirstStrike: 1
   sRender: {fileID: 8660886952408476278}
   Soap1: {fileID: 21300000, guid: 8635ccc7d0b3bfc498756c3949706b62, type: 3}
@@ -204,7 +204,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 70d22a55f3a00004dad40619cc1b57bc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

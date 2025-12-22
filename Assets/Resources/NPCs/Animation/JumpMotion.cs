@@ -42,6 +42,6 @@ public class JumpMotion : Animator
                 t.LerpLocalEulerZ(25 * JumpPercent, 0.1f);
             }
         }
-        Visual.transform.LerpLocalScale(new Vector2((1 + JumpPercent * 0.08f) * Utils.SignNoZero(Visual.transform.localScale.x), 1 - JumpPercent * 0.08f), 0.1f);
+        Visual.transform.LerpLocalScale(new Vector2((1 + JumpPercent * 0.08f) * Utils.SignNoZero(Visual.transform.localScale.x), 1 - JumpPercent * 0.08f) * 1.1f, 0.1f);
     }
 }

@@ -25,7 +25,7 @@ public class LightSpear : Projectile
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/LaserSquare");
         bool isCrown = Player.Instance.Hat is Crown;
         float specialColorMult = .75f;
-        if(Data.Length > 3)
+        if(Data.Length > 3 && Data[3] >= 0)
         {
             Color c = Utils.PastelRainbow(Data[3] + (isCrown ? 2f : 0), 0.67f) * 1.2f;
             SpriteRenderer.color *= c;
@@ -37,7 +37,6 @@ public class LightSpear : Projectile
             SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, new Color(1f, 0, 0, 0.5f), specialColorMult);
             SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, new Color(1f, 0, 0, 0.5f), specialColorMult);
         }
-        Damage = 2.0f + Player.Instance.LightSpear * 0.5f;
         Friendly = true;
         Hostile = false;
         cmp.c2D.offset = new Vector2(1, 0);
@@ -107,7 +106,9 @@ public class LightSpear : Projectile
     {
         if(Player.Instance.LightChainReact > 0 && !HasFiredLaser && Data[2] > 0 && target is Enemy e)
         {
-            Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), Data[2]).GetComponent<LightSpearCaster>().ignore = e;
+            float damage = Damage * 0.8f;
+            if(damage >= 0.5f)
+                Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), damage, Data[2]).GetComponent<LightSpearCaster>().ignore = e;
             HasFiredLaser = true;
         }
         Damage = 0;
@@ -136,7 +137,7 @@ public class LightSpearCaster : Projectile
             SpriteRendererGlow.transform.localPosition = new Vector3(0, 0.44f, -1);
             SpriteRendererGlow.transform.localScale = new Vector3(1.1f, 1.35f, 1f);
             SpriteRendererGlow.color = new Color(0.8f, 0f, 0f, 1f);
-            SpriteRendererGlow.sprite = Main.Shadow;
+            SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
             SpriteRendererGlow.sortingOrder = 0;
             SpriteRendererGlow.material = Resources.Load<Material>("Materials/Additive");
             alphaScale = 1f;
@@ -147,7 +148,7 @@ public class LightSpearCaster : Projectile
             SpriteRendererGlow.transform.localPosition = new Vector3(0, 0.66f, -1);
             SpriteRendererGlow.transform.localScale = Vector3.one * 1.6f;
             SpriteRendererGlow.color = new Color(0.9960784f, 0.9764706f, 0.2313726f, 0f);
-            SpriteRendererGlow.sprite = Main.Shadow;
+            SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
             SpriteRendererGlow.sortingOrder = 5;
             SpriteRendererGlow.material = Resources.Load<Material>("Materials/Additive");
             transform.localScale = Vector3.one;
@@ -156,7 +157,6 @@ public class LightSpearCaster : Projectile
         SpriteRenderer.color = new Color(1, 1, 1, 0);
         SpriteRenderer.sprite = Player.Instance.Hat.spriteRender.sprite;
         SpriteRenderer.flipX = false;
-        Damage = 0;
         Friendly = false;
         Hostile = false;
     }
@@ -174,7 +174,7 @@ public class LightSpearCaster : Projectile
                 if (!HasShot)
                 {
                     Vector2 shootFromPos = SpriteRendererGlow.transform.position;
-                    if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new List<Enemy> { ignore }, (int)Data1 - 1, bonusRange: 5 + 1f * Player.Instance.LightChainReact))
+                    if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new List<Enemy> { ignore }, (int)Data1 - 1, bonusRange: 5 + 1f * Player.Instance.LightChainReact, 1, Damage))
                         RB.velocity -= norm * 6;
                     HasShot = true;
                 }
@@ -223,7 +223,7 @@ public class ThunderLightSpearCaster : Projectile
     public override void Init()
     {
         SpriteRendererGlow.transform.localScale = Vector3.one * 1.5f;
-        SpriteRendererGlow.sprite = SpriteRenderer.sprite = Main.Shadow;
+        SpriteRendererGlow.sprite = SpriteRenderer.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.sortingOrder = 0;
         SpriteRendererGlow.material = SpriteRenderer.material = Resources.Load<Material>("Materials/Additive");
         alphaScale = 1f;
@@ -231,11 +231,11 @@ public class ThunderLightSpearCaster : Projectile
             SpriteRendererGlow.color = new Color(1f, 0f, 0f, 0.5f);
         else
             SpriteRendererGlow.color = new Color(0.996f, 0.9765f, 0.2314f, 0.5f);
-        Damage = 0;
         Friendly = false;
         Hostile = false;
         transform.localScale *= 0.75f;
-        MyTrail = SpecialTrail.NewTrail(transform, SpriteRendererGlow.color * 0.9f, 5f, 0.2f);
+        MyTrail = SpecialTrail.NewTrail(transform, SpriteRendererGlow.color * 0.9f, 1, 0.2f);
+        cmp.c2D.enabled = false;
     }
     public bool HasShot = false;
     public bool HasClosed = false;
@@ -277,7 +277,7 @@ public class ThunderLightSpearCaster : Projectile
             {
                 float rangeBonus = Data[2];
                 Vector2 shootFromPos = SpriteRendererGlow.transform.position;
-                if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new(), Player.Instance.LightChainReact, bonusRange: 3 + total * 0.5f + rangeBonus, 0f))
+                if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new(), Player.Instance.LightChainReact, bonusRange: 3 + total * 0.5f + rangeBonus, 0f, Damage))
                     HasShot = true;
                 timer -= speed;
             }

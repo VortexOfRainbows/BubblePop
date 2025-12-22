@@ -24,7 +24,7 @@ public class Crown : Bulb
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Crown of Command").WithDescription("Choice powers have 2 more options");
+        description.WithName("Crown of Command").WithDescription("Choice powers have 5 options");
     }
     public override void EquipUpdate()
     {

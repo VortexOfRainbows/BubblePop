@@ -1,0 +1,49 @@
+Dev Build 1.40 (tentative version number)
+
+New:
+1. Character Select UI changes: as it stands now, this is generally just a small fidelity improvement, but more will come later!
+
+Misc:
+1. Make it so all enemies are BLACKED until picked in a run, rather than unlocked.
+2. Relationships between equipment prefabs is now defined internally and with an exact ordering
+	1. Now it has a consistent ID system
+	2. For future updates, this should fix the randomizing of previously equipped equips and tier list when new equips are added
+
+Fixes:
+1. Crystal ambient sound is now effected by your sound setting
+	1. It should also no longer permanently play twice
+2. Fix bug where Eternal Bubbles accidentally increased bubble range
+3. Fix bug where game reloaded large amounts of data upon restart
+	1. This should generally improve loading times
+4. Give Burger the damage up back (I accidentally removed it for some reason)
+5. Fix some wave card scaling UI issues
+
+
+
+
+
+Dev Build 1.50 (tentative version number)
+
+New:
+1. New Weapon: Gacha Slots, unlocked with Gachapon
+	1. Comes with 7 accompanying powers, as well as some synergy with other powers
+2. New sound for chest spawning in
+
+Changes:
+1. Bubble Gun no longer contributes Haste or Bubble Propulsion to the pool
+2. Light Bulb no longer contributes Haste to the pool
+3. Gachapon now generates chips slower (2.5 -> 3.0), but can generate them in char select
+	1. This is meant to be a slight nerf to push Chips towards being the emergency burst option they were designed for, rather than a primary weapon (yes this change is targeted to YOU. YOU know who YOU are...)
+4. Increased power up prices across the board, for both wave rewards and the shop: (10 -> 15, 15 -> 25, 25 -> 50, 50 -> 100, 100 -> 250)
+	1. Reduced rate of shop price inflation 10% -> 5%
+	2. This should make early game prices steeper, common powers will be cheaper later game
+5. Wave Start power rewards now have a lower cost multiplier 2 -> 1.5 relative to Wave End reward
+6. Roll for Perception now caps the reduced weight of rarity 1 and 2 powers at 0.2 -> 0.5
+	1. This means common items should no longer appear as infrequently with the power in high quantities
+7. When not seeking an implant (where their hitbox turns off anyways), Infectors now try to stay 3 -> 4 units away from the player
+
+Misc:
+1. Slight modifications to Gachapon's Moving and Facial Animations
+
+Fixes:
+1. Fix issue where bunce hat would fly into the sky uncontrollably when switching from Gachapon to Bubblemancer in the equip menu where bunce hat was worn by Bubblemancer

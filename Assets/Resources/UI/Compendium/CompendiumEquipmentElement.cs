@@ -19,7 +19,7 @@ public class CompendiumEquipmentElement : CompendiumElement
         TypeID = i;
         if (MyElem.ActiveEquipment != null)
             Destroy(MyElem.ActiveEquipment.gameObject);
-        MyElem.UpdateEquipment(Main.Instance.EquipData.AllEquipmentsList[i].GetComponent<Equipment>());
+        MyElem.UpdateEquipment(Main.GlobalEquipData.AllEquipmentsList[i].GetComponent<Equipment>());
         MyElem.SetCompendiumLayering(canvas.sortingLayerID, Style == 4 ? 65 : 45, Style == 3 ? 0 : 1); //2 = UICamera, 20 = compendium canvas size
         CountCanvas.sortingLayerID = canvas.sortingLayerID;
         MyCanvas = canvas;
@@ -47,7 +47,7 @@ public class CompendiumEquipmentElement : CompendiumElement
             isAchieve = true;
             hoverTransform = achieve.CombinedRect;
         }
-        bool isWithinMaskRange = Camera.main.WorldToScreenPoint(count.transform.position).y > 800;
+        bool isWithinMaskRange = count.transform.position.y > Compendium.Instance.SortBar.position.y + Compendium.Instance.SortBar.sizeDelta.y * 0.5f * Compendium.Instance.SortBar.lossyScale.y;
         count.gameObject.SetActive((isAchieve ? Compendium.Instance.AchievementPage.ShowCounts : Compendium.Instance.EquipPage.ShowCounts) && !MyElem.DisplayOnly && (!IsLocked() || isAchieve) && Style <= 1 && !isWithinMaskRange);
         if (MyElem.ActiveEquipment != null)
         {
@@ -73,7 +73,7 @@ public class CompendiumEquipmentElement : CompendiumElement
                 Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
                 if (this is CompendiumAchievementElement achieve2 && achieve2.DescriptionImage != null)
                 {
-                    if(achieve2.MyUnlock.Completed && !Selected)
+                    if(achieve2.MyUnlock.Unlocked && !Selected)
                     {
                         target = new Color(.1f, .7f, .1f, 0.431372549f);
                     }

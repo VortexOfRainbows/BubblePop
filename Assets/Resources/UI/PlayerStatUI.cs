@@ -15,6 +15,10 @@ public class PlayerStatUI : MonoBehaviour
     private static PlayerStatUI s_Instance;
     public TMPro.TextMeshProUGUI moneyText;
     public GameObject Money;
+    public TMPro.TextMeshProUGUI keyText;
+    public GameObject Key;
+    public TMPro.TextMeshProUGUI tokenText;
+    public GameObject Tokens;
     public static void ClearHearts()
     {
         foreach (PlayerHeartUI heart in Hearts)
@@ -32,6 +36,7 @@ public class PlayerStatUI : MonoBehaviour
         ClearHearts();
         CurrentLife = MaxLife = 0;
         Money.SetActive(false);
+        Key.SetActive(false);
     }
     public void Update()
     {
@@ -41,6 +46,22 @@ public class PlayerStatUI : MonoBehaviour
             int money = CoinManager.Current; // : CoinManager.Savings;
             moneyText.text = $"${money}";
             moneyText.enabled = true;
+
+            Key.SetActive(true);
+            int keys = CoinManager.CurrentKeys; // : CoinManager.Savings;
+            keyText.text = $"{keys}";
+            keyText.enabled = true;
+
+            bool usingGachaSlots = Player.Instance.Weapon != null && Player.Instance.Weapon is SlotMachineWeapon;
+            Tokens.SetActive(usingGachaSlots);
+            if(usingGachaSlots)
+            {
+                int tokens = CoinManager.CurrentTokens; // : CoinManager.Savings;
+                string hex = ColorHelper.TokenColor.ToHexString();
+                string text = tokens > 0 ? $"{tokens}" : $"<color={(CoinManager.Current >= SlotMachineWeapon.CoinCost ? "#FFFFFF" : "#FF4455")}>${SlotMachineWeapon.CoinCost}</color>";
+                tokenText.text = $"<color={hex}>{text}/{Player.Instance.MaxTokens}</color>";
+                tokenText.enabled = true;
+            }
         }
     }
     public static void SetHeartsToPlayerLife()

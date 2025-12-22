@@ -39,6 +39,7 @@ public class Gachapon : Body
         if (Utils.RandFloat() < player.BlueChipChance){
             r.sprite = BlueChip;
         }
+        r.color = r.color.WithAlphaMultiplied(PlayerData.SpecialVisualOpacity);
         r.gameObject.transform.localScale = Vector3.zero;
         notYetResizedCips.Add(r.gameObject);
         stack.Chips.Add(r.gameObject);
@@ -76,9 +77,9 @@ public class Gachapon : Body
             float lerp = totalCount == 1 ? 0 : (float)i / (totalCount - 1);
             Vector2 rot = toMouse.RotatedBy(Mathf.Deg2Rad * Mathf.Lerp(-rotation, rotation, lerp));
             if(blue && blueCount-- > 0)
-                Projectile.NewProjectile<BlueChip>(transform.position, rot);
+                Projectile.NewProjectile<BlueChip>(transform.position, rot, 6 + 2 * Player.Instance.DoubleDownChip);
             else
-                Projectile.NewProjectile<PokerChip>(transform.position, rot);
+                Projectile.NewProjectile<PokerChip>(transform.position, rot, 3 + 1 * Player.Instance.DoubleDownChip);
             int sparkle = player.DashSparkle;
             if(sparkle > 0)
             {
@@ -89,12 +90,12 @@ public class Gachapon : Body
                 for (int j = 0; j < whole; ++j)
                 {
                     Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
-                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5), Utils.RandInt(2) * 2 - 1);
                 }
                 if(Utils.RandFloat(1) < approximate)
                 {
                     Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
-                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5));
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5), Utils.RandInt(2) * 2 - 1);
                 }
             }
         }
@@ -122,6 +123,7 @@ public class Gachapon : Body
         }
         stacks.RemoveAt(stacks.Count - 1);
     }
+    public float PreviousSpecial = 1;
     public void ResizeChips()
     {
         for(int i = notYetResizedCips.Count - 1; i >= 0; --i)
@@ -136,6 +138,18 @@ public class Gachapon : Body
             else
                 chip.transform.localScale = Vector3.Lerp(chip.transform.localScale * 1.01f, Vector3.one, 0.08f);
         }
+        if(PreviousSpecial != PlayerData.SpecialVisualOpacity)
+        {
+            PreviousSpecial = PlayerData.SpecialVisualOpacity;
+            foreach(ChipStack stack in stacks)
+            {
+                foreach(GameObject chip in stack.Chips)
+                {
+                    var sp = chip.GetComponent<SpriteRenderer>();
+                    sp.color = sp.color.WithAlpha(PreviousSpecial);
+                }
+            }
+        }
     }
     public Sprite[] altFaces;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
@@ -145,16 +159,13 @@ public class Gachapon : Body
         stacks = new List<ChipStack>();
     }
     //public SpriteRenderer MouthR;
-    protected override float AngleMultiplier => 0.4f;
+    protected override float AngleMultiplier => 0.25f;
     protected override float RotationSpeed => 1f;
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Choice>();
-        powerPool.Add<BubbleBirb>();
-        powerPool.Add<Overclock>();
         powerPool.Add<Raise>();
         powerPool.Add<AllIn>();
-        powerPool.Add<BubbleMitosis>();
+        powerPool.Add<DoubleDown>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -185,7 +196,7 @@ public class Gachapon : Body
         looking.y *= 0.75f;
         if (looking.x < 0)
             toMouseR += Mathf.PI;
-        Vector2 pos = new Vector2(0.08f * p.Direction, 0.35f) + looking;
+        Vector2 pos = new Vector2(0.07f * p.Direction, 0.325f) + looking;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
         FaceR.flipX = toMouse.x > 0;
@@ -193,7 +204,7 @@ public class Gachapon : Body
         top.SetActive(true);
         //MouthR.flipX = FaceR.flipX;
     }
-    public override float AbilityCD => 2.5f;
+    public override float AbilityCD => 3.0f;
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
         ResizeChips();
@@ -206,14 +217,6 @@ public class Gachapon : Body
             AddStack();
         while (stacks.Count > player.ChipStacks)
             RemoveStack();
-        if (Main.WavesUnleashed)
-        {
-            while(player.AbilityReady)
-            {
-                player.abilityTimer += AbilityCD;
-                AddChip();
-            }
-        }
         if(Control.Ability && !Control.LastAbility)
         {
             if (RemoveChip())
@@ -229,13 +232,10 @@ public class Gachapon : Body
                     break;
             }
         }
-        if (Main.WavesUnleashed)
+        while(player.AbilityReady)
         {
-            while(player.AbilityReady)
-            {
-                player.abilityTimer += AbilityCD;
-                AddChip();
-            }
+            player.abilityTimer += AbilityCD;
+            AddChip();
         }
         //if (p.AbilityReady && Control.Ability && !Control.LastAbility)
         //{

@@ -28,7 +28,7 @@ public class RollForCharisma : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Roll For Persuasion");
+        description.WithName("Roll For Charisma");
         description.WithDescription("Y:20% G:(+1% per stack) Y:chance to Y:heal after Y:[purchasing a power] or gain Y:25 G:(+25 per stack) Y:coins if uninjured");
         description.WithShortDescription("Chance to heal or refund a portion of money spent when purchasing power");
     } 
@@ -77,7 +77,7 @@ public class RollForInitiative : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to deal 250% G:(+25% per stack) to 500% G:(+50% per stack) Y:[bonus damage] on Y:[first strike]");
+        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to deal Y:200% G:(+20% per stack) Y:[bonus damage] on Y:[first strike]");
         description.WithShortDescription("Chance for first hit to deal additional damage");
     }
     public override void HeldEffect(Player p)
@@ -103,6 +103,8 @@ public class RollForPerception : PowerUp
     {
         description.WithDescription("Increases weights of Y:[rare powers] in the Y:[power pool] by Y:20% G:(+20% per stack)");
         description.WithShortDescription("Chance of seeing rare powers increased");
+        description.WithDescriptionVariant<SlotMachineWeapon>("Increases weights of Y:[rare powers] in the Y:[power pool] by Y:20% G:(+20% per stack) \nIncreases the likelihood of Y:[high-rarity spins] by Y:20% G:(+20% per stack)");
+        description.WithShortDescriptionVariant<SlotMachineWeapon>("Chance of seeing rare powers and rare spins increased");
     }
     public override void HeldEffect(Player p)
     {
@@ -149,12 +151,12 @@ public class ZapRadius : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Increases Y:[thunder bubble radius] by Y:7% G:(+7% per stack)");
+        description.WithDescription("Increases Y:[thunder bubble radius] by Y:10% G:(+10% per stack)");
         description.WithShortDescription("Increases thunder bubble radius");
     }
     public override void HeldEffect(Player p)
     {
-        p.ZapRadiusMult += 0.07f * Stack;
+        p.ZapRadiusMult += 0.10f * Stack;
     }
 }
 public class Electroluminescence : PowerUp
@@ -181,20 +183,20 @@ public class Burger : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Increases Y:[attack speed, movement speed, and damage] by Y:10% G:(+10% per stack)");
+        description.WithDescription("Increases Y:[attack speed] and Y:damage by Y:10% G:(+10% per stack) \nReduces Y:[movement speed] by Y:10% G:(+10% per stack)");
         description.WithShortDescription("Burger!?");
     }
     public override void HeldEffect(Player p)
     {
         p.AttackSpeedModifier += Stack * 0.1f;
-        p.MoveSpeedMod += Mathf.Sqrt(Stack) * 0.1f;
+        p.TrueMoveModifier -= Stack * 0.1f; 
         p.DamageMultiplier += Stack * 0.1f;
     }
     public override bool IsBlackMarket()
     {
         return true;
     }
-    public override int Cost => 30;
+    public override int Cost => 60;
 }
 public class BonusBatteries : PowerUp
 {
@@ -236,5 +238,320 @@ public class ResearchNotes : PowerUp
             }
             p.ResearchNoteKillCounter -= 3;
         }
+    }
+    public override int Cost => 50;
+}
+public class ResearchGrants : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Y:[Skull enemies] drop Y:3 G:(+2 per stack) additional Y:coins");
+        description.WithShortDescription("Skull enemies drop additional coins");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.FlatSkullCoinBonus += 1 + 2 * Stack;
+    }
+}
+public class Boomerang : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Electric Boomerang");
+        description.WithDescription($"Increases Y:[thunder bubble] recall damage by Y:50% G:(+50% per stack)");
+        description.WithShortDescription("Increases thunder bubble recall damage");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ThunderBubbleReturnDamageBonus += Stack * 1f;
+    }
+}
+public class ThunderBubbles : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Echo Bubbles");
+        description.WithDescription($"When recalled, Y:[thunder bubbles] leave behind a Y:[latent charge] that dissipates into Y:3 G:(+1 per stack) bubbles after Y:[thunder bubbles] are fully recalled");
+        description.WithShortDescription("Thunder bubbles release bubbles when recalled");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.EchoBubbles += 2 + Stack;
+    }
+}
+public class Supernova : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Legendary;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Stars have a Y:[20% chance] to Y:detonate on hit for Y:10 G:(+5 per stack) Y:damage " +
+            $"\nActivates <color=#BAE3FE>Starbarbs</color> and <color=#BAE3FE>Lucky Star</color>");
+        description.WithShortDescription("Stars have a chance to explode");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.Supernova += Stack;
+    }
+}
+public class ResonanceRuby : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Increases the Y:quality of Y:[wave rewards] by Y:20% G:(+20% per stack) \n" +
+            $"<color={DetailedDescription.Yellow}>Wave end</color> gains an additional Y:10% G:(+10% per stack) Y:chance to contain a Y:[bonus power reward]");
+        description.WithShortDescription("Improves wave rewards");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.Ruby += Stack;
+    }
+}
+public class DoubleDown : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Enemies Y:[killed by chips] drop additional Y:coins equal to the Y:[overkill damage dealt] up to a Y:[maximum of 5 coins] G:(+3 per stack) \nIncreases Y:[chip damage] by Y:1 G:(+1 per stack)");
+        description.WithShortDescription("Enemies killed by chips drop additional coins and increases chip damage");
+        //description.WithDescriptionVariant<SlotMachineWeapon>($"Enemies Y:[killed by chips] drop Y:1 G:(+1 per stack) token and additional Y:coins equal to the Y:[overkill damage dealt] up to a Y:[maximum of 5 coins] G:(+3 per stack) \nIncreases Y:[chip damage] by Y:1 G:(+1 per stack)");
+        //description.WithShortDescriptionVariant<SlotMachineWeapon>("Enemies killed by chips drop additional coins and a token, plus increases chip damage");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.DoubleDownChip += Stack;
+    }
+}
+public class FocusFizz : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Increases Y:[critical strike chance] by Y:5% G:(+5% per stack)");
+        description.WithShortDescription("Increases critical strike chance");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.CriticalStrikeChance += 0.05f * Stack;
+    }
+}
+public class Coupons : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Reduces the cost of Y:powers in the Y:shop by Y:12% G:(+12% per stack)");
+        description.WithShortDescription("Reduces the cost of powers in the shop");
+    }
+    public override void OnPickup(int count)
+    {
+        if(GachaponShop.Instance != null && GachaponShop.Instance.Stock != null)
+        {
+            foreach (PowerUpObject p in GachaponShop.Instance.Stock)
+            {
+                p.Cost = (int)(p.Cost - p.MyPower.Cost * 0.12f);
+            }
+        }
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ShopDiscount += 0.12f * Stack;
+    }
+}
+public class CloudWalker : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Cloud Walkers");
+        description.WithDescription($"Increases Y:[movement speed] by Y:10% G:(+10% per stack)");
+        description.WithShortDescription("Increases movement speed");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.TrueMoveModifier += Stack * 0.1f;
+    }
+}
+public class PerpetualBubbleMachine : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Adds Y:1 G:(+1 per stack) <color={DetailedDescription.Rares[0]}>Choice</color> to Y:[wave start]");
+        description.WithShortDescription("The key to infinite bubble forever?");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.PerpetualBubble += Stack;
+    }
+    public override bool IsBlackMarket()
+    {
+        return true;
+    }
+    public override int Cost => 125;
+}
+public class ConsolationPrize : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription("Increases Y:[non-winning spin damage] and Y:[secondary attack damage] by Y:20% G:(+20% per stack) \nY:7.77% chance to gain Y:2 G:(+2 per stack) Y:coins on Y:[non-winning spins] " +
+            "\nR:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins");
+        description.WithShortDescription("Increases non-winning spin damage, secondary attack damage, and gives a chance for consolation coins");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ConsolationPrize += Stack;
+        p.SpinPriceIncrease += 0.25f * Stack;
+    }
+}
+public class Pity : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Pity Charm");
+        description.WithDescription("Each consecutive Y:[non-Jackpot spin] increases Y:[Jackpot chance] by Y:4% G:(+2% per stack) " +
+            "\nR:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins");
+        description.WithShortDescription("Increases Jackpot chance after consecutive spins without a Jackpot");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.PityGrowthAmount = 0.02f + 0.02f * Stack;
+        p.SpinPriceIncrease += 0.25f * Stack;
+    }
+}
+public class TokenPouch : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Token Pouch");
+        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:3 G:(+3 per stack) and adds Y:2 G:(+2 per stack) Y:Token to Y:[wave start] " +
+            "\nR:[Increases spin price by 0.5] G:(+0.5 per stack) R:coins");
+        description.WithShortDescription("Hold more Tokens and get Tokens at the start of every wave");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.MaxTokens += Stack * 3;
+        p.TokensPerWave += Stack * 2;
+        p.SpinPriceIncrease += 0.5f * Stack;
+    }
+}
+public class BOGOSpin : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Bonus Spin");
+        description.WithDescription("Get a Y:[Bonus spin] on Y:10% G:(+10% per stack) of Y:spins \nEach Y:[Bonus spin] has Y:77.7% increased Y:[attack speed] for Y:[every spin that came before it] " +
+            "\nR:[Increases spin price by] R:1 G:(+1 per stack) R:coins");
+        description.WithShortDescription("Sometimes get a Bonus spin for free");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BuyOneGetOneMult += 0.1f * Stack;
+        p.SpinPriceIncrease += 1 * Stack;
+    }
+}
+public class PhilosophersStone : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Philosopher's Stone");
+        description.WithDescription("Increases Y:damage of Y:[high-rarity spins] by Y:10% G:(+10% per stack) and Y:[high-rarity spins] drop Y:50% G:(+50% per stack) more Y:coins on hit " +
+            "\nR:[Increases spin price by] R:2 G:(+2 per stack) R:coins");
+        description.WithShortDescription("Increases the damage dealt and coins dropped by high-rarity spins");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.PhilosophersStone += Stack;
+        p.SpinPriceIncrease += 2 * Stack;
+    }
+}
+public class RouletteWheel : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Roulette Wheel");
+        description.WithDescription("Increases the Y:[burst count] of your Y:[primary attack] by Y:1 G:(+1 per stack)" +
+            " \nEach Y:[burst] has Y:7.77% increased Y:[attack speed] for Y:[every burst in the same spin that came before it] " +
+            "\nR:[Increases spin price by] R:4 G:(+4 per stack) R:coins");
+        description.WithShortDescription("Keep that ball rolling!");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ExtraGachaBurst += Stack;
+        p.SpinPriceIncrease += 4 * Stack;
+    }
+}
+public class BatterUp : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Batter Up");
+        description.WithDescription("Y:[Secondary attack] launches Y:1 G:(+1 per stack) Y:[Curveball Tokens] for Y:[50% secondary attack damage] that drop Y:1 Y:Token on kill");
+        description.WithShortDescription("Let's hit it out of the park!");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BatterUp += Stack;
     }
 }
