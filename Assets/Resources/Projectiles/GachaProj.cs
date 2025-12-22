@@ -1,5 +1,3 @@
-using System.IO;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class GachaProj : Projectile
@@ -82,6 +80,72 @@ public class GachaProj : Projectile
         if (Utils.RandFloat() < bonus)
             count++;
         CoinManager.SpawnCoin(transform.position, (int)count, 1);
+    }
+    public override void OnKill()
+    {
+        int c2 = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
+        for (int i = 0; i < c2; i++)
+        {
+            Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, c.WithAlphaMultiplied(0.8f));
+        }
+        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
+    }
+    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
+    {
+        float currentSpeed = RB.velocity.magnitude * 0.99f + Player.Instance.HomingRangeSqrt * 0.125f;
+        float modAmt = 0.1f + Player.Instance.HomingRangeSqrt * 0.05f;
+        RB.velocity = Vector2.Lerp((1 - modAmt) * RB.velocity, norm * currentSpeed, modAmt).normalized * currentSpeed;
+        return false;
+    }
+}
+public class GachaTokenProj : Projectile
+{
+    public Color c = ColorHelper.TokenColor;
+    public override void Init()
+    {
+        c.a = 0.68f;
+        SpriteRenderer.sprite = Main.TextureAssets.TokenProj;
+        timer2 = 0;
+        transform.localScale *= 0.5f;
+        Penetrate = -1;
+        Friendly = true;
+        RB.velocity *= 1 + 0.1f * Player.Instance.FasterBulletSpeed;
+        SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
+        SpriteRendererGlow.color = c * 0.875f;
+        SpriteRendererGlow.transform.localScale *= 1.5f;
+        c2D.radius *= 1.25f;
+    }
+    public override void AI()
+    {
+        float deathTime = 180;
+        float speed = RB.velocity.magnitude;
+        float rtSpeed = Mathf.Sqrt(speed);
+        RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x) * 1.4f;
+        float targetScale = 1f + Data1 * 0.125f;
+        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
+        float FadeOutTime = 20;
+        if (timer > deathTime + FadeOutTime)
+        {
+            Kill();
+        }
+        if ((int)timer % 3 == 0)
+        {
+            Vector2 norm = RB.velocity.normalized;
+            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.1f + Utils.RandCircle(transform.lossyScale.x * 0.3f), .35f, norm * -.75f, 0.8f, Utils.RandFloat(0.225f, 0.35f), Data1 == 2 ? 1 : Data1 == 3 ? 2 : 0, c.WithAlphaMultiplied(0.5f));
+        }
+        if (timer > deathTime)
+        {
+            float alphaOut = 1 - (timer - deathTime) / FadeOutTime;
+            SpriteRenderer.color = new Color(SpriteRenderer.color.r, SpriteRenderer.color.g, SpriteRenderer.color.b, 0.68f * alphaOut);
+            SpriteRendererGlow.color = c * 0.8f * alphaOut;
+        }
+        timer++;
+    }
+    public override void OnHitTarget(Entity target)
+    {
+        Damage *= 0.8f;
+        CoinManager.SpawnToken(transform.position, 0.1f);
     }
     public override void OnKill()
     {

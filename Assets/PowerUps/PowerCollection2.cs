@@ -538,3 +538,20 @@ public class RouletteWheel : PowerUp
         p.SpinPriceIncrease += 4 * Stack;
     }
 }
+public class BatterUp : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Batter Up");
+        description.WithDescription("tbd");
+        description.WithShortDescription("tbd");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BatterUp += Stack;
+    }
+}

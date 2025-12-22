@@ -23,7 +23,7 @@ public class SlotMachineWeapon : Weapon
         powerPool.Add<TokenPouch>(); //Green
         powerPool.Add<PhilosophersStone>(); //Blue, Philosopher's Stone (more damage and money)
         powerPool.Add<RouletteWheel>(); //Blue, Roulette Wheel (Keep that ball rolling!
-        //powerPool.Add<Starshot>(); //Purple, Batter Up
+        powerPool.Add<BatterUp>(); //Purple, Batter Up
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -61,7 +61,7 @@ public class SlotMachineWeapon : Weapon
     private int PityCount = 0;
     private float BonusCount = 0;
     public int MaxBursts => 3 + player.ExtraGachaBurst;
-    private int BurstNum = 0;
+    private int BurstNum = 0, TokenShots = 0;
     protected override void AnimationUpdate()
     {
         Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
@@ -267,6 +267,16 @@ public class SlotMachineWeapon : Weapon
             }
             else
             {
+                if (TokenShots < player.BatterUp)
+                {
+                    float nextInterval = 1f / (player.BatterUp + 1) * (TokenShots + 1);
+                    while (iPer > nextInterval)
+                    {
+                        Projectile.NewProjectile<GachaTokenProj>(transform.position, attemptedPosition.RotatedBy(angleOffset), 5 + Player.Instance.ConsolationPrize, 0);
+                        TokenShots++;
+                        nextInterval = 1f / (player.BatterUp + 1) * (TokenShots + 1);
+                    }
+                }
                 attemptedPosition += Utils.RandCircle() * iPer * 0.26f;
             }
             attemptedPosition = attemptedPosition.RotatedBy(angleOffset);
@@ -340,6 +350,7 @@ public class SlotMachineWeapon : Weapon
         if (AttackRight <= 0 && AttackLeft < 0 && AttackGamble <= 0 && alternate)
         {
             AttackRight = AttackCooldownRight;
+            TokenShots = 0;
         }
     }
     protected override void DeathAnimation()

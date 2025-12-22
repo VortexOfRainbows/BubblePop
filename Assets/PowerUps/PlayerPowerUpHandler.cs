@@ -123,6 +123,7 @@ public partial class Player : Entity
     public float BuyOneGetOneMult = 0.0f;
     public float SpinPriceIncrease = 0.0f;
     public int ExtraGachaBurst = 0;
+    public int BatterUp = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -169,6 +170,7 @@ public partial class Player : Entity
         PityGrowthAmount = BuyOneGetOneMult = 0.0f;
         ConsolationPrize = PhilosophersStone = ExtraGachaBurst = 0;
         MaxTokens = 3;
+        BatterUp = 0;
     }
     private void UpdatePowerUps()
     {
