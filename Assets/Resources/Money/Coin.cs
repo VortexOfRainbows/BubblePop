@@ -49,14 +49,14 @@ public class Coin : MonoBehaviour
             rb.rotation += rb.velocity.magnitude * 0.5f * -Mathf.Sign(rb.velocity.x);
         float attractDist = IsHeart || IsKey ? 3.5f : 4 + p.Magnet * 3f;
         if(IsToken)
-            attractDist += 9;
+            attractDist *= 3;
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
         if (length < attractDist && (BeforeCollectableTimer <= 0 || IsHeart) && CanCollect())
         {
             float attractSpeed = 3 + p.Magnet + (++AttractTimer) / 30f;
             if (IsToken)
-                attractSpeed += 6;
+                attractSpeed *= 3;
             float percent = length / attractDist;
             rb.velocity = Vector2.Lerp(rb.velocity, toPlayer.normalized * attractSpeed, (1 - percent) * 0.2f);
             float speed = rb.velocity.magnitude;

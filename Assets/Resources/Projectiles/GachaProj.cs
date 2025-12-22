@@ -1,4 +1,5 @@
 using System.IO;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class GachaProj : Projectile
@@ -12,20 +13,21 @@ public class GachaProj : Projectile
         timer2 = 0;
         transform.localScale *= 0.5f;
         Damage = 5 + Player.Instance.ConsolationPrize;
-        Penetrate = 1;
+        Penetrate = 2;
         Friendly = true;
         if (Data1 == 1)
         {
             Damage = 10 + Player.Instance.PhilosophersStone;
             SpriteRenderer.sprite = Main.TextureAssets.CoinProj;
             c = ColorHelper.RarityColors[0];
+            Penetrate = 2;
         }
         else if (Data1 == 2)
         {
             Damage = 20 + Player.Instance.PhilosophersStone * 2;
             SpriteRenderer.sprite = Main.TextureAssets.GoldProj;
             c = ColorHelper.RarityColors[4];
-            Penetrate = 2;
+            Penetrate = 3;
         }
         else if (Data1 == 3)
         {
@@ -67,6 +69,7 @@ public class GachaProj : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
+        Damage *= 0.8f + 0.05f * Data1;
         if (Data1 == 0)
             return;
         float count = 1;
@@ -89,5 +92,12 @@ public class GachaProj : Projectile
             ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, c.WithAlphaMultiplied(0.8f));
         }
         AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
+    }
+    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
+    {
+        float currentSpeed = RB.velocity.magnitude * 0.99f + Player.Instance.HomingRangeSqrt * 0.125f;
+        float modAmt = 0.1f + Player.Instance.HomingRangeSqrt * 0.05f;
+        RB.velocity = Vector2.Lerp((1 - modAmt) * RB.velocity, norm * currentSpeed, modAmt).normalized * currentSpeed;
+        return false;
     }
 }
