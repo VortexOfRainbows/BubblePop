@@ -52,11 +52,13 @@ public partial class Main : MonoBehaviour
     public static class PrefabAssets
     {
         public static GameObject DefaultProjectile;
+        public static GameObject BatterUpTokenPrefab;
         public static PowerUpObject PowerUpObj;
         public static void Load()
         {
             DefaultProjectile = Resources.Load<GameObject>("Projectiles/Projectile");
             PowerUpObj = Resources.Load<GameObject>("PowerUps/Prefabs/PowerUpObj").GetComponent<PowerUpObject>();
+            BatterUpTokenPrefab = Resources.Load<GameObject>("Player/Gachapon/SlotMachine/BatterUpToken");
         }
     }
 }

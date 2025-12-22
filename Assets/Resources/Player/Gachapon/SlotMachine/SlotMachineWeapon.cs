@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 public class SlotMachineWeapon : Weapon
 {
+    public GameObject BatterUpToken => Main.PrefabAssets.BatterUpTokenPrefab;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
@@ -49,7 +51,8 @@ public class SlotMachineWeapon : Weapon
     public MeleeHitbox Hitbox { get; set; }
     public SpecialTrail Trail { get; set; }
     public Transform LeverArm;
-    public Transform Coin, GeoCenter;
+    public Transform Coin, GeoCenter, BatterUpCenter;
+    public List<Transform> BatterUpTokens;
     public float AttackGamble = 0;
     public int GambleOutcome = 1;
     public Vector3 previousAttemptedPosition = Vector3.zero;
@@ -78,7 +81,6 @@ public class SlotMachineWeapon : Weapon
         if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20 || AttackRight < RightClickEndLag)
         {
             attemptedPosition = playerToMouse.normalized * 1.05f + p.rb.velocity.normalized * 0.1f;
-            attemptedPosition.y *= 0.95f;
         }
         previousAttemptedPosition = attemptedPosition;
         Vector2 originalPosition = attemptedPosition;
@@ -247,6 +249,7 @@ public class SlotMachineWeapon : Weapon
                         Trail.Trail.sortingOrder = 2;
                     }
                 }
+                UpdateCoins(1, iPer);
             }
             else if(AttackRight <= RightClickEndLag)
             {
@@ -264,6 +267,7 @@ public class SlotMachineWeapon : Weapon
                     Trail.FakeParent = null;
                     Trail = null;
                 }
+                ClearCoins();
             }
             else
             {
@@ -272,11 +276,13 @@ public class SlotMachineWeapon : Weapon
                     float nextInterval = 1f / (player.BatterUp + 1) * (TokenShots + 1);
                     while (iPer > nextInterval)
                     {
-                        Projectile.NewProjectile<GachaTokenProj>(transform.position, attemptedPosition.RotatedBy(angleOffset), 5 + Player.Instance.ConsolationPrize, 0);
+                        AudioManager.PlaySound(SoundID.CoinPickup, BatterUpCenter.position, 0.3f, 1.4f + nextInterval * 0.1f, 0);
+                        BatterUpTokens.Add(Instantiate(BatterUpToken, BatterUpCenter.position, Quaternion.identity).transform);
                         TokenShots++;
                         nextInterval = 1f / (player.BatterUp + 1) * (TokenShots + 1);
                     }
                 }
+                UpdateCoins(iPer, 0);
                 attemptedPosition += Utils.RandCircle() * iPer * 0.26f;
             }
             attemptedPosition = attemptedPosition.RotatedBy(angleOffset);
@@ -313,6 +319,55 @@ public class SlotMachineWeapon : Weapon
 
         velocity *= 0.8f;
         bounceCount = 0.7f;
+    }
+    public void UpdateCoins(float percent, float launchPercent)
+    {
+        float interval = 1f / (player.BatterUp + 1) * (player.BatterUp + 1 - TokenShots);
+        if (launchPercent > interval && TokenShots > 0)
+        {
+            RemoveCoin();
+            --TokenShots;
+            UpdateCoins(percent, launchPercent);
+            return;
+        }
+        float bonus = 2.2f * percent;
+        float MINangleOffset = 185 * Mathf.Deg2Rad * dir;
+        float MAXangleOffset = 100 * Mathf.Deg2Rad * dir;
+        float size = MathF.Max(0.7f, 0.9f - 0.2f * player.BatterUp / 10f);
+        for (int i = 0; i < BatterUpTokens.Count; ++i)
+        {
+            Transform coin = BatterUpTokens[i];
+            interval = 1f / (player.BatterUp + 1) * (i + 1);
+            float iInter = 1 - interval;
+            float sin = Mathf.Sin((iInter * 0.33f + 0.67f * iInter * iInter) * Mathf.PI);
+            float angleOffset = MAXangleOffset * percent - MINangleOffset * percent * iInter;
+            Vector2 target = ((Vector2)previousAttemptedPosition).RotatedBy(angleOffset) * (1.9f + bonus * sin - iInter * 0.3f);
+            coin.transform.position = coin.transform.position.Lerp(Player.Position + target, 0.04f + 0.12f * percent);
+
+            coin.transform.localScale = new Vector3(Mathf.Abs(coin.transform.localScale.x), coin.transform.localScale.y, 1);
+            coin.transform.LerpLocalScale(Vector2.one * size, 0.1f);
+            coin.transform.localScale = new Vector3(coin.transform.localScale.x * -dir, coin.transform.localScale.y, 1);
+
+            coin.transform.LerpLocalEulerZ(target.ToRotation() * Mathf.Rad2Deg + (dir == -1 ? 180 : 0), 0.2f);
+        }
+    }
+    public void RemoveCoin()
+    {
+        int i = BatterUpTokens.Count - 1;
+        float interval = 1f / (player.BatterUp + 1) * (i + 1);
+        float dir = Utils.SignNoZero(BatterUpTokens[i].localScale.x);
+        Vector2 mousePos = Player.Position + (Vector2)previousAttemptedPosition.normalized * 15.5f;
+        AudioManager.PlaySound(SoundID.StarbarbImpact, BatterUpTokens[i].transform.position, 0.2f, 0.6f, 0);
+        Projectile.NewProjectile<GachaTokenProj>(BatterUpTokens[i].transform.position, new Vector2(44 * -dir, 0).RotatedBy((BatterUpTokens[i].localEulerAngles.z - dir * 33f) * Mathf.Deg2Rad), 5 + Player.Instance.ConsolationPrize,
+            mousePos.x, mousePos.y, dir, 0.5f * Mathf.Cos(Mathf.PI * (0.5f - interval)));
+        Destroy(BatterUpTokens[i].gameObject);
+        BatterUpTokens.RemoveAt(i);
+    }
+    public void ClearCoins()
+    {
+        for(int i = 0; i < BatterUpTokens.Count; ++i)
+            Destroy(BatterUpTokens[i].gameObject);
+        BatterUpTokens.Clear();
     }
     private float AttackCooldownLeft => 80;
     private float AttackCooldownRight => 100 + 20 * Mathf.Sqrt(player.SecondaryAttackSpeedModifier) + WindUpTime + RightClickEndLag;

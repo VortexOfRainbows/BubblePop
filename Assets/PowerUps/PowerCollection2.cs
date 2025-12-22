@@ -411,7 +411,7 @@ public class PerpetualBubbleMachine : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription($"Adds Y:1 G:(+1 per stack) <color={DetailedDescription.Rares[0]}>Choice</color> to Y:[wave start]");
-        description.WithShortDescription("The key to infinite bubble forever");
+        description.WithShortDescription("The key to infinite bubble forever?");
     }
     public override void HeldEffect(Player p)
     {
@@ -530,7 +530,7 @@ public class RouletteWheel : PowerUp
         description.WithDescription("Increases the Y:[burst count] of your Y:[primary attack] by Y:1 G:(+1 per stack)" +
             " \nEach Y:[burst] has Y:7.77% increased Y:[attack speed] for Y:[every burst in the same spin that came before it] " +
             "\nR:[Increases spin price by] R:4 G:(+4 per stack) R:coins");
-        description.WithShortDescription("Keep that ball rolling");
+        description.WithShortDescription("Keep that ball rolling!");
     }
     public override void HeldEffect(Player p)
     {
@@ -547,8 +547,8 @@ public class BatterUp : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Batter Up");
-        description.WithDescription("tbd");
-        description.WithShortDescription("tbd");
+        description.WithDescription("Y:[Secondary attack] launches Y:1 G:(+1 per stack) Y:[Curveball Tokens] for Y:[50% secondary attack damage] that drop Y:1 Y:Token on kill");
+        description.WithShortDescription("Let's hit it out of the park!");
     }
     public override void HeldEffect(Player p)
     {

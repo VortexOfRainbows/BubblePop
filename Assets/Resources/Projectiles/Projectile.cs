@@ -258,7 +258,7 @@ public class Projectile : MonoBehaviour
             }
         }
     }
-    public virtual bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
+    public virtual bool DoHomingBehavior(Enemy target, Vector2 norm, float range)
     {
         return true;
     }
