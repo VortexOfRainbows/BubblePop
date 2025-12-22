@@ -60,7 +60,7 @@ public class DetailedDescription
     public string SegmentToRichRext(string t, ref bool waitingForEnding)
     {
         string start2 = "";
-        if (t[0] == '\n')
+        if (t.Length > 0 && t[0] == '\n')
         {
             start2 += "\n";
             t = t[1..];

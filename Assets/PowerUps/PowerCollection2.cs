@@ -469,14 +469,14 @@ public class TokenPouch : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Token Pouch");
-        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:3 G:(+2 per stack) and adds Y:1 G:(+1 per stack) Y:Token to Y:[wave start] " +
+        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:3 G:(+3 per stack) and adds Y:2 G:(+2 per stack) Y:Token to Y:[wave start] " +
             "\nR:[Increases spin price by 0.5] G:(+0.5 per stack) R:coins");
         description.WithShortDescription("Hold more Tokens and get Tokens at the start of every wave");
     }
     public override void HeldEffect(Player p)
     {
-        p.MaxTokens += 1 + Stack * 2;
-        p.TokensPerWave += Stack;
+        p.MaxTokens += Stack * 3;
+        p.TokensPerWave += Stack * 2;
         p.SpinPriceIncrease += 0.5f * Stack;
     }
 }
@@ -516,5 +516,25 @@ public class PhilosophersStone : PowerUp
     {
         p.PhilosophersStone += Stack;
         p.SpinPriceIncrease += 2 * Stack;
+    }
+}
+public class RouletteWheel : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Roulette Wheel");
+        description.WithDescription("Increases the Y:[burst count] of your Y:[primary attack] by Y:1 G:(+1 per stack)" +
+            " \nEach Y:[burst] has Y:7.77% increased Y:[attack speed] for Y:[every burst in the same spin that came before it] " +
+            "\nR:[Increases spin price by] R:4 G:(+4 per stack) R:coins");
+        description.WithShortDescription("Keep that ball rolling");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ExtraGachaBurst += Stack;
+        p.SpinPriceIncrease += 4 * Stack;
     }
 }

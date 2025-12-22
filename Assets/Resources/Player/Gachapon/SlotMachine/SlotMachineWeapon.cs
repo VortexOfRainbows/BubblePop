@@ -22,7 +22,7 @@ public class SlotMachineWeapon : Weapon
         powerPool.Add<BOGOSpin>(); //White, Bonus Spin
         powerPool.Add<TokenPouch>(); //Green
         powerPool.Add<PhilosophersStone>(); //Blue, Philosopher's Stone (more damage and money)
-        //powerPool.Add<ShotSpeed>(); //Blue, Roulette Wheel (Keep that ball rolling!
+        powerPool.Add<RouletteWheel>(); //Blue, Roulette Wheel (Keep that ball rolling!
         //powerPool.Add<Starshot>(); //Purple, Batter Up
     }
     public override void InitializeDescription(ref DetailedDescription description)
@@ -39,6 +39,8 @@ public class SlotMachineWeapon : Weapon
             SwapSlotSprite(GambleSlots[2], 0, false);
         }
         player.PrimaryAttackSpeedModifier += 0.777f * BonusAttackNumber;
+        if (player.ExtraGachaBurst > 0)
+            player.PrimaryAttackSpeedModifier += Mathf.Max(0, 0.0777f * BurstNum);
     }
     public override bool IsPrimaryAttacking()
     {
@@ -58,6 +60,8 @@ public class SlotMachineWeapon : Weapon
     private float PityBonus = 0.0f;
     private int PityCount = 0;
     private float BonusCount = 0;
+    public int MaxBursts => 3 + player.ExtraGachaBurst;
+    private int BurstNum = 0;
     protected override void AnimationUpdate()
     {
         Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
@@ -114,7 +118,7 @@ public class SlotMachineWeapon : Weapon
                         {
                             velocity -= norm * 1f;
                             int num = GambleOutcome == 5 ? 3 : 0;
-                            int type = GambleOutcome != 5 ? GambleOutcome - 1 : AttackGamble == 50 ? 3 : AttackGamble == 30 ? 2 : 1;
+                            int type = GambleOutcome != 5 ? GambleOutcome - 1 : 3 - BurstNum % 3;
                             float separation = GambleOutcome == 5 ? 4.5f : 9f;
                             for (int i = -num; i <= num; i += 1)
                             {
@@ -134,6 +138,15 @@ public class SlotMachineWeapon : Weapon
                                         AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.0f, 0.3f, 2);
                                 }
                             }
+                            BurstNum++;
+                            if (BurstNum >= MaxBursts)
+                            {
+                                AttackGamble = 10;
+                            }
+                            else if(AttackGamble <= 10)
+                            {
+                                AttackGamble = 30;
+                            }
                         }
                         if(AttackGamble == 10)
                         {
@@ -148,7 +161,6 @@ public class SlotMachineWeapon : Weapon
                             {
                                 BonusCount -= 1;
                                 BonusAttackNumber++;
-                                AttackGamble = GambleAnimationFrames + GambleAttackFrames;
                                 GambleOutcome = DetermineGambleOutcome();
                             }
                             else
@@ -157,6 +169,7 @@ public class SlotMachineWeapon : Weapon
                     }
                     if (AttackGamble <= 1)
                     {
+                        BurstNum = 0;
                         BonusAttackNumber = 0;
                         hasDoneSelectAnimation = true;
                         FakeAttack = false;
@@ -191,7 +204,6 @@ public class SlotMachineWeapon : Weapon
             {
                 if (!FakeAttack)
                 {
-                    AttackGamble = GambleAnimationFrames + GambleAttackFrames;
                     GambleOutcome = DetermineGambleOutcome();
                 }
                 else AttackGamble = GambleAttackFrames / 2;
@@ -365,6 +377,8 @@ public class SlotMachineWeapon : Weapon
     public static List<int> FailureNums = new();
     public int DetermineGambleOutcome()
     {
+        BurstNum = 0;
+        AttackGamble = GambleAnimationFrames + GambleAttackFrames;
         if (!hasDoneSelectAnimation)
         {
             return 5;

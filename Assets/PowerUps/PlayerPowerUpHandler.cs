@@ -122,6 +122,7 @@ public partial class Player : Entity
     public int TokensPerWave = 0;
     public float BuyOneGetOneMult = 0.0f;
     public float SpinPriceIncrease = 0.0f;
+    public int ExtraGachaBurst = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -166,7 +167,7 @@ public partial class Player : Entity
         ShopDiscount = SpinPriceIncrease = 0.0f;
         LuckyStarItemsAllowedPerWave = PerpetualBubble = TokensPerWave = 0;
         PityGrowthAmount = BuyOneGetOneMult = 0.0f;
-        ConsolationPrize = PhilosophersStone = 0;
+        ConsolationPrize = PhilosophersStone = ExtraGachaBurst = 0;
         MaxTokens = 3;
     }
     private void UpdatePowerUps()
