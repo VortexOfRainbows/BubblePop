@@ -8,26 +8,35 @@ public class DualGridTilemap : MonoBehaviour
     public static GameObject Mushroom => Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
     public static GameObject VisualMapPrefab => Resources.Load<GameObject>("World/Tiles/VisualMap");
     public GameObject Visual;
-    private List<Tilemap> FloorMaps;
-    private List<Tilemap> BorderMaps;
+    private List<Tilemap> DisplayMap;
+    private List<Tilemap> BorderDisplayMap;
     public Tilemap Map;
-    public void Init(Color c, int orderOffset = -50)
+    public void Init()
     {
-        BorderMaps = new List<Tilemap>();
-        for (int k = 0; k < World.Instance.TileTypes.Length; ++k) {
-            Tilemap t = Instantiate(VisualMapPrefab, Visual.transform).GetComponent<Tilemap>();
-            BorderMaps.Add(t);
-            t.color = c;
-            BorderMaps[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + World.Instance.TileTypes[k].LayerOffset;
-        };
-        RefreshDisplayTilemap();
-
-        if(orderOffset == -50)
-            AddDecor(c, -20);
-        //else if (orderOffset == -49)
-        //    AddDecor(new Color(0.8f, 0.8f, 0.8f), -30);
+        DisplayMap = new List<Tilemap>();
+        BorderDisplayMap = new List<Tilemap>();
+        World.GeneratingBorder = false;
+        PrepareDisplayMap(Visual.transform, DisplayMap, Color.white, -50);
+        RefreshDisplayTilemap(Map, DisplayMap, false);
+        AddDecor(Color.white, -20);
+        World.GeneratingBorder = true;
+        PrepareDisplayMap(Visual.transform, BorderDisplayMap, new Color(0.4056604f, 0.4056604f, 0.4056604f), -49);
+        RefreshDisplayTilemap(Map, BorderDisplayMap, true);
+        AddDecor(new Color(0.8f, 0.8f, 0.8f), -30);
+        World.GeneratingBorder = false;
+        //GetComponent<TilemapRenderer>().enabled = false;
     }
-    public void RefreshDisplayTilemap()
+    public static void PrepareDisplayMap(Transform Visual, List<Tilemap> DisplayMap, Color c, int orderOffset)
+    {
+        for (int k = 0; k < World.Instance.TileTypes.Length; ++k)
+        {
+            Tilemap t = Instantiate(VisualMapPrefab, Visual).GetComponent<Tilemap>();
+            t.color = c;
+            DisplayMap.Add(t);
+            DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + World.Instance.TileTypes[k].LayerOffset;
+        };
+    }
+    public static void RefreshDisplayTilemap(Tilemap Map, List<Tilemap> DisplayMap, bool border)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
         for (int i = left; i < right; i++)
@@ -38,11 +47,9 @@ public class DualGridTilemap : MonoBehaviour
                 for (int k = 0; k < World.Instance.TileTypes.Length; ++k) //TODO: Replace this lookup with a dictionary for better efficiency 
                 {
                     var t = Map.GetTile(coords);
-                    if (World.Instance.TileTypes[k].RealTileMapVariant == t)
+                    if (World.Instance.TileTypes[k].TileType == t)
                     {
-                        World.Instance.TileTypes[k].UpdateDisplayTile(coords, BorderMaps[k]);
-                        if (k != 1) //THIS IS THE DIRT LAYER
-                            World.Instance.TileTypes[1].UpdateDisplayTile(coords, BorderMaps[1]); //MAKE IT SO DIRT IS UNDER EVERYTHING TO PREVENT CERTAIN VISUAL ISSUES. MAYBE TEMPORARY
+                        World.Instance.TileTypes[k].UpdateDisplayTile(coords, DisplayMap[k]);
                         break;
                     }
                 }
@@ -61,8 +68,8 @@ public class DualGridTilemap : MonoBehaviour
         }
         int grassLayer = 2;
         int dirtLayer = 1;
-        Tile grassTile = World.Instance.TileTypes[grassLayer].RealTileMapVariant; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
-        Tile dirtTile = World.Instance.TileTypes[dirtLayer].RealTileMapVariant; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
+        Tile grassTile = World.Instance.TileTypes[grassLayer].TileType; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
+        Tile dirtTile = World.Instance.TileTypes[dirtLayer].TileType; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)

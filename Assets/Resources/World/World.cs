@@ -7,7 +7,7 @@ public class World : MonoBehaviour
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
-    public static Tilemap CurrentGeneratingMap { get; private set; }
+    public static bool GeneratingBorder { get; set; } = false;
     public DualGridTilemap Tilemap;
     public DualGridTile[] TileTypes;
     public List<WorldNode> nodes;
@@ -21,8 +21,7 @@ public class World : MonoBehaviour
         LoadNodesOntoWorld();
         if (RealTileMap != null)
         {
-            CurrentGeneratingMap = RealTileMap.Map;
-            RealTileMap.Init(Color.white);
+            RealTileMap.Init();
         }
     }
     public void LoadNodesOntoWorld()

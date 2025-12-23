@@ -3,14 +3,11 @@ using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
 using System.Linq;
-using UnityEditor;
-using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "DualGridTile", menuName = "ScriptableObjects/DualGridTile", order = 1)]
 public class DualGridTile : ScriptableObject
 {
     #region Static Stuff
-    public static Tilemap RealTileMap => World.CurrentGeneratingMap;
     public static Dictionary<Tuple<bool, bool, bool, bool>, int> NeighbourRelations = SetNeighborRelations();
     public static Dictionary<Tuple<bool, bool, bool, bool>, int> SetNeighborRelations()
     {
@@ -42,12 +39,12 @@ public class DualGridTile : ScriptableObject
     #endregion
     public bool AdjacentTileSameType(Vector3Int coords, Vector3Int offset)
     {
-        var adjacentTileType = RealTileMap.GetTile(coords + offset);
+        var adjacentTileType = World.RealTileMap.Map.GetTile(coords + offset);
         if(TilesThatCountForBlending != null && TilesThatCountForBlending.Contains(adjacentTileType))
         {
             return true;
         }
-        return adjacentTileType == RealTileMapVariant;
+        return adjacentTileType == TileType;
     }
     public int CalculateDisplayTile(Vector3Int coords)
     {
@@ -76,12 +73,15 @@ public class DualGridTile : ScriptableObject
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
     public int LayerOffset = 0;
-    public Tile RealTileMapVariant;
-    public Tile BorderTileMapVariant;
+    [SerializeField]
+    private Tile RealTileMapVariant;
+    [SerializeField]
+    private Tile BorderTileMapVariant;
     public Tile[] TilesThatCountForBlending;
     public Sprite[] BonusTileVariations;
     #endregion
 
+    public Tile TileType => World.GeneratingBorder ? BorderTileMapVariant : RealTileMapVariant;
     public Tile[] DisplayTileVariants { get; private set; }
     public void Init()
     {
