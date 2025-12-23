@@ -9,7 +9,7 @@ using UnityEngine.Rendering;
 [CreateAssetMenu(fileName = "DualGridTile", menuName = "ScriptableObjects/DualGridTile", order = 1)]
 public class DualGridTile : ScriptableObject
 {
-    #region static/global stuff
+    #region Static Stuff
     public static Tilemap RealTileMap => World.CurrentGeneratingMap;
     public static Dictionary<Tuple<bool, bool, bool, bool>, int> NeighbourRelations = SetNeighborRelations();
     public static Dictionary<Tuple<bool, bool, bool, bool>, int> SetNeighborRelations()
@@ -72,12 +72,17 @@ public class DualGridTile : ScriptableObject
             map.SetTile(newPos, id != -1 ? DisplayTileVariants[CalculateDisplayTile(newPos)] : null);
         }
     }
+
+    #region Scriptable Object Stuff
     public Texture2D TileTexture;
     public int LayerOffset = 0;
     public Tile RealTileMapVariant;
+    public Tile BorderTileMapVariant;
     public Tile[] TilesThatCountForBlending;
-    public Tile[] DisplayTileVariants { get; private set; }
     public Sprite[] BonusTileVariations;
+    #endregion
+
+    public Tile[] DisplayTileVariants { get; private set; }
     public void Init()
     {
         SetDisplayVariants();

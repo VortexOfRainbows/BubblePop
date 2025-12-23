@@ -15,20 +15,6 @@ MonoBehaviour:
   TileTexture: {fileID: 2800000, guid: afe3f1ce216f35e41a54912bfe29e5e3, type: 3}
   LayerOffset: -3
   RealTileMapVariant: {fileID: 11400000, guid: 6d8561fb24b9e1c47b359e542b96a75d, type: 2}
+  BorderTileMapVariant: {fileID: 11400000, guid: 5b47626e20f2bd94ba5aa78d1622b3af, type: 2}
   TilesThatCountForBlending: []
-  DisplayTileVariants:
-  - {fileID: 11400000, guid: b659d67451955b14a8aa760ca2342090, type: 2}
-  - {fileID: 11400000, guid: f3533ea01f85a414a8bee7d08e1abfbe, type: 2}
-  - {fileID: 11400000, guid: 1c8b50acb55a49447a60ff7002f1ef52, type: 2}
-  - {fileID: 11400000, guid: f181ef1bd75a79c4e92be2ab73914276, type: 2}
-  - {fileID: 11400000, guid: b20b91071c7294e4f8f649035410aa19, type: 2}
-  - {fileID: 11400000, guid: e337f86dc5922f04d803bd8523806d05, type: 2}
-  - {fileID: 11400000, guid: aabc0be02a391d1499cce92aab249836, type: 2}
-  - {fileID: 11400000, guid: 34d4aaab1c9c39a4a9d6f87322f89a17, type: 2}
-  - {fileID: 11400000, guid: 586709506cc0df441bc615621e01dc31, type: 2}
-  - {fileID: 11400000, guid: a881f9666ad4b154a8e158fb49bca33a, type: 2}
-  - {fileID: 11400000, guid: 27f08872d57364445b9e15d68fa4a02f, type: 2}
-  - {fileID: 11400000, guid: decb7f8153befd84d9afbedef91cf92c, type: 2}
-  - {fileID: 11400000, guid: bdfc211d896b5124da076543cf37473e, type: 2}
-  - {fileID: 11400000, guid: 7e329aad24b1403468bf83d36336bc4e, type: 2}
-  - {fileID: 11400000, guid: 42ffc3a73d6ed2049b2650c27acd60a6, type: 2}
+  BonusTileVariations: []
