@@ -39,7 +39,7 @@ public class WorldNode : MonoBehaviour
                 var tile = TileMap.GetTile(v);
                 if(tile != null)
                 {
-                    world.Tilemap.Map.SetTile(v, tile);
+                    world.Tilemap.Map.SetTile(v + transformPos, tile);
                 }
             }
         }
