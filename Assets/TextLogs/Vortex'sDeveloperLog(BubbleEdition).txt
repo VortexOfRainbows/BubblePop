@@ -32,7 +32,7 @@ Need to do:
 12. Infector can die to poison while in an enemy (bug)
 13. Make power display on the bottom smaller
 14. Make Gachapon Weapon!
-	1. Needs: powers, debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for realestate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
+	1. Needs: debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for realestate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 15. Make Map NODE system
 16. Fix issue where hats start on the wrong side when facing left, standing still, and switching character or equipment
 
@@ -43,7 +43,9 @@ Mostly done but might need to keep an eye out:
 Done: 
 
 12/22/25 to 12/23/25
-1. WIP Node Generation
+1. WIP Node Generation:
+	1. Now the primary arena is generated with a NODE
+	2. While the whole system is far from complete, this is a great start!
 2. Rework how tile data is stored and generated for cleaner folder organization
 3. Change some sound effects for Batter Up
 4. Change some power descriptions and names

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 public class WaveCard 
 {
     public override string ToString()
@@ -178,19 +179,10 @@ public class EnemyPattern
     {
         bool hasWorldMap = World.RealTileMap != null && World.RealTileMap.Map != null;
         if(hasWorldMap)
-        {
             for(int i = -1; i <= 1; ++i)
-            {
                 for(int j = -1; j <= 1; ++j)
-                {
-                    if (!World.RealTileMap.Map.HasTile(World.RealTileMap.Map.WorldToCell(location) + new Vector3Int(i, j)))
-                    {
+                    if (!World.WithinBorders(location + new Vector2(i, j) * 2))
                         return false;
-                    }
-                }
-            }
-            return true;
-        }
         return true;
     }
 }

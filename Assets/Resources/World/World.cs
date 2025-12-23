@@ -11,6 +11,10 @@ public class World : MonoBehaviour
     public DualGridTilemap Tilemap;
     public DualGridTile[] TileTypes;
     public List<WorldNode> nodes;
+    public static bool WithinBorders(Vector3 position)
+    {
+        return RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) == Tile.ColliderType.None;
+    }
     public void Start()
     {
         m_Instance = this;

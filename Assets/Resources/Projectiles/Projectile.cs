@@ -121,7 +121,7 @@ public class Projectile : MonoBehaviour
         AI();
         if(CanBeAffectedByHoming() && (Friendly || this is SupernovaProj) && Player.Instance.HomingRange > 0)
             HomingBehavior();
-        if(World.RealTileMap.Map.GetColliderType(World.RealTileMap.Map.WorldToCell(transform.position)) != UnityEngine.Tilemaps.Tile.ColliderType.None)
+        if(!World.WithinBorders(transform.position))
             if(OnInsideTile())
                 Kill();
     }
