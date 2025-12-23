@@ -28,14 +28,9 @@ public class WorldNode : MonoBehaviour
     }
     public void Generate(World world)
     {
-        GetTileMap();
-        TileMap.CompressBounds();
         Vector3Int transformPos = new((int)transform.position.x / 2, (int)transform.position.y / 2);
-        var bounds = TileMap.cellBounds;
-        int left = bounds.x;
-        int right = left + bounds.size.x;
-        int bottom = bounds.y;
-        int top = bottom + bounds.size.y;
+        GetTileMap();
+        TileMap.GetCorners(out int left, out int right, out int bottom, out int top);
         for(int i = left; i < right; ++i)
         {
             for(int j = bottom; j < top; ++j)
@@ -44,8 +39,7 @@ public class WorldNode : MonoBehaviour
                 var tile = TileMap.GetTile(v);
                 if(tile != null)
                 {
-                    var change = new TileChangeData() { position = v + transformPos, tile = tile };
-                    world.m_RealTileMap.m_RealTileMap.SetTile(change, true);
+                    world.Tilemap.Map.SetTile(v + transformPos, tile);
                 }
             }
         }

@@ -169,7 +169,7 @@ public partial class Player : Entity
         HomingRangeSqrt = Mathf.Sqrt(HomingRange);
         bool dead = DeathKillTimer > 0;
         bool outOfBounds = false;
-        if (!World.RealTileMap.Map.HasTile(World.RealTileMap.Map.WorldToCell(transform.position)))
+        if (World.RealTileMap.Map.GetColliderType(World.RealTileMap.Map.WorldToCell(transform.position)) != UnityEngine.Tilemaps.Tile.ColliderType.None)
             outOfBounds = true;
         if (dead || outOfBounds)
             Pop();
