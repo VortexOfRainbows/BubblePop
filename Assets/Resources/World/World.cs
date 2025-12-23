@@ -6,17 +6,15 @@ public class World : MonoBehaviour
 {
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
-    public static DualGridTilemap RealTileMap => Instance.m_RealTileMap;
-    public static DualGridTilemap ColliderTileMap => Instance.m_ColliderTileMap;
+    public static DualGridTilemap RealTileMap => Instance.Tilemap;
     public static Tilemap CurrentGeneratingMap { get; private set; }
-    public DualGridTilemap m_RealTileMap;
-    public DualGridTilemap m_ColliderTileMap;
-    public DualGridTile[] Tiles;
+    public DualGridTilemap Tilemap;
+    public DualGridTile[] TileTypes;
     public List<WorldNode> nodes;
     public void Start()
     {
         m_Instance = this;
-        foreach (DualGridTile tile in Tiles)
+        foreach (DualGridTile tile in TileTypes)
         {
             tile.Init();
         }
@@ -26,12 +24,6 @@ public class World : MonoBehaviour
             CurrentGeneratingMap = RealTileMap.Map;
             RealTileMap.Init(Color.white);
         }
-        if (ColliderTileMap != null)
-        {
-            CurrentGeneratingMap = ColliderTileMap.Map;
-            ColliderTileMap.Init(new Color(0.4056604f, 0.4056604f, 0.4056604f), -49);
-        }
-        CurrentGeneratingMap = null;
     }
     public void LoadNodesOntoWorld()
     {
