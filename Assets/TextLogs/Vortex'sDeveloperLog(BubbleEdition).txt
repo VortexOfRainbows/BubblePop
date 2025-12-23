@@ -42,13 +42,19 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-12/22/25
+12/22/25 to 12/23/25
 1. WIP Node Generation
 2. Rework how tile data is stored and generated for cleaner folder organization
 3. Change some sound effects for Batter Up
 4. Change some power descriptions and names
 5. Reduce base damage of Gacha Slot non-winning spin 5 -> 4
 6. Gacha Slots projectiles now lose more damage when piercing then before (-20%, -15%, -10%, -5%) -> (-20%, -20%, -20%, -20%)
+7. Rework how the world is generally created and collision loaded (from a floor map and a wall map to a composite map). Should result in slightly less memory usage (maybe), and potentially improved performance
+	1. The main benefit is the internal and development organization is greatly improved, as only one tile map in a node needs to be modified
+	2. Also some visual artifacts should be removed as a result of this change
+8. Remove TilesThatCountForBlending system due to it seeming obsolete, which will change how tiles look slightly
+9. Thunder bubble no longer increases in speed by 10% when it bounces off of walls
+10. Added a new grass tile that matches with the border color (for secret ways)
 
 
 -- A1.50 --

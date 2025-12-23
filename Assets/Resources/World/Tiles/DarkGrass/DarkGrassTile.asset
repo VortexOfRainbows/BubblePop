@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 354ada615d12a894f938c2f1bac80208, type: 3}
-  m_Name: GrassTile
+  m_Name: DarkGrassTile
   m_EditorClassIdentifier: 
   TileTexture: {fileID: 2800000, guid: a2e8a1ff75daef94bb7f8df208eacba1, type: 3}
   LayerOffset: -4
-  RealTileMapVariant: {fileID: 11400000, guid: 6b42f1c117edfb14f987eb8a5b79b53b, type: 2}
-  BorderTileMapVariant: {fileID: 11400000, guid: d843f0cb7c9ed004cafb26f160cdd34d, type: 2}
-  TilesThatCountForBlending:
-  - {fileID: 11400000, guid: 0f6e7ab7fcfd9054188feafb42060c40, type: 2}
+  RealTileMapVariant: {fileID: 11400000, guid: 0f6e7ab7fcfd9054188feafb42060c40, type: 2}
+  BorderTileMapVariant: {fileID: 11400000, guid: 78217b49b0f4add42bf45323df37914b, type: 2}
   BonusTileVariations:
-  - {fileID: 21300000, guid: a6d154f9ef149a048bf9cacbf16993e6, type: 3}
+  - {fileID: 21300000, guid: 7360ab82bd78d774d8e224a2e6eb9116, type: 3}
+  ColorModifier: {r: 0.4, g: 0.4, b: 0.4, a: 1}

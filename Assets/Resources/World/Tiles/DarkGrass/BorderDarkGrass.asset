@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: BorderGrass
+  m_Name: BorderDarkGrass
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -1493498257, guid: a2e8a1ff75daef94bb7f8df208eacba1, type: 3}
-  m_Color: {r: 0.40392157, g: 0.40392157, b: 0.40392157, a: 1}
+  m_Sprite: {fileID: 21300000, guid: affd3f9ec3e920645986cd8303fd02f4, type: 3}
+  m_Color: {r: 0.16, g: 0.16, b: 0.16, a: 1}
   m_Transform:
     e00: 1
     e01: 0
