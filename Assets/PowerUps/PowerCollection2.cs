@@ -488,7 +488,7 @@ public class BOGOSpin : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Bonus Spin");
+        description.WithName("Buy One Get One");
         description.WithDescription("Get a Y:[Bonus spin] on Y:10% G:(+10% per stack) of Y:spins \nEach Y:[Bonus spin] has Y:77.7% increased Y:[attack speed] for Y:[every spin that came before it] " +
             "\nR:[Increases spin price by] R:1 G:(+1 per stack) R:coins");
         description.WithShortDescription("Sometimes get a Bonus spin for free");

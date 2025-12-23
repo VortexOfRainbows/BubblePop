@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354ada615d12a894f938c2f1bac80208, type: 3}
   m_Name: CobblestoneTile
   m_EditorClassIdentifier: 
+  TileTexture: {fileID: 2800000, guid: f6c69b511a4a63c40a7ef857b87a9c68, type: 3}
   LayerOffset: -3
   RealTileMapVariant: {fileID: 11400000, guid: 45ac33884c3b5964ab51fa406b495bab, type: 2}
   TilesThatCountForBlending:

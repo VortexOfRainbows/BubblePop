@@ -12,23 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354ada615d12a894f938c2f1bac80208, type: 3}
   m_Name: GrassTile
   m_EditorClassIdentifier: 
+  TileTexture: {fileID: 2800000, guid: a2e8a1ff75daef94bb7f8df208eacba1, type: 3}
   LayerOffset: -4
   RealTileMapVariant: {fileID: 11400000, guid: 6b42f1c117edfb14f987eb8a5b79b53b, type: 2}
   TilesThatCountForBlending: []
-  DisplayTileVariants:
-  - {fileID: 11400000, guid: 338c9b1cc8897d240b38acd52eef4286, type: 2}
-  - {fileID: 11400000, guid: d38b99487fc3bda4da3fe7cbbcab02da, type: 2}
-  - {fileID: 11400000, guid: fce7504580f21d047a259f689238fdea, type: 2}
-  - {fileID: 11400000, guid: 8eddee0909caed54abcc251fe2cbd467, type: 2}
-  - {fileID: 11400000, guid: da6d484ac73ed1b49adbc24a4eddc008, type: 2}
-  - {fileID: 11400000, guid: 37e4ac0c5fb63a146a532628e207d9cd, type: 2}
-  - {fileID: 11400000, guid: 16fcf76a29f39bb48b27c170d9c224f2, type: 2}
-  - {fileID: 11400000, guid: bcabcfd80256fad41aaeb334833ddd3e, type: 2}
-  - {fileID: 11400000, guid: fe48501dcfd3c5c469f3f8f2793e39a2, type: 2}
-  - {fileID: 11400000, guid: 40506d63c8eb29d45a7e10a0da54bc2a, type: 2}
-  - {fileID: 11400000, guid: 852783ab383fd9b4ab2b5b8505499e95, type: 2}
-  - {fileID: 11400000, guid: 21f0c4b2f07d51142a543a92a4c2c5af, type: 2}
-  - {fileID: 11400000, guid: 975cb656bd2373844a69b9ed07b7ce4f, type: 2}
-  - {fileID: 11400000, guid: 28be5f1209a221c4fa131492e39ab861, type: 2}
-  - {fileID: 11400000, guid: 1d0f597ca8de1e742838f2049b5da5c4, type: 2}
-  - {fileID: 11400000, guid: 3c853341ad1a8cd4bac39a3d89d6497b, type: 2}
+  BonusTileVariations:
+  - {fileID: 21300000, guid: a6d154f9ef149a048bf9cacbf16993e6, type: 3}

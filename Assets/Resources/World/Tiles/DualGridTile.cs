@@ -3,6 +3,8 @@ using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using UnityEditor;
+using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "DualGridTile", menuName = "ScriptableObjects/DualGridTile", order = 1)]
 public class DualGridTile : ScriptableObject
@@ -55,7 +57,7 @@ public class DualGridTile : ScriptableObject
         bool botLeft = AdjacentTileSameType(coords, -NEIGHBOURS[3]);
         Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft, topRight, botLeft, botRight);
         int i = NeighbourRelations[neighbourTuple];
-        if(i == 6 && DisplayTileVariants.Length > 15 && Utils.RandFloat() < 0.5f)
+        if(i == 6 && BonusTileVariations.Length > 0 && Utils.RandFloat() < 0.5f)
         {
             return Utils.RandInt(15, DisplayTileVariants.Length);
         }
@@ -70,11 +72,31 @@ public class DualGridTile : ScriptableObject
             map.SetTile(newPos, id != -1 ? DisplayTileVariants[CalculateDisplayTile(newPos)] : null);
         }
     }
+    public Texture2D TileTexture;
     public int LayerOffset = 0;
     public Tile RealTileMapVariant;
     public Tile[] TilesThatCountForBlending;
-    public Tile[] DisplayTileVariants;
+    public Tile[] DisplayTileVariants { get; private set; }
+    public Sprite[] BonusTileVariations;
+    public void Init()
+    {
+        SetDisplayVariants();
+    }
     public void SetDisplayVariants()
     {
+        if(TileTexture != null)
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>($"World/Tiles/{TileTexture.name}/{TileTexture.name}");
+            int len = sprites.Length + BonusTileVariations.Length;
+            DisplayTileVariants = new Tile[len];
+            for (int i = 0; i < len; ++i)
+            {
+                Tile tile = ScriptableObject.CreateInstance<Tile>();
+                tile.colliderType = Tile.ColliderType.Grid;
+                tile.color = Color.white;
+                tile.sprite = i >= sprites.Length ? BonusTileVariations[i - sprites.Length] : sprites[i];
+                DisplayTileVariants[i] = tile;
+            }
+        }
     }
 }

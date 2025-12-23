@@ -16,6 +16,10 @@ public class World : MonoBehaviour
     public void Start()
     {
         m_Instance = this;
+        foreach (DualGridTile tile in Tiles)
+        {
+            tile.Init();
+        }
         LoadNodesOntoWorld();
         if (RealTileMap != null)
         {

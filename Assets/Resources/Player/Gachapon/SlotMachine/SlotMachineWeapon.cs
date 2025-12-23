@@ -354,7 +354,7 @@ public class SlotMachineWeapon : Weapon
         float interval = 1f / (player.BatterUp + 1) * (i + 1);
         float dir = Utils.SignNoZero(BatterUpTokens[i].localScale.x);
         Vector2 mousePos = Player.Position + (Vector2)previousAttemptedPosition.normalized * 15.5f;
-        AudioManager.PlaySound(SoundID.StarbarbImpact, BatterUpTokens[i].transform.position, 0.2f, 0.6f, 0);
+        AudioManager.PlaySound(SoundID.Teleport, BatterUpTokens[i].transform.position, 0.2f, 1.7f, 0);
         Projectile.NewProjectile<GachaTokenProj>(BatterUpTokens[i].transform.position, new Vector2(44 * -dir, 0).RotatedBy((BatterUpTokens[i].localEulerAngles.z - dir * 33f) * Mathf.Deg2Rad), 5 + Player.Instance.ConsolationPrize,
             mousePos.x, mousePos.y, dir, 0.5f * Mathf.Cos(Mathf.PI * (0.5f - interval)));
         Destroy(BatterUpTokens[i].gameObject);

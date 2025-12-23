@@ -342,6 +342,6 @@ public class TokenReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.TokenColor.ToHexString(), tokens > 1 ? $"{tokens} Token" : $"{tokens} Token")}";
+        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.TokenColor.ToHexString(), tokens > 1 ? $"{tokens} Tokens" : $"{tokens} Token")}";
     }
 }

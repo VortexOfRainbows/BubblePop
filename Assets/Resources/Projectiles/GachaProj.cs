@@ -11,7 +11,7 @@ public class GachaProj : Projectile
         SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
         timer2 = 0;
         transform.localScale *= 0.5f;
-        Damage = 5 + Player.Instance.ConsolationPrize;
+        Damage = 4 * (1 + 0.2f * Player.Instance.ConsolationPrize);
         Penetrate = 2;
         Friendly = true;
         if (Data1 == 1)
@@ -68,7 +68,7 @@ public class GachaProj : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        Damage *= 0.8f + 0.05f * Data1;
+        Damage *= 0.8f; // 0.8f + 0.05f * Data1;
         if (Data1 == 0)
             return;
         float count = 1;
@@ -179,8 +179,8 @@ public class GachaTokenProj : Projectile
         if (target.Life <= 0)
             CoinManager.SpawnToken(target.transform.position, 0.1f);
 
-        AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 0.4f, 0.475f, 0);
-        AudioManager.PlaySound(SoundID.SoapDie, transform.position, 1.5f, 1.7f, 0);
+        AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 0.3f, 0.475f, 0);
+        AudioManager.PlaySound(SoundID.SoapDie, transform.position, 1.125f, 1.7f, 0);
         for (int i = 0; i < 15; ++i)
             ParticleManager.NewParticle(target.transform.position + new Vector3(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)), 3, RB.velocity * Utils.RandFloat(0.3f) + Utils.RandCircle(5), 5, Utils.RandFloat(0.7f, 0.8f), 3,
                 Color.Lerp(ColorHelper.RarityColors[0], ColorHelper.RarityColors[4], Utils.RandFloat()) * 0.95f);

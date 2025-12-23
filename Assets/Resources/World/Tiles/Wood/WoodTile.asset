@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354ada615d12a894f938c2f1bac80208, type: 3}
   m_Name: WoodTile
   m_EditorClassIdentifier: 
+  TileTexture: {fileID: 2800000, guid: afe3f1ce216f35e41a54912bfe29e5e3, type: 3}
   LayerOffset: -3
   RealTileMapVariant: {fileID: 11400000, guid: 6d8561fb24b9e1c47b359e542b96a75d, type: 2}
   TilesThatCountForBlending: []
