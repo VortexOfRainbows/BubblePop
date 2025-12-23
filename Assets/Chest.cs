@@ -42,7 +42,7 @@ public class Chest : MonoBehaviour
     {
         ClosedSprite = Main.TextureAssets.T3Chest;
         OpenSprite = Main.TextureAssets.T3ChestOpen;
-        SpriteRendererKey.enabled = false;
+        SpriteRendererKey.enabled = OpenVertically = false;
         SpriteRendererKey.color = SpriteRendererKey.color.WithAlpha(0);
         ChestType = type;
         if (ChestType == 0)
@@ -52,7 +52,7 @@ public class Chest : MonoBehaviour
             StarsAllocated = 1;
             BounceHeight = 0.7f;
             Bubble.transform.localPosition = new Vector3(0, 0.95f, -1f);
-            if(Utils.RandFloat(1) < 0.05f || OpenVertically)
+            if(Utils.RandFloat(1) < 0.05f)
             {
                 ClosedSprite = Main.TextureAssets.T3ChestUma;
                 OpenSprite = Main.TextureAssets.T3ChestUmaOpen;

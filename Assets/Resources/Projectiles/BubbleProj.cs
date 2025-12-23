@@ -383,13 +383,13 @@ public class ThunderBubble : Projectile
         {
             bool goingInThatDirection = Mathf.Sign(RB.velocity.x) == Mathf.Sign(diff.x);
             if(goingInThatDirection)
-                RB.velocity = new Vector2(RB.velocity.x * -1.0f, RB.velocity.y);
+                RB.velocity = new Vector2(RB.velocity.x * -1.1f, RB.velocity.y);
         }
         else
         {
             bool goingInThatDirection = Mathf.Sign(RB.velocity.y) == Mathf.Sign(diff.y);
             if(goingInThatDirection)
-                RB.velocity = new Vector2(RB.velocity.x, RB.velocity.y * -1.0f);
+                RB.velocity = new Vector2(RB.velocity.x, RB.velocity.y * -1.1f);
         }
         return false;
     }

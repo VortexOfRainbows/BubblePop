@@ -6,52 +6,57 @@ public class DualGridTilemap : MonoBehaviour
 {
     public static GameObject Flower => Resources.Load<GameObject>("World/Decor/Nature/WhiteFlower");
     public static GameObject Mushroom => Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
-    public static GameObject VisualMapPrefab => Resources.Load<GameObject>("World/Tiles/VisualMap");
-    public Transform Visual;
-    public Transform DecorVisual;
-    private List<Tilemap> DisplayMap;
-    private List<Tilemap> BorderDisplayMap;
-    public Tilemap Map;
-    public void Init()
+    public static readonly int WorldSize = 100;
+    public static Vector3Int[] NEIGHBOURS => DualGridTile.NEIGHBOURS;
+    public Tilemap Map => m_RealTileMap;
+    public GameObject VisualMapPrefab;
+    public GameObject Visual;
+    private List<Tilemap> VisualMaps;
+    public Tilemap m_RealTileMap;
+    // Provide the 16 tiles in the inspector
+    // The tiles on the display tilemap will recalculate themselves based on the placeholder tilemap
+    public void Init(Color c, int orderOffset = -50)
     {
-        DisplayMap = new List<Tilemap>();
-        BorderDisplayMap = new List<Tilemap>();
-        World.GeneratingBorder = false;
-        PrepareDisplayMap(Visual, DisplayMap, Color.white, -50);
-        RefreshDisplayTilemap(Map, DisplayMap, false);
-        AddDecor(Color.white, -20);
-        World.GeneratingBorder = true;
-        PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -49);
-        RefreshDisplayTilemap(Map, BorderDisplayMap, true);
-        AddDecor(new Color(0.8f, 0.8f, 0.8f), -30);
-        World.GeneratingBorder = false;
-        //GetComponent<TilemapRenderer>().enabled = false;
-    }
-    public static void PrepareDisplayMap(Transform Visual, List<Tilemap> DisplayMap, Color c, int orderOffset)
-    {
-        for (int k = 0; k < World.Instance.TileTypes.Length; ++k)
-        {
-            Tilemap t = Instantiate(VisualMapPrefab, Visual).GetComponent<Tilemap>();
-            t.gameObject.name = $"{(World.GeneratingBorder ? "Solid" : "Floor")}[{k}]: {World.Instance.TileTypes[k].name}";
+        VisualMaps = new List<Tilemap>();
+        for (int k = 0; k < World.Instance.Tiles.Length; ++k) {
+            Tilemap t = Instantiate(VisualMapPrefab, Visual.transform).GetComponent<Tilemap>();
+            VisualMaps.Add(t);
             t.color = c;
-            DisplayMap.Add(t);
-            DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + World.Instance.TileTypes[k].LayerOffset;
+            VisualMaps[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + World.Instance.Tiles[k].LayerOffset;
         };
+        RefreshDisplayTilemap();
+        if(orderOffset == -50)
+            AddDecor(c, -20);
+        if (orderOffset == -49)
+            AddDecor(new Color(0.8f, 0.8f, 0.8f), -30);
+        m_RealTileMap.GetComponent<TilemapRenderer>().enabled = false;
     }
-    public static void RefreshDisplayTilemap(Tilemap Map, List<Tilemap> DisplayMap, bool border)
+    //public void Update()
+    //{
+    //    //if(Input.GetKeyDown(KeyCode.R))
+    //    //{
+    //        //RefreshDisplayTilemap();
+    //    //}
+    //}
+    //public void SetCell(Vector3Int coords, DualGridTile tile)
+    //{
+    //    RealTileMap.SetTile(coords, tile.RealTileMapVariant);
+    //    tile.UpdateDisplayTile(coords);
+    //}
+    public void RefreshDisplayTilemap()
     {
-        Map.GetCorners(out int left, out int right, out int bottom, out int top);
-        for (int i = left; i < right; i++)
+        for (int i = -WorldSize; i <= WorldSize; i++)
         {
-            for (int j = bottom; j < top; j++)
+            for (int j = -WorldSize; j <= WorldSize; j++)
             {
                 Vector3Int coords = new(i, j);
-                for (int k = 0; k < World.Instance.TileTypes.Length; ++k) //TODO: Replace this lookup with a dictionary for better efficiency 
+                for (int k = 0; k < World.Instance.Tiles.Length; ++k)
                 {
-                    var t = Map.GetTile(coords);
-                    if (World.Instance.TileTypes[k].TileType == t)
+                    if (World.Instance.Tiles[k].RealTileMapVariant == m_RealTileMap.GetTile(coords))
                     {
-                        World.Instance.TileTypes[k].UpdateDisplayTile(coords, DisplayMap[k]);
+                        World.Instance.Tiles[k].UpdateDisplayTile(coords, VisualMaps[k]);
+                        if (k != 1) //THIS IS THE DIRT LAYER
+                            World.Instance.Tiles[1].UpdateDisplayTile(coords, VisualMaps[1]); //MAKE IT SO DIRT IS UNDER EVERYTHING TO PREVENT CERTAIN VISUAL ISSUES. MAYBE TEMPORARY
                         break;
                     }
                 }
@@ -60,7 +65,6 @@ public class DualGridTilemap : MonoBehaviour
     }
     public void AddDecor(Color c, int order)
     {
-        Map.GetCorners(out int left, out int right, out int bottom, out int top);
         bool mushroom = false;
         float mult = 1.0f;
         if (order == -30)
@@ -70,26 +74,26 @@ public class DualGridTilemap : MonoBehaviour
         }
         int grassLayer = 2;
         int dirtLayer = 1;
-        Tile grassTile = World.Instance.TileTypes[grassLayer].TileType; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
-        Tile dirtTile = World.Instance.TileTypes[dirtLayer].TileType; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
-        for (int i = left; i < right; i++)
+        Tile grassTile = World.Instance.Tiles[grassLayer].RealTileMapVariant; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
+        Tile dirtTile = World.Instance.Tiles[dirtLayer].RealTileMapVariant; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
+        for (int i = -WorldSize; i <= WorldSize; i++)
         {
-            for (int j = bottom; j < top; j++)
+            for (int j = -WorldSize; j <= WorldSize; j++)
             {
-                bool isGrassTile = Map.GetTile(i, j) == grassTile;
+                bool isGrassTile = m_RealTileMap.GetTile(i, j) == grassTile;
                 if (isGrassTile && Utils.RandFloat() < 0.05f * mult)
                 {
-                    var g = Instantiate(Flower, DecorVisual).GetComponent<SpriteRenderer>();
+                    var g = Instantiate(Flower, Visual.transform).GetComponent<SpriteRenderer>();
                     g.transform.localPosition = new Vector3(i + 1, j + 1, 0);
                     g.color = c;
                     g.sortingOrder = order;
                     continue;
                 }
-                if (mushroom && (isGrassTile || Map.GetTile(i, j) == dirtTile))
+                if (mushroom && (isGrassTile || m_RealTileMap.GetTile(i, j) == dirtTile))
                 {
                     if (Utils.RandFloat() < 0.05f)
                     {
-                        var g = Instantiate(Mushroom, DecorVisual).GetComponent<SpriteRenderer>();
+                        var g = Instantiate(Mushroom, Visual.transform).GetComponent<SpriteRenderer>();
                         g.transform.localPosition = new Vector3(i + 1, j + 1, 0) + (Vector3)Utils.RandCircle(0.2f);
                         g.color = c;
                         g.sortingOrder = order;

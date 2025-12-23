@@ -3,11 +3,14 @@ using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using UnityEditor;
+using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "DualGridTile", menuName = "ScriptableObjects/DualGridTile", order = 1)]
 public class DualGridTile : ScriptableObject
 {
     #region Static Stuff
+    public static Tilemap RealTileMap => World.CurrentGeneratingMap;
     public static Dictionary<Tuple<bool, bool, bool, bool>, int> NeighbourRelations = SetNeighborRelations();
     public static Dictionary<Tuple<bool, bool, bool, bool>, int> SetNeighborRelations()
     {
@@ -39,12 +42,12 @@ public class DualGridTile : ScriptableObject
     #endregion
     public bool AdjacentTileSameType(Vector3Int coords, Vector3Int offset)
     {
-        var adjacentTileType = World.RealTileMap.Map.GetTile(coords + offset);
-        //if(TilesThatCountForBlending != null && TilesThatCountForBlending.Contains(adjacentTileType))
-        //{
-            //return true;
-        //}
-        return adjacentTileType == TileType;
+        var adjacentTileType = RealTileMap.GetTile(coords + offset);
+        if(TilesThatCountForBlending != null && TilesThatCountForBlending.Contains(adjacentTileType))
+        {
+            return true;
+        }
+        return adjacentTileType == RealTileMapVariant;
     }
     public int CalculateDisplayTile(Vector3Int coords)
     {
@@ -73,16 +76,12 @@ public class DualGridTile : ScriptableObject
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
     public int LayerOffset = 0;
-    [SerializeField]
-    private Tile RealTileMapVariant;
-    [SerializeField]
-    private Tile BorderTileMapVariant;
-    //public Tile[] TilesThatCountForBlending;
+    public Tile RealTileMapVariant;
+    public Tile BorderTileMapVariant;
+    public Tile[] TilesThatCountForBlending;
     public Sprite[] BonusTileVariations;
-    public Color ColorModifier = Color.white;
     #endregion
 
-    public Tile TileType => World.GeneratingBorder ? BorderTileMapVariant : RealTileMapVariant;
     public Tile[] DisplayTileVariants { get; private set; }
     public void Init()
     {
@@ -99,7 +98,7 @@ public class DualGridTile : ScriptableObject
             {
                 Tile tile = ScriptableObject.CreateInstance<Tile>();
                 tile.colliderType = Tile.ColliderType.Grid;
-                tile.color = ColorModifier;
+                tile.color = Color.white;
                 tile.sprite = i >= sprites.Length ? BonusTileVariations[i - sprites.Length] : sprites[i];
                 DisplayTileVariants[i] = tile;
             }

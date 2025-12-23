@@ -315,13 +315,4 @@ public static class Utils
     {
         return RandInt(2) * 2 - 1;
     }
-    public static void GetCorners(this Tilemap map, out int left, out int right, out int bottom, out int top)
-    {
-        map.CompressBounds();
-        var bounds = map.cellBounds;
-        left = bounds.x;
-        right = left + bounds.size.x;
-        bottom = bounds.y;
-        top = bottom + bounds.size.y;
-    }
 }
