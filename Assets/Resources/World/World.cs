@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,9 +12,11 @@ public class World : MonoBehaviour
     public DualGridTilemap m_RealTileMap;
     public DualGridTilemap m_ColliderTileMap;
     public DualGridTile[] Tiles;
+    public List<WorldNode> nodes;
     public void Start()
     {
         m_Instance = this;
+        LoadNodesOntoWorld();
         if (RealTileMap != null)
         {
             CurrentGeneratingMap = RealTileMap.Map;
@@ -25,6 +28,14 @@ public class World : MonoBehaviour
             ColliderTileMap.Init(new Color(0.4056604f, 0.4056604f, 0.4056604f), -49);
         }
         CurrentGeneratingMap = null;
+    }
+    public void LoadNodesOntoWorld()
+    {
+        for(int i = 0; i < nodes.Count; ++i)
+        {
+            WorldNode node = nodes[i];
+            node.Generate(this);
+        }
     }
     public void Update()
     {

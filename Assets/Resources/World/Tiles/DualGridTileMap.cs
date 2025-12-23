@@ -49,7 +49,7 @@ public class DualGridTilemap : MonoBehaviour
         {
             for (int j = -WorldSize; j <= WorldSize; j++)
             {
-                Vector3Int coords = new Vector3Int(i, j);
+                Vector3Int coords = new(i, j);
                 for (int k = 0; k < World.Instance.Tiles.Length; ++k)
                 {
                     if (World.Instance.Tiles[k].RealTileMapVariant == m_RealTileMap.GetTile(coords))
