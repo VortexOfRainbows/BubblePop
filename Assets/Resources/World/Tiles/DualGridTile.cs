@@ -40,10 +40,10 @@ public class DualGridTile : ScriptableObject
     public bool AdjacentTileSameType(Vector3Int coords, Vector3Int offset)
     {
         var adjacentTileType = World.RealTileMap.Map.GetTile(coords + offset);
-        if(TilesThatCountForBlending != null && TilesThatCountForBlending.Contains(adjacentTileType))
-        {
-            return true;
-        }
+        //if(TilesThatCountForBlending != null && TilesThatCountForBlending.Contains(adjacentTileType))
+        //{
+            //return true;
+        //}
         return adjacentTileType == TileType;
     }
     public int CalculateDisplayTile(Vector3Int coords)
@@ -77,8 +77,9 @@ public class DualGridTile : ScriptableObject
     private Tile RealTileMapVariant;
     [SerializeField]
     private Tile BorderTileMapVariant;
-    public Tile[] TilesThatCountForBlending;
+    //public Tile[] TilesThatCountForBlending;
     public Sprite[] BonusTileVariations;
+    public Color ColorModifier = Color.white;
     #endregion
 
     public Tile TileType => World.GeneratingBorder ? BorderTileMapVariant : RealTileMapVariant;
@@ -98,7 +99,7 @@ public class DualGridTile : ScriptableObject
             {
                 Tile tile = ScriptableObject.CreateInstance<Tile>();
                 tile.colliderType = Tile.ColliderType.Grid;
-                tile.color = Color.white;
+                tile.color = ColorModifier;
                 tile.sprite = i >= sprites.Length ? BonusTileVariations[i - sprites.Length] : sprites[i];
                 DisplayTileVariants[i] = tile;
             }

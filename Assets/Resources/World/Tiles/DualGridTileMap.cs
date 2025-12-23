@@ -7,7 +7,8 @@ public class DualGridTilemap : MonoBehaviour
     public static GameObject Flower => Resources.Load<GameObject>("World/Decor/Nature/WhiteFlower");
     public static GameObject Mushroom => Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
     public static GameObject VisualMapPrefab => Resources.Load<GameObject>("World/Tiles/VisualMap");
-    public GameObject Visual;
+    public Transform Visual;
+    public Transform DecorVisual;
     private List<Tilemap> DisplayMap;
     private List<Tilemap> BorderDisplayMap;
     public Tilemap Map;
@@ -16,11 +17,11 @@ public class DualGridTilemap : MonoBehaviour
         DisplayMap = new List<Tilemap>();
         BorderDisplayMap = new List<Tilemap>();
         World.GeneratingBorder = false;
-        PrepareDisplayMap(Visual.transform, DisplayMap, Color.white, -50);
+        PrepareDisplayMap(Visual, DisplayMap, Color.white, -50);
         RefreshDisplayTilemap(Map, DisplayMap, false);
         AddDecor(Color.white, -20);
         World.GeneratingBorder = true;
-        PrepareDisplayMap(Visual.transform, BorderDisplayMap, new Color(0.4056604f, 0.4056604f, 0.4056604f), -49);
+        PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -49);
         RefreshDisplayTilemap(Map, BorderDisplayMap, true);
         AddDecor(new Color(0.8f, 0.8f, 0.8f), -30);
         World.GeneratingBorder = false;
@@ -31,6 +32,7 @@ public class DualGridTilemap : MonoBehaviour
         for (int k = 0; k < World.Instance.TileTypes.Length; ++k)
         {
             Tilemap t = Instantiate(VisualMapPrefab, Visual).GetComponent<Tilemap>();
+            t.gameObject.name = $"{(World.GeneratingBorder ? "Solid" : "Floor")}[{k}]: {World.Instance.TileTypes[k].name}";
             t.color = c;
             DisplayMap.Add(t);
             DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + World.Instance.TileTypes[k].LayerOffset;
@@ -77,7 +79,7 @@ public class DualGridTilemap : MonoBehaviour
                 bool isGrassTile = Map.GetTile(i, j) == grassTile;
                 if (isGrassTile && Utils.RandFloat() < 0.05f * mult)
                 {
-                    var g = Instantiate(Flower, Visual.transform).GetComponent<SpriteRenderer>();
+                    var g = Instantiate(Flower, DecorVisual).GetComponent<SpriteRenderer>();
                     g.transform.localPosition = new Vector3(i + 1, j + 1, 0);
                     g.color = c;
                     g.sortingOrder = order;
@@ -87,7 +89,7 @@ public class DualGridTilemap : MonoBehaviour
                 {
                     if (Utils.RandFloat() < 0.05f)
                     {
-                        var g = Instantiate(Mushroom, Visual.transform).GetComponent<SpriteRenderer>();
+                        var g = Instantiate(Mushroom, DecorVisual).GetComponent<SpriteRenderer>();
                         g.transform.localPosition = new Vector3(i + 1, j + 1, 0) + (Vector3)Utils.RandCircle(0.2f);
                         g.color = c;
                         g.sortingOrder = order;
