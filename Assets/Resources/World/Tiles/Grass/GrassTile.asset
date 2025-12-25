@@ -16,7 +16,8 @@ MonoBehaviour:
   LayerOffset: -4
   RealTileMapVariant: {fileID: 11400000, guid: 6b42f1c117edfb14f987eb8a5b79b53b, type: 2}
   BorderTileMapVariant: {fileID: 11400000, guid: d843f0cb7c9ed004cafb26f160cdd34d, type: 2}
-  TilesThatCountForBlending:
-  - {fileID: 11400000, guid: 0f6e7ab7fcfd9054188feafb42060c40, type: 2}
   BonusTileVariations:
   - {fileID: 21300000, guid: a6d154f9ef149a048bf9cacbf16993e6, type: 3}
+  - {fileID: 21300000, guid: a33be8ff1003cd04c8f4b6a593f12409, type: 3}
+  - {fileID: 21300000, guid: 8d5dc398937c0054899ed9602d40e8c3, type: 3}
+  ColorModifier: {r: 1, g: 1, b: 1, a: 1}

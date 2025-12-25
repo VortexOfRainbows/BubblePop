@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 public class DualGridTilemap : MonoBehaviour
 {
     public static GameObject Flower => Resources.Load<GameObject>("World/Decor/Nature/WhiteFlower");
+    public static GameObject Flower2 => Resources.Load<GameObject>("World/Decor/Nature/WhiteFlower2");
+    public static GameObject Flower3 => Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
     public static GameObject Mushroom => Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
     public static GameObject VisualMapPrefab => Resources.Load<GameObject>("World/Tiles/VisualMap");
     public Transform Visual;
@@ -77,12 +79,13 @@ public class DualGridTilemap : MonoBehaviour
             for (int j = bottom; j < top; j++)
             {
                 bool isGrassTile = Map.GetTile(i, j) == grassTile;
-                if (isGrassTile && Utils.RandFloat() < 0.05f * mult)
+                if (isGrassTile && Utils.RandFloat() < 0.1f * mult)
                 {
-                    var g = Instantiate(Flower, DecorVisual).GetComponent<SpriteRenderer>();
+                    var g = Instantiate(Utils.RandInt(3) != 0 ? Flower3 : Utils.RandInt(2) == 0 ? Flower2 : Flower, DecorVisual).GetComponent<SpriteRenderer>();
                     g.transform.localPosition = new Vector3(i + 1, j + 1, 0);
                     g.color = c;
                     g.sortingOrder = order;
+                    g.flipX = Utils.rand.NextBool();
                     continue;
                 }
                 if (mushroom && (isGrassTile || Map.GetTile(i, j) == dirtTile))

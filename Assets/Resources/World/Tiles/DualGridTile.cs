@@ -54,9 +54,11 @@ public class DualGridTile : ScriptableObject
         bool botLeft = AdjacentTileSameType(coords, -NEIGHBOURS[3]);
         Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft, topRight, botLeft, botRight);
         int i = NeighbourRelations[neighbourTuple];
-        if(i == 6 && BonusTileVariations.Length > 0 && Utils.RandFloat() < 0.5f)
+        if(i == 6 && BonusTileVariations.Length > 0)
         {
-            return Utils.RandInt(15, DisplayTileVariants.Length);
+            float chanceOfAlternateTexture = 1f / (1f + BonusTileVariations.Length);
+            if(Utils.RandFloat() > chanceOfAlternateTexture)
+                return Utils.RandInt(15, DisplayTileVariants.Length);
         }
         return i;
     }
