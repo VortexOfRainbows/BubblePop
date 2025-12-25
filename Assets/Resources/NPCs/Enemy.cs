@@ -406,26 +406,22 @@ public class Enemy : Entity
                 Player.Instance.ResearchNoteKillCounter += 1;
             }
             int max = Player.Instance.PiratesBooty;
-            for (int i = 0; i < max; ++i)
+            if (Utils.RollWithLuck(0.1f * max))
             {
-                if (Utils.RollWithLuck(0.1f))
+                Player.Instance.RemovePower(PowerUp.Get<PiratesBooty>().Type);
+                if ((CoinManager.CurrentKeys <= 0 && Utils.RollWithLuck(0.75f)) || (CoinManager.CurrentKeys > 0 && Utils.RollWithLuck(0.25f)))
                 {
-                    Player.Instance.RemovePower(PowerUp.Get<PiratesBooty>().Type);
-                    if (CoinManager.CurrentKeys <= 0)
-                    {
-                        CoinManager.SpawnKey(transform.position, 0.2f);
-                    }
-                    else
-                    {
-                        int type = 0;
-                        if (Utils.RollWithLuck(0.2f))
-                            type += Utils.RollWithLuck(0.2f) ? 2 : 1;
-                        var chest = CoinManager.SpawnChest(transform.position, type);
-                        chest.PirateChest = true;
-                        chest.StarsAllocated++;
-                    }
-                    --Player.Instance.PiratesBooty;
+                    CoinManager.SpawnKey(transform.position, 0.2f);
                 }
+                else
+                {
+                    int type = 0;
+                    if (Utils.RollWithLuck(0.2f))
+                        type += Utils.RollWithLuck(0.2f) ? 2 : 1;
+                    var chest = CoinManager.SpawnChest(transform.position, type);
+                    chest.PirateChest = true;
+                }
+                --Player.Instance.PiratesBooty;
             }
         }
         StaticData.TimesKilled++;

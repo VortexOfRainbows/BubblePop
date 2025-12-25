@@ -564,7 +564,7 @@ public class PiratesBooty : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Pirate's Booty");
-        description.WithDescription("Y:[Skull enemies] have a Y:10% G:(+10% per stack) chance to drop a Y:[extra-loot chest] or Y:key G:(consumed on use)");
+        description.WithDescription("Y:[Skull enemies] have a Y:10% G:(+10% per stack) chance to drop a Y:[Pirate chest] or Y:key G:(consumed on use)");
         description.WithShortDescription("Next killed Skull enemy has a chance to drop a chest or key");
     }
     public override void HeldEffect(Player p)

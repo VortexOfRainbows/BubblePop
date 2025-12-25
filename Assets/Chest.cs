@@ -27,7 +27,7 @@ public class Chest : MonoBehaviour
     public SpriteRenderer SpriteRenderer;
     public SpriteRenderer SpriteRendererKey;
     public SpriteRenderer SpriteRendererShadow;
-    public SpriteRenderer Bubble;
+    public SpriteRenderer Bubble, Hat;
     private float OGShadowAlpha = 0.0f;
     public Sprite ClosedSprite { get; private set; }
     public Sprite OpenSprite { get; private set; }
@@ -48,6 +48,7 @@ public class Chest : MonoBehaviour
         ChestType = type;
         if (ChestType == 0)
         {
+            Hat.transform.localPosition = new Vector3(Hat.transform.localPosition.x, Hat.transform.localPosition.y - 0.15f, Hat.transform.localPosition.z);
             ClosedSprite = Main.TextureAssets.T3Chest;
             OpenSprite = Main.TextureAssets.T3ChestOpen;
             StarsAllocated = 1;
@@ -58,6 +59,18 @@ public class Chest : MonoBehaviour
                 ClosedSprite = Main.TextureAssets.T3ChestUma;
                 OpenSprite = Main.TextureAssets.T3ChestUmaOpen;
                 OpenVertically = true;
+                #region shader move later
+                Hat.material = Main.TextureAssets.InfectorShader;
+                Color outlineColor = new(1, 0, 0);
+                Color inlineColor = new(0.275f, 0, 0);
+                float inlineThreshold = 0.03f;
+                float additiveColorPower = 0.5f;
+                Hat.material.SetColor("_OutlineColor", outlineColor);
+                Hat.material.SetColor("_InnerColor", inlineColor);
+                Hat.material.SetFloat("_InlineThreshold", inlineThreshold);
+                Hat.material.SetFloat("_OutlineSize", 0.0125f);
+                Hat.material.SetFloat("_AdditivePower", additiveColorPower);
+                #endregion
             }
         }
         else if (ChestType == 1)
@@ -102,6 +115,7 @@ public class Chest : MonoBehaviour
             AudioManager.PlaySound(SoundID.ChestSpawn, transform.position, 0.5f, 1.2f, 0);
         }
         Collider.enabled = true;
+        Hat.enabled = false;
     }
     public void Start()
     {
@@ -109,10 +123,11 @@ public class Chest : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        Hat.enabled = PirateChest;
         //Collider.isTrigger = CoinManager.CurrentKeys > 0;
         //if (Input.GetKey(KeyCode.R) && Main.DebugCheats)
         //{
-            //Init(ChestType);
+        //Init(ChestType);
         //}
         if (HasSpawned)
         {
@@ -202,6 +217,7 @@ public class Chest : MonoBehaviour
         {
             RB.mass = Mathf.Lerp(RB.mass, 1f, 0.1f);
             Collider.enabled = false;
+            Hat.enabled = false;
         }
         if (!HasOpened)
         {
@@ -248,6 +264,7 @@ public class Chest : MonoBehaviour
                 float sin = Mathf.Sin(OpenAnimation * Mathf.PI * 2.0f) * (0.4f + 0.6f * OpenAnimation);
                 Visual.LerpLocalScale(new Vector2(1 - sin * 0.1f, 1 + sin * 0.08f), 0.5f);
             }
+            Hat.color = Hat.color.WithAlpha(Mathf.Max(0, 1 - OpenAnimation));
         }
         else
         {
@@ -277,6 +294,8 @@ public class Chest : MonoBehaviour
     {
         List<int> powers = new();
         int s = StarsAllocated;
+        if (PirateChest && Utils.RollWithLuck(0.5f))
+            s += 1;
         while(s > 0)
         {
             int rare = Math.Max(1, Utils.RandInt(1, Math.Min(s + 1, 6)));
@@ -310,7 +329,7 @@ public class Chest : MonoBehaviour
                 CoinManager.SpawnCoin(pos, coinAmt, 1);
             else if(Utils.RandFloat(1) < 0.05f + 0.05f * StarsAllocated)
                 CoinManager.SpawnHeart(pos, 1);
-            else if(Utils.RandFloat(1) < 0.05f + 0.0125f * StarsAllocated)
+            else if(!PirateChest && Utils.RandFloat(1) < 0.05f + 0.0125f * StarsAllocated)
                 CoinManager.SpawnKey(pos, 1);
             if(PirateChest)
                 CoinManager.SpawnCoin(pos, coinAmt, 1);
