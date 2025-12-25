@@ -111,7 +111,7 @@ public class DetailedDescription
             }
             return start2 + $"{start}{contents}{end}";
         }
-        return t;
+        return start2 + t;
     }
     public DetailedDescription(PowerUp p)
     {

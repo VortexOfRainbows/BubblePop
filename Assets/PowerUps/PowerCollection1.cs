@@ -416,7 +416,7 @@ public class SnakeEyes : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:[4 damage] G:(+1 per stack) plus Y:damage equal to Y:4% of the Y:[victim's max life] over Y:[10 seconds]");
+        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:4 G:(+1 per stack) Y: damage plus Y:damage equal to Y:4% of the Y:[victim's max life] over Y:[10 seconds]");
         description.WithShortDescription("Chance to poison enemies on hit");
     }
     public override void HeldEffect(Player p)

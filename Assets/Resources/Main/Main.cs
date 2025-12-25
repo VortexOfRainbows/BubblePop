@@ -32,8 +32,6 @@ public partial class Main : MonoBehaviour
     }
     public void OnGameOpen()
     {
-        PlayerData.LoadAll();
-        CoinManager.InitCoinPrefabs();
     }
     public static void StartGame()
     {
@@ -69,10 +67,14 @@ public partial class Main : MonoBehaviour
             TextureAssets.Load();
             PrefabAssets.Load();
             BuffIcon.Load();
-            OnGameOpen();
+            PlayerData.LoadAll(); //This must come before LoadAllEquipList()
             GlobalEquipData.LoadAllEquipList();
             UnlockCondition.PrepareStatics();
+            CoinManager.InitCoinPrefabs();
+            PlayerData.TryVersionResetProcedure(); //This should come last. Right now it resets equip values to fix lingering bugs from old equip system
             GameFinishedLoading = true;
+
+            OnGameOpen();
         }
     }
     public void OnApplicationQuit()

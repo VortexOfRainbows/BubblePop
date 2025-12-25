@@ -88,14 +88,15 @@ public static class CoinManager
         var c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;
     }
-    public static void SpawnChest(Func<Vector2> func, int type)
+    public static Chest SpawnChest(Func<Vector2> func, int type)
     {
-        SpawnChest(func.Invoke(), type);
+        return SpawnChest(func.Invoke(), type);
     }
-    public static void SpawnChest(Vector2 pos, int type)
+    public static Chest SpawnChest(Vector2 pos, int type)
     {
         Chest obj = GameObject.Instantiate(Chest, pos, Quaternion.identity).GetComponent<Chest>();
         obj.Init(type);
+        return obj;
     }
     public static int Current { get; private set; } = 0;
     public static int CurrentKeys { get; private set; } = 0;

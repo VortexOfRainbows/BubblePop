@@ -9,7 +9,7 @@ public class Chest : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision) => OnTriggerStay2D(collision);
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (RB.mass > 1.1f && collision.CompareTag("Player"))
             TryOpening();
     }
     public void TryOpening()
@@ -34,10 +34,11 @@ public class Chest : MonoBehaviour
     public int BounceCount { get; private set; }
     public Vector2 Velocity;
     public int ChestType = 0;
-    public int StarsAllocated { get; private set; }
+    public int StarsAllocated { get; set; }
     public int Direction => (BounceCount % 2 * 2 - 1);
     public float BounceHeight { get; private set; } = 0.75f;
     public bool OpenVertically = false;
+    public bool PirateChest { get; set; } = false;
     public void Init(int type)
     {
         ClosedSprite = Main.TextureAssets.T3Chest;
@@ -86,18 +87,21 @@ public class Chest : MonoBehaviour
         if(SkipSpawnAnimation)
         {
             Bubble.enabled = false;
-            Collider.enabled = true;
+            RB.mass = 10f;
+            //Collider.enabled = true;
             HasSpawned = true;
         }
         else
         {
-            Collider.enabled = false;
+            //Collider.enabled = false;
+            RB.mass = 1f;
             Visual.transform.localScale = Vector3.one * 0.1f;
             SpriteRendererShadow.transform.localScale = new Vector3(Visual.transform.localScale.x * 3, Visual.transform.localScale.y, 1);
             Visual.transform.LerpLocalEulerZ(12 * Direction, 1);
             AudioManager.PlaySound(SoundID.SoapSlide, transform.position, 0.5f, 0.9f, 0);
             AudioManager.PlaySound(SoundID.ChestSpawn, transform.position, 0.5f, 1.2f, 0);
         }
+        Collider.enabled = true;
     }
     public void Start()
     {
@@ -195,7 +199,10 @@ public class Chest : MonoBehaviour
     public void Open()
     {
         if (OpenAnimation >= 1)
+        {
+            RB.mass = Mathf.Lerp(RB.mass, 1f, 0.1f);
             Collider.enabled = false;
+        }
         if (!HasOpened)
         {
             if(OpenDir == 0)
@@ -260,6 +267,7 @@ public class Chest : MonoBehaviour
     }
     public void Close()
     {
+        RB.mass = Mathf.Lerp(RB.mass, 10f, 0.1f);
         Collider.enabled = true;
         OpenAnimation = 0;
         SpriteRenderer.sprite = ClosedSprite;
@@ -295,12 +303,17 @@ public class Chest : MonoBehaviour
         Vector2 pos = transform.position + new Vector3(0, yOffset);
         if(spentPowers <= StarsAllocated + 2)
         {
-            if (Utils.RandFloat(1) < 0.25f + 0.125f * StarsAllocated)
-                CoinManager.SpawnCoin(pos, (int)(StarsAllocated * Utils.RandFloat(10, 21) * WaveDirector.WaveMult), 1);
+            int coinAmt = (int)(StarsAllocated * Utils.RandFloat(10, 21) * WaveDirector.WaveMult);
+            if (PirateChest)
+                coinAmt += 25;
+            if (!PirateChest && Utils.RandFloat(1) < 0.25f + 0.125f * StarsAllocated)
+                CoinManager.SpawnCoin(pos, coinAmt, 1);
             else if(Utils.RandFloat(1) < 0.05f + 0.05f * StarsAllocated)
                 CoinManager.SpawnHeart(pos, 1);
             else if(Utils.RandFloat(1) < 0.05f + 0.0125f * StarsAllocated)
                 CoinManager.SpawnKey(pos, 1);
+            if(PirateChest)
+                CoinManager.SpawnCoin(pos, coinAmt, 1);
         }
     }
 }

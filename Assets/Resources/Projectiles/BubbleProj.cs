@@ -208,7 +208,7 @@ public class BigBubble : Projectile
         AudioManager.PlaySound(SoundID.BubblePop, gameObject.transform.position, 0.8f, 1.5f);
         gameObject.transform.localScale *= 0.8f;
         RB.velocity *= 0.8f;
-        Damage = (int)Mathf.Max(Damage * 0.8f, 1);
+        Damage = Damage * 0.8f;
         if (Damage < 0)
             Kill();
         else
@@ -222,8 +222,22 @@ public class BigBubble : Projectile
     {
         if (timer > 10)
         {
-            Vector2 toClosest = collision.ClosestPoint(transform.position) - (Vector2)transform.position;
-            RB.velocity = 0.75f * RB.velocity.magnitude * -toClosest.normalized;
+            Vector2 closest = collision.ClosestPoint(transform.position);
+            Vector2 diff = closest - RB.position;
+            if (diff.magnitude > 1)
+                return false;
+            if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+            {
+                bool goingInThatDirection = Mathf.Sign(RB.velocity.x) == Mathf.Sign(diff.x);
+                if (goingInThatDirection)
+                    RB.velocity = new Vector2(RB.velocity.x * -1.1f, RB.velocity.y);
+            }
+            else
+            {
+                bool goingInThatDirection = Mathf.Sign(RB.velocity.y) == Mathf.Sign(diff.y);
+                if (goingInThatDirection)
+                    RB.velocity = new Vector2(RB.velocity.x, RB.velocity.y * -1.1f);
+            }
         }
         return false;
     }

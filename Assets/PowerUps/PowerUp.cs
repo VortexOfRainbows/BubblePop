@@ -91,6 +91,7 @@ public abstract class PowerUp
 
         //Powers
         AddPowerUpToAvailability<Choice>();
+        AddPowerUpToAvailability<PiratesBooty>();
         AddPowerUpToAvailability<BubbleMitosis>();
 
         //Special

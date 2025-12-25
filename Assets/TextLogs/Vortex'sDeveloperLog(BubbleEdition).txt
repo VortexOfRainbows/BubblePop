@@ -42,6 +42,18 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
+12/24/25 (Almost Christmas!)
+1. Bug where characters would sometimes wear other character's as equipment, preventing you from switching from character in the hat slot, should be fixed
+2. Pierce from Big Bubble is no longer truncated (now decimal damage)
+	1. Technically this is a minor buff
+3. While falling, chests now have collision, but less mass
+	1. After landing, their mass will return to normal
+4. Big Bubble Projectile now bounces off walls in a more physically correct manner, and gains 10% velocity instead of losing 25% velocity
+5. Token pouch max tokens 3 (+3) -> 2 (+2), tokens per wave 2 (+2) -> 1 (+1)
+	1. now player starts with 4 max token slots
+6. WIP Pirate's Booty Power
+	1. Needs: chest artwork
+
 12/22/25 to 12/23/25
 1. WIP Node Generation:
 	1. Now the primary arena is generated with a NODE

@@ -469,14 +469,14 @@ public class TokenPouch : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Token Pouch");
-        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:3 G:(+3 per stack) and adds Y:2 G:(+2 per stack) Y:Token to Y:[wave start] " +
+        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:2 G:(+2 per stack) and adds Y:1 G:(+1 per stack) Y:Tokens to Y:[wave start] " +
             "\nR:[Increases spin price by 0.5] G:(+0.5 per stack) R:coins");
         description.WithShortDescription("Hold more Tokens and get Tokens at the start of every wave");
     }
     public override void HeldEffect(Player p)
     {
-        p.MaxTokens += Stack * 3;
-        p.TokensPerWave += Stack * 2;
+        p.MaxTokens += Stack * 2;
+        p.TokensPerWave += Stack * 1;
         p.SpinPriceIncrease += 0.5f * Stack;
     }
 }
@@ -553,5 +553,22 @@ public class BatterUp : PowerUp
     public override void HeldEffect(Player p)
     {
         p.BatterUp += Stack;
+    }
+}
+public class PiratesBooty : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Pirate's Booty");
+        description.WithDescription("Y:[Skull enemies] have a Y:10% G:(+10% per stack) chance to drop a Y:[extra-loot chest] or Y:key G:(consumed on use)");
+        description.WithShortDescription("Next killed Skull enemy has a chance to drop a chest or key");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.PiratesBooty += Stack;
     }
 }

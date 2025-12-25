@@ -13,7 +13,7 @@ public static class PlayerData
         public static int MeadowsStars { get; set; } = 0;
         public static int TotalMeadowsStars { get; set; } = 0;
     }
-    public static readonly float CurrentPlayerVersion = 1.4f;
+    public static readonly float CurrentPlayerVersion = 1.5f;
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
@@ -53,12 +53,6 @@ public static class PlayerData
     public static void LoadAll()
     {
         SaveData.LoadFromJson();
-        float PreviousPlayerVersion = GetFloat("VersionNumber", 1.0f);
-        if(CurrentPlayerVersion != PreviousPlayerVersion)
-        {
-            SaveFloat("VersionNumber", CurrentPlayerVersion);
-            VersionResetProcedure();
-        }
         PauseDuringPowerSelect = GetBool("PauseDuringPowerSelect", true);
         PauseDuringCardSelect = GetBool("PauseDuringCardSelect", true);
         BriefDescriptionsByDefault = GetBool("BriefDescriptionsByDefault", true);
@@ -71,6 +65,15 @@ public static class PlayerData
         PowerUp.LoadAllData();
         //CoinManager.Load();
         WaveDirector.HighScoreWaveNum = GetInt("HighscoreWave", 0);
+    }
+    public static void TryVersionResetProcedure()
+    {
+        float PreviousPlayerVersion = GetFloat("VersionNumber", 1.0f);
+        if (CurrentPlayerVersion != PreviousPlayerVersion)
+        {
+            SaveFloat("VersionNumber", CurrentPlayerVersion);
+            VersionResetProcedure();
+        }
     }
     public static void SaveInt(string tag, int value) => SaveData.Write(tag, value);
     public static int GetInt(string tag, int defaultValue = 0) => SaveData.Read(tag, defaultValue);
