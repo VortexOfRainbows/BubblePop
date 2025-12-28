@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class World : MonoBehaviour
@@ -19,14 +21,12 @@ public class World : MonoBehaviour
     {
         m_Instance = this;
         foreach (DualGridTile tile in TileTypes)
-        {
             tile.Init();
-        }
         LoadNodesOntoWorld();
-        if (RealTileMap != null)
-        {
-            RealTileMap.Init();
-        }
+
+        CreateWorldOuterFill();
+
+        RealTileMap.Init();
     }
     public void LoadNodesOntoWorld()
     {
@@ -36,8 +36,47 @@ public class World : MonoBehaviour
             node.Generate(this);
         }
     }
+    public void CreateWorldOuterFill()
+    {
+        GeneratingBorder = true;
+        var Map = RealTileMap.Map;
+        int padding = 10;
+
+        FastNoiseLite Noise = new();
+        Noise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
+        Noise.SetFractalType(FastNoiseLite.FractalType.PingPong);
+        Noise.SetCellularDistanceFunction(FastNoiseLite.CellularDistanceFunction.EuclideanSq);
+        Noise.SetSeed(1337);
+        Noise.SetFrequency(0.04f);
+
+        Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        left -= padding;
+        right += padding;
+        bottom -= padding;
+        top += padding;
+        for (int i = left; i < right; i++)
+        {
+            for (int j = bottom; j < top; j++)
+            {
+                Vector3Int pos = new(i, j);
+                if (!Map.HasTile(pos))
+                {
+                    float f = Noise.GetNoise(i, j);
+                    if (f < 0.2f && f > -0.2f)
+                        Map.SetTile(pos, TileTypes[1].TileType);
+                    else
+                        Map.SetTile(pos, TileTypes[2].TileType);
+                }
+            }
+        }
+        GeneratingBorder = false;
+    }
     public void Update()
     {
         m_Instance = this;
+        #if UNITY_EDITOR
+        if(Input.GetKey(KeyCode.R) && true)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        #endif
     }
 }
