@@ -84,7 +84,11 @@ public class DualGridTile : ScriptableObject
     public Color ColorModifier = Color.white;
     #endregion
 
+    public int TypeIndex { get; set; }
+
     public Tile TileType => World.GeneratingBorder ? BorderTileMapVariant : RealTileMapVariant;
+    public Tile FloorTileType => RealTileMapVariant;
+    public Tile BorderTileType => BorderTileMapVariant;
     public Tile[] DisplayTileVariants { get; private set; }
     public void Init()
     {

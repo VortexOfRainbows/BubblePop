@@ -31,13 +31,13 @@ public class DualGridTilemap : MonoBehaviour
     }
     public static void PrepareDisplayMap(Transform Visual, List<Tilemap> DisplayMap, Color c, int orderOffset)
     {
-        for (int k = 0; k < World.Instance.TileTypes.Length; ++k)
+        for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
             Tilemap t = Instantiate(VisualMapPrefab, Visual).GetComponent<Tilemap>();
-            t.gameObject.name = $"{(World.GeneratingBorder ? "Solid" : "Floor")}[{k}]: {World.Instance.TileTypes[k].name}";
+            t.gameObject.name = $"{(World.GeneratingBorder ? "Solid" : "Floor")}[{k}]: {TileID.TileTypes[k].name}";
             t.color = c;
             DisplayMap.Add(t);
-            DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + World.Instance.TileTypes[k].LayerOffset;
+            DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + TileID.TileTypes[k].LayerOffset;
         };
     }
     public static void RefreshDisplayTilemap(Tilemap Map, List<Tilemap> DisplayMap, bool border)
@@ -48,14 +48,11 @@ public class DualGridTilemap : MonoBehaviour
             for (int j = bottom; j < top; j++)
             {
                 Vector3Int coords = new(i, j);
-                for (int k = 0; k < World.Instance.TileTypes.Length; ++k) //TODO: Replace this lookup with a dictionary for better efficiency 
+                var t = Map.GetTile(coords);
+                if (t != null)
                 {
-                    var t = Map.GetTile(coords);
-                    if (World.Instance.TileTypes[k].TileType == t)
-                    {
-                        World.Instance.TileTypes[k].UpdateDisplayTile(coords, DisplayMap[k]);
-                        break;
-                    }
+                    DualGridTile tile = TileID.GetTileIDFromTile(t);
+                    tile.UpdateDisplayTile(coords, DisplayMap[tile.TypeIndex]);
                 }
             }
         }
@@ -70,15 +67,11 @@ public class DualGridTilemap : MonoBehaviour
             mushroom = true;
             mult = 0.5f;
         }
-        int grassLayer = 2;
-        int dirtLayer = 1;
-        Tile grassTile = World.Instance.TileTypes[grassLayer].TileType; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
-        Tile dirtTile = World.Instance.TileTypes[dirtLayer].TileType; //This should be replaced with a more robust system later, like indexing all tiles in an array kept in world
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)
             {
-                bool isGrassTile = Map.GetTile(i, j) == grassTile;
+                bool isGrassTile = Map.GetTile(i, j) == TileID.Grass.TileType;
                 if (isGrassTile && Utils.RandFloat() < 0.1f * mult)
                 {
                     var g = Instantiate(Utils.RandInt(3) != 0 ? Flower3 : Utils.RandInt(2) == 0 ? Flower2 : Flower, DecorVisual).GetComponent<SpriteRenderer>();
@@ -88,7 +81,7 @@ public class DualGridTilemap : MonoBehaviour
                     g.flipX = Utils.rand.NextBool();
                     continue;
                 }
-                if (mushroom && (isGrassTile || Map.GetTile(i, j) == dirtTile))
+                if (mushroom && (isGrassTile || Map.GetTile(i, j) == TileID.Dirt.TileType))
                 {
                     if (Utils.RandFloat() < 0.05f)
                     {

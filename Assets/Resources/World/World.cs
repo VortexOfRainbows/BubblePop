@@ -11,7 +11,6 @@ public class World : MonoBehaviour
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
     public static bool GeneratingBorder { get; set; } = false;
     public DualGridTilemap Tilemap;
-    public DualGridTile[] TileTypes;
     public List<WorldNode> nodes;
     public static bool WithinBorders(Vector3 position)
     {
@@ -20,7 +19,7 @@ public class World : MonoBehaviour
     public void Start()
     {
         m_Instance = this;
-        foreach (DualGridTile tile in TileTypes)
+        foreach (DualGridTile tile in TileID.TileTypes)
             tile.Init();
         LoadNodesOntoWorld();
 
@@ -63,9 +62,9 @@ public class World : MonoBehaviour
                 {
                     float f = Noise.GetNoise(i, j);
                     if (f < 0.2f && f > -0.2f)
-                        Map.SetTile(pos, TileTypes[1].TileType);
+                        Map.SetTile(pos, TileID.Dirt.TileType);
                     else
-                        Map.SetTile(pos, TileTypes[2].TileType);
+                        Map.SetTile(pos, TileID.Grass.TileType);
                 }
             }
         }
