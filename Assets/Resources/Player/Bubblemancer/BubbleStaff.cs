@@ -14,7 +14,6 @@ public class BubbleStaff : BubblemancerWand
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         base.ModifyPowerPool(powerPool);
-        powerPool.Add<Coalescence>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -28,5 +27,10 @@ public class BubbleStaff : BubblemancerWand
     {
         base.AnimationUpdate();
         spriteRender.flipY = !spriteRender.flipY;
+    }
+    public override void EquipUpdate()
+    {
+        player.OldCoalescence += 1;
+        player.SecondaryAttackSpeedModifier += 0.2f;
     }
 }

@@ -152,7 +152,7 @@ public class BubblemancerWand : Weapon
                     if(AttackRight > 250 && (AttackRight - 50) % 100 == 0)
                     {
                         float scale = (AttackRight - 250) / 100;
-                        AudioManager.PlaySound(SoundID.ChargePoint.GetVariation((int)scale % 3), Player.Position, 0.7f + Mathf.Sqrt(scale) * 0.1f, 1f);
+                        AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(2), Player.Position, 0.7f, 1f + scale * 0.05f);
                     }
                 }
                 bonusPointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * p.squash;

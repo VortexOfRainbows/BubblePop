@@ -157,6 +157,17 @@ public class GachaponBurger : UnlockCondition
         category = Completionist;
     }
 }
-
-
-
+public class GachaponBubblebirb : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Gachapon: Kamikaze");
+        description.WithDescription($"As Y:Gachapon, kill {EnemyID.OldLeonard.GetComponent<Enemy>().Name()} with {Power.UnlockedName} resurrection flames");
+    }
+    public override PowerUp Power => PowerUp.Get<BubbleBirb>();
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Challenge;
+    }
+}

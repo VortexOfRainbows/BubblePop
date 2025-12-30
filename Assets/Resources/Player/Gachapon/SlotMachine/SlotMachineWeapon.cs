@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class SlotMachineWeapon : Weapon
@@ -48,7 +50,7 @@ public class SlotMachineWeapon : Weapon
     public MeleeHitbox Hitbox { get; set; }
     public SpecialTrail Trail { get; set; }
     public Transform LeverArm;
-    public Transform Coin, GeoCenter, BatterUpCenter;
+    public Transform Coin, GeoCenter, BatterUpCenter, ShootCenter;
     public List<Transform> BatterUpTokens;
     public float AttackGamble = 0;
     public int GambleOutcome = 1;
@@ -69,8 +71,8 @@ public class SlotMachineWeapon : Weapon
         float scaleUp = 0.95f;
         if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20 || AttackRight < RightClickEndLag)
             dir = Mathf.Sign(playerToMouse.x);
-        Vector2 awayFromWand = new Vector2(1.5f, 0.25f * dir).RotatedBy(playerToMouse.ToRotation());
-        Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)transform.position - awayFromWand;
+        float verticalOffset = this is DragonSlots ? -1f : 0.25f;
+        Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)ShootCenter.position;
         Vector2 norm = toMouse.normalized;
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
 
@@ -119,12 +121,10 @@ public class SlotMachineWeapon : Weapon
                             int num = GambleOutcome == 5 ? 3 : 0;
                             int type = GambleOutcome != 5 ? GambleOutcome - 1 : 3 - BurstNum % 3;
                             float separation = GambleOutcome == 5 ? 4.5f : 9f;
+                            Vector2 shootFrom = (Vector2)ShootCenter.position;
                             for (int i = -num; i <= num; i += 1)
                             {
-                                //if(num == 1 && i != 0)
-                                //    Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 1);
-                                //else
-                                Projectile.NewProjectile<GachaProj>((Vector2)transform.position + awayFromWand, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 2, type);
+                                Shoot(shootFrom, norm, separation, i, type);
                                 if(i == 0)
                                 {
                                     if(type == 0 || GambleOutcome == 5)
@@ -317,6 +317,10 @@ public class SlotMachineWeapon : Weapon
         velocity *= 0.8f;
         bounceCount = 0.7f;
     }
+    public virtual void Shoot(Vector2 shootFrom, Vector2 norm, float separation, int i, int type)
+    {
+        Projectile.NewProjectile<GachaProj>(shootFrom, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 2, type);
+    }
     public void UpdateCoins(float percent, float launchPercent)
     {
         float interval = 1f / (player.BatterUp + 1) * (player.BatterUp + 1 - TokenShots);
@@ -495,8 +499,8 @@ public class SlotMachineWeapon : Weapon
         public float DefaultX;
         public Transform Transform;
         public SpriteRenderer Renderer;
-        public int SpriteNum1;
         public SpriteRenderer RendererSecond;
+        public int SpriteNum1;
         public int SpriteNum2;
         public bool ReadyToSwitchSprite1 { get; set; } = false;
         public bool ReadyToSwitchSprite2 { get; set; } = false;

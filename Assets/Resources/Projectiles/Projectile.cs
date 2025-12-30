@@ -399,6 +399,16 @@ public class PhoenixFire : Projectile
         }
         timer++;
     }
+    public override void OnHitTarget(Entity target)
+    {
+        if(Player.Instance.Body is Gachapon && target is EnemyBossDuck)
+        {
+            if(target.Life <= 0)
+            {
+                UnlockCondition.Get<GachaponBubblebirb>().SetComplete();
+            }
+        }
+    }
 }
 public class SnakeLightning : Projectile
 {

@@ -188,6 +188,7 @@ public partial class Main : MonoBehaviour
         public static readonly GameObject CrystalSkull = LoadSubEquipment(GachaponCape, "Gachapon/Cryskull");
         public static readonly GameObject SusCape = LoadSubEquipment(GachaponCape, "Gachapon/ShadyCoat");
         public static readonly GameObject GachaponWeapon = LoadEquipment("Gachapon/SlotMachine/SlotMachine");
+        public static readonly GameObject DragonSlots = LoadSubEquipment(GachaponWeapon, "Gachapon/SlotMachine/DragonSlots");
         public static GameObject LoadEquipment(string path)
         {
             return LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));

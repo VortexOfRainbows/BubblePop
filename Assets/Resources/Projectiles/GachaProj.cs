@@ -35,6 +35,18 @@ public class GachaProj : Projectile
             c = ColorHelper.RarityColors[1];
             Penetrate = -1;
         }
+        else if(Data1 == 4)
+        {
+            Damage = Damage * 0.25f;
+            c = ColorHelper.RarityColors[4] * 0.9f;
+            Penetrate = -1;
+            SpriteRenderer.sprite = Main.TextureAssets.FireProj;
+            SpriteRenderer.color = SpriteRenderer.color.WithAlpha(0.5f);
+            SpriteRendererGlow.transform.localScale *= 0.9f;
+            SpriteRendererGlow.transform.localPosition = new Vector3(0, -0.1f);
+            transform.localScale *= 0.5f;
+            immunityFrames /= 2;
+        }
         RB.velocity *= 1 + 0.1f * Player.Instance.FasterBulletSpeed;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = c * 0.875f;
@@ -45,18 +57,32 @@ public class GachaProj : Projectile
         float deathTime = 180;
         float speed = RB.velocity.magnitude;
         float rtSpeed = Mathf.Sqrt(speed);
-        RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x) * 1.4f;
         float targetScale = 1f + Data1 * 0.125f;
+        if (Data1 != 4)
+        {
+            RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x) * 1.4f;
+            if ((int)timer % 3 == 0)
+            {
+                Vector2 norm = RB.velocity.normalized;
+                ParticleManager.NewParticle((Vector2)transform.position - norm * 0.1f + Utils.RandCircle(transform.lossyScale.x * 0.3f), .35f, norm * -.75f, 0.8f, Utils.RandFloat(0.225f, 0.35f), Data1 == 2 ? 1 : Data1 == 3 ? 2 : 0, c.WithAlphaMultiplied(0.5f));
+            }
+        }
+        else
+        {
+            SpriteRenderer.flipX = RB.velocity.x < 0;
+            if ((int)timer % 5 == 0)
+            {
+                Vector2 norm = RB.velocity.normalized;
+                ParticleManager.NewParticle((Vector2)transform.position - norm * 0.1f + Utils.RandCircle(transform.lossyScale.x * 0.3f), 2.0f, norm * 2.5f + Utils.RandCircle(3) + Vector2.up * 2.2f, 2.5f, Utils.RandFloat(0.5f, 0.7f), ParticleManager.ID.Pixel, c.WithAlphaMultiplied(0.5f));
+            }
+            targetScale = 0.9f;
+            RB.velocity *= 0.9925f;
+        }
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
         float FadeOutTime = 20;
         if (timer > deathTime + FadeOutTime)
         {
             Kill();
-        }
-        if ((int)timer % 3 == 0)
-        {
-            Vector2 norm = RB.velocity.normalized;
-            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.1f + Utils.RandCircle(transform.lossyScale.x * 0.3f), .35f, norm * -.75f, 0.8f, Utils.RandFloat(0.225f, 0.35f), Data1 == 2 ? 1 : Data1 == 3 ? 2 : 0, c.WithAlphaMultiplied(0.5f));
         }
         if (timer > deathTime)
         {
@@ -68,6 +94,8 @@ public class GachaProj : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
+        if (Data1 == 4)
+            return;
         Damage *= 0.8f; // 0.8f + 0.05f * Data1;
         if (Data1 == 0)
             return;
@@ -84,6 +112,8 @@ public class GachaProj : Projectile
     }
     public override void OnKill()
     {
+        if (Data1 == 4)
+            return;
         int c2 = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
         for (int i = 0; i < c2; i++)
         {
