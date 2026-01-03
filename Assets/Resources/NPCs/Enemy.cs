@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 public static class EnemyID
 {
@@ -359,8 +360,11 @@ public class Enemy : Entity
     {
 
     }
+    public virtual bool CanInjure() => true;
     public void Injure(float damage, int critLevel = 0, Color popupTextColor = default)
     {
+        if (!CanInjure())
+            return;
         Life -= damage;
         DamageTaken += damage;
         OnInjured(damage, critLevel);

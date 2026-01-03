@@ -29,18 +29,23 @@ Need to do:
 	4. Progress display for achievements
 10. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
 11. Grass shader to make grass more interesting and potentially slightly vary in the wind
-12. Infector can die to poison while in an enemy (bug)
-13. Make power display on the bottom smaller
-14. Make Gachapon Weapon!
+12. Make power display on the bottom smaller
+13. Make Gachapon Weapon!
 	1. Needs: debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for realestate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
-15. Make Map NODE system
-16. Fix issue where hats start on the wrong side when facing left, standing still, and switching character or equipment
+14. Make Map NODE system
+15. Fix issue where hats start on the wrong side when facing left, standing still, and switching character or equipment
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 2. Improve UI
 
 Done: 
+
+12/29/25 to 1/3/26
+1. Work on crucible sprites (no commit)
+2. Import gem sprite
+3. Fix bug where infector could die to poison while inside an enemy
+4. Fix bug where an Infector killed before infecting a host would prevent the host from ever being infected again by another infector
 
 12/27/25 to 12/29/25
 1. Procedurally Generated exterior to the map

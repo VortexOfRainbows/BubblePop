@@ -311,6 +311,10 @@ public class Infector : Enemy
             }
         }
     }
+    public override bool CanInjure()
+    {
+        return !FinishedImplanting;
+    }
     public override void OnInjured(float damage, int damageType)
     {
         if(Life > 0)
@@ -347,5 +351,9 @@ public class Infector : Enemy
         }
         for (int i = 0; i < 8; ++i)
             ParticleManager.NewParticle(pos2 + Utils.RandCircle(0.6f), 0.25f, Utils.RandCircle(3, 6), 0.1f, Utils.RandFloat(0.5f, 0.7f), ParticleManager.ID.Trail, Color.red);
+        if(Host != null)
+        {
+            Host.InfectionTarget = false;
+        }
     }
 }
