@@ -19,6 +19,8 @@ public class PlayerStatUI : MonoBehaviour
     public GameObject Key;
     public TMPro.TextMeshProUGUI tokenText;
     public GameObject Tokens;
+    public TMPro.TextMeshProUGUI GemText;
+    public GameObject Gems;
     public static void ClearHearts()
     {
         foreach (PlayerHeartUI heart in Hearts)
@@ -37,20 +39,26 @@ public class PlayerStatUI : MonoBehaviour
         CurrentLife = MaxLife = 0;
         Money.SetActive(false);
         Key.SetActive(false);
+        Gems.SetActive(false);
     }
     public void Update()
     {
         if(Main.WavesUnleashed)
         {
             Money.SetActive(true);
-            int money = CoinManager.Current; // : CoinManager.Savings;
+            int money = CoinManager.CurrentCoins;
             moneyText.text = $"${money}";
             moneyText.enabled = true;
 
             Key.SetActive(true);
-            int keys = CoinManager.CurrentKeys; // : CoinManager.Savings;
+            int keys = CoinManager.CurrentKeys;
             keyText.text = $"{keys}";
             keyText.enabled = true;
+
+            Gems.SetActive(true);
+            int gems = CoinManager.CurrentGems;
+            GemText.text = $"{gems}";
+            GemText.enabled = true;
 
             bool usingGachaSlots = Player.Instance.Weapon != null && Player.Instance.Weapon is SlotMachineWeapon;
             Tokens.SetActive(usingGachaSlots);
@@ -58,7 +66,7 @@ public class PlayerStatUI : MonoBehaviour
             {
                 int tokens = CoinManager.CurrentTokens; // : CoinManager.Savings;
                 string hex = ColorHelper.TokenColor.ToHexString();
-                string text = tokens > 0 ? $"{tokens}" : $"<color={(CoinManager.Current >= SlotMachineWeapon.CoinCost ? "#FFFFFF" : "#FF4455")}>${SlotMachineWeapon.CoinCost}</color>";
+                string text = tokens > 0 ? $"{tokens}" : $"<color={(CoinManager.CurrentCoins >= SlotMachineWeapon.CoinCost ? "#FFFFFF" : "#FF4455")}>${SlotMachineWeapon.CoinCost}</color>";
                 tokenText.text = $"<color={hex}>{text}/{Player.Instance.MaxTokens}</color>";
                 tokenText.enabled = true;
             }

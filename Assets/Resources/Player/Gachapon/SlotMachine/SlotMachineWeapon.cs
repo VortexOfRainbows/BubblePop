@@ -383,7 +383,7 @@ public class SlotMachineWeapon : Weapon
     {
         if (AttackLeft <= 0 && AttackGamble <= 0 && AttackRight < 0 && !alternate)
         {
-            bool hasMoney = CoinManager.Current >= CoinCost || !Main.WavesUnleashed || CoinManager.CurrentTokens > 0;
+            bool hasMoney = CoinManager.CurrentCoins >= CoinCost || !Main.WavesUnleashed || CoinManager.CurrentTokens > 0;
             if(!hasMoney)
             {
                 AudioManager.PlaySound(SoundID.SoapDie, transform.position, 1.5f, 1.0f, 1);

@@ -84,7 +84,7 @@ public class PowerUpObject : MonoBehaviour
     {
         if(collision.CompareTag("Player") && !PickedUp)
         {
-            if(CoinManager.Current >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))
+            if(CoinManager.CurrentCoins >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))
             {
                 PickUp();
             }

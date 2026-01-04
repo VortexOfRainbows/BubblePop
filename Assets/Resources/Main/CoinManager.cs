@@ -12,6 +12,7 @@ public static class CoinManager
         Key = Resources.Load<GameObject>("Money/KeyPickup");
         Chest = Resources.Load<GameObject>("Chests/Chest");
         Token = Resources.Load<GameObject>("Money/Token");
+        Gem = Resources.Load<GameObject>("Money/GemPickup");
     }
     //public static void Load()
     //{
@@ -26,7 +27,7 @@ public static class CoinManager
     public static GameObject Gold;
     public static GameObject Heart;
     public static GameObject Key;
-    public static GameObject Chest, Token;
+    public static GameObject Chest, Token, Gem;
     public static void SpawnCoin(Vector2 pos, int value = 1, float collectDelay = 0f)
     {
         int bronze = value % 5;
@@ -57,30 +58,28 @@ public static class CoinManager
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(8);
         obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
     }
-    public static void SpawnHeart(Func<Vector2> func, float collectDelay)
-    {
-        SpawnHeart(func.Invoke(), collectDelay);
-    }
+    public static void SpawnHeart(Func<Vector2> func, float collectDelay) => SpawnHeart(func.Invoke(), collectDelay);
     public static void SpawnHeart(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Heart, pos, Quaternion.identity);
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
         obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
     }
-    public static void SpawnKey(Func<Vector2> func, float collectDelay)
-    {
-        SpawnKey(func.Invoke(), collectDelay);
-    }
+    public static void SpawnKey(Func<Vector2> func, float collectDelay) => SpawnKey(func.Invoke(), collectDelay);
     public static void SpawnKey(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Key, pos, Quaternion.identity);
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
         obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
     }
-    public static void SpawnToken(Func<Vector2> func, float collectDelay)
+    public static void SpawnGem(Func<Vector2> func, float collectDelay) => SpawnGem(func.Invoke(), collectDelay);
+    public static void SpawnGem(Vector2 pos, float collectDelay)
     {
-        SpawnToken(func.Invoke(), collectDelay);
+        GameObject obj = GameObject.Instantiate(Gem, pos, Quaternion.identity);
+        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
+        obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
     }
+    public static void SpawnToken(Func<Vector2> func, float collectDelay) => SpawnToken(func.Invoke(), collectDelay);
     public static void SpawnToken(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Token, pos, Quaternion.identity);
@@ -88,29 +87,25 @@ public static class CoinManager
         var c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;
     }
-    public static Chest SpawnChest(Func<Vector2> func, int type)
-    {
-        return SpawnChest(func.Invoke(), type);
-    }
+    public static Chest SpawnChest(Func<Vector2> func, int type) => SpawnChest(func.Invoke(), type);
     public static Chest SpawnChest(Vector2 pos, int type)
     {
         Chest obj = GameObject.Instantiate(Chest, pos, Quaternion.identity).GetComponent<Chest>();
         obj.Init(type);
         return obj;
     }
-    public static int Current { get; private set; } = 0;
+    public static int CurrentCoins { get; private set; } = 0;
     public static int CurrentKeys { get; private set; } = 0;
     public static int CurrentTokens { get; private set; } = 0;
+    public static int CurrentGems { get; private set; } = 0;
     public static int TotalEquipCost;
     public static void AfterDeathReset()
     {
-        CurrentTokens = 0;
-        CurrentKeys = 0;
-        Current = 0;
+        CurrentTokens = CurrentKeys = CurrentCoins = CurrentGems = 0;
     }
     public static void ModifyCoins(int amt)
     {
-        Current += amt;
+        CurrentCoins += amt;
         if (amt < 0)
         {
             Player.GoldSpentTotal -= amt;
@@ -130,5 +125,9 @@ public static class CoinManager
         CurrentTokens += amt;
         if(CurrentTokens > Player.Instance.MaxTokens)
             CurrentTokens = Mathf.Max(prevTokens, Player.Instance.MaxTokens);
+    }
+    public static void ModifyGems(int amt)
+    {
+        CurrentGems += amt;
     }
 }

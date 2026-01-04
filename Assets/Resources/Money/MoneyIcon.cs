@@ -23,11 +23,15 @@ public class MoneyIcon : MonoBehaviour
             }
             else if(Type == 1)
             {
-                PopUpTextUI.Enable("Key", "Can be used to open chests");
+                PopUpTextUI.Enable("Keys", "Can be used to open chests");
             }
-            else
+            else if(Type == 2)
             {
                 PopUpTextUI.Enable("Tokens", "Can be used to play Gacha Slots instead of money");
+            }
+            else if(Type == 3)
+            {
+                PopUpTextUI.Enable("Gems", "WIP");
             }
             UpdateSparkle(Sparkle, true);
         }

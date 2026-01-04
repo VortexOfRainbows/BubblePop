@@ -410,22 +410,25 @@ public class Enemy : Entity
                 Player.Instance.ResearchNoteKillCounter += 1;
             }
             int max = Player.Instance.PiratesBooty;
-            if (Utils.RollWithLuck(0.1f * max))
+            if(max > 0)
             {
-                Player.Instance.RemovePower(PowerUp.Get<PiratesBooty>().Type);
-                if ((CoinManager.CurrentKeys <= 0 && Utils.RollWithLuck(0.75f)) || (CoinManager.CurrentKeys > 0 && Utils.RollWithLuck(0.25f)))
+                if (Utils.RollWithLuck(0.1f * max))
                 {
-                    CoinManager.SpawnKey(transform.position, 0.2f);
+                    Player.Instance.RemovePower(PowerUp.Get<PiratesBooty>().Type);
+                    if ((CoinManager.CurrentKeys <= 0 && Utils.RollWithLuck(0.75f)) || (CoinManager.CurrentKeys > 0 && Utils.RollWithLuck(0.25f)))
+                    {
+                        CoinManager.SpawnKey(transform.position, 0.2f);
+                    }
+                    else
+                    {
+                        int type = 0;
+                        if (Utils.RollWithLuck(0.2f))
+                            type += Utils.RollWithLuck(0.2f) ? 2 : 1;
+                        var chest = CoinManager.SpawnChest(transform.position, type);
+                        chest.PirateChest = true;
+                    }
+                    --Player.Instance.PiratesBooty;
                 }
-                else
-                {
-                    int type = 0;
-                    if (Utils.RollWithLuck(0.2f))
-                        type += Utils.RollWithLuck(0.2f) ? 2 : 1;
-                    var chest = CoinManager.SpawnChest(transform.position, type);
-                    chest.PirateChest = true;
-                }
-                --Player.Instance.PiratesBooty;
             }
         }
         StaticData.TimesKilled++;
@@ -445,8 +448,10 @@ public class Enemy : Entity
         float reduceRelativeDropRates = Mathf.Max(0.25f, Mathf.Min(1, 0.25f + (200 - WaveDirector.TotalPowersSpawned) / 200f)); //At 200 powers, this number is 0.25, meaning power drop rates will be reduced
         bool LuckyDrop = Utils.RandFloat(1) < (IsSkull ? SkullPowerDropChance : PowerDropChance) * reduceRelativeDropRates;
         WaveDirector.Point += (int)MaxCoins;
-        if (/*WaveDirector.CanSpawnPower() ||*/ LuckyDrop)
+        if (LuckyDrop)
             PowerUp.Spawn(PowerUp.RandomFromPool(0.15f), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 8));
+        else
+            CoinManager.SpawnGem(transform.position, 0.0f);
         Destroy(gameObject);
     }
     public virtual void AI()

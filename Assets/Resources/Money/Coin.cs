@@ -6,6 +6,7 @@ public class Coin : MonoBehaviour
     public bool IsHeart => YieldType == 1;
     public bool IsKey => YieldType == 2;
     public bool IsToken => YieldType == 3;
+    public bool IsGem => YieldType == 4;
     public Rigidbody2D rb;
     public int YieldType = 0;
     public int Value;
@@ -19,7 +20,7 @@ public class Coin : MonoBehaviour
             return Player.Instance.MaxTokens > CoinManager.CurrentTokens;
         if (IsHeart)
             return Player.Instance.Life < Player.Instance.TotalMaxLife;
-        if (IsKey)
+        if (IsKey || IsGem)
             return Main.WavesUnleashed;
         return true;
     }
@@ -103,37 +104,50 @@ public class Coin : MonoBehaviour
             }
             HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 225f) - 0.1f);
         }
-        else if(IsKey)
+        else if(IsKey || IsGem)
         {
             for(int i = -1; i <= 1; i += 2)
             {
                 if (Utils.RandFloat(1) < 0.6f)
                 {
                     Vector2 circular = new Vector2(1.15f * i, 0).RotatedBy(Mathf.PI * Time.fixedTime);
-                    circular.y *= 0.85f;
-                    circular.y -= 0.025f;
+                    if (IsKey)
+                    {
+                        circular.y *= 0.85f;
+                        circular.y -= 0.025f;
+                    }
+                    else
+                    {
+                        circular.x *= 0.85f;
+                        circular.x -= 0.025f;
+                    }
+
                     ParticleManager.NewParticle((Vector2)transform.position + circular, Utils.RandFloat(0.2f, 0.25f), circular * Utils.RandFloat(0.1f, 0.2f) + new Vector2(0, Utils.RandFloat(0, 2)),
                         1.6f, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Circle, PopupColor.WithAlpha(0.2f) * 1.25f);
                 }
             }
-            HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 225f) + 0.1f);
+            HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 200f) + 0.1f);
         }
     }
     public void OnCollected()
     {
-        if(IsToken)
+        if(IsGem)
+        {
+            CoinManager.ModifyGems(Value);
+            AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.1f, 0.5f, 2);
+            PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"Gem", true, 0.9f);
+        }
+        else if(IsToken)
         {
             CoinManager.ModifyTokens(Value);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.1f, 0.5f, 1);
             PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"Token", true, 0.8f, 90);
-            return;
         }
         else if(IsKey)
         {
             CoinManager.ModifyKeys(Value);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.2f, 0.25f, 2);
             PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}");
-            return;
         }
         else if (IsHeart)
         {
@@ -141,15 +155,17 @@ public class Coin : MonoBehaviour
             AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.1f, 0.76f, 0);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 0.9f, 0.4f, 0);
             PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}");
-            return;
         }
-        CoinManager.ModifyCoins(Value);
-        PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"${Value}");
-        if (Value <= 1)
-            AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 0);
-        else if (Value <= 5)
-            AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 1);
         else
-            AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 2);
+        {
+            CoinManager.ModifyCoins(Value);
+            PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"${Value}");
+            if (Value <= 1)
+                AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 0);
+            else if (Value <= 5)
+                AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 1);
+            else
+                AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 2);
+        }
     }
 }
