@@ -48,6 +48,8 @@ public class Coin : MonoBehaviour
         Player p = Player.Instance;
         if (IsCoin || IsToken)
             rb.rotation += rb.velocity.magnitude * 0.5f * -Mathf.Sign(rb.velocity.x);
+        else if(IsGem)
+            HeartVisual.transform.localEulerAngles = new Vector3(HeartVisual.transform.localEulerAngles.x, HeartVisual.transform.localEulerAngles.y, rb.velocity.x - 70);
         float attractDist = IsHeart || IsKey ? 3.5f : 4 + p.Magnet * 3f;
         if(IsToken)
             attractDist *= 3;
@@ -106,24 +108,30 @@ public class Coin : MonoBehaviour
         }
         else if(IsKey || IsGem)
         {
-            for(int i = -1; i <= 1; i += 2)
+            if(IsKey)
             {
-                if (Utils.RandFloat(1) < 0.6f)
+                for (int i = -1; i <= 1; i += 2)
                 {
-                    Vector2 circular = new Vector2(1.15f * i, 0).RotatedBy(Mathf.PI * Time.fixedTime);
-                    if (IsKey)
+                    if (Utils.RandFloat(1) < 0.6f)
                     {
+                        Vector2 circular = new Vector2(1.15f * i, 0).RotatedBy(Mathf.PI * Time.fixedTime);
                         circular.y *= 0.85f;
                         circular.y -= 0.025f;
+                        ParticleManager.NewParticle((Vector2)transform.position + circular, Utils.RandFloat(0.2f, 0.25f), circular * Utils.RandFloat(0.1f, 0.2f) + new Vector2(0, Utils.RandFloat(0, 2)),
+                            1.6f, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Circle, PopupColor.WithAlpha(0.2f) * 1.25f);
                     }
-                    else
-                    {
-                        circular.x *= 0.85f;
-                        circular.x -= 0.025f;
-                    }
-
-                    ParticleManager.NewParticle((Vector2)transform.position + circular, Utils.RandFloat(0.2f, 0.25f), circular * Utils.RandFloat(0.1f, 0.2f) + new Vector2(0, Utils.RandFloat(0, 2)),
-                        1.6f, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Circle, PopupColor.WithAlpha(0.2f) * 1.25f);
+                }
+            }
+            else
+            {
+                if (Utils.RandFloat(1) < 0.1f)
+                {
+                    Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(-Mathf.PI, Mathf.PI));
+                    circular.x *= 0.75f;
+                    circular = circular.RotatedBy(Mathf.Deg2Rad * (-40 + rb.rotation));
+                    circular.y += 0.05f;
+                    ParticleManager.NewParticle((Vector2)HeartVisual.transform.position + circular * 0.8f, Utils.RandFloat(1f, 2f), circular * Utils.RandFloat(0.1f, 1f),
+                        0.2f, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Pixel, PopupColor.WithAlpha(0.2f) * 1.25f);
                 }
             }
             HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 200f) + 0.1f);

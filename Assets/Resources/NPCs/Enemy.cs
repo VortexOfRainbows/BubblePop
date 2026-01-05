@@ -450,8 +450,10 @@ public class Enemy : Entity
         WaveDirector.Point += (int)MaxCoins;
         if (LuckyDrop)
             PowerUp.Spawn(PowerUp.RandomFromPool(0.15f), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 8));
-        else
+        else if (IsSkull)
+        {
             CoinManager.SpawnGem(transform.position, 0.0f);
+        }
         Destroy(gameObject);
     }
     public virtual void AI()
