@@ -68,13 +68,12 @@ public class PowerUpButton : MonoBehaviour
     }
     public void TurnOn()
     {
-        float chanceForChoice = Player.Instance.BonusChoices ? 0.024f : 0.04f; //This should give roughly the same chance of seeing a choice power again in either case
         if(!IsCheatButton)
         {
             PowerUp.PickingPowerUps = true;
             for (int i = RerollAttempsForSamePowerInPicker; i > 0; --i)
             {
-                SetType(PowerUp.RandomFromPool(chanceForChoice)); //This needs to happen first, before the button is turned on
+                SetType(PowerUp.RandomFromPool(-1)); //This needs to happen first, before the button is turned on
                 if (!SameTypeAsOthers())
                     break;
             }

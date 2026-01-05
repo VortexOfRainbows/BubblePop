@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public static class ReflectiveEnumerator
@@ -78,23 +75,22 @@ public abstract class PowerUp
     }
     public static void AddUniversalPowerups()
     {
-        //Stats
-        //Haste will be added here eventually (when I feel like the time is right)
+        //Statistical powers
         AddPowerUpToAvailability<Overclock>();
         AddPowerUpToAvailability<WeaponUpgrade>();
         AddPowerUpToAvailability<FocusFizz>();
         AddPowerUpToAvailability<CloudWalker>();
 
-        //Economy
+        //Economy powers
         AddPowerUpToAvailability<Magnet>();
         AddPowerUpToAvailability<Coupons>();
 
-        //Powers
+        //Powers that give powers
         AddPowerUpToAvailability<Choice>();
         AddPowerUpToAvailability<PiratesBooty>();
         AddPowerUpToAvailability<BubbleMitosis>();
 
-        //Special
+        //Special powers
         AddPowerUpToAvailability<BubbleBirb>();
     }
     private static void AddPowerUpToAvailability<T>() where T: PowerUp => AddPowerUpToAvailability(Get<T>());
@@ -186,7 +182,7 @@ public abstract class PowerUp
     }
     public int MyID = -1;
     #endregion
-    public static bool PickingPowerUps = false;
+    public static bool PickingPowerUps { get; set; }
     public static int RandomFromPool(float bonusChoiceChance = 0.15f, float blackMarketChance = -1f, int rarity = -1)
     {
         return PickRandomPower(0, bonusChoiceChance, Utils.RandFloat(1) < blackMarketChance, rarity);
@@ -206,11 +202,13 @@ public abstract class PowerUp
         {
             List<int> temp = new();
             foreach(int i in avail)
-                if(PowerUps[i].GetRarity() >= rarity)
+            {
+                if (PowerUps[i].GetRarity() >= rarity)
                 {
                     highestSeen = PowerUps[i].Weighting > highestSeen ? PowerUps[i].Weighting : highestSeen;
                     temp.Add(i);
                 }
+            }    
             if (temp.Count > 0)
                 avail = temp;
         }
@@ -234,12 +232,13 @@ public abstract class PowerUp
             }
         }
         float powerupWeighting = PowerUps[type].Weighting * weightMult;
-        if (rarity != -1 || powerupWeighting > Utils.RandFloat(1))
+        if ((rarity != -1 || powerupWeighting > Utils.RandFloat(1)) && 
+            (addedChoiceChance != -1 || type != Get<Choice>().Type))
         {
             return type;
         }
         else
-            return PickRandomPower(recursionDepth + 1, addedChoiceChance + 0.02f, BlackMarket);
+            return PickRandomPower(recursionDepth + 1, addedChoiceChance < 0 ? -1 : addedChoiceChance + 0.02f, BlackMarket);
     }
     public static void TurnOnPowerUpSelectors()
     {
