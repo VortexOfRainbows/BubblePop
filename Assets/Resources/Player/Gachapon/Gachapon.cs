@@ -263,6 +263,6 @@ public class Gachapon : Body
     {
         FaceR.enabled = false;
         top.SetActive(false);
-        spriteRender.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(spriteRender.transform.localEulerAngles.z, flipDir == -1 ? 180 : 0, 0.1f);
+        spriteRender.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(spriteRender.transform.localEulerAngles.z, FlipDir == -1 ? 180 : 0, 0.1f);
     }
 }

@@ -48,8 +48,8 @@ public class Body : Equipment
     public SpriteRenderer FaceR;
     protected virtual float AngleMultiplier => 1f;
     protected virtual float RotationSpeed => 0.12f;
-    protected int flipDir = 1;
-    public bool Flipped => flipDir == -1;
+    public int FlipDir { get; set; } = 1;
+    public bool Flipped => FlipDir == -1;
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         scale = 1.2f;
@@ -59,7 +59,6 @@ public class Body : Equipment
         float angleMult = 0.5f * AngleMultiplier;
         if (p.squash < 0.9f)
             angleMult = 1;
-        bool legacyRotation = this is Bubblemancer || this is ThoughtBubble;
         if (p.lastVelo.sqrMagnitude > 0.10f)
         {
             float r = spriteRender.transform.eulerAngles.z;
@@ -78,25 +77,16 @@ public class Body : Equipment
                 angle *= angleMult;
             }
             r = Mathf.LerpAngle(r, angle, RotationSpeed);
-            if (r >= 90 && r < 270)
-                flipDir = -1;
-            else
-                flipDir = 1;
-            if (legacyRotation)
-            {
-                spriteRender.flipY = flipDir == -1;
-                spriteRender.transform.eulerAngles = new Vector3(0, 0, r);
-            }
-            else
-            {
-                spriteRender.transform.eulerAngles = new Vector3(0, 0, r);
-            }
+            FlipDir = r >= 90 && r < 270 ? - 1 : 1;
+            spriteRender.transform.eulerAngles = new Vector3(0, 0, r);
         }
         gameObject.transform.localScale = new Vector3(1 + 0.1f * (1 - p.Bobbing), p.Bobbing, 1);
         spriteRender.transform.localScale = 
             FaceR.transform.localScale = new Vector3(1 + (1 - p.squash) * 2.5f, p.squash, 1);
-        spriteRender.transform.localScale = new Vector3(spriteRender.transform.localScale.x, spriteRender.transform.localScale.y * (legacyRotation ? 1 : flipDir), spriteRender.transform.localScale.z);
-        Vector2 squashReAlign = new Vector2(0, p.Bobbing * p.squash - 1);
+        spriteRender.transform.localScale = new Vector3(spriteRender.transform.localScale.x, 
+            spriteRender.transform.localScale.y * FlipDir,
+            spriteRender.transform.localScale.z);
+        Vector2 squashReAlign = new(0, p.Bobbing * p.squash - 1);
         transform.localPosition = squashReAlign;
         gameObject.SetActive(true);
         FaceUpdate();
