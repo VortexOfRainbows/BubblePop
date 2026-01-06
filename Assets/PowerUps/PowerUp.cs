@@ -250,11 +250,12 @@ public abstract class PowerUp
         int max = Player.Instance.BonusChoices ? 5 : 3;
         for (int i = 0; i < max; i++)
         {
-            if (!PowerUpButton.buttons[i].Active)
+            if (!PowerUpButton.Buttons[i].Active)
             {
-                PowerUpButton.buttons[i].TurnOn();
+                PowerUpButton.Buttons[i].TurnOn();
             }
         }
+        PowerUpButton.RerollButton.TurnOn();
         if(PlayerData.PauseDuringPowerSelect)
             Time.timeScale = 0;
     }
@@ -263,9 +264,9 @@ public abstract class PowerUp
         int max = 5;
         for (int i = 0; i < max; i++)
         {
-            if (PowerUpButton.buttons[i].Active)
+            if (PowerUpButton.Buttons[i].Active)
             {
-                PowerUpButton.buttons[i].TurnOff();
+                PowerUpButton.Buttons[i].TurnOff();
             }
         }
         Time.timeScale = 1;

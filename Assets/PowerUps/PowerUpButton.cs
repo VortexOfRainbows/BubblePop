@@ -4,20 +4,27 @@ using UnityEngine;
 public class PowerUpButton : MonoBehaviour
 {
     public const int RerollAttempsForSamePowerInPicker = 3;
-    public static PowerUpButton[] buttons = new PowerUpButton[5];
+    public static PowerUpButton[] Buttons = new PowerUpButton[5];
+    public static PowerUpButton RerollButton;
     [SerializeField] public PowerUpUIElement PowerUI;
     [SerializeField] private int index = 0;
     public bool IsCheatButton = false;
+    public bool IsRerollButton = false;
     public bool Active => gameObject.activeSelf;
     public TextMeshProUGUI HotkeyText;
     private KeyCode Hotkey;
     public void Start()
     {
-        if(!IsCheatButton)
+        if (IsRerollButton)
+        {
+            TurnOff();
+            RerollButton = this;
+        }
+        else if (!IsCheatButton)
         {
             if (Active)
                 PowerUp.PickingPowerUps = true;
-            buttons[index] = this;
+            Buttons[index] = this;
             TurnOff();
         }
         else
@@ -53,22 +60,26 @@ public class PowerUpButton : MonoBehaviour
         PowerUpButton other2;
         if(Player.Instance.BonusChoices)
         {
-            other1 = buttons[(index + 1) % 5];
-            other2 = buttons[(index + 2) % 5];   
-            PowerUpButton other3 = buttons[(index + 3) % 5];
-            PowerUpButton other4 = buttons[(index + 4) % 5];
+            other1 = Buttons[(index + 1) % 5];
+            other2 = Buttons[(index + 2) % 5];   
+            PowerUpButton other3 = Buttons[(index + 3) % 5];
+            PowerUpButton other4 = Buttons[(index + 4) % 5];
             return other1.PowerUI.Index == PowerUI.Index || 
                 other2.PowerUI.Index == PowerUI.Index ||
                 other3.PowerUI.Index == PowerUI.Index || 
                 other4.PowerUI.Index == PowerUI.Index;
         }
-        other1 = buttons[(index + 1) % 3];
-        other2 = buttons[(index + 2) % 3];
+        other1 = Buttons[(index + 1) % 3];
+        other2 = Buttons[(index + 2) % 3];
         return other1.PowerUI.Index == PowerUI.Index || other2.PowerUI.Index == PowerUI.Index;
     }
     public void TurnOn()
     {
-        if(!IsCheatButton)
+        if(IsRerollButton)
+        {
+            SetType(PowerUp.Get<Choice>().Type); //This needs to happen first, before the button is turned on
+        }
+        else if(!IsCheatButton)
         {
             PowerUp.PickingPowerUps = true;
             for (int i = RerollAttempsForSamePowerInPicker; i > 0; --i)
@@ -96,7 +107,12 @@ public class PowerUpButton : MonoBehaviour
     {
         if(HotkeyText != null)
         {
-            if (Player.Instance.BonusChoices)
+            if(IsRerollButton)
+            {
+                Hotkey = KeyCode.R;
+                HotkeyText.text = "R";
+            }
+            else if (Player.Instance.BonusChoices)
             {
                 if (index == 0)
                 {

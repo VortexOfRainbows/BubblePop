@@ -35,6 +35,7 @@ Need to do:
 	1. Needs: debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for realestate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 14. Make Map NODE system
 15. Fix issue where hats start on the wrong side when facing left, standing still, and switching character or equipment
+16. Change power up buttons to be controlled by a single instance instead of 5
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -42,7 +43,7 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-12/29/25 to 1/3/26 and 1/6/26
+12/29/25 to 1/6/26
 1. Work on crucible sprites (no commit)
 2. WIP Gem pickup
 3. Fix bug where infector could die to poison while inside an enemy
@@ -51,6 +52,7 @@ Done:
 6. Appearance order of pickups (visual layering) Key -> Gem -> Heart -> Coin
 7. Choice power can no longer appear in choice menu
 8. Some reorganization of the choice power men to use prefabs
+9. WIP Choice Reroll system (needs more work)
 
 
 12/27/25 to 12/29/25
