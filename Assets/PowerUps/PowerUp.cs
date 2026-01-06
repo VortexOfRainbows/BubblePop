@@ -269,6 +269,7 @@ public abstract class PowerUp
                 PowerUpButton.Buttons[i].TurnOff();
             }
         }
+        PowerUpButton.RerollButton.TurnOff();
         Time.timeScale = 1;
     }
     public int Stack;

@@ -18,8 +18,7 @@ Need to do:
 	3. Powers : Choice, Pirate's Booty, Mitosis, Black Market delivery
 	4. Special: Bubblebirb, Midas Touch (gold is worth more), Shard of Power (after being scrapped, choose an existing power to add onto)
 5. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
-	1. This will replace the current drop rate of powers, since I want to reduce power drop-rate prevalancy
-	2. Also should fix the popup text appearing behind the coin/token/key/gem icons
+	1. Also should fix the HOVER text appearing behind the coin/token/key/gem icons
 6. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 7. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 8. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
@@ -36,6 +35,7 @@ Need to do:
 14. Make Map NODE system
 15. Fix issue where hats start on the wrong side when facing left, standing still, and switching character or equipment
 16. Change power up buttons to be controlled by a single instance instead of 5
+	1. make ability to hide the power choice UI and put the reroll button on the right, hide button of the left for symmetry (maybe)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -52,7 +52,7 @@ Done:
 6. Appearance order of pickups (visual layering) Key -> Gem -> Heart -> Coin
 7. Choice power can no longer appear in choice menu
 8. Some reorganization of the choice power men to use prefabs
-9. WIP Choice Reroll system (needs more work)
+9. WIP Choice Reroll system (still needs more work)
 
 
 12/27/25 to 12/29/25

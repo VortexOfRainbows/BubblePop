@@ -2828,6 +2828,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 623887623711530114, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: myCanvas
+      value: 
+      objectReference: {fileID: 2026733030}
     - target: {fileID: 915952865280326036, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_text
       value: 1.0
@@ -2860,6 +2864,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2113022821446529159, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: myCanvas
+      value: 
+      objectReference: {fileID: 2026733030}
     - target: {fileID: 2135243894908487414, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3
@@ -2876,6 +2884,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2350614246999200687, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: myCanvas
+      value: 
+      objectReference: {fileID: 2026733030}
     - target: {fileID: 2579873030108977050, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2944,6 +2956,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainPackage
       objectReference: {fileID: 0}
+    - target: {fileID: 4160412515229863604, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: myCanvas
+      value: 
+      objectReference: {fileID: 2026733030}
     - target: {fileID: 4180741563695150573, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2988,6 +3004,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5863612655117405609, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: myCanvas
+      value: 
+      objectReference: {fileID: 2026733030}
     - target: {fileID: 5998196016883043315, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -8422,6 +8442,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8299561355073413303, guid: 4db017049cc61144a968f2141cb682bc, type: 3}
   m_PrefabInstance: {fileID: 793837340}
+  m_PrefabAsset: {fileID: 0}
+--- !u!223 &2026733030 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 4625244730472549140, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+  m_PrefabInstance: {fileID: 754807491}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2028576296
 PrefabInstance:

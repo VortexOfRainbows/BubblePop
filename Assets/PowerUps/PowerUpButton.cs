@@ -1,24 +1,37 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PowerUpButton : MonoBehaviour
 {
     public const int RerollAttempsForSamePowerInPicker = 3;
     public static PowerUpButton[] Buttons = new PowerUpButton[5];
     public static PowerUpButton RerollButton;
+    [SerializeField] private Button SelectButton;
     [SerializeField] public PowerUpUIElement PowerUI;
     [SerializeField] private int index = 0;
     public bool IsCheatButton = false;
     public bool IsRerollButton = false;
+    public GameObject GemParent;
+    public TextMeshProUGUI GemCostUI;
+    public int Cost { get; set; } = 0;
     public bool Active => gameObject.activeSelf;
     public TextMeshProUGUI HotkeyText;
     private KeyCode Hotkey;
+    public bool CanSelect()
+    {
+        return CoinManager.CurrentGems >= Cost;
+    }
     public void Start()
     {
+        if(GemParent != null)
+            GemParent.SetActive(IsRerollButton);
+        SelectButton.onClick.AddListener(OnButtonPress);
         if (IsRerollButton)
         {
             TurnOff();
             RerollButton = this;
+            Cost = 5;
         }
         else if (!IsCheatButton)
         {
@@ -26,10 +39,12 @@ public class PowerUpButton : MonoBehaviour
                 PowerUp.PickingPowerUps = true;
             Buttons[index] = this;
             TurnOff();
+            Cost = 0;
         }
         else
         {
             TurnOn();
+            Cost = 0;
         }
     }
     public void OnButtonPress()
@@ -39,9 +54,16 @@ public class PowerUpButton : MonoBehaviour
     }
     public void GrantPower()
     {
-        PowerUI.MyPower.PickUp();
-        if(!IsCheatButton)
-            PowerUp.TurnOffPowerUpSelectors();
+        if(CanSelect())
+        {
+            PowerUI.MyPower.PickUp();
+            if (!IsCheatButton)
+                PowerUp.TurnOffPowerUpSelectors();
+            if(Cost > 0)
+            {
+                CoinManager.ModifyGems(-Cost);
+            }
+        }
     }
     public void FixedUpdate()
     {
@@ -52,6 +74,19 @@ public class PowerUpButton : MonoBehaviour
         if (Input.GetKeyDown(Hotkey) && PowerUp.PickingPowerUps)
         {
             GrantPower();
+        }
+        if (IsRerollButton)
+        {
+            if(CanSelect()) //Can afford
+            {
+                GemCostUI.color = ColorHelper.UIDefaultColor;
+                SelectButton.targetGraphic.color = ColorHelper.UIDefaultColor.WithAlpha(0.5f);
+            }
+            else //Cannot Afford
+            {
+                GemCostUI.color = ColorHelper.UIRedColor;
+                SelectButton.targetGraphic.color = ColorHelper.UIDefaultColor.WithAlpha(0.2f);
+            }
         }
     }
     private bool SameTypeAsOthers()
@@ -78,6 +113,7 @@ public class PowerUpButton : MonoBehaviour
         if(IsRerollButton)
         {
             SetType(PowerUp.Get<Choice>().Type); //This needs to happen first, before the button is turned on
+            GemCostUI.text = $"{Cost}";
         }
         else if(!IsCheatButton)
         {

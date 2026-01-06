@@ -24,7 +24,7 @@ public class PricedButton : MonoBehaviour
         if (StartButton.interactable)
         {
             StartButtonImage.color = new Color(1, 1, 1, 0.8f);
-            InteractVisual.color = new Color(1, 1, 1, 0.4f);
+            InteractVisual.color = ColorHelper.UIGreyColor;
             Text.color = Color.white;
             if (Control.Interact)
                 SimulatePress();
