@@ -34,8 +34,6 @@ Need to do:
 	1. Needs: debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for realestate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 14. Make Map NODE system
 15. Fix issue where hats start on the wrong side when facing left, standing still, and switching character or equipment
-16. Change power up buttons to be controlled by a single instance instead of 5
-	1. make ability to hide the power choice UI and put the reroll button on the right, hide button of the left for symmetry (maybe)
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -53,6 +51,9 @@ Done:
 7. Choice power can no longer appear in choice menu
 8. Some reorganization of the choice power men to use prefabs
 9. WIP Choice Reroll system (still needs more work)
+10. Reorganize the choice reroll system a bit internally and on the UI
+11. Some WIP changes to character drawing to fix a visual bug (WIP)
+	1. For now, bubblemancer now doesn't rotate as much when moving
 
 
 12/27/25 to 12/29/25

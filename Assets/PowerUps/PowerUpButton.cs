@@ -5,47 +5,32 @@ using UnityEngine.UI;
 public class PowerUpButton : MonoBehaviour
 {
     public const int RerollAttempsForSamePowerInPicker = 3;
-    public static PowerUpButton[] Buttons = new PowerUpButton[5];
-    public static PowerUpButton RerollButton;
     [SerializeField] private Button SelectButton;
     [SerializeField] public PowerUpUIElement PowerUI;
     [SerializeField] private int index = 0;
     public bool IsCheatButton = false;
-    public bool IsRerollButton = false;
-    public GameObject GemParent;
-    public TextMeshProUGUI GemCostUI;
-    public int Cost { get; set; } = 0;
     public bool Active => gameObject.activeSelf;
     public TextMeshProUGUI HotkeyText;
     private KeyCode Hotkey;
-    public bool CanSelect()
-    {
-        return CoinManager.CurrentGems >= Cost;
-    }
     public void Start()
     {
-        if(GemParent != null)
-            GemParent.SetActive(IsRerollButton);
+        if (IsCheatButton)
+            Init();
+    }
+    public void Init()
+    {
         SelectButton.onClick.AddListener(OnButtonPress);
-        if (IsRerollButton)
-        {
-            TurnOff();
-            RerollButton = this;
-            Cost = 5;
-        }
-        else if (!IsCheatButton)
+        if (!IsCheatButton)
         {
             if (Active)
                 PowerUp.PickingPowerUps = true;
-            Buttons[index] = this;
             TurnOff();
-            Cost = 0;
         }
         else
         {
             TurnOn();
-            Cost = 0;
         }
+        UpdateHotkey();
     }
     public void OnButtonPress()
     {
@@ -54,16 +39,9 @@ public class PowerUpButton : MonoBehaviour
     }
     public void GrantPower()
     {
-        if(CanSelect())
-        {
-            PowerUI.MyPower.PickUp();
-            if (!IsCheatButton)
-                PowerUp.TurnOffPowerUpSelectors();
-            if(Cost > 0)
-            {
-                CoinManager.ModifyGems(-Cost);
-            }
-        }
+        PowerUI.MyPower.PickUp();
+        if (!IsCheatButton)
+            PowerUp.TurnOffPowerUpSelectors();
     }
     public void FixedUpdate()
     {
@@ -72,22 +50,7 @@ public class PowerUpButton : MonoBehaviour
     public void Update()
     {
         if (Input.GetKeyDown(Hotkey) && PowerUp.PickingPowerUps)
-        {
             GrantPower();
-        }
-        if (IsRerollButton)
-        {
-            if(CanSelect()) //Can afford
-            {
-                GemCostUI.color = ColorHelper.UIDefaultColor;
-                SelectButton.targetGraphic.color = ColorHelper.UIDefaultColor.WithAlpha(0.5f);
-            }
-            else //Cannot Afford
-            {
-                GemCostUI.color = ColorHelper.UIRedColor;
-                SelectButton.targetGraphic.color = ColorHelper.UIDefaultColor.WithAlpha(0.2f);
-            }
-        }
     }
     private bool SameTypeAsOthers()
     {
@@ -95,27 +58,22 @@ public class PowerUpButton : MonoBehaviour
         PowerUpButton other2;
         if(Player.Instance.BonusChoices)
         {
-            other1 = Buttons[(index + 1) % 5];
-            other2 = Buttons[(index + 2) % 5];   
-            PowerUpButton other3 = Buttons[(index + 3) % 5];
-            PowerUpButton other4 = Buttons[(index + 4) % 5];
+            other1 = ChoicePowerMenu.PowerButtons[(index + 1) % 5];
+            other2 = ChoicePowerMenu.PowerButtons[(index + 2) % 5];   
+            PowerUpButton other3 = ChoicePowerMenu.PowerButtons[(index + 3) % 5];
+            PowerUpButton other4 = ChoicePowerMenu.PowerButtons[(index + 4) % 5];
             return other1.PowerUI.Index == PowerUI.Index || 
                 other2.PowerUI.Index == PowerUI.Index ||
                 other3.PowerUI.Index == PowerUI.Index || 
                 other4.PowerUI.Index == PowerUI.Index;
         }
-        other1 = Buttons[(index + 1) % 3];
-        other2 = Buttons[(index + 2) % 3];
+        other1 = ChoicePowerMenu.PowerButtons[(index + 1) % 3];
+        other2 = ChoicePowerMenu.PowerButtons[(index + 2) % 3];
         return other1.PowerUI.Index == PowerUI.Index || other2.PowerUI.Index == PowerUI.Index;
     }
     public void TurnOn()
     {
-        if(IsRerollButton)
-        {
-            SetType(PowerUp.Get<Choice>().Type); //This needs to happen first, before the button is turned on
-            GemCostUI.text = $"{Cost}";
-        }
-        else if(!IsCheatButton)
+        if(!IsCheatButton)
         {
             PowerUp.PickingPowerUps = true;
             for (int i = RerollAttempsForSamePowerInPicker; i > 0; --i)
@@ -125,7 +83,6 @@ public class PowerUpButton : MonoBehaviour
                     break;
             }
         }
-        UpdateHotkey();
         PowerUI.TurnedOn();
         gameObject.SetActive(true);
     }
@@ -143,56 +100,30 @@ public class PowerUpButton : MonoBehaviour
     {
         if(HotkeyText != null)
         {
-            if(IsRerollButton)
+            if (index == 0)
             {
-                Hotkey = KeyCode.R;
-                HotkeyText.text = "R";
+                Hotkey = KeyCode.Alpha1;
+                HotkeyText.text = "1";
             }
-            else if (Player.Instance.BonusChoices)
+            if (index == 1)
             {
-                if (index == 0)
-                {
-                    Hotkey = KeyCode.Alpha2;
-                    HotkeyText.text = "2";
-                }
-                if (index == 1)
-                {
-                    Hotkey = KeyCode.Alpha3;
-                    HotkeyText.text = "3";
-                }
-                if (index == 2)
-                {
-                    Hotkey = KeyCode.Alpha4;
-                    HotkeyText.text = "4";
-                }
-                if (index == 3)
-                {
-                    Hotkey = KeyCode.Alpha1;
-                    HotkeyText.text = "1";
-                }
-                if (index == 4)
-                {
-                    Hotkey = KeyCode.Alpha5;
-                    HotkeyText.text = "5";
-                }
+                Hotkey = KeyCode.Alpha2;
+                HotkeyText.text = "2";
             }
-            else
+            if (index == 2)
             {
-                if (index == 0)
-                {
-                    Hotkey = KeyCode.Alpha1;
-                    HotkeyText.text = "1";
-                }
-                if (index == 1)
-                {
-                    Hotkey = KeyCode.Alpha2;
-                    HotkeyText.text = "2";
-                }
-                if (index == 2)
-                {
-                    Hotkey = KeyCode.Alpha3;
-                    HotkeyText.text = "3";
-                }
+                Hotkey = KeyCode.Alpha3;
+                HotkeyText.text = "3";
+            }
+            if (index == 3)
+            {
+                Hotkey = KeyCode.Alpha4;
+                HotkeyText.text = "4";
+            }
+            if (index == 4)
+            {
+                Hotkey = KeyCode.Alpha5;
+                HotkeyText.text = "5";
             }
         }
     }

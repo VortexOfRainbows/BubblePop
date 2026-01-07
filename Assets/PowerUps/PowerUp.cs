@@ -247,29 +247,13 @@ public abstract class PowerUp
             Player.Instance.BonusChoices = true;
             --Player.Instance.ResearchNoteBonuses;
         }
-        int max = Player.Instance.BonusChoices ? 5 : 3;
-        for (int i = 0; i < max; i++)
-        {
-            if (!PowerUpButton.Buttons[i].Active)
-            {
-                PowerUpButton.Buttons[i].TurnOn();
-            }
-        }
-        PowerUpButton.RerollButton.TurnOn();
-        if(PlayerData.PauseDuringPowerSelect)
+        ChoicePowerMenu.TurnOn(Player.Instance.BonusChoices);
+        if (PlayerData.PauseDuringPowerSelect)
             Time.timeScale = 0;
     }
     public static void TurnOffPowerUpSelectors()
     {
-        int max = 5;
-        for (int i = 0; i < max; i++)
-        {
-            if (PowerUpButton.Buttons[i].Active)
-            {
-                PowerUpButton.Buttons[i].TurnOff();
-            }
-        }
-        PowerUpButton.RerollButton.TurnOff();
+        ChoicePowerMenu.TurnOff();
         Time.timeScale = 1;
     }
     public int Stack;

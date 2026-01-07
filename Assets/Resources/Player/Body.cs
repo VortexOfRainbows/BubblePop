@@ -46,7 +46,7 @@ public class Body : Equipment
     public Color PrimaryColor = ParticleManager.DefaultColor;
     public GameObject Face => FaceR.gameObject;
     public SpriteRenderer FaceR;
-    protected virtual float AngleMultiplier => 1f;
+    protected virtual float AngleMultiplier => 0.3f;
     protected virtual float RotationSpeed => 0.12f;
     public int FlipDir { get; set; } = 1;
     public bool Flipped => FlipDir == -1;
