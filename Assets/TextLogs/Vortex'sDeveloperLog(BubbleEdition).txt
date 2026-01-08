@@ -36,7 +36,7 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-1/7/26
+1/7/26 to 1/8/26
 1. Fix issue where choice UI was not centered on all resolutions
 2. Enemies now try to avoid spawning on dark grass
 3. Dark grass now has more middle variants (same as normal grass)
@@ -44,6 +44,9 @@ Done:
 5. Dragon Slots losing-spin now has pierce penalty (0% -> 20%), but still pierces infinitely
 6. Dramatically reduced gems dropped by gem chests
 7. Description variants for parent equipment now apply to child equipment
+8. Enemy Power drop rates dramatically nerfed. All non-skull enemies can no longer drop powers by normal means, including Leonard, Infector, and Gatligator, who previously could
+	1. Furthermore, skull enemies also no longer drop powers, only dropping gems
+9. Base Gem Minimum drop rate 1 -> 0 (meaning most enemies drop 0.5 on average)
 
 
 -- A1.60 --
