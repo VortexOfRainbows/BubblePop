@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 public class World : MonoBehaviour
 {
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
@@ -9,9 +10,16 @@ public class World : MonoBehaviour
     public static bool GeneratingBorder { get; set; } = false;
     public DualGridTilemap Tilemap;
     public List<WorldNode> nodes;
+    public static bool ValidEnemySpawnTile(Vector3 pos)
+    {
+        bool validSpawnTile = RealTileMap.Map.GetTile(RealTileMap.Map.WorldToCell(pos)) != TileID.DarkGrass.TileType;
+        if(!validSpawnTile)
+            Debug.Log($"Valid Spawn Tile: {validSpawnTile}");
+        return WithinBorders(pos) && validSpawnTile;
+    }
     public static bool WithinBorders(Vector3 position)
     {
-        return RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) == Tile.ColliderType.None;
+        return  RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) == Tile.ColliderType.None;
     }
     public void Start()
     {

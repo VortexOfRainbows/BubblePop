@@ -181,7 +181,7 @@ public class EnemyPattern
         if(hasWorldMap)
             for(int i = -1; i <= 1; ++i)
                 for(int j = -1; j <= 1; ++j)
-                    if (!World.WithinBorders(location + new Vector2(i, j) * 2))
+                    if (!World.ValidEnemySpawnTile(location + new Vector2(i, j) * 2))
                         return false;
         return true;
     }
