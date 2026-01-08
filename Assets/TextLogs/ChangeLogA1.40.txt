@@ -65,7 +65,7 @@ Balance:
 1. Base damage of Gacha Slot non-winning spin 5 -> 4
 2. Gacha Slots projectiles now lose more damage when piercing then before (-20%, -15%, -10%, -5%) -> (-20%, -20%, -20%, -20%)
 3. Thunder bubble no longer gains 10% multiplicative speed when bouncing off of walls
-4. Big Bubble Projectile now bounces off walls in a more physically correct manner, and gains 10% velocity instead
+4. Big Bubble Projectile now bounces off walls in a more physically correct manner, and gains 10% velocity instead of losing 25%
 	1. Damage is also no longer truncated, resulting in decimal damage (minor buff)
 5. Token pouch max tokens 3 (+3) -> 2 (+2), tokens per wave 2 (+2) -> 1 (+1)
 	1. Now player starts with 4 max token slots

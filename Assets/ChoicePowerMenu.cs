@@ -35,7 +35,7 @@ public class ChoicePowerMenu : MonoBehaviour
     }
     public void Reroll()
     {
-        Instance.transform.localPosition = new Vector2(Instance.MyCanvas.pixelRect.width / 2, - Instance.MyCanvas.pixelRect.height / 2);
+        Instance.transform.localPosition = new Vector2(Instance.MyCanvas.GetComponent<RectTransform>().rect.width / 2, - MyCanvas.GetComponent<RectTransform>().rect.height / 2);
         if(Cost > 0)
             CoinManager.ModifyGems(-Cost);
         Cost++;
@@ -63,7 +63,7 @@ public class ChoicePowerMenu : MonoBehaviour
         float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
         if (Hide)
         {
-            transform.LerpLocalPosition(new Vector2(MyCanvas.pixelRect.width / 2, 790 - MyCanvas.pixelRect.height / 2), lerpT);
+            transform.LerpLocalPosition(new Vector2(MyCanvas.GetComponent<RectTransform>().rect.width / 2, 790 - MyCanvas.GetComponent<RectTransform>().rect.height / 2), lerpT);
             HideButton.transform.LerpLocalPosition(new Vector2(0, -260), lerpT);
             RerollButton.transform.LerpLocalPosition(new Vector2(0, -140), lerpT);
             HideButtonUI.text = "Show Choices";
@@ -71,7 +71,7 @@ public class ChoicePowerMenu : MonoBehaviour
         }
         else
         {
-            transform.LerpLocalPosition(new Vector2(MyCanvas.pixelRect.width / 2, 60 - MyCanvas.pixelRect.height / 2), lerpT);
+            transform.LerpLocalPosition(new Vector2(MyCanvas.GetComponent<RectTransform>().rect.width / 2, 60 - MyCanvas.GetComponent<RectTransform>().rect.height / 2), lerpT);
             HideButton.transform.LerpLocalPosition(new Vector2(110, -140), lerpT);
             RerollButton.transform.LerpLocalPosition(new Vector2(-110, -140), lerpT);
             HideButtonUI.text = "Hide Choices";
@@ -111,7 +111,7 @@ public class ChoicePowerMenu : MonoBehaviour
     {
         Hide = false;
         Instance.RemainingRerolls = GetBaseRerolls();
-        Instance.transform.localPosition = new Vector2(Instance.MyCanvas.pixelRect.width / 2, - Instance.MyCanvas.pixelRect.height / 2);
+        Instance.transform.localPosition = new Vector2(Instance.MyCanvas.GetComponent<RectTransform>().rect.width / 2, - Instance.MyCanvas.GetComponent<RectTransform>().rect.height / 2);
         Instance.gameObject.SetActive(true);
         int max = ExtraChoices ? 5 : 3;
         var r = Instance.Layout.GetComponent<RectTransform>();
