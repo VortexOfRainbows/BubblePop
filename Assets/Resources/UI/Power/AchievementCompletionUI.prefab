@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 895960862793900449}
   - component: {fileID: 4678305020032328297}
   m_Layer: 5
-  m_Name: PowerupPopupDescriptionUI
+  m_Name: AchievementCompletionUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -495,7 +495,7 @@ MonoBehaviour:
   myRect: {fileID: 1846035805060091531}
   FollowMouse: 0
   ReadyToRenderNormal: 0
-  Type: 1
+  Type: 2
   stars:
   - {fileID: 7382055916821127081}
   - {fileID: 8394254865555263010}

@@ -3,11 +3,15 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PopUpTextUI : MonoBehaviour
 {
+    private const int HoverUI = 0;
+    private const int PowerPopUpUI = 1;
+    private const int AchievementPopUpUI = 2;
     public const int DefaultPopupDuration = 400;
-    public static Queue<PowerUp> PowerupQueue = new();
+    public static readonly Queue<PowerUp> PowerupQueue = new();
+    public static readonly Queue<UnlockCondition> UnlockQueue = new();
     public static void Enable(string name, string desc, int duration = 4)
     {
-        Enable(Instance, name, desc, duration);
+        Enable(HoverTextInstance, name, desc, duration);
     }
     public static void Enable(PopUpTextUI instance, string name, string desc, int duration = DefaultPopupDuration)
     {
@@ -30,32 +34,32 @@ public class PopUpTextUI : MonoBehaviour
     }
     public RectTransform visualRect;
     public float enabledDuration = 0;
-    public static PopUpTextUI Instance;
-    public static PopUpTextUI MiddleInstance;
+    public static PopUpTextUI HoverTextInstance { get; private set; }
+    public static PopUpTextUI PopupPowerTextInstance { get; private set; }
+    public static PopUpTextUI PopupAchievementInstance { get; private set; }
     public PowerUpUIElement PowerUpVisual;
     public Canvas MainGameCanvas;
     public GameObject Visual;
     public TMPro.TextMeshProUGUI Name;
     public TMPro.TextMeshProUGUI Description;
     public RectTransform myRect;
-    public bool FollowMouse = false;
-    //public bool ReadyToRenderFixed = false;
     public bool ReadyToRenderNormal = false;
+    public int Type = 0;
     public void SetName(string name) => Name.text = name;
     public void SetDescription(string desc) => Description.text = desc;
     public void Start()
     {
-        if (FollowMouse)
-            Instance = this;
-        else
-            MiddleInstance = this;
+        if (Type == HoverUI)
+            HoverTextInstance = this;
+        else if(Type == PowerPopUpUI)
+            PopupPowerTextInstance = this;
+        else if (Type == AchievementPopUpUI)
+            PopupAchievementInstance = this;
     }
     public void FixedUpdate()
     {
-        //Instance.gameObject.SetActive(false);
         if (--enabledDuration < 0)
         {
-            //ReadyToRenderFixed = false;
             ReadyToRenderNormal = false;
             Visual.SetActive(false);
         }
@@ -81,39 +85,63 @@ public class PopUpTextUI : MonoBehaviour
         transform.localScale = Vector3.one * growPercent;
         float halfPercent = Mathf.Max(0, percent * 2 - 1);
         float colPer = percent < 0.5f ? Mathf.Min(1, percent * 20) : Mathf.Sqrt(halfPercent > 1 ? 0 : Mathf.Max(1 - halfPercent));
-        if(defaultColors == null)
+        if (Type == PowerPopUpUI)
         {
-            defaultColors = new List<Color>();
-            childImages = new List<Image>();
-            GetComponentsInChildren(false, childImages);
-            childImages.Add(PowerUpVisual.inner);
-            childImages.Add(PowerUpVisual.adornment);
-            foreach (Image i in childImages)
+            if (defaultColors == null)
             {
-                defaultColors.Add(i.color);
+                defaultColors = new List<Color>();
+                childImages = new List<Image>();
+                GetComponentsInChildren(false, childImages);
+                childImages.Add(PowerUpVisual.inner);
+                childImages.Add(PowerUpVisual.adornment);
+                foreach (Image i in childImages)
+                {
+                    defaultColors.Add(i.color);
+                }
+                defaultColors.Add(Name.color);
+                defaultColors.Add(Description.color);
             }
-            defaultColors.Add(Name.color);
-            defaultColors.Add(Description.color);
+            else
+            {
+                int i = 0;
+                for (; i < childImages.Count; ++i)
+                {
+                    childImages[i].color = defaultColors[i].WithAlphaMultiplied(colPer);
+                }
+                Name.color = defaultColors[i++].WithAlphaMultiplied(colPer);
+                Description.color = defaultColors[i++].WithAlphaMultiplied(colPer);
+                UpdateStars(colPer, 1 + (growPercent - 1) * 3);
+            }
         }
         else
         {
-            int i = 0;
-            for (; i < childImages.Count; ++i)
-            {
-                childImages[i].color = defaultColors[i].WithAlphaMultiplied(colPer);
-            }
-            Name.color = defaultColors[i++].WithAlphaMultiplied(colPer);
-            Description.color = defaultColors[i++].WithAlphaMultiplied(colPer);
-            UpdateStars(colPer, 1 + (growPercent - 1) * 3);
+
         }
         if(percent >= 1.05f)
         {
-            if(PowerupQueue.Count > 0)
+            if(Type == PowerPopUpUI)
             {
-                //swap to next in queue
-                PowerUp p = PowerupQueue.Dequeue();
-                UpdatePowerUp(this, p.Type);
-                Enable(this, p.UnlockedName, p.ShortDescription);
+                if (PowerupQueue.Count > 0)
+                {
+                    //swap to next in queue
+                    PowerUp p = PowerupQueue.Dequeue();
+                    UpdatePowerUp(this, p.Type);
+                    Enable(this, p.UnlockedName, p.ShortDescription);
+                }
+            }
+            else if (Type == AchievementPopUpUI)
+            {
+                if(Input.GetKeyDown(KeyCode.U))
+                {
+                    UnlockQueue.Enqueue(UnlockCondition.Get<BubbleBirbUnlock10>());
+                }
+                if (UnlockQueue.Count > 0)
+                {
+                    //swap to next in queue
+                    UnlockCondition u = UnlockQueue.Dequeue();
+                    //UpdatePowerUp(this, p.Type);
+                    Enable(this, u.GetName(), u.GetDescription());
+                }
             }
         }
     }
@@ -150,13 +178,18 @@ public class PopUpTextUI : MonoBehaviour
         {
             if (!Visual.activeSelf)
             {
-                if (FollowMouse)
+                if (Type == HoverUI)
                 {
                     transform.position = new Vector3(30000, transform.position.y, 0);
                     SnapToScreen(true);
                     Visual.SetActive(true);
                 }
-                else
+                else if(Type == PowerPopUpUI)
+                {
+                    transform.position = new Vector3(30000, transform.position.y, 0);
+                    Visual.SetActive(true);
+                }
+                else if(Type == AchievementPopUpUI)
                 {
                     transform.position = new Vector3(30000, transform.position.y, 0);
                     Visual.SetActive(true);
@@ -165,24 +198,32 @@ public class PopUpTextUI : MonoBehaviour
             else
             {
                 ReadyToRenderNormal = true;
-                if(!FollowMouse)
+                if(Type == 1)
                 {
                     transform.localPosition = new Vector3(MainGameCanvas.GetComponent<RectTransform>().rect.width / 2 + 75, -150, 0);
                 }
+                else
+                {
+                    transform.localPosition = new Vector3(MainGameCanvas.GetComponent<RectTransform>().rect.width / 2 + 75, -350, 0);
+                }
             }
         }
-        if(FollowMouse)
-            Instance = this;
-        else
+        if(Type == HoverUI)
+            HoverTextInstance = this;
+        else if(Type == PowerPopUpUI)
         {
             UpdateMiddleInstance();
-            MiddleInstance = this;
+            PopupPowerTextInstance = this;
+        }
+        else if(Type == AchievementPopUpUI)
+        {
+            UpdateMiddleInstance();
+            PopupAchievementInstance = this;
         }
         if (ReadyToRenderNormal)
         {
-            if (FollowMouse)
+            if (Type == HoverUI)
             {
-                //Debug.Log(Input.mousePosition);
                 transform.position = Input.mousePosition + new Vector3(40, -40);
                 SnapToScreen();
             }

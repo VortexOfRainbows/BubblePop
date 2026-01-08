@@ -1,4 +1,4 @@
-Vortex'sDeveloperLog(BubbleEdition)
+Bubble Developer Log (Vortex)
 
 Maybe Do:
 1. Organize layers better for rendering, so player and enemies can be in front of stuff like trees, chests, etc. But also can be behind them depending on y position...
@@ -9,32 +9,34 @@ Maybe Do:
 Need to do:
 1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden)
 2. More descriptive pause and select screen (pause screen should show powerups and change powerups default display to right side vertical)
-3. Make calculator homing snappier
-4. Make a distinct "Generic Power" pool, which contains: 
+3. Make a distinct "Generic Power" pool, which contains: 
 	1. Stats  : Overclock, Haste, Crits, Speed (cap speed at 2x)
 	2. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round
 	3. Powers : Choice, Pirate's Booty, Mitosis, Black Market delivery
 	4. Special: Bubblebirb, Midas Touch (gold is worth more), Shard of Power (after being scrapped, choose an existing power to add onto)
-5. Add a GEM currency, which can be used to reroll shop selections
-6. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
-7. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
-8. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-9. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
+4. Add a GEM currency, which can be used to reroll shop selections
+5. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
+6. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
+7. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
+8. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
 	1. Achievement chains, to hide achievements that are currently unobtainable
 	2. Hide unlocks from char select until they are unlocked, including subequipments
 	3. Achievements that come without unlocks should use the 6-star icon with, but with an emphasis on the two colors of the achievement categories it is part of (the other categories are slightly transparent, for example).
 	4. Progress display for achievements
-10. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
-11. Grass shader to make grass more interesting and potentially slightly vary in the wind
-12. Make power display on the bottom smaller
-13. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
-14. Make Map NODE system
+9. Achievement compendium rework to allow the icons to be powerups and equipments, that way you can "unlock" items into the black market pool
+10. Grass shader to make grass more interesting and potentially slightly vary in the wind
+11. Make power display on the bottom smaller
+12. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
+13. Make Map NODE system
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 2. Improve UI
 
 Done: 
+
+1/8/27
+1. WIP achievement completion popups
 
 1/7/26 to 1/8/26
 1. Fix issue where choice UI was not centered on all resolutions
