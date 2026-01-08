@@ -28,7 +28,7 @@ public partial class Player : Entity
     public Weapon Weapon { get => Animator.Weapon; set => Animator.Weapon = value; }
     public Hat Hat { get => Animator.Hat; set => Animator.Hat = value; }
     public Accessory Accessory { get => Animator.Accessory; set => Animator.Accessory = value; }
-    public Equipment[] Equips = new Equipment[4];
+    public Equipment[] Equips => new Equipment[] { Hat, Accessory, Weapon, Body };
     public PlayerAnimator Animator;
     public Rigidbody2D rb => Animator.rb;
     public float SquashAmt { get; private set; } = 0.6f;
@@ -128,16 +128,8 @@ public partial class Player : Entity
         Animator.PostUpdate();
     }
     private float AttackUpdateTimer = 0;
-    public void FillEquipArray()
-    {
-        Equips[0] = Hat;
-        Equips[1] = Accessory;
-        Equips[2] = Weapon;
-        Equips[3] = Body;
-    }
     public override void OnFixedUpdate()
     {
-        FillEquipArray();
         if (!HasRunStartingGear && Main.WavesUnleashed)
         {
             foreach(Equipment e in Equips)

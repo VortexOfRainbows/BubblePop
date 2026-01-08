@@ -336,7 +336,7 @@ public class Chest : MonoBehaviour
 
             if (ChestType == 2)
             {
-                int amt = (int)(Utils.RandFloat(2.25f, 8.5f) * WaveDirector.WaveMult);
+                int amt = (int)(Utils.RandFloat(2.0f, 2.0f + 1.5f * WaveDirector.WaveMult));
                 for(int i = 0; i < amt; ++i)
                     CoinManager.SpawnGem(pos, 1);
             }

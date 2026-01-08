@@ -468,15 +468,18 @@ public class TokenPouch : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Token Pouch");
-        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:2 G:(+2 per stack) and adds Y:1 G:(+1 per stack) Y:Tokens to Y:[wave start] " +
-            "\nR:[Increases spin price by 0.5] G:(+0.5 per stack) R:coins");
-        description.WithShortDescription("Hold more Tokens and get Tokens at the start of every wave");
+        //description.WithDescription("Increases the number of Y:Tokens you can hold by Y:2 G:(+2 per stack) and adds Y:1 G:(+1 per stack) Y:Tokens to Y:[wave start] " +
+        //    "\nR:[Increases spin price by 0.5] G:(+0.5 per stack) R:coins");
+        //description.WithShortDescription("Hold more Tokens and get Tokens at the start of every wave");
+        description.WithDescription("Increases the number of Y:Tokens you can hold by Y:2 G:(+2 per stack)" +
+            "\nR:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins");
+        description.WithShortDescription("Hold more Tokens");
     }
     public override void HeldEffect(Player p)
     {
         p.MaxTokens += Stack * 2;
-        p.TokensPerWave += Stack * 1;
-        p.SpinPriceIncrease += 0.5f * Stack;
+        //p.TokensPerWave += Stack * 1;
+        p.SpinPriceIncrease += 0.25f * Stack;
     }
 }
 public class BOGOSpin : PowerUp

@@ -189,24 +189,21 @@ public partial class Main : MonoBehaviour
         public static readonly GameObject SusCape = LoadSubEquipment(GachaponCape, "Gachapon/ShadyCoat");
         public static readonly GameObject GachaponWeapon = LoadEquipment("Gachapon/SlotMachine/SlotMachine");
         public static readonly GameObject DragonSlots = LoadSubEquipment(GachaponWeapon, "Gachapon/SlotMachine/DragonSlots");
-        public static GameObject LoadEquipment(string path)
-        {
-            return LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
-        }
+        public static GameObject LoadEquipment(string path) => LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
         public static GameObject LoadEquipment(GameObject Prefab)
         {
             Prefab.GetComponent<Equipment>().SubEquipment.Clear();
             EquipmentAddQueue.Enqueue(Prefab);
             return Prefab;
         }
-        public static GameObject LoadSubEquipment(GameObject ParentReference, string path)
-        {
-            return LoadSubEquipment(ParentReference, Resources.Load<GameObject>($"Player/{path}"));
-        }
+        public static GameObject LoadSubEquipment(GameObject ParentReference, string path) => LoadSubEquipment(ParentReference, Resources.Load<GameObject>($"Player/{path}"));
         public static GameObject LoadSubEquipment(GameObject ParentReference, GameObject Prefab)
         {
-            ParentReference.GetComponent<Equipment>().SubEquipment.Add(Prefab);
-            Prefab.GetComponent<Equipment>().IsSubEquip = true;
+            Equipment parent = ParentReference.GetComponent<Equipment>();
+            Equipment child = Prefab.GetComponent<Equipment>();
+            parent.SubEquipment.Add(Prefab);
+            child.IsSubEquip = true;
+            child.SubEquipParent = parent;
             return LoadEquipment(Prefab);
         }
     }

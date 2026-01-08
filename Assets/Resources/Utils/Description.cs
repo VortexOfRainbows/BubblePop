@@ -164,13 +164,16 @@ public class DetailedDescription
             CompleteDescription = ToRichText(Description);
         if (Player.Instance != null)
         {
-            Type[] equipTypes = new Type[] { 
-                Player.Instance.Body.GetType(), 
-                Player.Instance.Hat.GetType(),
-                Player.Instance.Weapon.GetType(), 
-                Player.Instance.Accessory.GetType() 
-            };
-            foreach(Type t in equipTypes)
+            List<Type> equipTypes = new();
+            for (int i = 0; i < 4; ++i)
+            {
+                Type t = Player.Instance.Equips[i].GetType();
+                equipTypes.Add(t);
+                Type b = t.BaseType;
+                if (b != typeof(Equipment))
+                    equipTypes.Add(b);
+            }
+            foreach (Type t in equipTypes)
             {
                 if (AltDescriptions.TryGetValue(t, out string lines))
                 {
@@ -194,12 +197,15 @@ public class DetailedDescription
             CompleteShortDescription = ToRichText(ShortDescription);
         if (Player.Instance != null)
         {
-            Type[] equipTypes = new Type[] {
-                Player.Instance.Body.GetType(),
-                Player.Instance.Hat.GetType(),
-                Player.Instance.Weapon.GetType(),
-                Player.Instance.Accessory.GetType()
-            };
+            List<Type> equipTypes = new();
+            for(int i = 0; i < 4; ++i)
+            {
+                Type t = Player.Instance.Equips[i].GetType();
+                equipTypes.Add(t);
+                Type b = t.BaseType;
+                if (b != typeof(Equipment))
+                    equipTypes.Add(b);
+            }
             foreach (Type t in equipTypes)
             {
                 if (ShortAltDescriptions.TryGetValue(t, out string lines))

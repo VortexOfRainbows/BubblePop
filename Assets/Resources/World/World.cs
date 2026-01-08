@@ -13,8 +13,8 @@ public class World : MonoBehaviour
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
         bool validSpawnTile = RealTileMap.Map.GetTile(RealTileMap.Map.WorldToCell(pos)) != TileID.DarkGrass.TileType;
-        if(!validSpawnTile)
-            Debug.Log($"Valid Spawn Tile: {validSpawnTile}");
+        //if(!validSpawnTile)
+        //    Debug.Log($"Valid Spawn Tile: {validSpawnTile}");
         return WithinBorders(pos) && validSpawnTile;
     }
     public static bool WithinBorders(Vector3 position)
