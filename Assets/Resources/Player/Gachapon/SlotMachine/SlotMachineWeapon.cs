@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-
 public class SlotMachineWeapon : Weapon
 {
     public GameObject BatterUpToken => Main.PrefabAssets.BatterUpTokenPrefab;
