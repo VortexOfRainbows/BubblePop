@@ -16,15 +16,15 @@ public class ThoughtBubbleUnlock : UnlockCondition
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Gatekeeper");
-        description.WithDescription("Reach and complete wave 25");
+        description.WithDescription("Reach and complete wave 20");
     }
-    protected override bool TryUnlockCondition => WaveDirector.HighScoreWaveNum > 25;
+    protected override bool TryUnlockCondition => WaveDirector.HighScoreWaveNum > 20;
 }
 public class GachaponUnlock : UnlockCondition
 {
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("In For A Penny");
-        description.WithDescription("Spend Y:[6480 coins] across multiple runs");
+        description.WithDescription("Spend Y:[5000 coins] across multiple runs");
     }
 }

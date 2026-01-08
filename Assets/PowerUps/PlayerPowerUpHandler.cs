@@ -125,6 +125,7 @@ public partial class Player : Entity
     public int ExtraGachaBurst = 0;
     public int BatterUp = 0;
     public int PiratesBooty = 0;
+    public int Eureka = 0;
     private void PowerInit()
     {
         powers = new List<int>();
@@ -171,7 +172,7 @@ public partial class Player : Entity
         PityGrowthAmount = BuyOneGetOneMult = 0.0f;
         ConsolationPrize = PhilosophersStone = ExtraGachaBurst = 0;
         MaxTokens = 4;
-        BatterUp = PiratesBooty = 0;
+        BatterUp = PiratesBooty = Eureka = 0;
     }
     private void UpdatePowerUps()
     {

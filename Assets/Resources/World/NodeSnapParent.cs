@@ -19,7 +19,7 @@ public class NodeSnapParent : MonoBehaviour
         {
             Transform child = transform.GetChild(i);
             Vector3Int transformPos = new((int)child.localPosition.x, (int)child.localPosition.y);
-            child.localPosition = transformPos;
+            child.localPosition = new Vector3(transformPos.x, transformPos.y, child.localPosition.z);
         }
     }
     #if UNITY_EDITOR

@@ -36,7 +36,7 @@ public class World : MonoBehaviour
     {
         GeneratingBorder = true;
         var Map = RealTileMap.Map;
-        int padding = 10;
+        int padding = 15;
 
         FastNoiseLite Noise = new();
         Noise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);

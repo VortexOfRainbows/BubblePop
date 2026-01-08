@@ -133,7 +133,7 @@ public class BubbleShield : PowerUp
     }
     public override void OnPickup(int count)
     {
-        Player.Instance.SetShield(Player.Instance.GetShield() + 1);
+        Player.Instance.SetShield(Player.Instance.GetShield() + count);
     }
     public override void HeldEffect(Player p)
     {
@@ -375,9 +375,8 @@ public class Coupons : PowerUp
         if(GachaponShop.Instance != null && GachaponShop.Instance.Stock != null)
         {
             foreach (PowerUpObject p in GachaponShop.Instance.Stock)
-            {
-                p.Cost = (int)(p.Cost - p.MyPower.Cost * 0.12f);
-            }
+                for (int i = 0; i < count; ++i)
+                    p.Cost = (int)(p.Cost - p.MyPower.Cost * 0.12f);
         }
     }
     public override void HeldEffect(Player p)
@@ -570,5 +569,27 @@ public class PiratesBooty : PowerUp
     public override void HeldEffect(Player p)
     {
         p.PiratesBooty += Stack;
+    }
+}
+public class Eureka : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Eureka!");
+        description.WithDescription($"Reduces <color={DetailedDescription.Rares[0]}>Choice</color> Y:Reroll cost by Y:1 G:(+1 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)");
+        description.WithShortDescription("Reduces Choice Reroll cost and increases Reroll count");
+    }
+    public override void OnPickup(int count)
+    {
+        ChoicePowerMenu.Instance.Cost -= count;
+        ChoicePowerMenu.Instance.RemainingRerolls += count;
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.Eureka += Stack;
     }
 }

@@ -15,7 +15,7 @@ public class ChoicePowerMenu : MonoBehaviour
     public int Cost { get; set; } = 3;
     public static int GetBaseRerolls()
     {
-        return 2;
+        return 2 + Player.Instance.Eureka;
     }
     public int RemainingRerolls { get; set; } = 2;
     public static bool Hide { get; set; } = false;
@@ -88,7 +88,7 @@ public class ChoicePowerMenu : MonoBehaviour
             GemCostUI.color = ColorHelper.UIRedColor;
             //RerollButton.targetGraphic.color = ColorHelper.UIDefaultColor.WithAlpha(0.2f);
         }
-        GemCostUI.text = Cost <= 0 ? "0" : Cost.ToString();
+        GemCostUI.text = Cost <= 0 ? "Free" : Cost.ToString();
         RemainingUI.text = $"Remaining: {RemainingRerolls}";
         if(RemainingRerolls > 0)
             RemainingUI.color = ColorHelper.UIDefaultColor;

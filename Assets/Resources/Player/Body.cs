@@ -48,7 +48,7 @@ public class Body : Equipment
     public SpriteRenderer FaceR;
     protected virtual float AngleMultiplier => 0.3f;
     protected virtual float RotationSpeed => 0.12f;
-    public int FlipDir { get; set; } = 1;
+    public int FlipDir { get; set; } = 0;
     public bool Flipped => FlipDir == -1;
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
@@ -59,27 +59,27 @@ public class Body : Equipment
         float angleMult = 0.5f * AngleMultiplier;
         if (p.squash < 0.9f)
             angleMult = 1;
-        if (p.lastVelo.sqrMagnitude > 0.10f)
+        Vector2 lastVelo = new(p.lastVelo.sqrMagnitude > 0.1f ? p.lastVelo.x : p.Direction, p.lastVelo.y);
+        #region modify rotation and direction
+        float r = spriteRender.transform.eulerAngles.z;
+        float angle = lastVelo.ToRotation() * Mathf.Rad2Deg;
+        if (angle < 0)
+            angle += 360;
+        if (angle > 90 && angle <= 270)
         {
-            float r = spriteRender.transform.eulerAngles.z;
-            float angle = p.lastVelo.ToRotation() * Mathf.Rad2Deg;
-            if (angle < 0)
-                angle += 360;
-            if (angle > 90 && angle <= 270)
-            {
-                angle = angle - 180;
-                angle = 180 + angle * angleMult;
-            }
-            else
-            {
-                if (angle >= 270)
-                    angle -= 360;
-                angle *= angleMult;
-            }
-            r = Mathf.LerpAngle(r, angle, RotationSpeed);
-            FlipDir = r >= 90 && r < 270 ? - 1 : 1;
-            spriteRender.transform.eulerAngles = new Vector3(0, 0, r);
+            angle = angle - 180;
+            angle = 180 + angle * angleMult;
         }
+        else
+        {
+            if (angle >= 270)
+                angle -= 360;
+            angle *= angleMult;
+        }
+        r = Mathf.LerpAngle(r, angle, RotationSpeed);
+        FlipDir = r >= 90 && r < 270 ? -1 : 1;
+        spriteRender.transform.eulerAngles = new Vector3(0, 0, r);
+        #endregion
         gameObject.transform.localScale = new Vector3(1 + 0.1f * (1 - p.Bobbing), p.Bobbing, 1);
         spriteRender.transform.localScale = 
             FaceR.transform.localScale = new Vector3(1 + (1 - p.squash) * 2.5f, p.squash, 1);

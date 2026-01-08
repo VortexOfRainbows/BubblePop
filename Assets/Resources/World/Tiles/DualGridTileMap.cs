@@ -25,7 +25,7 @@ public class DualGridTilemap : MonoBehaviour
         World.GeneratingBorder = true;
         PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -49);
         RefreshDisplayTilemap(Map, BorderDisplayMap, true);
-        AddDecor(new Color(0.8f, 0.8f, 0.8f), -30);
+        AddDecor(new Color(0.4f, 0.4f, 0.4f), -30);
         World.GeneratingBorder = false;
         //GetComponent<TilemapRenderer>().enabled = false;
     }
