@@ -21,6 +21,7 @@ public class EnemyBossDuck : EnemyDuck
     {
         data.BaseMaxLife = 45;
         data.BaseMaxCoin = 50;
+        data.BaseMaxGem = 5;
     }
     public override void AI()
     {

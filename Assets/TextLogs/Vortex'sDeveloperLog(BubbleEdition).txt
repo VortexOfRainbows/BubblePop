@@ -18,7 +18,6 @@ Need to do:
 	3. Powers : Choice, Pirate's Booty, Mitosis, Black Market delivery
 	4. Special: Bubblebirb, Midas Touch (gold is worth more), Shard of Power (after being scrapped, choose an existing power to add onto)
 5. Add a GEM currency, which can be used to reroll shop selections
-	1. Also should fix the HOVER text appearing behind the coin/token/key/gem icons
 6. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 7. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 8. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
@@ -43,7 +42,7 @@ Done:
 
 12/29/25 to 1/7/26
 1. Work on crucible sprites (no commit)
-2. WIP Gem pickup, dropped by skull enemies and Gem Chests for now
+2. Add Gem pickup, dropped by skull enemies, Gem Chests, and wave rewards
 3. Fix bug where infector could die to poison while inside an enemy
 4. Fix bug where an Infector killed before infecting a host would prevent the host from ever being infected again by another infector
 5. Keys now bob up an down slightly more aggressively
@@ -57,6 +56,7 @@ Done:
 11. Some WIP changes to character drawing to fix a visual bug (WIP)
 	1. For now, Bubblemancer now doesn't rotate as much when moving
 12. Power Select UI can now be hidden
+13. HOVER text now appears in front of the coin/token/key/gem icons
 
 
 12/27/25 to 12/29/25

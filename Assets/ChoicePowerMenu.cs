@@ -13,7 +13,11 @@ public class ChoicePowerMenu : MonoBehaviour
     public TextMeshProUGUI GemCostUI, RemainingUI, HideButtonUI;
     public HorizontalLayoutGroup Layout;
     public int Cost { get; set; } = 3;
-    public int RemainingRerolls { get; set; } = 1;
+    public static int GetBaseRerolls()
+    {
+        return 2;
+    }
+    public int RemainingRerolls { get; set; } = 2;
     public static bool Hide { get; set; } = false;
     public void Start()
     {
@@ -24,6 +28,7 @@ public class ChoicePowerMenu : MonoBehaviour
                 pb.Init();
             }
             RerollButton.onClick.AddListener(Reroll);
+            HideButton.onClick.AddListener(ToggleHide);
             gameObject.SetActive(false);
             Instance = this;
         }
@@ -31,7 +36,8 @@ public class ChoicePowerMenu : MonoBehaviour
     public void Reroll()
     {
         Instance.transform.localPosition = new Vector2(Instance.MyCanvas.pixelRect.width / 2, - Instance.MyCanvas.pixelRect.height / 2);
-        CoinManager.ModifyGems(-Cost);
+        if(Cost > 0)
+            CoinManager.ModifyGems(-Cost);
         Cost++;
         RemainingRerolls--;
         for (int i = 0; i < 5; i++)
@@ -40,15 +46,19 @@ public class ChoicePowerMenu : MonoBehaviour
                 PowerButtons[i].TurnOn();
         }
     }
+    public void ToggleHide()
+    {
+        Hide = !Hide;
+        if (!Hide && PlayerData.PauseDuringPowerSelect)
+            Main.PauseGame();
+        else
+            Main.UnpauseGame();
+    }
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.H) && PowerUp.PickingPowerUps)
         {
-            Hide = !Hide;
-            if(!Hide && PlayerData.PauseDuringPowerSelect)
-                Main.PauseGame();
-            else
-                Main.UnpauseGame();
+            ToggleHide();
         }
         float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
         if (Hide)
@@ -78,7 +88,7 @@ public class ChoicePowerMenu : MonoBehaviour
             GemCostUI.color = ColorHelper.UIRedColor;
             //RerollButton.targetGraphic.color = ColorHelper.UIDefaultColor.WithAlpha(0.2f);
         }
-        GemCostUI.text = Cost.ToString();
+        GemCostUI.text = Cost <= 0 ? "0" : Cost.ToString();
         RemainingUI.text = $"Remaining: {RemainingRerolls}";
         if(RemainingRerolls > 0)
             RemainingUI.color = ColorHelper.UIDefaultColor;
@@ -100,7 +110,7 @@ public class ChoicePowerMenu : MonoBehaviour
     public static void TurnOn(bool ExtraChoices)
     {
         Hide = false;
-        Instance.RemainingRerolls = 1;
+        Instance.RemainingRerolls = GetBaseRerolls();
         Instance.transform.localPosition = new Vector2(Instance.MyCanvas.pixelRect.width / 2, - Instance.MyCanvas.pixelRect.height / 2);
         Instance.gameObject.SetActive(true);
         int max = ExtraChoices ? 5 : 3;

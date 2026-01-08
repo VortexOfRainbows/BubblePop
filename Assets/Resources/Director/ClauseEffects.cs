@@ -345,3 +345,26 @@ public class TokenReward : Reward
         return $"{DetailedDescription.TextBoundedByColor(ColorHelper.TokenColor.ToHexString(), tokens > 1 ? $"{tokens} Tokens" : $"{tokens} Token")}";
     }
 }
+public class GemReward : Reward
+{
+    public GemReward(int value, int gems = 1)
+    {
+        this.gems = gems; 
+        coins = value;
+    }
+    public int coins;
+    public int gems = 1;
+    protected override float Cost()
+    {
+        return coins;
+    }
+    public override void GrantReward()
+    {
+        for (int i = 0; i < gems; ++i)
+            CoinManager.SpawnGem(RewardPosition, 0.5f);
+    }
+    public override string Description()
+    {
+        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[1], gems > 1 ? $"{gems} Gems" : $"{gems} Gem")}";
+    }
+}

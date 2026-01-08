@@ -430,8 +430,10 @@ public class RewardClause : CardClause
                 AddCashReward(c, listType);
             else if (r is ChestReward ch)
                 AddChestReward(ch, listType);
-            else if(r is KeyReward k)
+            else if (r is KeyReward k)
                 AddKeyReward(k, listType);
+            else if (r is GemReward g)
+                AddGemReward(g, listType);
         }
         HealingChance = healingChance;
         GenerateData();
@@ -470,6 +472,19 @@ public class RewardClause : CardClause
         if (SameType != null && SameType is KeyReward g2)
         {
             g2.keys += r.keys;
+        }
+        else
+        {
+            list.Add(r);
+            ++RewardsAdded;
+        }
+    }
+    public void AddGemReward(GemReward r, List<Reward> list)
+    {
+        Reward SameType = list.Find(g => g is GemReward g2);
+        if (SameType != null && SameType is GemReward g2)
+        {
+            g2.gems += r.gems;
         }
         else
         {
@@ -609,6 +624,16 @@ public class RewardClause : CardClause
             {
                 reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.5f) : (int)(PointsAvailable + 0.5f));
             }
+            else if(RewardType == -1 && Utils.RandFloat(1) < 0.2f)
+            {
+                RewardType = 3;
+                float conversionRate = (beforeWaveReward ? 12 : 10) + WaveDirector.WaveNum;
+                int maxGems = (int)Mathf.Max(1, PointsAvailable / conversionRate);
+                maxGems = (int)Mathf.Max(1, (maxGems + 1) * Utils.RandFloat());
+                int otherKeyValue = (int)Mathf.Max(1, (maxGems + 1) * Utils.RandFloat(0.6f, 1.0f) * Utils.RandFloat(0.6f, 1.0f));
+                maxGems = Mathf.Min(maxGems, otherKeyValue);
+                reward = new GemReward((int)(maxGems * conversionRate), maxGems);
+            }
             if(reward == null)
             {
                 if(Utils.RandFloat() < 0.3f)
@@ -617,7 +642,6 @@ public class RewardClause : CardClause
                 }
                 else
                 {
-                    //RewardType = 3;
                     reward = GenerateChest(ref PointsAvailable);
                 }
             }

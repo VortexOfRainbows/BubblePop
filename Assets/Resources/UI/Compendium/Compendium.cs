@@ -199,7 +199,10 @@ public class Compendium : MonoBehaviour
                 string concat = $"<size=42>{DetailedDescription.TextBoundedByRarityColor(rare, DisplayCPEnemy.MyElem.MyEnemyPrefab.Name(), false)}</size>" + shortLineBreak;
                 concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Stats\n", false)}</size>";
                 concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], "Base Health: ")}{e.BaseMaxLife}\n";
-                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, "Coin Range: ")}{e.BaseMinCoin}-{e.BaseMaxCoin}\n";
+                string coinRange = e.BaseMinCoin != e.BaseMaxCoin ? $"{e.BaseMinCoin}-{e.BaseMaxCoin}" : $"{e.BaseMinCoin}";
+                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, "Coin Range: ")}{coinRange}\n";
+                string gemRange = e.BaseMinGem != e.BaseMaxGem ? $"{e.BaseMinGem}-{e.BaseMaxGem}" : $"{e.BaseMaxGem}";
+                concat += $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColors[1].ToHexString(), "Gem Bounty: ")}{gemRange}\n";
                 concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, "Summon Cost: ")}{e.Cost:#.0}\n";
 
                 if (!DisplayCPEnemy.IsLocked())

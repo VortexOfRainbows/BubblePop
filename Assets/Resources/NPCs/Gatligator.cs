@@ -28,6 +28,7 @@ public class Gatligator : Enemy
         data.BaseMaxLife = 25;
         data.BaseMaxCoin = 40;
         data.Rarity = 4;
+        data.BaseMaxGem = 3;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

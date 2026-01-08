@@ -31,6 +31,8 @@ public static class EnemyID
         public float BaseMaxLife { get; set; } = 10;
         public float BaseMinCoin { get; set; } = 1;
         public float BaseMaxCoin { get; set; } = 1;
+        public float BaseMinGem { get; set; } = 1;
+        public float BaseMaxGem { get; set; } = 1;
         public bool Unlocked => TimesKilled > 0;
         public DetailedDescription Description;
         public GameObject OriginalPrefab;
@@ -450,9 +452,11 @@ public class Enemy : Entity
         WaveDirector.Point += (int)MaxCoins;
         if (LuckyDrop)
             PowerUp.Spawn(PowerUp.RandomFromPool(0.15f), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 8));
-        else if (IsSkull)
+        if (IsSkull)
         {
-            CoinManager.SpawnGem(transform.position, 0.0f);
+            int amt = Utils.RandInt((int)StaticData.BaseMinGem, (int)StaticData.BaseMaxGem + 1);
+            for(int i = 0; i < amt; ++i)
+                CoinManager.SpawnGem(transform.position, 0.0f);
         }
         Destroy(gameObject);
     }

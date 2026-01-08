@@ -21,6 +21,7 @@ public class Infector : Enemy
         data.BaseMinCoin = 5;
         data.BaseMaxCoin = 25;
         data.BaseMaxLife = 20;
+        data.BaseMaxGem = 3;
         data.Rarity = 5;
         data.Cost = 8f;
     }
