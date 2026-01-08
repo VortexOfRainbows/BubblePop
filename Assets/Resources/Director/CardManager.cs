@@ -113,6 +113,12 @@ public class CardManager : MonoBehaviour
             Main.PauseGame();
         WaveDirector.WaitingForCardDraw = false;
         Instance.Visual.SetActive(true);
+
+        if (PowerUp.PickingPowerUps)
+        {
+            ChoicePowerMenu.Hide = true;
+        }
+
         GenerateNewCards();
     }
     public static void ChooseCard(int i)

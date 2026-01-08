@@ -2868,6 +2868,10 @@ PrefabInstance:
       propertyPath: m_text
       value: 1.0
       objectReference: {fileID: 0}
+    - target: {fileID: 1132040373527548730, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: MyCanvas
+      value: 
+      objectReference: {fileID: 1027053838}
     - target: {fileID: 1277900365641642166, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4618,6 +4622,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87d91a66f1117d8498b2aa22488e1aaf, type: 3}
+--- !u!223 &1027053838 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 5575429787094297863, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+  m_PrefabInstance: {fileID: 754807491}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1028533014
 PrefabInstance:
   m_ObjectHideFlags: 0

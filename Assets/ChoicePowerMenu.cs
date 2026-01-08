@@ -9,14 +9,15 @@ public class ChoicePowerMenu : MonoBehaviour
 {
     public static ChoicePowerMenu Instance;
     public static PowerUpButton[] PowerButtons => Instance.Buttons;
-    [SerializeField]
-    private PowerUpButton[] Buttons = new PowerUpButton[5];
-    public Button RerollButton;
+    public PowerUpButton[] Buttons = new PowerUpButton[5];
+    public Canvas MyCanvas;
+    public Button RerollButton, HideButton;
     public GameObject GemParent;
-    public TextMeshProUGUI GemCostUI, RemainingUI;
+    public TextMeshProUGUI GemCostUI, RemainingUI, HideButtonUI;
     public HorizontalLayoutGroup Layout;
     public int Cost { get; set; } = 3;
     public int RemainingRerolls { get; set; } = 1;
+    public static bool Hide { get; set; } = false;
     public void Start()
     {
         if(Instance == null)
@@ -32,6 +33,7 @@ public class ChoicePowerMenu : MonoBehaviour
     }
     public void Reroll()
     {
+        Instance.transform.localPosition = new Vector2(Instance.MyCanvas.pixelRect.width / 2, - Instance.MyCanvas.pixelRect.height / 2);
         CoinManager.ModifyGems(-Cost);
         Cost++;
         RemainingRerolls--;
@@ -43,6 +45,30 @@ public class ChoicePowerMenu : MonoBehaviour
     }
     public void Update()
     {
+        if (Input.GetKeyDown(KeyCode.H) && PowerUp.PickingPowerUps)
+        {
+            Hide = !Hide;
+            if(!Hide && PlayerData.PauseDuringPowerSelect)
+                Main.PauseGame();
+            else
+                Main.UnpauseGame();
+        }
+        float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
+        if (Hide)
+        {
+            transform.LerpLocalPosition(new Vector2(MyCanvas.pixelRect.width / 2, 790 - MyCanvas.pixelRect.height / 2), lerpT);
+            HideButton.transform.LerpLocalPosition(new Vector2(0, -260), lerpT);
+            RerollButton.transform.LerpLocalPosition(new Vector2(0, -140), lerpT);
+            HideButtonUI.text = "Show Choices";
+            return;
+        }
+        else
+        {
+            transform.LerpLocalPosition(new Vector2(MyCanvas.pixelRect.width / 2, 60 - MyCanvas.pixelRect.height / 2), lerpT);
+            HideButton.transform.LerpLocalPosition(new Vector2(110, -140), lerpT);
+            RerollButton.transform.LerpLocalPosition(new Vector2(-110, -140), lerpT);
+            HideButtonUI.text = "Hide Choices";
+        }
         if (CoinManager.CurrentGems >= Cost) //Can afford
         {
             RerollButton.interactable = RemainingRerolls > 0;
@@ -60,7 +86,9 @@ public class ChoicePowerMenu : MonoBehaviour
         if(RemainingRerolls > 0)
             RemainingUI.color = ColorHelper.UIDefaultColor;
         else
+        {
             RemainingUI.color = ColorHelper.UIRedColor;
+        }
 
         if (RerollButton.interactable)
         {
@@ -74,7 +102,9 @@ public class ChoicePowerMenu : MonoBehaviour
     }
     public static void TurnOn(bool ExtraChoices)
     {
+        Hide = false;
         Instance.RemainingRerolls = 1;
+        Instance.transform.localPosition = new Vector2(Instance.MyCanvas.pixelRect.width / 2, - Instance.MyCanvas.pixelRect.height / 2);
         Instance.gameObject.SetActive(true);
         int max = ExtraChoices ? 5 : 3;
         var r = Instance.Layout.GetComponent<RectTransform>();

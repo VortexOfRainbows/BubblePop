@@ -49,6 +49,8 @@ public class PowerUpButton : MonoBehaviour
     }
     public void Update()
     {
+        if (ChoicePowerMenu.Hide && !IsCheatButton)
+            return;
         if (Input.GetKeyDown(Hotkey) && PowerUp.PickingPowerUps)
             GrantPower();
     }

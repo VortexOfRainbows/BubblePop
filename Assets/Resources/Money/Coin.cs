@@ -143,7 +143,7 @@ public class Coin : MonoBehaviour
         {
             CoinManager.ModifyGems(Value);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.1f, 0.5f, 2);
-            PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"Gem", true, 0.9f);
+            PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}", true, 1f);
         }
         else if(IsToken)
         {

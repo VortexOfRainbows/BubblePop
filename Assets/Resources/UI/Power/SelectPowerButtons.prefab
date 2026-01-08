@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -20, y: -20}
+  m_SizeDelta: {x: -20, y: -36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3174812723588693716
 CanvasRenderer:
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hide (WIP)
+  m_text: Hide Choices
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dcc4d89fd7a456e489958be9bd9ab26f, type: 2}
   m_sharedMaterial: {fileID: 3917725879710383133, guid: dcc4d89fd7a456e489958be9bd9ab26f, type: 2}
@@ -92,12 +92,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
+  m_fontSize: 37
   m_fontSizeBase: 34
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 70
+  m_fontSizeMax: 64
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096
@@ -979,10 +979,13 @@ MonoBehaviour:
   - {fileID: 7905884029430801210}
   - {fileID: 5799140540639936530}
   - {fileID: 8668829844104253247}
+  MyCanvas: {fileID: 0}
   RerollButton: {fileID: 1560583214806885081}
+  HideButton: {fileID: 8526403849767805741}
   GemParent: {fileID: 1734394803764243870}
   GemCostUI: {fileID: 7893305915022112462}
   RemainingUI: {fileID: 8425630612332165492}
+  HideButtonUI: {fileID: 1113505390629911620}
   Layout: {fileID: 8806486988567393353}
 --- !u!1 &6474452836623274010
 GameObject:
@@ -1299,7 +1302,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:

@@ -333,6 +333,13 @@ public class Chest : MonoBehaviour
                 CoinManager.SpawnKey(pos, 1);
             if(PirateChest)
                 CoinManager.SpawnCoin(pos, coinAmt, 1);
+
+            if (ChestType == 2)
+            {
+                int amt = (int)(Utils.RandFloat(2.25f, 8.5f) * WaveDirector.WaveMult);
+                for(int i = 0; i < amt; ++i)
+                    CoinManager.SpawnGem(pos, 1);
+            }
         }
     }
 }

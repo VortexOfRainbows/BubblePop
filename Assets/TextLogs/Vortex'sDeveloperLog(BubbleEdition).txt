@@ -17,7 +17,7 @@ Need to do:
 	2. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round
 	3. Powers : Choice, Pirate's Booty, Mitosis, Black Market delivery
 	4. Special: Bubblebirb, Midas Touch (gold is worth more), Shard of Power (after being scrapped, choose an existing power to add onto)
-5. Add a GEM currency, which can be used to reroll choice selections or shop selections, and maybe open special chests (not saved between runs).
+5. Add a GEM currency, which can be used to reroll shop selections
 	1. Also should fix the HOVER text appearing behind the coin/token/key/gem icons
 6. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 7. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
@@ -41,19 +41,22 @@ Mostly done but might need to keep an eye out:
 
 Done: 
 
-12/29/25 to 1/6/26
+12/29/25 to 1/7/26
 1. Work on crucible sprites (no commit)
-2. WIP Gem pickup
+2. WIP Gem pickup, dropped by skull enemies and Gem Chests for now
 3. Fix bug where infector could die to poison while inside an enemy
 4. Fix bug where an Infector killed before infecting a host would prevent the host from ever being infected again by another infector
 5. Keys now bob up an down slightly more aggressively
 6. Appearance order of pickups (visual layering) Key -> Gem -> Heart -> Coin
 7. Choice power can no longer appear in choice menu
 8. Some reorganization of the choice power men to use prefabs
-9. WIP Choice Reroll system (still needs more work)
+9. Add a Choice Reroll system 
+	1. For now it rerolls all options. The ability to reroll just one will probably be added in the future through a TB power up
 10. Reorganize the choice reroll system a bit internally and on the UI
+	1. Now comes with some minor animations
 11. Some WIP changes to character drawing to fix a visual bug (WIP)
-	1. For now, bubblemancer now doesn't rotate as much when moving
+	1. For now, Bubblemancer now doesn't rotate as much when moving
+12. Power Select UI can now be hidden
 
 
 12/27/25 to 12/29/25
