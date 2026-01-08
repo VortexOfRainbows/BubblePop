@@ -32,13 +32,19 @@ Need to do:
 13. Make Gachapon Weapon!
 	1. Needs: debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for realestate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 14. Make Map NODE system
-15. Fix issue where hats start on the wrong side when facing left, standing still, and switching character or equipment
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 2. Improve UI
 
 Done: 
+
+1/7/26
+1.
+
+
+-- A1.60 --
+
 
 12/29/25 to 1/7/26
 1. Work on crucible sprites (no commit)
@@ -53,14 +59,14 @@ Done:
 	1. For now it rerolls all options. The ability to reroll just one will probably be added in the future through a TB power up
 10. Reorganize the choice reroll system a bit internally and on the UI
 	1. Now comes with some minor animations
-11. Some WIP changes to character drawing to fix a visual bug (WIP)
-	1. For now, Bubblemancer now doesn't rotate as much when moving
+11. Bubblemancer now doesn't rotate as much when moving
 12. Power Select UI can now be hidden
 13. HOVER text now appears in front of the coin/token/key/gem icons
 14. Add EUREKA, a new power for the Light Bulb hat, aiding in gem mechanics
 15. Unlocking Thought Bubble now requires wave 25 -> 20
 16. Unlocking Gachapon now requires coins 6480 -> 5000
 17. Some worldgen adjustments to padding and color of minor decor on the outer border to match the multiplier on the outer border
+18. Fix issue where character and equipment orientation would start on the wrong side when facing left, standing still, and switching character or equipment
 
 
 12/27/25 to 12/29/25

@@ -47,3 +47,52 @@ Misc:
 
 Fixes:
 1. Fix issue where bunce hat would fly into the sky uncontrollably when switching from Gachapon to Bubblemancer in the equip menu where bunce hat was worn by Bubblemancer
+
+
+
+Dev Build 1.60 (tentative version number)
+
+New:
+1. New Power: Pirate's Booty
+2. New Power: Eureka!
+3. New Weapon: Dragon Slots
+4. New Tile, 2x Tile Decor, and Achievement
+5. New Currency: Gem
+6. Power Select UI can now be hidden
+7. New Chest variants
+
+Balance:
+1. Base damage of Gacha Slot non-winning spin 5 -> 4
+2. Gacha Slots projectiles now lose more damage when piercing then before (-20%, -15%, -10%, -5%) -> (-20%, -20%, -20%, -20%)
+3. Thunder bubble no longer gains 10% multiplicative speed when bouncing off of walls
+4. Big Bubble Projectile now bounces off walls in a more physically correct manner, and gains 10% velocity instead
+	1. Damage is also no longer truncated, resulting in decimal damage (minor buff)
+5. Token pouch max tokens 3 (+3) -> 2 (+2), tokens per wave 2 (+2) -> 1 (+1)
+	1. Now player starts with 4 max token slots
+6. Resprite and Upscale grass tile, flower decor
+7. Bubble Staff no longer adds Coalescence to the power pool. It now grants an additional charge shot levels and 20% increased secondary attack speed
+8. Made Thought Bubble and Gachapon unlocks slightly easier (25 -> 20, 6480 -> 5000)
+
+Changes:
+1. World is now generated with a new system called NODES internally. For now, major will actually change, except...
+	1. The world border is now somewhat procedurally decorated
+	2. The collision map is no longer separate from the main map, reducing some lag and visual confusion
+	3. Some tile data is now stored with a dictionary, resulting in what should be faster world setup speeds
+2. Change some sound effects for Batter Up
+3. Change some descriptions and power names
+4. While falling, chests now have some collision, but with less mass
+5. Bubblemancer now doesn't rotate as much when moving
+
+Misc:
+1. Many internal organization changes and improvements
+2. Appearance order of pickups (visual layering) changed to Key -> Gem -> Heart -> Coin
+3. Keys now bob up an down slightly more aggressively
+
+Fixes:
+1. Bug where characters would sometimes wear other character's as equipment, preventing you from switching from character in the hat slot, should be fixed
+2. Fix bug where infector could die to poison while inside an enemy
+3. Fix bug where an Infector killed before infecting a host would prevent the host from ever being infected again by another infector
+4. Hover text now appears above currency icons in the top left rather than below it
+5. Fix issue where character and equipment orientation would start on the wrong side when facing left, standing still, and switching character or equipment
+
+
