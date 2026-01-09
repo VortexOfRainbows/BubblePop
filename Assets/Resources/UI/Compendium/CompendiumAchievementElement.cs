@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,39 +9,44 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public RectTransform DescriptionArea, CombinedRect;
     public Image DescriptionImage;
     public TextMeshProUGUI NameText, DescriptionText;
+    public PowerUpUIElement AlternativeDisplayElement;
     public override void Init(int i, Canvas canvas)
     {
         MyUnlock = UnlockCondition.Get(i);
-        base.Init(MyUnlock.AssociatedUnlocks.Count > 0 ? MyUnlock.FrontPageUnlock().IndexInAllEquipPool : Main.GlobalEquipData.Bubblemancer.GetComponent<Equipment>().IndexInAllEquipPool, canvas);
         if(MyUnlock.AssociatedUnlocks.Count <= 0)
         {
-            MyElem.ActiveEquipment.spriteRender.sprite = Resources.Load<Sprite>("UI/StarAch");
+            base.Init(Main.GlobalEquipData.Bubblemancer.GetComponent<Equipment>().IndexInAllEquipPool, canvas);
+            AlternativeDisplayElement.gameObject.SetActive(true);
+            MyElem.Visual.SetActive(false);
+            InitPowerUpVersion();
+        }
+        else
+        {
+            AlternativeDisplayElement.gameObject.SetActive(false);
+            base.Init(MyUnlock.FrontPageUnlock().IndexInAllEquipPool, canvas);
         }
         MyElem.AchievementElement = true;
         TypeID = i;
         if (MyUnlock.Unlocked && !Selected && Style != 3)
         {
-            Color c = new Color(.1f, .7f, .1f, 0.431372549f);
+            Color c = new(.1f, .7f, .1f, 0.431372549f);
             DescriptionImage.color = c;
-            BG.color =c;
+            BG.color = c;
         }
         if (Style == 3)
             MyElem.DisplayOnly = true;
     }
-    ///// <summary>
-    ///// Currently unused, as this element does not have a 
-    ///// </summary>
-    //public override CompendiumElement Instantiate(TierList parent, TierCategory cat, Canvas canvas, int i, int position)
-    //{
-        //CompendiumAchievementElement cpue = Instantiate(Prefab).GetComponent<CompendiumAchievementElement>();
-        //parent.InsertIntoTransform(cat.Grid.transform, cpue, position);
-        //cpue.Style = 2;
-        //cpue.MyElem.DisplayOnly = true;
-        //cpue.SetGrayOut(true);
-        //cpue.Init(i, canvas);
-        //cpue.MyElem.HoverRadius = 0;
-        //return cpue;
-    //}
+    public void InitPowerUpVersion()
+    {
+
+    }
+    /// <summary>
+    /// Currently unused, as this element does not have a tier list
+    /// </summary>
+    public override CompendiumElement Instantiate(TierList parent, TierCategory cat, Canvas canvas, int i, int position)
+    {
+        throw new NotImplementedException("Currently unused, as this element does not have a tier list");
+    }
     public override int GetRare(bool reverse = false)
     {
         return MyUnlock.Rarity;

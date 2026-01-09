@@ -1,10 +1,5 @@
-using System;
 using TMPro;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
-
 public class CompendiumEquipmentElement : CompendiumElement
 {
     public static GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumEquipmentElement");

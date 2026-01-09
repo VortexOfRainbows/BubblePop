@@ -389,4 +389,5 @@ public abstract class PowerUp
     {
         return false;
     }
+    public virtual UnlockCondition BlackMarketVariantUnlockCondition => null;
 }

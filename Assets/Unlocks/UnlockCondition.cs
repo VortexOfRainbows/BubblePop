@@ -154,6 +154,10 @@ public abstract class UnlockCondition
     {
         AssociatedUnlocks.Add(e);
     }
+    public void AddAssociatedPower(PowerUp p)
+    {
+        AssociatedBlackMarketUnlocks.Add(p);
+    }
     public virtual Equipment FrontPageUnlock()
     {
         foreach(Equipment e in AssociatedUnlocks)
@@ -164,4 +168,5 @@ public abstract class UnlockCondition
         return AssociatedUnlocks[0];
     }
     public List<Equipment> AssociatedUnlocks;
+    public List<PowerUp> AssociatedBlackMarketUnlocks;
 }
