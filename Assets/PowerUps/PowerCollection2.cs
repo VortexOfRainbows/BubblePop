@@ -122,6 +122,7 @@ public class RollForPerception : PowerUp
     {
         return Resources.Load<Sprite>("PowerUps/Dice/InsightAddOn");
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<GachaponClover>();
 }
 public class BubbleShield : PowerUp
 {

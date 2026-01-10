@@ -237,7 +237,7 @@ public class Compendium : MonoBehaviour
                     concat += "Black Market Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
                     foreach (PowerUp p in DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks)
                     {
-                        string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.DetailedDescription.GetName() : DetailedDescription.BastardizeText(p.UnlockedName, '?');
+                        string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.DetailedDescription.GetName() : "???".WithColor(DetailedDescription.Rares[rare]);
                         concat += "  " + name + '\n';
                     }
                     concat += shortLineBreak;

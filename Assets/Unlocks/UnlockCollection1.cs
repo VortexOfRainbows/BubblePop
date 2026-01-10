@@ -216,3 +216,17 @@ public class ThoughtBubbleDecisionsDecisions : UnlockCondition
     }
     public override int Rarity => 2;
 }
+public class GachaponClover : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Gachapon: Clover");
+        description.WithDescription($"Using Y:[Gacha Slots,] roll Y:Jackpot 3 times in a row");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Completionist;
+    }
+    public override int Rarity => 5;
+}

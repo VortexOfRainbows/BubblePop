@@ -11,7 +11,7 @@ public class GachaProj : Projectile
         SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
         timer2 = 0;
         transform.localScale *= 0.5f;
-        Damage = 4 * (1 + 0.2f * Player.Instance.ConsolationPrize);
+        Damage = 4 * (1 + 0.1f * Player.Instance.ConsolationPrize);
         Penetrate = 2;
         Friendly = true;
         if (Data1 == 1)

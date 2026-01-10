@@ -61,6 +61,7 @@ public class SlotMachineWeapon : Weapon
     private float BonusCount = 0;
     public int MaxBursts => 3 + player.ExtraGachaBurst;
     private int BurstNum = 0, TokenShots = 0;
+    private int JackpotsInARow = 0;
     protected override void AnimationUpdate()
     {
         Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
@@ -214,7 +215,7 @@ public class SlotMachineWeapon : Weapon
         {
             if (Hitbox == null && AttackRight == AttackCooldownRight)
             {
-                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 10 * (1 + 0.2f * Player.Instance.ConsolationPrize), 0).GetComponent<MeleeHitbox>();
+                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 10 * (1 + 0.1f * Player.Instance.ConsolationPrize), 0).GetComponent<MeleeHitbox>();
                 AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.75f, 0.85f, 0);
             }
             float percent = (AttackRight - WindUpTime) / (AttackCooldownRight - WindUpTime);
@@ -356,7 +357,7 @@ public class SlotMachineWeapon : Weapon
         float dir = Utils.SignNoZero(BatterUpTokens[i].localScale.x);
         Vector2 mousePos = Player.Position + (Vector2)previousAttemptedPosition.normalized * 15.5f;
         AudioManager.PlaySound(SoundID.Teleport, BatterUpTokens[i].transform.position, 0.2f, 1.7f, 0);
-        Projectile.NewProjectile<GachaTokenProj>(BatterUpTokens[i].transform.position, new Vector2(44 * -dir, 0).RotatedBy((BatterUpTokens[i].localEulerAngles.z - dir * 33f) * Mathf.Deg2Rad), 5 + Player.Instance.ConsolationPrize,
+        Projectile.NewProjectile<GachaTokenProj>(BatterUpTokens[i].transform.position, new Vector2(44 * -dir, 0).RotatedBy((BatterUpTokens[i].localEulerAngles.z - dir * 33f) * Mathf.Deg2Rad), 5 + 0.5f * Player.Instance.ConsolationPrize,
             mousePos.x, mousePos.y, dir, 0.5f * Mathf.Cos(Mathf.PI * (0.5f - interval)));
         Destroy(BatterUpTokens[i].gameObject);
         BatterUpTokens.RemoveAt(i);
@@ -458,11 +459,15 @@ public class SlotMachineWeapon : Weapon
         }
         if ((n -= chanceForJackpot) < 0)
         {
+            JackpotsInARow++;
+            if(JackpotsInARow >= 3)
+                UnlockCondition.Get<GachaponClover>().SetComplete();
             PityCount = 0;
             PityBonus = 0;
             return 5;
         }
-        if(player.PityGrowthAmount != 0)
+        JackpotsInARow = 0;
+        if (player.PityGrowthAmount != 0)
         {
             PityCount++;
             PityBonus += player.PityGrowthAmount;
