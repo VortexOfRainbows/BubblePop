@@ -57,7 +57,7 @@ public class Equipment : MonoBehaviour
         {
             PowerUp p = PowerUp.Get(i);
             if (p.IsBlackMarket())
-                PowerUp.AddPowerUpToAvailability(p);
+                PowerUp.AddBlackMarketPowerToPool(p);
         }
         PowerPool.Clear();
     }

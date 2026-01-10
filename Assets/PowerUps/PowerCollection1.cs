@@ -455,4 +455,5 @@ public class Calculator : PowerUp
     {
         p.HomingRange += Stack * 2f + 2f;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<ThoughtBubbleShortForCalc>();
 }

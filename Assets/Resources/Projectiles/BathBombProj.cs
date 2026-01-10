@@ -149,9 +149,7 @@ public class BathBomb : Projectile
                 }
             }
         }
-        bool LuckyDrop = Utils.RandFloat(1) < 0.04f;
-        if (LuckyDrop)
-            PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position, LuckyDrop ? 0 : 100);
+        PowerUp.Spawn(PowerUp.RandomFromPool(), transform.position);
     }
 }
 public class Spike : Projectile

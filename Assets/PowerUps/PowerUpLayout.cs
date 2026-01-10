@@ -29,10 +29,10 @@ public class PowerUpLayout : MonoBehaviour
     public void Update()
     {
         UpdateSizing();
-        if(Input.GetKeyDown(KeyCode.V) && !isInGameLayout)
-        {
-            AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, 0);
-        }
+        //if(Input.GetKeyDown(KeyCode.V) && !isInGameLayout)
+        //{
+        //    AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, 0);
+        //}
         isHovering = false;
         for (int i = PowerUpElems.Count - 1; i >= 0; --i)
         {

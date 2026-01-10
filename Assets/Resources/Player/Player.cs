@@ -140,13 +140,6 @@ public partial class Player : Entity
             HasRunStartingGear = true;
             HasAttacked = false;
         }
-        if (Main.DebugCheats)
-        {
-            if (Input.GetKeyDown(KeyCode.C))
-                CoinManager.SpawnCoin(transform.position, 25);
-            if (Input.GetKeyDown(KeyCode.Z))
-                WaveDirector.Point += 100;
-        }
         Instance = this;
         WaveDirector.FixedUpdate();
         if (!HasRunStartingGear)

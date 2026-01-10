@@ -61,7 +61,7 @@ public class GachaponShop : MonoBehaviour
     public void AddStock(int i)
     {
         float mult = PriceMultiplier * (1.0f + 0.05f * TotalPowersPurchased - Player.Instance.ShopDiscount);
-        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, .005f * Player.Instance.BlackmarketMult), Pedastal[i].transform.position + new Vector3(0, 1.5f), 0).GetComponent<PowerUpObject>();
+        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, .005f * Player.Instance.BlackmarketMult), Pedastal[i].transform.position + new Vector3(0, 1.5f)).GetComponent<PowerUpObject>();
         obj.Cost = Mathf.Max(0, (int)(obj.MyPower.Cost * mult));
         Stock[i] = obj;
     }

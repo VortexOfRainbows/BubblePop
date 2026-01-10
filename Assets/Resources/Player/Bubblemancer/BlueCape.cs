@@ -18,7 +18,7 @@ public class BlueCape : BubblemancerCape
                 break;
             i = Utils.RandInt(PowerUp.AvailablePowers.Count);
         }
-        PowerUp.Spawn(PowerUp.AvailablePowers[i], Player.Position, 0);
+        PowerUp.Spawn(PowerUp.AvailablePowers[i], Player.Position);  
     }
     public override int GetRarity()
     {

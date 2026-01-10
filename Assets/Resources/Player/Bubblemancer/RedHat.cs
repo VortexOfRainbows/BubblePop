@@ -9,7 +9,7 @@ public class RedHat : BubblemancerHat
     }
     public override void OnStartWith()
     {
-        PowerUp.Spawn<BubbleBirb>(Player.Position, 0);
+        PowerUp.Spawn<BubbleBirb>(Player.Position);
         //PowerUp.Spawn(PowerUp.AvailablePowers.Last(), Player.Position, 0);
     }
     public override int GetRarity()

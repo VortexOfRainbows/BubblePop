@@ -41,6 +41,7 @@ public abstract class PowerUp
     public int PickedUpBestAllRuns => HighestAmountPickedUpInASingleRun;
     protected int AmountPickedUpAcrossAllRuns = 0;
     protected int HighestAmountPickedUpInASingleRun = 0;
+    public bool IsInPowerPool { get; private set; }
     public static void SaveAllData()
     {
         if (PowerUps == null)
@@ -69,6 +70,8 @@ public abstract class PowerUp
     public static List<int> AvailableBlackMarketPowers = new();
     public static void ResetPowerAvailability()
     {
+        for (int i = 0; i < maximumTypes; ++i)
+            Get(i).IsInPowerPool = false;
         AvailablePowers.Clear();
         AvailableBlackMarketPowers.Clear();
         AddUniversalPowerups();
@@ -96,11 +99,7 @@ public abstract class PowerUp
     private static void AddPowerUpToAvailability<T>() where T: PowerUp => AddPowerUpToAvailability(Get<T>());
     public static void AddPowerUpToAvailability(PowerUp power)
     {
-        if (power.IsBlackMarket())
-        { 
-            AvailableBlackMarketPowers.Add(power.MyID);
-            return;
-        }
+        power.IsInPowerPool = true;
         for (int i = 0; i < AvailablePowers.Count; ++i)
         {
             PowerUp currentPower = Get(AvailablePowers[i]);
@@ -121,23 +120,25 @@ public abstract class PowerUp
         //Debug.Log($"Insert {power.Name()} at end");
         AvailablePowers.Add(power.MyID);
     }
+    public static void AddBlackMarketPowerToPool(PowerUp power)
+    {
+        AvailableBlackMarketPowers.Add(power.MyID);
+    }
     #region Powerup Datastructure Related Stuff
     private static int typeCounter = 0;
     private static int maximumTypes = 0;
-    public static GameObject Spawn<T>(Vector2 pos, int pointCost = 100) where T : PowerUp => Spawn(typeof(T).Name, pos, pointCost);
-    public static GameObject Spawn(string powerTypeName, Vector2 pos, int pointCost = 100)
+    public static GameObject Spawn<T>(Vector2 pos) where T : PowerUp => Spawn(typeof(T).Name, pos);
+    public static GameObject Spawn(string powerTypeName, Vector2 pos)
     {
         if (Reverses == null)
             InitDict();
-        return Spawn(Reverses[powerTypeName], pos, pointCost);
+        return Spawn(Reverses[powerTypeName], pos);
     }
-    public static GameObject Spawn(int powerUpID, Vector2 pos, int pointCost = 100)
+    public static GameObject Spawn(int powerUpID, Vector2 pos)
     {
         PowerUpObject obj = GameObject.Instantiate(Main.PrefabAssets.PowerUpObj, pos, Quaternion.identity);
         obj.Type = powerUpID;
         obj.finalPosition = pos;
-        WaveDirector.PointsSpent += pointCost;
-        WaveDirector.PityPowersSpawned += pointCost / 100f;
         WaveDirector.TotalPowersSpawned += 1;
         return obj.gameObject;
     }
@@ -172,7 +173,7 @@ public abstract class PowerUp
         typeCounter++;
         maximumTypes++;
     }
-    protected static Dictionary<int, PowerUp> PowerUps;
+    public static Dictionary<int, PowerUp> PowerUps { get; private set; }
     public static Dictionary<string, int> Reverses;
     protected static void InitDict()
     {
@@ -273,7 +274,8 @@ public abstract class PowerUp
     }
     public virtual Sprite GetTexture()
     {
-        return Resources.Load<Sprite>($"PowerUps/{InternalName}");
+        var s = Resources.Load<Sprite>($"PowerUps/{InternalName}");
+        return s != null ? s : Main.TextureAssets.PowerUpPlaceholder;
     }
     public virtual Sprite GetAdornment()
     {
@@ -342,17 +344,18 @@ public abstract class PowerUp
     public int GetDefaultCost()
     {
         int rare = GetRarity();
+        int cost = 15;
         if (rare == 5)
-            return 250;
-        if (rare == 4)
-            return 100;
-        if (rare == 3)
-            return 50;
-        if (rare == 2)
-            return 25;
-        if (rare == 1)
-            return 15;
-        return (int)(20 / Weighting);
+            cost = 250;
+        else if (rare == 4)
+            cost = 100;
+        else if (rare == 3)
+            cost = 50;
+        else if (rare == 2)
+            cost = 25;
+        if (IsBlackMarket())
+            cost *= 3;
+        return cost;
     }
     public int CalculateRarity()
     {
@@ -387,7 +390,11 @@ public abstract class PowerUp
     }
     public virtual bool IsBlackMarket()
     {
+        bool NoAltsForCompendium = Compendium.Instance != null && Compendium.Instance.PageNumber == 0;
+        if (Main.GameFinishedLoading && !IsInPowerPool && HasBlackMarketAlternate && BlackMarketVariantUnlockCondition.Unlocked && !NoAltsForCompendium)
+            return true;
         return false;
     }
+    public bool HasBlackMarketAlternate => BlackMarketVariantUnlockCondition != null;
     public virtual UnlockCondition BlackMarketVariantUnlockCondition => null;
 }

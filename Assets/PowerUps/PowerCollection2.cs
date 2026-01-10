@@ -16,6 +16,10 @@ public class BubbleMitosis : PowerUp
         if (p.MostRecentPower != null && p.MostRecentPower.Type != Type)
         {
             p.MostRecentPower.PickUp(Stack);
+            if(Stack >= 5 && p.MostRecentPower is Calculator)
+            {
+                UnlockCondition.Get<ThoughtBubbleShortForCalc>().SetComplete();
+            }
             p.RemovePower(Type, Stack);
         }
     }
@@ -196,7 +200,6 @@ public class Burger : PowerUp
     {
         return true;
     }
-    public override int Cost => 60;
 }
 public class BonusBatteries : PowerUp
 {
@@ -420,7 +423,6 @@ public class PerpetualBubbleMachine : PowerUp
     {
         return true;
     }
-    public override int Cost => 125;
 }
 public class ConsolationPrize : PowerUp
 {

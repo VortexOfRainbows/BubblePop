@@ -85,10 +85,15 @@ public abstract class UnlockCondition
                 PlayerData.MetaProgression.TotalMeadowsStars += 1;
             PlayerData.MetaProgression.TotalAchievementStars += 1;
         }
+        foreach(PowerUp p in PowerUp.PowerUps.Values)
+        {
+            p.BlackMarketVariantUnlockCondition?.AddAssociatedPower(p);
+        }
     }
     protected UnlockCondition()
     {
         AssociatedUnlocks = new();
+        AssociatedBlackMarketUnlocks = new();
         Description = new(Rarity, SaveString);
         Description.WithoutSizeAugments();
         InitializeDescription(ref Description);
@@ -105,13 +110,23 @@ public abstract class UnlockCondition
         if(complete)
             SetComplete(true);
     }
-    public bool Unlocked => ForceUnlockAll || TryUnlock();
+    public bool Unlocked => FakeComplete || TryUnlock();
     protected virtual bool TryUnlockCondition => false;
     public string LockedText()
     {
         return Description.BriefDescription();
     }
     protected bool Completed { get; set; } = false;
+    private bool FakeComplete = false;
+    public bool ForceUnlock()
+    {
+        if(!FakeComplete && !Completed && ForceUnlockAll)
+        {
+            UpdatePowerPool();
+            FakeComplete = true;
+        }
+        return FakeComplete;
+    }
     public void SetComplete(bool skipSave = false, bool completeStatus = true)
     {
         if(!Completed && completeStatus)
@@ -122,6 +137,8 @@ public abstract class UnlockCondition
             if (AchievementZone == Meadows)
                 PlayerData.MetaProgression.MeadowsStars += 1;
             PlayerData.MetaProgression.AchievementStars += 1;
+            UpdatePowerPool();
+            PopUpTextUI.UnlockQueue.Enqueue(this);
         }
         else if(!completeStatus)
         {
@@ -129,6 +146,15 @@ public abstract class UnlockCondition
             if (!skipSave)
                 SaveData();
         }
+    }
+    public void UpdatePowerPool()
+    {
+        if (AssociatedBlackMarketUnlocks.Count > 0) //This will make it so completing an achievement mid run will add the power to the pool so you can get it the same run
+            foreach (PowerUp p in AssociatedBlackMarketUnlocks)
+            {
+                Debug.Log($"Unlock: Adding to black market pool! {DetailedDescription.TextBoundedByColor("#ff0000", p.UnlockedName)}");
+                PowerUp.AddBlackMarketPowerToPool(p);
+            }
     }
     public bool TryUnlock()
     {
@@ -167,6 +193,6 @@ public abstract class UnlockCondition
         }
         return AssociatedUnlocks[0];
     }
-    public List<Equipment> AssociatedUnlocks;
-    public List<PowerUp> AssociatedBlackMarketUnlocks;
+    public List<Equipment> AssociatedUnlocks { get; private set; }
+    public List<PowerUp> AssociatedBlackMarketUnlocks { get; private set; }
 }

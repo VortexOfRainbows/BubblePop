@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,21 +11,25 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public Image DescriptionImage;
     public TextMeshProUGUI NameText, DescriptionText;
     public PowerUpUIElement AlternativeDisplayElement;
+    public bool IsPowerUnlock;
     public override void Init(int i, Canvas canvas)
     {
         MyUnlock = UnlockCondition.Get(i);
-        if(MyUnlock.AssociatedUnlocks.Count <= 0)
+        IsPowerUnlock = MyUnlock.AssociatedUnlocks.Count <= 0;
+        if (IsPowerUnlock)
         {
+            //Initialize a fake equipment in the background just for certain behavor stuff
             base.Init(Main.GlobalEquipData.Bubblemancer.GetComponent<Equipment>().IndexInAllEquipPool, canvas);
-            AlternativeDisplayElement.gameObject.SetActive(true);
-            MyElem.Visual.SetActive(false);
-            InitPowerUpVersion();
+            InitPowerUpVersion(MyUnlock.AssociatedBlackMarketUnlocks.Count > 0 ? MyUnlock.AssociatedBlackMarketUnlocks.FirstOrDefault() : PowerUp.Get<Choice>());
+            AlternativeDisplayElement.OnUpdate();
+            AlternativeDisplayElement.OnUpdate();
         }
         else
         {
-            AlternativeDisplayElement.gameObject.SetActive(false);
             base.Init(MyUnlock.FrontPageUnlock().IndexInAllEquipPool, canvas);
         }
+        AlternativeDisplayElement.gameObject.SetActive(IsPowerUnlock);
+        MyElem.Visual.SetActive(!IsPowerUnlock);
         MyElem.AchievementElement = true;
         TypeID = i;
         if (MyUnlock.Unlocked && !Selected && Style != 3)
@@ -36,9 +41,11 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         if (Style == 3)
             MyElem.DisplayOnly = true;
     }
-    public void InitPowerUpVersion()
+    public void InitPowerUpVersion(PowerUp p)
     {
-
+        AlternativeDisplayElement.SetPowerType(p.Type);
+        AlternativeDisplayElement.SpecialLockedSprite = !MyUnlock.Unlocked;
+        AlternativeDisplayElement.ForceUnhideElement = MyUnlock.Unlocked;
     }
     /// <summary>
     /// Currently unused, as this element does not have a tier list
@@ -64,6 +71,14 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         base.Update();
         if(Style != 3)
             UpdateText();
+        if(IsPowerUnlock)
+        {
+            if (AlternativeDisplayElement != null)
+            {
+                AlternativeDisplayElement.transform.localScale = MyElem.transform.localScale;
+                AlternativeDisplayElement.OnUpdate();
+            }
+        }
     }
     public void UpdateText()
     {

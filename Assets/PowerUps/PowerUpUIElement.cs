@@ -38,6 +38,8 @@ public class PowerUpUIElement : MonoBehaviour
     private float Timer;
     public PowerUpLayout myLayout;
     public bool GrayOut { get; set; }
+    public bool SpecialLockedSprite { get; set; } = false;
+    public bool ForceUnhideElement { get; set; } = false;
     public bool PickerElement
     {
         get => !InventoryElement;
@@ -52,12 +54,14 @@ public class PowerUpUIElement : MonoBehaviour
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, true);
 
         inner.sprite = Sprite;
+        if(SpecialLockedSprite)
+            inner.sprite = Main.TextureAssets.PowerUpPlaceholder;
         RectTransform rect = inner.transform as RectTransform;
         Rect rectangle = inner.sprite.rect;
         rect.pivot = inner.sprite.pivot / new Vector2(rectangle.width, rectangle.height);
         inner.SetNativeSize();
 
-        Sprite adornSprite = MyPower.GetAdornment();
+        Sprite adornSprite = SpecialLockedSprite ? null : MyPower.GetAdornment();
         if (adornSprite != null)
         {
             adornment.gameObject.SetActive(true);
@@ -85,7 +89,7 @@ public class PowerUpUIElement : MonoBehaviour
         Timer = 0;
         visual.SetActive(false);
     }
-    public bool AppearLocked => MenuElement && MyPower.PickedUpCountAllRuns <= 0;
+    public bool AppearLocked => (MenuElement && MyPower.PickedUpCountAllRuns <= 0 && !ForceUnhideElement) || SpecialLockedSprite;
     public bool PreventHovering;
     public bool ForceHideCount = false;
     public float HoverRadius { get; set; } = 64;
@@ -123,19 +127,30 @@ public class PowerUpUIElement : MonoBehaviour
         }
         else
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);
-
-        if(GrayOut && !AppearLocked)
+        UpdateAppearance();
+    }
+    public void UpdateAppearance()
+    {
+        if (GrayOut && !AppearLocked)
         {
             inner.color = adornment.color = GrayColor;
             outer.color = GrayBubbleColor;
         }
         else
         {
-            if (AppearLocked)
-                inner.color = adornment.color = Color.black;
-            else if (MenuElement)
-                inner.color = adornment.color = Color.white;
             outer.color = DefaultBubbleColor;
+            if (AppearLocked)
+            {
+                inner.color = adornment.color = Color.black;
+                if(SpecialLockedSprite)
+                {
+                    outer.color = Color.black;
+                }
+            }
+            else if (MenuElement)
+            {
+                inner.color = adornment.color = Color.white;
+            }
         }
     }
     public void Update()

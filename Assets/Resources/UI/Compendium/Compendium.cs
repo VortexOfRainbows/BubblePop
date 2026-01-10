@@ -230,8 +230,18 @@ public class Compendium : MonoBehaviour
                         string name = e.IsUnlocked ? e.GetName() : DetailedDescription.BastardizeText(e.GetName(), '?');
                         concat += "  " + name + '\n';
                     }
+                    concat += shortLineBreak;
                 }
-                concat += shortLineBreak;
+                if (DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks.Count > 0)
+                {
+                    concat += "Black Market Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
+                    foreach (PowerUp p in DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks)
+                    {
+                        string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.DetailedDescription.GetName() : DetailedDescription.BastardizeText(p.UnlockedName, '?');
+                        concat += "  " + name + '\n';
+                    }
+                    concat += shortLineBreak;
+                }
                 concat += "Achievement Category: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
                 if(DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.Meadows)
                     concat += "  Meadows\n".WithColor(DetailedDescription.Rares[1]);

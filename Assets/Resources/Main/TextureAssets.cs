@@ -17,6 +17,7 @@ public partial class Main : MonoBehaviour
         public static Sprite T3ChestUma, T3ChestUmaOpen, T3Chest, T3ChestOpen, T2Chest, T2ChestOpen, T1Chest, T1ChestOpen;
         public static Sprite[] SlotSymbol = new Sprite[4];
         public static Sprite GoldProj, CoinProj, GemProj, TokenProj, FireProj;
+        public static Sprite PowerUpPlaceholder;
         public static void Load()
         {
             BubbleSmall = Resources.Load<Sprite>("Projectiles/SmallBubble");
@@ -48,6 +49,7 @@ public partial class Main : MonoBehaviour
             GemProj = Resources.Load<Sprite>("Projectiles/SlotMachine/GemProj");
             TokenProj = Resources.Load<Sprite>("Money/GachaslotTokenFlat");
             FireProj = Resources.Load<Sprite>("Projectiles/Fire");
+            PowerUpPlaceholder = Resources.Load<Sprite>($"PowerUps/Random");
         }
     }
     public static class PrefabAssets

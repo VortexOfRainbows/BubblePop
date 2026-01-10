@@ -71,21 +71,6 @@ public class StarbarbUnlock5 : UnlockCondition
     public override PowerUp Power => PowerUp.Get<Starbarbs>();
     protected override bool TryUnlockCondition => Power.PickedUpBestAllRuns >= 5;
 }
-public class ChoiceUnlock200 : UnlockCondition
-{
-    public override PowerUp Power => PowerUp.Get<Choice>();
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Decisions, Decisions");
-        description.WithDescription($"Pick up 200 {Power.UnlockedName} across multiple runs");
-    }
-    public override void SetAchievementCategories(ref int zone, ref int category)
-    {
-        zone = Meadows;
-        category = Completionist;
-    }
-    protected override bool TryUnlockCondition => Power.PickedUpCountAllRuns >= 200;
-}
 public class PlayerDeathUnlock10 : UnlockCondition
 {
     public override void InitializeDescription(ref DetailedDescription description)
@@ -128,6 +113,21 @@ public class ThoughtBubbleWave15NoAttack : UnlockCondition
         zone = Lab;
         category = Challenge;
     }
+}
+public class ThoughtBubbleShortForCalc : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<Calculator>();
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Thought Bubble: Short for Calc");
+        description.WithDescription($"Assimilate 5 or more {PowerUp.Get<BubbleMitosis>().UnlockedName} into a single {Power.UnlockedName}");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Lab;
+        category = Challenge;
+    }
+    public override int Rarity => 4;
 }
 public class GachaponWave15AllSkullWaves : UnlockCondition
 {

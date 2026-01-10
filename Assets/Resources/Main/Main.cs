@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public partial class Main : MonoBehaviour
 {
-    private static bool GameFinishedLoading = false;
+    public static bool GameFinishedLoading { get; private set; }
     public static bool MouseHoveringOverButton { get; set; }
     public static int GameUpdateCount = 0;
     public const float SnakeEyeChance = 0.0278f;
-    public static bool DebugCheats = false;
+    public static bool DebugCheats { get; set; } = false;
     public static bool PlayerNearPylon => PrevPylon != null && Player.Position.Distance(PrevPylon.transform.position) < 11;
     public static Vector2 PylonPositon => CurrentPylon != null ? CurrentPylon.transform.position : PrevPylon != null ? PrevPylon.transform.position : Player.Position;
     public static Pylon CurrentPylon = null;
@@ -105,6 +105,10 @@ public partial class Main : MonoBehaviour
             else
                 UIManager.Pause();
         }
+        if(Main.DebugCheats && Input.GetKey(KeyCode.B))
+        {
+            PowerUp.Spawn(PowerUp.RandomFromPool(0, 1, -1), Utils.MouseWorld);
+        }
         UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
     }
     public static Main Instance;
@@ -123,7 +127,10 @@ public partial class Main : MonoBehaviour
         public static void LoadAllEquipList()
         {
             foreach(UnlockCondition unlock in UnlockCondition.Unlocks.Values)
+            {
                 unlock.AssociatedUnlocks.Clear();
+                unlock.AssociatedBlackMarketUnlocks.Clear();
+            }
             TypeToEquipPrefab.Clear();
             EquipTypeToIndex.Clear();
             TimesUsedList.Clear();
@@ -209,7 +216,6 @@ public partial class Main : MonoBehaviour
     }
     public static class DebugSettings
     {
-        public static ref bool DebugCheats => ref Main.DebugCheats;
         public static void Update(Main instance)
         {
             if (/*Input.GetKey(KeyCode.R) &&*/Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.N))
@@ -224,7 +230,12 @@ public partial class Main : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.P) && DebugCheats)
                 PowerUpCheat = !PowerUpCheat;
             if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
+            {
+                foreach (UnlockCondition condition in UnlockCondition.Unlocks.Values) {
+                    condition.ForceUnlock();
+                }
                 UnlockCondition.ForceUnlockAll = true;
+            }
             if (Input.GetKeyDown(KeyCode.L) && DebugCheats)
                 SkipWaves = !SkipWaves;
 

@@ -191,7 +191,7 @@ public class Projectile : MonoBehaviour
                 float chance = 0.03f + Player.Instance.LuckyStar * 0.01f;
                 if (Utils.RandFloat(1) < chance)
                 {
-                    PowerUp.Spawn(PowerUp.RandomFromPool(), (Vector2)target.transform.position, 0);
+                    PowerUp.Spawn(PowerUp.RandomFromPool(), (Vector2)target.transform.position);
                     Player.Instance.LuckyStarItemsAcquiredThisWave++;
                 }
             }
