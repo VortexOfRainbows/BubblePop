@@ -167,16 +167,16 @@ public static class WaveDirector
         if(WaveNum >= 15)
         {
             if(Player.Instance.Body is ThoughtBubble && !Player.HasAttacked)
-            {
                 UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
-            }
             if(Player.Instance.Body is Gachapon && !Player.PickedLowerDifficultyWaveCard)
-            {
                 UnlockCondition.Get<GachaponWave15AllSkullWaves>().SetComplete();
-            }
+            if (Player.Instance.Body is Bubblemancer && !Player.HasBeenHit)
+                UnlockCondition.Get<BubblemancerPerfection>().SetComplete();
         }
-        if(WaveNum >= 25)
+        if(WaveNum >= 20)
             UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
+        if(WaveNum >= 40 && Player.Instance.Body is Gachapon)
+            UnlockCondition.Get<GachaponAddicted>().SetComplete();
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         CurrentAssociatedWaveCardNumber = 0;
         WaitingForCardDraw = true;

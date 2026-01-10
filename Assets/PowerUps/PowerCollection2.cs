@@ -146,6 +146,7 @@ public class BubbleShield : PowerUp
         //p.ImmunityFrameMultiplier += 0.05f * Stack;
         p.ShieldImmunityFrameMultiplier += 0.2f + 0.2f * Stack;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<BubblemancerPerfection>();
 }
 public class ZapRadius : PowerUp
 {
@@ -327,6 +328,7 @@ public class ResonanceRuby : PowerUp
     {
         p.Ruby += Stack;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<GachaponAddicted>();
 }
 public class DoubleDown : PowerUp
 {
@@ -597,4 +599,5 @@ public class Eureka : PowerUp
     {
         p.Eureka += Stack;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<ThoughtBubbleDecisionsDecisions>();
 }

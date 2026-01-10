@@ -15,7 +15,7 @@ public class WaveUnlock10 : UnlockCondition
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("You birds don't scare me!");
-        description.WithDescription("Complete wave 10");
+        description.WithDescription("Reach and complete wave 10");
         //description.WithShortDescription("");
     }
     public override void SetAchievementCategories(ref int zone, ref int category)
@@ -106,28 +106,13 @@ public class ThoughtBubbleWave15NoAttack : UnlockCondition
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Thought Bubble: Calculated");
-        description.WithDescription("Reach and complete wave 15 as Y:[Thought Bubble] without using your weapon");
+        description.WithDescription("As Y:[Thought Bubble,] reach and complete wave 15 without using your weapon");
     }
     public override void SetAchievementCategories(ref int zone, ref int category)
     {
         zone = Lab;
         category = Challenge;
     }
-}
-public class ThoughtBubbleShortForCalc : UnlockCondition
-{
-    public override PowerUp Power => PowerUp.Get<Calculator>();
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Thought Bubble: Short for Calc");
-        description.WithDescription($"Assimilate 5 or more {PowerUp.Get<BubbleMitosis>().UnlockedName} into a single {Power.UnlockedName}");
-    }
-    public override void SetAchievementCategories(ref int zone, ref int category)
-    {
-        zone = Lab;
-        category = Challenge;
-    }
-    public override int Rarity => 4;
 }
 public class GachaponWave15AllSkullWaves : UnlockCondition
 {
@@ -170,4 +155,64 @@ public class GachaponBubblebirb : UnlockCondition
         zone = City;
         category = Challenge;
     }
+}
+public class BubblemancerPerfection : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<Choice>();
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Bubblemancer: Bath Bomb");
+        description.WithDescription($"As Y:Bubblemancer, reach and complete wave 15 without taking damage");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Meadows;
+        category = Challenge;
+    }
+    public override int Rarity => 4;
+}
+public class GachaponAddicted : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<Choice>();
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Gachapon: Addicted");
+        description.WithDescription($"As Y:Gachapon, reach and complete wave 40");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Completionist;
+    }
+    public override int Rarity => 4;
+}
+public class ThoughtBubbleShortForCalc : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<Calculator>();
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Thought Bubble: Short for Calc");
+        description.WithDescription($"Assimilate 5 or more {PowerUp.Get<BubbleMitosis>().UnlockedName} into a single {Power.UnlockedName}");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Lab;
+        category = Challenge;
+    }
+    public override int Rarity => 4;
+}
+public class ThoughtBubbleDecisionsDecisions : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<Choice>();
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Thought Bubble: Decisions Decisions");
+        description.WithDescription($"Reroll a single {Power.UnlockedName} 10 times");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Lab;
+        category = Completionist;
+    }
+    public override int Rarity => 2;
 }

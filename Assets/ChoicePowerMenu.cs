@@ -18,6 +18,7 @@ public class ChoicePowerMenu : MonoBehaviour
         return 2 + Player.Instance.Eureka;
     }
     public int RemainingRerolls { get; set; } = 2;
+    public int RerollsInARow { get; set; } = 0;
     public static bool Hide { get; set; } = false;
     public void Start()
     {
@@ -40,6 +41,9 @@ public class ChoicePowerMenu : MonoBehaviour
             CoinManager.ModifyGems(-Cost);
         Cost++;
         RemainingRerolls--;
+        RerollsInARow++;
+        if(RerollsInARow >= 10)
+            UnlockCondition.Get<ThoughtBubbleDecisionsDecisions>().SetComplete();
         for (int i = 0; i < 5; i++)
         {
             if (PowerButtons[i].Active)
@@ -110,6 +114,7 @@ public class ChoicePowerMenu : MonoBehaviour
     public static void TurnOn(bool ExtraChoices)
     {
         Hide = false;
+        Instance.RerollsInARow = 0;
         Instance.RemainingRerolls = GetBaseRerolls();
         Instance.transform.localPosition = new Vector2(Instance.MyCanvas.GetComponent<RectTransform>().rect.width / 2, - Instance.MyCanvas.GetComponent<RectTransform>().rect.height / 2);
         Instance.gameObject.SetActive(true);

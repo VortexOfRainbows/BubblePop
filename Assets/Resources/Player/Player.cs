@@ -49,6 +49,7 @@ public partial class Player : Entity
     public const float DashDefault = 25f;
     public static bool HasAttacked = false;
     public static bool PickedLowerDifficultyWaveCard = false;
+    public static bool HasBeenHit = false;
     public static int GoldSpentTotal = 0;
     /// <summary>
     /// Shorthand for abilityTimer <= 0;
@@ -139,6 +140,7 @@ public partial class Player : Entity
             }
             HasRunStartingGear = true;
             HasAttacked = false;
+            HasBeenHit = false;
         }
         Instance = this;
         WaveDirector.FixedUpdate();
@@ -191,7 +193,7 @@ public partial class Player : Entity
                 }
             }
             if (Main.GameUpdateCount % 200 == 0)
-                Debug.Log($"Has Attacked: {HasAttacked}, Picked Lower Card: {PickedLowerDifficultyWaveCard}");
+                Debug.Log($"Has Attacked: {HasAttacked}, Picked Lower Card: {PickedLowerDifficultyWaveCard}, Has Taken Damage: {HasBeenHit}");
             if (Weapon.IsAttacking())
             {
                 if(Weapon.IsPrimaryAttacking())
@@ -229,6 +231,7 @@ public partial class Player : Entity
     }
     public void Hurt(int damage = 1)
     {
+        HasBeenHit = true;
         float defaultImmuneFrames = 100;
         float immunityFrameMultiplier = ImmunityFrameMultiplier;
         if(Shield > 0)
