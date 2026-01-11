@@ -602,3 +602,20 @@ public class Eureka : PowerUp
     }
     public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<ThoughtBubbleDecisionsDecisions>();
 }
+public class BlackMarketDelivery : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Epic;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("(WIP) Black Market Delivery");
+        description.WithDescription("Each Y:[Skull Wave] has a Y:10% G:(+10% per stack) chance to drop a Y:[Black Market crate] G:(consumed on use)");
+        description.WithShortDescription("The next Skull Wave has a chance to deliver a Black Market crate");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BlackMarketDelivery += Stack;
+    }
+}
