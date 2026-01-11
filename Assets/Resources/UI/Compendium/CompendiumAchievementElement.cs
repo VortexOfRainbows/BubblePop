@@ -32,7 +32,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         MyElem.Visual.SetActive(!IsPowerUnlock);
         MyElem.AchievementElement = true;
         TypeID = i;
-        if (MyUnlock.Unlocked && !Selected && Style != 3)
+        if (MyUnlock.Unlocked && !Selected && Style != 3 && Style != 5)
         {
             Color c = new(.1f, .7f, .1f, 0.431372549f);
             DescriptionImage.color = c;
@@ -69,7 +69,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public new void Update()
     {
         base.Update();
-        if(Style != 3)
+        if(Style != 3 && Style != 5)
             UpdateText();
         if(IsPowerUnlock)
         {

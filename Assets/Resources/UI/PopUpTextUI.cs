@@ -15,13 +15,26 @@ public class PopUpTextUI : MonoBehaviour
     }
     public static void Enable(PopUpTextUI instance, string name, string desc, int duration = DefaultPopupDuration)
     {
-        if (instance.Name.text != name || instance.Description.text != desc)
+        if(instance.Type == AchievementPopUpUI)
         {
-            instance.SetName(name);
-            instance.SetDescription(desc);
-            //instance.ReadyToRenderFixed = false;
-            instance.ReadyToRenderNormal = false;
-            instance.Visual.SetActive(false);
+            if (instance.AchievementElement.NameText.text != name || instance.AchievementElement.DescriptionText.text != desc)
+            {
+                instance.AchievementElement.NameText.text = name;
+                instance.AchievementElement.DescriptionText.text = desc;
+                instance.ReadyToRenderNormal = false;
+                instance.Visual.SetActive(false);
+            }
+        }
+        else
+        {
+            if (instance.Name.text != name || instance.Description.text != desc)
+            {
+                instance.SetName(name);
+                instance.SetDescription(desc);
+                //instance.ReadyToRenderFixed = false;
+                instance.ReadyToRenderNormal = false;
+                instance.Visual.SetActive(false);
+            }
         }
         instance.enabledDuration = duration;
     }
@@ -38,6 +51,7 @@ public class PopUpTextUI : MonoBehaviour
     public static PopUpTextUI PopupPowerTextInstance { get; private set; }
     public static PopUpTextUI PopupAchievementInstance { get; private set; }
     public PowerUpUIElement PowerUpVisual;
+    public CompendiumAchievementElement AchievementElement;
     public Canvas MainGameCanvas;
     public GameObject Visual;
     public TMPro.TextMeshProUGUI Name;
@@ -79,7 +93,8 @@ public class PopUpTextUI : MonoBehaviour
     }
     public void UpdateMiddleInstance()
     {
-        SetHeightMiddle();
+        if (Type == PowerPopUpUI)
+            SetHeightMiddle();
         float percent = 1 - enabledDuration / DefaultPopupDuration;
         float growPercent = 1 + 0.036f * Mathf.Sin(Mathf.Min(1, percent * 15) * Mathf.PI);
         transform.localScale = Vector3.one * growPercent;
@@ -113,7 +128,7 @@ public class PopUpTextUI : MonoBehaviour
                 UpdateStars(colPer, 1 + (growPercent - 1) * 3);
             }
         }
-        else
+        else if(Type == AchievementPopUpUI)
         {
 
         }

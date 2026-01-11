@@ -33,6 +33,8 @@ public class CompendiumEquipmentElement : CompendiumElement
     }
     public void Update()
     {
+        if (Style == 5)
+            return;
         if (TypeID == -1 && gameObject.activeSelf)
             Destroy(gameObject);
         RectTransform hoverTransform = rectTransform;
@@ -42,7 +44,7 @@ public class CompendiumEquipmentElement : CompendiumElement
             isAchieve = true;
             hoverTransform = achieve.CombinedRect;
         }
-        bool isWithinMaskRange = count.transform.position.y > Compendium.Instance.SortBar.position.y + Compendium.Instance.SortBar.sizeDelta.y * 0.5f * Compendium.Instance.SortBar.lossyScale.y;
+        bool isWithinMaskRange = (count.transform.position.y > Compendium.Instance.SortBar.position.y + Compendium.Instance.SortBar.sizeDelta.y * 0.5f * Compendium.Instance.SortBar.lossyScale.y);
         count.gameObject.SetActive((isAchieve ? Compendium.Instance.AchievementPage.ShowCounts : Compendium.Instance.EquipPage.ShowCounts) && !MyElem.DisplayOnly && (!IsLocked() || isAchieve) && Style <= 1 && !isWithinMaskRange);
         if (MyElem.ActiveEquipment != null)
         {
