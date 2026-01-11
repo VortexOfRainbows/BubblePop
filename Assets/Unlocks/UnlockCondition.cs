@@ -62,18 +62,14 @@ public abstract class UnlockCondition
         if (Unlocks == null)
             InitDict();
         for (int i = 0; i < maximumTypes; ++i)
-        {
             Unlocks[i].SaveData();
-        }
     }
     public static void LoadAllData()
     {
         if (Unlocks == null)
             InitDict();
         for (int i = 0; i < maximumTypes; ++i)
-        {
             Unlocks[i].LoadData();
-        }
     }
     public static void PrepareStatics()
     {
@@ -90,6 +86,11 @@ public abstract class UnlockCondition
             p.BlackMarketVariantUnlockCondition?.AddAssociatedPower(p);
         }
     }
+    public static void CheckAllUnlocksForCompletion()
+    {
+        foreach(UnlockCondition u in Unlocks.Values)
+            u.TryUnlock();
+    }
     protected UnlockCondition()
     {
         AssociatedUnlocks = new();
@@ -103,10 +104,12 @@ public abstract class UnlockCondition
     public void SaveData()
     {
         PlayerData.SaveBool(SaveString, Completed);
+        PlayerData.SaveBool(SaveString + "Msg", HasShownCompletionMessage);
     }
     public void LoadData()
     {
         bool complete = PlayerData.GetBool(SaveString);
+        HasShownCompletionMessage = PlayerData.GetBool(SaveString + "Msg");
         if(complete)
             SetComplete(true);
     }
@@ -117,6 +120,7 @@ public abstract class UnlockCondition
         return Description.BriefDescription();
     }
     protected bool Completed { get; set; } = false;
+    private bool HasShownCompletionMessage { get; set; } = false;
     private bool FakeComplete = false;
     public bool ForceUnlock()
     {
@@ -132,13 +136,18 @@ public abstract class UnlockCondition
         if(!Completed && completeStatus)
         {
             Completed = true;
-            if(!skipSave)
+            if (!HasShownCompletionMessage)
+            {
+                PopUpTextUI.UnlockQueue.Enqueue(this);
+                HasShownCompletionMessage = true;
+                SaveData();
+            }
+            else if (!skipSave)
                 SaveData();
             if (AchievementZone == Meadows)
                 PlayerData.MetaProgression.MeadowsStars += 1;
             PlayerData.MetaProgression.AchievementStars += 1;
             UpdatePowerPool();
-            PopUpTextUI.UnlockQueue.Enqueue(this);
         }
         else if(!completeStatus)
         {

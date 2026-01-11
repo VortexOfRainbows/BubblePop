@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 public class PopUpTextUI : MonoBehaviour
@@ -7,6 +8,7 @@ public class PopUpTextUI : MonoBehaviour
     private const int PowerPopUpUI = 1;
     private const int AchievementPopUpUI = 2;
     public const int DefaultPopupDuration = 400;
+    public const int DefaultAchievementPopupDuration = 300;
     public static readonly Queue<PowerUp> PowerupQueue = new();
     public static readonly Queue<UnlockCondition> UnlockQueue = new();
     public static void Enable(string name, string desc, int duration = 4)
@@ -22,8 +24,9 @@ public class PopUpTextUI : MonoBehaviour
                 instance.AchievementElement.NameText.text = name;
                 instance.AchievementElement.DescriptionText.text = desc;
                 instance.ReadyToRenderNormal = false;
-                instance.Visual.SetActive(false);
+                instance.Name.color = ColorHelper.RarityColors[instance.AchievementElement.GetRare() - 1];
             }
+            instance.Visual.SetActive(true);
         }
         else
         {
@@ -44,6 +47,11 @@ public class PopUpTextUI : MonoBehaviour
         {
             instance.PowerUpVisual.SetPowerType(type);
         }
+    }
+    public static void UpdateUnlock(PopUpTextUI instance, UnlockCondition u)
+    {
+        if (instance.AchievementElement != null)
+            instance.AchievementElement.Init(u.MyID, instance.MainGameCanvas);
     }
     public RectTransform visualRect;
     public float enabledDuration = 0;
@@ -75,7 +83,8 @@ public class PopUpTextUI : MonoBehaviour
         if (--enabledDuration < 0)
         {
             ReadyToRenderNormal = false;
-            Visual.SetActive(false);
+            if(Type != AchievementPopUpUI)
+                Visual.SetActive(false);
         }
     }
     private List<Color> defaultColors = null;
@@ -93,15 +102,14 @@ public class PopUpTextUI : MonoBehaviour
     }
     public void UpdateMiddleInstance()
     {
-        if (Type == PowerPopUpUI)
-            SetHeightMiddle();
+        UpdateSizing();
         float percent = 1 - enabledDuration / DefaultPopupDuration;
-        float growPercent = 1 + 0.036f * Mathf.Sin(Mathf.Min(1, percent * 15) * Mathf.PI);
-        transform.localScale = Vector3.one * growPercent;
-        float halfPercent = Mathf.Max(0, percent * 2 - 1);
-        float colPer = percent < 0.5f ? Mathf.Min(1, percent * 20) : Mathf.Sqrt(halfPercent > 1 ? 0 : Mathf.Max(1 - halfPercent));
         if (Type == PowerPopUpUI)
         {
+            float growPercent = 1 + 0.036f * Mathf.Sin(Mathf.Min(1, percent * 15) * Mathf.PI);
+            transform.localScale = Vector3.one * growPercent;
+            float halfPercent = Mathf.Max(0, percent * 2 - 1);
+            float colPer = percent < 0.5f ? Mathf.Min(1, percent * 20) : Mathf.Sqrt(halfPercent > 1 ? 0 : Mathf.Max(1 - halfPercent));
             if (defaultColors == null)
             {
                 defaultColors = new List<Color>();
@@ -130,7 +138,21 @@ public class PopUpTextUI : MonoBehaviour
         }
         else if(Type == AchievementPopUpUI)
         {
-
+            float PercentBetweenRange = Mathf.Clamp((percent - 0.265f) * 10, 0, 1);
+            float growPercent = 0.8f + 0.1f * Mathf.Sin(Mathf.Min(1, PercentBetweenRange) * Mathf.PI);
+            transform.localScale = Vector3.one * growPercent;
+            float totalWidthPlusSome = myRect.rect.width;
+            var rect = MainGameCanvas.GetComponent<RectTransform>();
+            float xPos = rect.rect.width - (myRect.rect.width / 2) + 21;
+            float yPosFromBottom = (Main.WavesUnleashed ? 270 : 450) - rect.rect.height;
+            if (enabledDuration >= 0)
+            {
+                transform.LerpLocalPosition(new Vector2(xPos, yPosFromBottom), Utils.DeltaTimeLerpFactor(0.1f));
+            }
+            else
+            {
+                transform.LerpLocalPosition(new Vector2(xPos + totalWidthPlusSome, yPosFromBottom), Utils.DeltaTimeLerpFactor(0.1f));
+            }
         }
         if(percent >= 1.05f)
         {
@@ -146,24 +168,27 @@ public class PopUpTextUI : MonoBehaviour
             }
             else if (Type == AchievementPopUpUI)
             {
-                if(Input.GetKeyDown(KeyCode.U))
-                {
-                    UnlockQueue.Enqueue(UnlockCondition.Get<BubbleBirbUnlock10>());
-                }
                 if (UnlockQueue.Count > 0)
                 {
                     //swap to next in queue
                     UnlockCondition u = UnlockQueue.Dequeue();
-                    //UpdatePowerUp(this, p.Type);
-                    Enable(this, u.GetName(), u.GetDescription());
+                    UpdateUnlock(this, u);
+                    Enable(this, u.GetName(), u.GetDescription(), DefaultAchievementPopupDuration);
                 }
             }
         }
     }
-    private void SetHeightMiddle()
+    private void UpdateSizing()
     {
-        float height = Mathf.Max(155, Description.renderedHeight + Name.renderedHeight + 30);
-        visualRect.sizeDelta = new Vector2(Mathf.Max(760, myRect.sizeDelta.x), height);
+        if (Type == PowerPopUpUI)
+        {
+            float height = Mathf.Max(155, Description.renderedHeight + Name.renderedHeight + 30);
+            visualRect.sizeDelta = new Vector2(Mathf.Max(760, myRect.sizeDelta.x), height);
+        }
+        else if (Type == AchievementPopUpUI)
+        {
+            //AchievementElement.DescriptionArea.sizeDelta = new Vector2(Mathf.Max(600, myRect.sizeDelta.x), 0);
+        }
     }
     public void SnapToScreen(bool sizeOnly = false)
     {
@@ -191,7 +216,7 @@ public class PopUpTextUI : MonoBehaviour
             myRect = GetComponent<RectTransform>();
         if (enabledDuration >= 0)
         {
-            if (!Visual.activeSelf)
+            if (!Visual.activeSelf) //Move the thing off screen when turned off that way the dimensions can adjust correctly!
             {
                 if (Type == HoverUI)
                 {
@@ -199,12 +224,7 @@ public class PopUpTextUI : MonoBehaviour
                     SnapToScreen(true);
                     Visual.SetActive(true);
                 }
-                else if(Type == PowerPopUpUI)
-                {
-                    transform.position = new Vector3(30000, transform.position.y, 0);
-                    Visual.SetActive(true);
-                }
-                else if(Type == AchievementPopUpUI)
+                else if (Type == PowerPopUpUI)
                 {
                     transform.position = new Vector3(30000, transform.position.y, 0);
                     Visual.SetActive(true);
@@ -213,13 +233,9 @@ public class PopUpTextUI : MonoBehaviour
             else
             {
                 ReadyToRenderNormal = true;
-                if(Type == 1)
+                if(Type == PowerPopUpUI)
                 {
                     transform.localPosition = new Vector3(MainGameCanvas.GetComponent<RectTransform>().rect.width / 2 + 75, -150, 0);
-                }
-                else
-                {
-                    transform.localPosition = new Vector3(MainGameCanvas.GetComponent<RectTransform>().rect.width / 2 + 75, -350, 0);
                 }
             }
         }

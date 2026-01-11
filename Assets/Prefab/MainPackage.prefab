@@ -30603,10 +30603,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 175038137716838613, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 75.00006
-      objectReference: {fileID: 0}
     - target: {fileID: 222697750627285641, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -30839,6 +30835,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6565999955829619767, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
+      propertyPath: enabledDuration
+      value: -40
+      objectReference: {fileID: 0}
     - target: {fileID: 6954510929273139585, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -30887,6 +30887,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 3657281034133755898}
+    - target: {fileID: 7563945110523091720, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 622996367
+      objectReference: {fileID: 0}
     - target: {fileID: 7563945110523091720, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: -1

@@ -15,7 +15,7 @@ public class CompendiumEquipmentElement : CompendiumElement
         if (MyElem.ActiveEquipment != null)
             Destroy(MyElem.ActiveEquipment.gameObject);
         MyElem.UpdateEquipment(Main.GlobalEquipData.AllEquipmentsList[i].GetComponent<Equipment>());
-        MyElem.SetCompendiumLayering(canvas.sortingLayerID, Style == 4 ? 65 : 45, Style == 3 ? 0 : 1); //2 = UICamera, 20 = compendium canvas size
+        MyElem.SetCompendiumLayering(canvas.sortingLayerID, Style == 4 ? 65 : 45, (Style == 3 || Style == 5) ? 0 : 1); //2 = UICamera, 20 = compendium canvas size
         CountCanvas.sortingLayerID = canvas.sortingLayerID;
         MyCanvas = canvas;
         MyElem.CompendiumElement = true;

@@ -101,10 +101,8 @@ public class PowerUpUIElement : MonoBehaviour
         else if(!CompendiumElement)
             Count.text = MyPower.Stack.ToString();
         else
-            Count.gameObject.SetActive(!AppearLocked && Compendium.Instance.PowerPage.ShowCounts && !PreventHovering);
-        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering);
-        if(CompendiumElement && !Compendium.Instance.PowerPage.MouseInCompendiumArea)
-            canHover = false;
+            Count.gameObject.SetActive(!AppearLocked && (Compendium.Instance == null || Compendium.Instance.PowerPage.ShowCounts) && !PreventHovering);
+        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && !(CompendiumElement && !Compendium.Instance.PowerPage.MouseInCompendiumArea);
         float size = CompendiumElement ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
         bool rectangular = CompendiumElement;
         if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement) && (CompendiumElement || !Main.GamePaused || PowerUp.PickingPowerUps))

@@ -158,6 +158,7 @@ public static class WaveDirector
         if(WaveNum != 1)
             MulliganAllCards();
         CurrentAssociatedWaveCardNumber = SkullEnemiesActive = 0;
+        UnlockCondition.CheckAllUnlocksForCompletion();
     }
     public static void EndWave()
     {
@@ -180,6 +181,7 @@ public static class WaveDirector
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         CurrentAssociatedWaveCardNumber = 0;
         WaitingForCardDraw = true;
+        UnlockCondition.CheckAllUnlocksForCompletion();
     }
     public static void GatherCredits()
     {

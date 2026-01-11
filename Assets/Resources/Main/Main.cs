@@ -109,6 +109,11 @@ public partial class Main : MonoBehaviour
         {
             PowerUp.Spawn(PowerUp.RandomFromPool(0, 1, -1), Utils.MouseWorld);
         }
+        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.U) && Main.DebugCheats)
+        {
+            foreach(UnlockCondition u in UnlockCondition.Unlocks.Values)
+                PopUpTextUI.UnlockQueue.Enqueue(u);
+        }
         UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
     }
     public static Main Instance;
