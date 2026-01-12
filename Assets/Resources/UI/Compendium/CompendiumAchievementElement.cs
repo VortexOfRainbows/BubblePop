@@ -21,8 +21,10 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
             //Initialize a fake equipment in the background just for certain behavor stuff
             base.Init(Main.GlobalEquipData.Bubblemancer.GetComponent<Equipment>().IndexInAllEquipPool, canvas);
             InitPowerUpVersion(MyUnlock.AssociatedBlackMarketUnlocks.Count > 0 ? MyUnlock.AssociatedBlackMarketUnlocks.FirstOrDefault() : PowerUp.Get<Choice>());
+            AlternativeDisplayElement.MyPower.ForceBlackMarket = true;
             AlternativeDisplayElement.OnUpdate();
             AlternativeDisplayElement.OnUpdate();
+            AlternativeDisplayElement.MyPower.ForceBlackMarket = false;
         }
         else
         {
@@ -75,8 +77,10 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         {
             if (AlternativeDisplayElement != null)
             {
+                AlternativeDisplayElement.MyPower.ForceBlackMarket = true;
                 AlternativeDisplayElement.transform.localScale = MyElem.transform.localScale;
                 AlternativeDisplayElement.OnUpdate();
+                AlternativeDisplayElement.MyPower.ForceBlackMarket = false;
             }
         }
     }

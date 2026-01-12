@@ -183,6 +183,7 @@ public abstract class PowerUp
     }
     public int MyID = -1;
     #endregion
+    public bool ForceBlackMarket { get; set; } = false;
     public static bool PickingPowerUps { get; set; }
     public static int RandomFromPool(float bonusChoiceChance = 0.15f, float blackMarketChance = -1f, int rarity = -1)
     {
@@ -395,7 +396,7 @@ public abstract class PowerUp
             return true;
         if (Compendium.Instance != null && Compendium.Instance.PageNumber == 3)
             return true; //All powers on the achievement page are going to show up as black market powers, so this should make sense as an extra fail-safe
-        return false;
+        return ForceBlackMarket;
     }
     public bool HasBlackMarketAlternate => BlackMarketVariantUnlockCondition != null;
     public virtual UnlockCondition BlackMarketVariantUnlockCondition => null;
