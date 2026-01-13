@@ -124,6 +124,7 @@ public class Coin : MonoBehaviour
             }
             else
             {
+                transform.LerpLocalScale(Vector3.one * 1f, 0.07f);
                 if (Utils.RandFloat(1) < 0.1f)
                 {
                     Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(-Mathf.PI, Mathf.PI));
