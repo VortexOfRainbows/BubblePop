@@ -31,7 +31,7 @@ public class Crucible : MonoBehaviour
         Connector2.position = new Vector3(Joint1.position.x, Joint1.position.y, Connector2.position.z);
         Connect(Connector2, Joint2);
         Connector3.position = new Vector3(Joint2.position.x, Joint2.position.y, Connector3.position.z);
-        Connect(Connector3, Joint3);
+        Connect(Connector3, Joint3, 4.2f);
 
         HandConnector1L.position = new Vector3(Joint3.position.x, Joint3.position.y, HandConnector1L.position.z);
         HandConnector1R.position = new Vector3(Joint3.position.x, Joint3.position.y, HandConnector1R.position.z);

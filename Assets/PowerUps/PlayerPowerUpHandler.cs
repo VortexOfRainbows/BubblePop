@@ -3,30 +3,30 @@ using UnityEngine;
 
 public partial class Player : Entity
 {
-    public int PowerCount => powers.Count;
+    public int PowerCount => Powers.Count;
     /// <summary>
     /// Returns the PowerUpID of the power at the given index
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    public int GetPower(int index) => powers[index];
+    public int GetPower(int index) => Powers[index];
     public void PickUpPower(int Type)
     {
-        if (powers.Contains(Type))
+        if (Powers.Contains(Type))
             return;
         else
-            powers.Add(Type);
+            Powers.Add(Type);
     }
     public void RemovePower(int Type, int num = 1)
     {
-        int index= powers.IndexOf(Type);
+        int index= Powers.IndexOf(Type);
         if (index != -1)
         {
             PowerUp p = PowerUp.Get(GetPower(index));
             p.Stack -= num;
             if(p.Stack <= 0)
             {
-                powers.RemoveAt(index);
+                Powers.RemoveAt(index);
                 //if (powers.Count < index)
                 //{
                 //    
@@ -97,8 +97,7 @@ public partial class Player : Entity
     public float ZapRadiusMult = 1.0f;
     public float DamageMultiplier = 1.0f;
     public int AllowedThunderBalls = 3;
-    private List<int> powers;
-
+    public List<int> Powers { get; private set; }
     public bool HasResearchNotes = false;
     public int ResearchNoteBonuses = 0;
     public int ResearchNoteKillCounter = 0;
@@ -129,12 +128,12 @@ public partial class Player : Entity
     public int Eureka = 0;
     private void PowerInit()
     {
-        powers = new List<int>();
+        Powers = new List<int>();
         PowerUp.ResetAll();
     }
     private void ResetPowers()
     {
-        powers.Clear();
+        Powers.Clear();
     }
     private void ClearPowerBonuses()
     {
@@ -178,9 +177,9 @@ public partial class Player : Entity
     private void UpdatePowerUps()
     {
         ClearPowerBonuses();
-        for(int i = 0; i < powers.Count; i++)
+        for(int i = 0; i < Powers.Count; i++)
         {
-            PowerUp power = PowerUp.Get(powers[i]);
+            PowerUp power = PowerUp.Get(Powers[i]);
             if(power.Stack > 0)
                 power.HeldEffect(this);
                 //Debug.Log($"Doing held effect for {power.Stack}");
