@@ -20,7 +20,7 @@ public class Coin : MonoBehaviour
             return Player.Instance.MaxTokens > CoinManager.CurrentTokens;
         if (IsHeart)
             return Player.Instance.Life < Player.Instance.TotalMaxLife;
-        if (IsKey || IsGem)
+        if (IsKey)
             return Main.WavesUnleashed;
         return true;
     }

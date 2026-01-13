@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PowerUpObject : MonoBehaviour
@@ -20,6 +19,7 @@ public class PowerUpObject : MonoBehaviour
     public float VeloEndTimer = 0.0f;
     public Vector2 velocity = Vector2.zero;
     public Vector2 finalPosition;
+    public bool FakePower = false;
     public void Start()
     {
         inner.sprite = Sprite;
@@ -47,7 +47,8 @@ public class PowerUpObject : MonoBehaviour
             inner.sprite = Sprite;
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
         timer++;
-        float scale = 1.0f + 0.1f * Mathf.Sin(Mathf.Deg2Rad * timer * 2f);
+        float vibrate = FakePower ? 0.05f : 0.1f;
+        float scale = 1.0f + vibrate * Mathf.Sin(Mathf.Deg2Rad * timer * 2f);
         if (velocity != Vector2.zero)
         {
             VeloEndTimer += Time.fixedDeltaTime;
@@ -57,11 +58,13 @@ public class PowerUpObject : MonoBehaviour
             transform.position = transform.position.Lerp(finalPosition, VeloEndTimer);
             transform.localScale = Vector3.Lerp(transform.localScale, (0.25f + 0.75f * Mathf.Sqrt(Mathf.Min(1, VeloEndTimer * 2f))) * Vector3.one, 0.1f);
         }
-        else
+        else if(!FakePower)
         {
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.1f);
         }
         outer.transform.localScale = Vector3.Lerp(outer.transform.localScale, new Vector3(2f / scale, 2f * scale, 2), 0.1f);
+        if (FakePower)
+            return;
         if (Utils.RandFloat(1) < 0.4f)
         {
             Vector2 circular = new Vector2(Utils.RandFloat(0, 1) * transform.localScale.x, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
@@ -82,6 +85,8 @@ public class PowerUpObject : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision) => OnTrigger(collision);
     private void OnTrigger(Collider2D collision)
     {
+        if (FakePower)
+            return;
         if(collision.CompareTag("Player") && !PickedUp)
         {
             if(CoinManager.CurrentCoins >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))
@@ -92,7 +97,9 @@ public class PowerUpObject : MonoBehaviour
     }
     public void PickUp()
     {
-        if(Cost > 0)
+        if (FakePower)
+            return;
+        if (Cost > 0)
         {
             CoinManager.ModifyCoins(-Cost);
             int charisma = Player.Instance.RollChar;
@@ -113,6 +120,8 @@ public class PowerUpObject : MonoBehaviour
     }
     private void Kill()
     {
+        if (FakePower)
+            return;
         for (int i = 0; i < 30; i++)
         {
             Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
