@@ -29,6 +29,8 @@ Need to do:
 10. Make power display on the bottom smaller
 11. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 12. Make Map NODE system
+13. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
+	1. To help with the thought bubble achievement now that there are more elements to be clicked
 
 Mostly done but might need to keep an eye out:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -44,12 +46,17 @@ Done:
 2. WIP Begin Working on Power Cheat Menu rework (this menu will eventually be used for Shard of Power and Crucible)
 	1. Now you can scrap powers at the crucible that you have by touching it
 	2. NEEDS: Cheat menu changes (title and stuff), Shard of Power changes (title and ability to select a power afterwards)
-	3. NEEDS: Center and resize the menu based on total powers so it is generally more centrally located, rather than the amount of empty space that exists right now
+		1. Also display a conversion map in the top right of the menu that shows roughly how the exchanges will work depending on the menu)
+		2. Also need the transition between the menus to be smoother. Priority should be in the order the popups happen (Last-In First-Out)
+			1. However, picking up a shard will make it prioritized until hidden
+			2. A button for switching to between
+	3. Centers and resizes the menu based on total powers
 	4. WIP hiding functionality
 3. Quantity button for the Cheat Menu Rework
 4. PowerUp glows should now be higher resolution and softer (changed the blend style and glow texture)
 5. Gems now drop with text indicating their value, to reduce lag
 6. More Improvements to how the choice menu positions itself when hidden (should work on weirder resolutions)
+7. Import some sprites
 
 1/8/26 to 1/12/26
 1. Add Achievement completion popups

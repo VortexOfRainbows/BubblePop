@@ -32,12 +32,14 @@ public class PowerUpCheatUI : MonoBehaviour
     public Crucible CurrentCrucible { get; set; }
     public TextMeshProUGUI Title;
     public TextMeshProUGUI Description, HideButtonTextUI;
-    public RectTransform SelectionArea;
+    public RectTransform MyRect, SelectionArea;
     public Canvas MyCanvas;
+    public GameObject NOPOWERS;
     public void Start()
     {
         Instance = this;
         gameObject.SetActive(false);
+        NOPOWERS.SetActive(false);
         QuantityUp.onClick.AddListener(UpQuantity);
         QuantityDown.onClick.AddListener(DownQuantity);
         HideButton.onClick.AddListener(ToggleHide);
@@ -71,6 +73,7 @@ public class PowerUpCheatUI : MonoBehaviour
     public void Init(int type = 0)
     {
         Disable();
+        NOPOWERS.SetActive(false);
         gameObject.SetActive(true);
         CurrentType = type;
         transform.localScale = 0.9f * Vector3.one;
@@ -101,7 +104,8 @@ public class PowerUpCheatUI : MonoBehaviour
             p.CheatButton = true;
             p.NonChoiceButton = true;
             p.PowerUI.CrucibleElement = true;
-            yield return new WaitForSeconds(Time.fixedUnscaledDeltaTime);
+            if(i % 3 == 2)
+                yield return new WaitForSeconds(Time.fixedUnscaledDeltaTime);
         }
         yield return null;
     }
@@ -121,7 +125,8 @@ public class PowerUpCheatUI : MonoBehaviour
             p.CheatButton = false;
             p.NonChoiceButton = true;
             p.PowerUI.CrucibleElement = true;
-            yield return new WaitForSeconds(Time.fixedUnscaledDeltaTime);
+            if(i % 3 == 2)
+                yield return new WaitForSeconds(Time.fixedUnscaledDeltaTime);
         }
         yield return null;
     }
@@ -150,9 +155,10 @@ public class PowerUpCheatUI : MonoBehaviour
         transform.LerpLocalScale(Vector2.one, Utils.DeltaTimeLerpFactor(0.1f));
         if (Hide)
         {
-            transform.LerpLocalPosition(new Vector2(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, 440), lerpT);
+            transform.LerpLocalPosition(new Vector2(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, 140), lerpT);
             HideButton.transform.LerpLocalPosition(new Vector2(ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf ? 710 : 600, -205), lerpT);
             HideButtonTextUI.text = "Show Selector";
+            MyRect.sizeDelta = new Vector2(MyRect.sizeDelta.x, Mathf.Lerp(MyRect.sizeDelta.y, 0, Utils.DeltaTimeLerpFactor(0.07f)));
             return;
         }
         else
@@ -160,16 +166,18 @@ public class PowerUpCheatUI : MonoBehaviour
             transform.LerpLocalPosition(new Vector2(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, -Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.height / 2), lerpT);
             HideButton.transform.LerpLocalPosition(new Vector2(600, -65), lerpT);
             HideButtonTextUI.text = "Hide Selector";
+            MyRect.sizeDelta = new Vector2(MyRect.sizeDelta.x, Mathf.Lerp(MyRect.sizeDelta.y, TargetSize, Utils.DeltaTimeLerpFactor(0.07f)));
         }
     }
+    public float TargetSize = 0;
     public void UpdateContentSize()
     {
         int c = GridParent.transform.childCount;
-        if (c <= 0)
-            return;
+        NOPOWERS.SetActive(c <= 1);
         Vector3 lastElement = GridParent.transform.GetChild(c - 1).localPosition;
         RectTransform r = GridParent.GetComponent<RectTransform>();
         float dist = -lastElement.y + GridParent.padding.bottom * 3;
-        r.sizeDelta = new Vector2(r.sizeDelta.x, dist - 600); //600 is the size of the canvas height
+        TargetSize = Mathf.Min(600, dist);
+        r.sizeDelta = new Vector2(r.sizeDelta.x, dist - MyRect.rect.height);
     }
 }
