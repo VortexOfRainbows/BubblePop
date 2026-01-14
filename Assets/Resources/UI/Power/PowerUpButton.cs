@@ -5,22 +5,23 @@ using UnityEngine.UI;
 public class PowerUpButton : MonoBehaviour
 {
     public const int RerollAttempsForSamePowerInPicker = 3;
-    [SerializeField] private Button SelectButton;
+    public Button SelectButton;
     [SerializeField] public PowerUpUIElement PowerUI;
     [SerializeField] private int index = 0;
-    public bool IsCheatButton = false;
+    public bool NonChoiceButton { get; set; } = false;
+    public bool CheatButton { get; set; } = false;
     public bool Active => gameObject.activeSelf;
     public TextMeshProUGUI HotkeyText;
     private KeyCode Hotkey;
     public void Start()
     {
-        if (IsCheatButton)
+        if (NonChoiceButton)
             Init();
     }
     public void Init()
     {
         SelectButton.onClick.AddListener(OnButtonPress);
-        if (!IsCheatButton)
+        if (!NonChoiceButton)
         {
             if (Active)
                 PowerUp.PickingPowerUps = true;
@@ -39,9 +40,12 @@ public class PowerUpButton : MonoBehaviour
     }
     public void GrantPower()
     {
-        PowerUI.MyPower.PickUp();
-        if (!IsCheatButton)
+        int amt = NonChoiceButton ? Mathf.Clamp(PowerUpCheatUI.ProcessQuantity, 1, 100) : 1;
+        PowerUI.MyPower.PickUp(amt);
+        if (!NonChoiceButton)
+        {
             PowerUp.TurnOffPowerUpSelectors();
+        }
     }
     public void FixedUpdate()
     {
@@ -49,7 +53,7 @@ public class PowerUpButton : MonoBehaviour
     }
     public void Update()
     {
-        if (ChoicePowerMenu.Hide && !IsCheatButton)
+        if (ChoicePowerMenu.Hide && !NonChoiceButton)
             return;
         if (Input.GetKeyDown(Hotkey) && PowerUp.PickingPowerUps)
             GrantPower();
@@ -75,7 +79,7 @@ public class PowerUpButton : MonoBehaviour
     }
     public void TurnOn()
     {
-        if(!IsCheatButton)
+        if(!NonChoiceButton)
         {
             PowerUp.PickingPowerUps = true;
             for (int i = RerollAttempsForSamePowerInPicker; i > 0; --i)

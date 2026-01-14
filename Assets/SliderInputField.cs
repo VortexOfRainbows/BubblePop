@@ -16,14 +16,28 @@ public class SliderInputField : MonoBehaviour
     }
     public void TryParseInput(string Input)
     {
+        TryParseInput(Input, Type == 3);
+    }
+    public void TryParseInput(string Input, bool integerOnly)
+    {
         try
         {
             float value = int.Parse(Input);
             if (value > 100)
                 value = 100;
-            InputField.text = value.ToString() + '%';
-            Slider.value = value / 100f;
-            UpdateSetting(Slider.value);
+            if(!integerOnly)
+            {
+                InputField.text = value.ToString() + '%';
+                Slider.value = value / 100f;
+                UpdateSetting(Slider.value);
+            }
+            else
+            {
+                if (value < 1)
+                    value = 1;
+                InputField.text = value.ToString();
+                UpdateSetting(value);
+            }
         }
         catch
         {
@@ -53,6 +67,10 @@ public class SliderInputField : MonoBehaviour
         {
             TryParseSlider(PlayerData.SpecialVisualOpacity);
         }
+        else if(Type == 3)
+        {
+            TryParseInput("0", true);
+        }
     }
     public void UpdateSetting(float value)
     {
@@ -78,6 +96,10 @@ public class SliderInputField : MonoBehaviour
                 PlayerData.SpecialVisualOpacity = value;
                 PlayerData.SaveSettingSliders();
             }
+        }
+        else if (Type == 3)
+        {
+            PowerUpCheatUI.ProcessQuantity = (int)value;
         }
     }
 }

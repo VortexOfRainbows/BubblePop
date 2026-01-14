@@ -237,6 +237,8 @@ public partial class Main : MonoBehaviour
                 PowerUpCheat = !PowerUpCheat;
                 if (PowerUpCheat)
                     instance.PowerupCheatCanvas.GetComponent<PowerUpCheatUI>().Init();
+                else
+                    instance.PowerupCheatCanvas.GetComponent<PowerUpCheatUI>().Disable();
             }
             if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
             {
