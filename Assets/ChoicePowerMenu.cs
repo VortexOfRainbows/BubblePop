@@ -60,16 +60,14 @@ public class ChoicePowerMenu : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H) && PowerUp.PickingPowerUps)
+        if (Input.GetKeyDown(KeyCode.H))
         {
             ToggleHide();
         }
-        if(PowerUpCheatUI.Instance.gameObject.activeSelf)
+        if(!PowerUpCheatUI.Hide && PowerUpCheatUI.Instance.gameObject.activeSelf)
         {
-            if (!Hide && PowerUp.PickingPowerUps)
-            {
+            if (!Hide)
                 ToggleHide();
-            }
             HideButton.interactable = false;
         }
         else
@@ -77,8 +75,8 @@ public class ChoicePowerMenu : MonoBehaviour
         float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
         if (Hide)
         {
-            transform.LerpLocalPosition(new Vector2(MyCanvas.GetComponent<RectTransform>().rect.width / 2, 790 - MyCanvas.GetComponent<RectTransform>().rect.height / 2), lerpT);
-            HideButton.transform.LerpLocalPosition(new Vector2(0, -260), lerpT);
+            transform.LerpLocalPosition(new Vector2(MyCanvas.GetComponent<RectTransform>().rect.width / 2, + 250), lerpT);
+            HideButton.transform.LerpLocalPosition(new Vector2(PowerUpCheatUI.Hide && PowerUpCheatUI.Instance.gameObject.activeSelf ? -110 : 0, -260), lerpT);
             RerollButton.transform.LerpLocalPosition(new Vector2(0, -140), lerpT);
             HideButtonUI.text = "Show Choices";
             return;
@@ -113,7 +111,7 @@ public class ChoicePowerMenu : MonoBehaviour
 
         if (RerollButton.interactable)
         {
-            if (Input.GetKeyDown(KeyCode.R) && PowerUp.PickingPowerUps)
+            if (Input.GetKeyDown(KeyCode.R) && !Hide)
                 Reroll();
         }
         else

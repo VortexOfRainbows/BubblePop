@@ -114,10 +114,8 @@ public class CardManager : MonoBehaviour
         WaveDirector.WaitingForCardDraw = false;
         Instance.Visual.SetActive(true);
 
-        if (PowerUp.PickingPowerUps)
-        {
-            ChoicePowerMenu.Hide = true;
-        }
+        ChoicePowerMenu.Hide = true;
+        PowerUpCheatUI.Hide = true;
 
         GenerateNewCards();
     }

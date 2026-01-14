@@ -69,7 +69,7 @@ public class PowerUpButton : MonoBehaviour
             return;
         if (CrucibleButton && PowerUI.MyPower.Stack <= 0)
             Destroy(gameObject);
-        if (Input.GetKeyDown(Hotkey) && PowerUp.PickingPowerUps)
+        if (Input.GetKeyDown(Hotkey) && !ChoicePowerMenu.Hide)
             GrantPower();
     }
     private bool SameTypeAsOthers()

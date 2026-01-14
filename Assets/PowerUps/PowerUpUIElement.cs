@@ -40,6 +40,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool GrayOut { get; set; }
     public bool SpecialLockedSprite { get; set; } = false;
     public bool ForceUnhideElement { get; set; } = false;
+    public bool CrucibleElement { get; set; } = false;
     public bool PickerElement
     {
         get => !InventoryElement;
@@ -102,10 +103,10 @@ public class PowerUpUIElement : MonoBehaviour
             Count.text = MyPower.Stack.ToString();
         else
             Count.gameObject.SetActive(!AppearLocked && (Compendium.Instance == null || Compendium.Instance.PowerPage.ShowCounts) && !PreventHovering);
-        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && !(CompendiumElement && !Compendium.Instance.PowerPage.MouseInCompendiumArea);
+        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea) && (!CrucibleElement || PowerUpCheatUI.MouseInCompendiumArea);
         float size = CompendiumElement ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
         bool rectangular = CompendiumElement;
-        if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement) && (CompendiumElement || !Main.GamePaused || PowerUp.PickingPowerUps))
+        if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement) && (CompendiumElement || !Main.GamePaused || !(InventoryElement || MenuElement)))
         {
             if(myLayout != null)
                 myLayout.isHovering = true;
