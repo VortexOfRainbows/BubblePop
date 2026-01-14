@@ -46,8 +46,7 @@ Done:
 2. WIP Begin Working on Power Cheat Menu rework (this menu will eventually be used for Shard of Power and Crucible)
 	1. Now you can scrap powers at the crucible that you have by touching it
 	2. NEEDS: Cheat menu changes (title and stuff), Shard of Power changes (title and ability to select a power afterwards)
-		1. Also display a conversion map in the top right of the menu that shows roughly how the exchanges will work depending on the menu)
-		2. Also need the transition between the menus to be smoother. Priority should be in the order the popups happen (Last-In First-Out)
+		1. Also need the transition between the menus to be smoother. Priority should be in the order the popups happen (Last-In First-Out)
 			1. However, picking up a shard will make it prioritized until hidden
 			2. A button for switching to between
 	3. Centers and resizes the menu based on total powers

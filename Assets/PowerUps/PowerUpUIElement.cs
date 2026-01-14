@@ -41,6 +41,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool SpecialLockedSprite { get; set; } = false;
     public bool ForceUnhideElement { get; set; } = false;
     public bool CrucibleElement { get; set; } = false;
+    public bool UsePlaceHolder = false;
     public bool PickerElement
     {
         get => !InventoryElement;
@@ -55,7 +56,7 @@ public class PowerUpUIElement : MonoBehaviour
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, true);
 
         inner.sprite = Sprite;
-        if(SpecialLockedSprite)
+        if(SpecialLockedSprite || UsePlaceHolder)
             inner.sprite = Main.TextureAssets.PowerUpPlaceholder;
         RectTransform rect = inner.transform as RectTransform;
         Rect rectangle = inner.sprite.rect;

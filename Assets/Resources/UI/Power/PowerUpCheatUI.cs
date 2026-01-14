@@ -36,6 +36,8 @@ public class PowerUpCheatUI : MonoBehaviour
     public RectTransform MyRect, SelectionArea;
     public Canvas MyCanvas;
     public GameObject NOPOWERS;
+    public GameObject CrucibleDisplay;
+    public GameObject ShardDisplay;
     public void Start()
     {
         Instance = this;
@@ -44,6 +46,8 @@ public class PowerUpCheatUI : MonoBehaviour
         QuantityUp.onClick.AddListener(UpQuantity);
         QuantityDown.onClick.AddListener(DownQuantity);
         HideButton.onClick.AddListener(ToggleHide);
+        CrucibleDisplay.SetActive(false);
+        ShardDisplay.SetActive(false);
     }
     public void ToggleHide()
     {
@@ -78,22 +82,36 @@ public class PowerUpCheatUI : MonoBehaviour
         gameObject.SetActive(true);
         CurrentType = type;
         transform.localScale = 0.9f * Vector3.one;
-        if (type == 1)
+        UpdateType();
+    }
+    public int PrevType { get; set; } = -1;
+    public void UpdateType()
+    {
+        if(PrevType != CurrentType)
         {
-            //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
-            //This could maybe be done without a couroutine too, but would be more arduous
-            Title.text = "Shards of Power";
-            Description.text = "Use Shards to Clone Any Power";
-            StartCoroutine(InitCheatButtons());
+
+            if (CurrentType == 1)
+            {
+                Title.text = "Rainbow Shards";
+                Description.text = "Use Shards to Clone Any Power";
+                CrucibleDisplay.SetActive(false);
+                ShardDisplay.SetActive(true);
+                //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
+                //This could maybe be done without a couroutine too, but would be more arduous
+                StartCoroutine(InitCheatButtons());
+            }
+            else
+            {
+                Title.text = "Crucible";
+                Description.text = "Convert Powers to Gems";
+                CrucibleDisplay.SetActive(true);
+                ShardDisplay.SetActive(false);
+                //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
+                //This could maybe be done without a couroutine too, but would be more arduous
+                StartCoroutine(InitCrucibleButtons());
+            }
         }
-        else
-        {
-            //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
-            //This could maybe be done without a couroutine too, but would be more arduous
-            Title.text = "Crucible";
-            Description.text = "Convert Powers to Gems";
-            StartCoroutine(InitCrucibleButtons());
-        }
+        PrevType = CurrentType;
     }
     public IEnumerator InitCheatButtons()
     {
