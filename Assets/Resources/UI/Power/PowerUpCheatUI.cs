@@ -1,6 +1,5 @@
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +10,9 @@ public class PowerUpCheatUI : MonoBehaviour
     public static int ProcessQuantity { get; set; } = 1;
     public static int CurrentType = -1;
     public static bool MouseInCompendiumArea { get; private set; }
+    public static Crucible CurrentCrucible { get; set; }
+    public static bool HasCrucible => CurrentCrucible != null;
+    public static bool HasShards => (CoinManager.CurrentShards > 0) || (Main.DebugCheats && Main.DebugSettings.PowerUpCheat);
     public static void TurnOn(int type = 0)
     {
         if(!Instance.gameObject.activeSelf || CurrentType != type)
@@ -29,7 +31,6 @@ public class PowerUpCheatUI : MonoBehaviour
     public GridLayoutGroup GridParent;
     public SliderInputField QuantitySlider;
     public Button QuantityUp, QuantityDown, HideButton;
-    public Crucible CurrentCrucible { get; set; }
     public TextMeshProUGUI Title;
     public TextMeshProUGUI Description, HideButtonTextUI;
     public RectTransform MyRect, SelectionArea;

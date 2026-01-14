@@ -386,6 +386,15 @@ public abstract class PowerUp
             gems *= 2;
         return gems;
     }
+    public virtual int ShardReplicationCost()
+    {
+        int rare = GetRarity();
+        if (rare == 3 || rare == 5)
+            return 3;
+        if (rare == 3 || rare == 4)
+            return 2;
+        return 1;
+    }
     public virtual int GetRarity()
     {
         return CalculateRarity();

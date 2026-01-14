@@ -7,6 +7,7 @@ public class Coin : MonoBehaviour
     public bool IsKey => YieldType == 2;
     public bool IsToken => YieldType == 3;
     public bool IsGem => YieldType == 4;
+    public bool IsShard => YieldType == 5;
     public Rigidbody2D rb;
     public int YieldType = 0;
     public int Value;
@@ -51,8 +52,10 @@ public class Coin : MonoBehaviour
             rb.rotation += rb.velocity.magnitude * 0.5f * -Mathf.Sign(rb.velocity.x);
         else if(IsGem)
             HeartVisual.transform.localEulerAngles = new Vector3(HeartVisual.transform.localEulerAngles.x, HeartVisual.transform.localEulerAngles.y, rb.velocity.x - 70);
+        else if(IsShard)
+            HeartVisual.transform.localEulerAngles = new Vector3(HeartVisual.transform.localEulerAngles.x, HeartVisual.transform.localEulerAngles.y, rb.velocity.x);
         float attractDist = IsHeart || IsKey ? 3.5f : 4 + p.Magnet * 3f;
-        if(IsToken)
+        if (IsToken)
             attractDist *= 3;
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
@@ -107,7 +110,7 @@ public class Coin : MonoBehaviour
             }
             HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 225f) - 0.1f);
         }
-        else if(IsKey || IsGem)
+        else if(IsKey || IsGem || IsShard)
         {
             if(IsKey)
             {
@@ -123,7 +126,7 @@ public class Coin : MonoBehaviour
                     }
                 }
             }
-            else
+            else if(IsGem)
             {
                 transform.LerpLocalScale(Vector3.one * 1f, 0.07f);
                 if (Utils.RandFloat(1) < 0.1f)
@@ -136,12 +139,32 @@ public class Coin : MonoBehaviour
                         0.2f, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Pixel, PopupColor.WithAlpha(0.2f) * 1.25f);
                 }
             }
+            else
+            {
+                transform.LerpLocalScale(Vector3.one * 1f, 0.07f);
+                ++timer;
+                if (Utils.RandFloat(1) < 0.5f)
+                {
+                    float r = Utils.RandFloat(-Mathf.PI, Mathf.PI);
+                    Vector2 circular = new Vector2(1, 0).RotatedBy(r);
+                    circular.x *= 0.65f;
+                    ParticleManager.NewParticle((Vector2)HeartVisual.transform.position + circular * 0.8f, Utils.RandFloat(1.0f, 2.0f), circular * Utils.RandFloat(1.0f, 2f),
+                        0.2f, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Pixel, 
+                        Utils.PastelRainbow(timer * Mathf.Deg2Rad + r, 0.5f) * 0.9f);
+                }
+            }
             HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 200f) + 0.1f);
         }
     }
     public void OnCollected()
     {
-        if(IsGem)
+        if(IsShard)
+        {
+            CoinManager.ModifyShards(Value);
+            AudioManager.PlaySound(SoundID.ChestSpawn, transform.position, 1.1f, 0.5f);
+            PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}", true, 1f);
+        }
+        else if (IsGem)
         {
             CoinManager.ModifyGems(Value);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.1f, 0.5f, 2);

@@ -13,7 +13,7 @@ public class Crucible : MonoBehaviour
     public void EnableUI()
     {
         HasEnteredRange = true;
-        PowerUpCheatUI.Instance.CurrentCrucible = this; //This needs to go before TrunOn()
+        PowerUpCheatUI.CurrentCrucible = this; //This needs to go before TrunOn()
         PowerUpCheatUI.TurnOn();
     }
     public Transform Connector1, Joint1, Connector2, Joint2;
@@ -97,8 +97,8 @@ public class Crucible : MonoBehaviour
     {
         PowerUpCheatUI.TurnOff();
         HasEnteredRange = false;
-        if (PowerUpCheatUI.Instance.CurrentCrucible == this)
-            PowerUpCheatUI.Instance.CurrentCrucible = null;
+        if (PowerUpCheatUI.CurrentCrucible == this)
+            PowerUpCheatUI.CurrentCrucible = null;
     }
     public void PreFixedUpdate()
     {
@@ -248,7 +248,7 @@ public class Crucible : MonoBehaviour
         HasSpawnedChestLoot = true;
         AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 0.8f + 0.2f * SpeedMultiplier);
         int value = powerType >= 0 ? PowerUp.Get(powerType).CrucibleGems() : 3;
-        int quant = Mathf.Min(value, 5);
+        int quant = Mathf.Abs(Mathf.Min(value, 5));
         float valuePerGem = value / (float)quant;
         Vector2 pos = transform.position + new Vector3(0, -1.4f);
         for (int i = 0; i < quant; ++i)
@@ -261,10 +261,12 @@ public class Crucible : MonoBehaviour
             c.rb.velocity += new Vector2(0, -4.5f).RotatedBy(Mathf.Lerp(-55, 55, percent) * Mathf.Deg2Rad);
             c.transform.localScale = Vector3.one * 0.1f;
         }
+        float r = Utils.rand.NextFloat(Mathf.PI * 2);
         for(int i = 0; i < 30; ++i)
         {
-            Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 15f);
-            ParticleManager.NewParticle(pos, Utils.RandFloat(2, 3), circular * Utils.RandFloat(2.5f, 4), 0.2f, Utils.RandFloat(1, 2), ParticleManager.ID.Pixel, ColorHelper.RarityColors[1] * 0.75f);
+            Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * i / 15f + r);
+            ParticleManager.NewParticle(pos, Utils.RandFloat(2, 3), circular * Utils.RandFloat(2.5f, 4), 0.2f, Utils.RandFloat(1, 2), ParticleManager.ID.Pixel,
+                value < 0 ? Utils.PastelRainbow(i / 15f * Mathf.PI, 0.5f) : ColorHelper.RarityColors[1] * 0.75f);
         }
     }
 }

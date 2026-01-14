@@ -13,21 +13,22 @@ public static class CoinManager
         Chest = Resources.Load<GameObject>("Chests/Chest");
         Token = Resources.Load<GameObject>("Money/Token");
         Gem = Resources.Load<GameObject>("Money/GemPickup");
+        Shard = Resources.Load<GameObject>("Money/ShardPickup");
     }
     //public static void Load()
     //{
-        //Savings = PlayerData.GetInt("Savings");
+    //Savings = PlayerData.GetInt("Savings");
     //}
     //public static void Save()
     //{
-        //PlayerData.SaveInt("Savings", Savings);
+    //PlayerData.SaveInt("Savings", Savings);
     //}
     public static GameObject Bronze;
     public static GameObject Silver;
     public static GameObject Gold;
     public static GameObject Heart;
     public static GameObject Key;
-    public static GameObject Chest, Token, Gem;
+    public static GameObject Chest, Token, Gem, Shard;
     public static void SpawnCoin(Vector2 pos, int value = 1, float collectDelay = 0f)
     {
         int bronze = value % 5;
@@ -75,7 +76,9 @@ public static class CoinManager
     public static Coin SpawnGem(Func<Vector2> func, float collectDelay, int value = 1) => SpawnGem(func.Invoke(), collectDelay, value);
     public static Coin SpawnGem(Vector2 pos, float collectDelay, int value = 1)
     {
-        GameObject obj = GameObject.Instantiate(Gem, pos, Quaternion.identity);
+        GameObject Prefab = value < 0 ? Shard : Gem;
+        value = Mathf.Abs(value);
+        GameObject obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
         var c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;
@@ -106,10 +109,11 @@ public static class CoinManager
     public static int CurrentKeys { get; private set; } = 0;
     public static int CurrentTokens { get; private set; } = 0;
     public static int CurrentGems { get; private set; } = 0;
+    public static int CurrentShards { get; private set; } = 0;
     public static int TotalEquipCost;
     public static void AfterDeathReset()
     {
-        CurrentTokens = CurrentKeys = CurrentCoins = CurrentGems = 0;
+        CurrentTokens = CurrentKeys = CurrentCoins = CurrentGems = CurrentShards = 0;
     }
     public static void ModifyCoins(int amt)
     {
@@ -137,5 +141,9 @@ public static class CoinManager
     public static void ModifyGems(int amt)
     {
         CurrentGems += amt;
+    }
+    public static void ModifyShards(int amt)
+    {
+        CurrentShards += amt;
     }
 }
