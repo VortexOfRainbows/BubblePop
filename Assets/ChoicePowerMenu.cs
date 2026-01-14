@@ -64,6 +64,16 @@ public class ChoicePowerMenu : MonoBehaviour
         {
             ToggleHide();
         }
+        if(PowerUpCheatUI.Instance.gameObject.activeSelf)
+        {
+            if (!Hide && PowerUp.PickingPowerUps)
+            {
+                ToggleHide();
+            }
+            HideButton.interactable = false;
+        }
+        else
+            HideButton.interactable = true;
         float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
         if (Hide)
         {

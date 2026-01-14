@@ -4,12 +4,14 @@ using UnityEngine.UI;
 
 public class PowerUpButton : MonoBehaviour
 {
+    public Crucible Crucible { get; set; }
     public const int RerollAttempsForSamePowerInPicker = 3;
     public Button SelectButton;
     [SerializeField] public PowerUpUIElement PowerUI;
     [SerializeField] private int index = 0;
     public bool NonChoiceButton { get; set; } = false;
     public bool CheatButton { get; set; } = false;
+    public bool CrucibleButton => Crucible != null;
     public bool Active => gameObject.activeSelf;
     public TextMeshProUGUI HotkeyText;
     private KeyCode Hotkey;
@@ -35,6 +37,16 @@ public class PowerUpButton : MonoBehaviour
     }
     public void OnButtonPress()
     {
+        if (CrucibleButton)
+        {
+            int removeAmt = Mathf.Min(PowerUpCheatUI.ProcessQuantity, PowerUI.MyPower.Stack);
+            Player.Instance.RemovePower(PowerUI.MyPower.Type, removeAmt);
+            for(int i = 0; i < removeAmt; ++i)
+                Crucible.PowerQueue.Enqueue(PowerUI.MyPower.Type);
+            Crucible.DisableUI();
+            Crucible.Text.text = Crucible.PowerQueue.Count.ToString();
+            return;
+        }
         GrantPower();
         Main.MouseHoveringOverButton = true;
     }
@@ -55,6 +67,8 @@ public class PowerUpButton : MonoBehaviour
     {
         if (ChoicePowerMenu.Hide && !NonChoiceButton)
             return;
+        if (CrucibleButton && PowerUI.MyPower.Stack <= 0)
+            Destroy(gameObject);
         if (Input.GetKeyDown(Hotkey) && PowerUp.PickingPowerUps)
             GrantPower();
     }

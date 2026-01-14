@@ -236,9 +236,9 @@ public partial class Main : MonoBehaviour
             {
                 PowerUpCheat = !PowerUpCheat;
                 if (PowerUpCheat)
-                    instance.PowerupCheatCanvas.GetComponent<PowerUpCheatUI>().Init();
+                    PowerUpCheatUI.TurnOn(1);
                 else
-                    instance.PowerupCheatCanvas.GetComponent<PowerUpCheatUI>().Disable();
+                    PowerUpCheatUI.TurnOff();
             }
             if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
             {
@@ -249,7 +249,6 @@ public partial class Main : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.L) && DebugCheats)
                 SkipWaves = !SkipWaves;
-            instance.PowerupCheatCanvas.SetActive(PowerUpCheat);
             instance.DirectorCanvas.SetActive(DirectorView);
         }
         public static bool DirectorView = false;

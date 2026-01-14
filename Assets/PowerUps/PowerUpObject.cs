@@ -37,9 +37,7 @@ public class PowerUpObject : MonoBehaviour
             outer.material = MyPower.GetBorder(true);
             adornment.gameObject.SetActive(false);
         }
-        adornment = null;
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
-
     }
     public void FixedUpdate()
     {
@@ -127,7 +125,7 @@ public class PowerUpObject : MonoBehaviour
             Vector2 circular = new Vector2(.5f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.6f, 0.7f), circular * Utils.RandFloat(3, 6), 4f, Utils.RandFloat(0.4f, 0.6f), 0, glow.color);
         }
-        AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.2f, 0.9f);
+        AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.2f, 0.9f );
         Destroy(gameObject);
     }
 }

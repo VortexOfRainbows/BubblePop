@@ -1025,7 +1025,6 @@ MonoBehaviour:
   SelectButton: {fileID: 6927679716640324005}
   PowerUI: {fileID: 3455161700543822476}
   index: 0
-  NonChoiceButton: 1
   HotkeyText: {fileID: 0}
 --- !u!1 &5576317249293098255
 GameObject:
@@ -1270,10 +1269,10 @@ RectTransform:
   - {fileID: 8168674731906338686}
   m_Father: {fileID: 2929490318405042049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000061035156}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1200, y: 800}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2140223440757842341
 MonoBehaviour:

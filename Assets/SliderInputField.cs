@@ -69,7 +69,7 @@ public class SliderInputField : MonoBehaviour
         }
         else if(Type == 3)
         {
-            TryParseInput("0", true);
+            TryParseInput(PowerUpCheatUI.ProcessQuantity.ToString(), true);
         }
     }
     public void UpdateSetting(float value)

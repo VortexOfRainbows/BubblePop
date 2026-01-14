@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8996391634425945585}
@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a51b3303673ac7240919119a6836c496, type: 2}
+  - {fileID: 2100000, guid: c5ed02ae1367faf40af5cdfc5f055644, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -73,8 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -11
-  m_Sprite: {fileID: 21300000, guid: 4d687bc38f357a545b958a029c40033b, type: 3}
-  m_Color: {r: 0.94509804, g: 0.84313726, b: 1, a: 0.6}
+  m_Sprite: {fileID: 21300000, guid: 2245f8b46850f954f80c2080056629ca, type: 3}
+  m_Color: {r: 0.94509804, g: 0.84313726, b: 1, a: 0.69803923}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -174,6 +174,10 @@ MonoBehaviour:
   Cost: 0
   CostObj: {fileID: 7656449535480649332}
   CostText: {fileID: 3870382532048146703}
+  VeloEndTimer: 0
+  velocity: {x: 0, y: 0}
+  finalPosition: {x: 0, y: 0}
+  FakePower: 0
 --- !u!1 &4152568415337083120
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,11 +1,20 @@
-using Unity.VisualScripting.Dependencies.Sqlite;
-using UnityEditor;
-using UnityEditor.Rendering;
-using UnityEditor.Tilemaps;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Crucible : MonoBehaviour
 {
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+            EnableUI();
+    }
+    public void EnableUI()
+    {
+        HasEnteredRange = true;
+        PowerUpCheatUI.Instance.CurrentCrucible = this; //This needs to go before TrunOn()
+        PowerUpCheatUI.TurnOn();
+    }
     public Transform Connector1, Joint1, Connector2, Joint2;
 
     public Transform Connector3, Joint3;
@@ -17,11 +26,15 @@ public class Crucible : MonoBehaviour
     public Transform Spiral;
     public Transform CauldronParent;
     public PowerUpObject HeldPower;
+    public TextMeshPro Text;
+    private bool HasEnteredRange { get; set; } = false;
     public void Start()
     {
         foreach(SpriteRenderer r in transform.GetComponentsInChildren<SpriteRenderer>())
             r.sortingOrder = -6;
         HeldPower.gameObject.SetActive(false);
+        Text.transform.localScale = Vector2.zero;
+        Text.text = "0";
     }
     public void ConnectArms()
     {
@@ -77,17 +90,60 @@ public class Crucible : MonoBehaviour
     public float AudioCounter = 0.0f;
     public bool Active = false;
     public bool HasSpawnedChestLoot = false;
-    public void FixedUpdate() //change this to fixed update
+    public readonly Queue<int> PowerQueue = new();
+    public void DisableUI()
     {
-        if (Input.GetKey(KeyCode.E) || Active)
+        PowerUpCheatUI.TurnOff();
+        HasEnteredRange = false;
+        if (PowerUpCheatUI.Instance.CurrentCrucible == this)
+            PowerUpCheatUI.Instance.CurrentCrucible = null;
+    }
+    public void PreFixedUpdate()
+    {
+        if(HasEnteredRange && Player.Instance.Distance(gameObject) > 8)
+            DisableUI();
+        if(!Active && PowerQueue.TryDequeue(out int powerType))
         {
+            HeldPower.Type = powerType;
+            HeldPower.Start();
             Active = true;
-            Counter += Time.fixedDeltaTime * 2;
+        }
+        if(HeldPower.gameObject.activeSelf)
+            Text.text = PowerQueue.Count.ToString();
+        if (Text.text != "0")
+        {
+            Text.gameObject.SetActive(true);
+            Text.transform.LerpLocalScale(Vector2.one, 0.1f);
         }
         else
         {
-            Counter = 0;
+            if(Text.transform.localScale.x <= 0.005f)
+            {
+                Text.gameObject.SetActive(false);
+                Text.transform.localScale = Vector2.zero;
+            }
+            else
+                Text.transform.LerpLocalScale(Vector2.zero, 0.1f);
         }
+    }
+    public float SpeedMultiplier { get; set; } = 1.0f;
+    public float BonusFrames { get; set; } = 0.0f;
+    public void FixedUpdate()
+    {
+        PreFixedUpdate();
+        BonusFrames += SpeedMultiplier;
+        while(BonusFrames >= 1)
+        {
+            Animate();
+            BonusFrames -= 1;
+        }
+    }
+    public void Animate()
+    {
+        if (Active)
+            Counter += Time.fixedDeltaTime * 2 * SpeedMultiplier;
+        else
+            Counter = 0;
         Counter2++;
         float percent = Counter;
         float per1 = Mathf.Clamp(percent, 0, 1);
@@ -102,20 +158,20 @@ public class Crucible : MonoBehaviour
         {
             rotateCounter = 2 * sin;
         }
-        else if(!Active)
+        else if (!Active)
         {
             rotateCounter = Mathf.LerpAngle(rotateCounter * 180, 0, 0.1f) / 180;
         }
 
         if (per5 >= 1)
         {
-            if(!HasSpawnedChestLoot && per6 > 0.75f)
+            if (!HasSpawnedChestLoot && per6 > 0.75f)
             {
                 FinishConsuming();
             }
             per5 *= 1 - per6;
             per4 *= 1 - per6;
-            if(per6 >= 1)
+            if (per6 >= 1)
             {
                 Counter = 0;
                 Active = HasSpawnedChestLoot = false;
@@ -130,12 +186,12 @@ public class Crucible : MonoBehaviour
             AudioCounter += per5;
             if (AudioCounter >= 5 && per6 < 0.4f)
             {
-                AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, 1.4f);
+                AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, SpeedMultiplier + 0.4f);
                 AudioCounter -= 15;
-                for(int i =0; i < 15; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     float scale2 = Utils.RandFloat(1.5f, 2.5f);
-                    ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.8f) + new Vector2(Utils.RandFloat(-per5, per5), 0.25f), scale2 + per5, new Vector2(Utils.RandFloat(-per5, per5) * Utils.RandFloat(15), 5 + per5 * 2) * Utils.RandFloat(- per5 * 0.1f, 1 + per5 * 0.2f), 0.8f + per5, 1f + per5 * 0.2f, ParticleManager.ID.Pixel, ColorHelper.RarityColors[2]);
+                    ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.8f) + new Vector2(Utils.RandFloat(-per5, per5), 0.25f), scale2 + per5, new Vector2(Utils.RandFloat(-per5, per5) * Utils.RandFloat(15), 5 + per5 * 2) * Utils.RandFloat(-per5 * 0.1f, 1 + per5 * 0.2f), 0.8f + per5, 1f + per5 * 0.2f, ParticleManager.ID.Pixel, ColorHelper.RarityColors[2]);
                 }
                 CauldronParent.localScale += new Vector3(1, 1) * 0.02f;
                 Arm.transform.localPosition += (Vector3)Utils.RandCircleEdge(0.035f);
@@ -156,7 +212,7 @@ public class Crucible : MonoBehaviour
         float scaleMult = Mathf.Clamp(per2 - per5 * 0.5f, 0, 1);
         if (!HeldPower.gameObject.activeSelf && scaleMult > 0 && per1 < 1 && Active)
         {
-            AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1, 1.1f);
+            AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1, 0.6f + 0.5f * SpeedMultiplier);
             HeldPower.gameObject.SetActive(true);
         }
         HeldPower.transform.localScale = new Vector3(scaleMult, scaleMult, 1);
@@ -173,7 +229,7 @@ public class Crucible : MonoBehaviour
         Spiral.localScale = Vector3.Lerp(Spiral.transform.localScale, new Vector3(1f - scale, 1 + scale, 1), 0.1f);
         ConnectArms();
 
-        if((int)Counter2 % 9 == 0)
+        if ((int)Counter2 % 9 == 0)
         {
             float scale2 = Utils.RandFloat(1.25f, 2.5f);
             ParticleManager.NewParticle((Vector2)transform.position + new Vector2(Utils.RandFloat(-1.5f, 1.5f), 0.2f + Utils.RandFloat(-0.5f, 0.5f)), scale2, new Vector2(0, 5 - scale2), 0.2f, 2f, ParticleManager.ID.Pixel, ColorHelper.RarityColors[2]);
@@ -183,8 +239,9 @@ public class Crucible : MonoBehaviour
     }
     public void FinishConsuming()
     {
+        SpeedMultiplier = PowerQueue.Count > 0 ? SpeedMultiplier + 0.05f : 1.0f;
         HasSpawnedChestLoot = true;
-        AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 1);
+        AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 0.8f + 0.2f * SpeedMultiplier);
         int value = 5;
         Vector2 pos = transform.position + new Vector3(0, -1.4f);
         for (int i = 0; i < value; ++i)
