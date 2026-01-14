@@ -370,6 +370,22 @@ public abstract class PowerUp
             return 2;
         return 1;
     }
+    public virtual int CrucibleGems()
+    {
+        int rare = GetRarity();
+        int gems = 2 + Utils.RandInt(2);
+        if (rare == 5)
+            gems = 25;
+        else if (rare == 4)
+            gems = 10;
+        else if (rare == 3)
+            gems = 5;
+        else if (rare == 2)
+            gems = 3 + Utils.RandInt(2);
+        if (IsBlackMarket())
+            gems *= 2;
+        return gems;
+    }
     public virtual int GetRarity()
     {
         return CalculateRarity();

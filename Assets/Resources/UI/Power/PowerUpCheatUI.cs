@@ -1,11 +1,12 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PowerUpCheatUI : MonoBehaviour
 {
     public static PowerUpCheatUI Instance { get; set; }
-    public static int ProcessQuantity { get; set; } = 10;
+    public static int ProcessQuantity { get; set; } = 1;
     public static int CurrentType = -1;
     public static void TurnOn(int type = 0)
     {
@@ -22,6 +23,8 @@ public class PowerUpCheatUI : MonoBehaviour
     public SliderInputField QuantitySlider;
     public Button QuantityUp, QuantityDown;
     public Crucible CurrentCrucible { get; set; }
+    public TextMeshProUGUI Title;
+    public TextMeshProUGUI Description;
     public void Start()
     {
         Instance = this;
@@ -57,12 +60,16 @@ public class PowerUpCheatUI : MonoBehaviour
         {
             //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
             //This could maybe be done without a couroutine too, but would be more arduous
+            Title.text = "Shards of Power";
+            Description.text = "Use Shards to Clone Any Power";
             StartCoroutine(InitCheatButtons());
         }
         else
         {
             //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
             //This could maybe be done without a couroutine too, but would be more arduous
+            Title.text = "Crucible";
+            Description.text = "Convert Powers to Gems";
             StartCoroutine(InitCrucibleButtons());
         }
     }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Crucible : MonoBehaviour
@@ -91,6 +92,7 @@ public class Crucible : MonoBehaviour
     public bool Active = false;
     public bool HasSpawnedChestLoot = false;
     public readonly Queue<int> PowerQueue = new();
+    public int NextConsumedPower { get; set; } = -1;
     public void DisableUI()
     {
         PowerUpCheatUI.TurnOff();
@@ -106,18 +108,20 @@ public class Crucible : MonoBehaviour
         {
             HeldPower.Type = powerType;
             HeldPower.Start();
+            HeldPower.adornment.gameObject.SetActive(false);
             Active = true;
+            NextConsumedPower = powerType;
         }
         if(HeldPower.gameObject.activeSelf)
-            Text.text = PowerQueue.Count.ToString();
-        if (Text.text != "0")
+            Text.text = PowerQueue.Count > 0 ? PowerQueue.Count.ToString() : "";
+        if (Text.text != "" && Text.text != "0")
         {
             Text.gameObject.SetActive(true);
             Text.transform.LerpLocalScale(Vector2.one, 0.1f);
         }
         else
         {
-            if(Text.transform.localScale.x <= 0.005f)
+            if (Text.transform.localScale.x <= 0.005f)
             {
                 Text.gameObject.SetActive(false);
                 Text.transform.localScale = Vector2.zero;
@@ -239,15 +243,20 @@ public class Crucible : MonoBehaviour
     }
     public void FinishConsuming()
     {
+        int powerType = NextConsumedPower;
         SpeedMultiplier = PowerQueue.Count > 0 ? SpeedMultiplier + 0.05f : 1.0f;
         HasSpawnedChestLoot = true;
         AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 0.8f + 0.2f * SpeedMultiplier);
-        int value = 5;
+        int value = powerType >= 0 ? PowerUp.Get(powerType).CrucibleGems() : 3;
+        int quant = Mathf.Min(value, 5);
+        float valuePerGem = value / (float)quant;
         Vector2 pos = transform.position + new Vector3(0, -1.4f);
-        for (int i = 0; i < value; ++i)
+        for (int i = 0; i < quant; ++i)
         {
-            float percent = (i + 0.5f) / value;
-            var c = CoinManager.SpawnGem(pos, 0.5f);
+            float percent = (i + 0.5f) / quant;
+            int hardVal = (int)valuePerGem;
+            hardVal += Utils.RandFloat() < valuePerGem - hardVal ? 1 : 0;
+            var c = CoinManager.SpawnGem(pos, 0.5f, hardVal);
             c.rb.velocity = new Vector2(c.rb.velocity.x * 0.1f, c.rb.velocity.y * 0.1f);
             c.rb.velocity += new Vector2(0, -4.5f).RotatedBy(Mathf.Lerp(-55, 55, percent) * Mathf.Deg2Rad);
             c.transform.localScale = Vector3.one * 0.1f;

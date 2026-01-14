@@ -488,12 +488,12 @@ MonoBehaviour:
   visualRect: {fileID: 4182673667172531889}
   enabledDuration: 0
   PowerUpVisual: {fileID: 6159684971180596224}
+  AchievementElement: {fileID: 0}
   MainGameCanvas: {fileID: 0}
   Visual: {fileID: 1698483528486257311}
   Name: {fileID: 8805318368367437868}
   Description: {fileID: 3586809203737096695}
   myRect: {fileID: 1846035805060091531}
-  FollowMouse: 0
   ReadyToRenderNormal: 0
   Type: 1
   stars:
@@ -596,6 +596,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6207016098801226674, guid: 3be9e9f3d2eccd8428060b1f5290a877, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174315051955675762, guid: 3be9e9f3d2eccd8428060b1f5290a877, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -992,6 +996,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2746305373669188761, guid: 67562e8d990913a4c938178c2bb60628, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8695132297172377407, guid: 67562e8d990913a4c938178c2bb60628, type: 3}
       propertyPath: m_Name
       value: StarRare4
@@ -1109,6 +1117,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3954360912594129109, guid: 5d12749d74b15d444849c961916eb7d8, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7518531576090389363, guid: 5d12749d74b15d444849c961916eb7d8, type: 3}
       propertyPath: m_Name
       value: StarRare5
@@ -1146,6 +1158,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6455508762782141308}
     m_Modifications:
+    - target: {fileID: 2276703768587257475, guid: 5f2018d2c5f345043bd37865c69e4544, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4092288237399193411, guid: 5f2018d2c5f345043bd37865c69e4544, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

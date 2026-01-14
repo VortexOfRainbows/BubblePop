@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 public class Coin : MonoBehaviour
 {
@@ -14,6 +14,7 @@ public class Coin : MonoBehaviour
     public Color PopupColor;
     public float BeforeCollectableTimer = 0;
     public GameObject HeartVisual;
+    public TextMeshPro Text;
     public bool CanCollect()
     {
         if (IsToken)

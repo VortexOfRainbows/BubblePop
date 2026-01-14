@@ -245,6 +245,7 @@ public class ResearchNotes : PowerUp
         }
     }
     public override int Cost => 50;
+    public override int CrucibleGems() => 5;
 }
 public class ResearchGrants : PowerUp
 {

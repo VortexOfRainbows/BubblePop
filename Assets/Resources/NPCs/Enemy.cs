@@ -453,8 +453,8 @@ public class Enemy : Entity
         if (IsSkull)
         {
             int amt = Utils.RandInt((int)StaticData.BaseMinGem, (int)StaticData.BaseMaxGem + 1);
-            for(int i = 0; i < amt; ++i)
-                CoinManager.SpawnGem(transform.position, 0.0f);
+            if(amt > 0)
+                CoinManager.SpawnGem(transform.position, 0.0f, amt);
         }
         Destroy(gameObject);
     }
