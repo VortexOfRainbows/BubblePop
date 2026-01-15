@@ -16,8 +16,8 @@ public class PowerUpCheatUI : MonoBehaviour
     public static bool HasCrucible => CurrentCrucible != null;
     public static bool HasShards => (CoinManager.CurrentShards > 0) || (Main.DebugCheats && Main.DebugSettings.PowerUpCheat);
     public static bool CanOpenMenu => HasCrucible || HasShards;
-    public static bool PrevHadCrucible { get; private set; } = false;
-    public static bool PrevHadShards { get; private set; } = false;
+    public static bool PrevHadCrucible { get; set; } = false;
+    public static bool PrevHadShards { get; set; } = false;
     public static void StaticUpdate()
     {
         if(CanOpenMenu)
@@ -219,7 +219,7 @@ public class PowerUpCheatUI : MonoBehaviour
         MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
         float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
         transform.LerpLocalScale(Vector2.one, Utils.DeltaTimeLerpFactor(0.1f));
-        ShardCountTxt.text = CoinManager.CurrentShards.ToString();
+        ShardCountTxt.text = Main.DebugSettings.PowerUpCheat ? "Inf" : CoinManager.CurrentShards.ToString();
         if (Hide)
         {
             transform.LerpLocalPosition(new Vector2(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, 140), lerpT);

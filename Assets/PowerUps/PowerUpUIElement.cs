@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,6 +43,8 @@ public class PowerUpUIElement : MonoBehaviour
     public bool ForceUnhideElement { get; set; } = false;
     public bool CrucibleElement { get; set; } = false;
     public bool UsePlaceHolder = false;
+    public TextMeshProUGUI CostText;
+    public GameObject CostObj;
     public bool PickerElement
     {
         get => !InventoryElement;
@@ -127,6 +130,20 @@ public class PowerUpUIElement : MonoBehaviour
         }
         else
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);
+        if(CrucibleElement && CostObj != null)
+        {
+            if (PowerUpCheatUI.CurrentType == 1)
+            {
+                CostObj.SetActive(true);
+                int cost = MyPower.ShardReplicationCost();
+                CostText.text = cost.ToString();
+                CostText.color = (cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat) ? ColorHelper.UIDefaultColor : ColorHelper.UIRedColor;
+            }
+            else
+            {
+                CostObj.SetActive(false);
+            }
+        }
         UpdateAppearance();
     }
     public void UpdateAppearance()

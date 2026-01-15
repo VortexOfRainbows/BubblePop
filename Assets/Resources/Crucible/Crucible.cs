@@ -11,6 +11,8 @@ public class Crucible : MonoBehaviour
     }
     public void EnableUI()
     {
+        if(PowerUpCheatUI.CurrentType == 1)
+            PowerUpCheatUI.PrevHadCrucible = false;
         if (PowerUpCheatUI.CurrentCrucible == null)
             PowerUpCheatUI.CurrentCrucible = this;
     }
