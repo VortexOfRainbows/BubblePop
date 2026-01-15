@@ -53,6 +53,8 @@ public class PowerUpButton : MonoBehaviour
     }
     public void GrantPower()
     {
+        if (PowerUI.CrucibleElement && !Main.DebugSettings.PowerUpCheat)
+            CoinManager.ModifyShards(-PowerUI.ShardCost * PowerUpCheatUI.ProcessQuantity);
         int amt = NonChoiceButton ? Mathf.Clamp(PowerUpCheatUI.ProcessQuantity, 1, 100) : 1;
         PowerUI.MyPower.PickUp(amt);
         if (!NonChoiceButton)
@@ -68,8 +70,29 @@ public class PowerUpButton : MonoBehaviour
     {
         if (ChoicePowerMenu.Hide && !NonChoiceButton)
             return;
-        if (CrucibleButton && PowerUI.MyPower.Stack <= 0)
-            Destroy(gameObject);
+        if (CrucibleButton || PowerUI.CrucibleElement)
+        {
+            if(PowerUI.MyPower.Stack <= 0)
+            {
+                if(CrucibleButton || !Main.DebugSettings.PowerUpCheat)
+                    Destroy(gameObject);
+            }
+            else
+            {
+                PowerUI.Count.gameObject.SetActive(PowerUI.MyPower.Stack > 1);
+                PowerUI.Count.text = PowerUI.MyPower.Stack.ToString();
+            }
+            if (!CrucibleButton)
+            {
+                int cost = PowerUI.ShardCost * PowerUpCheatUI.ProcessQuantity;
+                PowerUI.CostText.text = cost.ToString();
+                bool canAfford = cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
+                SelectButton.interactable = canAfford;
+            }
+            else
+                SelectButton.interactable = true;
+            return;
+        }
         if (Input.GetKeyDown(Hotkey) && !ChoicePowerMenu.Hide)
             GrantPower();
     }

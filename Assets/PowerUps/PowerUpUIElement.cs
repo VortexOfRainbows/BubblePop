@@ -98,6 +98,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool PreventHovering;
     public bool ForceHideCount = false;
     public float HoverRadius { get; set; } = 64;
+    public int ShardCost { get; set; } = -1;
     public void WhileOn()
     {
         Timer += 1;
@@ -135,9 +136,10 @@ public class PowerUpUIElement : MonoBehaviour
             if (PowerUpCheatUI.CurrentType == 1)
             {
                 CostObj.SetActive(true);
-                int cost = MyPower.ShardReplicationCost();
+                int cost = ShardCost * PowerUpCheatUI.ProcessQuantity;
                 CostText.text = cost.ToString();
-                CostText.color = (cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat) ? ColorHelper.UIDefaultColor : ColorHelper.UIRedColor;
+                bool canAfford = cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
+                CostText.color = canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIRedColor;
             }
             else
             {

@@ -388,12 +388,15 @@ public abstract class PowerUp
     }
     public virtual int ShardReplicationCost()
     {
+        int shards = 1;
         int rare = GetRarity();
-        if (rare == 3 || rare == 5)
-            return 3;
-        if (rare == 3 || rare == 4)
-            return 2;
-        return 1;
+        if (rare == 5)
+            shards = 3;
+        else if (rare == 3 || rare == 4)
+            shards = 2;
+        if (IsBlackMarket())
+            shards *= 2;
+        return shards;
     }
     public virtual int GetRarity()
     {

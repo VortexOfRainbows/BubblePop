@@ -176,7 +176,9 @@ public class PowerUpCheatUI : MonoBehaviour
             p.CheatButton = true;
             p.NonChoiceButton = true;
             p.PowerUI.CrucibleElement = true;
-            if(i % 3 == 2)
+            p.PowerUI.ShardCost = p.PowerUI.MyPower.ShardReplicationCost();
+            p.PowerUI.CostText.text = p.PowerUI.ShardCost.ToString();
+            if (i % 3 == 2)
                 yield return new WaitForSecondsRealtime(0.025f);
         }
         yield return null;
@@ -197,7 +199,9 @@ public class PowerUpCheatUI : MonoBehaviour
             p.CheatButton = false;
             p.NonChoiceButton = true;
             p.PowerUI.CrucibleElement = true;
-            if(i % 3 == 2)
+            p.PowerUI.ShardCost = power.ShardReplicationCost();
+            p.PowerUI.CostText.text = p.PowerUI.ShardCost.ToString();
+            if (i % 3 == 2)
                 yield return new WaitForSecondsRealtime(0.025f);
         }
         yield return null;
