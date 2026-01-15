@@ -74,12 +74,14 @@ public class PowerUpButton : MonoBehaviour
         {
             if(PowerUI.MyPower.Stack <= 0)
             {
-                if(CrucibleButton || !Main.DebugSettings.PowerUpCheat)
+                if (CrucibleButton || !Main.DebugSettings.PowerUpCheat)
                     Destroy(gameObject);
+                else
+                    PowerUI.Count.gameObject.SetActive(false);
             }
             else
             {
-                PowerUI.Count.gameObject.SetActive(PowerUI.MyPower.Stack > 1);
+                PowerUI.Count.gameObject.SetActive(PowerUI.MyPower.Stack > 1 || Main.DebugSettings.PowerUpCheat);
                 PowerUI.Count.text = PowerUI.MyPower.Stack.ToString();
             }
             if (!CrucibleButton)

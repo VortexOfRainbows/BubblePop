@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PowerUpCheatUI : MonoBehaviour
 {
-    public static bool Hide { get; set; } = false;
+    public static bool Hide { get; set; } = true;
     public static bool AutoHide { get; set; } = true;
     public static PowerUpCheatUI Instance { get; set; }
     public static int ProcessQuantity { get; set; } = 1;
@@ -25,13 +25,16 @@ public class PowerUpCheatUI : MonoBehaviour
             int type = CurrentType; //if you have a current type, don't switch even if the other type is satsified
             if(type >= 0) //Only switch off the current type if you don't satisfy the condition
             {
-                if (!HasCrucible && type == 0)
+                if (!HasCrucible && type == 0) //originally had crucible, left range, switch
                     type = -1;
-                else if (!HasShards && type == 1)
+                else if (!HasShards && type == 1) //originally had shards, no more, switch
+                {
+                    Instance.ToggleHide(true, false);
                     type = -1;
-                if (HasCrucible && !PrevHadCrucible)
+                }
+                if (HasCrucible && !PrevHadCrucible) //Had shards, but just contacted crucible, switch
                     type = 0;
-                else if (HasShards && !PrevHadShards)
+                else if (HasShards && !PrevHadShards) //Had crucible, but just contacted shards, switch
                     type = 1;
             }
             if(type < 0)
@@ -41,26 +44,18 @@ public class PowerUpCheatUI : MonoBehaviour
                 else if (HasShards)
                     type = 1;
             }
-            TurnOn(type);
+            if (!Instance.gameObject.activeSelf || CurrentType != type)
+                Instance.Init(type, (type == 1 && PrevHadCrucible && !HasCrucible) || (type == 0 && PrevHadShards && !HasShards));
         }
         else
         {
-            TurnOff();
+            if (Instance.gameObject.activeSelf)
+                Instance.Disable();
         }
         if(!Instance.gameObject.activeSelf)
             Instance.Update();
         PrevHadCrucible = HasCrucible;
         PrevHadShards = HasShards;
-    }
-    public static void TurnOn(int type = 0)
-    {
-        if(!Instance.gameObject.activeSelf || CurrentType != type)
-            Instance.Init(type);
-    }
-    public static void TurnOff()
-    {
-        if (Instance.gameObject.activeSelf)
-            Instance.Disable();
     }
     public PowerUpButton ChoiceTemplate;
     public GridLayoutGroup GridParent;
@@ -84,12 +79,18 @@ public class PowerUpCheatUI : MonoBehaviour
         CrucibleDisplay.SetActive(false);
         ShardDisplay.SetActive(false);
     }
-    public void ToggleHide()
+    public void ToggleHide() => ToggleHide(true, true);
+    public void ToggleHide(bool pauseBehavior, bool initPowers = true)
     {
         Hide = !Hide;
-        if (Hide && PlayerData.PauseDuringPowerSelect && Main.GamePaused)
-            Main.UnpauseGame();
-        if (!Hide)
+        if (pauseBehavior && PlayerData.PauseDuringPowerSelect)
+        {
+            if (!Hide && !Main.GamePaused)
+                Main.PauseGame();
+            else if(Hide && Main.GamePaused)
+                Main.UnpauseGame();
+        }
+        if (!Hide && initPowers)
             InitializePowers(CurrentType);
     }
     public void UpQuantity()
@@ -123,13 +124,14 @@ public class PowerUpCheatUI : MonoBehaviour
         foreach (PowerUpButton t in GridParent.GetComponentsInChildren<PowerUpButton>(false))
             Destroy(t.gameObject);
     }
-    public void Init(int type = 0)
+    public int PrevType { get; set; } = -1;
+    public void Init(int type = 0, bool skipHideSwitch = false)
     {
         InitializePowers(type);
         transform.localScale = 0.9f * Vector3.one;
-        //if (Hide)
-        //    ToggleHide();
-        if (PlayerData.PauseDuringPowerSelect && !Hide)
+        if (Hide && !skipHideSwitch)
+            ToggleHide(true, false);
+        else if (PlayerData.PauseDuringPowerSelect && !skipHideSwitch)
             Main.PauseGame();
         AutoHide = true;
     }
@@ -139,7 +141,7 @@ public class PowerUpCheatUI : MonoBehaviour
         gameObject.SetActive(false);
         CurrentType = -1;
         if (Hide)
-            ToggleHide();
+            ToggleHide(false, false);
         if (PlayerData.PauseDuringPowerSelect)
             Main.UnpauseGame();
     }
@@ -208,7 +210,7 @@ public class PowerUpCheatUI : MonoBehaviour
     }
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.C))
+        if(Input.GetKeyDown(KeyCode.C) && HideButton.interactable && Instance.gameObject.activeSelf)
             ToggleHide();
         if (!ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf)
         {

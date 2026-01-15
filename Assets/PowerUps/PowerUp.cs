@@ -83,6 +83,7 @@ public abstract class PowerUp
         AddPowerUpToAvailability<WeaponUpgrade>();
         AddPowerUpToAvailability<FocusFizz>();
         AddPowerUpToAvailability<CloudWalker>();
+        AddPowerUpToAvailability<BubbleBirb>();
 
         //Economy powers
         AddPowerUpToAvailability<Magnet>();
@@ -92,9 +93,7 @@ public abstract class PowerUp
         AddPowerUpToAvailability<Choice>();
         AddPowerUpToAvailability<PiratesBooty>();
         AddPowerUpToAvailability<BubbleMitosis>();
-
-        //Special powers
-        AddPowerUpToAvailability<BubbleBirb>();
+        AddPowerUpToAvailability<ShardsOfPower>();
     }
     private static void AddPowerUpToAvailability<T>() where T: PowerUp => AddPowerUpToAvailability(Get<T>());
     public static void AddPowerUpToAvailability(PowerUp power)

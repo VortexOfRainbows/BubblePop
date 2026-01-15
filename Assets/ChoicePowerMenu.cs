@@ -60,7 +60,7 @@ public class ChoicePowerMenu : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.H) && HideButton.interactable)
         {
             ToggleHide();
         }
