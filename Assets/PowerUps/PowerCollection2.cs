@@ -641,3 +641,27 @@ public class ShardsOfPower : PowerUp
         return -3;
     }
 }
+public class Contract : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Y:Trade for a Y:power from a given selection");
+        description.WithShortDescription("Let's make a deal");
+    }
+    public override void HeldEffect(Player p)
+    {
+        if (Stack > 0 && !PowerUp.PickingPowerUps)
+        {
+            p.RemovePower(Type);
+            PowerUp.TurnOnPowerUpSelectors();
+        }
+    }
+    public override bool IsBlackMarket()
+    {
+        return true;
+    }
+}

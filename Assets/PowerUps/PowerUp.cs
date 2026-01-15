@@ -190,9 +190,9 @@ public abstract class PowerUp
     }
     private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false, int rarity = -1)
     {
-        if (Utils.RandFloat() < addedChoiceChance && !BlackMarket && (rarity == -1 || rarity == 1))
+        if (Utils.RandFloat() < addedChoiceChance && (rarity == -1 || rarity == 1))
         {
-            return Get<Choice>().MyID;
+            return BlackMarket ? Get<Contract>().MyID : Get<Choice>().MyID;
         }
         if (rarity == 1)
             rarity = -1;
