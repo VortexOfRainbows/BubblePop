@@ -135,7 +135,7 @@ public class PowerUpUIElement : MonoBehaviour
         {
             if (PowerUpCheatUI.CurrentType == 1)
             {
-                CostObj.SetActive(true);
+                CostObj.SetActive(!Main.DebugSettings.PowerUpCheat);
                 int cost = ShardCost * PowerUpCheatUI.ProcessQuantity;
                 CostText.text = cost.ToString();
                 bool canAfford = cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;

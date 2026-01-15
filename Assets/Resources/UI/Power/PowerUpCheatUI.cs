@@ -14,13 +14,18 @@ public class PowerUpCheatUI : MonoBehaviour
     public static bool MouseInCompendiumArea { get; private set; }
     public static Crucible CurrentCrucible { get; set; }
     public static bool HasCrucible => CurrentCrucible != null;
-    public static bool HasShards => (CoinManager.CurrentShards > 0) || (Main.DebugCheats && Main.DebugSettings.PowerUpCheat);
+    public static int ShardsNeededToOpenMenu = 3;
+    public static bool HasShards => (CoinManager.CurrentShards >= ShardsNeededToOpenMenu) || (Main.DebugCheats && Main.DebugSettings.PowerUpCheat);
     public static bool CanOpenMenu => HasCrucible || HasShards;
     public static bool PrevHadCrucible { get; set; } = false;
     public static bool PrevHadShards { get; set; } = false;
     public static void StaticUpdate()
     {
-        if(CanOpenMenu)
+        if (HasShards)
+            ShardsNeededToOpenMenu = 1;
+        else
+            ShardsNeededToOpenMenu = 3;
+        if (CanOpenMenu)
         {
             int type = CurrentType; //if you have a current type, don't switch even if the other type is satsified
             if(type >= 0) //Only switch off the current type if you don't satisfy the condition

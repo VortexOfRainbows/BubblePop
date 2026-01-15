@@ -629,7 +629,7 @@ public class ShardsOfPower : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Shards of Power");
-        description.WithDescription("Drops Y:[3 Rainbow Shards] when Y:dissolved in a Y:Crucible \nY:[Rainbow Shards] can be used to Y:[duplicate any power you have]");
+        description.WithDescription("Drops Y:[3 Rainbow Shards] when Y:dissolved in a Y:Crucible \nY:[Rainbow Shards] can be used to Y:duplicate any Y:power you have");
         description.WithShortDescription("Drops Rainbow Shards when dissolved");
     }
     public override void HeldEffect(Player p)
