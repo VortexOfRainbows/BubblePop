@@ -43,7 +43,8 @@ public class PowerUpButton : MonoBehaviour
             Player.Instance.RemovePower(PowerUI.MyPower.Type, removeAmt);
             for(int i = 0; i < removeAmt; ++i)
                 Crucible.PowerQueue.Enqueue(PowerUI.MyPower.Type);
-            Crucible.DisableUI();
+            if(PowerUpCheatUI.AutoHide && !PowerUpCheatUI.Hide)
+                PowerUpCheatUI.Instance.ToggleHide();
             Crucible.Text.text = Crucible.PowerQueue.Count.ToString();
             return;
         }

@@ -1,20 +1,18 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Crucible : MonoBehaviour
 {
-    public void OnTriggerEnter2D(Collider2D collision)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
             EnableUI();
     }
     public void EnableUI()
     {
-        HasEnteredRange = true;
-        PowerUpCheatUI.CurrentCrucible = this; //This needs to go before TrunOn()
-        PowerUpCheatUI.TurnOn();
+        if (PowerUpCheatUI.CurrentCrucible == null)
+            PowerUpCheatUI.CurrentCrucible = this;
     }
     public Transform Connector1, Joint1, Connector2, Joint2;
 
@@ -28,7 +26,6 @@ public class Crucible : MonoBehaviour
     public Transform CauldronParent;
     public PowerUpObject HeldPower;
     public TextMeshPro Text;
-    private bool HasEnteredRange { get; set; } = false;
     public void Start()
     {
         foreach(SpriteRenderer r in transform.GetComponentsInChildren<SpriteRenderer>())
@@ -95,14 +92,12 @@ public class Crucible : MonoBehaviour
     public int NextConsumedPower { get; set; } = -1;
     public void DisableUI()
     {
-        PowerUpCheatUI.TurnOff();
-        HasEnteredRange = false;
-        if (PowerUpCheatUI.CurrentCrucible == this)
+        if(PowerUpCheatUI.CurrentCrucible == this)
             PowerUpCheatUI.CurrentCrucible = null;
     }
     public void PreFixedUpdate()
     {
-        if(HasEnteredRange && Player.Instance.Distance(gameObject) > 8)
+        if(Player.Instance.Distance(gameObject) > 15)
             DisableUI();
         if(!Active && PowerQueue.TryDequeue(out int powerType))
         {

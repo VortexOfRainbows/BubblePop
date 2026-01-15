@@ -233,13 +233,7 @@ public partial class Main : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.F) && DebugCheats)
                 DirectorView = !DirectorView;
             if (Input.GetKeyDown(KeyCode.P) && DebugCheats)
-            {
                 PowerUpCheat = !PowerUpCheat;
-                if (PowerUpCheat)
-                    PowerUpCheatUI.TurnOn(1);
-                else
-                    PowerUpCheatUI.TurnOff();
-            }
             if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
             {
                 foreach (UnlockCondition condition in UnlockCondition.Unlocks.Values) {
@@ -250,6 +244,8 @@ public partial class Main : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.L) && DebugCheats)
                 SkipWaves = !SkipWaves;
             instance.DirectorCanvas.SetActive(DirectorView);
+
+            PowerUpCheatUI.StaticUpdate();
         }
         public static bool DirectorView = false;
         public static bool PowerUpCheat = false;
