@@ -245,7 +245,10 @@ public class ResearchNotes : PowerUp
         }
     }
     public override int Cost => 50;
-    public override int CrucibleGems() => 5;
+    public override int CrucibleGems(bool dissolve = false)
+    {
+        return dissolve ? 10 : 25;
+    }
 }
 public class ResearchGrants : PowerUp
 {
@@ -487,6 +490,8 @@ public class TokenPouch : PowerUp
         //p.TokensPerWave += Stack * 1;
         p.SpinPriceIncrease += 0.25f * Stack;
     }
+    //Token pouch dissolves for more gems cause I think it's funny
+    public override int CrucibleGems(bool dissolve = false) => 5;
 }
 public class BOGOSpin : PowerUp
 {
@@ -594,7 +599,7 @@ public class Eureka : PowerUp
     }
     public override void OnPickup(int count)
     {
-        ChoicePowerMenu.Instance.Cost -= count;
+        ChoicePowerMenu.Instance.CostScaling -= count;
         ChoicePowerMenu.Instance.RemainingRerolls += count;
     }
     public override void HeldEffect(Player p)
@@ -632,11 +637,7 @@ public class ShardsOfPower : PowerUp
         description.WithDescription("Drops Y:[3 Rainbow Shards] when Y:dissolved in a Y:Crucible \nY:[Rainbow Shards] can be used to Y:duplicate any Y:power you have");
         description.WithShortDescription("Drops Rainbow Shards when dissolved");
     }
-    public override void HeldEffect(Player p)
-    {
-        //Nothing! Yay!
-    }
-    public override int CrucibleGems()
+    public override int CrucibleGems(bool dissolve)
     {
         return -3;
     }
@@ -654,8 +655,10 @@ public class Contract : PowerUp
     }
     public override void HeldEffect(Player p)
     {
+        p.HasContract = true;
         if (Stack > 0 && !PowerUp.PickingPowerUps)
         {
+            p.ChoiceContract++;
             p.RemovePower(Type);
             PowerUp.TurnOnPowerUpSelectors();
         }
@@ -663,5 +666,10 @@ public class Contract : PowerUp
     public override bool IsBlackMarket()
     {
         return true;
+    }
+    public override int Cost => 50;
+    public override int CrucibleGems(bool dissolve = false)
+    {
+        return dissolve ? 10 : 25;
     }
 }

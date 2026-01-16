@@ -98,7 +98,11 @@ public class PowerUpUIElement : MonoBehaviour
     public bool PreventHovering;
     public bool ForceHideCount = false;
     public float HoverRadius { get; set; } = 64;
-    public int ShardCost { get; set; } = -1;
+    /// <summary>
+    /// How much this power cost to manufacture.
+    /// Either Gems or Shards depending on context.
+    /// </summary>
+    public int Cost { get; set; } = -1;
     public void WhileOn()
     {
         Timer += 1;
@@ -131,20 +135,33 @@ public class PowerUpUIElement : MonoBehaviour
         }
         else
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.16f);
-        if(CrucibleElement && CostObj != null)
+        if(CostObj != null)
         {
-            if (PowerUpCheatUI.CurrentType == 1)
+            if(CrucibleElement)
             {
-                CostObj.SetActive(!Main.DebugSettings.PowerUpCheat);
-                int cost = ShardCost * PowerUpCheatUI.ProcessQuantity;
+                if (PowerUpCheatUI.CurrentType == 1)
+                {
+                    CostObj.SetActive(!Main.DebugSettings.PowerUpCheat);
+                    int cost = Cost * PowerUpCheatUI.ProcessQuantity;
+                    CostText.text = cost.ToString();
+                    bool canAfford = cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
+                    CostText.color = canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIRedColor;
+                }
+                else
+                {
+                    CostObj.SetActive(false);
+                }
+            }
+            else if(ChoicePowerMenu.IsBlackMarket)
+            {
+                CostObj.SetActive(ChoicePowerMenu.IsBlackMarket);
+                int cost = Cost;
+                bool canAfford = cost <= CoinManager.CurrentGems;
                 CostText.text = cost.ToString();
-                bool canAfford = cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
                 CostText.color = canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIRedColor;
             }
             else
-            {
                 CostObj.SetActive(false);
-            }
         }
         UpdateAppearance();
     }

@@ -53,8 +53,15 @@ public class PowerUpButton : MonoBehaviour
     }
     public void GrantPower()
     {
-        if (PowerUI.CrucibleElement && !Main.DebugSettings.PowerUpCheat)
-            CoinManager.ModifyShards(-PowerUI.ShardCost * PowerUpCheatUI.ProcessQuantity);
+        if(PowerUI.CrucibleElement)
+        {
+            if (!Main.DebugSettings.PowerUpCheat)
+                CoinManager.ModifyShards(-PowerUI.Cost * PowerUpCheatUI.ProcessQuantity);
+        }
+        else if(ChoicePowerMenu.IsBlackMarket)
+        {
+            CoinManager.ModifyGems(-PowerUI.Cost);
+        }
         int amt = NonChoiceButton ? Mathf.Clamp(PowerUpCheatUI.ProcessQuantity, 1, 100) : 1;
         PowerUI.MyPower.PickUp(amt);
         if (!NonChoiceButton)
@@ -86,8 +93,7 @@ public class PowerUpButton : MonoBehaviour
             }
             if (!CrucibleButton)
             {
-                int cost = PowerUI.ShardCost * PowerUpCheatUI.ProcessQuantity;
-                PowerUI.CostText.text = cost.ToString();
+                int cost = PowerUI.Cost * PowerUpCheatUI.ProcessQuantity;
                 bool canAfford = cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
                 SelectButton.interactable = canAfford;
             }
@@ -95,7 +101,13 @@ public class PowerUpButton : MonoBehaviour
                 SelectButton.interactable = true;
             return;
         }
-        if (Input.GetKeyDown(Hotkey) && !ChoicePowerMenu.Hide)
+        else if(ChoicePowerMenu.IsBlackMarket)
+        {
+            int cost = PowerUI.Cost;
+            bool canAfford = cost <= CoinManager.CurrentGems;
+            SelectButton.interactable = canAfford;
+        }
+        if (Input.GetKeyDown(Hotkey) && !ChoicePowerMenu.Hide && SelectButton.interactable)
             GrantPower();
     }
     private bool SameTypeAsOthers()
@@ -119,15 +131,20 @@ public class PowerUpButton : MonoBehaviour
     }
     public void TurnOn()
     {
-        if(!NonChoiceButton)
+        if (!NonChoiceButton)
         {
             PowerUp.PickingPowerUps = true;
+            float bm = ChoicePowerMenu.IsBlackMarket ? 1 : -1;
             for (int i = RerollAttempsForSamePowerInPicker; i > 0; --i)
             {
-                SetType(PowerUp.RandomFromPool(-1)); //This needs to happen first, before the button is turned on
+                int rare = -1;
+                if (ChoicePowerMenu.IsBlackMarket && index <= 2)
+                    rare = Utils.RandInt(index + 2);
+                SetType(PowerUp.RandomFromPool(-1, bm, rare)); //This needs to happen first, before the button is turned on
                 if (!SameTypeAsOthers())
                     break;
             }
+            PowerUI.Cost = ChoicePowerMenu.IsBlackMarket ? PowerUI.MyPower.CrucibleGems() : -1;
         }
         PowerUI.TurnedOn();
         gameObject.SetActive(true);

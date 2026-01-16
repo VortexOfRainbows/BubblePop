@@ -194,7 +194,7 @@ public abstract class PowerUp
         {
             return BlackMarket ? Get<Contract>().MyID : Get<Choice>().MyID;
         }
-        if (rarity == 1)
+        if (rarity == 1 || rarity == 0)
             rarity = -1;
         List<int> avail = BlackMarket ? AvailableBlackMarketPowers : AvailablePowers;
         float highestWeight = 1.0f;
@@ -234,12 +234,14 @@ public abstract class PowerUp
         }
         float powerupWeighting = PowerUps[type].Weighting * weightMult;
         if ((rarity != -1 || powerupWeighting > Utils.RandFloat(1)) && 
-            (addedChoiceChance != -1 || type != Get<Choice>().Type))
+            (addedChoiceChance != -1 || (type != Get<Choice>().Type && type != Get<Contract>().Type)))
         {
             return type;
         }
         else
-            return PickRandomPower(recursionDepth + 1, addedChoiceChance < 0 ? -1 : addedChoiceChance + 0.02f, BlackMarket);
+        {
+            return PickRandomPower(recursionDepth + 1, addedChoiceChance < 0 ? -1 : addedChoiceChance + 0.02f, BlackMarket, rarity);
+        }
     }
     public static void TurnOnPowerUpSelectors()
     {
@@ -248,7 +250,13 @@ public abstract class PowerUp
             Player.Instance.BonusChoices = true;
             --Player.Instance.ResearchNoteBonuses;
         }
-        ChoicePowerMenu.TurnOn(Player.Instance.BonusChoices);
+        bool BlackMarket = false;
+        if(Player.Instance.ChoiceContract > 0)
+        {
+            BlackMarket = true;
+            --Player.Instance.ChoiceContract;
+        }
+        ChoicePowerMenu.TurnOn(Player.Instance.BonusChoices, BlackMarket);
         if (PlayerData.PauseDuringPowerSelect)
             Time.timeScale = 0;
     }
@@ -369,20 +377,20 @@ public abstract class PowerUp
             return 2;
         return 1;
     }
-    public virtual int CrucibleGems()
+    public virtual int CrucibleGems(bool dissolve = false)
     {
         int rare = GetRarity();
-        int gems = 2 + Utils.RandInt(2);
+        int gems = dissolve ? 2 : 3;
         if (rare == 5)
-            gems = 25;
+            gems = dissolve ? 25 : 50;
         else if (rare == 4)
-            gems = 10;
+            gems = dissolve ? 10 : 25;
         else if (rare == 3)
-            gems = 5;
+            gems = dissolve ? 5 : 10;
         else if (rare == 2)
-            gems = 3 + Utils.RandInt(2);
-        if (IsBlackMarket())
-            gems *= 2;
+            gems = dissolve ? 3 : 5;
+        //if (IsBlackMarket())
+        //    gems *= 2;
         return gems;
     }
     public virtual int ShardReplicationCost()

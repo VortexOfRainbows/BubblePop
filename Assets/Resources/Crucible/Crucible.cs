@@ -244,7 +244,7 @@ public class Crucible : MonoBehaviour
         SpeedMultiplier = PowerQueue.Count > 0 ? SpeedMultiplier + 0.05f : 1.0f;
         HasSpawnedChestLoot = true;
         AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 0.8f + 0.2f * SpeedMultiplier);
-        int value = powerType >= 0 ? PowerUp.Get(powerType).CrucibleGems() : 3;
+        int value = powerType >= 0 ? PowerUp.Get(powerType).CrucibleGems(true) : 3;
         int quant = Mathf.Abs(Mathf.Min(value, 5));
         float valuePerGem = value / (float)quant;
         Vector2 pos = transform.position + new Vector3(0, -1.4f);

@@ -126,6 +126,8 @@ public partial class Player : Entity
     public int PiratesBooty = 0;
     public int BlackMarketDelivery = 0;
     public int Eureka = 0;
+    public bool HasContract = false;
+    public int ChoiceContract = 0;
     private void PowerInit()
     {
         Powers = new List<int>();
@@ -157,6 +159,8 @@ public partial class Player : Entity
             ResearchNoteBonuses = 0;
             ResearchNoteKillCounter = 0;
         }
+        if (!HasContract)
+            ChoiceContract = 0;
         HasResearchNotes = false;
         PersonalWaveCardBonus = 0.0f;
         FlatSkullCoinBonus = 0.0f;

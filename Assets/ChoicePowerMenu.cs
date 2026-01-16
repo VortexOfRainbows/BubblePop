@@ -6,13 +6,15 @@ public class ChoicePowerMenu : MonoBehaviour
 {
     public static ChoicePowerMenu Instance;
     public static PowerUpButton[] PowerButtons => Instance.Buttons;
+    public static bool IsBlackMarket { get; private set; } = false;
     public PowerUpButton[] Buttons = new PowerUpButton[5];
     public Canvas MyCanvas;
     public Button RerollButton, HideButton;
     public GameObject GemParent;
     public TextMeshProUGUI GemCostUI, RemainingUI, HideButtonUI;
     public HorizontalLayoutGroup Layout;
-    public int Cost { get; set; } = 3;
+    public int Cost => (IsBlackMarket ? 7 : 0) + CostScaling;
+    public int CostScaling { get; set; } = 3;
     public static int GetBaseRerolls()
     {
         return 2 + Player.Instance.Eureka;
@@ -39,7 +41,7 @@ public class ChoicePowerMenu : MonoBehaviour
         Instance.transform.localPosition = new Vector2(Instance.MyCanvas.GetComponent<RectTransform>().rect.width / 2, - MyCanvas.GetComponent<RectTransform>().rect.height / 2);
         if(Cost > 0)
             CoinManager.ModifyGems(-Cost);
-        Cost++;
+        CostScaling++;
         RemainingRerolls--;
         RerollsInARow++;
         if(RerollsInARow >= 10)
@@ -119,8 +121,9 @@ public class ChoicePowerMenu : MonoBehaviour
 
         }
     }
-    public static void TurnOn(bool ExtraChoices)
+    public static void TurnOn(bool ExtraChoices, bool BlackMarket)
     {
+        IsBlackMarket = BlackMarket;
         Hide = false;
         Instance.RerollsInARow = 0;
         Instance.RemainingRerolls = GetBaseRerolls();
@@ -131,9 +134,10 @@ public class ChoicePowerMenu : MonoBehaviour
         r.sizeDelta = new Vector2(ExtraChoices ? 1300 : 900, r.sizeDelta.y);
         for (int i = 0; i < max; i++)
         {
-            if (!PowerButtons[i].Active)
+            var p = PowerButtons[i];
+            if (!p.Active)
             {
-                PowerButtons[i].TurnOn();
+                p.TurnOn();
             }
         }
     }
