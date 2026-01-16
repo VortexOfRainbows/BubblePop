@@ -105,10 +105,8 @@ public partial class Main : MonoBehaviour
             else
                 UIManager.Pause();
         }
-        if(Main.DebugCheats && Input.GetKey(KeyCode.B))
-        {
-            PowerUp.Spawn(PowerUp.RandomFromPool(0, 1, -1), Utils.MouseWorld);
-        }
+        //if(Main.DebugCheats && Input.GetKey(KeyCode.B))
+        //    PowerUp.Spawn(PowerUp.RandomFromPool(0, 1, -1), Utils.MouseWorld);
         if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.U) && Main.DebugCheats)
         {
             foreach(UnlockCondition u in UnlockCondition.Unlocks.Values)
@@ -244,8 +242,8 @@ public partial class Main : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.L) && DebugCheats)
                 SkipWaves = !SkipWaves;
             instance.DirectorCanvas.SetActive(DirectorView);
-
-            PowerUpCheatUI.StaticUpdate();
+            if(PowerUpCheatUI.Instance != null)
+                PowerUpCheatUI.StaticUpdate();
         }
         public static bool DirectorView = false;
         public static bool PowerUpCheat = false;

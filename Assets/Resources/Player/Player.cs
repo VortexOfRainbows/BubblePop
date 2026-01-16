@@ -277,9 +277,7 @@ public partial class Player : Entity
             //Body.SetActive(true);
         }
         if (DeathKillTimer > 200)
-        {
             RegisterDeath();
-        }
     }
     public void RegisterDeath()
     {
@@ -295,6 +293,8 @@ public partial class Player : Entity
     }
     public void Rebirth()
     {
+        if(Accessory is RedCape)
+            PowerUp.Spawn<Contract>(transform.position);
         for(int i = 0; i < 30; i++)
         {
             Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 15);
