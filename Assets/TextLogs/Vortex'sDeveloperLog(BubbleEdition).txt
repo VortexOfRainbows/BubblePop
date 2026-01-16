@@ -8,7 +8,10 @@ Maybe Do:
 5. Grass shader to make grass more interesting and potentially slightly vary in the wind
 
 Need to do:
-1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden)
+1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden entirely)
+	1. Achievement chains, to hide achievements that are currently unobtainable
+	2. Hide unlocks from char select until they are unlocked, including subequipments
+	3. Progress display for achievements
 2. More descriptive pause and select screen (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. (ALL DONE) Stats  : Overclock, Haste, Crits, Speed (cap speed at 2x), Bubblebirb
@@ -18,17 +21,12 @@ Need to do:
 5. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 6. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 7. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-8. Achievements that give stars or sheep, which unlock certain things at the farm (like being able to start with an item, or something like that)
-	1. Achievement chains, to hide achievements that are currently unobtainable
-	2. Hide unlocks from char select until they are unlocked, including subequipments
-	3. Achievements that come without unlocks should use the 6-star icon with, but with an emphasis on the two colors of the achievement categories it is part of (the other categories are slightly transparent, for example).
-	4. Progress display for achievements
-9. Compendium: Make the power page able to show black market variants of items with a certain setting
+8. Compendium: Make the power page able to show black market variants of items with a certain setting
 	1. Maybe make yet to be seen/unlocked powers use the generic blank power, like on the achievement page too
-10. Make power display on the bottom smaller
-11. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
-12. Make Map NODE system
-13. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
+9. Make power display on the bottom smaller
+10. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
+11. Make Map NODE system
+12. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 
 Less Important (mostly non-issues or complete already), but in consideration:
@@ -36,6 +34,9 @@ Less Important (mostly non-issues or complete already), but in consideration:
 2. Improve UI
 
 Done: 
+
+1/15/26
+1. Import the King Oil Krita files (for future use)
 
 1/12/26 to 1/15/26
 1. Add the Crucible!
