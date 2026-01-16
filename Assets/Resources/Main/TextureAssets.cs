@@ -14,7 +14,7 @@ public partial class Main : MonoBehaviour
         public static Sprite Sparkle;
         public static Sprite Shadow;
         public static Material InfectorShader;
-        public static Sprite T3ChestUma, T3ChestUmaOpen, T3Chest, T3ChestOpen, T2Chest, T2ChestOpen, T1Chest, T1ChestOpen;
+        public static Sprite T3ChestUma, T3ChestUmaOpen, T3Chest, T3ChestOpen, T2Chest, T2ChestOpen, T1Chest, T1ChestOpen, BlackMarketCrate;
         public static Sprite[] SlotSymbol = new Sprite[4];
         public static Sprite GoldProj, CoinProj, GemProj, TokenProj, FireProj;
         public static Sprite PowerUpPlaceholder;
@@ -50,6 +50,7 @@ public partial class Main : MonoBehaviour
             TokenProj = Resources.Load<Sprite>("Money/GachaslotTokenFlat");
             FireProj = Resources.Load<Sprite>("Projectiles/Fire");
             PowerUpPlaceholder = Resources.Load<Sprite>($"PowerUps/Random");
+            BlackMarketCrate = Resources.Load<Sprite>("Chests/BlackMarketCrate");
         }
     }
     public static class PrefabAssets

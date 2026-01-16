@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -19
-  m_Sprite: {fileID: 21300000, guid: e80b2d644302de242af4a3fdc3dccca2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 55f862ea432c33d4cb176f17d5f507fb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 3228053052441750097}
   - component: {fileID: 4549134885520105398}
   m_Layer: 10
-  m_Name: Chest
+  m_Name: BlackMarketCrate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -396,7 +396,7 @@ MonoBehaviour:
   Bubble: {fileID: 5271805256940191291}
   Hat: {fileID: 7416191089556650877}
   Velocity: {x: 0, y: 0}
-  ChestType: 0
+  ChestType: 3
   OpenVertically: 0
   SkipSpawnAnimation: 0
   SpawnAnimation: 0

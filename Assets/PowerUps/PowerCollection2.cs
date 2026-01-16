@@ -616,7 +616,7 @@ public class BlackMarketDelivery : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("(WIP) Black Market Delivery");
+        description.WithName("Special Delivery");
         description.WithDescription("Each Y:[Skull Wave] has a Y:10% G:(+10% per stack) chance to drop a Y:[Black Market crate] G:(consumed on use)");
         description.WithShortDescription("The next Skull Wave has a chance to deliver a Black Market crate");
     }
@@ -651,7 +651,7 @@ public class Contract : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithDescription($"Y:Trade for a Y:power from a given selection");
-        description.WithShortDescription("Let's make a deal");
+        description.WithShortDescription("!TRADE OFFER!");
     }
     public override void HeldEffect(Player p)
     {
@@ -667,7 +667,7 @@ public class Contract : PowerUp
     {
         return true;
     }
-    public override int Cost => 50;
+    public override int Cost => 150;
     public override int CrucibleGems(bool dissolve = false)
     {
         return dissolve ? 10 : 25;

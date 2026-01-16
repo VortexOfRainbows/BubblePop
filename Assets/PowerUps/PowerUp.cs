@@ -93,6 +93,7 @@ public abstract class PowerUp
         AddPowerUpToAvailability<Choice>();
         AddPowerUpToAvailability<PiratesBooty>();
         AddPowerUpToAvailability<BubbleMitosis>();
+        AddPowerUpToAvailability<BlackMarketDelivery>();
         AddPowerUpToAvailability<ShardsOfPower>();
     }
     private static void AddPowerUpToAvailability<T>() where T: PowerUp => AddPowerUpToAvailability(Get<T>());

@@ -237,6 +237,15 @@ public class Enemy : Entity
         public int immuneFrames;
     }
     public List<ImmunityData> SpecializedImmuneFrames = new();
+    public void UpdateSpecialImmuneFrames()
+    {
+        if (SpecializedImmuneFrames.Count > 0)
+        {
+            for (int i = SpecializedImmuneFrames.Count - 1; i >= 0; --i)
+                if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
+                    SpecializedImmuneFrames.RemoveAt(i);
+        }
+    }
     public void DeathParticles(int count = 10, float size = 0, Color c = default)
     {
         BoxCollider2D c2D = GetComponent<BoxCollider2D>();
@@ -273,12 +282,7 @@ public class Enemy : Entity
             UpdateRendererColor(new Color(1, 0, 0, 0), 1);
             JustSpawnedIn = false;
         }
-        if (SpecializedImmuneFrames.Count > 0)
-        {
-            for (int i = SpecializedImmuneFrames.Count - 1; i >= 0; --i)
-                if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
-                    SpecializedImmuneFrames.RemoveAt(i);
-        }
+        UpdateSpecialImmuneFrames();
         if(ChampionType != -1)
         {
             UpdateImplantShader();

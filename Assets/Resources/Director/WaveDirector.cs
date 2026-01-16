@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public static class WaveDirector
 {
@@ -240,8 +241,19 @@ public static class WaveDirector
             {
                 var card = AssociatedWaveCards[CurrentAssociatedWaveCardNumber++];
                 PlayCard(card, false, 1.25f);
-                Debug.Log($"Played Special Wave Card At: [{interval * 100:##}%], {DetailedDescription.TextBoundedByColor("#FF0000",card.Patterns[0].EnemyPrefabs[0].GetComponent<Enemy>().Name())}");
+                Debug.Log($"Played Special Wave Card At: [{interval * 100:##}%], {DetailedDescription.TextBoundedByColor("#FF0000",card.Patterns[0].EnemyPrefabs[0].GetComponent<Enemy>().Name())}"); 
+                OnSkullWavePlayed();
             }
+        }
+    }
+    public static void OnSkullWavePlayed()
+    {
+        int max = Player.Instance.BlackMarketDelivery;
+        if (Utils.RollWithLuck(0.1f * max))
+        {
+            Player.Instance.RemovePower(PowerUp.Get<BlackMarketDelivery>().Type);
+            var chest = CoinManager.SpawnChest(Reward.RewardPositionChest, 3);
+            --Player.Instance.BlackMarketDelivery;
         }
     }
     public static void PlayCard(WaveCard card, bool incrementCardsPlayed = true, float overridePlayDelay = -1)

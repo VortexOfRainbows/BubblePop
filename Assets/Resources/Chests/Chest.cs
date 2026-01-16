@@ -1,23 +1,61 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Enemy;
 
 public class Chest : MonoBehaviour
 {
+    #region TODO: Move this to a separate class later (alongside the implementation in Enemy.cs)
+    public List<ImmunityData> SpecializedImmuneFrames = new();
+    public void UpdateSpecialImmuneFrames()
+    {
+        if (SpecializedImmuneFrames.Count > 0)
+        {
+            for (int i = SpecializedImmuneFrames.Count - 1; i >= 0; --i)
+                if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
+                    SpecializedImmuneFrames.RemoveAt(i);
+        }
+    }
+    #endregion
+    public int HitsRequiredToKill { get; set; } = -1;
     public void OnCollisionEnter2D(Collision2D collision) => OnTriggerStay2D(collision.collider);
     public void OnCollisionStay2D(Collision2D collision) => OnTriggerStay2D(collision.collider);
     public void OnTriggerEnter2D(Collider2D collision) => OnTriggerStay2D(collision);
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (RB.mass > 1.1f && collision.CompareTag("Player"))
-            TryOpening();
+        //if (OpenAnimation > 0 || HasOpened)
+        //    return;
+        if (ChestType != 3)
+        {
+            if(RB.mass > 1.1f && collision.CompareTag("Player"))
+                TryOpening();
+        }
+        else
+        {
+            if (RB.mass > 1.1f && collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p) && !SpecializedImmuneFrames.Contains(p))
+            {
+                if (--p.Penetrate == 0)
+                    p.Kill();
+                else
+                    SpecializedImmuneFrames.Add(new ImmunityData(p, p.immunityFrames));
+                if (HitsRequiredToKill <= 0 || p is MeleeHitbox)
+                    TryOpening();
+                else
+                {
+                    AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 0.6f, 1.6f);
+                    SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.red, 0.5f);
+                    --HitsRequiredToKill;
+                }
+            }
+        }
     }
     public void TryOpening()
     {
-        if(OpenAnimation <= 0 && CoinManager.CurrentKeys >= 1)
+        if(OpenAnimation <= 0 && (NoKeyRequired || CoinManager.CurrentKeys >= 1))
         {
             RB.velocity *= 0.0f;
-            CoinManager.ModifyKeys(-1);
+            if(!NoKeyRequired)
+                CoinManager.ModifyKeys(-1);
             Open();
         }
     }
@@ -39,6 +77,8 @@ public class Chest : MonoBehaviour
     public float BounceHeight { get; private set; } = 0.75f;
     public bool OpenVertically = false;
     public bool PirateChest { get; set; } = false;
+    public bool SkipOpenAnimation { get; private set; } = false;
+    public bool NoKeyRequired { get; private set; } = false;
     public void Init(int type)
     {
         ClosedSprite = Main.TextureAssets.T3Chest;
@@ -88,6 +128,19 @@ public class Chest : MonoBehaviour
             BounceHeight = 0.6f;
             Bubble.transform.localPosition = new Vector3(0, 1.025f, -1f);
         }
+        else if(ChestType == 3)
+        {
+            SkipOpenAnimation = NoKeyRequired = true;
+            ClosedSprite = Main.TextureAssets.BlackMarketCrate;
+            OpenSprite = Main.TextureAssets.BlackMarketCrate;
+            StarsAllocated = 1;
+            BounceHeight = 0.6f;
+            Bubble.transform.localPosition = new Vector3(0, 1.025f, -1f);
+            SpriteRendererShadow.transform.localPosition = new Vector3(0, 0.2f, 0f);
+            SpriteRendererShadow.transform.localScale = new Vector3(2.8f, 1.55f, 1f);
+            Collider.size = new Vector2(Collider.size.x, 2.3f);
+            HitsRequiredToKill = 10;
+        }
         OGShadowAlpha = SpriteRendererShadow.color.a;
 
         SpriteRenderer.sprite = ClosedSprite;
@@ -134,13 +187,9 @@ public class Chest : MonoBehaviour
             Visual.transform.LerpLocalEulerZ(0, 0.1f);
             Visual.transform.localPosition = Visual.transform.localPosition * 0.9f;
             if ((Input.GetKey(KeyCode.LeftControl) && Control.Tab && Main.DebugCheats) || OpenAnimation > 0)
-            {
                 Open();
-            }
             else
-            {
                 Close();
-            }
         }
         else
         {
@@ -204,6 +253,11 @@ public class Chest : MonoBehaviour
             SpriteRendererShadow.transform.localScale = new Vector3(Visual.transform.localScale.x * 3, sqrt, 1);
             SpriteRendererShadow.transform.localPosition = new Vector3(Visual.transform.localPosition.x * 0.5f, 0, 1);
         }
+        if(ChestType == 3)
+        {
+            SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.white, 0.07f);
+            UpdateSpecialImmuneFrames();
+        }
         RB.velocity *= 0.94f;
     }
     public bool SkipSpawnAnimation = false;
@@ -228,8 +282,9 @@ public class Chest : MonoBehaviour
                 else
                     OpenDir = 1;
             }
-            if(OpenAnimation >= 1)
+            if(OpenAnimation >= 1 || SkipOpenAnimation)
             {
+                OpenAnimation = 1;
                 AudioManager.PlaySound(SoundID.PickupPower, transform.position, 0.75f, 0.6f, 0);
                 SpriteRenderer.sprite = OpenSprite;
                 HasOpened = true;
@@ -268,16 +323,30 @@ public class Chest : MonoBehaviour
         }
         else
         {
-            EndAnimation += Time.fixedDeltaTime;
-            float timeOut = 5;
-            if(EndAnimation > timeOut)
+            if(SkipOpenAnimation)
             {
-                float endPercent = EndAnimation - timeOut;
-                SpriteRenderer.color = SpriteRenderer.color.WithAlpha(1 - endPercent);
-                SpriteRendererShadow.color = SpriteRendererShadow.color.WithAlpha(OGShadowAlpha * (1 - endPercent));
-                if (endPercent > 1)
+                for(int i = 0; i < 30; ++i)
                 {
-                    Destroy(gameObject);
+                    Vector2 randPos = Collider.bounds.min + new Vector3(Collider.bounds.extents.x * Utils.RandFloat(1), Collider.bounds.extents.y * Utils.RandFloat(1));
+                    ParticleManager.NewParticle(randPos, 0.7f * Utils.RandFloat(0.9f, 1.1f), Utils.RandCircle(8) + Vector2.up * Utils.RandFloat(6, 12), 5, Utils.RandFloat(1, 1.2f), 1, 
+                        Color.Lerp(Color.white, Color.black, Utils.RandFloat(0.8f, 1)));
+                }
+                AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 1, 0.9f);
+                Destroy(gameObject);
+            }
+            else
+            {
+                EndAnimation += Time.fixedDeltaTime;
+                float timeOut = 5;
+                if (EndAnimation > timeOut)
+                {
+                    float endPercent = EndAnimation - timeOut;
+                    SpriteRenderer.color = SpriteRenderer.color.WithAlpha(1 - endPercent);
+                    SpriteRendererShadow.color = SpriteRendererShadow.color.WithAlpha(OGShadowAlpha * (1 - endPercent));
+                    if (endPercent > 1)
+                    {
+                        Destroy(gameObject);
+                    }
                 }
             }
         }
@@ -296,10 +365,11 @@ public class Chest : MonoBehaviour
         int s = StarsAllocated;
         if (PirateChest && Utils.RollWithLuck(0.5f))
             s += 1;
+        float blackMarketChance = (OpenVertically || ChestType == 3) ? 1f : -1;
         while(s > 0)
         {
             int rare = Math.Max(1, Utils.RandInt(1, Math.Min(s + 1, 6)));
-            int power = PowerUp.RandomFromPool(0.05f, OpenVertically ? 1f : -1, rare);
+            int power = PowerUp.RandomFromPool(0.05f, blackMarketChance, rare);
             powers.Add(power);
             s -= rare;
         }
@@ -318,6 +388,9 @@ public class Chest : MonoBehaviour
             power.finalPosition = new Vector2(transform.position.x + circular.x, transform.position.y + yOffset);
             spentPowers += power.Cost;
         }
+
+        if (ChestType == 3)
+            return;
 
         Vector2 pos = transform.position + new Vector3(0, yOffset);
         if(spentPowers <= StarsAllocated + 2)

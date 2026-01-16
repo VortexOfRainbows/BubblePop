@@ -11,10 +11,9 @@ Need to do:
 1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden)
 2. More descriptive pause and select screen (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
-	1. Stats  : Overclock, Haste, Crits, Speed (cap speed at 2x)
-	2. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round
-	3. Powers : Choice, Pirate's Booty, Mitosis, Black Market delivery
-	4. Special: Bubblebirb, Midas Touch (gold is worth more), Shard of Power (after being scrapped, choose an existing power to add onto)
+	1. (ALL DONE) Stats  : Overclock, Haste, Crits, Speed (cap speed at 2x), Bubblebirb
+	2. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more)
+	3. (ALL DONE) Powers : Choice, Pirate's Booty, Mitosis, Special Delivery, Shards of Power (after being scrapped, choose an existing power to add onto)
 4. Add a GEM currency, which can be used to reroll shop selections
 5. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 6. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
@@ -57,6 +56,7 @@ Done:
 8. Add Shards of Power
 9. Add Contract Power, a choice that costs gems, but always gives black market powers!
 10. Change Red Cape: 20% movespeed -> drop a Contract each time you are revived by bubblebirb
+11. Add Special Delivery Power, which can drop a black market crate which is broken with attacks and is guaranteed to drop a black market power
 
 1/8/26 to 1/12/26
 1. Add Achievement completion popups

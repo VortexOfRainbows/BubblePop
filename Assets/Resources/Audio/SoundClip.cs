@@ -76,11 +76,13 @@ public static class SoundID
         "Spawn");
     public static SoundClip ChestDrop = new("Chest/",
         "Drop");
+    public static SoundClip WoodBreak = new("World/",
+        "WoodBreaking");
 }
 public class SoundClip
 {
     private const string audioPath = "Audio/";
-    private string myPath;
+    private readonly string myPath;
     private List<AudioClip> variations = new();
     private AudioClip Fetch(string audioFileName)
     {
