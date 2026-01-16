@@ -21,6 +21,10 @@ public class World : MonoBehaviour
     {
         return  RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) == Tile.ColliderType.None;
     }
+    public bool SolidTile(Vector3Int pos)
+    {
+        return RealTileMap.Map.GetColliderType(pos) == Tile.ColliderType.Grid;
+    }
     public void Start()
     {
         m_Instance = this;
@@ -34,10 +38,12 @@ public class World : MonoBehaviour
     }
     public void LoadNodesOntoWorld()
     {
+        WorldNode prevNode = null;
         for(int i = 0; i < nodes.Count; ++i)
         {
             WorldNode node = nodes[i];
-            node.Generate(this);
+            node.Generate(this, prevNode);
+            prevNode = node;
         }
     }
     public void CreateWorldOuterFill()
