@@ -4571,7 +4571,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileMap: {fileID: 7573328573185486376}
+  IsSubNode: 0
   ConnectorParent: {fileID: 6312478758362309955}
+  FeatureParent: {fileID: 4968511932184236685}
 --- !u!1 &7558453631014675353
 GameObject:
   m_ObjectHideFlags: 0

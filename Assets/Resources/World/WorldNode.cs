@@ -24,6 +24,7 @@ public class WorldNode : MonoBehaviour
         transform.position = transformPos * 2;
     }
     public Tilemap TileMap;
+    public bool IsSubNode = false;
     public Tilemap GetTileMap()
     {
         TileMap = TileMap != null ? TileMap : GetComponentInChildren<Tilemap>();
@@ -41,13 +42,13 @@ public class WorldNode : MonoBehaviour
             {
                 Vector3Int v = new(i, j);
                 var tile = TileMap.GetTile(v);
-                if(tile != null)
-                {
-                    world.Tilemap.Map.SetTile(v + transformPos, tile);
-                }
+                v += transformPos;
+                if (tile != null && !world.Tilemap.Map.HasTile(v))
+                    world.Tilemap.Map.SetTile(v, tile);
             }
         }
         GeneratePaths(world, PreviousNode);
+        FeatureParent.DetachChildren();
         gameObject.SetActive(false);
     }
     public void GatherConnectors()
@@ -57,6 +58,7 @@ public class WorldNode : MonoBehaviour
             Connectors.Add(con);
     }
     public Transform ConnectorParent;
+    public Transform FeatureParent;
     public readonly List<NodeConnector> Connectors = new();
     public void GetClosestConnectors(List<NodeConnector> starts, List<NodeConnector> ends, 
         out NodeConnector bestStart, out NodeConnector bestEnd, out float bestDist)
@@ -81,6 +83,23 @@ public class WorldNode : MonoBehaviour
             }
         }
     }
+    public void GetClosestSingleNode(Vector2 pos, List<NodeConnector> nodes,
+        out NodeConnector bestNode, out float bestDist)
+    {
+        bestNode = null;
+        bestDist = float.MaxValue;
+        foreach (NodeConnector node in nodes)
+        {
+            if (!node.EntranceNode)
+                continue;
+            float dist = pos.Distance(node.Position);
+            if (dist < bestDist)
+            {
+                bestNode = node;
+                bestDist = dist;
+            }
+        }
+    }
     public void GeneratePaths(World world, WorldNode prev)
     {
         if (world == null || prev == null)
@@ -92,27 +111,43 @@ public class WorldNode : MonoBehaviour
         GetClosestConnectors(starts, ends, out NodeConnector bestStart, out NodeConnector bestEnd, out float bestDist);
         if (bestStart == null || bestEnd == null || bestDist <= 0 || bestDist > 2000)
             return;
-        GeneratePath(world, bestStart, bestEnd);
+        GeneratePath(world, bestStart.Position, bestEnd.Position);
     }
-    public void GeneratePath(World world, NodeConnector startNode, NodeConnector endNode)
+    public void GeneratePath(World world, Vector2 start, Vector2 end)
     {
-        Vector2 start = startNode.Position;
-        Vector2 end = endNode.Position;
         Vector2 startToEnd = end - start;
         Vector2 norm = startToEnd.normalized;
         Vector2 prev = start;
-        float pathVariance = Mathf.Max(5, startToEnd.magnitude / 4f);
+        float pathVariance = Mathf.Max(4, startToEnd.magnitude / 4f);
         int totalPoints = 5;
-        float iterAmt = 1f / totalPoints;
+        float iterAmt = 1f / (totalPoints + 1);
+        int i = 0;
+        Vector2 subNodeConPos = Vector2.zero;
+        Vector2 subNodePos = Vector2.zero;  
         for(float per = iterAmt; per < 1; per += iterAmt)
         {
             float sin = Mathf.Sin(Mathf.PI * per);
             Vector2 pointBetween = Vector2.Lerp(start, end, per);
-            pointBetween += Utils.RandFloat(pathVariance) * sin * norm.RotatedBy(Mathf.PI / 2f * Utils.Rand1OrMinus1());
+            Vector2 rNorm = norm.RotatedBy(Mathf.PI / 2f * Utils.Rand1OrMinus1());
+            pointBetween += Utils.RandFloat(pathVariance * 0.25f, pathVariance) * sin * rNorm;
             GenerateLine(world, prev, pointBetween);
             prev = pointBetween;
+            if(i == 2)
+            {
+                subNodeConPos = pointBetween;
+                subNodePos = pointBetween + rNorm * (pathVariance * 1.5f + 10);
+            }
+            ++i;
         }
         GenerateLine(world, prev, end);
+        if(!IsSubNode)
+        {
+            WorldNode sub = Instantiate(Main.PrefabAssets.CrucibleNode, subNodePos, Quaternion.identity).GetComponent<WorldNode>();
+            sub.RoundPosition();
+            sub.Generate(world, null);
+            sub.GetClosestSingleNode(subNodeConPos, sub.Connectors, out NodeConnector best, out float _);
+            sub.GeneratePath(world, subNodeConPos, best.Position);
+        }
     }
     public void GenerateLine(World world, Vector2 start, Vector2 end)
     {
