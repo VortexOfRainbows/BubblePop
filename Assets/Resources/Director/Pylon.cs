@@ -6,13 +6,10 @@ public class Pylon : MonoBehaviour
     public SpriteRenderer Base;
     public GameObject Portal;
     public bool Active = false;
-    public void Start()
-    {
-        
-    }
+    public bool WaveActive = false;
     public void FixedUpdate()
     {
-        if (Player.Position.Distance(transform.position) < 11 || Main.WavesUnleashed)
+        if (Player.Position.Distance(transform.position) < Main.PylonActivationDist || WaveActive)
         {
             if(!Active)
                 AudioManager.PlaySound(SoundID.PylonDrone, transform.position, 1f, 1, 0);
@@ -28,7 +25,12 @@ public class Pylon : MonoBehaviour
     public float animCounter = 0;
     public void ActiveAnim()
     {
-        Main.CurrentPylon = this;
+        Main.SetClosestPylon(this);
+        if(Main.CurrentPylon != this)
+        {
+            DisableAnimation();
+            return;
+        }
         animCounter++;
 
         float sin = Mathf.Sin(animCounter * Mathf.Deg2Rad * 1.4f) * 0.3f;
@@ -36,7 +38,7 @@ public class Pylon : MonoBehaviour
         Crystal.transform.localPosition = Crystal.transform.localPosition.Lerp(new Vector3(0, 3 + sin, 1), lerp);
         Crystal.transform.localScale = Crystal.transform.localScale.Lerp(Vector3.one * 0.8f, lerp);
 
-        if (Main.WavesUnleashed)
+        if (WaveActive)
         {
             if (!Portal.activeSelf)
             {

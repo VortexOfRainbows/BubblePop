@@ -10,25 +10,35 @@ public partial class Main : MonoBehaviour
     public static int GameUpdateCount = 0;
     public const float SnakeEyeChance = 0.0278f;
     public static bool DebugCheats { get; set; } = false;
-    public static bool PlayerNearPylon => PrevPylon != null && Player.Position.Distance(PrevPylon.transform.position) < 11;
-    public static Vector2 PylonPositon => CurrentPylon != null ? CurrentPylon.transform.position : PrevPylon != null ? PrevPylon.transform.position : Player.Position;
+    public static bool PlayerNearPylon => CurrentPylon == null ? false : Player.Position.Distance(CurrentPylon.transform.position) < PylonActivationDist;
+    public static Vector2 PylonPositon => CurrentPylon == null ? Player.Position : CurrentPylon.transform.position;
     public static Pylon CurrentPylon = null;
-    private static Pylon PrevPylon = null;
     public static bool GamePaused => Time.timeScale == 0;
     public static bool WavesUnleashed { get; set; } = false;
     public GameObject DirectorCanvas;
     public GameObject PowerupCheatCanvas;
     public static int UICameraLayerID { get; private set; } = -1;
+    public static readonly int PylonActivationDist = 11;
+    public static void SetClosestPylon(Pylon pylon)
+    {
+        if (WavesUnleashed)
+            return;
+        if(CurrentPylon == null)
+            CurrentPylon = pylon;
+        else if(pylon.transform.position.Distance(Player.Position)
+            < CurrentPylon.transform.position.Distance(Player.Position))
+        {
+            CurrentPylon = pylon;
+        }
+    }
     public void FixedUpdate()
     {
         GameUpdateCount++;
-        Projectile.StaticUpdate(); 
-        PrevPylon = CurrentPylon;
-        CurrentPylon = null;
-        if (DebugCheats && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.RightShift))
-        {
-            PlayerData.ResetAll();
-        }
+        Projectile.StaticUpdate();
+        if (!WavesUnleashed && Vector2.Distance(Player.Position, PylonPositon) > PylonActivationDist)
+            CurrentPylon = null;
+        //if (DebugCheats && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.RightShift))
+        //    PlayerData.ResetAll();
     }
     public void OnGameOpen()
     {
@@ -37,6 +47,7 @@ public partial class Main : MonoBehaviour
     {
         UnpauseGame();
         //CoinManager.ModifySavings(-CoinManager.TotalEquipCost);
+        CurrentPylon.WaveActive = true;
         WavesUnleashed = true;
         CardManager.DrawCards();
         CanvasManager.StaticPlaySound();
