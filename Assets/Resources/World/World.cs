@@ -10,6 +10,7 @@ public class World : MonoBehaviour
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
     public static bool GeneratingBorder { get; set; } = false;
     public DualGridTilemap Tilemap;
+    public NatureOrderer NatureParent;
     public List<WorldNode> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
@@ -35,7 +36,8 @@ public class World : MonoBehaviour
         LoadNodesOntoWorld();
 
         CreateWorldOuterFill();
-
+        if(NatureParent != null)
+            NatureParent.Init();
         RealTileMap.Init();
     }
     public void LoadNodesOntoWorld()

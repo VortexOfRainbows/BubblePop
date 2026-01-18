@@ -5,7 +5,7 @@ using UnityEngine;
 public class NatureOrderer : MonoBehaviour
 {
     public List<GameObject> Objects;
-    public void Start()
+    public void Init()
     {
         GatherObjects();
         SortObjects();

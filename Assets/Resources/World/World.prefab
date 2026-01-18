@@ -311,6 +311,51 @@ MonoBehaviour:
   Visual: {fileID: 2479709917760063607}
   DecorVisual: {fileID: 8109859531356348073}
   Map: {fileID: 431813995446221663}
+--- !u!1 &7824214731170895280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4179307788725519689}
+  - component: {fileID: 4565691622756431449}
+  m_Layer: 10
+  m_Name: Nature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4179307788725519689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7824214731170895280}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4348580091444727035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4565691622756431449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7824214731170895280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 490c6f0fc216d334ca481c589fc0134b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Objects: []
 --- !u!1 &8226170919199669443
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,6 +388,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5548875619580134651}
+  - {fileID: 4179307788725519689}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!156049354 &1162549413205782315
@@ -370,11 +416,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tilemap: {fileID: 7124442120298395450}
-  TileTypes:
-  - {fileID: 11400000, guid: b6d486cb57dee494a8ac2a0d8f1db672, type: 2}
-  - {fileID: 11400000, guid: b4991580216c8934da29fd86967ceec0, type: 2}
-  - {fileID: 11400000, guid: bb76b363439b1a443b912032ade75d20, type: 2}
-  - {fileID: 11400000, guid: 3af0efa1f01be4e4d83bdf0893b07a8c, type: 2}
-  - {fileID: 11400000, guid: c0a9da3ec0c39744bb743abd6c4ee300, type: 2}
+  NatureParent: {fileID: 4565691622756431449}
   nodes:
   - {fileID: 0}

@@ -80,7 +80,9 @@ public class WorldNode : MonoBehaviour
             }
         }
         GeneratePaths(world, PreviousNode);
-        FeatureParent.DetachChildren();
+        for(int i = FeatureParent.childCount - 1; i >= 0; --i)
+            FeatureParent.GetChild(i).parent = world.NatureParent.transform;
+        //FeatureParent.DetachChildren();
         gameObject.SetActive(false);
     }
     public void GatherConnectors()
