@@ -42,6 +42,7 @@ public class World : MonoBehaviour
 
         var p = Instantiate(Main.PrefabAssets.PlayerPrefab, PlayerSpawnPosition.position, Quaternion.identity).GetComponent<Player>();
         Player.Instance = p;
+        Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
         Destroy(PlayerSpawnPosition.gameObject);
     }
     public void LoadNodesOntoWorld()
