@@ -58,7 +58,6 @@ public partial class Main : MonoBehaviour
         public static GameObject DefaultProjectile;
         public static GameObject BatterUpTokenPrefab;
         public static PowerUpObject PowerUpObj;
-        public static GameObject CrucibleNode = Resources.Load<GameObject>("World/Nodes/SubNodes/CrucibleNode");
         public static void Load()
         {
             DefaultProjectile = Resources.Load<GameObject>("Projectiles/Projectile");

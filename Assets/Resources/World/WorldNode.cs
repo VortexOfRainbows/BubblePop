@@ -1,14 +1,46 @@
 using System.Collections.Generic;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.WSA;
+
+public static class NodeID
+{
+    public static readonly List<WorldNode> Nodes = new();
+    public static readonly List<WorldNode> SubNodes = new();
+    public static bool LoadAllNodes()
+    {
+        Nodes.Clear();
+        SubNodes.Clear();
+        var nodes = Resources.LoadAll<GameObject>("World/Nodes");
+        //var subNodes = Resources.LoadAll<GameObject>("World/Nodes/SubNodes");
+        Debug.Log("Loading Nodes...".WithColor("FFFF00"));
+        foreach (GameObject obj in nodes)
+        {
+            if(obj.TryGetComponent(out WorldNode n))
+            {
+                if(n.IsSubNode)
+                {
+                    SubNodes.Add(n);
+                    Debug.Log($"Loaded SubNode: {obj.name.WithColor("#FFFF00")}");
+                }
+                else
+                {
+                    Nodes.Add(n);
+                    Debug.Log($"Loaded Node: {obj.name.WithColor("#FF77AA")}");
+                }
+            }
+            else
+            {
+                Debug.Log($"Skipped loading {obj.name.WithColor("#FF0000")} as it was not a node");
+            }
+        }
+        return true;
+    }
+}
 
 #if UNITY_EDITOR
 [ExecuteAlways]
 #endif
-
 public class WorldNode : MonoBehaviour
 {
     #if UNITY_EDITOR
@@ -59,7 +91,10 @@ public class WorldNode : MonoBehaviour
     }
     public Transform ConnectorParent;
     public Transform FeatureParent;
+    public int Zone = 0;
+    public float Weighting = 1.0f;
     public readonly List<NodeConnector> Connectors = new();
+    public static bool OverrideTiles = true;
     public void GetClosestConnectors(List<NodeConnector> starts, List<NodeConnector> ends, 
         out NodeConnector bestStart, out NodeConnector bestEnd, out float bestDist)
     {
@@ -111,6 +146,7 @@ public class WorldNode : MonoBehaviour
         GetClosestConnectors(starts, ends, out NodeConnector bestStart, out NodeConnector bestEnd, out float bestDist);
         if (bestStart == null || bestEnd == null || bestDist <= 0 || bestDist > 2000)
             return;
+        OverrideTiles = bestStart.OverrideTiles && bestEnd.OverrideTiles;
         GeneratePath(world, bestStart.Position, bestEnd.Position);
     }
     public void GeneratePath(World world, Vector2 start, Vector2 end)
@@ -142,10 +178,11 @@ public class WorldNode : MonoBehaviour
         GenerateLine(world, prev, end);
         if(!IsSubNode)
         {
-            WorldNode sub = Instantiate(Main.PrefabAssets.CrucibleNode, subNodePos, Quaternion.identity).GetComponent<WorldNode>();
+            WorldNode sub = Instantiate(NodeID.SubNodes[Utils.RandInt(NodeID.SubNodes.Count)], subNodePos, Quaternion.identity);
             sub.RoundPosition();
             sub.Generate(world, null);
             sub.GetClosestSingleNode(subNodeConPos, sub.Connectors, out NodeConnector best, out float _);
+            OverrideTiles = best.OverrideTiles;
             sub.GeneratePath(world, subNodeConPos, best.Position);
         }
     }
@@ -172,7 +209,7 @@ public class WorldNode : MonoBehaviour
             for(int i = -sin; i <= sin; ++i)
             {
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
-                if(world.Tilemap.Map.GetTile(v) == null || world.SolidTile(v))
+                if(world.Tilemap.Map.GetTile(v) == null || (world.SolidTile(v) && OverrideTiles))
                     world.Tilemap.Map.SetTile(v, tile);
             }
             percent += iter;

@@ -81,6 +81,12 @@ public class Chest : MonoBehaviour
     public bool NoKeyRequired { get; private set; } = false;
     public void Init(int type)
     {
+        if(type == -1)
+        {
+            type = 0;
+            while (Utils.RollWithLuck(0.25f) && type < 3)
+                type++;
+        }
         ClosedSprite = Main.TextureAssets.T3Chest;
         OpenSprite = Main.TextureAssets.T3ChestOpen;
         SpriteRendererKey.enabled = false;

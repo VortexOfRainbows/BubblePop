@@ -75,6 +75,8 @@ public class PowerUpLayout : MonoBehaviour
     }
     public void GenerateInventory()
     {
+        if (Player.Instance == null)
+            return;
         while (PowerUpElems.Count < Player.Instance.PowerCount)
         {
             AddNewPower(PowerUpUISlotPrefab, gameObject, PowerUpElems.Count, true);

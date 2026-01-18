@@ -31,6 +31,7 @@ public class World : MonoBehaviour
         m_Instance = this;
         foreach (DualGridTile tile in TileID.TileTypes)
             tile.Init();
+        NodeID.LoadAllNodes();
         LoadNodesOntoWorld();
 
         CreateWorldOuterFill();
