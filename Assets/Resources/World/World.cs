@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 public class World : MonoBehaviour
 {
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
@@ -11,6 +10,7 @@ public class World : MonoBehaviour
     public static bool GeneratingBorder { get; set; } = false;
     public DualGridTilemap Tilemap;
     public NatureOrderer NatureParent;
+    public Transform PlayerSpawnPosition;
     public List<WorldNode> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
@@ -39,6 +39,10 @@ public class World : MonoBehaviour
         if(NatureParent != null)
             NatureParent.Init();
         RealTileMap.Init();
+
+        var p = Instantiate(Main.PrefabAssets.PlayerPrefab, PlayerSpawnPosition.position, Quaternion.identity).GetComponent<Player>();
+        Player.Instance = p;
+        Destroy(PlayerSpawnPosition.gameObject);
     }
     public void LoadNodesOntoWorld()
     {

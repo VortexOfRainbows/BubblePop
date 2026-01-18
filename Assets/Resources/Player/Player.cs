@@ -40,8 +40,7 @@ public partial class Player : Entity
     public static Player Instance { get => m_Instance == null ? m_Instance = FindObjectOfType<Player>() : m_Instance; set => m_Instance = value; }
     private static Player m_Instance;
     public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
-    [SerializeField]
-    private Camera MainCamera;
+    public Camera MainCamera => Camera.main;
     private readonly float speed = 2.5f;
     private readonly float MovementDeacceleration = 0.9f;
     public float MaxSpeed => MoveSpeedMod * 6f;

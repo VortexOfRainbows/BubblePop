@@ -97,7 +97,7 @@ public partial class Player : Entity
     public float ZapRadiusMult = 1.0f;
     public float DamageMultiplier = 1.0f;
     public int AllowedThunderBalls = 3;
-    public List<int> Powers { get; private set; }
+    public List<int> Powers { get; private set; } = new();
     public bool HasResearchNotes = false;
     public int ResearchNoteBonuses = 0;
     public int ResearchNoteKillCounter = 0;

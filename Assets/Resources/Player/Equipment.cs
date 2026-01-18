@@ -9,11 +9,17 @@ public class Equipment : MonoBehaviour
     }
     public void Start()
     {
-        if(p == null && Player.Instance != null)
+        if(Player.Instance != null && myAnim == null)
             p = Player.Instance.Animator;
     }
     public static Player player => Player.Instance;
-    public PlayerAnimator p;
+    private PlayerAnimator myAnim;
+    public PlayerAnimator p { 
+        get => myAnim != null 
+            ? myAnim : 
+            Player.Instance.Animator; 
+        set => myAnim = value; 
+    }
     private static readonly List<PowerUp> PowerPool = new();
     private string InternalName = null;
     public readonly List<GameObject> SubEquipment = new();
