@@ -169,7 +169,7 @@ public abstract class PowerUp
         p.MyID = typeCounter;
         PowerUps[typeCounter] = p;
         Reverses[p.InternalName] = typeCounter;
-        Debug.Log($"Added: {p.TrueDescription.GetName()} to the dictionary at index {typeCounter}");
+        Debug.Log($"Added: {p.UnlockedName} to the dictionary at index {typeCounter}");
         typeCounter++;
         maximumTypes++;
     }
