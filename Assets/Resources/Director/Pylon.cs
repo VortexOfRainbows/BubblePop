@@ -1,3 +1,5 @@
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Pylon : MonoBehaviour
@@ -32,7 +34,7 @@ public class Pylon : MonoBehaviour
         else
         {
             Active = false;
-            DisableAnimation();
+            CompletionAnimation();
         }
     }
     public float animCounter = 0;
@@ -77,6 +79,19 @@ public class Pylon : MonoBehaviour
         float lerp = 0.045f;
         Crystal.transform.localPosition = Crystal.transform.localPosition.Lerp(new Vector3(0, 1, 1), lerp);
         Crystal.transform.localScale = Crystal.transform.localScale.Lerp(Vector3.one * 0.6f, lerp);
+    }
+    public void CompletionAnimation()
+    {
+        animCounter++;
+
+        float sin = Mathf.Sin(animCounter * Mathf.Deg2Rad * 1.4f);
+        float lerp = 0.035f;
+        //Color c = new(1.0f, 0.8f, 0.3f);
+        Color c = Color.Lerp(new Color(0.3f, 1f, 0.4f), new Color(0.4f, 1.0f, 0.3f), sin * 0.5f + 0.5f);
+        Crystal.color = Color.Lerp(Crystal.color, c, 0.1f);
+        Glow.color = Color.Lerp(Glow.color, c * 0.55f, 0.1f);
+        Crystal.transform.localPosition = Crystal.transform.localPosition.Lerp(new Vector3(0, 3 + sin * 0.3f, 1), lerp);
+        Crystal.transform.localScale = Crystal.transform.localScale.Lerp(Vector3.one * 0.8f, lerp);
     }
     public void IncrementWave()
     {
