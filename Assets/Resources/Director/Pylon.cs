@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public class Pylon : MonoBehaviour
 {
     public SpriteRenderer Crystal;
@@ -6,21 +7,33 @@ public class Pylon : MonoBehaviour
     public SpriteRenderer Base;
     public GameObject Portal;
     public bool Active = false;
-    public bool WaveActive = false;
+    public bool WaveActive { get; private set; } = false;
+    public int WavesRemaining = 2;
+    public int WavesPassed { get; private set; } = 0;
+    public bool EndlessPylon = false;
+    public bool Complete { get; private set; } = false;
     public void FixedUpdate()
     {
-        if (Player.Position.Distance(transform.position) < Main.PylonActivationDist || WaveActive)
+        if(!Complete)
         {
-            if(!Active)
-                AudioManager.PlaySound(SoundID.PylonDrone, transform.position, 1f, 1, 0);
-            Active = true;
+            if ((Player.Position.Distance(transform.position) < Main.PylonActivationDist || WaveActive))
+            {
+                if (!Active)
+                    AudioManager.PlaySound(SoundID.PylonDrone, transform.position, 1f, 1, 0);
+                Active = true;
+            }
+            else
+                Active = false;
+            if (Active && !Complete)
+                ActiveAnim();
+            else
+                DisableAnimation();
         }
         else
+        {
             Active = false;
-        if (Active)
-            ActiveAnim();
-        else
             DisableAnimation();
+        }
     }
     public float animCounter = 0;
     public void ActiveAnim()
@@ -28,6 +41,7 @@ public class Pylon : MonoBehaviour
         Main.SetClosestPylon(this);
         if(Main.CurrentPylon != this)
         {
+            Active = false;
             DisableAnimation();
             return;
         }
@@ -63,6 +77,30 @@ public class Pylon : MonoBehaviour
         float lerp = 0.045f;
         Crystal.transform.localPosition = Crystal.transform.localPosition.Lerp(new Vector3(0, 1, 1), lerp);
         Crystal.transform.localScale = Crystal.transform.localScale.Lerp(Vector3.one * 0.6f, lerp);
+    }
+    public void IncrementWave()
+    {
+        WavesPassed++;
+        if(!EndlessPylon)
+        {
+            WavesRemaining--;
+            if (WavesRemaining <= 0)
+            {
+                CompletePylon();
+                if(Main.CurrentPylon == this)
+                    Main.FinishPylon();
+            }
+        }
+    }
+    public void CompletePylon()
+    {
+        Complete = true;
+        Portal.GetComponent<Wormhole>().Closing = true;
+    }
+    public void Enable()
+    {
+        WaveActive = true;
+
     }
     public static void SummonLightning(Vector2 start, Vector2 end, Color c)
     {

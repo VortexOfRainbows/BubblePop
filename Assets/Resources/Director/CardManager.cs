@@ -107,6 +107,8 @@ public class CardManager : MonoBehaviour
     }
     public static void DrawCards()
     {
+        if(!Main.CurrentPylon.WaveActive)
+            Main.CurrentPylon.Enable();
         DespawnTimer = 20.0f; 
         Instance.DespawnCards();
         if (PlayerData.PauseDuringCardSelect)

@@ -183,6 +183,8 @@ public static class WaveDirector
         CurrentAssociatedWaveCardNumber = 0;
         WaitingForCardDraw = true;
         UnlockCondition.CheckAllUnlocksForCompletion();
+
+        Main.CurrentPylon.IncrementWave();
     }
     public static void GatherCredits()
     {
