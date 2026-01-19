@@ -34,11 +34,20 @@ Less Important (mostly non-issues or complete already), but in consideration:
 2. Improve UI
 3. Make Thought Bubble Trail avoid walls
 
+Current Task List:
+1. Custom Tile Data for which "Level" a tile belongs to, to prevent spawning enemies there until you are at that level (and for general organization)\
+2. Roadblocks that prevent movement between stages during combat (backwards) and before combat (forwards)
+	1. Roadblocks lifted when pylon is stabilized
+3. Quest List UI that says stuff like:
+	1. Activate the First Pylon => Clear 2 Waves of Invaders => Stabilize the Pylon => Activate the Next Pylon
+4. Pointers that show you the direction to the next Pylon
+
+
 Done: 
 
-1/15/26 to 1/18/26
+1/15/26 to 1/19/26
 1. Import the King Oil Krita files (for future use)
-2. Import Kurt Power sprite
+2. Import Kurt Power sprite (David), Fell Logs sprites from a while ago (Kayla)
 3. WIP Node connectors
 4. WIP Sub Nodes
 5. Pity Charm Sprite (David)
@@ -46,6 +55,8 @@ Done:
 7. Rather than being pre-placed, the player is now instantiated at the start of a level. This will help with some organization things, worldgen prep, and multiplayer prep.
 8. Begin Pylon rework logic in preparation for multi-stage levels
 	1. WIP Pylon completion and switching
+	2. Animations for Pylon Completion
+9. Adjustments to how pylons play sounds that should make the audio more consistent
 
 1/12/26 to 1/15/26
 1. Add the Crucible!

@@ -27,16 +27,17 @@ public class AudioManager : MonoBehaviour
             m_Instance = value;
         }
     }
-    public static void PlaySound(SoundClip soundID, Vector2 position, float volume = 1, float pitch = 1, int variation = -1)
+    public static Sound PlaySound(SoundClip soundID, Vector2 position, float volume = 1, float pitch = 1, int variation = -1)
     {
-        PlaySound(soundID.GetVariation(variation), position, volume, pitch);
+        return PlaySound(soundID.GetVariation(variation), position, volume, pitch);
     }
-    public static void PlaySound(AudioClip soundID, Vector2 position, float volume = 1, float pitch = 1)
+    public static Sound PlaySound(AudioClip soundID, Vector2 position, float volume = 1, float pitch = 1)
     {
         if (PlayerData.SFXVolume <= 0)
-            return;
+            return null;
         Sound sound = Instantiate(Instance.AudioObject, position, Quaternion.identity).GetComponent<Sound>();
         sound.Init(soundID, volume * PlayerData.SFXVolume, pitch);
+        return sound;
     }
     private void Start()
     {

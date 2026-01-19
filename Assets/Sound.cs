@@ -38,24 +38,33 @@ public class Sound : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        if(Source.clip == SoundID.PylonDrone.GetVariation(0))
+        if (!Source.isPlaying && !Source.loop)
         {
-            if (!HasEnded && (Main.PlayerNearPylon || Main.WavesUnleashed))
-                Source.loop = true;
+            Destroy(gameObject);
+        }
+    }
+    public void PylonSoundUpdate(Pylon p)
+    {
+        if (Source.clip == SoundID.PylonDrone.GetVariation(0))
+        {
+            float dist = Vector2.Distance(transform.position, Player.Position);
+            if (!HasEnded)
+                Source.loop = dist <= Main.PylonActivationDist;
             else
             {
                 HasEnded = true;
                 Source.loop = false;
             }
-            float dist = Vector2.Distance(transform.position, Player.Position) - 2;
-            if (dist < 0)
-                dist = 0;
-            float vol = 1 - Mathf.Min(1, Mathf.Pow(dist / 8f, 2));
-            Source.volume = vol * 0.8f * PlayerData.SFXVolume;
-        }
-        if (!Source.isPlaying && !Source.loop)
-        {
-            Destroy(gameObject);
+            float vol = 1 - Mathf.Min(1, Mathf.Pow(dist / Main.PylonActivationDist, 2));
+            Source.volume = vol * 0.9f * PlayerData.SFXVolume;
+            if (p.Complete)
+            {
+                float percent = p.CompleteAnimCounter >= 200 ? 1 : p.CompleteAnimCounter / 200f * 0.75f;
+                if(percent >= 1)
+                    Source.pitch = Mathf.Lerp(Source.pitch, 0.5f, 0.04f);
+                else
+                    Source.pitch = Mathf.Lerp(1.0f, 1.5f, percent);
+            }
         }
     }
 }
