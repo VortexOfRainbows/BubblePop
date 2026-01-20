@@ -35,15 +35,19 @@ Less Important (mostly non-issues or complete already), but in consideration:
 3. Make Thought Bubble Trail avoid walls
 
 Current Task List:
-1. Custom Tile Data for which "Level" a tile belongs to, to prevent spawning enemies there until you are at that level (and for general organization)\
-2. Roadblocks that prevent movement between stages during combat (backwards) and before combat (forwards)
+1. Roadblocks that prevent movement between stages during combat (backwards) and before combat (forwards)
 	1. Roadblocks lifted when pylon is stabilized
-3. Quest List UI that says stuff like:
+2. Quest List UI that says stuff like:
 	1. Activate the First Pylon => Clear 2 Waves of Invaders => Stabilize the Pylon => Activate the Next Pylon
-4. Pointers that show you the direction to the next Pylon
+3. Pointers that show you the direction to the next Pylon
+4. Procedurally generate the world
 
 
 Done: 
+
+1/19/26
+1. Custom Tile Data for which "Level" a tile belongs to, to prevent spawning enemies there until you are at that level (and for general organization)
+	1. Added a way to visualize this data in editor
 
 1/15/26 to 1/19/26
 1. Import the King Oil Krita files (for future use)

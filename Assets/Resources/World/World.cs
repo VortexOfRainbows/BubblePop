@@ -2,13 +2,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+
 public class World : MonoBehaviour
 {
+    public static Tile DepthTile => Resources.Load<Tile>("World/Tiles/DepthTile");
+    public struct TileData
+    {
+        public byte ProgressionNumber;
+        public TileData(byte progressionNum = byte.MaxValue)
+        {
+            ProgressionNumber = progressionNum;
+        }
+    }
+    private static Vector2Int tileDataOffset;
+    private static TileData[,] tileData;
+    private static readonly TileData NoTileData = new(byte.MaxValue);
+    public static readonly int Padding = 15;
+    public TileData GetTileData(Vector3Int pos)
+    {
+        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
+        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.Length || pointPos.y >= tileData.GetLength(1))
+        {
+            Debug.Log($"Tile QUERY out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
+            return NoTileData;
+        }
+        return tileData[pointPos.x, pointPos.y];
+    }
+    public void SetTileData(Vector3Int pos, TileData newData)
+    {
+        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
+        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.Length || pointPos.y >= tileData.GetLength(1))
+        {
+            Debug.Log($"Tile SET out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
+            return;
+        }
+        if(DepthTilemap != null && DepthTilemap.isActiveAndEnabled)
+        {
+            byte progNumber = newData.ProgressionNumber;
+            Color c = Color.Lerp(Color.Lerp(Color.red, Color.blue, progNumber / 20f % 1), Color.green, (progNumber / 5f) % 1).WithAlpha(0.5f);
+            DepthTilemap.SetTile(new (pos, DepthTile, c, Matrix4x4.identity), true);
+        }
+        tileData[pointPos.x, pointPos.y] = newData;
+    }
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
     public static bool GeneratingBorder { get; set; } = false;
     public DualGridTilemap Tilemap;
+    [SerializeField] private Tilemap DepthTilemap;
     public NatureOrderer NatureParent;
     public Transform PlayerSpawnPosition;
     public List<WorldNode> nodes;
@@ -32,6 +73,7 @@ public class World : MonoBehaviour
         m_Instance = this;
         foreach (DualGridTile tile in TileID.TileTypes)
             tile.Init();
+        ApproximateWorldBounds();
         NodeID.LoadAllNodes();
         LoadNodesOntoWorld();
 
@@ -45,13 +87,48 @@ public class World : MonoBehaviour
         Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
         Destroy(PlayerSpawnPosition.gameObject);
     }
+    public void ApproximateWorldBounds()
+    {
+        int left = int.MaxValue;
+        int right = int.MinValue;
+        int bottom = int.MaxValue;
+        int top = int.MinValue;
+        for (int i = 0; i < nodes.Count; ++i)
+        {
+            WorldNode node = nodes[i];
+            Vector3Int transformPos = new(Mathf.FloorToInt(node.transform.position.x / 2), Mathf.FloorToInt(node.transform.position.y / 2));
+            node.TileMap.GetCorners(out int l, out int r, out int b, out int t);
+            left = Mathf.Min(l + transformPos.x, left);
+            right = Mathf.Max(r + transformPos.x, right);
+            bottom = Mathf.Min(b + transformPos.y, bottom);
+            top = Mathf.Max(t + transformPos.y, top);
+        }
+        if (nodes.Count <= 0)
+            left = right = bottom = top = 0;
+        left -= Padding;
+        right += Padding;
+        bottom -= Padding;
+        top += Padding;
+        Vector2Int size = new(right - left, top - bottom);
+        Debug.Log($"World Border: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#CC77FF"));
+        Debug.Log($"World size: X: {size.x}, Y: {size.y}".WithColor("#CC77FF"));
+        if(size.x < 1000 && size.y < 1000 && size.x > 0 && size.y > 0)
+        {
+            tileDataOffset = new Vector2Int(left, bottom);
+            tileData = new TileData[size.x, size.y];
+        }
+        else
+        {
+            throw new System.Exception("BUBBLE: WORLD GENERATED TOO LARGE OR NEGATIVE SIZE. CANCELLING FOR SAFETY");
+        }
+    }
     public void LoadNodesOntoWorld()
     {
         WorldNode prevNode = null;
         for(int i = 0; i < nodes.Count; ++i)
         {
             WorldNode node = nodes[i];
-            node.Generate(this, prevNode);
+            node.Generate(this, (byte)i, prevNode);
             prevNode = node;
         }
     }
@@ -59,7 +136,6 @@ public class World : MonoBehaviour
     {
         GeneratingBorder = true;
         var Map = RealTileMap.Map;
-        int padding = 15;
 
         FastNoiseLite Noise = new();
         Noise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
@@ -69,10 +145,10 @@ public class World : MonoBehaviour
         Noise.SetFrequency(0.04f);
 
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
-        left -= padding;
-        right += padding;
-        bottom -= padding;
-        top += padding;
+        left -= Padding;
+        right += Padding;
+        bottom -= Padding;
+        top += Padding;
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)
@@ -82,7 +158,9 @@ public class World : MonoBehaviour
                 {
                     float f = Noise.GetNoise(i, j);
                     if (f < 0.2f && f > -0.2f)
+                    {
                         Map.SetTile(pos, TileID.Dirt.TileType);
+                    }
                     else
                         Map.SetTile(pos, TileID.Grass.TileType);
                 }

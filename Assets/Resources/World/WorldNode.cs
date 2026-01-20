@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -55,6 +57,8 @@ public class WorldNode : MonoBehaviour
         Vector3Int transformPos = new((int)transform.position.x / 2, (int)transform.position.y / 2);
         transform.position = transformPos * 2;
     }
+    public World World { get; set; }
+    public byte GenerationNumber { get; set; } = 0;
     public Tilemap TileMap;
     public bool IsSubNode = false;
     public Tilemap GetTileMap()
@@ -62,8 +66,10 @@ public class WorldNode : MonoBehaviour
         TileMap = TileMap != null ? TileMap : GetComponentInChildren<Tilemap>();
         return TileMap;
     }
-    public void Generate(World world, WorldNode PreviousNode = null)
+    public void Generate(World world, byte GenNumber, WorldNode PreviousNode = null)
     {
+        GenerationNumber = GenNumber;
+        this.World = world;
         Vector3Int transformPos = new(Mathf.FloorToInt(transform.position.x / 2), Mathf.FloorToInt(transform.position.y / 2));
         GatherConnectors();
         GetTileMap();
@@ -76,10 +82,13 @@ public class WorldNode : MonoBehaviour
                 var tile = TileMap.GetTile(v);
                 v += transformPos;
                 if (tile != null && !world.Tilemap.Map.HasTile(v))
+                {
                     world.Tilemap.Map.SetTile(v, tile);
+                    world.SetTileData(v, new World.TileData(GenerationNumber));
+                }
             }
         }
-        GeneratePaths(world, PreviousNode);
+        GeneratePaths(PreviousNode);
         for(int i = FeatureParent.childCount - 1; i >= 0; --i)
             FeatureParent.GetChild(i).parent = world.NatureParent.transform;
         //FeatureParent.DetachChildren();
@@ -137,9 +146,9 @@ public class WorldNode : MonoBehaviour
             }
         }
     }
-    public void GeneratePaths(World world, WorldNode prev)
+    public void GeneratePaths(WorldNode prev)
     {
-        if (world == null || prev == null)
+        if (World == null || prev == null)
             return;
         List<NodeConnector> starts = prev.Connectors;
         List<NodeConnector> ends = Connectors;
@@ -149,9 +158,9 @@ public class WorldNode : MonoBehaviour
         if (bestStart == null || bestEnd == null || bestDist <= 0 || bestDist > 2000)
             return;
         OverrideTiles = bestStart.OverrideTiles && bestEnd.OverrideTiles;
-        GeneratePath(world, bestStart.Position, bestEnd.Position);
+        GeneratePath(bestStart.Position, bestEnd.Position);
     }
-    public void GeneratePath(World world, Vector2 start, Vector2 end)
+    public void GeneratePath(Vector2 start, Vector2 end)
     {
         Vector2 startToEnd = end - start;
         Vector2 norm = startToEnd.normalized;
@@ -168,7 +177,7 @@ public class WorldNode : MonoBehaviour
             Vector2 pointBetween = Vector2.Lerp(start, end, per);
             Vector2 rNorm = norm.RotatedBy(Mathf.PI / 2f * Utils.Rand1OrMinus1());
             pointBetween += Utils.RandFloat(pathVariance * 0.25f, pathVariance) * sin * rNorm;
-            GenerateLine(world, prev, pointBetween);
+            GenerateLine(prev, pointBetween);
             prev = pointBetween;
             if(i == 2)
             {
@@ -177,18 +186,18 @@ public class WorldNode : MonoBehaviour
             }
             ++i;
         }
-        GenerateLine(world, prev, end);
+        GenerateLine(prev, end);
         if(!IsSubNode)
         {
             WorldNode sub = Instantiate(NodeID.SubNodes[Utils.RandInt(NodeID.SubNodes.Count)], subNodePos, Quaternion.identity);
             sub.RoundPosition();
-            sub.Generate(world, null);
+            sub.Generate(World, GenerationNumber, null);
             sub.GetClosestSingleNode(subNodeConPos, sub.Connectors, out NodeConnector best, out float _);
             OverrideTiles = best.OverrideTiles;
-            sub.GeneratePath(world, subNodeConPos, best.Position);
+            sub.GeneratePath(subNodeConPos, best.Position);
         }
     }
-    public void GenerateLine(World world, Vector2 start, Vector2 end)
+    public void GenerateLine(Vector2 start, Vector2 end)
     {
         Vector2 startToEnd = end - start;
         float dist = startToEnd.magnitude;
@@ -196,11 +205,11 @@ public class WorldNode : MonoBehaviour
         for (float i = 0; i < dist; ++i)
         {
             //Vector3Int v = new(Mathf.FloorToInt(start.x / 2), Mathf.FloorToInt(start.y / 2));
-            DiamondBrush(world, start, 2);
+            DiamondBrush(start, 2);
             start += norm;
         }
     }
-    public void DiamondBrush(World world, Vector2 center, int radias)
+    public void DiamondBrush(Vector2 center, int radias)
     {
         var tile = TileID.Grass.TileType;
         float percent = 0;
@@ -211,8 +220,11 @@ public class WorldNode : MonoBehaviour
             for(int i = -sin; i <= sin; ++i)
             {
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
-                if(world.Tilemap.Map.GetTile(v) == null || (world.SolidTile(v) && OverrideTiles))
-                    world.Tilemap.Map.SetTile(v, tile);
+                if(World.Tilemap.Map.GetTile(v) == null || (World.SolidTile(v) && OverrideTiles))
+                {
+                    World.Tilemap.Map.SetTile(v, tile);
+                    World.SetTileData(v, new World.TileData(GenerationNumber));
+                }
             }
             percent += iter;
         }
