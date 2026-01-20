@@ -114,14 +114,14 @@ public class Enemy : Entity
     }
     public virtual void ImplantShader()
     {
-        if(childrenRenderers != null)
+        if(ChildRenderers != null)
         {
             Color outlineColor = new Color(1, 0, 0);
             Color inlineColor = new Color(0.275f, 0, 0);
             float inlineThreshold = 0.2f;
             float additiveColorPower = 0.1f;
             ModifyInfectionShaderProperties(ref outlineColor, ref inlineColor, ref inlineThreshold, ref outlineThreshold, ref additiveColorPower);
-            foreach(SpriteRenderer renderer in childrenRenderers)
+            foreach(SpriteRenderer renderer in ChildRenderers)
             {
                 renderer.material = Main.TextureAssets.InfectorShader;
                 renderer.material.SetColor("_OutlineColor", outlineColor);
@@ -140,13 +140,13 @@ public class Enemy : Entity
         ImplantTimer -= Time.fixedDeltaTime * 7f;
         if (ImplantTimer < 0)
             ImplantTimer = 0;
-        foreach (SpriteRenderer renderer in childrenRenderers)
+        foreach (SpriteRenderer renderer in ChildRenderers)
         {
             renderer.material.SetFloat("_OutlineSize", Mathf.Lerp(outlineThreshold, 0.5f, ImplantTimer * ImplantTimer));
         }
         if (ImplantTimer <= 0)
         {
-            foreach (SpriteRenderer renderer in childrenRenderers)
+            foreach (SpriteRenderer renderer in ChildRenderers)
                 renderer.material.SetFloat("_OutlineSize", outlineThreshold);
             ImplantTimer = -1;
         }

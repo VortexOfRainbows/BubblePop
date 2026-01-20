@@ -50,7 +50,7 @@ public partial class Entity : MonoBehaviour
     {
         UniversalImmuneFrames--;
         OnFixedUpdate();
-        if(this is not Enemy e)
+        if (this is not Enemy e)
             Animate();
     }
     public virtual void OnFixedUpdate()
@@ -60,7 +60,7 @@ public partial class Entity : MonoBehaviour
     public void Start()
     {
         Init();
-        if(this is Enemy e)
+        if (this is Enemy e)
         {
             EnemyHealthScaling(e);
         }
@@ -75,7 +75,7 @@ public partial class Entity : MonoBehaviour
     public void EnemyHealthScaling(Enemy e)
     {
         Life = (int)(Life * WaveDirector.EnemyScalingFactor + 0.5f);
-        if(e.IsSkull)
+        if (e.IsSkull)
         {
             Life *= 2;
         }
@@ -86,7 +86,7 @@ public partial class Entity : MonoBehaviour
         {
             if (DamageTaken > 0)
             {
-                UpdateRendererColor(Color.Lerp(Color.white, Color.red, 0.8f), Utils.DeltaTimeLerpFactor(0.05f + DamageTaken / 500f)); 
+                UpdateRendererColor(Color.Lerp(Color.white, Color.red, 0.8f), Utils.DeltaTimeLerpFactor(0.05f + DamageTaken / 500f));
                 DamageTaken -= 20f * Time.deltaTime;
             }
             else
@@ -105,45 +105,45 @@ public partial class Entity : MonoBehaviour
     }
     public SpriteRenderer[] ChildrenRenders()
     {
-        return childrenRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
+        return ChildRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
     }
-    protected SpriteRenderer[] childrenRenderers = null;
-    private Color[] defaultColors = null;
+    public SpriteRenderer[] ChildRenderers { get; protected set; } = null;
+    public Color[] DefaultColors { get; private set; } = null;
     public void UpdateRendererColor(Color c, float lerp)
     {
         ChildrenRenders();
-        if (defaultColors == null)
+        if (DefaultColors == null)
         {
-            defaultColors = new Color[childrenRenderers.Length];
-            for (int i = 0; i < defaultColors.Length; ++i)
-                defaultColors[i] = childrenRenderers[i].color;
+            DefaultColors = new Color[ChildRenderers.Length];
+            for (int i = 0; i < DefaultColors.Length; ++i)
+                DefaultColors[i] = ChildRenderers[i].color;
         }
-        foreach (SpriteRenderer r in childrenRenderers)
+        foreach (SpriteRenderer r in ChildRenderers)
             r.color = Color.Lerp(r.color, c, lerp);
     }
     public void UpdateRendererColorToDefault(float lerp)
     {
         ChildrenRenders();
-        if (defaultColors == null)
+        if (DefaultColors == null)
         {
-            defaultColors = new Color[childrenRenderers.Length];
-            for (int i = 0; i < defaultColors.Length; ++i)
-                defaultColors[i] = childrenRenderers[i].color;
+            DefaultColors = new Color[ChildRenderers.Length];
+            for (int i = 0; i < DefaultColors.Length; ++i)
+                DefaultColors[i] = ChildRenderers[i].color;
         }
-        for (int i = 0; i < defaultColors.Length; ++i)
-            childrenRenderers[i].color = Color.Lerp(childrenRenderers[i].color, defaultColors[i], lerp);
+        for (int i = 0; i < DefaultColors.Length; ++i)
+            ChildRenderers[i].color = Color.Lerp(ChildRenderers[i].color, DefaultColors[i], lerp);
     }
     public void AdjustRenderColorFromDefault(Color other, float lerp)
     {
         ChildrenRenders();
-        if (defaultColors == null)
+        if (DefaultColors == null)
         {
-            defaultColors = new Color[childrenRenderers.Length];
-            for (int i = 0; i < defaultColors.Length; ++i)
-                defaultColors[i] = childrenRenderers[i].color;
+            DefaultColors = new Color[ChildRenderers.Length];
+            for (int i = 0; i < DefaultColors.Length; ++i)
+                DefaultColors[i] = ChildRenderers[i].color;
         }
-        for (int i = 0; i < defaultColors.Length; ++i)
-            childrenRenderers[i].color = Color.Lerp(defaultColors[i], other, lerp);
+        for (int i = 0; i < DefaultColors.Length; ++i)
+            ChildRenderers[i].color = Color.Lerp(DefaultColors[i], other, lerp);
     }
     public virtual void Kill()
     {
@@ -164,5 +164,42 @@ public partial class Entity : MonoBehaviour
     {
         foreach (Animator a in ChildAnimators)
             a.UpdateAnimation();
+    }
+    public void PushIntoClosestPossibleTile(int snapDist = 20, bool includeProgressionBounds = false)
+    {
+        Vector2[] dirs = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1),
+            new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
+        Vector2 pos = transform.position;
+        Vector2 finalPos = transform.position;
+        Vector2 tileCenter = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(transform.position));
+        Vector2 tileCenterToPlayerCenter = pos - tileCenter;
+        Vector2 veloOffset = -RB.velocity * Time.fixedDeltaTime;
+        float closestDist = float.MaxValue;
+        for (int j = 1; j < snapDist; ++j)
+        {
+            for (int i = 0; i < 8; ++i)
+            {
+                Vector2 direction = dirs[i] * j;
+                Vector2 newPos = pos + direction;
+                if (World.WithinBorders(newPos, includeProgressionBounds))
+                {
+                    Vector2 snap = new(Mathf.Abs(dirs[i].x), Mathf.Abs(dirs[i].y));
+                    var tileToPlayer2 = tileCenterToPlayerCenter * snap;
+                    var velo2 = veloOffset * snap;
+                    Vector2 best = pos + direction - tileToPlayer2 + velo2;
+                    float dist = transform.position.Distance(best);
+                    if (dist < closestDist)
+                    {
+                        closestDist = dist;
+                        finalPos = best;
+                        if(!World.WithinBorders(pos, false))
+                            finalPos += dirs[i] * 0.5f;
+                    }
+                }
+            }
+            if (closestDist < snapDist * 1.5f)
+                break;
+        }
+        transform.position = finalPos;
     }
 }

@@ -115,7 +115,7 @@ MonoBehaviour:
   DamageTaken: 0
   SpawnedIn: 0
   lastPos: {x: 0, y: 0}
-  RB: {fileID: 0}
+  RB: {fileID: 3216590746651522342}
   ChargeShotDamage: 0
   ShotgunPower: 0
   DashSparkle: 0
@@ -137,6 +137,7 @@ MonoBehaviour:
   Coalescence: 0
   OldCoalescence: 0
   LuckyStar: 0
+  Electroluminescence: 0
   TrailOfThoughts: 0
   Magnet: 0
   LightSpear: 0
@@ -151,7 +152,7 @@ MonoBehaviour:
   SnakeEyes: 0
   AbilityRecoverySpeed: 1
   AbilityRecoverySpeedMult: 1
-  MoveSpeedMod: 1
+  TrueMoveModifier: 1
   BlueChipChance: 0
   HomingRange: 0
   HomingRangeSqrt: 0
@@ -160,11 +161,45 @@ MonoBehaviour:
   BubbleShields: 0
   ImmunityFrameMultiplier: 1
   ShieldImmunityFrameMultiplier: 1
+  BonusChoices: 0
+  ZapRadiusMult: 1
+  DamageMultiplier: 1
+  AllowedThunderBalls: 3
+  HasResearchNotes: 0
+  ResearchNoteBonuses: 0
+  ResearchNoteKillCounter: 0
+  PersonalWaveCardBonus: 1
+  FlatSkullCoinBonus: 0
+  ThunderBubbleReturnDamageBonus: 0
+  EchoBubbles: 0
+  OrbitalStars: 0
+  Supernova: 0
+  Ruby: 0
+  DoubleDownChip: 0
+  BlackmarketMult: 1
+  CriticalStrikeChance: 0.05
+  ShopDiscount: 0
+  LuckyStarItemsAllowedPerWave: 0
+  LuckyStarItemsAcquiredThisWave: 0
+  PerpetualBubble: 0
+  PityGrowthAmount: 0
+  ConsolationPrize: 0
+  PhilosophersStone: 0
+  MaxTokens: 4
+  TokensPerWave: 0
+  BuyOneGetOneMult: 0
+  SpinPriceIncrease: 0
+  ExtraGachaBurst: 0
+  BatterUp: 0
+  PiratesBooty: 0
+  BlackMarketDelivery: 0
+  Eureka: 0
+  HasContract: 0
+  ChoiceContract: 0
   Life: 10
   MaxLife: -1
   Animator: {fileID: 6147547588852434854}
   bonusBubbles: 0
-  MainCamera: {fileID: 0}
   abilityTimer: 0
 --- !u!50 &3216590746651522342
 Rigidbody2D:

@@ -18,7 +18,7 @@ public class World : MonoBehaviour
     private static TileData[,] tileData;
     private static readonly TileData NoTileData = new(byte.MaxValue);
     public static readonly int Padding = 15;
-    public TileData GetTileData(Vector3Int pos)
+    public static TileData GetTileData(Vector3Int pos)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
         if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.Length || pointPos.y >= tileData.GetLength(1))
@@ -28,7 +28,7 @@ public class World : MonoBehaviour
         }
         return tileData[pointPos.x, pointPos.y];
     }
-    public void SetTileData(Vector3Int pos, TileData newData)
+    public static void SetTileData(Vector3Int pos, TileData newData)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
         if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.Length || pointPos.y >= tileData.GetLength(1))
@@ -36,11 +36,11 @@ public class World : MonoBehaviour
             Debug.Log($"Tile SET out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
             return;
         }
-        if(DepthTilemap != null && DepthTilemap.isActiveAndEnabled)
+        if(Instance.DepthTilemap != null && Instance.DepthTilemap.isActiveAndEnabled)
         {
             byte progNumber = newData.ProgressionNumber;
             Color c = Color.Lerp(Color.Lerp(Color.red, Color.blue, progNumber / 20f % 1), Color.green, (progNumber / 5f) % 1).WithAlpha(0.5f);
-            DepthTilemap.SetTile(new (pos, DepthTile, c, Matrix4x4.identity), true);
+            Instance.DepthTilemap.SetTile(new (pos, DepthTile, c, Matrix4x4.identity), true);
         }
         tileData[pointPos.x, pointPos.y] = newData;
     }
@@ -62,11 +62,16 @@ public class World : MonoBehaviour
     }
     public static bool WithinBorders(Vector3 position)
     {
-        return  RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) == Tile.ColliderType.None;
+        return RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) == Tile.ColliderType.None;
     }
-    public bool SolidTile(Vector3Int pos)
+    public static bool SolidTile(Vector3Int pos)
     {
         return RealTileMap.Map.GetColliderType(pos) == Tile.ColliderType.Grid;
+    }
+    public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds)
+    {
+        var data = GetTileData(RealTileMap.Map.WorldToCell(position));
+        return WithinBorders(position) && (!IncludeProgressionBounds || data.ProgressionNumber == Main.PylonProgressionNumber);
     }
     public void Start()
     {

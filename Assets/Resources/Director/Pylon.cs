@@ -12,6 +12,7 @@ public class Pylon : MonoBehaviour
     public bool SoundActive => sound != null;
     public bool WaveActive { get; private set; } = false;
     public int WavesRequired = 2;
+    public byte ProgressionNumber { get; set; } = 0;
     public int WavesPassed { get; private set; } = 0;
     public bool EndlessPylon = false;
     public bool Complete { get; private set; } = false;

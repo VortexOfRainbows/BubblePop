@@ -15,6 +15,7 @@ public partial class Main : MonoBehaviour
     public static Pylon CurrentPylon { get; private set; } = null;
     private static Pylon PrevPylon { get; set; } = null;
     public static bool JustSwitchedPylons => PrevPylon != CurrentPylon && PrevPylon != null;
+    public static byte PylonProgressionNumber;
     public static void FinishPylon()
     {
         CurrentPylon = null;
@@ -37,6 +38,7 @@ public partial class Main : MonoBehaviour
         {
             CurrentPylon = pylon;
         }
+        PylonProgressionNumber = CurrentPylon.ProgressionNumber;
     }
     public void FixedUpdate()
     {

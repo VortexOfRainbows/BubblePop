@@ -154,10 +154,9 @@ public partial class Player : Entity
         UpdateBuffs();
         HomingRangeSqrt = Mathf.Sqrt(HomingRange);
         bool dead = DeathKillTimer > 0;
-        bool outOfBounds = false;
-        if (!World.WithinBorders(transform.position))
-            outOfBounds = true;
-        if (dead || outOfBounds)
+        if (!World.WithinBorders(transform.position, true))
+            PushIntoClosestPossibleTile(includeProgressionBounds: true);
+        if (dead)
             Pop();
         else
         {

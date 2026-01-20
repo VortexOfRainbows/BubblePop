@@ -84,7 +84,7 @@ public class WorldNode : MonoBehaviour
                 if (tile != null && !world.Tilemap.Map.HasTile(v))
                 {
                     world.Tilemap.Map.SetTile(v, tile);
-                    world.SetTileData(v, new World.TileData(GenerationNumber));
+                    World.SetTileData(v, new World.TileData(GenerationNumber));
                 }
             }
         }
