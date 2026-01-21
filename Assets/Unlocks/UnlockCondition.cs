@@ -159,11 +159,20 @@ public abstract class UnlockCondition
     public void UpdatePowerPool()
     {
         if (AssociatedBlackMarketUnlocks.Count > 0) //This will make it so completing an achievement mid run will add the power to the pool so you can get it the same run
+        {
             foreach (PowerUp p in AssociatedBlackMarketUnlocks)
             {
-                Debug.Log($"Unlock: Adding to black market pool! {DetailedDescription.TextBoundedByColor("#ff0000", p.UnlockedName)}");
-                PowerUp.AddBlackMarketPowerToPool(p);
+                if (!p.IsInPowerPool)
+                {
+                    Debug.Log($"Unlock: Adding to black market pool! {DetailedDescription.TextBoundedByColor("#ff0000", p.UnlockedName)}");
+                    PowerUp.AddBlackMarketPowerToPool(p);
+                }
+                else
+                {
+                    Debug.Log($"Unlock SKIPPED: already in normal pool! {DetailedDescription.TextBoundedByColor("#ff0000", p.UnlockedName)}");
+                }
             }
+        }
     }
     public bool TryUnlock()
     {

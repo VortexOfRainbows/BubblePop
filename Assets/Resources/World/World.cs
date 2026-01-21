@@ -9,9 +9,11 @@ public class World : MonoBehaviour
     public struct TileData
     {
         public byte ProgressionNumber;
-        public TileData(byte progressionNum = byte.MaxValue)
+        public bool IsRoadblock;
+        public TileData(byte progressionNum = byte.MaxValue, bool roadBlock = false)
         {
             ProgressionNumber = progressionNum;
+            IsRoadblock = roadBlock;
         }
     }
     private static Vector2Int tileDataOffset;
@@ -36,11 +38,20 @@ public class World : MonoBehaviour
             Debug.Log($"Tile SET out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
             return;
         }
-        if(Instance.DepthTilemap != null && Instance.DepthTilemap.isActiveAndEnabled)
+        bool drawMaps1 = Instance.DepthTilemap.isActiveAndEnabled;
+        bool drawMaps2 = Instance.DepthTilemap.isActiveAndEnabled;
+        #if UNITY_EDITOR
+        drawMaps1 = drawMaps2 = true;
+        #endif
+        if (Instance.DepthTilemap != null && drawMaps1)
         {
             byte progNumber = newData.ProgressionNumber;
             Color c = Color.Lerp(Color.Lerp(Color.red, Color.blue, progNumber / 20f % 1), Color.green, (progNumber / 5f) % 1).WithAlpha(0.5f);
             Instance.DepthTilemap.SetTile(new (pos, DepthTile, c, Matrix4x4.identity), true);
+        }
+        if (Instance.RoadblockTilemap != null && drawMaps2 && newData.IsRoadblock)
+        {
+            Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
         }
         tileData[pointPos.x, pointPos.y] = newData;
     }
@@ -49,7 +60,7 @@ public class World : MonoBehaviour
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
     public static bool GeneratingBorder { get; set; } = false;
     public DualGridTilemap Tilemap;
-    [SerializeField] private Tilemap DepthTilemap;
+    [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap;
     public NatureOrderer NatureParent;
     public Transform PlayerSpawnPosition;
     public List<WorldNode> nodes;

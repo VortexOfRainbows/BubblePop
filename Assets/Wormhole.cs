@@ -37,23 +37,24 @@ public class Wormhole : MonoBehaviour
         Visual.transform.localScale = new Vector3(ScaleMultiplier, ScaleMultiplier, 1);
         FixedUpdate();   
     }
+    public float PlayerDistMult { get; private set; } = 1;
     public void FixedUpdate()
     {
-        float playerDistMult = 1;
+        PlayerDistMult = 1;
         if(RoadblockPortal)
         {
             float dist = Player.Instance.Distance(gameObject);
-            playerDistMult = Mathf.Sqrt(Mathf.Clamp(1.4f - dist / 12f, 0, 1));
-            playerDistMult *= playerDistMult;
-            if (playerDistMult <= 0)
+            PlayerDistMult = Mathf.Sqrt(Mathf.Clamp(1.4f - dist / 12f, 0, 1));
+            if (PlayerDistMult <= 0)
             {
+                Timer = 0;
                 Visual.SetActive(false);
                 return;
             }
             else
                 Visual.SetActive(true);
         }
-        Visual.transform.localScale = new Vector3(ScaleMultiplier * playerDistMult, ScaleMultiplier * playerDistMult, 1);
+        Visual.transform.localScale = new Vector3(ScaleMultiplier * PlayerDistMult, ScaleMultiplier * PlayerDistMult, 1);
         //if (Input.GetMouseButton(1))
         //{
         //    Timer = 0;
@@ -74,14 +75,14 @@ public class Wormhole : MonoBehaviour
         }
         else
         {
-            int amt = RoadblockPortal ? 1 : Utils.RandInt(1, 3);
+            int amt = RoadblockPortal ? (Utils.RandFloat() < PlayerDistMult ? 1 : 0) : Utils.RandInt(1, 3);
             for (int i = 0; i < amt; ++i)
             {
                 Vector2 circular = new Vector2(1 * Scale, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
                 float r = Utils.RandFloat(0.2f, 1);
                 r = Mathf.Max(r, Utils.RandFloat(1));
-                ParticleManager.NewParticle((Vector2)transform.position + 5 * ParticleEffectMult * r * circular * playerDistMult, Utils.RandFloat(1, 3), circular * Utils.RandFloat(1, 5), 1,
-                    Utils.RandFloat(0.4f, 0.7f), 3, (Color.red * (r + 0.1f) * 1.5f).WithAlphaMultiplied(playerDistMult));
+                ParticleManager.NewParticle((Vector2)transform.position + 5 * ParticleEffectMult * r * circular * PlayerDistMult, Utils.RandFloat(1, 3), circular * Utils.RandFloat(1, 5), 1,
+                    Utils.RandFloat(0.4f, 0.7f), 3, (Color.red * (r + 0.1f) * 1.5f).WithAlphaMultiplied(PlayerDistMult));
             }
         }
 
@@ -134,10 +135,10 @@ public class Wormhole : MonoBehaviour
             Scale = Mathf.Lerp(Scale, 1, 0.05f);
             Scale = Mathf.Lerp(Scale, Scale + ScaleSpeed, 0.5f);
         }
-        Timer += Time.fixedDeltaTime * (RoadblockPortal ? 15f : 10);
+        Timer += Time.fixedDeltaTime * (RoadblockPortal ? 22f : 10);
         transform.localScale = Vector3.one * Scale;
-        float alphaM = RoadblockPortal ? playerDistMult * 0.7f : 1.0f;
-        Light.intensity = p * p * LightIntensity / 5f * Scale * alphaM * playerDistMult;
+        float alphaM = RoadblockPortal ? PlayerDistMult * 0.7f : 1.0f;
+        Light.intensity = p * p * LightIntensity / 5f * Scale * alphaM * PlayerDistMult;
         Light.pointLightOuterRadius = 0.7f * ScaleMultiplier * Scale;
         for (int i = 0; i < Rings.Count; ++i)
         {

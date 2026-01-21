@@ -36,7 +36,7 @@ Less Important (mostly non-issues or complete already), but in consideration:
 
 Current Task List:
 1. Roadblocks that prevent movement between stages during combat (backwards) and before combat (forwards)
-	1. Roadblocks lifted when pylon is stabilized
+	1. Roadblocks lifted when pylon is stabilized, put back when a pylon in reinstated
 2. Quest List UI that says stuff like:
 	1. Activate the First Pylon => Clear 2 Waves of Invaders => Stabilize the Pylon => Activate the Next Pylon
 3. Pointers that show you the direction to the next Pylon
@@ -51,6 +51,8 @@ Done:
 2. Out of bounds players are pushed into inbound tiles rather than being killed
 3. Some primitive methods that allow for segmenting the world into unlockable regions
 4. WIP roadblocks
+	1. Currently they look okay (functional), but are missing some key features
+5. Fix some bugs regarding power achievements double dipping in the pool
 
 1/15/26 to 1/19/26
 1. Import the King Oil Krita files (for future use)

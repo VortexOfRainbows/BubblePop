@@ -158,6 +158,7 @@ public class WorldNode : MonoBehaviour
         if (bestStart == null || bestEnd == null || bestDist <= 0 || bestDist > 2000)
             return;
         OverrideTiles = bestStart.OverrideTiles && bestEnd.OverrideTiles;
+        CanGenerateRoadBlock = true;
         GeneratePath(bestStart.Position, bestEnd.Position);
     }
     public void GeneratePath(Vector2 start, Vector2 end)
@@ -170,7 +171,7 @@ public class WorldNode : MonoBehaviour
         float iterAmt = 1f / (totalPoints + 1);
         int i = 0;
         Vector2 subNodeConPos = Vector2.zero;
-        Vector2 subNodePos = Vector2.zero;  
+        Vector2 subNodePos = Vector2.zero;
         for(float per = iterAmt; per < 1; per += iterAmt)
         {
             float sin = Mathf.Sin(Mathf.PI * per);
@@ -209,6 +210,7 @@ public class WorldNode : MonoBehaviour
             start += norm;
         }
     }
+    private bool CanGenerateRoadBlock { get; set; } = false;
     public void DiamondBrush(Vector2 center, int radias)
     {
         var tile = TileID.Grass.TileType;
@@ -220,14 +222,27 @@ public class WorldNode : MonoBehaviour
             for(int i = -sin; i <= sin; ++i)
             {
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
+                bool canGenerate = World.GetTileData(v).IsRoadblock;
                 if(World.Tilemap.Map.GetTile(v) == null || (World.SolidTile(v) && OverrideTiles))
                 {
                     World.Tilemap.Map.SetTile(v, tile);
-                    World.SetTileData(v, new World.TileData(GenerationNumber));
-                    //if(Utils.RandFloat(1) < 0.2f)
+                    //Instantiate(Main.PrefabAssets.Roadblock, center + new Vector2(i * 2, j * 2), Quaternion.identity);
+                    //for(int x = -2; x <= 2; ++x)
                     //{
-                    //    Instantiate(Main.PrefabAssets.Roadblock, center, Quaternion.identity);
+                    //    for(int y = -2; y <= 2; ++y)
+                    //    {
+                    //        var v2 = v + new Vector3Int(x, y);
+                    //        if (World.Tilemap.Map.GetTile(v2) == null)
+                    //            World.SetTileData(v2, new World.TileData(GenerationNumber, true));
+                    //    }
                     //}
+                    World.SetTileData(v, new World.TileData(GenerationNumber, true));
+                    canGenerate = true;
+                }
+                if (i == 0 && j == 0 && CanGenerateRoadBlock && canGenerate)
+                {
+                    Instantiate(Main.PrefabAssets.Roadblock, center, Quaternion.identity);
+                    CanGenerateRoadBlock = false;
                 }
             }
             percent += iter;
