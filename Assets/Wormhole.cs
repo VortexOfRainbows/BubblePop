@@ -30,6 +30,7 @@ public class Wormhole : MonoBehaviour
     public float Scale = 0;
     public bool Closing = false;
     public bool StayOpen = false;
+    public bool RoadblockPortal = false;
     public bool IsSkullPortal { get; set; } = false;
     public void Start()
     {
@@ -59,7 +60,7 @@ public class Wormhole : MonoBehaviour
         }
         else
         {
-            int amt = Utils.RandInt(1, 3);
+            int amt = RoadblockPortal ? 1 : Utils.RandInt(1, 3);
             for (int i = 0; i < amt; ++i)
             {
                 Vector2 circular = new Vector2(1 * Scale, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
@@ -122,6 +123,7 @@ public class Wormhole : MonoBehaviour
         transform.localScale = Vector3.one * Scale;
         Light.intensity = p * p * LightIntensity / 5f * Scale;
         Light.pointLightOuterRadius = 0.7f * ScaleMultiplier * Scale;
+        float alphaM = RoadblockPortal ? 0.9f : 1.0f;
         for (int i = 0; i < Rings.Count; ++i)
         {
             float aPercent = (float)(i + 1) / Rings.Count;
@@ -129,7 +131,8 @@ public class Wormhole : MonoBehaviour
             float iPercent = 1 - percent;
             float myPercent = p * 0.4f + 0.6f * Mathf.Min(1, p - iPercent * 2);
             GameObject ring = Rings[i];
-            ring.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, myPercent * aPercent);
+            float x = RoadblockPortal ? 1.0f - i * 0.05f : 1.0f;
+            ring.GetComponent<SpriteRenderer>().color = new Color(x, x, x, myPercent * aPercent * alphaM);
             Vector2 circular = new Vector2(iPercent * 0.012f, 0).RotatedBy(Mathf.PI * percent * 4 + Timer * iPercent);
             ring.transform.localPosition = new Vector3(circular.x, circular.y, ring.transform.localPosition.z);
 

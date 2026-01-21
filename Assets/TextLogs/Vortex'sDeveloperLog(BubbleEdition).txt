@@ -49,7 +49,8 @@ Done:
 1. Custom Tile Data for which "Level" a tile belongs to, to prevent spawning enemies there until you are at that level (and for general organization)
 	1. Added a way to visualize this data in editor
 2. Out of bounds players are pushed into inbound tiles rather than being killed
-3. Some methods that allow for segmenting the world into unlockable regions
+3. Some primitive methods that allow for segmenting the world into unlockable regions
+4. WIP roadblocks
 
 1/15/26 to 1/19/26
 1. Import the King Oil Krita files (for future use)

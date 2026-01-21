@@ -86,6 +86,7 @@ public static class WaveDirector
     public static int SkullEnemiesActive { get; set; } = 0;
     public static void Reset()
     {
+        Main.PylonProgressionNumber = 0;
         Player.PickedLowerDifficultyWaveCard = false;
         CurrentAssociatedWaveCardNumber = 0;
         WaveNum = 0;

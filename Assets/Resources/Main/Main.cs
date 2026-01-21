@@ -15,7 +15,7 @@ public partial class Main : MonoBehaviour
     public static Pylon CurrentPylon { get; private set; } = null;
     private static Pylon PrevPylon { get; set; } = null;
     public static bool JustSwitchedPylons => PrevPylon != CurrentPylon && PrevPylon != null;
-    public static byte PylonProgressionNumber;
+    public static byte PylonProgressionNumber { get; set; } = 0;
     public static void FinishPylon()
     {
         CurrentPylon = null;
@@ -42,6 +42,7 @@ public partial class Main : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        transform.position = Vector3.zero;
         GameUpdateCount++;
         Projectile.StaticUpdate();
         if (!WavesUnleashed && Vector2.Distance(Player.Position, PylonPositon) > PylonActivationDist)
@@ -130,6 +131,10 @@ public partial class Main : MonoBehaviour
         {
             foreach(UnlockCondition u in UnlockCondition.Unlocks.Values)
                 PopUpTextUI.UnlockQueue.Enqueue(u);
+        }
+        if (DebugCheats && Input.GetKeyDown(KeyCode.K) && Input.GetKey(KeyCode.RightShift))
+        {
+            PylonProgressionNumber++;
         }
         UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
     }
