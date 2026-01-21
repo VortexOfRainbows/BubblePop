@@ -39,7 +39,21 @@ public class Wormhole : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        Visual.transform.localScale = new Vector3(ScaleMultiplier, ScaleMultiplier, 1);
+        float playerDistMult = 1;
+        if(RoadblockPortal)
+        {
+            float dist = Player.Instance.Distance(gameObject);
+            playerDistMult = Mathf.Sqrt(Mathf.Clamp(1.4f - dist / 12f, 0, 1));
+            playerDistMult *= playerDistMult;
+            if (playerDistMult <= 0)
+            {
+                Visual.SetActive(false);
+                return;
+            }
+            else
+                Visual.SetActive(true);
+        }
+        Visual.transform.localScale = new Vector3(ScaleMultiplier * playerDistMult, ScaleMultiplier * playerDistMult, 1);
         //if (Input.GetMouseButton(1))
         //{
         //    Timer = 0;
@@ -49,7 +63,7 @@ public class Wormhole : MonoBehaviour
         //    Closing = false;
         //}
         float p = Mathf.Min(2, Timer / 2f);
-        if(p < 1 && !Closing)
+        if(p < 1 && !Closing && !RoadblockPortal)
         {
             int amt = Utils.RandInt(3, 6);
             for (int i = 0; i < amt; ++i)
@@ -66,7 +80,8 @@ public class Wormhole : MonoBehaviour
                 Vector2 circular = new Vector2(1 * Scale, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
                 float r = Utils.RandFloat(0.2f, 1);
                 r = Mathf.Max(r, Utils.RandFloat(1));
-                ParticleManager.NewParticle((Vector2)transform.position + circular * r * 5 * ParticleEffectMult, Utils.RandFloat(1, 3), circular * Utils.RandFloat(1, 5), 1, Utils.RandFloat(0.4f, 0.7f), 3, Color.red * (r + 0.1f) * 1.5f);
+                ParticleManager.NewParticle((Vector2)transform.position + 5 * ParticleEffectMult * r * circular * playerDistMult, Utils.RandFloat(1, 3), circular * Utils.RandFloat(1, 5), 1,
+                    Utils.RandFloat(0.4f, 0.7f), 3, (Color.red * (r + 0.1f) * 1.5f).WithAlphaMultiplied(playerDistMult));
             }
         }
 
@@ -94,7 +109,7 @@ public class Wormhole : MonoBehaviour
             }
         }
 
-        if(Closing)
+        if(Closing && Timer2 > 0)
         {
             if(Timer2 > 50)
             {
@@ -119,11 +134,11 @@ public class Wormhole : MonoBehaviour
             Scale = Mathf.Lerp(Scale, 1, 0.05f);
             Scale = Mathf.Lerp(Scale, Scale + ScaleSpeed, 0.5f);
         }
-        Timer += Time.fixedDeltaTime * 10;
+        Timer += Time.fixedDeltaTime * (RoadblockPortal ? 15f : 10);
         transform.localScale = Vector3.one * Scale;
-        Light.intensity = p * p * LightIntensity / 5f * Scale;
+        float alphaM = RoadblockPortal ? playerDistMult * 0.7f : 1.0f;
+        Light.intensity = p * p * LightIntensity / 5f * Scale * alphaM * playerDistMult;
         Light.pointLightOuterRadius = 0.7f * ScaleMultiplier * Scale;
-        float alphaM = RoadblockPortal ? 0.9f : 1.0f;
         for (int i = 0; i < Rings.Count; ++i)
         {
             float aPercent = (float)(i + 1) / Rings.Count;
@@ -131,8 +146,8 @@ public class Wormhole : MonoBehaviour
             float iPercent = 1 - percent;
             float myPercent = p * 0.4f + 0.6f * Mathf.Min(1, p - iPercent * 2);
             GameObject ring = Rings[i];
-            float x = RoadblockPortal ? 1.0f - i * 0.05f : 1.0f;
-            ring.GetComponent<SpriteRenderer>().color = new Color(x, x, x, myPercent * aPercent * alphaM);
+            float x = RoadblockPortal ? 1.0f - i * 0.01f : 1.0f;
+            ring.GetComponent<SpriteRenderer>().color = new Color(x, x, x, myPercent * aPercent * (RoadblockPortal ? Mathf.Min(1, alphaM + 0.08f * i) : 1));
             Vector2 circular = new Vector2(iPercent * 0.012f, 0).RotatedBy(Mathf.PI * percent * 4 + Timer * iPercent);
             ring.transform.localPosition = new Vector3(circular.x, circular.y, ring.transform.localPosition.z);
 

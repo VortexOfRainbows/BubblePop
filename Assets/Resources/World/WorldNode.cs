@@ -224,6 +224,10 @@ public class WorldNode : MonoBehaviour
                 {
                     World.Tilemap.Map.SetTile(v, tile);
                     World.SetTileData(v, new World.TileData(GenerationNumber));
+                    //if(Utils.RandFloat(1) < 0.2f)
+                    //{
+                    //    Instantiate(Main.PrefabAssets.Roadblock, center, Quaternion.identity);
+                    //}
                 }
             }
             percent += iter;

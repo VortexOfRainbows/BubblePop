@@ -134,6 +134,7 @@ public partial class Main : MonoBehaviour
         }
         if (DebugCheats && Input.GetKeyDown(KeyCode.K) && Input.GetKey(KeyCode.RightShift))
         {
+            Main.WavesUnleashed = true;
             PylonProgressionNumber++;
         }
         UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";

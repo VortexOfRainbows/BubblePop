@@ -8,11 +8,13 @@ public class Roadblock : MonoBehaviour
     {
         if(Main.PylonProgressionNumber > ProgressionLevel)
         {
-            portal.Closing = true;
             //The logic here should be like this:
             //If same level as portal, on
+
             //If one level behind the portal, on if wave is active
+
             //If two levels behind the portal, close
+            portal.Closing = true;
         }
         if (portal == null)
             Destroy(gameObject);
