@@ -82,7 +82,12 @@ public class World : MonoBehaviour
     public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds)
     {
         var data = GetTileData(RealTileMap.Map.WorldToCell(position));
-        return WithinBorders(position) && (!IncludeProgressionBounds || data.ProgressionNumber == Main.PylonProgressionNumber);
+        bool hasProgressedPastThisTile = data.ProgressionNumber < Main.PylonProgressionNumber;
+        bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
+        return WithinBorders(position) && 
+            (!IncludeProgressionBounds || 
+            (hasProgressedPastThisTile && !WaveDirector.WaveActive) ||
+            currentlyOnThisProgressionTier);
     }
     public void Start()
     {

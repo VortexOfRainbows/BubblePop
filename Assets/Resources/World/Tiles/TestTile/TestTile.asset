@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 354ada615d12a894f938c2f1bac80208, type: 3}
-  m_Name: DirtTile
+  m_Name: TestTile
   m_EditorClassIdentifier: 
-  TileTexture: {fileID: 2800000, guid: d1a3b1f3fd6ffc944be5fd218ca9238b, type: 3}
-  LayerOffset: -2
-  RealTileMapVariant: {fileID: 11400000, guid: 3181d3395d4fe0942a54930a16706ea5, type: 2}
-  BorderTileMapVariant: {fileID: 11400000, guid: b8235e735d6f61846bd9d7b0b6bd3149, type: 2}
+  TileTexture: {fileID: 2800000, guid: 70dfab225d731634796e060be270b8b1, type: 3}
+  LayerOffset: -3
+  RealTileMapVariant: {fileID: 11400000, guid: a820b05f88cb9334fbf7c036921de9c6, type: 2}
+  BorderTileMapVariant: {fileID: 11400000, guid: 570593b1ca34898448c336388954b948, type: 2}
   BonusTileVariations: []
   ColorModifier: {r: 1, g: 1, b: 1, a: 1}

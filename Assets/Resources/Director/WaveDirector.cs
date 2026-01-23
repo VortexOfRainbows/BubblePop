@@ -82,7 +82,8 @@ public static class WaveDirector
     public static int HighScoreWaveNum = 0;
     public static float WaveMult = 1.0f;
     public static float EnemyScalingFactor => TemporaryModifiers.EnemyScaling;
-    public static bool WaveActive = false, WaitingForCardDraw = false;
+    public static bool WaveActive { get; set; } = false;
+    public static bool WaitingForCardDraw { get; set; } = false;
     public static int SkullEnemiesActive { get; set; } = 0;
     public static void Reset()
     {

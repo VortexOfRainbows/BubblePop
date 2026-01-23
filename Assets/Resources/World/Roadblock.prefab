@@ -84,6 +84,7 @@ MonoBehaviour:
   portal: {fileID: 4420844074899060151}
   c2D: {fileID: 5198299909787611812}
   ProgressionLevel: 0
+  counter: 0
 --- !u!1001 &2597765390034455984
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -98,6 +99,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1825333993674995719, guid: e1fc2a84b6f7c574a99a70c8f10735fb, type: 3}
       propertyPath: StayOpen
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825333993674995719, guid: e1fc2a84b6f7c574a99a70c8f10735fb, type: 3}
+      propertyPath: IsRoadblock
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1825333993674995719, guid: e1fc2a84b6f7c574a99a70c8f10735fb, type: 3}

@@ -30,10 +30,15 @@ public class Wormhole : MonoBehaviour
     public float Scale = 0;
     public bool Closing = false;
     public bool StayOpen = false;
-    public bool RoadblockPortal = false;
+    public bool IsRoadblock = false;
     public bool IsSkullPortal { get; set; } = false;
     public void Start()
     {
+        Timer = 0;
+        Timer2 = 0;
+        ScaleSpeed = 0;
+        Scale = 0;
+        Closing = false;
         Visual.transform.localScale = new Vector3(ScaleMultiplier, ScaleMultiplier, 1);
         FixedUpdate();   
     }
@@ -41,7 +46,7 @@ public class Wormhole : MonoBehaviour
     public void FixedUpdate()
     {
         PlayerDistMult = 1;
-        if(RoadblockPortal)
+        if(IsRoadblock)
         {
             float dist = Player.Instance.Distance(gameObject);
             PlayerDistMult = Mathf.Sqrt(Mathf.Clamp(1.4f - dist / 12f, 0, 1));
@@ -64,7 +69,7 @@ public class Wormhole : MonoBehaviour
         //    Closing = false;
         //}
         float p = Mathf.Min(2, Timer / 2f);
-        if(p < 1 && !Closing && !RoadblockPortal)
+        if(p < 1 && !Closing && !IsRoadblock)
         {
             int amt = Utils.RandInt(3, 6);
             for (int i = 0; i < amt; ++i)
@@ -75,7 +80,7 @@ public class Wormhole : MonoBehaviour
         }
         else
         {
-            int amt = RoadblockPortal ? (Utils.RandFloat() < PlayerDistMult ? 1 : 0) : Utils.RandInt(1, 3);
+            int amt = IsRoadblock ? (Utils.RandFloat() < PlayerDistMult ? 1 : 0) : Utils.RandInt(1, 3);
             for (int i = 0; i < amt; ++i)
             {
                 Vector2 circular = new Vector2(1 * Scale, 0).RotatedBy(Mathf.PI * Utils.RandFloat(2));
@@ -119,7 +124,9 @@ public class Wormhole : MonoBehaviour
                 Scale = Mathf.Lerp(Scale, Mathf.Max(0, sin), 0.1f);
             }
             if (Scale <= 0.2f)
+            {
                 Kill();
+            }
         }
         else
         {
@@ -135,9 +142,9 @@ public class Wormhole : MonoBehaviour
             Scale = Mathf.Lerp(Scale, 1, 0.05f);
             Scale = Mathf.Lerp(Scale, Scale + ScaleSpeed, 0.5f);
         }
-        Timer += Time.fixedDeltaTime * (RoadblockPortal ? 22f : 10);
+        Timer += Time.fixedDeltaTime * (IsRoadblock ? 22f : 10);
         transform.localScale = Vector3.one * Scale;
-        float alphaM = RoadblockPortal ? PlayerDistMult * 0.7f : 1.0f;
+        float alphaM = IsRoadblock ? PlayerDistMult * 0.7f : 1.0f;
         Light.intensity = p * p * LightIntensity / 5f * Scale * alphaM * PlayerDistMult;
         Light.pointLightOuterRadius = 0.7f * ScaleMultiplier * Scale;
         for (int i = 0; i < Rings.Count; ++i)
@@ -147,8 +154,8 @@ public class Wormhole : MonoBehaviour
             float iPercent = 1 - percent;
             float myPercent = p * 0.4f + 0.6f * Mathf.Min(1, p - iPercent * 2);
             GameObject ring = Rings[i];
-            float x = RoadblockPortal ? 1.0f - i * 0.01f : 1.0f;
-            ring.GetComponent<SpriteRenderer>().color = new Color(x, x, x, myPercent * aPercent * (RoadblockPortal ? Mathf.Min(1, alphaM + 0.08f * i) : 1));
+            float x = IsRoadblock ? 1.0f - i * 0.01f : 1.0f;
+            ring.GetComponent<SpriteRenderer>().color = new Color(x, x, x, myPercent * aPercent * (IsRoadblock ? Mathf.Min(1, alphaM + 0.08f * i) : 1));
             Vector2 circular = new Vector2(iPercent * 0.012f, 0).RotatedBy(Mathf.PI * percent * 4 + Timer * iPercent);
             ring.transform.localPosition = new Vector3(circular.x, circular.y, ring.transform.localPosition.z);
 
@@ -165,6 +172,9 @@ public class Wormhole : MonoBehaviour
             Vector2 circular = new Vector2(3 + Utils.RandFloat(13), 0).RotatedBy(Mathf.PI * (i / 5f * 2) + Utils.RandFloat(Mathf.PI * 0.4f)) * ParticleEffectMult;
             ParticleManager.NewParticle(transform.position, Utils.RandFloat(2, 3), circular, 5, Utils.RandFloat(0.5f, 1.5f), 3, Color.red * 1.5f);
         }
-        Destroy(gameObject);
+        if (!IsRoadblock)
+            Destroy(gameObject);
+        else
+            gameObject.SetActive(false);
     }
 }

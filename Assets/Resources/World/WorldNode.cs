@@ -241,7 +241,8 @@ public class WorldNode : MonoBehaviour
                 }
                 if (i == 0 && j == 0 && CanGenerateRoadBlock && canGenerate)
                 {
-                    Instantiate(Main.PrefabAssets.Roadblock, center, Quaternion.identity);
+                    Roadblock r = Instantiate(Main.PrefabAssets.Roadblock, center, Quaternion.identity).GetComponent<Roadblock>();
+                    r.ProgressionLevel = GenerationNumber;
                     CanGenerateRoadBlock = false;
                 }
             }
