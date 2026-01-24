@@ -89,8 +89,16 @@ public class WorldNode : MonoBehaviour
             }
         }
         GeneratePaths(PreviousNode);
-        for(int i = FeatureParent.childCount - 1; i >= 0; --i)
-            FeatureParent.GetChild(i).parent = world.NatureParent.transform;
+        if(FeatureParent != null)
+        {
+            for (int i = FeatureParent.childCount - 1; i >= 0; --i)
+                FeatureParent.GetChild(i).parent = world.NatureParent.transform;
+        }
+        if(PylonParent != null)
+        {
+            for (int i = PylonParent.childCount - 1; i >= 0; --i)
+                PylonParent.GetChild(i).parent = world.PylonParent;
+        }
         //FeatureParent.DetachChildren();
         gameObject.SetActive(false);
     }
@@ -102,6 +110,7 @@ public class WorldNode : MonoBehaviour
     }
     public Transform ConnectorParent;
     public Transform FeatureParent;
+    public Transform PylonParent;
     public int Zone = 0;
     public float Weighting = 1.0f;
     public readonly List<NodeConnector> Connectors = new();

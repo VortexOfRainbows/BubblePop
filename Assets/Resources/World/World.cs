@@ -62,6 +62,7 @@ public class World : MonoBehaviour
     public DualGridTilemap Tilemap;
     [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap;
     public NatureOrderer NatureParent;
+    public Transform PylonParent;
     public Transform PlayerSpawnPosition;
     public List<WorldNode> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
