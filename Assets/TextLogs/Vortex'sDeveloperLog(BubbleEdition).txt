@@ -42,13 +42,14 @@ Current Task List:
 
 Done: 
 
-1/23/26 to 1/24/26
+1/23/26 to 1/25/26
 1. Add Roadblock Logic:
 	1. Roadblocks are now lifted when a wave passes but come back when a wave is active
 	2. Roadblocks now have their wave numbers properly put in place
 2. Player is now only pushed out of appropriate tiles during and before waves
 3. WIP Tile Reworks (Fanny)
 4. Some minor changes and bug fixes to the repo and sprite art
+5. New David sprite reworks (Token Pouch and Philosopher's Stone)
 
 1/19/26 to 1/20/26
 1. Custom Tile Data for which "Level" a tile belongs to, to prevent spawning enemies there until you are at that level (and for general organization)
