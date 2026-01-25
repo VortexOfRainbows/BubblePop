@@ -8,16 +8,17 @@ public static class TileID
     private static int LoadIndexCount = 0;
     public static readonly List<DualGridTile> TileTypes = new();
     public static readonly Dictionary<TileBase, DualGridTile> TileToParentTile = new();
-    public static readonly DualGridTile Dirt = Load("Dirt/DirtTile");
-    public static readonly DualGridTile Grass = Load("Grass/GrassTile");
-    public static readonly DualGridTile Cobblestone = Load("Cobblestone/CobblestoneTile");
-    public static readonly DualGridTile Plank = Load("Wood/WoodTile");
-    public static readonly DualGridTile DarkGrass = Load("DarkGrass/DarkGrassTile");
-    public static readonly DualGridTile TestTile = Load("TestTile/TestTile");
-    public static DualGridTile Load(string path)
+    public static readonly DualGridTile Dirt = Load("Dirt/DirtTile", 0);
+    public static readonly DualGridTile Grass = Load("Grass/GrassTile", 1);
+    public static readonly DualGridTile Cobblestone = Load("Cobblestone/CobblestoneTile", 3);
+    public static readonly DualGridTile Plank = Load("Wood/WoodTile", 4);
+    public static readonly DualGridTile DarkGrass = Load("DarkGrass/DarkGrassTile", 2);
+    public static readonly DualGridTile TestTile = Load("TestTile/TestTile", 0);
+    public static DualGridTile Load(string path, int tileOrder = 0)
     {
         var tile = Resources.Load<DualGridTile>($"World/Tiles/{path}");
         tile.TypeIndex = LoadIndexCount++;
+        tile.LayerOffset = tileOrder;
 
         TileTypes.Add(tile);
         TileToParentTile.Add(tile.FloorTileType, tile);

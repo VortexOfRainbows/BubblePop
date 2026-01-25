@@ -74,7 +74,7 @@ public class DualGridTile : ScriptableObject
 
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
-    public int LayerOffset = 0;
+    public int LayerOffset { get; set; } = 0;
     [SerializeField]
     private Tile RealTileMapVariant;
     [SerializeField]
