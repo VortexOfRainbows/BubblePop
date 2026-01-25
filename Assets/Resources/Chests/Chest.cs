@@ -32,7 +32,7 @@ public class Chest : MonoBehaviour
         }
         else
         {
-            if (RB.mass > 1.1f && collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p) && !SpecializedImmuneFrames.Contains(p))
+            if (RB.mass > 1.1f && collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p) && !SpecializedImmuneFrames.Contains(p) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
             {
                 if (--p.Penetrate == 0)
                     p.Kill();
