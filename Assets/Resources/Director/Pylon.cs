@@ -14,6 +14,7 @@ public class Pylon : MonoBehaviour
     public int WavesPassed { get; private set; } = 0;
     public bool EndlessPylon = false;
     public bool Complete { get; private set; } = false;
+    public bool Purified { get; private set; } = false;
     public void FixedUpdate()
     {
         bool nearby = Player.Position.Distance(transform.position) < Main.PylonActivationDist;
@@ -33,6 +34,15 @@ public class Pylon : MonoBehaviour
                 CompletionAnimation();
             else
                 ActiveAnim();
+            if(CompleteAnimCounter >= 200 && Main.CurrentPylon == this)
+            {
+                Purified = true;
+                int nextLevel = ProgressionNumber + 1;
+                foreach (Roadblock rb in World.Roadblocks)
+                    if (rb.ProgressionLevel == nextLevel || rb.ProgressionLevel == ProgressionNumber)
+                        SummonLightning(Crystal.transform.position, rb.transform.position, CompletionColor(), Color.red);
+                Main.FinishPylon();
+            }
         }
         if(SoundActive)
             sound.PylonSoundUpdate(this);
@@ -172,12 +182,10 @@ public class Pylon : MonoBehaviour
         if(!EndlessPylon)
         {
             if (WavesPassed >= WavesRequired)
-            {
                 CompletePylon();
-                if(Main.CurrentPylon == this)
-                    Main.FinishPylon();
-            }
         }
+        else
+            WavesRequired++;
     }
     public void CompletePylon()
     {
@@ -205,6 +213,26 @@ public class Pylon : MonoBehaviour
             ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 1.2f) * 1.0f, .2f * scaleMult), Vector2.zero, 0, 1.2f, 4, Color.white * 0.8f, -toPrev.ToRotation() * Mathf.Rad2Deg);
             ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 2.3f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.2f, 4, c * 0.6f, -toPrev.ToRotation() * Mathf.Rad2Deg);
             ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 2.3f) * 1.0f, .1f * scaleMult), Vector2.zero, 0, 1.2f, 4, Color.white * 0.6f, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, Utils.RandFloat(0.7f, 1.5f), 3, c * 1.5f);
+            prev = pos;
+        }
+    }
+    public static void SummonLightning(Vector2 start, Vector2 end, Color c1, Color c2)
+    {
+        float dist = Vector2.Distance(start, end);
+        float distRounded = (int)dist;
+        Vector2 prev = start;
+        for (int i = 0; i < distRounded; i++)
+        {
+            float perc = i / distRounded;
+            float iPer = 1 - perc;
+            float iPer2 = 1 - perc * perc;
+            Color c = Color.Lerp(c1, c2, perc);
+            float scaleMult = 1.25f + 0.75f * iPer;
+            Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
+            Vector2 toPrev = prev - pos;
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .6f * scaleMult), Vector2.zero, 0, 1.5f, 4, c * iPer2, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.5f, 4, Color.white * iPer2, -toPrev.ToRotation() * Mathf.Rad2Deg);
             ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, Utils.RandFloat(0.7f, 1.5f), 3, c * 1.5f);
             prev = pos;
         }

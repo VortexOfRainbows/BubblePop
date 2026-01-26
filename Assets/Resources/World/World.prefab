@@ -240,6 +240,37 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
+--- !u!1 &3607597277270791933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3878835022692404742}
+  m_Layer: 0
+  m_Name: RoadblockParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3878835022692404742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3607597277270791933}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4348580091444727035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5433927477540987806
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,6 +694,7 @@ Transform:
   - {fileID: 5548875619580134651}
   - {fileID: 4179307788725519689}
   - {fileID: 3086789562115081537}
+  - {fileID: 3878835022692404742}
   - {fileID: 9220566089928892612}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -695,6 +727,7 @@ MonoBehaviour:
   RoadblockTilemap: {fileID: 618539107108323426}
   NatureParent: {fileID: 4565691622756431449}
   PylonParent: {fileID: 3086789562115081537}
+  RoadblockParent: {fileID: 3878835022692404742}
   PlayerSpawnPosition: {fileID: 9220566089928892612}
   nodes: []
 --- !u!1001 &1256196073106045522

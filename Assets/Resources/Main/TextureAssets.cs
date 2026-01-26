@@ -59,7 +59,7 @@ public partial class Main : MonoBehaviour
         public static GameObject BatterUpTokenPrefab;
         public static PowerUpObject PowerUpObj;
         public static GameObject PlayerPrefab = Resources.Load<GameObject>("Player/Player");
-        public static GameObject Roadblock;
+        public static GameObject Roadblock { get; private set; }
         public static void Load()
         {
             DefaultProjectile = Resources.Load<GameObject>("Projectiles/Projectile");

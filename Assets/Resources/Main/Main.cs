@@ -18,7 +18,9 @@ public partial class Main : MonoBehaviour
     public static byte PylonProgressionNumber { get; set; } = 0;
     public static void FinishPylon()
     {
+        PylonProgressionNumber = CurrentPylon.ProgressionNumber;
         CurrentPylon = null;
+        ++PylonProgressionNumber;
     }
     public static bool GamePaused => Time.timeScale == 0;
     public static bool WavesUnleashed { get; set; } = false;

@@ -12,7 +12,7 @@ public class Roadblock : MonoBehaviour
         bool PortalOn = false;
         if (Main.PylonProgressionNumber <= ProgressionLevel - 1)
             PortalOn = true;
-        else if(WaveDirector.WaveActive)
+        else if(Main.CurrentPylon != null && !Main.CurrentPylon.Purified)
             PortalOn = true;
         if (!PortalOn)
         {

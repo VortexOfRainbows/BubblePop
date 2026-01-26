@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -63,6 +64,7 @@ public class World : MonoBehaviour
     [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap;
     public NatureOrderer NatureParent;
     public Transform PylonParent;
+    public Transform RoadblockParent;
     public Transform PlayerSpawnPosition;
     public List<WorldNode> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
@@ -90,8 +92,12 @@ public class World : MonoBehaviour
             (hasProgressedPastThisTile && !WaveDirector.WaveActive) ||
             currentlyOnThisProgressionTier);
     }
+    public static readonly List<Pylon> Pylons = new();
+    public static readonly List<Roadblock> Roadblocks = new();
     public void Start()
     {
+        Pylons.Clear();
+        Roadblocks.Clear();
         m_Instance = this;
         foreach (DualGridTile tile in TileID.TileTypes)
             tile.Init();
@@ -109,6 +115,16 @@ public class World : MonoBehaviour
         Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
         Destroy(PlayerSpawnPosition.gameObject);
         Tilemap.GetComponent<TilemapRenderer>().enabled = false;
+
+        byte i = 0;
+        foreach(Pylon pylon in PylonParent.GetComponentsInChildren<Pylon>())
+        {
+            pylon.ProgressionNumber = i++;
+            Pylons.Add(pylon);
+        }
+        foreach (Roadblock rb in RoadblockParent.GetComponentsInChildren<Roadblock>())
+            Roadblocks.Add(rb);
+        Pylons.Last().EndlessPylon = true; //temporary endless pylon
     }
     public void ApproximateWorldBounds()
     {

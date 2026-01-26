@@ -252,6 +252,7 @@ public class WorldNode : MonoBehaviour
                 {
                     Roadblock r = Instantiate(Main.PrefabAssets.Roadblock, center, Quaternion.identity).GetComponent<Roadblock>();
                     r.ProgressionLevel = GenerationNumber;
+                    r.transform.SetParent(World.RoadblockParent);
                     CanGenerateRoadBlock = false;
                 }
             }
