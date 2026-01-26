@@ -37,11 +37,7 @@ Current Task List:
 1. Quest List UI that says stuff like:
 	1. Activate the First Pylon => Clear 2 Waves of Invaders => Stabilize the Pylon => Activate the Next Pylon
 2. Procedurally generate the world
-3. Figure out how to handle ambiguity of tile borders
-	1. Idea system: re-add the merge system where tiles can also merge with certain other allowed tiles	
-	2. However, reimplement this in a different way: tiles that count for merging simply spawn the visual of the merge tile below it, basically allowing the tiles to bleed into other tiles
-	3. For tiles that may blend doubly (such as dirt and grass both blending into solid grass), both tiles can simply bleed over, and the discrepancy is naturally solved.
-4. Finish Pylon and Roadblock systems:
+3. Finish Pylon and Roadblock systems:
 	1. Pylons are now stored in a list in world
 	2. The last pylon is guaranteed to be a endless pylon (for now)
 	3. Pylons open up the next game stage when complete (make sure it doesn't accidentally lock you into or out of an area)
@@ -57,6 +53,7 @@ Done:
 3. WIP Tile Reworks (Fanny)
 4. Some minor changes and bug fixes to the repo and sprite art
 5. New David sprite reworks (Token Pouch and Philosopher's Stone)
+6. Reworks to tile blending/merging to allow tiles to blend into layers that are above them for more cohesive tile blending
 
 1/19/26 to 1/20/26
 1. Custom Tile Data for which "Level" a tile belongs to, to prevent spawning enemies there until you are at that level (and for general organization)

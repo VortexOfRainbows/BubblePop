@@ -9,11 +9,11 @@ public static class TileID
     public static readonly List<DualGridTile> TileTypes = new();
     public static readonly Dictionary<TileBase, DualGridTile> TileToParentTile = new();
     public static readonly DualGridTile Dirt = Load("Dirt/DirtTile", 0);
-    public static readonly DualGridTile Grass = Load("Grass/GrassTile", 1);
-    public static readonly DualGridTile Cobblestone = Load("Cobblestone/CobblestoneTile", 3);
-    public static readonly DualGridTile Plank = Load("Wood/WoodTile", 4);
-    public static readonly DualGridTile DarkGrass = Load("DarkGrass/DarkGrassTile", 2);
-    public static readonly DualGridTile TestTile = Load("TestTile/TestTile", 0);
+    public static readonly DualGridTile Grass = Load("Grass/GrassTile", 2);
+    public static readonly DualGridTile Cobblestone = Load("Cobblestone/CobblestoneTile", 4);
+    public static readonly DualGridTile Plank = Load("Wood/WoodTile", 5);
+    public static readonly DualGridTile DarkGrass = Load("DarkGrass/DarkGrassTile", 3);
+    public static readonly DualGridTile TestTile = Load("TestTile/TestTile", 1);
     public static DualGridTile Load(string path, int tileOrder = 0)
     {
         var tile = Resources.Load<DualGridTile>($"World/Tiles/{path}");

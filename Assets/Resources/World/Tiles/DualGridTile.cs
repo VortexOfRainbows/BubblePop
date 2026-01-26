@@ -37,23 +37,36 @@ public class DualGridTile : ScriptableObject
         new(1, 1, 0)
     };
     #endregion
-    public bool AdjacentTileSameType(Vector3Int coords, Vector3Int offset)
+    public bool AdjacentTileSameType(Vector3Int coords, out bool ghostReturn)
     {
-        var adjacentTileType = World.RealTileMap.Map.GetTile(coords + offset);
-        //if(TilesThatCountForBlending != null && TilesThatCountForBlending.Contains(adjacentTileType))
-        //{
-            //return true;
-        //}
-        return adjacentTileType == TileType;
+        ghostReturn = false;
+        var adjacentTileType = World.RealTileMap.Map.GetTile(coords);
+        if (adjacentTileType == null)
+            return false;
+        if (adjacentTileType == TileType)
+            return true;
+        DualGridTile tile = TileID.GetTileIDFromTile(adjacentTileType);
+        if (World.GeneratingBorder)
+        {
+            if (tile.LayerOffset > LayerOffset && World.SolidTile(coords))
+                ghostReturn = true;
+        }
+        else if (tile.LayerOffset > LayerOffset || World.SolidTile(coords))
+            ghostReturn = true;
+        return false;
     }
     public int CalculateDisplayTile(Vector3Int coords)
     {
-        bool topRight = AdjacentTileSameType(coords, -NEIGHBOURS[0]);
-        bool botRight = AdjacentTileSameType(coords, -NEIGHBOURS[2]);
-        bool topLeft = AdjacentTileSameType(coords, -NEIGHBOURS[1]);
-        bool botLeft = AdjacentTileSameType(coords, -NEIGHBOURS[3]);
-        Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft, topRight, botLeft, botRight);
+        bool topRight = AdjacentTileSameType(coords -NEIGHBOURS[0], out bool ghostTopRight);
+        bool botRight = AdjacentTileSameType(coords -NEIGHBOURS[2], out bool ghostBotRight);
+        bool topLeft = AdjacentTileSameType(coords -NEIGHBOURS[1], out bool ghostTopLeft);
+        bool botLeft = AdjacentTileSameType(coords -NEIGHBOURS[3], out bool ghostBotLeft);
+        Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
         int i = NeighbourRelations[neighbourTuple];
+        if(i == 4 || i == 13) //weird double corner tiles do not consider ghosts
+        {
+            i = NeighbourRelations[new(topLeft, topRight, botLeft, botRight)];
+        }
         if(i == 6 && BonusTileVariations.Length > 0)
         {
             float chanceOfAlternateTexture = 1f / (1f + BonusTileVariations.Length);
@@ -68,7 +81,10 @@ public class DualGridTile : ScriptableObject
         {
             Vector3Int newPos = pos + NEIGHBOURS[i];
             int id = CalculateDisplayTile(newPos);
-            map.SetTile(newPos, id != -1 ? DisplayTileVariants[CalculateDisplayTile(newPos)] : null);
+            if(id != -1)
+            {
+                map.SetTile(newPos, DisplayTileVariants[id]);
+            }
         }
     }
 

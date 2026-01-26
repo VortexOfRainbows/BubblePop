@@ -108,6 +108,7 @@ public class World : MonoBehaviour
         Player.Instance = p;
         Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
         Destroy(PlayerSpawnPosition.gameObject);
+        Tilemap.GetComponent<TilemapRenderer>().enabled = false;
     }
     public void ApproximateWorldBounds()
     {

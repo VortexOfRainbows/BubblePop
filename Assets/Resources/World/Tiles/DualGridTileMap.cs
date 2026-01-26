@@ -19,11 +19,11 @@ public class DualGridTilemap : MonoBehaviour
         DisplayMap = new List<Tilemap>();
         BorderDisplayMap = new List<Tilemap>();
         World.GeneratingBorder = false;
-        PrepareDisplayMap(Visual, DisplayMap, Color.white, -50);
+        PrepareDisplayMap(Visual, DisplayMap, Color.white, -60);
         RefreshDisplayTilemap(Map, DisplayMap, false);
         AddDecor(Color.white, -20);
         World.GeneratingBorder = true;
-        PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -49);
+        PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -55);
         RefreshDisplayTilemap(Map, BorderDisplayMap, true);
         AddDecor(new Color(0.4f, 0.4f, 0.4f), -30);
         World.GeneratingBorder = false;
@@ -40,6 +40,7 @@ public class DualGridTilemap : MonoBehaviour
             DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + TileID.TileTypes[k].LayerOffset;
         };
     }
+    private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
     public static void RefreshDisplayTilemap(Tilemap Map, List<Tilemap> DisplayMap, bool border)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
@@ -51,8 +52,18 @@ public class DualGridTilemap : MonoBehaviour
                 var t = Map.GetTile(coords);
                 if (t != null)
                 {
-                    DualGridTile tile = TileID.GetTileIDFromTile(t);
-                    tile.UpdateDisplayTile(coords, DisplayMap[tile.TypeIndex]);
+                    if(border == World.SolidTile(coords))
+                    {
+                        DualGridTile tile = TileID.GetTileIDFromTile(t);
+                        tile.UpdateDisplayTile(coords, DisplayMap[tile.TypeIndex]);
+                        //for(int k = 0; k < 4; ++k)
+                        //{
+                        //    Vector3Int offset = coords + Adjacencies[k];
+                        //    var t2 = Map.GetTile(offset);
+                        //    if(t2 != t)
+                        //        tile.UpdateDisplayTile(offset, DisplayMap[tile.TypeIndex], true);
+                        //}
+                    }
                 }
             }
         }
