@@ -122,7 +122,7 @@ public class World : MonoBehaviour
         }
         foreach (Roadblock rb in RoadblockParent.GetComponentsInChildren<Roadblock>())
         {
-            rb.name = $"{(rb.IsEndRoadblock ? "End" : "")}Roadblock:{rb.ProgressionLevel}";
+            rb.name = $"{(rb.IsEndRoadblock ? "EndRoadblock" : "Roadblock")}:{rb.ProgressionLevel}";
             Roadblocks.Add(rb);
         }
         Pylons.Last().EndlessPylon = true; //temporary endless pylon

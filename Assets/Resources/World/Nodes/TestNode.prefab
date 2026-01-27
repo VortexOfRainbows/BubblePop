@@ -41201,6 +41201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ExitNode: 1
   EntranceNode: 1
+  OverrideTiles: 1
 --- !u!1 &7070966110504029346
 GameObject:
   m_ObjectHideFlags: 0
@@ -41265,6 +41266,9 @@ MonoBehaviour:
   IsSubNode: 0
   ConnectorParent: {fileID: 6312478758362309955}
   FeatureParent: {fileID: 4968511932184236685}
+  PylonParent: {fileID: 0}
+  Zone: -1
+  Weighting: 1
 --- !u!1 &7558453631014675353
 GameObject:
   m_ObjectHideFlags: 0

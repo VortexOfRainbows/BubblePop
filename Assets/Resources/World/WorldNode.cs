@@ -1,8 +1,4 @@
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -112,10 +108,13 @@ public class WorldNode : MonoBehaviour
     public Transform ConnectorParent;
     public Transform FeatureParent;
     public Transform PylonParent;
-    public int Zone = 0;
+    public int Zone = -1;
     public float Weighting = 1.0f;
     public readonly List<NodeConnector> Connectors = new();
     public static bool OverrideTiles = true;
+    public bool HasShop = false;
+    public bool HasCrucible = false;
+    public bool CountsAsLargeNode = false;
     public void GetClosestConnectors(List<NodeConnector> starts, List<NodeConnector> ends, 
         out NodeConnector bestStart, out NodeConnector bestEnd, out float bestDist)
     {

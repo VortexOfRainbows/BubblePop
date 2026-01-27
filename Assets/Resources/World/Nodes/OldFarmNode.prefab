@@ -64,7 +64,8 @@ MonoBehaviour:
   IsSubNode: 0
   ConnectorParent: {fileID: 8626482296010738517}
   FeatureParent: {fileID: 7061594608879932943}
-  Zone: 0
+  PylonParent: {fileID: 0}
+  Zone: -1
   Weighting: 1
 --- !u!1 &3091718402061990827
 GameObject:
