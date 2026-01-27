@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -172,6 +173,7 @@ public class WorldNode : MonoBehaviour
     }
     public void GeneratePath(Vector2 start, Vector2 end)
     {
+        bool roadBlock = CanGenerateRoadBlock;
         Vector2 startToEnd = end - start;
         Vector2 norm = startToEnd.normalized;
         Vector2 prev = start;
@@ -196,6 +198,8 @@ public class WorldNode : MonoBehaviour
             }
             ++i;
         }
+        if (roadBlock)
+            TryGeneratingEndRoadBlock = true;
         GenerateLine(prev, end);
         if(!IsSubNode)
         {
@@ -209,19 +213,42 @@ public class WorldNode : MonoBehaviour
     }
     public void GenerateLine(Vector2 start, Vector2 end)
     {
+        Vector2 bestEnd = end;
         Vector2 startToEnd = end - start;
         float dist = startToEnd.magnitude;
         Vector2 norm = startToEnd / dist;
         for (float i = 0; i < dist; ++i)
         {
             //Vector3Int v = new(Mathf.FloorToInt(start.x / 2), Mathf.FloorToInt(start.y / 2));
-            DiamondBrush(start, 2);
+            bool isRoadblock = DiamondBrush(start, 2);
             start += norm;
+            if (isRoadblock)
+            {
+                if (CanGenerateRoadBlock)
+                {
+                    Roadblock r = Instantiate(Main.PrefabAssets.Roadblock, start, Quaternion.identity).GetComponent<Roadblock>();
+                    r.ProgressionLevel = GenerationNumber;
+                    r.transform.SetParent(World.RoadblockParent);
+                    CanGenerateRoadBlock = false;
+                }
+                bestEnd = start;
+            }
+        }
+        if (TryGeneratingEndRoadBlock)
+        {
+            Roadblock r = Instantiate(Main.PrefabAssets.Roadblock, bestEnd, Quaternion.identity).GetComponent<Roadblock>();
+            r.ProgressionLevel = GenerationNumber;
+            r.transform.SetParent(World.RoadblockParent);
+            r.IsEndRoadblock = true;
+            r.portal.gameObject.SetActive(false);
+            TryGeneratingEndRoadBlock = false;
         }
     }
     private bool CanGenerateRoadBlock { get; set; } = false;
-    public void DiamondBrush(Vector2 center, int radias)
+    private bool TryGeneratingEndRoadBlock { get; set; } = false;
+    public bool DiamondBrush(Vector2 center, int radias)
     {
+        bool isValidForRoadblock = false;
         var tile = TileID.Grass.TileType;
         float percent = 0;
         float iter = 0.25f / radias;
@@ -248,15 +275,13 @@ public class WorldNode : MonoBehaviour
                     World.SetTileData(v, new World.TileData(GenerationNumber, true));
                     canGenerate = true;
                 }
-                if (i == 0 && j == 0 && CanGenerateRoadBlock && canGenerate)
+                if (i == 0 && j == 0 && canGenerate)
                 {
-                    Roadblock r = Instantiate(Main.PrefabAssets.Roadblock, center, Quaternion.identity).GetComponent<Roadblock>();
-                    r.ProgressionLevel = GenerationNumber;
-                    r.transform.SetParent(World.RoadblockParent);
-                    CanGenerateRoadBlock = false;
+                    isValidForRoadblock = true;
                 }
             }
             percent += iter;
         }
+        return isValidForRoadblock;
     }
 }

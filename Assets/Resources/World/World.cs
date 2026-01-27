@@ -85,12 +85,9 @@ public class World : MonoBehaviour
     public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds)
     {
         var data = GetTileData(RealTileMap.Map.WorldToCell(position));
-        bool hasProgressedPastThisTile = data.ProgressionNumber < Main.PylonProgressionNumber;
-        bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
-        return WithinBorders(position) && 
-            (!IncludeProgressionBounds || 
-            (hasProgressedPastThisTile && !WaveDirector.WaveActive) ||
-            currentlyOnThisProgressionTier);
+        bool currentlyOnThisProgressionTier = data.ProgressionNumber > Main.PylonProgressionNumber;
+        bool roadblock = IncludeProgressionBounds && (currentlyOnThisProgressionTier || (data.IsRoadblock && Main.PylonActive));
+        return WithinBorders(position) && !roadblock;
     }
     public static readonly List<Pylon> Pylons = new();
     public static readonly List<Roadblock> Roadblocks = new();
@@ -116,14 +113,18 @@ public class World : MonoBehaviour
         Destroy(PlayerSpawnPosition.gameObject);
         Tilemap.GetComponent<TilemapRenderer>().enabled = false;
 
-        byte i = 0;
+        int i = 0;
         foreach(Pylon pylon in PylonParent.GetComponentsInChildren<Pylon>())
         {
-            pylon.ProgressionNumber = i++;
+            pylon.name = $"Pylon:{i}";
+            pylon.ProgressionNumber = (byte)i++;
             Pylons.Add(pylon);
         }
         foreach (Roadblock rb in RoadblockParent.GetComponentsInChildren<Roadblock>())
+        {
+            rb.name = $"{(rb.IsEndRoadblock ? "End" : "")}Roadblock:{rb.ProgressionLevel}";
             Roadblocks.Add(rb);
+        }
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
     }
     public void ApproximateWorldBounds()

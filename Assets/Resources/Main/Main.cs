@@ -10,10 +10,11 @@ public partial class Main : MonoBehaviour
     public static int GameUpdateCount = 0;
     public const float SnakeEyeChance = 0.0278f;
     public static bool DebugCheats { get; set; } = false;
-    public static bool PlayerNearPylon => CurrentPylon != null && Player.Position.Distance(CurrentPylon.transform.position) < PylonActivationDist;
+    public static bool PlayerNearPylon => CurrentPylon != null && Player.Position.Distance(CurrentPylon.transform.position) < PylonActivationDist && !CurrentPylon.Complete;
     public static Vector2 PylonPositon => CurrentPylon == null ? Player.Position : CurrentPylon.transform.position;
     public static Pylon CurrentPylon { get; private set; } = null;
     private static Pylon PrevPylon { get; set; } = null;
+    public static bool PylonActive => CurrentPylon != null && !CurrentPylon.Purified && CurrentPylon.WaveActive;
     public static bool JustSwitchedPylons => PrevPylon != CurrentPylon && PrevPylon != null;
     public static byte PylonProgressionNumber { get; set; } = 0;
     public static void FinishPylon()

@@ -32,14 +32,14 @@ Need to do:
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 2. Improve UI
+3. Maybe shift roadblock visuals to the player so it's more encompassing
 
 Current Task List:
 1. Quest List UI that says stuff like:
 	1. Activate the First Pylon => Clear 2 Waves of Invaders => Stabilize the Pylon => Activate the Next Pylon
 2. Procedurally generate the world
 3. Finish Pylon and Roadblock systems:
-	1. Pylons open up the next game stage when complete (make sure it doesn't accidentally lock you into or out of an area)
-	2. Pointers that show you the direction to the next Pylon
+	1. Pointers that show you the direction to the next Pylon
 
 Done: 
 
@@ -47,6 +47,8 @@ Done:
 1. Pylons are now stored in world and the last pylon in the world is guaranteed to be endless (for now)
 2. Roadblocks are stored in world
 3. Pylons allow you to progress to the next area
+	1. Pylons lock you into the current areas with new roadblocks that also spawn behind you after activating a 
+4. David Consolation Prize resprite
 
 1/23/26 to 1/25/26
 1. Add Roadblock Logic:

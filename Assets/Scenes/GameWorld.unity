@@ -3311,10 +3311,6 @@ PrefabInstance:
       propertyPath: m_text
       value: 1.0
       objectReference: {fileID: 0}
-    - target: {fileID: 1132040373527548730, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      propertyPath: MyCanvas
-      value: 
-      objectReference: {fileID: 1027053838}
     - target: {fileID: 1277900365641642166, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3521,7 +3517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4212781573717827716, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 75
+      value: 75.00006
       objectReference: {fileID: 0}
     - target: {fileID: 4248297754441178282, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -5700,11 +5696,6 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5764274963667287759, guid: aef8affeda9b46b4b926a1e5bcaa536f, type: 3}
   m_PrefabInstance: {fileID: 1023996810}
-  m_PrefabAsset: {fileID: 0}
---- !u!223 &1027053838 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 5575429787094297863, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-  m_PrefabInstance: {fileID: 754807491}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1066343602
 PrefabInstance:

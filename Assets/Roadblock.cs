@@ -7,13 +7,14 @@ public class Roadblock : MonoBehaviour
     public byte ProgressionLevel = 0;
     public int counter = 0;
     public readonly Vector2[] dirs = new Vector2[] { new(1, 0), new(0, 1), new(-1, 0), new(0, -1) };
+    public bool IsEndRoadblock;
     public void FixedUpdate()
     {
         bool PortalOn = false;
-        if (Main.PylonProgressionNumber <= ProgressionLevel - 1)
+        if (Main.PylonProgressionNumber <= ProgressionLevel - 1 && !IsEndRoadblock)
             PortalOn = true;
-        else if(Main.CurrentPylon != null && !Main.CurrentPylon.Purified)
-            PortalOn = true;
+        else if(Main.PylonActive)
+            PortalOn = !IsEndRoadblock || Main.PylonProgressionNumber == ProgressionLevel;
         if (!PortalOn)
         {
             portal.Closing = true;
@@ -34,7 +35,7 @@ public class Roadblock : MonoBehaviour
             j *= 2;
             var v = World.RealTileMap.Map.WorldToCell((Vector2)transform.position + new Vector2(i, -j));
             var tileData1 = World.GetTileData(v);
-            if (tileData1.IsRoadblock && tileData1.ProgressionNumber > Main.PylonProgressionNumber && (Mathf.Abs(i) > 2 || Mathf.Abs(j) > 2))
+            if (tileData1.IsRoadblock && tileData1.ProgressionNumber == ProgressionLevel && (Mathf.Abs(i) > 2 || Mathf.Abs(j) > 2))
             {
                 Vector2 v2 = World.RealTileMap.Map.GetCellCenterWorld(v);
                 float dist = ((Vector2)transform.position - v2).magnitude;
@@ -45,7 +46,7 @@ public class Roadblock : MonoBehaviour
                     Vector2 dir = dirs[Utils.RandInt(4)];
                     Vector2 toPos = dir; // (Vector2)transform.position - v2;
                     var tileData2 = World.GetTileData(v + new Vector3Int((int)toPos.x, (int)toPos.y));
-                    if (tileData2.IsRoadblock && tileData2.ProgressionNumber > Main.PylonProgressionNumber && distM > 0.2f)
+                    if (tileData2.IsRoadblock && tileData2.ProgressionNumber == ProgressionLevel && distM > 0.2f)
                     {
                         var r = -toPos.ToRotation() * Mathf.Rad2Deg;
                         ParticleManager.NewParticle(v2 + dir * 0.6f, new Vector2(toPos.magnitude - 0.2f, .5f), Vector2.zero, 0, 2f, ParticleManager.ID.Line, Color.red.WithAlpha(alphaMult) * 2f, r);

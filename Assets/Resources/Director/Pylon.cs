@@ -23,7 +23,7 @@ public class Pylon : MonoBehaviour
                 sound = AudioManager.PlaySound(SoundID.PylonDrone, transform.position, 1f, 1, 0);
         if (!Complete)
         {
-            if (nearby || Main.CurrentPylon == this)
+            if (nearby || WaveActive)
                 ActiveAnim();
             else
                 DisableAnimation();
@@ -39,7 +39,7 @@ public class Pylon : MonoBehaviour
                 Purified = true;
                 int nextLevel = ProgressionNumber + 1;
                 foreach (Roadblock rb in World.Roadblocks)
-                    if (rb.ProgressionLevel == nextLevel || rb.ProgressionLevel == ProgressionNumber)
+                    if ((rb.ProgressionLevel == nextLevel && !rb.IsEndRoadblock) || (rb.ProgressionLevel == ProgressionNumber && rb.IsEndRoadblock))
                         SummonLightning(Crystal.transform.position, rb.transform.position, CompletionColor(), Color.red);
                 Main.FinishPylon();
             }
