@@ -66,7 +66,8 @@ public class World : MonoBehaviour
     public Transform PylonParent;
     public Transform RoadblockParent;
     public Transform PlayerSpawnPosition;
-    public List<WorldNode> nodes;
+    [SerializeField]
+    private List<Transform> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
         bool validSpawnTile = RealTileMap.Map.GetTile(RealTileMap.Map.WorldToCell(pos)) != TileID.DarkGrass.TileType;
@@ -93,13 +94,14 @@ public class World : MonoBehaviour
     public static readonly List<Roadblock> Roadblocks = new();
     public void Start()
     {
+        NodeID.LoadAllNodes();
+        NextToGenerate.Clear();
         Pylons.Clear();
         Roadblocks.Clear();
         m_Instance = this;
         foreach (DualGridTile tile in TileID.TileTypes)
             tile.Init();
         ApproximateWorldBounds();
-        NodeID.LoadAllNodes();
         LoadNodesOntoWorld();
 
         CreateWorldOuterFill();
@@ -127,6 +129,7 @@ public class World : MonoBehaviour
         }
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
     }
+    public Queue<WorldNode> NextToGenerate { get; private set; } = new();
     public void ApproximateWorldBounds()
     {
         int left = int.MaxValue;
@@ -135,8 +138,14 @@ public class World : MonoBehaviour
         int top = int.MinValue;
         for (int i = 0; i < nodes.Count; ++i)
         {
-            WorldNode node = nodes[i];
-            Vector3Int transformPos = new(Mathf.FloorToInt(node.transform.position.x / 2), Mathf.FloorToInt(node.transform.position.y / 2));
+            Transform tr = nodes[i];
+            if (!nodes[i].TryGetComponent(out WorldNode node))
+            {
+                tr.gameObject.SetActive(false);
+                node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0);
+                NextToGenerate.Enqueue(node);
+            }
+            Vector3Int transformPos = new(Mathf.FloorToInt(tr.position.x / 2), Mathf.FloorToInt(tr.position.y / 2));
             node.TileMap.GetCorners(out int l, out int r, out int b, out int t);
             left = Mathf.Min(l + transformPos.x, left);
             right = Mathf.Max(r + transformPos.x, right);
@@ -167,8 +176,10 @@ public class World : MonoBehaviour
         WorldNode prevNode = null;
         for(int i = 0; i < nodes.Count; ++i)
         {
-            WorldNode node = nodes[i];
-            node.Generate(node.transform.position, this, (byte)i, prevNode);
+            Transform t = nodes[i];
+            if (!nodes[i].TryGetComponent(out WorldNode node))
+                node = NextToGenerate.Dequeue();
+            node.Generate(t.position, this, (byte)i, prevNode);
             prevNode = node;
         }
     }

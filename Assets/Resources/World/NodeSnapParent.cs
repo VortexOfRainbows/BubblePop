@@ -18,8 +18,8 @@ public class NodeSnapParent : MonoBehaviour
         for (int i = 0; i < transform.childCount; ++i)
         {
             Transform child = transform.GetChild(i);
-            Vector3Int transformPos = new((int)child.localPosition.x, (int)child.localPosition.y);
-            child.localPosition = new Vector3(transformPos.x, transformPos.y, child.localPosition.z);
+            Vector3Int transformPos = new((int)(child.localPosition.x * transform.lossyScale.x), (int)(child.localPosition.y * transform.lossyScale.y));
+            child.localPosition = new Vector3(transformPos.x / transform.lossyScale.x, transformPos.y / transform.lossyScale.y, child.localPosition.z);
         }
     }
     #if UNITY_EDITOR
