@@ -324,4 +324,8 @@ public static class Utils
         bottom = bounds.y;
         top = bottom + bounds.size.y;
     }
+    public static DualGridTile GetTileID(this TileBase tile)
+    {
+        return TileID.TileToParentTile[tile];
+    }
 }

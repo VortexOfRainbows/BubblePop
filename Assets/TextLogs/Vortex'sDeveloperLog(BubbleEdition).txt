@@ -48,6 +48,7 @@ Done:
 1. No longer instantiate nodes when generating to reduce lag
 2. BOGO spin resprite courtesy of DAVID
 3. WIP node randomization
+4. Subnodes attempt not to spawn in invalid locations (And will fail to spawn if they have no good spot)
 
 1/26/26 to 1/27/26
 1. Pylons are now stored in world and the last pylon in the world is guaranteed to be endless (for now)

@@ -83,6 +83,14 @@ public class World : MonoBehaviour
     {
         return RealTileMap.Map.GetColliderType(pos) == Tile.ColliderType.Grid;
     }
+    public static bool AreaIsClear(Vector3Int area, int squareRadius = 0)
+    {
+        for(int i = -squareRadius; i <= squareRadius; ++i)
+            for(int j = -squareRadius; j <= squareRadius; ++j)
+                if (RealTileMap.Map.HasTile(area + new Vector3Int(i, j)))
+                    return false;
+        return true;
+    }
     public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds)
     {
         var data = GetTileData(RealTileMap.Map.WorldToCell(position));
@@ -128,6 +136,7 @@ public class World : MonoBehaviour
             Roadblocks.Add(rb);
         }
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
+        NodeID.ResetNodePositions(); //This is mostly for editor stuff
     }
     public Queue<WorldNode> NextToGenerate { get; private set; } = new();
     public void ApproximateWorldBounds()

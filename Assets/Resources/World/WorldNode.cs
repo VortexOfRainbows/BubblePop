@@ -7,14 +7,12 @@ public static class NodeID
 {
     public static readonly List<WorldNode> Nodes = new();
     public static readonly List<WorldNode> SubNodes = new();
-    public static readonly List<WorldNode> MeadowNodes = new();
     public static WorldNode PreviousNode { get; private set; } = null;
     public static bool LoadAllNodes()
     {
         PreviousNode = null;
         Nodes.Clear();
         SubNodes.Clear();
-        MeadowNodes.Clear();
         var nodes = Resources.LoadAll<GameObject>("World/Nodes");
         //var subNodes = Resources.LoadAll<GameObject>("World/Nodes/SubNodes");
         Debug.Log("Loading Nodes...".WithColor("FFFF00"));
@@ -39,6 +37,13 @@ public static class NodeID
             }
         }
         return true;
+    }
+    public static void ResetNodePositions()
+    {
+        foreach (WorldNode n in Nodes)
+            n.transform.position = Vector3.zero;
+        foreach (WorldNode n in SubNodes)
+            n.transform.position = Vector3.zero;
     }
     public static WorldNode GetRandomNodeWithParameters(List<WorldNode> pool, int zoneID = 0, bool? shop = null, bool? crucible =  null, bool? needsLarge = null)
     {
@@ -99,11 +104,11 @@ public class WorldNode : MonoBehaviour
     }
     public void Generate(Vector2 pos, World world, byte GenNumber, WorldNode PreviousNode = null, bool disable = false)
     {
-        transform.position = pos;
-        RoundPosition();
         GenerationNumber = GenNumber;
         this.World = world;
-        Vector3Int transformPos = new(Mathf.FloorToInt(transform.position.x / 2), Mathf.FloorToInt(transform.position.y / 2));
+        transform.position = pos; //TODO: Replace this with a system that doesn't use transform.position, as it creates some issues with repeat structures
+        RoundPosition();
+        Vector3Int transformPos = new(Mathf.FloorToInt(pos.x / 2), Mathf.FloorToInt(pos.y / 2));
         GatherConnectors();
         GetTileMap();
         TileMap.GetCorners(out int left, out int right, out int bottom, out int top);
@@ -225,25 +230,32 @@ public class WorldNode : MonoBehaviour
         int i = 0;
         Vector2 subNodeConPos = Vector2.zero;
         Vector2 subNodePos = Vector2.zero;
+        int attempts = 0;
         for(float per = iterAmt; per < 1; per += iterAmt)
         {
             float sin = Mathf.Sin(Mathf.PI * per);
             Vector2 pointBetween = Vector2.Lerp(start, end, per);
             Vector2 rNorm = norm.RotatedBy(Mathf.PI / 2f * Utils.Rand1OrMinus1());
             pointBetween += Utils.RandFloat(pathVariance * 0.25f, pathVariance) * sin * rNorm;
-            GenerateLine(prev, pointBetween);
-            prev = pointBetween;
             if(i == 2)
             {
                 subNodeConPos = pointBetween;
-                subNodePos = pointBetween + rNorm * (pathVariance * 1.5f + 10);
+                while(attempts == 0 || !World.AreaIsClear(World.RealTileMap.Map.WorldToCell(subNodePos), 5))
+                {
+                    subNodePos = pointBetween + rNorm * (pathVariance * Utils.RandFloat(1.0f - 0.25f * attempts, 1.5f + 0.1f * attempts) + 10) + Utils.RandCircle(attempts);
+                    attempts++;
+                    if (attempts > 10)
+                        break;
+                }
             }
+            GenerateLine(prev, pointBetween);
+            prev = pointBetween;
             ++i;
         }
         if (roadBlock)
             TryGeneratingEndRoadBlock = true;
         GenerateLine(prev, end);
-        if(!IsSubNode)
+        if(!IsSubNode && attempts <= 10)
         {
             WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 0);
             sub.Generate(subNodePos, World, GenerationNumber, null);
@@ -300,19 +312,13 @@ public class WorldNode : MonoBehaviour
             {
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
                 bool canGenerate = World.GetTileData(v).IsRoadblock;
-                if(World.Tilemap.Map.GetTile(v) == null || (World.SolidTile(v) && OverrideTiles))
+                TileBase existingTile = World.Tilemap.Map.GetTile(v);
+                if (existingTile == null || (World.SolidTile(v) && OverrideTiles))
                 {
-                    World.Tilemap.Map.SetTile(v, tile);
-                    //Instantiate(Main.PrefabAssets.Roadblock, center + new Vector2(i * 2, j * 2), Quaternion.identity);
-                    //for(int x = -2; x <= 2; ++x)
-                    //{
-                    //    for(int y = -2; y <= 2; ++y)
-                    //    {
-                    //        var v2 = v + new Vector3Int(x, y);
-                    //        if (World.Tilemap.Map.GetTile(v2) == null)
-                    //            World.SetTileData(v2, new World.TileData(GenerationNumber, true));
-                    //    }
-                    //}
+                    if (existingTile == null)
+                        World.Tilemap.Map.SetTile(v, tile);
+                    else
+                        World.Tilemap.Map.SetTile(v, existingTile.GetTileID().FloorTileType);
                     World.SetTileData(v, new World.TileData(GenerationNumber, true));
                     canGenerate = true;
                 }
