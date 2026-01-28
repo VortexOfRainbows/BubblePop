@@ -106,4 +106,8 @@ public class DualGridTilemap : MonoBehaviour
             }
         }
     }
+    public void AddTrees()
+    {
+
+    }
 }

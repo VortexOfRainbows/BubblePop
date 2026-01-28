@@ -103,9 +103,9 @@ public class World : MonoBehaviour
         LoadNodesOntoWorld();
 
         CreateWorldOuterFill();
-        if(NatureParent != null)
-            NatureParent.Init();
         RealTileMap.Init();
+        if (NatureParent != null)
+            NatureParent.Init();
 
         var p = Instantiate(Main.PrefabAssets.PlayerPrefab, PlayerSpawnPosition.position, Quaternion.identity).GetComponent<Player>();
         Player.Instance = p;
