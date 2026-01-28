@@ -90,8 +90,10 @@ public class WorldNode : MonoBehaviour
         TileMap = TileMap != null ? TileMap : GetComponentInChildren<Tilemap>();
         return TileMap;
     }
-    public void Generate(World world, byte GenNumber, WorldNode PreviousNode = null)
+    public void Generate(Vector2 pos, World world, byte GenNumber, WorldNode PreviousNode = null)
     {
+        transform.position = pos;
+        RoundPosition();
         GenerationNumber = GenNumber;
         this.World = world;
         Vector3Int transformPos = new(Mathf.FloorToInt(transform.position.x / 2), Mathf.FloorToInt(transform.position.y / 2));
@@ -116,12 +118,19 @@ public class WorldNode : MonoBehaviour
         if(FeatureParent != null)
         {
             for (int i = FeatureParent.childCount - 1; i >= 0; --i)
-                FeatureParent.GetChild(i).parent = world.NatureParent.transform;
+            {
+                Transform child = FeatureParent.GetChild(i);
+                Instantiate(child, world.NatureParent.transform, true);
+
+            }
         }
         if(PylonParent != null)
         {
             for (int i = PylonParent.childCount - 1; i >= 0; --i)
-                PylonParent.GetChild(i).parent = world.PylonParent;
+            {
+                Transform child = PylonParent.GetChild(i);
+                Instantiate(child, world.PylonParent.transform, true);
+            }
         }
         //FeatureParent.DetachChildren();
         gameObject.SetActive(false);
@@ -229,9 +238,8 @@ public class WorldNode : MonoBehaviour
         GenerateLine(prev, end);
         if(!IsSubNode)
         {
-            WorldNode sub = Instantiate(NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 0), subNodePos, Quaternion.identity);
-            sub.RoundPosition();
-            sub.Generate(World, GenerationNumber, null);
+            WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 0);
+            sub.Generate(subNodePos, World, GenerationNumber, null);
             sub.GetClosestSingleNode(subNodeConPos, sub.Connectors, out NodeConnector best, out float _);
             OverrideTiles = best.OverrideTiles;
             sub.GeneratePath(subNodeConPos, best.Position);

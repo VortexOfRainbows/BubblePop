@@ -168,7 +168,7 @@ public class World : MonoBehaviour
         for(int i = 0; i < nodes.Count; ++i)
         {
             WorldNode node = nodes[i];
-            node.Generate(this, (byte)i, prevNode);
+            node.Generate(node.transform.position, this, (byte)i, prevNode);
             prevNode = node;
         }
     }
