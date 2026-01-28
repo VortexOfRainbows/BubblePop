@@ -6,10 +6,12 @@ public static class NodeID
 {
     public static readonly List<WorldNode> Nodes = new();
     public static readonly List<WorldNode> SubNodes = new();
+    public static readonly List<WorldNode> MeadowNodes = new();
     public static bool LoadAllNodes()
     {
         Nodes.Clear();
         SubNodes.Clear();
+        MeadowNodes.Clear();
         var nodes = Resources.LoadAll<GameObject>("World/Nodes");
         //var subNodes = Resources.LoadAll<GameObject>("World/Nodes/SubNodes");
         Debug.Log("Loading Nodes...".WithColor("FFFF00"));
@@ -34,6 +36,31 @@ public static class NodeID
             }
         }
         return true;
+    }
+    public static WorldNode GetRandomNodeWithParameters(List<WorldNode> pool, int zoneID = 0, bool? shop = null, bool? crucible =  null, bool? needsLarge = null)
+    {
+        List<WorldNode> viableNodes = new();
+        foreach (WorldNode n in pool)
+        {
+            if(n.Zone == zoneID && 
+                (shop == null || shop.Value == n.HasShop) && 
+                (crucible == null || crucible.Value == n.HasCrucible) && 
+                (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode))
+            {
+                viableNodes.Add(n);
+            }
+        }
+        WorldNode pickedNode = null;
+        while (viableNodes.Count > 0)
+        {
+            int i = Utils.RandInt(viableNodes.Count);
+            pickedNode = viableNodes[i];
+            if (pickedNode.Weighting >= Utils.RandFloat())
+                return pickedNode;
+            else
+                viableNodes.RemoveAt(i);
+        }
+        return pickedNode;
     }
 }
 
@@ -202,7 +229,7 @@ public class WorldNode : MonoBehaviour
         GenerateLine(prev, end);
         if(!IsSubNode)
         {
-            WorldNode sub = Instantiate(NodeID.SubNodes[Utils.RandInt(NodeID.SubNodes.Count)], subNodePos, Quaternion.identity);
+            WorldNode sub = Instantiate(NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 0), subNodePos, Quaternion.identity);
             sub.RoundPosition();
             sub.Generate(World, GenerationNumber, null);
             sub.GetClosestSingleNode(subNodeConPos, sub.Connectors, out NodeConnector best, out float _);
