@@ -33,6 +33,7 @@ Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 2. Improve UI
 3. Maybe shift roadblock visuals to the player so it's more encompassing
+4. Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp
 
 Current Task List:
 1. Quest List UI that says stuff like:

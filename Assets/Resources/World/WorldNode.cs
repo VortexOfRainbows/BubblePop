@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,8 +8,10 @@ public static class NodeID
     public static readonly List<WorldNode> Nodes = new();
     public static readonly List<WorldNode> SubNodes = new();
     public static readonly List<WorldNode> MeadowNodes = new();
+    public static WorldNode PreviousNode { get; private set; } = null;
     public static bool LoadAllNodes()
     {
+        PreviousNode = null;
         Nodes.Clear();
         SubNodes.Clear();
         MeadowNodes.Clear();
@@ -42,7 +45,7 @@ public static class NodeID
         List<WorldNode> viableNodes = new();
         foreach (WorldNode n in pool)
         {
-            if(n.Zone == zoneID && 
+            if(n.Zone == zoneID && PreviousNode != n &&
                 (shop == null || shop.Value == n.HasShop) && 
                 (crucible == null || crucible.Value == n.HasCrucible) && 
                 (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode))
@@ -56,10 +59,14 @@ public static class NodeID
             int i = Utils.RandInt(viableNodes.Count);
             pickedNode = viableNodes[i];
             if (pickedNode.Weighting >= Utils.RandFloat())
+            {
+                PreviousNode = pickedNode;
                 return pickedNode;
+            }
             else
                 viableNodes.RemoveAt(i);
         }
+        PreviousNode = pickedNode;
         return pickedNode;
     }
 }
@@ -90,7 +97,7 @@ public class WorldNode : MonoBehaviour
         TileMap = TileMap != null ? TileMap : GetComponentInChildren<Tilemap>();
         return TileMap;
     }
-    public void Generate(Vector2 pos, World world, byte GenNumber, WorldNode PreviousNode = null)
+    public void Generate(Vector2 pos, World world, byte GenNumber, WorldNode PreviousNode = null, bool disable = false)
     {
         transform.position = pos;
         RoundPosition();
@@ -133,7 +140,7 @@ public class WorldNode : MonoBehaviour
             }
         }
         //FeatureParent.DetachChildren();
-        gameObject.SetActive(false);
+        gameObject.SetActive(!disable);
     }
     public void GatherConnectors()
     {
