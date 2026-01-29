@@ -1,20 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 
 public class GachaponShop : MonoBehaviour
 {
-    public static GachaponShop Instance;
+    public static List<GachaponShop> AllShops { get; set; } = new();
     public GameObject[] Pedastal;
     public PowerUpObject[] Stock { get; private set; }
-    public int TotalPowersPurchased;
-    public float PriceMultiplier = 1f;
+    public static int TotalPowersPurchased { get; set; } = 0;
+    public static float PriceMultiplier { get; set; } = 1f;
     public float FillStockTimer = 0;
     public int NextToFillUp = -1;
+    public byte ProgressionNumber { get; set; } = 0;
+    public void Start()
+    {
+        AllShops.Add(this);
+        ProgressionNumber = World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).ProgressionNumber;
+    }
     public void FixedUpdate()
     {
-        Instance = this;
-        if (Main.WavesUnleashed)
+        if (Main.WavesUnleashed && ProgressionNumber <= Main.PylonProgressionNumber)
         {
             if(Stock == null)
             {

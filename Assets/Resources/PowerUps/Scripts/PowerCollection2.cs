@@ -382,11 +382,15 @@ public class Coupons : PowerUp
     }
     public override void OnPickup(int count)
     {
-        if(GachaponShop.Instance != null && GachaponShop.Instance.Stock != null)
+        if(GachaponShop.AllShops.Count > 0)
         {
-            foreach (PowerUpObject p in GachaponShop.Instance.Stock)
-                for (int i = 0; i < count; ++i)
-                    p.Cost = (int)(p.Cost - p.MyPower.Cost * 0.12f);
+            foreach (GachaponShop shop in GachaponShop.AllShops)
+            {
+                if (shop.Stock != null)
+                    foreach (PowerUpObject p in shop.Stock)
+                        for (int i = 0; i < count; ++i)
+                            p.Cost = (int)(p.Cost - p.MyPower.Cost * 0.12f);
+            }
         }
     }
     public override void HeldEffect(Player p)

@@ -7,7 +7,7 @@ public static class NodeID
 {
     public static readonly List<WorldNode> Nodes = new();
     public static readonly List<WorldNode> SubNodes = new();
-    public static WorldNode PreviousNode { get; private set; } = null;
+    public static WorldNode PreviousNode { get; set; } = null;
     public static bool LoadAllNodes()
     {
         PreviousNode = null;
@@ -58,20 +58,17 @@ public static class NodeID
                 viableNodes.Add(n);
             }
         }
+        Debug.Log($"Available Nodes: {viableNodes.Count}");
         WorldNode pickedNode = null;
         while (viableNodes.Count > 0)
         {
             int i = Utils.RandInt(viableNodes.Count);
             pickedNode = viableNodes[i];
             if (pickedNode.Weighting >= Utils.RandFloat())
-            {
-                PreviousNode = pickedNode;
                 return pickedNode;
-            }
             else
                 viableNodes.RemoveAt(i);
         }
-        PreviousNode = pickedNode;
         return pickedNode;
     }
 }
@@ -108,7 +105,7 @@ public class WorldNode : MonoBehaviour
         this.World = world;
         transform.position = pos; //TODO: Replace this with a system that doesn't use transform.position, as it creates some issues with repeat structures
         RoundPosition();
-        Vector3Int transformPos = new(Mathf.FloorToInt(pos.x / 2), Mathf.FloorToInt(pos.y / 2));
+        Vector3Int transformPos = new(Mathf.FloorToInt(transform.position.x / 2), Mathf.FloorToInt(transform.position.y / 2));
         GatherConnectors();
         GetTileMap();
         TileMap.GetCorners(out int left, out int right, out int bottom, out int top);
@@ -133,7 +130,6 @@ public class WorldNode : MonoBehaviour
             {
                 Transform child = FeatureParent.GetChild(i);
                 Instantiate(child, world.NatureParent.transform, true);
-
             }
         }
         if(PylonParent != null)

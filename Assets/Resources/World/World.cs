@@ -102,6 +102,8 @@ public class World : MonoBehaviour
     public static readonly List<Roadblock> Roadblocks = new();
     public void Start()
     {
+        GachaponShop.AllShops.Clear();
+        GachaponShop.TotalPowersPurchased = 0;
         NodeID.LoadAllNodes();
         NextToGenerate.Clear();
         Pylons.Clear();
@@ -151,7 +153,8 @@ public class World : MonoBehaviour
             if (!nodes[i].TryGetComponent(out WorldNode node))
             {
                 tr.gameObject.SetActive(false);
-                node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0, null, null, i == nodes.Count - 1);
+                node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0, i == nodes.Count / 2 || i == nodes.Count - 1, null, i == nodes.Count - 1);
+                NodeID.PreviousNode = node;
                 NextToGenerate.Enqueue(node);
             }
             Vector3Int transformPos = new(Mathf.FloorToInt(tr.position.x / 2), Mathf.FloorToInt(tr.position.y / 2));
