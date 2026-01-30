@@ -25,7 +25,8 @@ Need to do:
 	1. Maybe make yet to be seen/unlocked powers use the generic blank power, like on the achievement page too
 9. Make power display on the bottom smaller
 10. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
-11. Make Map NODE system
+11. Make Map NODE system (mostly complete)
+	1. Still needs: tree spawning on outer tiles, starting area for the player to spawn in
 12. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 
@@ -38,13 +39,12 @@ Less Important (mostly non-issues or complete already), but in consideration:
 Current Task List:
 1. Quest List UI that says stuff like:
 	1. Activate the First Pylon => Clear 2 Waves of Invaders => Stabilize the Pylon => Activate the Next Pylon
-2. Procedurally generate the world
-3. Finish Pylon and Roadblock systems:
+2. Finish Pylon and Roadblock systems:
 	1. Pointers that show you the direction to the next Pylon
 
 Done: 
 
-1/29/26
+1/29/26 to 1/30/26
 1. More worldgen changes + shops can spawn as subnodes + another node
 2. Some more node-related bug fixes
 3. Add black market shops (.25 weight in subnodes)
