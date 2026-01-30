@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2571931874903079262}
   - component: {fileID: 8691471864086795411}
   - component: {fileID: 4870930668747883590}
+  - component: {fileID: 326224477751605865}
   m_Layer: 9
   m_Name: ShopGachapon
   m_TagString: Untagged
@@ -139,8 +140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Visual: {fileID: 5057068482299052583}
   UniversalImmuneFrames: 0
-  Life: 10
   DamageTaken: 0
+  SpawnedIn: 0
   lastPos: {x: 0, y: 0}
   RB: {fileID: 0}
   p: {fileID: 7710747734503710076}
@@ -196,6 +197,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &326224477751605865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268744164881615657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4256bb1fb4c11499fa7b19d0d7048f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pedastal:
+  - {fileID: 8880733734445247598}
+  - {fileID: 5365178420219167164}
+  - {fileID: 8385516524998682337}
+  FillStockTimer: 0
+  NextToFillUp: -1
 --- !u!1 &1826210161243397790
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,7 +427,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5604892137317966488}
-  - component: {fileID: 6917417879688716027}
   m_Layer: 9
   m_Name: Shop
   m_TagString: Untagged
@@ -434,26 +452,6 @@ Transform:
   - {fileID: 563175997926584838}
   m_Father: {fileID: 1629267001450153892}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6917417879688716027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4502114344575395569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a4256bb1fb4c11499fa7b19d0d7048f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Pedastal:
-  - {fileID: 8880733734445247598}
-  - {fileID: 5365178420219167164}
-  - {fileID: 8385516524998682337}
-  TotalPowersPurchased: 0
-  PriceMultiplier: 1
-  FillStockTimer: 0
-  NextToFillUp: -1
 --- !u!1 &5057068482299052583
 GameObject:
   m_ObjectHideFlags: 0

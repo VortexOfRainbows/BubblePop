@@ -8,6 +8,7 @@ public class GachaponShop : MonoBehaviour
     public PowerUpObject[] Stock { get; private set; }
     public static int TotalPowersPurchased { get; set; } = 0;
     public static float PriceMultiplier { get; set; } = 1f;
+    public bool BlackMarketShop = false;
     public float FillStockTimer = 0;
     public int NextToFillUp = -1;
     public byte ProgressionNumber { get; set; } = 0;
@@ -65,7 +66,8 @@ public class GachaponShop : MonoBehaviour
     public void AddStock(int i)
     {
         float mult = PriceMultiplier * (1.0f + 0.05f * TotalPowersPurchased - Player.Instance.ShopDiscount);
-        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, .005f * Player.Instance.BlackmarketMult), Pedastal[i].transform.position + new Vector3(0, 1.5f)).GetComponent<PowerUpObject>();
+        float bmChance = BlackMarketShop ? 1 : .005f * Player.Instance.BlackmarketMult;
+        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, bmChance), Pedastal[i].transform.position + new Vector3(0, 1.5f)).GetComponent<PowerUpObject>();
         obj.Cost = Mathf.Max(0, (int)(obj.MyPower.Cost * mult));
         Stock[i] = obj;
     }

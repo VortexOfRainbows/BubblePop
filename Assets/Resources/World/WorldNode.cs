@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Build.Player;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -48,17 +49,46 @@ public static class NodeID
     public static WorldNode GetRandomNodeWithParameters(List<WorldNode> pool, int zoneID = 0, bool? shop = null, bool? crucible =  null, bool? needsLarge = null)
     {
         List<WorldNode> viableNodes = new();
+        int bestScore = 0;
         foreach (WorldNode n in pool)
         {
-            if(n.Zone == zoneID && PreviousNode != n &&
-                (shop == null || shop.Value == n.HasShop) && 
-                (crucible == null || crucible.Value == n.HasCrucible) && 
-                (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode))
+            if(PreviousNode != n)
             {
-                viableNodes.Add(n);
+                int score = 0;
+                if (n.Zone == zoneID)
+                    score += 3;
+                if (shop == null || shop.Value == n.HasShop)
+                    score += 1;
+                if (crucible == null || crucible.Value == n.HasCrucible)
+                    score += 1;
+                if (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode)
+                    score += 1;
+                if(score >= 6)
+                    viableNodes.Add(n);
+                bestScore = Mathf.Max(bestScore, score);
             }
         }
-        Debug.Log($"Available Nodes: {viableNodes.Count}");
+        if(viableNodes.Count <= 0) //If it can't find any exact matches, find the next best match
+        {
+            foreach (WorldNode n in pool)
+            {
+                if (PreviousNode != n)
+                {
+                    int score = 0;
+                    if (n.Zone == zoneID)
+                        score += 3;
+                    if (shop == null || shop.Value == n.HasShop)
+                        score += 1;
+                    if (crucible == null || crucible.Value == n.HasCrucible)
+                        score += 1;
+                    if (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode)
+                        score += 1;
+                    if (score >= bestScore)
+                        viableNodes.Add(n);
+                }
+            }
+        }
+        //Debug.Log($"Available Nodes: {viableNodes.Count}");
         WorldNode pickedNode = null;
         while (viableNodes.Count > 0)
         {
@@ -116,10 +146,14 @@ public class WorldNode : MonoBehaviour
                 Vector3Int v = new(i, j);
                 var tile = TileMap.GetTile(v);
                 v += transformPos;
-                if (tile != null && !world.Tilemap.Map.HasTile(v))
+                if (tile != null)
                 {
-                    world.Tilemap.Map.SetTile(v, tile);
-                    World.SetTileData(v, new World.TileData(GenerationNumber));
+                    bool canPlaceTile = !world.Tilemap.Map.HasTile(v) || !World.SolidTile(v);
+                    if(canPlaceTile)
+                    {
+                        world.Tilemap.Map.SetTile(v, tile);
+                        World.SetTileData(v, new World.TileData(GenerationNumber));
+                    }
                 }
             }
         }
@@ -253,7 +287,7 @@ public class WorldNode : MonoBehaviour
         GenerateLine(prev, end);
         if(!IsSubNode && attempts <= 10)
         {
-            WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 0);
+            WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 0, GenerationNumber % 2 == 0 ? null : Utils.RandFloat(1) < 0.66f, null, null);
             sub.Generate(subNodePos, World, GenerationNumber, null);
             sub.GetClosestSingleNode(subNodeConPos, sub.Connectors, out NodeConnector best, out float _);
             OverrideTiles = best.OverrideTiles;
