@@ -48,6 +48,9 @@ Done:
 1. More worldgen changes + shops can spawn as subnodes + another node
 2. Some more node-related bug fixes
 3. Add black market shops (.25 weight in subnodes)
+4. Fix some node generation bugs
+5. Add 4 more nodes for variety
+6. Prevent enemies from spawning in roadblocked area
 
 1/28/26
 1. No longer instantiate nodes when generating to reduce lag

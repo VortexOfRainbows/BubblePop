@@ -70,9 +70,8 @@ public class World : MonoBehaviour
     private List<Transform> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
-        bool validSpawnTile = RealTileMap.Map.GetTile(RealTileMap.Map.WorldToCell(pos)) != TileID.DarkGrass.TileType;
-        //if(!validSpawnTile)
-        //    Debug.Log($"Valid Spawn Tile: {validSpawnTile}");
+        Vector3Int posi = RealTileMap.Map.WorldToCell(pos);
+        bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.TileType && !GetTileData(posi).IsRoadblock;
         return WithinBorders(pos) && validSpawnTile;
     }
     public static bool WithinBorders(Vector3 position)
@@ -153,11 +152,11 @@ public class World : MonoBehaviour
             if (!nodes[i].TryGetComponent(out WorldNode node))
             {
                 tr.gameObject.SetActive(false);
-                bool shop = i == nodes.Count / 2 || i == nodes.Count - 1;
+                bool shop = i == 2 || i == 4 || i == nodes.Count - 1;
                 bool largo = i == nodes.Count - 1;
                 node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0,
                     shop,
-                    i % 3 == 1 ? !shop && !largo : null,
+                    i % 3 == 1 && !largo ? !shop && Utils.RollWithLuck(0.5f) : null,
                     largo);
                 NodeID.PreviousNode = node;
                 NextToGenerate.Enqueue(node);

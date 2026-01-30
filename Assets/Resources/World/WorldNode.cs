@@ -46,26 +46,30 @@ public static class NodeID
         foreach (WorldNode n in SubNodes)
             n.transform.position = Vector3.zero;
     }
-    public static WorldNode GetRandomNodeWithParameters(List<WorldNode> pool, int zoneID = 0, bool? shop = null, bool? crucible =  null, bool? needsLarge = null)
+    public static WorldNode GetRandomNodeWithParameters(List<WorldNode> pool, int zoneID = 0, bool? shop = null, bool? crucible =  null, bool? needsLarge = null, float maxWeight = 5f)
     {
         List<WorldNode> viableNodes = new();
         int bestScore = 0;
+        float bestWeight = 0.1f;
         foreach (WorldNode n in pool)
         {
             if(PreviousNode != n)
             {
                 int score = 0;
                 if (n.Zone == zoneID)
-                    score += 3;
+                    score += 2;
                 if (shop == null || shop.Value == n.HasShop)
                     score += 1;
                 if (crucible == null || crucible.Value == n.HasCrucible)
                     score += 1;
                 if (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode)
-                    score += 1;
+                    score += 2;
+                if (n.Weighting >= maxWeight)
+                    score -= 2;
                 if(score >= 6)
                     viableNodes.Add(n);
                 bestScore = Mathf.Max(bestScore, score);
+                bestWeight = Mathf.Max(n.Weighting, bestWeight);
             }
         }
         if(viableNodes.Count <= 0) //If it can't find any exact matches, find the next best match
@@ -76,15 +80,18 @@ public static class NodeID
                 {
                     int score = 0;
                     if (n.Zone == zoneID)
-                        score += 3;
+                        score += 2;
                     if (shop == null || shop.Value == n.HasShop)
                         score += 1;
                     if (crucible == null || crucible.Value == n.HasCrucible)
                         score += 1;
                     if (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode)
-                        score += 1;
+                        score += 2;
+                    if (n.Weighting >= maxWeight)
+                        score -= 2;
                     if (score >= bestScore)
                         viableNodes.Add(n);
+                    bestWeight = Mathf.Max(n.Weighting, bestWeight);
                 }
             }
         }
@@ -94,7 +101,7 @@ public static class NodeID
         {
             int i = Utils.RandInt(viableNodes.Count);
             pickedNode = viableNodes[i];
-            if (pickedNode.Weighting >= Utils.RandFloat())
+            if (pickedNode.Weighting / bestWeight >= Utils.RandFloat())
                 return pickedNode;
             else
                 viableNodes.RemoveAt(i);
@@ -148,10 +155,15 @@ public class WorldNode : MonoBehaviour
                 v += transformPos;
                 if (tile != null)
                 {
-                    bool canPlaceTile = !world.Tilemap.Map.HasTile(v) || !World.SolidTile(v);
-                    if(canPlaceTile)
+                    bool iAmSolid = ((Tile)tile).colliderType != Tile.ColliderType.None;
+                    bool solid = World.SolidTile(v);
+                    bool canPlaceTile = !world.Tilemap.Map.HasTile(v) || (solid == iAmSolid);
+                    bool placeSolidAsUnsolid = !solid && iAmSolid && !canPlaceTile;
+                    if(placeSolidAsUnsolid)
+                        canPlaceTile = true;
+                    if (canPlaceTile)
                     {
-                        world.Tilemap.Map.SetTile(v, tile);
+                        world.Tilemap.Map.SetTile(v, placeSolidAsUnsolid ? tile.GetTileID().FloorTileType : tile);
                         World.SetTileData(v, new World.TileData(GenerationNumber));
                     }
                 }
@@ -285,9 +297,9 @@ public class WorldNode : MonoBehaviour
         if (roadBlock)
             TryGeneratingEndRoadBlock = true;
         GenerateLine(prev, end);
-        if(!IsSubNode && attempts <= 10)
+        if(!IsSubNode && attempts <= 10)    
         {
-            WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 0, GenerationNumber % 2 == 0 ? null : Utils.RandFloat(1) < 0.66f, null, null);
+            WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 0, GenerationNumber % 2 == 0 ? null : (GenerationNumber == 7 || Utils.RandFloat(1) < 0.66f), null, null, GenerationNumber == 7 ? 0.5f : 5.0f);
             sub.Generate(subNodePos, World, GenerationNumber, null);
             sub.GetClosestSingleNode(subNodeConPos, sub.Connectors, out NodeConnector best, out float _);
             OverrideTiles = best.OverrideTiles;
