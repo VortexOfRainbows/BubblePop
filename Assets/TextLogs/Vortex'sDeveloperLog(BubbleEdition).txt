@@ -25,9 +25,7 @@ Need to do:
 	1. Maybe make yet to be seen/unlocked powers use the generic blank power, like on the achievement page too
 9. Make power display on the bottom smaller
 10. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
-11. Make Map NODE system (mostly complete)
-	1. Still needs: starting area for the player to spawn in
-12. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
+11. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 
 Less Important (mostly non-issues or complete already), but in consideration:
@@ -52,6 +50,7 @@ Done:
 5. Add 4 more nodes for variety
 6. Prevent enemies from spawning in roadblocked area
 7. Tree generation on exterior nodes
+8. Starter node for the player to spawn in + now the node scene is the default gameplay scene
 
 1/28/26
 1. No longer instantiate nodes when generating to reduce lag

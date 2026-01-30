@@ -84,9 +84,10 @@ public class DualGridTilemap : MonoBehaviour
             {
                 TileBase t = Map.GetTile(i, j);
                 bool isGrassTile = t == TileID.Grass.TileType;
+                bool isDirtTile = t == TileID.Dirt.TileType;
                 if(i % 3 == 0 && j % 3 == 0)
                 {
-                    AddTrees(i + Utils.RandInt(3), j + Utils.RandInt(3));
+                    AddTrees(i + Utils.RandInt(2), j + Utils.RandInt(2));
                 }
                 if (isGrassTile && Utils.RandFloat() < 0.1f * mult)
                 {
@@ -97,9 +98,10 @@ public class DualGridTilemap : MonoBehaviour
                     g.flipX = Utils.rand.NextBool();
                     continue;
                 }
-                if (mushroom && (isGrassTile || Map.GetTile(i, j) == TileID.Dirt.TileType))
+                if (mushroom && (isGrassTile || isDirtTile))
                 {
-                    if (Utils.RandFloat() < 0.05f)
+                    float chance = isDirtTile ? 0.1f : 0.05f;
+                    if (Utils.RandFloat() < chance)
                     {
                         var g = Instantiate(Mushroom, DecorVisual).GetComponent<SpriteRenderer>();
                         g.transform.localPosition = new Vector3(i + 1, j + 1, 0) + (Vector3)Utils.RandCircle(0.2f);
@@ -117,7 +119,7 @@ public class DualGridTilemap : MonoBehaviour
         int order = 20;
         Color c = Color.white;
         bool isGrassTile = t == TileID.Grass.BorderTileType;
-        if (isGrassTile && Utils.RandFloat() < 0.5f)
+        if (isGrassTile && Utils.RandFloat() < 0.55f)
         {
             int nonSolidTiles = 0;
             for(int x = -1; x <= 1; ++x)

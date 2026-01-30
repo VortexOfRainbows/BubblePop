@@ -169,7 +169,7 @@ public class WorldNode : MonoBehaviour
                 }
             }
         }
-        GeneratePaths(PreviousNode);
+        GeneratePaths(PreviousNode, PreviousNode != null && !PreviousNode.IsSubNode);
         if(FeatureParent != null)
         {
             for (int i = FeatureParent.childCount - 1; i >= 0; --i)
@@ -245,7 +245,7 @@ public class WorldNode : MonoBehaviour
             }
         }
     }
-    public void GeneratePaths(WorldNode prev)
+    public void GeneratePaths(WorldNode prev, bool withSubNode)
     {
         if (World == null || prev == null)
             return;
@@ -257,12 +257,12 @@ public class WorldNode : MonoBehaviour
         if (bestStart == null || bestEnd == null || bestDist <= 0 || bestDist > 2000)
             return;
         OverrideTiles = bestStart.OverrideTiles && bestEnd.OverrideTiles;
-        CanGenerateRoadBlock = true;
-        GeneratePath(bestStart.Position, bestEnd.Position);
+        CanGenerateRoadBlock = withSubNode;
+        GeneratePath(bestStart.Position, bestEnd.Position, withSubNode);
     }
-    public void GeneratePath(Vector2 start, Vector2 end)
+    public void GeneratePath(Vector2 start, Vector2 end, bool withSubNode = true)
     {
-        bool roadBlock = CanGenerateRoadBlock;
+        bool roadBlock = CanGenerateRoadBlock || !withSubNode;
         Vector2 startToEnd = end - start;
         Vector2 norm = startToEnd.normalized;
         Vector2 prev = start;
@@ -279,7 +279,7 @@ public class WorldNode : MonoBehaviour
             Vector2 pointBetween = Vector2.Lerp(start, end, per);
             Vector2 rNorm = norm.RotatedBy(Mathf.PI / 2f * Utils.Rand1OrMinus1());
             pointBetween += Utils.RandFloat(pathVariance * 0.25f, pathVariance) * sin * rNorm;
-            if(i == 2)
+            if(i == 2 && withSubNode)
             {
                 subNodeConPos = pointBetween;
                 while(attempts == 0 || !World.AreaIsClear(World.RealTileMap.Map.WorldToCell(subNodePos), 5))
@@ -297,7 +297,7 @@ public class WorldNode : MonoBehaviour
         if (roadBlock)
             TryGeneratingEndRoadBlock = true;
         GenerateLine(prev, end);
-        if(!IsSubNode && attempts <= 10)    
+        if(withSubNode && !IsSubNode && attempts <= 10)    
         {
             WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 
                 0, 

@@ -12,6 +12,6 @@ public class PositionRounder : MonoBehaviour
     public void RoundPosition()
     {
         Vector3Int transformPos = new((int)transform.position.x / 2, (int)transform.position.y / 2);
-        transform.position = transformPos * 2;
+        transform.position = transformPos * 2 + Vector3Int.one;
     }
 }

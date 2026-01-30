@@ -190,12 +190,19 @@ public class World : MonoBehaviour
     public void LoadNodesOntoWorld()
     {
         WorldNode prevNode = null;
+        byte genNum = 0;
         for(int i = 0; i < nodes.Count; ++i)
         {
             Transform t = nodes[i];
+            bool disable = true;
             if (!nodes[i].TryGetComponent(out WorldNode node))
+            {
                 node = NextToGenerate.Dequeue();
-            node.Generate(t.position, this, (byte)i, prevNode);
+                disable = false;
+            }
+            node.Generate(t.position, this, genNum, prevNode, disable);
+            if (!node.IsSubNode)
+                genNum++;
             prevNode = node;
         }
     }
