@@ -82,7 +82,12 @@ public class DualGridTilemap : MonoBehaviour
         {
             for (int j = bottom; j < top; j++)
             {
-                bool isGrassTile = Map.GetTile(i, j) == TileID.Grass.TileType;
+                TileBase t = Map.GetTile(i, j);
+                bool isGrassTile = t == TileID.Grass.TileType;
+                if(i % 3 == 0 && j % 3 == 0)
+                {
+                    AddTrees(i + Utils.RandInt(3), j + Utils.RandInt(3));
+                }
                 if (isGrassTile && Utils.RandFloat() < 0.1f * mult)
                 {
                     var g = Instantiate(Utils.RandInt(3) != 0 ? Flower3 : Utils.RandInt(2) == 0 ? Flower2 : Flower, DecorVisual).GetComponent<SpriteRenderer>();
@@ -106,8 +111,32 @@ public class DualGridTilemap : MonoBehaviour
             }
         }
     }
-    public void AddTrees()
+    public void AddTrees(int i, int j)
     {
-
+        TileBase t = Map.GetTile(i, j);
+        int order = 20;
+        Color c = Color.white;
+        bool isGrassTile = t == TileID.Grass.BorderTileType;
+        if (isGrassTile && Utils.RandFloat() < 0.5f)
+        {
+            int nonSolidTiles = 0;
+            for(int x = -1; x <= 1; ++x)
+            {
+                for(int y = -1; y <= 3; ++y)
+                {
+                    if (!World.SolidTile(new Vector3Int(i + x, j + y)) && World.RealTileMap.Map.GetTile(i, j) != TileID.DarkGrass.FloorTileType)
+                        nonSolidTiles++;
+                }
+            }
+            if (nonSolidTiles > 3)
+                return;
+            var list = Utils.RandFloat() < 0.3f ? Main.PrefabAssets.Stumps : Main.PrefabAssets.Trees;
+            var g = Instantiate(list[Utils.RandInt(list.Count)], World.Instance.NatureParent.transform, true).GetComponent<SpriteRenderer>();
+            g.transform.localPosition = new Vector2(i * 2 + 1, j * 2 + 1) + Utils.RandCircle(.5f);
+            g.transform.localScale = new Vector3(g.transform.localScale.x * Utils.RandFloat(0.95f, 1.0f), g.transform.localScale.y * Utils.RandFloat(0.95f, 1.0f));
+            g.color = c;
+            g.sortingOrder = order;
+            g.flipX = Utils.rand.NextBool();
+        }
     }
 }

@@ -299,7 +299,11 @@ public class WorldNode : MonoBehaviour
         GenerateLine(prev, end);
         if(!IsSubNode && attempts <= 10)    
         {
-            WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 0, GenerationNumber % 2 == 0 ? null : (GenerationNumber == 7 || Utils.RandFloat(1) < 0.66f), null, null, GenerationNumber == 7 ? 0.5f : 5.0f);
+            WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 
+                0, 
+                GenerationNumber % 2 == 0 ? Utils.RollWithLuck(0.5f) ? false : null : (GenerationNumber == 7 || Utils.RandFloat(1) < 0.66f),
+                null, null, 
+                GenerationNumber == 7 ? 0.5f : 5.0f);
             sub.Generate(subNodePos, World, GenerationNumber, null);
             sub.GetClosestSingleNode(subNodeConPos, sub.Connectors, out NodeConnector best, out float _);
             OverrideTiles = best.OverrideTiles;

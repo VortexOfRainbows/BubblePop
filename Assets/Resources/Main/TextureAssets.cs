@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,12 +61,22 @@ public partial class Main : MonoBehaviour
         public static PowerUpObject PowerUpObj;
         public static GameObject PlayerPrefab = Resources.Load<GameObject>("Player/Player");
         public static GameObject Roadblock { get; private set; }
+        public static readonly List<GameObject> Trees = new();
+        public static readonly List<GameObject> Stumps = new();
         public static void Load()
         {
+            Trees.Clear();
+            Stumps.Clear();
             DefaultProjectile = Resources.Load<GameObject>("Projectiles/Projectile");
             PowerUpObj = Resources.Load<GameObject>("PowerUps/Prefabs/PowerUpObj").GetComponent<PowerUpObject>();
             BatterUpTokenPrefab = Resources.Load<GameObject>("Player/Gachapon/SlotMachine/BatterUpToken");
             Roadblock = Resources.Load<GameObject>("World/Roadblock");
+            Trees.Add(Resources.Load<GameObject>("World/Decor/Nature/FluffyTree"));
+            Trees.Add(Resources.Load<GameObject>("World/Decor/Nature/PointyTree"));
+            Stumps.Add(Resources.Load<GameObject>("World/Decor/Nature/PlainStump"));
+            Stumps.Add(Resources.Load<GameObject>("World/Decor/Nature/PlainStumpMoss"));
+            Stumps.Add(Resources.Load<GameObject>("World/Decor/Nature/StumpWBranch"));
+            Stumps.Add(Resources.Load<GameObject>("World/Decor/Nature/StumpWBranchMoss"));
         }
     }
 }
