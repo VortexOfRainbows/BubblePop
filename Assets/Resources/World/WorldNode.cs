@@ -159,12 +159,11 @@ public class WorldNode : MonoBehaviour
                     bool solid = World.SolidTile(v);
                     bool canPlaceTile = !world.Tilemap.Map.HasTile(v) || (solid == iAmSolid);
                     bool placeSolidAsUnsolid = !solid && iAmSolid && !canPlaceTile;
-                    if(placeSolidAsUnsolid)
-                        canPlaceTile = true;
-                    if (canPlaceTile)
+                    if(canPlaceTile || placeSolidAsUnsolid)
                     {
                         world.Tilemap.Map.SetTile(v, placeSolidAsUnsolid ? tile.GetTileID().FloorTileType : tile);
-                        World.SetTileData(v, new World.TileData(GenerationNumber));
+                        if(canPlaceTile)
+                            World.SetTileData(v, new World.TileData(GenerationNumber));
                     }
                 }
             }
