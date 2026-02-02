@@ -72,6 +72,7 @@ public static class EnemyID
     public static readonly GameObject Ent = LoadNPC("Ent/Ent");
     public static readonly GameObject Infector = LoadNPC("Infectors/Infector");
     public static readonly GameObject RockSpider = LoadNPC("BabyRockEnemy/RockSpider");
+    public static readonly GameObject Sentinel = LoadNPC("Sentinel/Sentinel");
 }
 public class Enemy : Entity
 {

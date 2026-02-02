@@ -12,4 +12,10 @@ public static class ColorHelper
     public static readonly Color UIRedColor = New255(255, 50, 50);
     public static readonly Color UIGreyColor = new(1, 1, 1, 0.4f);
     public static readonly Color TokenColor = New255(176, 147, 58);
+    public static readonly Color SentinelGreen = new(0.18f, 1.0f, .55f);
+    public static readonly Color SentinelBlue = new(0.26f, 0.95f, 1.0f);
+    public static Color SentinelColorsLerp(float t)
+    {
+        return Color.Lerp(SentinelGreen, SentinelBlue, t);
+    }
 }
