@@ -14,7 +14,7 @@ public class PowerUpCheatUI : MonoBehaviour
     public static bool MouseInCompendiumArea { get; private set; }
     public static Crucible CurrentCrucible { get; set; }
     public static bool HasCrucible => CurrentCrucible != null;
-    public static int ShardsNeededToOpenMenu = 3;
+    public static int ShardsNeededToOpenMenu = 1;
     public static bool HasShards => (CoinManager.CurrentShards >= ShardsNeededToOpenMenu) || (Main.DebugCheats && Main.DebugSettings.PowerUpCheat);
     public static bool CanOpenMenu => HasCrucible || HasShards;
     public static bool PrevHadCrucible { get; set; } = false;

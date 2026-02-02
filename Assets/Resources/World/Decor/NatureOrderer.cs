@@ -34,6 +34,6 @@ public class YPosComparer : IComparer<GameObject>
 {
     public int Compare(GameObject x, GameObject y)
     {
-        return (int)Math.Floor(x.transform.position.y - y.transform.position.y);
+        return Mathf.FloorToInt(x.transform.position.y - y.transform.position.y);
     }
 }

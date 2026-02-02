@@ -128,6 +128,7 @@ public partial class Player : Entity
     public int Eureka = 0;
     public bool HasContract = false;
     public int ChoiceContract = 0;
+    public int RainbowFlowers = 0;
     private void PowerInit()
     {
         Powers = new List<int>();
@@ -176,7 +177,7 @@ public partial class Player : Entity
         PityGrowthAmount = BuyOneGetOneMult = 0.0f;
         ConsolationPrize = PhilosophersStone = ExtraGachaBurst = 0;
         MaxTokens = 4;
-        BatterUp = PiratesBooty = Eureka = BlackMarketDelivery = 0;
+        BatterUp = PiratesBooty = Eureka = BlackMarketDelivery = RainbowFlowers = 0;
     }
     private void UpdatePowerUps()
     {

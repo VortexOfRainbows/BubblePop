@@ -191,6 +191,11 @@ public abstract class PowerUp
     }
     private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false, int rarity = -1)
     {
+        float flowerChance = Player.Instance.RainbowFlowers * 0.05f;
+        if(Utils.RollWithLuck(flowerChance))
+        {
+            return Get<RainbowFlower>().MyID;
+        }
         if (Utils.RandFloat() < addedChoiceChance && (rarity == -1 || rarity == 1))
         {
             return BlackMarket ? Get<Contract>().MyID : Get<Choice>().MyID;

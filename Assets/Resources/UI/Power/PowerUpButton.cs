@@ -107,6 +107,8 @@ public class PowerUpButton : MonoBehaviour
             bool canAfford = cost <= CoinManager.CurrentGems;
             SelectButton.interactable = canAfford;
         }
+        else
+            SelectButton.interactable = true;
         if (Input.GetKeyDown(Hotkey) && !ChoicePowerMenu.Hide && SelectButton.interactable)
             GrantPower();
     }
