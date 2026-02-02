@@ -14,7 +14,9 @@ public partial class Main : MonoBehaviour
         public static Sprite Laser;
         public static Sprite Sparkle;
         public static Sprite Shadow;
+        public static Sprite GradientLine;
         public static Material InfectorShader;
+        public static Material AdditiveShader;
         public static Sprite T3ChestUma, T3ChestUmaOpen, T3Chest, T3ChestOpen, T2Chest, T2ChestOpen, T1Chest, T1ChestOpen, BlackMarketCrate;
         public static Sprite[] SlotSymbol = new Sprite[4];
         public static Sprite GoldProj, CoinProj, GemProj, TokenProj, FireProj;
@@ -29,8 +31,10 @@ public partial class Main : MonoBehaviour
             Feather = Resources.Load<Sprite>("Projectiles/Feather");
             Laser = Resources.Load<Sprite>("Projectiles/Laser");
             Sparkle = Resources.Load<Sprite>("Projectiles/Sparkle");
+            GradientLine = Resources.Load<Sprite>("LongGradient");
             Shadow = Resources.Load<Sprite>("Shadow");
             InfectorShader = Resources.Load<Material>("Materials/InfectionShader/Infection");
+            AdditiveShader = Resources.Load<Material>("Materials/Additive");
 
             T3ChestUma = Resources.Load<Sprite>("Chests/T3ChestClosed2");
             T3ChestUmaOpen = Resources.Load<Sprite>("Chests/T3ChestOpen2");
@@ -60,6 +64,7 @@ public partial class Main : MonoBehaviour
         public static GameObject BatterUpTokenPrefab;
         public static PowerUpObject PowerUpObj;
         public static GameObject PlayerPrefab = Resources.Load<GameObject>("Player/Player");
+        public static GameObject SpritebatchPrefab = Resources.Load<GameObject>("SpriteBatch/SpritebatchDraw");
         public static GameObject Roadblock { get; private set; }
         public static readonly List<GameObject> Trees = new();
         public static readonly List<GameObject> Stumps = new();

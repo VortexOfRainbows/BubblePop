@@ -15082,6 +15082,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2385536326268178608}
+  - {fileID: 1755457766737359977}
   - {fileID: 2135243894908487414}
   - {fileID: 5500380985008093861}
   - {fileID: 7338429072883857388}
@@ -15105,6 +15106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DirectorCanvas: {fileID: 2528735675891889062}
   PowerupCheatCanvas: {fileID: 5702857135718872428}
+  SpritebatchSuperParent: {fileID: 1755457766737359977}
   MyUIManager:
     ResumeButtons:
     - {fileID: 5059882442936566987}
@@ -30433,6 +30435,37 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!1 &7953930283446865277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1755457766737359977}
+  m_Layer: 0
+  m_Name: SpritebatchSuperParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1755457766737359977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7953930283446865277}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3914301646772711725}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1813798564584018291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30708,6 +30741,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterSelectCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 805541592938224784, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.001159668
+      objectReference: {fileID: 0}
     - target: {fileID: 1244068026190114695, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -30726,7 +30763,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1350636881185566872, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 75.00006
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 1468496954959900899, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_AnchorMax.x

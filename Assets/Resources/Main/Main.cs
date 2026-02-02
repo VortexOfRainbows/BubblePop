@@ -27,6 +27,8 @@ public partial class Main : MonoBehaviour
     public static bool WavesUnleashed { get; set; } = false;
     public GameObject DirectorCanvas;
     public GameObject PowerupCheatCanvas;
+    public Transform SpritebatchSuperParent;
+    public static Transform SpritebatchParent => Instance.SpritebatchSuperParent;
     public static int UICameraLayerID { get; private set; } = -1;
     public static readonly int PylonActivationDist = 11;
     public static void SetClosestPylon(Pylon pylon)
@@ -95,6 +97,7 @@ public partial class Main : MonoBehaviour
             UnlockCondition.PrepareStatics();
             CoinManager.InitCoinPrefabs();
             PlayerData.TryVersionResetProcedure(); //This should come last. Right now it resets equip values to fix lingering bugs from old equip system
+            SpriteBatch.Setup();
             GameFinishedLoading = true;
 
             OnGameOpen();
@@ -141,6 +144,11 @@ public partial class Main : MonoBehaviour
             PylonProgressionNumber++;
         }
         UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
+
+    }
+    public void LateUpdate()
+    {
+        SpriteBatch.OnUpdate();
     }
     public static Main Instance;
     public static class GlobalEquipData

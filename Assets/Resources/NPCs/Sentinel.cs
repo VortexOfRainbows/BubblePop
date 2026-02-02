@@ -100,6 +100,15 @@ public class Sentinel : Enemy
             ParticleManager.NewParticle(Rings[0].position - (Vector3)(RB.velocity.normalized * 0.65f + Utils.RandCircle(0.25f)), Utils.RandFloat(1.5f, 2.5f), -RB.velocity * 0.2f, 1f, Utils.RandFloat(0.8f, 1.2f), ParticleManager.ID.Pixel, ColorHelper.SentinelColorsLerp(Utils.RandFloat()).WithAlpha(0.5f));
         }
     }
+    public new void Update()
+    {
+        base.Update();
+
+        Vector2 toTarget = targetedLocation - (Vector2)Head.position;
+        float magnitude = toTarget.magnitude;
+        SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f), 
+            new Vector2(magnitude * 0.3f, 5), toTarget.ToRotation(), ColorHelper.SentinelGreen);
+    }
     public override void OnKill()
     {
         float amt = 60;
