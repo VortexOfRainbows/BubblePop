@@ -230,3 +230,17 @@ public class GachaponClover : UnlockCondition
     }
     public override int Rarity => 5;
 }
+public class GachaponHealer : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Gachapon: Healer");
+        description.WithDescription($"As Y:Gachapon, take damage 15 times in one run");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Completionist;
+    }
+    public override int Rarity => 4;
+}

@@ -48,6 +48,7 @@ public class RollForCharisma : PowerUp
     {
         return Resources.Load<Sprite>("PowerUps/Dice/CharismaSunglasses");
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<GachaponHealer>();
 }
 public class RollForDexterity : PowerUp
 {

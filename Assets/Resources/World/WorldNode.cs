@@ -283,7 +283,7 @@ public class WorldNode : MonoBehaviour
                 subNodeConPos = pointBetween;
                 while(attempts == 0 || !World.AreaIsClear(World.RealTileMap.Map.WorldToCell(subNodePos), 5))
                 {
-                    subNodePos = pointBetween + rNorm * (pathVariance * Utils.RandFloat(1.0f - 0.25f * attempts, 1.5f + 0.1f * attempts) + 10) + Utils.RandCircle(attempts);
+                    subNodePos = pointBetween + rNorm * Utils.Rand1OrMinus1() * (pathVariance * Utils.RandFloat(1.0f - 0.25f * attempts, 1.5f + 0.1f * attempts) + 10) + Utils.RandCircle(attempts);
                     attempts++;
                     if (attempts > 10)
                         break;
