@@ -152,11 +152,11 @@ public class World : MonoBehaviour
             if (!nodes[i].TryGetComponent(out WorldNode node))
             {
                 tr.gameObject.SetActive(false);
-                bool shop = i == 2 || i == 4 || i == nodes.Count - 1;
+                bool shop = i == 2 || i == 4 || i == 6 || i == nodes.Count - 1;
                 bool largo = i == nodes.Count - 1;
                 node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0,
                     shop,
-                    i % 3 == 1 && !largo ? !shop && Utils.RollWithLuck(0.5f) : null,
+                    i % 3 == 1 && !largo ? Utils.RollWithLuck(0.5f) : null,
                     largo);
                 NodeID.PreviousNode = node;
                 NextToGenerate.Enqueue(node);

@@ -33,6 +33,7 @@ Less Important (mostly non-issues or complete already), but in consideration:
 2. Improve UI
 3. Maybe shift roadblock visuals to the player so it's more encompassing
 4. Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp
+5. Enemy Pathfinding
 
 Current Task List:
 1. Quest List UI that says stuff like:
@@ -46,8 +47,10 @@ Done:
 1. Add Rainbow Flower Power
 2. Fix bug where contract would permanently lock choice
 3. Fix bug floating point crash with trees
+	1. Changed algorithm to no longer rely on list sorting. Now just uses math, so it should also be more optimized.
 4. New Achievement: Gachapon: Healer
-5. Two new nodes
+5. Five new nodes
+	1. plus four new subnodes
 6. Node paths now are more varied generation
 
 1/29/26 to 1/30/26

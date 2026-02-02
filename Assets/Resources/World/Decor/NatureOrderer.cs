@@ -1,32 +1,36 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NatureOrderer : MonoBehaviour
 {
-    public List<GameObject> Objects;
+    public List<Transform> Objects { get; private set; } = new();
+    private float Lowest;
+    private float Highest;
     public void Init()
     {
         GatherObjects();
-        SortObjects();
         OrderObjects();
     }
     public void GatherObjects()
     {
+        Lowest = float.MaxValue;
+        Highest = float.MinValue;
         for (int i = 0; i < transform.childCount; ++i)
-            Objects.Add(transform.GetChild(i).gameObject);
-    }
-    public void SortObjects()
-    {
-        Objects.Sort(new YPosComparer());
+        {
+            var t = transform.GetChild(i);
+            Objects.Add(t);
+            Lowest = Mathf.Min(Lowest, t.position.y);
+            Highest = Mathf.Max(Highest, t.position.y);
+        }
     }
     public void OrderObjects()
     {
+        float diff = Highest - Lowest;
         for (int i = 0; i < Objects.Count; ++i)
         {
-            GameObject g = Objects[i];
-            float percent = i / (float)Objects.Count;
-            g.transform.position = new Vector3(g.transform.position.x, g.transform.position.y, percent);
+            Transform t = Objects[i];
+            float percent = (t.position.y - Lowest) / diff;
+            t.position = new Vector3(t.position.x, t.position.y, percent);
         }
     }
 }
@@ -35,8 +39,6 @@ public class YPosComparer : IComparer<GameObject>
     public int Compare(GameObject x, GameObject y)
     {
         float diff = x.transform.position.y - y.transform.position.y;
-        if (MathF.Abs(diff) < 0.0001f)
-            return 0;
         return Mathf.FloorToInt(diff);
     }
 }
