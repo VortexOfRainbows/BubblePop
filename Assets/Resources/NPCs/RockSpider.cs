@@ -54,7 +54,7 @@ public class RockSpider : Enemy
     {
         UpdateDirection(-1);
     }
-    public void UpdateDirection(float i)
+    public virtual void UpdateDirection(float i)
     {
         if (i >= 0)
             i = -1;
