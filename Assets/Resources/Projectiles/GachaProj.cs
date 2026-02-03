@@ -144,7 +144,7 @@ public class GachaTokenProj : Projectile
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = c;
         SpriteRendererGlow.transform.localScale *= 1.25f; //2.5
-        c2D.radius *= 1.5f;
+        C2D.radius *= 1.5f;
         startPos = transform.position;
         trail = SpecialTrail.NewTrail(transform, c * 0.9f, 1.8f, 0.18f, 0.3f);
     }

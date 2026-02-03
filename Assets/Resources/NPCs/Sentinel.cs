@@ -11,21 +11,24 @@ public class Sentinel : Enemy
         inlineThreshold = 0.1f;
     }
     public Transform[] Rings;
-    private static readonly Vector2[] DefaultPositions = new Vector2[] { new(0, -0.5f), new(0, -0.875f), new(0, -1.025f), new(0, 1.4f) };
+    public SpriteRenderer[] Glows;
+    private static readonly Vector2[] DefaultPositions = new Vector2[] { new(0, -0.5f), new(0, -0.875f), new(0, -1.025f), new(0, 1.0f) };
     public Transform Head => Rings[3];
     private Vector2 targetedLocation;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 25;
-        data.BaseMaxCoin = 20;
-        data.BaseMinCoin = 1;
+        data.BaseMaxLife = 24;
+        data.BaseMaxCoin = 25;
+        data.BaseMinCoin = 5;
         data.BaseMinGem = 1;
+        data.BaseMaxGem = 3;
         data.Rarity = 3;
-        data.Cost = 4f;
+        data.Cost = 5.5f;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
-        scale *= 1.1f;
+        scale *= 0.86f;
+        offset.y -= 0.85f;
     }
     public float AnimCounter = 0;
     public int DustCount = 0;
@@ -41,23 +44,45 @@ public class Sentinel : Enemy
     {
         float moveSpeed = 1.5f;
         float inertiaMult = 0.9825f;
-        targetedLocation = Player.Position;
-        Vector2 toTarget = targetedLocation - (Vector2)transform.position;
+        float percentShot = AttackCounter / 200f;
+        targetedLocation = Vector2.Lerp(targetedLocation, Player.Position, (1 - percentShot) * (1 - percentShot) * (1 - percentShot));
+        Vector2 toTarget = targetedLocation - (Vector2)Head.position;
         float magnitude = toTarget.magnitude;
         if (magnitude > 16 && AttackCounter <= 0)
         {
-            RB.velocity += toTarget / magnitude * moveSpeed;
-            inertiaMult = 0.95f;
+            if(AttackCounter < 0)
+            {
+                AttackCounter++;
+            }
+            else
+            {
+                RB.velocity += toTarget / magnitude * moveSpeed;
+                inertiaMult = 0.95f;
+            }
         }
         else
         {
-            AttackCounter++;
-            if (AttackCounter >= 200)
+            if (AttackCounter > 200)
             {
-                AttackCounter = 0;
+                float amt = 60;
+                for (int i = 0; i < amt; ++i)
+                {
+                    float p = i / amt * Mathf.PI * 2;
+                    Vector2 circular = new Vector2(0, 1.5f + 0.5f * Mathf.Sin(p * 4)).RotatedBy(p - Mathf.PI / 8f);
+                    ParticleManager.NewParticle((Vector2)Head.position + circular * 0.1f, Utils.RandFloat(2.5f, 3.0f), circular * Utils.RandFloat(3, 4f), .2f, Utils.RandFloat(0.65f, 1.35f), ParticleManager.ID.Pixel, ColorHelper.SentinelColorsLerp(Mathf.Sin(p)));
+                }
+                AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.5f, 1.2f);
+                AudioManager.PlaySound(SoundID.Teleport, Head.position, 1, 0.67f, 0);
+                Vector2 norm = toTarget.normalized;
+                RB.velocity -= norm * 7f;
+                Projectile.NewProjectile<SentinelLaser>(Head.position, norm, 1);
+                AttackCounter = -50;
             }
+            ++AttackCounter;
             RB.velocity += toTarget.RotatedBy(Mathf.PI * 0.4f) / magnitude * moveSpeed * 0.0225f;
         }
+        foreach (SpriteRenderer glow in Glows)
+            glow.color = glow.color.WithAlpha(Mathf.Lerp(glow.color.a, 0.1f + percentShot * 0.9f, 0.04f));
         RB.velocity *= inertiaMult;
         float mainDir = toTarget.x > 0 ? 1 : -1;
         float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -3.0f;
@@ -109,20 +134,21 @@ public class Sentinel : Enemy
     public new void Update()
     {
         base.Update();
+        if(IsDummy)
+            return;           
         float percent = AttackCounter / 200f;
-        float iPer = 1 - percent;
-        iPer *= iPer;
+        float iPer = 1 - percent * percent;
         float sqrt = Mathf.Sqrt(percent);
         Vector2 toTarget = targetedLocation - (Vector2)Head.position;
-        float magnitude = toTarget.magnitude;
+        float magnitude = 5;
         for (int i = -1; i <= 1; i += 2)
             SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
-                new Vector2(magnitude * 0.3f * percent, 6 + percent * 10f),
-                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 90, ColorHelper.SentinelGreen * sqrt * 0.9f);
+                new Vector2(magnitude * percent, 6 + percent * 10f),
+                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, ColorHelper.SentinelGreen * sqrt * 0.9f);
         for (int i = -1; i <= 1; i += 2)
             SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
-                new Vector2(magnitude * 0.3f * percent, 3 + percent * 5f),
-                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 90, ColorHelper.SentinelBlue * sqrt);
+                new Vector2(magnitude * percent, 3 + percent * 5f),
+                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, ColorHelper.SentinelBlue * sqrt);
     }
     public override void OnKill()
     {
@@ -132,6 +158,10 @@ public class Sentinel : Enemy
             float p = i / amt * Mathf.PI * 2;
             Vector2 circular = new Vector2(0, 1.5f + 0.5f * Mathf.Sin(p * 5)).RotatedBy(p - Mathf.PI / 10f);
             ParticleManager.NewParticle((Vector2)Head.position + circular * 0.1f, Utils.RandFloat(2.5f, 4.0f), circular * Utils.RandFloat(4, 6), 2f, Utils.RandFloat(0.6f, 2.5f), ParticleManager.ID.Pixel, ColorHelper.SentinelColorsLerp(Mathf.Sin(p)));
+        }
+        for (int i = 0; i < 15; ++i)
+        {
+            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.6f), Utils.RandFloat(0.3f, 0.4f), Utils.RandCircle(5), 0.3f, Utils.RandFloat(0.6f, 1.1f), ParticleManager.ID.Square, Color.gray);
         }
         AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.5f, 1.2f);
     }

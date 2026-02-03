@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
     public SpriteRenderer SpriteRendererGlow => cmp.spriteRendererGlow;
     public SpriteRenderer SpriteRenderer => cmp.spriteRenderer;
     public Rigidbody2D RB => cmp.rb;
-    public CircleCollider2D c2D => cmp.c2D;
+    public CircleCollider2D C2D => cmp.c2D;
     public static int colorGradient = 0;
     public float timer = 0f;
     public float timer2 = 0f;
@@ -71,6 +71,15 @@ public class Projectile : MonoBehaviour
         GameObject Proj = Instantiate(Main.PrefabAssets.DefaultProjectile, pos, Quaternion.identity);
         Projectile proj = Proj.AddComponent<T>();
         proj.cmp = Proj.GetComponent<ProjComponents>();
+        if (proj is BoxProjectile)
+        {
+            proj.cmp.c2D.enabled = false;
+            proj.cmp.rectCollider = Proj.AddComponent<BoxCollider2D>();
+            proj.cmp.rectCollider.includeLayers = proj.cmp.c2D.includeLayers;
+            proj.cmp.rectCollider.excludeLayers = proj.cmp.c2D.excludeLayers;
+            proj.cmp.rectCollider.contactCaptureLayers = proj.cmp.c2D.contactCaptureLayers;
+            proj.cmp.rectCollider.callbackLayers = proj.cmp.c2D.callbackLayers;
+        }
         proj.RB.velocity = velo;
         if(!hasMerged)
         {
@@ -262,6 +271,10 @@ public class Projectile : MonoBehaviour
     {
         return true;
     }
+}
+public abstract class BoxProjectile : Projectile
+{
+    public new BoxCollider2D C2D => cmp.rectCollider;
 }
 public class FlamingoFeather : Projectile
 {

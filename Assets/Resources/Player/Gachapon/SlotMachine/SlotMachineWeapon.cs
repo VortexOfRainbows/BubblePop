@@ -291,7 +291,7 @@ public class SlotMachineWeapon : Weapon
                 Hitbox.transform.position = GeoCenter.position;
                 Hitbox.transform.localScale = transform.localScale;
                 Hitbox.transform.SetEulerZ(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
-                Hitbox.c2D.radius = 1.65f;
+                Hitbox.C2D.radius = 1.65f;
             }
             if (Trail != null)
             {

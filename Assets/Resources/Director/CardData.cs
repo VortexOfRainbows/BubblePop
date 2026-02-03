@@ -125,6 +125,11 @@ public class CardData
             else
                 m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum });
         }
+        if (waveNum == 16 || waveNum == 17)
+        {
+            if (Utils.RandFloat(1) < (waveNum == 16 ? 0.25f : 0.75f))
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Sentinel) { IsPermanent = true });
+        }
         if (waveNum >= 5 && m == null)
         {
             if (waveNum % 3 == 0) //Previously, there was a 10% power boost with each wave number, so this should mimic the old system
@@ -276,7 +281,7 @@ public class EnemyClause : CardClause
         AssociatedWaveCards.Clear();
         int maxSwarmDifficulty = 6;
         float difficultMult = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
-        if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator) //1 mid-wave by default for bosses, 3 at max card difficulty
+        if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator || Enemy.EnemyToAdd is Sentinel) //1 mid-wave by default for bosses, 3 at max card difficulty
         {
             difficultMult -= 1;
             if (Enemy.EnemyToAdd is EnemyBossDuck)

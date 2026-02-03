@@ -246,8 +246,8 @@ public class World : MonoBehaviour
     {
         m_Instance = this;
         #if UNITY_EDITOR
-        if(Input.GetKey(KeyCode.R) && true)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //if(Input.GetKey(KeyCode.R) && Main.DebugCheats)
+        //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         #endif
     }
 }

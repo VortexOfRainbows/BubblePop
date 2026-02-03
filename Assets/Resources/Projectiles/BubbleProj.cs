@@ -425,7 +425,7 @@ public class ThoughtBubbleThunderAura : Projectile
         Penetrate = -1;
         immunityFrames = 50;
         Friendly = false;
-        c2D.radius *= 4 * (Player.Instance.TrailOfThoughts / 10f + 1);
+        C2D.radius *= 4 * (Player.Instance.TrailOfThoughts / 10f + 1);
         SpriteRendererGlow.transform.localScale = Vector3.one * 2f;
         SpriteRendererGlow.color = Color.black;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
