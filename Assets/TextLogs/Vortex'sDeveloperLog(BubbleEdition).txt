@@ -41,7 +41,8 @@ Current Task List:
 2. Finish Pylon and Roadblock systems:
 	1. Pointers that show you the direction to the next Pylon
 3. Sentinel Enemy
-4. Fix bug where hover text is sometime not appearing during choice menu on left and right powers (not sure what is causing this)
+4. Fix bug where chests can get stuck in walls
+5. Fix bug where enemies can spawn in subnodes
 
 Done: 
 
@@ -56,6 +57,7 @@ Done:
 6. Node paths now are more varied generation
 7. WIP Sentinel Enemy
 8. WIP "Spritebatch" implementation
+9. Fix bug where popup text was not showing for all choice elements
 
 1/29/26 to 1/30/26
 1. More worldgen changes + shops can spawn as subnodes + another node
