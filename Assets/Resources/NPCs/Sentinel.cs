@@ -29,6 +29,7 @@ public class Sentinel : Enemy
     }
     public float AnimCounter = 0;
     public int DustCount = 0;
+    public float AttackCounter = 0;
     public SpecialTrail MyTrail { get; private set; }
     public override void OnSpawn()
     {
@@ -43,13 +44,18 @@ public class Sentinel : Enemy
         targetedLocation = Player.Position;
         Vector2 toTarget = targetedLocation - (Vector2)transform.position;
         float magnitude = toTarget.magnitude;
-        if (magnitude > 16)
+        if (magnitude > 16 && AttackCounter <= 0)
         {
             RB.velocity += toTarget / magnitude * moveSpeed;
             inertiaMult = 0.95f;
         }
         else
         {
+            AttackCounter++;
+            if (AttackCounter >= 200)
+            {
+                AttackCounter = 0;
+            }
             RB.velocity += toTarget.RotatedBy(Mathf.PI * 0.4f) / magnitude * moveSpeed * 0.0225f;
         }
         RB.velocity *= inertiaMult;
@@ -103,11 +109,20 @@ public class Sentinel : Enemy
     public new void Update()
     {
         base.Update();
-
+        float percent = AttackCounter / 200f;
+        float iPer = 1 - percent;
+        iPer *= iPer;
+        float sqrt = Mathf.Sqrt(percent);
         Vector2 toTarget = targetedLocation - (Vector2)Head.position;
         float magnitude = toTarget.magnitude;
-        SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f), 
-            new Vector2(magnitude * 0.3f, 5), toTarget.ToRotation(), ColorHelper.SentinelGreen);
+        for (int i = -1; i <= 1; i += 2)
+            SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
+                new Vector2(magnitude * 0.3f * percent, 6 + percent * 10f),
+                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 90, ColorHelper.SentinelGreen * sqrt * 0.9f);
+        for (int i = -1; i <= 1; i += 2)
+            SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
+                new Vector2(magnitude * 0.3f * percent, 3 + percent * 5f),
+                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 90, ColorHelper.SentinelBlue * sqrt);
     }
     public override void OnKill()
     {

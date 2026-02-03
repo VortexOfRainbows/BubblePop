@@ -10,7 +10,7 @@ public static class SpriteBatch
             sprite = sprite,
             position = position,
             scale = new Vector3(scale.x, scale.y, 1),
-            rotation = rotation * Mathf.Rad2Deg,
+            rotation = rotation,
             color = color,
             order = order
         };
