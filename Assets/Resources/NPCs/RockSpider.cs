@@ -36,19 +36,19 @@ public class RockSpider : Enemy
         if(Utils.RandFloat() < 0.5f)
         {
             mossy = true;
-            Head.sprite = mossy ? Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyBody3") : Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyBody2");
+            Head.sprite = mossy ? Resources.Load<Sprite>("NPCs/Rock/BabyRockEnemyBody3") : Resources.Load<Sprite>("NPCs/Rock/BabyRockEnemyBody2");
         }
         foreach (var p in LegConnectors)
         {
             if (mossy)
-                p.sprite = Utils.RandFloat() < 0.5f ? Resources.Load<Sprite>("NPCs/BabyRockEnemy/LegConnector3") : 
-                    Resources.Load<Sprite>("NPCs/BabyRockEnemy/LegConnector2");
+                p.sprite = Utils.RandFloat() < 0.5f ? Resources.Load<Sprite>("NPCs/Rock/LegConnector3") : 
+                    Resources.Load<Sprite>("NPCs/Rock/LegConnector2");
         }
         foreach (var p in LegPoints)
         {
             if (mossy)
-                p.sprite = Utils.RandFloat() < 0.5f ? Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyRightLeg3") :
-                    Resources.Load<Sprite>("NPCs/BabyRockEnemy/BabyRockEnemyRightLeg4");
+                p.sprite = Utils.RandFloat() < 0.5f ? Resources.Load<Sprite>("NPCs/Rock/BabyRockEnemyRightLeg3") :
+                    Resources.Load<Sprite>("NPCs/Rock/BabyRockEnemyRightLeg4");
         }
     }
     public override void UIAI()
