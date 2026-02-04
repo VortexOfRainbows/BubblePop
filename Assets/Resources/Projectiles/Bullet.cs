@@ -5,10 +5,13 @@ public class Bullet : Projectile
     public float SizeMult => Data.Length > 0 ? Data[0] : 1f;
     public override void Init()
     {
-        SpriteRendererGlow.color = new Color(245 / 255f, 191 / 255f, 7 / 255f);
+        //SpriteRendererGlow.color = new Color(245 / 255f, 191 / 255f, 7 / 255f);
         SpriteRenderer.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.transform.localScale *= 1.1f;
-        SpriteRendererGlow.color = new Color(1, 0.1f, 0.1f, 1f);
+        if(Data.Length > 1 && Data[1] == 1)
+            SpriteRendererGlow.color = new Color(0.2f, 0.3f, 1f, 1f);
+        else
+            SpriteRendererGlow.color = new Color(1, 0.1f, 0.1f, 1f);
         SpriteRenderer.color = new Color(1, 1f, 1f, 5f);
         SpriteRenderer.material = Resources.Load<Material>("Materials/Additive");
         SpriteRendererGlow.material = Resources.Load<Material>("Particles/Bubble2");
@@ -43,7 +46,7 @@ public class Bullet : Projectile
     }
     public override void OnKill()
     {
-        Color c = new Color(1, 0.1f, 0.1f, 1f);
+        Color c = SpriteRendererGlow.color.WithAlpha(1);
         for (int i = 0; i < 6; i++)
         {
             Vector2 circular = new Vector2(Utils.RandFloat(3) * SizeMult, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));

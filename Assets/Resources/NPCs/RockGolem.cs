@@ -11,7 +11,7 @@ public class RockGolem : RockSpider
         data.BaseMaxLife = 20;
         data.BaseMaxCoin = 5;
         data.BaseMinCoin = 1;
-        data.BaseMaxGem = 3;
+        data.BaseMaxGem = 1;
         data.Cost = 9.5f;
         data.Rarity = 4;
     }
@@ -36,12 +36,14 @@ public class RockGolem : RockSpider
         //Animate();
     }
     public float TiltCounter { get; set; } = 0;
+    public static readonly float ShotCooldownSlowdown = 100;
+    public static readonly float ShotCooldown = 600;
+    public static readonly float ShotWindup = 150;
+    public static readonly float ShotChainRate = 0.1f;
     public override void AI()
     {
         if (Parent == null)
         {
-            //if distance to player
-            ++Timer;
             GetComponent<CircleCollider2D>().enabled = true;
             SpawnedInAlpha += 0.05f;
             if (!hasSpawned)
@@ -55,22 +57,25 @@ public class RockGolem : RockSpider
                     prevP.Child = r.gameObject;
                     prevP = r;
                     r.transform.localScale *= 1f;
+                    if (IsSkull)
+                        r.SetSkullEnemy();
                 }
             }
             Head.gameObject.SetActive(true);
             Vector2 toPlayer = Player.Position - (Vector2)transform.position;
-
+            if (toPlayer.magnitude < 16 || Timer < 60)
+                ++Timer;
             float percent = 1;
-            float speed = 0.16f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
-            if (Timer > 300)
+            float speed = 0.18f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
+            if (Timer > ShotCooldown - ShotCooldownSlowdown)
             {
-                percent = 1 - ((Timer - 300) / 100f);
+                percent = 1 - ((Timer - ShotCooldown + ShotCooldownSlowdown) / ShotCooldownSlowdown);
                 percent = Mathf.Clamp01(percent);
                 speed *= percent;
                 if(percent <= 0)
                 {
-                    percent = ((Timer - 400) / 120f);
-                    if(percent > 0.2f && Child != null)
+                    percent = ((Timer - ShotCooldown) / ShotWindup);
+                    if(percent > ShotChainRate && Child != null)
                     {
                         var child = Child.GetComponent<RockGolem>();
                         if (child.Timer <= 0)
@@ -98,14 +103,14 @@ public class RockGolem : RockSpider
             if(Timer > 0 && SpawnedInAlpha >= 1)
             {
                 Timer++;
-                float percent = Timer / 120f;
-                if (percent > 0.2f && Child != null)
+                float percent = Timer / ShotWindup;
+                if (percent > ShotChainRate && Child != null)
                 {
                     var child = Child.GetComponent<RockGolem>();
                     if (child.Timer <= 0)
                         child.Timer = 1;
                 }
-                if (Timer > 120)
+                if (Timer > ShotWindup)
                     ShootProj();
             }
             else
@@ -118,7 +123,7 @@ public class RockGolem : RockSpider
             Vector2 parent = Parent.transform.position;
             Vector2 parentToMe = pos - parent;
             float magnitude = parentToMe.magnitude;
-            float snapDist = 2.0f;
+            float snapDist = 2.05f;
             if(magnitude > snapDist)
             {
                 Vector2 old = transform.position;
@@ -141,13 +146,14 @@ public class RockGolem : RockSpider
     public void ShootProj()
     {
         Vector2 pos = (Vector2)Body.transform.position + new Vector2(0, 3.5f).RotatedBy(Body.transform.localEulerAngles.z * Mathf.Deg2Rad);
-        for (int i = 0; i < 24; ++i)
+        Vector2 toPlayer = Player.Position - pos;
+        Vector2 tnorm = toPlayer.normalized;
+        for (int i = 0; i < 16; ++i)
         {
-            ParticleManager.NewParticle(pos, Utils.RandFloat(2, 4), Utils.RandCircle(5), .2f, Utils.RandFloat(0.8f, 1.5f), 
+            ParticleManager.NewParticle(pos, Utils.RandFloat(2, 4), Utils.RandCircle(5) - tnorm * Utils.RandFloat(3), .2f, Utils.RandFloat(0.8f, 1.5f), 
                 ParticleManager.ID.Pixel, Color.Lerp(Color.blue, Color.white, Utils.RandFloat()));
-            ParticleManager.NewParticle(pos, Utils.RandFloat(2, 3), Utils.RandCircle(4), .2f, Utils.RandFloat(0.7f, 1.3f),
-                ParticleManager.ID.Pixel, Color.white);
         }
+        Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, 1.25f, 1);
         Timer = 0;
     }
     public new void Update()
@@ -164,10 +170,10 @@ public class RockGolem : RockSpider
             DamageTaken = 0;
             UpdateRendererColor(Color.Lerp(Color.red, Color.white, SpawnedInAlpha).WithAlpha(SpawnedInAlpha), Utils.DeltaTimeLerpFactor(0.1f));
         }
-        float offset = Parent == null ? 400 : 0;
+        float offset = Parent == null ? ShotCooldown : 0;
         if (Timer > offset)
         {
-            float percent = (Timer - offset) / 120f;
+            float percent = (Timer - offset) / ShotWindup;
             float per2 = percent * percent;
             Vector2 pos = (Vector2)Body.transform.position + new Vector2(0, 1.0f + per2 * 2.5f).RotatedBy(Body.transform.localEulerAngles.z * Mathf.Deg2Rad);
             SpriteBatch.Draw(Main.TextureAssets.Shadow,

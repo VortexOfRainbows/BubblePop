@@ -148,6 +148,11 @@ public class Projectile : MonoBehaviour
             //if(Utils.RandFloat() < chanceOfSuccess)
                 //NewProjectile<SnakeLightning>(transform.position, (target.transform.position - transform.position).normalized * 2.5f, 10, recursiveDepth);
         //}
+        if(target is RockGolem)
+        {
+            if (Damage > 0.1f)
+                Damage = Mathf.Max(0.1f, Damage * 0.8f);
+        }
         if(Player.Instance.SnakeEyes > 0)
         {
             int poison = Player.Instance.SnakeEyes;
