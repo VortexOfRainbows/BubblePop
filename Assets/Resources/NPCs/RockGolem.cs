@@ -1,5 +1,7 @@
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEditor.Search;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 public class RockGolem : RockSpider
 {
     private Color ShotColor => InfectionTarget ? new Color(1, .1f, .1f, 1.0f) : new Color(.2f, .3f, 1f, 1.0f);
@@ -18,8 +20,8 @@ public class RockGolem : RockSpider
         data.BaseMaxCoin = 5;
         data.BaseMinCoin = 1;
         data.BaseMaxGem = 1;
-        data.Cost = 9.5f;
-        data.Rarity = 4;
+        data.Cost = 10f;
+        data.Rarity = 5;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
@@ -46,6 +48,7 @@ public class RockGolem : RockSpider
     public static readonly float ShotCooldown = 600;
     public static readonly float ShotWindup = 150;
     public static readonly float ShotChainRate = 0.1f;
+    public int AttackNum = 0;
     public override bool ViableInfectionTarget()
     {
         return Parent == null;
@@ -94,16 +97,37 @@ public class RockGolem : RockSpider
                 speed *= percent;
                 if(percent <= 0)
                 {
-                    percent = ((Timer - ShotCooldown) / ShotWindup);
-                    if(percent > ShotChainRate && Child != null)
+                    if(AttackNum % 2 == 0)
                     {
-                        var child = Child.GetComponent<RockGolem>();
-                        if (child.Timer <= 0)
-                            child.Timer = 1;
+                        percent = ((Timer - ShotCooldown) / ShotWindup);
+                        if (percent > ShotChainRate && Child != null && Child.GetComponent<RockGolem>().SpawnedInAlpha >= 0.95f)
+                        {
+                            var child = Child.GetComponent<RockGolem>();
+                            if (child.Timer <= 0)
+                                child.Timer = 1;
+                        }
+                        if (percent >= 1)
+                        {
+                            ShootProj();
+                            AttackNum++;
+                        }
                     }
-                    if(percent >= 1)
+                    else
                     {
-                        ShootProj();
+                        percent = ((Timer - ShotCooldown) / ShotWindup);
+                        if (percent >= 1)
+                        {
+                            Vector2 headToPlayer = Player.Position - (Vector2)Head.transform.position;
+                            Vector2 norm2 = headToPlayer.normalized;
+                            for(int i = -4; i <= 4; ++i)
+                            {
+                                Projectile.NewProjectile<Bullet>(Head.transform.position, 
+                                    norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, 1.25f - Mathf.Abs(i) * 0.125f, InfectionTarget ? 0 : 1);
+                            }
+                            Head.transform.position -= (Vector3)(norm2 * 0.35f);
+                            AttackNum++;
+                            Timer = 0;
+                        }
                     }
                 }
             }
@@ -116,7 +140,7 @@ public class RockGolem : RockSpider
             norm.x *= 0.25f;
             norm.y *= 0.20f;
             norm.y += 0.12f;
-            Head.transform.localPosition = norm;
+            Head.transform.localPosition = Head.transform.localPosition.Lerp(norm, 0.05f);
         }
         else
         {
@@ -196,10 +220,20 @@ public class RockGolem : RockSpider
             float percent = (Timer - offset) / ShotWindup;
             float per2 = percent * percent;
             Vector2 pos = (Vector2)Body.transform.position + new Vector2(0, 1.0f + per2 * 2.5f).RotatedBy(Body.transform.localEulerAngles.z * Mathf.Deg2Rad);
-            SpriteBatch.Draw(Main.TextureAssets.Shadow,
-                pos, Vector2.one * (1 + percent), 0, ShotColor * percent, 1);
-            SpriteBatch.Draw(Main.TextureAssets.Shadow,
-                pos, Vector2.one * per2, 0, Color.white * percent, 1);
+            if (AttackNum % 2 == 0)
+            {
+                SpriteBatch.Draw(Main.TextureAssets.Shadow,
+                    pos, Vector2.one * (1 + percent), 0, ShotColor * percent, 1);
+                SpriteBatch.Draw(Main.TextureAssets.Shadow,
+                    pos, Vector2.one * per2, 0, Color.white * percent, 1);
+            }
+            else
+            {
+                SpriteBatch.Draw(Main.TextureAssets.Shadow,
+                    Head.transform.position + new Vector3(0, -0.24f), Vector2.one * (1 + percent), 0, ShotColor * percent, 1);
+                SpriteBatch.Draw(Main.TextureAssets.Shadow,
+                    Head.transform.position + new Vector3(0, -0.24f), Vector2.one * percent, 0, ShotColor * percent, 1);
+            }
         }
         lastPos = transform.position;
     }
