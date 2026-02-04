@@ -7,11 +7,11 @@ public class RockGolem : RockSpider
     }
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 15;
+        data.BaseMaxLife = 20;
         data.BaseMaxCoin = 5;
         data.BaseMinCoin = 1;
         data.BaseMaxGem = 3;
-        data.Cost = 15f;
+        data.Cost = 9.5f;
         data.Rarity = 4;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
@@ -33,6 +33,7 @@ public class RockGolem : RockSpider
         //UpdateLegRotations();
         //Animate();
     }
+    public float TiltCounter { get; set; } = 0;
     public override void AI()
     {
         if (Parent == null)
@@ -84,6 +85,10 @@ public class RockGolem : RockSpider
             SpawnedInAlpha +=  RB.velocity.magnitude * Time.fixedDeltaTime * 0.5f;
             transform.position -= (Vector3)(RB.velocity * Time.fixedDeltaTime);
         }
+        float magnitude2 = RB.velocity.magnitude;
+        if(magnitude2 > 0)
+            TiltCounter += Mathf.Sqrt(magnitude2) * Time.fixedDeltaTime * 0.4f;
+        Body.LerpLocalEulerZ(Mathf.Sin(TiltCounter * Mathf.PI) * 6, 0.5f);
         hasSpawned = true;
         UpdateDirection(Utils.SignNoZero(RB.velocity.x));
         UpdateLegRotations();
@@ -146,5 +151,10 @@ public class RockGolem : RockSpider
         else
             i = 1;
         Body.transform.localScale = new Vector3(i * Mathf.Abs(Body.transform.localScale.x), Body.transform.localScale.y, 1);
+    }
+    public override void OnKill()
+    {
+        DeathParticles(30, 0.5f, new Color(60 / 255f, 70 / 255f, 92 / 255f));
+        AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.1f, 0.5f);
     }
 }
