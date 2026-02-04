@@ -5,6 +5,7 @@ public class RockSpider : Enemy
     public SpriteRenderer Head;
     public SpriteRenderer[] LegConnectors;
     public SpriteRenderer[] LegPoints;
+    public Transform Body;
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Rock Spider");
@@ -60,7 +61,7 @@ public class RockSpider : Enemy
             i = -1;
         else
             i = 1;
-        Visual.transform.localScale = new Vector3(i * 1.2f, 1.2f, 1);
+        Body.transform.localScale = new Vector3(i, 1, 1);
     }
     protected float Timer = 150;
     public Transform Eye;
@@ -70,13 +71,20 @@ public class RockSpider : Enemy
     {
         Vector2 toPlayer = Player.Position - (Vector2)transform.position;
         Vector2 norm = toPlayer.normalized;
-        norm.x *= Utils.SignNoZero(Visual.transform.localScale.x);
+        norm.x *= Utils.SignNoZero(Body.transform.localScale.x);
         float f = 1;
         Vector3 e = Eye.transform.localEulerAngles;
         Eye.transform.localPosition = Eye.transform.localPosition.Lerp(0.06f * f * ShotRecoil * norm, 0.11f);
         ShotRecoil = Mathf.Lerp(ShotRecoil, 1, 0.08f);
     }
-    public void MoveUpdate()
+    private Vector2 FindTargetedPlayerPosition()
+    {
+        Vector2 toPlayer = Player.Position - RB.position;
+        float magnitude = Mathf.Min(5, toPlayer.magnitude);
+        toPlayer = toPlayer.normalized;
+        return RB.position + toPlayer * magnitude + new Vector2(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
+    }
+    public override void AI()
     {
         Vector2 toPlayer = Player.Position - (Vector2)transform.position;
         Vector2 norm = toPlayer.normalized;
@@ -84,7 +92,7 @@ public class RockSpider : Enemy
         Timer++;
         if (Timer > 160)
         {
-            if(MoveCounter > 1 && Utils.RandFloat(1) < MoveCounter * 0.2f)
+            if (MoveCounter > 1 && Utils.RandFloat(1) < MoveCounter * 0.2f)
             {
                 AudioManager.PlaySound(SoundID.ElectricZap, Eye.transform.position, 0.7f, 1.7f, 0);
                 int c = 1;
@@ -112,7 +120,7 @@ public class RockSpider : Enemy
                 RB.velocity *= 0.4f;
                 RB.velocity += toPlayer.normalized * 5f;
             }
-            norm = RB.velocity.normalized;
+            //norm = RB.velocity.normalized;
             RB.velocity += toPlayer.normalized * Mathf.Min(0.225f, toPlayer.magnitude);
             if (Mathf.Abs(RB.velocity.x) > 0.1f)
                 UpdateDirection(RB.velocity.x);
@@ -120,17 +128,6 @@ public class RockSpider : Enemy
         }
         if (Timer > 120)
             RB.velocity *= 0.8f;
-    }
-    private Vector2 FindTargetedPlayerPosition()
-    {
-        Vector2 toPlayer = Player.Position - RB.position;
-        float magnitude = Mathf.Min(5, toPlayer.magnitude);
-        toPlayer = toPlayer.normalized;
-        return RB.position + toPlayer * magnitude + new Vector2(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
-    }
-    public override void AI()
-    {
-        MoveUpdate();
     }
     public override void OnKill()
     {

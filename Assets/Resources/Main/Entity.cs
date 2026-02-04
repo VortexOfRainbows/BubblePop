@@ -7,10 +7,10 @@ public partial class Entity : MonoBehaviour
     public GameObject Visual;
     //public static int NextUniqueID = 0;
     //public int UniqueID = NextUniqueID++;
-    public float UniversalImmuneFrames = 0;
+    public float UniversalImmuneFrames { get; set; } = 0;
     public float Life { get; set; } = 10f;
     public float MaxLife { get; set; } = -1;
-    public float DamageTaken = 0;
+    public float DamageTaken { get; protected set; } = 0;
     public bool SpawnedIn = false;
     public static readonly string PlayerTag = "Player";
     public static readonly string ProjTag = "Proj";
@@ -45,7 +45,7 @@ public partial class Entity : MonoBehaviour
             p.Hurt(1);
         }
     }
-    public Vector2 lastPos = Vector2.zero;
+    public Vector2 lastPos { get; protected set; } = Vector2.zero;
     public void FixedUpdate()
     {
         UniversalImmuneFrames--;

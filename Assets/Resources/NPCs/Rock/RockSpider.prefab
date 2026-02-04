@@ -300,14 +300,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Parent: {fileID: 498886357958556334}
-  SpeedMult: -1.6
+  SpeedMult: -1.5
   WalkCounter: 0
   AngleOffset: 0
   WalkSize: 0.35
   WalkSizeXMult: 0.4
-  WalkTiltAngle: 5
+  WalkTiltAngle: -5
   SqrtSpeed: 1
   ResetRate: 0.0125
+  FlipWithDirection: 1
 --- !u!1 &1993918521774879709
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,7 +730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Parent: {fileID: 498886357958556334}
-  SpeedMult: -1.6
+  SpeedMult: -1.5
   WalkCounter: 0
   AngleOffset: 180
   WalkSize: 0.35
@@ -737,6 +738,7 @@ MonoBehaviour:
   WalkTiltAngle: 5
   SqrtSpeed: 1
   ResetRate: 0.0125
+  FlipWithDirection: 1
 --- !u!1 &2629137834372358585
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,14 +869,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Parent: {fileID: 498886357958556334}
-  SpeedMult: -1.6
+  SpeedMult: -1.5
   WalkCounter: 0
   AngleOffset: 180
   WalkSize: 0.35
   WalkSizeXMult: 0.4
-  WalkTiltAngle: 5
+  WalkTiltAngle: -5
   SqrtSpeed: 1
   ResetRate: 0.0125
+  FlipWithDirection: 1
 --- !u!1 &5688364220199719885
 GameObject:
   m_ObjectHideFlags: 0
@@ -1051,6 +1054,7 @@ MonoBehaviour:
   - {fileID: 611933247996818123}
   - {fileID: 3603104447751804160}
   - {fileID: 4679927848259159489}
+  Body: {fileID: 7214364616371254904}
   moveSpeed: 0.12
   inertiaMult: 0.96
   Eye: {fileID: 7244118209338941042}
@@ -1154,7 +1158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Parent: {fileID: 498886357958556334}
-  SpeedMult: -1.6
+  SpeedMult: -1.5
   WalkCounter: 0
   AngleOffset: 0
   WalkSize: 0.35
@@ -1162,6 +1166,7 @@ MonoBehaviour:
   WalkTiltAngle: 5
   SqrtSpeed: 1
   ResetRate: 0.0125
+  FlipWithDirection: 1
 --- !u!1 &5883500228875152707
 GameObject:
   m_ObjectHideFlags: 0
