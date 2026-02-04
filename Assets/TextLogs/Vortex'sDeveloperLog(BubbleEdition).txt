@@ -51,8 +51,13 @@ Done:
 1. WIP Rock Golem enemy
 	1. Has working walk animation, bestiary portrait, and worm AI
 	2. WIP golem attack 
+	3. Has functional behavior with Infectors (entire creature is infected, even after infector is released)
 2. Decrease gems dropped by Leonard 0-5 -> 0-3
 3. Modify walking animation for spider enemies to be more correct when transitioning directions
+4. Infector health scale on implant reduced 100% -> 50% of current enemy life
+5. Thought bubble hp 2 -> 3
+6. Sentinel is now effected correctly by infectors
+7. Add some functions for more control over infector visuals
 
 2/1/26 to 2/2/26
 1. Add Rainbow Flower Power
@@ -64,7 +69,6 @@ Done:
 	1. plus four new subnodes
 6. Node paths now are more varied generation
 7. Add Sentinel Enemy (VERY COOL)	
-	1. Needs infector testing
 8. WIP "Spritebatch" implementation (YAYAYAY)
 9. Fix bug where popup text was not showing for all choice elements
 10. Add system for laser projectile collision

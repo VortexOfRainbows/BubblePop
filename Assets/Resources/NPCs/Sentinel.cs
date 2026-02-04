@@ -8,7 +8,8 @@ public class Sentinel : Enemy
     }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
-        inlineThreshold = 0.1f;
+        inlineThreshold = 0.03f;
+        additiveColorPower += 0.9f;
     }
     public Transform[] Rings;
     public SpriteRenderer[] Glows;
@@ -37,11 +38,16 @@ public class Sentinel : Enemy
     public override void OnSpawn()
     {
         MyTrail = SpecialTrail.NewTrail(Rings[0], ColorHelper.SentinelBlue.WithAlpha(0.75f), 0.5f, 0.75f);
-        MyTrail.Trail.sortingOrder = -1;
+        MyTrail.Trail.sortingOrder = -2;
         MyTrail.Trail.endColor = ColorHelper.SentinelGreen.WithAlpha(0);
     }
     public override void AI()
     {
+        if(MyTrail != null)
+        {
+            MyTrail.Trail.startColor = InfectionTarget ? ColorHelper.CommandInfector.WithAlpha(0.75f) : ColorHelper.SentinelBlue.WithAlpha(0.75f);
+            MyTrail.Trail.endColor = InfectionTarget ? ColorHelper.CommandInfector.WithAlpha(0) : ColorHelper.SentinelGreen.WithAlpha(0);
+        }
         float moveSpeed = 1.5f;
         float inertiaMult = 0.9825f;
         float percentShot = AttackCounter / 200f;
@@ -69,13 +75,15 @@ public class Sentinel : Enemy
                 {
                     float p = i / amt * Mathf.PI * 2;
                     Vector2 circular = new Vector2(0, 1.5f + 0.5f * Mathf.Sin(p * 4)).RotatedBy(p - Mathf.PI / 8f);
-                    ParticleManager.NewParticle((Vector2)Head.position + circular * 0.1f, Utils.RandFloat(2.5f, 3.0f), circular * Utils.RandFloat(3, 4f), .2f, Utils.RandFloat(0.65f, 1.35f), ParticleManager.ID.Pixel, ColorHelper.SentinelColorsLerp(Mathf.Sin(p)));
+                    ParticleManager.NewParticle((Vector2)Head.position + circular * 0.1f, Utils.RandFloat(2.5f, 3.0f), 
+                        circular * Utils.RandFloat(3, 4f), .2f, Utils.RandFloat(0.65f, 1.35f), ParticleManager.ID.Pixel,
+                        InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(p)));
                 }
                 AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.5f, 1.2f);
                 AudioManager.PlaySound(SoundID.Teleport, Head.position, 1, 0.67f, 0);
                 Vector2 norm = toTarget.normalized;
                 RB.velocity -= norm * 7f;
-                Projectile.NewProjectile<SentinelLaser>(Head.position, norm, 1);
+                Projectile.NewProjectile<SentinelLaser>(Head.position, norm, 1, InfectionTarget ? 1 : 0);
                 AttackCounter = -50;
             }
             ++AttackCounter;
@@ -122,13 +130,15 @@ public class Sentinel : Enemy
                     Vector2 circular = new Vector2(0.5f, 0).RotatedBy(r);
                     circular.y *= 0.25f;
                     circular.y += 0.05f;
-                    ParticleManager.NewParticle(Rings[0].position + (Vector3)circular, Utils.RandFloat(1.25f, 1.5f), Vector2.up * 8 + circular * 10 + RB.velocity, 0.1f, 1f, ParticleManager.ID.Pixel, ColorHelper.SentinelColorsLerp(Mathf.Sin(r)).WithAlpha(0.5f));
+                    ParticleManager.NewParticle(Rings[0].position + (Vector3)circular, Utils.RandFloat(1.25f, 1.5f), Vector2.up * 8 + circular * 10 + RB.velocity, 0.1f, 1f, ParticleManager.ID.Pixel, InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(r)).WithAlpha(0.5f));
                 }
             }
         }
         if(RB.velocity.magnitude > 6 && DustCount % 3 == 0)
         {
-            ParticleManager.NewParticle(Rings[0].position - (Vector3)(RB.velocity.normalized * 0.65f + Utils.RandCircle(0.25f)), Utils.RandFloat(1.5f, 2.5f), -RB.velocity * 0.2f, 1f, Utils.RandFloat(0.8f, 1.2f), ParticleManager.ID.Pixel, ColorHelper.SentinelColorsLerp(Utils.RandFloat()).WithAlpha(0.5f));
+            ParticleManager.NewParticle(Rings[0].position - (Vector3)(RB.velocity.normalized * 0.65f + Utils.RandCircle(0.25f)), 
+                Utils.RandFloat(1.5f, 2.5f), -RB.velocity * 0.2f, 1f, Utils.RandFloat(0.8f, 1.2f), ParticleManager.ID.Pixel, 
+                InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Utils.RandFloat()).WithAlpha(0.5f));
         }
     }
     public new void Update()
@@ -141,14 +151,16 @@ public class Sentinel : Enemy
         float sqrt = Mathf.Sqrt(percent);
         Vector2 toTarget = targetedLocation - (Vector2)Head.position;
         float magnitude = 5;
+        Color g = InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelGreen * sqrt * 0.9f;
+        Color b = InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelBlue * sqrt;
         for (int i = -1; i <= 1; i += 2)
             SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
                 new Vector2(magnitude * percent, 6 + percent * 10f),
-                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, ColorHelper.SentinelGreen * sqrt * 0.9f);
+                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, g, -1);
         for (int i = -1; i <= 1; i += 2)
             SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
                 new Vector2(magnitude * percent, 3 + percent * 5f),
-                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, ColorHelper.SentinelBlue * sqrt);
+                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, b, -1);
     }
     public override void OnKill()
     {
@@ -157,12 +169,17 @@ public class Sentinel : Enemy
         {
             float p = i / amt * Mathf.PI * 2;
             Vector2 circular = new Vector2(0, 1.5f + 0.5f * Mathf.Sin(p * 5)).RotatedBy(p - Mathf.PI / 10f);
-            ParticleManager.NewParticle((Vector2)Head.position + circular * 0.1f, Utils.RandFloat(2.5f, 4.0f), circular * Utils.RandFloat(4, 6), 2f, Utils.RandFloat(0.6f, 2.5f), ParticleManager.ID.Pixel, ColorHelper.SentinelColorsLerp(Mathf.Sin(p)));
+            ParticleManager.NewParticle((Vector2)Head.position + circular * 0.1f, Utils.RandFloat(2.5f, 4.0f), circular * Utils.RandFloat(4, 6), 2f, Utils.RandFloat(0.6f, 2.5f), ParticleManager.ID.Pixel, 
+                InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(p)));
         }
         for (int i = 0; i < 15; ++i)
         {
             ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.6f), Utils.RandFloat(0.3f, 0.4f), Utils.RandCircle(5), 0.3f, Utils.RandFloat(0.6f, 1.1f), ParticleManager.ID.Square, Color.gray);
         }
         AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.5f, 1.2f);
+    }
+    public override Vector3 CrownPositionOffset()
+    {
+        return new Vector3(0, 0.2f, Head.position.z);
     }
 }

@@ -52,7 +52,8 @@ public class Infector : Enemy
                 size.x = 0;
             if (size.y < 0)
                 size.y = 0;
-            Crown.transform.localPosition = Utils.LerpSnap(Crown.transform, new Vector3(0, 0.3f + size.y * 1.1f, 0), 0.05f, 0.001f);
+            Crown.transform.localPosition = 
+                Crown.transform.localPosition.Lerp(new Vector3(0, 0.3f + size.y * 1.1f) + Host.CrownPositionOffset(), 0.05f);
         }
         AnimationTimer += FinishedImplanting ? 1.5f : 1;
         int c = Shards.Length;

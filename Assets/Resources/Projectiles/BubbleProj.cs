@@ -1,3 +1,4 @@
+using System.Data.Common;
 using UnityEngine;
 public class SmallBubble : Projectile
 {
@@ -358,6 +359,11 @@ public class ThunderBubble : Projectile
             Pylon.SummonLightning2(transform.position, targetPos, ColorVar, 0.15f);
         }
         RB.velocity = velo;
+        if(timer % 50 == 0)
+        {
+            if (Damage < 1)
+                Damage += 0.1f;
+        }
     }
     public override bool CanBeAffectedByHoming()
     {

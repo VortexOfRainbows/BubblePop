@@ -2,9 +2,15 @@ using UnityEditor.Search;
 using UnityEngine;
 public class RockGolem : RockSpider
 {
+    private Color ShotColor => InfectionTarget ? new Color(1, .1f, .1f, 1.0f) : new Color(.2f, .3f, 1f, 1.0f);
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Rock Golem");
+    }
+    public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
+    {
+        inlineThreshold = 0.05f;
+        additiveColorPower += 0.4f;
     }
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
@@ -24,7 +30,7 @@ public class RockGolem : RockSpider
     public GameObject Child { get; set; } = null;
     public override void OnSpawn()
     {
-
+        Timer = 0;
     }
     public bool hasSpawned = false;
     public float SpawnedInAlpha = 0;
@@ -40,6 +46,19 @@ public class RockGolem : RockSpider
     public static readonly float ShotCooldown = 600;
     public static readonly float ShotWindup = 150;
     public static readonly float ShotChainRate = 0.1f;
+    public override bool ViableInfectionTarget()
+    {
+        return Parent == null;
+    }
+    public override void OnImplantChampion(Infector Infector)
+    {
+        if(Child != null)
+        {
+            var spider = Child.GetComponent<RockGolem>();
+            spider.ImplantChampion(Infector);
+            spider.InfectionTarget = true;
+        }
+    }
     public override void AI()
     {
         if (Parent == null)
@@ -63,13 +82,14 @@ public class RockGolem : RockSpider
             }
             Head.gameObject.SetActive(true);
             Vector2 toPlayer = Player.Position - (Vector2)transform.position;
-            if (toPlayer.magnitude < 16 || Timer < 60)
+            float beginShootingRange = ShotCooldown - ShotCooldownSlowdown;
+            if (toPlayer.magnitude < 16 || Timer < 60 || Timer > beginShootingRange)
                 ++Timer;
             float percent = 1;
             float speed = 0.18f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
-            if (Timer > ShotCooldown - ShotCooldownSlowdown)
+            if (Timer > beginShootingRange)
             {
-                percent = 1 - ((Timer - ShotCooldown + ShotCooldownSlowdown) / ShotCooldownSlowdown);
+                percent = 1 - ((Timer - beginShootingRange) / ShotCooldownSlowdown);
                 percent = Mathf.Clamp01(percent);
                 speed *= percent;
                 if(percent <= 0)
@@ -131,8 +151,8 @@ public class RockGolem : RockSpider
                 Vector2 oldToNew = (Vector2)transform.position - old;
                 RB.velocity = Vector2.Lerp(RB.velocity, oldToNew * magnitude / Time.fixedDeltaTime, 0.05f);
             }
-            SpawnedInAlpha +=  RB.velocity.magnitude * Time.fixedDeltaTime * 0.5f;
-            transform.position -= (Vector3)(RB.velocity * Time.fixedDeltaTime);
+            SpawnedInAlpha += RB.velocity.magnitude * Time.fixedDeltaTime * 0.5f;
+            RB.position -= RB.velocity * Time.fixedDeltaTime;
         }
         float magnitude2 = RB.velocity.magnitude;
         if(magnitude2 > 0)
@@ -151,9 +171,9 @@ public class RockGolem : RockSpider
         for (int i = 0; i < 16; ++i)
         {
             ParticleManager.NewParticle(pos, Utils.RandFloat(2, 4), Utils.RandCircle(5) - tnorm * Utils.RandFloat(3), .2f, Utils.RandFloat(0.8f, 1.5f), 
-                ParticleManager.ID.Pixel, Color.Lerp(Color.blue, Color.white, Utils.RandFloat()));
+                ParticleManager.ID.Pixel, Color.Lerp(ShotColor, Color.white, Utils.RandFloat()));
         }
-        Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, 1.25f, 1);
+        Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, 1.25f, InfectionTarget ? 0 : 1);
         Timer = 0;
     }
     public new void Update()
@@ -177,7 +197,7 @@ public class RockGolem : RockSpider
             float per2 = percent * percent;
             Vector2 pos = (Vector2)Body.transform.position + new Vector2(0, 1.0f + per2 * 2.5f).RotatedBy(Body.transform.localEulerAngles.z * Mathf.Deg2Rad);
             SpriteBatch.Draw(Main.TextureAssets.Shadow,
-                pos, Vector2.one * (1 + percent), 0, Color.blue * percent, 1);
+                pos, Vector2.one * (1 + percent), 0, ShotColor * percent, 1);
             SpriteBatch.Draw(Main.TextureAssets.Shadow,
                 pos, Vector2.one * per2, 0, Color.white * percent, 1);
         }
@@ -229,5 +249,9 @@ public class RockGolem : RockSpider
     {
         DeathParticles(30, 0.5f, new Color(60 / 255f, 70 / 255f, 92 / 255f));
         AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.1f, 0.5f);
+    }
+    public override Vector3 CrownPositionOffset()
+    {
+        return new Vector3(0, 0, -1);
     }
 }

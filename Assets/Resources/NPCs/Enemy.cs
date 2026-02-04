@@ -105,10 +105,19 @@ public class Enemy : Entity
         ChampionType = 0;
         ChampionSpeedBonus = 1;
         //Basically heal after being implanted
-        float originalMax = MaxLife;
+        float originalMax = (int)(MaxLife / 2);
         MaxLife += originalMax;
         Life += originalMax;
         ImplantShader();
+        OnImplantChampion(Infector);
+    }
+    public virtual Vector3 CrownPositionOffset()
+    {
+        return Vector3.zero;
+    }
+    public virtual void OnImplantChampion(Infector Infector)
+    {
+
     }
     public virtual void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
@@ -214,7 +223,7 @@ public class Enemy : Entity
             //Debug.Log(e.tag);
             if (dist <= searchDistance && 
                 (!requireNonImmune || e.UniversalImmuneFrames <= 0) && 
-                (!requireNonHost || (!e.InfectionTarget && e is not Infector)))
+                (!requireNonHost || (!e.InfectionTarget && e is not Infector && e.ViableInfectionTarget())))
             {
                 bool blackListed = ignore != null && ignore.Contains(e);
                 if (!blackListed)
@@ -489,5 +498,9 @@ public class Enemy : Entity
     public virtual void UIAI()
     {
 
+    }
+    public virtual bool ViableInfectionTarget()
+    {
+        return true;
     }
 }
