@@ -1,6 +1,4 @@
-using System.Linq;
 using UnityEngine;
-
 public class RockGolem : RockSpider
 {
     public override void InitializeDescription(ref DetailedDescription description)
@@ -39,8 +37,9 @@ public class RockGolem : RockSpider
     {
         if (Parent == null)
         {
+            GetComponent<CircleCollider2D>().enabled = true;
             SpawnedInAlpha += 0.05f;
-            if(!hasSpawned)
+            if (!hasSpawned)
             {
                 GameObject prevP = gameObject;
                 for(int i = 1; i < 10; ++i)
@@ -57,9 +56,16 @@ public class RockGolem : RockSpider
             Vector2 norm = toPlayer.normalized;
             RB.velocity += norm * 0.15f;
             RB.velocity *= 0.95f;
+
+            Head.transform.SetEulerZ(norm.x * 20 * norm.y);
+            norm.x *= 0.3f;
+            norm.y *= 0.25f;
+            norm.y += 0.15f;
+            Head.transform.localPosition = norm;
         }
         else
         {
+            GetComponent<CircleCollider2D>().enabled = false;
             if(!hasSpawned)
                 UpdateRendererColor(Color.red.WithAlpha(0), 1);
             Head.gameObject.SetActive(false);
@@ -100,14 +106,15 @@ public class RockGolem : RockSpider
         lastPos = transform.position;
     }
     public Transform[] LegAnchors;
+    public float movementOffset = 0;
     public void UpdateLegRotations()
     {
         float[] radians = new float[] {Mathf.PI, Mathf.PI * 3 / 2, Mathf.PI / 2, 0};
-        float movementoffset = RB.velocity.ToRotation() + Mathf.PI / 2;
+        movementOffset = Mathf.LerpAngle(movementOffset, (RB.velocity.ToRotation() + Mathf.PI / 2) * Mathf.Rad2Deg, 0.05f);
         Color c = IsDummy ? Color.white : Color.Lerp(Color.red, Color.white, SpawnedInAlpha);
         for (int i = 0; i < LegPoints.Length; ++i)
         {
-            float r = radians[i] + movementoffset;
+            float r = radians[i] + movementOffset * Mathf.Deg2Rad;
             float sin = Mathf.Sin(r - 3 * Mathf.PI / 4);
             Vector2 v = new Vector2(1, 1).RotatedBy(r); 
             Vector3 defaultPos = v;
