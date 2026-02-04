@@ -1,3 +1,4 @@
+using UnityEditor.Search;
 using UnityEngine;
 public class RockGolem : RockSpider
 {
@@ -20,6 +21,7 @@ public class RockGolem : RockSpider
         offset.y += 0.55f;
     }
     public GameObject Parent { get; set; } = null;
+    public GameObject Child { get; set; } = null;
     public override void OnSpawn()
     {
 
@@ -38,34 +40,76 @@ public class RockGolem : RockSpider
     {
         if (Parent == null)
         {
+            //if distance to player
+            ++Timer;
             GetComponent<CircleCollider2D>().enabled = true;
             SpawnedInAlpha += 0.05f;
             if (!hasSpawned)
             {
-                GameObject prevP = gameObject;
+                RockGolem prevP = this;
                 for(int i = 1; i < 10; ++i)
                 {
                     RockGolem r = Instantiate(EnemyID.RockGolem, transform.position, Quaternion.identity).GetComponent<RockGolem>();
-                    r.Parent = prevP;
+                    r.Parent = prevP.gameObject;
                     r.Visual.transform.localPosition = new Vector3(r.Visual.transform.localPosition.x, r.Visual.transform.localPosition.y, 0.07f * i);
-                    prevP = r.gameObject;
+                    prevP.Child = r.gameObject;
+                    prevP = r;
                     r.transform.localScale *= 1f;
                 }
             }
             Head.gameObject.SetActive(true);
             Vector2 toPlayer = Player.Position - (Vector2)transform.position;
+
+            float percent = 1;
+            float speed = 0.16f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
+            if (Timer > 300)
+            {
+                percent = 1 - ((Timer - 300) / 100f);
+                percent = Mathf.Clamp01(percent);
+                speed *= percent;
+                if(percent <= 0)
+                {
+                    percent = ((Timer - 400) / 120f);
+                    if(percent > 0.2f && Child != null)
+                    {
+                        var child = Child.GetComponent<RockGolem>();
+                        if (child.Timer <= 0)
+                            child.Timer = 1;
+                    }
+                    if(percent >= 1)
+                    {
+                        ShootProj();
+                    }
+                }
+            }
             Vector2 norm = toPlayer.normalized;
-            RB.velocity += norm * 0.15f;
+            RB.velocity += norm * speed;
             RB.velocity *= 0.95f;
 
+            norm *= 0.5f + 0.5f * percent;
             Head.transform.SetEulerZ(norm.x * 20 * norm.y);
-            norm.x *= 0.3f;
-            norm.y *= 0.25f;
-            norm.y += 0.15f;
+            norm.x *= 0.25f;
+            norm.y *= 0.20f;
+            norm.y += 0.12f;
             Head.transform.localPosition = norm;
         }
         else
         {
+            if(Timer > 0 && SpawnedInAlpha >= 1)
+            {
+                Timer++;
+                float percent = Timer / 120f;
+                if (percent > 0.2f && Child != null)
+                {
+                    var child = Child.GetComponent<RockGolem>();
+                    if (child.Timer <= 0)
+                        child.Timer = 1;
+                }
+                if (Timer > 120)
+                    ShootProj();
+            }
+            else
+                Timer = 0;
             GetComponent<CircleCollider2D>().enabled = false;
             if(!hasSpawned)
                 UpdateRendererColor(Color.red.WithAlpha(0), 1);
@@ -94,6 +138,18 @@ public class RockGolem : RockSpider
         UpdateLegRotations();
         SpawnedInAlpha = Mathf.Clamp01(SpawnedInAlpha);
     }
+    public void ShootProj()
+    {
+        Vector2 pos = (Vector2)Body.transform.position + new Vector2(0, 3.5f).RotatedBy(Body.transform.localEulerAngles.z * Mathf.Deg2Rad);
+        for (int i = 0; i < 24; ++i)
+        {
+            ParticleManager.NewParticle(pos, Utils.RandFloat(2, 4), Utils.RandCircle(5), .2f, Utils.RandFloat(0.8f, 1.5f), 
+                ParticleManager.ID.Pixel, Color.Lerp(Color.blue, Color.white, Utils.RandFloat()));
+            ParticleManager.NewParticle(pos, Utils.RandFloat(2, 3), Utils.RandCircle(4), .2f, Utils.RandFloat(0.7f, 1.3f),
+                ParticleManager.ID.Pixel, Color.white);
+        }
+        Timer = 0;
+    }
     public new void Update()
     {
         if (IsDummy)
@@ -107,6 +163,17 @@ public class RockGolem : RockSpider
         {
             DamageTaken = 0;
             UpdateRendererColor(Color.Lerp(Color.red, Color.white, SpawnedInAlpha).WithAlpha(SpawnedInAlpha), Utils.DeltaTimeLerpFactor(0.1f));
+        }
+        float offset = Parent == null ? 400 : 0;
+        if (Timer > offset)
+        {
+            float percent = (Timer - offset) / 120f;
+            float per2 = percent * percent;
+            Vector2 pos = (Vector2)Body.transform.position + new Vector2(0, 1.0f + per2 * 2.5f).RotatedBy(Body.transform.localEulerAngles.z * Mathf.Deg2Rad);
+            SpriteBatch.Draw(Main.TextureAssets.Shadow,
+                pos, Vector2.one * (1 + percent), 0, Color.blue * percent, 1);
+            SpriteBatch.Draw(Main.TextureAssets.Shadow,
+                pos, Vector2.one * per2, 0, Color.white * percent, 1);
         }
         lastPos = transform.position;
     }
