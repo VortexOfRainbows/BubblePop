@@ -43,11 +43,15 @@ Current Task List:
 3. Fix bug where chests can get stuck in walls
 4. Fix bug where enemies can spawn in subnodes
 5. Test Out Fanny's new tiles
+6. Fix bug where spacebar interacts with power buttons (including hide button)
 
 Done: 
 
-2/3/26.
+2/3/26 to 2/4/26
 1. WIP Rock Golem enemy
+	1. Has working walk animation, bestiary portrait, and worm AI
+	2. NEEDS: Head animation, head has collision with other npcs
+	3. NEEDS: Boss AI?
 2. Decrease gems dropped by leonard 0-5 -> 0-3
 3. Modify walking animation for spider enemies to be more correct when transitioning directions
 

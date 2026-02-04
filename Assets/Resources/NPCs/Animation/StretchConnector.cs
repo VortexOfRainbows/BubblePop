@@ -9,8 +9,8 @@ public class StretchConnector : Animator
     public float YScaleContribution = 0.0f;
     public override void UpdateAnimation()
     {
-        Vector2 toOther = Destination.localPosition - transform.localPosition;
-        float dist = toOther.magnitude;
+        Vector2 toOther = Destination.position - transform.position;
+        float dist = toOther.magnitude / Destination.transform.lossyScale.x;
         if (OriginalDistance == -1)
             OriginalDistance = dist;
         float r = toOther.ToRotation();
