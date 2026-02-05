@@ -97,18 +97,22 @@ public class RockGolem : RockSpider
             if (Timer > beginShootingRange)
             {
                 percent = 1 - ((Timer - beginShootingRange) / ShotCooldownSlowdown);
-                percent = Mathf.Clamp01(percent);
-                speed *= percent;
                 if(percent <= 0)
                 {
-                    if(AttackNum % 2 == 0)
+                    if ((Timer - ShotCooldown) == 70)
+                        AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.5f, 1.1f, 0);
+                    percent = Mathf.Clamp01(percent);
+                    speed *= percent;
+                    if (AttackNum % 2 == 0)
                     {
                         percent = ((Timer - ShotCooldown) / ShotWindup);
                         if (percent > ShotChainRate && Child != null && Child.GetComponent<RockGolem>().SpawnedInAlpha >= 0.95f)
                         {
                             var child = Child.GetComponent<RockGolem>();
                             if (child.Timer <= 0)
+                            {
                                 child.Timer = 1;
+                            }
                         }
                         if (percent >= 1)
                         {
@@ -128,11 +132,17 @@ public class RockGolem : RockSpider
                                 Projectile.NewProjectile<Bullet>(Head.transform.position, 
                                     norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, 1.25f - Mathf.Abs(i) * 0.125f, InfectionTarget ? 0 : 1);
                             }
+                            AudioManager.PlaySound(SoundID.BathBombBurst, Head.transform.position, 1.1f, 1.3f, 0);
                             Head.transform.position -= (Vector3)(norm2 * 0.35f);
                             AttackNum++;
                             Timer = 0;
                         }
                     }
+                }
+                else
+                {
+                    percent = Mathf.Clamp01(percent);
+                    speed *= percent;
                 }
             }
             Vector2 norm = toPlayer.normalized;
@@ -152,12 +162,16 @@ public class RockGolem : RockSpider
             if(Timer > 0 && SpawnedInAlpha >= 1)
             {
                 Timer++;
+                if(Timer == 70)
+                    AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.5f, 1.1f, 0);
                 float percent = Timer / ShotWindup;
                 if (percent > ShotChainRate && Child != null)
                 {
                     var child = Child.GetComponent<RockGolem>();
                     if (child.Timer <= 0)
+                    {
                         child.Timer = 1;
+                    }
                 }
                 if (Timer > ShotWindup)
                     ShootProj();
@@ -203,6 +217,7 @@ public class RockGolem : RockSpider
                 ParticleManager.ID.Pixel, Color.Lerp(ShotColor, Color.white, Utils.RandFloat()));
         }
         Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, 1.25f, InfectionTarget ? 0 : 1);
+        AudioManager.PlaySound(SoundID.BathBombBurst, pos, 1.0f, 1.4f, 0);
         Timer = 0;
     }
     public new void Update()
