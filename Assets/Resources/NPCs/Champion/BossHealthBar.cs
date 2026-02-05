@@ -18,7 +18,7 @@ public class BossHealthBar : MonoBehaviour
         e.Highlight.color = e.Highlight.color.WithAlpha(0);
         e.Skull.color = e.Skull.color.WithAlpha(0);
         e.PointerSkull.color = e.PointerSkull.color.WithAlpha(0);
-        e.IntendedSize = Mathf.Min(3.5f, host.GetComponent<BoxCollider2D>().size.x * host.transform.localScale.x * 0.5f + 0.55f);
+        e.IntendedSize = Mathf.Min(3.5f, (host.GetComponent<BoxCollider2D>().size.x * host.transform.localScale.x * 0.5f + 0.55f) * host.HealthBarSizeModifier);
         return e;
     }
     public void Update()
@@ -47,9 +47,10 @@ public class BossHealthBar : MonoBehaviour
                 Alpha = 1;
             if(Alpha > 0)
             {
-                Inner.color = Inner.color.WithAlpha(Alpha);
-                Highlight.color = Highlight.color.WithAlpha(Alpha);
-                Skull.color = Skull.color.WithAlpha(Alpha);
+                float a = Alpha * (Host == null ? 1 : Host.HealthBarAlpha);
+                Inner.color = Inner.color.WithAlpha(a);
+                Highlight.color = Highlight.color.WithAlpha(a);
+                Skull.color = Skull.color.WithAlpha(a);
             }
         }
     }

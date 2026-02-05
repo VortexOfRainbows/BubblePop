@@ -249,7 +249,6 @@ public class EnemyClause : CardClause
         while (newEnemy == null)
         {
             Enemy e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
-            Enemy secondChoice = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
             if (WaveDirector.WaveNum < 5) //Temporary. Replace with special tiered getter later which does different stuff depending on wave number
             {
                 while(e is Infector)
@@ -257,9 +256,10 @@ public class EnemyClause : CardClause
             }
             else if(WaveDirector.WaveNum > 10)
             {
+                Enemy secondChoice = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
                 if(WaveDirector.EnemyPool.Contains(e.gameObject))
                     e = secondChoice;
-                if (secondChoice.CostMultiplier > e.CostMultiplier)
+                else if (secondChoice.CostMultiplier > e.CostMultiplier)
                     e = secondChoice;
             }
             newEnemy = new(e);
@@ -281,10 +281,11 @@ public class EnemyClause : CardClause
         AssociatedWaveCards.Clear();
         int maxSwarmDifficulty = 6;
         float difficultMult = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
-        if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator || Enemy.EnemyToAdd is Sentinel) //1 mid-wave by default for bosses, 3 at max card difficulty
+        if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator 
+            || Enemy.EnemyToAdd is Sentinel || Enemy.EnemyToAdd is RockGolem) //1 mid-wave by default for bosses, 3 at max card difficulty
         {
             difficultMult -= 1;
-            if (Enemy.EnemyToAdd is EnemyBossDuck)
+            if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is RockGolem)
                 maxSwarmDifficulty -= 3;
             else
                 maxSwarmDifficulty -= 1;

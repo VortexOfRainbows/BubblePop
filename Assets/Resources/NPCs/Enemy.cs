@@ -491,6 +491,8 @@ public class Enemy : Entity
         IsSkull = value;
     }
     public virtual float HealthBarOffset => 0;
+    public virtual float HealthBarSizeModifier => 1.0f;
+    public float HealthBarAlpha { get; set; } = 1.0f;
     public int GetRarity()
     {
         return StaticData.Rarity;

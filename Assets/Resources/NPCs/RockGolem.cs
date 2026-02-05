@@ -14,6 +14,8 @@ public class RockGolem : RockSpider
         inlineThreshold = 0.05f;
         additiveColorPower += 0.4f;
     }
+    public override float HealthBarOffset => -1.1f;
+    public override float HealthBarSizeModifier => .7f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 20;
@@ -32,6 +34,7 @@ public class RockGolem : RockSpider
     public GameObject Child { get; set; } = null;
     public override void OnSpawn()
     {
+        HealthBarAlpha = 0;
         Timer = 0;
     }
     public bool hasSpawned = false;
@@ -66,6 +69,7 @@ public class RockGolem : RockSpider
     {
         if (Parent == null)
         {
+            HealthBarAlpha = Mathf.Lerp(HealthBarAlpha, 1, 0.05f);
             GetComponent<CircleCollider2D>().enabled = true;
             SpawnedInAlpha += 0.05f;
             if (!hasSpawned)
@@ -89,7 +93,7 @@ public class RockGolem : RockSpider
             if (toPlayer.magnitude < 16 || Timer < 60 || Timer > beginShootingRange)
                 ++Timer;
             float percent = 1;
-            float speed = 0.18f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
+            float speed = 0.2f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
             if (Timer > beginShootingRange)
             {
                 percent = 1 - ((Timer - beginShootingRange) / ShotCooldownSlowdown);
@@ -144,6 +148,7 @@ public class RockGolem : RockSpider
         }
         else
         {
+            HealthBarAlpha = Mathf.Lerp(HealthBarAlpha, 0, 0.05f);
             if(Timer > 0 && SpawnedInAlpha >= 1)
             {
                 Timer++;
@@ -167,7 +172,7 @@ public class RockGolem : RockSpider
             Vector2 parent = Parent.transform.position;
             Vector2 parentToMe = pos - parent;
             float magnitude = parentToMe.magnitude;
-            float snapDist = 2.05f;
+            float snapDist = 2.05f * transform.localScale.x;
             if(magnitude > snapDist)
             {
                 Vector2 old = transform.position;

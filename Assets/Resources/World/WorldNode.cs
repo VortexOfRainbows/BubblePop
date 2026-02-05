@@ -163,7 +163,7 @@ public class WorldNode : MonoBehaviour
                     {
                         world.Tilemap.Map.SetTile(v, placeSolidAsUnsolid ? tile.GetTileID().FloorTileType : tile);
                         if(canPlaceTile)
-                            World.SetTileData(v, new World.TileData(GenerationNumber));
+                            World.SetTileData(v, new World.TileData(GenerationNumber, IsSubNode));
                     }
                 }
             }

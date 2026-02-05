@@ -41,9 +41,9 @@ Current Task List:
 2. Finish Pylon and Roadblock systems:
 	1. Pointers that show you the direction to the next Pylon
 3. Fix bug where chests can get stuck in walls
-4. Fix bug where enemies can spawn in subnodes
-5. Test Out Fanny's new tiles
-6. Fix bug where spacebar interacts with power buttons (including hide button)
+4. Test Out Fanny's new tiles
+5. Add basic sounds to rock golem
+
 
 Done: 
 
@@ -58,6 +58,8 @@ Done:
 5. Thought bubble hp 2 -> 3
 6. Sentinel is now effected correctly by infectors
 7. Add some functions for more control over infector visuals
+8. Spacebar no longer interacts with certain power buttons
+9. Enemies should no longer spawn in subnodes
 
 2/1/26 to 2/2/26
 1. Add Rainbow Flower Power

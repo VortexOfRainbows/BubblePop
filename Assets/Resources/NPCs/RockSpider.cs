@@ -18,7 +18,6 @@ public class RockSpider : Enemy
     private Vector2 targetedLocation;
     public float moveSpeed = 0.12f;
     public float inertiaMult = 0.96f;
-    public override float CostMultiplier => 1;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 8;
