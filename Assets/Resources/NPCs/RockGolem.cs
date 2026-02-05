@@ -286,7 +286,7 @@ public class RockGolem : RockSpider
     }
     public override void OnKill()
     {
-        DeathParticles(30, 0.5f, new Color(60 / 255f, 70 / 255f, 92 / 255f));
+        DeathParticles(40, 0.6f, new Color(60 / 255f, 70 / 255f, 92 / 255f));
         AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.1f, 0.5f);
     }
     public override Vector3 CrownPositionOffset()
