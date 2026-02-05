@@ -165,7 +165,7 @@ public partial class Entity : MonoBehaviour
         foreach (Animator a in ChildAnimators)
             a.UpdateAnimation();
     }
-    public void PushIntoClosestPossibleTile(int snapDist = 20, bool includeProgressionBounds = false)
+    public static void PushIntoClosestPossibleTile(Transform transform, Rigidbody2D RB, int snapDist = 20, bool includeProgressionBounds = false)
     {
         Vector2[] dirs = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1),
             new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };

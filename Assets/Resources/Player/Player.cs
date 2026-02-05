@@ -157,7 +157,7 @@ public partial class Player : Entity
         HomingRangeSqrt = Mathf.Sqrt(HomingRange);
         bool dead = DeathKillTimer > 0;
         if (!World.WithinBorders(transform.position, true))
-            PushIntoClosestPossibleTile(includeProgressionBounds: true);
+            Entity.PushIntoClosestPossibleTile(transform, RB, includeProgressionBounds: true);
         if (dead)
             Pop();
         else
