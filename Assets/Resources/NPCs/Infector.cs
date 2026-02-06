@@ -22,6 +22,7 @@ public class Infector : Enemy
         data.BaseMaxGem = 3;
         data.Rarity = 5;
         data.Cost = 8f;
+        data.WaveNumber = 8;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

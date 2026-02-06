@@ -13,6 +13,8 @@ public class EnemyFlamingo : EnemyDuck
         data.BaseMaxLife = 10;
         data.BaseMaxCoin = 15;
         data.Cost = 3;
+        data.WaveNumber = 3;
+        data.Rarity = 3;
     }
     public override void AI()
     {

@@ -27,6 +27,7 @@ public class Gatligator : Enemy
         data.Rarity = 4;
         data.BaseMaxGem = 3;
         data.Cost = 5;
+        data.WaveNumber = 6;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

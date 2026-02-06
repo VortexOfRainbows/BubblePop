@@ -28,6 +28,7 @@ public static class EnemyID
         public int TimesKilledSkull { get; set; } = 0;
         public int Rarity { get; set; } = 0;
         public float Cost { get; set; } = 0;
+        public float WaveNumber { get; set; } = 1;
         public float BaseMaxLife { get; set; } = 10;
         public float BaseMinCoin { get; set; } = 1;
         public float BaseMaxCoin { get; set; } = 1;
@@ -175,7 +176,7 @@ public class Enemy : Entity
     public void InitStaticDefaults(ref EnemyID.StaticEnemyData data)
     {
         data.Cost = 1;
-        data.Rarity = (int)Mathf.Clamp(data.Cost, 1, 5);
+        data.Rarity = 1;
         InitStatics(ref data);
         if (data.CardBG == null)
             data.CardBG = Resources.Load<Sprite>("UI/Background");

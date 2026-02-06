@@ -18,6 +18,8 @@ public class EnemySoap : Enemy
         data.BaseMaxLife = 5;
         data.BaseMaxCoin = 5;
         data.Cost = 2;
+        data.WaveNumber = 2;
+        data.Rarity = 2;
     }
     // Update is called once per frame
     public override void AI()

@@ -27,6 +27,8 @@ public class Crow : Enemy
         data.BaseMaxLife = 10;
         data.BaseMaxCoin = 15;
         data.Cost = 2;
+        data.WaveNumber = 3;
+        data.Rarity = 2;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

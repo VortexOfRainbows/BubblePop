@@ -25,6 +25,8 @@ public class Sentinel : Enemy
         data.BaseMaxGem = 3;
         data.Rarity = 3;
         data.Cost = 5.5f;
+        data.WaveNumber = 4;
+        data.Rarity = 3;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

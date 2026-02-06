@@ -204,6 +204,7 @@ public class Compendium : MonoBehaviour
                 string gemRange = e.BaseMinGem != e.BaseMaxGem ? $"{e.BaseMinGem}-{e.BaseMaxGem}" : $"{e.BaseMaxGem}";
                 concat += $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColors[1].ToHexString(), "Gem Bounty: ")}{gemRange}\n";
                 concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, "Summon Cost: ")}{e.Cost:#.0}\n";
+                concat += $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[2], "Wave: ")}{e.WaveNumber:#.#}\n";
 
                 if (!DisplayCPEnemy.IsLocked())
                 {

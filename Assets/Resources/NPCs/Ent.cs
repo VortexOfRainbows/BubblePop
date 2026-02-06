@@ -19,6 +19,8 @@ public class Ent : Enemy
         data.BaseMaxCoin = 18;
         data.BaseMaxGem = 2;
         data.Cost = 3.5f;
+        data.WaveNumber = 4;
+        data.Rarity = 3;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

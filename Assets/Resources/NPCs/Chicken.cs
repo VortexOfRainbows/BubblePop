@@ -1,4 +1,3 @@
-using System.IO;
 using UnityEngine;
 
 public class Chicken : Enemy
@@ -19,6 +18,7 @@ public class Chicken : Enemy
         data.BaseMaxLife = 7;
         data.BaseMaxCoin = 10;
         data.Cost = 1;
+        data.WaveNumber = 1;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
