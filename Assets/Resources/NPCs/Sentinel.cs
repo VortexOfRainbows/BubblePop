@@ -24,7 +24,7 @@ public class Sentinel : Enemy
         data.BaseMinGem = 1;
         data.BaseMaxGem = 3;
         data.Rarity = 3;
-        data.Cost = 5.5f;
+        data.Cost = 5.0f;
         data.WaveNumber = 4;
         data.Rarity = 3;
     }

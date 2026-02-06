@@ -63,7 +63,8 @@ public static class SpriteBatch
     }
     public static void ClearRenderer(int i)
     {
-        GameObject.Destroy(Renderers[i].gameObject); 
+        if(Renderers[i] != null)
+            GameObject.Destroy(Renderers[i].gameObject); 
         Renderers.RemoveAt(i);
     }
 }

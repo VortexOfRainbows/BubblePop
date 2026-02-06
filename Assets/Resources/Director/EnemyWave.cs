@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 public class WaveCard 
 {
     public override string ToString()

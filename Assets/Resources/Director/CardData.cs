@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
-
 public class CardData
 {
     public CardData(ModifierCard owner)
@@ -31,7 +29,7 @@ public class CardData
         GetPointsAllowed();
         float originalAvailablePoints = AvailablePoints;
         AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r);
-        e ??= new EnemyClause(AvailablePoints);
+        e ??= new EnemyClause(AvailablePoints, difficultyMultiplier: DifficultyMult);
         m ??= new ModifierClause(AvailablePoints - 20);
         float bonusMult = Player.Instance.Ruby * 0.2f + 1f;
         float pointsAllocatedToPowers = originalAvailablePoints * bonusMult;
@@ -57,65 +55,24 @@ public class CardData
         m = null;
         r = null;
         int waveNum = UpcomingWave;
-        if ((waveNum == 1 || waveNum == 2) && !WaveDirector.EnemyPool.Contains(EnemyID.RockSpider))
+        if (waveNum == 10 || (waveNum > 11 && !WaveDirector.EnemyPool.Contains(EnemyID.OldLeonard)))
         {
-            if (Utils.RandFloat(1) < 0.12f * waveNum * difficultyNum)
-                e ??= new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.RockSpider) { IsPermanent = true });
+            if (Utils.RandFloat(1) < 0.25f * difficultyNum)
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = false });
         }
-        if (waveNum == 1)
-        {
-            e ??= new EnemyClause(AvailablePoints, new EnemyCard(Utils.RandFloat(1) < 0.3f ? EnemyID.OldDuck : EnemyID.Chicken) { IsPermanent = true });
-        }
-        if(waveNum == 3)
-        {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldSoap));
-        }
-        if (waveNum == 4 || waveNum == 5)
-        {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? (Utils.RandFloat(1) < 0.3f ? EnemyID.Chicken : EnemyID.OldDuck) : MidDifficulty ? EnemyID.Crow : EnemyID.OldFlamingo));
-        }
-        if (waveNum == 6)
-        {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MaxDifficultyCard ? EnemyID.Crow : (Utils.RandFloat(1) < 0.7f ? EnemyID.Chicken : EnemyID.OldDuck)));
-            m = new(AvailablePoints, 1, new DirectorSkullSwarmModifier(e.Enemy) { ApplicationStrength = MaxDifficultyCard ? 1 : 2, IsPermanent = false });
-        }
-        if (waveNum == 7)
-        {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Crow : EnemyID.OldFlamingo) { IsPermanent = MaxDifficultyCard });
-        }
-        if (waveNum == 8)
-        {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(MinDifficultyCard ? EnemyID.Ent : MaxDifficultyCard ? EnemyID.Gatligator : EnemyID.OldFlamingo));
-        }
-        if (waveNum == 9)
-        {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(Utils.RandFloat(1) < 0.15f ? EnemyID.Infector : MinDifficultyCard ? EnemyID.Ent : MaxDifficultyCard ? EnemyID.OldLeonard : EnemyID.Gatligator));
-        }
-        if (waveNum == 10)
-        {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = false });
-        }
-        if(waveNum == 11)
+        if(waveNum == 13 || (waveNum > 13 && !WaveDirector.EnemyPool.Contains(EnemyID.Infector)))
         {
             if(Utils.RandFloat(1) < 0.5f)
                 e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = false });
-        }
-        if (waveNum == 12)
-        {
-            e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Ent) { IsPermanent = true });
-            m = new(AvailablePoints, 1, new DirectorSkullSwarmModifier(e.Enemy) { ApplicationStrength = 2, IsPermanent = false });
-        }
-        if (waveNum == 13 || waveNum == 14)
-        {
-            if (Utils.RandFloat(1) < (waveNum == 13 ? 0.5f : 0.66f))
-                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = true });
         }
         if (waveNum >= 15 && waveNum % 5 == 0)
         {
             if(waveNum % 10 == 0 && Utils.RandFloat(1) < 0.5f)
                 e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = true });
-            else
+            else if(Utils.RandFloat(1) < 0.75f)
                 e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = true });
+            else
+                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.RockGolem) { IsPermanent = true });
             float strength = waveNum >= 25 ? 200 : 50;
             if(waveNum % 10 == 0)
                 m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { 
@@ -124,11 +81,6 @@ public class CardData
                     new EnemyStrengthModifier() { ApplicationStrength = 1000, IsPermanent = true, Free = true });
             else
                 m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum });
-        }
-        if (waveNum == 16 || waveNum == 17)
-        {
-            if (Utils.RandFloat(1) < (waveNum == 16 ? 0.25f : 0.75f))
-                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Sentinel) { IsPermanent = true });
         }
         if (waveNum >= 5 && m == null)
         {
@@ -215,8 +167,10 @@ public class EnemyClause : CardClause
     public EnemyCard Enemy;
     public bool AlreadyInPool = false;
     public DirectorSkullSwarmModifier AlternativeModifier = null;
-    public EnemyClause(float points, EnemyCard newCard = null) : base(points)
+    public float difficultyMultiplier;
+    public EnemyClause(float points, EnemyCard newCard = null, float difficultyMultiplier = 2) : base(points)
     {
+        this.difficultyMultiplier = difficultyMultiplier;
         Enemy = newCard;
         GenerateData();
     }
@@ -226,7 +180,7 @@ public class EnemyClause : CardClause
     }
     public override void GenerateData()
     {
-        Enemy ??= GenRandomEnemyPoolAddition();
+        Enemy ??= GenRandomEnemyPoolAddition((int)(difficultyMultiplier - 1), true);
         if (!Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
         {
             Enemy.IsPermanent = true;
@@ -243,28 +197,47 @@ public class EnemyClause : CardClause
             };
         }
     }
-    public EnemyCard GenRandomEnemyPoolAddition()
+    public EnemyCard GenRandomEnemyPoolAddition(int costBias = 0, bool firstPick = false)
     {
+        int failedRolls = 0;
         EnemyCard newEnemy = null;
         while (newEnemy == null)
         {
             Enemy e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
-            if (WaveDirector.WaveNum < 5) //Temporary. Replace with special tiered getter later which does different stuff depending on wave number
-            {
-                while(e is Infector)
-                    e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
-            }
-            else if(WaveDirector.WaveNum > 10)
-            {
-                Enemy secondChoice = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
-                if(WaveDirector.EnemyPool.Contains(e.gameObject))
-                    e = secondChoice;
-                else if (secondChoice.CostMultiplier > e.CostMultiplier)
-                    e = secondChoice;
-            }
+            while ((WaveDirector.WaveNum + 1) < e.StaticData.WaveNumber && ++failedRolls <= 100)
+                e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+            if(failedRolls >= 100)
+                Debug.Log($"FAILED TO ROLL ENEMY: {failedRolls}".WithColor(ColorHelper.UIRedColor.ToHexString()));
             newEnemy = new(e);
-            if (newEnemy.GetCost() > Points)
-                newEnemy = null;
+            bool searchingForNonMatch = false;
+            if (firstPick)
+            {
+                if (WaveDirector.EnemyPool.Contains(e.gameObject))
+                {
+                    searchingForNonMatch = true;
+                    costBias++;
+                }
+                else if (newEnemy.GetCost() > Points)
+                    costBias--;
+            }
+            if (costBias < 0)
+            {
+                EnemyCard other = GenRandomEnemyPoolAddition(costBias + 1, false);
+                if (other.GetCost() < newEnemy.GetCost())
+                    newEnemy = other;
+            }
+            if(costBias > 0)
+            {
+                EnemyCard other = GenRandomEnemyPoolAddition(costBias - 1, false);
+                if (other.GetCost() > newEnemy.GetCost() || (searchingForNonMatch && !WaveDirector.EnemyPool.Contains(other.EnemyToAdd.gameObject)))
+                    newEnemy = other;
+            }
+            //if (WaveDirector.WaveNum > 10)
+            //{
+                //Enemy secondChoice = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+                //else if (secondChoice.CostMultiplier > e.CostMultiplier)
+                    //e = secondChoice;
+            //}
         }
         return newEnemy;
     }

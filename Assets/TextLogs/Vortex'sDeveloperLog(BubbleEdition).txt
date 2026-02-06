@@ -47,6 +47,14 @@ Done:
 2/6/26
 1. Simplify the way enemy costs are defined
 2. Fix how enemy rarities are determined
+3. Rework Enemy Card Algorithm
+	1. Now enemies are assigned waves that they cannot spawn before
+	2. If the director cannot afford an enemy, instead of mulligan completely, it will now attempt one roll for a cheaper enemy
+	3. If the enemy is already in the pool, an attempt for a more expensive enemy or new enemy will be made
+	4. Remove some logic involving preventing infector spawns and previous mulligan behavior
+	5. Removed many hardcoded enemy waves 
+	6. During wave 10 and 12+, if you have not pulled Leonard, he will try to invade your deck
+	7. During wave 13+, if you have not pulled Infector, they will try to invade your deck
 
 2/3/26 to 2/6/26
 1. Add Rock Golem enemy
