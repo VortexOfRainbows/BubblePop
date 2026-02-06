@@ -75,7 +75,7 @@ public class Coin : MonoBehaviour
         }
         else
         {
-            rb.velocity *= IsKey ? 0.9725f : IsHeart ? 0.935f : 0.985f;
+            rb.velocity *= IsKey ? 0.9725f : (IsHeart && Value > 0) ? 0.935f : 0.985f;
             AttractTimer = 0;
         }
         BeforeCollectableTimer -= Time.fixedDeltaTime;
@@ -108,7 +108,12 @@ public class Coin : MonoBehaviour
                 ParticleManager.NewParticle((Vector2)transform.position + circular, Utils.RandFloat(0.2f, 0.25f), circular * Utils.RandFloat(1.5f, 2) + new Vector2(0, Utils.RandFloat(-1, 2)),
                     1.6f, Utils.RandFloat(0.3f, 0.4f), 0, PopupColor.WithAlpha(0.4f) * 1.2f);
             }
-            HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 225f) - 0.1f);
+            transform.LerpLocalScale(Vector3.one * 1.6f, 0.07f);
+            HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 225f) - 0.1f, HeartVisual.transform.localPosition.z);
+            if(Value < 0 && rb.velocity.magnitude < 0.05f)
+            {
+                Value = -Value;
+            }
         }
         else if(IsKey || IsGem || IsShard)
         {
@@ -152,8 +157,9 @@ public class Coin : MonoBehaviour
                         0.2f, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Pixel, 
                         Utils.PastelRainbow(timer * Mathf.Deg2Rad + r, 0.5f) * 0.9f);
                 }
+                HeartVisual.transform.localPosition = new Vector3(HeartVisual.transform.localPosition.x, HeartVisual.transform.localPosition.y, -1.535f);
             }
-            HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 200f) + 0.1f);
+            HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 200f) + 0.1f, HeartVisual.transform.localPosition.z);
         }
     }
     public void OnCollected()
@@ -186,6 +192,8 @@ public class Coin : MonoBehaviour
         }
         else if (IsHeart)
         {
+            if (Value < 0)
+                Value *= -1;
             Player.Instance.SetLife(Player.Instance.Life + Value);
             AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.1f, 0.76f, 0);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 0.9f, 0.4f, 0);

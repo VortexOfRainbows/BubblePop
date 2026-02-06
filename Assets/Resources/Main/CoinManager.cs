@@ -59,12 +59,14 @@ public static class CoinManager
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(8);
         obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
     }
-    public static void SpawnHeart(Func<Vector2> func, float collectDelay) => SpawnHeart(func.Invoke(), collectDelay);
-    public static void SpawnHeart(Vector2 pos, float collectDelay)
+    public static Coin SpawnHeart(Func<Vector2> func, float collectDelay) => SpawnHeart(func.Invoke(), collectDelay);
+    public static Coin SpawnHeart(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Heart, pos, Quaternion.identity);
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
-        obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
+        Coin c = obj.GetComponent<Coin>();
+        c.BeforeCollectableTimer = collectDelay;
+        return c;
     }
     public static void SpawnKey(Func<Vector2> func, float collectDelay) => SpawnKey(func.Invoke(), collectDelay);
     public static void SpawnKey(Vector2 pos, float collectDelay)

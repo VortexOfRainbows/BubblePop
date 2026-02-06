@@ -24,6 +24,8 @@ public partial class Player : Entity
         {
             PowerUp p = PowerUp.Get(GetPower(index));
             p.Stack -= num;
+            if(p.MyID == PowerUp.Get<QuantumCake>().MyID)
+                PowerUp.Get<EatenCake>().PickUp(num);
             if(p.Stack <= 0)
             {
                 Powers.RemoveAt(index);

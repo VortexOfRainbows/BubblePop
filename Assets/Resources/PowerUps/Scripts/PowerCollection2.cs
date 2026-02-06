@@ -704,3 +704,40 @@ public class RainbowFlower : PowerUp
         return 1;
     }
 }
+public class QuantumCake : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Quantum Cake");
+        description.WithDescription($"Drops a Y:[Heart] and becomes a {"Schrodinger's Cake".WithColor(DetailedDescription.Rares[5])} when Y:dissolved in a Y:Crucible");
+        description.WithShortDescription("And you can eat it too!");
+    }
+    public override void HeldEffect(Player p)
+    {
+
+    }
+    public override bool IsBlackMarket() => true;
+}
+public class EatenCake : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = -1;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Schrodinger's Cake");
+        description.WithDescription($"Becomes a {PowerUp.Get<QuantumCake>().UnlockedName} at the start of a Y:wave G:(consumed on use)");
+        description.WithShortDescription("And you can have it too!");
+    }
+    public override void HeldEffect(Player p)
+    {
+
+    }
+    public override int GetRarity() => 3;
+    public override bool IsBlackMarket() => true;
+}

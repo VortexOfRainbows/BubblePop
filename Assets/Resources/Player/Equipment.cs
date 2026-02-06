@@ -62,7 +62,7 @@ public class Equipment : MonoBehaviour
         for (int i = 0; i < PowerUp.Reverses.Count; ++i)
         {
             PowerUp p = PowerUp.Get(i);
-            if (p.IsBlackMarket())
+            if (p.IsBlackMarket() && p.Weighting > 0)
                 PowerUp.AddBlackMarketPowerToPool(p);
         }
         PowerPool.Clear();

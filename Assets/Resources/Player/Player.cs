@@ -371,6 +371,11 @@ public partial class Player : Entity
             if (HasBubbleShield && Shield < TotalMaxShield)
                 SetShield(Shield + 1);
         }
+        if(PowerUp.Get<EatenCake>().Stack > 0)
+        {
+            PowerUp.Get<QuantumCake>().PickUp();
+            RemovePower(PowerUp.Get<EatenCake>().MyID);
+        }
         LuckyStarItemsAcquiredThisWave = 0;
     }
 }

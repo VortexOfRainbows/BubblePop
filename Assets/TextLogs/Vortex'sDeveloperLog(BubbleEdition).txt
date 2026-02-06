@@ -26,7 +26,6 @@ Need to do:
 9. Make power display on the bottom smaller
 10. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 
-
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
 2. Improve UI
@@ -45,7 +44,7 @@ Current Task List:
 
 Done: 
 
-2/3/26 to 2/4/26
+2/3/26 to 2/6/26
 1. Add Rock Golem enemy
 	1. Has working walk animation, bestiary portrait, and worm AI
 	2. Has two attacks with sound fx
@@ -59,6 +58,8 @@ Done:
 8. Spacebar no longer interacts with certain power buttons
 9. Enemies should no longer spawn in subnodes
 10. Chests no longer get stuck in walls
+11. Appearance order of pickups (visual layering) Heart -> Shard -> Key -> Gem -> -> Coin
+12. Add Cake Powerups
 
 2/1/26 to 2/2/26
 1. Add Rainbow Flower Power

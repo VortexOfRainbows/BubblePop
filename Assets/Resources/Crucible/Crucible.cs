@@ -90,7 +90,7 @@ public class Crucible : MonoBehaviour
     public float AudioCounter = 0.0f;
     public bool Active = false;
     public bool HasSpawnedChestLoot = false;
-    public readonly Queue<int> PowerQueue = new();
+    public Queue<int> PowerQueue { get; private set; } = new();
     public int NextConsumedPower { get; set; } = -1;
     public void DisableUI()
     {
@@ -257,6 +257,17 @@ public class Crucible : MonoBehaviour
             c.rb.velocity = new Vector2(c.rb.velocity.x * 0.1f, c.rb.velocity.y * 0.1f);
             c.rb.velocity += new Vector2(0, -4.5f).RotatedBy(Mathf.Lerp(-55, 55, percent) * Mathf.Deg2Rad);
             c.transform.localScale = Vector3.one * 0.1f;
+            if(i == 0)
+            {
+                if(powerType == PowerUp.Get<QuantumCake>().MyID)
+                {
+                    c = CoinManager.SpawnHeart(pos, 0.25f);
+                    c.rb.velocity = new Vector2(c.rb.velocity.x * 0.1f, c.rb.velocity.y * 0.1f);
+                    c.rb.velocity = new Vector2(0, -4.5f);
+                    c.transform.localScale = Vector3.one * 0.1f;
+                    c.Value = -1;
+                }
+            }
         }
         float r = Utils.rand.NextFloat(Mathf.PI * 2);
         for(int i = 0; i < 30; ++i)
