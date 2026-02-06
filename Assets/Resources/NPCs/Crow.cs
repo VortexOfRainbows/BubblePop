@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 public class Crow : Enemy
@@ -21,12 +22,11 @@ public class Crow : Enemy
     private float timer = 0;
     private float timer2 = 100;
     private float initialShootDelay = 100;
-    public override float CostMultiplier => 2f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 10;
         data.BaseMaxCoin = 15;
-        //data.CardBG = Resources.Load<Sprite>("NPCs/Card/CrowB");
+        data.Cost = 2;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

@@ -20,13 +20,13 @@ public class Gatligator : Enemy
     public float direction = 1;
     private float ShootTimer = 0;
     private float ShootSpeed = 0.5f;
-    public override float CostMultiplier => 5;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 25;
         data.BaseMaxCoin = 40;
         data.Rarity = 4;
         data.BaseMaxGem = 3;
+        data.Cost = 5;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

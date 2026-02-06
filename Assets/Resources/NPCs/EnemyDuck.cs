@@ -10,11 +10,11 @@ public class EnemyDuck : Enemy
     private int movingTimer;
     const int baseMovingTimer = 300;
     protected float bobbingTimer = 0;
-    public override float CostMultiplier => 1;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxCoin = 8;
         data.BaseMaxLife = 10;
+        data.Cost = 1;
     }
     public void MoveUpdate()
     {

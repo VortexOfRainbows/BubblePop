@@ -174,7 +174,7 @@ public class Enemy : Entity
     }
     public void InitStaticDefaults(ref EnemyID.StaticEnemyData data)
     {
-        data.Cost = CostMultiplier;
+        data.Cost = 1;
         data.Rarity = (int)Mathf.Clamp(data.Cost, 1, 5);
         InitStatics(ref data);
         if (data.CardBG == null)
@@ -413,7 +413,7 @@ public class Enemy : Entity
     /// <summary>
     /// The cost multiplier to spawn this specific enemy by the director
     /// </summary>
-    public virtual float CostMultiplier => 1;
+    public float CostMultiplier => StaticData.Cost;
     public sealed override void Kill()
     {
         if (IsSkull)

@@ -14,12 +14,12 @@ public class EnemyBossDuck : EnemyDuck
     public override float HealthBarOffset => -3f;
     private float projectileSpeed = 3f;
     private int projectileTimer = -50;
-    public override float CostMultiplier => 10;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 45;
         data.BaseMaxCoin = 50;
         data.BaseMaxGem = 3;
+        data.Cost = 10;
     }
     public override void AI()
     {

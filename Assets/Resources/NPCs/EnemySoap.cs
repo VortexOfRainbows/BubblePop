@@ -13,11 +13,11 @@ public class EnemySoap : Enemy
     protected Vector2 targetedPlayerPosition = Vector2.zero;
     protected float timer = 0;
     protected float moveSpeed = 3f;
-    public override float CostMultiplier => 2;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 5;
         data.BaseMaxCoin = 5;
+        data.Cost = 2;
     }
     // Update is called once per frame
     public override void AI()

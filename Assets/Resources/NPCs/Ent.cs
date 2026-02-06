@@ -13,12 +13,12 @@ public class Ent : Enemy
     private Vector2 targetedLocation;
     public float moveSpeed = 0.12f;
     public float inertiaMult = 0.96f;
-    public override float CostMultiplier => 3.5f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 27;
         data.BaseMaxCoin = 18;
         data.BaseMaxGem = 2;
+        data.Cost = 3.5f;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
