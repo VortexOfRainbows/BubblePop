@@ -178,10 +178,10 @@ public class PowerUpUIElement : MonoBehaviour
             if (AppearLocked)
             {
                 inner.color = adornment.color = Color.black;
-                if(SpecialLockedSprite)
-                {
+                if (SpecialLockedSprite)
                     outer.color = Color.black;
-                }
+                else if(GrayOut)
+                    outer.color = GrayBubbleColor;
             }
             else if (MenuElement)
             {

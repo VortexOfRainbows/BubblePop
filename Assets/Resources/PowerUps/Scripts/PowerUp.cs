@@ -439,6 +439,12 @@ public abstract class PowerUp
             return true; //All powers on the achievement page are going to show up as black market powers, so this should make sense as an extra fail-safe
         return ForceBlackMarket;
     }
+    public bool CountsAsBlackMarketForCompendium()
+    {
+        return IsBlackMarket() || (HasBlackMarketAlternate
+                            && PickedUpCountAllRuns > 0
+                            && BlackMarketVariantUnlockCondition.Unlocked);
+    }
     public bool HasBlackMarketAlternate => BlackMarketVariantUnlockCondition != null;
     public virtual UnlockCondition BlackMarketVariantUnlockCondition => null;
 }

@@ -7,6 +7,20 @@ public class CompendiumPowerUpElement : CompendiumElement
     public PowerUpUIElement MyElem;
     public int Style { get; set; }
     protected bool Selected { get; set; }
+    public Button BlackMarketButton = null;
+    public GameObject BlackMarketVisual, NormalVisual;
+    public void Start()
+    {
+        if(BlackMarketButton != null)
+            BlackMarketButton.onClick.AddListener(ToggleBlackMarket);
+    }
+    public void ToggleBlackMarket()
+    {
+        Compendium.Instance.PowerPage.ToggleBlackMarketMode();
+        BlackMarketVisual.SetActive(!Compendium.Instance.PowerPage.BlackMarketMode);
+        NormalVisual.SetActive(Compendium.Instance.PowerPage.BlackMarketMode);
+        Debug.Log("Black Market Compendium Mode".WithColor(ColorHelper.RarityColors[5].ToHexString()));
+    }
     public override void Init(int i, Canvas canvas)
     {
         MyElem.SetPowerType(TypeID = i);
@@ -40,6 +54,28 @@ public class CompendiumPowerUpElement : CompendiumElement
                 BG.color = Color.Lerp(BG.color, target, 0.125f);
             }
         }
+        else if(BlackMarketButton != null)
+        {
+            bool canAppearAsBlackMarket = (MyElem.MyPower.IsBlackMarket() || MyElem.MyPower.HasBlackMarketAlternate)
+                && (MyElem.MyPower.PickedUpCountAllRuns > 0 &&
+                (MyElem.MyPower.BlackMarketVariantUnlockCondition == null || MyElem.MyPower.BlackMarketVariantUnlockCondition.Unlocked));
+            BlackMarketButton.gameObject.SetActive(canAppearAsBlackMarket);
+            if (BlackMarketButton.isActiveAndEnabled)
+            {
+                RectTransform r = BlackMarketButton.GetComponent<RectTransform>();
+                if (Utils.IsMouseHoveringOverThis(true, r, 56, MyElem.myCanvas, true))
+                {
+                    PopUpTextUI.Enable(Compendium.Instance.PowerPage.BlackMarketMode ?
+                        "Return to Normal".WithColor(ColorHelper.RarityColors[0].ToHexString()) : 
+                        "Black Market Mode".WithColor(ColorHelper.RarityColors[5].ToHexString()), "");
+                    BlackMarketButton.transform.LerpLocalScale(new Vector2(1.1f, 1.1f), Utils.DeltaTimeLerpFactor(.1f));
+                }
+                else
+                {
+                    BlackMarketButton.transform.LerpLocalScale(new Vector2(1.0f, 1.0f), Utils.DeltaTimeLerpFactor(.1f));
+                }
+            }
+        }
     }
     public override void SetHovering(bool canHover)
     {
@@ -63,7 +99,7 @@ public class CompendiumPowerUpElement : CompendiumElement
     public override int GetRare(bool reverse = false)
     {
         var p = PowerUp.Get(TypeID);
-        return p.GetRarity() + (p.IsBlackMarket() ? (reverse ? -5 : 5) : 0);
+        return p.GetRarity() + (p.IsBlackMarket() ? (Compendium.Instance.PowerPage.BlackMarketMode != reverse ? -5 : 5) : 0);
     }
     public override int GetCount()
     {

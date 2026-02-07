@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Overlays;
 using UnityEngine;
 
 public class ShadyCoat : LabCoat
@@ -31,7 +32,7 @@ public class ShadyCoat : LabCoat
     protected override void AnimationUpdate()
     {
         base.AnimationUpdate();
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)p.Body.transform.position;
+        Vector2 toMouse = p.LookPosition - (Vector2)p.Body.transform.position;
         float facingDir = p.Direction;
         toMouse = facingDir * LookingAtMouseScale * toMouse.normalized;
         float offset = p.Body is Gachapon ? 0.37f : 0.1f;

@@ -43,7 +43,7 @@ public class BubblemancerCape : Accessory
     {
         CapeB.transform.localScale = new Vector3(Mathf.Abs(CapeB.transform.localScale.x), CapeB.transform.localScale.y, CapeB.transform.localScale.z);
         //Time.timeScale = 0.2f;
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)p.Body.transform.position;
+        Vector2 toMouse = p.LookPosition - (Vector2)p.Body.transform.position;
         float facingDir = p.Direction;
         toMouse = toMouse.normalized * LookingAtMouseScale * facingDir;
 

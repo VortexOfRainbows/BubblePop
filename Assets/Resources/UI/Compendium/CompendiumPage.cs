@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static ParticleManager;
 
 public abstract class CompendiumPage : MonoBehaviour
 {
@@ -35,6 +33,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     private bool HasSnappedTierList { get; set; } //could be made into a field
     public bool WideDisplayStyle { get; set; } = false;
     public bool HasInit { get; set; } = false;
+    public bool BlackMarketMode { get; set; } = false;
     public CompendiumElement HoverCPUE;
     public RectTransform SelectionArea;
     public GridLayoutGroup PowerUpLayoutGroup;
@@ -108,6 +107,18 @@ public abstract class TierListCompendiumPage : CompendiumPage
                 sortText.text = "Sort: Favorite";
         }
         Sort();
+    }
+    public void ToggleBlackMarketMode()
+    {
+        BlackMarketMode = !BlackMarketMode;
+        SetVisibility();
+        Sort();
+        if (Owner.Elements[0] is CompendiumPowerUpElement c)
+        {
+            c.MyElem.MyPower.ForceBlackMarket = BlackMarketMode;
+            c.MyElem.TurnedOn();
+            c.MyElem.MyPower.ForceBlackMarket = false;
+        }
     }
     public void ToggleUnlock(Button unlockButton)
     {
@@ -256,15 +267,40 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public void SetVisibility()
     {
-        List<CompendiumElement> childs = GetCPUEChildren(out int c);
+        List<CompendiumElement> childs = GetCPUEChildren(out int _);
         foreach (CompendiumElement cpue in childs)
         {
             bool locked = cpue.IsLocked();
             cpue.gameObject.SetActive(!locked || !ShowOnlyUnlocked);
             if (!TierListActive)
-                cpue.SetGrayOut(false);
+            {
+                bool grayOut = false;
+                if(cpue is CompendiumPowerUpElement e)
+                {
+                    if (BlackMarketMode)
+                    {
+                        if (e.MyElem.MyPower.CountsAsBlackMarketForCompendium())
+                        {
+                            e.MyElem.MyPower.ForceBlackMarket = true;
+                            e.MyElem.TurnedOn();
+                            e.MyElem.MyPower.ForceBlackMarket = false;
+                            grayOut = false;
+                        }
+                        else
+                            grayOut = true;
+                    }
+                    else
+                    {
+                        e.MyElem.MyPower.ForceBlackMarket = false;
+                        e.MyElem.TurnedOn();
+                    }
+                }
+                cpue.SetGrayOut(grayOut);
+            }
             else
+            {
                 cpue.SetGrayOut(TierList.HasBeenPlaced(cpue.TypeID));
+            }
             cpue.transform.localPosition = new Vector3(0, 0, 0); //Failsafe for repositioning elements as disabling them sometimes has weird behavior with layout group
         }
     }
@@ -273,14 +309,28 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         int id1 = e1.TypeID;
         int id2 = e2.TypeID;
-        if (e1.IsLocked())
-            id1 += SortMultiplier * 20000;
-        if (e1.GrayOut)
-            id1 += SortMultiplier * 10000;
-        if (e2.IsLocked())
-            id2 += SortMultiplier * 20000;
-        if (e2.GrayOut)
-            id2 += SortMultiplier * 10000;
+        if(BlackMarketMode && e1 is CompendiumPowerUpElement p1 && e2 is CompendiumPowerUpElement p2)
+        {
+            if (e1.IsLocked())
+                id1 += SortMultiplier * 10000;
+            if (e1.GrayOut)
+                id1 += SortMultiplier * 20000;
+            if (e2.IsLocked())
+                id2 += SortMultiplier * 10000;
+            if (e2.GrayOut)
+                id2 += SortMultiplier * 20000;
+        }
+        else
+        {
+            if (e1.IsLocked())
+                id1 += SortMultiplier * 20000;
+            else if (e1.GrayOut)
+                id1 += SortMultiplier * 10000;
+            if (e2.IsLocked())
+                id2 += SortMultiplier * 20000;
+            else if (e2.GrayOut)
+                id2 += SortMultiplier * 10000;
+        }
         int num = id1 - id2;
         return num;
     }
@@ -288,14 +338,28 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         int rare1 = e1.GetRare(ReverseSort);
         int rare2 = e2.GetRare(ReverseSort);
-        if (e1.IsLocked())
-            rare1 += SortMultiplier * 20;
-        else if (e1.GrayOut)
-            rare1 += SortMultiplier * 10;
-        if (e2.IsLocked())
-            rare2 += SortMultiplier * 20;
-        else if (e2.GrayOut)
-            rare2 += SortMultiplier * 10;
+        if (BlackMarketMode && e1 is CompendiumPowerUpElement p1 && e2 is CompendiumPowerUpElement p2)
+        {
+            if (e1.IsLocked())
+                rare1 += SortMultiplier * 10;
+            if (e1.GrayOut)
+                rare1 += SortMultiplier * 20;
+            if (e2.IsLocked())
+                rare2 += SortMultiplier * 10;
+            if (e2.GrayOut)
+                rare2 += SortMultiplier * 20;
+        }
+        else
+        {
+            if (e1.IsLocked())
+                rare1 += SortMultiplier * 20;
+            else if (e1.GrayOut)
+                rare1 += SortMultiplier * 10;
+            if (e2.IsLocked())
+                rare2 += SortMultiplier * 20;
+            else if (e2.GrayOut)
+                rare2 += SortMultiplier * 10;
+        }
         int num = rare1 - rare2;
         return num == 0 ? CompareID(e1, e2) : num;
     }
@@ -303,14 +367,28 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         int count1 = e1.GetCount();
         int count2 = e2.GetCount();
-        if (e1.IsLocked())
-            count1 += SortMultiplier * (int.MinValue >> 1);
-        else if (e1.GrayOut)
-            count1 += SortMultiplier * (int.MinValue >> 2);
-        if (e2.IsLocked())
-            count2 += SortMultiplier * (int.MinValue >> 1);
-        else if (e2.GrayOut)
-            count2 += SortMultiplier * (int.MinValue >> 2);
+        if (BlackMarketMode && e1 is CompendiumPowerUpElement p1 && e2 is CompendiumPowerUpElement p2)
+        {
+            if (e1.IsLocked())
+                count1 += SortMultiplier * (int.MinValue >> 3);
+            if (e1.GrayOut)
+                count1 += SortMultiplier * (int.MinValue >> 2);
+            if (e2.IsLocked())
+                count2 += SortMultiplier * (int.MinValue >> 3);
+            if (e2.GrayOut)
+                count2 += SortMultiplier * (int.MinValue >> 2);
+        }
+        else
+        {
+            if (e1.IsLocked())
+                count1 += SortMultiplier * (int.MinValue >> 2);
+            else if (e1.GrayOut)
+                count1 += SortMultiplier * (int.MinValue >> 3);
+            if (e2.IsLocked())
+                count2 += SortMultiplier * (int.MinValue >> 2);
+            else if (e2.GrayOut)
+                count2 += SortMultiplier * (int.MinValue >> 3);
+        }
         int num = count2 - count1;
         return num == 0 ? CompareRare(e1, e2) : num;
     }

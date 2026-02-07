@@ -3894,6 +3894,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3783050911642121985}
     m_Modifications:
+    - target: {fileID: 2021326966303068594, guid: 97d6fa1ba9539364ca14cd6b91f0403f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5736223416083112534, guid: 97d6fa1ba9539364ca14cd6b91f0403f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6471841166953782137, guid: 97d6fa1ba9539364ca14cd6b91f0403f, type: 3}
       propertyPath: m_Name
       value: BlackMarketShop

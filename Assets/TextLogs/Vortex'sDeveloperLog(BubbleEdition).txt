@@ -14,17 +14,13 @@ Need to do:
 	3. Progress display for achievements
 2. More descriptive pause and select screen (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
-	1. (ALL DONE) Stats  : Overclock, Haste, Crits, Speed (cap speed at 2x), Bubblebirb
-	2. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more)
-	3. (ALL DONE) Powers : Choice, Pirate's Booty, Mitosis, Special Delivery, Shards of Power (after being scrapped, choose an existing power to add onto)
+	1. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more)
 4. Add a GEM currency, which can be used to reroll shop selections
 5. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 6. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 7. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-8. Compendium: Make the power page able to show black market variants of items with a certain setting
-	1. Maybe make yet to be seen/unlocked powers use the generic blank power, like on the achievement page too
-9. Make power display on the bottom smaller
-10. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
+8. Make power display on the bottom smaller
+9. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -55,6 +51,8 @@ Done:
 	5. Removed many hardcoded enemy waves 
 	6. During wave 10 and 12+, if you have not pulled Leonard, he will try to invade your deck
 	7. During wave 13+, if you have not pulled Infector, they will try to invade your deck
+4. Black market Gachapon no longer faces the player's mouse
+5. Add Black Market compendium sorting mode to the power up page
 
 2/3/26 to 2/6/26
 1. Add Rock Golem enemy
