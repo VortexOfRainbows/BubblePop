@@ -24,7 +24,7 @@ public class PowerUpCheatUI : MonoBehaviour
         if (HasShards)
             ShardsNeededToOpenMenu = 1;
         else
-            ShardsNeededToOpenMenu = 3;
+            ShardsNeededToOpenMenu = 1;
         if (CanOpenMenu)
         {
             int type = CurrentType; //if you have a current type, don't switch even if the other type is satsified
