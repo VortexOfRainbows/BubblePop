@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using static ParticleManager;
@@ -29,7 +30,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public bool ShowCounts { get; set; }
     public bool ReverseSort { get; set; }
     private int SortMode { get; set; } //could be made into a field
-    private bool TierListActive { get; set; } //could be made into a field
+    public bool TierListActive { get; private set; } //could be made into a field
     private bool HasSnappedTierList { get; set; } //could be made into a field
     public bool WideDisplayStyle { get; set; } = false;
     public bool HasInit { get; set; } = false;
@@ -70,6 +71,10 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public void ToggleTierList(TextMeshProUGUI tierListText)
     {
+        if (BlackMarketMode)
+        {
+            ToggleBlackMarketMode();
+        }
         if (TierListActive) //Save
         {
             PlayerData.SaveTierList(TierList);

@@ -444,7 +444,7 @@ public class ConsolationPrize : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Increases Y:[non-winning spin damage] and Y:[secondary attack damage] by Y:20% G:(+20% per stack) \nY:7.77% chance to gain Y:2 G:(+2 per stack) Y:coins on Y:[non-winning spins] " +
+        description.WithDescription("Increases Y:[non-winning spin damage] and Y:[secondary attack damage] by Y:10% G:(+10% per stack) \nY:7.77% chance to gain Y:2 G:(+2 per stack) Y:coins on Y:[non-winning spins] " +
             "\nR:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins");
         description.WithShortDescription("Increases non-winning spin damage, secondary attack damage, and gives a chance for consolation coins");
     }

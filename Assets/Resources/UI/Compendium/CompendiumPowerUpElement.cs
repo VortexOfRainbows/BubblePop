@@ -19,7 +19,6 @@ public class CompendiumPowerUpElement : CompendiumElement
         Compendium.Instance.PowerPage.ToggleBlackMarketMode();
         BlackMarketVisual.SetActive(!Compendium.Instance.PowerPage.BlackMarketMode);
         NormalVisual.SetActive(Compendium.Instance.PowerPage.BlackMarketMode);
-        Debug.Log("Black Market Compendium Mode".WithColor(ColorHelper.RarityColors[5].ToHexString()));
     }
     public override void Init(int i, Canvas canvas)
     {
@@ -58,7 +57,8 @@ public class CompendiumPowerUpElement : CompendiumElement
         {
             bool canAppearAsBlackMarket = (MyElem.MyPower.IsBlackMarket() || MyElem.MyPower.HasBlackMarketAlternate)
                 && (MyElem.MyPower.PickedUpCountAllRuns > 0 &&
-                (MyElem.MyPower.BlackMarketVariantUnlockCondition == null || MyElem.MyPower.BlackMarketVariantUnlockCondition.Unlocked));
+                (MyElem.MyPower.BlackMarketVariantUnlockCondition == null || MyElem.MyPower.BlackMarketVariantUnlockCondition.Unlocked))
+                && !Compendium.Instance.PowerPage.TierListActive;
             BlackMarketButton.gameObject.SetActive(canAppearAsBlackMarket);
             if (BlackMarketButton.isActiveAndEnabled)
             {

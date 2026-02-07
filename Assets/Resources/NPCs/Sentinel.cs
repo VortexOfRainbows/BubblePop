@@ -18,7 +18,7 @@ public class Sentinel : Enemy
     private Vector2 targetedLocation;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 24;
+        data.BaseMaxLife = 15;
         data.BaseMaxCoin = 25;
         data.BaseMinCoin = 5;
         data.BaseMinGem = 1;

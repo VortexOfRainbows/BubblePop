@@ -15,7 +15,7 @@ public class RockGolem : RockSpider
     public override float HealthBarSizeModifier => .7f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 20;
+        data.BaseMaxLife = 16;
         data.BaseMaxCoin = 5;
         data.BaseMinCoin = 1;
         data.BaseMaxGem = 1;
