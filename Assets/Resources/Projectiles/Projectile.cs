@@ -151,7 +151,7 @@ public class Projectile : MonoBehaviour
         if(target is RockGolem)
         {
             if (Damage > 0.1f)
-                Damage = Mathf.Max(0.1f, Damage * 0.8f);
+                Damage = Mathf.Max(0.1f, Damage * 0.875f);
         }
         if(Player.Instance.SnakeEyes > 0)
         {

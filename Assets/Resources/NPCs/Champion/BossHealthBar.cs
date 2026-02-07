@@ -42,12 +42,19 @@ public class BossHealthBar : MonoBehaviour
     {
         if (Alpha < 1)
         {
-            Alpha += Time.deltaTime * 1f;
-            if (Alpha > 1)
-                Alpha = 1;
+            if(Host is RockGolem)
+            {
+                Alpha = Host.HealthBarAlpha;
+            }
+            else
+            {
+                Alpha += Time.deltaTime * 1f;
+                if (Alpha > 1)
+                    Alpha = 1;
+            }
             if(Alpha > 0)
             {
-                float a = Alpha * (Host == null ? 1 : Host.HealthBarAlpha);
+                float a = Alpha * 1;
                 Inner.color = Inner.color.WithAlpha(a);
                 Highlight.color = Highlight.color.WithAlpha(a);
                 Skull.color = Skull.color.WithAlpha(a);

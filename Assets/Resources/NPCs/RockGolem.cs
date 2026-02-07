@@ -16,7 +16,7 @@ public class RockGolem : RockSpider
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 18;
-        data.BaseMaxCoin = 5;
+        data.BaseMaxCoin = 3;
         data.BaseMinCoin = 1;
         data.BaseMaxGem = 1;
         data.Cost = 10f;
@@ -46,7 +46,7 @@ public class RockGolem : RockSpider
     }
     public float TiltCounter { get; set; } = 0;
     public static readonly float ShotCooldownSlowdown = 100;
-    public static readonly float ShotCooldown = 600;
+    public static readonly float ShotCooldown = 500;
     public static readonly float ShotWindup = 150;
     public static readonly float ShotChainRate = 0.1f;
     public int AttackNum = 0;
@@ -91,7 +91,7 @@ public class RockGolem : RockSpider
             if (toPlayer.magnitude < 16 || Timer < 60 || Timer > beginShootingRange)
                 ++Timer;
             float percent = 1;
-            float speed = 0.2f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
+            float speed = 0.24f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
             if (Timer > beginShootingRange)
             {
                 percent = 1 - ((Timer - beginShootingRange) / ShotCooldownSlowdown);

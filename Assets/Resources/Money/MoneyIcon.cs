@@ -31,7 +31,7 @@ public class MoneyIcon : MonoBehaviour
             }
             else if(Type == 3)
             {
-                PopUpTextUI.Enable("Gems", "WIP");
+                PopUpTextUI.Enable("Gems", "Can be used to reroll Choices");
             }
             UpdateSparkle(Sparkle, true);
         }

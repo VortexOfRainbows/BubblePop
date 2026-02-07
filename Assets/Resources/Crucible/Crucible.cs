@@ -105,7 +105,7 @@ public class Crucible : MonoBehaviour
         {
             HeldPower.Type = powerType;
             HeldPower.Start();
-            HeldPower.adornment.gameObject.SetActive(false);
+            HeldPower.adornment.enabled = false;
             Active = true;
             NextConsumedPower = powerType;
         }
