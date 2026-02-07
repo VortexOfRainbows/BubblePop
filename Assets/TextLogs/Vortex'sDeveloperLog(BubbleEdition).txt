@@ -43,14 +43,22 @@ Done:
 
 2/6/26
 1. Shards needed before shard menu opens is now 3 -> 1 (this might be annoying but we'll try it for now)
-2. New node
+2. New nodes, including the incredible rare "Funny Node"
 3. Increased the amount of space available in certain labyrinthian node layouts
 4. Fixed consolation prize text not showing the correct number
 5. Turn off black market mode in the tier list
 6. Sentinel Base health 24 -> 15
-7. Rock Golem base health 20 -> 16
-
-
+7. Rock Golem base health 20 -> 18
+8. Sentinel laser telegraph no longer goes through terrain
+9. Sentinel fire 10% slower, track the player 10% slower, and have slightly reduced acceleration and max speed
+10. Health wave rewards no longer reduce the reward point pool as much,	
+	1. Pre-wave: 100% of points -> 50% of points
+	2. Post-wave 75% of points -> 37.5% of points
+11. Heart wave rewards are now more common (5%, 10%, 15%) -> (10%, 15%, 20%)
+12. Gem wave reward conversion is now greater (12, 10) -> (5, 4) points per gem
+13. Chest base coin reward 10-20 -> 10-30
+	1. Coin bonus from pirate chest (25) is now effected by wave scaling
+14. Chests rate of containing hearts increased 5% * chest multiplier + 5% flat -> 5% * chest multiplier + 10% flat
 
 -- A2.0 --
 

@@ -584,10 +584,10 @@ public class RewardClause : CardClause
         Reward reward = null;
         if(reward == null)
         {
-            if (RewardType == -1 && Utils.RandFloat(1) < HealingChance * 0.05f && PreRewards.Count <= 0)
+            if (RewardType == -1 && Utils.RandFloat(1) < (HealingChance * 0.05f + 0.05f) && PreRewards.Count <= 0)
             {
                 RewardType = 1;
-                reward = new HealReward(beforeWaveReward ? (int)(PointsAvailable + 0.5f) : (int)(PointsAvailable * 0.75f + 0.5f));
+                reward = new HealReward(beforeWaveReward ? (int)(PointsAvailable * 0.5f + 0.5f) : (int)(PointsAvailable * 0.375f + 0.5f));
             }
             else if (RewardType == -1 && Utils.RandFloat(1) < 0.40f)
             {
@@ -606,7 +606,7 @@ public class RewardClause : CardClause
             else if(RewardType == -1 && Utils.RandFloat(1) < 0.2f)
             {
                 RewardType = 3;
-                float conversionRate = (beforeWaveReward ? 12 : 10) + WaveDirector.WaveNum;
+                float conversionRate = (beforeWaveReward ? 5 : 4) + WaveDirector.WaveNum;
                 int maxGems = (int)Mathf.Max(1, PointsAvailable / conversionRate);
                 maxGems = (int)Mathf.Max(1, (maxGems + 1) * Utils.RandFloat());
                 int otherKeyValue = (int)Mathf.Max(1, (maxGems + 1) * Utils.RandFloat(0.6f, 1.0f) * Utils.RandFloat(0.6f, 1.0f));

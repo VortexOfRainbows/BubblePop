@@ -403,12 +403,12 @@ public class Chest : MonoBehaviour
         Vector2 pos = transform.position + new Vector3(0, yOffset);
         if(spentPowers <= StarsAllocated + 2)
         {
-            int coinAmt = (int)(StarsAllocated * Utils.RandFloat(10, 21) * WaveDirector.WaveMult);
+            int coinAmt = (int)(StarsAllocated * Utils.RandFloat(10, 31) * WaveDirector.WaveMult);
             if (PirateChest)
-                coinAmt += 25;
+                coinAmt += (int)(25 * WaveDirector.WaveMult);
             if (!PirateChest && Utils.RandFloat(1) < 0.25f + 0.125f * StarsAllocated)
                 CoinManager.SpawnCoin(pos, coinAmt, 1);
-            else if(Utils.RandFloat(1) < 0.05f + 0.05f * StarsAllocated)
+            else if(Utils.RandFloat(1) < 0.10f + 0.05f * StarsAllocated)
                 CoinManager.SpawnHeart(pos, 1);
             else if(!PirateChest && Utils.RandFloat(1) < 0.05f + 0.0125f * StarsAllocated)
                 CoinManager.SpawnKey(pos, 1);

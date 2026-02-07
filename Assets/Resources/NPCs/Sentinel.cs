@@ -1,4 +1,6 @@
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Sentinel : Enemy
 {
@@ -50,10 +52,10 @@ public class Sentinel : Enemy
             MyTrail.Trail.startColor = InfectionTarget ? ColorHelper.CommandInfector.WithAlpha(0.75f) : ColorHelper.SentinelBlue.WithAlpha(0.75f);
             MyTrail.Trail.endColor = InfectionTarget ? ColorHelper.CommandInfector.WithAlpha(0) : ColorHelper.SentinelGreen.WithAlpha(0);
         }
-        float moveSpeed = 1.5f;
-        float inertiaMult = 0.9825f;
+        float moveSpeed = 1.45f;
+        float inertiaMult = 0.98125f;
         float percentShot = AttackCounter / 200f;
-        targetedLocation = Vector2.Lerp(targetedLocation, Player.Position, (1 - percentShot) * (1 - percentShot) * (1 - percentShot));
+        targetedLocation = Vector2.Lerp(targetedLocation, Player.Position, 0.9f * (1 - percentShot) * (1 - percentShot) * (1 - percentShot));
         Vector2 toTarget = targetedLocation - (Vector2)Head.position;
         float magnitude = toTarget.magnitude;
         if (magnitude > 16 && AttackCounter <= 0)
@@ -70,7 +72,7 @@ public class Sentinel : Enemy
         }
         else
         {
-            if (AttackCounter > 200)
+            if (AttackCounter > 220)
             {
                 float amt = 60;
                 for (int i = 0; i < amt; ++i)
@@ -148,21 +150,24 @@ public class Sentinel : Enemy
         base.Update();
         if(IsDummy)
             return;           
-        float percent = AttackCounter / 200f;
+        float percent = AttackCounter / 220f;
         float iPer = 1 - percent * percent;
         float sqrt = Mathf.Sqrt(percent);
         Vector2 toTarget = targetedLocation - (Vector2)Head.position;
-        float magnitude = 5;
         Color g = InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelGreen * sqrt * 0.9f;
         Color b = InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelBlue * sqrt;
         for (int i = -1; i <= 1; i += 2)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(Head.position, toTarget.normalized.RotatedBy(i * iPer * 20 * Mathf.Deg2Rad), 24, LayerMask.GetMask("World"));
+            float dist = hit.distance == 0 ? 24 : hit.distance;
+            dist /= 4f;
             SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
-                new Vector2(magnitude * percent, 6 + percent * 10f),
+                new Vector2(dist * percent, 6 + percent * 10f),
                 toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, g, -1);
-        for (int i = -1; i <= 1; i += 2)
             SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
-                new Vector2(magnitude * percent, 3 + percent * 5f),
+                new Vector2(dist * percent, 3 + percent * 5f),
                 toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, b, -1);
+        }
     }
     public override void OnKill()
     {
