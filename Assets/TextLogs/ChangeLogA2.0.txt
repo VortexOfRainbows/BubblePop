@@ -1,0 +1,58 @@
+Dev Build 2.0 (tentative version number)
+
+New:
+1. Achievement Completion Popups
+2. New Achievements:
+	1. Thought Bubble: Decisions Decisions (Replaces "Decisions Decisions")
+	2. Bubblemancer: Bath Bomb
+	3. Gachapon: Addicted
+	4. Thought Bubble: Short For Calc
+	5. Gachapon: Clover
+	6. Gachapon: Healer
+3. New Powers:
+	1. S***** ** P****
+	2. C*******
+	3. S****** D*******
+	4. R****** F*****
+	5. Q****** C***
+	6. S**********'s C***
+4. Added the Crucible
+5. New Sprites for some of the Gacha Slots powers
+6. Add Black Market Shops
+7. New Enemies:
+	1. Sentinel
+	2. Rock Golem
+8. Enemy Choice Algorithm Reworked (Less pre-set enemy waves)
+9. Procedural World/Map Generation and Multiple Pylons
+
+Balance:
+1. (NERF) Token Pouch no longer gives tokens each wave, but also no longer nerfs price as much (0.5 -> 0.25)
+2. (NERF) Dragon Slots losing-spin now has pierce penalty (0% -> 20%), but still pierces infinitely
+3. (NERF) Dramatically reduced gems dropped by gem chests
+4. (NERF)  Enemies no longer drop powers normally, instead only dropping gems
+	1. Minimum gem drop rates reduced across the board
+5. (NERF) Consolation Prize damage base and scaling +20% -> +10%
+6. (NERF) Infector health scale on implant reduced 100% -> 50% of current enemy life
+7. (BUFF) Thought bubble hp 2 -> 3
+
+Changes:
+1. Red Cape effect changed
+2. Out of bounds players are pushed into inbound tiles rather than being killed
+3. Reworks to tile blending/merging to allow tiles to blend into layers that are above them for more cohesive tile blending
+
+Misc:
+1. Enemies now try to avoid spawning on dark grass and dark grass has more visual variations
+2. Standardize black market item prices
+3. PowerUp glows should now be higher resolution and softer (changed the blend style and glow texture)
+4. Gems now drop with text indicating their value, to reduce lag
+5. More Improvements to how the choice menu positions itself when hidden (should work on weirder resolutions)
+6. Spacebar no longer interacts with certain power buttons
+7. Changed appearance order of pickups (visual layering) Heart -> Shard -> Key -> Gem -> Coin
+
+Fixes:
+1. Fix issue where choice UI was not centered on all resolutions
+2. Description variants for parent equipment now apply to child equipment (Dragon Slots)
+3. Pylon sounds should now play more consistently
+4. Chests no longer get stuck in walls
+
+

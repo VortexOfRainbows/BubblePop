@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using UnityEditor.Overlays;
 using UnityEngine;
-
 public class ShadyCoat : LabCoat
 {
     public override int GetRarity()

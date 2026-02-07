@@ -1,6 +1,4 @@
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
-using UnityEngine.XR;
 public static class Control
 {
     public static bool Interact => Input.GetKeyDown(KeyCode.E);

@@ -1,7 +1,4 @@
-using Unity.VisualScripting.Dependencies.Sqlite;
-using UnityEditor.Search;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 public class RockGolem : RockSpider
 {
     private Color ShotColor => InfectionTarget ? new Color(1, .1f, .1f, 1.0f) : new Color(.2f, .3f, 1f, 1.0f);
