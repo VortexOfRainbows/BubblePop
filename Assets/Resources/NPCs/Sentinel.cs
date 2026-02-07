@@ -1,6 +1,4 @@
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Sentinel : Enemy
 {
