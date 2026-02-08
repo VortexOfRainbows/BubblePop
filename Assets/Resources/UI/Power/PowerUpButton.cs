@@ -53,17 +53,21 @@ public class PowerUpButton : MonoBehaviour
     }
     public void GrantPower()
     {
-        if(PowerUI.CrucibleElement)
+        int amt = NonChoiceButton ? Mathf.Clamp(PowerUpCheatUI.ProcessQuantity, 1, 100) : 1;
+        PowerUI.MyPower.PickUp(amt);
+        if (PowerUI.CrucibleElement)
         {
             if (!Main.DebugSettings.PowerUpCheat)
+            {
                 CoinManager.ModifyShards(-PowerUI.Cost * PowerUpCheatUI.ProcessQuantity);
+                PowerUI.Cost = PowerUI.MyPower.ShardReplicationCost();
+                PowerUI.CostText.text = PowerUI.Cost.ToString();
+            }
         }
-        else if(ChoicePowerMenu.IsBlackMarket)
+        else if (ChoicePowerMenu.IsBlackMarket)
         {
             CoinManager.ModifyGems(-PowerUI.Cost);
         }
-        int amt = NonChoiceButton ? Mathf.Clamp(PowerUpCheatUI.ProcessQuantity, 1, 100) : 1;
-        PowerUI.MyPower.PickUp(amt);
         if (!NonChoiceButton)
         {
             PowerUp.TurnOffPowerUpSelectors();

@@ -50,6 +50,8 @@ Done:
 3. Thought Bubble now requires wave 15 to unlock instead of 20
 4. Gachapon: Addicted now requires wave 30 to unlock instead of 40
 5. Fix bug where counts would appear inside the achievement page of the compendium when count was enabled inside the power page
+6. WIP making Perpetual Bubble Machine cost to duplicate grows with the stack
+	1. Needs: grow cost each time the power is purchased, and show proper cost when replicating multiple at a time
 
 2/7/26 to 2/8/26
 1. Increase world padding by 5 (hopefully this will prevent some out of bound issues)

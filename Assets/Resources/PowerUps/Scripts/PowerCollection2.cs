@@ -424,7 +424,7 @@ public class PerpetualBubbleMachine : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription($"Adds Y:1 G:(+1 per stack) <color={DetailedDescription.Rares[0]}>Choice</color> to Y:[wave start]");
+        description.WithDescription($"Adds Y:1 G:(+1 per stack) <color={DetailedDescription.Rares[0]}>Choice</color> to Y:[wave start] \nR:[Rainbow Shard replication cost increases with stack size]");
         description.WithShortDescription("The key to infinite bubble forever?");
     }
     public override void HeldEffect(Player p)
@@ -434,6 +434,10 @@ public class PerpetualBubbleMachine : PowerUp
     public override bool IsBlackMarket()
     {
         return true;
+    }
+    public override int ShardReplicationCost()
+    {
+        return base.ShardReplicationCost() + Stack - 1;
     }
 }
 public class ConsolationPrize : PowerUp

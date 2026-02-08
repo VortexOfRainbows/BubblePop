@@ -258,7 +258,7 @@ public class Crucible : MonoBehaviour
             c.rb.velocity = new Vector2(c.rb.velocity.x * 0.1f, c.rb.velocity.y * 0.1f);
             c.rb.velocity += new Vector2(0, -4.5f).RotatedBy(Mathf.Lerp(-55, 55, percent) * Mathf.Deg2Rad);
             c.transform.localScale = Vector3.one * 0.1f;
-            if(i == 0)
+            if(i == 0 && value > 0)
             {
                 if(powerType == PowerUp.Get<QuantumCake>().MyID)
                 {
