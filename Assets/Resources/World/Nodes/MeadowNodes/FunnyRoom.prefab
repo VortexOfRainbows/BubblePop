@@ -822,11 +822,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7573328573185486376, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
       propertyPath: m_TileAssetArray.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7573328573185486376, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
       propertyPath: m_TileSpriteArray.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7573328573185486376, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
       propertyPath: m_Tiles.Array.data[0].first.x
