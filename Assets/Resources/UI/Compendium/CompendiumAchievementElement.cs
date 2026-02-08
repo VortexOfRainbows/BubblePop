@@ -25,6 +25,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
             AlternativeDisplayElement.OnUpdate();
             AlternativeDisplayElement.OnUpdate();
             AlternativeDisplayElement.MyPower.ForceBlackMarket = false;
+            AlternativeDisplayElement.ForceHideCount = true;
         }
         else
         {

@@ -21,11 +21,9 @@ Need to do:
 7. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 8. Make power display on the bottom smaller
 9. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
-10. Add Thought Bubble Toolbelt
-11. Make Perpetual Bubble Machine cost to duplicate with shards grow with the stack
-12. Make enemies spawn further away when possible, slower coming out of the portal
-13. Nerf the health modifier
-14. Increase base magnet range
+10. Make Perpetual Bubble Machine cost to duplicate with shards grow with the stack
+11. Make enemies spawn further away when possible, slower coming out of the portal
+12. Nerf the health modifier
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -45,6 +43,14 @@ Current Task List:
 
 Done: 
 
+
+2/8/26
+1. Adjustments to TB face animation
+2. Added Utility Belt equipment, which starts the player with a magnet, key, and 100 gold
+3. Thought Bubble now requires wave 15 to unlock instead of 20
+4. Gachapon: Addicted now requires wave 30 to unlock instead of 40
+5. Fix bug where counts would appear inside the achievement page of the compendium when count was enabled inside the power page
+
 2/7/26 to 2/8/26
 1. Increase world padding by 5 (hopefully this will prevent some out of bound issues)
 	1. Reduce range of foliage spawning by 10, should reduce some worldgen-related performance issues
@@ -59,6 +65,7 @@ Done:
 10. Crucible gives some coins on smelt now (this may be temporary until more gem uses are added)
 11. Added Light Bulb node
 12. Nerf the difficulty of certain node terrain
+13. Increase base magnet range by 25%
 
 2/7/26
 1. Rock golem coins dropped 1-5 -> 1-3

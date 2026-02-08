@@ -310,6 +310,8 @@ public abstract class PowerUp
         AmountPickedUpAcrossAllRuns += amt;
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;
+        if(Player.Instance.PowerCount >= 20 && Player.Instance.Body is ThoughtBubble)
+            UnlockCondition.Get<ThoughtBubbleArsenal>().SetComplete();
     }
     public void AddToDisplayQueue()
     {

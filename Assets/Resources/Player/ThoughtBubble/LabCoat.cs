@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class LabCoat : BubblemancerCape
 {
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
@@ -41,7 +41,7 @@ public class LabCoat : BubblemancerCape
         base.AnimationUpdate();
         if (this is ShadyCoat)
             return;
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)p.Body.transform.position;
+        Vector2 toMouse = p.LookPosition - (Vector2)p.Body.transform.position;
         float facingDir = p.Direction;
         toMouse = facingDir * LookingAtMouseScale * toMouse.normalized;
         CapeB.transform.localPosition = CapeB.transform.localPosition + new Vector3((toMouse.x * 0.08f + 0.02f) * facingDir, -0.06f);

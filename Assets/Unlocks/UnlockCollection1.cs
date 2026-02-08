@@ -177,7 +177,7 @@ public class GachaponAddicted : UnlockCondition
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Gachapon: Addicted");
-        description.WithDescription($"As Y:Gachapon, reach and complete wave 40");
+        description.WithDescription($"As Y:Gachapon, reach and complete wave 30");
     }
     public override void SetAchievementCategories(ref int zone, ref int category)
     {
@@ -243,4 +243,19 @@ public class GachaponHealer : UnlockCondition
         category = Completionist;
     }
     public override int Rarity => 4;
+}
+public class ThoughtBubbleArsenal : UnlockCondition
+{
+    public override PowerUp Power => PowerUp.Get<Choice>();
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Thought Bubble: Arsenal");
+        description.WithDescription($"As Y:[Thought Bubble,] possess 20 different powers in a single run");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Lab;
+        category = Completionist;
+    }
+    public override int Rarity => 2;
 }

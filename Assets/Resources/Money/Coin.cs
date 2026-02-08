@@ -57,6 +57,8 @@ public class Coin : MonoBehaviour
         float attractDist = IsHeart || IsKey ? 3.5f : 4 + p.Magnet * 3f;
         if (IsToken)
             attractDist *= 3;
+        else
+            attractDist *= 1.25f;
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
         if (length < attractDist && (BeforeCollectableTimer <= 0 || IsHeart) && CanCollect())

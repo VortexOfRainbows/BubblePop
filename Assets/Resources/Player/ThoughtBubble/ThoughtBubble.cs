@@ -42,11 +42,11 @@ public class ThoughtBubble : Body
         Vector2 toMouse2 = toMouse.normalized;
         toMouse2.x += Mathf.Sign(toMouse2.x) * 4;
         float toMouseR = toMouse2.ToRotation();
-        Vector2 looking = new Vector2(0.18f, 0).RotatedBy(toMouseR);
+        Vector2 looking = new Vector2(0.17f, 0).RotatedBy(toMouseR);
         looking.y *= 0.8f;
         if (looking.x < 0)
             toMouseR += Mathf.PI;
-        Vector2 pos = new Vector2(0.16f * p.Direction, 0.02f) + looking;
+        Vector2 pos = new Vector2(0.17f * p.Direction, 0.05f) + looking;
         Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
         FaceR.flipX = toMouse.x > 0;
