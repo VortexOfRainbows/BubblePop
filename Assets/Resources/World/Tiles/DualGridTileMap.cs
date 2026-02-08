@@ -71,6 +71,10 @@ public class DualGridTilemap : MonoBehaviour
     public void AddDecor(Color c, int order)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        left += 10;
+        right -= 10;
+        bottom += 10;
+        top -= 10;
         bool mushroom = false;
         float mult = 1.0f;
         if (order == -30)

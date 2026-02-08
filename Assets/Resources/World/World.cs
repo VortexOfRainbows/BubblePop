@@ -20,7 +20,7 @@ public class World : MonoBehaviour
     private static Vector2Int tileDataOffset;
     private static TileData[,] tileData;
     private static readonly TileData NoTileData = new(byte.MaxValue);
-    public static readonly int Padding = 15;
+    public static readonly int Padding = 20;
     public static TileData GetTileData(Vector3Int pos)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;

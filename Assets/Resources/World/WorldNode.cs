@@ -159,7 +159,7 @@ public class WorldNode : MonoBehaviour
                     if(canPlaceTile || placeSolidAsUnsolid)
                     {
                         world.Tilemap.Map.SetTile(v, placeSolidAsUnsolid ? tile.GetTileID().FloorTileType : tile);
-                        if(canPlaceTile)
+                        if(canPlaceTile && World.GetTileData(v).ProgressionNumber == 0)
                             World.SetTileData(v, new World.TileData(GenerationNumber, IsSubNode));
                     }
                 }
@@ -171,7 +171,9 @@ public class WorldNode : MonoBehaviour
             for (int i = FeatureParent.childCount - 1; i >= 0; --i)
             {
                 Transform child = FeatureParent.GetChild(i);
-                Instantiate(child, world.NatureParent.transform, true);
+                Transform f = Instantiate(child, world.NatureParent.transform, true);
+                if(f.gameObject.TryGetComponent<Chest>(out Chest c))
+                    c.SkipSpawnAnimation = true;
             }
         }
         if(PylonParent != null)

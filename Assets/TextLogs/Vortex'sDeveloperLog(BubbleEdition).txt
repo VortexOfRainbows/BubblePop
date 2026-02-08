@@ -22,6 +22,7 @@ Need to do:
 8. Make power display on the bottom smaller
 9. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 10. Add Thought Bubble Toolbelt
+11. Make Perpetual Bubble Machine cost to duplicate with shards grow with the stack
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -40,6 +41,13 @@ Current Task List:
 
 
 Done: 
+
+2/7/26
+1. Increase world padding by 5 (hopefully this will prevent some out of bound issues)
+	1. Reduce range of foliage spawning by 10, should reduce some worldgen-related performance issues
+2. Chests should skip the spawn animation when entering the world now, meaning no more random chest drop sound
+3. Attempt some worldgen related fixes
+
 
 2/7/26
 1. Rock golem coins dropped 1-5 -> 1-3

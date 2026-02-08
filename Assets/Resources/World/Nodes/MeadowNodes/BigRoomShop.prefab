@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1864510594727055106}
     m_Modifications:
+    - target: {fileID: 2797293488491232329, guid: 047644f5587b9ca4a841cc61a185d384, type: 3}
+      propertyPath: SkipSpawnAnimation
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7283554516986598860, guid: 047644f5587b9ca4a841cc61a185d384, type: 3}
       propertyPath: m_LocalPosition.x
       value: -39
