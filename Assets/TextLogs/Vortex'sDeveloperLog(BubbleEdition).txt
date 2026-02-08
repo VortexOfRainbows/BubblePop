@@ -23,6 +23,7 @@ Need to do:
 9. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 10. Add Thought Bubble Toolbelt
 11. Make Perpetual Bubble Machine cost to duplicate with shards grow with the stack
+12. Dissolving Pirates booty gives a key
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -47,6 +48,8 @@ Done:
 	1. Reduce range of foliage spawning by 10, should reduce some worldgen-related performance issues
 2. Chests should skip the spawn animation when entering the world now, meaning no more random chest drop sound
 3. Attempt some worldgen related fixes
+4. Reduce mass of chests by 50% to make them easier to push
+5. Reduce size of shop gachapon collider by .15 to make it harder to get stuck on (and adjust culprit room)
 
 
 2/7/26

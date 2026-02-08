@@ -159,7 +159,7 @@ public class Chest : MonoBehaviour
         if(SkipSpawnAnimation)
         {
             Bubble.enabled = false;
-            RB.mass = 10f;
+            RB.mass = 5f;
             //Collider.enabled = true;
             HasSpawned = true;
         }
@@ -361,7 +361,7 @@ public class Chest : MonoBehaviour
     }
     public void Close()
     {
-        RB.mass = Mathf.Lerp(RB.mass, 10f, 0.1f);
+        RB.mass = Mathf.Lerp(RB.mass, 5f, 0.1f);
         Collider.enabled = true;
         OpenAnimation = 0;
         SpriteRenderer.sprite = ClosedSprite;
