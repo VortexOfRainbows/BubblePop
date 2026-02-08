@@ -53,11 +53,37 @@ public static class CoinManager
         for (; gold > 0; --gold)
             Spawn(Gold, func.Invoke(), collectDelay);
     }
-    private static void Spawn(GameObject coinType, Vector2 pos, float collectDelay)
+    private static Rigidbody2D Spawn(GameObject coinType, Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(coinType, pos, Quaternion.identity);
-        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(8);
+        Rigidbody2D r = obj.GetComponent<Rigidbody2D>();
+        r.velocity = Utils.RandCircle(8);
         obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
+        return r;
+    }
+    public static void SpawnCoinCrucible(Vector2 pos, Func<Vector2> velocity, int value = 1, float collectDelay = 0f)
+    {
+        int bronze = value % 5;
+        int silver = value / 5 % 5;
+        int gold = value / 25;
+        for (; bronze > 0; --bronze)
+        {
+            var r = Spawn(Bronze, pos, collectDelay);
+            r.velocity = velocity.Invoke();
+            r.transform.localScale = Vector3.one * 0.1f;
+        }
+        for (; silver > 0; --silver)
+        {
+            var r = Spawn(Silver, pos, collectDelay);
+            r.velocity = velocity.Invoke();
+            r.transform.localScale = Vector3.one * 0.1f;
+        }
+        for (; gold > 0; --gold)
+        {
+            var r = Spawn(Gold, pos, collectDelay);
+            r.velocity = velocity.Invoke();
+            r.transform.localScale = Vector3.one * 0.1f;
+        }
     }
     public static Coin SpawnHeart(Func<Vector2> func, float collectDelay) => SpawnHeart(func.Invoke(), collectDelay);
     public static Coin SpawnHeart(Vector2 pos, float collectDelay)
@@ -68,12 +94,14 @@ public static class CoinManager
         c.BeforeCollectableTimer = collectDelay;
         return c;
     }
-    public static void SpawnKey(Func<Vector2> func, float collectDelay) => SpawnKey(func.Invoke(), collectDelay);
-    public static void SpawnKey(Vector2 pos, float collectDelay)
+    public static Coin SpawnKey(Func<Vector2> func, float collectDelay) => SpawnKey(func.Invoke(), collectDelay);
+    public static Coin SpawnKey(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Key, pos, Quaternion.identity);
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
-        obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
+        var c = obj.GetComponent<Coin>();
+        c.BeforeCollectableTimer = collectDelay;
+        return c;
     }
     public static Coin SpawnGem(Func<Vector2> func, float collectDelay, int value = 1) => SpawnGem(func.Invoke(), collectDelay, value);
     public static Coin SpawnGem(Vector2 pos, float collectDelay, int value = 1)

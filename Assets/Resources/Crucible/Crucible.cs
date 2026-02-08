@@ -245,6 +245,7 @@ public class Crucible : MonoBehaviour
         HasSpawnedChestLoot = true;
         AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 0.8f + 0.2f * SpeedMultiplier);
         int value = powerType >= 0 ? PowerUp.Get(powerType).CrucibleGems(true) : 3;
+        int coinValue = powerType >= 0 ? PowerUp.Get(powerType).Cost : 15;
         int quant = Mathf.Abs(Mathf.Min(value, 5));
         float valuePerGem = value / (float)quant;
         Vector2 pos = transform.position + new Vector3(0, -1.4f);
@@ -263,9 +264,20 @@ public class Crucible : MonoBehaviour
                 {
                     c = CoinManager.SpawnHeart(pos, 0.25f);
                     c.rb.velocity = new Vector2(c.rb.velocity.x * 0.1f, c.rb.velocity.y * 0.1f);
-                    c.rb.velocity = new Vector2(0, -4.5f);
+                    c.rb.velocity += new Vector2(0, -4.5f);
                     c.transform.localScale = Vector3.one * 0.1f;
                     c.Value = -1;
+                }
+                else if(powerType == PowerUp.Get<PiratesBooty>().MyID)
+                {
+                    c = CoinManager.SpawnKey(pos, 0.25f);
+                    c.rb.velocity = new Vector2(c.rb.velocity.x * 0.1f, c.rb.velocity.y * 0.1f);
+                    c.rb.velocity += new Vector2(0, -6.5f);
+                    c.transform.localScale = Vector3.one * 0.1f;
+                }
+                else
+                {
+                    CoinManager.SpawnCoinCrucible(pos, () => new Vector2(0, -5.5f) + Utils.RandCircle(2), coinValue, 0.25f);
                 }
             }
         }

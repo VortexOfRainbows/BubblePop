@@ -79,8 +79,11 @@ public class Coin : MonoBehaviour
             AttractTimer = 0;
         }
         BeforeCollectableTimer -= Time.fixedDeltaTime;
-
-        if(IsToken)
+        if(IsCoin)
+        {
+            transform.LerpLocalScale(Vector3.one * 0.75f, 0.1f);
+        }
+        else if(IsToken)
         {
             transform.LerpLocalScale(Vector3.one * 0.9f, 0.1f);
             timer++;
@@ -119,6 +122,7 @@ public class Coin : MonoBehaviour
         {
             if(IsKey)
             {
+                transform.LerpLocalScale(Vector3.one * 1.6f, 0.07f);
                 for (int i = -1; i <= 1; i += 2)
                 {
                     if (Utils.RandFloat(1) < 0.6f)

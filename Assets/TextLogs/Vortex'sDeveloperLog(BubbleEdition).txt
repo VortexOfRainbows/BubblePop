@@ -50,7 +50,11 @@ Done:
 3. Attempt some worldgen related fixes
 4. Reduce mass of chests by 50% to make them easier to push
 5. Reduce size of shop gachapon collider by .15 to make it harder to get stuck on (and adjust culprit room)
-
+6. Eureka cost reduction scaling 1 (+1) -> 2 (+2)
+7. Add a heart to a node
+8. Shifted the gem return from crucible and costs from contract: (2/3, 3/5, 5/10, 10/25, 25/50) -> (3/5, 5/10, 10/15, 15/20, 20/25)
+9. Attempt a fix on the infinite Rock Golem crash
+10. Crucible gives some coins on smelt now (this may be temporary until more gem uses are added)
 
 2/7/26
 1. Rock golem coins dropped 1-5 -> 1-3

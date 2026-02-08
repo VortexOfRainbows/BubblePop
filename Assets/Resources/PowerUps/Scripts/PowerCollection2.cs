@@ -582,7 +582,7 @@ public class PiratesBooty : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Pirate's Booty");
-        description.WithDescription("Y:[Skull enemies] have a Y:10% G:(+10% per stack) chance to drop a Y:[Pirate chest] or Y:key G:(consumed on use)");
+        description.WithDescription("Y:[Skull enemies] have a Y:10% G:(+10% per stack) chance to drop a Y:[Pirate chest] or Y:key G:(consumed on use) \nDrops a Y:key when Y:dissolved in a Y:Crucible");
         description.WithShortDescription("Next killed Skull enemy has a chance to drop a chest or key");
     }
     public override void HeldEffect(Player p)
@@ -599,12 +599,12 @@ public class Eureka : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Eureka!");
-        description.WithDescription($"Reduces <color={DetailedDescription.Rares[0]}>Choice</color> Y:Reroll cost by Y:1 G:(+1 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)");
+        description.WithDescription($"Reduces <color={DetailedDescription.Rares[0]}>Choice</color> Y:Reroll cost by Y:2 G:(+2 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)");
         description.WithShortDescription("Reduces Choice Reroll cost and increases Reroll count");
     }
     public override void OnPickup(int count)
     {
-        ChoicePowerMenu.Instance.CostScaling -= count;
+        ChoicePowerMenu.Instance.CostScaling -= count * 2;
         ChoicePowerMenu.Instance.RemainingRerolls += count;
     }
     public override void HeldEffect(Player p)

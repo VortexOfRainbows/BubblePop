@@ -386,15 +386,15 @@ public abstract class PowerUp
     public virtual int CrucibleGems(bool dissolve = false)
     {
         int rare = GetRarity();
-        int gems = dissolve ? 2 : 3;
+        int gems = dissolve ? 3 : 5;
         if (rare == 5)
-            gems = dissolve ? 25 : 50;
+            gems = dissolve ? 20 : 25;
         else if (rare == 4)
-            gems = dissolve ? 10 : 25;
+            gems = dissolve ? 15 : 20;
         else if (rare == 3)
-            gems = dissolve ? 5 : 10;
+            gems = dissolve ? 10 : 15;
         else if (rare == 2)
-            gems = dissolve ? 3 : 5;
+            gems = dissolve ? 5 : 10;
         //if (IsBlackMarket())
         //    gems *= 2;
         return gems;

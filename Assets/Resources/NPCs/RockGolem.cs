@@ -81,6 +81,8 @@ public class RockGolem : RockSpider
                     prevP.Child = r.gameObject;
                     prevP = r;
                     r.transform.localScale *= 1f;
+                    r.hasSpawned = true;
+                    r.UpdateRendererColor(Color.red.WithAlpha(0), 1);
                     if (IsSkull)
                         r.SetSkullEnemy();
                 }
@@ -177,8 +179,6 @@ public class RockGolem : RockSpider
             else
                 Timer = 0;
             GetComponent<CircleCollider2D>().enabled = false;
-            if(!hasSpawned)
-                UpdateRendererColor(Color.red.WithAlpha(0), 1);
             Head.gameObject.SetActive(false);
             Vector2 pos = transform.position;
             Vector2 parent = Parent.transform.position;
