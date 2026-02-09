@@ -90,3 +90,40 @@ Fixes:
 1. Fixed consolation prize text not showing the correct number
 2. Turn off black market mode in the tier list
 
+
+Dev Build 2.0.2 (tentative version number)
+
+New:
+1. Added Light Bulb node
+2. Crucible gives some coins on smelt now (this may be temporary until more gem uses are added)
+3. New Equipment for Thought Bubble
+
+Balance:
+1. (NERF) Rock golem coins dropped 1-5 -> 1-3
+	1. (NERF) Damage reduction on piercing projectiles -20% -> -12.5%
+	2. (BUFF) Shot cooldown 6 seconds -> 5 seconds
+	3. (BUFF) Movement speed increased by 20%
+2. (BUFF) Increase base coin attraction range by 25%
+3. (NERF) Decrease the difficulty of certain node terrain
+4. (BUFF) Eureka cost reduction scaling 1 (+1) -> 2 (+2)
+5. (NERF) Wave-only wave health modifier scaling reduced by 50% (permanent is unchanged)
+6. (BUFF) Perpetual Bubble Machine shard cost to duplicate grows with the stack
+
+Changes:
+1. Shifted the gem return from crucible and costs from contract: (2/3, 3/5, 5/10, 10/25, 25/50) -> (3/5, 5/10, 10/15, 15/20, 20/25)
+2. Adjusted some node rewards
+3. Reduce mass of chests by 50% to make them easier to push
+4. Reduce size of shop Gachapon collider by 10% to make it harder to get stuck on (and adjust culprit room)
+
+Misc:
+1. Adjustments to TB face animation
+2. Thought Bubble now requires wave 15 to unlock instead of 20
+3. Gachapon: Addicted now requires wave 30 to unlock instead of 40
+
+Fixes:
+1. Attempt a fix on the infinite Rock Golem crash
+2. Attempt some worldgen related fixes
+3. Chests should skip the spawn animation when entering the world now, meaning no more random chest drop sound
+4. Increase world padding by 5 (hopefully this will prevent some out of bound issues)
+	1. Reduce range of foliage spawning by 10, should reduce some worldgen-related performance issues
+5. Fix bug where counts would appear inside the achievement page of the compendium when count was enabled inside the power page
