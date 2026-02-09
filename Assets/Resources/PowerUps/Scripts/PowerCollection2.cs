@@ -435,9 +435,10 @@ public class PerpetualBubbleMachine : PowerUp
     {
         return true;
     }
-    public override int ShardReplicationCost()
+    public override int ShardReplicationCost(int stackSize = 1)
     {
-        return base.ShardReplicationCost() + Stack - 1;
+        int currentStack = Stack;
+        return (currentStack * stackSize) + (stackSize * stackSize + stackSize) / 2;
     }
 }
 public class ConsolationPrize : PowerUp
@@ -703,9 +704,9 @@ public class RainbowFlower : PowerUp
     {
         return dissolve ? -1 : 3;
     }
-    public override int ShardReplicationCost()
+    public override int ShardReplicationCost(int stackSize = 1)
     {
-        return 1;
+        return stackSize;
     }
 }
 public class QuantumCake : PowerUp

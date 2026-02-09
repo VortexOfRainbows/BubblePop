@@ -142,9 +142,9 @@ public class PowerUpUIElement : MonoBehaviour
                 if (PowerUpCheatUI.CurrentType == 1)
                 {
                     CostObj.SetActive(!Main.DebugSettings.PowerUpCheat);
-                    int cost = Cost * PowerUpCheatUI.ProcessQuantity;
-                    CostText.text = cost.ToString();
-                    bool canAfford = cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
+                    if(PowerUpCheatUI.UpdatedProcessQuantity > 0)
+                        UpdateShardCost();
+                    bool canAfford = Cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
                     CostText.color = canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIRedColor;
                 }
                 else
@@ -164,6 +164,15 @@ public class PowerUpUIElement : MonoBehaviour
                 CostObj.SetActive(false);
         }
         UpdateAppearance();
+    }
+    public void UpdateShardCost()
+    {
+        int cost = MyPower.ShardReplicationCost(PowerUpCheatUI.ProcessQuantity);
+        if (cost != Cost)
+        {
+            Cost = cost;
+            CostText.text = Cost.ToString();
+        }
     }
     public void UpdateAppearance()
     {

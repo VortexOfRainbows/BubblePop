@@ -59,8 +59,8 @@ public class PowerUpButton : MonoBehaviour
         {
             if (!Main.DebugSettings.PowerUpCheat)
             {
-                CoinManager.ModifyShards(-PowerUI.Cost * PowerUpCheatUI.ProcessQuantity);
-                PowerUI.Cost = PowerUI.MyPower.ShardReplicationCost();
+                CoinManager.ModifyShards(-PowerUI.Cost);
+                PowerUI.Cost = PowerUI.MyPower.ShardReplicationCost(PowerUpCheatUI.ProcessQuantity);
                 PowerUI.CostText.text = PowerUI.Cost.ToString();
             }
         }
@@ -97,7 +97,7 @@ public class PowerUpButton : MonoBehaviour
             }
             if (!CrucibleButton)
             {
-                int cost = PowerUI.Cost * PowerUpCheatUI.ProcessQuantity;
+                int cost = PowerUI.Cost;
                 bool canAfford = cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
                 SelectButton.interactable = canAfford;
             }

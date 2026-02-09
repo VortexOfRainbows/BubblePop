@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-
 public abstract class ClauseEffect
 {
     protected static string RedText(string s)
@@ -87,6 +83,8 @@ public abstract class DirectorModifier : ClauseEffect
 }
 public class EnemyStrengthModifier : DirectorModifier
 {
+    public override float PointToPercentRatio => 200;
+    public override float PermanentMultiplier => 0.2f;
     public override void Apply()
     {
         MyModifier.EnemyScaling += Percent;

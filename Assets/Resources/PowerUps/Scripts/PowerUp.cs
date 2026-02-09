@@ -401,7 +401,7 @@ public abstract class PowerUp
         //    gems *= 2;
         return gems;
     }
-    public virtual int ShardReplicationCost()
+    public virtual int ShardReplicationCost(int stackSize = 1)
     {
         int shards = 1;
         int rare = GetRarity();
@@ -411,7 +411,7 @@ public abstract class PowerUp
             shards = 2;
         if (IsBlackMarket())
             shards *= 2;
-        return shards;
+        return shards * stackSize;
     }
     public virtual int GetRarity()
     {
@@ -434,12 +434,14 @@ public abstract class PowerUp
     }
     public virtual bool IsBlackMarket()
     {
+        if (ForceBlackMarket)
+            return true;
         bool NoAltsForCompendium = Compendium.Instance != null && Compendium.Instance.PageNumber == 0;
         if (Main.GameFinishedLoading && !IsInPowerPool && HasBlackMarketAlternate && BlackMarketVariantUnlockCondition.Unlocked && !NoAltsForCompendium)
             return true;
         if (Compendium.Instance != null && Compendium.Instance.PageNumber == 3)
             return true; //All powers on the achievement page are going to show up as black market powers, so this should make sense as an extra fail-safe
-        return ForceBlackMarket;
+        return false;
     }
     public bool CountsAsBlackMarketForCompendium()
     {

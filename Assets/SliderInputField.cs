@@ -99,7 +99,12 @@ public class SliderInputField : MonoBehaviour
         }
         else if (Type == 3)
         {
-            PowerUpCheatUI.ProcessQuantity = (int)value;
+            int val = (int)value;
+            if(PowerUpCheatUI.ProcessQuantity != val)
+            {
+                PowerUpCheatUI.UpdatedProcessQuantity = 2;
+                PowerUpCheatUI.ProcessQuantity = val;
+            }
         }
     }
 }

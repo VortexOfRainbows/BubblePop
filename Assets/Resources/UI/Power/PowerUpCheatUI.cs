@@ -10,6 +10,7 @@ public class PowerUpCheatUI : MonoBehaviour
     public static bool AutoHide { get; set; } = true;
     public static PowerUpCheatUI Instance { get; set; }
     public static int ProcessQuantity { get; set; } = 1;
+    public static int UpdatedProcessQuantity { get; set; } = 0;
     public static int CurrentType = -1;
     public static bool MouseInCompendiumArea { get; private set; }
     public static Crucible CurrentCrucible { get; set; }
@@ -61,6 +62,8 @@ public class PowerUpCheatUI : MonoBehaviour
             Instance.Update();
         PrevHadCrucible = HasCrucible;
         PrevHadShards = HasShards;
+        if (UpdatedProcessQuantity > 0)
+            --UpdatedProcessQuantity;
     }
     public PowerUpButton ChoiceTemplate;
     public GridLayoutGroup GridParent;
@@ -206,7 +209,7 @@ public class PowerUpCheatUI : MonoBehaviour
             p.CheatButton = false;
             p.NonChoiceButton = true;
             p.PowerUI.CrucibleElement = true;
-            p.PowerUI.Cost = power.ShardReplicationCost();
+            p.PowerUI.Cost = power.ShardReplicationCost(ProcessQuantity);
             p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
             if (i % 3 == 2)
                 yield return new WaitForSecondsRealtime(0.025f);
