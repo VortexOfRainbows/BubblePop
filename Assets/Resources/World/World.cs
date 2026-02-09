@@ -65,7 +65,7 @@ public class World : MonoBehaviour
     public NatureOrderer NatureParent;
     public Transform PylonParent;
     public Transform RoadblockParent;
-    public Transform PlayerSpawnPosition;
+    public List<Transform> PlayerSpawnPosition = new();
     [SerializeField]
     private List<Transform> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
@@ -118,12 +118,17 @@ public class World : MonoBehaviour
         if (NatureParent != null)
             NatureParent.Init();
 
-        var p = Instantiate(Main.PrefabAssets.PlayerPrefab, PlayerSpawnPosition.position, Quaternion.identity).GetComponent<Player>();
-        Player.Instance = p;
-        Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
-        Destroy(PlayerSpawnPosition.gameObject);
-        Tilemap.GetComponent<TilemapRenderer>().enabled = false;
+        Player.AllPlayers.Clear();
 
+        foreach(Transform spawnPos in PlayerSpawnPosition)
+        {
+            var p = Instantiate(Main.PrefabAssets.PlayerPrefab, spawnPos.position, Quaternion.identity).GetComponent<Player>();
+            Player.AllPlayers.Add(p);
+            Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
+            spawnPos.gameObject.SetActive(false);
+        }
+
+        Tilemap.GetComponent<TilemapRenderer>().enabled = false;
         int i = 0;
         foreach(Pylon pylon in PylonParent.GetComponentsInChildren<Pylon>())
         {

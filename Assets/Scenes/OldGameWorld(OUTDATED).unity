@@ -54508,6 +54508,10 @@ PrefabInstance:
       propertyPath: nodes.Array.data[1]
       value: 
       objectReference: {fileID: 1023996811}
+    - target: {fileID: 1866361830754972015, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
+      propertyPath: PlayerSpawnPosition.Array.data[0]
+      value: 
+      objectReference: {fileID: 4507489693925147037}
     - target: {fileID: 4348580091444727035, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -54554,7 +54558,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9220566089928892612, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -54688,6 +54692,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
+--- !u!224 &4507489693925147037 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 9220566089928892612, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
+  m_PrefabInstance: {fileID: 4507489693925147036}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

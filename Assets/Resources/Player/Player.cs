@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 public static class Control
 {
@@ -16,6 +17,11 @@ public static class Control
 }
 public partial class Player : Entity
 {
+    public static List<Player> AllPlayers = new();
+    public static Player GetInstance(int instanceID = 0)
+    {
+        return AllPlayers[instanceID];
+    }
     private int Shield = 0;
     private int MaxShield = 0;
     public new int Life = 0;
@@ -33,17 +39,13 @@ public partial class Player : Entity
     public float SquashAmt { get; private set; } = 0.6f;
     private float DeathKillTimer { get => Animator.DeathKillTimer; set => Animator.DeathKillTimer = value; }
     #endregion
-    public bool IsDead => DeathKillTimer > 0;
     public static Color ProjectileColor => Instance.Body.PrimaryColor;
-    public int bonusBubbles = 0;
-    public static Player Instance { get => m_Instance == null ? m_Instance = FindObjectOfType<Player>() : m_Instance; set => m_Instance = value; }
+    public static Player Instance { get => m_Instance == null ? m_Instance = FindObjectOfType<Player>() : m_Instance; }
     private static Player m_Instance;
     public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
     public Camera MainCamera => Camera.main;
     private readonly float speed = 2.5f;
     private readonly float MovementDeacceleration = 0.9f;
-    public float MaxSpeed => MoveSpeedMod * 6f;
-    private bool HasRunStartingGear = false;
     public const float DashDefault = 25f;
     public static bool HasAttacked = false;
     public static bool PickedLowerDifficultyWaveCard = false;
@@ -55,12 +57,17 @@ public partial class Player : Entity
     /// </summary>
     public bool AbilityReady => abilityTimer <= 0;
     public bool AbilityOnCooldown => abilityTimer > 0;
+    private bool HasRunStartingGear = false;
+    public float MaxSpeed => MoveSpeedMod * 6f;
+    public int bonusBubbles = 0;
+    public bool IsDead => DeathKillTimer > 0;
     public override void Init()
     {
         PowerInit();
         WaveDirector.Reset();
         MainCamera.orthographicSize = 12;
-        Instance = this;
+        if(m_Instance == null)
+            m_Instance = this;
         DeathKillTimer = 0;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
         HasRunStartingGear = false;
@@ -141,7 +148,6 @@ public partial class Player : Entity
             HasAttacked = false;
             TimesHitThisRun = 0;
         }
-        Instance = this;
         WaveDirector.FixedUpdate();
         if (!HasRunStartingGear)
         {
@@ -215,11 +221,7 @@ public partial class Player : Entity
         ImmuneFlashing();
         Main.MouseHoveringOverButton = false;
     }
-    new public void Update()
-    {
-        base.Update();
-        Instance = this;
-    }
+    new public void Update() => base.Update(); //why did I do tis i don't know
     public void SetLife(int num)
     {
         if (num > TotalMaxLife)
