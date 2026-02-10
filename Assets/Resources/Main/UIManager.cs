@@ -95,7 +95,7 @@ public partial class Main : MonoBehaviour
         public void Restart()
         {
             CoinManager.AfterDeathReset();
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             UnpauseGame();
             StaticPlaySound();
         }

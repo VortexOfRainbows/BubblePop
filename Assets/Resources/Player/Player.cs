@@ -20,7 +20,7 @@ public partial class Player : Entity
     public static List<Player> AllPlayers = new();
     public static Player GetInstance(int instanceID = 0)
     {
-        return AllPlayers[instanceID];
+        return AllPlayers.Count <= instanceID ? null : AllPlayers[instanceID];
     }
     private int Shield = 0;
     private int MaxShield = 0;
@@ -40,8 +40,7 @@ public partial class Player : Entity
     private float DeathKillTimer { get => Animator.DeathKillTimer; set => Animator.DeathKillTimer = value; }
     #endregion
     public static Color ProjectileColor => Instance.Body.PrimaryColor;
-    public static Player Instance { get => m_Instance == null ? m_Instance = FindObjectOfType<Player>() : m_Instance; }
-    private static Player m_Instance;
+    public static Player Instance => GetInstance(0);
     public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
     public Camera MainCamera => Camera.main;
     private readonly float speed = 2.5f;
@@ -66,8 +65,6 @@ public partial class Player : Entity
         PowerInit();
         WaveDirector.Reset();
         MainCamera.orthographicSize = 12;
-        if(m_Instance == null)
-            m_Instance = this;
         DeathKillTimer = 0;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
         HasRunStartingGear = false;

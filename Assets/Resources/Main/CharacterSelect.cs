@@ -121,7 +121,7 @@ public class CharacterSelect : MonoBehaviour
         Utils.LerpSnap(Slider.transform, new Vector2(0, 645), 1f);
         InitializeMainButtons();
     }
-    public void Update()
+    public void OnUpdate()
     {
         Instance = this;
         if(!HasLoaded)
