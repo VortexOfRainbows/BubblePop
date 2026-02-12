@@ -746,3 +746,21 @@ public class EatenCake : PowerUp
     public override int GetRarity() => 3;
     public override bool IsBlackMarket() => true;
 }
+public class GlassShard : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Shard of Glass");
+        description.WithDescription($"All attacks deal Y:+1 G:(+1 per stack) Y:[bonus damage] \nR:[When you get hurt,] roll Y:1 G:(+1 per stack) times for a Y:[25% chance] to take Y:[additional damage]");
+        description.WithShortDescription("Don't pop yourself");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.GlassShards += Stack;
+    }
+    public override bool IsBlackMarket() => true;
+}

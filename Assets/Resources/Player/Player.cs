@@ -229,6 +229,9 @@ public partial class Player : Entity
     }
     public void Hurt(int damage = 1)
     {
+        for(int i = 0; i < GlassShards; ++i)
+            if(Utils.RandFloat() < 0.25f)
+                ++damage;
         TimesHitThisRun++;
         if(TimesHitThisRun>= 15 && this.Body is Gachapon)
         {

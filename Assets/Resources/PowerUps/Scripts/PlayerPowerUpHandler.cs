@@ -12,7 +12,7 @@ public partial class Player : Entity
     public int GetPower(int index) => Powers[index];
     public void PickUpPower(int Type)
     {
-        Debug.Log($"Player[{InstanceID}] PowerCount: {Powers.Count + 1}".WithColor(ColorHelper.SentinelColorsLerp(InstanceID).ToHexString()));
+        Debug.Log($"Player[{InstanceID}] PowerCount: {Powers.Count}".WithColor(ColorHelper.SentinelColorsLerp(InstanceID).ToHexString()));
         if (Powers.Contains(Type))
             return;
         else
@@ -134,6 +134,7 @@ public partial class Player : Entity
     public bool HasContract = false;
     public int ChoiceContract = 0;
     public int RainbowFlowers = 0;
+    public int GlassShards = 0;
     private void PowerInit()
     {
         Powers = new List<int>();
@@ -183,6 +184,7 @@ public partial class Player : Entity
         ConsolationPrize = PhilosophersStone = ExtraGachaBurst = 0;
         MaxTokens = 4;
         BatterUp = PiratesBooty = Eureka = BlackMarketDelivery = RainbowFlowers = 0;
+        GlassShards = 0;
     }
     private void UpdatePowerUps()
     {

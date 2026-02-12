@@ -322,7 +322,8 @@ public class Enemy : Entity
             return;
         if (proj.Friendly && !AlreadyDead)
         {
-            float damage = proj.Damage * Player.Instance.DamageMultiplier;
+            float damage = proj.Damage + Player.Instance.GlassShards;
+            damage *= Player.Instance.DamageMultiplier;
             bool rollForInitiative = false;
             float critChance = Player.Instance.CriticalStrikeChance;
             int crit = (int)critChance;
