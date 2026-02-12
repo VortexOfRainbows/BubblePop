@@ -12,6 +12,7 @@ public partial class Player : Entity
     public int GetPower(int index) => Powers[index];
     public void PickUpPower(int Type)
     {
+        Debug.Log($"Player[{InstanceID}] PowerCount: {Powers.Count + 1}".WithColor(ColorHelper.SentinelColorsLerp(InstanceID).ToHexString()));
         if (Powers.Contains(Type))
             return;
         else
@@ -25,16 +26,18 @@ public partial class Player : Entity
             PowerUp p = PowerUp.Get(GetPower(index));
             p.Stack -= num;
             if(p.MyID == PowerUp.Get<QuantumCake>().MyID)
-                PowerUp.Get<EatenCake>().PickUp(num);
+                PowerUp.Get<EatenCake>().PickUp(this, num);
             if(p.Stack <= 0)
-            {
                 Powers.RemoveAt(index);
-                //if (powers.Count < index)
-                //{
-                //    
-                //}
-            }
         }
+    }
+    public static void PickUpPowerAll(int Type)
+    {
+
+    }
+    public static void RemovePowerAll(int Type, int num = 1)
+    {
+
     }
     public float AbilityCD => Body.AbilityCD;
     public int ChargeShotDamage = 0;

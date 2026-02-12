@@ -371,7 +371,7 @@ public partial class Player : Entity
         }
         if(PowerUp.Get<EatenCake>().Stack > 0)
         {
-            PowerUp.Get<QuantumCake>().PickUp();
+            PowerUp.Get<QuantumCake>().PickUp(this);
             RemovePower(PowerUp.Get<EatenCake>().MyID);
         }
         LuckyStarItemsAcquiredThisWave = 0;

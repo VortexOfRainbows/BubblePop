@@ -578,7 +578,7 @@ public class SlotMachineWeapon : Weapon
                 s.SpriteNum1 = 1;
             else if (GambleOutcome == 2)
                 s.SpriteNum1 = 2;
-            else
+            else if(FailureNums.Count > 0)
             {
                 int rand = Utils.RandInt(FailureNums.Count);
                 s.SpriteNum1 = FailureNums[rand];

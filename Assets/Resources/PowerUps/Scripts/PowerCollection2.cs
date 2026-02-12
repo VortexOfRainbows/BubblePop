@@ -15,7 +15,7 @@ public class BubbleMitosis : PowerUp
     {
         if (p.MostRecentPower != null && p.MostRecentPower.Type != Type)
         {
-            p.MostRecentPower.PickUp(Stack);
+            p.MostRecentPower.PickUp(p, Stack);
             if(Stack >= 5 && p.MostRecentPower is Calculator)
             {
                 UnlockCondition.Get<ThoughtBubbleShortForCalc>().SetComplete();
@@ -240,7 +240,7 @@ public class ResearchNotes : PowerUp
             if (Stack > 0 && !PowerUp.PickingPowerUps)
             {
                 p.RemovePower(Type);
-                PowerUp.Get<Choice>().PickUp(); //Choice is ID 0
+                PowerUp.Get<Choice>().PickUp(p); //Choice is ID 0
             }
             p.ResearchNoteKillCounter -= 3;
         }

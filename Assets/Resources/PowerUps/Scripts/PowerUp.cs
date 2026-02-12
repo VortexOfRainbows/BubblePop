@@ -301,16 +301,16 @@ public abstract class PowerUp
         Weighting = 1;
         Init();
     }
-    public void PickUp(int amt = 1)
+    public void PickUp(Player player, int amt = 1)
     {
         AddToDisplayQueue();
-        AddToPlayer(amt);
+        AddToPlayer(player, amt);
         OnPickup(amt);
-        Player.Instance.MostRecentPower = this;
+        player.MostRecentPower = this;
         AmountPickedUpAcrossAllRuns += amt;
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;
-        if(Player.Instance.PowerCount >= 20 && Player.Instance.Body is ThoughtBubble)
+        if(player.PowerCount >= 20 && player.Body is ThoughtBubble)
             UnlockCondition.Get<ThoughtBubbleArsenal>().SetComplete();
     }
     public void AddToDisplayQueue()
@@ -318,9 +318,9 @@ public abstract class PowerUp
         if (!PopUpTextUI.PowerupQueue.Contains(this))
             PopUpTextUI.PowerupQueue.Enqueue(this);
     }
-    private int AddToPlayer(int count = 1)
+    private int AddToPlayer(Player player, int count = 1)
     {
-        Player.Instance.PickUpPower(MyID);
+        player.PickUpPower(MyID);
         Stack = Stack + count;
         return Stack;
     }

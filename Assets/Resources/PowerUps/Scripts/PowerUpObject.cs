@@ -89,11 +89,11 @@ public class PowerUpObject : MonoBehaviour
         {
             if(CoinManager.CurrentCoins >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))
             {
-                PickUp();
+                PickUp(collision.gameObject.GetComponent<Player>());
             }
         }
     }
-    public void PickUp()
+    public void PickUp(Player player)
     {
         if (FakePower)
             return;
@@ -113,7 +113,7 @@ public class PowerUpObject : MonoBehaviour
             }
         }
         PickedUp = true;
-        MyPower.PickUp();
+        MyPower.PickUp(player);
         Kill();
     }
     private void Kill()

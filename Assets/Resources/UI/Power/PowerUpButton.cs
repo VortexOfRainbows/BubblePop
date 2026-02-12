@@ -54,7 +54,7 @@ public class PowerUpButton : MonoBehaviour
     public void GrantPower()
     {
         int amt = NonChoiceButton ? Mathf.Clamp(PowerUpCheatUI.ProcessQuantity, 1, 100) : 1;
-        PowerUI.MyPower.PickUp(amt);
+        PowerUI.MyPower.PickUp(Player.Instance, amt);
         if (PowerUI.CrucibleElement)
         {
             if (!Main.DebugSettings.PowerUpCheat)
