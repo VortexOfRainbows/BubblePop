@@ -40,6 +40,11 @@ Current Task List:
 	1. Activate the First Pylon => Clear 2 Waves of Invaders => Stabilize the Pylon => Activate the Next Pylon
 2. Finish Pylon and Roadblock systems:
 	1. Pointers that show you the direction to the next Pylon
+3. Multiplayer:
+	1. Make both players share powers (for now)
+		1. Global power effects should be moved to a separate class and given special logic to prevent stacking effects, as both players will actually have a cloned power pool for now
+	2. Method for targeting the closest player (enemies, coins, etc.)
+	3. Controls for the separate player (try some special keyboard inputs for now, controller later)
 
 
 Done: 
