@@ -7134,6 +7134,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1624198296}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: MyUIManager.PlayButtons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.QuitButtons.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -7142,12 +7146,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: MyUIManager.PlayButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 8137496645639104258}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.QuitButtons.Array.data[0]
       value: 
       objectReference: {fileID: 8137496645639104259}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.RestartButtons.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.SettingsButton.Array.size

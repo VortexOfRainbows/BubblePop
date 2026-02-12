@@ -24,6 +24,7 @@ Need to do:
 10. Make enemies spawn further away when possible, slower coming out of the portal
 11. New tile variation system + tile resprite implementation
 12. Make it so enemies become permanent at a cheaper price from wave cards
+13. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -42,6 +43,10 @@ Current Task List:
 
 
 Done: 
+
+2/11/26
+1. Fix bug where switching characters would briefly misorient equips (make them face a wrong direction)
+2. Switching equipments now switches the equips for both characters
 
 2/9/26
 1. Beginning of small structural changes in preparation for multiplayer

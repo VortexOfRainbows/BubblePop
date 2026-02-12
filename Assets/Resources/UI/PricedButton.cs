@@ -36,8 +36,8 @@ public class PricedButton : MonoBehaviour
             Text.color = CanAfford ? Color.white : Color.red;
         }
         PylonUpdate();
-        StartButtonCoinVisual.SetActive(CoinManager.TotalEquipCost > 0);
-        Text.text = $"${CoinManager.TotalEquipCost}";
+        //StartButtonCoinVisual.SetActive(CoinManager.TotalEquipCost > 0);
+        //Text.text = $"${CoinManager.TotalEquipCost}";
     }
     public void FixedUpdate()
     {
@@ -49,12 +49,8 @@ public class PricedButton : MonoBehaviour
         if (PylonVisual == null)
             return;
         if(Main.PlayerNearPylon)
-        {
             PylonVisual.color = Color.white;
-        }
         else
-        {
             PylonVisual.color = new Color(0.75f, 0.75f, 0.75f, 0.75f);
-        }
     }
 }

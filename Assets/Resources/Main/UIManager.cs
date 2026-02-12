@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,6 +16,8 @@ public partial class Main : MonoBehaviour
     [Serializable]
     public class CanvasManager
     {
+        public List<Button> PlayButtons = new();
+        public List<Button> MultiplayerButtons = new();
         public List<Button> ResumeButtons = new();
         public List<Button> ReturnToMenuButtons = new();
         public List<Button> RestartButtons = new();
@@ -25,7 +28,11 @@ public partial class Main : MonoBehaviour
         public TextMeshProUGUI PauseMenuTopText;
         public void AddListeners()
         {
-            foreach(Button b in ResumeButtons)
+            foreach (Button b in PlayButtons)
+                b.onClick.AddListener(Play);
+            foreach (Button b in MultiplayerButtons)
+                b.onClick.AddListener(Play);
+            foreach (Button b in ResumeButtons)
                 b.onClick.AddListener(Resume);
             foreach (Button b in ReturnToMenuButtons)
                 b.onClick.AddListener(MainMenu);
@@ -94,8 +101,16 @@ public partial class Main : MonoBehaviour
         }
         public void Restart()
         {
+            Play(SceneManager.GetActiveScene().buildIndex);
+        }
+        public void Play()
+        {
+            Play(1);
+        }
+        public void Play(int scene)
+        {
             CoinManager.AfterDeathReset();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(scene);
             UnpauseGame();
             StaticPlaySound();
         }

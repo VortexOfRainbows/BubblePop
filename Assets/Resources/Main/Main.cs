@@ -144,7 +144,8 @@ public partial class Main : MonoBehaviour
             PylonProgressionNumber++;
         }
         UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
-        CharacterSelect.Instance.OnUpdate();
+        if (CharacterSelect.Instance != null)
+            CharacterSelect.Instance.OnUpdate();
     }
     public void LateUpdate()
     {

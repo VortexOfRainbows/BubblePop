@@ -140,7 +140,7 @@ public static class CoinManager
     public static int CurrentTokens { get; private set; } = 0;
     public static int CurrentGems { get; private set; } = 0;
     public static int CurrentShards { get; private set; } = 0;
-    public static int TotalEquipCost;
+    //public static int TotalEquipCost;
     public static void AfterDeathReset()
     {
         CurrentTokens = CurrentKeys = CurrentCoins = CurrentGems = CurrentShards = 0;

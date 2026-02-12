@@ -95,12 +95,6 @@ public class CharacterSelect : MonoBehaviour
     public PowerUpLayout PowerLayout;
     public GameObject visual;
     public EquipmentUIElement[] DisplayBoxes;
-    public List<GameObject>[] PrimaryEquipments => Main.GlobalEquipData.PrimaryEquipments;
-    public List<GameObject> Hats => Main.GlobalEquipData.Hats;
-    public List<GameObject> Accessories => Main.GlobalEquipData.Accessories;
-    public List<GameObject> Weapons => Main.GlobalEquipData.Weapons;
-    public List<GameObject> Characters => Main.GlobalEquipData.Characters;
-    public static List<GameObject> AllEquipmentsList => Main.GlobalEquipData.AllEquipmentsList;
     private Canvas myCanvas;
     public EquipmentPage SecondaryPage { get; private set; }
     public EquipmentPage PrimaryPage { get; private set; }
@@ -201,8 +195,8 @@ public class CharacterSelect : MonoBehaviour
             PowerLayout.Generate(PowerUp.AvailablePowers);
             PowerUpPageIsOpen = true;
         }
-        if (Player.Instance != null)
-            CoinManager.TotalEquipCost = 0; //Player.Instance.Hat.GetPrice() + Player.Instance.Accessory.GetPrice() + Player.Instance.Weapon.GetPrice() + Player.Instance.Body.GetPrice(); 
+        //if (player != null)
+        //    CoinManager.TotalEquipCost = 0; //player.Hat.GetPrice() + player.Accessory.GetPrice() +player.Weapon.GetPrice() + player.Body.GetPrice(); 
     }
     public bool IsWithinMaskRange(EquipmentUIElement t)
     {
@@ -248,17 +242,17 @@ public class CharacterSelect : MonoBehaviour
                 if (((slot.Unlocked && slot.CanAfford) || page == PrimaryPage) && (!justClosed || index != page.PreviousType))
                 {
                     if (page == PrimaryPage)
-                        page.Open(slot, PrimaryEquipments[index], index);
+                        page.Open(slot, Main.GlobalEquipData.PrimaryEquipments[index], index);
                     else
                     {
                         if(slot.ActiveEquipment is Body b)
                         {
                             b.LoadData();
-                            List<GameObject> bodyPrevSelectedEquips = new List<GameObject>
+                            List<GameObject> bodyPrevSelectedEquips = new()
                             {
-                                AllEquipmentsList[b.LastSelectedWep],
-                                AllEquipmentsList[b.LastSelectedAcc],
-                                AllEquipmentsList[b.LastSelectedHat]
+                                Main.GlobalEquipData.AllEquipmentsList[b.LastSelectedWep],
+                                Main.GlobalEquipData.AllEquipmentsList[b.LastSelectedAcc],
+                                Main.GlobalEquipData.AllEquipmentsList[b.LastSelectedHat]
                             };
                             page.Open(slot, bodyPrevSelectedEquips, index);
                         }
@@ -293,13 +287,14 @@ public class CharacterSelect : MonoBehaviour
             i = 3;
         else if (equipPrefab is Body)
             i = 0;
-        SwapPlayerEquipment(equipPrefab);
+        for(int j = 0; j < Player.AllPlayers.Count; ++j)
+            SwapPlayerEquipment(Player.GetInstance(j), equipPrefab);
         RenderBox(DisplayBoxes[i], equipPrefab);
     }
     public void UpdateSelectedEquipmentBox(int AllIndex)
     {
         //Debug.Log($"Tried Accessing Equip Index: {AllEquipmentsList}, {AllIndex}");
-        Equipment equipPrefab = AllEquipmentsList[AllIndex].GetComponent<Equipment>();
+        Equipment equipPrefab = Main.GlobalEquipData.AllEquipmentsList[AllIndex].GetComponent<Equipment>();
         int i = -1;
         if (equipPrefab is Hat)
             i = 1;
@@ -309,70 +304,75 @@ public class CharacterSelect : MonoBehaviour
             i = 3;
         else if (equipPrefab is Body)
             i = 0;
-        SwapPlayerEquipment(equipPrefab);
+        for (int j = 0; j < Player.AllPlayers.Count; ++j)
+            SwapPlayerEquipment(Player.GetInstance(j), equipPrefab);
         RenderBox(DisplayBoxes[i], equipPrefab);
     }
-    public void SwapPlayerEquipment(Equipment equipPrefab)
+    public void SwapPlayerEquipment(Player player, Equipment equipPrefab)
     {
         Equipment equip = null;
         int i = -1;
         if (equipPrefab is Hat)
         {
             i = 1;
-            equip = Player.Instance.Hat;
+            equip = player.Hat;
         }
         else if (equipPrefab is Accessory)
         {
             i = 2;
-            equip = Player.Instance.Accessory;
+            equip = player.Accessory;
         }
         else if (equipPrefab is Weapon)
         {
             i = 3;
-            equip = Player.Instance.Weapon;
+            equip = player.Weapon;
         }
         else if (equipPrefab is Body)
         {
             i = 0;
-            equip = Player.Instance.Body;
+            equip = player.Body;
         }
 
-        GameObject oldEquipment = equip.gameObject;
-        equip = Instantiate(equipPrefab, Player.Instance.Visual.transform).GetComponent<Equipment>();
-        equip.p = Player.Instance.Animator;
-        equip.AliveUpdate();
+        Equipment oldEquipment = equip;
+        equip = Instantiate(equipPrefab, player.Visual.transform).GetComponent<Equipment>();
+        equip.p = player.Animator;
         if (i == 1)
         {
-            Player.Instance.Hat = equip as Hat;
-            Player.Instance.Body.LastSelectedHat = equip.IndexInAllEquipPool;
+            player.Hat = equip as Hat;
+            player.Body.LastSelectedHat = equip.IndexInAllEquipPool;
         }
-        if (i == 2)
+        else if (i == 2)
         {
-            Player.Instance.Accessory = equip as Accessory;
-            Player.Instance.Body.LastSelectedAcc = equip.IndexInAllEquipPool;
+            player.Accessory = equip as Accessory;
+            player.Body.LastSelectedAcc = equip.IndexInAllEquipPool;
         }
-        if (i == 3)
+        else if (i == 3)
         {
-            Player.Instance.Weapon = equip as Weapon;
-            Player.Instance.Body.LastSelectedWep = equip.IndexInAllEquipPool;
+            player.Weapon = equip as Weapon;
+            player.Body.LastSelectedWep = equip.IndexInAllEquipPool;
         }
         if (i == 0)
-        {
-            SwapBody(oldEquipment.GetComponent<Equipment>() as Body, equip as Body);
-        }
-        SaveCurrentSelects();
-        Destroy(oldEquipment);
-        PowerLayout.Generate(PowerUp.AvailablePowers);
+            SwapBody(player, oldEquipment as Body, equip as Body);
+        else
+            equip.AliveUpdate();
+        if (player.InstanceID == 0)
+            SaveCurrentSelects();
+        Destroy(oldEquipment.gameObject);
+        if(player.InstanceID == 0)
+            PowerLayout.Generate(PowerUp.AvailablePowers);
     }
-    public void SwapBody(Body oldBody, Body newBody)
+    public void SwapBody(Player player, Body oldBody, Body newBody)
     {
-        Player.Instance.Body = newBody;
+        player.Body = newBody;
+        player.Body.AliveUpdate();
+        player.Body.FlipDir = oldBody.FlipDir;
         newBody.LoadData();
         UpdateSelectedEquipmentBox(newBody.LastSelectedHat);
         UpdateSelectedEquipmentBox(newBody.LastSelectedAcc);
         UpdateSelectedEquipmentBox(newBody.LastSelectedWep);
         LastSelectedBody = newBody.IndexInAllEquipPool;
-        SaveCurrentSelects();
+        if(player.InstanceID == 0)
+            SaveCurrentSelects();
     }
     public void SaveCurrentSelects()
     {
@@ -383,7 +383,7 @@ public class CharacterSelect : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            RenderBox(DisplayBoxes[i], PrimaryEquipments[i][0].GetComponent<Equipment>());
+            RenderBox(DisplayBoxes[i], Main.GlobalEquipData.PrimaryEquipments[i][0].GetComponent<Equipment>());
         }
     }
     public void RenderBox(EquipmentUIElement uiElem, Equipment equipmentToRender)

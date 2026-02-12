@@ -17,7 +17,8 @@ public static class Control
 }
 public partial class Player : Entity
 {
-    public static List<Player> AllPlayers = new();
+    public static readonly List<Player> AllPlayers = new();
+    public int InstanceID = 0;
     public static Player GetInstance(int instanceID = 0)
     {
         return AllPlayers.Count <= instanceID ? null : AllPlayers[instanceID];

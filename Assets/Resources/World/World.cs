@@ -123,6 +123,7 @@ public class World : MonoBehaviour
         foreach(Transform spawnPos in PlayerSpawnPosition)
         {
             var p = Instantiate(Main.PrefabAssets.PlayerPrefab, spawnPos.position, Quaternion.identity).GetComponent<Player>();
+            p.InstanceID = Player.AllPlayers.Count;
             Player.AllPlayers.Add(p);
             Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
             spawnPos.gameObject.SetActive(false);

@@ -21,11 +21,11 @@ public class Body : Equipment
         LastSelectedWep = PlayerData.GetInt($"{TypeName}Wep");
         //Debug.Log($"{LastSelectedHat}{LastSelectedAcc}{LastSelectedWep}");
         if (LastSelectedHat <= 0)
-            LastSelectedHat = GetDefaultEquip(CharacterSelect.Instance.Hats);
+            LastSelectedHat = GetDefaultEquip(Main.GlobalEquipData.Hats);
         if (LastSelectedAcc <= 0)
-            LastSelectedAcc = GetDefaultEquip(CharacterSelect.Instance.Accessories);
+            LastSelectedAcc = GetDefaultEquip(Main.GlobalEquipData.Accessories);
         if (LastSelectedWep <= 0)
-            LastSelectedWep = GetDefaultEquip(CharacterSelect.Instance.Weapons);
+            LastSelectedWep = GetDefaultEquip(Main.GlobalEquipData.Weapons);
     }
     public int GetDefaultEquip(List<GameObject> equipList)
     {
