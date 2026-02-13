@@ -1,5 +1,129 @@
 using System.Collections.Generic;
 using UnityEngine;
+
+public class NewControls
+{
+    #region control classes
+    public abstract class ControlBinding
+    {
+        public ControlBinding(int bind)
+        {
+            Bind = bind;
+        }
+        protected int Bind;
+        public virtual bool Get() => false;
+        public static implicit operator bool(ControlBinding c)
+        {
+            return c.Get();
+        }
+    }
+    public class EmptyBinding : ControlBinding
+    {
+        public EmptyBinding(int bind) : base(bind) { }
+    }
+    public class KeyHold : ControlBinding
+    {
+        protected readonly KeyCode code;
+        protected readonly KeyCode secondCode;
+        public KeyHold(KeyCode bind, KeyCode bind2 = KeyCode.None) : base((int)bind) { code = bind; secondCode = bind2; }
+        public override bool Get() => Input.GetKey(code) || Input.GetKey(secondCode);
+    }
+    public class KeyDown : KeyHold
+    {
+        public KeyDown(KeyCode bind, KeyCode bind2 = KeyCode.None) : base(bind, bind2) { }
+        public override bool Get() => Input.GetKeyDown(code) || Input.GetKeyDown(secondCode);
+    }
+    public class VerboseKeyHold : ControlBinding
+    {
+        protected readonly KeyCode anti;
+        protected readonly KeyCode[] codes;
+        public VerboseKeyHold(KeyCode antiKey = KeyCode.None, params KeyCode[] code) : base(0) { anti = antiKey; codes = code; }
+        public override bool Get()
+        {
+            if (Input.GetKey(anti))
+                return false;
+            foreach(KeyCode k in codes)
+                if (Input.GetKey(k))
+                    return true;
+            return false;
+        }
+    }
+    public class VerboseKeyDown : VerboseKeyHold
+    {
+        public VerboseKeyDown(KeyCode antiKey = KeyCode.None, params KeyCode[] code) : base(antiKey, code) { }
+        public override bool Get()
+        {
+            if (Input.GetKey(anti))
+                return false;
+            foreach (KeyCode k in codes)
+                if (Input.GetKeyDown(k))
+                    return true;
+            return false;
+        }
+    }
+    public class MouseHold : ControlBinding
+    {
+        public MouseHold(int bind) : base(bind) { }
+        public override bool Get() => Input.GetMouseButton(Bind);
+    }
+    public class MouseDown : ControlBinding
+    {
+        public MouseDown(int bind) : base(bind) { }
+        public override bool Get() => Input.GetMouseButtonDown(Bind);
+
+    }
+    #endregion
+    public NewControls(int ControlScheme)
+    {
+        ControlSchemeType = ControlScheme;
+        if(ControlSchemeType == 0) //Default
+        {
+            PrimaryAttackHold = new MouseHold(0);
+            PrimaryAttackStart = new MouseDown(0);
+            SecondaryAttackHold = new MouseHold(1);
+            SecondaryAttackStart = new MouseDown(1);
+            Up = new KeyHold(KeyCode.W, KeyCode.UpArrow);
+            Left = new KeyHold(KeyCode.A, KeyCode.LeftArrow);
+            Down = new KeyHold(KeyCode.S, KeyCode.DownArrow);
+            Right = new KeyHold(KeyCode.D, KeyCode.RightArrow);
+            Ability = new KeyHold(KeyCode.LeftShift, KeyCode.Space);
+        }
+        else if(ControlSchemeType == 1) //Player 1
+        {
+            PrimaryAttackHold = new MouseHold(0);
+            PrimaryAttackStart = new MouseDown(0);
+            SecondaryAttackHold = new MouseHold(1);
+            SecondaryAttackStart = new MouseDown(1);
+            Up = new KeyHold(KeyCode.UpArrow);
+            Left = new KeyHold(KeyCode.LeftArrow);
+            Down = new KeyHold(KeyCode.DownArrow);
+            Right = new KeyHold(KeyCode.RightArrow);
+            Ability = new KeyHold(KeyCode.RightControl);
+        }  
+        else if(ControlSchemeType == 2) //Player 2
+        {
+            PrimaryAttackHold = new VerboseKeyHold(KeyCode.Space, KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L);
+            PrimaryAttackStart = new VerboseKeyDown(KeyCode.Space, KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L);
+            SecondaryAttackHold = new KeyHold(KeyCode.Space);
+            SecondaryAttackStart = new KeyDown(KeyCode.Space);
+            Up = new KeyHold(KeyCode.W);
+            Left = new KeyHold(KeyCode.A);
+            Down = new KeyHold(KeyCode.S);
+            Right = new KeyHold(KeyCode.D);
+            Ability = new KeyHold(KeyCode.LeftShift, KeyCode.Space);
+        }
+    }
+    public int ControlSchemeType = 0;
+    public readonly ControlBinding PrimaryAttackHold;
+    public readonly ControlBinding PrimaryAttackStart;
+    public readonly ControlBinding SecondaryAttackHold;
+    public readonly ControlBinding SecondaryAttackStart;
+    public readonly ControlBinding Up;
+    public readonly ControlBinding Down;
+    public readonly ControlBinding Left;
+    public readonly ControlBinding Right;
+    public readonly ControlBinding Ability;
+}
 public static class Control
 {
     public static bool Interact => Input.GetKeyDown(KeyCode.E);
@@ -248,7 +372,7 @@ public partial class Player : Entity
                 float velocity = 2;
                 int amt = 16 + 8 * BubbleShields;
                 for (int i = 0; i < amt; ++i)
-                    Projectile.NewProjectile<SmallBubble>(transform.position, Random.insideUnitCircle * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1);
+                    Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1);
             }
         }
         else
