@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class NewControls
@@ -111,6 +112,39 @@ public class NewControls
             Down = new KeyHold(KeyCode.S);
             Right = new KeyHold(KeyCode.D);
             Ability = new KeyHold(KeyCode.LeftShift);
+            AimUp = new KeyHold(KeyCode.I);
+            AimLeft = new KeyHold(KeyCode.J);
+            AimDown = new KeyHold(KeyCode.K);
+            AimRight = new KeyHold(KeyCode.L);
+        }
+    }
+    public void UpdateMouse(Vector2 PlayerPosition)
+    {
+        if(ControlSchemeType == 0 || ControlSchemeType == 1)
+        {
+            MousePosition = Utils.MouseWorld;
+            toMouse = MousePosition - PlayerPosition;
+        }
+        else if (ControlSchemeType == 2)
+        {
+            float currentAngle = toMouse.ToRotation();
+            float newAngle;
+            Vector2 direction = Vector2.zero;
+            if(AimUp)
+                direction += Vector2.up;
+            if(AimDown)
+                direction += Vector2.down;
+            if (AimLeft)
+                direction += Vector2.left;
+            if (AimRight)
+                direction += Vector2.right;
+            if (direction != Vector2.zero)
+                newAngle = direction.ToRotation();
+            else
+                newAngle = Mathf.Round(currentAngle * 4 / Mathf.PI) * Mathf.PI / 4f;
+            currentAngle = Utils.LerpAngleRadians(currentAngle, newAngle, Utils.DeltaTimeLerpFactor(0.2f));
+            toMouse = new Vector2(1, 0).RotatedBy(currentAngle);
+            MousePosition = PlayerPosition + toMouse.normalized * 10f;
         }
     }
     public int ControlSchemeType = 0;
@@ -118,26 +152,28 @@ public class NewControls
     public readonly ControlBinding PrimaryAttackStart;
     public readonly ControlBinding SecondaryAttackHold;
     public readonly ControlBinding SecondaryAttackStart;
+    public readonly ControlBinding AimLeft, AimRight, AimDown, AimUp;
     public readonly ControlBinding Up;
     public readonly ControlBinding Down;
     public readonly ControlBinding Left;
     public readonly ControlBinding Right;
     public readonly ControlBinding Ability;
     public bool LastAbility { get; internal set; }
+    public Vector2 MousePosition;
+    private Vector2 toMouse = Vector2.up;
 }
 public static class Control
 {
     public static bool Interact => Input.GetKeyDown(KeyCode.E);
     public static bool Tab => Input.GetKey(KeyCode.Tab);
-    public static bool LeftMouseHold => Input.GetMouseButton(0);
     public static bool LeftMouseClick => Input.GetMouseButtonDown(0);
-    public static bool RightMouseHold => Input.GetMouseButton(1);
     public static bool RightMouseClick => Input.GetMouseButtonDown(1);
 }
 public partial class Player : Entity
 {
     public static readonly List<Player> AllPlayers = new();
     public NewControls Control { get; private set; }
+    public SpriteRenderer AimIndicator;
     public int InstanceID = 0;
     public static Player GetInstance(int instanceID = 0)
     {
@@ -306,12 +342,12 @@ public partial class Player : Entity
             MovementUpdate();
             if(!Main.MouseHoveringOverButton)
             {
-                if (Input.GetMouseButton(0))
+                if (Control.PrimaryAttackHold)
                 {
                     HasAttacked = true;
                     Weapon.StartAttack(false);
                 }
-                else if (Input.GetMouseButton(1))
+                else if (Control.SecondaryAttackHold)
                 {
                     HasAttacked = true;
                     Weapon.StartAttack(true);
@@ -342,7 +378,24 @@ public partial class Player : Entity
         ImmuneFlashing();
         Main.MouseHoveringOverButton = false;
     }
-    new public void Update() => base.Update(); //why did I do tis i don't know
+    new public void Update() {
+        Control.UpdateMouse(transform.position);
+        if(Control.ControlSchemeType == 0)
+        {
+            AimIndicator.gameObject.SetActive(false);
+        }
+        else
+        {
+            if(InstanceID == 0)
+                AimIndicator.color = new Color(0.5f, 0.5f, 1f);
+            else
+                AimIndicator.color = new Color(1f, 0.5f, 0.5f);
+            AimIndicator.gameObject.SetActive(true);
+            Vector2 toMouse = Control.MousePosition - (Vector2)transform.position;
+            AimIndicator.transform.localPosition = toMouse.normalized * 2.5f;
+            AimIndicator.transform.SetEulerZ(toMouse.ToRotation() * Mathf.Rad2Deg);
+        }
+    }
     public void SetLife(int num)
     {
         if (num > TotalMaxLife)

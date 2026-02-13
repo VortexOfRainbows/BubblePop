@@ -44,13 +44,16 @@ Current Task List:
 	1. Make both players share powers (for now)
 		1. Global power effects should be moved to a separate class and given special logic to prevent stacking effects, as both players will actually have a cloned power pool for now (global effects will also likely still be global when making online multiplayer, so it will work there too (though this is hardly important for a long time))
 	2. Method for targeting the closest player (enemies, coins, etc.)
-	3. Controls for the separate player (try some special keyboard inputs for now, controller later)
+	3. Controls for the separate player (try some special keyboard inputs for now, controller later)	
+	4. Projectile player ownership relations (needed for many situations)
+	5. Normalize player customization layering
 
 
 Done: 
 
 2/13/26
 1. WIP Control Scheme reworks in preparation for multiplayer support
+	1. WIP Aiming for player 2
 2. Rework some instancing in preparation or multiplayer support
 
 2/11/26 to 2/12/26

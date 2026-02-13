@@ -129,7 +129,7 @@ public class BubblemancerWand : Weapon
         }
         if (AttackRight > 0)
         {
-            if ((Input.GetMouseButton(1) || AttackRight < 100) && AttackRight >= 50)
+            if ((Player.Control.SecondaryAttackHold || AttackRight < 100) && AttackRight >= 50)
             {
                 int maxCharge = 250 + 100 * Player.OldCoalescence;
                 if (AttackRight == 50)

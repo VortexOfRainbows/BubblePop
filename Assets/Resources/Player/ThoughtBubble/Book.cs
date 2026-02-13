@@ -98,7 +98,7 @@ public class Book : Weapon
         p.MoveOffset = -5 * bodyDir * p.squash;
         p.DashOffset = 20 * dir * (1 - p.squash);
 
-        WantsOpen = (AttackLeft >= 0 || AttackRight >= 0 || (!InClosingAnimation && (Control.LeftMouseHold || Control.RightMouseHold) && !Main.MouseHoveringOverButton)) && hasDoneSelectAnimation;
+        WantsOpen = (AttackLeft >= 0 || AttackRight >= 0 || (!InClosingAnimation && (Player.Control.PrimaryAttackHold || Player.Control.SecondaryAttackHold) && !Main.MouseHoveringOverButton)) && hasDoneSelectAnimation;
         Vector2 awayFromWand = new Vector2(-0.05f, 0.2f * dir).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
         Vector2 shootSpot = (Vector2)transform.position + awayFromWand;
         if(WantsOpen == Open && hasDoneSelectAnimation)
