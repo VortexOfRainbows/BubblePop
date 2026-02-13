@@ -56,6 +56,6 @@ public class ShadyCoat : LabCoat
     }
     public override void EquipUpdate()
     {
-        player.BlackmarketMult += 2;
+        Player.BlackmarketMult += 2;
     }
 }

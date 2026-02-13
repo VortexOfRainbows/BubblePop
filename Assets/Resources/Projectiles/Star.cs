@@ -36,8 +36,8 @@ public class StarProj : Projectile
             Vector2 rotatedTarget = ((Vector2)transform.position).RotatedBy(Mathf.Deg2Rad * 15 * Data[2], Player.Position);
             Data1 = rotatedTarget.x;
             Data2 = rotatedTarget.y;
-            RB.position += Player.Instance.rb.velocity * Time.fixedDeltaTime * 0.9f;
-            RB.velocity += Player.Instance.rb.velocity * 0.1f * Time.fixedDeltaTime;
+            RB.position += Player.Instance.RB.velocity * Time.fixedDeltaTime * 0.9f;
+            RB.velocity += Player.Instance.RB.velocity * 0.1f * Time.fixedDeltaTime;
         }
         Vector2 toTarget = (target - (Vector2)transform.position);
         float dist = toTarget.magnitude;

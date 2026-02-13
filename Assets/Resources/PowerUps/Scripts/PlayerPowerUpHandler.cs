@@ -39,6 +39,8 @@ public partial class Player : Entity
     {
 
     }
+    public int SlotMachineCoinCost => (int)Mathf.Max(5, 4 + WaveDirector.WaveNum + SpinPriceIncrease);
+    public int TotalBookBalls { get; set; } = 0;
     public float AbilityCD => Body.AbilityCD;
     public int ChargeShotDamage = 0;
     public int ShotgunPower = 0;

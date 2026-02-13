@@ -110,7 +110,7 @@ public class NewControls
             Left = new KeyHold(KeyCode.A);
             Down = new KeyHold(KeyCode.S);
             Right = new KeyHold(KeyCode.D);
-            Ability = new KeyHold(KeyCode.LeftShift, KeyCode.Space);
+            Ability = new KeyHold(KeyCode.LeftShift);
         }
     }
     public int ControlSchemeType = 0;
@@ -123,16 +123,11 @@ public class NewControls
     public readonly ControlBinding Left;
     public readonly ControlBinding Right;
     public readonly ControlBinding Ability;
+    public bool LastAbility { get; internal set; }
 }
 public static class Control
 {
     public static bool Interact => Input.GetKeyDown(KeyCode.E);
-    public static bool Ability => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.Space);
-    public static bool LastAbility = false;
-    public static bool Up => Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
-    public static bool Down => Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
-    public static bool Left => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
-    public static bool Right => Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
     public static bool Tab => Input.GetKey(KeyCode.Tab);
     public static bool LeftMouseHold => Input.GetMouseButton(0);
     public static bool LeftMouseClick => Input.GetMouseButtonDown(0);
@@ -142,6 +137,7 @@ public static class Control
 public partial class Player : Entity
 {
     public static readonly List<Player> AllPlayers = new();
+    public NewControls Control { get; private set; }
     public int InstanceID = 0;
     public static Player GetInstance(int instanceID = 0)
     {
@@ -160,7 +156,7 @@ public partial class Player : Entity
     public Accessory Accessory { get => Animator.Accessory; set => Animator.Accessory = value; }
     public Equipment[] Equips => new Equipment[] { Hat, Accessory, Weapon, Body };
     public PlayerAnimator Animator;
-    public Rigidbody2D rb => Animator.rb;
+    public new Rigidbody2D RB => Animator.rb;
     public float SquashAmt { get; private set; } = 0.6f;
     private float DeathKillTimer { get => Animator.DeathKillTimer; set => Animator.DeathKillTimer = value; }
     #endregion
@@ -195,11 +191,13 @@ public partial class Player : Entity
         HasRunStartingGear = false;
         Life = MaxLife = 3;
         PlayerStatUI.SetHeartsToPlayerLife();
+        Control = new(AllPlayers.Count > 1 ? InstanceID + 1 : 0);
+        Debug.Log($"Initialized Player With Control Scheme: [{Control.ControlSchemeType}]");
     }
     public float abilityTimer = 0;
     private void MovementUpdate()
     {
-        Vector2 velocity = rb.velocity;
+        Vector2 velocity = RB.velocity;
         float cSpeed = speed * MoveSpeedMod;
         Vector2 movespeed = Vector2.zero;
         if (Control.Up && !Control.Down)
@@ -251,7 +249,7 @@ public partial class Player : Entity
                     ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, Body.PrimaryColor);
             }
         }
-        rb.velocity = velocity;
+        RB.velocity = velocity;
         Control.LastAbility = Control.Ability;
         Body.AliveUpdate();
         Animator.PostUpdate();
@@ -259,6 +257,7 @@ public partial class Player : Entity
     private float AttackUpdateTimer = 0;
     public override void OnFixedUpdate()
     {
+        Body.Player = Accessory.Player = Weapon.Player = Hat.Player = this; //There's probably a better way to do this
         if (!HasRunStartingGear && Main.WavesUnleashed)
         {
             foreach(Equipment e in Equips)
@@ -283,7 +282,7 @@ public partial class Player : Entity
         HomingRangeSqrt = Mathf.Sqrt(HomingRange);
         bool dead = DeathKillTimer > 0;
         if (!World.WithinBorders(transform.position, true))
-            Entity.PushIntoClosestPossibleTile(transform, RB, includeProgressionBounds: true);
+            Entity.PushIntoClosestPossibleTile(transform, base.RB, includeProgressionBounds: true);
         if (dead)
             Pop();
         else
@@ -318,7 +317,7 @@ public partial class Player : Entity
                     Weapon.StartAttack(true);
                 }
             }
-            if (Main.GameUpdateCount % 200 == 0)
+            if (InstanceID == 0 && Main.GameUpdateCount % 200 == 0)
                 Debug.Log($"Has Attacked: {HasAttacked}, Picked Lower Card: {PickedLowerDifficultyWaveCard}, Has Taken Damage: {HasBeenHit}:{TimesHitThisRun}");
             if (Weapon.IsAttacking())
             {
@@ -394,7 +393,7 @@ public partial class Player : Entity
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 6f, 0.03f);
         else
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 17f, 0.03f);
-        rb.velocity *= 0.9f;
+        RB.velocity *= 0.9f;
         Body.DeadUpdate();
         Hat.DeadUpdate();
         Weapon.DeadUpdate();

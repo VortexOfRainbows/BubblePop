@@ -23,10 +23,6 @@ public class Dice : Hat
         powerPool.Add<RollForPerception>();
         powerPool.Add<SnakeEyes>();
     }
-    protected override void ReducePowerPool(List<PowerUp> powerPool)
-    {
-        base.ReducePowerPool(powerPool);
-    }
     protected override void AnimationUpdate()
     {
         float r = p.MoveDashRotation();

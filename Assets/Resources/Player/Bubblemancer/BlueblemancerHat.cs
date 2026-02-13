@@ -11,7 +11,7 @@ public class BlueblemancerHat : BubblemancerHat
     }
     public override void EquipUpdate()
     {
-        player.OrbitalStars = true;
+        Player.OrbitalStars = true;
     }
     public override int GetRarity()
     {

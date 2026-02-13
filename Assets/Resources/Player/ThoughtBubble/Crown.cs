@@ -28,7 +28,7 @@ public class Crown : Bulb
     }
     public override void EquipUpdate()
     {
-        player.BonusChoices = true;
+        Player.BonusChoices = true;
     }
     private float AnimationTimer = 0;
     protected override void AnimationUpdate()

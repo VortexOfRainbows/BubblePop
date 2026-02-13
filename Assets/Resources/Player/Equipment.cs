@@ -9,15 +9,15 @@ public class Equipment : MonoBehaviour
     }
     public void Start()
     {
-        if(Player.Instance != null && myAnim == null)
-            p = Player.Instance.Animator;
+        if(Player != null && myAnim == null)
+            p = Player.Animator;
     }
-    public static Player player => Player.Instance;
+    public Player Player { get; set; } = null;
     private PlayerAnimator myAnim;
     public PlayerAnimator p { 
         get => myAnim != null 
-            ? myAnim : 
-            Player.Instance.Animator; 
+            ? myAnim :
+            Player.Animator; 
         set => myAnim = value; 
     }
     private static readonly List<PowerUp> PowerPool = new();
@@ -41,7 +41,7 @@ public class Equipment : MonoBehaviour
         }
     }
     public Equipment OriginalPrefab => Main.GlobalEquipData.AllEquipmentsList[IndexInAllEquipPool].GetComponent<Equipment>();
-    private int m_LocalIndexInAllEquipPool;
+    //private int m_LocalIndexInAllEquipPool;
     public static void ModifyPowerPoolAll()
     {
         PowerUp.ResetPowerAvailability();
@@ -50,10 +50,10 @@ public class Equipment : MonoBehaviour
         Player.Instance.Accessory.ModifyPowerPool(PowerPool);
         Player.Instance.Weapon.ModifyPowerPool(PowerPool);
         Player.Instance.Body.ModifyPowerPool(PowerPool);
-        Player.Instance.Hat.ReducePowerPool(PowerPool);
-        Player.Instance.Accessory.ReducePowerPool(PowerPool);
-        Player.Instance.Weapon.ReducePowerPool(PowerPool);
-        Player.Instance.Body.ReducePowerPool(PowerPool);
+        //Player.Instance.Hat.ReducePowerPool(PowerPool);
+        //Player.Instance.Accessory.ReducePowerPool(PowerPool);
+        //Player.Instance.Weapon.ReducePowerPool(PowerPool);
+        //Player.Instance.Body.ReducePowerPool(PowerPool);
         for (int i = 0; i < PowerPool.Count; ++i)
         {
             PowerUp.AddPowerUpToAvailability(PowerPool[i]);

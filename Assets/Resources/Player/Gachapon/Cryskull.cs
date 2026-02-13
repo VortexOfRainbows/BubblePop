@@ -13,7 +13,7 @@ public class Cryskull : Crystal
     }
     public override void EquipUpdate()
     {
-        player.PersonalWaveCardBonus += 1f;
+        Player.PersonalWaveCardBonus += 1f;
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponWave15AllSkullWaves>();
     public override int GetRarity()

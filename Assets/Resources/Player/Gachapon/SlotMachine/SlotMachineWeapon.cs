@@ -36,9 +36,9 @@ public class SlotMachineWeapon : Weapon
             SwapSlotSprite(GambleSlots[1], 0, false);
             SwapSlotSprite(GambleSlots[2], 0, false);
         }
-        player.PrimaryAttackSpeedModifier += 0.777f * BonusAttackNumber;
-        if (player.ExtraGachaBurst > 0)
-            player.PrimaryAttackSpeedModifier += Mathf.Max(0, 0.0777f * BurstNum);
+        Player.PrimaryAttackSpeedModifier += 0.777f * BonusAttackNumber;
+        if (Player.ExtraGachaBurst > 0)
+            Player.PrimaryAttackSpeedModifier += Mathf.Max(0, 0.0777f * BurstNum);
     }
     public override bool IsPrimaryAttacking()
     {
@@ -59,7 +59,7 @@ public class SlotMachineWeapon : Weapon
     private float PityBonus = 0.0f;
     private int PityCount = 0;
     private float BonusCount = 0;
-    public int MaxBursts => 3 + player.ExtraGachaBurst;
+    public int MaxBursts => 3 + Player.ExtraGachaBurst;
     private int BurstNum = 0, TokenShots = 0;
     private int JackpotsInARow = 0;
     protected override void AnimationUpdate()
@@ -147,9 +147,9 @@ public class SlotMachineWeapon : Weapon
                         }
                         if(AttackGamble == 10)
                         {
-                            if(GambleOutcome == 1 && player.ConsolationPrize > 0 && Utils.RollWithLuck(0.0777f))
+                            if(GambleOutcome == 1 && Player.ConsolationPrize > 0 && Utils.RollWithLuck(0.0777f))
                             {
-                                CoinManager.SpawnCoin(Player.Position, player.ConsolationPrize * 2, 0.1f);
+                                CoinManager.SpawnCoin(Player.Position, Player.ConsolationPrize * 2, 0.1f);
                             }
                         }
                         if(AttackGamble == 5)
@@ -161,7 +161,7 @@ public class SlotMachineWeapon : Weapon
                                 GambleOutcome = DetermineGambleOutcome();
                             }
                             else
-                                BonusCount += player.BuyOneGetOneMult;
+                                BonusCount += Player.BuyOneGetOneMult;
                         }
                     }
                     if (AttackGamble <= 1)
@@ -240,7 +240,7 @@ public class SlotMachineWeapon : Weapon
                     Hitbox.Friendly = true;
                     if (Trail == null)
                     {
-                        Trail = SpecialTrail.NewTrail(Hitbox.transform, ColorHelper.RarityColors[4] * 0.6f, 1.9f, 0.25f * (WindUpTime - RightClickEndLag) * Time.fixedDeltaTime / MathF.Sqrt(player.SecondaryAttackSpeedModifier), 0.1f, true);
+                        Trail = SpecialTrail.NewTrail(Hitbox.transform, ColorHelper.RarityColors[4] * 0.6f, 1.9f, 0.25f * (WindUpTime - RightClickEndLag) * Time.fixedDeltaTime / MathF.Sqrt(Player.SecondaryAttackSpeedModifier), 0.1f, true);
                         Trail.Trail.sortingOrder = 2;
                     }
                 }
@@ -266,15 +266,15 @@ public class SlotMachineWeapon : Weapon
             }
             else
             {
-                if (TokenShots < player.BatterUp)
+                if (TokenShots < Player.BatterUp)
                 {
-                    float nextInterval = 1f / (player.BatterUp + 1) * (TokenShots + 1);
+                    float nextInterval = 1f / (Player.BatterUp + 1) * (TokenShots + 1);
                     while (iPer > nextInterval)
                     {
                         AudioManager.PlaySound(SoundID.CoinPickup, BatterUpCenter.position, 0.3f, 1.4f + nextInterval * 0.1f, 0);
                         BatterUpTokens.Add(Instantiate(BatterUpToken, BatterUpCenter.position, Quaternion.identity).transform);
                         TokenShots++;
-                        nextInterval = 1f / (player.BatterUp + 1) * (TokenShots + 1);
+                        nextInterval = 1f / (Player.BatterUp + 1) * (TokenShots + 1);
                     }
                 }
                 UpdateCoins(iPer, 0);
@@ -321,7 +321,7 @@ public class SlotMachineWeapon : Weapon
     }
     public void UpdateCoins(float percent, float launchPercent)
     {
-        float interval = 1f / (player.BatterUp + 1) * (player.BatterUp + 1 - TokenShots);
+        float interval = 1f / (Player.BatterUp + 1) * (Player.BatterUp + 1 - TokenShots);
         if (launchPercent > interval && TokenShots > 0)
         {
             RemoveCoin();
@@ -332,11 +332,11 @@ public class SlotMachineWeapon : Weapon
         float bonus = 2.2f * percent;
         float MINangleOffset = 185 * Mathf.Deg2Rad * dir;
         float MAXangleOffset = 100 * Mathf.Deg2Rad * dir;
-        float size = MathF.Max(0.7f, 0.9f - 0.2f * player.BatterUp / 10f);
+        float size = MathF.Max(0.7f, 0.9f - 0.2f * Player.BatterUp / 10f);
         for (int i = 0; i < BatterUpTokens.Count; ++i)
         {
             Transform coin = BatterUpTokens[i];
-            interval = 1f / (player.BatterUp + 1) * (i + 1);
+            interval = 1f / (Player.BatterUp + 1) * (i + 1);
             float iInter = 1 - interval;
             float sin = Mathf.Sin((iInter * 0.33f + 0.67f * iInter * iInter) * Mathf.PI);
             float angleOffset = MAXangleOffset * percent - MINangleOffset * percent * iInter;
@@ -353,7 +353,7 @@ public class SlotMachineWeapon : Weapon
     public void RemoveCoin()
     {
         int i = BatterUpTokens.Count - 1;
-        float interval = 1f / (player.BatterUp + 1) * (i + 1);
+        float interval = 1f / (Player.BatterUp + 1) * (i + 1);
         float dir = Utils.SignNoZero(BatterUpTokens[i].localScale.x);
         Vector2 mousePos = Player.Position + (Vector2)previousAttemptedPosition.normalized * 15.5f;
         AudioManager.PlaySound(SoundID.Teleport, BatterUpTokens[i].transform.position, 0.2f, 1.7f, 0);
@@ -369,19 +369,18 @@ public class SlotMachineWeapon : Weapon
         BatterUpTokens.Clear();
     }
     private float AttackCooldownLeft => 80;
-    private float AttackCooldownRight => 100 + 20 * Mathf.Sqrt(player.SecondaryAttackSpeedModifier) + WindUpTime + RightClickEndLag;
+    private float AttackCooldownRight => 100 + 20 * Mathf.Sqrt(Player.SecondaryAttackSpeedModifier) + WindUpTime + RightClickEndLag;
     private float GambleAnimationFrames => 112;
     private float GambleAttackFrames => 55;
     private float RightClickEndLag => 70;
-    private float WindUpTime => (int)(RightClickEndLag + 50 * Mathf.Sqrt(player.SecondaryAttackSpeedModifier));
+    private float WindUpTime => (int)(RightClickEndLag + 50 * Mathf.Sqrt(Player.SecondaryAttackSpeedModifier));
     public bool FakeAttack = false;
     protected float bounceCount = 0.7f;
-    public static int CoinCost => (int)Mathf.Max(5, 4 + WaveDirector.WaveNum + player.SpinPriceIncrease);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft <= 0 && AttackGamble <= 0 && AttackRight < 0 && !alternate)
         {
-            bool hasMoney = CoinManager.CurrentCoins >= CoinCost || !Main.WavesUnleashed || CoinManager.CurrentTokens > 0;
+            bool hasMoney = CoinManager.CurrentCoins >= Player.SlotMachineCoinCost || !Main.WavesUnleashed || CoinManager.CurrentTokens > 0;
             if(!hasMoney)
             {
                 AudioManager.PlaySound(SoundID.SoapDie, transform.position, 1.5f, 1.0f, 1);
@@ -395,7 +394,7 @@ public class SlotMachineWeapon : Weapon
                     if (CoinManager.CurrentTokens > 0)
                         CoinManager.ModifyTokens(-1);
                     else
-                        CoinManager.ModifyCoins(-CoinCost);
+                        CoinManager.ModifyCoins(-Player.SlotMachineCoinCost);
                 }
                 AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1.5f, 1.2f, 1);
                 AttackLeft = AttackCooldownLeft;
@@ -448,12 +447,12 @@ public class SlotMachineWeapon : Weapon
         {
             return 5;
         }
-        float cutOffMultiplier = 1.0f + 0.2f * player.RollPerc;
+        float cutOffMultiplier = 1.0f + 0.2f * Player.RollPerc;
         float n = Utils.RollWithLuckRaw();
         //Best Match
         //JACKPOT! ~0.6%
         float chanceForJackpot = 0.006f * cutOffMultiplier;
-        if(player.PityGrowthAmount != 0)
+        if(Player.PityGrowthAmount != 0)
         {
             chanceForJackpot *= 1 + PityBonus;
         }
@@ -467,10 +466,10 @@ public class SlotMachineWeapon : Weapon
             return 5;
         }
         JackpotsInARow = 0;
-        if (player.PityGrowthAmount != 0)
+        if (Player.PityGrowthAmount != 0)
         {
             PityCount++;
-            PityBonus += player.PityGrowthAmount;
+            PityBonus += Player.PityGrowthAmount;
         }
         else
         {
@@ -511,7 +510,7 @@ public class SlotMachineWeapon : Weapon
     {
         if(AttackGamble == GambleAnimationFrames + GambleAttackFrames - 1)
         {
-            AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1.5f, 0.65f * player.PrimaryAttackSpeedModifier, 0);
+            AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1.5f, 0.65f * Player.PrimaryAttackSpeedModifier, 0);
         }
         int offsetAmt = 20;
         float totalFrames = GambleAnimationFrames - offsetAmt * 2;

@@ -9,6 +9,7 @@ public class ThoughtBubble : Body
         Life += 3;
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
+    public Sound teleportSound;
     public const float TailRegenTime = 0.3f;
     public const float TailTravelTime = 4f;
     public GameObject TailPrefab;
@@ -54,6 +55,8 @@ public class ThoughtBubble : Body
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
         TailUpdate(ref playerVelo);
+        if(teleportSound != null)
+            teleportSound.HasEnded = !Player.Control.Ability || FinishedTeleport;
     }
     protected override void DeathAnimation()
     {
@@ -74,7 +77,7 @@ public class ThoughtBubble : Body
     public void TailUpdate(ref Vector2 playerVelo)
     {
         //p.TrailOfThoughts = 10;
-        int maxTail = player.TrailOfThoughts * 3 + 12;
+        int maxTail = Player.TrailOfThoughts * 3 + 12;
         if (Tails == null)
         {
             Tails = new List<GameObject>();
@@ -83,12 +86,12 @@ public class ThoughtBubble : Body
         {
             TryAddingTail();
         }
-        if (Control.Ability && (!Control.LastAbility || CurrentMarkedTail != -1) && CurrentMarkedTail < TailCount - 1 && TailCount >= 3)
+        if (Player.Control.Ability && (!Player.Control.LastAbility || CurrentMarkedTail != -1) && CurrentMarkedTail < TailCount - 1 && TailCount >= 3)
         {
-            if(Control.Ability && !Control.LastAbility)
+            if(Player.Control.Ability && !Player.Control.LastAbility)
             {
                 FinishedTeleport = false;
-                AudioManager.PlaySound(SoundID.TeleportCharge, transform.position, 1f, 1);
+                teleportSound = AudioManager.PlaySound(SoundID.TeleportCharge, transform.position, 1f, 1);
             }
             if(TailTravelTimer >= TailTravelTime)
             {
@@ -104,7 +107,7 @@ public class ThoughtBubble : Body
         }
         else
         {
-            if(Control.LastAbility && CurrentMarkedTail != -1) //This will only be true upon releasing the button
+            if(Player.Control.LastAbility && CurrentMarkedTail != -1) //This will only be true upon releasing the button
             {
                 Teleport(CurrentTail.transform.position);
                 for(int i = CurrentMarkedTail; i >= 0; --i)
@@ -118,7 +121,7 @@ public class ThoughtBubble : Body
             {
                 if (TailCount < maxTail && p.DeathKillTimer <= 0 && playerVelo.magnitude > 1.5f)
                 {
-                    TailAddTimer += Time.deltaTime * player.TrailOfThoughtsRecoverySpeed;
+                    TailAddTimer += Time.deltaTime * Player.TrailOfThoughtsRecoverySpeed;
                     while (TailAddTimer > TailRegenTime)
                     {
                         TailAddTimer -= TailRegenTime;
@@ -139,23 +142,23 @@ public class ThoughtBubble : Body
             UpdateTailPos(i, ref previousPos);
         }
     }
-    public static bool FinishedTeleport = false;
+    public bool FinishedTeleport = false;
     public void Teleport(Vector2 pos)
     {
-        player.OnUseAbility();
-        player.transform.position = pos;
+        Player.OnUseAbility();
+        Player.transform.position = pos;
         AudioManager.PlaySound(SoundID.Teleport, pos, 2f, 1);
         FinishedTeleport = true;
         int amt = (int)BrainBlastNum;
         while (BrainBlastNum >= 1)
         {
-            float speed = 5f + player.BrainBlast * Utils.RandFloat(1.5f, 2.5f);
+            float speed = 5f + Player.BrainBlast * Utils.RandFloat(1.5f, 2.5f);
             Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.5f)), 0).RotatedBy((BrainBlastNum + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1); 
             --BrainBlastNum;
         }
         ThunderAuraNum = 0;
-        if (player.UniversalImmuneFrames < 7)
-            player.UniversalImmuneFrames = 7;
+        if (Player.UniversalImmuneFrames < 7)
+            Player.UniversalImmuneFrames = 7;
     }
     public void UpdateTailPos(int i, ref Vector3 previousPos)
     {
@@ -231,15 +234,15 @@ public class ThoughtBubble : Body
                 BrainBlastTrailNum--;
         }
         if(!death)
-            Projectile.NewProjectile<ThoughtBubbleThunderAura>(current.transform.position, Vector2.zero, 1.0f * (1 + player.BrainBlast * 0.2f), ++ThunderAuraNum % 3);
-        if (player.BrainBlast > 0)
+            Projectile.NewProjectile<ThoughtBubbleThunderAura>(current.transform.position, Vector2.zero, 1.0f * (1 + Player.BrainBlast * 0.2f), ++ThunderAuraNum % 3);
+        if (Player.BrainBlast > 0)
         {
-            BrainBlastNum += 0.5f + player.BrainBlast * 0.5f;
-            BrainBlastTrailNum += 0.1f + player.BrainBlast * 0.1f;
+            BrainBlastNum += 0.5f + Player.BrainBlast * 0.5f;
+            BrainBlastTrailNum += 0.1f + Player.BrainBlast * 0.1f;
         }
-        if (player.DashSparkle > 0)
+        if (Player.DashSparkle > 0)
         {
-            sparkleSparkleNum += (player.DashSparkle + 1) / 6f; //33% + 16.67% per stack
+            sparkleSparkleNum += (Player.DashSparkle + 1) / 6f; //33% + 16.67% per stack
             while (sparkleSparkleNum > 1f)
             {
                 Vector2 target = Utils.RandCircle(1).normalized * 20;
@@ -248,7 +251,7 @@ public class ThoughtBubble : Body
                 sparkleSparkleNum -= 1.0f;
             }
         }
-        player.OnUseAbility();
+        Player.OnUseAbility();
     }
     public void TryAddingTail()
     {

@@ -77,10 +77,10 @@ public class Bulb : Hat
     public static readonly float DefaultShotSpeed = 2.2f;
     public static readonly float MaxRange = 48;
     private float lightSpearCounter = 0;
-    public static float SpeedModifier => player.PassiveAttackSpeedModifier;
+    public static float SpeedModifier => Player.Instance.PassiveAttackSpeedModifier; //temporarily use instance
     public override void PostEquipUpdate()
     {
-        if(player.LightSpear > 0)
+        if(Player.LightSpear > 0)
         {
             float Damage = 2.0f + Player.Instance.LightSpear * 0.5f;
             Vector2 shootFromPos = (Vector2)transform.position + new Vector2(0, 0.6f).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) * transform.lossyScale.x;
@@ -88,7 +88,7 @@ public class Bulb : Hat
             lightSpearCounter += Time.fixedDeltaTime * SpeedModifier;
             while(lightSpearCounter > shotTime)
             {
-                if(LaunchSpear(shootFromPos, out Vector2 norm, new(), player.LightChainReact, Damage: Damage))
+                if(LaunchSpear(shootFromPos, out Vector2 norm, new(), Player.LightChainReact, Damage: Damage))
                 {
                     velocity -= norm;
                     lightSpearCounter -= shotTime;
@@ -100,15 +100,16 @@ public class Bulb : Hat
     }
     public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, List<Enemy> ignore, int BounceNum = 0, float bonusRange = 0, float defaultRangeMult = 1f, float Damage = 2.0f)
     {
+        Player tempPlayer = Player.Instance;
         float speedMod = SpeedModifier;
         float spearSpeed = 5 + speedMod * 0.015f; // this only matters for visuals as the spear is hitscan
-        float spearRange = ((player.LightSpear + 3) * 2.25f) * defaultRangeMult + bonusRange; //starts at 3 * 3 = 9, +2.25 range per stack
+        float spearRange = ((tempPlayer.LightSpear + 3) * 2.25f) * defaultRangeMult + bonusRange; //starts at 3 * 3 = 9, +2.25 range per stack
         if (spearRange > MaxRange)
             spearRange = MaxRange;
         norm = Vector2.zero;
         Vector2 searchPosition = shootFromPos;
         bool hitTarget = false;
-        int totalHits = Mathf.Max(1, 1 + player.Refraction);
+        int totalHits = Mathf.Max(1, 1 + tempPlayer.Refraction);
         int enemiesFound = 0;
         for (int i = 0; i < totalHits; ++i)
         {
@@ -122,7 +123,7 @@ public class Bulb : Hat
                         return true;
                     Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, Damage, target.transform.position.x, target.transform.position.y, BounceNum, -1);
                     searchPosition = target.transform.position;
-                    spearRange = 7 + player.Refraction * 2; //Starts at 7 + 2 = 9, scales by + 2 per stack
+                    spearRange = 7 + tempPlayer.Refraction * 2; //Starts at 7 + 2 = 9, scales by + 2 per stack
                 }
                 ignore.Add(target);
                 hitTarget = true;

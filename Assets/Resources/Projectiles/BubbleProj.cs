@@ -139,13 +139,13 @@ public class BigBubble : Projectile
             timer = -attackRight;
             Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             if (Utils.RandFloat(1) < 0.2f)
-                ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + Player.Instance.rb.velocity * 0.9f, 0.2f, 0.3f, 0, Player.ProjectileColor);
+                ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + Player.Instance.RB.velocity * 0.9f, 0.2f, 0.3f, 0, Player.ProjectileColor);
             if (attackRight >= Data1)
             {
                 for (int i = 0; i < 30; i++)
                 {
                     circular = new Vector2(targetSize * 0.5f + 1f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-                    ParticleManager.NewParticle((Vector2)transform.position + circular, .3f, -circular.normalized * Utils.RandFloat(5, 10) + Player.Instance.rb.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, Player.ProjectileColor);
+                    ParticleManager.NewParticle((Vector2)transform.position + circular, .3f, -circular.normalized * Utils.RandFloat(5, 10) + Player.Instance.RB.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, Player.ProjectileColor);
                 }
                 Data1 += 100;
             }
@@ -154,7 +154,7 @@ public class BigBubble : Projectile
 
             transform.position = Vector2.Lerp(transform.position, (Vector2)Player.Instance.Weapon.transform.position + awayFromWand, 0.15f);
             RB.velocity *= 0.8f;
-            RB.velocity += Player.Instance.rb.velocity * 0.1f;
+            RB.velocity += Player.Instance.RB.velocity * 0.1f;
             Damage = (1 + target) * (2 + Player.Instance.ChargeShotDamage);
             Data2 = target;
             //rb.rotation = toMouse.ToRotation() * Mathf.Rad2Deg;
@@ -378,8 +378,8 @@ public class ThunderBubble : Projectile
     }
     public override void OnKill()
     {
-        if(Book.TotalBalls > 0)
-            Book.TotalBalls--;
+        if(Player.Instance.TotalBookBalls > 0)
+            Player.Instance.TotalBookBalls--;
         //int c = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
         //for (int i = 0; i < c; i++)
         //{

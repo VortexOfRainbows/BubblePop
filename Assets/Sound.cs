@@ -4,7 +4,7 @@ public class Sound : MonoBehaviour
 {
     [SerializeField]
     public AudioSource Source;
-    private bool HasEnded = false;
+    public bool HasEnded { get; set; } = false;
     public void Init(AudioClip clip, float volume = 1, float pitch = 1)
     {
         Source.clip = clip;
@@ -26,7 +26,7 @@ public class Sound : MonoBehaviour
         }
         else if(Source.clip == SoundID.TeleportCharge.GetVariation(0) || Source.clip == SoundID.TeleportSustain.GetVariation(0))
         {
-            bool usingTeleport = Control.Ability && !ThoughtBubble.FinishedTeleport;
+            bool usingTeleport = !HasEnded; //Control.Ability && !ThoughtBubble.FinishedTeleport;
             transform.position = Player.Instance.transform.position;
             if (!Source.isPlaying && usingTeleport)
             {

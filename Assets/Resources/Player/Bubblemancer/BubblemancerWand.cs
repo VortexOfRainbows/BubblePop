@@ -29,7 +29,7 @@ public class BubblemancerWand : Weapon
     {
         WandUpdate();
     }
-    private float AttackCooldown => Mathf.Max(0, 20f - (player.AttackSpeedModifier - 1) * 5);
+    private float AttackCooldown => Mathf.Max(0, 20f - (Player.AttackSpeedModifier - 1) * 5);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft < -AttackCooldown && AttackRight < 0)
@@ -38,7 +38,7 @@ public class BubblemancerWand : Weapon
             {
                 AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1f);
                 AttackLeft = 50;
-                player.bonusBubbles = player.ShotgunPower;
+                Player.bonusBubbles = Player.ShotgunPower;
             }
         }
         if (AttackRight < -AttackCooldown && AttackLeft < 0)
@@ -58,13 +58,13 @@ public class BubblemancerWand : Weapon
         {
             Vector2 toMouse = Utils.MouseWorld - (Vector2)p.gameObject.transform.position;
             Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
-            float spread = Mathf.Max(90 - player.FasterBulletSpeed * 5, 0);
-            float speed = Utils.RandFloat(16, 19) + 1.6f * player.FasterBulletSpeed;
+            float spread = Mathf.Max(90 - Player.FasterBulletSpeed * 5, 0);
+            float speed = Utils.RandFloat(16, 19) + 1.6f * Player.FasterBulletSpeed;
             Vector2 velocity = toMouse.normalized * speed + awayFromWand * 4;
-            Vector2 norm = velocity.normalized * (12 + player.FasterBulletSpeed * 0.5f) + Utils.RandCircle(4) * (10f / (10f + player.FasterBulletSpeed));
+            Vector2 norm = velocity.normalized * (12 + Player.FasterBulletSpeed * 0.5f) + Utils.RandCircle(4) * (10f / (10f + Player.FasterBulletSpeed));
             Projectile.NewProjectile<StarProj>((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), 2,transform.position.x + norm.x, transform.position.y + norm.y, Utils.RandInt(2) * 2 - 1);
 
-            float chanceOfLosingAStarProc = 0.6f * (10f / (9f + player.ShotgunPower)); //0.45 chance when you have one extra power, .409f when you have another, etc
+            float chanceOfLosingAStarProc = 0.6f * (10f / (9f + Player.ShotgunPower)); //0.45 chance when you have one extra power, .409f when you have another, etc
             if (Utils.RandFloat(1) < chanceOfLosingAStarProc)
                 --starshotNum;
         }
@@ -93,23 +93,23 @@ public class BubblemancerWand : Weapon
         if (AttackLeft > 0)
         {
             bool canAttack = AttackLeft % 2 == 1 && AttackLeft >= 41;
-            bool bonusBubble = player.bonusBubbles > 0 && AttackLeft >= 41;
+            bool bonusBubble = Player.bonusBubbles > 0 && AttackLeft >= 41;
             if (!canAttack && bonusBubble)
             {
                 canAttack = true;
-                player.bonusBubbles--;
+                Player.bonusBubbles--;
             }
             if (canAttack)
             {
-                int starshotNum = player.Starshot;
+                int starshotNum = Player.Starshot;
                 float speed = Utils.RandFloat(9, 15);
-                float spread = 12 + Mathf.Sqrt(player.ShotgunPower);
+                float spread = 12 + Mathf.Sqrt(Player.ShotgunPower);
                 Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2,
                     toMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad)
                     * speed + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)), 1);
                 TryDoingStarShot(ref starshotNum);
                 float odds = Mathf.Sqrt(1f / (AttackLeft - 40f));
-                int attempts = player.bonusBubbles;
+                int attempts = Player.bonusBubbles;
                 while (attempts >= AttackLeft - 40)
                 {
                     if (Utils.RandFloat(1) <= odds)
@@ -118,7 +118,7 @@ public class BubblemancerWand : Weapon
                         Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2,
                             toMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad)
                             * speed + awayFromWand * Utils.RandFloat(2, 4) + new Vector2(Utils.RandFloat(-0.7f, 0.7f), Utils.RandFloat(-0.7f, 0.7f)), 1);
-                        player.bonusBubbles--;
+                        Player.bonusBubbles--;
                         TryDoingStarShot(ref starshotNum);
                     }
                     attempts--;
@@ -131,7 +131,7 @@ public class BubblemancerWand : Weapon
         {
             if ((Input.GetMouseButton(1) || AttackRight < 100) && AttackRight >= 50)
             {
-                int maxCharge = 250 + 100 * player.OldCoalescence;
+                int maxCharge = 250 + 100 * Player.OldCoalescence;
                 if (AttackRight == 50)
                 {
                     AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.5f);

@@ -23,17 +23,17 @@ public class BunceHat : BubblemancerHat
     protected override void AnimationUpdate()
     {
         float bonus = 0.12f;
-        if (player.Body is Bubblemancer)
+        if (Player.Body is Bubblemancer)
         {
-            if (player.abilityTimer > 0)
+            if (Player.abilityTimer > 0)
             {
-                float sin = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(Mathf.PI * Mathf.Max(0, player.abilityTimer / player.AbilityCD)))) * player.abilityTimer / player.AbilityCD;
+                float sin = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(Mathf.PI * Mathf.Max(0, Player.abilityTimer / Player.AbilityCD)))) * Player.abilityTimer / Player.AbilityCD;
                 velocity = new Vector2(0, p.Direction * 0.65f * sin).RotatedBy(p.lastVelo.ToRotation());
             }
-            else if (player.AbilityReady)
+            else if (Player.AbilityReady)
                 velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
         }
-        else if (player.Body is Gachapon)
+        else if (Player.Body is Gachapon)
             bonus = 0.16f;
         bonus -= 0.23f;
         spriteRender.flipX = !p.Body.Flipped;

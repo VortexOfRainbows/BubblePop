@@ -66,7 +66,7 @@ public class PlayerStatUI : MonoBehaviour
             {
                 int tokens = CoinManager.CurrentTokens; // : CoinManager.Savings;
                 string hex = ColorHelper.TokenColor.ToHexString();
-                string text = tokens > 0 ? $"{tokens}" : $"<color={(CoinManager.CurrentCoins >= SlotMachineWeapon.CoinCost ? "#FFFFFF" : "#FF4455")}>${SlotMachineWeapon.CoinCost}</color>";
+                string text = tokens > 0 ? $"{tokens}" : $"<color={(CoinManager.CurrentCoins >= Player.Instance.SlotMachineCoinCost ? "#FFFFFF" : "#FF4455")}>${Player.Instance.SlotMachineCoinCost}</color>";
                 tokenText.text = $"<color={hex}>{text}/{Player.Instance.MaxTokens}</color>";
                 tokenText.enabled = true;
             }

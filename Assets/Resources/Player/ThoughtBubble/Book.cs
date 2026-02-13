@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Book : Weapon
 {
-    public static int AllowedBalls => player.AllowedThunderBalls;
-    public static int TotalBalls = 0;
+    public int AllowedBalls => Player.AllowedThunderBalls;
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         offset = new Vector2(0, 0);
@@ -23,6 +22,10 @@ public class Book : Weapon
         powerPool.Add<BonusBatteries>();
         powerPool.Add<ThunderBubbles>();
         powerPool.Add<Electroluminescence>();
+    }
+    public override void Init()
+    {
+        Player.TotalBookBalls = 0;
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -104,7 +107,7 @@ public class Book : Weapon
             if (AttackLeft >= 0)
             {
                 percent = AttackLeft / 80f;
-                bool canAttack = AttackLeft == 75 && TotalBalls < AllowedBalls;
+                bool canAttack = AttackLeft == 75 && Player.TotalBookBalls < AllowedBalls;
                 if (canAttack)
                 {
                     AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1f);
@@ -114,14 +117,14 @@ public class Book : Weapon
 
                     if (!JustOpened)
                     {
-                        Color c = Color.Lerp(player.Body.PrimaryColor, Color.blue, 0.75f);
+                        Color c = Color.Lerp(Player.Body.PrimaryColor, Color.blue, 0.75f);
                         for (int i = 0; i < 20; ++i)
                         {
                             Vector2 circular = new Vector2(Utils.RandFloat(7, 8), 0).RotatedBy(i / 10f * Mathf.PI);
                             circular.y *= 0.5f;
                             circular = circular.RotatedBy(25 * dir * Mathf.Deg2Rad);
                             Vector2 pos = (Vector2)transform.position;
-                            ParticleManager.NewParticle(pos, 0.5f, circular + awayFromWand * 5 + player.rb.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, c * 0.6f);
+                            ParticleManager.NewParticle(pos, 0.5f, circular + awayFromWand * 5 + Player.RB.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, c * 0.6f);
                         }
                         //for (int i = 0; i < 20; ++i)
                         //{
@@ -134,15 +137,15 @@ public class Book : Weapon
                     }
                     else
                         JustOpened = false;
-                    ++TotalBalls;
-                    float speed = 3.3f + player.FasterBulletSpeed * 0.33f;
+                    ++Player.TotalBookBalls;
+                    float speed = 3.3f + Player.FasterBulletSpeed * 0.33f;
                     Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand, 1);
                 }
             }
             else if (AttackRight >= 0)
             {
                 percent = AttackRight / 80f;
-                bool canAttack = AttackRight == 75 && TotalBalls < AllowedBalls;
+                bool canAttack = AttackRight == 75 && Player.TotalBookBalls < AllowedBalls;
                 if (canAttack)
                 {
                     AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1f);
@@ -151,20 +154,20 @@ public class Book : Weapon
                     //    ParticleManager.NewParticle(shootSpot, 1, Utils.RandCircle(5), 0.2f, 0.5f, 2, Color.blue);
                     if (!JustOpened)
                     {
-                        Color c = Color.Lerp(player.Body.PrimaryColor, Color.blue, 0.75f);
+                        Color c = Color.Lerp(Player.Body.PrimaryColor, Color.blue, 0.75f);
                         for (int i = 0; i < 20; ++i)
                         {
                             Vector2 circular = new Vector2(Utils.RandFloat(7, 8), 0).RotatedBy(i / 10f * Mathf.PI);
                             circular.y *= 0.5f;
                             circular = circular.RotatedBy(25 * dir * Mathf.Deg2Rad);
                             Vector2 pos = (Vector2)transform.position;
-                            ParticleManager.NewParticle(pos, 0.5f, circular + awayFromWand * 5 + player.rb.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, c * 0.6f);
+                            ParticleManager.NewParticle(pos, 0.5f, circular + awayFromWand * 5 + Player.RB.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, c * 0.6f);
                         }
                     }
                     else
                         JustOpened = false;
-                    ++TotalBalls;
-                    float speed = 12.0f + player.FasterBulletSpeed * 1.2f;
+                    ++Player.TotalBookBalls;
+                    float speed = 12.0f + Player.FasterBulletSpeed * 1.2f;
                     Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand, 1);
                 }
             }
@@ -181,7 +184,7 @@ public class Book : Weapon
             if (Open)
                 InClosingAnimation = true;
             OpeningAnimationTimer++;
-            float timeToOpenClose = 80f * (0.6f + 0.4f * player.AttackSpeedModifier);
+            float timeToOpenClose = 80f * (0.6f + 0.4f * Player.AttackSpeedModifier);
             float dir2 = Open ? -1 : 1;
             float percent = ClosingPercent = OpeningAnimationTimer / timeToOpenClose;
             float iPer = 1 - percent;
@@ -197,7 +200,7 @@ public class Book : Weapon
                     circular.y *= Open ? 0.8f : 0.5f;
                     circular = circular.RotatedBy(25 * dir * Mathf.Deg2Rad);
                     Vector2 pos = (Vector2)transform.position + (Open ? circular * 0.3f + awayFromWand * 1.5f: Vector2.zero );
-                    ParticleManager.NewParticle(pos, 0.5f, dir2 * (circular + awayFromWand * 5) + player.rb.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, Color.gray * 0.4f);
+                    ParticleManager.NewParticle(pos, 0.5f, dir2 * (circular + awayFromWand * 5) + Player.RB.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, Color.gray * 0.4f);
                 }
                 Open = WantsOpen;
                 OpeningAnimationTimer = 0;
@@ -210,7 +213,7 @@ public class Book : Weapon
                 }
                 else
                     JustOpened = true;
-                TotalBalls = 0;
+                Player.TotalBookBalls = 0;
                 hasDoneSelectAnimation = true;
             }
         }

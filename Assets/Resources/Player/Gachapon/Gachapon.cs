@@ -36,7 +36,7 @@ public class Gachapon : Body
         int direction = index % 2 * 2 - 1;
         ChipStack stack = stacks[index];
         SpriteRenderer r = Instantiate(ChipPrefab, stack.Transform).GetComponent<SpriteRenderer>();
-        if (Utils.RandFloat() < player.BlueChipChance){
+        if (Utils.RandFloat() < Player.BlueChipChance){
             r.sprite = BlueChip;
         }
         r.color = r.color.WithAlphaMultiplied(PlayerData.SpecialVisualOpacity);
@@ -80,11 +80,11 @@ public class Gachapon : Body
                 Projectile.NewProjectile<BlueChip>(transform.position, rot, 6 + 2 * Player.Instance.DoubleDownChip);
             else
                 Projectile.NewProjectile<PokerChip>(transform.position, rot, 3 + 1 * Player.Instance.DoubleDownChip);
-            int sparkle = player.DashSparkle;
+            int sparkle = Player.DashSparkle;
             if(sparkle > 0)
             {
                 Vector2 pos = (Vector2)transform.position;
-                float approximate = player.DashSparkle * 0.25f + 0.25f;
+                float approximate = Player.DashSparkle * 0.25f + 0.25f;
                 int whole = (int)approximate;
                 approximate -= whole;
                 for (int j = 0; j < whole; ++j)
@@ -102,7 +102,7 @@ public class Gachapon : Body
         bool ret = totalCount > 0;
         if(ret)
         {
-            player.OnUseAbility();
+            Player.OnUseAbility();
         }
         return ret;
     }
@@ -213,28 +213,28 @@ public class Gachapon : Body
         {
             PrimaryColor = new Color(0.6f, 0.933f, 0.255f);
         }
-        while(stacks.Count < player.ChipStacks)
+        while(stacks.Count < Player.ChipStacks)
             AddStack();
-        while (stacks.Count > player.ChipStacks)
+        while (stacks.Count > Player.ChipStacks)
             RemoveStack();
-        if(Control.Ability && !Control.LastAbility)
+        if(Player.Control.Ability && !Player.Control.LastAbility)
         {
             if (RemoveChip())
-                player.abilityTimer = AbilityCD;
+                Player.abilityTimer = AbilityCD;
         }
-        else if(Control.Ability)
+        else if(Player.Control.Ability)
         {
-            while(player.abilityTimer < AbilityCD * 0.8f)
+            while(Player.abilityTimer < AbilityCD * 0.8f)
             {
                 if (RemoveChip())
-                    player.abilityTimer = AbilityCD * 0.8f + AbilityCD * 0.125f * ((player.AbilityRecoverySpeed - 1) * 0.2f + Mathf.Sqrt(player.AbilityRecoverySpeed));
+                    Player.abilityTimer = AbilityCD * 0.8f + AbilityCD * 0.125f * ((Player.AbilityRecoverySpeed - 1) * 0.2f + Mathf.Sqrt(Player.AbilityRecoverySpeed));
                 else
                     break;
             }
         }
-        while(player.AbilityReady)
+        while(Player.AbilityReady)
         {
-            player.abilityTimer += AbilityCD;
+            Player.abilityTimer += AbilityCD;
             AddChip();
         }
         //if (p.AbilityReady && Control.Ability && !Control.LastAbility)

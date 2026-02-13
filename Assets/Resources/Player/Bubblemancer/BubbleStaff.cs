@@ -30,7 +30,7 @@ public class BubbleStaff : BubblemancerWand
     }
     public override void EquipUpdate()
     {
-        player.OldCoalescence += 1;
-        player.SecondaryAttackSpeedModifier += 0.2f;
+        Player.OldCoalescence += 1;
+        Player.SecondaryAttackSpeedModifier += 0.2f;
     }
 }
