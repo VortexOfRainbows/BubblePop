@@ -47,6 +47,9 @@ Current Task List:
 	3. Controls for the separate player (try some special keyboard inputs for now, controller later)	
 	4. Projectile player ownership relations (needed for many situations)
 	5. Normalize player customization layering
+	6. Convert keycodes to proper localized strings for purpose of UI display
+	7. Fix visual bugs related to the player aiming perfectly up and down
+	8. (Consider) Use new unity input system for gamepad controls
 
 
 Done: 
