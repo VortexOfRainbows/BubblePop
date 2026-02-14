@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4177b109971490449e1470692b9c663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MyPlayer: {fileID: 7594576432851193269}
   PointDirOffset: 0
   MoveOffset: 0
   DashOffset: 0

@@ -63,7 +63,7 @@ public class Gachapon : Body
                 stack.Chips.RemoveAt(top);
             }
         }
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)transform.position;
+        Vector2 toMouse = Player.Control.MousePosition - (Vector2)transform.position;
         toMouse = toMouse.normalized * 14;
         float rotation = 12.5f * (totalCount - 1);
         float max = 180 * (1f - 1f / totalCount);

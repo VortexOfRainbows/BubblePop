@@ -64,8 +64,8 @@ public class SlotMachineWeapon : Weapon
     private int JackpotsInARow = 0;
     protected override void AnimationUpdate()
     {
-        Vector2 playerToMouse = Utils.MouseWorld - (Vector2)p.transform.position;
-        Vector2 mouseAdjustedFromPlayer = playerToMouse.magnitude < 4 ? playerToMouse.normalized * 4 + (Vector2)p.transform.position : Utils.MouseWorld;
+        Vector2 playerToMouse = Player.Control.MousePosition - (Vector2)p.transform.position;
+        Vector2 mouseAdjustedFromPlayer = playerToMouse.magnitude < 4 ? playerToMouse.normalized * 4 + (Vector2)p.transform.position : Player.Control.MousePosition;
         float scaleUp = 0.95f;
         if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20 || AttackRight < RightClickEndLag)
             dir = Mathf.Sign(playerToMouse.x);

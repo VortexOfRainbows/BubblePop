@@ -56,7 +56,7 @@ public class BubblemancerWand : Weapon
         float chance = 0.1f + 0.05f * starshotNum;
         if (Utils.RandFloat(1f) < chance)
         {
-            Vector2 toMouse = Utils.MouseWorld - (Vector2)p.gameObject.transform.position;
+            Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.gameObject.transform.position;
             Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
             float spread = Mathf.Max(90 - Player.FasterBulletSpeed * 5, 0);
             float speed = Utils.RandFloat(16, 19) + 1.6f * Player.FasterBulletSpeed;
@@ -77,7 +77,7 @@ public class BubblemancerWand : Weapon
         //    ShotgunPower++;
         //}
 
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)p.gameObject.transform.position;
+        Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.gameObject.transform.position;
         float dir = Mathf.Sign(toMouse.x);
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
         Vector2 attemptedPosition = new Vector2(0.8f, 0.2f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.velocity.normalized * 0.1f;

@@ -83,7 +83,7 @@ public class Book : Weapon
         //    ShotgunPower++;
         //}
 
-        Vector2 toMouse = Utils.MouseWorld - (Vector2)p.gameObject.transform.position;
+        Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.gameObject.transform.position;
         float dir = Mathf.Sign(toMouse.x);
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
         Vector2 attemptedPosition = new Vector2(1.1f, -0.15f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.velocity.normalized * 0.1f;

@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    public Vector2 LookPosition => IsMainPlayerAnimator ? Utils.MouseWorld : Player.Position;
+    public Player MyPlayer;
+    public Vector2 LookPosition => IsMainPlayerAnimator && MyPlayer != null ? MyPlayer.Control.MousePosition : Player.Position;
     public float PointDirOffset;
     public float MoveOffset;
     public float DashOffset;
