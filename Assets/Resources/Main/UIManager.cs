@@ -48,7 +48,7 @@ public partial class Main : MonoBehaviour
                 b.onClick.AddListener(OpenDebugMenu);
         }
         public Canvas MainCanvas;
-        public GameObject PauseMenu, SettingsMenu, DebugMenu;
+        public GameObject PauseMenu, SettingsMenu, DebugMenu, MultiplayerMenu;
         public TextMeshProUGUI DeadHighscoreText;
         public void Pause()
         {

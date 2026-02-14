@@ -119,17 +119,24 @@ public partial class Main : MonoBehaviour
         DebugSettings.Update(this);
         if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex != 0)
         {
-            if (GamePaused)
+            if(UIManager.MultiplayerMenu == null || !UIManager.MultiplayerMenu.activeSelf)
             {
-                if (UIManager.SettingsMenu.activeSelf)
-                    UIManager.ToggleSettings();
-                else if (UIManager.DebugMenu.activeSelf)
-                    UIManager.OpenDebugMenu();
+                if (GamePaused)
+                {
+                    if (UIManager.SettingsMenu.activeSelf)
+                        UIManager.ToggleSettings();
+                    else if (UIManager.DebugMenu.activeSelf)
+                        UIManager.OpenDebugMenu();
+                    else
+                        UIManager.Resume();
+                }
                 else
-                    UIManager.Resume();
+                    UIManager.Pause();
             }
-            else
-                UIManager.Pause();
+            else if (UIManager.MultiplayerMenu != null)
+            {
+                UIManager.MultiplayerMenu.SetActive(false);
+            }
         }
         //if(Main.DebugCheats && Input.GetKey(KeyCode.B))
         //    PowerUp.Spawn(PowerUp.RandomFromPool(0, 1, -1), Utils.MouseWorld);

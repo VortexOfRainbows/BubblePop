@@ -117,6 +117,21 @@ public class NewControls
             AimDown = new KeyHold(KeyCode.K);
             AimRight = new KeyHold(KeyCode.L);
         }
+        else if(ControlSchemeType == 3) //Player 2/Controller
+        {
+
+        }
+        var connectedControllers = Input.GetJoystickNames();
+        if(connectedControllers.Length > 0)
+        {
+            foreach (string s in connectedControllers)
+                Debug.Log(("Controller Connected: " + s).WithColor(ColorHelper.SentinelBlue.ToHexString()));
+            //Controller support TBD
+        }
+        else
+        {
+            Debug.Log("No Controllers Connected".WithColor(ColorHelper.SentinelGreen.ToHexString()));
+        }
     }
     public void UpdateMouse(Vector2 PlayerPosition)
     {

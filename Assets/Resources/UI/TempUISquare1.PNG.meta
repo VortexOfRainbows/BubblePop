@@ -37,9 +37,9 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -48,17 +48,17 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1800
+  spriteBorder: {x: 740, y: 740, z: 740, w: 740}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
-  flipbookRows: 1
-  flipbookColumns: 1
+  flipbookRows: 3
+  flipbookColumns: 3
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -108,18 +108,216 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: TempUISquare_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 166.66666
+        width: 77.333336
+        height: 83.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bacf738523dbdd458940d82fbae0ccc
+      internalID: -632322515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TempUISquare_1
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 166.66666
+        width: 77.333336
+        height: 83.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae8a73b501eda874092caf5f9cf99f55
+      internalID: -201322277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TempUISquare_2
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 166.66666
+        width: 77.333336
+        height: 83.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0e0baf17118c0f4f8116c937d98c6f4
+      internalID: -1709231080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TempUISquare_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 83.666664
+        width: 77.333336
+        height: 83.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70a8a5531d0fdbb4f8a0b74ce3f1318d
+      internalID: -317510121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TempUISquare_4
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 83.666664
+        width: 77.333336
+        height: 83.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cf8304ef1c1c29459517b5138d2ee1d
+      internalID: 972952874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TempUISquare_5
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 83.666664
+        width: 77.333336
+        height: 83.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce7acb81bf49106418c287b36dcd4b47
+      internalID: 450355524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TempUISquare_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 77
+        height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f4ff13288abc6741b024acac3c54350
+      internalID: -965101636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TempUISquare_7
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 0.6666641
+        width: 77.333336
+        height: 83.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b92122c26c95fe64695e12ad2b1cebc8
+      internalID: -1879456379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TempUISquare_8
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 0.6666641
+        width: 77.333336
+        height: 83.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cbc7342318f7b44abe7e2ae6b3a52ac
+      internalID: -1681089505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      TempUISquare_0: -632322515
+      TempUISquare_1: -201322277
+      TempUISquare_2: -1709231080
+      TempUISquare_3: -317510121
+      TempUISquare_4: 972952874
+      TempUISquare_5: 450355524
+      TempUISquare_6: -965101636
+      TempUISquare_7: -1879456379
+      TempUISquare_8: -1681089505
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
