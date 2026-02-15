@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 public class NewControls
 {
@@ -51,11 +52,6 @@ public class NewControls
             return code.ToString();
         }
     }
-    public class KeyDown : KeyHold
-    {
-        public KeyDown(KeyCode bind, KeyCode bind2 = KeyCode.None) : base(bind, bind2) { }
-        public override bool Get() => Input.GetKeyDown(code) || Input.GetKeyDown(secondCode);
-    }
     public class VerboseKeyHold : ControlBinding
     {
         protected readonly KeyCode anti;
@@ -78,19 +74,6 @@ public class NewControls
             return t;
         }
     }
-    public class VerboseKeyDown : VerboseKeyHold
-    {
-        public VerboseKeyDown(KeyCode antiKey = KeyCode.None, params KeyCode[] code) : base(antiKey, code) { }
-        public override bool Get()
-        {
-            if (Input.GetKey(anti))
-                return false;
-            foreach (KeyCode k in codes)
-                if (Input.GetKeyDown(k))
-                    return true;
-            return false;
-        }
-    }
     public class MouseHold : ControlBinding
     {
         public MouseHold(int bind) : base(bind) { }
@@ -104,30 +87,59 @@ public class NewControls
     {
         public MouseDown(int bind) : base(bind) { }
         public override bool Get() => Input.GetMouseButtonDown(Bind);
-
+    }
+    public class ButtonBinding : ControlBinding
+    {
+        public ButtonControl Control { get; set; }
+        public ButtonBinding(ButtonControl control) : base(0)
+        {
+            Control = control;
+        }
+        public override bool Get() => Control.isPressed;
+        public override string ToString()
+        {
+            return Control.ToString();
+        }
+    }
+    public class VerboseButtonBinding : ButtonBinding
+    {
+        public ButtonControl[] Controls;
+        public VerboseButtonBinding(ButtonControl control, params ButtonControl[] extras) : base(control)
+        {
+            Controls = extras;
+        }
+        public override bool Get()
+        {
+            if (base.Get())
+                return true;
+            foreach (ButtonControl k in Controls)
+                if (k.isPressed)
+                    return true;
+            return false;
+        }
+        public override string ToString()
+        {
+            string t = string.Empty;
+            for (int i = 0; i < Controls.Length; ++i)
+                t += Controls[i].ToString() + (i < Controls.Length - 1 ? ", " : "");
+            return t;
+        }
     }
     #endregion
     public NewControls(int ControlScheme)
     {
-        bool controllerConnected = false;
-        var connectedControllers = Input.GetJoystickNames();
-        if (connectedControllers.Length > 0)
-        {
-            foreach (string s in connectedControllers)
-                Debug.Log(("Controller Connected: " + s).WithColor(ColorHelper.SentinelBlue.ToHexString()));
-            controllerConnected = true;
-        }
+        var gamePad = Gamepad.current;
+        bool controllerConnected = gamePad != null;
+        //Gamepad.all;
+        if (controllerConnected)
+            Debug.Log(("Controller Connected: " + gamePad).WithColor(ColorHelper.SentinelBlue.ToHexString()));
         else
-        {
             Debug.Log("No Controllers Connected".WithColor(ColorHelper.SentinelGreen.ToHexString()));
-        }
         ControlSchemeType = ControlScheme;
         if(ControlSchemeType == 0) //Default
         {
             PrimaryAttackHold = new MouseHold(0);
-            PrimaryAttackStart = new MouseDown(0);
             SecondaryAttackHold = new MouseHold(1);
-            SecondaryAttackStart = new MouseDown(1);
             Up = new KeyHold(KeyCode.W, KeyCode.UpArrow);
             Left = new KeyHold(KeyCode.A, KeyCode.LeftArrow);
             Down = new KeyHold(KeyCode.S, KeyCode.DownArrow);
@@ -137,9 +149,7 @@ public class NewControls
         else if(ControlSchemeType == 1) //Player 1
         {
             PrimaryAttackHold = new MouseHold(0);
-            PrimaryAttackStart = new MouseDown(0);
             SecondaryAttackHold = new MouseHold(1);
-            SecondaryAttackStart = new MouseDown(1);
             Up = new KeyHold(KeyCode.UpArrow);
             Left = new KeyHold(KeyCode.LeftArrow);
             Down = new KeyHold(KeyCode.DownArrow);
@@ -149,9 +159,7 @@ public class NewControls
         else //Player 2
         {
             PrimaryAttackHold = new VerboseKeyHold(KeyCode.Space, KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L);
-            PrimaryAttackStart = new VerboseKeyDown(KeyCode.Space, KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L);
             SecondaryAttackHold = new KeyHold(KeyCode.Space);
-            SecondaryAttackStart = new KeyDown(KeyCode.Space);
             Up = new KeyHold(KeyCode.W);
             Left = new KeyHold(KeyCode.A);
             Down = new KeyHold(KeyCode.S);
@@ -163,8 +171,9 @@ public class NewControls
             AimRight = new KeyHold(KeyCode.L);
             if(controllerConnected) //Player 2/Controller
             {
-                SecondaryAttackHold = new KeyHold(KeyCode.JoystickButton4);
-                SecondaryAttackStart = new KeyDown(KeyCode.JoystickButton4);
+                Ability = new VerboseButtonBinding(gamePad.xButton, gamePad.yButton, gamePad.aButton, gamePad.bButton);
+                PrimaryAttackHold = new VerboseButtonBinding(gamePad.rightTrigger, gamePad.rightShoulder);
+                SecondaryAttackHold = new VerboseButtonBinding(gamePad.leftTrigger, gamePad.leftShoulder);
             }
         }
     }
@@ -173,11 +182,11 @@ public class NewControls
         if(ControlSchemeType == 0 || ControlSchemeType == 1)
         {
             MousePosition = Utils.MouseWorld;
-            toMouse = MousePosition - PlayerPosition;
+            AimingVector = MousePosition - PlayerPosition;
         }
         else if (ControlSchemeType == 2)
         {
-            float currentAngle = toMouse.ToRotation();
+            float currentAngle = AimingVector.ToRotation();
             float newAngle;
             Vector2 direction = Vector2.zero;
             if(AimUp)
@@ -193,15 +202,13 @@ public class NewControls
             else
                 newAngle = Mathf.Round(currentAngle * 4 / Mathf.PI) * Mathf.PI / 4f;
             currentAngle = Utils.LerpAngleRadians(currentAngle, newAngle, Utils.DeltaTimeLerpFactor(0.1f));
-            toMouse = new Vector2(1, 0).RotatedBy(currentAngle);
-            MousePosition = PlayerPosition + toMouse.normalized * 10f;
+            AimingVector = new Vector2(1, 0).RotatedBy(currentAngle);
+            MousePosition = PlayerPosition + AimingVector.normalized * 10f;
         }
     }
     public int ControlSchemeType = 0;
     public readonly ControlBinding PrimaryAttackHold;
-    public readonly ControlBinding PrimaryAttackStart;
     public readonly ControlBinding SecondaryAttackHold;
-    public readonly ControlBinding SecondaryAttackStart;
     public readonly ControlBinding AimLeft, AimRight, AimDown, AimUp;
     public readonly ControlBinding Up;
     public readonly ControlBinding Left;
@@ -209,8 +216,9 @@ public class NewControls
     public readonly ControlBinding Right;
     public readonly ControlBinding Ability;
     public bool LastAbility { get; internal set; }
+    public Vector2 MovementVector = Vector2.zero;
+    private Vector2 AimingVector = Vector2.up;
     public Vector2 MousePosition;
-    private Vector2 toMouse = Vector2.up;
     public void PrintAllBindings()
     {
         string concat = string.Empty;
@@ -461,15 +469,15 @@ public partial class Player : Entity
             AimIndicator.transform.SetEulerZ(toMouse.ToRotation() * Mathf.Rad2Deg);
         }
         //THIS IS FOR DEBUG AN SHOULD BE REMOVED AFTER CONTROLS ARE FIGURED OUT
-        if(InstanceID == 1)
-            foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
-            {
-                if (Input.GetKeyDown(key))
-                {
-                    Debug.Log("Key pressed: " + key.ToString());
-                    break; // Stop after finding the first pressed key
-                }
-            }
+        //if(InstanceID == 1)
+            //foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
+            //{
+                //if (Input.GetKeyDown(key))
+                //{
+                    //Debug.Log("Key pressed: " + key.ToString());
+                    //break; // Stop after finding the first pressed key
+                //}
+            //}
     }
     public void SetLife(int num)
     {
