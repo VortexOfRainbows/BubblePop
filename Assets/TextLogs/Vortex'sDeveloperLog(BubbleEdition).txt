@@ -44,12 +44,9 @@ Current Task List:
 	1. Make both players share powers (for now)
 		1. Global power effects should be moved to a separate class and given special logic to prevent stacking effects, as both players will actually have a cloned power pool for now (global effects will also likely still be global when making online multiplayer, so it will work there too (though this is hardly important for a long time))
 	2. Method for targeting the closest player (enemies, coins, etc.)
-	3. Controls for the separate player (try some special keyboard inputs for now, controller later)	
-	4. Projectile player ownership relations (needed for many situations)
-	5. Normalize player customization layering
-	6. Convert keycodes to proper localized strings for purpose of UI display
-	7. Fix visual bugs related to the player aiming perfectly up and down
-	8. (Consider) Use new unity input system for gamepad controls
+	3. Projectile player ownership relations (needed for many situations)
+	4. Normalize player customization layering
+	5. Convert keycodes to proper localized strings for purpose of UI display
 
 
 Done: 
@@ -60,7 +57,7 @@ Done:
 2. Rework some instancing in preparation or multiplayer support
 3. Experimenting with new User Interface elements
 4. WIP Multiplayer Info Screen
-5. WIP Gamepad controls
+5. Add Gamepad controls (for player 2 in multiplayer)
 
 2/11/26 to 2/12/26
 1. Fix bug where switching characters would briefly misorient equips (make them face a wrong direction)

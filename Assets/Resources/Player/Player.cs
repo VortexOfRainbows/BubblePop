@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -18,6 +20,39 @@ public class NewControls
     //    "JoystickButton9"  // R3
     //};
     #region control classes
+    public class DirectionalBinding
+    {
+        public StickControl Stick;
+        public ControlBinding Up, Left, Down, Right;
+        public DirectionalBinding(StickControl stick)
+        {
+            Stick = stick;
+        }
+        public DirectionalBinding(ControlBinding up, ControlBinding left, ControlBinding down, ControlBinding right)
+        {
+            Up = up;
+            Left = left;
+            Down = down;
+            Right = right;
+        }
+        public Vector2 GetVector2()
+        {
+            if(Stick != null)
+                return Stick.ReadValue();
+            return new Vector2(Right - Left, Up - Down).normalized;
+        }
+        public static implicit operator Vector2(DirectionalBinding c) => c.GetVector2();
+        public float x => GetVector2().x;
+        public float y => GetVector2().y;
+        public new string ToString()
+        {
+            if(Stick == null)
+            {
+                return $"{Up}, {Left}, {Down}, {Right}";
+            }
+            return Stick.ToString();
+        }
+    }
     public abstract class ControlBinding
     {
         public ControlBinding(int bind)
@@ -26,10 +61,9 @@ public class NewControls
         }
         protected int Bind;
         public virtual bool Get() => false;
-        public static implicit operator bool(ControlBinding c)
-        {
-            return c.Get();
-        }
+        public virtual float GetContinuous() => Get() ? 1 : 0;
+        public static implicit operator bool(ControlBinding c) => c.Get();
+        public static implicit operator float(ControlBinding c) => c.GetContinuous();
         public new virtual string ToString()
         {
             return Bind.ToString();
@@ -100,6 +134,10 @@ public class NewControls
         {
             return Control.ToString();
         }
+        public override float GetContinuous()
+        {
+            return Control.ReadValue();
+        }
     }
     public class VerboseButtonBinding : ButtonBinding
     {
@@ -136,84 +174,93 @@ public class NewControls
         else
             Debug.Log("No Controllers Connected".WithColor(ColorHelper.SentinelGreen.ToHexString()));
         ControlSchemeType = ControlScheme;
+        if (ControlSchemeType == 1 && controllerConnected)
+            ControlSchemeType = 0;
         if(ControlSchemeType == 0) //Default
         {
             PrimaryAttackHold = new MouseHold(0);
             SecondaryAttackHold = new MouseHold(1);
-            Up = new KeyHold(KeyCode.W, KeyCode.UpArrow);
-            Left = new KeyHold(KeyCode.A, KeyCode.LeftArrow);
-            Down = new KeyHold(KeyCode.S, KeyCode.DownArrow);
-            Right = new KeyHold(KeyCode.D, KeyCode.RightArrow);
+            Movement = new DirectionalBinding(
+                new KeyHold(KeyCode.W, KeyCode.UpArrow), 
+                new KeyHold(KeyCode.A, KeyCode.LeftArrow),
+                new KeyHold(KeyCode.S, KeyCode.DownArrow), 
+                new KeyHold(KeyCode.D, KeyCode.RightArrow));
             Ability = new KeyHold(KeyCode.LeftShift, KeyCode.Space);
         }
         else if(ControlSchemeType == 1) //Player 1
         {
             PrimaryAttackHold = new MouseHold(0);
             SecondaryAttackHold = new MouseHold(1);
-            Up = new KeyHold(KeyCode.UpArrow);
-            Left = new KeyHold(KeyCode.LeftArrow);
-            Down = new KeyHold(KeyCode.DownArrow);
-            Right = new KeyHold(KeyCode.RightArrow);
+            Movement = new DirectionalBinding(
+                new KeyHold(KeyCode.UpArrow),
+                new KeyHold(KeyCode.LeftArrow),
+                new KeyHold(KeyCode.DownArrow),
+                new KeyHold(KeyCode.RightArrow));
             Ability = new KeyHold(KeyCode.RightControl);
         }  
         else //Player 2
         {
-            PrimaryAttackHold = new VerboseKeyHold(KeyCode.Space, KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L);
-            SecondaryAttackHold = new KeyHold(KeyCode.Space);
-            Up = new KeyHold(KeyCode.W);
-            Left = new KeyHold(KeyCode.A);
-            Down = new KeyHold(KeyCode.S);
-            Right = new KeyHold(KeyCode.D);
-            Ability = new KeyHold(KeyCode.LeftShift);
-            AimUp = new KeyHold(KeyCode.I);
-            AimLeft = new KeyHold(KeyCode.J);
-            AimDown = new KeyHold(KeyCode.K);
-            AimRight = new KeyHold(KeyCode.L);
             if(controllerConnected) //Player 2/Controller
             {
-                Ability = new VerboseButtonBinding(gamePad.xButton, gamePad.yButton, gamePad.aButton, gamePad.bButton);
-                PrimaryAttackHold = new VerboseButtonBinding(gamePad.rightTrigger, gamePad.rightShoulder);
-                SecondaryAttackHold = new VerboseButtonBinding(gamePad.leftTrigger, gamePad.leftShoulder);
+                Movement = new DirectionalBinding(gamePad.leftStick);
+                Aim = new DirectionalBinding(gamePad.rightStick);
+                Ability = new VerboseButtonBinding(gamePad.xButton, gamePad.yButton, gamePad.aButton, gamePad.bButton, gamePad.leftStickButton, gamePad.rightStickButton, gamePad.leftTrigger, gamePad.leftShoulder);
+                PrimaryAttackHold = new VerboseButtonBinding(gamePad.rightTrigger);
+                SecondaryAttackHold = new VerboseButtonBinding(gamePad.rightShoulder);
+            }
+            else
+            {
+                PrimaryAttackHold = new VerboseKeyHold(KeyCode.Space, KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L);
+                SecondaryAttackHold = new KeyHold(KeyCode.Space);
+                Movement = new DirectionalBinding(
+                    new KeyHold(KeyCode.W),
+                    new KeyHold(KeyCode.A),
+                    new KeyHold(KeyCode.S),
+                    new KeyHold(KeyCode.D));
+                Ability = new KeyHold(KeyCode.LeftShift);
+                Aim = new DirectionalBinding(
+                    new KeyHold(KeyCode.I),
+                    new KeyHold(KeyCode.J),
+                    new KeyHold(KeyCode.K),
+                    new KeyHold(KeyCode.L));
             }
         }
     }
-    public void UpdateMouse(Vector2 PlayerPosition, float playerDirection)
+    public void UpdateMouse(Vector2 PlayerPosition)
     {
-        if(ControlSchemeType == 0 || ControlSchemeType == 1)
+        if(ControlSchemeType == 0 || ControlSchemeType == 1 || Aim == null)
         {
             MousePosition = Utils.MouseWorld;
             AimingVector = MousePosition - PlayerPosition;
         }
-        else if (ControlSchemeType == 2)
+        else
         {
             float currentAngle = AimingVector.ToRotation();
-            float newAngle;
-            Vector2 direction = Vector2.zero;
-            if(AimUp)
-                direction += Vector2.up;
-            if(AimDown)
-                direction += Vector2.down;
-            if (AimLeft)
-                direction += Vector2.left;
-            if (AimRight)
-                direction += Vector2.right;
+            float newAngle = currentAngle;
+            Vector2 direction = Aim;
             if (direction != Vector2.zero)
                 newAngle = direction.ToRotation();
-            else
+            else if(Aim.Stick == null)
                 newAngle = Mathf.Round(currentAngle * 4 / Mathf.PI) * Mathf.PI / 4f;
             currentAngle = Utils.LerpAngleRadians(currentAngle, newAngle, Utils.DeltaTimeLerpFactor(0.1f));
             AimingVector = new Vector2(1, 0).RotatedBy(currentAngle);
-            MousePosition = PlayerPosition + AimingVector.normalized * 10f;
+            MousePosition = AimingVector.normalized * 10f;
+            float snapDist = 0.25f;
+            if(MousePosition.x < snapDist && MousePosition.x > -snapDist)
+                MousePosition.x = MousePosition.x > 0 ? snapDist : -snapDist;
+            MousePosition += PlayerPosition;
         }
     }
     public int ControlSchemeType = 0;
     public readonly ControlBinding PrimaryAttackHold;
     public readonly ControlBinding SecondaryAttackHold;
     public readonly ControlBinding AimLeft, AimRight, AimDown, AimUp;
-    public readonly ControlBinding Up;
-    public readonly ControlBinding Left;
-    public readonly ControlBinding Down;
-    public readonly ControlBinding Right;
+    public readonly DirectionalBinding Movement;
+    public readonly DirectionalBinding Aim;
+    public bool Up => Movement.y > .001f;
+    public bool Left => Movement.x < -.001f;
+    public bool Down => Movement.y < -.001f;
+    public bool Right => Movement.x > .001f;
     public readonly ControlBinding Ability;
     public bool LastAbility { get; internal set; }
     public Vector2 MovementVector = Vector2.zero;
@@ -224,10 +271,8 @@ public class NewControls
         string concat = string.Empty;
         concat += "Primary: " + PrimaryAttackHold.ToString();
         concat += "\nSecondary: " + SecondaryAttackHold.ToString();
-        concat += "\nUp: " + Up.ToString();
-        concat += "\nLeft: " + Left.ToString();
-        concat += "\nDown: " + Down.ToString();
-        concat += "\nRight: " + Right.ToString();
+        concat += "\nMovement: " + Movement.ToString();
+        concat += "\nAim: " + (Aim != null ? Aim.ToString() : "Mouse");
         concat += "\nAbility: " + Ability.ToString();
         Debug.Log(concat);
     }
@@ -311,13 +356,13 @@ public partial class Player : Entity
         {
             if (velocity.y < 0)
                 velocity.y *= MovementDeacceleration;
-            movespeed.y += cSpeed;
+            movespeed.y += cSpeed * Control.Movement.y;
         }
         else if (!Control.Up && Control.Down)
         {
             if (velocity.y > 0)
                 velocity.y *= MovementDeacceleration;
-            movespeed.y -= cSpeed;
+            movespeed.y += cSpeed * Control.Movement.y;
         }
         else
             velocity.y *= MovementDeacceleration;
@@ -325,18 +370,18 @@ public partial class Player : Entity
         {
             if (velocity.x > 0)
                 velocity.x *= MovementDeacceleration;
-            movespeed.x -= cSpeed;
+            movespeed.x += cSpeed * Control.Movement.x;
         }
         else if (Control.Right && !Control.Left)
         {
             if (velocity.x < 0)
                 velocity.x *= MovementDeacceleration;
-            movespeed.x += cSpeed;
+            movespeed.x += cSpeed * Control.Movement.x;
         }
         else
             velocity.x *= MovementDeacceleration;
         movespeed = movespeed.normalized;
-
+            
         abilityTimer -= Time.fixedDeltaTime * AbilityRecoverySpeed;
         if (abilityTimer < 0)
             abilityTimer = 0;
@@ -344,7 +389,7 @@ public partial class Player : Entity
         Body.AbilityUpdate(ref velocity, movespeed);
 
         //Final stuff
-        velocity += movespeed * cSpeed;
+        velocity += Control.Movement.GetVector2().magnitude * cSpeed * movespeed;
         float currentSpeed = velocity.magnitude;
         if (currentSpeed > MaxSpeed)
         {
@@ -451,9 +496,8 @@ public partial class Player : Entity
     }
     public void LateUpdate()
     {
-        if(Body != null)
-            Control.UpdateMouse(transform.position, Body.FlipDir);
-        if(Control.ControlSchemeType == 0)
+        Control.UpdateMouse(transform.position);
+        if(Control.ControlSchemeType != 2)
         {
             AimIndicator.gameObject.SetActive(false);
         }
