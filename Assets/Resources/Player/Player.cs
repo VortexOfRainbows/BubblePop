@@ -1,24 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 public class NewControls
 {
-    //private string[] joystickButtons = {
-    //    "JoystickButton0", // Typically A (Xbox)/Cross (PS)
-    //    "JoystickButton1", // B / Circle
-    //    "JoystickButton2", // X / Square
-    //    "JoystickButton3", // Y / Triangle
-    //    "JoystickButton4", // LB / L1
-    //    "JoystickButton5", // RB / R1
-    //    "JoystickButton6", // Back / Share
-    //    "JoystickButton7", // Start / Options
-    //    "JoystickButton8", // L3
-    //    "JoystickButton9"  // R3
-    //};
     #region control classes
     public class DirectionalBinding
     {
@@ -48,9 +34,9 @@ public class NewControls
         {
             if(Stick == null)
             {
-                return $"{Up}, {Left}, {Down}, {Right}";
+                return $"{Up.ToString()}, {Left.ToString()}, {Down.ToString()}, {Right.ToString()}";
             }
-            return Stick.ToString();
+            return Stick.shortDisplayName;
         }
     }
     public abstract class ControlBinding
@@ -82,7 +68,7 @@ public class NewControls
         public override string ToString()
         {
             if (secondCode != KeyCode.None)
-                return $"{code}, {secondCode}";
+                return $"{code}/{secondCode}";
             return code.ToString();
         }
     }
@@ -132,7 +118,7 @@ public class NewControls
         public override bool Get() => Control.isPressed;
         public override string ToString()
         {
-            return Control.ToString();
+            return Control.shortDisplayName;
         }
         public override float GetContinuous()
         {
@@ -157,9 +143,9 @@ public class NewControls
         }
         public override string ToString()
         {
-            string t = string.Empty;
+            string t = Control.shortDisplayName;
             for (int i = 0; i < Controls.Length; ++i)
-                t += Controls[i].ToString() + (i < Controls.Length - 1 ? ", " : "");
+                t += ", " + Controls[i].shortDisplayName;
             return t;
         }
     }
@@ -204,9 +190,9 @@ public class NewControls
             {
                 Movement = new DirectionalBinding(gamePad.leftStick);
                 Aim = new DirectionalBinding(gamePad.rightStick);
-                Ability = new VerboseButtonBinding(gamePad.xButton, gamePad.yButton, gamePad.aButton, gamePad.bButton, gamePad.leftStickButton, gamePad.rightStickButton, gamePad.leftTrigger, gamePad.leftShoulder);
-                PrimaryAttackHold = new VerboseButtonBinding(gamePad.rightTrigger);
-                SecondaryAttackHold = new VerboseButtonBinding(gamePad.rightShoulder);
+                Ability = new VerboseButtonBinding(gamePad.xButton, gamePad.yButton, gamePad.aButton, gamePad.bButton, /*gamePad.leftStickButton, gamePad.rightStickButton,*/ gamePad.leftTrigger, gamePad.leftShoulder);
+                PrimaryAttackHold = new ButtonBinding(gamePad.rightTrigger);
+                SecondaryAttackHold = new ButtonBinding(gamePad.rightShoulder);
             }
             else
             {
@@ -266,15 +252,16 @@ public class NewControls
     public Vector2 MovementVector = Vector2.zero;
     private Vector2 AimingVector = Vector2.up;
     public Vector2 MousePosition;
-    public void PrintAllBindings()
+    public string AllBindings()
     {
         string concat = string.Empty;
-        concat += "Primary: " + PrimaryAttackHold.ToString();
-        concat += "\nSecondary: " + SecondaryAttackHold.ToString();
-        concat += "\nMovement: " + Movement.ToString();
-        concat += "\nAim: " + (Aim != null ? Aim.ToString() : "Mouse");
-        concat += "\nAbility: " + Ability.ToString();
-        Debug.Log(concat);
+        string h = ColorHelper.SentinelGreen.ToHexString();
+        concat += "Primary: ".WithColor(h) + PrimaryAttackHold.ToString();
+        concat += "\nSecondary: ".WithColor(h) + SecondaryAttackHold.ToString();
+        concat += "\nMovement: ".WithColor(h) + Movement.ToString();
+        concat += "\nAim: ".WithColor(h) + (Aim != null ? Aim.ToString() : "Mouse");
+        concat += "\nAbility: ".WithColor(h) + Ability.ToString();
+        return concat;
     }
 }
 public static class Control
@@ -344,7 +331,12 @@ public partial class Player : Entity
         PlayerStatUI.SetHeartsToPlayerLife();
         Control = new(AllPlayers.Count > 1 ? InstanceID + 1 : 0);
         Debug.Log($"Initialized Player With Control Scheme: [{Control.ControlSchemeType}]");
-        Control.PrintAllBindings();
+        if(Main.UIManager.MPControls1 != null && Main.UIManager.MPControls2 != null)
+        {
+            var target = InstanceID == 0 ? Main.UIManager.MPControls1 : Main.UIManager.MPControls2;
+            string s = Control.AllBindings();
+            target.text = s;
+        }
     }
     public float abilityTimer = 0;
     private void MovementUpdate()
@@ -512,16 +504,6 @@ public partial class Player : Entity
             AimIndicator.transform.localPosition = toMouse.normalized * 2.5f;
             AimIndicator.transform.SetEulerZ(toMouse.ToRotation() * Mathf.Rad2Deg);
         }
-        //THIS IS FOR DEBUG AN SHOULD BE REMOVED AFTER CONTROLS ARE FIGURED OUT
-        //if(InstanceID == 1)
-            //foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
-            //{
-                //if (Input.GetKeyDown(key))
-                //{
-                    //Debug.Log("Key pressed: " + key.ToString());
-                    //break; // Stop after finding the first pressed key
-                //}
-            //}
     }
     public void SetLife(int num)
     {

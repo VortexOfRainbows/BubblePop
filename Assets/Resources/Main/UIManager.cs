@@ -25,7 +25,7 @@ public partial class Main : MonoBehaviour
         public List<Button> SettingsButton = new();
         public List<Button> QuitButtons = new();
         public List<Button> DebugButtons = new();
-        public TextMeshProUGUI PauseMenuTopText;
+        public TextMeshProUGUI PauseMenuTopText, MPControls1, MPControls2;
         public void AddListeners()
         {
             foreach (Button b in PlayButtons)
