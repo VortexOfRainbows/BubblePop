@@ -63,7 +63,7 @@ public class SupernovaProj : Projectile
     }
     public override void OnKill()
     {
-        NewProjectile<SupernovaExplode>(transform.position, Vector2.zero, Damage);
+        NewProjectile<SupernovaExplode>(transform.position, Vector2.zero, Damage, PlayerOwner);
     }
     public override bool OnInsideTile() => false;
     public override bool OnTileCollide(Collider2D collision) => false;

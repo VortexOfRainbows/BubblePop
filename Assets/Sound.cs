@@ -47,7 +47,7 @@ public class Sound : MonoBehaviour
     {
         if (Source.clip == SoundID.PylonDrone.GetVariation(0))
         {
-            float dist = Vector2.Distance(transform.position, Player.Position);
+            float dist = Vector2.Distance(transform.position, Player.FindClosest(transform.position, out _).Position);
             if (!HasEnded)
                 Source.loop = dist <= Main.PylonActivationDist;
             else

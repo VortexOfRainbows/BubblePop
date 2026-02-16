@@ -38,7 +38,7 @@ public class DragonSlots : SlotMachineWeapon
         if(t == 0)
         {
             for(int j = 1; j < 6; ++j)
-                Projectile.NewProjectile<GachaProj>(shootFrom, norm.RotatedBy(Mathf.Deg2Rad * separation * i + Utils.RandFloat(-5 * j, 5 * j) * Mathf.Deg2Rad) * (15 + 2 * j - Mathf.Abs(i) * 1f), 2, 4);
+                Projectile.NewProjectile<GachaProj>(shootFrom, norm.RotatedBy(Mathf.Deg2Rad * separation * i + Utils.RandFloat(-5 * j, 5 * j) * Mathf.Deg2Rad) * (15 + 2 * j - Mathf.Abs(i) * 1f), 2, Player, 4);
         }
         else
         {

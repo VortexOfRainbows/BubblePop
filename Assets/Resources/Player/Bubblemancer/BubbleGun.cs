@@ -30,8 +30,8 @@ public class BubbleGun : BubblemancerWand
     {
         GunUpdate();
     }
-    private float AttackCooldownLeft => Mathf.Max(0, 14f - (Player.Instance.PrimaryAttackSpeedModifier - 1) * 2f);
-    private float AttackCooldownRight => Mathf.Max(0, 20f - (Player.Instance.SecondaryAttackSpeedModifier - 1) * 20f);
+    private float AttackCooldownLeft => Mathf.Max(0, 14f - (Player.PrimaryAttackSpeedModifier - 1) * 2f);
+    private float AttackCooldownRight => Mathf.Max(0, 20f - (Player.SecondaryAttackSpeedModifier - 1) * 20f);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft < -AttackCooldownLeft && AttackRight < 0)
@@ -64,7 +64,7 @@ public class BubbleGun : BubblemancerWand
             float speed = Utils.RandFloat(16, 17) + 2.4f * Player.FasterBulletSpeed;
             Vector2 velocity = toMouse.normalized * speed + awayFromWand * 4;
             Vector2 norm = velocity.normalized * (12 + Player.FasterBulletSpeed * 0.5f) + Utils.RandCircle(4) * (10f / (10f + Player.FasterBulletSpeed));
-            Projectile.NewProjectile<StarProj>((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), 2, transform.position.x + norm.x, transform.position.y + norm.y, Utils.RandInt(2) * 2 - 1);
+            Projectile.NewProjectile<StarProj>((Vector2)transform.position + awayFromWand * 2, velocity.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad), 2, Player, transform.position.x + norm.x, transform.position.y + norm.y, Utils.RandInt(2) * 2 - 1);
             --starshotNum;
         }
     }
@@ -110,7 +110,7 @@ public class BubbleGun : BubblemancerWand
                     float spread = spreadAmt * (i - (shotCount - 1) * 0.5f);
                     Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand,
                         toMouse.normalized.RotatedBy(spread * Mathf.Deg2Rad)
-                        * speed + Utils.RandCircle(0.15f), 1);
+                        * speed + Utils.RandCircle(0.15f), 1, Player);
                     TryDoingStarShot(ref starshotNum);
                 }
                 Player.bonusBubbles %= 5;
@@ -127,7 +127,7 @@ public class BubbleGun : BubblemancerWand
                 {
                     AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.5f);
                     AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(0), Player.Position, 0.6f, 1f);
-                    Projectile.NewProjectile<BigBubble>((Vector2)transform.position + awayFromWand, Vector2.zero, 1, 149, 0);
+                    Projectile.NewProjectile<BigBubble>((Vector2)transform.position + awayFromWand, Vector2.zero, 1, Player, 149, 0);
                 }
                 if (AttackRight < maxCharge)
                 {

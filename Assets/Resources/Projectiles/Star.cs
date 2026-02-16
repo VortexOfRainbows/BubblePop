@@ -9,7 +9,7 @@ public class StarProj : Projectile
         if(Damage <= 0)
             Damage = 2;
         Friendly = true;
-        MyTrail = SpecialTrail.NewTrail(transform, Color.Lerp(Color.blue * 0.85f, Player.Instance.Body.PrimaryColor, 0.75f).WithAlpha(0.4f), 1, 0.25f, 0.3f);
+        MyTrail = SpecialTrail.NewTrail(transform, Color.Lerp(Color.blue * 0.85f, PlayerOwner.Body.PrimaryColor, 0.75f).WithAlpha(0.4f), 1, 0.25f, 0.3f);
     }
     public override void AI()
     {
@@ -31,13 +31,13 @@ public class StarProj : Projectile
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 0.66f, 0.085f);
 
         Vector2 target = new Vector2(Data1, Data2);
-        if(Player.Instance.OrbitalStars)
+        if(PlayerOwner.OrbitalStars)
         {
-            Vector2 rotatedTarget = ((Vector2)transform.position).RotatedBy(Mathf.Deg2Rad * 15 * Data[2], Player.Position);
+            Vector2 rotatedTarget = ((Vector2)transform.position).RotatedBy(Mathf.Deg2Rad * 15 * Data[2], PlayerOwner.Position);
             Data1 = rotatedTarget.x;
             Data2 = rotatedTarget.y;
-            RB.position += Player.Instance.RB.velocity * Time.fixedDeltaTime * 0.9f;
-            RB.velocity += Player.Instance.RB.velocity * 0.1f * Time.fixedDeltaTime;
+            RB.position += PlayerOwner.RB.velocity * Time.fixedDeltaTime * 0.9f;
+            RB.velocity += PlayerOwner.RB.velocity * 0.1f * Time.fixedDeltaTime;
         }
         Vector2 toTarget = (target - (Vector2)transform.position);
         float dist = toTarget.magnitude;
@@ -45,14 +45,14 @@ public class StarProj : Projectile
         Vector2 newVelo = RB.velocity.magnitude * toTarget;
         if (timer < 60)
             RB.velocity *= 1.002f;
-        if ((timer < 100 && dist > 1) || Player.Instance.OrbitalStars)
+        if ((timer < 100 && dist > 1) || PlayerOwner.OrbitalStars)
         {
-            RB.velocity = Vector2.Lerp(RB.velocity, newVelo, Player.Instance.OrbitalStars ? 0.0775f : 0.065f).normalized * RB.velocity.magnitude;
+            RB.velocity = Vector2.Lerp(RB.velocity, newVelo, PlayerOwner.OrbitalStars ? 0.0775f : 0.065f).normalized * RB.velocity.magnitude;
         }
         else if (timer < 100)
             timer = 100;
         RB.rotation += Mathf.Sqrt(RB.velocity.magnitude) * Mathf.Sign(RB.velocity.x);
-        float timeOut = Player.Instance.OrbitalStars ? 220 : 150;
+        float timeOut = PlayerOwner.OrbitalStars ? 220 : 150;
         float fadeOut = 20f;
         if (timer > timeOut + fadeOut)
         {
@@ -75,7 +75,7 @@ public class StarProj : Projectile
     {
         if (timer > 150)
             return false; 
-        if (Player.Instance.OrbitalStars)
+        if (PlayerOwner.OrbitalStars)
         {
             homingCounter += 3; //Basically check homing again if it was successful previously
         }
@@ -83,7 +83,7 @@ public class StarProj : Projectile
             homingCounter += 2;
         Vector2 targetPos = new Vector2(Data1, Data2);
         float modAmt = 0.025f + Mathf.Sqrt(scale) * 0.0075f;
-        if (Player.Instance.OrbitalStars)
+        if (PlayerOwner.OrbitalStars)
             modAmt *= 0.045f;
         targetPos = Vector2.Lerp(targetPos, target.transform.position, modAmt);
         Data1 = targetPos.x;
@@ -92,12 +92,12 @@ public class StarProj : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        if(Player.Instance.Supernova > 0)
+        if(PlayerOwner.Supernova > 0)
         {
             float chance = 0.2f;
             if(Utils.RandFloat() < chance)
             {
-                NewProjectile<SupernovaProj>(transform.position, Vector2.zero, 5 + Player.Instance.Supernova * 5);
+                NewProjectile<SupernovaProj>(transform.position, Vector2.zero, 5 + PlayerOwner.Supernova * 5, PlayerOwner);
             }
         }
         OnHitByStar(target);

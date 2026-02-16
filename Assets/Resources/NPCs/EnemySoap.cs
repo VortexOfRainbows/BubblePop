@@ -73,7 +73,7 @@ public class EnemySoap : Enemy
     private Vector2 FindTargetedPlayerPosition() {
         float offsetX = Random.Range(-5f, 5f);
         float offsetY = Random.Range(-5f, 5f);
-        return new Vector2 (Player.Position.x + offsetX, Player.Position.y + offsetY);
+        return Target.Position + new Vector2 (offsetX, offsetY);
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

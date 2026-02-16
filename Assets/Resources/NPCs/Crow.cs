@@ -45,7 +45,7 @@ public class Crow : Enemy
     }
     public void MoveUpdate()
     {
-        targetedLocation = Player.Position;
+        targetedLocation = Target.Position;
         Vector2 toTarget = targetedLocation - (Vector2)transform.position;
         float dist = toTarget.magnitude;
         if(dist < 11)
@@ -111,7 +111,7 @@ public class Crow : Enemy
                 for (int i = -1; i <= 1; ++i)
                 {
                     Vector2 v = norm.RotatedBy(i * Mathf.Deg2Rad * 35f);
-                    Projectile.NewProjectile<Bullet>((Vector2)transform.position + v * 1.5f, v * 6);
+                    Projectile.NewProjectile<Bullet>((Vector2)transform.position + v * 1.5f, v * 6, 1, this);
                 }
             }
         }

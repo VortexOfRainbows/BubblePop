@@ -68,7 +68,7 @@ public class RockSpider : Enemy
     public int MoveCounter = 0;
     public void UpdateEye()
     {
-        Vector2 toPlayer = Player.Position - (Vector2)transform.position;
+        Vector2 toPlayer = Target.Position - (Vector2)transform.position;
         Vector2 norm = toPlayer.normalized;
         norm.x *= Utils.SignNoZero(Body.transform.localScale.x);
         float f = 1;
@@ -78,14 +78,14 @@ public class RockSpider : Enemy
     }
     private Vector2 FindTargetedPlayerPosition()
     {
-        Vector2 toPlayer = Player.Position - RB.position;
+        Vector2 toPlayer = Target.Position - RB.position;
         float magnitude = Mathf.Min(5, toPlayer.magnitude);
         toPlayer = toPlayer.normalized;
         return RB.position + toPlayer * magnitude + new Vector2(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
     }
     public override void AI()
     {
-        Vector2 toPlayer = Player.Position - (Vector2)transform.position;
+        Vector2 toPlayer = Target.Position - (Vector2)transform.position;
         Vector2 norm = toPlayer.normalized;
         UpdateEye();
         Timer++;
@@ -100,7 +100,7 @@ public class RockSpider : Enemy
                     float otherMult = (i + 0.5f - c / 2f);
                     float j = otherMult * 25f;
                     Vector2 spread = norm.RotatedBy(j * Mathf.Deg2Rad);
-                    Projectile.NewProjectile<Bullet>((Vector2)Eye.transform.position + spread * 0.5f, spread * 5.5f, 1, 1.15f);
+                    Projectile.NewProjectile<Bullet>((Vector2)Eye.transform.position + spread * 0.5f, spread * 5.5f, 1, this, 1.15f);
                 }
                 ShotRecoil = -1.7f;
                 MoveCounter = 0;

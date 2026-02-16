@@ -103,12 +103,12 @@ public static class WaveDeck
     {
         return new ArbitrarySpawnPattern(delegate() 
         { 
-            return Player.Position + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
+            return Player.Instance1Pos + new Vector2(Random.Range(minXBound, maxXBound), Random.Range(minYBound, maxYBound));
         }, true);
     }
     public static ArbitrarySpawnPattern RightOnPlayer()
     {
-        return new ArbitrarySpawnPattern(() => Player.Position, true);
+        return new ArbitrarySpawnPattern(() => Player.Instance1Pos, true);
     }
     public static WaveCard DrawSingleSpawn(GameObject enemy)
     {

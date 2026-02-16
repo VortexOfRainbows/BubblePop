@@ -18,11 +18,11 @@ public class SmallBubble : Projectile
         Penetrate = 1;
         Friendly = false;
         SpriteRendererGlow.gameObject.SetActive(false);
-        RB.velocity *= 1 + 0.1f * Player.Instance.FasterBulletSpeed;
+        RB.velocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
 
-        if (Player.Instance.EternalBubbles > 0)
+        if (PlayerOwner.EternalBubbles > 0)
         {
-            int bonus = Player.Instance.EternalBubbles;
+            int bonus = PlayerOwner.EternalBubbles;
             if (bonus > 9)
             {
                 RandomLifeShorten -= 10 * (bonus - 9);
@@ -102,12 +102,12 @@ public class BigBubble : Projectile
     public override void OnKill()
     {
         AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.8f, 0.9f);
-        if (Player.Instance.BubbleBlast > 0)
+        if (PlayerOwner.BubbleBlast > 0)
         {
-            float amt = 1 + (3 + Data2) * Player.Instance.BubbleBlast;
-            float speed = 3.5f + (Data2 * 1.25f + Player.Instance.ChargeShotDamage * 0.75f);
+            float amt = 1 + (3 + Data2) * PlayerOwner.BubbleBlast;
+            float speed = 3.5f + (Data2 * 1.25f + PlayerOwner.ChargeShotDamage * 0.75f);
             for (int i = 0; i < amt; i++)
-                NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1);
+                NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.2f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1, PlayerOwner);
         }
         for (int i = 0; i < 30; i++)
         {
@@ -121,41 +121,41 @@ public class BigBubble : Projectile
     }
     public void BigBubbleAI()
     {
-        if (Player.Instance.Weapon is not BubblemancerWand wand)
+        if (PlayerOwner.Weapon is not BubblemancerWand wand)
         {
             return;
         }
         int attackRight = (int)wand.AttackRight;
-        Vector2 toMouse = Utils.MouseWorld - Player.Position;
+        Vector2 toMouse = PlayerOwner.Control.MousePosition - PlayerOwner.Position;
         if (attackRight >= 50 && timer <= 0)
         {
-            int maximumTarget = Player.Instance.OldCoalescence + 2;
+            int maximumTarget = PlayerOwner.OldCoalescence + 2;
             float maximumSize = 0.8f + maximumTarget * .3f;
 
             int target = (int)(attackRight - 50) / 100;
             float targetSize = target * maximumSize / maximumTarget + 0.8f + attackRight / 240f;
-            targetSize *= 1f + Mathf.Sqrt(Player.Instance.ChargeShotDamage) * 0.4f;
+            targetSize *= 1f + Mathf.Sqrt(PlayerOwner.ChargeShotDamage) * 0.4f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetSize, 0.1f);
             timer = -attackRight;
             Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             if (Utils.RandFloat(1) < 0.2f)
-                ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + Player.Instance.RB.velocity * 0.9f, 0.2f, 0.3f, 0, Player.ProjectileColor);
+                ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + PlayerOwner.RB.velocity * 0.9f, 0.2f, 0.3f, 0, Player.ProjectileColor);
             if (attackRight >= Data1)
             {
                 for (int i = 0; i < 30; i++)
                 {
                     circular = new Vector2(targetSize * 0.5f + 1f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-                    ParticleManager.NewParticle((Vector2)transform.position + circular, .3f, -circular.normalized * Utils.RandFloat(5, 10) + Player.Instance.RB.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, Player.ProjectileColor);
+                    ParticleManager.NewParticle((Vector2)transform.position + circular, .3f, -circular.normalized * Utils.RandFloat(5, 10) + PlayerOwner.RB.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, Player.ProjectileColor);
                 }
                 Data1 += 100;
             }
-            float r = Player.Instance.Weapon.transform.eulerAngles.z * Mathf.Deg2Rad;
-            Vector2 awayFromWand = Player.Instance.Weapon is BubbleGun ? new Vector2(1.8f + targetSize * 0.5f, 0.2f * Mathf.Sign(Player.Instance.Animator.PointDirOffset)).RotatedBy(r) : new Vector2(1.4f, (0.51f + targetSize * 0.49f) * Mathf.Sign(Player.Instance.Animator.PointDirOffset)).RotatedBy(r);
+            float r = PlayerOwner.Weapon.transform.eulerAngles.z * Mathf.Deg2Rad;
+            Vector2 awayFromWand = PlayerOwner.Weapon is BubbleGun ? new Vector2(1.8f + targetSize * 0.5f, 0.2f * Mathf.Sign(PlayerOwner.Animator.PointDirOffset)).RotatedBy(r) : new Vector2(1.4f, (0.51f + targetSize * 0.49f) * Mathf.Sign(PlayerOwner.Animator.PointDirOffset)).RotatedBy(r);
 
-            transform.position = Vector2.Lerp(transform.position, (Vector2)Player.Instance.Weapon.transform.position + awayFromWand, 0.15f);
+            transform.position = Vector2.Lerp(transform.position, (Vector2)PlayerOwner.Weapon.transform.position + awayFromWand, 0.15f);
             RB.velocity *= 0.8f;
-            RB.velocity += Player.Instance.RB.velocity * 0.1f;
-            Damage = (1 + target) * (2 + Player.Instance.ChargeShotDamage);
+            RB.velocity += PlayerOwner.RB.velocity * 0.1f;
+            Damage = (1 + target) * (2 + PlayerOwner.ChargeShotDamage);
             Data2 = target;
             //rb.rotation = toMouse.ToRotation() * Mathf.Rad2Deg;
         }
@@ -164,7 +164,7 @@ public class BigBubble : Projectile
             AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1.1f, 0.6f);
             if (toMouse.magnitude < 6)
                 toMouse = toMouse.normalized * 6;
-            Vector2 mouse = Player.Position + toMouse;
+            Vector2 mouse = PlayerOwner.Position + toMouse;
             toMouse = mouse - (Vector2)transform.position;
             RB.velocity = toMouse * 0.1f + toMouse.normalized * (10f + Mathf.Min(24, 24f * (timer + 50) / -200f));
             timer = 1;
@@ -182,17 +182,17 @@ public class BigBubble : Projectile
             Friendly = true;
             RB.velocity *= 1 - 0.0035f - timer / 4000f;
             timer++;
-            if (Player.Instance.SoapySoap > 0 && timer <= 120)
+            if (PlayerOwner.SoapySoap > 0 && timer <= 120)
             {
-                int count = (int)(2.0f + Data2 * 2f + Player.Instance.SoapySoap * 3f); //2 + 1.5 + 3.5 = 7
+                int count = (int)(2.0f + Data2 * 2f + PlayerOwner.SoapySoap * 3f); //2 + 1.5 + 3.5 = 7
                 int interval = 120 / count;
                 if (interval <= 0)
                     interval = 1;
                 if (timer % interval == 0)
                 {
                     Vector2 norm = RB.velocity.normalized;
-                    float veloMult = Utils.RandFloat(0.25f, 3f + Player.Instance.FasterBulletSpeed * 1.25f);
-                    NewProjectile<SmallBubble>((Vector2)transform.position + Utils.RandCircle(transform.lossyScale.x * 0.5f), Utils.RandCircle(2) - norm * veloMult, 1);
+                    float veloMult = Utils.RandFloat(0.25f, 3f + PlayerOwner.FasterBulletSpeed * 1.25f);
+                    NewProjectile<SmallBubble>((Vector2)transform.position + Utils.RandCircle(transform.lossyScale.x * 0.5f), Utils.RandCircle(2) - norm * veloMult, 1, PlayerOwner);
                 }
             }
             if (timer > 160)
@@ -251,7 +251,7 @@ public class ThunderBubble : Projectile
 {
     private Color ColorVar;
     public bool Recalled = false;
-    public float ScaleFactor => 2.0f * Player.Instance.ZapRadiusMult;
+    public float ScaleFactor => 2.0f * PlayerOwner.ZapRadiusMult;
     public override void Init()
     {
         ColorVar = Color.Lerp(Player.ProjectileColor, Color.blue, 0.5f);
@@ -267,10 +267,10 @@ public class ThunderBubble : Projectile
         immunityFrames = 25;
         UpdateSize();
 
-        float total = Player.Instance.Electroluminescence;
+        float total = PlayerOwner.Electroluminescence;
         for(int i = 0; i < total; ++i)
         {
-            ThunderLightSpearCaster TLSC = NewProjectile<ThunderLightSpearCaster>(transform.position, Vector2.zero, 2.0f + Player.Instance.LightSpear * 0.5f, i, total, ScaleFactor * 1.1f, Utils.SignNoZero(RB.velocity.x)).GetComponent<ThunderLightSpearCaster>();
+            ThunderLightSpearCaster TLSC = NewProjectile<ThunderLightSpearCaster>(transform.position, Vector2.zero, 2.0f + PlayerOwner.LightSpear * 0.5f, PlayerOwner, i, total, ScaleFactor * 1.1f, Utils.SignNoZero(RB.velocity.x)).GetComponent<ThunderLightSpearCaster>();
             TLSC.FakeParent = transform;
         }
     }
@@ -290,7 +290,7 @@ public class ThunderBubble : Projectile
 
         float deathTime = 10800; //Only really times out when you stop recall
         float FadeOutTime = 60;
-        if (timer > deathTime + FadeOutTime || Player.Instance.Weapon is not Book)
+        if (timer > deathTime + FadeOutTime || PlayerOwner.Weapon is not Book)
         {
             Kill();
         }
@@ -300,16 +300,16 @@ public class ThunderBubble : Projectile
             if(!Recalled)
             {
                 AudioManager.PlaySound(SoundID.ElectricZap.GetVariation(0), transform.position, 0.3f, 0.66f);
-                if(Player.Instance.EchoBubbles > 0)
+                if(PlayerOwner.EchoBubbles > 0)
                 {
-                    NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, Player.Instance.EchoBubbles);
+                    NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, PlayerOwner, PlayerOwner.EchoBubbles);
                 }
-                Damage *= 2 + Player.Instance.ThunderBubbleReturnDamageBonus;
+                Damage *= 2 + PlayerOwner.ThunderBubbleReturnDamageBonus;
                 Recalled = true;
                 //cmp.c2D.enabled = false;
             }
             timer = deathTime;
-            Vector2 weaponPos = Player.Instance.Weapon.transform.position;
+            Vector2 weaponPos = PlayerOwner.Weapon.transform.position;
             Vector2 toWeapon = weaponPos - (Vector2)transform.position;
             float perc = Book.ClosingPercent;
             perc = perc * perc;
@@ -319,7 +319,7 @@ public class ThunderBubble : Projectile
             SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f * iPer);
             SpriteRendererGlow.color = ColorVar.WithAlphaMultiplied(iPer * iPer) * 0.6f * iPer * (1 - perc);
             transform.localScale = iPer * targetScale * Vector3.one;
-            SpriteRendererGlow.transform.localScale = iPer * ((1 - perc) * 0.5f + 0.5f) * 4.0f * Player.Instance.ZapRadiusMult * Vector3.one;
+            SpriteRendererGlow.transform.localScale = iPer * ((1 - perc) * 0.5f + 0.5f) * 4.0f * PlayerOwner.ZapRadiusMult * Vector3.one;
         }
         else
         {
@@ -355,7 +355,7 @@ public class ThunderBubble : Projectile
         else if (timer <= deathTime)
         {
             Vector2 norm = velo.normalized;
-            Vector2 targetPos = Recalled ? Player.Instance.Weapon.transform.position : RB.position - norm * transform.localScale.x * 2.5f;
+            Vector2 targetPos = Recalled ? PlayerOwner.Weapon.transform.position : RB.position - norm * transform.localScale.x * 2.5f;
             Pylon.SummonLightning2(transform.position, targetPos, ColorVar, 0.15f);
         }
         RB.velocity = velo;
@@ -371,15 +371,15 @@ public class ThunderBubble : Projectile
     }
     public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
     {
-        float currentSpeed = RB.velocity.magnitude + Player.Instance.HomingRangeSqrt * 0.01f;
-        float modAmt = 0.04f + Player.Instance.HomingRangeSqrt * 0.04f;
+        float currentSpeed = RB.velocity.magnitude + PlayerOwner.HomingRangeSqrt * 0.01f;
+        float modAmt = 0.04f + PlayerOwner.HomingRangeSqrt * 0.04f;
         RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm * currentSpeed, modAmt).normalized * currentSpeed;
         return false;
     }
     public override void OnKill()
     {
-        if(Player.Instance.TotalBookBalls > 0)
-            Player.Instance.TotalBookBalls--;
+        if(PlayerOwner.TotalBookBalls > 0)
+            PlayerOwner.TotalBookBalls--;
         //int c = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
         //for (int i = 0; i < c; i++)
         //{
@@ -425,13 +425,13 @@ public class ThoughtBubbleThunderAura : Projectile
     private Color c;
     public override void Init()
     {
-        c = Player.Instance.Hat is Crown ? new Color(1, 0, 0, 0.7f) : new Color(1, 0.9f, .5f, 0.5f) * 0.9f;
+        c = PlayerOwner.Hat is Crown ? new Color(1, 0, 0, 0.7f) : new Color(1, 0.9f, .5f, 0.5f) * 0.9f;
         SpriteRenderer.enabled = false;
         transform.localScale *= 1.5f;
         Penetrate = -1;
         immunityFrames = 50;
         Friendly = false;
-        C2D.radius *= 4 * (Player.Instance.TrailOfThoughts / 10f + 1);
+        C2D.radius *= 4 * (PlayerOwner.TrailOfThoughts / 10f + 1);
         SpriteRendererGlow.transform.localScale = Vector3.one * 2f;
         SpriteRendererGlow.color = Color.black;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;

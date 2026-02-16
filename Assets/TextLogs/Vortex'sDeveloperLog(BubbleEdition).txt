@@ -43,21 +43,22 @@ Current Task List:
 3. Multiplayer:
 	1. Make both players share powers (for now)
 		1. Global power effects should be moved to a separate class and given special logic to prevent stacking effects, as both players will actually have a cloned power pool for now (global effects will also likely still be global when making online multiplayer, so it will work there too (though this is hardly important for a long time))
-	2. Method for targeting the closest player (enemies, coins, etc.)
-	3. Projectile player ownership relations (needed for many situations)
-	4. Normalize player customization layering
-	5. Convert keycodes to proper localized strings for purpose of UI display
+	2. Normalize player customization layering
+	3. Make Portals attempt to spawn far away from BOTH players, rather than just the first player
 
 
 Done: 
 
-2/13/26 to 2/14/26
+2/13/26 to 2/15/26
 1. WIP Control Scheme reworks in preparation for multiplayer support
 	1. WIP Aiming for player 2
 2. Rework some instancing in preparation or multiplayer support
 3. Experimenting with new User Interface elements
 4. WIP Multiplayer Info Screen
 5. Add Gamepad controls (for player 2 in multiplayer)
+6. Projectiles can now have an OWNER, which allows for multiplayer functionality and ai logic to be improved
+7. Removed Coalescence's hidden .01 seconds absorption scaling per stack 
+8. Remove reliance on Player.Instance and related properites/fields, which makes things work better in multiplayer
 
 2/11/26 to 2/12/26
 1. Fix bug where switching characters would briefly misorient equips (make them face a wrong direction)
@@ -83,6 +84,7 @@ Done:
 7. Adjustments to shard cost logic to allow for scaling replication costs 
 	1. May also reduce some lag when the menu is open
 8. Wave-only wave health modifier scaling reduced by 50% (permanent is unchanged)
+9. Algorithm for finding the closest enemy now uses SQRMagnitude, which should reduce lag somewhat (especially for things like calculator)
 
 2/7/26 to 2/8/26
 1. Increase world padding by 5 (hopefully this will prevent some out of bound issues)

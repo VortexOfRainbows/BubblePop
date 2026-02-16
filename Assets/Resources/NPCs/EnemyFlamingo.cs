@@ -35,13 +35,13 @@ public class EnemyFlamingo : EnemyDuck
         }
     }
     private void ShootProjectile() {
-        Vector2 projectileDirection = (Player.Position - (Vector2)transform.position).normalized * ProjVelocity;
-        Projectile.NewProjectile<FlamingoFeather>(transform.position, projectileDirection.RotatedBy(Mathf.Deg2Rad * Utils.RandFloat(-15, 15)));
+        Vector2 projectileDirection = (Target.Position - (Vector2)transform.position).normalized * ProjVelocity;
+        Projectile.NewProjectile<FlamingoFeather>(transform.position, projectileDirection.RotatedBy(Mathf.Deg2Rad * Utils.RandFloat(-15, 15)), 1, this);
         AudioManager.PlaySound(SoundID.FlamingoShot.GetVariation(0), transform.position, 0.05f, 1.2f);
     }
     protected override Vector2 FindLocation()
     {
-        return (Vector2)transform.position.Lerp(Player.Position, Utils.RandFloat(0.3f, 0.5f)) + Utils.RandCircleEdge(Utils.RandFloat(4f, 8f));
+        return (Vector2)transform.position.Lerp(Target.Position, Utils.RandFloat(0.3f, 0.5f)) + Utils.RandCircleEdge(Utils.RandFloat(4f, 8f));
     }
     public override void OnKill()
     {

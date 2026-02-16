@@ -127,9 +127,9 @@ public partial class Main : MonoBehaviour
         }
         public static void StaticPlaySound()
         {
-            Vector3 pos = Vector3.zero;
-            if (Player.Instance != null)
-                pos = Player.Position;
+            //Vector3 pos = Vector3.zero;
+            //if (Player.Instance != null)
+            //    pos = Player.Instance1Pos;
             AudioManager.PlaySound(SoundID.BubblePop, Vector3.zero, 1f, 1.0f);
         }
         public void QuitGame()

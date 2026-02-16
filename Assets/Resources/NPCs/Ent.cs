@@ -38,7 +38,7 @@ public class Ent : Enemy
     public void MoveUpdate()
     {
         float dir = Utils.SignNoZero(Visual.transform.localScale.x);
-        targetedLocation = Player.Position;
+        targetedLocation = Target.Position;
         Vector2 toTarget = targetedLocation - (Vector2)transform.position;
         RB.velocity += toTarget.normalized * moveSpeed;
         RB.velocity *= inertiaMult;
@@ -58,7 +58,7 @@ public class Ent : Enemy
         AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.5f, 0.9f);
         for(int i = 0; i < 8; ++i)
         {
-            Projectile.NewProjectile<Bullet>(transform.position, new Vector2(0, 7).RotatedBy(Mathf.PI * i / 4f));
+            Projectile.NewProjectile<Bullet>(transform.position, new Vector2(0, 7).RotatedBy(Mathf.PI * i / 4f), 1, this);
         }
     }
 }

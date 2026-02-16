@@ -51,11 +51,11 @@ public class EnemyBossDuck : EnemyDuck
     }
     private void ShootProjectile(int c = 8)
     {
-        Vector2 projectileDirection = (Player.Position - (Vector2)this.transform.position).normalized * projectileSpeed;
+        Vector2 projectileDirection = (Target.Position - (Vector2)this.transform.position).normalized * projectileSpeed;
         for(int i = 0; i < c; i++)
         {
             Vector2 circular = projectileDirection.RotatedBy(i / (float)c * 2 * Mathf.PI);
-            Projectile.NewProjectile<Laser>(this.transform.position, circular * 2.5f);
+            Projectile.NewProjectile<Laser>(this.transform.position, circular * 2.5f, 1, this);
         }
         AudioManager.PlaySound(SoundID.LenardLaser.GetVariation(0), transform.position, 0.3f, 1.5f);
     }
@@ -67,7 +67,7 @@ public class EnemyBossDuck : EnemyDuck
     }
     protected override Vector2 FindLocation()
     {
-        return (Vector2)transform.position.Lerp(Player.Position, Utils.RandFloat(0.1f, 0.5f)) + Utils.RandCircleEdge(Utils.RandFloat(5f, 15f));
+        return (Vector2)transform.position.Lerp(Target.Position, Utils.RandFloat(0.1f, 0.5f)) + Utils.RandCircleEdge(Utils.RandFloat(5f, 15f));
     }
     public bool PlayMusic = false;
     new public void Update()

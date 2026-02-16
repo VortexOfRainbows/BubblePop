@@ -15,9 +15,10 @@ public class Pylon : MonoBehaviour
     public bool EndlessPylon = false;
     public bool Complete { get; private set; } = false;
     public bool Purified { get; private set; } = false;
+    public Player ClosestPlayer => Player.FindClosest(transform.position, out _);
     public void FixedUpdate()
     {
-        bool nearby = Player.Position.Distance(transform.position) < Main.PylonActivationDist;
+        bool nearby = ClosestPlayer.Distance(gameObject) < Main.PylonActivationDist;
         if (nearby)
             if (!SoundActive)
                 sound = AudioManager.PlaySound(SoundID.PylonDrone, transform.position, 1f, 1, 0);
@@ -98,7 +99,7 @@ public class Pylon : MonoBehaviour
         animCounter++;
         float sin = Mathf.Sin(animCounter * Mathf.Deg2Rad * 1.4f);
         float lerp = 0.02f;
-        if(CompleteAnimCounter >= 1 || Player.Position.Distance(transform.position) < Main.PylonActivationDist * 0.9f)
+        if(CompleteAnimCounter >= 1 || ClosestPlayer.Distance(gameObject) < Main.PylonActivationDist * 0.9f)
         {
             if(CompleteAnimCounter == 0)
                 AudioManager.PlaySound(SoundID.ChestSpawn, transform.position, 0.5f, 0.2f, 0);

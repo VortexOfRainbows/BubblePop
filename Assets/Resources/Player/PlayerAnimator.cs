@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     public Player MyPlayer;
-    public Vector2 LookPosition => IsMainPlayerAnimator && MyPlayer != null ? MyPlayer.Control.MousePosition : Player.Position;
+    public Vector2 LookPosition => IsMainPlayerAnimator && MyPlayer != null ? MyPlayer.Control.MousePosition : Player.FindClosest(transform.position, out _).Position;
     public float PointDirOffset;
     public float MoveOffset;
     public float DashOffset;

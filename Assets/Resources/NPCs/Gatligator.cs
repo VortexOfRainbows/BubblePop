@@ -53,11 +53,11 @@ public class Gatligator : Enemy
         Vector2 toTarget = targetedLocation - (Vector2)transform.position;
         if(movingMode == 0)
         {
-            targetedLocation = Player.Position;
+            targetedLocation = Target.Position;
         }
         else if(toTarget.magnitude < 1)
         {
-            targetedLocation = Player.Position + Utils.RandCircle(18);
+            targetedLocation = Target.Position + Utils.RandCircle(18);
         }
         RB.velocity += toTarget.normalized * moveSpeed;
         RB.velocity *= inertiaMult;
@@ -73,12 +73,12 @@ public class Gatligator : Enemy
             movingMode++;
             movingMode %= 2;
             if(movingMode == 1)
-                targetedLocation = Player.Position + Utils.RandCircle(18);
+                targetedLocation = Target.Position + Utils.RandCircle(18);
         }
     }
     public void GunUpdate()
     {
-        Vector2 toTarget = Player.Position - (Vector2)Gun.transform.position;
+        Vector2 toTarget = Target.Position - (Vector2)Gun.transform.position;
         toTarget.x *= Visual.transform.localScale.x;
         float lerp = 0.02f;
         if (direction != Visual.transform.localScale.x)
@@ -93,7 +93,7 @@ public class Gatligator : Enemy
         {
             ShootTimer -= ShootSpeed;
             Vector2 norm = (GunTip.position - Gun.transform.position).normalized;
-            Projectile.NewProjectile<Gatorade>(GunTip.transform.position, norm * 16f);
+            Projectile.NewProjectile<Gatorade>(GunTip.transform.position, norm * 16f, 1, this);
             AudioManager.PlaySound(SoundID.ShootBubbles, GunTip.transform.position, 0.5f, 1.5f);
         }
     }

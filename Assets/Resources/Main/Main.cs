@@ -10,8 +10,8 @@ public partial class Main : MonoBehaviour
     public static int GameUpdateCount = 0;
     public const float SnakeEyeChance = 0.0278f;
     public static bool DebugCheats { get; set; } = false;
-    public static bool PlayerNearPylon => CurrentPylon != null && Player.Position.Distance(CurrentPylon.transform.position) < PylonActivationDist && !CurrentPylon.Complete;
-    public static Vector2 PylonPositon => CurrentPylon == null ? Player.Position : CurrentPylon.transform.position;
+    public static bool PlayerNearPylon => CurrentPylon != null && CurrentPylon.ClosestPlayer.Distance(CurrentPylon.gameObject) < PylonActivationDist && !CurrentPylon.Complete;
+    public static Vector2 PylonPositon => CurrentPylon == null ? Player.Instance1Pos : CurrentPylon.transform.position;
     public static Pylon CurrentPylon { get; private set; } = null;
     private static Pylon PrevPylon { get; set; } = null;
     public static bool PylonActive => CurrentPylon != null && !CurrentPylon.Purified && CurrentPylon.WaveActive;
@@ -38,8 +38,8 @@ public partial class Main : MonoBehaviour
         PrevPylon = CurrentPylon;
         if (CurrentPylon == null)
             CurrentPylon = pylon;
-        else if(pylon.transform.position.Distance(Player.Position)
-            < CurrentPylon.transform.position.Distance(Player.Position))
+        else if(pylon.transform.position.Distance(CurrentPylon.ClosestPlayer.Position)
+            < CurrentPylon.transform.position.Distance(CurrentPylon.ClosestPlayer.Position))
         {
             CurrentPylon = pylon;
         }
@@ -50,7 +50,7 @@ public partial class Main : MonoBehaviour
         transform.position = Vector3.zero;
         GameUpdateCount++;
         Projectile.StaticUpdate();
-        if (!WavesUnleashed && Vector2.Distance(Player.Position, PylonPositon) > PylonActivationDist)
+        if (!WavesUnleashed && Vector2.Distance(Player.FindClosest(PylonPositon, out _).Position, PylonPositon) > PylonActivationDist)
             CurrentPylon = null;
         //if (DebugCheats && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.RightShift))
         //    PlayerData.ResetAll();

@@ -139,7 +139,7 @@ public class Book : Weapon
                         JustOpened = false;
                     ++Player.TotalBookBalls;
                     float speed = 3.3f + Player.FasterBulletSpeed * 0.33f;
-                    Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand, 1);
+                    Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand, 1, Player);
                 }
             }
             else if (AttackRight >= 0)
@@ -168,7 +168,7 @@ public class Book : Weapon
                         JustOpened = false;
                     ++Player.TotalBookBalls;
                     float speed = 12.0f + Player.FasterBulletSpeed * 1.2f;
-                    Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand, 1);
+                    Projectile.NewProjectile<ThunderBubble>(shootSpot, toMouse.normalized * speed + awayFromWand, 1, Player);
                 }
             }
             float sin = Mathf.Abs(MathF.Sin(percent * Mathf.PI));

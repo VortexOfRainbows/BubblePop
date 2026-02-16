@@ -80,7 +80,7 @@ public class Infector : Enemy
     }
     public void UpdateEye()
     {
-        Vector2 toPlayer = Player.Position - (Vector2)transform.position;
+        Vector2 toPlayer = Target.Position - (Vector2)transform.position;
         Vector2 norm = toPlayer.normalized;
         float f = 1;
         float percent = Mathf.Clamp(ImplantAnimation / 90f, 0, 1f);
@@ -126,7 +126,7 @@ public class Infector : Enemy
     }
     public override void AI()
     {
-        Vector2 playerPos = Player.Position;
+        Vector2 playerPos = Target.Position;
         Vector2 toPlayer = playerPos - (Vector2)transform.position;
         Vector2 norm = toPlayer.normalized;
         float dist = toPlayer.magnitude;
@@ -219,8 +219,8 @@ public class Infector : Enemy
                 if (TargetPos == Vector2.zero)
                 {
                     Vector2 circular = new Vector2(-Mathf.Clamp(dist - 4, 10, 14.5f), 0).RotatedBy(toPlayer.ToRotation() + Utils.RandFloat(Mathf.PI / 2f, Mathf.PI) * Utils.Rand1OrMinus1());
-                    TargetPos = Player.Position + circular;
-                    PrevPlayerPos = Player.Position;
+                    TargetPos = playerPos + circular;
+                    PrevPlayerPos = playerPos;
                     if(!StartedMoving)
                     {
                         AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.7f, 0.7875f, 0);
@@ -281,7 +281,7 @@ public class Infector : Enemy
                     float otherMult = (i + 0.5f - c / 2f);
                     float j = otherMult * 25f;
                     Vector2 spread = norm.RotatedBy(j * Mathf.Deg2Rad);
-                    Projectile.NewProjectile<Bullet>((Vector2)Eye.transform.position + spread * 0.5f, spread * (FinishedImplanting ? 7.5f : 10 - Mathf.Abs(otherMult) * 2), 1, 1.3f);
+                    Projectile.NewProjectile<Bullet>((Vector2)Eye.transform.position + spread * 0.5f, spread * (FinishedImplanting ? 7.5f : 10 - Mathf.Abs(otherMult) * 2), 1, this, 1.3f);
                 }
                 ShotRecoil = -0.6f;
                 RB.velocity -= norm * 2.0f;

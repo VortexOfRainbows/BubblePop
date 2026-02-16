@@ -103,7 +103,7 @@ public class ArbitrarySpawnPattern : EnemySpawnPattern
     {
         if(locationFunction == null)
         {
-            Vector2 toPlayer = (Player.Position - Location.Value).normalized;
+            Vector2 toPlayer = (Player.Instance1Pos - Location.Value).normalized;
             Location += toPlayer * 1.25f + Utils.RandCircle(2f);
             if (finalGeneration)
                 return Location.Value;
@@ -129,7 +129,7 @@ public class CircleSpawnPattern : EnemySpawnPattern
     }
     public override Vector2 RegenerateLocation(int attemptNumber, bool finalGeneration = false)
     {
-        Vector2 toPlayer = (Player.Position - Location).normalized;
+        Vector2 toPlayer = (Player.Instance1Pos - Location).normalized;
         Location += toPlayer * 1.25f + Utils.RandCircle(2f);
         if (finalGeneration)
             return Location;
@@ -159,13 +159,13 @@ public class EnemyPattern
     }
     public Vector2 ShiftLocationIfOutOfBounds(Vector2 location)
     {
-        Vector2 toPlayer = Player.Position - location;
+        Vector2 toPlayer = Player.Instance1Pos - location;
         float dist = toPlayer.magnitude;
         toPlayer = toPlayer.normalized;
         float minDist = SpawnPattern.MinimumDistanceToPlayer;
         if (dist < minDist)
         {
-            location = Player.Position - toPlayer * minDist;
+            location = Player.Instance1Pos - toPlayer * minDist;
         }
         int att = -1;
         while (!ValidLocation(location) && ++att <= 200)

@@ -70,7 +70,7 @@ public class EnemyDuck : Enemy
         MoveUpdate();
     }
     protected virtual Vector2 FindLocation() {
-        return (Vector2)transform.position.Lerp(Player.Position, Utils.RandFloat(0.25f, 0.75f)) + Utils.RandCircleEdge(Utils.RandFloat(2.5f, 10f));
+        return (Vector2)transform.position.Lerp(Target.Position, Utils.RandFloat(0.25f, 0.75f)) + Utils.RandCircleEdge(Utils.RandFloat(2.5f, 10f));
     }
     public override void OnKill()
     {

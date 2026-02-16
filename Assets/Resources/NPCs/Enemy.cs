@@ -78,6 +78,7 @@ public static class EnemyID
 }
 public class Enemy : Entity
 {
+    public Player Target => Player.FindClosest(transform.position, out _);
     public DetailedDescription MyDescription => StaticData.Description;
     public virtual void InitializeDescription(ref DetailedDescription description)
     {
@@ -215,12 +216,13 @@ public class Enemy : Entity
     }
     public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, List<Enemy> ignore, bool requireNonImmune = true, bool requireNonHost = false)
     {
+        searchDistance *= searchDistance;
         norm = Vector2.zero;
         Enemy best = null;
         foreach (Enemy e in Enemies)
         {
             Vector2 toDest = e.transform.position - position;
-            float dist = toDest.magnitude;
+            float dist = toDest.sqrMagnitude;
             //Debug.Log(e.tag);
             if (dist <= searchDistance && 
                 (!requireNonImmune || e.UniversalImmuneFrames <= 0) && 

@@ -77,18 +77,18 @@ public class Bulb : Hat
     public static readonly float DefaultShotSpeed = 2.2f;
     public static readonly float MaxRange = 48;
     private float lightSpearCounter = 0;
-    public static float SpeedModifier => Player.Instance.PassiveAttackSpeedModifier; //temporarily use instance
+    public static float SpeedModifier(Player p) => p.PassiveAttackSpeedModifier; //temporarily use instance
     public override void PostEquipUpdate()
     {
         if(Player.LightSpear > 0)
         {
-            float Damage = 2.0f + Player.Instance.LightSpear * 0.5f;
+            float Damage = 2.0f + Player.LightSpear * 0.5f;
             Vector2 shootFromPos = (Vector2)transform.position + new Vector2(0, 0.6f).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) * transform.lossyScale.x;
             float shotTime = DefaultShotSpeed;
-            lightSpearCounter += Time.fixedDeltaTime * SpeedModifier;
+            lightSpearCounter += Time.fixedDeltaTime * SpeedModifier(Player);
             while(lightSpearCounter > shotTime)
             {
-                if(LaunchSpear(shootFromPos, out Vector2 norm, new(), Player.LightChainReact, Damage: Damage))
+                if(LaunchSpear(shootFromPos, out Vector2 norm, new(), Player, Player.LightChainReact, Damage: Damage))
                 {
                     velocity -= norm;
                     lightSpearCounter -= shotTime;
@@ -98,18 +98,17 @@ public class Bulb : Hat
             }
         }
     }
-    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, List<Enemy> ignore, int BounceNum = 0, float bonusRange = 0, float defaultRangeMult = 1f, float Damage = 2.0f)
+    public static bool LaunchSpear(Vector2 shootFromPos, out Vector2 norm, List<Enemy> ignore, Player player, int BounceNum = 0, float bonusRange = 0, float defaultRangeMult = 1f, float Damage = 2.0f)
     {
-        Player tempPlayer = Player.Instance;
-        float speedMod = SpeedModifier;
+        float speedMod = SpeedModifier(player);
         float spearSpeed = 5 + speedMod * 0.015f; // this only matters for visuals as the spear is hitscan
-        float spearRange = ((tempPlayer.LightSpear + 3) * 2.25f) * defaultRangeMult + bonusRange; //starts at 3 * 3 = 9, +2.25 range per stack
+        float spearRange = ((player.LightSpear + 3) * 2.25f) * defaultRangeMult + bonusRange; //starts at 3 * 3 = 9, +2.25 range per stack
         if (spearRange > MaxRange)
             spearRange = MaxRange;
         norm = Vector2.zero;
         Vector2 searchPosition = shootFromPos;
         bool hitTarget = false;
-        int totalHits = Mathf.Max(1, 1 + tempPlayer.Refraction);
+        int totalHits = Mathf.Max(1, 1 + player.Refraction);
         int enemiesFound = 0;
         for (int i = 0; i < totalHits; ++i)
         {
@@ -121,9 +120,9 @@ public class Bulb : Hat
                     norm = norm2;
                     if (Damage < 0.5f)
                         return true;
-                    Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, Damage, target.transform.position.x, target.transform.position.y, BounceNum, -1);
+                    Projectile.NewProjectile<LightSpear>(shootFromPos, norm * spearSpeed, Damage, player, target.transform.position.x, target.transform.position.y, BounceNum, -1);
                     searchPosition = target.transform.position;
-                    spearRange = 7 + tempPlayer.Refraction * 2; //Starts at 7 + 2 = 9, scales by + 2 per stack
+                    spearRange = 7 + player.Refraction * 2; //Starts at 7 + 2 = 9, scales by + 2 per stack
                 }
                 ignore.Add(target);
                 hitTarget = true;
@@ -139,7 +138,7 @@ public class Bulb : Hat
             Damage *= 0.8f;
             if (Damage < 0.5f)
                 return hitTarget;
-            Projectile.NewProjectile<LightSpear>(shootFromPos, newNorm.normalized * spearSpeed, Damage, target.transform.position.x, target.transform.position.y, BounceNum, radians);
+            Projectile.NewProjectile<LightSpear>(shootFromPos, newNorm.normalized * spearSpeed, Damage, player, target.transform.position.x, target.transform.position.y, BounceNum, radians);
         }
         return hitTarget;
     }

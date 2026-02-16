@@ -52,11 +52,11 @@ public class PaperPlane : Projectile
             if(Recalled)
             {
                 Vector2 norm = velo.normalized;
-                int shotCount = 5 + Player.Instance.bonusBubbles;
+                int shotCount = 5 + PlayerOwner.bonusBubbles;
                 for (int i = 0; i < shotCount; ++i)
                 {
                     float sp = i * 2 + 12;
-                    NewProjectile<SmallBubble>((Vector2)transform.position, norm * sp, 1);
+                    NewProjectile<SmallBubble>((Vector2)transform.position, norm * sp, 1, PlayerOwner);
                 }
                 Kill();
                 return;
@@ -65,9 +65,9 @@ public class PaperPlane : Projectile
         }
 
         float deathTime = 240;
-        if (Player.Instance.EternalBubbles > 0)
+        if (PlayerOwner.EternalBubbles > 0)
         {
-            int bonus = Player.Instance.EternalBubbles;
+            int bonus = PlayerOwner.EternalBubbles;
             if (bonus > 9)
             {
                 deathTime += 10 * (bonus - 9);
@@ -98,7 +98,7 @@ public class PaperPlane : Projectile
     {
         Vector2 toCursor = Utils.MouseWorld - (Vector2)transform.position;
         float speed = RB.velocity.magnitude;
-        float lerpAmt = 0.036f + 0.01f * Player.Instance.HomingRangeSqrt;
+        float lerpAmt = 0.036f + 0.01f * PlayerOwner.HomingRangeSqrt;
         RB.velocity = Vector2.Lerp(RB.velocity, toCursor.normalized * speed, lerpAmt).normalized * speed;
     }
     public override void OnKill()
@@ -175,9 +175,9 @@ public class LatentCharge : Projectile
     public override void OnKill()
     {
         float amt = Data1;
-        float speed = (4.0f + amt * 0.6f) * (0.8f + 0.2f * Player.Instance.ZapRadiusMult);
+        float speed = (4.0f + amt * 0.6f) * (0.8f + 0.2f * PlayerOwner.ZapRadiusMult);
         for (int i = 0; i < Data1; i++)
-            NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.0f, 1.1f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1);
+            NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.0f, 1.1f)), 0).RotatedBy((i + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1, PlayerOwner);
         int c = Data.Length > 0 ? (int)Mathf.Sqrt(Data1 + 6) * 2 + 3 : 3;
         for (int i = 0; i < c; i++)
         {

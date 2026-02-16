@@ -11,26 +11,26 @@ public class GachaProj : Projectile
         SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
         timer2 = 0;
         transform.localScale *= 0.5f;
-        Damage = 4 * (1 + 0.1f * Player.Instance.ConsolationPrize);
+        Damage = 4 * (1 + 0.1f * PlayerOwner.ConsolationPrize);
         Penetrate = 2;
         Friendly = true;
         if (Data1 == 1)
         {
-            Damage = 10 + Player.Instance.PhilosophersStone;
+            Damage = 10 + PlayerOwner.PhilosophersStone;
             SpriteRenderer.sprite = Main.TextureAssets.CoinProj;
             c = ColorHelper.RarityColors[0];
             Penetrate = 2;
         }
         else if (Data1 == 2)
         {
-            Damage = 20 + Player.Instance.PhilosophersStone * 2;
+            Damage = 20 + PlayerOwner.PhilosophersStone * 2;
             SpriteRenderer.sprite = Main.TextureAssets.GoldProj;
             c = ColorHelper.RarityColors[4];
             Penetrate = 3;
         }
         else if (Data1 == 3)
         {
-            Damage = 40 + Player.Instance.PhilosophersStone * 4;
+            Damage = 40 + PlayerOwner.PhilosophersStone * 4;
             SpriteRenderer.sprite = Main.TextureAssets.GemProj;
             c = ColorHelper.RarityColors[1];
             Penetrate = -1;
@@ -47,7 +47,7 @@ public class GachaProj : Projectile
             transform.localScale *= 0.5f;
             immunityFrames /= 2;
         }
-        RB.velocity *= 1 + 0.1f * Player.Instance.FasterBulletSpeed;
+        RB.velocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = c * 0.875f;
         SpriteRendererGlow.transform.localScale *= 0.75f;
@@ -102,7 +102,7 @@ public class GachaProj : Projectile
             count = 3;
         else if (Data1 == 3)
             count = 5;
-        count *= 1.0f + 0.5f * Player.Instance.PhilosophersStone;
+        count *= 1.0f + 0.5f * PlayerOwner.PhilosophersStone;
         float bonus = count - (int)count;
         if (Utils.RandFloat() < bonus)
             count++;
@@ -122,8 +122,8 @@ public class GachaProj : Projectile
     }
     public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
     {
-        float currentSpeed = RB.velocity.magnitude * 0.99f + Player.Instance.HomingRangeSqrt * 0.125f;
-        float modAmt = 0.1f + Player.Instance.HomingRangeSqrt * 0.05f;
+        float currentSpeed = RB.velocity.magnitude * 0.99f + PlayerOwner.HomingRangeSqrt * 0.125f;
+        float modAmt = 0.1f + PlayerOwner.HomingRangeSqrt * 0.05f;
         RB.velocity = Vector2.Lerp((1 - modAmt) * RB.velocity, norm * currentSpeed, modAmt).normalized * currentSpeed;
         return false;
     }
@@ -140,7 +140,7 @@ public class GachaTokenProj : Projectile
         transform.localScale *= 0.7f;
         Penetrate = -1;
         Friendly = true;
-        RB.velocity *= 1 + 0.1f * Player.Instance.FasterBulletSpeed;
+        RB.velocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = c;
         SpriteRendererGlow.transform.localScale *= 1.25f; //2.5
@@ -166,7 +166,7 @@ public class GachaTokenProj : Projectile
         Vector2 target = new(Data[0], Data[1]);
         if(SwitchedPos)
         {
-            target = Player.Position;
+            target = PlayerOwner.Position;
             Data[0] = target.x;
             Data[1] = target.y;
         }
@@ -189,7 +189,7 @@ public class GachaTokenProj : Projectile
         {
             if(!SwitchedPos)
             {
-                target = Player.Position;
+                target = PlayerOwner.Position;
                 Data[0] = target.x;
                 Data[1] = target.y;
                 SwitchedPos = true;
@@ -223,7 +223,7 @@ public class GachaTokenProj : Projectile
     }
     public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
     {
-        Vector2 target2 = Vector2.Lerp(new Vector2(Data1, Data2), target.transform.position, 0.025f + Player.Instance.HomingRangeSqrt * 0.05f);
+        Vector2 target2 = Vector2.Lerp(new Vector2(Data1, Data2), target.transform.position, 0.025f + PlayerOwner.HomingRangeSqrt * 0.05f);
         Data[0] = target2.x;
         Data[1] = target2.y;
         return false;

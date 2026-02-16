@@ -31,7 +31,7 @@ public class Coin : MonoBehaviour
         float radius = IsHeart ? 0.35f : 0.7025f;
         radius *= transform.localScale.x;
         radius += Player.Instance.transform.localScale.x * 0.7f;
-        if (transform.position.Distance(Player.Position) < radius)
+        if (Player.FindClosest(transform.position, out _).Distance(gameObject) < radius)
         {
             if (!CanCollect())
                 return;

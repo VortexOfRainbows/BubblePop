@@ -215,7 +215,7 @@ public class SlotMachineWeapon : Weapon
         {
             if (Hitbox == null && AttackRight == AttackCooldownRight)
             {
-                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 10 * (1 + 0.1f * Player.Instance.ConsolationPrize), 0).GetComponent<MeleeHitbox>();
+                Hitbox = Projectile.NewProjectile<MeleeHitbox>(transform.position, Vector2.zero, 10 * (1 + 0.1f * Player.ConsolationPrize), Player, 0).GetComponent<MeleeHitbox>();
                 AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.75f, 0.85f, 0);
             }
             float percent = (AttackRight - WindUpTime) / (AttackCooldownRight - WindUpTime);
@@ -317,7 +317,7 @@ public class SlotMachineWeapon : Weapon
     }
     public virtual void Shoot(Vector2 shootFrom, Vector2 norm, float separation, int i, int type)
     {
-        Projectile.NewProjectile<GachaProj>(shootFrom, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 2, type);
+        Projectile.NewProjectile<GachaProj>(shootFrom, norm.RotatedBy(Mathf.Deg2Rad * separation * i) * (23 - Mathf.Abs(i) * 1f), 2, Player, type);
     }
     public void UpdateCoins(float percent, float launchPercent)
     {
@@ -357,7 +357,7 @@ public class SlotMachineWeapon : Weapon
         float dir = Utils.SignNoZero(BatterUpTokens[i].localScale.x);
         Vector2 mousePos = Player.Position + (Vector2)previousAttemptedPosition.normalized * 15.5f;
         AudioManager.PlaySound(SoundID.Teleport, BatterUpTokens[i].transform.position, 0.2f, 1.7f, 0);
-        Projectile.NewProjectile<GachaTokenProj>(BatterUpTokens[i].transform.position, new Vector2(44 * -dir, 0).RotatedBy((BatterUpTokens[i].localEulerAngles.z - dir * 33f) * Mathf.Deg2Rad), 5 + 0.5f * Player.Instance.ConsolationPrize,
+        Projectile.NewProjectile<GachaTokenProj>(BatterUpTokens[i].transform.position, new Vector2(44 * -dir, 0).RotatedBy((BatterUpTokens[i].localEulerAngles.z - dir * 33f) * Mathf.Deg2Rad), 5 + 0.5f * Player.ConsolationPrize, Player,
             mousePos.x, mousePos.y, dir, 0.5f * Mathf.Cos(Mathf.PI * (0.5f - interval)));
         Destroy(BatterUpTokens[i].gameObject);
         BatterUpTokens.RemoveAt(i);

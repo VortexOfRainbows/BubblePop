@@ -5,9 +5,9 @@ public class Projectile : MonoBehaviour
 {
     public static void StaticUpdate()
     {
-        if(Main.GameUpdateCount % 2 == 0 && Player.Instance != null)
+        if(Main.GameUpdateCount % 2 == 0)
         {
-            float absorptionMaxTime = Player.Instance.Coalescence + 19;
+            float absorptionMaxTime = 20;
             for (int i = RecentlySpawnedSmallBubbles.Count - 1; i >= 0; --i)
             {
                 SmallBubble otherBubbles = RecentlySpawnedSmallBubbles[i];
@@ -22,7 +22,6 @@ public class Projectile : MonoBehaviour
     public SpriteRenderer SpriteRenderer => cmp.spriteRenderer;
     public Rigidbody2D RB => cmp.rb;
     public CircleCollider2D C2D => cmp.c2D;
-    public static int colorGradient = 0;
     public float timer = 0f;
     public float timer2 = 0f;
     public float[] Data;
@@ -38,10 +37,16 @@ public class Projectile : MonoBehaviour
     public bool Hostile = false;
     public int immunityFrames = 100;
     public Vector2 startPos = Vector2.zero;
-    public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, float damage = 1, params float[] data) where T : Projectile
+    public Player PlayerOwner { get; private set; }
+    public Entity Owner { get; private set; }
+    //public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, float damage = 1, params float[] data) where T : Projectile
+    //{
+    //    return NewProjectile<T>(pos, velo, damage, null, data);
+    //}
+    public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, float damage, Entity owner, params float[] data) where T : Projectile
     {
         bool hasMerged = true;
-        if(Player.Instance.Coalescence > 0 && typeof(T) == typeof(SmallBubble))
+        if(owner != null && owner is Player p && p.Coalescence > 0 && typeof(T) == typeof(SmallBubble))
         {
             hasMerged = false;
             for(int i = RecentlySpawnedSmallBubbles.Count - 1; i >= 0; --i)
@@ -62,7 +67,7 @@ public class Projectile : MonoBehaviour
                     otherBubbles.Data1 += 1;
                     float startingSpeed = otherBubbles.RB.velocity.magnitude;
                     otherBubbles.RB.velocity = Vector2.Lerp(otherBubbles.RB.velocity * 1.5f, velo, 3f / (otherBubbles.Data1 + 3f)).normalized * startingSpeed;
-                    if(otherBubbles.Data1 >= Player.Instance.Coalescence)
+                    if(otherBubbles.Data1 >= p.Coalescence)
                         RecentlySpawnedSmallBubbles.RemoveAt(i);
                     return null;
                 }
@@ -71,6 +76,12 @@ public class Projectile : MonoBehaviour
         GameObject Proj = Instantiate(Main.PrefabAssets.DefaultProjectile, pos, Quaternion.identity);
         Projectile proj = Proj.AddComponent<T>();
         proj.cmp = Proj.GetComponent<ProjComponents>();
+        if (owner != null)
+        {
+            proj.Owner = owner;
+            if (owner is Player p2)
+                proj.PlayerOwner = p2;
+        }
         if (proj is BoxProjectile)
         {
             proj.cmp.c2D.enabled = false;
@@ -128,7 +139,7 @@ public class Projectile : MonoBehaviour
     public void FixedUpdate()
     {
         AI();
-        if(CanBeAffectedByHoming() && (Friendly || this is SupernovaProj) && Player.Instance.HomingRange > 0)
+        if(CanBeAffectedByHoming() && (Friendly || this is SupernovaProj) && PlayerOwner.HomingRange > 0)
             HomingBehavior();
         if(!World.WithinBorders(transform.position))
             if(OnInsideTile())
@@ -136,9 +147,9 @@ public class Projectile : MonoBehaviour
     }
     public void HitTarget(Entity target)
     {
-        //if(Player.Instance.RecursiveSubspaceLightning > 0)
+        //if(PlayerOwner.RecursiveSubspaceLightning > 0)
         //{
-            //int eyes = Player.Instance.RecursiveSubspaceLightning + 2;
+            //int eyes = PlayerOwner.RecursiveSubspaceLightning + 2;
             //float recursiveDepth = 1;
             //if (this is SnakeLightning)
             //{
@@ -153,9 +164,9 @@ public class Projectile : MonoBehaviour
             if (Damage > 0.1f)
                 Damage = Mathf.Max(0.1f, Damage * 0.875f);
         }
-        if(Player.Instance.SnakeEyes > 0)
+        if(PlayerOwner.SnakeEyes > 0)
         {
-            int poison = Player.Instance.SnakeEyes;
+            int poison = PlayerOwner.SnakeEyes;
             if (poison > 0)
             {
                 if (poison >= 81 || Utils.RandFloat(1) < 0.19f + poison * 0.01f)
@@ -179,7 +190,7 @@ public class Projectile : MonoBehaviour
     {
         if (target.Life <= 0)
         {
-            if (Player.Instance.Starbarbs > 0)
+            if (PlayerOwner.Starbarbs > 0)
             {
                 AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, 1);
                 Vector2 norm = RB.velocity.normalized;
@@ -193,20 +204,20 @@ public class Projectile : MonoBehaviour
                     randPos = randPos.RotatedBy(randRot);
                     ParticleManager.NewParticle(target.transform.position, Utils.RandFloat(0.95f, 1.05f), -norm * 4.5f + randPos * Utils.RandFloat(4, 5) + Utils.RandCircle(.3f), 0.1f, .6f, 0, SpriteRenderer.color);
                 }
-                int stars = 2 + Player.Instance.Starbarbs;
+                int stars = 2 + PlayerOwner.Starbarbs;
                 for (; stars > 0; --stars)
                 {
                     Vector2 targetPos = (Vector2)target.transform.position + norm * 9 + Utils.RandCircle(7);
-                    NewProjectile<StarProj>(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, targetPos.x, targetPos.y, Utils.RandInt(2) * 2 - 1);
+                    NewProjectile<StarProj>(target.transform.position, norm.RotatedBy(Utils.RandFloat(360) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, Owner, targetPos.x, targetPos.y, Utils.RandInt(2) * 2 - 1);
                 }
             }
-            if (Player.Instance.LuckyStar > 0 && Player.Instance.LuckyStarItemsAcquiredThisWave < Player.Instance.LuckyStarItemsAllowedPerWave)
+            if (PlayerOwner.LuckyStar > 0 && PlayerOwner.LuckyStarItemsAcquiredThisWave < PlayerOwner.LuckyStarItemsAllowedPerWave)
             {
-                float chance = 0.03f + Player.Instance.LuckyStar * 0.01f;
+                float chance = 0.03f + PlayerOwner.LuckyStar * 0.01f;
                 if (Utils.RandFloat(1) < chance)
                 {
                     PowerUp.Spawn(PowerUp.RandomFromPool(), (Vector2)target.transform.position);
-                    Player.Instance.LuckyStarItemsAcquiredThisWave++;
+                    PlayerOwner.LuckyStarItemsAcquiredThisWave++;
                 }
             }
         }
@@ -262,12 +273,12 @@ public class Projectile : MonoBehaviour
     {
         if(homingCounter++ % 4 == 0)
         {
-            float range = Player.Instance.HomingRange;
+            float range = PlayerOwner.HomingRange;
             Enemy target = Enemy.FindClosest(transform.position, range, out Vector2 norm2, true);
             if (target != null && DoHomingBehavior(target, norm2, range))
             {
-                float currentSpeed = RB.velocity.magnitude + Player.Instance.HomingRangeSqrt * 0.225f;
-                float modAmt = 0.0625f + Player.Instance.HomingRangeSqrt * 0.03f;
+                float currentSpeed = RB.velocity.magnitude + PlayerOwner.HomingRangeSqrt * 0.225f;
+                float modAmt = 0.0625f + PlayerOwner.HomingRangeSqrt * 0.03f;
                 RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm2 * currentSpeed, modAmt).normalized * currentSpeed;
             }
         }
@@ -311,7 +322,7 @@ public class FlamingoFeather : Projectile
         if (timer < 300)
         {
             RB.velocity += RB.velocity.normalized * 0.003f;
-            RB.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.03f;
+            RB.velocity += (PlayerOwner.Position - (Vector2)transform.position).normalized * 0.03f;
         }
         if (timer > 510)
         {
@@ -355,7 +366,7 @@ public class Laser : Projectile
         if (timer < 200)
         {
             RB.velocity += RB.velocity.normalized * 0.02f;
-            RB.velocity += (Player.Position - (Vector2)transform.position).normalized * 0.08f * (1 - timer / 200f);
+            RB.velocity += (PlayerOwner.Position - (Vector2)transform.position).normalized * 0.08f * (1 - timer / 200f);
         }
         if (timer > 610)
         {
@@ -419,7 +430,7 @@ public class PhoenixFire : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        if(Player.Instance.Body is Gachapon && target is EnemyBossDuck)
+        if(PlayerOwner.Body is Gachapon && target is EnemyBossDuck)
         {
             if(target.Life <= 0)
             {

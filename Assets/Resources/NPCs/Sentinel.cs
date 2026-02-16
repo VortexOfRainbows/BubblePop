@@ -53,7 +53,7 @@ public class Sentinel : Enemy
         float moveSpeed = 1.45f;
         float inertiaMult = 0.98125f;
         float percentShot = AttackCounter / 200f;
-        targetedLocation = Vector2.Lerp(targetedLocation, Player.Position, 0.9f * (1 - percentShot) * (1 - percentShot) * (1 - percentShot));
+        targetedLocation = Vector2.Lerp(targetedLocation, Target.Position, 0.9f * (1 - percentShot) * (1 - percentShot) * (1 - percentShot));
         Vector2 toTarget = targetedLocation - (Vector2)Head.position;
         float magnitude = toTarget.magnitude;
         if (magnitude > 16 && AttackCounter <= 0)
@@ -85,7 +85,7 @@ public class Sentinel : Enemy
                 AudioManager.PlaySound(SoundID.Teleport, Head.position, 1, 0.67f, 0);
                 Vector2 norm = toTarget.normalized;
                 RB.velocity -= norm * 7f;
-                Projectile.NewProjectile<SentinelLaser>(Head.position, norm, 1, InfectionTarget ? 1 : 0);
+                Projectile.NewProjectile<SentinelLaser>(Head.position, norm, 1, this, InfectionTarget ? 1 : 0);
                 AttackCounter = -50;
             }
             ++AttackCounter;

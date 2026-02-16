@@ -88,7 +88,8 @@ public class RockGolem : RockSpider
                 }
             }
             Head.gameObject.SetActive(true);
-            Vector2 toPlayer = Player.Position - (Vector2)transform.position;
+            Vector2 playerPos = Target.Position;
+            Vector2 toPlayer = playerPos - (Vector2)transform.position;
             float beginShootingRange = ShotCooldown - ShotCooldownSlowdown;
             if (toPlayer.magnitude < 16 || Timer < 60 || Timer > beginShootingRange)
                 ++Timer;
@@ -125,12 +126,12 @@ public class RockGolem : RockSpider
                         percent = ((Timer - ShotCooldown) / ShotWindup);
                         if (percent >= 1)
                         {
-                            Vector2 headToPlayer = Player.Position - (Vector2)Head.transform.position;
+                            Vector2 headToPlayer = playerPos - (Vector2)Head.transform.position;
                             Vector2 norm2 = headToPlayer.normalized;
                             for(int i = -4; i <= 4; ++i)
                             {
                                 Projectile.NewProjectile<Bullet>(Head.transform.position, 
-                                    norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, 1.25f - Mathf.Abs(i) * 0.125f, InfectionTarget ? 0 : 1);
+                                    norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, this, 1.25f - Mathf.Abs(i) * 0.125f, InfectionTarget ? 0 : 1);
                             }
                             AudioManager.PlaySound(SoundID.BathBombBurst, Head.transform.position, 1.1f, 1.3f, 0);
                             Head.transform.position -= (Vector3)(norm2 * 0.35f);
@@ -207,14 +208,14 @@ public class RockGolem : RockSpider
     public void ShootProj()
     {
         Vector2 pos = (Vector2)Body.transform.position + new Vector2(0, 3.5f).RotatedBy(Body.transform.localEulerAngles.z * Mathf.Deg2Rad);
-        Vector2 toPlayer = Player.Position - pos;
+        Vector2 toPlayer = Target.Position - pos;
         Vector2 tnorm = toPlayer.normalized;
         for (int i = 0; i < 16; ++i)
         {
             ParticleManager.NewParticle(pos, Utils.RandFloat(2, 4), Utils.RandCircle(5) - tnorm * Utils.RandFloat(3), .2f, Utils.RandFloat(0.8f, 1.5f), 
                 ParticleManager.ID.Pixel, Color.Lerp(ShotColor, Color.white, Utils.RandFloat()));
         }
-        Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, 1.25f, InfectionTarget ? 0 : 1);
+        Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, this, 1.25f, InfectionTarget ? 0 : 1);
         AudioManager.PlaySound(SoundID.BathBombBurst, pos, 1.0f, 1.4f, 0);
         Timer = 0;
     }

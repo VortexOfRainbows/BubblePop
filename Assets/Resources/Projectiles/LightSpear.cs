@@ -23,7 +23,7 @@ public class LightSpear : Projectile
         SpriteRendererGlow.transform.localScale = new Vector3(0.4f, 3f, 3f);
         SpriteRendererGlow.color = new Color(1.2f, 1.2f, 1.2f);
         SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/LaserSquare");
-        bool isCrown = Player.Instance.Hat is Crown;
+        bool isCrown = PlayerOwner.Hat is Crown;
         float specialColorMult = .75f;
         if(Data.Length > 3 && Data[3] >= 0)
         {
@@ -58,7 +58,7 @@ public class LightSpear : Projectile
     }
     public void SpawnParticles()
     {
-        Color c = Player.Instance.Hat is Crown ? new(1, 0, 0, 1f) : SpriteRenderer.color;
+        Color c = PlayerOwner.Hat is Crown ? new(1, 0, 0, 1f) : SpriteRenderer.color;
         Vector2 destination = new Vector2(Data1, Data2);
         Vector2 toDest = destination - (Vector2)transform.position;
         float scaleX = toDest.magnitude;
@@ -104,11 +104,11 @@ public class LightSpear : Projectile
     public bool HasFiredLaser = false;
     public override void OnHitTarget(Entity target)
     {
-        if(Player.Instance.LightChainReact > 0 && !HasFiredLaser && Data[2] > 0 && target is Enemy e)
+        if(PlayerOwner.LightChainReact > 0 && !HasFiredLaser && Data[2] > 0 && target is Enemy e)
         {
             float damage = Damage * 0.8f;
             if(damage >= 0.5f)
-                Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), damage, Data[2]).GetComponent<LightSpearCaster>().ignore = e;
+                Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), damage, PlayerOwner, Data[2]).GetComponent<LightSpearCaster>().ignore = e;
             HasFiredLaser = true;
         }
         Damage = 0;
@@ -132,7 +132,7 @@ public class LightSpearCaster : Projectile
     public float alphaScale = 0.2f;
     public override void Init()
     {
-        if(Player.Instance.Hat is Crown)
+        if(PlayerOwner.Hat is Crown)
         {
             SpriteRendererGlow.transform.localPosition = new Vector3(0, 0.44f, -1);
             SpriteRendererGlow.transform.localScale = new Vector3(1.1f, 1.35f, 1f);
@@ -155,7 +155,7 @@ public class LightSpearCaster : Projectile
             RB.rotation = 20f;
         }
         SpriteRenderer.color = new Color(1, 1, 1, 0);
-        SpriteRenderer.sprite = Player.Instance.Hat.spriteRender.sprite;
+        SpriteRenderer.sprite = PlayerOwner.Hat.spriteRender.sprite;
         SpriteRenderer.flipX = false;
         Friendly = false;
         Hostile = false;
@@ -167,14 +167,14 @@ public class LightSpearCaster : Projectile
         float speed = Bulb.DefaultShotSpeed / 5f;
         if (RB.velocity.sqrMagnitude < 1)
         {
-            float speedMod = Bulb.SpeedModifier;
+            float speedMod = Bulb.SpeedModifier(PlayerOwner);
             timer += Time.fixedDeltaTime * speedMod;
             if (timer > speed)
             {
                 if (!HasShot)
                 {
                     Vector2 shootFromPos = SpriteRendererGlow.transform.position;
-                    if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new List<Enemy> { ignore }, (int)Data1 - 1, bonusRange: 5 + 1f * Player.Instance.LightChainReact, 1, Damage))
+                    if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new List<Enemy> { ignore }, PlayerOwner, (int)Data1 - 1, bonusRange: 5 + 1f * PlayerOwner.LightChainReact, 1, Damage))
                         RB.velocity -= norm * 6;
                     HasShot = true;
                 }
@@ -196,7 +196,7 @@ public class LightSpearCaster : Projectile
     }
     public override void OnKill()
     {
-        Color c = Player.Instance.Hat is Crown ? new(1, 0, 0, 1f) : new(1, 1, .9f, 0.5f);
+        Color c = PlayerOwner.Hat is Crown ? new(1, 0, 0, 1f) : new(1, 1, .9f, 0.5f);
         for (int j = 0; j < 15; ++j)
         {
             ParticleManager.NewParticle(SpriteRendererGlow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, c);
@@ -227,7 +227,7 @@ public class ThunderLightSpearCaster : Projectile
         SpriteRendererGlow.sortingOrder = 0;
         SpriteRendererGlow.material = SpriteRenderer.material = Resources.Load<Material>("Materials/Additive");
         alphaScale = 1f;
-        if (Player.Instance.Hat is Crown)
+        if (PlayerOwner.Hat is Crown)
             SpriteRendererGlow.color = new Color(1f, 0f, 0f, 0.5f);
         else
             SpriteRendererGlow.color = new Color(0.996f, 0.9765f, 0.2314f, 0.5f);
@@ -271,13 +271,13 @@ public class ThunderLightSpearCaster : Projectile
 
             float startUpTime = (1.5f + total * .1f) * (myNum / total);
             float speed = 0.5f;
-            float speedMod = Bulb.SpeedModifier;
+            float speedMod = Bulb.SpeedModifier(PlayerOwner);
             timer += (0.5f + 0.5f * speedMod) * Time.fixedDeltaTime * iPer;
             if (timer > speed + startUpTime)
             {
                 float rangeBonus = Data[2];
                 Vector2 shootFromPos = SpriteRendererGlow.transform.position;
-                if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new(), Player.Instance.LightChainReact, bonusRange: 3 + total * 0.5f + rangeBonus, 0f, Damage))
+                if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new(), PlayerOwner, PlayerOwner.LightChainReact, bonusRange: 3 + total * 0.5f + rangeBonus, 0f, Damage))
                     HasShot = true;
                 timer -= speed;
             }
@@ -291,7 +291,7 @@ public class ThunderLightSpearCaster : Projectile
     {
         if (HasClosed)
             return;
-        Color c = Player.Instance.Hat is Crown ? new(1, 0, 0, 1f) : new(1, 1, .9f, 0.5f);
+        Color c = PlayerOwner.Hat is Crown ? new(1, 0, 0, 1f) : new(1, 1, .9f, 0.5f);
         for (int j = 0; j < 15; ++j)
         {
             ParticleManager.NewParticle(SpriteRendererGlow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, c);

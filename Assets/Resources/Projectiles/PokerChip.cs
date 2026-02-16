@@ -33,9 +33,9 @@ public class PokerChip : Projectile
         }
 
         float deathTime = 200;
-        if (Player.Instance.EternalBubbles > 0)
+        if (PlayerOwner.EternalBubbles > 0)
         {
-            deathTime += 40 + 40 * Player.Instance.EternalBubbles;
+            deathTime += 40 + 40 * PlayerOwner.EternalBubbles;
         }
         float FadeOutTime = 20;
         if (timer > deathTime + FadeOutTime)
@@ -65,10 +65,10 @@ public class PokerChip : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        if (target.Life <= 0 && Player.Instance.DoubleDownChip > 0)
+        if (target.Life <= 0 && PlayerOwner.DoubleDownChip > 0)
         {
             int bonusCoins = (int)(-target.Life + 0.5f);
-            bonusCoins = Mathf.Min(bonusCoins, Player.Instance.DoubleDownChip * 3 + 2);
+            bonusCoins = Mathf.Min(bonusCoins, PlayerOwner.DoubleDownChip * 3 + 2);
             CoinManager.SpawnCoin(transform.position, bonusCoins, 0.1f);
         }
     }

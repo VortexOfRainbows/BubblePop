@@ -274,6 +274,26 @@ public static class Control
 public partial class Player : Entity
 {
     public static readonly List<Player> AllPlayers = new();
+    //TODO: Make this output the distance so it can be used in situations requiring distance easily
+    public static Player FindClosest(Vector3 position, out Vector2 norm, float searchDistance = 10000)
+    {
+        searchDistance *= searchDistance;
+        norm = Vector2.zero;
+        Player best = null;
+        foreach (Player e in AllPlayers)
+        {
+            Vector2 toDest = e.transform.position - position;
+            float dist = toDest.sqrMagnitude;
+            if (dist <= searchDistance)
+            {
+                best = e;
+                searchDistance = dist;
+                norm = toDest;
+            }
+        }
+        norm = norm.normalized;
+        return best;
+    }
     public NewControls Control { get; private set; }
     public SpriteRenderer AimIndicator;
     public int InstanceID = 0;
@@ -300,7 +320,8 @@ public partial class Player : Entity
     #endregion
     public static Color ProjectileColor => Instance.Body.PrimaryColor;
     public static Player Instance => GetInstance(0);
-    public static Vector2 Position => Instance == null ? Vector2.zero : (Vector2)Instance.transform.position;
+    public Vector2 Position => (Vector2)transform.position;
+    public static Vector2 Instance1Pos => Instance != null ? (Vector2)Instance.transform.position : Vector2.zero;
     public Camera MainCamera => Camera.main;
     private readonly float speed = 2.5f;
     private readonly float MovementDeacceleration = 0.9f;
@@ -533,7 +554,7 @@ public partial class Player : Entity
                 float velocity = 2;
                 int amt = 16 + 8 * BubbleShields;
                 for (int i = 0; i < amt; ++i)
-                    Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1);
+                    Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1, this);
             }
         }
         else
@@ -587,7 +608,7 @@ public partial class Player : Entity
             PowerUp.Spawn<Contract>(transform.position);
         for(int i = 0; i < 30; i++)
         {
-            Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 15);
+            Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 15, this);
         }
         UniversalImmuneFrames = 200 * ImmunityFrameMultiplier;
         SpentBonusLives++;

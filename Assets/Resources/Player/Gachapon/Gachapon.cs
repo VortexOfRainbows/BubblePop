@@ -77,9 +77,9 @@ public class Gachapon : Body
             float lerp = totalCount == 1 ? 0 : (float)i / (totalCount - 1);
             Vector2 rot = toMouse.RotatedBy(Mathf.Deg2Rad * Mathf.Lerp(-rotation, rotation, lerp));
             if(blue && blueCount-- > 0)
-                Projectile.NewProjectile<BlueChip>(transform.position, rot, 6 + 2 * Player.Instance.DoubleDownChip);
+                Projectile.NewProjectile<BlueChip>(transform.position, rot, 6 + 2 * Player.DoubleDownChip, Player);
             else
-                Projectile.NewProjectile<PokerChip>(transform.position, rot, 3 + 1 * Player.Instance.DoubleDownChip);
+                Projectile.NewProjectile<PokerChip>(transform.position, rot, 3 + 1 * Player.DoubleDownChip, Player);
             int sparkle = Player.DashSparkle;
             if(sparkle > 0)
             {
@@ -90,12 +90,12 @@ public class Gachapon : Body
                 for (int j = 0; j < whole; ++j)
                 {
                     Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
-                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5), Utils.RandInt(2) * 2 - 1);
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, Player, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5), Utils.RandInt(2) * 2 - 1);
                 }
                 if(Utils.RandFloat(1) < approximate)
                 {
                     Vector2 target = pos + rot * Utils.RandFloat(0.2f, 1.0f);
-                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5), Utils.RandInt(2) * 2 - 1);
+                    Projectile.NewProjectile<StarProj>(pos, rot + Utils.RandCircle(5), 2, Player, target.x + Utils.RandFloat(-5, 5), target.y + Utils.RandFloat(-5, 5), Utils.RandInt(2) * 2 - 1);
                 }
             }
         }
@@ -112,6 +112,7 @@ public class Gachapon : Body
         int direction = stacks.Count % 2 * 2 - 1;
         stacks.Add(Instantiate(ChipStackPrefab, transform).GetComponent<ChipStack>());
         float totalOffset = (0.575f + 0.625f * total) * direction;
+        stacks[stacks.Count - 1].owner = Player;
         stacks[stacks.Count - 1].transform.localPosition = new Vector3(totalOffset, -0.78f);
     }
     public void RemoveStack()
@@ -178,7 +179,7 @@ public class Gachapon : Body
         Vector2 toMouse2 = toMouse.normalized;
         if (p.IsMainPlayerAnimator)
         {
-            if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && (Player.Instance.Weapon.IsAttacking() || Player.Instance.Weapon is BubbleGun || Player.Instance.Weapon is Book))
+            if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && (Player.Weapon.IsAttacking() || Player.Weapon is BubbleGun || Player.Weapon is Book))
                 FaceR.sprite = altFaces[1];
             else
                 FaceR.sprite = altFaces[0];

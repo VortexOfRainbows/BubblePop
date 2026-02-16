@@ -225,7 +225,7 @@ public partial class Player : Entity
                 {
                     circular = circular.RotatedBy(spreadAmt);
                     Vector2 target = (Vector2)transform.position + circular * 16;
-                    Projectile.NewProjectile<StarProj>(transform.position, circular.RotatedBy(Mathf.PI * 0.55f) * speedMax, 2, target.x, target.y, -1);
+                    Projectile.NewProjectile<StarProj>(transform.position, circular.RotatedBy(Mathf.PI * 0.55f) * speedMax, 2, this, target.x, target.y, -1);
                 }
             }
         }
@@ -240,7 +240,7 @@ public partial class Player : Entity
             {
                 BubbleTrailTimer += 2f / (PassiveAttackSpeedModifier * (BubbleTrail + 2f)); //.5, 2/5, 2/6, 2/7, 1/4
                 Vector2 circular = (Utils.RandCircle(1.3f) - Animator.lastVelo * 0.4f).normalized;
-                Projectile.NewProjectile<SmallBubble>(transform.position, circular * 2, 1);
+                Projectile.NewProjectile<SmallBubble>(transform.position, circular * 2, 1, this);
             }
         }
         else
@@ -258,7 +258,7 @@ public partial class Player : Entity
             for (; stars > 0; --stars)
             {
                 Vector2 target = (Vector2)transform.position + norm * 14 + Utils.RandCircle(6);
-                Projectile.NewProjectile<StarProj>(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, target.x, target.y, Utils.RandInt(2) * 2 - 1);
+                Projectile.NewProjectile<StarProj>(transform.position, norm.RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad) * -Utils.RandFloat(16f, 24f), 2, this, target.x, target.y, Utils.RandInt(2) * 2 - 1);
             }
         }
     }
