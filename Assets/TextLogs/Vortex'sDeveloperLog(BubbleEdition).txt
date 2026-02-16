@@ -41,24 +41,24 @@ Current Task List:
 2. Finish Pylon and Roadblock systems:
 	1. Pointers that show you the direction to the next Pylon
 3. Multiplayer:
-	1. Make both players share powers (for now)
-		1. Global power effects should be moved to a separate class and given special logic to prevent stacking effects, as both players will actually have a cloned power pool for now (global effects will also likely still be global when making online multiplayer, so it will work there too (though this is hardly important for a long time))
-	2. Normalize player customization layering
-	3. Make Portals attempt to spawn far away from BOTH players, rather than just the first player
+	1. Normalize player customization layering
+	2. Make Portals attempt to spawn far away from BOTH players, rather than just the first player + camera adjustments
 
 
 Done: 
 
-2/13/26 to 2/15/26
-1. WIP Control Scheme reworks in preparation for multiplayer support
-	1. WIP Aiming for player 2
+2/13/26 to 2/16/26
+1. Control Scheme reworks in preparation for multiplayer support
+	1. Aiming for player 2
 2. Rework some instancing in preparation or multiplayer support
 3. Experimenting with new User Interface elements
-4. WIP Multiplayer Info Screen
+4. Multiplayer Info Screen
 5. Add Gamepad controls (for player 2 in multiplayer)
 6. Projectiles can now have an OWNER, which allows for multiplayer functionality and ai logic to be improved
 7. Removed Coalescence's hidden .01 seconds absorption scaling per stack 
 8. Remove reliance on Player.Instance and related properites/fields, which makes things work better in multiplayer
+9. Powerups no longer use physics colliders for detecting if they can be picked up, potentially reducing lag
+10. Powerups are now shared in multiplayer (right now this is done using as static power list, which may lead to some bugs but idk for now)
 
 2/11/26 to 2/12/26
 1. Fix bug where switching characters would briefly misorient equips (make them face a wrong direction)

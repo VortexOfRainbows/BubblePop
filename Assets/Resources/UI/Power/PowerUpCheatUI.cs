@@ -195,10 +195,9 @@ public class PowerUpCheatUI : MonoBehaviour
     }
     public IEnumerator InitCrucibleButtons()
     {
-        Player player = Player.Instance;
-        for (int i = 0; i < player.Powers.Count; i++)
+        for (int i = 0; i < Player.GlobalPowers.Count; i++)
         {
-            PowerUp power = PowerUp.Get(player.Powers[i]);
+            PowerUp power = PowerUp.Get(Player.GlobalPowers[i]);
             PowerUpButton p = Instantiate(ChoiceTemplate, GridParent.transform);
             p.SetType(power.Type);
             p.gameObject.SetActive(true);

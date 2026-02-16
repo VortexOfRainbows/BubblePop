@@ -39,6 +39,18 @@ public class PowerUpObject : MonoBehaviour
         }
         MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
     }
+    public void TryCollecting()
+    {
+        float radius = 1.0f;
+        radius *= transform.localScale.x;
+        radius += Player.Instance.transform.localScale.x * 0.7f;
+        Player p = Player.FindClosest(transform.position, out _);
+        if (p.Distance(gameObject) < radius)
+        {
+            if (!PickedUp && CoinManager.CurrentCoins >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))
+                PickUp(p);
+        }
+    }
     public void FixedUpdate()
     {
         if (inner.sprite == null)
@@ -78,20 +90,7 @@ public class PowerUpObject : MonoBehaviour
         {
             CostObj.SetActive(false);
         }
-    }
-    public void OnTriggerStay2D(Collider2D collision) => OnTrigger(collision);
-    public void OnTriggerEnter2D(Collider2D collision) => OnTrigger(collision);
-    private void OnTrigger(Collider2D collision)
-    {
-        if (FakePower)
-            return;
-        if(collision.CompareTag("Player") && !PickedUp)
-        {
-            if(CoinManager.CurrentCoins >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))
-            {
-                PickUp(collision.gameObject.GetComponent<Player>());
-            }
-        }
+        TryCollecting();
     }
     public void PickUp(Player player)
     {

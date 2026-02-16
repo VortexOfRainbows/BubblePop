@@ -3,6 +3,10 @@ using UnityEngine;
 
 public partial class Player : Entity
 {
+    public static class GlobalPowerHandler
+    { 
+    
+    }
     public int PowerCount => Powers.Count;
     /// <summary>
     /// Returns the PowerUpID of the power at the given index
@@ -20,7 +24,7 @@ public partial class Player : Entity
     }
     public void RemovePower(int Type, int num = 1)
     {
-        int index= Powers.IndexOf(Type);
+        int index = Powers.IndexOf(Type);
         if (index != -1)
         {
             PowerUp p = PowerUp.Get(GetPower(index));
@@ -104,7 +108,8 @@ public partial class Player : Entity
     public float ZapRadiusMult = 1.0f;
     public float DamageMultiplier = 1.0f;
     public int AllowedThunderBalls = 3;
-    public List<int> Powers { get; private set; } = new();
+    public static List<int> GlobalPowers { get; private set; } = new();
+    private List<int> Powers => GlobalPowers;
     public bool HasResearchNotes = false;
     public int ResearchNoteBonuses = 0;
     public int ResearchNoteKillCounter = 0;
@@ -139,7 +144,7 @@ public partial class Player : Entity
     public int GlassShards = 0;
     private void PowerInit()
     {
-        Powers = new List<int>();
+        GlobalPowers = new List<int>();
         PowerUp.ResetAll();
     }
     private void ResetPowers()
