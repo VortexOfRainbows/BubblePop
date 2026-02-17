@@ -199,8 +199,9 @@ public class Coin : MonoBehaviour
         else if (IsHeart)
         {
             if (Value < 0)
-                Value *= -1;
-            Player.Instance.SetLife(Player.Instance.Life + Value);
+                Value = -Value;
+            foreach(Player player in Player.AllPlayers)
+                player.SetLife(player.Life + Value);
             AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.1f, 0.76f, 0);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 0.9f, 0.4f, 0);
             PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}");

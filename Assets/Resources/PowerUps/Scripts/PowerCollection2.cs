@@ -139,7 +139,8 @@ public class BubbleShield : PowerUp
     }
     public override void OnPickup(int count)
     {
-        Player.Instance.SetShield(Player.Instance.GetShield() + count);
+        foreach(Player player in Player.AllPlayers)
+            player.SetShield(player.GetShield() + count);
     }
     public override void HeldEffect(Player p)
     {

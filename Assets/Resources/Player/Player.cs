@@ -440,6 +440,11 @@ public partial class Player : Entity
             MaxLife = Life = Shield = MaxShield = 0;
             foreach (Equipment e in Equips)
                 e.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
+            if(AllPlayers.Count > 1)
+            {
+                MaxLife++;
+                Life++;
+            }
             PlayerStatUI.SetHeartsToPlayerLife();
         }
         UpdatePowerUps();
@@ -535,14 +540,26 @@ public partial class Player : Entity
     }
     public void Hurt(int damage = 1)
     {
-        for(int i = 0; i < GlassShards; ++i)
-            if(Utils.RandFloat() < 0.25f)
-                ++damage;
-        TimesHitThisRun++;
-        if(TimesHitThisRun>= 15 && this.Body is Gachapon)
+        if(damage > 0)
         {
-            UnlockCondition.Get<GachaponHealer>().SetComplete();
+            for (int i = 0; i < GlassShards; ++i)
+                if (Utils.RandFloat() < 0.25f)
+                    ++damage;
+            TimesHitThisRun += damage;
+            if (TimesHitThisRun >= 15 && this.Body is Gachapon)
+            {
+                UnlockCondition.Get<GachaponHealer>().SetComplete();
+            }
+            if(AllPlayers.Count > 0)
+            {
+                if (InstanceID == 0)
+                    AllPlayers[1].Hurt(-damage);
+                else
+                    AllPlayers[0].Hurt(-damage);
+            }
         }
+        else
+            damage = -damage;
         float defaultImmuneFrames = 100;
         float immunityFrameMultiplier = ImmunityFrameMultiplier;
         if(Shield > 0)
