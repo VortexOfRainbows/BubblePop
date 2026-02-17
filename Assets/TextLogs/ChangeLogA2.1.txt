@@ -1,0 +1,19 @@
+Dev Build 2.1 (tentative version number)
+
+New:
+1. Experimental Local Multiplayer
+2. Add new Power: Shard of Glass
+3. Add new sprite for Power: Roulette Wheel
+
+Changes:
+1. Removed Coalescence's hidden .01 seconds absorption scaling per stack 
+2. Completely remove flamingo feather homing factor and leonard laser homing factor
+3. Some experimental changes to UI (more to come in the future)
+4. Powerups no longer use physics colliders for detecting if they can be picked up, potentially reducing lag
+
+Misc:
+1. Many internal reworks in order to allow multiplayer to work, which may cause some bugs
+
+Fixes:
+1. Fix bug where switching characters would briefly misorient equips (make them face a wrong direction)
+2. Fix bug where slot machine would sometime cause an error when first used

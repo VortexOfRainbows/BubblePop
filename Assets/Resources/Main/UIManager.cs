@@ -29,7 +29,7 @@ public partial class Main : MonoBehaviour
             foreach (Button b in PlayButtons)
                 b.onClick.AddListener(Play);
             foreach (Button b in MultiplayerButtons)
-                b.onClick.AddListener(Play);
+                b.onClick.AddListener(PlayMult);
             foreach (Button b in ResumeButtons)
                 b.onClick.AddListener(Resume);
             foreach (Button b in ReturnToMenuButtons)
@@ -118,6 +118,10 @@ public partial class Main : MonoBehaviour
         public void Play()
         {
             Play(1);
+        }
+        public void PlayMult()
+        {
+            Play(4);
         }
         public void Play(int scene)
         {

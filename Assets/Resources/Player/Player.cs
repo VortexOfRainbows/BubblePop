@@ -457,8 +457,8 @@ public partial class Player : Entity
                 e.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
             if(AllPlayers.Count > 1)
             {
-                MaxLife++;
-                Life++;
+                MaxLife += 2;
+                Life += 2;
             }
             PlayerStatUI.SetHeartsToPlayerLife();
         }
@@ -487,7 +487,6 @@ public partial class Player : Entity
             PostEquipUpdate();
             foreach (Equipment e in Equips)
                 e.PostEquipUpdate();
-            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 15f, 0.03f);
             MovementUpdate();
             if(!Main.MouseHoveringOverButton)
             {
@@ -523,7 +522,29 @@ public partial class Player : Entity
             Hat.AliveUpdate();
             Accessory.AliveUpdate();
         }
-        MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(transform.position.x, transform.position.y, MainCamera.transform.position.z), 0.1f);
+        if(InstanceID == 0)
+        {
+            int playerCount = 0;
+            Vector2 average = Vector2.zero;
+            foreach (Player p in AllPlayers)
+            {
+                average += (Vector2)p.transform.position;
+                playerCount++;
+            }
+            if (playerCount <= 0)
+                playerCount = 1;
+            average /= playerCount;
+            float size = 15f;
+            if (playerCount > 1)
+            {
+                float biggestDistToCenter = 0;
+                foreach (Player p in AllPlayers)
+                    biggestDistToCenter = Mathf.Max(biggestDistToCenter, Mathf.Max(Mathf.Abs(p.Position.x - average.x), Mathf.Abs(p.Position.y - average.y)));
+                size = Mathf.Max(size, Mathf.Min(30, biggestDistToCenter * 1.2f + 5));
+            }
+            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, size, 0.03f);
+            MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(average.x, average.y, MainCamera.transform.position.z), 0.1f);
+        }
         ImmuneFlashing();
         Main.MouseHoveringOverButton = false;
     }

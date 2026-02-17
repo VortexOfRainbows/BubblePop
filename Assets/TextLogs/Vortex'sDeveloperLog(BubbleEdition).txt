@@ -42,9 +42,13 @@ Current Task List:
 	1. Pointers that show you the direction to the next Pylon
 3. Multiplayer:
 	1. Normalize player customization layering
-	2. Make Portals attempt to spawn far away from BOTH players, rather than just the first player + camera adjustments
+	2. Make Portals attempt to spawn far away from BOTH players, rather than just the first player
 
 Done: 
+
+
+-- A2.1 --
+
 
 2/13/26 to 2/16/26
 1. Control Scheme reworks in preparation for multiplayer support
@@ -62,6 +66,8 @@ Done:
 12. Fix some power up interactions in multiplayer
 13. Players now share health in multiplayer
 14. Safety net for when controllers are connected mid game or disconnected
+15. Camera now resizes based on player positions
+16. Roulette wheel resprite (DAVID)
 
 2/11/26 to 2/12/26
 1. Fix bug where switching characters would briefly misorient equips (make them face a wrong direction)

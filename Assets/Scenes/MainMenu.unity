@@ -4794,6 +4794,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1378404739}
   m_CullTransparentMesh: 1
+--- !u!114 &1378525040 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 181323969487034106, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+  m_PrefabInstance: {fileID: 8137496645639104254}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1447647887
 GameObject:
   m_ObjectHideFlags: 0
@@ -7174,9 +7185,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8137496645639104257}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: MyUIManager.MultiplayerButtons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.ReturnToMenuButtons.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: MyUIManager.MultiplayerButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1378525040}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.ReturnToMenuButtons.Array.data[1]
       value: 
