@@ -306,7 +306,8 @@ public abstract class PowerUp
         AddToDisplayQueue();
         AddToPlayer(player, amt);
         OnPickup(amt);
-        player.MostRecentPower = this;
+        foreach(Player p in Player.AllPlayers)
+            p.MostRecentPower = this;
         AmountPickedUpAcrossAllRuns += amt;
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;

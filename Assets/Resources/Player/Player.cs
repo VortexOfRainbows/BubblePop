@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -282,6 +283,8 @@ public partial class Player : Entity
         Player best = null;
         foreach (Player e in AllPlayers)
         {
+            if (e == null)
+                continue;
             Vector2 toDest = e.transform.position - position;
             float dist = toDest.sqrMagnitude;
             if (dist <= searchDistance)

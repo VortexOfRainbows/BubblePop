@@ -322,7 +322,7 @@ public class FlamingoFeather : Projectile
         if (timer < 300)
         {
             RB.velocity += RB.velocity.normalized * 0.003f;
-            RB.velocity += (PlayerOwner.Position - (Vector2)transform.position).normalized * 0.03f;
+            //RB.velocity += (PlayerOwner.Position - (Vector2)transform.position).normalized * 0.03f;
         }
         if (timer > 510)
         {
@@ -366,7 +366,7 @@ public class Laser : Projectile
         if (timer < 200)
         {
             RB.velocity += RB.velocity.normalized * 0.02f;
-            RB.velocity += (PlayerOwner.Position - (Vector2)transform.position).normalized * 0.08f * (1 - timer / 200f);
+            //RB.velocity += (PlayerOwner.Position - (Vector2)transform.position).normalized * 0.08f * (1 - timer / 200f);
         }
         if (timer > 610)
         {

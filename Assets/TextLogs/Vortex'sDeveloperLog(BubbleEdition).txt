@@ -63,6 +63,9 @@ Done:
 8. Remove reliance on Player.Instance and related properites/fields, which makes things work better in multiplayer
 9. Powerups no longer use physics colliders for detecting if they can be picked up, potentially reducing lag
 10. Powerups are now shared in multiplayer (right now this is done using as static power list, which may lead to some bugs but idk for now)
+11. Completely remove flamingo feather homing factor and leonard laser homing factor
+12. Fix some power up interactions in multiplayer
+13. Players now share health in multiplayer
 
 2/11/26 to 2/12/26
 1. Fix bug where switching characters would briefly misorient equips (make them face a wrong direction)
