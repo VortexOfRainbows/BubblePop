@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -50,6 +48,20 @@ public partial class Main : MonoBehaviour
         public Canvas MainCanvas;
         public GameObject PauseMenu, SettingsMenu, DebugMenu, MultiplayerMenu;
         public TextMeshProUGUI DeadHighscoreText;
+        public void OpenMultiplayerMenu(bool pause)
+        {
+            if (pause)
+                PauseGame();
+            MultiplayerMenu.SetActive(true);
+        }
+        public void CloseMultiplayerMenu()
+        {
+            if(!PauseMenu.activeSelf && Main.GamePaused)
+            {
+                UnpauseGame();
+            }
+            MultiplayerMenu.SetActive(false);
+        }
         public void Pause()
         {
             PauseMenu.SetActive(true);

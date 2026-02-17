@@ -43,11 +43,6 @@ Current Task List:
 3. Multiplayer:
 	1. Normalize player customization layering
 	2. Make Portals attempt to spawn far away from BOTH players, rather than just the first player + camera adjustments
-	3. Make players share health stats
-4. MP Bugs:
-	1. Mitosis isn't working
-	2. Dying and restarting makes the player have two faces (?????)
-
 
 Done: 
 
@@ -66,6 +61,7 @@ Done:
 11. Completely remove flamingo feather homing factor and leonard laser homing factor
 12. Fix some power up interactions in multiplayer
 13. Players now share health in multiplayer
+14. Safety net for when controllers are connected mid game or disconnected
 
 2/11/26 to 2/12/26
 1. Fix bug where switching characters would briefly misorient equips (make them face a wrong direction)

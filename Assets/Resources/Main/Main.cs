@@ -135,7 +135,7 @@ public partial class Main : MonoBehaviour
             }
             else if (UIManager.MultiplayerMenu != null)
             {
-                UIManager.MultiplayerMenu.SetActive(false);
+                UIManager.CloseMultiplayerMenu();
             }
         }
         //if(Main.DebugCheats && Input.GetKey(KeyCode.B))

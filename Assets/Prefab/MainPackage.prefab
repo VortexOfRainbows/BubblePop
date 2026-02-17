@@ -15108,6 +15108,8 @@ MonoBehaviour:
   PowerupCheatCanvas: {fileID: 5702857135718872428}
   SpritebatchSuperParent: {fileID: 1755457766737359977}
   MyUIManager:
+    PlayButtons: []
+    MultiplayerButtons: []
     ResumeButtons:
     - {fileID: 5059882442936566987}
     ReturnToMenuButtons:
@@ -15122,10 +15124,13 @@ MonoBehaviour:
     DebugButtons:
     - {fileID: 4009496582322280567}
     PauseMenuTopText: {fileID: 150896373085234072}
+    MPControls1: {fileID: 1551694451369446912}
+    MPControls2: {fileID: 5442564416590628244}
     MainCanvas: {fileID: 2534426465646320681}
     PauseMenu: {fileID: 2841498186864804204}
     SettingsMenu: {fileID: 5135139980668629945}
     DebugMenu: {fileID: 6075037036165169769}
+    MultiplayerMenu: {fileID: 1155593327117542689}
     DeadHighscoreText: {fileID: 1745695600835559801}
 --- !u!114 &4056103149566074873
 MonoBehaviour:
@@ -30590,6 +30595,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1155593327117542689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 658253617303909458, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
+  m_PrefabInstance: {fileID: 1813798564584018291}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1551694451369446912 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 910661497514286963, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
+  m_PrefabInstance: {fileID: 1813798564584018291}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1745695600835559801 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 77155793733996554, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
@@ -30665,6 +30686,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6802764983358464714, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
   m_PrefabInstance: {fileID: 1813798564584018291}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5442564416590628244 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5957197633980470503, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
+  m_PrefabInstance: {fileID: 1813798564584018291}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6075037036165169769 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5576922881470976794, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}

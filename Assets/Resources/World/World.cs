@@ -129,6 +129,7 @@ public class World : MonoBehaviour
             spawnPos.gameObject.SetActive(false);
         }
 
+        Main.UIManager.OpenMultiplayerMenu(false);
         Tilemap.GetComponent<TilemapRenderer>().enabled = false;
         int i = 0;
         foreach(Pylon pylon in PylonParent.GetComponentsInChildren<Pylon>())

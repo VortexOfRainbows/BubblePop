@@ -189,6 +189,7 @@ public class NewControls
         {
             if(controllerConnected) //Player 2/Controller
             {
+                ControlSchemeType = 3;
                 Movement = new DirectionalBinding(gamePad.leftStick);
                 Aim = new DirectionalBinding(gamePad.rightStick);
                 Ability = new VerboseButtonBinding(gamePad.xButton, gamePad.yButton, gamePad.aButton, gamePad.bButton, /*gamePad.leftStickButton, gamePad.rightStickButton,*/ gamePad.leftTrigger, gamePad.leftShoulder);
@@ -263,6 +264,17 @@ public class NewControls
         concat += "\nAim: ".WithColor(h) + (Aim != null ? Aim.ToString() : "Mouse");
         concat += "\nAbility: ".WithColor(h) + Ability.ToString();
         return concat;
+    }
+    public bool CheckIfControlsAreCorrect()
+    {
+        if (Player.AllPlayers.Count <= 1)
+            return true;
+        var gamePad = Gamepad.current;
+        bool controllerConnected = gamePad != null;
+        if(controllerConnected)
+            return ControlSchemeType == 0 || ControlSchemeType == 3;
+        else
+            return ControlSchemeType == 1 || ControlSchemeType == 2;
     }
 }
 public static class Control
@@ -515,10 +527,25 @@ public partial class Player : Entity
         ImmuneFlashing();
         Main.MouseHoveringOverButton = false;
     }
+    public new void Update()
+    {
+        if (!Control.CheckIfControlsAreCorrect())
+        {
+            Control = new NewControls(InstanceID + 1);
+            if (Main.UIManager.MPControls1 != null && Main.UIManager.MPControls2 != null)
+            {
+                var target = InstanceID == 0 ? Main.UIManager.MPControls1 : Main.UIManager.MPControls2;
+                string s = Control.AllBindings();
+                target.text = s;
+            }
+            Main.UIManager.OpenMultiplayerMenu(true);
+        }
+        base.Update();
+    }
     public void LateUpdate()
     {
         Control.UpdateMouse(transform.position);
-        if(Control.ControlSchemeType != 2)
+        if(Control.ControlSchemeType <= 1)
         {
             AimIndicator.gameObject.SetActive(false);
         }
