@@ -57,9 +57,7 @@ public partial class Main : MonoBehaviour
         public void CloseMultiplayerMenu()
         {
             if(!PauseMenu.activeSelf && Main.GamePaused)
-            {
                 UnpauseGame();
-            }
             MultiplayerMenu.SetActive(false);
         }
         public void Pause()

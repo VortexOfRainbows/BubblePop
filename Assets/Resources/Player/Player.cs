@@ -548,8 +548,14 @@ public partial class Player : Entity
         ImmuneFlashing();
         Main.MouseHoveringOverButton = false;
     }
+    public bool RunOnce { get; set; } = true;
     public new void Update()
     {
+        if(RunOnce && Player.AllPlayers.Count > 0 && InstanceID == 0 && Main.UIManager.MultiplayerMenu != null)
+        {
+            Main.UIManager.OpenMultiplayerMenu(false);
+            RunOnce = false;
+        }
         if (!Control.CheckIfControlsAreCorrect())
         {
             Control = new NewControls(InstanceID + 1);

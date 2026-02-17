@@ -107,8 +107,8 @@ public class Pylon : MonoBehaviour
                 Portal.GetComponent<Wormhole>().Closing = true;
             CompleteAnimCounter++;
         }
-        if (Input.GetKey(KeyCode.G))
-            CompleteAnimCounter = 0;
+        //if (Input.GetKey(KeyCode.G))
+        //    CompleteAnimCounter = 0;
 
         Color c = CompletionColor();
         float percent = Mathf.Min(1, CompleteAnimCounter / 200f);

@@ -25,6 +25,7 @@ Need to do:
 11. New tile variation system + tile resprite implementation
 12. Make it so enemies become permanent at a cheaper price from wave cards
 13. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens
+14. Do not load nodes multiple times
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -43,8 +44,18 @@ Current Task List:
 3. Multiplayer:
 	1. Normalize player customization layering
 	2. Make Portals attempt to spawn far away from BOTH players, rather than just the first player
+	3. BUGS:
+		1. Player 2 does not attract coins at all
+		2, Bubble birb does not work sometimes
 
 Done: 
+
+-- A2.1.1 (No changelog) --
+
+
+2/16/26
+1. Crucible should now work for both players in multiplayer
+2. Fix bug where multiplayer UI screen did not appear (for real this time)
 
 
 -- A2.1 --

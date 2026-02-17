@@ -99,7 +99,8 @@ public class Crucible : MonoBehaviour
     }
     public void PreFixedUpdate()
     {
-        if(Player.Instance == null || Player.Instance.Distance(gameObject) > 15)
+        Player p = Player.FindClosest(transform.position, out _);
+        if (p == null || p.Distance(gameObject) > 15)
             DisableUI();
         if(!Active && PowerQueue.TryDequeue(out int powerType))
         {

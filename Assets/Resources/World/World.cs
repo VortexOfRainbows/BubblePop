@@ -128,8 +128,6 @@ public class World : MonoBehaviour
             Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
             spawnPos.gameObject.SetActive(false);
         }
-
-        Main.UIManager.OpenMultiplayerMenu(false);
         Tilemap.GetComponent<TilemapRenderer>().enabled = false;
         int i = 0;
         foreach(Pylon pylon in PylonParent.GetComponentsInChildren<Pylon>())
