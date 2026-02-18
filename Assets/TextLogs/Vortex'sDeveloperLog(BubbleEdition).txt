@@ -21,7 +21,7 @@ Need to do:
 7. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 8. Make power display on the bottom smaller
 9. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
-10. Make enemies spawn further away when possible, slower coming out of the portal
+10. Make enemies spawn further away when possible
 11. New tile variation system + tile resprite implementation
 12. Make it so enemies become permanent at a cheaper price from wave cards
 13. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens
@@ -44,11 +44,14 @@ Current Task List:
 3. Multiplayer:
 	1. Normalize player customization layering
 	2. Make Portals attempt to spawn far away from BOTH players, rather than just the first player
-	3. BUGS:
-		1. Player 2 does not attract coins at all
-		2, Bubble birb does not work sometimes
 
 Done: 
+
+2/18/26
+1. Coins now search for the closest player to be attracted to every 10 frames
+2. Bubblebirb should now work in multiplayer
+3. Add ~0.5 seconds of grace frames where enemies don't deal damage when first spawning in
+
 
 -- A2.1.1 (No changelog) --
 

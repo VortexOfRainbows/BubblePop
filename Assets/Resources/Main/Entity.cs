@@ -27,7 +27,7 @@ public partial class Entity : MonoBehaviour
     {
         if (collision.CompareTag(ProjTag) && collision.GetComponentInParent<Projectile>() is Projectile proj)
             HurtByProjectile(proj);
-        if (collision.CompareTag(EnemyTag))
+        else if (collision.CompareTag(EnemyTag) && collision.GetComponentInParent<Enemy>() is Enemy npc && npc.FramesAlive > 50)
             HurtByNPC();
     }
     public void HurtByProjectile(Projectile proj)

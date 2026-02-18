@@ -666,10 +666,12 @@ public partial class Player : Entity
     }
     public void RegisterDeath()
     {
-        PlayerData.PlayerDeaths++;
+        if(InstanceID == 1)
+            PlayerData.PlayerDeaths++;
         if(BonusPhoenixLives > 0)
         {
-            RemovePower(PowerUp.Get<BubbleBirb>().Type, 1);
+            if(InstanceID == 1)
+                RemovePower(PowerUp.Get<BubbleBirb>().Type, 1);
             Rebirth();
             return;
         }

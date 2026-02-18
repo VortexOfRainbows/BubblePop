@@ -270,6 +270,7 @@ public class Enemy : Entity
         }
     }
     private bool JustSpawnedIn = true;
+    public int FramesAlive { get; private set; } = 0;
     public void SetDummy() => IsDummy = true;
     public bool IsDummy { get; private set; }
     public sealed override void OnFixedUpdate()
@@ -296,6 +297,8 @@ public class Enemy : Entity
             UpdateRendererColor(new Color(1, 0, 0, 0), 1);
             JustSpawnedIn = false;
         }
+        else
+            ++FramesAlive;
         UpdateSpecialImmuneFrames();
         if(ChampionType != -1)
         {
