@@ -22,17 +22,15 @@ Need to do:
 8. Make power display on the bottom smaller
 9. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 10. Make enemies spawn further away when possible
-11. New tile variation system + tile resprite implementation
-12. Make it so enemies become permanent at a cheaper price from wave cards
-13. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens
+11. Tile resprite implementation
+12. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens
 
 Less Important (mostly non-issues or complete already), but in consideration:
-1. Fix resolution scaling issues across the board, such as with the compendium and tier list
-2. Improve UI
-3. Maybe shift roadblock visuals to the player so it's more encompassing
-4. Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp
-5. Enemy Pathfinding
-6. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
+1. Improve UI
+2. Maybe shift roadblock visuals to the player so it's more encompassing
+3. Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp
+4. Enemy Pathfinding
+5. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 
 Current Task List:
@@ -53,6 +51,9 @@ Done:
 4. Node Prefabs are now only loaded once on the first world generation, rather than on every world generation, improving restart speed slightly
 5. Reworks to tiles for variation implementation
 6. Add Tile variations for experimental grass
+7. Enemy wave card enemy cost scaling 10 -> 8, cost to make permanent 2.0x -> 1.75x
+	1. This should make enemies more reliably become part of the enemy pool
+8. Slight changes to multiplayer camera + some bug fixes
 
 
 -- A2.1.1 (No changelog) --

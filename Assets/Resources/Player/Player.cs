@@ -540,7 +540,7 @@ public partial class Player : Entity
                 float biggestDistToCenter = 0;
                 foreach (Player p in AllPlayers)
                     biggestDistToCenter = Mathf.Max(biggestDistToCenter, Mathf.Max(Mathf.Abs(p.Position.x - average.x), Mathf.Abs(p.Position.y - average.y)));
-                size = Mathf.Max(size, Mathf.Min(30, biggestDistToCenter * 1.2f + 5));
+                size = Mathf.Max(size, Mathf.Min(30, biggestDistToCenter * 1.16f + 6));
             }
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, size, 0.03f);
             MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(average.x, average.y, MainCamera.transform.position.z), 0.1f);
@@ -551,7 +551,7 @@ public partial class Player : Entity
     public bool RunOnce { get; set; } = true;
     public new void Update()
     {
-        if(RunOnce && Player.AllPlayers.Count > 0 && InstanceID == 0 && Main.UIManager.MultiplayerMenu != null)
+        if(RunOnce && Player.AllPlayers.Count > 1 && InstanceID == 0 && Main.UIManager.MultiplayerMenu != null)
         {
             Main.UIManager.OpenMultiplayerMenu(false);
             RunOnce = false;
@@ -760,5 +760,9 @@ public partial class Player : Entity
             RemovePower(PowerUp.Get<EatenCake>().MyID);
         }
         LuckyStarItemsAcquiredThisWave = 0;
+    }
+    public void OnDestroy()
+    {
+        AllPlayers.Remove(this);
     }
 }

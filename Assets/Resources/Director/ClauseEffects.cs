@@ -37,7 +37,7 @@ public abstract class ClauseEffect
 public class EnemyCard : ClauseEffect
 {
     public WaveDirector.WaveModifiers MyModifier => IsPermanent ? WaveDirector.PermanentModifiers : WaveDirector.TemporaryModifiers;
-    public float PermanentMultiplier => 2f;
+    public float PermanentMultiplier => 1.75f;
     public bool IsPermanent { get; set; } = false;
     public Enemy EnemyToAdd;
     public EnemyCard(Enemy prefabToAdd)
@@ -54,7 +54,7 @@ public class EnemyCard : ClauseEffect
     }
     protected override float Cost()
     {
-        return EnemyToAdd.CostMultiplier * 10 * (IsPermanent ? PermanentMultiplier : 1);
+        return EnemyToAdd.CostMultiplier * 8 * (IsPermanent ? PermanentMultiplier : 1);
     }
     public override string Description()
     {
