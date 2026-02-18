@@ -8,6 +8,8 @@ public static class NodeID
     public static WorldNode PreviousNode { get; set; } = null;
     public static bool LoadAllNodes()
     {
+        if (Nodes.Count > 0 && SubNodes.Count > 0)
+            return true;
         PreviousNode = null;
         Nodes.Clear();
         SubNodes.Clear();

@@ -25,7 +25,6 @@ Need to do:
 11. New tile variation system + tile resprite implementation
 12. Make it so enemies become permanent at a cheaper price from wave cards
 13. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens
-14. Do not load nodes multiple times
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Fix resolution scaling issues across the board, such as with the compendium and tier list
@@ -51,6 +50,7 @@ Done:
 1. Coins now search for the closest player to be attracted to every 10 frames
 2. Bubblebirb should now work in multiplayer
 3. Add ~0.5 seconds of grace frames where enemies don't deal damage when first spawning in
+4. Node Prefabs are now only loaded once on the first world generation, rather than on every world generation, improving restart speed slightly
 
 
 -- A2.1.1 (No changelog) --
