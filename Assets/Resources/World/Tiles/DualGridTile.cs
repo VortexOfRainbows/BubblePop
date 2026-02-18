@@ -79,12 +79,18 @@ public class DualGridTile : ScriptableObject
             if (id == 6 && BonusCenterVariants.Length > 0 && Utils.RandFloat() > chanceOfAlternateTexture)
                 map.SetTile(newPos, BonusCenterVariants[Utils.RandInt(BonusCenterVariants.Length)]);
             else if (id != -1)
-                map.SetTile(newPos, DisplayTileVariants[id]);
+            {
+                if(BonusTileTextures != null && BonusTileTextures.Length > 0)
+                    id += Utils.RandInt(BonusTileTextures.Length + 1) * 15;
+                Tile t = DisplayTileVariants[id];
+                map.SetTile(newPos, t);
+            }
         }
     }
 
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
+    public Texture2D[] BonusTileTextures;
     public int LayerOffset { get; set; } = 0;
     [SerializeField]
     private Tile RealTileMapVariant;
@@ -96,11 +102,10 @@ public class DualGridTile : ScriptableObject
     #endregion
 
     public int TypeIndex { get; set; }
-
     public Tile TileType => World.GeneratingBorder ? BorderTileMapVariant : RealTileMapVariant;
     public Tile FloorTileType => RealTileMapVariant;
     public Tile BorderTileType => BorderTileMapVariant;
-    public Tile[] DisplayTileVariants { get; private set; }
+    public List<Tile> DisplayTileVariants { get; private set; }
     public Tile[] BonusCenterVariants { get; private set; }
     public void Init()
     {
@@ -112,14 +117,30 @@ public class DualGridTile : ScriptableObject
         {
             Sprite[] sprites = Resources.LoadAll<Sprite>($"World/Tiles/{TileTexture.name}/{TileTexture.name}");
             int len = sprites.Length;
-            DisplayTileVariants = new Tile[len];
+            DisplayTileVariants = new(16);
             for (int i = 0; i < len; ++i)
             {
                 Tile tile = ScriptableObject.CreateInstance<Tile>();
                 tile.colliderType = Tile.ColliderType.Grid;
                 tile.color = ColorModifier;
                 tile.sprite = sprites[i];
-                DisplayTileVariants[i] = tile;
+                DisplayTileVariants.Add(tile);
+            }
+            if(BonusTileTextures != null)
+            {
+                for (int j = 0; j < BonusTileTextures.Length; ++j)
+                {
+                    sprites = Resources.LoadAll<Sprite>($"World/Tiles/{TileTexture.name}/{BonusTileTextures[j].name}");
+                    len = sprites.Length;
+                    for (int i = 0; i < len; ++i)
+                    {
+                        Tile tile = ScriptableObject.CreateInstance<Tile>();
+                        tile.colliderType = Tile.ColliderType.Grid;
+                        tile.color = ColorModifier;
+                        tile.sprite = sprites[i];
+                        DisplayTileVariants.Add(tile);
+                    }
+                }
             }
             len = BonusTileVariations.Length;
             BonusCenterVariants = new Tile[len];
