@@ -67,12 +67,6 @@ public class DualGridTile : ScriptableObject
         {
             i = NeighbourRelations[new(topLeft, topRight, botLeft, botRight)];
         }
-        if(i == 6 && BonusTileVariations.Length > 0)
-        {
-            float chanceOfAlternateTexture = 1f / (1f + BonusTileVariations.Length);
-            if(Utils.RandFloat() > chanceOfAlternateTexture)
-                return Utils.RandInt(15, DisplayTileVariants.Length);
-        }
         return i;
     }
     public void UpdateDisplayTile(Vector3Int pos, Tilemap map)
@@ -81,10 +75,11 @@ public class DualGridTile : ScriptableObject
         {
             Vector3Int newPos = pos + NEIGHBOURS[i];
             int id = CalculateDisplayTile(newPos);
-            if(id != -1)
-            {
+            float chanceOfAlternateTexture = 1f / (1f + BonusTileVariations.Length);
+            if (id == 6 && BonusCenterVariants.Length > 0 && Utils.RandFloat() > chanceOfAlternateTexture)
+                map.SetTile(newPos, BonusCenterVariants[Utils.RandInt(BonusCenterVariants.Length)]);
+            else if (id != -1)
                 map.SetTile(newPos, DisplayTileVariants[id]);
-            }
         }
     }
 
@@ -106,6 +101,7 @@ public class DualGridTile : ScriptableObject
     public Tile FloorTileType => RealTileMapVariant;
     public Tile BorderTileType => BorderTileMapVariant;
     public Tile[] DisplayTileVariants { get; private set; }
+    public Tile[] BonusCenterVariants { get; private set; }
     public void Init()
     {
         SetDisplayVariants();
@@ -115,15 +111,25 @@ public class DualGridTile : ScriptableObject
         if(TileTexture != null)
         {
             Sprite[] sprites = Resources.LoadAll<Sprite>($"World/Tiles/{TileTexture.name}/{TileTexture.name}");
-            int len = sprites.Length + BonusTileVariations.Length;
+            int len = sprites.Length;
             DisplayTileVariants = new Tile[len];
             for (int i = 0; i < len; ++i)
             {
                 Tile tile = ScriptableObject.CreateInstance<Tile>();
                 tile.colliderType = Tile.ColliderType.Grid;
                 tile.color = ColorModifier;
-                tile.sprite = i >= sprites.Length ? BonusTileVariations[i - sprites.Length] : sprites[i];
+                tile.sprite = sprites[i];
                 DisplayTileVariants[i] = tile;
+            }
+            len = BonusTileVariations.Length;
+            BonusCenterVariants = new Tile[len];
+            for (int i = 0; i < len; ++i)
+            {
+                Tile tile = ScriptableObject.CreateInstance<Tile>();
+                tile.colliderType = Tile.ColliderType.Grid;
+                tile.color = ColorModifier;
+                tile.sprite = BonusTileVariations[i];
+                BonusCenterVariants[i] = tile;
             }
         }
     }

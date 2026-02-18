@@ -51,6 +51,7 @@ Done:
 2. Bubblebirb should now work in multiplayer
 3. Add ~0.5 seconds of grace frames where enemies don't deal damage when first spawning in
 4. Node Prefabs are now only loaded once on the first world generation, rather than on every world generation, improving restart speed slightly
+5. WIP Reworks to tiles for variation implementation
 
 
 -- A2.1.1 (No changelog) --
