@@ -70,12 +70,6 @@ public class BubbleGun : BubblemancerWand
     }
     private void GunUpdate()
     {
-        //if(Input.GetKeyDown(KeyCode.V))
-        //{
-        //    DamagePower++;
-        //    ShotgunPower++;
-        //}
-
         Vector2 playerToMouse = Player.Control.MousePosition - (Vector2)p.transform.position;
         Vector2 mouseAdjustedFromPlayer = playerToMouse.magnitude < 4 ? playerToMouse.normalized * 4 + (Vector2)p.transform.position : Player.Control.MousePosition;
         float dir = Mathf.Sign(playerToMouse.x);
@@ -120,7 +114,7 @@ public class BubbleGun : BubblemancerWand
         }
         if (AttackRight > 0)
         {
-            if ((Input.GetMouseButton(1) || AttackRight < 100) && AttackRight >= 50)
+            if ((Player.Control.SecondaryAttackHold || AttackRight < 100) && AttackRight >= 50)
             {
                 int maxCharge = 250 + 100 * Player.OldCoalescence;
                 if (AttackRight == 50)
@@ -168,7 +162,7 @@ public class BubbleGun : BubblemancerWand
         AttackLeft--;
 
         bool notAttacking = false;
-        if (-AttackCooldownLeft <= AttackLeft || -AttackCooldownRight <= AttackRight || Input.GetMouseButton(1) || Input.GetMouseButton(0))
+        if (-AttackCooldownLeft <= AttackLeft || -AttackCooldownRight <= AttackRight || Player.Control.PrimaryAttackHold || Player.Control.SecondaryAttackHold)
         {
             spinSpeed += 0.275f;
         }

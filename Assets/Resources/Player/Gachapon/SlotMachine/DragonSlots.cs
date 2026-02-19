@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class DragonSlots : SlotMachineWeapon
 {
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponBubblebirb>();

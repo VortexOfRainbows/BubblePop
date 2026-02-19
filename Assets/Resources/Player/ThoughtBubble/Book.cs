@@ -77,12 +77,6 @@ public class Book : Weapon
     private bool hasDoneSelectAnimation = false;
     private void AttackUpdate()
     {
-        //if(Input.GetKeyDown(KeyCode.V))
-        //{
-        //    DamagePower++;
-        //    ShotgunPower++;
-        //}
-
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.gameObject.transform.position;
         float dir = Mathf.Sign(toMouse.x);
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
