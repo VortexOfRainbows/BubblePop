@@ -9,7 +9,7 @@ public class PlayerAnimator : MonoBehaviour
         {
             if (IsMainPlayerAnimator && MyPlayer != null)
                 return MyPlayer.Control.MousePosition;
-            Player p = Player.FindClosest(transform.position, out _);
+            Player p = Player.FindClosest(transform.position, out _, out _);
             return p == null ? Utils.MouseWorld : p.Position;
         }
     }

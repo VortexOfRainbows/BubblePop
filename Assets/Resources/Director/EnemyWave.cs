@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static UnityEngine.GraphicsBuffer;
 public class WaveCard 
 {
     public override string ToString()
@@ -60,8 +61,12 @@ public class WaveCard
 }
 public abstract class EnemySpawnPattern
 {
+    public EnemySpawnPattern(Player target)
+    {
+        Target = target;
+    }
     public virtual float MinimumDistanceToPlayer => 12;
-    public Player Target => Player.Instance;
+    public Player Target { get; set; } = null;
     public virtual Vector2 GenerateLocation()
     {
         return Target.transform.position;
@@ -80,12 +85,12 @@ public class ArbitrarySpawnPattern : EnemySpawnPattern
     public Func<Vector2> locationFunction = null;
     public Vector2? Location = null;
     private readonly bool OnlyGenOnce;
-    public ArbitrarySpawnPattern(Func<Vector2> location, bool onlyGenerateOnce = false)
+    public ArbitrarySpawnPattern(Player target, Func<Vector2> location, bool onlyGenerateOnce = false) : base(target)
     {
         locationFunction = location;
         OnlyGenOnce = onlyGenerateOnce;
     }
-    public ArbitrarySpawnPattern(Vector2 location)
+    public ArbitrarySpawnPattern(Player target, Vector2 location) : base(target)
     {
         Location = location;
     }
@@ -103,7 +108,7 @@ public class ArbitrarySpawnPattern : EnemySpawnPattern
     {
         if(locationFunction == null)
         {
-            Vector2 toPlayer = (Player.Instance1Pos - Location.Value).normalized;
+            Vector2 toPlayer = (Target.Position - Location.Value).normalized;
             Location += toPlayer * 1.25f + Utils.RandCircle(2f);
             if (finalGeneration)
                 return Location.Value;
@@ -112,24 +117,24 @@ public class ArbitrarySpawnPattern : EnemySpawnPattern
         return GenerateLocation();
     }
 }
-public class CircleSpawnPattern : EnemySpawnPattern
+public class SpawnWithOffset : EnemySpawnPattern
 {
     public override float MinimumDistanceToPlayer => 0;
-    public Vector2 CircularOffset;
-    public EnemySpawnPattern CircularCenter;
+    public Vector2 Offset;
+    public EnemySpawnPattern Center;
     public Vector2 Location;
-    public CircleSpawnPattern(EnemySpawnPattern center, Vector2 offset)
+    public SpawnWithOffset(Player target, EnemySpawnPattern center, Vector2 offset) : base(target)
     {
-        CircularCenter = center;
-        CircularOffset = offset;
+        Center = center;
+        Offset = offset;
     }
     public override Vector2 GenerateLocation()
     {
-        return Location = CircularCenter.GenerateLocation() + CircularOffset;
+        return Location = Center.GenerateLocation() + Offset;
     }
     public override Vector2 RegenerateLocation(int attemptNumber, bool finalGeneration = false)
     {
-        Vector2 toPlayer = (Player.Instance1Pos - Location).normalized;
+        Vector2 toPlayer = (Target.Position - Location).normalized;
         Location += toPlayer * 1.25f + Utils.RandCircle(2f);
         if (finalGeneration)
             return Location;
@@ -159,18 +164,32 @@ public class EnemyPattern
     }
     public Vector2 ShiftLocationIfOutOfBounds(Vector2 location)
     {
-        Vector2 toPlayer = Player.Instance1Pos - location;
-        float dist = toPlayer.magnitude;
-        toPlayer = toPlayer.normalized;
+        Player closest = Player.FindClosest(location, out Vector2 toPlayer, out float dist);
         float minDist = SpawnPattern.MinimumDistanceToPlayer;
-        if (dist < minDist)
+        if (dist < minDist) //If I'm too close to the player, shift myself away from the player.
         {
-            location = Player.Instance1Pos - toPlayer * minDist;
+            location = closest.Position - toPlayer * minDist;
         }
-        int att = -1;
-        while (!ValidLocation(location) && ++att <= 200)
+        for (int att = 0; !ValidLocation(location) && att <= 100; ++att)
         {
-            location = SpawnPattern.RegenerateLocation(att, att == 200);
+            SpawnPattern.Target = closest;
+            location = SpawnPattern.RegenerateLocation(att, att == 100);
+        }
+        for (int deg = 0; deg <= 180; deg += 5)
+        {
+            closest = Player.FindClosest(location, out toPlayer, out dist);
+            if (dist < minDist)
+            {
+                Vector2 testLocation = closest.Position - (toPlayer * minDist).RotatedBy(Utils.RandFloat(-deg, deg));
+                if(ValidLocation(testLocation))
+                {
+                    Debug.Log($"Shifted enemy spawn postion that was too close to Player[{closest.InstanceID}]".WithColor("#FF5511"));
+                    location = testLocation;
+                    break;
+                }
+            }
+            else
+                break;
         }
         return location;
     }

@@ -276,7 +276,7 @@ public class EnemyClause : CardClause
             GameObject[] enemies = new GameObject[TotalDudes];
             for (int j = 0; j < TotalDudes; ++j)
                 enemies[j] = enemyType;
-            var card = WaveDeck.DrawMultiSpawn(WaveDeck.RandomPositionOnPlayerEdge(), 0, 0.5f, 0, 1.75f, enemies);
+            var card = WaveDeck.DrawMultiSpawn(WaveDeck.RandomPositionOnPlayerEdge(Player.GetInstance(Utils.RandInt(Player.AllPlayers.Count))), 0, 0.5f, 0, 1.75f, enemies);
             card.Patterns[0].Skull = true;
             float chance = wavesWithoutSwarm * (0.05f * difficultMult * WaveDirector.WaveNum);
             if ((wavesWithoutSwarm >= 1 && chance > Utils.RandFloat()) || i == max)

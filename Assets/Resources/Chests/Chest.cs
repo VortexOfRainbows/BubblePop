@@ -285,7 +285,7 @@ public class Chest : MonoBehaviour
         {
             if(OpenDir == 0)
             {
-                if (Player.FindClosest(transform.position, out _).Position.x < transform.position.x)
+                if (Player.FindClosest(transform.position, out _, out _).Position.x < transform.position.x)
                     OpenDir = -1;
                 else
                     OpenDir = 1;

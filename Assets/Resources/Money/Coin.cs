@@ -31,7 +31,7 @@ public class Coin : MonoBehaviour
         float radius = IsHeart ? 0.35f : 0.7025f;
         radius *= transform.localScale.x;
         radius += 0.75f;
-        if (Player.FindClosest(transform.position, out _).Distance(gameObject) < radius)
+        if (Player.FindClosest(transform.position, out _, out float dist) != null && dist < radius)
         {
             if (!CanCollect())
                 return;
@@ -50,7 +50,7 @@ public class Coin : MonoBehaviour
     {
         TryCollecting();
         if(++getPlayerTimer % 10 == 0 || p == null)
-            p = Player.FindClosest(transform.position, out Vector2 _);
+            p = Player.FindClosest(transform.position, out _, out _);
         if (IsCoin || IsToken)
             rb.rotation += rb.velocity.magnitude * 0.5f * -Mathf.Sign(rb.velocity.x);
         else if(IsGem)

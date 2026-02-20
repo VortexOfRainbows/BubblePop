@@ -15,7 +15,7 @@ public class Pylon : MonoBehaviour
     public bool EndlessPylon = false;
     public bool Complete { get; private set; } = false;
     public bool Purified { get; private set; } = false;
-    public Player ClosestPlayer => Player.FindClosest(transform.position, out _);
+    public Player ClosestPlayer => Player.FindClosest(transform.position, out _, out _);
     public void FixedUpdate()
     {
         bool nearby = ClosestPlayer.Distance(gameObject) < Main.PylonActivationDist;

@@ -50,7 +50,7 @@ public partial class Main : MonoBehaviour
         transform.position = Vector3.zero;
         GameUpdateCount++;
         Projectile.StaticUpdate();
-        if (!WavesUnleashed && Player.AllPlayers.Count > 0 && Vector2.Distance(Player.FindClosest(PylonPositon, out _).Position, PylonPositon) > PylonActivationDist)
+        if (!WavesUnleashed && Player.AllPlayers.Count > 0 && Player.FindClosest(PylonPositon, out _, out float dist) != null && dist > PylonActivationDist)
             CurrentPylon = null;
         //if (DebugCheats && Input.GetKey(KeyCode.O) && Input.GetKey(KeyCode.RightShift))
         //    PlayerData.ResetAll();

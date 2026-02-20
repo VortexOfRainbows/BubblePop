@@ -14,35 +14,37 @@ Need to do:
 	3. Progress display for achievements
 2. More descriptive pause and select screen (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
-	1. Economy: Magnet, Discount, Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more)
+	1. Economy: Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more) or maybe Bounty Hunter
 4. Add a GEM currency, which can be used to reroll shop selections
 5. Add descriptions for character abilities on a sidebar and each equipments contribution to the ability pool
 6. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 7. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 8. Make power display on the bottom smaller
 9. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
-10. Make enemies spawn further away when possible
-11. Tile resprite implementation
-12. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens
+10. Tile resprite implementation
+11. Enemy Pathfinding
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Improve UI
 2. Maybe shift roadblock visuals to the player so it's more encompassing
 3. Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp
-4. Enemy Pathfinding
-5. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
+4. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
+5. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't easily replicate either)
+6. Normalize player customization layering (not super important but part of a future task)
 
 Current Task List:
 1. Quest List UI that says stuff like:
 	1. Activate the First Pylon => Clear 2 Waves of Invaders => Stabilize the Pylon => Activate the Next Pylon
 2. Finish Pylon and Roadblock systems:
 	1. Pointers that show you the direction to the next Pylon
-3. Multiplayer:
-	1. Normalize player customization layering
-	2. Make Portals attempt to spawn far away from BOTH players, rather than just the first player
 
 Done: 
+
+2/20/26
+1. Enemy portals may now spawn near either player in multiplayer mode
+2. Decrease the max number of attempts taken to move an enemy spawn position to the player if it happens to spawn in a wall (200 -> 100)
+3. After the initial enemy spawn adjustments, if the enemy spawn is STILL too close to the player(s), it now attempts to shift away from the player(s) (~36 attempts), while searching for valid tiles, which should hopefully curb enemies spawning on players in nearly all cases, including some where you are hiding inside a enclosed area
 
 2/19/26
 1. In multiplayer, health UI is only updated by player 1 now, which should reduce lag and fix some visual bugs
@@ -60,7 +62,7 @@ Done:
 7. Enemy wave card enemy cost scaling 10 -> 8, cost to make permanent 2.0x -> 1.75x
 	1. This should make enemies more reliably become part of the enemy pool
 8. Slight changes to multiplayer camera + some bug fixes
-9. Fix bubble gun not working for multiplayer player 2
+9. Fix bubble gun secondary attack not working for multiplayer player 2
 
 
 -- A2.1.1 (No changelog) --

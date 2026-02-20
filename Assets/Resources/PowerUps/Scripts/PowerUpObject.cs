@@ -44,7 +44,7 @@ public class PowerUpObject : MonoBehaviour
         float radius = 1.0f;
         radius *= transform.localScale.x;
         radius += Player.Instance.transform.localScale.x * 0.7f;
-        Player p = Player.FindClosest(transform.position, out _);
+        Player p = Player.FindClosest(transform.position, out _, out _);
         if (p.Distance(gameObject) < radius)
         {
             if (!PickedUp && CoinManager.CurrentCoins >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))

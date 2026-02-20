@@ -78,7 +78,7 @@ public static class EnemyID
 }
 public class Enemy : Entity
 {
-    public Player Target => Player.FindClosest(transform.position, out _);
+    public Player Target => Player.FindClosest(transform.position, out _, out _);
     public DetailedDescription MyDescription => StaticData.Description;
     public virtual void InitializeDescription(ref DetailedDescription description)
     {
@@ -374,10 +374,8 @@ public class Enemy : Entity
     }
     private Color PickCriticalStrikeColor(int critValue)
     {
-        if (critValue >= 1)
-        {
+        if (critValue > 1)
             return Color.Lerp(new Color(1f, 0.85f, 0.15f), new Color(1f, 0.1f, 1.0f), (critValue - 1) /  10f);
-        }
         return new(1f, 0.5f, 0.4f);
     }
     public virtual void OnInjured(float damage, int critLevel)

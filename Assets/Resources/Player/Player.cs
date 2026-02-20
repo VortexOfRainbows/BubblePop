@@ -288,7 +288,7 @@ public partial class Player : Entity
 {
     public static readonly List<Player> AllPlayers = new();
     //TODO: Make this output the distance so it can be used in situations requiring distance easily
-    public static Player FindClosest(Vector3 position, out Vector2 norm, float searchDistance = 10000)
+    public static Player FindClosest(Vector3 position, out Vector2 norm, out float distanceToPlayer, float searchDistance = 10000)
     {
         searchDistance *= searchDistance;
         norm = Vector2.zero;
@@ -306,7 +306,8 @@ public partial class Player : Entity
                 norm = toDest;
             }
         }
-        norm = norm.normalized;
+        distanceToPlayer = norm.magnitude;
+        norm /= distanceToPlayer;
         return best;
     }
     public NewControls Control { get; private set; }
