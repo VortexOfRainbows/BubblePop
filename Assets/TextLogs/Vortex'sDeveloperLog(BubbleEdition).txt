@@ -20,9 +20,8 @@ Need to do:
 6. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 7. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 8. Make power display on the bottom smaller
-9. Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
-10. Tile resprite implementation
-11. Enemy Pathfinding
+9. Tile resprite implementation
+10. Enemy Pathfinding
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Improve UI
@@ -32,6 +31,7 @@ Less Important (mostly non-issues or complete already), but in consideration:
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 5. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't easily replicate either)
 6. Normalize player customization layering (not super important but part of a future task)
+7. (MAYBE) Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 
 Current Task List:
 1. Quest List UI that says stuff like:
@@ -45,6 +45,7 @@ Done:
 1. Enemy portals may now spawn near either player in multiplayer mode
 2. Decrease the max number of attempts taken to move an enemy spawn position to the player if it happens to spawn in a wall (200 -> 100)
 3. After the initial enemy spawn adjustments, if the enemy spawn is STILL too close to the player(s), it now attempts to shift away from the player(s) (~36 attempts), while searching for valid tiles, which should hopefully curb enemies spawning on players in nearly all cases, including some where you are hiding inside a enclosed area
+4. Batter up resprite (DAVID)
 
 2/19/26
 1. In multiplayer, health UI is only updated by player 1 now, which should reduce lag and fix some visual bugs
