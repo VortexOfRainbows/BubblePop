@@ -82,7 +82,7 @@ public class SmallBubble : Projectile
             Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
         }
-        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
+        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 1.1f);
     }
 }
 public class BigBubble : Projectile

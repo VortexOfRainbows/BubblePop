@@ -41,9 +41,14 @@ Current Task List:
 3. Multiplayer:
 	1. Normalize player customization layering
 	2. Make Portals attempt to spawn far away from BOTH players, rather than just the first player
-	3. BUGS: Bubble shield is not working in some way
 
 Done: 
+
+2/19/26
+1. In multiplayer, health UI is only updated by player 1 now, which should reduce lag and fix some visual bugs
+2. Fix bubble shield not working in multiplayer
+3. In multiplayer, only player 1 will update the camera during the death animation, making it match singleplayer update speeds
+4. Lowered volume multiplier on small bubble pop sound 70% -> 50%
 
 2/18/26
 1. Coins now search for the closest player to be attracted to every 10 frames

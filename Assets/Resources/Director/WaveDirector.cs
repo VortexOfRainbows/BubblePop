@@ -152,7 +152,8 @@ public static class WaveDirector
             HighScoreWaveNum = WaveNum;
             PlayerData.SaveInt("HighscoreWave", HighScoreWaveNum);
         }
-        Player.Instance.OnWaveStart(WaveNum);
+        foreach(Player p in Player.AllPlayers)
+            p.OnWaveStart(WaveNum);
         WaveActive = true;
         CardManager.ApplyChosenCard(); //Applies permanent modifiers, updates temp modifiers, spawns loot
         CardsPlayed = 0;
@@ -165,7 +166,8 @@ public static class WaveDirector
     }
     public static void EndWave()
     {
-        Player.Instance.OnWaveEnd(WaveNum);
+        foreach (Player p in Player.AllPlayers)
+            p.OnWaveEnd(WaveNum);
         WaveActive = false;
         WaveMult += 0.1f;
         if(WaveNum >= 15)

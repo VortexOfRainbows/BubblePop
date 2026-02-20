@@ -646,10 +646,13 @@ public partial class Player : Entity
     public void Pop()
     {
         //Time.timeScale = 0.5f + 0.5f * Mathf.Sqrt(Mathf.Max(0, 1 - DeathKillTimer / 200f));
-        if (DeathKillTimer > 100)
-            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 6f, 0.03f);
-        else
-            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 17f, 0.03f);
+        if(InstanceID == 0)
+        {
+            if (DeathKillTimer > 100)
+                MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 6f, 0.03f);
+            else
+                MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 17f, 0.03f);
+        }
         RB.velocity *= 0.9f;
         Body.DeadUpdate();
         Hat.DeadUpdate();
@@ -703,12 +706,14 @@ public partial class Player : Entity
     }
     public void OnSetLife(int value)
     {
-        PlayerStatUI.SetHearts(value, Shield);
+        if(InstanceID == 0)
+            PlayerStatUI.SetHearts(value, Shield);
     }
     public void SetShield(int num)
     {
         Shield = num;
-        PlayerStatUI.SetHearts(Life, num);
+        if(InstanceID == 0)
+            PlayerStatUI.SetHearts(Life, num);
     }
     public void ImmuneFlashing()
     {
@@ -754,10 +759,13 @@ public partial class Player : Entity
             if (HasBubbleShield && Shield < TotalMaxShield)
                 SetShield(Shield + 1);
         }
-        if(PowerUp.Get<EatenCake>().Stack > 0)
+        if(InstanceID == 0)
         {
-            PowerUp.Get<QuantumCake>().PickUp(this);
-            RemovePower(PowerUp.Get<EatenCake>().MyID);
+            if (PowerUp.Get<EatenCake>().Stack > 0)
+            {
+                PowerUp.Get<QuantumCake>().PickUp(this);
+                RemovePower(PowerUp.Get<EatenCake>().MyID);
+            }
         }
         LuckyStarItemsAcquiredThisWave = 0;
     }
