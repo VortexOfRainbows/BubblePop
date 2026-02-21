@@ -8,12 +8,13 @@ public class Gatligator : Enemy
     }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
-        inlineThreshold = 0.05f;
+        inlineThreshold = 0.01f;
         additiveColorPower = 0.5f;
     }
     public override float HealthBarOffset => -0.25f;
-    public Transform GunTip;
+    public Transform GunTip, Head;
     public GameObject Gun;
+    public Transform[] Barrels = new Transform[6];
     private Vector2 targetedLocation;
     private readonly float moveSpeed = 0.18f;
     private readonly float inertiaMult = 0.9875f;
@@ -31,13 +32,19 @@ public class Gatligator : Enemy
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
-        offset.x -= 0.1f;
-        scale *= 0.45f;
+        offset.x -= 0.125f;
+        offset.y += 0.55f;
+        scale *= 0.6125f;
     }
     public override void OnSpawn()
     {
         ShootTimer = -3f;
         ShootSpeed = 0.38f;
+        GunAnimationUpdate();
+    }
+    public override void UIAI()
+    {
+        GunAnimationUpdate();
     }
     public void UpdateDirection(float i)
     {
@@ -45,7 +52,7 @@ public class Gatligator : Enemy
             i = 1;
         else
             i = -1;
-        Visual.transform.localScale = new Vector3(i, 1, 1);
+        Visual.transform.localScale = new Vector3(i * 1.1f, 1.1f, 1);
     }
     private int movingMode = 0;
     public void MoveUpdate()
@@ -78,15 +85,19 @@ public class Gatligator : Enemy
     }
     public void GunUpdate()
     {
+        GunAnimationUpdate();
         Vector2 toTarget = Target.Position - (Vector2)Gun.transform.position;
         toTarget.x *= Visual.transform.localScale.x;
-        float lerp = 0.02f;
-        if (direction != Visual.transform.localScale.x)
+        float lerp = 0.03f;
+        if (direction != Utils.SignNoZero(Visual.transform.localScale.x))
         {
-            direction = Visual.transform.localScale.x;
+            direction = Utils.SignNoZero(Visual.transform.localScale.x);
             Gun.transform.localEulerAngles = Vector3.forward * (180 - Gun.transform.localEulerAngles.z);
         }
-        Gun.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Gun.transform.localEulerAngles.z, toTarget.ToRotation() * Mathf.Rad2Deg, lerp);
+        float angle = Mathf.LerpAngle(Gun.transform.localEulerAngles.z, toTarget.ToRotation() * Mathf.Rad2Deg, lerp);
+        float dir2 = angle < 90 || angle > 270 ? 1 : -1;
+        Gun.transform.localScale = new Vector3(0.97f, 0.97f * dir2, 1f);
+        Gun.transform.localEulerAngles = Vector3.forward * angle;
 
         ShootTimer += Time.fixedDeltaTime;
         if(ShootTimer > ShootSpeed)
@@ -95,6 +106,24 @@ public class Gatligator : Enemy
             Vector2 norm = (GunTip.position - Gun.transform.position).normalized;
             Projectile.NewProjectile<Gatorade>(GunTip.transform.position, norm * 16f, 1, this);
             AudioManager.PlaySound(SoundID.ShootBubbles, GunTip.transform.position, 0.5f, 1.5f);
+        }
+    }
+    public void GunAnimationUpdate()
+    {
+        float windUpPercent = Mathf.Clamp01((ShootTimer + 3) / 3f);
+        float rollPercent = windUpPercent * Mathf.Clamp01(ShootTimer / ShootSpeed);
+        Head.transform.SetEulerZ(Mathf.Sin(rollPercent * Mathf.PI * 2) * -15);
+        for(int i = 0; i < 6; ++i)
+        {
+            var b = Barrels[i];
+            float r = i * Mathf.PI / 3f;
+            Vector2 circular = new Vector2(0, 1).RotatedBy(r + rollPercent * Mathf.PI);
+            float scaleFactor = circular.x;
+            circular.x *= 0.05f;
+            circular.y *= 0.2f;
+            b.localPosition = new Vector3(circular.x, circular.y, scaleFactor * 0.005f);
+            b.localScale = Vector3.one * (1 - 0.1f * scaleFactor);
+            b.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.black, Color.white, 0.6f - 0.4f * scaleFactor);
         }
     }
     public override void AI()
