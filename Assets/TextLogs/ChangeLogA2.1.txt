@@ -17,3 +17,39 @@ Misc:
 Fixes:
 1. Fix bug where switching characters would briefly misorient equips (make them face a wrong direction)
 2. Fix bug where slot machine would sometime cause an error when first used
+
+
+Dev Build 2.1.1 and 2.1.2 (tentative version number)
+
+New:
+1. Enemy portals may now spawn near either player in multiplayer mode
+2. After the initial enemy spawn adjustments, if the enemy spawn is STILL too close to the player(s), it now attempts to shift away from the player(s) (~36 attempts), while searching for valid tiles, which should hopefully curb enemies spawning on players in nearly all cases, including some where you are hiding inside a enclosed area
+3. Batter up resprite
+4. Gatligator resprite and appropriate hitbox modifications
+	1. Now has animations for shooting, chomping
+	2. Increased gun lock-on rate 0.02 -> 0.03
+	3. Works with infector
+
+Changes:
+1. Add ~0.5 seconds of grace frames where enemies don't deal damage when first spawning in
+2. Enemy wave card enemy cost scaling 10 -> 8, cost to make permanent 2.0x -> 1.75x
+	1. This should make enemies more reliably become part of the enemy pool
+3. Lowered volume multiplier on small bubble pop sound 70% -> 50%
+
+Misc:
+1. Coins now search for the closest player to be attracted to every 10 frames
+2. Node Prefabs are now only loaded once on the first world generation, rather than on every world generation, improving restart speed slightly
+3. Reworks to tiles for variation implementation
+
+Fixes:
+1. Fix bug where multiplayer UI screen did not appear (for real this time)
+2. Crucible should now work for both players in multiplayer
+3. Bubblebirb should now work in multiplayer
+4. Slight changes to multiplayer camera + some bug fixes
+5. Fix bubble gun secondary attack not working for multiplayer player 2
+6. In multiplayer, health UI is only updated by player 1 now, which should reduce lag and fix some visual bugs
+7. Fix bubble shield not working in multiplayer
+8. In multiplayer, only player 1 will update the camera during the death animation, making it match singleplayer update speeds
+
+
+
