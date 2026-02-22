@@ -44,7 +44,11 @@ public class Gatligator : Enemy
     }
     public override void UIAI()
     {
-        GunAnimationUpdate();
+        if (ShootSpeed != 5)
+        {
+            ShootSpeed = 5;
+            GunAnimationUpdate();
+        }
     }
     public void UpdateDirection(float i)
     {
@@ -123,7 +127,10 @@ public class Gatligator : Enemy
             circular.y *= 0.2f;
             b.localPosition = new Vector3(circular.x, circular.y, scaleFactor * 0.005f);
             b.localScale = Vector3.one * (1 - 0.1f * scaleFactor);
-            b.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.black, Color.white, 0.6f - 0.4f * scaleFactor);
+            var sr = b.GetComponent<SpriteRenderer>();
+            if (!IsDummy)
+                sr.color = Color.white;
+            sr.color = Color.Lerp(sr.color, Color.black, 0.4f + 0.4f * scaleFactor);
         }
     }
     public override void AI()

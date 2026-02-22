@@ -7,7 +7,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         get
         {
-            if (IsMainPlayerAnimator && MyPlayer != null)
+            if (IsMainPlayerAnimator && MyPlayer != null && MyPlayer.Control != null)
                 return MyPlayer.Control.MousePosition;
             Player p = Player.FindClosest(transform.position, out _, out _);
             return p == null ? Utils.MouseWorld : p.Position;

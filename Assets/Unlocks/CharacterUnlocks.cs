@@ -28,3 +28,12 @@ public class GachaponUnlock : UnlockCondition
         description.WithDescription("Spend Y:[5000 coins] across multiple runs");
     }
 }
+public class FizzyUnlock : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Kickflip");
+        description.WithDescription("Starts unlocked");
+    }
+    protected override bool TryUnlockCondition => true;
+}

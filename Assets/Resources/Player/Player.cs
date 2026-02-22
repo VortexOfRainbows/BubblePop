@@ -608,7 +608,7 @@ public partial class Player : Entity
             {
                 UnlockCondition.Get<GachaponHealer>().SetComplete();
             }
-            if(AllPlayers.Count > 0)
+            if(AllPlayers.Count > 1)
             {
                 if (InstanceID == 0)
                     AllPlayers[1].Hurt(-damage);
