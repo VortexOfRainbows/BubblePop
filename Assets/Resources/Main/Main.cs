@@ -244,7 +244,7 @@ public partial class Main : MonoBehaviour
         public static readonly GameObject GachaponWeapon = LoadEquipment("Gachapon/SlotMachine/SlotMachine");
         public static readonly GameObject DragonSlots = LoadSubEquipment(GachaponWeapon, "Gachapon/SlotMachine/DragonSlots");
         public static readonly GameObject UtilityBelt = LoadSubEquipment(ThoughtBubbleCape, "ThoughtBubble/Belt");
-        //public static readonly GameObject Fizzy = LoadEquipment("Fizzy/Fizzy");
+        public static readonly GameObject Fizzy = LoadEquipment("Fizzy/Fizzy");
         public static GameObject LoadEquipment(string path) => LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
         public static GameObject LoadEquipment(GameObject Prefab)
         {

@@ -48,6 +48,11 @@ public partial class Entity : MonoBehaviour
     public Vector2 lastPos { get; protected set; } = Vector2.zero;
     public void FixedUpdate()
     {
+        if (!HasCalledInit)
+        {
+            Init();
+            HasCalledInit = true;
+        }
         UniversalImmuneFrames--;
         OnFixedUpdate();
         if (this is not Enemy e)
@@ -57,9 +62,14 @@ public partial class Entity : MonoBehaviour
     {
 
     }
+    public bool HasCalledInit = false;
     public void Start()
     {
-        Init();
+        if(!HasCalledInit)
+        {
+            Init();
+            HasCalledInit = true;
+        }
         if (this is Enemy e)
         {
             EnemyHealthScaling(e);

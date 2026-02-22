@@ -11,7 +11,6 @@ public class BubblemancerWand : Weapon
     // protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        //powerPool.Add<WeaponUpgrade>();
         powerPool.Add<EternalBubbles>();
         powerPool.Add<Shotgun>();
         powerPool.Add<ChargeShot>();
@@ -19,7 +18,6 @@ public class BubblemancerWand : Weapon
         powerPool.Add<SoapySoap>();
         powerPool.Add<ShotSpeed>();
         powerPool.Add<Starshot>();
-        //powerPool.Add<Coalescence>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
