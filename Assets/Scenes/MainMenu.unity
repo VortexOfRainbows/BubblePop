@@ -8185,6 +8185,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 385856397051242337, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 68433232140797940a6178bd14cecd2f, type: 3}
+    - target: {fileID: 685716567374030474, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 68433232140797940a6178bd14cecd2f, type: 3}
+    - target: {fileID: 3031685811550372424, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 68433232140797940a6178bd14cecd2f, type: 3}
     - target: {fileID: 4648045220826043896, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -8265,10 +8277,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -42.07
       objectReference: {fileID: 0}
+    - target: {fileID: 4900792360812470555, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 68433232140797940a6178bd14cecd2f, type: 3}
     - target: {fileID: 6848860501712354903, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 410043210}
+    - target: {fileID: 7505217099311367489, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 68433232140797940a6178bd14cecd2f, type: 3}
     - target: {fileID: 8163378996973584416, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
       propertyPath: m_Name
       value: MainMenuCanvas
