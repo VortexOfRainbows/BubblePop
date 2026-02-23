@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -90,6 +91,7 @@ public class CharacterSelect : MonoBehaviour
     {
         LastSelectedBody = PlayerData.GetInt("LastSelectedChar");
     }
+    public EquipmentInfoScreen InfoScreen;
     public int LastSelectedBody = 0;
     public EquipmentUIElement EquipmentUISlotPrefab;
     public PowerUpLayout PowerLayout;
@@ -227,6 +229,10 @@ public class CharacterSelect : MonoBehaviour
                 openPage = true;
                 page.hoveringElement = null; 
                 justClosedFromDragOff = true;
+            }
+            if(openPage)
+            {
+                InfoScreen.SetUIElement(slot.ActiveEquipment);
             }
         }
         if (openPage && AllowOpeningPage)

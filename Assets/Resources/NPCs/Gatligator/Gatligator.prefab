@@ -527,10 +527,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Visual: {fileID: 8980884455947466911}
   SpawnedIn: 0
+  HasCalledInit: 0
   RB: {fileID: 8718947618727373290}
   IndexInAllEnemyArray: -1
   AlreadyDead: 0
   FirstStrike: 1
+  MainBodyRenderer: {fileID: 4375757716097604773}
   GunTip: {fileID: 802660635248054019}
   Head: {fileID: 3296608790526047216}
   Gun: {fileID: 5855300600448744006}

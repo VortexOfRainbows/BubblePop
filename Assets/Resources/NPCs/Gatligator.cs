@@ -12,6 +12,7 @@ public class Gatligator : Enemy
         additiveColorPower = 0.5f;
     }
     public override float HealthBarOffset => -0.25f;
+    public SpriteRenderer MainBodyRenderer;
     public Transform GunTip, Head;
     public GameObject Gun;
     public Transform[] Barrels = new Transform[6];
@@ -129,7 +130,7 @@ public class Gatligator : Enemy
             b.localScale = Vector3.one * (1 - 0.1f * scaleFactor);
             var sr = b.GetComponent<SpriteRenderer>();
             if (!IsDummy)
-                sr.color = Color.white;
+                sr.color = MainBodyRenderer.color;
             sr.color = Color.Lerp(sr.color, Color.black, 0.4f + 0.4f * scaleFactor);
         }
     }
