@@ -28,7 +28,7 @@ public class PowerUpLayout : MonoBehaviour
     }
     public void Update()
     {
-        UpdateSizing();
+        //UpdateSizing();
         //if(Input.GetKeyDown(KeyCode.V) && !isInGameLayout)
         //{
         //    AddNewPower(PowerUpUISlotPrefab.gameObject, gameObject, 0);
@@ -62,9 +62,7 @@ public class PowerUpLayout : MonoBehaviour
     public void Generate(List<int> AvailablePowers)
     {
         foreach (PowerUpUIElement pUI in PowerUpElems)
-        {
             Destroy(pUI.gameObject);
-        }
         PowerUpElems.Clear();
         Equipment.ModifyPowerPoolAll();
         //PowerUp.SortAvailablePowers();
@@ -72,6 +70,21 @@ public class PowerUpLayout : MonoBehaviour
         {
             AddNewPower(PowerUpUISlotPrefab, gameObject, AvailablePowers[i]);
         }
+        UpdateSizing();
+    }
+    public void GenerateSingle(List<PowerUp> AvailablePowers)
+    {
+        foreach (PowerUpUIElement pUI in PowerUpElems)
+            Destroy(pUI.gameObject);
+        PowerUpElems.Clear();
+        for (int i = 0; i < AvailablePowers.Count; ++i)
+        {
+            AvailablePowers[i].ForceNOTBlackMarket = true;
+            var ui = AddNewPower(PowerUpUISlotPrefab, gameObject, AvailablePowers[i].MyID);
+            ui.ForceNotBlackMarket = true;
+            AvailablePowers[i].ForceNOTBlackMarket = false;
+        }
+        UpdateSizing();
     }
     public void GenerateInventory()
     {
@@ -87,6 +100,7 @@ public class PowerUpLayout : MonoBehaviour
             PowerUpElems.RemoveAt(PowerUpElems.Count - 1);
             Destroy(obj.gameObject);
         }
+        UpdateSizing();
     }
     public PowerUpUIElement AddNewPower(GameObject prefab, GameObject parent, int index, bool inventory = false)
     {
@@ -100,7 +114,6 @@ public class PowerUpLayout : MonoBehaviour
         powerUI.myLayout = this;
         powerUI.TurnedOn();
         PowerUpElems.Add(powerUI);
-        UpdateSizing();
         return powerUI;
     }
 }

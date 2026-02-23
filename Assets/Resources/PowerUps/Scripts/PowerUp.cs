@@ -183,6 +183,7 @@ public abstract class PowerUp
     }
     public int MyID = -1;
     #endregion
+    public bool ForceNOTBlackMarket { get; set; } = false;
     public bool ForceBlackMarket { get; set; } = false;
     public static bool PickingPowerUps { get; set; }
     public static int RandomFromPool(float bonusChoiceChance = 0.15f, float blackMarketChance = -1f, int rarity = -1)
@@ -275,7 +276,7 @@ public abstract class PowerUp
     public float Weighting = 1;
     //Returns the MyID of this power
     public int Type => MyID;
-    private string InternalName;
+    private readonly string InternalName;
     protected PowerUp()
     {
         TrueDescription = new(this);
@@ -437,6 +438,8 @@ public abstract class PowerUp
     {
         if (ForceBlackMarket)
             return true;
+        else if (ForceNOTBlackMarket)
+            return false;
         bool NoAltsForCompendium = Compendium.Instance != null && Compendium.Instance.PageNumber == 0;
         if (Main.GameFinishedLoading && !IsInPowerPool && HasBlackMarketAlternate && BlackMarketVariantUnlockCondition.Unlocked && !NoAltsForCompendium)
             return true;

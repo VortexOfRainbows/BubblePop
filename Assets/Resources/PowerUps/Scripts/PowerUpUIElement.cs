@@ -41,6 +41,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool GrayOut { get; set; }
     public bool SpecialLockedSprite { get; set; } = false;
     public bool ForceUnhideElement { get; set; } = false;
+    public bool ForceNotBlackMarket { get; set; } = false;
     public bool CrucibleElement { get; set; } = false;
     public bool UsePlaceHolder = false;
     public TextMeshProUGUI CostText;
@@ -205,6 +206,8 @@ public class PowerUpUIElement : MonoBehaviour
     }
     public void OnUpdate()
     {
+        if (ForceNotBlackMarket)
+            MyPower.ForceNOTBlackMarket = true;
         if (Type >= 0)
         {
             if ((!visual.activeSelf || prevType != Type) && Timer > 1)
@@ -217,5 +220,7 @@ public class PowerUpUIElement : MonoBehaviour
         }
         else
             TurnedOff();
+        if (ForceNotBlackMarket)
+            MyPower.ForceNOTBlackMarket = false;
     }
 }
