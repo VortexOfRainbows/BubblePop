@@ -23,7 +23,9 @@ public partial class Main : MonoBehaviour
         public List<Button> SettingsButton = new();
         public List<Button> QuitButtons = new();
         public List<Button> DebugButtons = new();
-        public TextMeshProUGUI PauseMenuTopText, MPControls1, MPControls2;
+        public List<Button> CloseTutorialMenuButton = new();
+        public GameObject MPMenu1, MPMenu2, SPMenu;
+        public TextMeshProUGUI PauseMenuTopText, MPControls1, MPControls2, SPControls;
         public void AddListeners()
         {
             foreach (Button b in PlayButtons)
@@ -44,6 +46,8 @@ public partial class Main : MonoBehaviour
                 b.onClick.AddListener(QuitGame);
             foreach (Button b in DebugButtons)
                 b.onClick.AddListener(OpenDebugMenu);
+            foreach (Button b in CloseTutorialMenuButton)
+                b.onClick.AddListener(CloseMultiplayerMenu);
         }
         public Canvas MainCanvas;
         public GameObject PauseMenu, SettingsMenu, DebugMenu, MultiplayerMenu;
@@ -52,6 +56,9 @@ public partial class Main : MonoBehaviour
         {
             if (pause)
                 PauseGame();
+            MPMenu1.SetActive(Player.AllPlayers.Count > 1);
+            MPMenu2.SetActive(Player.AllPlayers.Count > 1);
+            SPMenu.SetActive(Player.AllPlayers.Count <= 1);
             MultiplayerMenu.SetActive(true);
         }
         public void CloseMultiplayerMenu()

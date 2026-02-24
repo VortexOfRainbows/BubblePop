@@ -1,11 +1,32 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 public class NewControls
 {
+    public static Dictionary<KeyCode, string> LocalizedValue = GenLocals();
+    public static Dictionary<KeyCode, string> GenLocals()
+    {
+        Dictionary<KeyCode, string> dict = new()
+        {
+            [KeyCode.LeftArrow] = "LArrow",
+            [KeyCode.RightArrow] = "RArrow",
+            [KeyCode.DownArrow] = "DArrow",
+            [KeyCode.UpArrow] = "UArrow",
+            [KeyCode.LeftShift] = "LShift",
+            [KeyCode.RightShift] = "RShift",
+            [KeyCode.LeftControl] = "LCtrl",
+            [KeyCode.RightControl] = "RCtrl"
+        };
+        return dict;
+    }
+    public static string KeyCodeToString(KeyCode code)
+    {
+        if(LocalizedValue.TryGetValue(code, out string val))
+            return val;
+        return code.ToString();
+    }
     #region control classes
     public class DirectionalBinding
     {
@@ -68,9 +89,9 @@ public class NewControls
         public override bool Get() => Input.GetKey(code) || Input.GetKey(secondCode);
         public override string ToString()
         {
-            if (secondCode != KeyCode.None)
-                return $"{code}/{secondCode}";
-            return code.ToString();
+            return KeyCodeToString(code);
+            //if (secondCode != KeyCode.None)
+            //    return $"{KeyCodeToString(code)} or {KeyCodeToString(secondCode)}";
         }
     }
     public class VerboseKeyHold : ControlBinding
@@ -91,7 +112,7 @@ public class NewControls
         {
             string t = string.Empty;
             for (int i = 0; i < codes.Length; ++i)
-                t += codes[i].ToString() + (i < codes.Length - 1 ? ", " : "");
+                t += KeyCodeToString(codes[i]) + (i < codes.Length - 1 ? "/" : "");
             return t;
         }
     }
@@ -101,7 +122,7 @@ public class NewControls
         public override bool Get() => Input.GetMouseButton(Bind);
         public override string ToString()
         {
-            return "Mouse" + base.ToString();
+            return "Mouse" + (Bind + 1);
         }
     }
     public class MouseDown : ControlBinding
@@ -146,7 +167,7 @@ public class NewControls
         {
             string t = Control.shortDisplayName;
             for (int i = 0; i < Controls.Length; ++i)
-                t += ", " + Controls[i].shortDisplayName;
+                t += "/" + Controls[i].shortDisplayName;
             return t;
         }
     }
@@ -380,6 +401,10 @@ public partial class Player : Entity
             var target = InstanceID == 0 ? Main.UIManager.MPControls1 : Main.UIManager.MPControls2;
             string s = Control.AllBindings();
             target.text = s;
+            if (InstanceID == 0  && Main.UIManager.SPControls != null)
+            {
+                Main.UIManager.SPControls.text = s;
+            }
         }
     }
     public float abilityTimer = 0;
@@ -561,7 +586,7 @@ public partial class Player : Entity
     public bool RunOnce { get; set; } = true;
     public new void Update()
     {
-        if(RunOnce && Player.AllPlayers.Count > 1 && InstanceID == 0 && Main.UIManager.MultiplayerMenu != null)
+        if(RunOnce && InstanceID == 0 && Main.UIManager.MultiplayerMenu != null)
         {
             Main.UIManager.OpenMultiplayerMenu(false);
             RunOnce = false;
