@@ -35,14 +35,17 @@ public class PricedButton : MonoBehaviour
             StartButtonImage.color = Color.Lerp(new Color(1, 1, 1, 0.8f), new Color(0.9f, 0.0f, 0.0f, 0.8f), 0.5f);
             Text.color = CanAfford ? Color.white : Color.red;
         }
+        if (Utils.IsMouseHoveringOverThis(true, StartButton.GetComponent<RectTransform>(), 0, MyCanvas))
+        {
+            if (!StartButton.interactable)
+            {
+                PopUpTextUI.Enable("Must be near a pylon to begin!".WithColor(DetailedDescription.Rares[5]), "");
+            }
+            Player.Instance.Control.BlockAttack = true;
+        }
         PylonUpdate();
         //StartButtonCoinVisual.SetActive(CoinManager.TotalEquipCost > 0);
         //Text.text = $"${CoinManager.TotalEquipCost}";
-    }
-    public void FixedUpdate()
-    {
-        if (Utils.IsMouseHoveringOverThis(true, StartButton.GetComponent<RectTransform>(), 0, MyCanvas))
-            Main.MouseHoveringOverButton = true;
     }
     public void PylonUpdate()
     {

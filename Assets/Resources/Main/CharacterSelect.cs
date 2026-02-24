@@ -117,6 +117,7 @@ public class CharacterSelect : MonoBehaviour
         Utils.LerpSnap(Slider.transform, new Vector2(0, 645), 1f);
         InitializeMainButtons();
     }
+    private Vector2 prevPosition;
     public void OnUpdate()
     {
         Instance = this;
@@ -145,11 +146,17 @@ public class CharacterSelect : MonoBehaviour
             return;
         }
         //hangarButtonImage = hangarButtonImage != null ? hangarButtonImage : HangerButton.GetComponent<Image>();
-        float lerpFactor = Utils.DeltaTimeLerpFactor(0.1f);
+        float lerpFactor = Utils.DeltaTimeLerpFactor(0.1125f);
         if (Utils.IsMouseHoveringOverThis(true, HangerButton, 0, myCanvas))
         {
             if(Control.LeftMouseClick)
                 selectMenuOpen = !selectMenuOpen;
+            else
+            {
+                bool isMoving = prevPosition.Distance((Vector2)HangerButton.transform.position) > 0.01f;
+                if (!isMoving)
+                    PopUpTextUI.Enable(!selectMenuOpen ? "Open Character Menu" : "Hide Character Menu", "");
+            }
             if(!selectMenuOpen)
             {
                 PrimaryPage.Close();
@@ -167,14 +174,16 @@ public class CharacterSelect : MonoBehaviour
         Rect canvasRect = myCanvas.pixelRect;
         if (selectMenuOpen)
         {
+            prevPosition = HangerButton.transform.position;
             Utils.LerpSnap(HangerButton.transform, new Vector2(30 - canvasRect.width / 2, 705 - canvasRect.height / 2), lerpFactor);
-            Utils.LerpSnap(Slider.transform, new Vector2(0, 50), lerpFactor);
+            Utils.LerpSnap(Slider.transform, new Vector2(0, 45), lerpFactor);
             Utils.LerpSnap(InfoScreen.transform, new Vector2(canvasRect.width / 2 - 30, canvasRect.height / 2 - 140), lerpFactor);
         }
         else
         {
+            prevPosition = HangerButton.transform.position;
             Utils.LerpSnap(HangerButton.transform, new Vector2(30 - canvasRect.width / 2, 105 - canvasRect.height / 2), lerpFactor);
-            Utils.LerpSnap(Slider.transform, new Vector2(0, 650), lerpFactor);
+            Utils.LerpSnap(Slider.transform, new Vector2(0, 645), lerpFactor);
             Utils.LerpSnap(InfoScreen.transform, new Vector2(canvasRect.width / 2 + 430, canvasRect.height / 2 - 140), lerpFactor);
         }
         if (selectMenuOpen)

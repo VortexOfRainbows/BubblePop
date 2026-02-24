@@ -55,7 +55,7 @@ public class PowerUpLayout : MonoBehaviour
         float remainingPaddingAllowedForHeight = height - powerupSize * rowCount;
         int paddingX = powerupSize / 2 - 30;
         int paddingY = (int)remainingPaddingAllowedForHeight / 2;
-        if (PowerUpElems.Count == 1)
+        if (RowCount == 2 && PowerUpElems.Count == 1)
             paddingX = (int)(r.rect.width - powerupSize) / 2;
         layout.padding = new RectOffset(paddingX, paddingX, paddingY, paddingY);
         float resolution = r.rect.width - paddingX * 2;

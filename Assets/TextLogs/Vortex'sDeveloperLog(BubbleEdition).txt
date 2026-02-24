@@ -30,7 +30,7 @@ Less Important (mostly non-issues or complete already), but in consideration:
 1. Improve UI
 2. Maybe shift roadblock visuals to the player so it's more encompassing
 3. Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp
-4. Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
+4. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 5. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't easily replicate either)
 6. Normalize player customization layering (not super important but part of a future task)
@@ -51,6 +51,9 @@ Done:
 2. Remove some arbitrary overhead "resize" calls to certain UI elements that should generally reduce lag
 3. Add UI for equipment contributions to the ability pool
 4. Remove pre-round powerup pool display, in favor of the new, less cluttered interface
+5. Add some small tutorial popups
+6. Add some preliminary features for preventing players from starting attacks while hovering on UI elements
+	1. For now, this mostly means you won't attack the frame before switching characters
 
 2/21/26
 1. WIP Fizzy Bubble body (FACIAL ANIMATIONS)

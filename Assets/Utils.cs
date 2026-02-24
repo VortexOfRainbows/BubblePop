@@ -123,18 +123,14 @@ public static class Utils
         pos += Main.ActivePrimaryCanvas.transform.position;
         return pos;
     }
-    public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null, bool ignoreScale = false)
+    public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null, bool ignoreScale = false, bool allowAttackWhileHovering = false)
     {
         if (Main.ActivePrimaryCanvas == null)
             return false;
         Vector3 pos = transform.position;
         float scale = Main.ActivePrimaryCanvas.scaleFactor;
-        if (canvas == null)
-            canvas = Main.ActivePrimaryCanvas;
-        else
-        {
+        if (canvas != null)
             pos = PositionAdjustedByCanvas(pos, canvas);
-        }
         if (rectangular)
         {
             //Debug.Log(pos);
@@ -144,13 +140,21 @@ public static class Utils
             float height = (rect.height + radius) * scale ;
             rect = new Rect(pos.x - width * transform.pivot.x, pos.y - height * transform.pivot.y, width, height);
             if (rect.Contains(Input.mousePosition))
+            {
+                if(!allowAttackWhileHovering && Player.Instance != null && Player.Instance.Control != null)
+                    Player.Instance.Control.BlockAttack = true;
                 return true;
+            }
         }
         else
         {
             pos += radius * scale * new Vector3(1 - 2 * transform.pivot.x, 1 - 2 * transform.pivot.y);
             if (((Vector2)pos - (Vector2)Input.mousePosition).magnitude < radius * scale)
+            {
+                if (!allowAttackWhileHovering && Player.Instance != null && Player.Instance.Control != null)
+                    Player.Instance.Control.BlockAttack = true;
                 return true;
+            }
         }
         return false;
     }

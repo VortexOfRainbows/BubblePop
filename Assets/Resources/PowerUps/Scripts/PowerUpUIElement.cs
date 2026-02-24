@@ -118,7 +118,7 @@ public class PowerUpUIElement : MonoBehaviour
         float size = CompendiumElement ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
         size *= ScaleMultiplier;
         bool rectangular = CompendiumElement;
-        if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement) && (CompendiumElement || !Main.GamePaused || !(InventoryElement || MenuElement)))
+        if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement, true) && (CompendiumElement || !Main.GamePaused || !(InventoryElement || MenuElement)))
         {
             if(myLayout != null)
                 myLayout.isHovering = true;

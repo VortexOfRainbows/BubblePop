@@ -251,6 +251,13 @@ public class NewControls
     public bool Right => Movement.x > .001f;
     public readonly ControlBinding Ability;
     public bool LastAbility { get; internal set; }
+    public bool PendingBlock { get; internal set; }
+    public bool BlockAttackState { get; internal set; }
+    public bool BlockAttack 
+    { 
+        get => BlockAttackState; 
+        set => PendingBlock = value;
+    }
     public Vector2 MovementVector = Vector2.zero;
     private Vector2 AimingVector = Vector2.up;
     public Vector2 MousePosition;
@@ -470,7 +477,10 @@ public partial class Player : Entity
         if (!World.WithinBorders(transform.position, true))
             Entity.PushIntoClosestPossibleTile(transform, base.RB, includeProgressionBounds: true);
         if (dead)
+        {
             Pop();
+            //Main.MouseHoveringOverButton = false;
+        }
         else
         {
             if (HasRunStartingGear)
@@ -489,7 +499,7 @@ public partial class Player : Entity
             foreach (Equipment e in Equips)
                 e.PostEquipUpdate();
             MovementUpdate();
-            if(!Main.MouseHoveringOverButton)
+            if (!Control.BlockAttack)
             {
                 if (Control.PrimaryAttackHold)
                 {
@@ -547,7 +557,6 @@ public partial class Player : Entity
             MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(average.x, average.y, MainCamera.transform.position.z), 0.1f);
         }
         ImmuneFlashing();
-        Main.MouseHoveringOverButton = false;
     }
     public bool RunOnce { get; set; } = true;
     public new void Update()
@@ -587,6 +596,18 @@ public partial class Player : Entity
             Vector2 toMouse = Control.MousePosition - (Vector2)transform.position;
             AimIndicator.transform.localPosition = toMouse.normalized * 2.5f;
             AimIndicator.transform.SetEulerZ(toMouse.ToRotation() * Mathf.Rad2Deg);
+        }
+        if(Control.PrimaryAttackHold || Control.SecondaryAttackHold)
+        {
+
+        }
+        else
+        {
+            if (Control.PendingBlock) //pending block
+                Control.BlockAttackState = true; //block
+            else
+                Control.BlockAttackState = false;
+            Control.PendingBlock = false;
         }
     }
     public void SetLife(int num)

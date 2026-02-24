@@ -49,7 +49,7 @@ public class PowerUpButton : MonoBehaviour
             return;
         }
         GrantPower();
-        Main.MouseHoveringOverButton = true;
+        Player.Instance.Control.BlockAttack = true;
     }
     public void GrantPower()
     {

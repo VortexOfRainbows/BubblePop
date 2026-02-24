@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour
@@ -178,11 +179,11 @@ public class Equipment : MonoBehaviour
     {
         Main.GlobalEquipData.EquipTypeToIndex.Add(GetType(), index);
         DetailedDescription descData = new(GetRarity() - 1, TypeName.ToSpacedString());
+        descData.WithoutSizeAugments();
         InitializeDescription(ref descData);
         Main.GlobalEquipData.DescriptionData.Add(descData);
         Main.GlobalEquipData.TimesUsedList.Add(0);
         LoadGlobalData();
-
         UnlockCondition.AddAssociatedEquip(this);
         //LoadGlobalData();
     }
