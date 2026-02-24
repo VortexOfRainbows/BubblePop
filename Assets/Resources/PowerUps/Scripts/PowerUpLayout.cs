@@ -53,7 +53,7 @@ public class PowerUpLayout : MonoBehaviour
         }
         float height = r.rect.height;
         float remainingPaddingAllowedForHeight = height - powerupSize * rowCount;
-        int paddingX = powerupSize / 2 - 25;
+        int paddingX = powerupSize / 2 - 30;
         int paddingY = (int)remainingPaddingAllowedForHeight / 2;
         if (PowerUpElems.Count == 1)
             paddingX = (int)(r.rect.width - powerupSize) / 2;
@@ -74,16 +74,22 @@ public class PowerUpLayout : MonoBehaviour
     }
     public void Generate(List<int> AvailablePowers)
     {
-        foreach (PowerUpUIElement pUI in PowerUpElems)
-            Destroy(pUI.gameObject);
-        PowerUpElems.Clear();
+        if (gameObject.activeSelf)
+        {
+            foreach (PowerUpUIElement pUI in PowerUpElems)
+                Destroy(pUI.gameObject);
+            PowerUpElems.Clear();
+        }
         Equipment.ModifyPowerPoolAll();
         //PowerUp.SortAvailablePowers();
-        for (int i = 0; i < PowerUp.AvailablePowers.Count; ++i)
+        if (gameObject.activeSelf)
         {
-            AddNewPower(PowerUpUISlotPrefab, gameObject, AvailablePowers[i]);
+            for (int i = 0; i < PowerUp.AvailablePowers.Count; ++i)
+            {
+                AddNewPower(PowerUpUISlotPrefab, gameObject, AvailablePowers[i]);
+            }
+            UpdateSizing();
         }
-        UpdateSizing();
     }
     public void GenerateSingle(List<PowerUp> AvailablePowers)
     {

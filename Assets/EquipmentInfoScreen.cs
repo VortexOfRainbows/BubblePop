@@ -7,10 +7,12 @@ public class EquipmentInfoScreen : MonoBehaviour
     public EquipmentUIElement MyElem;
     public PowerUpLayout Layout;
     public TextMeshProUGUI Title, Description;
+    public List<RectTransform> Rects = new();
     public void SetUIElement(Equipment e)
     {
         if (MyElem.ActiveEquipment != null && MyElem.ActiveEquipment.IndexInAllEquipPool == e.IndexInAllEquipPool)
             return;
+        Rects.Clear();
         if (MyElem.ActiveEquipment != null)
             Destroy(MyElem.ActiveEquipment.gameObject);
         MyElem.UpdateEquipment(e);
@@ -20,10 +22,26 @@ public class EquipmentInfoScreen : MonoBehaviour
         Layout.GenerateSingle(powers);
         Title.text = e.GetName();
         Description.text = e.GetDescription();
-        Description.transform.localPosition = Layout.transform.localPosition 
-            + new Vector3(0, -Layout.GetComponent<RectTransform>().rect.height * Layout.transform.localScale.x - 5, 0);
-        RectTransform r = Description.transform.GetComponent<RectTransform>();
-        //r.sizeDelta = new Vector2(r.sizeDelta.x, -440 + 20);
+        Rects.Add(Title.rectTransform);
+        Rects.Add(MyElem.GetComponent<RectTransform>());
+        Rects.Add(Layout.GetComponent<RectTransform>());
+        Rects.Add(Description.rectTransform);
+        TightenRectangleSpacing();
+    }
+    public void TightenRectangleSpacing()
+    {
+        float verticalPadding = 15;
+        RectTransform r = transform.GetComponent<RectTransform>();
+        float top = r.rect.yMax;
+        float bot = top - verticalPadding;
+        for (int i = 0; i < Rects.Count; ++i)
+        {
+            RectTransform current = Rects[i];
+            float height = current.rect.height * current.transform.localScale.x;
+            current.localPosition = new Vector2(current.localPosition.x, bot - height * (1 - current.pivot.y));
+            bot -= height + verticalPadding;
+        }
+        r.sizeDelta = new Vector2(r.sizeDelta.x, top - bot);
     }
     public void OnUpdate(Canvas canvas)
     {

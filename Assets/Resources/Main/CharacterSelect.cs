@@ -164,17 +164,18 @@ public class CharacterSelect : MonoBehaviour
             InfoScreen.OnUpdate(myCanvas);
             HangerIcon.transform.LerpLocalScale(new Vector2(1.375f, 1.55f), lerpFactor);
         }
-        if(selectMenuOpen)
+        Rect canvasRect = myCanvas.pixelRect;
+        if (selectMenuOpen)
         {
-            Utils.LerpSnap(HangerButton.transform, new Vector2(0, 600), lerpFactor);
-            Utils.LerpSnap(Slider.transform, new Vector2(0, 45), lerpFactor);
-            Utils.LerpSnap(InfoScreen.transform, new Vector2(myCanvas.pixelRect.width / 2 - 30, 140), lerpFactor);
+            Utils.LerpSnap(HangerButton.transform, new Vector2(30 - canvasRect.width / 2, 705 - canvasRect.height / 2), lerpFactor);
+            Utils.LerpSnap(Slider.transform, new Vector2(0, 50), lerpFactor);
+            Utils.LerpSnap(InfoScreen.transform, new Vector2(canvasRect.width / 2 - 30, canvasRect.height / 2 - 140), lerpFactor);
         }
         else
         {
-            Utils.LerpSnap(HangerButton.transform, new Vector2(0, 0), lerpFactor);
-            Utils.LerpSnap(Slider.transform, new Vector2(0, 645), lerpFactor);
-            Utils.LerpSnap(InfoScreen.transform, new Vector2(myCanvas.pixelRect.width / 2 + 430, 140), lerpFactor);
+            Utils.LerpSnap(HangerButton.transform, new Vector2(30 - canvasRect.width / 2, 105 - canvasRect.height / 2), lerpFactor);
+            Utils.LerpSnap(Slider.transform, new Vector2(0, 650), lerpFactor);
+            Utils.LerpSnap(InfoScreen.transform, new Vector2(canvasRect.width / 2 + 430, canvasRect.height / 2 - 140), lerpFactor);
         }
         if (selectMenuOpen)
         {
