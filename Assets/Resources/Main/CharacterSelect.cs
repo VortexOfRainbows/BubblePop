@@ -103,7 +103,7 @@ public class CharacterSelect : MonoBehaviour
     private bool PowerUpPageIsOpen = false;
     public bool HasLoaded = false;
     public static CharacterSelect Instance;
-    public RectTransform HangerButton, Slider, HoverMask;
+    public RectTransform HangerButton, Slider, HoverMask, InfoHover;
     public Image HangerIcon;
     public bool selectMenuOpen = false;
     public void Start()
@@ -170,6 +170,16 @@ public class CharacterSelect : MonoBehaviour
         {
             InfoScreen.OnUpdate(myCanvas);
             HangerIcon.transform.LerpLocalScale(new Vector2(1.375f, 1.55f), lerpFactor);
+        }
+        if (InfoHover != null)
+        {
+            if (Utils.IsMouseHoveringOverThis(true, InfoHover, 0, myCanvas))
+            {
+                PopUpTextUI.Enable("Allows these Powers to appear in the Power Pool", " ");
+                InfoHover.transform.LerpLocalScale(new Vector2(1.1f, 1.1f), lerpFactor);
+            }
+            else
+                InfoHover.transform.LerpLocalScale(new Vector2(1.0f, 1.0f), lerpFactor);
         }
         Rect canvasRect = myCanvas.pixelRect;
         if (selectMenuOpen)
