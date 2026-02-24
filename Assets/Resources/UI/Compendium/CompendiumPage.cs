@@ -431,7 +431,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     }
     public void OnUpdate()
     {
-        MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
+        MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas, false, true);
         if (Control.RightMouseClick)
         {
             UpdateSelectedType(-3);

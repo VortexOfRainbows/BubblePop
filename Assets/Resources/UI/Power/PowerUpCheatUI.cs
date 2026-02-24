@@ -229,7 +229,7 @@ public class PowerUpCheatUI : MonoBehaviour
             HideButton.interactable = true;
         Instance = this;
         UpdateContentSize();
-        MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas);
+        MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas, false, Hide || !Instance.gameObject.activeSelf);
         float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
         transform.LerpLocalScale(Vector2.one, Utils.DeltaTimeLerpFactor(0.1f));
         ShardCountTxt.text = Main.DebugSettings.PowerUpCheat ? "Inf" : CoinManager.CurrentShards.ToString();

@@ -16,37 +16,41 @@ Need to do:
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. Economy: Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more) or maybe Bounty Hunter
 4. Add a GEM currency, which can be used to reroll shop selections
-5. (ASAP) Add descriptions for character abilities on a sidebar
-	1. Ability blurbs for each equipment that comes with them 
-	2. Separate the flavortext from the actual useful descriptions. Flavortext appears on hover equip, blurbs in the new right-side info menu.
-	3. Make power pool contributions appear in the compendium (maybe)
-6. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
-7. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-8. Tile resprite implementation
-9. Enemy Pathfinding
-10. Some UI classes to normalize UI colors, Button behaviors, etc.
+5. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
+6. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
+7. Tile resprite implementation
+8. Enemy Pathfinding
+9. Some UI classes to normalize UI colors, Button behaviors, etc.
+10. Compendium TODO:
+	1. Make equipment power pool contributions appear in the compendium
+	2. Make powers show which pools they belong to
 
 Less Important (mostly non-issues or complete already), but in consideration:
-1. Improve UI
-2. Maybe shift roadblock visuals to the player so it's more encompassing
-3. Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp
-4. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
+1. Maybe shift roadblock visuals to the player so it's more encompassing
+2. Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp
+3. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
-5. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't easily replicate either)
-6. Normalize player customization layering (not super important but part of a future task)
-7. (MAYBE) Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
+4. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
+5. Normalize player customization layering (not super important but part of a future task)
+6. (MAYBE) Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 
 Current Task List:
-1. Quest List UI that says stuff like:
+1. (ASAP) Quest List UI that says stuff like:
 	1. Activate the First Pylon => Clear 2 Waves of Invaders => Stabilize the Pylon => Activate the Next Pylon
 2. Finish Pylon and Roadblock systems:
 	1. Pointers that show you the direction to the next Pylon
 3. Fix bug where other player can be stuck out of bounds if wave started while they are behind
 4. Nerfs: Scaling for slot machine coin drops, Reflection should stack differently
+5. (ASAP) Add descriptions for character abilities on the sidebar
+	1. Ability blurbs for each equipment that comes with them 
+	2. Separate the flavortext from the actual useful descriptions. Flavortext appears on hover equip, blurbs in the new right-side info menu (most equips won't have blurbs).
+	3. Small Info (i) button that tells you a bit more about power display
+6. (MAYBE) Tip/Loading screen!
+7. Close button for the multiplayer menu! Make the multiplayer menu appear in single player to briefly showcase the controls?
 
 Done: 
 
-2/23/26
+2/23/26 to 2/24/26
 1. WIP UI reworks to the select screen
 2. Remove some arbitrary overhead "resize" calls to certain UI elements that should generally reduce lag
 3. Add UI for equipment contributions to the ability pool
@@ -54,6 +58,7 @@ Done:
 5. Add some small tutorial popups
 6. Add some preliminary features for preventing players from starting attacks while hovering on UI elements
 	1. For now, this mostly means you won't attack the frame before switching characters
+7. Resprite Eureka (DAVID)
 
 2/21/26
 1. WIP Fizzy Bubble body (FACIAL ANIMATIONS)
