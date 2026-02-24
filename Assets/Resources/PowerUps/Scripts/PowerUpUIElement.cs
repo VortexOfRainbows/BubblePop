@@ -99,6 +99,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool PreventHovering;
     public bool ForceHideCount = false;
     public float HoverRadius { get; set; } = 64;
+    public float ScaleMultiplier { get; set; } = 1.0f;
     /// <summary>
     /// How much this power cost to manufacture.
     /// Either Gems or Shards depending on context.
@@ -115,6 +116,7 @@ public class PowerUpUIElement : MonoBehaviour
             Count.gameObject.SetActive(!AppearLocked && (Compendium.Instance == null || Compendium.Instance.PowerPage.ShowCounts) && !PreventHovering);
         bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea) && (!CrucibleElement || PowerUpCheatUI.MouseInCompendiumArea);
         float size = CompendiumElement ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
+        size *= ScaleMultiplier;
         bool rectangular = CompendiumElement;
         if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement) && (CompendiumElement || !Main.GamePaused || !(InventoryElement || MenuElement)))
         {

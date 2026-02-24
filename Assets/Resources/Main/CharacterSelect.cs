@@ -161,17 +161,20 @@ public class CharacterSelect : MonoBehaviour
         }
         else
         {
+            InfoScreen.OnUpdate(myCanvas);
             HangerIcon.transform.LerpLocalScale(new Vector2(1.375f, 1.55f), lerpFactor);
         }
         if(selectMenuOpen)
         {
             Utils.LerpSnap(HangerButton.transform, new Vector2(0, 600), lerpFactor);
             Utils.LerpSnap(Slider.transform, new Vector2(0, 45), lerpFactor);
+            Utils.LerpSnap(InfoScreen.transform, new Vector2(myCanvas.pixelRect.width / 2 - 30, 140), lerpFactor);
         }
         else
         {
             Utils.LerpSnap(HangerButton.transform, new Vector2(0, 0), lerpFactor);
             Utils.LerpSnap(Slider.transform, new Vector2(0, 645), lerpFactor);
+            Utils.LerpSnap(InfoScreen.transform, new Vector2(myCanvas.pixelRect.width / 2 + 430, 140), lerpFactor);
         }
         if (selectMenuOpen)
         {
@@ -230,10 +233,8 @@ public class CharacterSelect : MonoBehaviour
                 page.hoveringElement = null; 
                 justClosedFromDragOff = true;
             }
-            if(openPage)
-            {
+            if(hovering && slot.ActiveEquipment.IsUnlocked)
                 InfoScreen.SetUIElement(slot.ActiveEquipment);
-            }
         }
         if (openPage && AllowOpeningPage)
         {
@@ -274,7 +275,9 @@ public class CharacterSelect : MonoBehaviour
         }
         if(page != PrimaryPage)
         {
-            if(clicked && slot.Unlocked && slot.CanAfford)
+            if(hovering && slot.ActiveEquipment.IsUnlocked)
+                InfoScreen.SetUIElement(slot.ActiveEquipment);
+            if (clicked && slot.Unlocked && slot.CanAfford)
             {
                 UpdateSelectedEquipmentBox(slot.ActiveEquipment.OriginalPrefab);
                 PrimaryPage.Close();

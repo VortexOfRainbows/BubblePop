@@ -14,6 +14,8 @@ public class PowerUpLayout : MonoBehaviour
     public Image bg;
     public bool isInGameLayout;
     public bool isHovering;
+    public int RowCount = 1;
+    public float ScaleFactor = 1.0f;
     public void FixedUpdate()
     {
         if(isInGameLayout)
@@ -41,11 +43,22 @@ public class PowerUpLayout : MonoBehaviour
     }
     public void UpdateSizing()
     {
-        int rowCount = 1;
+        RectTransform r = layout.GetComponent<RectTransform>();
+        int rowCount = RowCount;
         int powerupSize = 130;
-        int padding = 20;
-        layout.padding = new RectOffset(padding, padding, padding, padding);
-        float resolution = layout.GetComponent<RectTransform>().rect.width - padding * 2;
+        if(RowCount > 1)
+        {
+            rowCount = 1 + PowerUpElems.Count / 4;
+            r.sizeDelta = new Vector2(r.sizeDelta.x, 170 + (rowCount - 1) * powerupSize);
+        }
+        float height = r.rect.height;
+        float remainingPaddingAllowedForHeight = height - powerupSize * rowCount;
+        int paddingX = powerupSize / 2 - 25;
+        int paddingY = (int)remainingPaddingAllowedForHeight / 2;
+        if (PowerUpElems.Count == 1)
+            paddingX = (int)(r.rect.width - powerupSize) / 2;
+        layout.padding = new RectOffset(paddingX, paddingX, paddingY, paddingY);
+        float resolution = r.rect.width - paddingX * 2;
         int amountFittable = (int)(resolution / powerupSize);
         int amountINeedToFit = (PowerUpElems.Count + rowCount - 1) / rowCount;
         if (amountINeedToFit < amountFittable)
@@ -54,7 +67,7 @@ public class PowerUpLayout : MonoBehaviour
         //float scaleChange = amountFittable / (float)amountINeedToFit;
 
         float actualSize = resolution / amountINeedToFit;
-        layout.cellSize = new Vector2(actualSize, powerupSize + 10);
+        layout.cellSize = new Vector2(actualSize, powerupSize);
         layout.constraintCount = amountINeedToFit;
 
         //layout.transform.localScale = Vector3.one * scaleChange;
@@ -113,6 +126,7 @@ public class PowerUpLayout : MonoBehaviour
         powerUI.MenuElement = !inventory;
         powerUI.myLayout = this;
         powerUI.TurnedOn();
+        powerUI.ScaleMultiplier = transform.localScale.x;
         PowerUpElems.Add(powerUI);
         return powerUI;
     }
