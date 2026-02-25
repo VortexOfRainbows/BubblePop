@@ -15,6 +15,10 @@ public class BunceHat : BubblemancerHat
     {
         description.WithName("Bunce Cap").WithDescription("Grants an additional heart\nYou stupid!");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));
+    }
     public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int MaxShield, ref int Shield)
     {
         ++Life;

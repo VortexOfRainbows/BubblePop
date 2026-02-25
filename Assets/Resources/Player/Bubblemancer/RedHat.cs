@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 public class RedHat : BubblemancerHat
@@ -7,10 +8,13 @@ public class RedHat : BubblemancerHat
     {
         description.WithName("Red Bubblemancy Hat").WithDescription($"Start with {PowerUp.Get<BubbleBirb>().UnlockedName}");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Passive, $"Start with {PowerUp.Get<BubbleBirb>().UnlockedName}"));
+    }
     public override void OnStartWith()
     {
         PowerUp.Spawn<BubbleBirb>(Player.Position);
-        //PowerUp.Spawn(PowerUp.AvailablePowers.Last(), Player.Position, 0);
     }
     public override int GetRarity()
     {

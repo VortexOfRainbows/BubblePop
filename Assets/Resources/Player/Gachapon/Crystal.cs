@@ -19,6 +19,10 @@ public class Crystal : Accessory
     {
         description.WithName("Wishing Emerald").WithDescription("Grants an additional heart");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));
+    }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

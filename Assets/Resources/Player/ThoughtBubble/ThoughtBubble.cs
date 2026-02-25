@@ -35,7 +35,13 @@ public class ThoughtBubble : Body
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Thought Bubble").WithDescription("A mysterious Bubbletech Scientist. His origin is unknown. He appeared before Bubblemancer shortly after the first waves... why was he there?");
+        description.WithName("Thought Bubble")
+            .WithDescription("A mysterious Bubbletech Scientist. His origin is unknown. He appeared before Bubblemancer shortly after the first waves... why was he there?");
+    }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Ability, "Y:Charge a teleport to a segment of your Y:[thought trail]"));
+        abilities.Add(new Ability(Ability.ID.Passive, "Generate a Y:[thought trail] while moving"));
     }
     public override void FaceUpdate()
     {

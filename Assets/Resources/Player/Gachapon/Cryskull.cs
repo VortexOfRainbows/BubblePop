@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Cryskull : Crystal
@@ -10,6 +11,11 @@ public class Cryskull : Crystal
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Cryskull").WithDescription("Grants an additional heart\nIncreases wave card difficulty and rewards");
+    }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));
+        abilities.Add(new Ability(Ability.ID.Passive, $"Increases Y:[wave card difficulty] and Y:rewards"));
     }
     public override void EquipUpdate()
     {

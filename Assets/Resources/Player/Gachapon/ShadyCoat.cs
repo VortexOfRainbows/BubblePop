@@ -21,7 +21,11 @@ public class ShadyCoat : LabCoat
     protected override Vector2 CapeScale => new(1f, 1f);
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Suspicious Disguise").WithDescription("Increases the rate at which black market items appear in the shop by 200%\n\nGachapon must know something about the black market dealer... why else would she have his coat?");
+        description.WithName("Suspicious Disguise").WithDescription("Gachapon must know something about the black market dealer... why else would she have his coat?");
+    }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Passive, $"Increases the rate at which Y:[black market items] appear in the shop by Y:200%"));
     }
     public override void Init()
     {

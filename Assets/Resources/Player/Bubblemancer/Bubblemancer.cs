@@ -18,6 +18,10 @@ public class Bubblemancer : Body
     {
         description.WithName("Bubblemancer").WithDescription("A humble shepard from the quaint Bubble Fields");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Ability, "Y:Dash forward a short distance"));
+    }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
         if (Player.Control.Ability && !Player.Control.LastAbility && moveSpeed.magnitude > 0 && Player.AbilityReady)

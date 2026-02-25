@@ -26,6 +26,10 @@ public class Crown : Bulb
     {
         description.WithName("Crown of Command").WithDescription("Choice powers have 5 options");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Passive, $"{"Choice".WithColor(DetailedDescription.Rares[0])} powers have Y:[5 options]"));
+    }
     public override void EquipUpdate()
     {
         Player.BonusChoices = true;

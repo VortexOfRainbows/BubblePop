@@ -22,6 +22,10 @@ public class UtilityBelt : Accessory
     {
         description.WithName("Utility Belt").WithDescription($"Start with a {"Magnet".WithColor(DetailedDescription.Rares[0])}, a Y:Key, and Y:[100 coins]");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Passive, $"Start with a {"Magnet".WithColor(DetailedDescription.Rares[0])}, a Y:Key, and Y:[100 coins]"));
+    }
     public override void OnStartWith()
     {
         PowerUp.Spawn<Magnet>(p.transform.position);
