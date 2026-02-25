@@ -55,13 +55,13 @@ public class Ability
         b.MyCanvas = canvas;
         b.Type = Type;
         if(Type == ID.Primary)
-            b.IconText.text = "P";
+            b.IconText.text = "LMB";
         else if (Type == ID.Secondary)
-            b.IconText.text = "S";
+            b.IconText.text = "RMB";
         else if (Type == ID.Ability)
-            b.IconText.text = "A";
+            b.IconText.text = "ABL";
         else
-            b.IconText.text = "*";
+            b.IconText.text = "PSV";
         return g;
     }
 }

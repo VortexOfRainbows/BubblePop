@@ -91,6 +91,11 @@ public abstract class UnlockCondition
         foreach(UnlockCondition u in Unlocks.Values)
             u.TryUnlock();
     }
+    public static void ForceSetCompleteAll()
+    {
+        foreach (UnlockCondition u in Unlocks.Values)
+            u.SetComplete();
+    }
     protected UnlockCondition()
     {
         AssociatedUnlocks = new();

@@ -48,7 +48,7 @@ public class Wormhole : MonoBehaviour
         PlayerDistMult = 1;
         if(IsRoadblock)
         {
-            float dist = Player.Instance.Distance(gameObject);
+            Player.FindClosest(transform.position, out _, out float dist);
             PlayerDistMult = Mathf.Sqrt(Mathf.Clamp(1.4f - dist / 12f, 0, 1));
             if (PlayerDistMult <= 0)
             {

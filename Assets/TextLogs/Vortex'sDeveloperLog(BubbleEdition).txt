@@ -13,7 +13,7 @@ Need to do:
 	1. Achievement chains, to hide achievements that are currently unobtainable
 	2. Hide unlocks from char select until they are unlocked, including subequipments
 	3. Progress display for achievements
-2. More descriptive pause and select screen (pause screen should show powerups and change powerups default display to right side vertical)
+2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. Economy: Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more) or maybe Bounty Hunter
 4. Add a GEM currency, which can be used to reroll shop selections
@@ -43,10 +43,13 @@ Current Task List:
 	1. Pointers that show you the direction to the next Pylon
 3. Fix bug where other player can be stuck out of bounds if wave started while they are behind
 4. Nerfs: Scaling for slot machine coin drops, Reflection should stack differently
-5. (ASAP) Add descriptions for character abilities on the sidebar
-	1. Ability blurbs for each equipment that comes with them 
+
 
 Done: 
+
+2/25/26
+1. Add ability blurbs to the sidebar so players can have a rough idea of what each equip does
+2. Roadblock visuals now appear for player 2 as well
 
 2/23/26 to 2/25/26
 1. WIP UI reworks to the select screen

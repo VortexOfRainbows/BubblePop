@@ -268,7 +268,7 @@ public partial class Main : MonoBehaviour
     {
         public static void Update(Main instance)
         {
-            if (/*Input.GetKey(KeyCode.R) &&*/Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.N))
+            if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.N))
             {
                 UIManager.EnableDebugButtons();
                 DebugCheats = true;
@@ -288,6 +288,8 @@ public partial class Main : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.L) && DebugCheats)
                 SkipWaves = !SkipWaves;
+            if (DebugCheats && Input.GetKeyDown(KeyCode.Backspace))
+                DebugCheats = false;
             instance.DirectorCanvas.SetActive(DirectorView);
             if(PowerUpCheatUI.Instance != null)
                 PowerUpCheatUI.StaticUpdate();
