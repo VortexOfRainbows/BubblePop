@@ -7,10 +7,11 @@ public class StretchConnector : Animator
     public float OriginalDistance = -1;
     public float XScaleMult = 1.0f;
     public float YScaleContribution = 0.0f;
+    public bool Local = false;
     public override void UpdateAnimation()
     {
-        Vector2 toOther = Destination.position - transform.position;
-        float dist = toOther.magnitude / Destination.transform.lossyScale.x;
+        Vector2 toOther = Local ? Destination.localPosition - transform.localPosition : Destination.position - transform.position;
+        float dist = Local ? toOther.magnitude : toOther.magnitude / Destination.transform.lossyScale.x;
         if (OriginalDistance == -1)
             OriginalDistance = dist;
         float r = toOther.ToRotation();

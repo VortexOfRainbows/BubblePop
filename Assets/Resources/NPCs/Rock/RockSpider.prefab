@@ -136,6 +136,7 @@ MonoBehaviour:
   OriginalDistance: 0.75
   XScaleMult: 1
   YScaleContribution: 0
+  Local: 1
 --- !u!1 &327116510961783231
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,6 +446,7 @@ MonoBehaviour:
   OriginalDistance: 0.75
   XScaleMult: 1
   YScaleContribution: 0
+  Local: 1
 --- !u!1 &2147890405171327836
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,6 +634,7 @@ MonoBehaviour:
   OriginalDistance: 0.75
   XScaleMult: 1
   YScaleContribution: 0
+  Local: 1
 --- !u!1 &2555710551132484581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,10 +1038,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Visual: {fileID: 6965677185545126500}
-  UniversalImmuneFrames: 0
-  DamageTaken: 0
   SpawnedIn: 0
-  lastPos: {x: 0, y: 0}
+  HasCalledInit: 0
   RB: {fileID: 8628457919241732162}
   IndexInAllEnemyArray: 10
   AlreadyDead: 0
@@ -1476,6 +1477,7 @@ MonoBehaviour:
   OriginalDistance: 0.75
   XScaleMult: 1
   YScaleContribution: 0
+  Local: 1
 --- !u!1001 &3346042899808225703
 PrefabInstance:
   m_ObjectHideFlags: 0
