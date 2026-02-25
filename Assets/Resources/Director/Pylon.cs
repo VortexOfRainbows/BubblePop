@@ -15,16 +15,20 @@ public class Pylon : MonoBehaviour
     public bool EndlessPylon = false;
     public bool Complete { get; private set; } = false;
     public bool Purified { get; private set; } = false;
+    public bool PlayersNearby { get; private set; } = false;
     public Player ClosestPlayer => Player.FindClosest(transform.position, out _, out _);
     public void FixedUpdate()
     {
-        bool nearby = ClosestPlayer.Distance(gameObject) < Main.PylonActivationDist;
-        if (nearby)
+        PlayersNearby = true;
+        foreach(Player p in Player.AllPlayers)
+            if(p.Distance(gameObject) > Main.PylonActivationDist)
+                PlayersNearby = false;
+        if (PlayersNearby)
             if (!SoundActive)
                 sound = AudioManager.PlaySound(SoundID.PylonDrone, transform.position, 1f, 1, 0);
         if (!Complete)
         {
-            if (nearby || WaveActive)
+            if (PlayersNearby || WaveActive)
                 ActiveAnim();
             else
                 DisableAnimation();
