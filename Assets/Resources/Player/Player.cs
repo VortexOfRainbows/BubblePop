@@ -56,6 +56,12 @@ public class NewControls
         {
             if(Stick == null)
             {
+                if (Up.ToString() == "UArrow" && Left.ToString() == "LArrow" && Down.ToString() == "DArrow" && Right.ToString() == "RArrow")
+                    return "Arrows";
+                if (Up.ToString() == "W" && Left.ToString() == "A" && Down.ToString() == "S" && Right.ToString() == "D")
+                    return "WASD";
+                else if (Up.ToString() == "I" && Left.ToString() == "J" && Down.ToString() == "K" && Right.ToString() == "L")
+                    return "IJKL";
                 return $"{Up.ToString()}, {Left.ToString()}, {Down.ToString()}, {Right.ToString()}";
             }
             return Stick.shortDisplayName;

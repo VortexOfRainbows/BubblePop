@@ -6,6 +6,7 @@ Maybe Do:
 3. Wave bar on the top shows current wave card modifier information
 4. Integrate Compendium into the pause menu
 5. Grass shader to make grass more interesting and potentially slightly vary in the wind
+6. Update to Unity 6 to remove the silly splash screen
 
 Need to do:
 1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden entirely)
@@ -56,7 +57,7 @@ Done:
 6. Add some preliminary features for preventing players from starting attacks while hovering on UI elements
 	1. For now, this mostly means you won't attack the frame before switching characters
 7. Resprite Eureka (DAVID)
-8. Tutorial menu appears during singleplayer now and has a close button (this is just for playtest)
+8. Tutorial menu appears during singleplayer now and has a close button (this is just for playtest), plus more detail
 9. Small info button to explain the meaning of the equip screen
 
 2/21/26
