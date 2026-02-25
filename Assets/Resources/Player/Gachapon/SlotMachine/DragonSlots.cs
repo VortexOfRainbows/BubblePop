@@ -16,7 +16,11 @@ public class DragonSlots : SlotMachineWeapon
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Dragon Slots").WithDescription("99% of bubble hit it big before popping");
-        //\nGet increasingly inaccurate while firing, but non-winning spins spew fire instead of bubbles
+    }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Primary, "Spend Y:coins or a Y:token to spin! Losing spins Y:[spew fire]"));
+        abilities.Add(new Ability(Ability.ID.Secondary, "Slam! Killed enemies drop a Y:token"));
     }
     public Transform Jaw;
     public Transform OpenMouth;

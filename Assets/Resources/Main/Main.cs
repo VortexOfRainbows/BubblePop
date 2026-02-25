@@ -162,6 +162,7 @@ public partial class Main : MonoBehaviour
     {
         public static readonly Dictionary<Type, int> EquipTypeToIndex = new();
         public static readonly List<DetailedDescription> DescriptionData = new();
+        public static readonly List<List<Ability>> AbilityData = new();
         public static readonly List<int> TimesUsedList = new();
         public static readonly Dictionary<Type, Equipment> TypeToEquipPrefab = new();
         public static readonly List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
@@ -181,6 +182,7 @@ public partial class Main : MonoBehaviour
             EquipTypeToIndex.Clear();
             TimesUsedList.Clear();
             DescriptionData.Clear();
+            AbilityData.Clear();
             AllEquipmentsList.Clear();
             PrimaryEquipments[0] = Characters;
             PrimaryEquipments[1] = Hats;

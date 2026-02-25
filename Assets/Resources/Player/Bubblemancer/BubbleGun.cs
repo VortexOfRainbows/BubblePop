@@ -22,6 +22,11 @@ public class BubbleGun : BubblemancerWand
     {
         description.WithName("Bubble Gun").WithDescription("The right to bare bubble shall not be infringed");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Primary, "Fire a Y:[stream of bubbles]"));
+        abilities.Add(new Ability(Ability.ID.Secondary, "Y:Charge a big bubble that can Y:pierce multiple enemies"));
+    }
     public override void EquipUpdate()
     {
         Player.PrimaryAttackSpeedModifier += 0.2f;

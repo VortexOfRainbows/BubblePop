@@ -179,9 +179,12 @@ public class Equipment : MonoBehaviour
     {
         Main.GlobalEquipData.EquipTypeToIndex.Add(GetType(), index);
         DetailedDescription descData = new(GetRarity() - 1, TypeName.ToSpacedString());
+        List<Ability> MyAbilities = new();
         descData.WithoutSizeAugments();
         InitializeDescription(ref descData);
+        InitializeAbilities(ref MyAbilities);
         Main.GlobalEquipData.DescriptionData.Add(descData);
+        Main.GlobalEquipData.AbilityData.Add(MyAbilities);
         Main.GlobalEquipData.TimesUsedList.Add(0);
         LoadGlobalData();
         UnlockCondition.AddAssociatedEquip(this);
@@ -219,7 +222,15 @@ public class Equipment : MonoBehaviour
     {
         return Main.GlobalEquipData.DescriptionData[IndexInAllEquipPool];
     }
+    public List<Ability> GetAbility()
+    {
+        return Main.GlobalEquipData.AbilityData[IndexInAllEquipPool];
+    }
     public virtual void InitializeDescription(ref DetailedDescription description)
+    {
+
+    }
+    public virtual void InitializeAbilities(ref List<Ability> abilities)
     {
 
     }

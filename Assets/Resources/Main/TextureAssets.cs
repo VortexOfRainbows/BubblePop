@@ -65,6 +65,7 @@ public partial class Main : MonoBehaviour
         public static PowerUpObject PowerUpObj;
         public static GameObject PlayerPrefab = Resources.Load<GameObject>("Player/Player");
         public static GameObject SpritebatchPrefab = Resources.Load<GameObject>("SpriteBatch/SpritebatchDraw");
+        public static GameObject AbilityBlurbPrefab = Resources.Load<GameObject>("UI/AbilityBlurb");
         public static GameObject Roadblock { get; private set; }
         public static readonly List<GameObject> Trees = new();
         public static readonly List<GameObject> Stumps = new();

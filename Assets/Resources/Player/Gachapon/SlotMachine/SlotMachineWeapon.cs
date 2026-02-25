@@ -27,6 +27,11 @@ public class SlotMachineWeapon : Weapon
     {
         description.WithName("Gacha Slots").WithDescription("99% of bubbles pop before hitting it big");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Primary, "Spend Y:coins or a Y:token to spin! Winning spins do Y:[more damage]"));
+        abilities.Add(new Ability(Ability.ID.Secondary, "Slam! Killed enemies drop a Y:token"));
+    }
     public override void EquipUpdate()
     {
         if(runOnce)

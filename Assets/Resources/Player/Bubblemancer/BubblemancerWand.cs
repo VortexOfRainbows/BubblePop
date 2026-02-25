@@ -23,6 +23,11 @@ public class BubblemancerWand : Weapon
     {
         description.WithName("Bubble Wand").WithDescription("A magical bubble-blowing wand given to The Bubblemancer by a suspicious scientist");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Primary, "Blow a Y:[volley of bubbles]"));
+        abilities.Add(new Ability(Ability.ID.Secondary, "Y:Charge a big bubble that can Y:pierce multiple enemies"));
+    }
     protected override void AnimationUpdate()
     {
         WandUpdate();

@@ -31,6 +31,11 @@ public class Book : Weapon
     {
         description.WithName("Electrodynamics Grimoire").WithDescription("Thought Bubble's trusty tome, 'only used for self defense'");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Primary, "Cast a Y:[slow-moving thunder bubble] that is recalled when you stop attacking"));
+        abilities.Add(new Ability(Ability.ID.Secondary, "Cast a Y:[fast-moving thunder bubble] that is recalled when you stop attacking"));
+    }
     protected override void AnimationUpdate()
     {
         AttackUpdate();

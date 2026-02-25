@@ -6,12 +6,15 @@ public class EquipmentInfoScreen : MonoBehaviour
 {
     public EquipmentUIElement MyElem;
     public PowerUpLayout Layout;
-    public TextMeshProUGUI Title, Description;
+    public TextMeshProUGUI Title;
     public List<RectTransform> Rects = new();
     public void SetUIElement(Equipment e)
     {
         if (MyElem.ActiveEquipment != null && MyElem.ActiveEquipment.IndexInAllEquipPool == e.IndexInAllEquipPool)
             return;
+        for(int i = 0; i < Rects.Count; ++i)
+            if (i >= 3)
+                Destroy(Rects[i].gameObject);
         Rects.Clear();
         if (MyElem.ActiveEquipment != null)
             Destroy(MyElem.ActiveEquipment.gameObject);
@@ -21,11 +24,11 @@ public class EquipmentInfoScreen : MonoBehaviour
         List<PowerUp> powers = MyElem.ActiveEquipment.GetPowerPoolForDisplay();
         Layout.GenerateSingle(powers);
         Title.text = e.GetName();
-        Description.text = e.GetDescription();
         Rects.Add(Title.rectTransform);
         Rects.Add(MyElem.GetComponent<RectTransform>());
         Rects.Add(Layout.GetComponent<RectTransform>());
-        Rects.Add(Description.rectTransform);
+        foreach(Ability a in e.GetAbility())
+            Rects.Add(a.CreateAbilityBlurb(transform, Layout.myCanvas).GetComponent<RectTransform>());
         TightenRectangleSpacing();
     }
     public void TightenRectangleSpacing()
@@ -41,7 +44,7 @@ public class EquipmentInfoScreen : MonoBehaviour
             current.localPosition = new Vector2(current.localPosition.x, bot - height * (1 - current.pivot.y));
             bot -= height + verticalPadding;
         }
-        r.sizeDelta = new Vector2(r.sizeDelta.x, top - bot);
+        r.sizeDelta = new Vector2(r.sizeDelta.x, top - bot + verticalPadding / 2);
     }
     public void OnUpdate(Canvas canvas)
     {
