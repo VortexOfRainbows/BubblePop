@@ -63,7 +63,12 @@ public class WaveMeter : MonoBehaviour
             StartTimer = 0;
         }
         if (Input.GetKeyDown(KeyCode.Q))
-            Quests.Add(Quest.SpawnBlurb(NextWaveButton.parent));
+        {
+            Quest q = Quest.SpawnBlurb(NextWaveButton.parent, new Quest.QuestData("Arbitrary Test Quest", () => false, () => "Incomplete"));
+            int i = Quests.Count;
+            q.transform.localPosition = new Vector3(q.transform.localPosition.x, -80 * i - 135, q.transform.localPosition.z);
+            Quests.Add(q);
+        }
         UpdateSkullsRemaining();
         UpdateNextWaveButton();
         UpdateTicks();
@@ -139,15 +144,15 @@ public class WaveMeter : MonoBehaviour
     }
     public void UpdateQuests()
     {
-        for(int i = Quests.Count - 1; i >= 0; --i)
+        float l = Utils.DeltaTimeLerpFactor(0.1f);
+        for (int i = Quests.Count - 1; i >= 0; --i)
         {
             Quest q = Quests[i];
             q.DoUpdate();
-            if(q.Complete)
-            {
+            if (q.Complete)
                 Quests.RemoveAt(i);
-            }
-            q.transform.localPosition = new Vector3(q.transform.localPosition.x, -80 * i - 100, q.transform.localPosition.z);
+            else
+                q.transform.localPosition = new Vector3(q.transform.localPosition.x, Mathf.Lerp(q.transform.localPosition.y, - 80 * i - 135, l), q.transform.localPosition.z);
         }
     }
 }
