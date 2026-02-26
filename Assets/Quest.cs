@@ -4,20 +4,37 @@ using UnityEngine;
 
 public class Quest : MonoBehaviour
 {
+    public enum QuestType
+    { 
+        SurviveAgainstInvaders,
+        ActivatePylon,
+        StabilizePylon,
+    }
     public class QuestData
     {
-        public QuestData(string text, Func<bool> completionCheck, Func<string> updateCheck)
+        public QuestType Type;
+        public QuestData(string text, string progressText, QuestType Type)
         {
             Text = text;
-            CompletionCheck = completionCheck;
-            UpdateCheck = updateCheck;
-            ProgressText = UpdateCheck.Invoke();
+            ProgressText = progressText;
+            this.Type = Type;
         }
-        public readonly Func<bool> CompletionCheck;
-        public readonly Func<string> UpdateCheck;
         public string Text { get; private set; }
         public string ProgressText { get; set; }
         public string CompleteText => Text + " " + ProgressText;
+        internal bool CheckForCompletion()
+        {
+            switch(Type)
+            {
+                case QuestType.SurviveAgainstInvaders:
+                    break;
+                case QuestType.ActivatePylon:
+                    break;
+                case QuestType.StabilizePylon:
+                    break;
+            }
+            return false;
+        }
     }
     public static Quest SpawnBlurb(Transform parent, QuestData data)
     {
@@ -27,6 +44,11 @@ public class Quest : MonoBehaviour
         q.Data = data;
         q.UpdateText();
         return q;
+    }
+    public void CheckForCompletion()
+    {
+        if (CompletionCounter < 0 && Data.CheckForCompletion())
+            SetComplete();
     }
     public QuestData Data { get; set; }
     public void UpdateText()
@@ -47,12 +69,7 @@ public class Quest : MonoBehaviour
     }
     public void DoUpdate()
     {
-        if(CompletionCounter < 0)
-        {
-            Data.UpdateCheck.Invoke();
-            if(Data.CompletionCheck.Invoke())
-                SetComplete();
-        }
+        CheckForCompletion();
         float lerpFactor = Utils.DeltaTimeLerpFactor(0.085f);
         if (Complete)
         {

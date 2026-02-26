@@ -64,7 +64,7 @@ public class WaveMeter : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Quest q = Quest.SpawnBlurb(NextWaveButton.parent, new Quest.QuestData("Arbitrary Test Quest", () => false, () => "Incomplete"));
+            Quest q = Quest.SpawnBlurb(NextWaveButton.parent, new Quest.QuestData("Arbitrary Test Quest", "Incomplete", Quest.QuestType.SurviveAgainstInvaders));
             int i = Quests.Count;
             q.transform.localPosition = new Vector3(q.transform.localPosition.x, -80 * i - 135, q.transform.localPosition.z);
             Quests.Add(q);
