@@ -30,7 +30,6 @@ public class WaveMeter : MonoBehaviour
         Meter.sizeDelta = new Vector2(20, Meter.sizeDelta.y);
         AnimationTimer = StartTimer = 0;
         transform.localPosition = new Vector2(transform.localPosition.x, 150);
-        Quests.Add(Quest.SpawnBlurb(NextWaveButton.parent));
     }
     public void AnimationUpdate()
     {
@@ -57,10 +56,14 @@ public class WaveMeter : MonoBehaviour
             if(WaveDirector.WaveNum > 1)
                 WaveNumber.text = WaveDirector.WaveNum.ToString();
             else
+            {
                 WaveNumber.text = "1";
-            HighscoreWaveText.text = $"Highscore: {WaveDirector.HighScoreWaveNum}";
+                HighscoreWaveText.text = $"Highscore: {WaveDirector.HighScoreWaveNum}";
+            }
             StartTimer = 0;
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+            Quests.Add(Quest.SpawnBlurb(NextWaveButton.parent));
         UpdateSkullsRemaining();
         UpdateNextWaveButton();
         UpdateTicks();
@@ -136,9 +139,15 @@ public class WaveMeter : MonoBehaviour
     }
     public void UpdateQuests()
     {
-        foreach(Quest q in Quests)
+        for(int i = Quests.Count - 1; i >= 0; --i)
         {
+            Quest q = Quests[i];
             q.DoUpdate();
+            if(q.Complete)
+            {
+                Quests.RemoveAt(i);
+            }
+            q.transform.localPosition = new Vector3(q.transform.localPosition.x, -80 * i - 100, q.transform.localPosition.z);
         }
     }
 }
