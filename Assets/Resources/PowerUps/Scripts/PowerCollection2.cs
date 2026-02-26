@@ -703,7 +703,7 @@ public class RainbowFlower : PowerUp
     public override int Cost => 100;
     public override int CrucibleGems(bool dissolve = false)
     {
-        return dissolve ? -1 : 3;
+        return dissolve ? -1 : 5;
     }
     public override int ShardReplicationCost(int stackSize = 1)
     {

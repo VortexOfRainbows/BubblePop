@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class WaveMeter : MonoBehaviour
 {
+    public List<Quest> Quests { get; set; } = new();
     public static WaveMeter Instance;
     public float FillAmt { get; set; } = 1;
     public float StartTimer { get; set; } = 0;
@@ -16,7 +17,6 @@ public class WaveMeter : MonoBehaviour
     public TextMeshProUGUI WaveNumber;
     public Transform DeckPosition;
     public Transform Mask;
-
     public GameObject SkullTick => Resources.Load<GameObject>("Director/SkullTick");
     public void Update()
     {
@@ -30,6 +30,7 @@ public class WaveMeter : MonoBehaviour
         Meter.sizeDelta = new Vector2(20, Meter.sizeDelta.y);
         AnimationTimer = StartTimer = 0;
         transform.localPosition = new Vector2(transform.localPosition.x, 150);
+        Quests.Add(Quest.SpawnBlurb(NextWaveButton.parent));
     }
     public void AnimationUpdate()
     {
@@ -63,6 +64,7 @@ public class WaveMeter : MonoBehaviour
         UpdateSkullsRemaining();
         UpdateNextWaveButton();
         UpdateTicks();
+        UpdateQuests();
     }
     public RectTransform NextWaveButton;
     public Image NextWaveBG, Pylon;
@@ -130,6 +132,13 @@ public class WaveMeter : MonoBehaviour
         {
             SkullTick tick = SkullTicks[i];
             tick.UpdateSkull(1 - FillAmt);
+        }
+    }
+    public void UpdateQuests()
+    {
+        foreach(Quest q in Quests)
+        {
+            q.DoUpdate();
         }
     }
 }
