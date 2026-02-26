@@ -6,6 +6,7 @@ public class Quest : MonoBehaviour
 {
     public enum QuestType
     { 
+        Dummy,
         SurviveAgainstInvaders,
         ActivatePylon,
         StabilizePylon,
@@ -13,17 +14,20 @@ public class Quest : MonoBehaviour
     public class QuestData
     {
         public QuestType Type;
-        public QuestData(string text, string progressText, QuestType Type)
+        public QuestData Sequel { get; private set; }
+        public QuestData(string text, string progressText, QuestType Type, QuestData sequelQuest = null)
         {
             Text = text;
             ProgressText = progressText;
-            this.Type = Type;
+            this.Type = Type; 
+            Sequel = sequelQuest;
         }
         public string Text { get; private set; }
         public string ProgressText { get; set; }
         public string CompleteText => Text + " " + ProgressText;
         internal bool CheckForCompletion()
         {
+            bool setComplete = false;
             switch(Type)
             {
                 case QuestType.SurviveAgainstInvaders:
@@ -33,7 +37,7 @@ public class Quest : MonoBehaviour
                 case QuestType.StabilizePylon:
                     break;
             }
-            return false;
+            return setComplete;
         }
     }
     public static Quest SpawnBlurb(Transform parent, QuestData data)
@@ -59,6 +63,7 @@ public class Quest : MonoBehaviour
     public RectTransform RectTransform { get; set; }
     public bool Complete { get; private set; } = false;
     public float CompletionCounter = -1;
+    public bool Dead { get; set; } = false;
     public void SetComplete()
     {
         if(CompletionCounter < 0)
@@ -70,7 +75,8 @@ public class Quest : MonoBehaviour
     public void DoUpdate()
     {
         CheckForCompletion();
-        float lerpFactor = Utils.DeltaTimeLerpFactor(0.085f);
+        float lerpFactor = Utils.DeltaTimeLerpFactor(0.05f);
+        float lerpFactor2 = Utils.DeltaTimeLerpFactor(0.1f);
         if (Complete)
         {
             Utils.LerpSnap(transform, new Vector2(400 - RectTransform.rect.width / 2, transform.localPosition.y), lerpFactor);
@@ -78,18 +84,20 @@ public class Quest : MonoBehaviour
             {
                 CompletionCounter += Time.deltaTime;
                 if (CompletionCounter > 2)
-                    Destroy(gameObject);
+                {
+                    Dead = true;
+                }
             }
         }
         else
         {
             if (CompletionCounter >= 0)
             {
-                Text.color = Color.Lerp(Text.color, Color.green, lerpFactor);
+                Text.color = Color.Lerp(Text.color, Color.green, lerpFactor2);
                 CompletionCounter += Time.deltaTime * 1.1f;
                 float sin = Mathf.Sin(CompletionCounter * Mathf.PI);
                 sin *= 0.1f;
-                Utils.LerpLocalScale(transform, Vector2.one * (1 + sin), lerpFactor);
+                Utils.LerpLocalScale(transform, Vector2.one * (1 + sin), lerpFactor2);
                 if (CompletionCounter >= 1)
                 {
                     CompletionCounter = 1;
@@ -101,9 +109,7 @@ public class Quest : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Main.DebugCheats && Input.GetKeyDown(KeyCode.N))
             SetComplete();
-        if (Complete)
-            DoUpdate();
     }
 }

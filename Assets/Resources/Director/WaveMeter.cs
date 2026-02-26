@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class WaveMeter : MonoBehaviour
@@ -30,6 +31,13 @@ public class WaveMeter : MonoBehaviour
         Meter.sizeDelta = new Vector2(20, Meter.sizeDelta.y);
         AnimationTimer = StartTimer = 0;
         transform.localPosition = new Vector2(transform.localPosition.x, 150);
+    }
+    public void AddQuest(Quest.QuestData data)
+    {
+        Quest q = Quest.SpawnBlurb(NextWaveButton.parent, data);
+        int i = Quests.Count;
+        q.transform.localPosition = new Vector3(q.transform.localPosition.x, -80 * i - 135, q.transform.localPosition.z);
+        Quests.Add(q);
     }
     public void AnimationUpdate()
     {
@@ -62,12 +70,9 @@ public class WaveMeter : MonoBehaviour
             }
             StartTimer = 0;
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Main.DebugCheats && Input.GetKeyDown(KeyCode.Q))
         {
-            Quest q = Quest.SpawnBlurb(NextWaveButton.parent, new Quest.QuestData("Arbitrary Test Quest", "Incomplete", Quest.QuestType.SurviveAgainstInvaders));
-            int i = Quests.Count;
-            q.transform.localPosition = new Vector3(q.transform.localPosition.x, -80 * i - 135, q.transform.localPosition.z);
-            Quests.Add(q);
+            AddQuest(new Quest.QuestData("Arbitrary Test Quest", "Incomplete", Quest.QuestType.Dummy, new Quest.QuestData("Arbitrary Sequel Quest", "Incomplete", Quest.QuestType.Dummy)));
         }
         UpdateSkullsRemaining();
         UpdateNextWaveButton();
@@ -145,14 +150,24 @@ public class WaveMeter : MonoBehaviour
     public void UpdateQuests()
     {
         float l = Utils.DeltaTimeLerpFactor(0.1f);
-        for (int i = Quests.Count - 1; i >= 0; --i)
+        List<Quest.QuestData> sequels = new();
+        for (int i = 0; i < Quests.Count; ++i)
         {
             Quest q = Quests[i];
             q.DoUpdate();
-            if (q.Complete)
-                Quests.RemoveAt(i);
+            if (q.Dead)
+            {
+                Quests.RemoveAt(i--);
+                if (q.Data.Sequel != null)
+                    sequels.Add(q.Data.Sequel);
+                Destroy(q.gameObject);
+            }
             else
                 q.transform.localPosition = new Vector3(q.transform.localPosition.x, Mathf.Lerp(q.transform.localPosition.y, - 80 * i - 135, l), q.transform.localPosition.z);
+        }
+        foreach(Quest.QuestData data in sequels)
+        {
+            AddQuest(data);
         }
     }
 }
