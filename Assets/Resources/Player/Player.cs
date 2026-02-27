@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -320,6 +321,7 @@ public static class Control
 }
 public partial class Player : Entity
 {
+    public TextMeshPro PlayerNumber;
     public static readonly List<Player> AllPlayers = new();
     //TODO: Make this output the distance so it can be used in situations requiring distance easily
     public static Player FindClosest(Vector3 position, out Vector2 norm, out float distanceToPlayer, float searchDistance = 10000)
@@ -442,6 +444,9 @@ public partial class Player : Entity
                 Main.UIManager.SPControls.text = s;
             }
         }
+        PlayerNumber.color = InstanceID == 0 ? ColorHelper.Player1Color : ColorHelper.Player2Color;
+        PlayerNumber.text = InstanceID == 0 ? "P1" : "P2";
+        PlayerNumber.gameObject.SetActive(AllPlayers.Count > 1);
     }
     public float abilityTimer = 0;
     private void MovementUpdate()
@@ -669,6 +674,11 @@ public partial class Player : Entity
             else
                 Control.BlockAttackState = false;
             Control.PendingBlock = false;
+        }
+        if (AllPlayers.Count > 1)
+        {
+            float distToOtherPlayer = Distance(AllPlayers[InstanceID == 0 ? 1 : 0].gameObject);
+            PlayerNumber.color = PlayerNumber.color.WithAlpha(Mathf.Lerp(PlayerNumber.color.a, distToOtherPlayer < 12 ? 1 : 0, Utils.DeltaTimeLerpFactor(0.15f)));
         }
     }
     public void SetLife(int num)
