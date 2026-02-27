@@ -242,16 +242,16 @@ public class RockGolem : RockSpider
             if (AttackNum % 2 == 0)
             {
                 SpriteBatch.Draw(Main.TextureAssets.Shadow,
-                    pos, Vector2.one * (1 + percent), 0, ShotColor * percent, 1);
+                    pos, Vector2.one * (1 + percent), 0, ShotColor * percent, 1, Main.TextureAssets.AdditiveShader);
                 SpriteBatch.Draw(Main.TextureAssets.Shadow,
-                    pos, Vector2.one * per2, 0, Color.white * percent, 1);
+                    pos, Vector2.one * per2, 0, Color.white * percent, 1, Main.TextureAssets.AdditiveShader);
             }
             else
             {
                 SpriteBatch.Draw(Main.TextureAssets.Shadow,
-                    Head.transform.position + new Vector3(0, -0.24f), Vector2.one * (1 + percent), 0, ShotColor * percent, 1);
+                    Head.transform.position + new Vector3(0, -0.24f), Vector2.one * (1 + percent), 0, ShotColor * percent, 1, Main.TextureAssets.AdditiveShader);
                 SpriteBatch.Draw(Main.TextureAssets.Shadow,
-                    Head.transform.position + new Vector3(0, -0.24f), Vector2.one * percent, 0, ShotColor * percent, 1);
+                    Head.transform.position + new Vector3(0, -0.24f), Vector2.one * percent, 0, ShotColor * percent, 1, Main.TextureAssets.AdditiveShader);
             }
         }
         lastPos = transform.position;

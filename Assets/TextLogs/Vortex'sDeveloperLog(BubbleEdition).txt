@@ -1,12 +1,13 @@
 Bubble Developer Log (Vortex)
 
-Maybe Do:
+Do Later:
 1. Organize layers better for rendering, so player and enemies can be in front of stuff like trees, chests, etc. But also can be behind them depending on y position...
 2. Day/Night system (so we can have cooler lighting)
 3. Wave bar on the top shows current wave card modifier information
 4. Integrate Compendium into the pause menu
 5. Grass shader to make grass more interesting and potentially slightly vary in the wind
 6. Update to Unity 6 to remove the silly splash screen
+7. Localization and text organization system
 
 Need to do:
 1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden entirely)
@@ -26,6 +27,7 @@ Need to do:
 	1. Make equipment power pool contributions appear in the compendium
 	2. Make powers show which pools they belong to
 	3. Make blurbs appear in the equipment page
+	4. Add flavortext for all compendium elements
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Maybe shift roadblock visuals to the player so it's more encompassing
@@ -37,12 +39,13 @@ Less Important (mostly non-issues or complete already), but in consideration:
 6. (MAYBE) Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 
 Current Task List:
-1. Finish Pylon and Roadblock systems:
-	1. Pointers that show you the direction to the next Pylon
-2. Nerfs: Scaling for slot machine coin drops, Reflection should stack differently
+1. Nerfs: Scaling for slot machine coin drops, Reflection should stack differently
 
 
 Done: 
+
+2/27/26
+1. Add pointers that show you where the next pylon is
 
 2/25/26 to 2/26/26
 1. Add ability blurbs to the sidebar so players can have a rough idea of what each equip does

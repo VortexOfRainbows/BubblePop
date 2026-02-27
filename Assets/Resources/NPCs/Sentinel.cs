@@ -161,10 +161,10 @@ public class Sentinel : Enemy
             dist /= 4f;
             SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
                 new Vector2(dist * percent, 6 + percent * 10f),
-                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, g, -1);
+                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, g, -1, Main.TextureAssets.AdditiveShader);
             SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
                 new Vector2(dist * percent, 3 + percent * 5f),
-                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, b, -1);
+                toTarget.ToRotation() * Mathf.Rad2Deg + i * iPer * 20, b, -1, Main.TextureAssets.AdditiveShader);
         }
     }
     public override void OnKill()

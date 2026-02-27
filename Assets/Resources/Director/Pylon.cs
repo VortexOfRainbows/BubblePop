@@ -52,6 +52,13 @@ public class Pylon : MonoBehaviour
         if(SoundActive)
             sound.PylonSoundUpdate(this);
     }
+    public void Update()
+    {
+        bool awaitingPurification = Complete && !Purified;
+        bool nextPylon = (this == Main.NextPylon && Main.CurrentPylon == null) || (Main.CurrentPylon == this && !WaveDirector.WaveActive && !Complete && WavesPassed == 0);
+        if (awaitingPurification || nextPylon)
+            CreatePointers();
+    }
     public float animCounter = 0;
     public int CompleteAnimCounter = 0;
     public void ActiveAnim()
@@ -272,5 +279,27 @@ public class Pylon : MonoBehaviour
             ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, lifeMult, 3, Color.white);
             prev = pos;
         }
+    }
+    public float PointerAlpha = -3.0f;
+    public void CreatePointers()
+    {
+        Vector3 position = Crystal.transform.position;
+
+        Vector2 clamped = Utils.ClampToScreenEdge(position, 40);
+        position.x = clamped.x;
+        position.y = clamped.y;
+
+
+        Vector2 toPointer = position - Crystal.transform.position;
+        float distanceFromPointer = toPointer.magnitude;
+        float scaleFactor = Mathf.Clamp(distanceFromPointer - 1, 0, 1);
+
+        if (distanceFromPointer > 1)
+            PointerAlpha += Time.unscaledDeltaTime * 1.5f;
+        else
+            PointerAlpha -= Time.unscaledDeltaTime;
+        PointerAlpha = Mathf.Clamp(PointerAlpha, -3f, scaleFactor);
+
+        SpriteBatch.Draw(Crystal.sprite, position, Vector2.one * 0.4f, 0, Color.white.WithAlpha(Mathf.Max(PointerAlpha * 0.7f, 0)), 21, Crystal.material);
     }
 }

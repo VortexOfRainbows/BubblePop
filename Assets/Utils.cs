@@ -332,4 +332,36 @@ public static class Utils
     {
         return TileID.TileToParentTile[tile];
     }
+    public static Vector2 ClampToScreenEdge(Vector2 position, float PaddingAllowed = 30)
+    {
+        Vector2 screenSize = Main.ActivePrimaryCanvas.pixelRect.size;
+        Vector2 middle = screenSize / 2;
+        Camera main = Camera.main;
+        Vector2 myPos = main.WorldToScreenPoint(position);
+        
+        float targetDistanceX = screenSize.x / 2 - PaddingAllowed;
+        float targetDistanceY = screenSize.y / 2 - PaddingAllowed;
+        Vector2 toMyPos = myPos - middle;
+        float currentDistanceX = Mathf.Abs(toMyPos.x);
+        float currentDistanceY = Mathf.Abs(toMyPos.y);
+        float ratioX = currentDistanceX == 0 ? 1 : targetDistanceX / currentDistanceX;
+        float ratioY = currentDistanceY == 0 ? 1 : targetDistanceY / currentDistanceY;
+
+        Vector2 relativePosition = toMyPos;
+        if (ratioX < 1 && ratioY < 1)
+        {
+            if (ratioX < ratioY)
+                relativePosition *= ratioX;
+            else
+                relativePosition *= ratioY;
+        }
+        else if (ratioX < 1)
+            relativePosition *= ratioX;
+        else if (ratioY < 1)
+            relativePosition *= ratioY;
+
+        myPos = main.ScreenToWorldPoint(middle + relativePosition);
+
+        return myPos;
+    }
 }
