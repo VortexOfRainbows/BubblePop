@@ -49,9 +49,9 @@ public class Quest : MonoBehaviour
                         setComplete = true;
                     else
                     {
-                        Player.FindClosest(Main.CurrentPylon.transform.position, out _, out float dist);
+                        Player.FindFarthest(Main.CurrentPylon.transform.position, out _, out float dist);
                         dist -= Main.PylonActivationDist * 0.9f;
-                        if (dist <= 0)
+                        if (dist <= 0 || Main.CurrentPylon.CompleteAnimCounter > 0)
                         {
                             setComplete = Main.CurrentPylon.Purified;
                             ProgressText = "In Progress";
@@ -65,7 +65,7 @@ public class Quest : MonoBehaviour
                         setComplete = true;
                     else
                     {
-                        Player.FindClosest(Main.NextPylon.transform.position, out _, out float dist);
+                        Player.FindFarthest(Main.NextPylon.transform.position, out _, out float dist);
                         dist -= Main.PylonActivationDist * 1.0f;
                         if(dist <= 0)
                             ProgressText = "Ready";

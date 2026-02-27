@@ -344,6 +344,28 @@ public partial class Player : Entity
         norm /= distanceToPlayer;
         return best;
     }
+    public static Player FindFarthest(Vector3 position, out Vector2 norm, out float distanceToPlayer)
+    {
+        float searchDistance = 0;
+        norm = Vector2.zero;
+        Player best = null;
+        foreach (Player e in AllPlayers)
+        {
+            if (e == null)
+                continue;
+            Vector2 toDest = e.transform.position - position;
+            float dist = toDest.sqrMagnitude;
+            if (dist >= searchDistance)
+            {
+                best = e;
+                searchDistance = dist;
+                norm = toDest;
+            }
+        }
+        distanceToPlayer = norm.magnitude;
+        norm /= distanceToPlayer;
+        return best;
+    }
     public NewControls Control { get; private set; }
     public SpriteRenderer AimIndicator;
     public int InstanceID = 0;
