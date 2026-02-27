@@ -4,9 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class DualGridTilemap : MonoBehaviour
 {
-    public static GameObject Flower => Resources.Load<GameObject>("World/Decor/Nature/WhiteFlower");
-    public static GameObject Flower2 => Resources.Load<GameObject>("World/Decor/Nature/WhiteFlower2");
-    public static GameObject Flower3 => Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
+    public static GameObject TallGrass => Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
     public static GameObject Mushroom => Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
     public static GameObject VisualMapPrefab => Resources.Load<GameObject>("World/Tiles/VisualMap");
     public Transform Visual;
@@ -25,7 +23,7 @@ public class DualGridTilemap : MonoBehaviour
         World.GeneratingBorder = true;
         PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -55);
         RefreshDisplayTilemap(Map, BorderDisplayMap, true);
-        AddDecor(new Color(0.4f, 0.4f, 0.4f), -30);
+        AddDecor(new Color(0.5f, 0.5f, 0.5f), -30);
         World.GeneratingBorder = false;
         //GetComponent<TilemapRenderer>().enabled = false;
     }
@@ -93,10 +91,27 @@ public class DualGridTilemap : MonoBehaviour
                 {
                     AddTrees(i + Utils.RandInt(2), j + Utils.RandInt(2));
                 }
-                if (isGrassTile && Utils.RandFloat() < 0.1f * mult)
+                if (isGrassTile && Utils.RandFloat() < 0.16f * mult)
                 {
-                    var g = Instantiate(Utils.RandInt(3) != 0 ? Flower3 : Utils.RandInt(2) == 0 ? Flower2 : Flower, DecorVisual).GetComponent<SpriteRenderer>();
-                    g.transform.localPosition = new Vector3(i + 1, j + 1, 0);
+                    int type = Utils.RandInt(3);
+                    var g = Instantiate(TallGrass, DecorVisual).GetComponent<SpriteRenderer>();
+                    var pos = new Vector3(i + 1, j + 1, 0);
+                    if (type == 0)
+                    {
+                        g.sprite = Main.TextureAssets.TallGrass[Utils.RandInt(Main.TextureAssets.TallGrass.Length)];
+                        pos.y += Utils.RandFloat(0.1f, 0.3f);
+                    }
+                    if (type == 1)
+                    {
+                        g.sprite = Main.TextureAssets.Flowers[Utils.RandInt(Main.TextureAssets.Flowers.Length)];
+                        pos.y += Utils.RandFloat(0.1f);
+                    }
+                    if (type == 2)
+                    {
+                        g.sprite = Main.TextureAssets.ShortGrass[Utils.RandInt(Main.TextureAssets.ShortGrass.Length)];
+                        pos.y += Utils.RandFloat(0.05f, 0.25f);
+                    }
+                    g.transform.localPosition = pos;
                     g.color = c;
                     g.sortingOrder = order;
                     g.flipX = Utils.rand.NextBool();

@@ -21,6 +21,9 @@ public partial class Main : MonoBehaviour
         public static Sprite[] SlotSymbol = new Sprite[4];
         public static Sprite GoldProj, CoinProj, GemProj, TokenProj, FireProj;
         public static Sprite PowerUpPlaceholder;
+        public static Sprite[] Flowers; //= Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Flowers");
+        public static Sprite[] TallGrass; //= Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/TallGrass");
+        public static Sprite[] ShortGrass;// = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/ShortGrass");
         public static void Load()
         {
             BubbleSmall = Resources.Load<Sprite>("Projectiles/SmallBubble");
@@ -56,6 +59,20 @@ public partial class Main : MonoBehaviour
             FireProj = Resources.Load<Sprite>("Projectiles/Fire");
             PowerUpPlaceholder = Resources.Load<Sprite>($"PowerUps/Random");
             BlackMarketCrate = Resources.Load<Sprite>("Chests/BlackMarketCrate");
+            Flowers = new Sprite[] {
+                Resources.Load<Sprite>("World/Decor/Nature/Sprites/Flowers1")
+            };
+            ShortGrass = new Sprite[] {
+                Resources.Load<Sprite>("World/Decor/Nature/Sprites/ShortGrass1"),
+                Resources.Load<Sprite>("World/Decor/Nature/Sprites/ShortGrass2"),
+                Resources.Load<Sprite>("World/Decor/Nature/Sprites/ShortGrass3"),
+                Resources.Load<Sprite>("World/Decor/Nature/Sprites/ShortGrass4"),
+            };
+            TallGrass = new Sprite[] {
+                Resources.Load<Sprite>("World/Decor/Nature/Sprites/TallGrass1"),
+                Resources.Load<Sprite>("World/Decor/Nature/Sprites/TallGrass2"),
+                Resources.Load<Sprite>("World/Decor/Nature/Sprites/TallGrass3"),
+            };
         }
     }
     public static class PrefabAssets

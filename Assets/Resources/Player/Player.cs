@@ -366,7 +366,7 @@ public partial class Player : Entity
         norm /= distanceToPlayer;
         return best;
     }
-    public NewControls Control { get; private set; }
+    public NewControls Control { get; private set; } //For some reason this crashes when assigned = new NewControls(0);
     public SpriteRenderer AimIndicator;
     public int InstanceID = 0;
     public static Player GetInstance(int instanceID = 0)
@@ -412,6 +412,14 @@ public partial class Player : Entity
     public float MaxSpeed => MoveSpeedMod * 6f;
     public int bonusBubbles = 0;
     public bool IsDead => DeathKillTimer > 0;
+    //public void Awake()
+    //{
+    //    if (!HasCalledInit)
+    //    {
+    //        Init();
+    //        HasCalledInit = true;
+    //    }
+    //}
     public override void Init()
     {
         PowerInit();

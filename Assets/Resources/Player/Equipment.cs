@@ -86,6 +86,8 @@ public class Equipment : MonoBehaviour
     }
     public void AliveUpdate()
     {
+        if (Player != null && Player.Control == null)
+            return;
         if(!hasInit)
         {
             Init();

@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: GrassTile
   m_EditorClassIdentifier: 
   TileTexture: {fileID: 2800000, guid: a2e8a1ff75daef94bb7f8df208eacba1, type: 3}
-  LayerOffset: -4
+  BonusTileTextures:
+  - {fileID: 2800000, guid: 8c53ee661fe57da469b9fdc322cf9e50, type: 3}
+  - {fileID: 2800000, guid: 001ca832bbba58d458f2356aea582504, type: 3}
   RealTileMapVariant: {fileID: 11400000, guid: 6b42f1c117edfb14f987eb8a5b79b53b, type: 2}
   BorderTileMapVariant: {fileID: 11400000, guid: d843f0cb7c9ed004cafb26f160cdd34d, type: 2}
-  BonusTileVariations:
-  - {fileID: 21300000, guid: a6d154f9ef149a048bf9cacbf16993e6, type: 3}
-  - {fileID: 21300000, guid: a33be8ff1003cd04c8f4b6a593f12409, type: 3}
-  - {fileID: 21300000, guid: 8d5dc398937c0054899ed9602d40e8c3, type: 3}
+  BonusTileVariations: []
   ColorModifier: {r: 1, g: 1, b: 1, a: 1}
