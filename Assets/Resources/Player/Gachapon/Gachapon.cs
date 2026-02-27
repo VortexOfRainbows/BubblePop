@@ -156,7 +156,7 @@ public class Gachapon : Body
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     public override void Init()
     {
-        PrimaryColor = new Color(0.95f, 1f, 0.6f);
+        PrimaryColor = new Color(0.95f, 1f, 0.7f);
         stacks = new List<ChipStack>();
     }
     //public SpriteRenderer MouthR;
@@ -214,10 +214,10 @@ public class Gachapon : Body
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
         ResizeChips();
-        PrimaryColor = new Color(0.95f, 1f, 0.6f);
+        PrimaryColor = new Color(0.95f, 1f, 0.7f);
         if(p.Accessory is Crystal)
         {
-            PrimaryColor = new Color(0.6f, 0.933f, 0.255f);
+            PrimaryColor = new Color(0.6f, 0.933f, 0.35f);
         }
         while(stacks.Count < Player.ChipStacks)
             AddStack();

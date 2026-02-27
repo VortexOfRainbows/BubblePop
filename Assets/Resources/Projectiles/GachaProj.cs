@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -92,6 +93,7 @@ public class GachaProj : Projectile
         }
         timer++;
     }
+    public int TimesIHaveAlreadyDroppedMoney = 0;
     public override void OnHitTarget(Entity target)
     {
         Damage *= 0.8f; // 0.8f + 0.05f * Data1;
@@ -106,7 +108,12 @@ public class GachaProj : Projectile
         float bonus = count - (int)count;
         if (Utils.RandFloat() < bonus)
             count++;
-        CoinManager.SpawnCoin(transform.position, (int)count, 1);
+        count -= TimesIHaveAlreadyDroppedMoney;
+        if(count > 0)
+        {
+            CoinManager.SpawnCoin(transform.position, (int)count, 1);
+            ++TimesIHaveAlreadyDroppedMoney;
+        }
     }
     public override void OnKill()
     {

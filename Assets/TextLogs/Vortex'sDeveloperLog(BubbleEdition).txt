@@ -20,10 +20,9 @@ Need to do:
 4. Add a GEM currency, which can be used to reroll shop selections
 5. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 6. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-7. Tile resprite implementation
-8. Enemy Pathfinding
-9. Some UI classes to normalize UI colors, Button behaviors, etc.
-10. Compendium TODO:
+7. Enemy Pathfinding
+8. Some UI classes to normalize UI colors, Button behaviors, etc.
+9. Compendium TODO:
 	1. Make equipment power pool contributions appear in the compendium
 	2. Make powers show which pools they belong to
 	3. Make blurbs appear in the equipment page
@@ -39,7 +38,7 @@ Less Important (mostly non-issues or complete already), but in consideration:
 6. (MAYBE) Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 
 Current Task List:
-1. Nerfs: Scaling for slot machine coin drops, Reflection should stack differently
+1. Reflection should stack differently (do not scale bounces, give it a damage multiplier)
 
 
 Done: 
@@ -50,6 +49,8 @@ Done:
 3. New tall grass assets (plus removed shadows) (FANNY)
 4. New Grass and Stone tile assets (FANNY), THESE LOOK SO GOOD!
 5. Stop equips from running code if unable to fetch player controls (should fix some bugs where multiple player equip sprites are overlayed weirdly)
+6. Each time a money-giving gachaproj hits an enemy, it will now decrease the money dropped by subsequent pierces by 1
+7. Make some character's bubble projectile colors less transparent
 
 2/25/26 to 2/26/26
 1. Add ability blurbs to the sidebar so players can have a rough idea of what each equip does

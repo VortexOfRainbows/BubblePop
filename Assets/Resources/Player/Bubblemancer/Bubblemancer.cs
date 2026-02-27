@@ -7,7 +7,7 @@ public class Bubblemancer : Body
     public override void Init()
     {
         Player.abilityTimer = 0;
-        PrimaryColor = new Color(0.8f, 0.85f, 0.9f, 0.45f);
+        PrimaryColor = new Color(0.8f, 0.85f, 0.9f, 0.6f);
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
