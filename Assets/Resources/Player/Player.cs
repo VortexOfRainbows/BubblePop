@@ -748,7 +748,7 @@ public partial class Player : Entity
             PlayerData.PlayerDeaths++;
         if(BonusPhoenixLives > 0)
         {
-            if(InstanceID == 1)
+            if(InstanceID == 1 || Player.AllPlayers.Count <= 1)
                 RemovePower(PowerUp.Get<BubbleBirb>().Type, 1);
             Rebirth();
             return;

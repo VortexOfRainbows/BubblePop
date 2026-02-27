@@ -33,13 +33,15 @@ public class Quest : MonoBehaviour
                 case QuestType.SurviveAgainstInvaders:
                     if (Main.CurrentPylon == null)
                         setComplete = true;
+                    else if(Main.CurrentPylon.EndlessPylon)
+                        ProgressText = "Endless";
                     else if(WaveDirector.SkullEnemiesActive <= 0 && !WaveDirector.WaveActive)
                     {
                         if (Main.CurrentPylon.Complete)
                             setComplete = true;
                         else
                         {
-                            string quant = Main.CurrentPylon.WavesRequired > 0 && !Main.CurrentPylon.EndlessPylon ? Main.CurrentPylon.WavesRequired.ToString() : "Endless";
+                            string quant = Main.CurrentPylon.WavesRequired.ToString();
                             ProgressText = $"Waves: {Main.CurrentPylon.WavesPassed}/{quant}";
                         }
                     }

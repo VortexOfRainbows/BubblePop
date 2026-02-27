@@ -17,7 +17,7 @@ public class WaveMeter : MonoBehaviour
     public RectTransform Meter;
     public TextMeshProUGUI WaveNumber;
     public Transform DeckPosition;
-    public Transform Mask;
+    public Transform Mask, QuestAnchor;
     public GameObject SkullTick => Resources.Load<GameObject>("Director/SkullTick");
     public void Update()
     {
@@ -34,7 +34,7 @@ public class WaveMeter : MonoBehaviour
     }
     public void AddQuest(Quest.QuestData data)
     {
-        Quest q = Quest.SpawnBlurb(NextWaveButton.parent, data);
+        Quest q = Quest.SpawnBlurb(QuestAnchor, data);
         int i = Quests.Count;
         q.transform.localPosition = new Vector3(q.transform.localPosition.x, -80 * i - 135, q.transform.localPosition.z);
         Quests.Add(q);
@@ -84,18 +84,20 @@ public class WaveMeter : MonoBehaviour
     public RectTransform SkullEnemyRemaining;
     public TextMeshProUGUI SkullEnemyRemainingText;
     public bool SkullEnemiesActive { get; set; } = false;
+    public Vector2 BarLeftPosition()
+    {
+        return new Vector2(400 - Meter.sizeDelta.x, Meter.transform.localPosition.y + 250);
+    }
     public void UpdateSkullsRemaining()
     {
         SkullEnemiesActive = WaveDirector.SkullEnemiesActive > 0;
-        float defaultPosition = 50;
-        Utils.LerpSnap(SkullEnemyRemaining, new Vector2(SkullEnemyRemaining.localPosition.x, SkullEnemiesActive ? (Mathf.Sin(AnimationTimer * Mathf.Deg2Rad * 60) * 4 -80) : defaultPosition), Utils.DeltaTimeLerpFactor(0.05f), 0.1f);
+        Utils.LerpSnap(SkullEnemyRemaining, new Vector2(BarLeftPosition().x, BarLeftPosition().y + (SkullEnemiesActive ? (Mathf.Sin(AnimationTimer * Mathf.Deg2Rad * 60) * 4 -200) : 0)), Utils.DeltaTimeLerpFactor(0.05f), 0.1f);
         SkullEnemyRemainingText.text = WaveDirector.SkullEnemiesActive.ToString();
     }
     public void UpdateNextWaveButton()
     {
         bool AwaitingNextCard = !WaveDirector.WaveActive && WaveDirector.WaitingForCardDraw && WaveDirector.SkullEnemiesActive <= 0;
-        float defaultPosition = 200;
-        Utils.LerpSnap(NextWaveButton, new Vector2(NextWaveButton.localPosition.x, AwaitingNextCard ? -50 : defaultPosition), Utils.DeltaTimeLerpFactor(0.05f), 0.1f);
+        Utils.LerpSnap(NextWaveButton, new Vector2(BarLeftPosition().x, BarLeftPosition().y + (AwaitingNextCard ? -130 : 150)), Utils.DeltaTimeLerpFactor(0.05f), 0.1f);
         Color targetColor = !Main.PlayerNearPylon ? new Color(0.9f, 0.5f, 0.5f, 1f) : Color.white;
         if (Main.PlayerNearPylon)
         {
@@ -113,6 +115,13 @@ public class WaveMeter : MonoBehaviour
                     CardManager.DrawCards();
                 }
             }
+        }
+        else if(Utils.IsMouseHoveringOverThis(true, NextWaveBG.rectTransform, 0, CardManager.Instance.MyCanvas))
+        {
+            if (Player.AllPlayers.Count > 1)
+                PopUpTextUI.Enable("All players must be near a pylon to start!".WithColor(DetailedDescription.Rares[5]), " ");
+            else
+                PopUpTextUI.Enable("Must be near a pylon to start!".WithColor(DetailedDescription.Rares[5]), "");
         }
         if (!AwaitingNextCard || Main.PlayerNearPylon)
             Pylon.color = Color.Lerp(Pylon.color, Color.white, Utils.DeltaTimeLerpFactor(0.2f));
