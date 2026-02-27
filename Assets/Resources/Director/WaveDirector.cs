@@ -163,6 +163,9 @@ public static class WaveDirector
             MulliganAllCards();
         CurrentAssociatedWaveCardNumber = SkullEnemiesActive = 0;
         UnlockCondition.CheckAllUnlocksForCompletion();
+
+        if (Main.CurrentPylon != null)
+            Main.CurrentPylon.AddQuests();
     }
     public static void EndWave()
     {

@@ -24,19 +24,58 @@ public class Quest : MonoBehaviour
         }
         public string Text { get; private set; }
         public string ProgressText { get; set; }
-        public string CompleteText => Text + " " + ProgressText;
+        public string CompleteText => Text + "\n" + ProgressText;
         internal bool CheckForCompletion()
         {
             bool setComplete = false;
             switch(Type)
             {
                 case QuestType.SurviveAgainstInvaders:
-                    break;
-                case QuestType.ActivatePylon:
+                    if (Main.CurrentPylon == null)
+                        setComplete = true;
+                    else if(WaveDirector.SkullEnemiesActive <= 0 && !WaveDirector.WaveActive)
+                    {
+                        if (Main.CurrentPylon.Complete)
+                            setComplete = true;
+                        else
+                        {
+                            string quant = Main.CurrentPylon.WavesRequired > 0 && !Main.CurrentPylon.EndlessPylon ? Main.CurrentPylon.WavesRequired.ToString() : "Endless";
+                            ProgressText = $"Waves: {Main.CurrentPylon.WavesPassed}/{quant}";
+                        }
+                    }
                     break;
                 case QuestType.StabilizePylon:
+                    if (Main.CurrentPylon == null || Main.CurrentPylon.Purified)
+                        setComplete = true;
+                    else
+                    {
+                        Player.FindClosest(Main.CurrentPylon.transform.position, out _, out float dist);
+                        dist -= Main.PylonActivationDist * 0.9f;
+                        if (dist <= 0)
+                        {
+                            setComplete = Main.CurrentPylon.Purified;
+                            ProgressText = "In Progress";
+                        }
+                        else
+                            ProgressText = $"Distance: {(int)(dist + 0.9999f):#}";
+                    }
+                    break;
+                case QuestType.ActivatePylon:
+                    if (Main.NextPylon == null || (Main.NextPylon == Main.CurrentPylon && Main.PylonActive))
+                        setComplete = true;
+                    else
+                    {
+                        Player.FindClosest(Main.NextPylon.transform.position, out _, out float dist);
+                        dist -= Main.PylonActivationDist * 1.0f;
+                        if(dist <= 0)
+                            ProgressText = "Ready";
+                        else
+                            ProgressText = $"Distance: {(int)(dist + 0.9999f):#}";
+                    }
                     break;
             }
+            if(setComplete)
+                ProgressText = "Complete";
             return setComplete;
         }
     }
@@ -74,15 +113,16 @@ public class Quest : MonoBehaviour
     }
     public void DoUpdate()
     {
+        UpdateText();
         CheckForCompletion();
-        float lerpFactor = Utils.DeltaTimeLerpFactor(0.05f);
+        float lerpFactor = Utils.DeltaTimeLerpFactor(0.0675f);
         float lerpFactor2 = Utils.DeltaTimeLerpFactor(0.1f);
         if (Complete)
         {
             Utils.LerpSnap(transform, new Vector2(400 - RectTransform.rect.width / 2, transform.localPosition.y), lerpFactor);
             if (CompletionCounter >= 1)
             {
-                CompletionCounter += Time.deltaTime;
+                CompletionCounter += Time.deltaTime * 1.5f;
                 if (CompletionCounter > 2)
                 {
                     Dead = true;
@@ -94,7 +134,7 @@ public class Quest : MonoBehaviour
             if (CompletionCounter >= 0)
             {
                 Text.color = Color.Lerp(Text.color, Color.green, lerpFactor2);
-                CompletionCounter += Time.deltaTime * 1.1f;
+                CompletionCounter += Time.deltaTime * 1.2f;
                 float sin = Mathf.Sin(CompletionCounter * Mathf.PI);
                 sin *= 0.1f;
                 Utils.LerpLocalScale(transform, Vector2.one * (1 + sin), lerpFactor2);

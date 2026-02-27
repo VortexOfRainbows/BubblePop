@@ -12,6 +12,7 @@ public partial class Main : MonoBehaviour
     public static bool PlayerNearPylon => CurrentPylon != null && CurrentPylon.PlayersNearby && !CurrentPylon.Complete;
     public static Vector2 PylonPositon => CurrentPylon == null ? Player.Instance1Pos : CurrentPylon.transform.position;
     public static Pylon CurrentPylon { get; private set; } = null;
+    public static Pylon NextPylon => World.Pylons.Count > PylonProgressionNumber ? World.Pylons[PylonProgressionNumber] : CurrentPylon;
     private static Pylon PrevPylon { get; set; } = null;
     public static bool PylonActive => CurrentPylon != null && !CurrentPylon.Purified && CurrentPylon.WaveActive;
     public static bool JustSwitchedPylons => PrevPylon != CurrentPylon && PrevPylon != null;

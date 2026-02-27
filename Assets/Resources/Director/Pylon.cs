@@ -181,6 +181,16 @@ public class Pylon : MonoBehaviour
             }
         }
     }
+    public void AddQuests()
+    {
+        if(WavesPassed == 0)
+        {
+            WaveMeter.Instance.AddQuest(new Quest.QuestData(
+                "Survive against the invaders", $"Waves: 0/{WavesRequired}", Quest.QuestType.SurviveAgainstInvaders, new Quest.QuestData(
+                    "Stabilize the Pylon,", "Distance: 0", Quest.QuestType.StabilizePylon, new Quest.QuestData(
+                        "Activate the next Pylon,", "Distance: 0", Quest.QuestType.ActivatePylon))));
+        }
+    }
     public void IncrementWave()
     {
         WavesPassed++;
