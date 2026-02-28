@@ -1,0 +1,41 @@
+Dev Build 2.2 (tentative version number)
+
+New:
+1. Major environmental art overhauls to ambient features and tiles
+2. Add a new menu in the Character select UI
+3. Add some small tutorial popups (some of these may be temporary)
+4. New sprites for Eureka power, Gatligator Cola projectile
+5. Add a "quest" system, which somewhat guides you in the direction you need to go in game
+	1. Skull Enemy meter and wave start button are now displayed left of the pylon UI instead of below it, in order to allow quests to fit.
+6. Add pointers that show you where the next pylon is
+
+Changes:
+1. Remove pre-round powerup pool display, in favor of the new, less cluttered interface
+2. Rainbow flower Contract cost 3 gems -> 5 gems (normalized)
+3. Modify some rooms to make gen bugs less likely with those rooms
+4. Each time a money-giving gachaproj hits an enemy, it will now decrease the money dropped by subsequent pierces by 1
+
+Multiplayer:
+1. Both players must be near a pylon to activate it
+2. Player numbers appear over player's heads when they get too close
+
+Misc:
+1. Experiment with some of the blue UI
+2. Add some preliminary features for preventing players from starting attacks while hovering on UI elements
+	1. For now, this mostly means you won't attack the frame before switching characters
+3. Tutorial menu now and has a close button, and is more detailed
+4. Normalize some descriptions (tokens is no longer a proper noun)
+5. Make some character's bubble projectile colors less transparent
+
+Fixes:
+1. The INIT call for entities should now happen first regardless of framerate and stop equips from running code if unable to fetch player controls (should fix some bugs where multiple player equip sprites are overlayed weirdly)
+2. Remove some arbitrary overhead "resize" calls to certain UI elements that should generally reduce lag
+3. Roadblock visuals now appear for player 2 as well
+4. Fix rock spider leg animation bug
+5. Bubble Birb is now consumed properly again in singleplayer
+
+
+Dev Build 2.21 (tentative version number)
+
+Fixes:
+1. Fix bug where new UI interface did not work on all resolutions
