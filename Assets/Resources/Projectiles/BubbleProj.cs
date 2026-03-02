@@ -208,8 +208,8 @@ public class BigBubble : Projectile
     {
         AudioManager.PlaySound(SoundID.BubblePop, gameObject.transform.position, 0.8f, 1.5f);
         gameObject.transform.localScale *= 0.8f;
-        RB.velocity *= 0.8f;
-        Damage = Damage * 0.8f;
+        RB.velocity *= 0.85f;
+        Damage *= 0.9f;
         if (Damage < 0)
             Kill();
         else

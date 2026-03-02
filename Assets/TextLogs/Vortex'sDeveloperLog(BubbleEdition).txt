@@ -38,11 +38,20 @@ Less Important (mostly non-issues or complete already), but in consideration:
 6. (MAYBE) Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 
 Current Task List:
-1. Reflection should stack differently (do not scale bounces, give it a damage multiplier)
+1. Reflection should stack differently (do not scale bounces, give it a damage multiplier), Rainbow flower should probably be reworked entirely
 2. Bug: Spritebatch sometimes just doesn't work. Cause unknown
 
 
 Done: 
+
+3/2/26
+1. Reduced randomness/variance of Bubble Wand bubble velocity
+2. Bubble Wand spread reduced 
+3. Reduced attack cooldown of both bubble wand attacks 0.2 -> 0.1s
+4. Bubble Wand big bubble damage lost on pierce 20% -> 10%, velocity lost 20% -> 15%
+5. Bubble Gun cooldown of primary reduced 0.14s -> 0.1s
+6. Controller aim wheel now moves 7.5x faster
+
 
 -- A2.21 (NO changelog yet) --
 

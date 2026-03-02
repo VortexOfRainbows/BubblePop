@@ -258,7 +258,7 @@ public class NewControls
                 newAngle = direction.ToRotation();
             else if(Aim.Stick == null)
                 newAngle = Mathf.Round(currentAngle * 4 / Mathf.PI) * Mathf.PI / 4f;
-            currentAngle = Utils.LerpAngleRadians(currentAngle, newAngle, Utils.DeltaTimeLerpFactor(0.1f));
+            currentAngle = Utils.LerpAngleRadians(currentAngle, newAngle, Utils.DeltaTimeLerpFactor(0.75f));
             AimingVector = new Vector2(1, 0).RotatedBy(currentAngle);
             MousePosition = AimingVector.normalized * 10f;
             float snapDist = 0.25f;

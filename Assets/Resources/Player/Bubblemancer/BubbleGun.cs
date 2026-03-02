@@ -8,7 +8,7 @@ public class BubbleGun : BubblemancerWand
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
         offset.x -= 0.05f;
         offset.y -= 0.05f;
-        scale *= 1.025f;
+        scale *= 1.0f;
     }
     public SpriteRenderer Upper;
     public SpriteRenderer Lower;
@@ -35,8 +35,8 @@ public class BubbleGun : BubblemancerWand
     {
         GunUpdate();
     }
-    private float AttackCooldownLeft => Mathf.Max(0, 14f - (Player.PrimaryAttackSpeedModifier - 1) * 2f);
-    private float AttackCooldownRight => Mathf.Max(0, 20f - (Player.SecondaryAttackSpeedModifier - 1) * 20f);
+    private float AttackCooldownLeft => Mathf.Max(0, 10f - (Player.PrimaryAttackSpeedModifier - 1) * 2f);
+    private float AttackCooldownRight => Mathf.Max(0, 10f - (Player.SecondaryAttackSpeedModifier - 1) * 10f);
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft < -AttackCooldownLeft && AttackRight < 0)
@@ -115,7 +115,7 @@ public class BubbleGun : BubblemancerWand
                 Player.bonusBubbles %= 5;
             }
             float percent = AttackLeft / 10f;
-            p.PointDirOffset -= 20 * percent * dir * p.squash;
+            p.PointDirOffset -= 15 * percent * dir * p.squash;
         }
         if (AttackRight > 0)
         {
@@ -167,9 +167,12 @@ public class BubbleGun : BubblemancerWand
         AttackLeft--;
 
         bool notAttacking = false;
-        if (-AttackCooldownLeft <= AttackLeft || -AttackCooldownRight <= AttackRight || Player.Control.PrimaryAttackHold || Player.Control.SecondaryAttackHold)
+        if (-AttackCooldownLeft <= AttackLeft || 
+            -AttackCooldownRight <= AttackRight || 
+            Player.Control.PrimaryAttackHold || 
+            Player.Control.SecondaryAttackHold)
         {
-            spinSpeed += 0.275f;
+            spinSpeed += 0.27f;
         }
         else
             notAttacking = true;
@@ -177,19 +180,13 @@ public class BubbleGun : BubblemancerWand
         float angleScale = Mathf.Min(1.0f, cos);
         if(notAttacking)
         {
-            if(cos - 1.0f > 0.01f)
-            {
-                spinSpeed += 0.3f;
-            }
+            if((spin >= 175 && spin <= 185) || (spin <= 5 || spin >= 355))
+                spinSpeed *= 0.45f;
             else
-            {
-                spinSpeed *= 0.9f;
-                spin = Mathf.LerpAngle(spin, 0, 0.05f);
-            }
+                spinSpeed += 0.3f;
         }
-
-        Lower.transform.localScale = new Vector3(1, Mathf.Lerp(Lower.transform.localScale.y, angleScale, 0.25f), 1);
         spinSpeed *= 0.96f;
+        Lower.transform.localScale = new Vector3(1, angleScale * 1.1f, 1);
         spin += spinSpeed;
         spin %= 360;
     }
