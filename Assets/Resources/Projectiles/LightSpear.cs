@@ -251,17 +251,20 @@ public class ThunderLightSpearCaster : Projectile
             float percentStarted = Mathf.Min(1, timer2 * 2);
             float maxDist = 1.5f + total * 0.025f;
             float iPer = 1;
-            if (Book.InClosingAnimation)
+            if(PlayerOwner.Weapon is Book book)
             {
-                iPer -= Book.ClosingPercent;
-                maxDist *= iPer;
-                HasClosed = true;
-                if (MyTrail != null)
+                if (book.InClosingAnimation)
                 {
-                    MyTrail.Trail.startColor = MyTrail.Trail.startColor.WithAlpha(iPer * 0.9f);
-                    MyTrail.originalAlpha = iPer * 0.9f;
-                    SpriteRendererGlow.color = SpriteRendererGlow.color.WithAlpha(0.5f * iPer);
-                    SpriteRenderer.color = SpriteRenderer.color.WithAlpha(iPer);
+                    iPer -= book.ClosingPercent;
+                    maxDist *= iPer;
+                    HasClosed = true;
+                    if (MyTrail != null)
+                    {
+                        MyTrail.Trail.startColor = MyTrail.Trail.startColor.WithAlpha(iPer * 0.9f);
+                        MyTrail.originalAlpha = iPer * 0.9f;
+                        SpriteRendererGlow.color = SpriteRendererGlow.color.WithAlpha(0.5f * iPer);
+                        SpriteRenderer.color = SpriteRenderer.color.WithAlpha(iPer);
+                    }
                 }
             }
             float max = Mathf.Max(8, Mathf.Min(8, total), total > 32 ? (int)(Mathf.Sqrt(total) * 4) : total > 16 ? (int)(Mathf.Sqrt(total) * 2) : 0);

@@ -33,7 +33,7 @@ public class PaperPlane : Projectile
         cmp.spriteRenderer.flipY = RB.rotation > 90 || RB.rotation < -90;
         float targetScale = 0.75f;
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.04f + 0.01f * rtSpeed);
-        if (Book.InClosingAnimation)
+        if (PlayerOwner.Weapon is Book Book && Book.InClosingAnimation)
         {
             if(!Recalled)
             {
@@ -138,7 +138,7 @@ public class LatentCharge : Projectile
         transform.localScale = transform.localScale.Lerp(Vector3.one * 0.85f, 0.2f);
         RB.velocity *= 0.5f;
         RB.rotation = Utils.WrapAngle(RB.velocity.ToRotation()) * Mathf.Rad2Deg;
-        if (Book.InClosingAnimation)
+        if (PlayerOwner.Weapon is Book Book && Book.InClosingAnimation)
         {
             if (!Recalled)
             {

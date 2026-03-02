@@ -53,6 +53,8 @@ public static class SpriteBatch
             Renderers.Add(rend);
         }
         SpriteRenderer renderer = Renderers[i];
+        if (renderer == null)
+            return;
         renderer.sprite = call.sprite;
         renderer.material = call.material;
         renderer.sortingOrder = call.order;

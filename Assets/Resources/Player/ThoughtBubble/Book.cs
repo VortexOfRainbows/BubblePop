@@ -73,8 +73,8 @@ public class Book : Weapon
             }
         }
     }
-    public static bool InClosingAnimation = false;
-    public static float ClosingPercent = 0.0f;
+    public bool InClosingAnimation = false;
+    public float ClosingPercent = 0.0f;
     private bool WantsOpen = false;
     private bool Open = true;
     public float OpeningAnimationTimer = 0;

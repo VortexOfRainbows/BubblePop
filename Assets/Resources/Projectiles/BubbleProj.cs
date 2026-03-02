@@ -1,4 +1,5 @@
 using System.Data.Common;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 public class SmallBubble : Projectile
 {
@@ -290,12 +291,13 @@ public class ThunderBubble : Projectile
 
         float deathTime = 10800; //Only really times out when you stop recall
         float FadeOutTime = 60;
-        if (timer > deathTime + FadeOutTime || PlayerOwner.Weapon is not Book)
+        if (timer > deathTime + FadeOutTime || PlayerOwner.Weapon is not Book book)
         {
             Kill();
+            return;
         }
         float targetScale = 1.1f;
-        if(Book.InClosingAnimation && timer <= deathTime)
+        if(book.InClosingAnimation && timer <= deathTime)
         {
             if(!Recalled)
             {
@@ -311,7 +313,7 @@ public class ThunderBubble : Projectile
             timer = deathTime;
             Vector2 weaponPos = PlayerOwner.Weapon.transform.position;
             Vector2 toWeapon = weaponPos - (Vector2)transform.position;
-            float perc = Book.ClosingPercent;
+            float perc = book.ClosingPercent;
             perc = perc * perc;
             velo = toWeapon * 0.2f;
             transform.position = Vector2.Lerp(transform.position, weaponPos, perc);
@@ -348,7 +350,7 @@ public class ThunderBubble : Projectile
         }
         if ((int)++timer2 % 6 != 0)
         {
-            float perc = (1 - Book.ClosingPercent) * 0.1f;
+            float perc = (1 - book.ClosingPercent) * 0.1f;
             ParticleManager.NewParticle(RB.position + velo * Time.fixedDeltaTime * 2f, transform.localScale.x * 2.3f, velo * 0.5f, 2f, Recalled ? perc : Utils.RandFloat(0.1f, 0.15f), 2,
                 SpriteRendererGlow.color.WithAlphaMultiplied(.6f));
         }
@@ -367,7 +369,9 @@ public class ThunderBubble : Projectile
     }
     public override bool CanBeAffectedByHoming()
     {
-        return !Book.InClosingAnimation;
+        if (PlayerOwner.Weapon is not Book book)
+            return false;
+        return !book.InClosingAnimation;
     }
     public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
     {

@@ -147,6 +147,10 @@ PrefabInstance:
       value: 1242
       objectReference: {fileID: 0}
     - target: {fileID: 7573328573185486376, guid: 20b420ef7ff849c4383e5f3a450e3e6b, type: 3}
+      propertyPath: m_TileSpriteArray.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7573328573185486376, guid: 20b420ef7ff849c4383e5f3a450e3e6b, type: 3}
       propertyPath: m_Tiles.Array.data[0].first.x
       value: 10
       objectReference: {fileID: 0}
