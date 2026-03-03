@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Fizzy : Body
 {
-    //protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     public override void Init()
     {
         Player.abilityTimer = 0;
