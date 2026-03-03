@@ -755,8 +755,8 @@ public class GlassShard : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Shard of Glass");
-        description.WithDescription($"All attacks deal Y:+1 G:(+1 per stack) Y:[bonus damage] \nR:[When you get hurt,] roll Y:1 G:(+1 per stack) times for a Y:[25% chance] to take Y:[additional damage]");
+        description.WithName("Glass Knife");
+        description.WithDescription($"All attacks deal Y:+1 G:(+1 per stack) Y:[bonus damage] \nR:[When you get hurt,] roll Y:1 G:(+1 per stack) times for a Y:[50% chance] to take Y:[additional damage]");
         description.WithShortDescription("Don't pop yourself");
     }
     public override void HeldEffect(Player p)

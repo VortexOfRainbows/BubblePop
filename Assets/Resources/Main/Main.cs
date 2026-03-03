@@ -248,6 +248,7 @@ public partial class Main : MonoBehaviour
         public static readonly GameObject UtilityBelt = LoadSubEquipment(ThoughtBubbleCape, "ThoughtBubble/Belt");
         public static readonly GameObject Fizzy = LoadEquipment("Fizzy/Fizzy");
         public static readonly GameObject Cap = LoadEquipment("Fizzy/Cap");
+        public static readonly GameObject Kicks = LoadEquipment("Fizzy/Kicks");
         public static GameObject LoadEquipment(string path) => LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
         public static GameObject LoadEquipment(GameObject Prefab)
         {

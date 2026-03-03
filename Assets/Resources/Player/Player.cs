@@ -693,7 +693,7 @@ public partial class Player : Entity
         if(damage > 0)
         {
             for (int i = 0; i < GlassShards; ++i)
-                if (Utils.RandFloat() < 0.25f)
+                if (Utils.RollWithLuckRaw() > 0.5f)
                     ++damage;
             TimesHitThisRun += damage;
             if (TimesHitThisRun >= 15 && this.Body is Gachapon)
