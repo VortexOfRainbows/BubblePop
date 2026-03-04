@@ -28,11 +28,12 @@ public class Kicks : Crystal
         bounceCount = 0.7f;
         velocity *= 0.9f;
         transform.localScale = new Vector3(Player.Body.FlipDir, 1, 1);
-        transform.localPosition = new Vector3(-0.1f * Player.Body.FlipDir, 0, 0);
-        LeftKickAnchor.transform.localPosition = new Vector3(-0.425f, -1.025f, -0.1f);
-        RightKickAnchor.transform.localPosition = new Vector3(0.425f, -1.025f, 0.1f);
-        LeftKick.ReAnchorOffset = new Vector2(0.25f, -0.05f);
-        RightKick.ReAnchorOffset = new Vector2(-0.35f, -0.05f);
+        transform.localPosition = new Vector3(-0.15f * Player.Body.FlipDir, 0, 0);
+        LeftKickAnchor.transform.localPosition = new Vector3(-0.4325f, -1.05f, -0.1f);
+        RightKickAnchor.transform.localPosition = new Vector3(0.4325f, -1.05f, 0.1f);
+        float directionOffset = 0.025f;
+        LeftKick.ReAnchorOffset = new Vector2(0.325f - directionOffset, -0.05f);
+        RightKick.ReAnchorOffset = new Vector2(-0.325f - directionOffset, -0.05f);
         LeftKickAnchor.SetEulerZ(0);
         RightKickAnchor.SetEulerZ(0);
         LeftKick.Parent = RightKick.Parent = Player;

@@ -56,15 +56,19 @@ public class LegMotion : Animator
         Vector2 circularMotion = new Vector2(walkMotion * WalkMultiplier, 0).RotatedBy(-WalkCounter + AngleOffset * Mathf.Deg2Rad) * walkSpeedMultiplier;
         circularMotion.x *= WalkSizeXMult;
         Vector2 inverse = -circularMotion;
+        float mult = 1.0f;
         if (circularMotion.y < 0)
             circularMotion.y *= 0.1f;
         if (inverse.y < 0)
+        {
+            mult = 0.2f;
             inverse.y *= 0.1f;
+        }
         inverse += ReAnchorOffset * walkSpeedMultiplier;
 
         transform.localPosition = transform.localPosition.SetXY(inverse);
         float angle = WalkTiltAngle;
-        float leftAngle = Mathf.Sin(WalkCounter) * -angle * walkSpeedMultiplier;
+        float leftAngle = Mathf.Sin(WalkCounter) * -angle * walkSpeedMultiplier * mult;
         transform.localEulerAngles = new Vector3(0, 0, leftAngle);
     }
 }

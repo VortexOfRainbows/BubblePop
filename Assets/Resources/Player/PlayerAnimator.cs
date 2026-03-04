@@ -40,6 +40,10 @@ public class PlayerAnimator : MonoBehaviour
         else if (lastVelo.x == 0)
             lastVelo.x = 0.01f;
         lastVelo.y = rb.velocity.y;
+        if(Accessory is Kicks)
+            DropShadow.transform.localPosition = new Vector3(0, -1.25f, 0);
+        else
+            DropShadow.transform.localPosition = new Vector3(0, -0.85f, 0);
     }
     public float BobbingUpdate()
     {
