@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5981291181293688870}
   - component: {fileID: 4414458124059245088}
+  - component: {fileID: 3547930893885086254}
   m_Layer: 0
   m_Name: Left
   m_TagString: Untagged
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: a65d11e9d738ea649855abd916225647, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -84,6 +85,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3547930893885086254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2175608619511575885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708d2680bec4d994d8d1e91f2e40c67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 0}
+  SpeedMult: 0.75
+  WalkCounter: 0
+  AngleOffset: 180
+  WalkSize: 0.5
+  WalkSizeXMult: 0.5
+  WalkTiltAngle: 15
+  SqrtSpeed: 1
+  ResetRate: 0.1
+  FlipWithDirection: 0
 --- !u!1 &2910650093732307641
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +132,7 @@ Transform:
   m_GameObject: {fileID: 2910650093732307641}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: -0.225, y: -1, z: 0}
+  m_LocalPosition: {x: -0.225, y: -1, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -220,8 +243,8 @@ MonoBehaviour:
   hasInit: 0
   LeftKickAnchor: {fileID: 3456073538759404482}
   RightKickAnchor: {fileID: 8618104770766310464}
-  LeftKick: {fileID: 5981291181293688870}
-  RightKick: {fileID: 8985494265906256021}
+  LeftKick: {fileID: 3547930893885086254}
+  RightKick: {fileID: 3864528336060254197}
 --- !u!1 &6221235486405898858
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8985494265906256021}
   - component: {fileID: 4518913173585733892}
+  - component: {fileID: 3864528336060254197}
   m_Layer: 0
   m_Name: Right
   m_TagString: Untagged
@@ -294,7 +318,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: 61d6464d86e7b3043bda222c0962806b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -306,6 +330,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3864528336060254197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6221235486405898858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708d2680bec4d994d8d1e91f2e40c67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 0}
+  SpeedMult: 0.75
+  WalkCounter: 0
+  AngleOffset: 0
+  WalkSize: 0.5
+  WalkSizeXMult: 0.5
+  WalkTiltAngle: 15
+  SqrtSpeed: 1
+  ResetRate: 0.1
+  FlipWithDirection: 0
 --- !u!1 &6945607434279709181
 GameObject:
   m_ObjectHideFlags: 0

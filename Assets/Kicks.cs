@@ -5,7 +5,7 @@ public class Kicks : Crystal
 {
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
-        offset = new Vector2(-0.08f, 1.175f);
+        offset = new Vector2(-0.12f, 1.15f);
         scale = 1.8f;
     }
     public override void InitializeDescription(ref DetailedDescription description)
@@ -22,16 +22,20 @@ public class Kicks : Crystal
         powerPool.Add<BubbleShield>();
     }
     public Transform LeftKickAnchor, RightKickAnchor;
-    public Transform LeftKick, RightKick;
+    public LegMotion LeftKick, RightKick;
     protected override void AnimationUpdate()
     {
         bounceCount = 0.7f;
         velocity *= 0.9f;
         transform.localScale = new Vector3(Player.Body.FlipDir, 1, 1);
-        LeftKickAnchor.transform.localPosition = new Vector3(-0.5f, -1f, 0.1f);
-        RightKickAnchor.transform.localPosition = new Vector3(0.5f, -1, 0.1f);
+        transform.localPosition = new Vector3(-0.075f * Player.Body.FlipDir, 0, 0);
+        LeftKickAnchor.transform.localPosition = new Vector3(-0.45f, -1.04f, -0.1f);
+        RightKickAnchor.transform.localPosition = new Vector3(0.45f, -1.04f, 0.1f);
         LeftKickAnchor.SetEulerZ(0);
         RightKickAnchor.SetEulerZ(0);
+        LeftKick.Parent = RightKick.Parent = Player;
+        LeftKick.Animate();
+        RightKick.Animate();
     }
     private float bounceCount = 0.7f;
     protected override void DeathAnimation()

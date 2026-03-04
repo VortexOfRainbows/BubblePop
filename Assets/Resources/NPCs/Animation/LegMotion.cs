@@ -6,7 +6,8 @@ public abstract class Animator : MonoBehaviour
     public Entity Parent;
     public void Start()
     {
-        Parent.AddAnim(this);
+        if(Parent != null && Parent is not Player)
+            Parent.AddAnim(this);
     }
     public virtual void UpdateAnimation()
     {
@@ -48,6 +49,8 @@ public class LegMotion : Animator
             WalkMultiplier *= rRate;
             WalkMultiplier = Math.Clamp(WalkMultiplier, 0, 1);
         }
+        if (walkSpeedMultiplier == 0)
+            WalkCounter = 0;
 
         Vector2 circularMotion = new Vector2(walkMotion * WalkMultiplier, 0).RotatedBy(-WalkCounter + AngleOffset * Mathf.Deg2Rad) * walkSpeedMultiplier;
         circularMotion.x *= WalkSizeXMult;
