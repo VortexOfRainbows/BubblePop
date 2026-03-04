@@ -31,6 +31,7 @@ public class LegMotion : Animator
     public float ResetRate = 0.0f;
     private float WalkMultiplier = 1.0f;
     public bool FlipWithDirection = false;
+    public Vector2 ReAnchorOffset { get; set; } = Vector2.zero;
     public void Animate()
     {
         float rRate = 1 - ResetRate;
@@ -59,6 +60,7 @@ public class LegMotion : Animator
             circularMotion.y *= 0.1f;
         if (inverse.y < 0)
             inverse.y *= 0.1f;
+        inverse += ReAnchorOffset * walkSpeedMultiplier;
 
         transform.localPosition = transform.localPosition.SetXY(inverse);
         float angle = WalkTiltAngle;

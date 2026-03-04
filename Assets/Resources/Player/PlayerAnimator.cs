@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     public Player MyPlayer;
+    public Transform DropShadow;
     public Vector2 LookPosition
     {
         get
