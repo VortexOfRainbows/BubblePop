@@ -349,12 +349,14 @@ public class NeuronActivation : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Reflection");
-        description.WithDescription("Enemies Y:[struck by beams of light] bounce Y:[beams of light] to nearby enemies up to Y:1 G:(+1 per stack) times, but bounced Y:[beams of light lose 20% damage]");
+        description.WithDescription("Enemies Y:[struck by beams of light] bounce Y:[beams of light] to nearby enemies once; bounced Y:[beams of light gain 20%] G:(+60% per stack) Y:damage");
         description.WithShortDescription("Enemies struck by beams of light fire beams of light at nearby enemies");
     }
     public override void HeldEffect(Player p)
     {
-        p.LightChainReact += Stack;
+        p.LightChainReact = 1;
+        p.LightMultiplierBonusDamage += 0.6f * Stack - 0.4f;
+        //Stack;
     }
 }
 public class BrainBlast : PowerUp

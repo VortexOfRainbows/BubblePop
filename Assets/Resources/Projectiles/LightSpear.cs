@@ -106,7 +106,7 @@ public class LightSpear : Projectile
     {
         if(PlayerOwner.LightChainReact > 0 && !HasFiredLaser && Data[2] > 0 && target is Enemy e)
         {
-            float damage = Damage * 0.8f;
+            float damage = Damage * (1 + PlayerOwner.LightMultiplierBonusDamage);
             if(damage >= 0.5f)
                 Projectile.NewProjectile<LightSpearCaster>(target.transform.position, new Vector2(Utils.RandFloat(-4, 4), 20), damage, PlayerOwner, Data[2]).GetComponent<LightSpearCaster>().ignore = e;
             HasFiredLaser = true;
@@ -183,9 +183,7 @@ public class LightSpearCaster : Projectile
                 SpriteRenderer.color = new Color(1, 1, 1, 1 - percent);
                 transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 0.03f);
                 if (percent >= 1)
-                {
                     Kill();
-                }
             }
         }
         if (timer < speed)

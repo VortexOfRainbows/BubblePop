@@ -97,9 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cffc45cb773c974fa3aaa09b08967af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRender: {fileID: 0}
+  spriteRender: {fileID: 8973945380139369154}
   velocity: {x: 0, y: 0}
   hasInit: 0
   AttackLeft: 0
   AttackRight: 0
   WandEulerAngles: {x: 0, y: 0, z: 0}
+  recoil: {x: 0, y: 0}
+  bonusPointDirOffset: 0

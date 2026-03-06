@@ -38,12 +38,12 @@ Less Important (mostly non-issues or complete already), but in consideration:
 6. (MAYBE) Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 
 Current Task List:
-1. Reflection should stack differently (do not scale bounces, give it a damage multiplier), Rainbow flower should probably be reworked entirely
+1. Rainbow flower should probably be reworked entirely
 
 
 Done: 
 
-3/2/26 to 3/4/26
+3/2/26 to 3/6/26
 1. Reduced randomness/variance of Bubble Wand bubble velocity
 2. Bubble Wand spread reduced 
 3. Reduced attack cooldown of both bubble wand attacks 0.2 -> 0.1s
@@ -52,9 +52,10 @@ Done:
 6. Controller aim wheel now moves 4x faster
 7. Fix issue where spritebatch was not working after restarting while a spritebatch all was already in queue
 8. Fix issue where Electrodynamics Grimoire was closing in multiplayer for both players when either player closed the book
-9. WIP Fizzy Cap, Kicks Animation 
+9. WIP Fizzy Cap, Kicks + Animation, Cola + Animation + Attacks
 	1. Need: Death animations, adjustments to walk animation
 10. Shard of Glass redesign sprite to Glass Knife, and chance to take additional damage 25% -> 50%
+11. Reflection now longer stacks completely crazily, instead increasing bounce damage one stack rather than bounce count
 
 
 -- A2.21 (NO changelog yet) --

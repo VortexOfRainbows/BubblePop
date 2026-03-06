@@ -74,6 +74,7 @@ public partial class Player : Entity
     public float TrailOfThoughtsRecoverySpeed => AbilityRecoverySpeed;
     public float AbilityRecoverySpeed = 1.0f, AbilityRecoverySpeedMult = 1.0f;
     public float TrueMoveModifier = 1.0f;
+    public float LightMultiplierBonusDamage = 0.0f;
     public float MoveSpeedMod 
     {   
         get
@@ -167,8 +168,7 @@ public partial class Player : Entity
         ZapRadiusMult = DamageMultiplier = 1.0f;
         Electroluminescence = 0;
         AllowedThunderBalls = 3;
-
-        if(!HasResearchNotes)
+        if (!HasResearchNotes)
         {
             ResearchNoteBonuses = 0;
             ResearchNoteKillCounter = 0;
@@ -192,6 +192,7 @@ public partial class Player : Entity
         MaxTokens = 4;
         BatterUp = PiratesBooty = Eureka = BlackMarketDelivery = RainbowFlowers = 0;
         GlassShards = 0;
+        LightMultiplierBonusDamage = 0.0f;
     }
     private void UpdatePowerUps()
     {
