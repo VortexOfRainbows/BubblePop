@@ -32,8 +32,8 @@ public class FizzyUnlock : UnlockCondition
 {
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Kickflip");
-        description.WithDescription("Starts unlocked");
+        description.WithName("Kickflip (WIP)");
+        description.WithDescription("WIP");
     }
     protected override bool TryUnlockCondition => true;
 }

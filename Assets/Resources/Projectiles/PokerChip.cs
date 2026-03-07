@@ -65,11 +65,16 @@ public class PokerChip : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        if (target.Life <= 0 && PlayerOwner.DoubleDownChip > 0)
+        if (target.Life <= 0)
         {
-            int bonusCoins = (int)(-target.Life + 0.5f);
-            bonusCoins = Mathf.Min(bonusCoins, PlayerOwner.DoubleDownChip * 3 + 2);
-            CoinManager.SpawnCoin(transform.position, bonusCoins, 0.1f);
+            if (PlayerOwner.DoubleDownChip > 0)
+            {
+                int bonusCoins = (int)(-target.Life + 0.5f);
+                bonusCoins = Mathf.Min(bonusCoins, PlayerOwner.DoubleDownChip * 3 + 2);
+                CoinManager.SpawnCoin(transform.position, bonusCoins, 0.1f);
+            }
+            if(PlayerOwner.Weapon is SlotMachineWeapon)
+                CoinManager.SpawnToken(target.transform.position, 0.1f);
         }
     }
 }

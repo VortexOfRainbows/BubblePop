@@ -143,6 +143,7 @@ public partial class Player : Entity
     public int ChoiceContract = 0;
     public int RainbowFlowers = 0;
     public int GlassShards = 0;
+    public int BountyHunter = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -193,6 +194,7 @@ public partial class Player : Entity
         BatterUp = PiratesBooty = Eureka = BlackMarketDelivery = RainbowFlowers = 0;
         GlassShards = 0;
         LightMultiplierBonusDamage = 0.0f;
+        BountyHunter = 0;
     }
     private void UpdatePowerUps()
     {

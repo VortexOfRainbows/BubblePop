@@ -772,3 +772,21 @@ public class GlassShard : PowerUp
     }
     public override bool IsBlackMarket() => true;
 }
+public class BountyHunter : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Bounty Hunter");
+        description.WithDescription($"Y:[Skull enemies] have a Y:10% G:(+5% per stack) chance to drop a Y:[Pirate chest, a key, 5 gems, or 100 coins]");
+        description.WithShortDescription("Skull enemies have a chance to drop extra loot");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BountyHunter += Stack;
+    }
+    public override bool IsBlackMarket() => true;
+}

@@ -35,13 +35,16 @@ Less Important (mostly non-issues or complete already), but in consideration:
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 4. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
 5. Normalize player customization layering (not super important but part of a future task)
-6. (MAYBE) Gacha slots need a debuff instead of dropping coins outright (and for tokens too! As this would fix the problem where it competes for real-estate with chips, and would allow players to more freely use the slot machine on enemies that survive a hit of the melee!)
 
 Current Task List:
 N/A
 
 
 Done: 
+
+
+-- A2.22 (NO changelog yet) --
+
 
 3/2/26 to 3/6/26
 1. Reduced randomness/variance of Bubble Wand bubble velocity
@@ -53,11 +56,13 @@ Done:
 7. Fix issue where spritebatch was not working after restarting while a spritebatch all was already in queue
 8. Fix issue where Electrodynamics Grimoire was closing in multiplayer for both players when either player closed the book
 9. WIP Fizzy Cap, Kicks + Animation, Cola + Animation + Attacks
-	1. Need: Death animations, adjustments to walk animation
+	1. Need: Death animations, adjustments to walk animation, powers, ability, secondary attack
 10. Shard of Glass redesign sprite to Glass Knife, and chance to take additional damage 25% -> 50%
 11. Reflection now longer stacks completely crazily, instead increasing bounce damage one stack rather than bounce count
 12. The cost of rainbow flower is no longer arbitrarily increased (normalized price)
 	1. However, it no longer replaces powers in the pool. Instead it just gives a random amount of rainbow shards.
+13. Enemies killed by Gachapon Chips while using a slot machine weapon will now drop tokens
+14. Add bounty hunter power
 
 
 -- A2.21 (NO changelog yet) --
