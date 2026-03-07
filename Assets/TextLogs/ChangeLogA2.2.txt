@@ -39,3 +39,26 @@ Dev Build 2.21 (tentative version number)
 
 Fixes:
 1. Fix bug where new UI interface did not work on all resolutions
+
+
+Dev Build 2.22 (tentative version number)
+
+New:
+1. Add a new power
+
+Changes:
+1. (BUFF) Reduced randomness/variance and spread of Bubble Wand bubble velocity
+2. (BUFF) Reduced attack cooldown of both bubble wand attacks 0.2 -> 0.1s
+3. (BUFF) Bubble Wand big bubble damage lost on pierce 20% -> 10%, velocity lost 20% -> 15%
+4. (BUFF) Bubble Gun cooldown of primary reduced 0.14s -> 0.1s
+5. (BUFF) Controller aim wheel now moves 4x faster
+6. (NERF) Shard of Glass redesign sprite to Glass Knife, and chance to take additional damage 25% -> 50%
+7. (REWORK) Reflection no longer stacks additional bounces, instead increasing bounce damage on stack
+8. (BUFF) The cost of rainbow flower is no longer arbitrarily increased (normalized price)
+    1. (NERF) However, it no longer replaces powers in the pool. Instead it just gives a random amount of rainbow shards.
+    2. (NERF) Rainbow flower shard replication cost increased to 3
+9. (BUFF) Enemies killed by Gachapon Chips while using a slot machine weapon will now drop tokens
+
+Fixes:
+1. Fix issue where spritebatch was not working after restarting while a spritebatch all was already in queue
+2. Fix issue where Electrodynamics Grimoire was closing in multiplayer for both players when either player closed the book

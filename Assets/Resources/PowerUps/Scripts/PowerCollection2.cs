@@ -714,7 +714,7 @@ public class RainbowFlower : PowerUp
     }
     public override int ShardReplicationCost(int stackSize = 1)
     {
-        return stackSize;
+        return stackSize * 3;
     }
 }
 public class QuantumCake : PowerUp

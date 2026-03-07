@@ -1,5 +1,3 @@
-using System.Data.Common;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 public class SmallBubble : Projectile
 {

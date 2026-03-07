@@ -43,7 +43,7 @@ N/A
 Done: 
 
 
--- A2.22 (NO changelog yet) --
+-- A2.22 --
 
 
 3/2/26 to 3/6/26
@@ -61,11 +61,12 @@ Done:
 11. Reflection now longer stacks completely crazily, instead increasing bounce damage one stack rather than bounce count
 12. The cost of rainbow flower is no longer arbitrarily increased (normalized price)
 	1. However, it no longer replaces powers in the pool. Instead it just gives a random amount of rainbow shards.
+	2. Rainbow flower shard replication cost increased to 3
 13. Enemies killed by Gachapon Chips while using a slot machine weapon will now drop tokens
 14. Add bounty hunter power
 
 
--- A2.21 (NO changelog yet) --
+-- A2.21 --
 
 
 2/27/26
