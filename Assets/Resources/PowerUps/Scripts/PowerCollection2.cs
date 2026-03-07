@@ -692,18 +692,25 @@ public class RainbowFlower : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription($"Y:5% G:(+5% per stack) Y:chance to replace powers with {this.UnlockedName} \nDrops a Y:[Rainbow Shard] when Y:dissolved in a Y:Crucible \nY:[Rainbow Shards] can be used to Y:duplicate any Y:power you have");
+        //Y:5% G:(+5% per stack) Y:chance to replace powers with {this.UnlockedName} \n
+        description.WithDescription($"Drops a Y:[Rainbow Shard] when Y:dissolved in a Y:Crucible, with a Y:50% chance for an Y:[additional shard, rolled until failure] \nY:[Rainbow Shards] can be used to Y:duplicate any Y:power you have");
         description.WithShortDescription("Power Propagation");
     }
     public override void HeldEffect(Player p)
     {
-        p.RainbowFlowers += Stack;
+        //p.RainbowFlowers += Stack;
     }
     public override bool IsBlackMarket() => true;
-    public override int Cost => 100;
     public override int CrucibleGems(bool dissolve = false)
     {
-        return dissolve ? -1 : 5;
+        if(dissolve)
+        {
+            int count = 1;
+            while (Utils.RollWithLuck(0.5f))
+                ++count;
+            return -count;
+        }
+        return 5;
     }
     public override int ShardReplicationCost(int stackSize = 1)
     {

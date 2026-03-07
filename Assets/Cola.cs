@@ -34,6 +34,10 @@ public class Cola : Weapon
     {
         WandUpdate();
     }
+    public override void Init()
+    {
+        transform.localScale = Vector3.zero;
+    }
     private float AttackCooldown => Mathf.Max(20, 55f - Player.AttackSpeedModifier * 5);
     private readonly float RightAttackSpeed = 125;
     public override void StartAttack(bool alternate)
