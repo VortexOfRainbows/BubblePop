@@ -53,7 +53,7 @@ MonoBehaviour:
   PointDirOffset: 0
   MoveOffset: 0
   DashOffset: 0
-  IsMainPlayerAnimator: 1
+  RealPlayer: 1
   squash: 1
   Bobbing: 1
   rb: {fileID: 3216590746651522342}
@@ -163,6 +163,7 @@ MonoBehaviour:
   AbilityRecoverySpeed: 1
   AbilityRecoverySpeedMult: 1
   TrueMoveModifier: 1
+  LightMultiplierBonusDamage: 0
   BlueChipChance: 0
   HomingRange: 0
   HomingRangeSqrt: 0
@@ -208,6 +209,7 @@ MonoBehaviour:
   ChoiceContract: 0
   RainbowFlowers: 0
   GlassShards: 0
+  BountyHunter: 0
 --- !u!50 &3216590746651522342
 Rigidbody2D:
   serializedVersion: 4

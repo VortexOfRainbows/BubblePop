@@ -103,7 +103,7 @@ public class Cola : Weapon
                     * speed + awayFromWand * Utils.RandFloat(2, 4) + Utils.RandCircle(2f);
                 Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2,
                    shotDirection, 1, Player);
-                recoil -= awayFromWand;
+                recoil -= awayFromWand * 0.8f;
             }
             float percent = AttackLeft / (50f + Player.ShotgunPower * 10f);
         }
@@ -129,7 +129,8 @@ public class Cola : Weapon
             //if (Player.Control.SecondaryAttackHold)
             if (--AttackRight <= 0)
             {
-                Projectile.NewProjectile<ColaProj>(transform.position, toMouse.normalized * 22, 222, Player, Player.Control.MousePosition.x, Player.Control.MousePosition.y);
+                Vector2 velo = toMouse.normalized * 20;
+                Projectile.NewProjectile<ColaProj>(transform.position, velo, 222, Player, Player.Control.MousePosition.x, Player.Control.MousePosition.y, dir);
                 transform.localScale = Vector3.zero;
             }
             spriteRender.enabled = true;
@@ -148,6 +149,6 @@ public class Cola : Weapon
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.18f);
         transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
         AttackLeft--;
-        recoil *= 0.93f;
+        recoil *= 0.925f;
     }
 }

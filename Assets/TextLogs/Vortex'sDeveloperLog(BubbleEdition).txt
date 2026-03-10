@@ -25,7 +25,7 @@ Need to do:
 9. Compendium TODO:
 	1. Make equipment power pool contributions appear in the compendium
 	2. Make powers show which pools they belong to
-	3. Make blurbs appear in the equipment page
+	3. Make blurbs appear in the equipmrfent page
 	4. Add flavortext for all compendium elements
 
 Less Important (mostly non-issues or complete already), but in consideration:
@@ -37,10 +37,16 @@ Less Important (mostly non-issues or complete already), but in consideration:
 5. Normalize player customization layering (not super important but part of a future task)
 
 Current Task List:
-N/A
+1. Multiplayer: bubble shield may not be refreshing on repeated pickup
 
 
 Done: 
+
+
+3/10/26
+1. Fix bug where in multiplayer only one player's dash is used for hat tipping visual
+2. MORE WIP Cola proj
+	1. Needs: Secondary attack speed scaling should have some sort of post-processing curve
 
 
 -- A2.22 --

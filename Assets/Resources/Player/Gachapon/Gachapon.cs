@@ -182,7 +182,7 @@ public class Gachapon : Body
     {
         Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
         Vector2 toMouse2 = toMouse.normalized;
-        if (p.IsMainPlayerAnimator)
+        if (p.RealPlayer)
         {
             if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && (Player.Weapon.IsAttacking() || Player.Weapon is BubbleGun || Player.Weapon is Book))
                 FaceR.sprite = altFaces[1];

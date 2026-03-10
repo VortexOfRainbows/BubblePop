@@ -8,7 +8,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         get
         {
-            if (IsMainPlayerAnimator && MyPlayer != null && MyPlayer.Control != null)
+            if (RealPlayer && MyPlayer != null && MyPlayer.Control != null)
                 return MyPlayer.Control.MousePosition;
             Player p = Player.FindClosest(transform.position, out _, out _);
             return p == null ? Utils.MouseWorld : p.Position;
@@ -17,7 +17,7 @@ public class PlayerAnimator : MonoBehaviour
     public float PointDirOffset;
     public float MoveOffset;
     public float DashOffset;
-    public bool IsMainPlayerAnimator = false;
+    public bool RealPlayer = false;
     public float squash = 1f;
     public float Bobbing = 1f;
     public Rigidbody2D rb;
@@ -49,7 +49,7 @@ public class PlayerAnimator : MonoBehaviour
     public float BobbingUpdate()
     {
         float abs = Mathf.Sqrt(Mathf.Abs(rb.velocity.magnitude)) * 0.5f;
-        walkTimer += abs + (IsMainPlayerAnimator ? 1 : 0.5f);
+        walkTimer += abs + (RealPlayer ? 1 : 0.5f);
         walkTimer %= 100f;
         float sin = Mathf.Sin(walkTimer / 50f * Mathf.PI);
         float bobbing = 0.925f + 0.075f * sin;
@@ -57,7 +57,7 @@ public class PlayerAnimator : MonoBehaviour
     }
     public float MoveDashRotation()
     {
-        float bonusR = Body is Bubblemancer && IsMainPlayerAnimator ? 1f * Mathf.Max(0, Player.Instance.abilityTimer / Player.Instance.AbilityCD) : 0;
+        float bonusR = Body is Bubblemancer && RealPlayer ? 1f * Mathf.Max(0, MyPlayer.abilityTimer / MyPlayer.AbilityCD) : 0;
         float r = new Vector2(Mathf.Abs(lastVelo.x), lastVelo.y * Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + bonusR);
         return r;
     }

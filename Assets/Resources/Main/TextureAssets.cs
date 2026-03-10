@@ -17,6 +17,7 @@ public partial class Main : MonoBehaviour
         public static Sprite GradientLine;
         public static Material InfectorShader;
         public static Material AdditiveShader;
+        public static Material AlphaShader;
         public static Sprite T3ChestUma, T3ChestUmaOpen, T3Chest, T3ChestOpen, T2Chest, T2ChestOpen, T1Chest, T1ChestOpen, BlackMarketCrate;
         public static Sprite[] SlotSymbol = new Sprite[4];
         public static Sprite GoldProj, CoinProj, GemProj, TokenProj, FireProj;
@@ -38,6 +39,7 @@ public partial class Main : MonoBehaviour
             Shadow = Resources.Load<Sprite>("Shadow");
             InfectorShader = Resources.Load<Material>("Materials/InfectionShader/Infection");
             AdditiveShader = Resources.Load<Material>("Materials/Additive");
+            AlphaShader = Resources.Load<Material>("Materials/Alpha");
 
             T3ChestUma = Resources.Load<Sprite>("Chests/T3ChestClosed2");
             T3ChestUmaOpen = Resources.Load<Sprite>("Chests/T3ChestOpen2");
