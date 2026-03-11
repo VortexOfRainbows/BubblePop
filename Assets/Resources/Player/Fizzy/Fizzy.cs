@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Fizzy : Body
 {
+    public GameObject Skateboard;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     public override void Init()
     {
@@ -22,7 +23,7 @@ public class Fizzy : Body
     {
         if (Player.Control.Ability && !Player.Control.LastAbility && moveSpeed.magnitude > 0 && Player.AbilityReady)
         {
-
+            Skateboard.SetActive(!Skateboard.activeSelf);
         }
     }
     public override void FaceUpdate()
