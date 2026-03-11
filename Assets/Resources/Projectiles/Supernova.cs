@@ -15,10 +15,7 @@ public class SupernovaProj : Projectile
         transform.localScale *= 0.1f;
         Friendly = false;
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return true;
-    }
+    public override bool? CanBeAffectedByHoming() => true;
     public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
     {
         return base.DoHomingBehavior(target, norm, scale);
@@ -120,10 +117,7 @@ public class SupernovaExplode : Projectile
             Kill();
         }
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return false;
-    }
+    public override bool? CanBeAffectedByHoming() => false;
     public override void OnHitTarget(Entity target)
     {
         OnHitByStar(target);

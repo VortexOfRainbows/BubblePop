@@ -365,7 +365,7 @@ public class ThunderBubble : Projectile
                 Damage += 0.1f;
         }
     }
-    public override bool CanBeAffectedByHoming()
+    public override bool? CanBeAffectedByHoming()
     {
         if (PlayerOwner.Weapon is not Book book)
             return false;

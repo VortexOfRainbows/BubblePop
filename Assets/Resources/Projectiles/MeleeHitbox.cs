@@ -57,8 +57,5 @@ public class MeleeHitbox : Projectile
     {
 
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return false;
-    }
+    public override bool? CanBeAffectedByHoming() => false;
 }

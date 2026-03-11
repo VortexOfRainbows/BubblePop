@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ColaProj : Projectile
@@ -35,7 +37,7 @@ public class ColaProj : Projectile
         }
 
         float dist = startPos.Distance(Destination);
-        float timeNeeded = 1 + dist / speed;
+        float timeNeeded = 0.9f + dist / speed;
         float percent = timer / 100f;
         timer += speedMult / timeNeeded;
         if (percent > 1)
@@ -59,12 +61,81 @@ public class ColaProj : Projectile
     }
     public override void OnKill()
     {
-        int c = 25;
+        float exitSpeed = 8;
+        int projCount = 8;
+        int c = projCount * 5;
         for (int i = 0; i < c; i++)
         {
-            Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
+            Vector2 circular = new Vector2(Utils.RandFloat(0, exitSpeed), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f), 
+                Utils.RandFloat(0.33f, .44f), circular * Utils.RandFloat(2, 4), 4f, 
+                0.9f, 0, Player.ProjectileColor);
         }
         AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 1.1f);
+        for(int i = 0; i < projCount; ++i)
+        {
+            float p = (float)i / projCount;
+            Vector2 direction = new Vector2(exitSpeed, 0).RotatedBy(p * Mathf.PI * 2);
+            Projectile.NewProjectile<SmallBubble>(Destination, 
+                direction, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
+        }
+        Projectile.NewProjectile<ColaExplode>(Destination, Vector2.zero, Damage, PlayerOwner, exitSpeed / 8f);
+    }
+    public override bool? CanBeAffectedByHoming() => true;
+    public override Vector3 HomingStartPosition() => Destination;
+    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float range)
+    {
+        Vector2 target2 = Vector2.Lerp(Destination, target.transform.position, 0.025f + PlayerOwner.HomingRangeSqrt * 0.05f);
+        Data[0] = target2.x;
+        Data[1] = target2.y;
+        return false;
+    }
+}
+public class ColaExplode : SupernovaExplode
+{
+    private Color ColorVar;
+    public override void Init()
+    {
+        ColorVar = Player.ProjectileColor;
+        SpriteRenderer.sprite = Main.TextureAssets.Shadow;
+        SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
+        SpriteRendererGlow.color = SpriteRenderer.color = Color.clear;
+        SpriteRenderer.material = SpriteRendererGlow.material;
+        Penetrate = -1;
+        transform.localScale *= 1.2f;
+        cmp.c2D.radius *= 2.0f * Data1;
+        Friendly = true;
+        immunityFrames = 100;
+    }
+    public override void AI()
+    {
+        if (runOnce)
+        {
+            int c = 30;
+            for (int i = 0; i < c; ++i)
+            {
+                float r2 = Utils.RandFloat(0.4f, 1.6f);
+                Vector2 circular = new Vector2(r2, 0).RotatedBy(i / (float)(0.5f * c) * Mathf.PI);
+                ParticleManager.NewParticle((Vector2)transform.position, 0.56f - r2 * 0.1f, circular * 10.2f, 2, Utils.RandFloat(0.4f, 0.9f), 5, ColorVar);
+            }
+            runOnce = false;
+        }
+        timer++;
+        float percent = timer / 50f;
+        float sqrtP = Mathf.Sqrt(percent);
+        float sin = MathF.Sin(sqrtP * MathF.PI);
+        Color targetColor = Color.Lerp(ColorVar, Color.clear, percent);
+        SpriteRenderer.color = SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, targetColor, 0.3f);
+        transform.localScale = Vector2.one * (2.1f + sqrtP + 0.5f * sin);
+        if (percent > 0.5f)
+            Friendly = false;
+        if (percent > 1)
+        {
+            Kill();
+        }
+    }
+    public override void OnHitTarget(Entity target)
+    {
+        //do not do the original thing
     }
 }

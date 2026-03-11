@@ -38,8 +38,8 @@ public class Cola : Weapon
     {
         transform.localScale = Vector3.zero;
     }
-    private float AttackCooldown => Mathf.Max(20, 55f - Player.AttackSpeedModifier * 5);
-    private readonly float RightAttackSpeed = 125;
+    private float AttackCooldown => Mathf.Max(20, 52f - Player.AttackSpeedModifier * 2);
+    private float RightAttackSpeed => 70 + Player.SecondaryAttackSpeedModifier * 50;
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft < -AttackCooldown && AttackRight < -AttackCooldown)
@@ -129,8 +129,12 @@ public class Cola : Weapon
             //if (Player.Control.SecondaryAttackHold)
             if (--AttackRight <= 0)
             {
-                Vector2 velo = toMouse.normalized * 20;
-                Projectile.NewProjectile<ColaProj>(transform.position, velo, 222, Player, Player.Control.MousePosition.x, Player.Control.MousePosition.y, dir);
+                Vector2 velo = toMouse.normalized;
+                float dist = toMouse.magnitude;
+                dist = Mathf.Clamp(dist, 7, 16);
+                Vector2 targetPosition = (Vector2)p.transform.position + velo * dist;
+                int explodeDamage = 3;
+                Projectile.NewProjectile<ColaProj>(transform.position, velo * 24, explodeDamage, Player, targetPosition.x, targetPosition.y, dir);
                 transform.localScale = Vector3.zero;
             }
             spriteRender.enabled = true;

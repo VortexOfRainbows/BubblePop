@@ -139,7 +139,8 @@ public class Projectile : MonoBehaviour
     public void FixedUpdate()
     {
         AI();
-        if(CanBeAffectedByHoming() && (Friendly || this is SupernovaProj) && PlayerOwner.HomingRange > 0)
+        bool? homing = CanBeAffectedByHoming();
+        if (((!homing.HasValue && Friendly) || (homing.HasValue && CanBeAffectedByHoming().Value)) && PlayerOwner.HomingRange > 0)
             HomingBehavior();
         if(!World.WithinBorders(transform.position))
             if(OnInsideTile())
@@ -264,17 +265,19 @@ public class Projectile : MonoBehaviour
         int blu = (int)(center + width);
         return new Color(red / 255f, grn / 255f, blu / 255f);
     }
-    public virtual bool CanBeAffectedByHoming()
-    {
-        return true;
-    }
+    /// <summary>
+    /// Return false to not be affected by homing, null to be effected only when friendly, true to be affected regardless
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool? CanBeAffectedByHoming() => null;
+    public virtual Vector3 HomingStartPosition() => transform.position;
     public int homingCounter = 0;
     public void HomingBehavior()
     {
         if(homingCounter++ % 4 == 0)
         {
             float range = PlayerOwner.HomingRange;
-            Enemy target = Enemy.FindClosest(transform.position, range, out Vector2 norm2, true);
+            Enemy target = Enemy.FindClosest(HomingStartPosition(), range, out Vector2 norm2, true);
             if (target != null && DoHomingBehavior(target, norm2, range))
             {
                 float currentSpeed = RB.velocity.magnitude + PlayerOwner.HomingRangeSqrt * 0.225f;
@@ -470,8 +473,5 @@ public class SnakeLightning : Projectile
         if (timer > 40)
             Kill();
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return false;
-    }
+    public override bool? CanBeAffectedByHoming() => false;
 }

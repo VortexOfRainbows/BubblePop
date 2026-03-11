@@ -16,10 +16,7 @@ public class PaperPlane : Projectile
         Friendly = true;
         SpriteRendererGlow.gameObject.SetActive(false);
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return true;
-    }
+    public override bool? CanBeAffectedByHoming() => null;
     public bool Recalled = false;
     public override void AI()
     {
@@ -126,10 +123,7 @@ public class LatentCharge : Projectile
         transform.localScale *= 0.1f;
         Friendly = false;
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return true;
-    }
+    public override bool? CanBeAffectedByHoming() => null;
     public bool Recalled = false;
     public override void AI()
     {

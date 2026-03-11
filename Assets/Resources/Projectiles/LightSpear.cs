@@ -11,10 +11,7 @@ public class LightSpear : Projectile
     {
         return false;
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return false;
-    }
+    public override bool? CanBeAffectedByHoming() => false;
     public override void Init()
     {
         transform.localScale = Vector3.one * 0.5f;
@@ -124,10 +121,7 @@ public class LightSpearCaster : Projectile
     {
         return false;
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return false;
-    }
+    public override bool? CanBeAffectedByHoming() => false;
     public Enemy ignore;
     public float alphaScale = 0.2f;
     public override void Init()
@@ -211,10 +205,7 @@ public class ThunderLightSpearCaster : Projectile
     {
         return false;
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return false;
-    }
+    public override bool? CanBeAffectedByHoming() => false;
     public SpecialTrail MyTrail;
     public Transform FakeParent;
     public float alphaScale = 0.2f;

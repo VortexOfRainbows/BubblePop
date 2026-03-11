@@ -1,6 +1,4 @@
-using System.Runtime.InteropServices;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class GachaProj : Projectile
 {
@@ -224,10 +222,7 @@ public class GachaTokenProj : Projectile
     {
 
     }
-    public override bool CanBeAffectedByHoming()
-    {
-        return true;
-    }
+    public override bool? CanBeAffectedByHoming() => null;
     public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
     {
         Vector2 target2 = Vector2.Lerp(new Vector2(Data1, Data2), target.transform.position, 0.025f + PlayerOwner.HomingRangeSqrt * 0.05f);
