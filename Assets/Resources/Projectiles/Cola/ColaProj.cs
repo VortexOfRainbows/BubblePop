@@ -37,7 +37,7 @@ public class ColaProj : Projectile
         }
 
         float dist = startPos.Distance(Destination);
-        float timeNeeded = 0.9f + dist / speed;
+        float timeNeeded = 0.8f + dist / speed;
         float percent = timer / 100f;
         timer += speedMult / timeNeeded;
         if (percent > 1)
@@ -90,6 +90,8 @@ public class ColaProj : Projectile
         Data[1] = target2.y;
         return false;
     }
+    public override bool OnInsideTile() => false;
+    public override bool OnTileCollide(Collider2D collision) => false;
 }
 public class ColaExplode : SupernovaExplode
 {

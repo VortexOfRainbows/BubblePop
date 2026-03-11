@@ -34,6 +34,15 @@ public class Cola : Weapon
     {
         WandUpdate();
     }
+    protected override void DeathAnimation()
+    {
+        if(transform.localScale.x > 0.01f)
+        {
+            transform.localScale = Vector3.zero;
+            Vector2 endpos = Player.Position + Utils.RandCircle(6f);
+            Projectile.NewProjectile<ColaProj>(transform.position, Vector2.up * 400, 3, Player, endpos.x, endpos.y, p.Direction);
+        }
+    }
     public override void Init()
     {
         transform.localScale = Vector3.zero;
@@ -62,21 +71,13 @@ public class Cola : Weapon
     public float bonusPointDirOffset = 0;
     private void WandUpdate()
     {
-        //if(Input.GetKeyDown(KeyCode.V))
-        //{
-        //    DamagePower++;
-        //    ShotgunPower++;
-        //}
-
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.transform.position;
         float dir = Mathf.Sign(toMouse.x);
         float bodyDir = Mathf.Sign(p.rb.velocity.x);
         Vector2 attemptedPosition = new Vector2(1.1f, -0.25f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.velocity.normalized * 0.1f;
         attemptedPosition.x *= 1.25f;
         attemptedPosition *= 1.25f;
-        //attemptedPosition.y -= 1.5f;
         Vector2 clampedMousePos = toMouse.magnitude < 3 ? (Vector2)p.transform.position + toMouse.normalized * 3 : Player.Control.MousePosition;
-        //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
 
         p.PointDirOffset = 0;
         p.MoveOffset = -5 * bodyDir * p.squash;
@@ -125,8 +126,6 @@ public class Cola : Weapon
             float d = 80 * sin2 * dir;
             attemptedPosition = attemptedPosition.RotatedBy(Mathf.Deg2Rad * d);
             bonusPointDirOffset -= d;
-            //attemptedPosition += awayFromWand * sin2 * sin2 * 3 * percent;
-            //if (Player.Control.SecondaryAttackHold)
             if (--AttackRight <= 0)
             {
                 Vector2 velo = toMouse.normalized;

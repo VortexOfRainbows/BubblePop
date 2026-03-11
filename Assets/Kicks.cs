@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class Kicks : Accessory
 {
+    public override void Init()
+    {
+        velocities = new Vector2[] { Vector2.zero, Vector2.zero };
+        base.Init();
+    }
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         offset = new Vector2(-0.12f, 1.15f);
@@ -41,27 +46,37 @@ public class Kicks : Accessory
         RightKick.Animate();
     }
     private float bounceCount = 0.7f;
+    public GameObject[] Shoes => new GameObject[] { LeftKick.gameObject, RightKick.gameObject };
+    private Vector2[] velocities;
     protected override void DeathAnimation()
     {
-        float toBody = transform.localPosition.y - p.Body.transform.localPosition.y;
-        if (p.DeathKillTimer <= 0)
+        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, 0, 0.03f));
+        int c = Shoes.Length;
+        for (int i = 0; i < c; ++i)
         {
-            velocity *= 0.1f;
-            velocity.x += Utils.RandFloat(-1, 1) * 0.05f;
-            velocity.y += 0.05f;
+            Transform t = Shoes[i].transform;
+            float z = t.localPosition.z;
+            float toBody = t.localPosition.y - p.Body.transform.localPosition.y;
+            if (p.DeathKillTimer <= 0)
+            {
+                velocities[i] *= 0.0f;
+                velocities[i].y += 0.05f * Utils.RandFloat(1f, 2f);
+                velocities[i].x += Utils.RandFloat(-0.04f, 0.04f);
+            }
+            if (toBody < -0.2f)
+            {
+                velocities[i] *= -bounceCount;
+                velocities[i] += Utils.RandCircle(0.05f) * Mathf.Abs(bounceCount);
+                t.localPosition = (Vector2)t.localPosition + new Vector2(0, -0.2f - toBody);
+                bounceCount *= 0.95f;
+            }
+            else
+            {
+                velocities[i].x *= 0.998f;
+                velocities[i].y -= 0.005f;
+            }
+            t.localPosition = (Vector2)t.localPosition + velocities[i];
+            t.localPosition = new Vector3(t.localPosition.x, t.localPosition.y, z);
         }
-        float bounceArea = -0.2f;
-        if (toBody < bounceArea)
-        {
-            velocity *= -bounceCount;
-            transform.localPosition = (Vector2)transform.localPosition + new Vector2(0, bounceArea - toBody);
-            bounceCount *= 0.5f;
-        }
-        else
-        {
-            velocity.x *= 0.998f;
-            velocity.y -= 0.005f;
-        }
-        transform.localPosition = (Vector2)transform.localPosition + velocity;
     }
 }
