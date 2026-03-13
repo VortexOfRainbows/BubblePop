@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Fizzy : Body
 {
-    public static readonly string[] CoolWords = new string[] { "COOL", "RADICAL", "EPIC", "RAD", "SWAG", "GNARLY" };
+    public static readonly string[] CoolWords = new string[] { "COOL", "RADICAL", "EPIC", "RAD", "SWAG", "GNARLY", "KICKFLIP" };
+    public static readonly string[] CoolWords2 = new string[] { "DISMOUNT", "RADICAL", "SUPER", "RAD", "RELEASE", "KICKFLIP" };
     public GameObject Skateboard;
     public Transform Wheel1, Wheel2, Board;
     public bool OnSkateboard { get; private set; } = false;
@@ -25,7 +27,12 @@ public class Fizzy : Body
     {
         description.WithName("Fizzy").WithDescription("He's a pretty cool bubble");
     }
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Ability, "Do a Y:[Cool Kickflip] and Y:mount a Y:Skateboard"));
+    }
     public float SkateboardPercent => SkateboardMountCounter / SkateboardMountTime;
+    public float starTimer = 1.0f;
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
         if (Player.Control.Ability && !Player.Control.LastAbility && (moveSpeed.magnitude > 0 || playerVelo.magnitude > 1) && Player.AbilityReady)
@@ -61,7 +68,24 @@ public class Fizzy : Body
         float speed = playerVelo.magnitude * 0.9f * -p.Direction;
         Wheel1.transform.SetLocalEulerZ(Wheel1.transform.localEulerAngles.z + speed);
         Wheel2.transform.SetLocalEulerZ(Wheel2.transform.localEulerAngles.z + speed);
-        Board.transform.localEulerAngles = new Vector3((1 - percent) * 540, 0, 0);
+        Vector2 norm = playerVelo.normalized;
+        Board.transform.localEulerAngles = new Vector3((1 - percent) * 540, 0, norm.x * 5 + norm.y * 5);
+
+        if(OnSkateboard)
+        {
+            int trail = Player.DashSparkle;
+            if (trail > 0)
+            {
+                starTimer -= Time.fixedDeltaTime;
+                while (starTimer <= 0)
+                {
+                    starTimer += 4f / (Player.PassiveAttackSpeedModifier * (trail + 3f)); //4/4, 4/5, 4/6, 4/7, etc
+                    Vector2 circular = (Utils.RandCircle(1.3f) - Player.RB.velocity).normalized;
+                    Vector2 randPos = (Vector2)transform.position + Utils.RandCircleEdge(3);
+                    Projectile.NewProjectile<StarProj>((Vector2)Skateboard.transform.position + circular * 2 + new Vector2(0, 0.3f), circular * 8, 1, Player, randPos.x, randPos.y);
+                }
+            }
+        }
     }
     public void SwapSkateboard()
     {
@@ -74,6 +98,8 @@ public class Fizzy : Body
             {
                 AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, 1.2f, 0);
                 AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1.1f, 0.7f, 0);
+                Projectile.NewProjectile<SkateboardProj>(Skateboard.transform.position, Player.RB.velocity, 10, Player);
+                PopupText.NewPopupText(transform.position, new Vector2(0, 10) + Utils.RandCircle(5) + Player.RB.velocity * 0.5f, Utils.PastelRainbow(Utils.RandFloat(Mathf.PI * -0.75f, Mathf.PI * 0.25f), 0.55f, default), CoolWords2[Utils.RandInt(CoolWords2.Length)], true, 1.1f, 80);
             }
             else
             {

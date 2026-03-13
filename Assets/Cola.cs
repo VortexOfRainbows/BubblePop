@@ -10,7 +10,7 @@ public class Cola : Weapon
         offset.x += 0.5f;
         scale *= 1.25f;
     }
-    // protected override UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<EternalBubbles>();

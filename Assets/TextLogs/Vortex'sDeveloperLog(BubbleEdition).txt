@@ -43,13 +43,14 @@ Current Task List:
 Done: 
 
  
-3/10/26 to 3/11/26
+3/10/26 to 3/13/26
 1. Fix bug where in multiplayer only one player's dash is used for hat tipping visual
 2. Added secondary attack to the Cola weapon
 3. Death animation for Fizzy Cap, Fizzy Shoes, Etc.
-4. Fizzy still needs Powers, Skateboard Ability, Sound Effects
+4. Fizzy still needs Powers
 5, WIP Fizzy skateboard ability (some animation fixes for the shoes)
-	1. Needs: Sparkle-Sparkle interaction, release skateboard on finish, cooldown
+	1. Needs: cooldown
+6. Add Achievement for unlocking Fizzy
 
 
 -- A2.22 --
@@ -65,7 +66,7 @@ Done:
 7. Fix issue where spritebatch was not working after restarting while a spritebatch all was already in queue
 8. Fix issue where Electrodynamics Grimoire was closing in multiplayer for both players when either player closed the book
 9. WIP Fizzy Cap, Kicks + Animation, Cola + Animation + Attacks
-	1. Need: Death animations, adjustments to walk animation, powers, ability, secondary attack
+	1. Need: Death animations, adjustments to walk animation, powers, ability, secondary attack (retroactively, these are all done but powers)
 10. Shard of Glass redesign sprite to Glass Knife, and chance to take additional damage 25% -> 50%
 11. Reflection now longer stacks completely crazily, instead increasing bounce damage one stack rather than bounce count
 12. The cost of rainbow flower is no longer arbitrarily increased (normalized price)

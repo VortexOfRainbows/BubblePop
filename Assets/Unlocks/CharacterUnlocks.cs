@@ -32,8 +32,8 @@ public class FizzyUnlock : UnlockCondition
 {
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Kickflip (WIP)");
-        description.WithDescription("WIP");
+        description.WithName("Kickflip");
+        description.WithDescription($"Reach the end of a {"Gatligator".WithColor(DetailedDescription.Rares[3])} Y:[Skull Wave]");
     }
-    protected override bool TryUnlockCondition => true;
+    protected override bool TryUnlockCondition => false;
 }

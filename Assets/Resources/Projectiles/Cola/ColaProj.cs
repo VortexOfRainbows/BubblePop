@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ColaProj : Projectile
@@ -139,5 +138,79 @@ public class ColaExplode : SupernovaExplode
     public override void OnHitTarget(Entity target)
     {
         //do not do the original thing
+    }
+}
+public class SkateboardProj : Projectile
+{
+    public Transform Wheel1, Wheel2;
+    public float Angle = 0;
+    public override void Init()
+    {
+        SpriteRenderer.enabled = false;
+        SpriteRendererGlow.enabled = false;
+        SpriteRenderer.color = PlayerOwner.Body.PrimaryColor;
+        Friendly = true;
+        GameObject t = Instantiate(Resources.Load<GameObject>("Player/Fizzy/Skateboard"), transform, false);
+        float xReduce = PlayerOwner.Accessory is BubblemancerCape || PlayerOwner.Accessory is LabCoat ? 0.7f : 1.0f;
+        t.transform.localScale = new Vector3(xReduce, 1, 1);
+        Wheel1 = t.transform.GetChild(0).GetChild(0);
+        Wheel2 = t.transform.GetChild(0).GetChild(1);
+        Penetrate = -1;
+        Angle = Utils.RandFloat(-.5f, .5f);
+        cmp.c2D.offset = new Vector2(0, 0.525f);
+        cmp.c2D.radius = 1.1f;
+    }
+    public float starTimer = 0.2f;
+    public override void AI()
+    {
+        float speed = RB.velocity.magnitude * 0.9f * -Utils.SignNoZero(RB.velocity.x);
+        Wheel1.transform.SetLocalEulerZ(Wheel1.transform.localEulerAngles.z + speed);
+        Wheel2.transform.SetLocalEulerZ(Wheel2.transform.localEulerAngles.z + speed);
+        int trail = PlayerOwner.DashSparkle;
+        if (trail > 0)
+        {
+            starTimer -= Time.fixedDeltaTime;
+            while (starTimer <= 0)
+            {
+                starTimer += 4f / (PlayerOwner.PassiveAttackSpeedModifier * (trail + 3f)); //4/4, 4/5, 4/6, 4/7, etc
+                Vector2 circular = (Utils.RandCircle(1.3f) - RB.velocity).normalized;
+                Vector2 randPos = (Vector2)transform.position + Utils.RandCircleEdge(3);
+                Projectile.NewProjectile<StarProj>((Vector2)transform.position + circular * 2 + new Vector2(0, 0.3f), circular * 8, 2, PlayerOwner, randPos.x, randPos.y);
+            }
+        }
+        Vector2 norm = RB.velocity.normalized;
+        RB.rotation = norm.x * 5 + norm.y * 5;
+        if ((int)timer % 2 == 0)
+        {
+            ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, .3f) + Utils.RandCircle(0.25f) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, SpriteRenderer.color);
+        }
+        timer++;
+        if(RB.velocity.magnitude < 40)
+        {
+            RB.velocity += norm * 0.1f;
+            if (RB.velocity.magnitude > 40)
+                RB.velocity = norm * 40;
+            RB.velocity = RB.velocity.RotatedBy(Angle * Mathf.Deg2Rad);
+        }
+        if(timer > 1000)
+            Kill();
+    }
+    public override void OnKill()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+            ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, 0, SpriteRenderer.color);
+        }
+        for (int i = 0; i < 24; i++)
+        {
+            Vector2 circular = new Vector2(1, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+            ParticleManager.NewParticle((Vector2)transform.position + circular * Utils.RandFloat(0, 1), Utils.RandFloat(0.3f, 0.6f), circular * Utils.RandFloat(3, 6), 4f, 0.4f, ParticleManager.ID.Square, Color.Lerp(Color.gray, Color.black, Utils.RandFloat()));
+        }
+        AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.7f, 0.6f);
+    }
+    public override void OnHitTarget(Entity target)
+    {
+        PopupText.NewPopupText(target.transform.position, new Vector2(0, 7) + Utils.RandCircle(4) + target.RB.velocity * 0.3f, Utils.PastelRainbow(Utils.RandFloat(Mathf.PI * -0.75f, Mathf.PI * 0.25f), 0.55f, default), Fizzy.CoolWords[Utils.RandInt(Fizzy.CoolWords.Length)], false, 0.8f, 50);
     }
 }
