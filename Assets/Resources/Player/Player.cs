@@ -398,7 +398,7 @@ public partial class Player : Entity
     public static Vector2 Instance1Pos => Instance != null ? (Vector2)Instance.transform.position : Vector2.zero;
     public Camera MainCamera => Camera.main;
     private readonly float speed = 2.5f;
-    private readonly float MovementDeacceleration = 0.9f;
+    public readonly float MovementDeacceleration = 0.9f;
     public const float DashDefault = 25f;
     public static bool HasAttacked = false;
     public static bool PickedLowerDifficultyWaveCard = false;
@@ -506,7 +506,7 @@ public partial class Player : Entity
         RB.velocity = velocity;
         Control.LastAbility = Control.Ability;
         Body.AliveUpdate();
-        Animator.PostUpdate();
+        Animator.PostFixedUpdate();
     }
     private float AttackUpdateTimer = 0;
     public override void OnFixedUpdate()

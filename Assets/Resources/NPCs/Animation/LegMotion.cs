@@ -32,19 +32,31 @@ public class LegMotion : Animator
     private float WalkMultiplier = 1.0f;
     public bool FlipWithDirection = false;
     public Vector2 ReAnchorOffset { get; set; } = Vector2.zero;
+    public float walkSpeedMultiplier;
+    public Vector2 ParentVelocity { get; set; } = Vector2.zero;
     public void Animate()
     {
+        if(Parent is Player p && p.Body is Fizzy f)
+        {
+            if(f.OnSkateboard)
+                ParentVelocity *= p.MovementDeacceleration;
+            else
+                ParentVelocity = Parent.RB.velocity * (1 - f.SkateboardMountCounter / f.SkateboardMountTime);
+        }
+        else
+            ParentVelocity = Parent.RB.velocity;
         float rRate = 1 - ResetRate;
         float walkMotion = WalkSize;
         float walkDirection = 1f;
         if (FlipWithDirection)
-            walkDirection = -Utils.SignNoZero(Parent.RB.velocity.x);
-        float velocity = (SqrtSpeed ? Mathf.Sqrt(Parent.RB.velocity.magnitude) : Parent.RB.velocity.magnitude) * 2f * SpeedMult;
-        float walkSpeedMultiplier = Mathf.Clamp(Math.Abs(velocity), 0, 1f);
+            walkDirection = -Utils.SignNoZero(ParentVelocity.x);
+        float magnitude = ParentVelocity.magnitude;
+        float velocity = (SqrtSpeed ? Mathf.Sqrt(magnitude) : magnitude) * 2f * SpeedMult;
+        walkSpeedMultiplier = Mathf.Clamp(Math.Abs(velocity), 0, 1f);
         WalkCounter += walkDirection * velocity * Mathf.Deg2Rad * Mathf.Clamp(walkSpeedMultiplier * 9, 0, 1);
         WalkCounter = WalkCounter.WrapAngle();
 
-        if(rRate != 1)
+        if (rRate != 1)
         {
             WalkMultiplier += Mathf.Abs(velocity) * ResetRate * 2.5f;
             WalkMultiplier *= rRate;

@@ -29,11 +29,14 @@ public class PlayerAnimator : MonoBehaviour
     public Vector2 lastVelo;
     private float walkTimer = 0;
     public float DeathKillTimer = 0;
-    public void PostUpdate()
+    public void PostFixedUpdate()
     {
         if (squash < 1)
             squash += 0.005f;
         squash = Mathf.Lerp(squash, 1, 0.025f);
+        //if(Body is Fizzy f && f.OnSkateboard)
+        //    Bobbing = Mathf.Lerp(Bobbing, 1, 0.1f);
+        //else
         Bobbing = BobbingUpdate();
         if (Mathf.Abs(rb.velocity.x) > 0.1f)
             lastVelo.x = rb.velocity.x;
@@ -51,7 +54,8 @@ public class PlayerAnimator : MonoBehaviour
         float abs = Mathf.Sqrt(Mathf.Abs(rb.velocity.magnitude)) * 0.5f;
         walkTimer += abs + (RealPlayer ? 1 : 0.5f);
         walkTimer %= 100f;
-        float sin = Mathf.Sin(walkTimer / 50f * Mathf.PI);
+        float rad = walkTimer / 50f * Mathf.PI;
+        float sin = Mathf.Sin(rad);
         float bobbing = 0.925f + 0.075f * sin;
         return bobbing;
     }

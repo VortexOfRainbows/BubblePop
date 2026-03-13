@@ -25,10 +25,10 @@ public class BubblemancerHat : Hat
     protected override void AnimationUpdate()
     {
         spriteRender.flipX = !p.Body.Flipped;
-        transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, p.MoveDashRotation(), 0.1f));
+        transform.localEulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.localEulerAngles.z, p.MoveDashRotation(), 0.1f));
         velocity = Vector2.Lerp(velocity, Vector2.zero, 0.2f);
         transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition, 
-            new Vector2(0, (-0.3f + 0.8f * p.Bobbing * p.squash - 0.1f * (1 - p.squash))).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
+            new Vector2(0, (-0.3f + 0.8f * p.Bobbing * p.squash - 0.1f * (1 - p.squash))).RotatedBy(transform.localEulerAngles.z * Mathf.Deg2Rad),
             0.1f) + velocity;
     }
     protected override void DeathAnimation()

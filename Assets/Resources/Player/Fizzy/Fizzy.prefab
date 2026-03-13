@@ -391,6 +391,7 @@ MonoBehaviour:
   PrimaryColor: {r: 0.8, g: 0.7, b: 0.56, a: 0.5}
   FaceR: {fileID: 2589045313495851660}
   Skateboard: {fileID: 2758288789175135842}
+  SkateboardMountCounter: 0
 --- !u!1001 &1581441319156191766
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -409,7 +410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5327987897504141713, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.5
+      value: -1.75
       objectReference: {fileID: 0}
     - target: {fileID: 5327987897504141713, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}
       propertyPath: m_LocalPosition.z

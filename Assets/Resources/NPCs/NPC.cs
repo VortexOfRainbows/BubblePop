@@ -13,6 +13,6 @@ public class NPC : Entity
             p.lastVelo.x = -1;
         else
             p.lastVelo.x = 1;
-        p.PostUpdate();
+        p.PostFixedUpdate();
     }
 }

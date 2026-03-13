@@ -4,6 +4,9 @@ using UnityEngine;
 public class Fizzy : Body
 {
     public GameObject Skateboard;
+    public bool OnSkateboard { get; private set; } = false;
+    public float SkateboardMountCounter = 0;
+    public float SkateboardMountTime => 100;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     public override void Init()
     {
@@ -23,9 +26,36 @@ public class Fizzy : Body
     {
         if (Player.Control.Ability && !Player.Control.LastAbility && moveSpeed.magnitude > 0 && Player.AbilityReady)
         {
-            Skateboard.SetActive(!Skateboard.activeSelf);
+            SwapSkateboard();
+        }
+        if(OnSkateboard)
+        {
+            if(SkateboardMountCounter < SkateboardMountTime)
+                SkateboardMountCounter++;
+            if(SkateboardMountCounter >= 100)
+            {
+                Skateboard.transform.localPosition = new Vector3(0, Player.Accessory is Kicks ? -1.75f : -1.3f, 0);
+            }
+        }
+        else
+        {
+            if (SkateboardMountCounter > 0)
+                SkateboardMountCounter--;
+        }
+        float percent = SkateboardMountCounter / SkateboardMountTime;
+        float sin = Mathf.Sin(percent * Mathf.PI);
+        float scale = percent + sin * 0.5f;
+        Skateboard.transform.LerpLocalScale(Vector2.one * scale, 0.1f);
+    }
+    public void SwapSkateboard()
+    {
+        if(SkateboardMountCounter >= 100 || SkateboardMountCounter <= 0)
+        {
+            OnSkateboard = !OnSkateboard;
+            Skateboard.SetActive(true);
         }
     }
+
     public override void FaceUpdate()
     {
         Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
