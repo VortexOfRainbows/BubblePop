@@ -41,7 +41,7 @@ public class LegMotion : Animator
             if(f.OnSkateboard)
                 ParentVelocity *= p.MovementDeacceleration;
             else
-                ParentVelocity = Parent.RB.velocity * (1 - f.SkateboardMountCounter / f.SkateboardMountTime);
+                ParentVelocity = Parent.RB.velocity * (1 - f.SkateboardPercent);
         }
         else
             ParentVelocity = Parent.RB.velocity;

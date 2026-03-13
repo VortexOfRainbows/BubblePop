@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class Fizzy : Body
 {
+    public static readonly string[] CoolWords = new string[] { "COOL", "RADICAL", "EPIC", "RAD", "SWAG", "GNARLY" };
     public GameObject Skateboard;
+    public Transform Wheel1, Wheel2, Board;
     public bool OnSkateboard { get; private set; } = false;
+    public bool FinishedSkateAnim = false;
     public float SkateboardMountCounter = 0;
-    public float SkateboardMountTime => 100;
+    public float SkateboardMountTime => 54;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     public override void Init()
     {
@@ -22,9 +25,10 @@ public class Fizzy : Body
     {
         description.WithName("Fizzy").WithDescription("He's a pretty cool bubble");
     }
+    public float SkateboardPercent => SkateboardMountCounter / SkateboardMountTime;
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
-        if (Player.Control.Ability && !Player.Control.LastAbility && moveSpeed.magnitude > 0 && Player.AbilityReady)
+        if (Player.Control.Ability && !Player.Control.LastAbility && (moveSpeed.magnitude > 0 || playerVelo.magnitude > 1) && Player.AbilityReady)
         {
             SwapSkateboard();
         }
@@ -32,9 +36,13 @@ public class Fizzy : Body
         {
             if(SkateboardMountCounter < SkateboardMountTime)
                 SkateboardMountCounter++;
-            if(SkateboardMountCounter >= 100)
+            else if(SkateboardMountCounter == SkateboardMountTime && !FinishedSkateAnim)
             {
-                Skateboard.transform.localPosition = new Vector3(0, Player.Accessory is Kicks ? -1.75f : -1.3f, 0);
+                AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1.1f, 0.7f, 0);
+                FinishedSkateAnim = true;
+                Vector2 combind = playerVelo + moveSpeed;
+                playerVelo += combind.normalized * 40;
+                PopupText.NewPopupText(transform.position, new Vector2(0, 10) + Utils.RandCircle(5) + playerVelo * 0.8f, Utils.PastelRainbow(Utils.RandFloat(Mathf.PI * -0.75f, Mathf.PI * 0.25f), 0.55f, default), CoolWords[Utils.RandInt(CoolWords.Length)], true, 1.1f, 80);
             }
         }
         else
@@ -42,17 +50,39 @@ public class Fizzy : Body
             if (SkateboardMountCounter > 0)
                 SkateboardMountCounter--;
         }
-        float percent = SkateboardMountCounter / SkateboardMountTime;
+        float percent = SkateboardPercent;
         float sin = Mathf.Sin(percent * Mathf.PI);
-        float scale = percent + sin * 0.5f;
-        Skateboard.transform.LerpLocalScale(Vector2.one * scale, 0.1f);
+        float scale = Mathf.Sqrt(percent) + sin * 0.5f;
+        float xReduce = Player.Accessory is BubblemancerCape || Player.Accessory is LabCoat ? 0.7f : 1.0f;
+        Skateboard.transform.LerpLocalScale(new Vector2(xReduce, 1) * scale, 0.1f);
+        float jump = sin * 0.5f + 0.5f * Mathf.Sqrt(Mathf.Abs(sin));
+        Player.Visual.transform.localPosition = new Vector3(0, jump, 0);
+        Skateboard.transform.localPosition = new Vector3(0, (Player.Accessory is Kicks ? -1.75f : -1.3f) - jump, 0);
+        float speed = playerVelo.magnitude * 0.9f * -p.Direction;
+        Wheel1.transform.SetLocalEulerZ(Wheel1.transform.localEulerAngles.z + speed);
+        Wheel2.transform.SetLocalEulerZ(Wheel2.transform.localEulerAngles.z + speed);
+        Board.transform.localEulerAngles = new Vector3((1 - percent) * 540, 0, 0);
     }
     public void SwapSkateboard()
     {
-        if(SkateboardMountCounter >= 100 || SkateboardMountCounter <= 0)
+        if(SkateboardMountCounter >= SkateboardMountTime || SkateboardMountCounter <= 0)
         {
+            FinishedSkateAnim = false;
+            if (Player.UniversalImmuneFrames < SkateboardMountTime + 4)
+                Player.UniversalImmuneFrames = SkateboardMountTime + 4;
+            if(OnSkateboard)
+            {
+                AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, 1.2f, 0);
+                AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1.1f, 0.7f, 0);
+            }
+            else
+            {
+                AudioManager.PlaySound(SoundID.Teleport, transform.position, 1, 1.7f, 0);
+                AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, 1.5f, 0);
+            }
             OnSkateboard = !OnSkateboard;
-            Skateboard.SetActive(true);
+            Skateboard.SetActive(OnSkateboard);
+            Player.OnUseAbility();
         }
     }
 

@@ -71,7 +71,6 @@ public class ColaProj : Projectile
                 Utils.RandFloat(0.33f, .44f), circular * Utils.RandFloat(2, 4), 4f, 
                 0.9f, 0, Player.ProjectileColor);
         }
-        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 1.1f);
         for(int i = 0; i < projCount; ++i)
         {
             float p = (float)i / projCount;
@@ -80,6 +79,7 @@ public class ColaProj : Projectile
                 direction, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
         }
         Projectile.NewProjectile<ColaExplode>(Destination, Vector2.zero, Damage, PlayerOwner, exitSpeed / 8f);
+        AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.5f, 1.1f);
     }
     public override bool? CanBeAffectedByHoming() => true;
     public override Vector3 HomingStartPosition() => Destination;

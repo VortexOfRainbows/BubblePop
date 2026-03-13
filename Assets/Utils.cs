@@ -216,7 +216,7 @@ public static class Utils
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, Mathf.LerpAngle(transform.localEulerAngles.z, r, t));
         return transform;
     }
-    public static Transform SetEulerZ(this Transform transform, float r)
+    public static Transform SetLocalEulerZ(this Transform transform, float r)
     {
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, r);
         return transform;

@@ -295,7 +295,7 @@ public class SlotMachineWeapon : Weapon
                     ParticleManager.NewParticle(Hitbox.transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f), Utils.RandFloat(-0.3f, 0.3f)), Utils.RandFloat(2f, 2.25f), Hitbox.RB.velocity * Utils.RandFloat(0.25f, 0.5f), 2, Utils.RandFloat(0.7f, 0.8f), 3, ColorHelper.RarityColors[4] * 0.85f);
                 Hitbox.transform.position = GeoCenter.position;
                 Hitbox.transform.localScale = transform.localScale;
-                Hitbox.transform.SetEulerZ(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
+                Hitbox.transform.SetLocalEulerZ(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
                 Hitbox.C2D.radius = 1.65f;
             }
             if (Trail != null)

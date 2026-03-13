@@ -39,8 +39,8 @@ public class Kicks : Accessory
         float directionOffset = 0.025f;
         LeftKick.ReAnchorOffset = new Vector2(0.325f - directionOffset, -0.05f);
         RightKick.ReAnchorOffset = new Vector2(-0.325f - directionOffset, -0.05f);
-        LeftKickAnchor.SetEulerZ(0);
-        RightKickAnchor.SetEulerZ(0);
+        LeftKickAnchor.SetLocalEulerZ(0);
+        RightKickAnchor.SetLocalEulerZ(0);
         LeftKick.Parent = RightKick.Parent = Player;
         LeftKick.Animate();
         RightKick.Animate();

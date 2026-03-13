@@ -110,11 +110,8 @@ public class Cola : Weapon
         }
         if (AttackRight > 0)
         {
-            //if (AttackRight == 50)
-            //{
-            //    AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.5f);
-            //    AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(0), Player.Position, 0.6f, 1f);
-            //}
+            if (AttackRight == RightAttackSpeed)
+                AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.75f, 0.75f * RightAttackSpeed / 120f, 0);
             float percent = 1 - AttackRight / RightAttackSpeed;
             float firstPercent = Mathf.Min(percent * 2, 1);
             float secondPercent = Mathf.Clamp(percent * 1.5f - 0.5f, 0, 1);
@@ -134,6 +131,7 @@ public class Cola : Weapon
                 Vector2 targetPosition = (Vector2)p.transform.position + velo * dist;
                 int explodeDamage = 3;
                 Projectile.NewProjectile<ColaProj>(transform.position, velo * 24, explodeDamage, Player, targetPosition.x, targetPosition.y, dir);
+                AudioManager.PlaySound(SoundID.Teleport, transform.position, 1, 1.7f, 0);
                 transform.localScale = Vector3.zero;
             }
             spriteRender.enabled = true;

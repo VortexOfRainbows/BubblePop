@@ -151,7 +151,7 @@ public class RockGolem : RockSpider
             RB.velocity *= 0.95f;
 
             norm *= 0.5f + 0.5f * percent;
-            Head.transform.SetEulerZ(norm.x * 20 * norm.y);
+            Head.transform.SetLocalEulerZ(norm.x * 20 * norm.y);
             norm.x *= 0.25f;
             norm.y *= 0.20f;
             norm.y += 0.12f;

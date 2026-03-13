@@ -8,7 +8,7 @@ public class SentinelLaser : BoxProjectile
         SpriteRendererGlow.enabled = false;
         Friendly = false;
         Hostile = true;
-        transform.SetEulerZ(RB.velocity.ToRotation() * Mathf.Rad2Deg);
+        transform.SetLocalEulerZ(RB.velocity.ToRotation() * Mathf.Rad2Deg);
     }
     public override void AI()
     {

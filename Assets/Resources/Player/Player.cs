@@ -453,35 +453,55 @@ public partial class Player : Entity
     {
         Vector2 velocity = RB.velocity;
         float cSpeed = speed * MoveSpeedMod;
+        float cDeaccel = MovementDeacceleration;
+        float cMaxSpeed = MaxSpeed;
+        if (Body is Fizzy f)
+        {
+            if (f.SkateboardPercent > 0)
+            {
+                if(!f.OnSkateboard || f.SkateboardPercent >= 1)
+                {
+                    cDeaccel = Mathf.Lerp(cDeaccel, 0.9985f, f.SkateboardPercent);
+                    cSpeed *= Mathf.Lerp(1, 0.225f, f.SkateboardPercent);
+                    cMaxSpeed *= Mathf.Lerp(1, 3.75f, f.SkateboardPercent);
+                }
+                else
+                {
+                    float iPer = 1 - f.SkateboardPercent;
+                    cSpeed *= iPer * iPer;
+                    velocity *= 0.98f;
+                }
+            }
+        }
         Vector2 movespeed = Vector2.zero;
         if (Control.Up && !Control.Down)
         {
             if (velocity.y < 0)
-                velocity.y *= MovementDeacceleration;
+                velocity.y *= cDeaccel;
             movespeed.y += cSpeed * Control.Movement.y;
         }
         else if (!Control.Up && Control.Down)
         {
             if (velocity.y > 0)
-                velocity.y *= MovementDeacceleration;
+                velocity.y *= cDeaccel;
             movespeed.y += cSpeed * Control.Movement.y;
         }
         else
-            velocity.y *= MovementDeacceleration;
+            velocity.y *= cDeaccel;
         if (!Control.Right && Control.Left)
         {
             if (velocity.x > 0)
-                velocity.x *= MovementDeacceleration;
+                velocity.x *= cDeaccel;
             movespeed.x += cSpeed * Control.Movement.x;
         }
         else if (Control.Right && !Control.Left)
         {
             if (velocity.x < 0)
-                velocity.x *= MovementDeacceleration;
+                velocity.x *= cDeaccel;
             movespeed.x += cSpeed * Control.Movement.x;
         }
         else
-            velocity.x *= MovementDeacceleration;
+            velocity.x *= cDeaccel;
         movespeed = movespeed.normalized;
             
         abilityTimer -= Time.fixedDeltaTime * AbilityRecoverySpeed;
@@ -493,15 +513,24 @@ public partial class Player : Entity
         //Final stuff
         velocity += Control.Movement.GetVector2().magnitude * cSpeed * movespeed;
         float currentSpeed = velocity.magnitude;
-        if (currentSpeed > MaxSpeed)
+        if (currentSpeed > cMaxSpeed)
         {
             Vector2 norm = velocity.normalized;
-            velocity = norm * (MaxSpeed + (currentSpeed - MaxSpeed) * 0.8f);
-            if (currentSpeed > MaxSpeed + 15f * MoveSpeedMod)
+            velocity = norm * (cMaxSpeed + (currentSpeed - cMaxSpeed) * 0.8f);
+            if(Body is Bubblemancer)
             {
-                for (float i = 0; i < 1; i += 0.5f)
-                    ParticleManager.NewParticle((Vector2)transform.position + velocity * i * Time.fixedDeltaTime + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, Body.PrimaryColor);
+                if (currentSpeed > cMaxSpeed + 15f * MoveSpeedMod)
+                {
+                    for (float i = 0; i < 1; i += 0.5f)
+                        ParticleManager.NewParticle((Vector2)transform.position + i * Time.fixedDeltaTime * velocity + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, Body.PrimaryColor);
+                }
             }
+        }
+        if (Body is Fizzy fiz && fiz.OnSkateboard)
+        {
+            Vector2 norm = velocity.normalized;
+            if(currentSpeed > cMaxSpeed || Utils.RandFloat() < 0.15f)
+                ParticleManager.NewParticle((Vector2)fiz.Skateboard.transform.position + new Vector2(0, .6f) + Utils.RandCircle(0.25f) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, Body.PrimaryColor);
         }
         RB.velocity = velocity;
         Control.LastAbility = Control.Ability;
@@ -661,7 +690,7 @@ public partial class Player : Entity
             AimIndicator.gameObject.SetActive(true);
             Vector2 toMouse = Control.MousePosition - (Vector2)transform.position;
             AimIndicator.transform.localPosition = toMouse.normalized * 2.5f;
-            AimIndicator.transform.SetEulerZ(toMouse.ToRotation() * Mathf.Rad2Deg);
+            AimIndicator.transform.SetLocalEulerZ(toMouse.ToRotation() * Mathf.Rad2Deg);
         }
         if(Control.PrimaryAttackHold || Control.SecondaryAttackHold)
         {

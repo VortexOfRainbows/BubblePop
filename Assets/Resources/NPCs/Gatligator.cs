@@ -117,7 +117,7 @@ public class Gatligator : Enemy
     {
         float windUpPercent = Mathf.Clamp01((ShootTimer + 3) / 3f);
         float rollPercent = windUpPercent * Mathf.Clamp01(ShootTimer / ShootSpeed);
-        Head.transform.SetEulerZ(Mathf.Sin(rollPercent * Mathf.PI * 2) * -15);
+        Head.transform.SetLocalEulerZ(Mathf.Sin(rollPercent * Mathf.PI * 2) * -15);
         for(int i = 0; i < 6; ++i)
         {
             var b = Barrels[i];

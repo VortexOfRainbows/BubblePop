@@ -75,14 +75,14 @@ public class Crucible : MonoBehaviour
         Vector2 ConnectorToJoint = end.localPosition - start.localPosition;
         float dist = ConnectorToJoint.magnitude;
         float r = ConnectorToJoint.ToRotation();
-        start.SetEulerZ(r * Mathf.Rad2Deg + 90);
+        start.SetLocalEulerZ(r * Mathf.Rad2Deg + 90);
         start.localScale = new Vector3(start.localScale.x, dist * lengthMult, 1);
     }
     public  void JustRotate(Transform start, Transform end)
     {
         Vector2 ConnectorToJoint = end.position - start.position;
         float r = ConnectorToJoint.ToRotation();
-        start.SetEulerZ(r * Mathf.Rad2Deg - 90);
+        start.SetLocalEulerZ(r * Mathf.Rad2Deg - 90);
     }
     public float Counter = 0;
     public float Counter2 = 0;
@@ -220,10 +220,10 @@ public class Crucible : MonoBehaviour
         HeldPower.transform.localScale = new Vector3(scaleMult, scaleMult, 1);
         rotateCounter %= 4;
         float r = (2 + rotateCounter) * 90;
-        HeldPower.transform.SetEulerZ(r);
+        HeldPower.transform.SetLocalEulerZ(r);
         float sin2 = Mathf.Sin(r * Mathf.Deg2Rad);
-        Joint1.transform.SetEulerZ(sin2 * sin2 * 45 - 180);
-        Joint2.transform.SetEulerZ(sin2 * sin2 * 45 - 180);
+        Joint1.transform.SetLocalEulerZ(sin2 * sin2 * 45 - 180);
+        Joint2.transform.SetLocalEulerZ(sin2 * sin2 * 45 - 180);
         SpinHands(HandJoint1L, HandJoint2L);
         SpinHands(HandJoint1R, HandJoint2R, -1);
 

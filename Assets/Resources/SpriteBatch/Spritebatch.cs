@@ -60,7 +60,7 @@ public static class SpriteBatch
         renderer.sortingOrder = call.order;
         renderer.color = call.color;
         renderer.transform.localScale = call.scale;
-        renderer.transform.SetEulerZ(call.rotation);
+        renderer.transform.SetLocalEulerZ(call.rotation);
         renderer.transform.position = call.position;
     }
     public static void ClearRenderer(int i)
