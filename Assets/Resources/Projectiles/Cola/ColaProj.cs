@@ -61,7 +61,7 @@ public class ColaProj : Projectile
     public override void OnKill()
     {
         float exitSpeed = 8;
-        int projCount = 8;
+        int projCount = 8 + 4 * PlayerOwner.BubbleBlast;
         int c = projCount * 5;
         for (int i = 0; i < c; i++)
         {

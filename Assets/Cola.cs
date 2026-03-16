@@ -14,12 +14,12 @@ public class Cola : Weapon
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<EternalBubbles>();
-        powerPool.Add<Shotgun>();
-        powerPool.Add<ChargeShot>();
-        powerPool.Add<BubbleBlast>();
-        powerPool.Add<SoapySoap>();
+        powerPool.Add<BonusFizz>();
+        //powerPool.Add<ChargeShot>();
+        powerPool.Add<BottleBlast>();
+        //powerPool.Add<SoapySoap>();
         powerPool.Add<ShotSpeed>();
-        powerPool.Add<Starshot>();
+        //powerPool.Add<Starshot>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
