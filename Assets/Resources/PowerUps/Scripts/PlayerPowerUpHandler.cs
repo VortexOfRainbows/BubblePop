@@ -144,6 +144,7 @@ public partial class Player : Entity
     public int RainbowFlowers = 0;
     public int GlassShards = 0;
     public int BountyHunter = 0;
+    public int BottleFlip = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -195,6 +196,7 @@ public partial class Player : Entity
         GlassShards = 0;
         LightMultiplierBonusDamage = 0.0f;
         BountyHunter = 0;
+        BottleFlip = 0;
     }
     private void UpdatePowerUps()
     {

@@ -17,7 +17,7 @@ public class Cola : Weapon
         powerPool.Add<BonusFizz>();
         //powerPool.Add<ChargeShot>();
         powerPool.Add<BottleBlast>();
-        //powerPool.Add<SoapySoap>();
+        powerPool.Add<BottleFlip>();
         powerPool.Add<ShotSpeed>();
         //powerPool.Add<Starshot>();
     }
@@ -40,7 +40,7 @@ public class Cola : Weapon
         {
             transform.localScale = Vector3.zero;
             Vector2 endpos = Player.Position + Utils.RandCircle(6f);
-            Projectile.NewProjectile<ColaProj>(transform.position, Vector2.up * 400, 3, Player, endpos.x, endpos.y, p.Direction);
+            Projectile.NewProjectile<ColaProj>(transform.position, Vector2.up * 400, 3, Player, endpos.x, endpos.y, p.Direction, Player.BottleFlip);
         }
     }
     public override void Init()
@@ -130,7 +130,7 @@ public class Cola : Weapon
                 dist = Mathf.Clamp(dist, 7, 16);
                 Vector2 targetPosition = (Vector2)p.transform.position + velo * dist;
                 int explodeDamage = 3;
-                Projectile.NewProjectile<ColaProj>(transform.position, velo * 24, explodeDamage, Player, targetPosition.x, targetPosition.y, dir);
+                Projectile.NewProjectile<ColaProj>(transform.position, velo * 24, explodeDamage, Player, targetPosition.x, targetPosition.y, dir, Player.BottleFlip);
                 AudioManager.PlaySound(SoundID.Teleport, transform.position, 1, 1.7f, 0);
                 transform.localScale = Vector3.zero;
             }

@@ -27,3 +27,24 @@ public class BottleBlast : BubbleBlast
         return s != null ? s : Main.TextureAssets.PowerUpPlaceholder;
     }
 }
+public class BottleFlip : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Bottle Flip");
+        description.WithDescription("Your Y:[secondary attack] bounces and explodes Y:1 G:(+1 per stack) additional times");
+        description.WithShortDescription("Your secondary attack bounces and explodes an additional time");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BottleFlip += Stack;
+    }
+    public override Sprite GetTexture()
+    {
+        return Main.TextureAssets.PowerUpPlaceholder;
+    }
+}

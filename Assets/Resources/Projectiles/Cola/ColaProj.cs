@@ -5,6 +5,7 @@ public class ColaProj : Projectile
 {
     public Vector2 Destination => new(Data[0], Data[1]);
     public Vector2 playerStartPos = Vector2.zero;
+    public float SpeedLockContribution = 0.8f;
     public override void Init()
     {
         SpriteRenderer.color = SpriteRenderer.color.WithAlpha(0.85f);
@@ -17,6 +18,11 @@ public class ColaProj : Projectile
         SpriteRendererGlow.gameObject.SetActive(false);
         startPos = transform.position;
         playerStartPos = PlayerOwner.lastPos;
+        if(Data.Length > 4)
+        {
+            playerStartPos = startPos;
+            SpeedLockContribution = 0.8f * (10f / (10f + Data[4]));
+        }
     }
     public override void AI()
     {
@@ -36,7 +42,7 @@ public class ColaProj : Projectile
         }
 
         float dist = startPos.Distance(Destination);
-        float timeNeeded = 0.8f + dist / speed;
+        float timeNeeded = SpeedLockContribution + dist / speed;
         float percent = timer / 100f;
         timer += speedMult / timeNeeded;
         if (percent > 1)
@@ -76,6 +82,13 @@ public class ColaProj : Projectile
             Vector2 direction = new Vector2(exitSpeed, 0).RotatedBy(p * Mathf.PI * 2);
             Projectile.NewProjectile<SmallBubble>(Destination, 
                 direction, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
+        }
+        if (Data[3] > 0)
+        {
+            Vector2 toBouncePosition = Utils.RandCircleEdge(6 + 4 * SpeedLockContribution);
+            Vector2 bouncePosition = toBouncePosition + (Vector2)transform.position;
+            Projectile.NewProjectile<ColaProj>(Destination, toBouncePosition.normalized * (RB.velocity.magnitude * 1.25f), Damage,
+                PlayerOwner, bouncePosition.x, bouncePosition.y, Data[2], Data[3] - 1, Data.Length > 4 ? Data[4] + 1 : 1);
         }
         Projectile.NewProjectile<ColaExplode>(Destination, Vector2.zero, Damage, PlayerOwner, exitSpeed / 8f);
         AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.5f, 1.1f);

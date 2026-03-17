@@ -450,24 +450,27 @@ public class Enemy : Entity
                     --Player.Instance.PiratesBooty;
                 }
             }
-            float chance = Player.Instance.BountyHunter * 0.05f + 0.05f;
-            while (Utils.RollWithLuck(chance))
+            if(Player.Instance.BountyHunter > 0)
             {
-                if (Utils.RollWithLuck(0.2f))
+                float chance = Player.Instance.BountyHunter * 0.05f + 0.05f;
+                while (Utils.RollWithLuck(chance))
                 {
-                    int type = 0;
                     if (Utils.RollWithLuck(0.2f))
-                        type += Utils.RollWithLuck(0.2f) ? 2 : 1;
-                    var chest = CoinManager.SpawnChest(transform.position, type);
-                    chest.PirateChest = true;
+                    {
+                        int type = 0;
+                        if (Utils.RollWithLuck(0.2f))
+                            type += Utils.RollWithLuck(0.2f) ? 2 : 1;
+                        var chest = CoinManager.SpawnChest(transform.position, type);
+                        chest.PirateChest = true;
+                    }
+                    else if (Utils.RollWithLuck(0.2f))
+                        CoinManager.SpawnKey(transform.position, 0.2f);
+                    else if (Utils.RollWithLuck(0.2f))
+                        CoinManager.SpawnGem(transform.position, 0.2f, 5);
+                    else
+                        CoinManager.SpawnCoin(transform.position, 100, 0.2f);
+                    --chance;
                 }
-                else if (Utils.RollWithLuck(0.2f))
-                    CoinManager.SpawnKey(transform.position, 0.2f);
-                else if (Utils.RollWithLuck(0.2f))
-                    CoinManager.SpawnGem(transform.position, 0.2f, 5);
-                else
-                    CoinManager.SpawnCoin(transform.position, 100, 0.2f);
-                --chance;
             }
         }
         StaticData.TimesKilled++;
