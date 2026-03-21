@@ -756,7 +756,7 @@ public partial class Player : Entity
         float defaultImmuneFrames = 100;
         float immuneMult = ImmunityFrameMultiplier;
         if (skipDamageStep)
-            immuneMult *= 0.6f;
+            immuneMult *= 0.75f;
         if(Shield > 0)
         {
             if(!skipDamageStep)

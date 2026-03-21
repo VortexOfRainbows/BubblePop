@@ -6,11 +6,6 @@ public class BonusFizz : Shotgun
         base.InitializeDescription(ref description);
         description.WithName("Bonus Fizz");
     }
-    public override Sprite GetTexture()
-    {
-        var s = Resources.Load<Sprite>($"PowerUps/Shotgun");
-        return s != null ? s : Main.TextureAssets.PowerUpPlaceholder;
-    }
 }
 public class BottleBlast : BubbleBlast
 {
@@ -20,11 +15,6 @@ public class BottleBlast : BubbleBlast
         description.WithName("Bottle Blast");
         description.WithDescription("Your Y:[secondary attack] releases Y:4 G:(+4 per stack) additional bubbles on impact");
         description.WithShortDescription("Your secondary attack releases extra bubbles");
-}
-    public override Sprite GetTexture()
-    {
-        var s = Resources.Load<Sprite>($"PowerUps/BubbleBlast");
-        return s != null ? s : Main.TextureAssets.PowerUpPlaceholder;
     }
 }
 public class BottleFlip : PowerUp
@@ -43,10 +33,6 @@ public class BottleFlip : PowerUp
     {
         p.BottleFlip += Stack;
     }
-    public override Sprite GetTexture()
-    {
-        return Main.TextureAssets.PowerUpPlaceholder;
-    }
 }
 public class FancyFootwork : CloudWalker
 {
@@ -64,11 +50,6 @@ public class FancyFootwork : CloudWalker
     public override void HeldEffect(Player p)
     {
         p.DodgeStat += 0.1f * Stack;
-    }
-    public override Sprite GetTexture()
-    {
-        var s = Resources.Load<Sprite>($"PowerUps/CloudWalker");
-        return s != null ? s : Main.TextureAssets.PowerUpPlaceholder;
     }
 }
 

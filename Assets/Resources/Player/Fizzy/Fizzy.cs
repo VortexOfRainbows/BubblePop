@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Fizzy : Body
 {
-    public static readonly string[] CoolWords = new string[] { "COOL", "RADICAL", "EPIC", "RAD", "SWAG", "GNARLY", "KICKFLIP" };
-    public static readonly string[] CoolWords2 = new string[] { "DISMOUNT", "RADICAL", "SUPER", "RAD", "RELEASE", "KICKFLIP" };
+    public static readonly string[] CoolWords = new string[] { "BASED", "AWESOME", "TUBULAR", "COOL", "RADICAL", "EPIC", "RAD", "SWAG", "GNARLY", "KICKFLIP" };
+    public static readonly string[] CoolWords2 = new string[] { "WACK", "SLICK", "YOLO", "DISMOUNT", "RADICAL", "SUPER", "RAD", "RELEASE", "KICKFLIP" };
     public GameObject Skateboard;
     public Transform Wheel1, Wheel2, Board;
     public bool OnSkateboard { get; private set; } = false;
     public bool FinishedSkateAnim = false;
     public float SkateboardMountCounter = 0;
     public float SkateboardMountTime => 54;
+    public override float AbilityCD => 6;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     public override void Init()
     {
@@ -35,10 +36,8 @@ public class Fizzy : Body
     public float starTimer = 1.0f;
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
-        if (Player.Control.Ability && !Player.Control.LastAbility && (moveSpeed.magnitude > 0 || playerVelo.magnitude > 1) && Player.AbilityReady)
-        {
+        if (Player.Control.Ability && !Player.Control.LastAbility && (moveSpeed.magnitude > 0 || playerVelo.magnitude > 1))
             SwapSkateboard();
-        }
         if(OnSkateboard)
         {
             if(SkateboardMountCounter < SkateboardMountTime)
@@ -89,6 +88,9 @@ public class Fizzy : Body
     }
     public void SwapSkateboard()
     {
+        bool ready = OnSkateboard || Player.AbilityReady;
+        if (!ready)
+            return;
         if(SkateboardMountCounter >= SkateboardMountTime || SkateboardMountCounter <= 0)
         {
             FinishedSkateAnim = false;
@@ -107,6 +109,8 @@ public class Fizzy : Body
                 AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, 1.5f, 0);
             }
             OnSkateboard = !OnSkateboard;
+            if (OnSkateboard)
+                Player.abilityTimer = AbilityCD;
             Skateboard.SetActive(OnSkateboard);
             Player.OnUseAbility();
         }

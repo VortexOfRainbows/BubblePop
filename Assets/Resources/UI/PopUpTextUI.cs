@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 public class PopUpTextUI : MonoBehaviour
@@ -144,7 +143,7 @@ public class PopUpTextUI : MonoBehaviour
             float totalWidthPlusSome = myRect.rect.width;
             var rect = MainGameCanvas.GetComponent<RectTransform>();
             float xPos = rect.rect.width - (myRect.rect.width / 2) + 21;
-            float yPosFromBottom = (Main.WavesUnleashed ? 270 : 450) - rect.rect.height;
+            float yPosFromBottom = 270 - rect.rect.height;
             if (enabledDuration >= 0)
             {
                 transform.LerpLocalPosition(new Vector2(xPos, yPosFromBottom), Utils.DeltaTimeLerpFactor(0.1f));
