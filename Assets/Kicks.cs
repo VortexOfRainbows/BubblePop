@@ -24,7 +24,7 @@ public class Kicks : Accessory
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<BubbleShield>();
+        powerPool.Add<FancyFootwork>();
     }
     public Transform LeftKickAnchor, RightKickAnchor;
     public LegMotion LeftKick, RightKick;

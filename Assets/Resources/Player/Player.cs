@@ -739,12 +739,29 @@ public partial class Player : Entity
         }
         else
             damage = -damage;
+        bool skipDamageStep = false;
+        if(DodgeStat > 0)
+        {
+            bool dodge = Utils.RandFloat() < DodgeStat / Mathf.Pow(2, ConsecutiveDodges);
+            if(dodge)
+                skipDamageStep = true;
+        }
+        if (!skipDamageStep)
+            ConsecutiveDodges = 0;
+        else
+        {
+            PopupText.NewPopupText(transform.position, Vector2.up * 8 + Utils.RandCircle(4), Color.gray, "DODGE", true, 0.8f, 100);
+            ConsecutiveDodges++;
+        }
         float defaultImmuneFrames = 100;
-        float immunityFrameMultiplier = ImmunityFrameMultiplier;
+        float immuneMult = ImmunityFrameMultiplier;
+        if (skipDamageStep)
+            immuneMult *= 0.6f;
         if(Shield > 0)
         {
-            SetShield(Shield - damage);
-            immunityFrameMultiplier *= ShieldImmunityFrameMultiplier;
+            if(!skipDamageStep)
+                SetShield(Shield - damage);
+            immuneMult *= ShieldImmunityFrameMultiplier;
             if(BubbleShields > 0)
             {
                 float velocity = 2;
@@ -755,15 +772,14 @@ public partial class Player : Entity
         }
         else
         {
-            SetLife(Life - damage);
+            if(!skipDamageStep)
+                SetLife(Life - damage);
         }
-        UniversalImmuneFrames = defaultImmuneFrames * immunityFrameMultiplier;
+        UniversalImmuneFrames = defaultImmuneFrames * immuneMult;
         if (Life <= 0)
             Pop();
         else
-        {
             Body.ModifyHurtAnimation();
-        }
     }
     public void Pop()
     {

@@ -19,6 +19,10 @@ public class Choice : PowerUp
     {
         return dissolve ? 10 : 25;
     }
+    public override int ShardReplicationCost(int stackSize = 1)
+    {
+        return stackSize * 2;
+    }
 }
 public class ChargeShot : PowerUp
 {

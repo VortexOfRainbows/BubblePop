@@ -48,3 +48,27 @@ public class BottleFlip : PowerUp
         return Main.TextureAssets.PowerUpPlaceholder;
     }
 }
+public class FancyFootwork : CloudWalker
+{
+    public override void Init()
+    {
+        Weighting = Epic;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        base.InitializeDescription(ref description);
+        description.WithName("Fancy Footwork");
+        description.WithDescription($"Gain a Y:10% G:(+10% per stack) chance to Y:[dodge damage] \nChance to Y:dodge reduced by Y:50% for each Y:[consecutive dodge]");
+        description.WithShortDescription("Chance to dodge attacks");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.DodgeStat += 0.1f * Stack;
+    }
+    public override Sprite GetTexture()
+    {
+        var s = Resources.Load<Sprite>($"PowerUps/CloudWalker");
+        return s != null ? s : Main.TextureAssets.PowerUpPlaceholder;
+    }
+}
+
