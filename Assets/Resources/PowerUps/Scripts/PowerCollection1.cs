@@ -73,11 +73,9 @@ public class ShotSpeed : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bubble Propulsion");
-        description.WithDescription("Blown bubbles travel Y:10% G:(+10% per stack) further and Y:10% G:(+10% per stack) faster"); //These numbers are not quite correct but do give a good estimate
-        description.WithShortDescription("Blown bubbles travel further and faster");
+        description.WithDescription("Small bubbles travel Y:10% G:(+10% per stack) further and faster");
+        description.WithShortDescription("Small bubbles travel further and faster");
     }
-    //protected override string Name() => "Bubble Propulsion";
-    //protected override string Description() => "Blown bubbles travel further and faster";
     public override void HeldEffect(Player p)
     {
         p.FasterBulletSpeed += Stack;

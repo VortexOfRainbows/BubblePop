@@ -146,6 +146,8 @@ public partial class Player : Entity
     public int BountyHunter = 0;
     public int BottleFlip = 0;
     public float DodgeStat = 0, ConsecutiveDodges = 0;
+    public int BonusBubblePierce = 0;
+    public int ExplodingBubbles = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -199,6 +201,8 @@ public partial class Player : Entity
         BountyHunter = 0;
         BottleFlip = 0;
         DodgeStat = 0.0f;
+        BonusBubblePierce = 0;
+        ExplodingBubbles = 0;
     }
     private void UpdatePowerUps()
     {

@@ -85,12 +85,14 @@ public class ColaProj : Projectile
         }
         if (Data[3] > 0)
         {
-            Vector2 toBouncePosition = Utils.RandCircleEdge(6 + 4 * SpeedLockContribution);
+            Vector2 toBouncePosition = Utils.RandCircleEdge(4 + 6 * SpeedLockContribution);
+            Vector2 toPlayer = PlayerOwner.Position - (Vector2)transform.position;
+            toBouncePosition += toPlayer.normalized;
             Vector2 bouncePosition = toBouncePosition + (Vector2)transform.position;
             Projectile.NewProjectile<ColaProj>(Destination, toBouncePosition.normalized * (RB.velocity.magnitude * 1.25f), Damage,
                 PlayerOwner, bouncePosition.x, bouncePosition.y, Data[2], Data[3] - 1, Data.Length > 4 ? Data[4] + 1 : 1);
         }
-        Projectile.NewProjectile<ColaExplode>(Destination, Vector2.zero, Damage, PlayerOwner, exitSpeed / 8f);
+        Projectile.NewProjectile<ColaExplode>(Destination, Vector2.zero, Damage, PlayerOwner, exitSpeed / 8f * 1.2f);
         AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.5f, 1.1f);
     }
     public override bool? CanBeAffectedByHoming() => true;
@@ -116,19 +118,21 @@ public class ColaExplode : SupernovaExplode
         SpriteRendererGlow.color = SpriteRenderer.color = Color.clear;
         SpriteRenderer.material = SpriteRendererGlow.material;
         Penetrate = -1;
-        transform.localScale *= 1.2f;
-        cmp.c2D.radius *= 2.0f * Data1;
+        transform.localScale *= 1.0f * Data1;
+        cmp.c2D.radius *= 2.0f;
         Friendly = true;
         immunityFrames = 100;
+        if (Data.Length > 1)
+            ColorVar.a *= Data2;
     }
     public override void AI()
     {
         if (runOnce)
         {
-            int c = 30;
+            float c = 24 * Data1;
             for (int i = 0; i < c; ++i)
             {
-                float r2 = Utils.RandFloat(0.4f, 1.6f);
+                float r2 = Utils.RandFloat(0.4f, 1.6f) * Data1;
                 Vector2 circular = new Vector2(r2, 0).RotatedBy(i / (float)(0.5f * c) * Mathf.PI);
                 ParticleManager.NewParticle((Vector2)transform.position, 0.56f - r2 * 0.1f, circular * 10.2f, 2, Utils.RandFloat(0.4f, 0.9f), 5, ColorVar);
             }
@@ -140,7 +144,7 @@ public class ColaExplode : SupernovaExplode
         float sin = MathF.Sin(sqrtP * MathF.PI);
         Color targetColor = Color.Lerp(ColorVar, Color.clear, percent);
         SpriteRenderer.color = SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, targetColor, 0.3f);
-        transform.localScale = Vector2.one * (2.1f + sqrtP + 0.5f * sin);
+        transform.localScale = (2.1f + sqrtP + 0.5f * sin) * Data1 * Vector2.one;
         if (percent > 0.5f)
             Friendly = false;
         if (percent > 1)
@@ -150,7 +154,7 @@ public class ColaExplode : SupernovaExplode
     }
     public override void OnHitTarget(Entity target)
     {
-        //do not do the original thing
+        //do not remove this. We don't want the original effect of working with starbarbs from inheriting supernova
     }
 }
 public class SkateboardProj : Projectile

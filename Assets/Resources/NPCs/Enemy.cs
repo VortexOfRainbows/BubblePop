@@ -455,7 +455,8 @@ public class Enemy : Entity
                 float chance = Player.Instance.BountyHunter * 0.05f + 0.05f;
                 while (Utils.RollWithLuck(chance))
                 {
-                    if (Utils.RollWithLuck(0.2f))
+                    float luck = Utils.RollWithLuckRaw();
+                    if (luck < 0.2f)
                     {
                         int type = 0;
                         if (Utils.RollWithLuck(0.2f))
@@ -463,9 +464,9 @@ public class Enemy : Entity
                         var chest = CoinManager.SpawnChest(transform.position, type);
                         chest.PirateChest = true;
                     }
-                    else if (Utils.RollWithLuck(0.2f))
+                    else if (luck < 0.4f)
                         CoinManager.SpawnKey(transform.position, 0.2f);
-                    else if (Utils.RollWithLuck(0.2f))
+                    else if (luck < 0.6f)
                         CoinManager.SpawnGem(transform.position, 0.2f, 5);
                     else
                         CoinManager.SpawnCoin(transform.position, 100, 0.2f);

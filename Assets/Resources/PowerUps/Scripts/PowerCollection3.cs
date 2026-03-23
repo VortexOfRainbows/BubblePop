@@ -21,12 +21,12 @@ public class BottleFlip : PowerUp
 {
     public override void Init()
     {
-        Weighting = Rare;
+        Weighting = Epic;
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bottle Flip");
-        description.WithDescription("Your Y:[secondary attack] bounces and explodes Y:1 G:(+1 per stack) additional times");
+        description.WithDescription("Your Y:[secondary attack] bounces and Y:explodes Y:1 G:(+1 per stack) additional times");
         description.WithShortDescription("Your secondary attack bounces and explodes an additional time");
     }
     public override void HeldEffect(Player p)
@@ -52,4 +52,38 @@ public class FancyFootwork : CloudWalker
         p.DodgeStat += 0.1f * Stack;
     }
 }
-
+public class CarbonForce : ShotSpeed
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Carbon Force");
+        description.WithDescription("Small bubbles gain Y:+1 G:(+1 per stack) Y:pierce and travel Y:10% G:(+10% per stack) further and faster"); 
+        description.WithShortDescription("Small bubbles get additional pierce and travel further");
+    }
+    public override void HeldEffect(Player p)
+    {
+        base.HeldEffect(p);
+        p.BonusBubblePierce += Stack;
+    }
+}
+public class FlavorExplosion : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Flavor Explosion");
+        description.WithDescription("Small bubbles Y:explode on hit for Y:20% G:(+5% per stack) Y:damage \nY:[Explosion size] scales with Y:damage");
+        description.WithShortDescription("Small bubbles explode on hit");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ExplodingBubbles += Stack;
+    }
+}

@@ -21,6 +21,8 @@ public class SentinelLaser : BoxProjectile
             Vector2 norm = RB.velocity;
             RaycastHit2D hit = Physics2D.Raycast(position, norm, 24, LayerMask.GetMask("World"));
             float dist = hit.distance == 0 ? 24 : hit.distance;
+            if (dist > 24)
+                dist = 24;
             C2D.size = new Vector2(dist, 0.5f);
             C2D.offset = new Vector2(dist / 2, 0);
             float increment = 0.25f;

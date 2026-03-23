@@ -13,12 +13,12 @@ public class Cola : Weapon
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<EternalBubbles>();
+        powerPool.Add<FlavorExplosion>();
         powerPool.Add<BonusFizz>();
         //powerPool.Add<ChargeShot>();
         powerPool.Add<BottleBlast>();
         powerPool.Add<BottleFlip>();
-        powerPool.Add<ShotSpeed>();
+        powerPool.Add<CarbonForce>();
         //powerPool.Add<Starshot>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
@@ -47,7 +47,7 @@ public class Cola : Weapon
     {
         transform.localScale = Vector3.zero;
     }
-    private float AttackCooldown => Mathf.Max(20, 52f - Player.AttackSpeedModifier * 2);
+    private float AttackCooldown => Mathf.Max(30, 62f - Player.AttackSpeedModifier * 2);
     private float RightAttackSpeed => 70 + Player.SecondaryAttackSpeedModifier * 50;
     public override void StartAttack(bool alternate)
     {

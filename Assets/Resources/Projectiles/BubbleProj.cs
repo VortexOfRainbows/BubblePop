@@ -29,6 +29,21 @@ public class SmallBubble : Projectile
             }
             RandomLifeShorten -= 40 + 40 * bonus;
         }
+        if (PlayerOwner.BonusBubblePierce > 0)
+            Penetrate += PlayerOwner.BonusBubblePierce;
+    }
+    public override void OnHitTarget(Entity target)
+    {
+        if (Penetrate <= PlayerOwner.BonusBubblePierce + 1)
+            Damage *= 0.8f;
+        int exploding = PlayerOwner.ExplodingBubbles;
+        if (exploding > 0)
+        {
+            AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.2f, 1.3f);
+            float damage = Damage * (0.15f + 0.05f * exploding);
+            float size = 1.5f * damage * transform.localScale.x;
+            Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, damage, PlayerOwner, size, 0.5f);
+        }
     }
     public override void AI()
     {
