@@ -105,7 +105,7 @@ public class SoapySoap : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Your Y:[secondary attack] releases Y:5 G:(+3 per stack) bubbles while traveling, plus Y:[2 more bubbles for each charge level]");
+        description.WithDescription("Your Y:[secondary attack] releases Y:4 G:(+4 per stack) bubbles while traveling, plus Y:[2 more bubbles for each charge level]");
         description.WithShortDescription("Your secondary attack leaves behind a trail of bubbles");
     }
     public override void HeldEffect(Player p)

@@ -281,7 +281,10 @@ public class Enemy : Entity
             return;
         }
         else
+        {
+            ResolveDamageBuffer();
             Animate();
+        }
         if (JustSpawnedIn)
         {
             if (IsSkull)
@@ -358,7 +361,7 @@ public class Enemy : Entity
             {
                 finalDamage *= (1 - ChampionDefenseBonus);
             }
-            Injure(finalDamage, crit, c);
+            Injure(finalDamage, crit, c, 0);
             proj.HitTarget(this);
             if (proj.Penetrate != -1)
             {
@@ -383,34 +386,80 @@ public class Enemy : Entity
 
     }
     public virtual bool CanInjure() => true;
-    public void Injure(float damage, int critLevel = 0, Color popupTextColor = default)
+    public void Injure(float damage, int critLevel = 0, Color popupTextColor = default, int bufferNum = 0)
     {
         if (!CanInjure())
             return;
         Life -= damage;
         DamageTaken += damage;
         OnInjured(damage, critLevel);
+        if(bufferNum == 0)
+            DamageBuffer.Add(new DamageData(damage, critLevel, popupTextColor));
+        else
+            DoPopupText(new DamageData(damage, critLevel, popupTextColor));
+        if (Life <= 0 && !AlreadyDead)
+        {
+            ResolveDamageBuffer(true);
+            SetDead();
+            Kill();
+        }
+    }
+    public class DamageData
+    {
+        public DamageData(float damage, int crit, Color popup)
+        {
+            Damage = damage;
+            CritLevel = crit;
+            PopupTextColor = popup;
+        }
+        public float Damage;
+        public int CritLevel;
+        public Color PopupTextColor;
+        public int TimeInBuffer;
+    }
+    public List<DamageData> DamageBuffer = new();
+    public void ResolveDamageBuffer(bool ForceResolve = false)
+    {
+        if(DamageBuffer.Count > 0)
+        {
+            for (int i = 0; i < DamageBuffer.Count; ++i)
+                ++DamageBuffer[i].TimeInBuffer;
+            DamageData FinalDamageData = DamageBuffer.First();
+            if(FinalDamageData.TimeInBuffer > 2 || ForceResolve)
+            {
+                for (int i = 1; i < DamageBuffer.Count; ++i)
+                {
+                    DamageData dmg = DamageBuffer[i];
+                    FinalDamageData.Damage += dmg.Damage;
+                    if (dmg.CritLevel >= FinalDamageData.CritLevel)
+                    {
+                        FinalDamageData.CritLevel = dmg.CritLevel;
+                        FinalDamageData.PopupTextColor = dmg.PopupTextColor;
+                    }
+                }
+                DamageBuffer.Clear();
+                DoPopupText(FinalDamageData);
+            }
+        }
+    }
+    private void DoPopupText(DamageData FinalDamageData)
+    {
         BoxCollider2D c2D = GetComponent<BoxCollider2D>();
         Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
-        if (popupTextColor == default)
-            popupTextColor = new Color(1f, 0.5f, 0.4f);
+        if (FinalDamageData.PopupTextColor == default)
+            FinalDamageData.PopupTextColor = new Color(1f, 0.5f, 0.4f);
         Vector2 velo = Utils.RandCircle(3) + Vector2.up * 2;
-        if (critLevel == -1)
+        if (FinalDamageData.CritLevel == -1)
         {
             velo.x *= 0.5f;
             velo.y += 0.5f;
         }
-        float scale = critLevel == -1 ? 0.8f : 1f;
-        if (critLevel > 0)
+        float scale = FinalDamageData.CritLevel == -1 ? 0.8f : 1f;
+        if (FinalDamageData.CritLevel > 0)
         {
-            scale = 1f + 0.1f * Mathf.Sqrt(critLevel - 1);
+            scale = 1f + 0.1f * Mathf.Sqrt(FinalDamageData.CritLevel - 1);
         }
-        GameObject g = PopupText.NewPopupText(randPos, velo, popupTextColor, damage.ToString("0.#"), critLevel >= 1, scale, critLevel >= 1 ? 100 : 80);
-        if (Life <= 0 && !AlreadyDead)
-        {
-            SetDead();
-            Kill();
-        }
+        PopupText.NewPopupText(randPos, velo, FinalDamageData.PopupTextColor, FinalDamageData.Damage.ToString("0.#"), FinalDamageData.CritLevel >= 1, scale, FinalDamageData.CritLevel >= 1 ? 100 : 80);
     }
     protected float MaxCoins { get; set; } = 1;
     protected float MinCoins { get; set; } = 1;

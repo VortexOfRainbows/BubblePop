@@ -198,7 +198,7 @@ public class BigBubble : Projectile
             timer++;
             if (PlayerOwner.SoapySoap > 0 && timer <= 120)
             {
-                int count = (int)(2.0f + Data2 * 2f + PlayerOwner.SoapySoap * 3f); //2 + 1.5 + 3.5 = 7
+                int count = (int)(Data2 * 2f + PlayerOwner.SoapySoap * 4f); //2 + 1.5 + 3.5 = 7
                 int interval = 120 / count;
                 if (interval <= 0)
                     interval = 1;

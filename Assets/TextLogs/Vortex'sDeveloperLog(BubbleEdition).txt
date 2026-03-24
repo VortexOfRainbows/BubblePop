@@ -27,7 +27,6 @@ Need to do:
 	2. Make powers show which pools they belong to
 	3. Make blurbs appear in the equipmrfent page
 	4. Add flavortext for all compendium elements
-10. Put damage numbers into a per-enemy buffer so it can sometimes do the damage math for you
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Maybe shift roadblock visuals to the player so it's more encompassing
@@ -47,6 +46,10 @@ Done:
 1. Try fixing bug where sentinel lasers sometimes were extremely big
 2. Add Carbon Force and Flavor Explosion powers
 3. Some adjustments to power balancing (Bottle Flip is now epic) and description wording for various powers
+4. Soapy soap stack factor 5 (+3) -> 4 (+4)
+5. Damage popup numbers are now put into a small buffer to reduce the amount of numbers that popup by summing the damage values
+	1. This doesn't actually change damage calculations at all, but makes the game more readable and less laggy (thing of PVZ GW2 peashooter damage number)
+6. Bubble shield bubbles released capped at 1024
 
 3/20/26 to 3/21/26
 1. Choice now costs 2 shards to replicate

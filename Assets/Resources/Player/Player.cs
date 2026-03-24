@@ -766,6 +766,8 @@ public partial class Player : Entity
             {
                 float velocity = 2;
                 int amt = 16 + 8 * BubbleShields;
+                if (amt > 1024)
+                    amt = 1024;
                 for (int i = 0; i < amt; ++i)
                     Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1, this);
             }
