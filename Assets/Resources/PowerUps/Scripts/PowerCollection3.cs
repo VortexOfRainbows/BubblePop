@@ -105,3 +105,20 @@ public class ExplosionRadius : PowerUp
         p.ExplodeRadiusMult += 0.1f * Stack;
     }
 }
+public class BonusBoards : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Bonus Boards");
+        description.WithDescription("Release Y:1 G:(+1 per stack) additional Y:Skateboards on Y:dismount");
+        description.WithShortDescription("Release additional Skateboards on dismount");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BonusBoards += Stack;
+    }
+}

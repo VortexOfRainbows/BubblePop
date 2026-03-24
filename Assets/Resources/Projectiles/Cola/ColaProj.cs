@@ -173,7 +173,7 @@ public class ColaExplode : SupernovaExplode
 public class SkateboardProj : Projectile
 {
     public Transform Wheel1, Wheel2;
-    public float Angle = 0;
+    public float Angle => Data1;
     public override void Init()
     {
         SpriteRenderer.enabled = false;
@@ -186,7 +186,6 @@ public class SkateboardProj : Projectile
         Wheel1 = t.transform.GetChild(0).GetChild(0);
         Wheel2 = t.transform.GetChild(0).GetChild(1);
         Penetrate = -1;
-        Angle = Utils.RandFloat(-.5f, .5f);
         cmp.c2D.offset = new Vector2(0, 0.525f);
         cmp.c2D.radius = 1.1f;
     }
