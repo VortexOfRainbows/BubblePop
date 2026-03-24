@@ -87,3 +87,20 @@ public class FlavorExplosion : PowerUp
         p.ExplodingBubbles += Stack;
     }
 }
+public class ExplosionRadius : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Common;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Explosion Radius");
+        description.WithDescription("Increases Y:[cola explosion radius] by Y:10% G:(+10% per stack)");
+        description.WithShortDescription("Increases cola explosion radius");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ExplodeRadiusMult += 0.1f * Stack;
+    }
+}

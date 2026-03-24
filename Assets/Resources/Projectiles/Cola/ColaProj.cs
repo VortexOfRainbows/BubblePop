@@ -118,6 +118,7 @@ public class ColaExplode : SupernovaExplode
         SpriteRendererGlow.color = SpriteRenderer.color = Color.clear;
         SpriteRenderer.material = SpriteRendererGlow.material;
         Penetrate = -1;
+        Data1 *= PlayerOwner.ExplodeRadiusMult;
         transform.localScale *= 1.0f * Data1;
         cmp.c2D.radius *= 2.0f;
         Friendly = true;

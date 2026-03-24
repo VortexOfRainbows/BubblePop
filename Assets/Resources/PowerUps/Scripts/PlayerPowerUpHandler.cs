@@ -106,7 +106,7 @@ public partial class Player : Entity
     public float ShieldImmunityFrameMultiplier = 1.0f;
     public bool BonusChoices = false;
 
-    public float ZapRadiusMult = 1.0f;
+    public float ZapRadiusMult = 1.0f, ExplodeRadiusMult = 1.0f;
     public float DamageMultiplier = 1.0f;
     public int AllowedThunderBalls = 3;
     public static List<int> GlobalPowers { get; private set; } = new();
@@ -170,7 +170,7 @@ public partial class Player : Entity
         TotalMaxLife = MaxLife;
         BubbleShields = Coalescence = 0;
         RollDex = RollInit = RollChar = RollPerc = SnakeEyes = 0;
-        ZapRadiusMult = DamageMultiplier = 1.0f;
+        ZapRadiusMult = DamageMultiplier = ExplodeRadiusMult = 1.0f;
         Electroluminescence = 0;
         AllowedThunderBalls = 3;
         if (!HasResearchNotes)
