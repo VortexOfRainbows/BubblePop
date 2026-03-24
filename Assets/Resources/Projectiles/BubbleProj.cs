@@ -34,8 +34,6 @@ public class SmallBubble : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        if (Penetrate <= PlayerOwner.BonusBubblePierce + 1)
-            Damage *= 0.8f;
         int exploding = PlayerOwner.ExplodingBubbles;
         if (exploding > 0)
         {
@@ -44,6 +42,8 @@ public class SmallBubble : Projectile
             float size = 1.5f * damage * transform.localScale.x;
             Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, damage, PlayerOwner, size, 0.5f);
         }
+        if (Penetrate <= PlayerOwner.BonusBubblePierce + 1)
+            Damage *= 0.8f;
     }
     public override void AI()
     {
@@ -90,13 +90,24 @@ public class SmallBubble : Projectile
     }
     public override void OnKill()
     {
-        int c = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
-        for (int i = 0; i < c; i++)
+        int exploding = PlayerOwner.ExplodingBubbles;
+        if (exploding > 0 && Penetrate > 0)
         {
-            Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
+            AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.2f, 1.3f);
+            float damage = Damage * (0.15f + 0.05f * exploding);
+            float size = 1.5f * damage * transform.localScale.x;
+            Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, damage, PlayerOwner, size, 0.5f);
         }
-        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 1.1f);
+        else
+        {
+            int c = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
+            for (int i = 0; i < c; i++)
+            {
+                Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
+            }
+            AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 1.1f);
+        }
     }
 }
 public class BigBubble : Projectile

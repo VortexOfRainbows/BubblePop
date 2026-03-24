@@ -752,6 +752,9 @@ public partial class Player : Entity
         {
             PopupText.NewPopupText(transform.position, Vector2.up * 8 + Utils.RandCircle(4), Color.gray, "DODGE", true, 0.8f, 100);
             ConsecutiveDodges++;
+            if(ConsecutiveDodges >= 4)
+                if (Body is Fizzy)
+                    UnlockCondition.Get<FizzyThinkImJustGonnaStandThereAndTakeIt>().SetComplete();
         }
         float defaultImmuneFrames = 100;
         float immuneMult = ImmunityFrameMultiplier;

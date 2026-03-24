@@ -124,23 +124,31 @@ public class ColaExplode : SupernovaExplode
         Friendly = true;
         immunityFrames = 100;
         if (Data.Length > 1)
-            ColorVar.a *= Data2;
+            ColorVar *= Data2;
     }
     public override void AI()
     {
         if (runOnce)
         {
-            float c = 24 * Data1;
+            float c = 20 * Data1;
+            if (Data.Length > 1)
+                c *= Data2;
+            if (c > 60)
+                c = 60;
             for (int i = 0; i < c; ++i)
             {
                 float r2 = Utils.RandFloat(0.4f, 1.6f) * Data1;
                 Vector2 circular = new Vector2(r2, 0).RotatedBy(i / (float)(0.5f * c) * Mathf.PI);
-                ParticleManager.NewParticle((Vector2)transform.position, 0.56f - r2 * 0.1f, circular * 10.2f, 2, Utils.RandFloat(0.4f, 0.9f), 5, ColorVar);
+                float size = (0.46f + 0.1f * Data1) - r2 * 0.1f;
+                ParticleManager.NewParticle((Vector2)transform.position, Mathf.Clamp(size, 0.1f, 1), circular * 10.2f, 2, Utils.RandFloat(0.4f, 0.9f), 5, ColorVar);
             }
             runOnce = false;
         }
         timer++;
-        float percent = timer / 50f;
+        float timeOut = 50;
+        if (Data.Length > 1)
+            timeOut = timeOut * Data2;
+        float percent = timer / timeOut;
         float sqrtP = Mathf.Sqrt(percent);
         float sin = MathF.Sin(sqrtP * MathF.PI);
         Color targetColor = Color.Lerp(ColorVar, Color.clear, percent);

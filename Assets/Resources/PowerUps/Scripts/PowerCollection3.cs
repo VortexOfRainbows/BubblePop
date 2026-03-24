@@ -51,6 +51,7 @@ public class FancyFootwork : CloudWalker
     {
         p.DodgeStat += 0.1f * Stack;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<FizzyThinkImJustGonnaStandThereAndTakeIt>();
 }
 public class CarbonForce : ShotSpeed
 {
@@ -79,8 +80,8 @@ public class FlavorExplosion : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Flavor Explosion");
-        description.WithDescription("Small bubbles Y:explode on hit for Y:20% G:(+5% per stack) Y:damage \nY:[Explosion size] scales with Y:damage");
-        description.WithShortDescription("Small bubbles explode on hit");
+        description.WithDescription("Small bubbles Y:explode on hit or upon expiring for Y:20% G:(+5% per stack) Y:damage \nY:[Explosion size] scales with Y:damage");
+        description.WithShortDescription("Small bubbles explode on hit or upon expiring");
     }
     public override void HeldEffect(Player p)
     {

@@ -259,3 +259,17 @@ public class ThoughtBubbleArsenal : UnlockCondition
     }
     public override int Rarity => 2;
 }
+public class FizzyThinkImJustGonnaStandThereAndTakeIt : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Fizzy: Dodge Tank");
+        description.WithDescription($"As Y:Fizzy, dodge damage 4 times in a row");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Completionist;
+    }
+    public override int Rarity => 4;
+}
