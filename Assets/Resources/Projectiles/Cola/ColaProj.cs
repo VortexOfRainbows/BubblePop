@@ -109,6 +109,10 @@ public class ColaProj : Projectile
 }
 public class ColaExplode : SupernovaExplode
 {
+    public override bool? CanBeAffectedByHoming()
+    {
+        return false;
+    }
     private Color ColorVar;
     public override void Init()
     {
@@ -131,10 +135,10 @@ public class ColaExplode : SupernovaExplode
         if (runOnce)
         {
             float c = 20 * Data1;
-            if (Data.Length > 1)
-                c *= Data2;
             if (c > 60)
                 c = 60;
+            if (Data.Length > 1)
+                c *= Data2;
             for (int i = 0; i < c; ++i)
             {
                 float r2 = Utils.RandFloat(0.4f, 1.6f) * Data1;

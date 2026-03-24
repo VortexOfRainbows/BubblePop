@@ -517,7 +517,10 @@ public class RewardClause : CardClause
             AddPowerReward(reward, PostRewards);
         }
         if (CardData.UpcomingWave == 1)
+        {
             AddKeyReward(new KeyReward(0, 1) { BeforeWaveEndReward = true }, PreRewards);
+            AddPowerReward(new PowerReward(PowerUp.Get<Choice>().MyID) { BeforeWaveEndReward = false }, PostRewards);
+        }
         while (Points >= 1 && (RewardsAdded < RewardsAllowed || RewardsAllowed == -1))
         {
             Reward r = GenRandomReward();

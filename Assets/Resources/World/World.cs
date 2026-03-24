@@ -158,9 +158,12 @@ public class World : MonoBehaviour
                 tr.gameObject.SetActive(false);
                 bool shop = i == 2 || i == 4 || i == 6 || i == nodes.Count - 1;
                 bool largo = i == nodes.Count - 1;
+                bool? crucible = i % 3 == 1 && !largo ? Utils.RollWithLuck(0.5f) : null;
+                if (i <= 1) //Don't want crucible on first room
+                    crucible = false;
                 node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0,
                     shop,
-                    i % 3 == 1 && !largo ? Utils.RollWithLuck(0.5f) : null,
+                    crucible,
                     largo);
                 NodeID.PreviousNode = node;
                 NextToGenerate.Enqueue(node);
