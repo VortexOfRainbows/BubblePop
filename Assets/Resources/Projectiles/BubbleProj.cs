@@ -40,7 +40,7 @@ public class SmallBubble : Projectile
             AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.2f, 1.3f);
             float damage = Damage * (0.15f + 0.05f * exploding);
             float size = 1.5f * damage * transform.localScale.x;
-            Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, damage, PlayerOwner, size, 0.5f);
+            Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, damage, PlayerOwner, size, 0.6f);
         }
         if (Penetrate <= PlayerOwner.BonusBubblePierce + 1)
             Damage *= 0.8f;
@@ -91,12 +91,21 @@ public class SmallBubble : Projectile
     public override void OnKill()
     {
         int exploding = PlayerOwner.ExplodingBubbles;
-        if (exploding > 0 && Penetrate > 0)
+        if (exploding > 0)
         {
             AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.2f, 1.3f);
-            float damage = Damage * (0.15f + 0.05f * exploding);
-            float size = 1.5f * damage * transform.localScale.x;
-            Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, damage, PlayerOwner, size, 0.5f);
+            if(Penetrate > 0)
+            {
+                float damage = Damage * (0.15f + 0.05f * exploding);
+                float size = 1.5f * damage * transform.localScale.x;
+                Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, damage, PlayerOwner, size, 0.6f);
+            }
+            int c = 3;
+            for (int i = 0; i < c; i++)
+            {
+                Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
+            }
         }
         else
         {
