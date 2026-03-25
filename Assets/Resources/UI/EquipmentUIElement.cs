@@ -16,7 +16,8 @@ public class EquipmentUIElement : MonoBehaviour
     public bool CanAfford => true; // CoinManager.Savings >= ActiveEquipment.GetPrice() || ActiveEquipment.GetPrice() <= 0;
     public bool DisplayOnly = false;
     public bool CompendiumElement = false;
-    public bool AchievementElement = false;
+    public bool AchievementElement => ParentAchieve != null;
+    public CompendiumAchievementElement ParentAchieve = null;
     public void UpdateEquipment(Equipment equip)
     {
         ActiveEquipment = GenerateEquipment(equip, Visual.transform);
@@ -117,14 +118,31 @@ public class EquipmentUIElement : MonoBehaviour
             string desc; 
             if(AchievementElement)
             {
-                name = ActiveEquipment.GetUnlockCondition().GetName();
+                UnlockCondition u = ParentAchieve.MyUnlock;
+                name = u.GetName();
                 desc = string.Empty;
                 //desc = ActiveEquipment.GetUnlockCondition().GetDescription();
             }
             else
             {
-                name = Unlocked ? ActiveEquipment.GetName() : DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???", false);
-                desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
+                if(Unlocked)
+                {
+                    name = ActiveEquipment.GetName();
+                    desc = CompendiumElement ? "" : ActiveEquipment.GetDescription();
+                }
+                else
+                {
+                    if (!ActiveEquipment.GetUnlockCondition().PreReqComplete)
+                    {
+                        name = ActiveEquipment.GetUnlockCondition().GetName();
+                        desc = ActiveEquipment.GetUnlockCondition().GetDescription();
+                    }
+                    else
+                    {
+                        name = DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???", false);
+                        desc = ActiveEquipment.GetUnlockReq();
+                    }
+                }
             }
             if (!AchievementElement || !Compendium.Instance.AchievementPage.WideDisplayStyle)
                 PopUpTextUI.Enable(name, desc);

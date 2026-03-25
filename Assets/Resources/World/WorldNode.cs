@@ -52,7 +52,7 @@ public static class NodeID
         float bestWeight = 0.1f;
         foreach (WorldNode n in pool)
         {
-            if(PreviousNode != n)
+            if(PreviousNode != n) // Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp, so no spawning the previous node again
             {
                 int score = 0;
                 if (n.Zone == zoneID)

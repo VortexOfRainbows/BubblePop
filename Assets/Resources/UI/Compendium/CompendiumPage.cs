@@ -98,7 +98,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         if (SortMode == FavSort && HoverCPUE is CompendiumAchievementElement)
             SortMode = ArbitrarySort;
         if (SortMode == ArbitrarySort) //Arbitrary / ID
-            sortText.text = "Sort: ID";
+            sortText.text = Compendium.CurrentlySelectedPage == Compendium.Instance.EquipPage ? "Sort: Group" : "Sort: ID";
         else if (SortMode == RaritySort) //By rarity
             sortText.text = "Sort: Rarity";
         else if (SortMode == FavSort) //By count
@@ -144,7 +144,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         if (SortMode == FavSort && HoverCPUE is CompendiumAchievementElement)
             SortMode = ArbitrarySort;
         if (SortMode == ArbitrarySort) //Arbitrary / ID
-            sortText.text = "Sort: ID";
+            sortText.text = Compendium.CurrentlySelectedPage == Compendium.Instance.EquipPage ? "Sort: Group" : "Sort: ID";
         else if (SortMode == RaritySort) //By rarity
             sortText.text = "Sort: Rarity";
         else if (SortMode == FavSort) //By count
@@ -220,7 +220,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         }
         else
         {
-            SortMode = ArbitrarySort;
+            SortMode = HoverCPUE is CompendiumEquipmentElement ? FavSort : ArbitrarySort;
             ToggleSort(sortText); //default sort is rare
         }
 
@@ -309,9 +309,9 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public int SortMultiplier => ReverseSort ? -1 : 1;
     public int CompareID(CompendiumElement e1, CompendiumElement e2)
     {
-        int id1 = e1.TypeID;
-        int id2 = e2.TypeID;
-        if(BlackMarketMode && e1 is CompendiumPowerUpElement p1 && e2 is CompendiumPowerUpElement p2)
+        int id1 = e1.GetIDForSorting(ReverseSort);
+        int id2 = e2.GetIDForSorting(ReverseSort);
+        if(BlackMarketMode && e1 is CompendiumPowerUpElement && e2 is CompendiumPowerUpElement)
         {
             if (e1.IsLocked())
                 id1 += SortMultiplier * 10000;
@@ -340,7 +340,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         int rare1 = e1.GetRare(ReverseSort);
         int rare2 = e2.GetRare(ReverseSort);
-        if (BlackMarketMode && e1 is CompendiumPowerUpElement p1 && e2 is CompendiumPowerUpElement p2)
+        if (BlackMarketMode && e1 is CompendiumPowerUpElement && e2 is CompendiumPowerUpElement)
         {
             if (e1.IsLocked())
                 rare1 += SortMultiplier * 10;
@@ -369,7 +369,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         int count1 = e1.GetCount();
         int count2 = e2.GetCount();
-        if (BlackMarketMode && e1 is CompendiumPowerUpElement p1 && e2 is CompendiumPowerUpElement p2)
+        if (BlackMarketMode && e1 is CompendiumPowerUpElement && e2 is CompendiumPowerUpElement)
         {
             if (e1.IsLocked())
                 count1 += SortMultiplier * (int.MinValue >> 3);
@@ -399,17 +399,11 @@ public abstract class TierListCompendiumPage : CompendiumPage
         List<CompendiumElement> childs = GetCPUEChildren(out int c);
         PowerUpLayoutGroup.transform.DetachChildren();
         if (SortMode == ArbitrarySort)
-        {
             childs.Sort(CompareID);
-        }
-        if (SortMode == RaritySort)
-        {
+        else if (SortMode == RaritySort)
             childs.Sort(CompareRare);
-        }
-        if (SortMode == FavSort)
-        {
+        else if(SortMode == FavSort)
             childs.Sort(CompareFav);
-        }
         if(!ReverseSort)
         {
             for (int i = 0; i < c; ++i)

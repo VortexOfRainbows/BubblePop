@@ -23,7 +23,8 @@ public class PopUpTextUI : MonoBehaviour
                 instance.AchievementElement.NameText.text = name;
                 instance.AchievementElement.DescriptionText.text = desc;
                 instance.ReadyToRenderNormal = false;
-                instance.Name.color = ColorHelper.RarityColors[instance.AchievementElement.GetRare() - 1];
+                //Not needed as the color is naturally part of the text using tags
+                //instance.Name.color = ColorHelper.RarityColors[instance.AchievementElement.GetRare() - 1];
             }
             instance.Visual.SetActive(true);
         }

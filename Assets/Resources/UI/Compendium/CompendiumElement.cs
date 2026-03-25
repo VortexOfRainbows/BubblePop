@@ -28,6 +28,10 @@ public class CompendiumElement : MonoBehaviour
     {
         return false;
     }
+    public virtual int GetIDForSorting(bool reverse = false)
+    {
+        return TypeID;
+    }
     public virtual int GetCount()
     {
         return 0;

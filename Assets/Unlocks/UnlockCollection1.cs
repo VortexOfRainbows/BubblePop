@@ -24,6 +24,7 @@ public class WaveUnlock10 : UnlockCondition
         category = Completionist;
     }
     protected override bool TryUnlockCondition => WaveDirector.HighScoreWaveNum > 10;
+    public override UnlockCondition PreReqUnlock => Get<BubblemancerUnlock>();
 }
 public class ChargeShot10 : UnlockCondition
 {
@@ -39,6 +40,7 @@ public class ChargeShot10 : UnlockCondition
     }
     public override PowerUp Power => PowerUp.Get<ChargeShot>();
     protected override bool TryUnlockCondition => Power.PickedUpBestAllRuns >= 10;
+    public override UnlockCondition PreReqUnlock => Get<BubblemancerUnlock>();
 }
 public class ShotSpeed10 : UnlockCondition
 {
@@ -54,6 +56,7 @@ public class ShotSpeed10 : UnlockCondition
     }
     public override PowerUp Power => PowerUp.Get<ShotSpeed>();
     protected override bool TryUnlockCondition => Power.PickedUpBestAllRuns >= 10;
+    public override UnlockCondition PreReqUnlock => Get<BubblemancerUnlock>();
 }
 
 public class StarbarbUnlock5 : UnlockCondition
@@ -70,6 +73,7 @@ public class StarbarbUnlock5 : UnlockCondition
     }
     public override PowerUp Power => PowerUp.Get<Starbarbs>();
     protected override bool TryUnlockCondition => Power.PickedUpBestAllRuns >= 5;
+    public override UnlockCondition PreReqUnlock => Get<BubblemancerUnlock>();
 }
 public class PlayerDeathUnlock10 : UnlockCondition
 {
@@ -85,6 +89,7 @@ public class PlayerDeathUnlock10 : UnlockCondition
     }
     public override PowerUp Power => PowerUp.Get<Starbarbs>();
     protected override bool TryUnlockCondition => PlayerData.PlayerDeaths >= 10;
+    public override UnlockCondition PreReqUnlock => Get<BubblemancerUnlock>();
 }
 public class BubbleBirbUnlock10 : UnlockCondition
 {
@@ -100,6 +105,7 @@ public class BubbleBirbUnlock10 : UnlockCondition
     }
     public override PowerUp Power => PowerUp.Get<BubbleBirb>();
     protected override bool TryUnlockCondition => Power.PickedUpCountAllRuns >= 10;
+    public override UnlockCondition PreReqUnlock => Get<BubblemancerUnlock>();
 }
 public class ThoughtBubbleWave15NoAttack : UnlockCondition
 {
@@ -113,6 +119,7 @@ public class ThoughtBubbleWave15NoAttack : UnlockCondition
         zone = Lab;
         category = Challenge;
     }
+    public override UnlockCondition PreReqUnlock => Get<ThoughtBubbleUnlock>();
 }
 public class GachaponWave15AllSkullWaves : UnlockCondition
 {
@@ -126,6 +133,7 @@ public class GachaponWave15AllSkullWaves : UnlockCondition
         zone = City;
         category = Challenge;
     }
+    public override UnlockCondition PreReqUnlock => Get<GachaponUnlock>();
 }
 public class GachaponBurger : UnlockCondition
 {
@@ -141,6 +149,7 @@ public class GachaponBurger : UnlockCondition
         zone = City;
         category = Completionist;
     }
+    public override UnlockCondition PreReqUnlock => Get<GachaponUnlock>();
 }
 public class GachaponBubblebirb : UnlockCondition
 {
@@ -155,6 +164,7 @@ public class GachaponBubblebirb : UnlockCondition
         zone = City;
         category = Challenge;
     }
+    public override UnlockCondition PreReqUnlock => Get<GachaponUnlock>();
 }
 public class BubblemancerPerfection : UnlockCondition
 {
@@ -170,6 +180,7 @@ public class BubblemancerPerfection : UnlockCondition
         category = Challenge;
     }
     public override int Rarity => 4;
+    public override UnlockCondition PreReqUnlock => Get<BubblemancerUnlock>();
 }
 public class GachaponAddicted : UnlockCondition
 {
@@ -185,6 +196,7 @@ public class GachaponAddicted : UnlockCondition
         category = Completionist;
     }
     public override int Rarity => 4;
+    public override UnlockCondition PreReqUnlock => Get<GachaponUnlock>();
 }
 public class ThoughtBubbleShortForCalc : UnlockCondition
 {
@@ -200,6 +212,7 @@ public class ThoughtBubbleShortForCalc : UnlockCondition
         category = Challenge;
     }
     public override int Rarity => 4;
+    public override UnlockCondition PreReqUnlock => Get<ThoughtBubbleUnlock>();
 }
 public class ThoughtBubbleDecisionsDecisions : UnlockCondition
 {
@@ -215,6 +228,7 @@ public class ThoughtBubbleDecisionsDecisions : UnlockCondition
         category = Completionist;
     }
     public override int Rarity => 2;
+    public override UnlockCondition PreReqUnlock => Get<ThoughtBubbleUnlock>();
 }
 public class GachaponClover : UnlockCondition
 {
@@ -229,6 +243,7 @@ public class GachaponClover : UnlockCondition
         category = Completionist;
     }
     public override int Rarity => 5;
+    public override UnlockCondition PreReqUnlock => Get<GachaponUnlock>();
 }
 public class GachaponHealer : UnlockCondition
 {
@@ -243,6 +258,7 @@ public class GachaponHealer : UnlockCondition
         category = Completionist;
     }
     public override int Rarity => 4;
+    public override UnlockCondition PreReqUnlock => Get<GachaponUnlock>();
 }
 public class ThoughtBubbleArsenal : UnlockCondition
 {
@@ -258,13 +274,14 @@ public class ThoughtBubbleArsenal : UnlockCondition
         category = Completionist;
     }
     public override int Rarity => 2;
+    public override UnlockCondition PreReqUnlock => Get<ThoughtBubbleUnlock>();
 }
 public class FizzyThinkImJustGonnaStandThereAndTakeIt : UnlockCondition
 {
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Fizzy: Dodge Tank");
-        description.WithDescription($"As Y:Fizzy, dodge damage 4 times in a row");
+        description.WithDescription($"As Y:Fizzy, dodge damage 3 times in a row");
     }
     public override void SetAchievementCategories(ref int zone, ref int category)
     {
@@ -272,4 +289,5 @@ public class FizzyThinkImJustGonnaStandThereAndTakeIt : UnlockCondition
         category = Completionist;
     }
     public override int Rarity => 4;
+    public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
 }

@@ -172,10 +172,21 @@ public class Compendium : MonoBehaviour
             else if (PageNumber == 1)
             {
                 Equipment e = DisplayCEE.MyElem.ActiveEquipment;
+                UnlockCondition u = e.GetUnlockCondition();
                 rare = e.GetRarity() - 1;
-                string concat = $"<size=42>{e.GetName()}</size>" + shortLineBreak;
+                string concat;
+                if (!u.PreReqComplete && !e.IsUnlocked)
+                {
+                    rare = -1;
+                    concat = $"<size=42>{e.GetName(true).WithColor(DetailedDescription.LesserGray)}</size>" + shortLineBreak;
+                }
+                else
+                    concat = $"<size=42>{e.GetName()}</size>" + shortLineBreak;
                 concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n", false)}</size>";
-                concat += e.GetDescription() + shortLineBreak;
+                if (!u.PreReqComplete && !e.IsUnlocked)
+                    concat += e.GetDescription().WithColor(DetailedDescription.Gray) + shortLineBreak;
+                else
+                    concat += e.GetDescription() + shortLineBreak;
                 if (!DisplayCEE.IsLocked())
                 {
                     concat += shortLineBreak;
@@ -188,7 +199,7 @@ public class Compendium : MonoBehaviour
                 }
                 concat += shortLineBreak;
                 concat += "Associated Achievement: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
-                concat += e.GetUnlockCondition().GetName();
+                concat += u.GetName();
                 DisplayPortDescription.text = concat;
             }
             else if(PageNumber == 2)
@@ -222,39 +233,44 @@ public class Compendium : MonoBehaviour
                 rare = DisplayCPAchievement.GetRare() - 1;
                 string concat = $"<size=42>{DisplayCPAchievement.MyUnlock.GetName()}</size>" + shortLineBreak;
                 concat += DisplayCPAchievement.MyUnlock.GetDescription() + shortLineBreak;
-                if(DisplayCPAchievement.MyUnlock.AssociatedUnlocks.Count > 0)
+                if(DisplayCPAchievement.MyUnlock.PreReqComplete)
                 {
-                    concat += "Associated Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
-                    foreach (Equipment e in DisplayCPAchievement.MyUnlock.AssociatedUnlocks)
+                    if (DisplayCPAchievement.MyUnlock.AssociatedUnlocks.Count > 0)
                     {
-                        string name = e.IsUnlocked ? e.GetName() : DetailedDescription.BastardizeText(e.GetName(), '?');
-                        concat += "  " + name + '\n';
+                        concat += "Associated Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
+                        foreach (Equipment e in DisplayCPAchievement.MyUnlock.AssociatedUnlocks)
+                        {
+                            string name = e.IsUnlocked ? e.GetName() : DetailedDescription.BastardizeText(e.GetName(), '?');
+                            concat += "  " + name + '\n';
+                        }
+                        concat += shortLineBreak;
                     }
-                    concat += shortLineBreak;
-                }
-                if (DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks.Count > 0)
-                {
-                    concat += "Black Market Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
-                    foreach (PowerUp p in DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks)
+                    if (DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks.Count > 0)
                     {
-                        string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.DetailedDescription.GetName() : "???".WithColor(DetailedDescription.Rares[rare]);
-                        concat += "  " + name + '\n';
+                        concat += "Black Market Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
+                        foreach (PowerUp p in DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks)
+                        {
+                            string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.DetailedDescription.GetName() : "???".WithColor(DetailedDescription.Rares[rare]);
+                            concat += "  " + name + '\n';
+                        }
+                        concat += shortLineBreak;
                     }
-                    concat += shortLineBreak;
+                    concat += "Achievement Category: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
+                    if (DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.Meadows)
+                        concat += "  Meadows\n".WithColor(DetailedDescription.Rares[1]);
+                    else if (DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.City)
+                        concat += "  City\n".WithColor(DetailedDescription.Rares[2]);
+                    else if (DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.Lab)
+                        concat += "  Lab\n".WithColor(DetailedDescription.Rares[3]);
+                    if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Completionist)
+                        concat += "  Completionist\n".WithColor(DetailedDescription.Rares[4]);
+                    else if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Challenge)
+                        concat += "  Challenge\n".WithColor(DetailedDescription.Rares[5]);
+                    else if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Secret)
+                        concat += "  Secret\n".WithColor(DetailedDescription.Rares[0]);
                 }
-                concat += "Achievement Category: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
-                if(DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.Meadows)
-                    concat += "  Meadows\n".WithColor(DetailedDescription.Rares[1]);
-                else if (DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.City)
-                    concat += "  City\n".WithColor(DetailedDescription.Rares[2]);
-                else if(DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.Lab)
-                    concat += "  Lab\n".WithColor(DetailedDescription.Rares[3]);
-                if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Completionist)
-                    concat += "  Completionist\n".WithColor(DetailedDescription.Rares[4]);
-                else if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Challenge)
-                    concat += "  Challenge\n".WithColor(DetailedDescription.Rares[5]);
-                else if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Secret)
-                    concat += "  Secret\n".WithColor(DetailedDescription.Rares[0]);
+                else
+                    rare = -1;
                 DisplayPortDescription.text = concat;
             }
             UpdateStars(rare);

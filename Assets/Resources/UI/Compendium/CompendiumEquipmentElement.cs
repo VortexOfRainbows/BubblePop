@@ -106,7 +106,22 @@ public class CompendiumEquipmentElement : CompendiumElement
     }
     public override int GetRare(bool reverse = false)
     {
-        return MyElem.ActiveEquipment.GetRarity();
+        UnlockCondition MyUnlock = MyElem.ActiveEquipment.GetUnlockCondition();
+        return MyUnlock.PreReqComplete || MyUnlock.Unlocked ? MyElem.ActiveEquipment.GetRarity() : MyUnlock.Rarity + (reverse ? -10 : 10);
+    }
+    public override int GetIDForSorting(bool reverse = false)
+    {
+        UnlockCondition MyUnlock = MyElem.ActiveEquipment.GetUnlockCondition();
+        int id = TypeID;
+        if (MyUnlock.PreReqUnlock != null)
+        {
+            int dir = reverse ? -1 : 1;
+            id += MyUnlock.Rarity * 100;
+            id += (MyUnlock.PreReqUnlock.MyID + 1) * 1000 * dir;
+            if (!MyUnlock.PreReqComplete && !MyUnlock.Unlocked)
+                id += 10000 * dir;
+        }
+        return id;
     }
     public override int GetCount()
     {

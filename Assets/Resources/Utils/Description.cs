@@ -227,6 +227,10 @@ public class DetailedDescription
     }
     public static string TextBoundedByRarityColor(int rare, string text, bool blackMarket)
     {
+        if(rare == -1)
+            return TextBoundedByColor(LesserGray, text);
+        else if (rare == -2)
+            return TextBoundedByColor(Gray, text);
         return TextBoundedByColor(Rares[blackMarket ? 5 : rare], text);
     }
     public string TextBoundedByRarityColor(string text)

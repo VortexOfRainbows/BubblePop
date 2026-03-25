@@ -33,7 +33,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         }
         AlternativeDisplayElement.gameObject.SetActive(IsPowerUnlock);
         MyElem.Visual.SetActive(!IsPowerUnlock);
-        MyElem.AchievementElement = true;
+        MyElem.ParentAchieve = this;
         TypeID = i;
         if (MyUnlock.Unlocked && !Selected && Style != 3 && Style != 5)
         {
@@ -59,11 +59,23 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     }
     public override int GetRare(bool reverse = false)
     {
-        return MyUnlock.Rarity;
+        return MyUnlock.PreReqComplete || MyUnlock.Unlocked ? MyUnlock.Rarity : MyUnlock.Rarity + (reverse ? -10 : 10);
     }
     public override int GetCount()
     {
         return TypeID + 1;
+    }
+    public override int GetIDForSorting(bool reverse = false)
+    {
+        int id = TypeID;
+        if (MyUnlock.PreReqUnlock != null)
+        {
+            int dir = reverse ? -1 : 1;
+            id += (MyUnlock.PreReqUnlock.MyID + 1) * 1000 * dir;
+            if (!MyUnlock.PreReqComplete && !MyUnlock.Unlocked)
+                id += 10000 * dir;
+        }
+        return id;
     }
     public override bool IsLocked()
     {
@@ -90,8 +102,10 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         float x = Compendium.Instance.AchievementPage.PowerUpLayoutGroup.spacing.x - Compendium.Instance.AchievementPage.PowerUpLayoutGroup.padding.right;
         DescriptionArea.sizeDelta = new Vector2(x, DescriptionArea.sizeDelta.y);
         DescriptionArea.gameObject.SetActive(Compendium.Instance.AchievementPage.WideDisplayStyle);
+
         NameText.text = MyUnlock.GetName();
-        DescriptionText.text = /*MyUnlock.Completed ? "Completed!" :*/ MyUnlock.GetDescription();
+        DescriptionText.text = MyUnlock.GetDescription();
+
         CombinedRect.sizeDelta = new Vector2(DescriptionArea.sizeDelta.x, 0);
     }
 }

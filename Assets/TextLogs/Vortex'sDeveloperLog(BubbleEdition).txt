@@ -10,10 +10,9 @@ Do Later:
 7. Localization and text organization system
 
 Need to do:
-1. Unlock system might need more reworks in the future (hide far away unlocks, only directly showing character unlocks unless the character has already been unlocked, in which case their equipment can be shown too. Example: if you don't have thought bubble unlocked, the thought bubble-related unlocks are hidden entirely)
-	1. Achievement chains, to hide achievements that are currently unobtainable
-	2. Hide unlocks from char select until they are unlocked, including subequipments
-	3. Progress display for achievements
+1. Unlock system might need more reworks in the future
+	1. Hide unlocks from char select until they are unlocked, including subequipments
+	2. Progress display for achievements
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. Economy: Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more)
@@ -30,11 +29,10 @@ Need to do:
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Maybe shift roadblock visuals to the player so it's more encompassing
-2. Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp
-3. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
+2. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
-4. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
-5. Normalize player customization layering (not super important but part of a future task)
+3. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
+4. Normalize player customization layering (not super important but part of a future task)
 
 Current Task List:
 1. Multiplayer: bubble shield may not be refreshing on repeated pickup
@@ -42,7 +40,7 @@ Current Task List:
 
 Done: 
 
-3/23/26 to 3/24/26
+3/23/26 to 3/25/26
 1. Try fixing bug where sentinel lasers sometimes were extremely big
 2. Add Carbon Force, Flavor Explosion, Explosion Radius, Bonus Boards, Kickflip powers
 3. Some adjustments to power balancing (Bottle Flip is now epic) and description wording for various powers
@@ -57,6 +55,12 @@ Done:
 11. WIP Dirt resprites by SAM
 12. Coupons now cost 2 shards to replicate (this might be temporary until shop reworks)
 13. Reduce some of the deacceleration from mounting skateboard
+14. Add achievement chains. Now achievements are "covered" until prereqs are complete
+	1. Achievement menu is now better sorted, including where "covered" achievements are placed in the menu
+15. Equipment page should also have some different functionality with this system
+	1. Equipment page now uses the same sorting system as the achievement sort, meaning "covered" equips are now placed at the bottom, etc.
+	2. Equipment page now defaults to a "Group" sorting system which replaces the "ID" sort for this page.
+16. Fix some compendium issues where power unlocks displayed the wrong hover text in grid display mode
 
 3/20/26 to 3/21/26
 1. Choice now costs 2 shards to replicate

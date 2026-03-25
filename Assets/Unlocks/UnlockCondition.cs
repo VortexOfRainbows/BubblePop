@@ -41,7 +41,7 @@ public abstract class UnlockCondition
         unlock.MyID = typeCounter;
         Unlocks[typeCounter] = unlock;
         Reverses[typeName] = typeCounter;
-        Debug.Log($"Added: {unlock.LockedText()} to the dictionary at index {typeCounter}");
+        Debug.Log($"Added: {unlock.SaveString} to the dictionary at index {typeCounter}");
         typeCounter++;
         maximumTypes++;
     }
@@ -120,10 +120,7 @@ public abstract class UnlockCondition
     }
     public bool Unlocked => FakeComplete || TryUnlock();
     protected virtual bool TryUnlockCondition => false;
-    public string LockedText()
-    {
-        return Description.BriefDescription();
-    }
+    public string LockedText() => GetDescription(true);
     protected bool Completed { get; set; } = false;
     private bool HasShownCompletionMessage { get; set; } = false;
     private bool FakeComplete = false;
@@ -188,10 +185,14 @@ public abstract class UnlockCondition
     protected DetailedDescription Description;
     public string GetName()
     {
+        if(!PreReqComplete && !Completed)
+            return "???".WithColor(DetailedDescription.LesserGray);
         return DetailedDescription.TextBoundedByRarityColor(Rarity - 1, Description.GetName(true), false);
     }
     public string GetDescription(bool brief = false)
     {
+        if (!PreReqComplete && !Completed)
+            return "Play more to uncover".WithColor(DetailedDescription.Gray);
         return brief ? Description.BriefDescription() : Description.FullDescription();
     }
     public virtual int Rarity => AssociatedUnlocks.Count > 0 ? FrontPageUnlock().GetRarity() : 1;
@@ -218,4 +219,6 @@ public abstract class UnlockCondition
     }
     public List<Equipment> AssociatedUnlocks { get; private set; }
     public List<PowerUp> AssociatedBlackMarketUnlocks { get; private set; }
+    public bool PreReqComplete => PreReqUnlock == null || PreReqUnlock.Completed;
+    public virtual UnlockCondition PreReqUnlock => null;
 }
