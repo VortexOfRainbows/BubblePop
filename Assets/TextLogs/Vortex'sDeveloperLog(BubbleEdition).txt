@@ -16,7 +16,7 @@ Need to do:
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. Economy: Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more)
-4. Add a GEM currency, which can be used to reroll shop selections
+4. Add a GEM currency, which can be used to reroll shop selections, print items at a FORGE
 5. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
 6. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 7. Enemy Pathfinding
@@ -26,6 +26,8 @@ Need to do:
 	2. Make powers show which pools they belong to
 	3. Make blurbs appear in the equipment page
 	4. Add flavortext for all compendium elements
+10. New sounds for Rock Golem
+11. Finalize Procedural World generation to actually generate things FULLY randomly instead of in the guaranteed map shape
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Maybe shift roadblock visuals to the player so it's more encompassing
@@ -34,19 +36,19 @@ Less Important (mostly non-issues or complete already), but in consideration:
 3. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
 4. Normalize player customization layering (not super important but part of a future task)
 
-Current Task List:
-1. Multiplayer: bubble shield may not be refreshing on repeated pickup
+Multiplayer Task List:
+1. Bubble shield may not be refreshing on repeated pickup
 
 
 Done: 
 
 3/23/26 to 3/25/26
 1. Try fixing bug where sentinel lasers sometimes were extremely big
-2. Add Carbon Force, Flavor Explosion, Explosion Radius, Bonus Boards, Kickflip powers
+2. Add Carbon Force, Flavor Explosion, Explosion Radius, Bonus Boards, Kickflip powers (rename Bonus Fizz to Bottle Burst)
 3. Some adjustments to power balancing (Bottle Flip is now epic) and description wording for various powers
 4. Soapy soap stack factor 5 (+3) -> 4 (+4)
 5. Damage popup numbers are now put into a small buffer to reduce the amount of numbers that popup by summing the damage values
-	1. This doesn't actually change damage calculations at all, but makes the game more readable and less laggy (thing of PVZ GW2 peashooter damage number)
+	1. This doesn't actually change damage calculations at all, but makes the game more readable and less laggy (think of PVZ GW2 peashooter damage number)
 6. Bubble shield bubbles released capped at 1024
 7. Add Fizzy: Dodge Tank achievement (Fancy Footwork)
 8. New Node: Loss, LightBulbNoCrucibe (has 2 keys)

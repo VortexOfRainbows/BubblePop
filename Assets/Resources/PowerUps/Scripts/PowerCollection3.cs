@@ -4,7 +4,7 @@ public class BonusFizz : Shotgun
     public override void InitializeDescription(ref DetailedDescription description)
     {
         base.InitializeDescription(ref description);
-        description.WithName("Bonus Fizz");
+        description.WithName("Bottle Burst");
     }
 }
 public class BottleBlast : BubbleBlast
