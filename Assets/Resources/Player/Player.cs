@@ -468,8 +468,13 @@ public partial class Player : Entity
                 else
                 {
                     float iPer = 1 - f.SkateboardPercent;
-                    cSpeed *= iPer * iPer;
+                    cSpeed *= 0.1f + 0.9f * iPer * iPer;
                     velocity *= 0.98f;
+                }
+                if(!f.OnSkateboard || f.SkateboardPercent < 1)
+                {
+                    float bonusSkateboardSpeed = 1.0f + Kickflip * (f.OnSkateboard ? 0.3f : 0.15f);
+                    cSpeed *= bonusSkateboardSpeed;
                 }
             }
         }

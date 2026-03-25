@@ -22,7 +22,7 @@ public class Fizzy : Body
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add(PowerUp.Get<BonusBoards>());
-        powerPool.Add(PowerUp.Get<WeaponUpgrade>());
+        powerPool.Add(PowerUp.Get<Kickflip>());
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

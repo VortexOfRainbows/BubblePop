@@ -58,7 +58,7 @@ public class RollForDexterity : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to gain Y:15% increased movement speed after using Y:[your ability,] stacking up to Y:2 G:(+1 per stack) times and lasting Y:[5 seconds]");
+        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to gain Y:15% increased Y:[movement speed] after using Y:[your ability,] stacking up to Y:2 G:(+1 per stack) times and lasting Y:[5 seconds]");
         description.WithShortDescription("Chance to gain increased speed after using your ability");
     }
     public override void HeldEffect(Player p)
@@ -398,6 +398,10 @@ public class Coupons : PowerUp
     public override void HeldEffect(Player p)
     {
         p.ShopDiscount += 0.12f * Stack;
+    }
+    public override int ShardReplicationCost(int stackSize = 1)
+    {
+        return stackSize * 2;
     }
 }
 public class CloudWalker : PowerUp

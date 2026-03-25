@@ -122,3 +122,20 @@ public class BonusBoards : PowerUp
         p.BonusBoards += Stack;
     }
 }
+public class Kickflip : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Kickflip");
+        description.WithDescription("Increases Y:[movement speed] by Y:15% G:(+15% per stack) while Y:mounting or Y:dismounting your Y:Skateboard");
+        description.WithShortDescription("Faster movement while mounting or dismounting Skateboard");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.Kickflip += Stack;
+    }
+}
