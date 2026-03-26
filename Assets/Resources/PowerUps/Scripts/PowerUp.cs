@@ -312,7 +312,12 @@ public abstract class PowerUp
         AmountPickedUpAcrossAllRuns += amt;
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;
-        if(player.PowerCount >= 20 && player.Body is ThoughtBubble)
+        if(player.Body is Gachapon)
+        {
+            if (this is Burger && Stack >= 3)
+                UnlockCondition.Get<GachaponBurger>().SetComplete();
+        }
+        else if (player.PowerCount >= 20 && player.Body is ThoughtBubble)
             UnlockCondition.Get<ThoughtBubbleArsenal>().SetComplete();
     }
     public void AddToDisplayQueue()

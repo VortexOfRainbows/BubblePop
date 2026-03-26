@@ -140,10 +140,9 @@ public class GachaponBurger : UnlockCondition
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Gachapon: Yummy!");
-        description.WithDescription($"Possess 3 {Power.UnlockedName} in a single run");
+        description.WithDescription($"As Y:Gachapon, possess 3 {Power.UnlockedName} in a single run");
     }
     public override PowerUp Power => PowerUp.Get<Burger>();
-    protected override bool TryUnlockCondition => Power.PickedUpBestAllRuns >= 3;
     public override void SetAchievementCategories(ref int zone, ref int category)
     {
         zone = City;

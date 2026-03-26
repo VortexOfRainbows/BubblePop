@@ -25,7 +25,8 @@ public class ShadyCoat : LabCoat
     }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"Increases the rate at which Y:[black market items] appear in the shop by Y:200%"));
+        abilities.Add(new Ability(Ability.ID.Passive, $"Increases the rate at which Y:[Black Market powers] appear in the shop by Y:100%"));
+        abilities.Add(new Ability(Ability.ID.Passive, $"Y:[Black Market crates] have a Y:5% chance to Y:[replace chest rewards]"));
     }
     public override void Init()
     {
@@ -60,6 +61,6 @@ public class ShadyCoat : LabCoat
     }
     public override void EquipUpdate()
     {
-        Player.BlackmarketMult += 2;
+        Player.BlackmarketMult += 1;
     }
 }
