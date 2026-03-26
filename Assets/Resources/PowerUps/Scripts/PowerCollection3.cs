@@ -13,8 +13,8 @@ public class BottleBlast : BubbleBlast
     {
         base.InitializeDescription(ref description);
         description.WithName("Bottle Blast");
-        description.WithDescription("Your Y:[secondary attack] releases Y:4 G:(+4 per stack) additional bubbles on impact");
-        description.WithShortDescription("Your secondary attack releases extra bubbles");
+        description.WithDescription("Y:[Secondary attack] releases Y:4 G:(+4 per stack) additional bubbles on impact");
+        description.WithShortDescription("Secondary attack releases extra bubbles");
     }
 }
 public class BottleFlip : PowerUp
@@ -26,8 +26,8 @@ public class BottleFlip : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bottle Flip");
-        description.WithDescription("Your Y:[secondary attack] bounces and Y:explodes Y:1 G:(+1 per stack) additional times");
-        description.WithShortDescription("Your secondary attack bounces and explodes an additional time");
+        description.WithDescription("Y:[Secondary attack] bounces and Y:explodes Y:1 G:(+1 per stack) additional times");
+        description.WithShortDescription("Secondary attack bounces and explodes an additional time");
     }
     public override void HeldEffect(Player p)
     {
@@ -158,6 +158,27 @@ public class RetaliatoryBlast : PowerUp
     public override void HeldEffect(Player p)
     {
         p.RetaliatoryBomb += Stack;
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
+    }
+}
+public class BombasticBrew : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Bombastic Brew");
+        description.WithDescription("Secondary attack drop a Y:3 G:(+3 per stack) Y:[damage bath bomb] \nY:[Explosion size] scales with Y:damage");
+        description.WithShortDescription("Secondary attack drops a bath bomb");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BombBrew += Stack;
     }
     public override Sprite GetAdornment()
     {

@@ -19,7 +19,7 @@ public class Cola : Weapon
         powerPool.Add<BottleBlast>();
         powerPool.Add<BottleFlip>();
         powerPool.Add<CarbonForce>();
-        //powerPool.Add<Starshot>();
+        powerPool.Add<BombasticBrew>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

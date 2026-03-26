@@ -83,6 +83,12 @@ public class ColaProj : Projectile
             Projectile.NewProjectile<SmallBubble>(Destination, 
                 direction, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
         }
+        if(PlayerOwner.BombBrew > 0)
+        {
+            Vector2 velo = Utils.RandCircle(3);
+            Vector2 endPos = velo + (Vector2)transform.position;
+            Projectile.NewProjectile<BathBomb>(transform.position, velo, PlayerOwner.BombBrew * 3, PlayerOwner, endPos.x, endPos.y, 3, 0.66f);
+        }
         if (Data[3] > 0)
         {
             Vector2 toBouncePosition = Utils.RandCircleEdge(4 + 6 * SpeedLockContribution);

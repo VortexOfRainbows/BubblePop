@@ -105,8 +105,8 @@ public class SoapySoap : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Your Y:[secondary attack] releases Y:4 G:(+4 per stack) bubbles while traveling, plus Y:[2 more bubbles for each charge level]");
-        description.WithShortDescription("Your secondary attack leaves behind a trail of bubbles");
+        description.WithDescription("Y:[Secondary attack] releases Y:4 G:(+4 per stack) bubbles while traveling, plus Y:[2 more bubbles for each charge level]");
+        description.WithShortDescription("Secondary attack leaves behind a trail of bubbles");
     }
     public override void HeldEffect(Player p)
     {
@@ -121,8 +121,8 @@ public class BubbleBlast : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Your Y:[secondary attack] releases Y:4 G:(+3 per stack) bubbles upon expiring, plus Y:1 G:(+1 per stack) Y:[more bubbles for each charge level]");
-        description.WithShortDescription("Your secondary attack releases bubbles upon expiring");
+        description.WithDescription("Y:[Secondary attack] releases Y:4 G:(+3 per stack) bubbles upon expiring, plus Y:1 G:(+1 per stack) Y:[more bubbles for each charge level]");
+        description.WithShortDescription("Secondary attack releases bubbles upon expiring");
     }
     public override void HeldEffect(Player p)
     {

@@ -23,6 +23,8 @@ public class BathBomb : Projectile
         transform.localScale = new Vector3(0, 0, 1);
         startPos = transform.position;
         playerStartPos = PlayerOwner.lastPos;
+        if (Data.Length > 2)
+            playerStartPos = startPos;
     }
     public override void AI()
     {
@@ -47,7 +49,7 @@ public class BathBomb : Projectile
                 Kill();
             else
             {
-                AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 1.1f, 1.2f + 0.2f * timer2, 0);
+                AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 1.0f * (Data.Length > 3 ? Data[3] : 1.0f), 1.2f + 0.2f * timer2, 0);
                 playerStartPos = startPos = Destination;
                 Destination += RB.velocity * (Time.fixedDeltaTime * 50);
                 RB.velocity *= 0.5f;
@@ -63,19 +65,22 @@ public class BathBomb : Projectile
         RB.MovePosition(pos);
 
         float targetScale = 1.0f + sin * 0.05f * (timer2 + 2);
+        targetScale *= Data.Length > 3 ? Data[3] : 1.0f;
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
-        SpriteRendererGlow.transform.localScale = transform.localScale * 2;
+        SpriteRendererGlow.transform.LerpLocalScale(Vector2.one * (2 + timer2 * 0.15f), .1f);
         SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, new Color(sin + timer2 * 0.1f, 0.0f, 0.0f), 0.1f);
     }
     public override void OnKill()
     {
         float range = 1.0f + Mathf.Sqrt(Damage / 10f) * 0.75f; //Starting damage is 10, so scaling is based off of that
+        range *= Data.Length > 3 ? Data[3] : 1.0f;
         AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1.1f, 0.7f);
-        for (int i = 0; i < 8; i++)
+        float count = Data.Length > 2 ? Data[2] : 8;
+        for (int i = 0; i < count; i++)
         {
-            float r = Mathf.PI * i / 4f;
-            Vector2 circular = new Vector2(1, 0).RotatedBy(r + Utils.RandFloat(-Mathf.PI / 8f, Mathf.PI / 8f));
-            NewProjectile<BathBombShrapnel>((Vector2)transform.position + circular * 0.5f, circular * Utils.RandFloat(4, 8), 5, Owner, 0, Data2);
+            float r = Mathf.PI * i / count * 2;
+            Vector2 circular = new Vector2(1, 0).RotatedBy(r + Utils.RandFloat(-Mathf.PI / count, Mathf.PI / count));
+            NewProjectile<BathBombShrapnel>((Vector2)transform.position + circular * 0.5f, circular * Utils.RandFloat(4, 8), Damage * 0.25f, Owner, 0, Data2);
         }
         NewProjectile<ColaExplode>((Vector2)transform.position, Vector2.zero, Damage, Owner, range, 2.5f, 1);
     }
@@ -85,7 +90,9 @@ public class BathBomb : Projectile
         float sin = Mathf.Sin(percent * Mathf.PI);
         Vector3 drawPos = Vector2.Lerp(playerStartPos, Destination, percent);
         drawPos.y -= 0.5f;
-        SpriteBatch.Draw(Main.TextureAssets.Shadow, drawPos, new Vector2(2.0f, 1.4f), 0,
+        Vector2 scale = new(2.0f, 1.4f);
+        scale *= Data.Length > 3 ? Data[3] : 1.0f;
+        SpriteBatch.Draw(Main.TextureAssets.Shadow, drawPos, scale, 0,
             new Color(0, 0, 0, 0.3f + 0.2f * sin), -50, Main.TextureAssets.AlphaShader);
     }
     public override bool? CanBeAffectedByHoming() => true;
