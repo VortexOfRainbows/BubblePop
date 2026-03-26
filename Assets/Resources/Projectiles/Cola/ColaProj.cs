@@ -182,7 +182,14 @@ public class ColaExplode : SupernovaExplode
     }
     public override void OnHitTarget(Entity target)
     {
-        //do not remove this. We don't want the original effect of working with starbarbs from inheriting supernova
+        if (target.Life <= 0 && Data.Length > 2)
+        {
+            int count = PlayerOwner.PrizeBombCoins;
+            if (count > 0)
+            {
+                CoinManager.SpawnCoin(target.transform.position, (int)count, 1);
+            }
+        }
     }
 }
 public class SkateboardProj : Projectile

@@ -28,6 +28,7 @@ Need to do:
 	4. Add flavortext for all compendium elements
 10. New sounds for Rock Golem
 11. Finalize Procedural World generation to actually generate things FULLY randomly instead of in the guaranteed map shape
+12. Fix chest stuck issue
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Maybe shift roadblock visuals to the player so it's more encompassing
@@ -43,13 +44,14 @@ Multiplayer Task List:
 Done: 
 
 3/25/26 to 3/26/26
-1. Retaliatory Blast, Bombastic Brew, Collateral Damage, Cluster Bomb, powers
+1. Retaliatory Blast, Bombastic Brew, Collateral Damage, Cluster Bomb, Prize Bomb, Sharp Bomb powers
 2. Rework Bath Bomb projectiles to be friendly and part of the cool cap power line
 3. Shady Coat rate at which black market spawns from shops are decreased 200% -> 100%
 4. Shady Coat now provides a 5% chance to replace chest rewards with a black market crate
 5. Gachapon: Yummy Achievement can no longer be completed on any character, now requires Gachapon
 6. Remove "Your" from a few power descriptions where it was unnecessary (won't be the last time this happens)
 7. Rename Cola Explosion Radius to Splash Radius to make it more distinct from bath bomb explosive stats
+8. Reduce hitbox size on shop gachapon by .10 units which should make getting stuck impossible now
 
 3/23/26 to 3/25/26
 1. Try fixing bug where sentinel lasers sometimes were extremely big

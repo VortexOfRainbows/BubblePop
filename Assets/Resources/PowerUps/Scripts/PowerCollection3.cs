@@ -247,3 +247,45 @@ public class ClusterBombs : PowerUp
         return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
     }
 }
+public class SharpBombs : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Sharp Bombs");
+        description.WithDescription("Y:[Bath bombs] release Y:50% G:(+50% per stack) more Y:shrapnel \nIncreases lifespan of Y:shrapnel by Y:10% G:(+10% per stack)");
+        description.WithShortDescription("Bath bombs release extra shrapnel");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BonusShrapnel += 0.5f * Stack;
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
+    }
+}
+public class PrizeBombs : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Epic;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Prize Bombs");
+        description.WithDescription("Enemies drop Y:10 G:(+10 per stack) additional Y:coins when killed by Y:[bath bombs] or Y:shrapnel");
+        description.WithShortDescription("Enemies drop coins when killed by bath bombs");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.PrizeBombCoins += 10 * Stack;
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/Dice/InsightAddOn");
+    }
+}

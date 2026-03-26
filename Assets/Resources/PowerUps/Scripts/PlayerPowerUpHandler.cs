@@ -151,6 +151,8 @@ public partial class Player : Entity
     public int BonusBoards = 0;
     public int Kickflip = 0;
     public int RetaliatoryBomb = 0, BombBrew, SkullBomb, ClusterBomb = 0;
+    public float BonusShrapnel = 0.0f;
+    public int PrizeBombCoins = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -205,7 +207,8 @@ public partial class Player : Entity
         BottleFlip = 0;
         DodgeStat = 0.0f;
         BonusBubblePierce = 0;
-        ExplodingBubbles = BonusBoards = Kickflip = RetaliatoryBomb = BombBrew = SkullBomb = ClusterBomb = 0;
+        ExplodingBubbles = BonusBoards = Kickflip = RetaliatoryBomb = BombBrew = SkullBomb = ClusterBomb = PrizeBombCoins = 0;
+        BonusShrapnel = 0.0f;
     }
     private void UpdatePowerUps()
     {

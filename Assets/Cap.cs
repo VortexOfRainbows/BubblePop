@@ -15,8 +15,8 @@ public class Cap : BubblemancerHat
         powerPool.Add<RetaliatoryBlast>();
         powerPool.Add<CollateralDamage>();
         powerPool.Add<ClusterBombs>();
-        //powerPool.Add<Starbarbs>();
-        //powerPool.Add<Supernova>();
+        powerPool.Add<SharpBombs>();
+        powerPool.Add<PrizeBombs>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

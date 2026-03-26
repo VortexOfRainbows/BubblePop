@@ -52,7 +52,7 @@ public class BathBomb : Projectile
                 Kill();
             else
             {
-                AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 1.0f * (Data.Length > 3 ? Data[3] : 1.0f), 1.2f + 0.2f * timer2, 0);
+                AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 0.8f * (Data.Length > 3 ? Data[3] : 1.0f), 1.2f + 0.2f * timer2, 0);
                 playerStartPos = startPos = Destination;
                 Destination += RB.velocity * (Time.fixedDeltaTime * 50);
                 RB.velocity *= 0.5f;
@@ -79,11 +79,14 @@ public class BathBomb : Projectile
         range *= Data.Length > 3 ? Data[3] : 1.0f;
         AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1.1f, 0.7f);
         float count = Data.Length > 2 ? Data[2] : 8;
-        for (int i = 0; i < count; i++)
+        float actualCount = Mathf.Round(count * (1 + PlayerOwner.BonusShrapnel) + 0.49f);
+        if (actualCount > 1024)
+            actualCount = 1024; //Most items have no hard limit, but I feel this is necessary
+        for (int i = 0; i < actualCount; i++)
         {
-            float r = Mathf.PI * i / count * 2;
-            Vector2 circular = new Vector2(1, 0).RotatedBy(r + Utils.RandFloat(-Mathf.PI / count, Mathf.PI / count));
-            NewProjectile<BathBombShrapnel>((Vector2)transform.position + circular * 0.5f, circular * Utils.RandFloat(4, 8), Damage / 2f, Owner, 0, Data2);
+            float r = Mathf.PI * i / actualCount * 2;
+            Vector2 circular = new Vector2(1, 0).RotatedBy(r + Utils.RandFloat(-Mathf.PI / actualCount, Mathf.PI / actualCount));
+            NewProjectile<BathBombShrapnel>((Vector2)transform.position + circular * 0.5f, circular * Utils.RandFloat(1, 8), Damage / 2f, Owner, 0, Data2);
         }
         if (PlayerOwner.ClusterBomb > 0 && Data.Length < 5)
         {
@@ -122,6 +125,17 @@ public class BathBomb : Projectile
     }
     public override bool OnInsideTile() => false;
     public override bool OnTileCollide(Collider2D collision) => false;
+    public override void OnHitTarget(Entity target)
+    {
+        if(target.Life <= 0)
+        {
+            int count = PlayerOwner.PrizeBombCoins;
+            if (count > 0)
+            {
+                CoinManager.SpawnCoin(target.transform.position, (int)count, 1);
+            }
+        }
+    }
 }
 public class BathBombShrapnel : Projectile
 {
@@ -135,6 +149,9 @@ public class BathBombShrapnel : Projectile
         Hostile = false;
         Friendly = true;
         timer -= Utils.RandInt(20);
+        timer -= 20 * PlayerOwner.BonusShrapnel;
+        if (timer < -410)
+            timer = -410;
     }
     public override void AI()
     {
@@ -158,5 +175,16 @@ public class BathBombShrapnel : Projectile
             ParticleManager.NewParticle((Vector2)transform.position, Utils.RandFloat(0.2f, 0.3f), circular * Utils.RandFloat(3, 6), 3f, 0.4f, ParticleManager.ID.Bubble, SpriteRendererGlow.color);
         }
         AudioManager.PlaySound(SoundID.SoapDie, transform.position, 0.4f, 0.8f);
+    }
+    public override void OnHitTarget(Entity target)
+    {
+        if (target.Life <= 0)
+        {
+            int count = PlayerOwner.PrizeBombCoins;
+            if (count > 0)
+            {
+                CoinManager.SpawnCoin(target.transform.position, (int)count, 1);
+            }
+        }
     }
 }

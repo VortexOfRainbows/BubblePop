@@ -51,10 +51,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4177b109971490449e1470692b9c663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MyPlayer: {fileID: 0}
+  DropShadow: {fileID: 0}
   PointDirOffset: 0
   MoveOffset: 0
   DashOffset: 0
-  IsMainPlayerAnimator: 0
+  RealPlayer: 0
   squash: 1
   Bobbing: 1
   rb: {fileID: 7482800386599377654}
@@ -125,7 +127,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.3}
   serializedVersion: 2
-  m_Radius: 1.35
+  m_Radius: 1.25
 --- !u!114 &8691471864086795411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,6 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Visual: {fileID: 5057068482299052583}
   SpawnedIn: 0
+  HasCalledInit: 0
   RB: {fileID: 0}
   p: {fileID: 7710747734503710076}
 --- !u!212 &4870930668747883590
