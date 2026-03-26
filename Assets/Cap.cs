@@ -13,8 +13,8 @@ public class Cap : BubblemancerHat
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
         powerPool.Add<RetaliatoryBlast>();
-        //powerPool.Add<LuckyStar>();
-        //powerPool.Add<BinaryStars>();
+        powerPool.Add<CollateralDamage>();
+        powerPool.Add<ClusterBombs>();
         //powerPool.Add<Starbarbs>();
         //powerPool.Add<Supernova>();
     }

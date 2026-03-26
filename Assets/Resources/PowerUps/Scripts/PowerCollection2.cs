@@ -401,7 +401,7 @@ public class Coupons : PowerUp
     }
     public override int ShardReplicationCost(int stackSize = 1)
     {
-        return stackSize * 2;
+        return stackSize * 1;
     }
 }
 public class CloudWalker : PowerUp

@@ -87,7 +87,7 @@ public class ColaProj : Projectile
         {
             Vector2 velo = Utils.RandCircle(3);
             Vector2 endPos = velo + (Vector2)transform.position;
-            Projectile.NewProjectile<BathBomb>(transform.position, velo, PlayerOwner.BombBrew * 3, PlayerOwner, endPos.x, endPos.y, 3, 0.66f);
+            Projectile.NewProjectile<BathBomb>(transform.position, velo, PlayerOwner.BombBrew * 2, PlayerOwner, endPos.x, endPos.y, 2, 0.6f);
         }
         if (Data[3] > 0)
         {

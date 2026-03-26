@@ -177,6 +177,15 @@ public class Projectile : MonoBehaviour
                 }
             }
         }
+        if(PlayerOwner.SkullBomb > 0)
+        {
+            if(target.Life <= 0 && target is Enemy e && e.IsSkull)
+            {
+                Vector2 velo = Utils.RandCircle(3);
+                Vector2 endPos = velo + (Vector2)transform.position;
+                Projectile.NewProjectile<BathBomb>(transform.position, velo, PlayerOwner.SkullBomb * 5, PlayerOwner, endPos.x, endPos.y, 4, 0.8f);
+            }
+        }
         OnHitTarget(target);
     }
     /// <summary>

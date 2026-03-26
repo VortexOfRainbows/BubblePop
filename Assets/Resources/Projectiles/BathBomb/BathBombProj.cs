@@ -25,6 +25,9 @@ public class BathBomb : Projectile
         playerStartPos = PlayerOwner.lastPos;
         if (Data.Length > 2)
             playerStartPos = startPos;
+        if (Data.Length > 4)
+            BounceTimeNeeded *= 0.9f;
+        BounceTimeNeeded *= Utils.RandFloat(0.9f, 1.0f);
     }
     public override void AI()
     {
@@ -80,9 +83,22 @@ public class BathBomb : Projectile
         {
             float r = Mathf.PI * i / count * 2;
             Vector2 circular = new Vector2(1, 0).RotatedBy(r + Utils.RandFloat(-Mathf.PI / count, Mathf.PI / count));
-            NewProjectile<BathBombShrapnel>((Vector2)transform.position + circular * 0.5f, circular * Utils.RandFloat(4, 8), Damage * 0.25f, Owner, 0, Data2);
+            NewProjectile<BathBombShrapnel>((Vector2)transform.position + circular * 0.5f, circular * Utils.RandFloat(4, 8), Damage / 2f, Owner, 0, Data2);
         }
-        NewProjectile<ColaExplode>((Vector2)transform.position, Vector2.zero, Damage, Owner, range, 2.5f, 1);
+        if (PlayerOwner.ClusterBomb > 0 && Data.Length < 5)
+        {
+            int count2 = Data.Length <= 2 ? 3 : Data[3] > 0.7f ? 2 : 1;
+            float size = Data.Length > 2 ? Data[3] * 0.9f : 0.9f;
+            for (int i = 0; i < count2; ++i)
+            {
+                Vector2 velo = Utils.RandCircle(3);
+                Vector2 endPos = velo + (Vector2)transform.position;
+                Projectile.NewProjectile<BathBomb>(transform.position, velo, Damage * 0.5f * PlayerOwner.ClusterBomb, PlayerOwner, endPos.x, endPos.y, count * 0.5f, size, -1);
+            }
+        }
+        else if (Data.Length >= 5)
+            range *= 1.1f;
+        NewProjectile<ColaExplode>((Vector2)transform.position, Vector2.zero, Damage, Owner, range, 2.5f * (Data.Length > 3 ? Data[3] : 1.0f), 1);
     }
     public void Update()
     {

@@ -6,6 +6,10 @@ public class BonusFizz : Shotgun
         base.InitializeDescription(ref description);
         description.WithName("Bottle Burst");
     }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/WeaponUpgrade");
+    }
 }
 public class BottleBlast : BubbleBlast
 {
@@ -15,6 +19,10 @@ public class BottleBlast : BubbleBlast
         description.WithName("Bottle Blast");
         description.WithDescription("Y:[Secondary attack] releases Y:4 G:(+4 per stack) additional bubbles on impact");
         description.WithShortDescription("Secondary attack releases extra bubbles");
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/WeaponUpgrade");
     }
 }
 public class BottleFlip : PowerUp
@@ -33,6 +41,10 @@ public class BottleFlip : PowerUp
     {
         p.BottleFlip += Stack;
     }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/WeaponUpgrade");
+    }
 }
 public class FancyFootwork : CloudWalker
 {
@@ -50,6 +62,10 @@ public class FancyFootwork : CloudWalker
     public override void HeldEffect(Player p)
     {
         p.DodgeStat += 0.1f * Stack;
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/Dice/DexBoot");
     }
     public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<FizzyThinkImJustGonnaStandThereAndTakeIt>();
 }
@@ -80,8 +96,8 @@ public class FlavorExplosion : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Flavor Explosion");
-        description.WithDescription("Small bubbles Y:explode on hit or upon expiring for Y:20% G:(+5% per stack) Y:damage \nY:[Explosion size] scales with Y:damage");
-        description.WithShortDescription("Small bubbles explode on hit or upon expiring");
+        description.WithDescription("Small bubbles Y:splash on hit or upon expiring for Y:20% G:(+5% per stack) Y:damage \nY:[Splash size] scales with Y:damage");
+        description.WithShortDescription("Small bubbles splash on hit or upon expiring");
     }
     public override void HeldEffect(Player p)
     {
@@ -96,9 +112,9 @@ public class ExplosionRadius : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithName("Explosion Radius");
-        description.WithDescription("Increases Y:[cola explosion radius] by Y:10% G:(+10% per stack)");
-        description.WithShortDescription("Increases cola explosion radius");
+        description.WithName("Splash Radius");
+        description.WithDescription("Increases Y:[cola splash radius] by Y:10% G:(+10% per stack)");
+        description.WithShortDescription("Increases cola splash radius");
     }
     public override void HeldEffect(Player p)
     {
@@ -120,6 +136,10 @@ public class BonusBoards : PowerUp
     public override void HeldEffect(Player p)
     {
         p.BonusBoards += Stack;
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/Dice/CharismaSunglasses");
     }
 }
 public class Kickflip : PowerUp
@@ -173,12 +193,54 @@ public class BombasticBrew : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bombastic Brew");
-        description.WithDescription("Secondary attack drop a Y:3 G:(+3 per stack) Y:[damage bath bomb] \nY:[Explosion size] scales with Y:damage");
+        description.WithDescription("Secondary attack drop a Y:2 G:(+2 per stack) Y:[damage bath bomb] \nY:[Explosion size] scales with Y:damage");
         description.WithShortDescription("Secondary attack drops a bath bomb");
     }
     public override void HeldEffect(Player p)
     {
         p.BombBrew += Stack;
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
+    }
+}
+public class CollateralDamage : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Collateral Damage");
+        description.WithDescription("Y:[Skull enemies] drop a Y:5 G:(+5 per stack) Y:[damage bath bomb] \nY:[Explosion size] scales with Y:damage");
+        description.WithShortDescription("Skull enemies drop a bath bomb when killed");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.SkullBomb += Stack;
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
+    }
+}
+public class ClusterBombs : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Legendary;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Cluster Bombs");
+        description.WithDescription("Y:[Bath bombs] drop Y:smaller Y:50% G:(+50% per stack) Y:[damage bath bombs] \nY:[Explosion size] scales with Y:damage");
+        description.WithShortDescription("Bath bombs drop smaller bath bombs");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.ClusterBomb += Stack;
     }
     public override Sprite GetAdornment()
     {
