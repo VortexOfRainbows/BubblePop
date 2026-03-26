@@ -12,11 +12,11 @@ public class Cap : BubblemancerHat
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Dash>();
-        powerPool.Add<LuckyStar>();
-        powerPool.Add<BinaryStars>();
-        powerPool.Add<Starbarbs>();
-        powerPool.Add<Supernova>();
+        powerPool.Add<RetaliatoryBlast>();
+        //powerPool.Add<LuckyStar>();
+        //powerPool.Add<BinaryStars>();
+        //powerPool.Add<Starbarbs>();
+        //powerPool.Add<Supernova>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

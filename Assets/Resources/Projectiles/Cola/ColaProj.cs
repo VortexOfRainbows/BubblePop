@@ -116,19 +116,26 @@ public class ColaExplode : SupernovaExplode
     private Color ColorVar;
     public override void Init()
     {
-        ColorVar = Player.ProjectileColor;
+        if (Data.Length > 2)
+        {
+            ColorVar = Color.red;
+        }
+        else
+        {
+            ColorVar = Player.ProjectileColor;
+            Data1 *= PlayerOwner.ExplodeRadiusMult;
+            if (Data.Length > 1)
+                ColorVar *= Data2;
+        }
         SpriteRenderer.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = SpriteRenderer.color = Color.clear;
         SpriteRenderer.material = SpriteRendererGlow.material;
         Penetrate = -1;
-        Data1 *= PlayerOwner.ExplodeRadiusMult;
         transform.localScale *= 1.0f * Data1;
         cmp.c2D.radius *= 2.0f;
         Friendly = true;
-        immunityFrames = 100;
-        if (Data.Length > 1)
-            ColorVar *= Data2;
+        immunityFrames = 500;
     }
     public override void AI()
     {
@@ -139,12 +146,14 @@ public class ColaExplode : SupernovaExplode
                 c = 60;
             if (Data.Length > 1)
                 c *= Data2;
+            float lifeTimeMult = Data.Length > 1 ? Data2 * 0.5f + 0.5f : 1.0f;
+            int particleType = ParticleManager.ID.Trail;
             for (int i = 0; i < c; ++i)
             {
                 float r2 = Utils.RandFloat(0.4f, 1.6f) * Data1;
                 Vector2 circular = new Vector2(r2, 0).RotatedBy(i / (float)(0.5f * c) * Mathf.PI);
-                float size = (0.46f + 0.1f * Data1) - r2 * 0.1f;
-                ParticleManager.NewParticle((Vector2)transform.position, Mathf.Clamp(size, 0.1f, 1), circular * 10.2f, 2, Utils.RandFloat(0.4f, 0.9f), 5, ColorVar);
+                float size = 0.46f + 0.1f * Data1 - r2 * 0.1f;
+                ParticleManager.NewParticle((Vector2)transform.position, Mathf.Clamp(size, 0.1f, 1), circular * 10.2f, 2, Utils.RandFloat(0.4f, 0.8f) * lifeTimeMult, particleType, ColorVar);
             }
             runOnce = false;
         }

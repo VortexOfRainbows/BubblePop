@@ -724,7 +724,8 @@ public partial class Player : Entity
     }
     public void Hurt(int damage = 1)
     {
-        if(damage > 0)
+        OnHurtEffects();
+        if (damage > 0)
         {
             for (int i = 0; i < GlassShards; ++i)
                 if (Utils.RollWithLuckRaw() > 0.5f)
@@ -790,6 +791,15 @@ public partial class Player : Entity
             Pop();
         else
             Body.ModifyHurtAnimation();
+    }
+    public void OnHurtEffects()
+    {
+        if (RetaliatoryBomb > 0)
+        {
+            Vector2 velo = Utils.RandCircle(3);
+            Vector2 endPos = velo + (Vector2)transform.position;
+            Projectile.NewProjectile<BathBomb>(transform.position, velo, RetaliatoryBomb * 10, this, endPos.x, endPos.y);
+        }
     }
     public void Pop()
     {

@@ -31,7 +31,7 @@ public partial class Main : MonoBehaviour
             BubbleSprite = Resources.Load<Sprite>("Projectiles/Bubble2");
             BathBombSprite = Resources.Load<Sprite>("Projectiles/BathBomb/BathBomb");
             BathBombShards = new Sprite[] { Resources.Load<Sprite>("Projectiles/BathBomb/BBS1"), Resources.Load<Sprite>("Projectiles/BathBomb/BBS2"), 
-                Resources.Load<Sprite>("Projectiles/BathBomb/BBS3"), Resources.Load<Sprite>("Projectiles/BathBomb/BBS4") };
+                Resources.Load<Sprite>("Projectiles/BathBomb/BBS3"), Resources.Load<Sprite>("Projectiles/BathBomb/BBS4"), Resources.Load<Sprite>("Projectiles/BathBomb/BBS5") };
             Feather = Resources.Load<Sprite>("Projectiles/Feather");
             Laser = Resources.Load<Sprite>("Projectiles/Laser");
             Sparkle = Resources.Load<Sprite>("Projectiles/Sparkle");

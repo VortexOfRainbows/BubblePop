@@ -231,40 +231,6 @@ public class Projectile : MonoBehaviour
     {
 
     }
-    public Color PickColor(float data, float counter)
-    {
-        Color color = Color.white;
-        if (data == 0)
-            color = new Color(112 / 255f, 54 / 255f, 157 / 255f);
-        if (data == 1)
-            color = new Color(75 / 255f, 54 / 255f, 255 / 255f);
-        if (data == 2)
-            color = new Color(121 / 255f, 195 / 255f, 20 / 255f);
-        if (data == 3)
-            color = new Color(250 / 255f, 235 / 255f, 54 / 255f);
-        if (data == 4)
-            color = new Color(255 / 255f, 165 / 255f, 0 / 255f);
-        if (data == 5)
-            color = new Color(232 / 255f, 20 / 255f, 22 / 255f);
-        if (data == 6)
-            color = Rainbow(counter);
-        return color;
-    }
-    public Color Rainbow(float timer)
-    {
-        timer = timer * Mathf.Deg2Rad * 2.5f;
-        double center = 130;
-        Vector2 circlePalette = new Vector2(1, 0).RotatedBy(timer);
-        double width = 125 * circlePalette.y;
-        int red = (int)(center + width);
-        circlePalette = new Vector2(1, 0).RotatedBy(timer + Mathf.PI * 2f / 3f);
-        width = 125 * circlePalette.y;
-        int grn = (int)(center + width);
-        circlePalette = new Vector2(1, 0).RotatedBy(timer + Mathf.PI * 4f / 3f);
-        width = 125 * circlePalette.y;
-        int blu = (int)(center + width);
-        return new Color(red / 255f, grn / 255f, blu / 255f);
-    }
     /// <summary>
     /// Return false to not be affected by homing, null to be effected only when friendly, true to be affected regardless
     /// </summary>

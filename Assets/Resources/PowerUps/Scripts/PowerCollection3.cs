@@ -143,3 +143,24 @@ public class Kickflip : PowerUp
         return Resources.Load<Sprite>("PowerUps/Dice/DexBoot");
     }
 }
+public class RetaliatoryBlast : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Retaliatory Blast");
+        description.WithDescription("Drop a Y:10 G:(+10 per stack) Y:[damage bath bomb when hurt] \nY:[Explosion size] scales with Y:damage");
+        description.WithShortDescription("Drop a high-damage bath bomb when hurt");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.RetaliatoryBomb += Stack;
+    }
+    public override Sprite GetAdornment()
+    {
+        return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
+    }
+}
