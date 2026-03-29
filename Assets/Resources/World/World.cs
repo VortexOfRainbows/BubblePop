@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -109,6 +110,8 @@ public class World : MonoBehaviour
         m_Instance = this;
         foreach (DualGridTile tile in TileID.TileTypes)
             tile.Init();
+
+        PlaceNodeLocations();
         ApproximateWorldBounds();
         LoadNodesOntoWorld();
 
@@ -143,6 +146,58 @@ public class World : MonoBehaviour
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
         NodeID.ResetNodePositions(); //This is mostly for editor stuff
     }
+    /// <summary>
+    /// Generates the positions for nodes on the map before they are fully loaded. Uses approximations to find the best spot to place the nodes.
+    /// </summary>
+    public void PlaceNodeLocations()
+    {
+        Transform t = nodes.Last();
+        WorldNode prevNode = null;
+        for (int i = 0; i < nodes.Count; ++i) //Assign all nodes 
+        {
+            if (!nodes[i].TryGetComponent(out WorldNode node))
+                prevNode = AssignNodeToTransform(nodes[i], i);
+            else
+                NextToGenerate.Enqueue(node);
+        }
+        if (prevNode == null)
+            throw new System.Exception("BUBBLE: FAILED TO FIND STARTING PROCEDURAL NODE");
+        int nodeCount = 1;
+        for(int i = 0; i < nodeCount; ++i)
+        {
+            Vector3 pos = t.position;
+            GameObject arbitraryGameObject = new($"ProceduralNode[{i}]");
+            arbitraryGameObject.transform.position = pos;
+            WorldNode node = AssignNodeToTransform(arbitraryGameObject.transform, i);
+            Rect prev = prevNode.TileMap.GetRect(new(Mathf.FloorToInt(t.position.x / 2), Mathf.FloorToInt(t.position.y / 2)));
+            Rect current = node.TileMap.GetRect(new(Mathf.FloorToInt(arbitraryGameObject.transform.position.x / 2), Mathf.FloorToInt(arbitraryGameObject.transform.position.y / 2)));
+            int att = 0;
+            while(prev.Intersects(current))
+            {
+                arbitraryGameObject.transform.position += new Vector3(2, 0, 0);
+                current = node.TileMap.GetRect(new(Mathf.FloorToInt(arbitraryGameObject.transform.position.x / 2), Mathf.FloorToInt(arbitraryGameObject.transform.position.y / 2)), false);
+                if(++att > 1000)
+                    throw new System.Exception("BUBBLE: FAILED TO PLACE PROCEDURAL NODE");
+            }
+            nodes.Add(arbitraryGameObject.transform);
+        }
+    }
+    public WorldNode AssignNodeToTransform(Transform t, int i)
+    {
+        t.gameObject.SetActive(false);
+        bool shop = i == 2 || i == 4 || i == 6 || i == nodes.Count - 1;
+        bool largo = i == nodes.Count - 1;
+        bool? crucible = i % 3 == 1 && !largo ? Utils.RollWithLuck(0.5f) : null;
+        if (i <= 1) //Don't want crucible on first room
+            crucible = false;
+        WorldNode node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0,
+            shop,
+        crucible,
+            largo);
+        NodeID.PreviousNode = node;
+        NextToGenerate.Enqueue(node);
+        return node;
+    }
     public Queue<WorldNode> NextToGenerate { get; private set; } = new();
     public void ApproximateWorldBounds()
     {
@@ -150,30 +205,18 @@ public class World : MonoBehaviour
         int right = int.MinValue;
         int bottom = int.MaxValue;
         int top = int.MinValue;
-        for (int i = 0; i < nodes.Count; ++i)
+        int i = 0;
+        foreach(WorldNode n in NextToGenerate)
         {
             Transform tr = nodes[i];
-            if (!nodes[i].TryGetComponent(out WorldNode node))
-            {
-                tr.gameObject.SetActive(false);
-                bool shop = i == 2 || i == 4 || i == 6 || i == nodes.Count - 1;
-                bool largo = i == nodes.Count - 1;
-                bool? crucible = i % 3 == 1 && !largo ? Utils.RollWithLuck(0.5f) : null;
-                if (i <= 1) //Don't want crucible on first room
-                    crucible = false;
-                node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0,
-                    shop,
-                    crucible,
-                    largo);
-                NodeID.PreviousNode = node;
-                NextToGenerate.Enqueue(node);
-            }
             Vector3Int transformPos = new(Mathf.FloorToInt(tr.position.x / 2), Mathf.FloorToInt(tr.position.y / 2));
-            node.TileMap.GetCorners(out int l, out int r, out int b, out int t);
+            n.TileMap.GetCorners(out int l, out int r, out int b, out int t);
             left = Mathf.Min(l + transformPos.x, left);
             right = Mathf.Max(r + transformPos.x, right);
             bottom = Mathf.Min(b + transformPos.y, bottom);
             top = Mathf.Max(t + transformPos.y, top);
+            Debug.Log($"Node[{i}]: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#66FF11"));
+            ++i;
         }
         if (nodes.Count <= 0)
             left = right = bottom = top = 0;
@@ -201,12 +244,8 @@ public class World : MonoBehaviour
         for(int i = 0; i < nodes.Count; ++i)
         {
             Transform t = nodes[i];
-            bool disable = true;
-            if (!nodes[i].TryGetComponent(out WorldNode node))
-            {
-                node = NextToGenerate.Dequeue();
-                disable = false;
-            }
+            bool disable = nodes[i].TryGetComponent(out WorldNode _);
+            WorldNode node = NextToGenerate.Dequeue();
             node.Generate(t.position, this, genNum, prevNode, disable);
             if (!node.IsSubNode)
                 genNum++;

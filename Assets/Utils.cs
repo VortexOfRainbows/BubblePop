@@ -319,6 +319,28 @@ public static class Utils
     {
         return RandInt(2) * 2 - 1;
     }
+    public static bool Intersects(this Rect r1, Rect r2)
+    {
+        return r1.Contains(r2.min) || r1.Contains(new Vector2(r2.xMin, r2.yMax)) || r1.Contains(new Vector2(r2.xMax, r2.yMin)) || r1.Contains(r2.max);
+    }
+    public static Vector3Int GetSize(this Tilemap map)
+    {
+        map.CompressBounds();
+        return map.cellBounds.size;
+    }
+    public static Rect GetRect(this Tilemap map, Vector3 modifyPosition = default, bool compress = true)
+    {
+        if(compress)
+            map.CompressBounds();
+        var bounds = map.cellBounds;
+        Rect r = new(bounds.x, bounds.y, bounds.size.x, bounds.size.y);
+        if(modifyPosition != default)
+        {
+            r.x += modifyPosition.x;
+            r.y += modifyPosition.y;
+        }
+        return r;
+    }
     public static void GetCorners(this Tilemap map, out int left, out int right, out int bottom, out int top)
     {
         map.CompressBounds();
