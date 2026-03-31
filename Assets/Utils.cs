@@ -321,14 +321,21 @@ public static class Utils
     }
     public static bool Intersects(this Rect r1, Rect r2)
     {
-        return r1.Contains(r2.min) || r1.Contains(new Vector2(r2.xMin, r2.yMax)) || r1.Contains(new Vector2(r2.xMax, r2.yMin)) || r1.Contains(r2.max);
+        return r1.Contains(r2.min) || r1.Contains(new Vector2(r2.xMin, r2.yMax)) || r1.Contains(new Vector2(r2.xMax, r2.yMin)) || r1.Contains(r2.max)
+            || r1.Contains(r2.center)
+            || r2.Contains(r1.min) || r2.Contains(new Vector2(r1.xMin, r1.yMax)) || r2.Contains(new Vector2(r1.xMax, r1.yMin)) || r2.Contains(r1.max);
+    }
+    public static Vector3Int ToTilePosition(this Vector3 worldPos)
+    {
+        //2 is the scale factor of the tile map
+        return new Vector3Int(Mathf.RoundToInt(worldPos.x / 2), Mathf.RoundToInt(worldPos.y / 2), 0);
     }
     public static Vector3Int GetSize(this Tilemap map)
     {
         map.CompressBounds();
         return map.cellBounds.size;
     }
-    public static Rect GetRect(this Tilemap map, Vector3 modifyPosition = default, bool compress = true)
+    public static Rect GetRect(this Tilemap map, Vector3 modifyPosition = default, bool compress = true, float padding = 0)
     {
         if(compress)
             map.CompressBounds();
@@ -339,6 +346,10 @@ public static class Utils
             r.x += modifyPosition.x;
             r.y += modifyPosition.y;
         }
+        r.x -= padding;
+        r.y -= padding;
+        r.width += padding;
+        r.height += padding;
         return r;
     }
     public static void GetCorners(this Tilemap map, out int left, out int right, out int bottom, out int top)

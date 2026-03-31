@@ -151,42 +151,46 @@ public class World : MonoBehaviour
     /// </summary>
     public void PlaceNodeLocations()
     {
-        Transform t = nodes.Last();
+        int nodeCount = 7 + nodes.Count;
         WorldNode prevNode = null;
         for (int i = 0; i < nodes.Count; ++i) //Assign all nodes 
         {
             if (!nodes[i].TryGetComponent(out WorldNode node))
-                prevNode = AssignNodeToTransform(nodes[i], i);
+                prevNode = AssignNodeToTransform(nodes[i], i, nodeCount);
             else
+            {
                 NextToGenerate.Enqueue(node);
+                prevNode = node;
+            }
         }
         if (prevNode == null)
             throw new System.Exception("BUBBLE: FAILED TO FIND STARTING PROCEDURAL NODE");
-        int nodeCount = 1;
         for(int i = 0; i < nodeCount; ++i)
         {
+            Transform t = nodes.Last();
             Vector3 pos = t.position;
             GameObject arbitraryGameObject = new($"ProceduralNode[{i}]");
             arbitraryGameObject.transform.position = pos;
-            WorldNode node = AssignNodeToTransform(arbitraryGameObject.transform, i);
-            Rect prev = prevNode.TileMap.GetRect(new(Mathf.FloorToInt(t.position.x / 2), Mathf.FloorToInt(t.position.y / 2)));
-            Rect current = node.TileMap.GetRect(new(Mathf.FloorToInt(arbitraryGameObject.transform.position.x / 2), Mathf.FloorToInt(arbitraryGameObject.transform.position.y / 2)));
+            WorldNode node = AssignNodeToTransform(arbitraryGameObject.transform, i, nodeCount);
+            Rect prev = prevNode.TileMap.GetRect(t.position.ToTilePosition(), true, 5);
+            Rect current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), true, 5);
             int att = 0;
-            while(prev.Intersects(current))
+            while (prev.Intersects(current))
             {
                 arbitraryGameObject.transform.position += new Vector3(2, 0, 0);
-                current = node.TileMap.GetRect(new(Mathf.FloorToInt(arbitraryGameObject.transform.position.x / 2), Mathf.FloorToInt(arbitraryGameObject.transform.position.y / 2)), false);
+                current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), false, 5);
                 if(++att > 1000)
                     throw new System.Exception("BUBBLE: FAILED TO PLACE PROCEDURAL NODE");
             }
             nodes.Add(arbitraryGameObject.transform);
+            prevNode = node;
         }
     }
-    public WorldNode AssignNodeToTransform(Transform t, int i)
+    public WorldNode AssignNodeToTransform(Transform t, int i, int totalNodes)
     {
         t.gameObject.SetActive(false);
-        bool shop = i == 2 || i == 4 || i == 6 || i == nodes.Count - 1;
-        bool largo = i == nodes.Count - 1;
+        bool shop = i == 2 || i == 4 || i == 6 || i == totalNodes - 1;
+        bool largo = i == totalNodes - 1;
         bool? crucible = i % 3 == 1 && !largo ? Utils.RollWithLuck(0.5f) : null;
         if (i <= 1) //Don't want crucible on first room
             crucible = false;
@@ -209,7 +213,7 @@ public class World : MonoBehaviour
         foreach(WorldNode n in NextToGenerate)
         {
             Transform tr = nodes[i];
-            Vector3Int transformPos = new(Mathf.FloorToInt(tr.position.x / 2), Mathf.FloorToInt(tr.position.y / 2));
+            Vector3Int transformPos = tr.position.ToTilePosition(); // new(Mathf.FloorToInt(tr.position.x / 2), Mathf.FloorToInt(tr.position.y / 2));
             n.TileMap.GetCorners(out int l, out int r, out int b, out int t);
             left = Mathf.Min(l + transformPos.x, left);
             right = Mathf.Max(r + transformPos.x, right);
