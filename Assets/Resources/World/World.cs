@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TreeEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -165,26 +166,45 @@ public class World : MonoBehaviour
         }
         if (prevNode == null)
             throw new System.Exception("BUBBLE: FAILED TO FIND STARTING PROCEDURAL NODE");
-        for(int i = 0; i < nodeCount; ++i)
+        Vector2 toPrev = Utils.RandCircleEdge();
+        for(int i = nodes.Count; i < nodeCount; ++i)
         {
             Transform t = nodes.Last();
-            Vector3 pos = t.position;
+            Vector3 prevPosition = t.position;
             GameObject arbitraryGameObject = new($"ProceduralNode[{i}]");
-            arbitraryGameObject.transform.position = pos;
+            arbitraryGameObject.transform.position = prevPosition;
             WorldNode node = AssignNodeToTransform(arbitraryGameObject.transform, i, nodeCount);
-            Rect prev = prevNode.TileMap.GetRect(t.position.ToTilePosition(), true, 5);
+            nodes.Add(arbitraryGameObject.transform);
             Rect current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), true, 5);
-            int att = 0;
-            while (prev.Intersects(current))
+            float att = (current.width + current.height) * 0.25f;
+            while (IntersectionCount(current) > 0)
             {
-                arbitraryGameObject.transform.position += new Vector3(2, 0, 0);
+                float r = Utils.RandFloat(-att, att);
+                r += Mathf.Sign(r) * 10;
+                arbitraryGameObject.transform.position = prevPosition - (Vector3)((toPrev * (att + Utils.RandFloat(25))).RotatedBy(r * Mathf.Deg2Rad));
                 current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), false, 5);
-                if(++att > 1000)
+                if(++att > 360)
                     throw new System.Exception("BUBBLE: FAILED TO PLACE PROCEDURAL NODE");
             }
-            nodes.Add(arbitraryGameObject.transform);
+            toPrev = prevPosition - arbitraryGameObject.transform.position;
+            toPrev = toPrev.normalized;
             prevNode = node;
         }
+    }
+    public int IntersectionCount(Rect r)
+    {
+        int c = 0;
+        int i = 0;
+        foreach(WorldNode node in NextToGenerate)
+        {
+            if (i >= NextToGenerate.Count - 1)
+                return c;
+            Transform t = nodes[i++];
+            Rect prev = node.TileMap.GetRect(t.position.ToTilePosition(), true, 5);
+            if(prev.Intersects(r))
+                ++c;
+        }
+        return c;
     }
     public WorldNode AssignNodeToTransform(Transform t, int i, int totalNodes)
     {

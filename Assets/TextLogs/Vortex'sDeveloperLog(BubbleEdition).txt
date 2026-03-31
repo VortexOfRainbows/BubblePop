@@ -27,8 +27,7 @@ Need to do:
 	3. Make blurbs appear in the equipment page
 	4. Add flavortext for all compendium elements
 10. New sounds for Rock Golem
-11. Finalize Procedural World generation to actually generate things FULLY randomly instead of in the guaranteed map shape
-12. Fix chest stuck issue
+11. Fix chest stuck issue
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Maybe shift roadblock visuals to the player so it's more encompassing
@@ -44,7 +43,10 @@ Multiplayer Task List:
 Done: 
 
 3/28/26 and 3/31/26
-1. WIP Procedural world generation changes
+1. Procedural world generation changes that should make worldgen more random and also less buggy (less softlocks)
+2. Shop Pillows from Fanny!
+3. New Node with crucible: Double Donut
+4. Change the position of some shop pedestals on subnodes
 
 3/25/26 to 3/26/26
 1. Retaliatory Blast, Bombastic Brew, Collateral Damage, Cluster Bomb, Prize Bomb, Sharp Bomb powers

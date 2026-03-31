@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -4
       objectReference: {fileID: 0}
+    - target: {fileID: 563175997926584838, guid: 43038993f63705941a829d30db75cb5e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1268744164881615657, guid: 43038993f63705941a829d30db75cb5e, type: 3}
       propertyPath: m_Name
       value: ShopGachapon
@@ -58,11 +62,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2406054804163062537, guid: 43038993f63705941a829d30db75cb5e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8
+      value: -7.1
       objectReference: {fileID: 0}
     - target: {fileID: 6072778034680709602, guid: 43038993f63705941a829d30db75cb5e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6072778034680709602, guid: 43038993f63705941a829d30db75cb5e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
