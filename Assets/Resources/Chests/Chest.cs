@@ -59,7 +59,7 @@ public class Chest : MonoBehaviour
             Open();
         }
     }
-    public BoxCollider2D Collider;
+    public CapsuleCollider2D Collider;
     public Rigidbody2D RB;
     public Transform Visual;
     public SpriteRenderer SpriteRenderer;

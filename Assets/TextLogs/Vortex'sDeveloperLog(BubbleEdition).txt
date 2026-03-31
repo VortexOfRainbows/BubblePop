@@ -27,7 +27,6 @@ Need to do:
 	3. Make blurbs appear in the equipment page
 	4. Add flavortext for all compendium elements
 10. New sounds for Rock Golem
-11. Fix chest stuck issue
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Maybe shift roadblock visuals to the player so it's more encompassing
@@ -47,6 +46,7 @@ Done:
 2. Shop Pillows from Fanny!
 3. New Node with crucible: Double Donut
 4. Change the position of some shop pedestals on subnodes
+5. Adjusted chest hitbox to make it harder to push, but it should* also no longer get stuck in 1x1 areas - softlocking you
 
 3/25/26 to 3/26/26
 1. Retaliatory Blast, Bombastic Brew, Collateral Damage, Cluster Bomb, Prize Bomb, Sharp Bomb powers
