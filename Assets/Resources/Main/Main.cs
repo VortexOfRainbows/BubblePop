@@ -250,6 +250,7 @@ public partial class Main : MonoBehaviour
         public static readonly GameObject Cap = LoadEquipment("Fizzy/Cap");
         public static readonly GameObject Kicks = LoadEquipment("Fizzy/Kicks");
         public static readonly GameObject Cola = LoadEquipment("Fizzy/Cola");
+        public static readonly GameObject ThoughtBubblePhysicsBook = LoadSubEquipment(ThoughtBubbleWeapon, "ThoughtBubble/PhysicsBook");
         public static GameObject LoadEquipment(string path) => LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
         public static GameObject LoadEquipment(GameObject Prefab)
         {

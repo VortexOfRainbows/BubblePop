@@ -10,8 +10,8 @@ public class Book : Weapon
         rotation = 0;
         scale = 1.5f;
     }
-    public Sprite OpenBook => Resources.Load<Sprite>("Player/ThoughtBubble/BookOpen");
-    public Sprite ClosedBook => Resources.Load<Sprite>("Player/ThoughtBubble/BookClosed");
+    public virtual Sprite OpenBook => Resources.Load<Sprite>("Player/ThoughtBubble/BookOpen");
+    public virtual Sprite ClosedBook => Resources.Load<Sprite>("Player/ThoughtBubble/BookClosed");
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
