@@ -63,10 +63,6 @@ public class FancyFootwork : CloudWalker
     {
         p.DodgeStat += 0.1f * Stack;
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/Dice/DexBoot");
-    }
     public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<FizzyThinkImJustGonnaStandThereAndTakeIt>();
 }
 public class CarbonForce : ShotSpeed

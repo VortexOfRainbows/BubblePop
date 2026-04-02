@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 public class Coin : MonoBehaviour
 {
@@ -31,18 +32,31 @@ public class Coin : MonoBehaviour
         float radius = IsHeart ? 0.35f : 0.7025f;
         radius *= transform.localScale.x;
         radius += 0.75f;
-        if (Player.FindClosest(transform.position, out _, out float dist) != null && dist < radius)
+        Player p = Player.FindClosest(transform.position, out _, out float dist);
+        if (p != null)
         {
-            if (!CanCollect())
-                return;
-            OnCollected();
-            gameObject.SetActive(false);
-            Destroy(gameObject);
+            if (dist < radius)
+            {
+                if (!CanCollect())
+                    return;
+                OnCollected();
+            }
+            else if (p.HasMagnetBook && p.Weapon is PhysicsBook pb)
+            {
+                radius *= p.ZapRadiusMult * 1.25f;
+                foreach (GameObject magnet in pb.MagnetBalls)
+                {
+                    dist = Vector2.SqrMagnitude(transform.position - magnet.transform.position);
+                    if(dist < radius * radius)
+                    {
+                        if (!CanCollect())
+                            return;
+                        OnCollected();
+                    }
+                }
+            }
         }
     }
-    //public void OnTriggerStay2D(Collider2D collision)
-    //{
-    //}
     private Player p { get; set; }
     private int getPlayerTimer = 0;
     private float timer;
@@ -220,5 +234,7 @@ public class Coin : MonoBehaviour
             else
                 AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 1, 0.85f, 2);
         }
+        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

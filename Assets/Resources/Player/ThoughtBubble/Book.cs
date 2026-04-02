@@ -76,7 +76,7 @@ public class Book : Weapon
     public bool InClosingAnimation = false;
     public float ClosingPercent = 0.0f;
     private bool WantsOpen = false;
-    private bool Open = true;
+    protected bool Open = true;
     public float OpeningAnimationTimer = 0;
     public bool JustOpened = false;
     private bool hasDoneSelectAnimation = false;

@@ -286,9 +286,21 @@ public class ThunderBubble : Projectile
     private Color ColorVar;
     public bool Recalled = false;
     public float ScaleFactor => 2.0f * PlayerOwner.ZapRadiusMult;
+    private bool IsMagnet = false;
+    public bool North = true;
     public override void Init()
     {
         ColorVar = Color.Lerp(Player.ProjectileColor, Color.blue, 0.5f);
+        if (PlayerOwner.Weapon is PhysicsBook pb)
+        {
+            pb.MagnetBalls.Add(gameObject);
+            IsMagnet = true;
+            if (IsMagnet && pb.MagnetBalls.Count % 2 == 0)
+            {
+                ColorVar = Color.Lerp(Player.ProjectileColor, Color.red, 0.5f);
+                North = false;
+            }
+        }
         SpriteRenderer.color = ColorVar.WithAlphaMultiplied(0.3f);
         SpriteRenderer.sprite = Main.TextureAssets.BubbleSmall;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
@@ -380,6 +392,23 @@ public class ThunderBubble : Projectile
                 transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
             }
             timer++;
+            if(IsMagnet && PlayerOwner.Weapon is PhysicsBook pb) 
+            {
+                foreach (GameObject magnet in pb.MagnetBalls)
+                {
+                    if(magnet != null && magnet.TryGetComponent<ThunderBubble>(out ThunderBubble other))
+                    {
+                        float dir = other.North == North ? -1 : 1;
+                        Vector2 toOther = (Vector2)other.transform.position - (Vector2)transform.position;
+                        float dist = toOther.magnitude;
+                        if(dist != 0 && dist < SpriteRendererGlow.transform.localScale.x * 3)
+                        {
+                            toOther = toOther / dist;
+                            velo += toOther / dist * dir;
+                        }
+                    }
+                }
+            }
         }
         if ((int)++timer2 % 6 != 0)
         {
@@ -423,6 +452,9 @@ public class ThunderBubble : Projectile
         //    Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
         //    ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
         //}
+        if (PlayerOwner.Weapon is PhysicsBook pb)
+            if(!pb.InClosingAnimation)
+                pb.MagnetBalls.Remove(gameObject);
     }
     public override bool OnInsideTile()
     {

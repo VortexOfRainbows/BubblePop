@@ -17,16 +17,15 @@ Need to do:
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. Economy: Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more)
 4. Add a GEM currency, which can be used to reroll shop selections, print items at a FORGE
-5. Alternate book: Introduction to Electromagnetism (has a slower closing speed and damage, but drags powerups with it)
-6. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-7. Enemy Pathfinding
-8. Some UI classes to normalize UI colors, Button behaviors, etc.
-9. Compendium TODO:
+5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
+6. Enemy Pathfinding
+7. Some UI classes to normalize UI colors, Button behaviors, etc.
+8. Compendium TODO:
 	1. Make equipment power pool contributions appear in the compendium
 	2. Make powers show which pools they belong to
 	3. Make blurbs appear in the equipment page
 	4. Add flavortext for all compendium elements
-10. New sounds for Rock Golem
+9. New sounds for Rock Golem
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Maybe shift roadblock visuals to the player so it's more encompassing
@@ -40,6 +39,11 @@ Multiplayer Task List:
 
 
 Done: 
+
+4/2/26
+1. Add silly Physics Magnet book
+2. Trying out some more dirt sprite changes
+3. Fancy Footwork sprite (David)
 
 3/28/26 and 3/31/26
 1. Procedural world generation changes that should make worldgen more random and also less buggy (less softlocks)
