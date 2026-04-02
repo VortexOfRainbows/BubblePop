@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PhysicsBook : Book
 {
-    public List<GameObject> MagnetBalls = new();
-    protected override UnlockCondition UnlockCondition => base.UnlockCondition;
+    public List<GameObject> MagnetBalls { get; set; } = new();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleIndistinguishable>();
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Guide to Physics").WithDescription("A encyclopedia of everything physics'");

@@ -46,6 +46,8 @@ public class Coin : MonoBehaviour
                 radius *= p.ZapRadiusMult * 1.25f;
                 foreach (GameObject magnet in pb.MagnetBalls)
                 {
+                    if (magnet == null)
+                        continue;
                     dist = Vector2.SqrMagnitude(transform.position - magnet.transform.position);
                     if(dist < radius * radius)
                     {

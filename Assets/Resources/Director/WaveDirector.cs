@@ -188,6 +188,10 @@ public static class WaveDirector
             UnlockCondition.Get<GachaponAddicted>().SetComplete();
         if(TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator || PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator)
             UnlockCondition.Get<FizzyUnlock>().SetComplete();
+        if (Player.Instance.Body is ThoughtBubble && 
+            (TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Infector ||
+            PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Infector))
+            UnlockCondition.Get<ThoughtBubbleIndistinguishable>().SetComplete();
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         CurrentAssociatedWaveCardNumber = 0;
         WaitingForCardDraw = true;

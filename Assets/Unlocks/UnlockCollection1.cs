@@ -261,11 +261,26 @@ public class GachaponHealer : UnlockCondition
 }
 public class ThoughtBubbleArsenal : UnlockCondition
 {
-    public override PowerUp Power => PowerUp.Get<Choice>();
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Thought Bubble: Arsenal");
         description.WithDescription($"As Y:[Thought Bubble,] possess 20 different powers in a single run");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Lab;
+        category = Completionist;
+    }
+    public override int Rarity => 2;
+    public override UnlockCondition PreReqUnlock => Get<ThoughtBubbleUnlock>();
+}
+public class ThoughtBubbleIndistinguishable : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Thought Bubble: Indistinguishable");
+        description.WithDescription($"As Y:[Thought Bubble,] reach the end of a" +
+            $" {"Infector".WithColor(DetailedDescription.Rares[5])} Y:[Skull Wave]");
     }
     public override void SetAchievementCategories(ref int zone, ref int category)
     {
