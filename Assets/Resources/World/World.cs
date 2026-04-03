@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEngine.Rendering.DebugUI;
 
 public class World : MonoBehaviour
 {
@@ -65,6 +66,7 @@ public class World : MonoBehaviour
     public Transform PylonParent;
     public Transform RoadblockParent;
     public List<Transform> PlayerSpawnPosition = new();
+    public Rect ApproximateSize { get; set; }
     [SerializeField]
     private List<Transform> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
@@ -80,6 +82,10 @@ public class World : MonoBehaviour
     public static bool SolidTile(Vector3Int pos)
     {
         return RealTileMap.Map.GetColliderType(pos) == Tile.ColliderType.Grid;
+    }
+    public static bool HasTile(Vector3Int pos)
+    {
+        return RealTileMap.Map.HasTile(pos);
     }
     public static bool AreaIsClear(Vector3Int area, int squareRadius = 0)
     {
@@ -249,7 +255,8 @@ public class World : MonoBehaviour
         Vector2Int size = new(right - left, top - bottom);
         Debug.Log($"World Border: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#CC77FF"));
         Debug.Log($"World size: X: {size.x}, Y: {size.y}".WithColor("#CC77FF"));
-        if(size.x < 1000 && size.y < 1000 && size.x > 0 && size.y > 0)
+        ApproximateSize = new(left, bottom, right - left, top - bottom);
+        if (size.x < 1000 && size.y < 1000 && size.x > 0 && size.y > 0)
         {
             tileDataOffset = new Vector2Int(left, bottom);
             tileData = new TileData[size.x, size.y];
@@ -278,7 +285,44 @@ public class World : MonoBehaviour
     }
     public void PlaceBonusNodes()
     {
-
+        Vector3Int bestLocation = Vector3Int.zero;
+        int bestValue = 0;
+        for(int i = 0; i < 20; ++i)
+        {
+            Vector3Int randomLocation = new Vector3Int(Utils.RandInt((int)ApproximateSize.xMin + Padding, (int)ApproximateSize.xMax - Padding), Utils.RandInt((int)ApproximateSize.yMin + Padding, (int)ApproximateSize.yMax - Padding));
+            int TotalSolidTilesSeen = 0;
+            int ReachedEndPoint = 0;
+            for(int j = 0; j < 4; ++j)
+            {
+                Vector3Int dir = j == 0 ? new Vector3Int(1, 0) : j == 1 ? new Vector3Int(-1, 0) : j == 2 ? new Vector3Int(0, 1) : new Vector3Int(0, -1);
+                for(int k = 1; k < 70; k += 2)
+                {
+                    Vector3Int locationToCheck = randomLocation + dir * k;
+                    if(!HasTile(locationToCheck) || World.SolidTile(locationToCheck))
+                    {
+                        TotalSolidTilesSeen++;
+                    }
+                    else
+                    {
+                        if (TotalSolidTilesSeen < 6)
+                            break;
+                        ReachedEndPoint++;
+                        TotalSolidTilesSeen += 20;
+                        break;
+                    }
+                }
+            }
+            int value = TotalSolidTilesSeen * ReachedEndPoint;
+            if(bestValue < value)
+            {
+                bestValue = value;
+                bestLocation = randomLocation;
+            }
+            GameObject n2 = new($"SecretRoom[{value},{ReachedEndPoint}]");
+            n2.transform.position = randomLocation * 2;
+        }
+        GameObject n = new($"TrueSecretRoom[{bestValue}]");
+        n.transform.position = bestLocation * 2;
     }
     public void GenerateBonusNodes()
     {
