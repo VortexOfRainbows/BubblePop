@@ -73,7 +73,7 @@ public class World : MonoBehaviour
     public List<Transform> PlayerSpawnPosition = new();
     public Rect ApproximateSize { get; set; }
     [SerializeField]
-    private List<Transform> nodes;
+    public List<Transform> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
         Vector3Int posi = RealTileMap.Map.WorldToCell(pos);
