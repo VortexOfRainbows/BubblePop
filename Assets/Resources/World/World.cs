@@ -293,6 +293,7 @@ public class World : MonoBehaviour
     {
         Vector3Int[] directions = new Vector3Int[] { new (1, 0), new (-1, 0), new (0, 1), new (0, -1) };
         Vector3Int bestLocation = Vector3Int.zero;
+        Vector3Int bestEndLocation = Vector3Int.zero;
         byte bestGenOwner = 0;
         int bestValue = 0;
         for(int i = 0; i < 40; ++i)
@@ -302,15 +303,17 @@ public class World : MonoBehaviour
             int ReachedEndPoint = 0;
             byte closestGenOwner = 0;
             int exit = int.MaxValue;
+            Vector3Int closeEndLocation = Vector3Int.zero;
             for(int j = 0; j < 4; ++j)
             {
                 bool hasReachedEndHere = false;
                 int solids = 0;
-                Vector3Int dir = directions[j];
+                Vector3Int dir2 = directions[j];
+                Vector3Int endLocation = Vector3Int.zero;
                 byte genOwner = 0;
                 for(int k = 1; k < 80; k += 2)
                 {
-                    Vector3Int locationToCheck = randomLocation + dir * k;
+                    Vector3Int locationToCheck = randomLocation + dir2 * k;
                     if(!HasTile(locationToCheck) || World.SolidTile(locationToCheck))
                     {
                         solids++;
@@ -326,6 +329,7 @@ public class World : MonoBehaviour
                         hasReachedEndHere = true;
                         ReachedEndPoint++;
                         solids += 20;
+                        endLocation = locationToCheck;
                         break;
                     }
                 }
@@ -335,6 +339,7 @@ public class World : MonoBehaviour
                     {
                         exit = solids;
                         closestGenOwner = genOwner;
+                        closeEndLocation = endLocation;
                     }
                     TotalSolidTilesSeen += solids;
                 }
@@ -345,6 +350,7 @@ public class World : MonoBehaviour
                 bestValue = value;
                 bestLocation = randomLocation;
                 bestGenOwner = closestGenOwner;
+                bestEndLocation = closeEndLocation;
             }
             //GameObject n2 = new($"SecretRoom[{value},{ReachedEndPoint}]");
             //n2.transform.position = randomLocation * 2;
@@ -357,7 +363,8 @@ public class World : MonoBehaviour
         WorldNode node = NodeID.GetRandomNodeWithParameters(NodeID.SecretNodes, 0, null, null, null);
         node.Generate(n.transform.position, this, bestGenOwner, null, false);
 
-        //node.GeneratePath(false);
+        Vector2 dir = (Vector2)n.transform.position - new Vector2(bestEndLocation.x, bestEndLocation.y);
+        node.GeneratePath(new Vector2(bestEndLocation.x, bestEndLocation.y) * 2, (Vector2)n.transform.position - dir.normalized * 10, false, -1);
     }
     public void GenerateBonusNodes()
     {

@@ -268,7 +268,7 @@ public class WorldNode : MonoBehaviour
         CanGenerateRoadBlock = withSubNode;
         GeneratePath(bestStart.Position, bestEnd.Position, withSubNode);
     }
-    public void GeneratePath(Vector2 start, Vector2 end, bool withSubNode = true)
+    public void GeneratePath(Vector2 start, Vector2 end, bool withSubNode = true, int pathType = 0)
     {
         bool roadBlock = CanGenerateRoadBlock || !withSubNode;
         Vector2 startToEnd = end - start;
@@ -276,6 +276,12 @@ public class WorldNode : MonoBehaviour
         Vector2 prev = start;
         float pathVariance = Mathf.Max(4, startToEnd.magnitude / 4f);
         int totalPoints = 5;
+        float radius = 2;
+        if (pathType == -1)
+        {
+            radius = 0.75f;
+            totalPoints = 3;
+        }
         float iterAmt = 1f / (totalPoints + 1);
         int i = 0;
         Vector2 subNodeConPos = Vector2.zero;
@@ -298,13 +304,13 @@ public class WorldNode : MonoBehaviour
                         break;
                 }
             }
-            GenerateLine(prev, pointBetween);
+            GenerateLine(prev, pointBetween, radius);
             prev = pointBetween;
             ++i;
         }
         if (roadBlock)
             TryGeneratingEndRoadBlock = true;
-        GenerateLine(prev, end);
+        GenerateLine(prev, end, radius);
         if(withSubNode && !IsSubNode && attempts <= 10)    
         {
             WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 
@@ -318,7 +324,7 @@ public class WorldNode : MonoBehaviour
             sub.GeneratePath(subNodeConPos, best.Position);
         }
     }
-    public void GenerateLine(Vector2 start, Vector2 end)
+    public void GenerateLine(Vector2 start, Vector2 end, float radias = 2)
     {
         Vector2 bestEnd = end;
         Vector2 startToEnd = end - start;
@@ -327,7 +333,7 @@ public class WorldNode : MonoBehaviour
         for (float i = 0; i < dist; ++i)
         {
             //Vector3Int v = new(Mathf.FloorToInt(start.x / 2), Mathf.FloorToInt(start.y / 2));
-            bool isRoadblock = DiamondBrush(start, 2);
+            bool isRoadblock = DiamondBrush(start, radias);
             start += norm;
             if (isRoadblock)
             {
@@ -353,17 +359,20 @@ public class WorldNode : MonoBehaviour
     }
     private bool CanGenerateRoadBlock { get; set; } = false;
     private bool TryGeneratingEndRoadBlock { get; set; } = false;
-    public bool DiamondBrush(Vector2 center, int radias)
+    public bool DiamondBrush(Vector2 center, float radias)
     {
         bool isValidForRoadblock = false;
-        var tile = TileID.Grass.TileType;
+        var tile = radias < 1 ? TileID.DarkGrass.FloorTileType : TileID.Grass.TileType;
         float percent = 0;
-        float iter = 0.25f / radias;
-        for (float j = -radias; j <= radias; j += 0.5f)
+        float iter = Mathf.Min(1, 0.5f * radias);
+        float rSquared = radias * radias;
+        for (float j = -radias; j <= radias; j += iter)
         {
-            int sin = Mathf.FloorToInt(Mathf.Sin(percent * Mathf.PI) * radias + 0.5f);
-            for(int i = -sin; i <= sin; ++i)
+            for(float i = -radias; i <= radias; i += iter)
             {
+                float dist = i * i + j * j;
+                if (dist > rSquared)
+                    continue;
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
                 bool canGenerate = World.GetTileData(v).IsRoadblock;
                 TileBase existingTile = World.Tilemap.Map.GetTile(v);
@@ -372,7 +381,10 @@ public class WorldNode : MonoBehaviour
                     if (existingTile == null)
                         World.Tilemap.Map.SetTile(v, tile);
                     else
-                        World.Tilemap.Map.SetTile(v, existingTile.GetTileID().FloorTileType);
+                    {
+                        var tile2 = (existingTile.GetTileID() == TileID.Dirt || existingTile.GetTileID() == TileID.Grass) ? tile : existingTile.GetTileID().FloorTileType;
+                        World.Tilemap.Map.SetTile(v, tile2);
+                    }
                     World.SetTileData(v, new World.TileData(GenerationNumber, true));
                     canGenerate = true;
                 }
