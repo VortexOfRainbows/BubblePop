@@ -5,14 +5,16 @@ public static class NodeID
 {
     public static readonly List<WorldNode> Nodes = new();
     public static readonly List<WorldNode> SubNodes = new();
+    public static readonly List<WorldNode> SecretNodes = new();
     public static WorldNode PreviousNode { get; set; } = null;
     public static bool LoadAllNodes()
     {
-        if (Nodes.Count > 0 && SubNodes.Count > 0)
+        if (Nodes.Count > 0 && SubNodes.Count > 0 && SecretNodes.Count > 0)
             return true;
         PreviousNode = null;
         Nodes.Clear();
         SubNodes.Clear();
+        SecretNodes.Clear();
         var nodes = Resources.LoadAll<GameObject>("World/Nodes");
         //var subNodes = Resources.LoadAll<GameObject>("World/Nodes/SubNodes");
         Debug.Log("Loading Nodes...".WithColor("FFFF00"));
@@ -20,7 +22,12 @@ public static class NodeID
         {
             if(obj.TryGetComponent(out WorldNode n))
             {
-                if(n.IsSubNode)
+                if(n.IsSecretRoomNode)
+                {
+                    SecretNodes.Add(n);
+                    Debug.Log($"Loaded SecretNode: {obj.name.WithColor("#FF00FF")}");
+                }
+                else if(n.IsSubNode)
                 {
                     SubNodes.Add(n);
                     Debug.Log($"Loaded SubNode: {obj.name.WithColor("#FFFF00")}");
@@ -28,7 +35,7 @@ public static class NodeID
                 else
                 {
                     Nodes.Add(n);
-                    Debug.Log($"Loaded Node: {obj.name.WithColor("#FF77AA")}");
+                    Debug.Log($"Loaded WorldNode: {obj.name.WithColor("#FF77AA")}");
                 }
             }
             else
@@ -130,6 +137,7 @@ public class WorldNode : MonoBehaviour
     public byte GenerationNumber { get; set; } = 0;
     public Tilemap TileMap;
     public bool IsSubNode = false;
+    public bool IsSecretRoomNode = false;
     public Tilemap GetTileMap()
     {
         TileMap = TileMap != null ? TileMap : GetComponentInChildren<Tilemap>();

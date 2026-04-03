@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileTexture: {fileID: 2800000, guid: d1a3b1f3fd6ffc944be5fd218ca9238b, type: 3}
   BonusTileTextures:
+  - {fileID: 2800000, guid: 1867ff0e4dd4bca40b95132e3bfdd9da, type: 3}
   - {fileID: 2800000, guid: 28edbb1cb1c86ab4b821b8a5e55d86e1, type: 3}
+  - {fileID: 2800000, guid: d81e65971ac1ab04dabf8bbc2b014afa, type: 3}
+  - {fileID: 2800000, guid: 5d0cfb160c8b5814d84b098c0f816f6b, type: 3}
+  - {fileID: 2800000, guid: 2ba9434af29fae440b9dd623437225d4, type: 3}
   RealTileMapVariant: {fileID: 11400000, guid: 3181d3395d4fe0942a54930a16706ea5, type: 2}
   BorderTileMapVariant: {fileID: 11400000, guid: b8235e735d6f61846bd9d7b0b6bd3149, type: 2}
   BonusTileVariations: []

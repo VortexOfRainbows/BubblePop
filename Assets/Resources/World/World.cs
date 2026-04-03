@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using TreeEditor;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEngine.Rendering.DebugUI;
@@ -65,6 +69,7 @@ public class World : MonoBehaviour
     public NatureOrderer NatureParent;
     public Transform PylonParent;
     public Transform RoadblockParent;
+    public Transform ProceduralGenParent;
     public List<Transform> PlayerSpawnPosition = new();
     public Rect ApproximateSize { get; set; }
     [SerializeField]
@@ -177,6 +182,7 @@ public class World : MonoBehaviour
             Vector3 prevPosition = t.position;
             GameObject arbitraryGameObject = new($"ProceduralNode[{i}]");
             arbitraryGameObject.transform.position = prevPosition;
+            arbitraryGameObject.transform.parent = ProceduralGenParent;
             WorldNode node = AssignNodeToTransform(arbitraryGameObject.transform, i, nodeCount);
             nodes.Add(arbitraryGameObject.transform);
             Rect current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), true, 5);
@@ -285,31 +291,52 @@ public class World : MonoBehaviour
     }
     public void PlaceBonusNodes()
     {
+        Vector3Int[] directions = new Vector3Int[] { new (1, 0), new (-1, 0), new (0, 1), new (0, -1) };
         Vector3Int bestLocation = Vector3Int.zero;
+        byte bestGenOwner = 0;
         int bestValue = 0;
-        for(int i = 0; i < 20; ++i)
+        for(int i = 0; i < 40; ++i)
         {
-            Vector3Int randomLocation = new Vector3Int(Utils.RandInt((int)ApproximateSize.xMin + Padding, (int)ApproximateSize.xMax - Padding), Utils.RandInt((int)ApproximateSize.yMin + Padding, (int)ApproximateSize.yMax - Padding));
+            Vector3Int randomLocation = new (Utils.RandInt((int)ApproximateSize.xMin + Padding, (int)ApproximateSize.xMax - Padding), Utils.RandInt((int)ApproximateSize.yMin + Padding, (int)ApproximateSize.yMax - Padding));
             int TotalSolidTilesSeen = 0;
             int ReachedEndPoint = 0;
+            byte closestGenOwner = 0;
+            int exit = int.MaxValue;
             for(int j = 0; j < 4; ++j)
             {
-                Vector3Int dir = j == 0 ? new Vector3Int(1, 0) : j == 1 ? new Vector3Int(-1, 0) : j == 2 ? new Vector3Int(0, 1) : new Vector3Int(0, -1);
-                for(int k = 1; k < 70; k += 2)
+                bool hasReachedEndHere = false;
+                int solids = 0;
+                Vector3Int dir = directions[j];
+                byte genOwner = 0;
+                for(int k = 1; k < 80; k += 2)
                 {
                     Vector3Int locationToCheck = randomLocation + dir * k;
                     if(!HasTile(locationToCheck) || World.SolidTile(locationToCheck))
                     {
-                        TotalSolidTilesSeen++;
+                        solids++;
                     }
                     else
                     {
-                        if (TotalSolidTilesSeen < 6)
+                        if (solids < 10)
+                        {
+                            --ReachedEndPoint;
                             break;
+                        }
+                        genOwner = World.GetTileData(locationToCheck).ProgressionNumber;
+                        hasReachedEndHere = true;
                         ReachedEndPoint++;
-                        TotalSolidTilesSeen += 20;
+                        solids += 20;
                         break;
                     }
+                }
+                if (hasReachedEndHere)
+                {
+                    if(solids < exit)
+                    {
+                        exit = solids;
+                        closestGenOwner = genOwner;
+                    }
+                    TotalSolidTilesSeen += solids;
                 }
             }
             int value = TotalSolidTilesSeen * ReachedEndPoint;
@@ -317,12 +344,20 @@ public class World : MonoBehaviour
             {
                 bestValue = value;
                 bestLocation = randomLocation;
+                bestGenOwner = closestGenOwner;
             }
-            GameObject n2 = new($"SecretRoom[{value},{ReachedEndPoint}]");
-            n2.transform.position = randomLocation * 2;
+            //GameObject n2 = new($"SecretRoom[{value},{ReachedEndPoint}]");
+            //n2.transform.position = randomLocation * 2;
+            //n2.transform.parent = ProceduralGenParent;
         }
         GameObject n = new($"TrueSecretRoom[{bestValue}]");
         n.transform.position = bestLocation * 2;
+        n.transform.parent = ProceduralGenParent;
+
+        WorldNode node = NodeID.GetRandomNodeWithParameters(NodeID.SecretNodes, 0, null, null, null);
+        node.Generate(n.transform.position, this, bestGenOwner, null, false);
+
+        //node.GeneratePath(false);
     }
     public void GenerateBonusNodes()
     {
