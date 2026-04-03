@@ -349,7 +349,7 @@ public class ThunderBubble : Projectile
                 AudioManager.PlaySound(SoundID.ElectricZap.GetVariation(0), transform.position, 0.3f, 0.66f);
                 if(PlayerOwner.EchoBubbles > 0)
                 {
-                    NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, PlayerOwner, PlayerOwner.EchoBubbles);
+                    NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, PlayerOwner, PlayerOwner.EchoBubbles, North ? 1 : -1);
                 }
                 Damage *= 2 + PlayerOwner.ThunderBubbleReturnDamageBonus;
                 Recalled = true;

@@ -273,6 +273,16 @@ public class World : MonoBehaviour
                 genNum++;
             prevNode = node;
         }
+        PlaceBonusNodes();
+        GenerateBonusNodes();
+    }
+    public void PlaceBonusNodes()
+    {
+
+    }
+    public void GenerateBonusNodes()
+    {
+
     }
     public void CreateWorldOuterFill()
     {
