@@ -3,6 +3,8 @@ using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using System.IO;
+using UnityEditor;
 
 [CreateAssetMenu(fileName = "DualGridTile", menuName = "ScriptableObjects/DualGridTile", order = 1)]
 public class DualGridTile : ScriptableObject
@@ -80,8 +82,9 @@ public class DualGridTile : ScriptableObject
                 map.SetTile(newPos, BonusCenterVariants[Utils.RandInt(BonusCenterVariants.Length)]);
             else if (id != -1)
             {
-                if(BonusTileTextures != null && BonusTileTextures.Length > 0)
+                if (BonusTileTextures != null && BonusTileTextures.Length > 0)
                     id += Utils.RandInt(BonusTileTextures.Length + 1) * 15;
+                Debug.Log(id);
                 Tile t = DisplayTileVariants[id];
                 map.SetTile(newPos, t);
             }
@@ -115,7 +118,13 @@ public class DualGridTile : ScriptableObject
     {
         if(TileTexture != null)
         {
-            Sprite[] sprites = Resources.LoadAll<Sprite>($"World/Tiles/{TileTexture.name}/{TileTexture.name}");
+            String path = AssetDatabase.GetAssetPath(TileTexture).Substring(17); // Cuts off "Assets/Resources/"
+            int lastSlashIndex = path.LastIndexOf('/');
+            if (lastSlashIndex != -1)
+            {
+                path = path.Substring(0, lastSlashIndex + 1); // Cuts off asset to just get folder path
+            }
+            Sprite[] sprites = Resources.LoadAll<Sprite>(path + TileTexture.name);
             int len = sprites.Length;
             DisplayTileVariants = new(16);
             for (int i = 0; i < len; ++i)
@@ -130,7 +139,7 @@ public class DualGridTile : ScriptableObject
             {
                 for (int j = 0; j < BonusTileTextures.Length; ++j)
                 {
-                    sprites = Resources.LoadAll<Sprite>($"World/Tiles/{TileTexture.name}/{BonusTileTextures[j].name}");
+                    sprites = Resources.LoadAll<Sprite>(path + BonusTileTextures[j].name);
                     len = sprites.Length;
                     for (int i = 0; i < len; ++i)
                     {
