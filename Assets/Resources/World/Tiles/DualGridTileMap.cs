@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,6 +9,7 @@ public class DualGridTilemap : MonoBehaviour
     public static GameObject TallGrass => Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
     public static GameObject Mushroom => Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
     public static GameObject VisualMapPrefab => Resources.Load<GameObject>("World/Tiles/VisualMap");
+    public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     public Transform Visual;
     public Transform DecorVisual;
     private List<Tilemap> DisplayMap;
@@ -36,7 +39,12 @@ public class DualGridTilemap : MonoBehaviour
             t.color = c;
             DisplayMap.Add(t);
             DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + TileID.TileTypes[k].LayerOffset;
-        };
+            if (TileID.TileTypes[k].name.Contains("Grass")) // Applies overlay to tiles based on their names
+            {
+                DisplayMap[k].GetComponent<TilemapRenderer>().material = OverlayMats.Overlays[0];
+            }
+        }
+        ;
     }
     private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
     public static void RefreshDisplayTilemap(Tilemap Map, List<Tilemap> DisplayMap, bool border)

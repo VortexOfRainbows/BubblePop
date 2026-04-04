@@ -4,7 +4,7 @@ Shader "Custom/OverlayShader"
     {
         _OverlayTex("Overlay Texture", 2D) = "white" {}
         _Scale("Scale", Float) = 0.006944444
-        _Mix("Mix", Float) = 1.0
+        _BlendAmount("Blend Amount", Range(0.0, 1.0)) = 1.0
     }
     SubShader
     {
@@ -26,12 +26,14 @@ Shader "Custom/OverlayShader"
             sampler2D _MainTex;
             sampler2D _OverlayTex;
             float _Scale; // should be pixels per unit divided by texture size for pixel perfect look (64 pixels per unit here)
-            float _Mix; // How much of the overlay appears vs the original tile
+            float _BlendAmount;
+            bool _Solid;
 
             struct appdata_t
             {
                 float4 vertex : POSITION;
                 float2 texcoord : TEXCOORD0;
+                fixed4 color : COLOR; // Tilemap color
             };
 
             struct v2f
@@ -39,6 +41,7 @@ Shader "Custom/OverlayShader"
                 float2 uv : TEXCOORD0;
                 float2 worldPos : TEXCOORD1;
                 float4 vertex : SV_POSITION;
+                float4 color : COLOR;
             };
 
             v2f vert(appdata_t v)
@@ -51,6 +54,7 @@ Shader "Custom/OverlayShader"
                 o.worldPos = worldPos.xy;
                 
                 o.uv = v.texcoord;
+                o.color = v.color;
                 return o;
             }
 
@@ -58,13 +62,16 @@ Shader "Custom/OverlayShader"
             {
                 // Sample the main texture
                 fixed4 color = tex2D(_MainTex, i.uv);
+                color = color * i.color; // Applies the Tilemap's color
 
                 // Sample the overlay texture using the scaled world position
                 float2 overlayUV = i.worldPos * _Scale;
                 fixed4 overlayColor = tex2D(_OverlayTex, overlayUV);
+                if (color.a == 0.0) { // Ignores anything outside the texture
+                    return color;
+                }
 
-                // Mix the original color with the overlay color based on the mask
-                return lerp(color, overlayColor, _Mix);
+                return lerp(color, clamp(color + overlayColor, 0.0, 1.0), _BlendAmount);
             }
             ENDCG
         }
