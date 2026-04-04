@@ -41,10 +41,6 @@ public class BottleFlip : PowerUp
     {
         p.BottleFlip += Stack;
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/WeaponUpgrade");
-    }
 }
 public class FancyFootwork : CloudWalker
 {
