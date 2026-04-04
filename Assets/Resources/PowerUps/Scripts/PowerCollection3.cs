@@ -150,10 +150,6 @@ public class Kickflip : PowerUp
     {
         p.Kickflip += Stack;
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/Dice/DexBoot");
-    }
 }
 public class RetaliatoryBlast : PowerUp
 {
