@@ -16,7 +16,7 @@ Need to do:
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. Economy: Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more)
-4. Add a GEM currency, which can be used to reroll shop selections, print items at a FORGE
+4. Add a GEM currency, (should do now) which can be used to reroll shop selections, print items at a FORGE
 5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 6. Enemy Pathfinding
 7. Some UI classes to normalize UI colors, Button behaviors, etc.
@@ -26,9 +26,12 @@ Need to do:
 	3. Make blurbs appear in the equipment page
 	4. Add flavortext for all compendium elements
 9. New sounds for Rock Golem
+10. Walls to have actual 2.5-like depth (actual walls like Necesse, Rimworld, Core Keeper, Stardew, etc.)
+11. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
+12. Bombee and Kamikaze Enemies.
 
 Less Important (mostly non-issues or complete already), but in consideration:
-1. Maybe shift roadblock visuals to the player so it's more encompassing
+1. (should do now) Maybe shift roadblock visuals to the player so it's more encompassing
 2. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 3. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
@@ -44,7 +47,6 @@ Done:
 1. Add some WIP logic for determining where to spawn a "secret" room
 2. Add Secret rooms which can spawn and contain cool things
 3. Add some new Node variants (Wes)
-
 
 4/2/26
 1. Add silly Physics Magnet book + unlock condition for it
