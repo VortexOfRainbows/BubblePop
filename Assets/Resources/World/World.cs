@@ -71,6 +71,7 @@ public class World : MonoBehaviour
     public Transform RoadblockParent;
     public Transform ProceduralGenParent;
     public List<Transform> PlayerSpawnPosition = new();
+    public int NodesToGenerate = 7;
     public Rect ApproximateSize { get; set; }
     [SerializeField]
     public List<Transform> nodes;
@@ -161,7 +162,7 @@ public class World : MonoBehaviour
     /// </summary>
     public void PlaceNodeLocations()
     {
-        int nodeCount = 7 + nodes.Count;
+        int nodeCount = NodesToGenerate + nodes.Count;
         WorldNode prevNode = null;
         for (int i = 0; i < nodes.Count; ++i) //Assign all nodes 
         {

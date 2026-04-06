@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class GachaponShop : MonoBehaviour
 {
+    public RestockMachine RestockMachine;
+    public int RestockRemaining { get; set; } = 3;
     public static List<GachaponShop> AllShops { get; set; } = new();
     public GameObject[] Pedastal;
     public PowerUpObject[] Stock { get; private set; }
@@ -16,6 +18,7 @@ public class GachaponShop : MonoBehaviour
     {
         AllShops.Add(this);
         ProgressionNumber = World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).ProgressionNumber;
+        RestockMachine.SetRestockAmountToShopStock(this);
     }
     public void FixedUpdate()
     {
@@ -34,19 +37,27 @@ public class GachaponShop : MonoBehaviour
             }
             else
             {
-                Restock();
+                TryRestocking();
             }
         }
     }
     public void Restock()
     {
+        ++TotalPowersPurchased;
+        AddStock(NextToFillUp);
+        NextToFillUp = -1;
+        --RestockRemaining;
+        if (RestockRemaining <= 0) //This is just for testing the restock machine
+            RestockRemaining = 10;
+        RestockMachine.SetRestockAmountToShopStock(this);
+    }
+    public void TryRestocking()
+    {
         FillStockTimer += Time.fixedDeltaTime;
-        if (FillStockTimer > 1.5f)
+        if (RestockRemaining > 0)
         {
-            ++TotalPowersPurchased;
-            FillStockTimer = 0; 
-            AddStock(NextToFillUp);
-            NextToFillUp = -1;
+            FillStockTimer = 0;
+            Restock();
         }
     }
     public bool CheckMissingStock()
@@ -67,8 +78,12 @@ public class GachaponShop : MonoBehaviour
     {
         float mult = PriceMultiplier * (1.0f + 0.05f * TotalPowersPurchased - Player.Instance.ShopDiscount);
         float bmChance = BlackMarketShop ? 1 : .005f * Player.Instance.BlackmarketMult;
-        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, bmChance), Pedastal[i].transform.position + new Vector3(0, 1.2f)).GetComponent<PowerUpObject>();
+        Vector3 pillowPosition = Pedastal[i].transform.position + new Vector3(0, 1.2f);
+        Vector3 spawnPosition = RestockMachine != null ? RestockMachine.transform.position : pillowPosition;
+        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, bmChance), spawnPosition).GetComponent<PowerUpObject>();
         obj.Cost = Mathf.Max(0, (int)(obj.MyPower.Cost * mult));
+        obj.finalPosition = pillowPosition;
+        obj.velocity = Utils.RandCircleEdge(4);
         Stock[i] = obj;
     }
 }

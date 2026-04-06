@@ -18,7 +18,7 @@ public class PowerUpObject : MonoBehaviour
 
     public float VeloEndTimer = 0.0f;
     public Vector2 velocity = Vector2.zero;
-    public Vector2 finalPosition;
+    public Vector2 finalPosition { get; set; } = Vector2.zero;
     public bool FakePower = false;
     public void Start()
     {
