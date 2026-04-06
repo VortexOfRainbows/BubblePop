@@ -138,7 +138,7 @@ public abstract class PowerUp
     {
         PowerUpObject obj = GameObject.Instantiate(Main.PrefabAssets.PowerUpObj, pos, Quaternion.identity);
         obj.Type = powerUpID;
-        obj.finalPosition = pos;
+        obj.FinalPosition = pos;
         WaveDirector.TotalPowersSpawned += 1;
         return obj.gameObject;
     }
@@ -356,12 +356,12 @@ public abstract class PowerUp
     {
 
     }
-    public virtual void AliveUpdate(GameObject inner, GameObject outer, bool UI = false)
-    {
-        inner.transform.localPosition = Vector3.zero;
-        inner.transform.eulerAngles = Vector3.zero;
-        inner.transform.localScale = Vector3.one;
-    }
+    //public virtual void AliveUpdate(GameObject inner, GameObject outer, bool UI = false)
+    //{
+        //inner.transform.localPosition = Vector3.zero;
+        //inner.transform.eulerAngles = Vector3.zero;
+        //inner.transform.localScale = Vector3.one;
+    //}
     public Sprite sprite;
     public virtual int Cost => GetDefaultCost();
     public int GetDefaultCost()

@@ -398,7 +398,7 @@ public class Chest : MonoBehaviour
             circular.y += yOffset;
             PowerUpObject power = PowerUp.Spawn(powers[i], (Vector2)transform.position + new Vector2(0, yOffset * 0.6f)).GetComponent<PowerUpObject>();
             power.velocity = circular * 3.5f;
-            power.finalPosition = new Vector2(transform.position.x + circular.x, transform.position.y + yOffset);
+            power.FinalPosition = new Vector2(transform.position.x + circular.x, transform.position.y + yOffset);
             spentPowers += power.Cost;
         }
 

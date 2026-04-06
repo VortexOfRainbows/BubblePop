@@ -82,8 +82,9 @@ public class GachaponShop : MonoBehaviour
         Vector3 spawnPosition = RestockMachine != null ? RestockMachine.transform.position : pillowPosition;
         PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, bmChance), spawnPosition).GetComponent<PowerUpObject>();
         obj.Cost = Mathf.Max(0, (int)(obj.MyPower.Cost * mult));
-        obj.finalPosition = pillowPosition;
-        obj.velocity = Utils.RandCircleEdge(4);
+        obj.FinalPosition = pillowPosition;
+        obj.VelocityStyle = 1;
+        obj.velocity = new Vector2(0, 8);
         Stock[i] = obj;
     }
 }

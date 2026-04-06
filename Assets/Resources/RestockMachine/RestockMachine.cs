@@ -24,6 +24,15 @@ public class RestockMachine : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        Animate();
+        AnimateNumber();
+    }
+    public void Animate()
+    {
+
+    }
+    public void AnimateNumber()
+    {
         NumberSwapTimer += Time.fixedDeltaTime * 2.5f;
         if (NumberSwapTimer > 1)
             NumberSwapTimer = 1;

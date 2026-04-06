@@ -18,7 +18,8 @@ public class PowerUpObject : MonoBehaviour
 
     public float VeloEndTimer = 0.0f;
     public Vector2 velocity = Vector2.zero;
-    public Vector2 finalPosition { get; set; } = Vector2.zero;
+    public Vector2 FinalPosition { get; set; } = Vector2.zero;
+    public int VelocityStyle { get; set; } = 0;
     public bool FakePower = false;
     public void Start()
     {
@@ -37,7 +38,7 @@ public class PowerUpObject : MonoBehaviour
             outer.material = MyPower.GetBorder(true);
             adornment.gameObject.SetActive(false);
         }
-        MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
+        //MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
     }
     public void TryCollecting()
     {
@@ -55,18 +56,22 @@ public class PowerUpObject : MonoBehaviour
     {
         if (inner.sprite == null)
             inner.sprite = Sprite;
-        MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
+        //MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
         timer++;
         float vibrate = FakePower ? 0.05f : 0.1f;
         float scale = 1.0f + vibrate * Mathf.Sin(Mathf.Deg2Rad * timer * 2f);
         if (velocity != Vector2.zero)
         {
-            VeloEndTimer += Time.fixedDeltaTime;
+            VeloEndTimer += VelocityStyle == 1 ? Time.fixedDeltaTime * 0.75f : Time.fixedDeltaTime;
             if (VeloEndTimer > 1)
                 VeloEndTimer = 1;
             transform.position += (Vector3)velocity * Time.fixedDeltaTime;
-            transform.position = transform.position.Lerp(finalPosition, VeloEndTimer);
-            transform.localScale = Vector3.Lerp(transform.localScale, (0.25f + 0.75f * Mathf.Sqrt(Mathf.Min(1, VeloEndTimer * 2f))) * Vector3.one, 0.1f);
+            if(VelocityStyle == 1)
+                transform.position = transform.position.Lerp(FinalPosition, VeloEndTimer * VeloEndTimer);
+            else
+                transform.position = transform.position.Lerp(FinalPosition, VeloEndTimer);
+            float scale2 = VelocityStyle == 1 ? (0.3f + 0.7f * Mathf.Sqrt(Mathf.Min(1, VeloEndTimer * 2f))) : (0.25f + 0.75f * Mathf.Sqrt(Mathf.Min(1, VeloEndTimer * 2f)));
+            transform.localScale = Vector3.Lerp(transform.localScale, scale2 * Vector3.one, VelocityStyle == 1 ? 0.12f : 0.1f);
         }
         else if(!FakePower)
         {

@@ -57,7 +57,7 @@ public class PowerUpUIElement : MonoBehaviour
     }
     public void TurnedOn()
     {
-        MyPower.AliveUpdate(inner.gameObject, outer.gameObject, true);
+        //MyPower.AliveUpdate(inner.gameObject, outer.gameObject, true);
 
         inner.sprite = Sprite;
         if(SpecialLockedSprite || UsePlaceHolder)
