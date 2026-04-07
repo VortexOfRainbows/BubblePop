@@ -1,12 +1,13 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class GachaponShop : MonoBehaviour
 {
     public RestockMachine RestockMachine;
-    public int RestockPrice { get; set; } = 5;
+    public int RestockCost { get; set; } = 3;
     public int RestockRemaining { get; set; } = 3;
+    public int PreviousStock { get; set; } = 3;
     public static List<GachaponShop> AllShops { get; set; } = new();
     public GameObject[] Pedastal;
     public PowerUpObject[] Stock { get; private set; }
@@ -22,6 +23,7 @@ public class GachaponShop : MonoBehaviour
         ProgressionNumber = World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).ProgressionNumber;
         RestockRemaining += Player.Instance.BonusStocks;
         RestockMachine.SetRestockAmountToShopStock(this);
+        RestockMachine.UpdateUI(this);
     }
     public void TryAddingRemainingRestocks(int gemCost = 0)
     {
@@ -33,13 +35,15 @@ public class GachaponShop : MonoBehaviour
         float roll = bonusChance - extra;
         if (Utils.RandFloat() < roll)
             extra++;
-        RestockRemaining += 1 + extra;
-        RestockMachine.SetRestockAmountToShopStock(this);
+        int restockAmt = 3 + extra;
+        RestockRemaining += restockAmt;
+        RestockCost += 1;
     }
     public void FixedUpdate()
     {
         if (Main.WavesUnleashed && ProgressionNumber <= Main.PylonProgressionNumber)
         {
+            FillStockTimer += Time.fixedDeltaTime;
             if(Stock == null)
             {
                 Stock = new PowerUpObject[Pedastal.Length];
@@ -47,15 +51,20 @@ public class GachaponShop : MonoBehaviour
                     AddStock(i);
             }
             if(NextToFillUp == -1)
-            {
-                FillStockTimer = 0;
                 CheckMissingStock();
-            }
             else
-            {
                 TryRestocking();
-            }
         }
+        if(RestockRemaining != PreviousStock)
+        { 
+            RestockMachine.SetRestockAmountToShopStock(this);
+            PreviousStock = RestockRemaining;
+        }
+    }
+    public void Update()
+    {
+        if (RestockRemaining <= 0)
+            RestockMachine.UpdateUI(this);
     }
     public void Restock()
     {
@@ -63,14 +72,12 @@ public class GachaponShop : MonoBehaviour
         AddStock(NextToFillUp);
         NextToFillUp = -1;
         --RestockRemaining;
-        if (RestockRemaining <= 0) //This is just for testing the restock machine
-            RestockRemaining = 10;
-        RestockMachine.SetRestockAmountToShopStock(this);
+        //if (RestockRemaining <= 0) //This is just for testing the restock machine
+        //    RestockRemaining = 10;
     }
     public void TryRestocking()
     {
-        FillStockTimer += Time.fixedDeltaTime;
-        if (RestockRemaining > 0)
+        if (RestockRemaining > 0 && FillStockTimer > 0.5f)
         {
             FillStockTimer = 0;
             Restock();

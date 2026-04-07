@@ -294,16 +294,13 @@ public class Restock : PowerUp
         {
             foreach (GachaponShop shop in GachaponShop.AllShops)
             {
-                if (shop.Stock != null)
-                {
-                    shop.RestockRemaining += 2;
-                }
+                shop.RestockRemaining += 2;
             }
         }
     }
     public override void HeldEffect(Player p)
     {
         p.BonusStocks += Stack * 2;
-        p.BonusRestockChance += 0.1f * Stack;
+        p.BonusRestockChance += 0.5f * Stack;
     }
 }

@@ -10,6 +10,7 @@ public static class ColorHelper
     public static readonly Color UISelectColor = Color.yellow;
     public static readonly Color UIDefaultColor = Color.white;
     public static readonly Color UIRedColor = New255(255, 50, 50);
+    public static readonly Color UIDarkGreyColor = New255(0x99, 0x99, 0x99);
     public static readonly Color UIGreyColor = new(1, 1, 1, 0.4f);
     public static readonly Color TokenColor = New255(176, 147, 58);
     public static readonly Color SentinelGreen = new(0.18f, 1.0f, .55f);

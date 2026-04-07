@@ -1,9 +1,13 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RestockMachine : MonoBehaviour
 {
     public SpriteRenderer[] Numbers;
     public SpriteRenderer DisplayNumber;
+    public Transform UI;
+    public TextMeshProUGUI RestockCost;
     public Transform GumballMachine;
     public GameObject Smile, OpenSmile;
     public float NumberSwapTimer = 0;
@@ -15,8 +19,33 @@ public class RestockMachine : MonoBehaviour
             index = Numbers.Length - 1;
         DisplayNumber.sprite = Numbers[index].sprite;
         DisplayNumber.transform.localPosition = Numbers[index].transform.localPosition;
-        DisplayNumber.transform.localScale *= 0;
+        DisplayNumber.transform.localScale = Vector3.one * 0.5f;
         NumberSwapTimer = 0;
+    }
+    public void UpdateUI(GachaponShop owner)
+    {
+        float distance = Player.Instance1Pos.Distance(transform.position);
+        if(distance < 6)
+        {
+            UI.gameObject.SetActive(true);
+            if(owner.RestockRemaining <= 0)
+            {
+                bool canAfford = CoinManager.CurrentGems >= owner.RestockCost;
+                Image i = UI.GetComponent<Image>();
+                i.color = Color.Lerp(i.color, canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIDarkGreyColor, Utils.DeltaTimeLerpFactor(0.1f)).WithAlpha(0.5f);
+                RestockCost.color = canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIRedColor;
+                if (Input.GetKeyDown(KeyCode.R) && canAfford)
+                {
+                    owner.TryAddingRemainingRestocks(owner.RestockCost);
+                    UI.gameObject.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            UI.gameObject.SetActive(false);
+        }
+        RestockCost.text = owner.RestockCost.ToString();
     }
     public void FixedUpdate()
     {
