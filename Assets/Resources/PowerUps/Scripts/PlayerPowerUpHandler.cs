@@ -154,6 +154,8 @@ public partial class Player : Entity
     public float BonusShrapnel = 0.0f;
     public int PrizeBombCoins = 0;
     public bool HasMagnetBook = false;
+    public int BonusStocks = 0;
+    public float BonusRestockChance = 0.0f;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -208,8 +210,8 @@ public partial class Player : Entity
         BottleFlip = 0;
         DodgeStat = 0.0f;
         BonusBubblePierce = 0;
-        ExplodingBubbles = BonusBoards = Kickflip = RetaliatoryBomb = BombBrew = SkullBomb = ClusterBomb = PrizeBombCoins = 0;
-        BonusShrapnel = 0.0f;
+        ExplodingBubbles = BonusBoards = Kickflip = RetaliatoryBomb = BombBrew = SkullBomb = ClusterBomb = PrizeBombCoins = BonusStocks = 0;
+        BonusShrapnel = BonusRestockChance = 0.0f;
         HasMagnetBook = false;
     }
     private void UpdatePowerUps()

@@ -5,6 +5,7 @@ using static UnityEditor.PlayerSettings;
 public class GachaponShop : MonoBehaviour
 {
     public RestockMachine RestockMachine;
+    public int RestockPrice { get; set; } = 5;
     public int RestockRemaining { get; set; } = 3;
     public static List<GachaponShop> AllShops { get; set; } = new();
     public GameObject[] Pedastal;
@@ -19,6 +20,20 @@ public class GachaponShop : MonoBehaviour
     {
         AllShops.Add(this);
         ProgressionNumber = World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).ProgressionNumber;
+        RestockRemaining += Player.Instance.BonusStocks;
+        RestockMachine.SetRestockAmountToShopStock(this);
+    }
+    public void TryAddingRemainingRestocks(int gemCost = 0)
+    {
+        if (CoinManager.CurrentGems < gemCost)
+            return;
+        CoinManager.ModifyGems(-gemCost);
+        float bonusChance = Player.Instance.BonusRestockChance;
+        int extra = (int)bonusChance;
+        float roll = bonusChance - extra;
+        if (Utils.RandFloat() < roll)
+            extra++;
+        RestockRemaining += 1 + extra;
         RestockMachine.SetRestockAmountToShopStock(this);
     }
     public void FixedUpdate()

@@ -277,3 +277,33 @@ public class PrizeBombs : PowerUp
         return Resources.Load<Sprite>("PowerUps/Dice/InsightAddOn");
     }
 }
+public class Restock : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"TBD");
+        description.WithShortDescription("Adds additional stock to all shops and chance for bonus stock on purchased restock");
+    }
+    public override void OnPickup(int count)
+    {
+        if (GachaponShop.AllShops.Count > 0)
+        {
+            foreach (GachaponShop shop in GachaponShop.AllShops)
+            {
+                if (shop.Stock != null)
+                {
+                    shop.RestockRemaining += 2;
+                }
+            }
+        }
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.BonusStocks += Stack * 2;
+        p.BonusRestockChance += 0.1f * Stack;
+    }
+}
