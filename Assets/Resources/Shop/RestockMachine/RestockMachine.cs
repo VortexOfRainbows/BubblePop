@@ -15,17 +15,20 @@ public class RestockMachine : MonoBehaviour
     public void SetRestockAmountToShopStock(GachaponShop Owner)
     {
         int index = Owner.RestockRemaining;
-        if (index >= Numbers.Length)
+        if (index >= Numbers.Length - 1)
+            index = Numbers.Length - 2;
+        if (Owner.RestockRemaining >= 99999)
             index = Numbers.Length - 1;
         DisplayNumber.sprite = Numbers[index].sprite;
         DisplayNumber.transform.localPosition = Numbers[index].transform.localPosition;
         DisplayNumber.transform.localScale = Vector3.one * 0.5f;
+        DisplayNumber.transform.localRotation = Numbers[index].transform.localRotation;
         NumberSwapTimer = 0;
     }
     public void UpdateUI(GachaponShop owner)
     {
         float distance = Player.Instance1Pos.Distance(transform.position);
-        if(distance < 6)
+        if(distance < 7 && owner.FillUpTimer <= 0)
         {
             UI.gameObject.SetActive(true);
             if(owner.RestockRemaining <= 0)
@@ -34,7 +37,7 @@ public class RestockMachine : MonoBehaviour
                 Image i = UI.GetComponent<Image>();
                 i.color = Color.Lerp(i.color, canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIDarkGreyColor, Utils.DeltaTimeLerpFactor(0.1f)).WithAlpha(0.5f);
                 RestockCost.color = canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIRedColor;
-                if (Input.GetKeyDown(KeyCode.R) && canAfford)
+                if (Input.GetKeyDown(KeyCode.R) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
                 {
                     owner.TryAddingRemainingRestocks(owner.RestockCost);
                     UI.gameObject.SetActive(false);

@@ -285,18 +285,14 @@ public class Restock : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription($"TBD");
-        description.WithShortDescription("Adds additional stock to all shops and chance for bonus stock on purchased restock");
+        description.WithDescription($"All Y:shops gain Y:+2 G:(+2 per stack) Y:stock \nUsing Y:gems to Y:restock has a Y:50% G:(+50% per stack) chance to Y:stock extra Y:powers");
+        description.WithShortDescription("All shops gain additional stock and a chance for bonus stock on restock");
     }
     public override void OnPickup(int count)
     {
         if (GachaponShop.AllShops.Count > 0)
-        {
             foreach (GachaponShop shop in GachaponShop.AllShops)
-            {
                 shop.RestockRemaining += 2;
-            }
-        }
     }
     public override void HeldEffect(Player p)
     {

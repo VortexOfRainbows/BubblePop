@@ -40,6 +40,7 @@ Less Important (mostly non-issues or complete already), but in consideration:
 
 Multiplayer Task List:
 1. Bubble shield may not be refreshing on repeated pickup (not sure I am able to replicate this)
+2. Make reroll machine work in multiplayer
 
 
 Done: 
@@ -51,8 +52,8 @@ Done:
 4. Bottle Flip Sprite (David)
 5. Kickflip Sprite (Sam)
 6. WIP Restock machine for the shop
-	1. Now has some more animations, hitbox, and gem for restocking
-	1. Needs: testing, gem insert animation on restock
+	1. Now has some more animations, hitbox, and gem for restocking, and gem insert animation on restock
+	1. Needs: testing, sfx for gem anim, add restock machine to a cool place in all shops
 7. Adjustments to layering for Powerups to put all renderers on the same layer for future organizational purposes
 8. WIP restock power
 9. Reorganize some asset internals

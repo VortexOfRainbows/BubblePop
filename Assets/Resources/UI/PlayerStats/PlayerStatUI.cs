@@ -74,8 +74,8 @@ public class PlayerStatUI : MonoBehaviour
     }
     public static void SetHeartsToPlayerLife()
     {
-        Prefab = Prefab != null ? Prefab : Resources.Load<GameObject>("UI/Heart");
-        PrefabShield = PrefabShield != null ? PrefabShield : Resources.Load<GameObject>("UI/Shield");
+        Prefab = Prefab != null ? Prefab : Resources.Load<GameObject>("UI/PlayerStats/Heart");
+        PrefabShield = PrefabShield != null ? PrefabShield : Resources.Load<GameObject>("UI/PlayerStats/Shield");
         UpdateHearts(Player.Instance);
         CurrentLife = MaxLife;
         CurrentShield = MaxShield;
