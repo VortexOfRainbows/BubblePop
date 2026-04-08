@@ -175,13 +175,15 @@ public partial class Entity : MonoBehaviour
         foreach (Animator a in ChildAnimators)
             a.UpdateAnimation();
     }
-    public static void PushIntoClosestPossibleTile(Transform transform, Rigidbody2D RB, int snapDist = 20, bool includeProgressionBounds = false)
+    public static void PushIntoClosestPossibleTile(Transform transform, Rigidbody2D RB, int snapDist = 20, bool includeProgressionBounds = false, Vector2 offset = default)
     {
         Vector2[] dirs = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1),
             new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
+        if (offset == default)
+            offset = Vector2.zero;
         Vector2 pos = transform.position;
-        Vector2 finalPos = transform.position;
-        Vector2 tileCenter = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(transform.position));
+        Vector2 finalPos = pos;
+        Vector2 tileCenter = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(pos + offset));
         Vector2 tileCenterToPlayerCenter = pos - tileCenter;
         Vector2 veloOffset = -RB.velocity * Time.fixedDeltaTime;
         float closestDist = float.MaxValue;
@@ -191,13 +193,13 @@ public partial class Entity : MonoBehaviour
             {
                 Vector2 direction = dirs[i] * j;
                 Vector2 newPos = pos + direction;
-                if (World.WithinBorders(newPos, includeProgressionBounds))
+                if (World.WithinBorders(newPos + offset, includeProgressionBounds))
                 {
                     Vector2 snap = new(Mathf.Abs(dirs[i].x), Mathf.Abs(dirs[i].y));
                     var tileToPlayer2 = tileCenterToPlayerCenter * snap;
                     var velo2 = veloOffset * snap;
                     Vector2 best = pos + direction - tileToPlayer2 + velo2;
-                    float dist = transform.position.Distance(best);
+                    float dist = pos.Distance(best);
                     if (dist < closestDist)
                     {
                         closestDist = dist;

@@ -187,8 +187,8 @@ public class Chest : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if (!World.WithinBorders(transform.position, false))
-            Entity.PushIntoClosestPossibleTile(transform, RB, includeProgressionBounds: false);
+        if (!World.WithinBorders(transform.position + new Vector3(0, 1f), false))
+            Entity.PushIntoClosestPossibleTile(transform, RB, includeProgressionBounds: false, offset: new Vector3(0, 1f));
         Hat.enabled = PirateChest;
         //Collider.isTrigger = CoinManager.CurrentKeys > 0;
         //if (Input.GetKey(KeyCode.R) && Main.DebugCheats)

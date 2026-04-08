@@ -42082,6 +42082,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4968511932184236685}
     m_Modifications:
+    - target: {fileID: 326224477751605865, guid: 43038993f63705941a829d30db75cb5e, type: 3}
+      propertyPath: InfiniteStock
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1268744164881615657, guid: 43038993f63705941a829d30db75cb5e, type: 3}
       propertyPath: m_Name
       value: ShopGachapon

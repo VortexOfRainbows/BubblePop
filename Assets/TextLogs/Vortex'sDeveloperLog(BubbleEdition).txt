@@ -15,8 +15,8 @@ Need to do:
 	2. Progress display for achievements
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
-	1. Economy: Bonus Shop Stock per reroll/restock, More Gem Drops Per Round, Midas Touch (gold is worth more)
-4. Add a GEM currency, print items at a FORGE
+	1. Economy: More Gem Drops Per Round, Midas Touch (gold is worth more)
+4. Add a FORGE which uses GEMS to print powers
 5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 6. Enemy Pathfinding
 7. Some UI classes to normalize UI colors, Button behaviors, etc.
@@ -40,7 +40,7 @@ Less Important (mostly non-issues or complete already), but in consideration:
 
 Multiplayer Task List:
 1. Bubble shield may not be refreshing on repeated pickup (not sure I am able to replicate this)
-2. Make reroll machine work in multiplayer
+2. Make sure reroll machine work in multiplayer
 
 
 Done: 
@@ -52,11 +52,14 @@ Done:
 4. Bottle Flip Sprite (David)
 5. Kickflip Sprite (Sam)
 6. WIP Restock machine for the shop
-	1. Now has some more animations, hitbox, and gem for restocking, and gem insert animation on restock
-	1. Needs: testing, sfx for gem anim, add restock machine to a cool place in all shops
+	1. Now has some more animations, hitbox, and gem for restocking, gem insert animation on restock, restock machine spawns in all shops
+	2. Needs: testing, sfx for gem anim
 7. Adjustments to layering for Powerups to put all renderers on the same layer for future organizational purposes
-8. WIP restock power
+8. Add restock power + sprite from David
 9. Reorganize some asset internals
+10. Shop related stuff now snaps in the editor and further reduced size of Gachapon hitbox in shop
+11. Adjustments to the somes of the nodes by Wes
+12. Adjustments to chest collision to hopefully prevent chests from being stuck in walls (for real this time)
 
 4/2/26
 1. Add silly Physics Magnet book + unlock condition for it

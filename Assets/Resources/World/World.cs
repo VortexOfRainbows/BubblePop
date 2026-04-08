@@ -297,7 +297,7 @@ public class World : MonoBehaviour
         Vector3Int bestEndLocation = Vector3Int.zero;
         byte bestGenOwner = 0;
         int bestValue = 0;
-        for(int i = 0; i < 40; ++i)
+        for(int i = 0; i < 25; ++i)
         {
             Vector3Int randomLocation = new (Utils.RandInt((int)ApproximateSize.xMin + Padding, (int)ApproximateSize.xMax - Padding), Utils.RandInt((int)ApproximateSize.yMin + Padding, (int)ApproximateSize.yMax - Padding));
             int TotalSolidTilesSeen = 0;
@@ -312,7 +312,7 @@ public class World : MonoBehaviour
                 Vector3Int dir2 = directions[j];
                 Vector3Int endLocation = Vector3Int.zero;
                 byte genOwner = 0;
-                for(int k = 1; k < 80; k += 2)
+                for(int k = 1; k < 75; k += 3)
                 {
                     Vector3Int locationToCheck = randomLocation + dir2 * k;
                     if(!HasTile(locationToCheck) || World.SolidTile(locationToCheck))

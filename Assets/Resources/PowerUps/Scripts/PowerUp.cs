@@ -88,6 +88,7 @@ public abstract class PowerUp
         //Economy powers
         AddPowerUpToAvailability<Magnet>();
         AddPowerUpToAvailability<Coupons>();
+        AddPowerUpToAvailability<Restock>();
 
         //Powers that give powers
         AddPowerUpToAvailability<Choice>();
