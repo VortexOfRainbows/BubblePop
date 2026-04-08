@@ -30,13 +30,13 @@ Need to do:
 11. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
 12. Bombee and Kamikaze Enemies.
 13. Button popups for crucible
+14. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
 
 Less Important (mostly non-issues or complete already), but in consideration:
-1. (NEXT UP) Maybe shift roadblock visuals to the player so it's more encompassing
-2. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
+1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
-3. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
-4. Normalize player customization layering (not super important but part of a future task)
+2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
+3. Normalize player customization layering (not super important but part of a future task)
 
 Multiplayer Task List:
 1. Bubble shield may not be refreshing on repeated pickup (not sure I am able to replicate this)
@@ -44,6 +44,10 @@ Multiplayer Task List:
 
 
 Done: 
+
+4/7/26
+1. Shifted roadblock visuals to the player only rather than using the portals
+	1. Since the player moves, this does create some weird visual artifacts occasionally. This can be fixed later with an overall rework of sorts
 
 4/3/26 to 4/7/2026
 1. Add some WIP logic for determining where to spawn a "secret" room

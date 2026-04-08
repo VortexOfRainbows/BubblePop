@@ -185,6 +185,7 @@ public partial class Entity : MonoBehaviour
         Vector2 finalPos = pos;
         Vector2 tileCenter = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(pos + offset));
         Vector2 tileCenterToPlayerCenter = pos - tileCenter;
+        RB.velocity *= 0.95f;
         Vector2 veloOffset = -RB.velocity * Time.fixedDeltaTime;
         float closestDist = float.MaxValue;
         for (int j = 1; j < snapDist; ++j)

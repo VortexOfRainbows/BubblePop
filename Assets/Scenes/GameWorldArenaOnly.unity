@@ -812,7 +812,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5616126579624063750, guid: 5cc36e807b61d074a868931506a81156, type: 3}
       propertyPath: InfiniteStock
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5764274963667287759, guid: 5cc36e807b61d074a868931506a81156, type: 3}
       propertyPath: m_LocalScale.z

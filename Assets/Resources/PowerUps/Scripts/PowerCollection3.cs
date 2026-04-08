@@ -292,7 +292,10 @@ public class Restock : PowerUp
     {
         if (GachaponShop.AllShops.Count > 0)
             foreach (GachaponShop shop in GachaponShop.AllShops)
+            {
                 shop.RestockRemaining += 2;
+                shop.RestockMachine.UpdateUI(shop);
+            }
     }
     public override void HeldEffect(Player p)
     {

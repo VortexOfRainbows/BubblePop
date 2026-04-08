@@ -657,7 +657,12 @@ public partial class Player : Entity
             MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(average.x, average.y, MainCamera.transform.position.z), 0.1f);
         }
         ImmuneFlashing();
+        if(!dead)
+        {
+            Roadblock.DoRoadblockVisual(ref RoadblockCounter, transform.position, Main.PylonProgressionNumber + 1, 1);
+        }
     }
+    public int RoadblockCounter = 0;
     public bool RunOnce { get; set; } = true;
     public new void Update()
     {
