@@ -186,17 +186,21 @@ public class World : MonoBehaviour
             arbitraryGameObject.transform.parent = ProceduralGenParent;
             WorldNode node = AssignNodeToTransform(arbitraryGameObject.transform, i, nodeCount);
             nodes.Add(arbitraryGameObject.transform);
-            Rect current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), true, 5);
-            float att = (current.width + current.height) * 0.25f;
+            Rect prev = node.TileMap.GetRect(prevPosition.ToTilePosition(), true, 4);
+            Rect current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), true, 4);
+            float att = (current.width + current.height + prev.width + prev.height) * 0.4f;
+            float start = att;
             while (IntersectionCount(current) > 0)
             {
                 float r = Utils.RandFloat(-att, att);
                 r += Mathf.Sign(r) * 10;
                 arbitraryGameObject.transform.position = prevPosition - (Vector3)((toPrev * (att + Utils.RandFloat(25))).RotatedBy(r * Mathf.Deg2Rad));
                 current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), false, 5);
-                if(++att > 360)
-                    throw new System.Exception("BUBBLE: FAILED TO PLACE PROCEDURAL NODE");
+                if(att > 360)
+                    throw new Exception("BUBBLE: FAILED TO PLACE PROCEDURAL NODE");
+                att += 2;
             }
+            Debug.Log($"Placing Node [{i}] took {att - start} attempts".WithColor("#5500FF"));
             toPrev = prevPosition - arbitraryGameObject.transform.position;
             toPrev = toPrev.normalized;
             prevNode = node;
@@ -297,7 +301,7 @@ public class World : MonoBehaviour
         Vector3Int bestEndLocation = Vector3Int.zero;
         byte bestGenOwner = 0;
         int bestValue = 0;
-        for(int i = 0; i < 25; ++i)
+        for(int i = 0; i < 20; ++i)
         {
             Vector3Int randomLocation = new (Utils.RandInt((int)ApproximateSize.xMin + Padding, (int)ApproximateSize.xMax - Padding), Utils.RandInt((int)ApproximateSize.yMin + Padding, (int)ApproximateSize.yMax - Padding));
             int TotalSolidTilesSeen = 0;
@@ -312,7 +316,7 @@ public class World : MonoBehaviour
                 Vector3Int dir2 = directions[j];
                 Vector3Int endLocation = Vector3Int.zero;
                 byte genOwner = 0;
-                for(int k = 1; k < 75; k += 3)
+                for(int k = 1; k < 80; k += 4)
                 {
                     Vector3Int locationToCheck = randomLocation + dir2 * k;
                     if(!HasTile(locationToCheck) || World.SolidTile(locationToCheck))
@@ -321,7 +325,7 @@ public class World : MonoBehaviour
                     }
                     else
                     {
-                        if (solids < 10)
+                        if (solids < 6)
                         {
                             --ReachedEndPoint;
                             break;

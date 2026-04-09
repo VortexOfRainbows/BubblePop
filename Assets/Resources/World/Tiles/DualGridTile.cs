@@ -84,7 +84,7 @@ public class DualGridTile : ScriptableObject
             {
                 if (BonusTileTextures != null && BonusTileTextures.Length > 0)
                     id += Utils.RandInt(BonusTileTextures.Length + 1) * 15;
-                Debug.Log(id);
+                //Debug.Log(id);
                 Tile t = DisplayTileVariants[id];
                 map.SetTile(newPos, t);
             }

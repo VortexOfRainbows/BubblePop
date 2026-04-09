@@ -305,3 +305,18 @@ public class FizzyThinkImJustGonnaStandThereAndTakeIt : UnlockCondition
     public override int Rarity => 4;
     public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
 }
+public class GachaponBlackjack : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Gachapon: Blackjack");
+        description.WithDescription($"As Y:Gachapon, reach and complete wave 15 without ever having more than 21 total powers");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Challenge;
+    }
+    public override int Rarity => 4;
+    public override UnlockCondition PreReqUnlock => Get<GachaponUnlock>();
+}

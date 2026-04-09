@@ -81,7 +81,7 @@ public class Chest : MonoBehaviour
     public bool NoKeyRequired { get; private set; } = false;
     public void Init(int type)
     {
-        if (Player.Instance.BlackmarketMult > 1.5f && !PirateChest)
+        if (Player.Instance != null && Player.Instance.BlackmarketMult > 1.5f && !PirateChest)
         {
             if (Utils.RandFloat(1) < 0.05f)
                 type = 3;

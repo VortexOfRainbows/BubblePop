@@ -447,6 +447,8 @@ public partial class Player : Entity
         PlayerNumber.color = InstanceID == 0 ? ColorHelper.Player1Color : ColorHelper.Player2Color;
         PlayerNumber.text = InstanceID == 0 ? "P1" : "P2";
         PlayerNumber.gameObject.SetActive(AllPlayers.Count > 1);
+        PowerCountIncludingStacks = 0; 
+        BestPowerCountIncludingStacks = 0;
     }
     public float abilityTimer = 0;
     private void MovementUpdate()

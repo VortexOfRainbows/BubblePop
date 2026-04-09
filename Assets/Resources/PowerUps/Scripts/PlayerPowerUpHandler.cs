@@ -8,6 +8,8 @@ public partial class Player : Entity
     
     }
     public int PowerCount => Powers.Count;
+    public int PowerCountIncludingStacks = 0;
+    public int BestPowerCountIncludingStacks = 0;
     /// <summary>
     /// Returns the PowerUpID of the power at the given index
     /// </summary>
@@ -33,6 +35,7 @@ public partial class Player : Entity
                 PowerUp.Get<EatenCake>().PickUp(this, num);
             if(p.Stack <= 0)
                 Powers.RemoveAt(index);
+            PowerCountIncludingStacks -= num;
         }
     }
     public static void PickUpPowerAll(int Type)
@@ -156,6 +159,7 @@ public partial class Player : Entity
     public bool HasMagnetBook = false;
     public int BonusStocks = 0;
     public float BonusRestockChance = 0.0f;
+    public int CoinsOnPowerPickup = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -213,6 +217,7 @@ public partial class Player : Entity
         ExplodingBubbles = BonusBoards = Kickflip = RetaliatoryBomb = BombBrew = SkullBomb = ClusterBomb = PrizeBombCoins = BonusStocks = 0;
         BonusShrapnel = BonusRestockChance = 0.0f;
         HasMagnetBook = false;
+        CoinsOnPowerPickup = 0;
     }
     private void UpdatePowerUps()
     {

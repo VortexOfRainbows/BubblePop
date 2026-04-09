@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class CatEars : Dice
@@ -16,5 +18,13 @@ public class CatEars : Dice
     {
         description.WithName("Cat Ears").WithDescription("Tail not included");
     }
-    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
+    public override void InitializeAbilities(ref List<Ability> abilities)
+    {
+        abilities.Add(new Ability(Ability.ID.Passive, "Gain Y:[5 coins] when a Y:power is acquired"));
+    }
+    public override void EquipUpdate()
+    {
+        p.MyPlayer.CoinsOnPowerPickup += 5;
+    }
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponBlackjack>();
 }
