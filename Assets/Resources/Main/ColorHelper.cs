@@ -15,11 +15,13 @@ public static class ColorHelper
     public static readonly Color TokenColor = New255(176, 147, 58);
     public static readonly Color SentinelGreen = new(0.18f, 1.0f, .55f);
     public static readonly Color SentinelBlue = new(0.26f, 0.95f, 1.0f);
+    public static readonly Color SentinelPurple = new(.75f, .53f, 1);
+    public static readonly Color SentinelMagenta = new(.875f, .255f, 1);
     public static readonly Color CommandInfector = new(1, .1f, .1f);
     public static readonly Color Player1Color = New255(0x88, 0xF4, 0xFF);
     public static readonly Color Player2Color = New255(0xFF, 0x96, 0x96);
-    public static Color SentinelColorsLerp(float t)
+    public static Color SentinelColorsLerp(float t, bool purple = false)
     {
-        return Color.Lerp(SentinelGreen, SentinelBlue, t);
+        return purple ? Color.Lerp(SentinelPurple, SentinelMagenta, t) : Color.Lerp(SentinelGreen, SentinelBlue, t);
     }
 }

@@ -13,6 +13,7 @@ public class SentinelLaser : BoxProjectile
     public override void AI()
     {
         bool isInfector = Data.Length > 0 && Data1 == 1;
+        bool isPurple = Data.Length > 0 && Data1 == 2;
         transform.position -= (Vector3)(RB.velocity * Time.fixedDeltaTime);
         if(timer <= 0)
         {
@@ -29,7 +30,7 @@ public class SentinelLaser : BoxProjectile
             Vector2 spawnPos = (Vector2)position + norm;
             for (int i = 0; i < 20; ++i)
                 ParticleManager.NewParticle(spawnPos, Utils.RandFloat(2.5f, 4.5f), norm * Utils.RandFloat(-1, 5), 5f, Utils.RandFloat(0.5f, 1.5f), ParticleManager.ID.Pixel,
-                    isInfector ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Utils.RandFloat()).WithAlpha(0.65f));
+                    isInfector ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Utils.RandFloat(), isPurple).WithAlpha(0.65f));
             Vector2 pos;
             for (int j = -1; j <= 1; j += 2)
             {
@@ -44,7 +45,7 @@ public class SentinelLaser : BoxProjectile
                     Vector2 toPrev = prev - spawnPos;
                     float magnitude2 = toPrev.magnitude;
                     float r = -toPrev.ToRotation() * Mathf.Rad2Deg;
-                    Color c2 = isInfector ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(0.5f + 0.5f * sin * j);
+                    Color c2 = isInfector ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(0.5f + 0.5f * sin * j, isPurple);
                     ParticleManager.NewParticle(spawnPos, new Vector2(magnitude2, 0.2f + 0.4f * scaleMult), norm * 0.1f, 0, Mathf.Lerp(0.75f, 1.5f, 0.5f + 0.5f * sin * j), ParticleManager.ID.Line, c2.WithAlpha(0.6f * secondPercentMult),
                         r);
                     ParticleManager.NewParticle(spawnPos, new Vector2(magnitude2, 0.1f + 0.2f * scaleMult), norm * 0.1f, 0, Mathf.Lerp(0.6f, 1.5f, 0.5f + 0.5f * sin * j), ParticleManager.ID.Line, Color.white * secondPercentMult,

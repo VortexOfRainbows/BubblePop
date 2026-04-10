@@ -75,6 +75,7 @@ public static class EnemyID
     public static readonly GameObject RockSpider = LoadNPC("Rock/RockSpider");
     public static readonly GameObject Sentinel = LoadNPC("Sentinel/Sentinel");
     public static readonly GameObject RockGolem = LoadNPC("Rock/Golem/RockGolem");
+    public static readonly GameObject SuperSentinel = LoadNPC("Sentinel/SuperSentinel");
 }
 public class Enemy : Entity
 {

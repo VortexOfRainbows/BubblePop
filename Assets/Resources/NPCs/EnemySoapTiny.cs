@@ -7,6 +7,7 @@ public class EnemySoapTiny : EnemySoap
         data.BaseMaxCoin = 5;
         data.BaseMinGem = 0;
         data.Rarity = 2;
+        data.WaveNumber = 2;
     }
     public override void OnSpawn()
     {
