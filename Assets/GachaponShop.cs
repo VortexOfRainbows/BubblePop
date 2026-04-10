@@ -119,7 +119,7 @@ public class GachaponShop : MonoBehaviour
                 if (GemAnimateList[i].startTime <= 0)
                 {
                     if (GemAnimateList[i].endDuration == 0)
-                        GemAnimateList[i].startPosition = Player.Instance1Pos;
+                        GemAnimateList[i].startPosition = Player.FindClosest(RestockMachine.transform.position, out Vector2 _, out float _).Position;
                     GemAnimateList[i].endDuration += Time.deltaTime * 2;
                     float percent = GemAnimateList[i].endDuration;
                     Vector2 position = Vector2.Lerp(GemAnimateList[i].startPosition, finalPos, percent);

@@ -27,8 +27,8 @@ public class RestockMachine : MonoBehaviour
     }
     public void UpdateUI(GachaponShop owner)
     {
-        float distance = Player.Instance1Pos.Distance(transform.position);
-        if(distance < 7 && owner.FillUpTimer <= 0 && owner.RestockRemaining <= 0)
+        Player.FindClosest(transform.position, out Vector2 norm, out float distance, 7);
+        if (distance < 7 && owner.FillUpTimer <= 0 && owner.RestockRemaining <= 0)
         {
             UI.gameObject.SetActive(true);
             if(owner.RestockRemaining <= 0)
