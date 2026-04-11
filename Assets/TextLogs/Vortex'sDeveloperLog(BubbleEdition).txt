@@ -27,6 +27,9 @@ Need to do:
 	4. Add flavortext for all compendium elements
 9. New sounds for Rock Golem
 10. Walls to have actual 2.5-like depth (actual walls like Necesse, Rimworld, Core Keeper, Stardew, etc.)
+	1. Offset all solid tiles up 1/2 unit, then place walls underneath. Potentially allow for bigger walls in the future than 1/2 unit
+	2. Maybe allow player to hide behind the walls, but figure out a way to make the weapon not appear through the wall
+	3. Might have to experiment with different offsets for both the top and bottom parts of the wall to get them to look nice, especially for existing 1-tile-thick solid borders
 11. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
 12. Bombee and Kamikaze Enemies.
 13. Button popups for crucible
@@ -49,6 +52,7 @@ Done:
 2. Some worldgen adjustments to hopefully increase speed with the new procedural gen system
 3. Small adjustments to restock machine for multiplayer functionality
 4. Super Sentinel enemy which can appear wave 12+
+5. Experimented with some wall stuff (mostly done manually in editor)
 
 4/3/26 to 4/7/26
 1. Add some WIP logic for determining where to spawn a "secret" room
