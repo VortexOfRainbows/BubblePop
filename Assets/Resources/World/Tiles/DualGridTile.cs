@@ -102,8 +102,10 @@ public class DualGridTile : ScriptableObject
     //public Tile[] TilesThatCountForBlending;
     public Sprite[] BonusTileVariations;
     public Color ColorModifier = Color.white;
+    [SerializeField]
+    private bool IsWall = false;
+    public bool ThisIsAWall() => IsWall;
     #endregion
-
     public int TypeIndex { get; set; }
     public Tile TileType => World.GeneratingBorder ? BorderTileMapVariant : RealTileMapVariant;
     public Tile FloorTileType => RealTileMapVariant;
@@ -118,11 +120,11 @@ public class DualGridTile : ScriptableObject
     {
         if(TileTexture != null)
         {
-            String path = AssetDatabase.GetAssetPath(TileTexture).Substring(17); // Cuts off "Assets/Resources/"
+            String path = AssetDatabase.GetAssetPath(TileTexture)[17..]; // Cuts off "Assets/Resources/"
             int lastSlashIndex = path.LastIndexOf('/');
             if (lastSlashIndex != -1)
             {
-                path = path.Substring(0, lastSlashIndex + 1); // Cuts off asset to just get folder path
+                path = path[..(lastSlashIndex + 1)]; // Cuts off asset to just get folder path
             }
             Sprite[] sprites = Resources.LoadAll<Sprite>(path + TileTexture.name);
             int len = sprites.Length;

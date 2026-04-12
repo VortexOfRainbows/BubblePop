@@ -47,12 +47,13 @@ Multiplayer Task List:
 
 Done: 
 
-4/9/26 to 4/10/26
+4/9/26 to 4/12/26
 1. Add Cat Ears equip + Blackjack achievement
 2. Some worldgen adjustments to hopefully increase speed with the new procedural gen system
 3. Small adjustments to restock machine for multiplayer functionality
 4. Super Sentinel enemy which can appear wave 12+
 5. Experimented with some wall stuff (mostly done manually in editor)
+6. Restock machine SFX
 
 4/3/26 to 4/7/26
 1. Add some WIP logic for determining where to spawn a "secret" room
@@ -60,9 +61,8 @@ Done:
 3. Add some new Node variants (Wes)
 4. Bottle Flip Sprite (David)
 5. Kickflip Sprite (Sam)
-6. WIP Restock machine for the shop
+6. Add Restock machine for the shop
 	1. Now has some more animations, hitbox, and gem for restocking, gem insert animation on restock, restock machine spawns in all shops
-	2. Needs: testing, sfx for gem anim
 7. Adjustments to layering for Powerups to put all renderers on the same layer for future organizational purposes
 8. Add restock power + sprite from David
 9. Reorganize some asset internals
