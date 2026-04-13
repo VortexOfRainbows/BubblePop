@@ -14,9 +14,21 @@ public static class TileID
     public static readonly DualGridTile Plank = Load("Wood/WoodTile", 5);
     public static readonly DualGridTile DarkGrass = Load("DarkGrass/DarkGrassTile", 3);
     public static readonly DualGridTile TestTile = Load("TestTile/TestTile", 1);
+    public static readonly DualGridTile WallTest = LoadWall("WallTest", 6);
     public static DualGridTile Load(string path, int tileOrder = 0)
     {
         var tile = Resources.Load<DualGridTile>($"World/Tiles/{path}");
+        tile.TypeIndex = LoadIndexCount++;
+        tile.LayerOffset = tileOrder;
+
+        TileTypes.Add(tile);
+        TileToParentTile.Add(tile.FloorTileType, tile);
+        TileToParentTile.Add(tile.BorderTileType, tile);
+        return tile;
+    }
+    public static DualGridTile LoadWall(string path, int tileOrder = 0)
+    {
+        var tile = Resources.Load<DualGridTile>($"World/Walls/{path}");
         tile.TypeIndex = LoadIndexCount++;
         tile.LayerOffset = tileOrder;
 

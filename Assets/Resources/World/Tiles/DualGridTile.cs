@@ -10,9 +10,22 @@ using UnityEditor;
 public class DualGridTile : ScriptableObject
 {
     #region Static Stuff
-    public static Dictionary<Tuple<bool, bool, bool, bool>, int> NeighbourRelations = SetNeighborRelations();
-    public static Dictionary<Tuple<bool, bool, bool, bool>, int> SetNeighborRelations()
+    public static Dictionary<Tuple<bool, bool, bool, bool>, int> NeighbourRelations = SetNeighborRelations(false); //top left, top right, bot left, bot right
+    public static Dictionary<Tuple<bool, bool, bool, bool>, int> WallNeighbourRelations = SetNeighborRelations(true);
+    public static Dictionary<Tuple<bool, bool, bool, bool>, int> SetNeighborRelations(bool wall)
     {
+        if(wall)
+            return new() {
+            {new (true, true, false, true), 0},
+            {new (true, true, true, true), 1},
+            {new (true, true, true, false), 2},
+            {new (false, true, false, true), 3},
+            {new (true, false, true, false), 5},
+            {new (false, true, false, false), 6},
+            {new (true, true, false, false), 7},
+            {new (true, false, false, false), 8},
+            {new (false, false, false, false), -1}, //Empty
+            };
         return new() {
             {new (true, true, true, true), 6}, //Inner tile
             {new (false, false, false, true), 12}, // OUTER_BOTTOM_RIGHT
@@ -60,8 +73,8 @@ public class DualGridTile : ScriptableObject
     public int CalculateDisplayTile(Vector3Int coords)
     {
         bool topRight = AdjacentTileSameType(coords -NEIGHBOURS[0], out bool ghostTopRight);
-        bool botRight = AdjacentTileSameType(coords -NEIGHBOURS[2], out bool ghostBotRight);
         bool topLeft = AdjacentTileSameType(coords -NEIGHBOURS[1], out bool ghostTopLeft);
+        bool botRight = AdjacentTileSameType(coords -NEIGHBOURS[2], out bool ghostBotRight);
         bool botLeft = AdjacentTileSameType(coords -NEIGHBOURS[3], out bool ghostBotLeft);
         Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
         int i = NeighbourRelations[neighbourTuple];
@@ -71,26 +84,48 @@ public class DualGridTile : ScriptableObject
         }
         return i;
     }
+    public bool AdjacentTileSameTypeWall(Vector3Int coords, out bool ghostReturn)
+    {
+        throw new NotImplementedException();
+    }
+    public int CalculateDisplayWall(Vector3Int coords)
+    {
+        bool topRight = AdjacentTileSameType(coords - NEIGHBOURS[0], out bool ghostTopRight);
+        bool topLeft = AdjacentTileSameType(coords - NEIGHBOURS[1], out bool ghostTopLeft);
+        bool botRight = AdjacentTileSameType(coords - NEIGHBOURS[2], out bool ghostBotRight);
+        bool botLeft = AdjacentTileSameType(coords - NEIGHBOURS[3], out bool ghostBotLeft);
+        //These statements might not make sense if we use a .5 offset for our walls, as then another variant will be needed
+        if (botRight)
+            topRight = true;
+        if (botLeft)
+            topLeft = true;
+        if((!topRight && !topLeft) || (botRight && botLeft))
+            topRight = topLeft = true; //throw new Exception("ERROR: Wall placed in area without top tiles");
+        Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
+        int i = WallNeighbourRelations[neighbourTuple];
+        return i;
+    }
     public void UpdateDisplayTile(Vector3Int pos, Tilemap map)
     {
         for (int i = 0; i < NEIGHBOURS.Length; i++)
         {
             Vector3Int newPos = pos + NEIGHBOURS[i];
-            int id = CalculateDisplayTile(newPos);
-            float chanceOfAlternateTexture = 1f / (1f + BonusTileVariations.Length);
-            if (id == 6 && BonusCenterVariants.Length > 0 && Utils.RandFloat() > chanceOfAlternateTexture)
-                map.SetTile(newPos, BonusCenterVariants[Utils.RandInt(BonusCenterVariants.Length)]);
+            int id = IsWall ? CalculateDisplayWall(newPos) : CalculateDisplayTile(newPos);
+            if (id == 6 && BonusCenterVariants.Length > 0 )
+            {
+                float chanceOfAlternateTexture = 1f / (1f + BonusTileVariations.Length);
+                if (Utils.RandFloat() > chanceOfAlternateTexture)
+                    map.SetTile(newPos, BonusCenterVariants[Utils.RandInt(BonusCenterVariants.Length)]);
+            }
             else if (id != -1)
             {
                 if (BonusTileTextures != null && BonusTileTextures.Length > 0)
-                    id += Utils.RandInt(BonusTileTextures.Length + 1) * 15;
-                //Debug.Log(id);
+                    id += Utils.RandInt(BonusTileTextures.Length + 1) * SpriteCount;
                 Tile t = DisplayTileVariants[id];
                 map.SetTile(newPos, t);
             }
         }
     }
-
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
     public Texture2D[] BonusTileTextures;
@@ -105,6 +140,7 @@ public class DualGridTile : ScriptableObject
     [SerializeField]
     private bool IsWall = false;
     public bool ThisIsAWall() => IsWall;
+    public int SpriteCount => IsWall ? 9 : 15;
     #endregion
     public int TypeIndex { get; set; }
     public Tile TileType => World.GeneratingBorder ? BorderTileMapVariant : RealTileMapVariant;
