@@ -6,10 +6,6 @@ public class BonusFizz : Shotgun
         base.InitializeDescription(ref description);
         description.WithName("Bottle Burst");
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/WeaponUpgrade");
-    }
 }
 public class BottleBlast : BubbleBlast
 {
