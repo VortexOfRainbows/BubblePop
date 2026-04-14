@@ -19,4 +19,5 @@ MonoBehaviour:
   BonusTileVariations: []
   ColorModifier: {r: 1, g: 1, b: 1, a: 1}
   IsWall: 1
-  ViableTilesForThisWall: []
+  ViableTilesForThisWall:
+  - {fileID: 11400000, guid: 3af0efa1f01be4e4d83bdf0893b07a8c, type: 2}

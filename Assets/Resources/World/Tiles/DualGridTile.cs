@@ -63,7 +63,7 @@ public class DualGridTile : ScriptableObject
         DualGridTile tile = TileID.GetTileIDFromTile(adjacentTileType);
         if (IsWall)
         {
-            if(ViableTilesForThisWall.Contains(tile))
+            if(ViableTilesForThisWall.Contains(tile) && World.SolidTile(coords))
                 return true;
         }
         else if (World.GeneratingBorder)
