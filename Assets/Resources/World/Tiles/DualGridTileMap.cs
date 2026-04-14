@@ -20,11 +20,11 @@ public class DualGridTilemap : MonoBehaviour
         DisplayMap = new List<Tilemap>();
         BorderDisplayMap = new List<Tilemap>();
         World.GeneratingBorder = false;
-        PrepareDisplayMap(Visual, DisplayMap, Color.white, -60);
+        PrepareDisplayMap(Visual, DisplayMap, Color.white, -50);
         RefreshDisplayTilemap(Map, DisplayMap, false);
         AddDecor(Color.white, -20);
         World.GeneratingBorder = true;
-        PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -55);
+        PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -49);
         RefreshDisplayTilemap(Map, BorderDisplayMap, true);
         AddDecor(new Color(0.5f, 0.5f, 0.5f), -30);
         World.GeneratingBorder = false;
@@ -38,7 +38,9 @@ public class DualGridTilemap : MonoBehaviour
             t.gameObject.name = $"{(World.GeneratingBorder ? "Solid" : "Floor")}[{k}]: {TileID.TileTypes[k].name}";
             t.color = c;
             DisplayMap.Add(t);
-            DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset + TileID.TileTypes[k].LayerOffset;
+            float layerOffset = TileID.TileTypes[k].LayerOffset;
+            DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset;
+            DisplayMap[k].transform.localPosition = new Vector3(0, 0, layerOffset);
             if (TileID.TileTypes[k].name.Contains("Grass")) // Applies overlay to tiles based on their names
             {
                 DisplayMap[k].GetComponent<TilemapRenderer>().material = OverlayMats.Overlays[0];

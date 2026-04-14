@@ -61,12 +61,17 @@ public class DualGridTile : ScriptableObject
         if (adjacentTileType == TileType)
             return true;
         DualGridTile tile = TileID.GetTileIDFromTile(adjacentTileType);
-        if (World.GeneratingBorder)
+        if (IsWall)
         {
-            if (tile.LayerOffset > LayerOffset && World.SolidTile(coords))
+            if(ViableTilesForThisWall.Contains(tile))
+                return true;
+        }
+        else if (World.GeneratingBorder)
+        {
+            if (tile.LayerOffset < LayerOffset && World.SolidTile(coords))
                 ghostReturn = true;
         }
-        else if (tile.LayerOffset > LayerOffset || World.SolidTile(coords))
+        else if (tile.LayerOffset < LayerOffset || World.SolidTile(coords))
             ghostReturn = true;
         return false;
     }
@@ -83,10 +88,6 @@ public class DualGridTile : ScriptableObject
             i = NeighbourRelations[new(topLeft, topRight, botLeft, botRight)];
         }
         return i;
-    }
-    public bool AdjacentTileSameTypeWall(Vector3Int coords, out bool ghostReturn)
-    {
-        throw new NotImplementedException();
     }
     public int CalculateDisplayWall(Vector3Int coords)
     {
@@ -129,7 +130,7 @@ public class DualGridTile : ScriptableObject
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
     public Texture2D[] BonusTileTextures;
-    public int LayerOffset { get; set; } = 0;
+    public float LayerOffset { get; set; } = 0;
     [SerializeField]
     private Tile RealTileMapVariant;
     [SerializeField]
@@ -139,9 +140,10 @@ public class DualGridTile : ScriptableObject
     public Color ColorModifier = Color.white;
     [SerializeField]
     private bool IsWall = false;
+    public List<DualGridTile> ViableTilesForThisWall = new();
+    #endregion
     public bool ThisIsAWall() => IsWall;
     public int SpriteCount => IsWall ? 9 : 15;
-    #endregion
     public int TypeIndex { get; set; }
     public Tile TileType => World.GeneratingBorder ? BorderTileMapVariant : RealTileMapVariant;
     public Tile FloorTileType => RealTileMapVariant;
