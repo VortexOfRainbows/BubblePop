@@ -14,7 +14,7 @@ public static class TileID
     public static readonly DualGridTile Plank = Load("Wood/WoodTile", 1);
     public static readonly DualGridTile DarkGrass = Load("DarkGrass/DarkGrassTile", 3);
     public static readonly DualGridTile TestTile = Load("TestTile/TestTile", 5);
-    public static readonly DualGridTile WallTest = LoadWall("WallTest", 0);
+    public static readonly DualGridTile WallTest = LoadWall("WallTest/WallTest", 0);
     public static DualGridTile Load(string path, float tileOrder = 0)
     {
         var tile = Resources.Load<DualGridTile>($"World/Tiles/{path}");

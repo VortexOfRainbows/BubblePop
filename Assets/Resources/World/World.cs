@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TreeEditor;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEngine.Rendering.DebugUI;
 
 public class World : MonoBehaviour
 {

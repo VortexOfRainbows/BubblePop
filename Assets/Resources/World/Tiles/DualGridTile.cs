@@ -158,14 +158,11 @@ public class DualGridTile : ScriptableObject
     {
         if(TileTexture != null)
         {
-            String path = AssetDatabase.GetAssetPath(TileTexture)[17..]; // Cuts off "Assets/Resources/"
-            int lastSlashIndex = path.LastIndexOf('/');
-            if (lastSlashIndex != -1)
-            {
-                path = path[..(lastSlashIndex + 1)]; // Cuts off asset to just get folder path
-            }
+            string path = IsWall ? $"World/Walls/{TileTexture.name}/" : $"World/Tiles/{TileTexture.name}/";
             Sprite[] sprites = Resources.LoadAll<Sprite>(path + TileTexture.name);
             int len = sprites.Length;
+            if (len < 3)
+                throw new Exception($"Could not find tile texture at \"{path + TileTexture.name}\". Is it possible that the texture is not the same name as the directory?");
             DisplayTileVariants = new(16);
             for (int i = 0; i < len; ++i)
             {
@@ -181,6 +178,8 @@ public class DualGridTile : ScriptableObject
                 {
                     sprites = Resources.LoadAll<Sprite>(path + BonusTileTextures[j].name);
                     len = sprites.Length;
+                    if (len < 3)
+                        throw new Exception($"Could not find tile texture at \"{path + BonusTileTextures[j].name}\". Is it possible that the texture is not the same name as the directory?");
                     for (int i = 0; i < len; ++i)
                     {
                         Tile tile = ScriptableObject.CreateInstance<Tile>();
