@@ -63,7 +63,7 @@ public class DualGridTile : ScriptableObject
         DualGridTile tile = TileID.GetTileIDFromTile(adjacentTileType);
         if (IsWall)
         {
-            if(ViableTilesForThisWall.Contains(tile) && World.SolidTile(coords))
+            if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex] && World.SolidTile(coords))
                 return true;
         }
         else if (World.GeneratingBorder)
@@ -140,7 +140,6 @@ public class DualGridTile : ScriptableObject
     public Color ColorModifier = Color.white;
     [SerializeField]
     private bool IsWall = false;
-    public List<DualGridTile> ViableTilesForThisWall = new();
     #endregion
     public bool ThisIsAWall() => IsWall;
     public int SpriteCount => IsWall ? 9 : 15;
