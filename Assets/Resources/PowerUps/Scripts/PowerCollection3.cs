@@ -125,10 +125,6 @@ public class BonusBoards : PowerUp
     {
         p.BonusBoards += Stack;
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/Dice/CharismaSunglasses");
-    }
 }
 public class Kickflip : PowerUp
 {
