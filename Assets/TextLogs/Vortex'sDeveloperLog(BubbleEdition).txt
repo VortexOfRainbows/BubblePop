@@ -49,6 +49,9 @@ Done:
 
 4/16/26
 1. Power sprite for Bonus Boards (Sam)
+2. Large reworks to Tile generation and world systems
+	1. These should result in minor performance improvements given that a lot of this was optimizations
+	2. These are also in preparation for more wall-related stuff
 
 4/9/26 to 4/14/26
 1. Add Cat Ears equip + Blackjack achievement

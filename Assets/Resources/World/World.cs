@@ -59,7 +59,6 @@ public class World : MonoBehaviour
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
-    public static bool GeneratingBorder { get; set; } = false;
     public DualGridTilemap Tilemap;
     [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap;
     public NatureOrderer NatureParent;
@@ -74,7 +73,7 @@ public class World : MonoBehaviour
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
         Vector3Int posi = RealTileMap.Map.WorldToCell(pos);
-        bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.TileType && !GetTileData(posi).IsRoadblock;
+        bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.FloorTileType && !GetTileData(posi).IsRoadblock;
         return WithinBorders(pos) && validSpawnTile;
     }
     public static bool WithinBorders(Vector3 position)
@@ -116,7 +115,9 @@ public class World : MonoBehaviour
         Roadblocks.Clear();
         m_Instance = this;
         foreach (DualGridTile tile in TileID.TileTypes)
+        {
             tile.Init();
+        }
 
         PlaceNodeLocations();
         ApproximateWorldBounds();
@@ -373,7 +374,6 @@ public class World : MonoBehaviour
     }
     public void CreateWorldOuterFill()
     {
-        GeneratingBorder = true;
         var Map = RealTileMap.Map;
 
         FastNoiseLite Noise = new();
@@ -398,14 +398,13 @@ public class World : MonoBehaviour
                     float f = Noise.GetNoise(i, j);
                     if (f < 0.2f && f > -0.2f)
                     {
-                        Map.SetTile(pos, TileID.Dirt.TileType);
+                        Map.SetTile(pos, TileID.Dirt.BorderTileType);
                     }
                     else
-                        Map.SetTile(pos, TileID.Grass.TileType);
+                        Map.SetTile(pos, TileID.Grass.BorderTileType);
                 }
             }
         }
-        GeneratingBorder = false;
     }
     public void Update()
     {

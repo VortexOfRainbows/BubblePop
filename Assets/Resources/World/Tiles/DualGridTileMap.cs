@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,44 +11,49 @@ public class DualGridTilemap : MonoBehaviour
     public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     public Transform Visual;
     public Transform DecorVisual;
-    private List<Tilemap> DisplayMap;
-    private List<Tilemap> BorderDisplayMap;
+    private Dictionary<int, Tilemap> DisplayMap;
+    private Dictionary<int, Tilemap> BorderDisplayMap;
+    private Dictionary<int, Tilemap> WallDisplayMap;
     public Tilemap Map;
     public void Init()
     {
-        DisplayMap = new List<Tilemap>();
-        BorderDisplayMap = new List<Tilemap>();
-        World.GeneratingBorder = false;
+        DisplayMap = new();
+        BorderDisplayMap = new();
+        WallDisplayMap = new();
         PrepareDisplayMap(Visual, DisplayMap, Color.white, -50);
-        RefreshDisplayTilemap(Map, DisplayMap, false);
         AddDecor(Color.white, -20);
-        World.GeneratingBorder = true;
-        PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -49);
-        RefreshDisplayTilemap(Map, BorderDisplayMap, true);
-        AddDecor(new Color(0.5f, 0.5f, 0.5f), -30);
-        World.GeneratingBorder = false;
+        PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -49, border: true);
+        AddDecor(new Color(0.5f, 0.5f, 0.5f), -30, true);
+        PrepareDisplayMap(Visual, WallDisplayMap, new Color(0.4f, 0.4f, 0.4f), -50, wall: true);
+        RefreshDisplayTilemap(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
         //GetComponent<TilemapRenderer>().enabled = false;
     }
-    public static void PrepareDisplayMap(Transform Visual, List<Tilemap> DisplayMap, Color c, int orderOffset)
+    public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, Color c, int orderOffset, bool border = false, bool wall = false)
     {
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
-            Tilemap t = Instantiate(VisualMapPrefab, Visual).GetComponent<Tilemap>();
-            t.gameObject.name = $"{(World.GeneratingBorder ? "Solid" : "Floor")}[{k}]: {TileID.TileTypes[k].name}";
-            t.color = c;
-            DisplayMap.Add(t);
-            float layerOffset = TileID.TileTypes[k].LayerOffset;
-            DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset;
-            DisplayMap[k].transform.localPosition = new Vector3(0, 0, layerOffset);
-            if (TileID.TileTypes[k].name.Contains("Grass")) // Applies overlay to tiles based on their names
+            DualGridTile tile = TileID.TileTypes[k];
+            DisplayMap.Add(k, null);
+            if (tile.CountsAsWall() == wall)
             {
-                DisplayMap[k].GetComponent<TilemapRenderer>().material = OverlayMats.Overlays[0];
+                Tilemap t = Instantiate(VisualMapPrefab, Visual).GetComponent<Tilemap>();
+                t.gameObject.name = $"{(wall ? "WALL" : border ? "Solid" : "Floor")}[{k}]: {tile.name}";
+                t.color = c;
+                DisplayMap[k] = t;
+                float layerOffset = tile.LayerOffset;
+                DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset;
+                DisplayMap[k].transform.localPosition = new Vector3(0, 0, layerOffset);
+
+                //TODO: Change this to not use string.Contains(string) this as the check system :sob:
+                if (tile.name.Contains("Grass")) // Applies overlay to tiles based on their names
+                {
+                    DisplayMap[k].GetComponent<TilemapRenderer>().material = OverlayMats.Overlays[0];
+                }
             }
         }
-        ;
     }
-    private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
-    public static void RefreshDisplayTilemap(Tilemap Map, List<Tilemap> DisplayMap, bool border)
+    //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
+    public static void RefreshDisplayTilemap(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
         for (int i = left; i < right; i++)
@@ -58,23 +64,18 @@ public class DualGridTilemap : MonoBehaviour
                 var t = Map.GetTile(coords);
                 if (t != null)
                 {
-                    if(border == World.SolidTile(coords))
-                    {
-                        DualGridTile tile = TileID.GetTileIDFromTile(t);
+                    DualGridTile tile = TileID.GetTileIDFromTile(t);
+                    if (World.SolidTile(coords))
+                        tile.UpdateDisplayTile(coords, BorderMap[tile.TypeIndex], true);
+                    else if(tile.CountsAsWall())
+                        tile.UpdateDisplayTile(coords, WallMap[tile.TypeIndex]);
+                    else
                         tile.UpdateDisplayTile(coords, DisplayMap[tile.TypeIndex]);
-                        //for(int k = 0; k < 4; ++k)
-                        //{
-                        //    Vector3Int offset = coords + Adjacencies[k];
-                        //    var t2 = Map.GetTile(offset);
-                        //    if(t2 != t)
-                        //        tile.UpdateDisplayTile(offset, DisplayMap[tile.TypeIndex], true);
-                        //}
-                    }
                 }
             }
         }
     }
-    public void AddDecor(Color c, int order)
+    public void AddDecor(Color c, int order, bool border = false)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
         left += 10;
@@ -93,8 +94,8 @@ public class DualGridTilemap : MonoBehaviour
             for (int j = bottom; j < top; j++)
             {
                 TileBase t = Map.GetTile(i, j);
-                bool isGrassTile = t == TileID.Grass.TileType;
-                bool isDirtTile = t == TileID.Dirt.TileType;
+                bool isGrassTile = t == TileID.Grass.TileType(border);
+                bool isDirtTile = t == TileID.Dirt.TileType(border);
                 if(i % 3 == 0 && j % 3 == 0)
                 {
                     AddTrees(i + Utils.RandInt(2), j + Utils.RandInt(2));

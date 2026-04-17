@@ -362,7 +362,7 @@ public class WorldNode : MonoBehaviour
     public bool DiamondBrush(Vector2 center, float radias)
     {
         bool isValidForRoadblock = false;
-        var tile = radias < 1 ? TileID.DarkGrass.FloorTileType : TileID.Grass.TileType;
+        var tile = radias < 1 ? TileID.DarkGrass.FloorTileType : TileID.Grass.FloorTileType;
         float percent = 0;
         float iter = Mathf.Min(1, 0.5f * radias);
         float rSquared = radias * radias;
