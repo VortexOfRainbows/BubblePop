@@ -49,7 +49,9 @@ Done:
 
 4/18/26
 1. Walls generate with collision
-2. Generate walls on top of solid block for future use
+2. Generate walls on top of solid block and offset them for wall illusion
+3. Increased size of player collider for tile collision (enemy/projectile unaffected)
+4. Adjust some tile coloring for wall stuff
 
 4/16/26
 1. Power sprite for Bonus Boards (Sam)

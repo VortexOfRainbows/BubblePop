@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.WSA;
 
 public class DualGridTilemap : MonoBehaviour
 {
@@ -20,35 +21,50 @@ public class DualGridTilemap : MonoBehaviour
         DisplayMap = new();
         BorderDisplayMap = new();
         WallDisplayMap = new();
-        PrepareDisplayMap(Visual, DisplayMap, Color.white, -50);
+        PrepareDisplayMap(Visual, DisplayMap, -50);
         AddDecor(Color.white, -20);
-        PrepareDisplayMap(Visual, BorderDisplayMap, new Color(0.4f, 0.4f, 0.4f), -49, border: true);
+        PrepareDisplayMap(Visual, BorderDisplayMap, -49, border: true);
         AddDecor(new Color(0.5f, 0.5f, 0.5f), -30, true);
-        PrepareDisplayMap(Visual, WallDisplayMap, new Color(0.4f, 0.4f, 0.4f), -50, wall: true);
+        PrepareDisplayMap(Visual, WallDisplayMap, -48, wall: true);
         RefreshDisplayTilemap(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
         //GetComponent<TilemapRenderer>().enabled = false;
     }
-    public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, Color c, int orderOffset, bool border = false, bool wall = false)
+    public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, int orderOffset, bool border = false, bool wall = false)
     {
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
             DualGridTile tile = TileID.TileTypes[k];
+            Color c = border ? new Color(0.4f, 0.4f, 0.4f) : Color.white;
             DisplayMap.Add(k, null);
             if (tile.CountsAsWall() == wall)
             {
                 Tilemap t = Instantiate(VisualMapPrefab, Visual).GetComponent<Tilemap>();
-                t.gameObject.name = $"{(wall ? "WALL" : border ? "Solid" : "Floor")}[{k}]: {tile.name}";
-                t.color = c;
                 DisplayMap[k] = t;
                 float layerOffset = tile.LayerOffset;
-                DisplayMap[k].GetComponent<TilemapRenderer>().sortingOrder = orderOffset;
-                DisplayMap[k].transform.localPosition = new Vector3(0, 0, layerOffset);
+                float wallGridTransform = 0;
+                int order = orderOffset;
+                if(tile.CountsAsWall())
+                {
+                    wallGridTransform = -0.425f;
+                    c = new(0.35f, 0.35f, 0.35f);
+                }
+                else if(border && tile.HasWallVariant())
+                {
+                    wallGridTransform = 0.25f;
+                    c = new(0.75f, 0.75f, 0.75f);
+                    order += 2; //TODO: make the player appear visually behind tiles if appropriate
+                }
+                DisplayMap[k].transform.localPosition = new Vector3(0, wallGridTransform, layerOffset);
 
+                TilemapRenderer r = DisplayMap[k].GetComponent<TilemapRenderer>();
                 //TODO: Change this to not use string.Contains(string) this as the check system :sob:
                 if (tile.name.Contains("Grass")) // Applies overlay to tiles based on their names
                 {
-                    DisplayMap[k].GetComponent<TilemapRenderer>().material = OverlayMats.Overlays[0];
+                    r.material = OverlayMats.Overlays[0];
                 }
+                r.sortingOrder = order;
+                t.gameObject.name = $"{(wall ? "WALL" : border ? "Solid" : "Floor")}[{k}]: {tile.name}";
+                t.color = c;
             }
         }
     }
