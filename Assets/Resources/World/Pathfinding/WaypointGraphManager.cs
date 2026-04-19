@@ -48,7 +48,7 @@ public class WaypointGraphManager : MonoBehaviour
                 bool BR = isWall(bottomRight);
                 bool B = isWall(bottom);
 
-                if (!BL && !B && !L)
+                if (!BL && !B && !L && isTile(bottomLeft))
                 {
                     Vector3 worldPos = ManualCellToWorld(bottomLeft);
                     Debug.Log("World Pos: " + worldPos);
