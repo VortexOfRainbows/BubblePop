@@ -21,6 +21,12 @@ public class WaypointGraphManager : MonoBehaviour
     {
         BoundsInt bounds = nodeTilemap.cellBounds;
 
+        bool[][] usedCells = new bool[bounds.size.x][]; // To prevent setting multiple waypoints in the same spot
+        for (int i = 0; i < bounds.size.x; i++)
+        {
+            usedCells[i] = new bool[bounds.size.y];
+        }
+
         for (int x = bounds.xMin + 1; x < bounds.xMax - 1; x++) // This skips the outermost edge, I think all tiles are drawn so it should be okay
         {
             for (int y = bounds.yMin + 1; y < bounds.yMax - 1; y++)
@@ -48,14 +54,27 @@ public class WaypointGraphManager : MonoBehaviour
                 bool BR = isWall(bottomRight);
                 bool B = isWall(bottom);
 
-                if (!BL && !B && !L && isTile(bottomLeft))
+                int i = x - bounds.xMin;
+                int j = y - bounds.yMin;
+                if (!BL && !B && !L && isTile(bottomLeft) && !usedCells[i - 1][j - 1])
                 {
-                    Vector3 worldPos = ManualCellToWorld(bottomLeft);
-                    Debug.Log("World Pos: " + worldPos);
-                    Color cellColor = nodeTilemap.GetColor(cellPos);
-                    Debug.Log("Color: " +  cellColor);
-
-                    Instantiate(waypointPrefab, worldPos, Quaternion.identity);
+                    Instantiate(waypointPrefab, ManualCellToWorld(bottomLeft), Quaternion.identity);
+                    usedCells[i - 1][j - 1] = true;
+                }
+                if (!TL && !T && !L && isTile(topLeft) && !usedCells[i - 1][j + 1])
+                {
+                    Instantiate(waypointPrefab, ManualCellToWorld(topLeft), Quaternion.identity);
+                    usedCells[i - 1][j + 1] = true;
+                }
+                if (!TR && !T && !R && isTile(topRight) && !usedCells[i + 1][j + 1])
+                {
+                    Instantiate(waypointPrefab, ManualCellToWorld(topRight), Quaternion.identity);
+                    usedCells[i + 1][j + 1] = true;
+                }
+                if (!BR && !B && !R && isTile(bottomRight) && !usedCells[i + 1][j - 1])
+                {
+                    Instantiate(waypointPrefab, ManualCellToWorld(bottomRight), Quaternion.identity);
+                    usedCells[i + 1][j - 1] = true;
                 }
             }
         }
@@ -94,7 +113,7 @@ public class WaypointGraphManager : MonoBehaviour
         x += size.x * 0.5f;
         y += size.y * 0.5f;
 
-        return new Vector3(x, y, 0) + new Vector3(2, 32, 0);
+        return new Vector3(x, y, 0) + transform.position;
     }
 
     public Waypoint GetClosestWaypoint(Vector2 position) // Will need to check via raycast if waypoint can be reached
