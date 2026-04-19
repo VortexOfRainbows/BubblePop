@@ -16,7 +16,8 @@ public static class TileID
     public static readonly DualGridTile TestTile = Load("TestTile/TestTile", 5);
     public static readonly DualGridTile WallTest = LoadWall("WallTest/WallTest", 0);
     public static bool[,] WallTileRelations { get; private set; } = LoadWallTileRelations();
-    public static bool[] HasWallTile { get; private set; }
+    private static bool[] HasWallTile { get; set; }
+    private static DualGridTile[] MyWallTile { get; set; }
     public static DualGridTile Load(string path, float tileOrder = 0)
     {
         var tile = Resources.Load<DualGridTile>($"World/Tiles/{path}");
@@ -43,6 +44,7 @@ public static class TileID
     {
         WallTileRelations = new bool[LoadIndexCount, LoadIndexCount];
         HasWallTile = new bool[LoadIndexCount];
+        MyWallTile = new DualGridTile[LoadIndexCount];
         AddWallRelation(Plank, WallTest);
         return WallTileRelations;
     }
@@ -51,6 +53,15 @@ public static class TileID
         WallTileRelations[tile.TypeIndex, wallTile.TypeIndex] = true;
         WallTileRelations[wallTile.TypeIndex, tile.TypeIndex] = true;
         HasWallTile[tile.TypeIndex] = true;
+        MyWallTile[tile.TypeIndex] = wallTile;
+    }
+    public static bool HasWallVariant(this DualGridTile tile)
+    {
+        return HasWallTile[tile.TypeIndex];
+    }
+    public static DualGridTile MyWallVariant(this DualGridTile tile)
+    {
+        return MyWallTile[tile.TypeIndex];
     }
     public static DualGridTile GetTileIDFromTile(TileBase tile)
     {
