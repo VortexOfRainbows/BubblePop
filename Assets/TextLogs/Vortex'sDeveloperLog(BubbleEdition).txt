@@ -2,6 +2,7 @@ Bubble Developer Log (Vortex)
 
 Do Later:
 1. Organize layers better for rendering, so player and enemies can be in front of stuff like trees, chests, etc. But also can be behind them depending on y position...
+	1. Maybe allow player to hide behind the walls, but figure out a way to make the weapon not appear through the wall
 2. Day/Night system (so we can have cooler lighting)
 3. Wave bar on the top shows current wave card modifier information
 4. Integrate Compendium into the pause menu
@@ -26,14 +27,10 @@ Need to do:
 	3. Make blurbs appear in the equipment page
 	4. Add flavortext for all compendium elements
 9. New sounds for Rock Golem
-10. Walls to have actual 2.5-like depth (actual walls like Necesse, Rimworld, Core Keeper, Stardew, etc.)
-	1. Offset all solid tiles up 1/2 unit, then place walls underneath. Potentially allow for bigger walls in the future than 1/2 unit
-	2. Maybe allow player to hide behind the walls, but figure out a way to make the weapon not appear through the wall
-	3. Might have to experiment with different offsets for both the top and bottom parts of the wall to get them to look nice, especially for existing 1-tile-thick solid borders
-11. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
-12. Bombee and Kamikaze Enemies.
-13. Button popups for crucible
-14. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
+10. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
+11. Bombee and Kamikaze Enemies.
+12. Button popups for crucible
+13. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
