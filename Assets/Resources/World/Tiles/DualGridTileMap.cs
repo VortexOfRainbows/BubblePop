@@ -65,10 +65,10 @@ public class DualGridTilemap : MonoBehaviour
                 if (t != null)
                 {
                     DualGridTile tile = TileID.GetTileIDFromTile(t);
-                    if (World.SolidTile(coords))
-                        tile.UpdateDisplayTile(coords, BorderMap[tile.TypeIndex], true);
-                    else if(tile.CountsAsWall())
+                    if(tile.CountsAsWall())
                         tile.UpdateDisplayTile(coords, WallMap[tile.TypeIndex]);
+                    else if (World.SolidTile(coords))
+                        tile.UpdateDisplayTile(coords, BorderMap[tile.TypeIndex], true);
                     else
                         tile.UpdateDisplayTile(coords, DisplayMap[tile.TypeIndex]);
                 }

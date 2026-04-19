@@ -65,7 +65,7 @@ public class DualGridTile : ScriptableObject
         }
         else if (GeneratingBorder)
         {
-            if (tile.LayerOffset < LayerOffset && World.SolidTile(coords))
+            if (tile.LayerOffset < LayerOffset && World.SolidTile(coords) && !tile.IsWall)
                 ghostReturn = true;
         }
         else if (tile.LayerOffset < LayerOffset || World.SolidTile(coords))
@@ -111,13 +111,13 @@ public class DualGridTile : ScriptableObject
         {
             Vector3Int newPos = pos + NEIGHBOURS[i];
             int id = IsWall ? CalculateDisplayWall(newPos) : CalculateDisplayTile(newPos);
-            if (id == 6 && BonusCenterVariants.Length > 0 )
-            {
-                float chanceOfAlternateTexture = 1f / (1f + BonusTileVariations.Length);
-                if (Utils.RandFloat() > chanceOfAlternateTexture)
-                    map.SetTile(newPos, BonusCenterVariants[Utils.RandInt(BonusCenterVariants.Length)]);
-            }
-            else if (id != -1)
+            //if (id == 6 && BonusCenterVariants.Length > 0 )
+            //{
+                //float chanceOfAlternateTexture = 1f / (1f + BonusTileVariations.Length);
+                //if (Utils.RandFloat() > chanceOfAlternateTexture)
+                    //map.SetTile(newPos, BonusCenterVariants[Utils.RandInt(BonusCenterVariants.Length)]);
+            //} else 
+            if (id != -1)
             {
                 if (BonusTileTextures != null && BonusTileTextures.Length > 0)
                     id += Utils.RandInt(BonusTileTextures.Length + 1) * SpriteCount;
@@ -136,7 +136,7 @@ public class DualGridTile : ScriptableObject
     [SerializeField]
     private Tile BorderTileMapVariant;
     //public Tile[] TilesThatCountForBlending;
-    public Sprite[] BonusTileVariations;
+    //public Sprite[] BonusTileVariations;
     public Color ColorModifier = Color.white;
     [SerializeField]
     private bool IsWall = false;
@@ -189,16 +189,16 @@ public class DualGridTile : ScriptableObject
                     }
                 }
             }
-            len = BonusTileVariations.Length;
-            BonusCenterVariants = new Tile[len];
-            for (int i = 0; i < len; ++i)
-            {
-                Tile tile = ScriptableObject.CreateInstance<Tile>();
-                tile.colliderType = Tile.ColliderType.Grid;
-                tile.color = ColorModifier;
-                tile.sprite = BonusTileVariations[i];
-                BonusCenterVariants[i] = tile;
-            }
+            //len = BonusTileVariations.Length;
+            //BonusCenterVariants = new Tile[len];
+            //for (int i = 0; i < len; ++i)
+            //{
+            //    Tile tile = ScriptableObject.CreateInstance<Tile>();
+            //    tile.colliderType = Tile.ColliderType.Grid;
+            //    tile.color = ColorModifier;
+            //    tile.sprite = BonusTileVariations[i];
+            //    BonusCenterVariants[i] = tile;
+            //}
         }
     }
 }
