@@ -205,6 +205,7 @@ public class CollateralDamage : PowerUp
     {
         return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<FizzyCoolGuys>();
 }
 public class ClusterBombs : PowerUp
 {

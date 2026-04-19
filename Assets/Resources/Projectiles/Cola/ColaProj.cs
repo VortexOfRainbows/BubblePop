@@ -180,6 +180,7 @@ public class ColaExplode : SupernovaExplode
             Kill();
         }
     }
+    public int EnemiesKilled = 0;
     public override void OnHitTarget(Entity target)
     {
         if (target.Life <= 0 && Data.Length > 2)
@@ -189,6 +190,9 @@ public class ColaExplode : SupernovaExplode
             {
                 CoinManager.SpawnCoin(target.transform.position, (int)count, 1);
             }
+            EnemiesKilled++;
+            if(EnemiesKilled >= 5 && PlayerOwner.Body is Fizzy)
+                UnlockCondition.Get<FizzyCoolGuys>().SetComplete();
         }
     }
 }
