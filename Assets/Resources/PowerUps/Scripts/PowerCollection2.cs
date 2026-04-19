@@ -609,12 +609,16 @@ public class Eureka : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Eureka!");
-        description.WithDescription($"Reduces <color={DetailedDescription.Rares[0]}>Choice</color> Y:Reroll cost by Y:2 G:(+2 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)");
+        description.WithDescription($"Reduces <color={DetailedDescription.Rares[0]}>Choice</color> Y:Reroll cost by Y:5 G:(+5 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)");
+        description.WithDescriptionVariant<Bulb>($"Reduces <color={DetailedDescription.Rares[0]}>Choice</color> Y:Reroll cost by Y:2 G:(+2 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)");
         description.WithShortDescription("Reduces Choice Reroll cost and increases Reroll count");
     }
     public override void OnPickup(int count)
     {
-        ChoicePowerMenu.Instance.CostScaling -= count * 2;
+        if(Player.Instance.Hat is Bulb b)
+            ChoicePowerMenu.Instance.CostScaling -= count * 2;
+        else
+            ChoicePowerMenu.Instance.CostScaling -= count * 5;
         ChoicePowerMenu.Instance.RemainingRerolls += count;
     }
     public override void HeldEffect(Player p)
