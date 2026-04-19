@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Node : MonoBehaviour
+public class Waypoint : MonoBehaviour
 {
-    public List<Node> neighbors = new List<Node>();
+    public List<Waypoint> neighbors = new List<Waypoint>();
 
     private void OnDrawGizmos()
     {
@@ -13,7 +13,7 @@ public class Node : MonoBehaviour
         if (neighbors != null)
         {
             Gizmos.color = Color.yellow;
-            foreach (Node neighbor in neighbors)
+            foreach (Waypoint neighbor in neighbors)
             {
                 if (neighbor != null)
                 {
