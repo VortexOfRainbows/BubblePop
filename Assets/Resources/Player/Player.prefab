@@ -126,6 +126,9 @@ MonoBehaviour:
   Animator: {fileID: 6147547588852434854}
   bonusBubbles: 0
   abilityTimer: 0
+  RoadblockCounter: 0
+  PowerCountIncludingStacks: 0
+  BestPowerCountIncludingStacks: 0
   ChargeShotDamage: 0
   ShotgunPower: 0
   DashSparkle: 0
@@ -174,6 +177,7 @@ MonoBehaviour:
   ShieldImmunityFrameMultiplier: 1
   BonusChoices: 0
   ZapRadiusMult: 1
+  ExplodeRadiusMult: 1
   DamageMultiplier: 1
   AllowedThunderBalls: 3
   HasResearchNotes: 0
@@ -210,6 +214,23 @@ MonoBehaviour:
   RainbowFlowers: 0
   GlassShards: 0
   BountyHunter: 0
+  BottleFlip: 0
+  DodgeStat: 0
+  ConsecutiveDodges: 0
+  BonusBubblePierce: 0
+  ExplodingBubbles: 0
+  BonusBoards: 0
+  Kickflip: 0
+  RetaliatoryBomb: 0
+  BombBrew: 0
+  SkullBomb: 0
+  ClusterBomb: 0
+  BonusShrapnel: 0
+  PrizeBombCoins: 0
+  HasMagnetBook: 0
+  BonusStocks: 0
+  BonusRestockChance: 0
+  CoinsOnPowerPickup: 0
 --- !u!50 &3216590746651522342
 Rigidbody2D:
   serializedVersion: 4
@@ -249,10 +270,10 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 640
+    m_Bits: 1152
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 895
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -271,7 +292,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.7
+  m_Radius: 0.825
 --- !u!58 &4611052802867087265
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -284,7 +305,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 375
+    m_Bits: 887
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 128

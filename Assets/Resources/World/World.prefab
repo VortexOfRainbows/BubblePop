@@ -456,7 +456,7 @@ GameObject:
   - component: {fileID: 463442727954500776}
   - component: {fileID: 7124442120298395450}
   m_Layer: 7
-  m_Name: TileMap
+  m_Name: WorldMap
   m_TagString: Tub
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -807,6 +807,7 @@ MonoBehaviour:
   ProceduralGenParent: {fileID: 2174558821135791763}
   PlayerSpawnPosition:
   - {fileID: 0}
+  NodesToGenerate: 7
   nodes: []
 --- !u!1001 &1256196073106045522
 PrefabInstance:

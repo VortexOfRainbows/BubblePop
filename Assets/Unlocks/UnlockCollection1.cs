@@ -320,3 +320,18 @@ public class GachaponBlackjack : UnlockCondition
     public override int Rarity => 4;
     public override UnlockCondition PreReqUnlock => Get<GachaponUnlock>();
 }
+public class FizzyCoolGuys : UnlockCondition
+{
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Fizzy: Don't Look At Explosions");
+        description.WithDescription($"As Y:Fizzy, kill 5 or more enemies with a single bath bomb explosion");
+    }
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Challenge;
+    }
+    public override int Rarity => 3;
+    public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
+}

@@ -6,10 +6,6 @@ public class BonusFizz : Shotgun
         base.InitializeDescription(ref description);
         description.WithName("Bottle Burst");
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/WeaponUpgrade");
-    }
 }
 public class BottleBlast : BubbleBlast
 {
@@ -129,10 +125,6 @@ public class BonusBoards : PowerUp
     {
         p.BonusBoards += Stack;
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/Dice/CharismaSunglasses");
-    }
 }
 public class Kickflip : PowerUp
 {
@@ -213,6 +205,7 @@ public class CollateralDamage : PowerUp
     {
         return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<FizzyCoolGuys>();
 }
 public class ClusterBombs : PowerUp
 {

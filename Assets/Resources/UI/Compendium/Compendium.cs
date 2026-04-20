@@ -126,6 +126,14 @@ public class Compendium : MonoBehaviour
         if(PageNumber == 1)
             DisplayCEE.Style = 3;
         Elements[PageNumber].Init(SelectedType, MyCanvas);
+        if (Elements[PageNumber] is CompendiumPowerUpElement c)
+        {
+            c.MyElem.MyPower.ForceBlackMarket = CurrentlySelectedPage.BlackMarketMode;
+            c.Init(SelectedType, MyCanvas);
+            if (CurrentlySelectedPage.BlackMarketMode)
+                c.MyElem.TurnedOn();
+            c.MyElem.MyPower.ForceBlackMarket = false;
+        }
         for (int i = 0; i < 4; ++i)
             Elements[i].gameObject.SetActive(i == PageNumber);
     }

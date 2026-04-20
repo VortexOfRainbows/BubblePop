@@ -370,7 +370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5764274963667287759, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 114
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5764274963667287759, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -414,7 +414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7070966110504029346, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
       propertyPath: m_Name
-      value: BoxesShop2 2
+      value: Castle
       objectReference: {fileID: 0}
     - target: {fileID: 7573328573185486376, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
       propertyPath: m_Size.x

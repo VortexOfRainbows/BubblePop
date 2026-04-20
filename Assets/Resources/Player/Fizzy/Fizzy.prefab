@@ -328,9 +328,9 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: bb2a31164c756e04d97d3a38f205e4cd, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.8}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_FlipX: 1
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
@@ -396,6 +396,7 @@ MonoBehaviour:
   Board: {fileID: 2930385766994779788}
   FinishedSkateAnim: 0
   SkateboardMountCounter: 0
+  starTimer: 1
 --- !u!1001 &1581441319156191766
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,7 +2,10 @@ Bubble Developer Log (Vortex)
 
 Do Later:
 1. Organize layers better for rendering, so player and enemies can be in front of stuff like trees, chests, etc. But also can be behind them depending on y position...
+	1. Maybe allow player to hide behind the walls, but figure out a way to make the weapon not appear through the wall
+	2. Normalize player customization layering (not super important but part of a future task)
 2. Day/Night system (so we can have cooler lighting)
+	1. Shadows with the wall system?
 3. Wave bar on the top shows current wave card modifier information
 4. Integrate Compendium into the pause menu
 5. Grass shader to make grass more interesting and potentially slightly vary in the wind
@@ -15,7 +18,7 @@ Need to do:
 	2. Progress display for achievements
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
-	1. Economy: More Gem Drops Per Round, Midas Touch (gold is worth more)
+	1. Economy: Gacha Capsule (dissolving in crucible gives random rewards), Midas Touch (gold is worth more)
 4. Add a FORGE which uses GEMS to print powers
 5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 6. Enemy Pathfinding
@@ -25,21 +28,16 @@ Need to do:
 	2. Make powers show which pools they belong to
 	3. Make blurbs appear in the equipment page
 	4. Add flavortext for all compendium elements
-9. New sounds for Rock Golem
-10. Walls to have actual 2.5-like depth (actual walls like Necesse, Rimworld, Core Keeper, Stardew, etc.)
-	1. Offset all solid tiles up 1/2 unit, then place walls underneath. Potentially allow for bigger walls in the future than 1/2 unit
-	2. Maybe allow player to hide behind the walls, but figure out a way to make the weapon not appear through the wall
-	3. Might have to experiment with different offsets for both the top and bottom parts of the wall to get them to look nice, especially for existing 1-tile-thick solid borders
-11. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
-12. Bombee and Kamikaze Enemies.
-13. Button popups for crucible
-14. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
+9. New sounds for Rock Golem and battle music
+10. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
+11. Bombee and Kamikaze Enemies.
+12. Button popups for crucible
+13. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
-3. Normalize player customization layering (not super important but part of a future task)
 
 Multiplayer Task List:
 1. Bubble shield may not be refreshing on repeated pickup (not sure I am able to replicate this)
@@ -47,12 +45,33 @@ Multiplayer Task List:
 
 Done: 
 
-4/9/26 to 4/10/26
+4/18/26 to 4/19/26
+1. Walls generate with collision
+2. Generate walls on top of solid block and offset them for wall illusion
+3. Increased size of player collider for tile collision (enemy/projectile unaffected)
+4. Adjust some tile coloring for wall stuff
+5. Flavor Force sprite (David)
+6. Fizzy is now more opaque (80% -> 90%)
+7. Blackmarket variant powers in compendium blackmarket mode should now always appear red rather than inconsistently switching colors while navigating
+8. Fizzy Cool Guys Don't Look At Explosions achievement (which unlocks collateral damage)
+9. When in black market (not wearing light bulb hat), Eureka is now more powerful (this is experimental)
+
+4/16/26
+1. Power sprite for Bonus Boards (Sam)
+2. Large reworks to Tile generation and world systems
+	1. These should result in minor performance improvements given that a lot of this was optimizations
+	2. These are also in preparation for more wall-related stuff
+
+4/9/26 to 4/14/26
 1. Add Cat Ears equip + Blackjack achievement
 2. Some worldgen adjustments to hopefully increase speed with the new procedural gen system
 3. Small adjustments to restock machine for multiplayer functionality
 4. Super Sentinel enemy which can appear wave 12+
 5. Experimented with some wall stuff (mostly done manually in editor)
+6. Restock machine SFX
+7. More WIP Wall stuff + experimentation
+8. Change the way tiles are layered to be more consistent with the rest of the game (now they use Z-level instead of flat layering, which will be important for futureproofing)
+9. Bottle Burst sprite (David)
 
 4/3/26 to 4/7/26
 1. Add some WIP logic for determining where to spawn a "secret" room
@@ -60,9 +79,8 @@ Done:
 3. Add some new Node variants (Wes)
 4. Bottle Flip Sprite (David)
 5. Kickflip Sprite (Sam)
-6. WIP Restock machine for the shop
+6. Add Restock machine for the shop
 	1. Now has some more animations, hitbox, and gem for restocking, gem insert animation on restock, restock machine spawns in all shops
-	2. Needs: testing, sfx for gem anim
 7. Adjustments to layering for Powerups to put all renderers on the same layer for future organizational purposes
 8. Add restock power + sprite from David
 9. Reorganize some asset internals

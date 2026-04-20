@@ -63,7 +63,9 @@ public class GachaponShop : MonoBehaviour
             RestockCost = 50;
         int gemAnimation = Mathf.Min(50, gemCost);
         for(int i = 0; i < gemAnimation; ++i)
+        {
             GemAnimateList.Add(new GemAnimationVisual(0.5f * (1 - i * FillUpTimer / gemAnimation)));
+        }
     }
     public void FixedUpdate()
     {
@@ -119,7 +121,10 @@ public class GachaponShop : MonoBehaviour
                 if (GemAnimateList[i].startTime <= 0)
                 {
                     if (GemAnimateList[i].endDuration == 0)
+                    {
                         GemAnimateList[i].startPosition = Player.FindClosest(RestockMachine.transform.position, out Vector2 _, out float _).Position;
+                        AudioManager.PlaySound(SoundID.CoinPickup, GemAnimateList[i].startPosition, 1, 1, 0);
+                    }
                     GemAnimateList[i].endDuration += Time.deltaTime * 2;
                     float percent = GemAnimateList[i].endDuration;
                     Vector2 position = Vector2.Lerp(GemAnimateList[i].startPosition, finalPos, percent);

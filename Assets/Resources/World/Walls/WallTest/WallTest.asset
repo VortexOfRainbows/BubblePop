@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 354ada615d12a894f938c2f1bac80208, type: 3}
+  m_Name: WallTest
+  m_EditorClassIdentifier: 
+  TileTexture: {fileID: 2800000, guid: b924f4344db03d642b7d2effe53e5f7c, type: 3}
+  BonusTileTextures: []
+  RealTileMapVariant: {fileID: 11400000, guid: 4407559d1212f9d4ca76928947ca2e27, type: 2}
+  BorderTileMapVariant: {fileID: 11400000, guid: 9b5f774ba0eb49e4d86f9d73aee8935b, type: 2}
+  BonusTileVariations: []
+  ColorModifier: {r: 1, g: 1, b: 1, a: 1}
+  IsWall: 1
+  ViableTilesForThisWall:
+  - {fileID: 11400000, guid: 3af0efa1f01be4e4d83bdf0893b07a8c, type: 2}
