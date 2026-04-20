@@ -8,16 +8,14 @@ public class WaypointGraphManager : MonoBehaviour
     public Tilemap nodeTilemap;
     public GameObject waypointPrefab;
     
-    public List<Waypoint> nodeWaypoints = new List<Waypoint>();
-    public Waypoint[] waypointArr;
-    private int numWaypoints;
 
     void Start()
     {
         GenerateGraphFromTiles();
+        ConnectWaypoints();
     }
 
-    void GenerateGraphFromTiles()
+    private void GenerateGraphFromTiles()
     {
         BoundsInt bounds = nodeTilemap.cellBounds;
 
@@ -58,22 +56,22 @@ public class WaypointGraphManager : MonoBehaviour
                 int j = y - bounds.yMin;
                 if (!BL && !B && !L && isTile(bottomLeft) && !usedCells[i - 1][j - 1])
                 {
-                    Instantiate(waypointPrefab, ManualCellToWorld(bottomLeft), Quaternion.identity);
+                    Instantiate(waypointPrefab, ManualCellToWorld(bottomLeft), Quaternion.identity).transform.parent = transform;
                     usedCells[i - 1][j - 1] = true;
                 }
                 if (!TL && !T && !L && isTile(topLeft) && !usedCells[i - 1][j + 1])
                 {
-                    Instantiate(waypointPrefab, ManualCellToWorld(topLeft), Quaternion.identity);
+                    Instantiate(waypointPrefab, ManualCellToWorld(topLeft), Quaternion.identity).transform.parent = transform;
                     usedCells[i - 1][j + 1] = true;
                 }
                 if (!TR && !T && !R && isTile(topRight) && !usedCells[i + 1][j + 1])
                 {
-                    Instantiate(waypointPrefab, ManualCellToWorld(topRight), Quaternion.identity);
+                    Instantiate(waypointPrefab, ManualCellToWorld(topRight), Quaternion.identity).transform.parent = transform;
                     usedCells[i + 1][j + 1] = true;
                 }
                 if (!BR && !B && !R && isTile(bottomRight) && !usedCells[i + 1][j - 1])
                 {
-                    Instantiate(waypointPrefab, ManualCellToWorld(bottomRight), Quaternion.identity);
+                    Instantiate(waypointPrefab, ManualCellToWorld(bottomRight), Quaternion.identity).transform.parent = transform;
                     usedCells[i + 1][j - 1] = true;
                 }
             }
@@ -116,18 +114,44 @@ public class WaypointGraphManager : MonoBehaviour
         return new Vector3(x, y, 0) + transform.position;
     }
 
-    public Waypoint GetClosestWaypoint(Vector2 position) // Will need to check via raycast if waypoint can be reached
+    private void ConnectWaypoints()
     {
-        Waypoint closest = null;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Waypoint curWaypoint = transform.GetChild(i).GetComponent<Waypoint>();
+
+            for (int j = 0; j < transform.childCount; j++)
+            {
+                Waypoint checkWaypoint = transform.GetChild(j).GetComponent<Waypoint>();
+
+                // Raycast here and connect nodes
+            }
+        }
+
+        foreach (Transform child in transform) // Turns all node information into arrays for faster processing at the end
+        {
+            child.GetComponent<Waypoint>().convertToArray();
+        }
+    }
+
+
+
+
+
+
+
+    private Transform GetClosestWaypoint(Vector2 position) // Will need to check via raycast if waypoint can be reached
+    {
+        Transform closest = null;
         float minDist = Mathf.Infinity;
 
-        foreach (Waypoint waypoint in nodeWaypoints)
+        foreach (Transform child in transform)
         {
-            float dist = Vector2.Distance(position, waypoint.transform.position);
+            float dist = Vector2.Distance(position, child.position);
             if (dist < minDist)
             {
                 minDist = dist;
-                closest = waypoint;
+                closest = child;
             }
         }
         return closest;

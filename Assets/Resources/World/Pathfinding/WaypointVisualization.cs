@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 public class Waypoint : MonoBehaviour
 {
-    public List<Waypoint> neighbors = new List<Waypoint>();
+    public List<Waypoint> listNeighbors = new List<Waypoint>();
+    public Waypoint[] neighbors;
 
     private void OnDrawGizmos()
     {
@@ -20,6 +21,16 @@ public class Waypoint : MonoBehaviour
                     Gizmos.DrawLine(transform.position, neighbor.transform.position);
                 }
             }
+        }
+    }
+
+    public void convertToArray() // Turns all node information into arrays for faster processing at the end
+    {
+        neighbors = new Waypoint[listNeighbors.Count];
+        int index = 0;
+        foreach (Waypoint neighbor in listNeighbors)
+        {
+            neighbors[index++] = neighbor;
         }
     }
 }
