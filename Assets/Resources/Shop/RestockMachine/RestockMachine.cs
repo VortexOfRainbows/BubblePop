@@ -30,6 +30,7 @@ public class RestockMachine : MonoBehaviour
         Player.FindClosest(transform.position, out Vector2 norm, out float distance, 100);
         if (distance < 7 && owner.FillUpTimer <= 0 && owner.RestockRemaining <= 0)
         {
+            UI.LerpLocalScale(Vector2.one, 0.1f);
             UI.gameObject.SetActive(true);
             if(owner.RestockRemaining <= 0)
             {
@@ -47,6 +48,7 @@ public class RestockMachine : MonoBehaviour
         else
         {
             UI.gameObject.SetActive(false);
+            UI.LerpLocalScale(Vector2.one * 0.8f, 0.5f);
         }
         RestockCost.text = owner.RestockCost.ToString();
     }

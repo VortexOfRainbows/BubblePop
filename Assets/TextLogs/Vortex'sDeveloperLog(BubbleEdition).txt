@@ -31,19 +31,24 @@ Need to do:
 9. New sounds for Rock Golem and battle music
 10. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
 11. Bombee and Kamikaze Enemies.
-12. Button popups for crucible
-13. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
+12. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
+3. Rework Book left/right click system
 
 Multiplayer Task List:
 1. Bubble shield may not be refreshing on repeated pickup (not sure I am able to replicate this)
 
 
 Done: 
+
+4/19/26 to 4/20/26
+1. Reduce interaction range with crucible 15 -> 12, crucible no longer opens when you collide with it, instead always requiring input
+2. Rework some crucible UI interactions and make it have a UI popup that's more similar to the restock machine.
+	1. The hope is that this should make the crucible and shard menu overlap less confusing (and also it should be less likely to accidentally open/close)
 
 4/18/26 to 4/19/26
 1. Walls generate with collision

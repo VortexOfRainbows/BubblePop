@@ -1,20 +1,30 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Crucible : MonoBehaviour
 {
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-            EnableUI();
-    }
+    //public void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //        EnableUI();
+    //}
     public void EnableUI()
     {
         if(PowerUpCheatUI.CurrentType == 1)
             PowerUpCheatUI.PrevHadCrucible = false;
         if (PowerUpCheatUI.CurrentCrucible == null)
             PowerUpCheatUI.CurrentCrucible = this;
+        PopUpUI.gameObject.SetActive(true);
+        PopUpUI.LerpLocalScale(Vector2.one, 0.1f);
+    }
+    public void DisableUI()
+    {
+        if (PowerUpCheatUI.CurrentCrucible == this)
+            PowerUpCheatUI.CurrentCrucible = null;
+        PopUpUI.gameObject.SetActive(false);
+        PopUpUI.LerpLocalScale(Vector2.one * 0.8f, 0.5f);
     }
     public Transform Connector1, Joint1, Connector2, Joint2;
 
@@ -92,16 +102,18 @@ public class Crucible : MonoBehaviour
     public bool HasSpawnedChestLoot = false;
     public Queue<int> PowerQueue { get; private set; } = new();
     public int NextConsumedPower { get; set; } = -1;
-    public void DisableUI()
-    {
-        if(PowerUpCheatUI.CurrentCrucible == this)
-            PowerUpCheatUI.CurrentCrucible = null;
-    }
+    public Transform PopUpUI;
     public void PreFixedUpdate()
     {
         Player p = Player.FindClosest(transform.position, out _, out float dist);
-        if (p == null || dist > 15)
+        if (p == null || dist > 12)
+        {
             DisableUI();
+        }
+        else
+        {
+            EnableUI();
+        }
         if(!Active && PowerQueue.TryDequeue(out int powerType))
         {
             HeldPower.Type = powerType;
