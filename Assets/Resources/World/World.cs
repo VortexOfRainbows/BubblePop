@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections;
 
 public class World : MonoBehaviour
 {
@@ -105,6 +106,7 @@ public class World : MonoBehaviour
     }
     public static readonly List<Pylon> Pylons = new();
     public static readonly List<Roadblock> Roadblocks = new();
+    public GameObject WaypointManager;
     public void Start()
     {
         GachaponShop.AllShops.Clear();
@@ -154,6 +156,16 @@ public class World : MonoBehaviour
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
         NodeID.ResetNodePositions(); //This is mostly for editor stuff
     }
+
+    int frames = 0;
+    private void FixedUpdate()
+    {
+        if (frames++ == 1)
+        {
+            WaypointManager.GetComponent<WaypointGraphManager>().GenerateGraphFromTiles();
+        }
+    }
+
     /// <summary>
     /// Generates the positions for nodes on the map before they are fully loaded. Uses approximations to find the best spot to place the nodes.
     /// </summary>

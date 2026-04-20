@@ -9,15 +9,8 @@ public class WaypointGraphManager : MonoBehaviour
 {
     public Tilemap nodeTilemap;
     public GameObject waypointPrefab;
-    
 
-    void Start()
-    {
-        GenerateGraphFromTiles();
-        ConnectWaypoints();
-    }
-
-    private void GenerateGraphFromTiles()
+    public void GenerateGraphFromTiles()
     {
         BoundsInt bounds = nodeTilemap.cellBounds;
 
@@ -78,6 +71,8 @@ public class WaypointGraphManager : MonoBehaviour
                 }
             }
         }
+
+        ConnectWaypoints();
     }
 
     private bool isWall(Vector3Int cellPos)
@@ -128,21 +123,25 @@ public class WaypointGraphManager : MonoBehaviour
 
     private void ConnectWaypoints()
     {
-        Debug.Log("Connecting");
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount - 1; i++)
         {
             Waypoint curWaypoint = transform.GetChild(i).GetComponent<Waypoint>();
 
-            for (int j = i + 1; j < transform.childCount - 1; j++)
+            for (int j = i + 1; j < transform.childCount; j++)
             {
                 Waypoint checkWaypoint = transform.GetChild(j).GetComponent<Waypoint>();
 
-                RaycastHit2D hit = Physics2D.Raycast(curWaypoint.transform.position, checkWaypoint.transform.position - curWaypoint.transform.position, LayerMask.GetMask("World"));
+                Vector3 direction = (checkWaypoint.transform.position - curWaypoint.transform.position);
+                RaycastHit2D hit = Physics2D.Raycast(curWaypoint.transform.position, direction.normalized, direction.magnitude, LayerMask.GetMask("World"));
                 if (hit.collider == null)
                 {
-                    Debug.Log("Hit: " + hit.collider);
+                    Debug.Log(hit.distance);
                     curWaypoint.listNeighbors.Add(checkWaypoint);
                     checkWaypoint.listNeighbors.Add(curWaypoint);
+                }
+                else
+                {
+                    Debug.Log(hit.collider);
                 }
             }
         }
