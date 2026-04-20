@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEngine.GraphicsBuffer;
 
 public class WaypointGraphManager : MonoBehaviour
 {
@@ -114,46 +116,40 @@ public class WaypointGraphManager : MonoBehaviour
         return new Vector3(x, y, 0) + transform.position;
     }
 
+    private Vector3Int ManualWorldToCell(Vector3 worldPos)
+    {
+        Vector3 size = new Vector3(2, 2, 0);
+
+        float x = (worldPos.x - transform.position.x) / size.x;
+        float y = (worldPos.y - transform.position.y) / size.y;
+
+        return new Vector3Int((int)x, (int)y, 0);
+    }
+
     private void ConnectWaypoints()
     {
+        Debug.Log("Connecting");
         for (int i = 0; i < transform.childCount; i++)
         {
             Waypoint curWaypoint = transform.GetChild(i).GetComponent<Waypoint>();
 
-            for (int j = 0; j < transform.childCount; j++)
+            for (int j = i + 1; j < transform.childCount - 1; j++)
             {
                 Waypoint checkWaypoint = transform.GetChild(j).GetComponent<Waypoint>();
 
-                // Raycast here and connect nodes
+                RaycastHit2D hit = Physics2D.Raycast(curWaypoint.transform.position, checkWaypoint.transform.position - curWaypoint.transform.position, LayerMask.GetMask("World"));
+                if (hit.collider == null)
+                {
+                    Debug.Log("Hit: " + hit.collider);
+                    curWaypoint.listNeighbors.Add(checkWaypoint);
+                    checkWaypoint.listNeighbors.Add(curWaypoint);
+                }
             }
         }
 
-        foreach (Transform child in transform) // Turns all node information into arrays for faster processing at the end
+        foreach (Transform child in transform) // At the end turns all waypoint neighbor information into arrays for faster processing during runtime
         {
             child.GetComponent<Waypoint>().convertToArray();
         }
-    }
-
-
-
-
-
-
-
-    private Transform GetClosestWaypoint(Vector2 position) // Will need to check via raycast if waypoint can be reached
-    {
-        Transform closest = null;
-        float minDist = Mathf.Infinity;
-
-        foreach (Transform child in transform)
-        {
-            float dist = Vector2.Distance(position, child.position);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                closest = child;
-            }
-        }
-        return closest;
     }
 }
