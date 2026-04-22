@@ -25,10 +25,9 @@ Need to do:
 6. Enemy Pathfinding
 7. Some UI classes to normalize UI colors, Button behaviors, etc.
 8. Compendium TODO:
-	1. Make equipment power pool contributions appear in the compendium
-	2. Make powers show which pools they belong to
-	3. Make blurbs appear in the equipment page
-	4. Add flavortext for all compendium elements
+	1. Make powers show which pools they belong to
+	2. Make blurbs appear in the equipment page
+	3. Add flavortext for all compendium elements and systemize the way compendium display is created
 9. New battle music
 10. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
 11. Bombee and Kamikaze Enemies.
@@ -60,6 +59,8 @@ Done:
 	4. Health 18 -> 20 (still overall health decrease with decrease in segments 180 -> 160)
 	5. Now has some new sounds for some attacks (Marcos)
 9. Bullets no longer make an expiration sound (generic enemy projectiles no longer "pop")
+10. Compendium (equip page) now shows the powers that belong to each equipment (nothing fancy, uses colored text)
+11. Some normalization of how much whitespace is used in the compendium for lists and other patterns
 
 4/19/26 to 4/20/26
 1. Reduce interaction range with crucible 15 -> 12, crucible no longer opens when you collide with it, instead always requiring input
