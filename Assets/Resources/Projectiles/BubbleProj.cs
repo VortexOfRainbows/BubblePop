@@ -295,7 +295,7 @@ public class ThunderBubble : Projectile
         {
             pb.MagnetBalls.Add(gameObject);
             IsMagnet = true;
-            if (IsMagnet && pb.MagnetBalls.Count % 2 == 0)
+            if (IsMagnet && pb.MagnetBallCounter++ % 2 == 0)
             {
                 ColorVar = Color.Lerp(Player.ProjectileColor, Color.red, 0.5f);
                 North = false;
@@ -336,7 +336,8 @@ public class ThunderBubble : Projectile
 
         float deathTime = 10800; //Only really times out when you stop recall
         float FadeOutTime = 60;
-        if (timer > deathTime + FadeOutTime || PlayerOwner.Weapon is not Book book)
+        if (timer > deathTime + FadeOutTime || PlayerOwner.Weapon is not Book book || 
+            book.AllowedBalls < PlayerOwner.TotalBookBalls)
         {
             Kill();
             return;
@@ -446,15 +447,28 @@ public class ThunderBubble : Projectile
     {
         if(PlayerOwner.TotalBookBalls > 0)
             PlayerOwner.TotalBookBalls--;
-        //int c = Data.Length > 0 ? (int)Data1 * 2 + 3 : 3;
-        //for (int i = 0; i < c; i++)
-        //{
-        //    Vector2 circular = new Vector2(Utils.RandFloat(0, 0.5f), 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-        //    ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.3f, 0.5f), circular * Utils.RandFloat(4, 6), 4f, 0.36f, 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
-        //}
         if (PlayerOwner.Weapon is PhysicsBook pb)
             if(!pb.InClosingAnimation)
                 pb.MagnetBalls.Remove(gameObject);
+        if(!Recalled)
+        {
+            int c = 15;
+            for (int i = 0; i < c; i++)
+            {
+                Vector2 circular = new Vector2(Utils.RandFloat(0.25f, 0.5f), 0).RotatedBy(Mathf.PI * 2 * i / c);
+                ParticleManager.NewParticle(RB.position + circular, transform.localScale.x * Utils.RandFloat(), circular * 4f, 0.2f, Utils.RandFloat(0.3f, 0.4f), 2,
+                SpriteRendererGlow.color.WithAlphaMultiplied(.4f));
+            }
+            //Vector2 cir = Utils.RandCircleEdge(2);
+            for (int i = 0; i < 3; ++i)
+            {
+                ParticleManager.NewParticle(RB.position, transform.localScale.x * 2.3f, Vector2.zero, 0.4f, 0.4f, 2,
+                    SpriteRendererGlow.color.WithAlphaMultiplied(.6f));
+            }
+            Pylon.SummonLightning2(transform.position, PlayerOwner.Weapon.transform.position, ColorVar * 0.66f, 0.33f, 0.66f);
+            if (PlayerOwner.EchoBubbles > 0)
+                NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, PlayerOwner, PlayerOwner.EchoBubbles, North ? 1 : -1, -1);
+        }
     }
     public override bool OnInsideTile()
     {

@@ -4,6 +4,7 @@ using UnityEngine;
 public class PhysicsBook : Book
 {
     public List<GameObject> MagnetBalls { get; set; } = new();
+    public int MagnetBallCounter = 0;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleIndistinguishable>();
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -11,8 +12,7 @@ public class PhysicsBook : Book
     }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
-        abilities.Add(new Ability(Ability.ID.Primary, "Cast a Y:[slow-moving thunder bubble] that is recalled when you stop attacking"));
-        abilities.Add(new Ability(Ability.ID.Secondary, "Cast a Y:[fast-moving thunder bubble] that is recalled when you stop attacking"));
+        base.InitializeAbilities(ref abilities);
         abilities.Add(new Ability(Ability.ID.Passive, "Y:[Thunder bubbles] have Y:[magnetic properties] and can pick up Y:coins"));
     }
     public override int GetRarity() => 2;

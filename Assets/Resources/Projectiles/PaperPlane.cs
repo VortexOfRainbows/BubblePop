@@ -125,6 +125,7 @@ public class LatentCharge : Projectile
     }
     public override bool? CanBeAffectedByHoming() => null;
     public bool Recalled = false;
+    public float timer3 = 0;
     public override void AI()
     {
         SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, ColorVar.WithAlphaMultiplied(0.5f), 0.1f);
@@ -132,7 +133,21 @@ public class LatentCharge : Projectile
         transform.localScale = transform.localScale.Lerp(Vector3.one * 0.85f, 0.2f);
         RB.velocity *= 0.5f;
         RB.rotation = Utils.WrapAngle(RB.velocity.ToRotation()) * Mathf.Rad2Deg;
-        if (PlayerOwner.Weapon is Book Book && Book.InClosingAnimation)
+        bool isSpecial = Data.Length > 2 && Data[2] == -1;
+        Book book = null;
+        float percent = 0;
+        if (PlayerOwner.Weapon is Book Book)
+        {
+            book = Book;
+            percent = book.ClosingPercent;
+        }
+        if (isSpecial)
+        {
+            timer3++;
+            float timeToOpenClose = 80f * (0.6f + 0.4f * PlayerOwner.SecondaryAttackSpeedModifier);
+            percent = timer3 / timeToOpenClose;
+        }
+        if ((book != null && book.InClosingAnimation) || isSpecial)
         {
             if (!Recalled)
             {
@@ -141,7 +156,6 @@ public class LatentCharge : Projectile
             }
             else
             {
-                float percent = Book.ClosingPercent;
                 int total = Math.Min(15, (int)Mathf.Pow(Data1 + 1, 0.75f) + 1);
                 timer2 += total;
                 float size = 1.9f + total * 0.1f;
@@ -156,6 +170,8 @@ public class LatentCharge : Projectile
                 }
                 //Pylon.SummonLightning2(RB.position + circular, RB.position - circular.normalized.RotatedBy(Mathf.PI * 0.5f), ColorVar, 0.1f);
             }
+            if (isSpecial && percent > 1)
+                Kill();
         }
         else
         {

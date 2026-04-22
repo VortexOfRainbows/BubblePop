@@ -44,7 +44,7 @@ public class PowerUpCheatUI : MonoBehaviour
                 else if (HasShards)
                     type = 1;
             }
-            if (CurrentType != type)
+            if (CurrentType != type && !Main.DebugSettings.PowerUpCheat)
                 Instance.Init(type); //(type == 1 && PrevHadCrucible && !HasCrucible) || (type == 0 && PrevHadShards && !HasShards)
         }
         else if (!Hide)
@@ -124,8 +124,10 @@ public class PowerUpCheatUI : MonoBehaviour
         NOPOWERS.SetActive(false);
         UpdateType();
     }
+    public bool AwaitingPowerReset = false;
     public void ResetPowers()
     {
+        AwaitingPowerReset = true;
         foreach (PowerUpButton t in GridParent.GetComponentsInChildren<PowerUpButton>(false))
             Destroy(t.gameObject);
     }
@@ -171,8 +173,16 @@ public class PowerUpCheatUI : MonoBehaviour
     }
     public IEnumerator InitCheatButtons()
     {
+        if(AwaitingPowerReset)
+            yield return new WaitForSecondsRealtime(0.03f);
+        AwaitingPowerReset = false;
         for (int i = 0; i < PowerUp.Reverses.Count; ++i)
         {
+            if(AwaitingPowerReset)
+            {
+                AwaitingPowerReset = false;
+                break;
+            }
             PowerUpButton p = Instantiate(ChoiceTemplate, GridParent.transform);
             p.SetType(i);
             p.gameObject.SetActive(true);
@@ -182,14 +192,22 @@ public class PowerUpCheatUI : MonoBehaviour
             p.PowerUI.Cost = p.PowerUI.MyPower.ShardReplicationCost();
             p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
             if (i % 3 == 2)
-                yield return new WaitForSecondsRealtime(0.025f);
+                yield return new WaitForSecondsRealtime(0.02f);
         }
         yield return null;
     }
     public IEnumerator InitCrucibleButtons()
     {
+        if (AwaitingPowerReset)
+            yield return new WaitForSecondsRealtime(0.03f);
+        AwaitingPowerReset = false;
         for (int i = 0; i < Player.GlobalPowers.Count; i++)
         {
+            if (AwaitingPowerReset)
+            {
+                AwaitingPowerReset = false;
+                break;
+            }
             PowerUp power = PowerUp.Get(Player.GlobalPowers[i]);
             PowerUpButton p = Instantiate(ChoiceTemplate, GridParent.transform);
             p.SetType(power.Type);
@@ -204,7 +222,7 @@ public class PowerUpCheatUI : MonoBehaviour
             p.PowerUI.Cost = power.ShardReplicationCost(ProcessQuantity);
             p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
             if (i % 3 == 2)
-                yield return new WaitForSecondsRealtime(0.025f);
+                yield return new WaitForSecondsRealtime(0.02f);
         }
         yield return null;
     }
