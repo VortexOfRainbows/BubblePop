@@ -15,7 +15,7 @@ public class RockGolem : RockSpider
     public override float HealthBarSizeModifier => .7f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 18;
+        data.BaseMaxLife = 20;
         data.BaseMaxCoin = 3;
         data.BaseMinCoin = 1;
         data.BaseMaxGem = 1;
@@ -46,7 +46,7 @@ public class RockGolem : RockSpider
     }
     public float TiltCounter { get; set; } = 0;
     public static readonly float ShotCooldownSlowdown = 100;
-    public static readonly float ShotCooldown = 500;
+    public static readonly float ShotCooldown = 400;
     public static readonly float ShotWindup = 150;
     public static readonly float ShotChainRate = 0.1f;
     public int AttackNum = 0;
@@ -73,7 +73,7 @@ public class RockGolem : RockSpider
             if (!hasSpawned)
             {
                 RockGolem prevP = this;
-                for(int i = 1; i < 10; ++i)
+                for(int i = 1; i < 8; ++i)
                 {
                     RockGolem r = Instantiate(EnemyID.RockGolem, transform.position, Quaternion.identity).GetComponent<RockGolem>();
                     r.Parent = prevP.gameObject;
@@ -91,17 +91,22 @@ public class RockGolem : RockSpider
             Vector2 playerPos = Target.Position;
             Vector2 toPlayer = playerPos - (Vector2)transform.position;
             float beginShootingRange = ShotCooldown - ShotCooldownSlowdown;
-            if (toPlayer.magnitude < 16 || Timer < 60 || Timer > beginShootingRange)
+            if (toPlayer.magnitude < 20 || Timer < 60 || Timer > beginShootingRange)
                 ++Timer;
             float percent = 1;
-            float speed = 0.24f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
+            float speed = 0.28f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
             if (Timer > beginShootingRange)
             {
                 percent = 1 - ((Timer - beginShootingRange) / ShotCooldownSlowdown);
                 if(percent <= 0)
                 {
                     if ((Timer - ShotCooldown) == 70)
-                        AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.5f, 1.1f, 0);
+                    {
+                        if(AttackNum % 2 == 0)
+                            AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.5f, 1.1f, 0);
+                        else
+                            AudioManager.PlaySound(SoundID.GolemCharge, transform.position, 1.2f, 1.3f, 0);
+                    }
                     percent = Mathf.Clamp01(percent);
                     speed *= percent;
                     if (AttackNum % 2 == 0)
@@ -133,7 +138,7 @@ public class RockGolem : RockSpider
                                 Projectile.NewProjectile<Bullet>(Head.transform.position, 
                                     norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, this, 1.25f - Mathf.Abs(i) * 0.125f, InfectionTarget ? 0 : 1);
                             }
-                            AudioManager.PlaySound(SoundID.BathBombBurst, Head.transform.position, 1.1f, 1.3f, 0);
+                            AudioManager.PlaySound(SoundID.GolemMultiShoot, Head.transform.position, 1.5f, 1.1f);
                             Head.transform.position -= (Vector3)(norm2 * 0.35f);
                             AttackNum++;
                             Timer = 0;
@@ -216,7 +221,7 @@ public class RockGolem : RockSpider
                 ParticleManager.ID.Pixel, Color.Lerp(ShotColor, Color.white, Utils.RandFloat()));
         }
         Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, this, 1.25f, InfectionTarget ? 0 : 1);
-        AudioManager.PlaySound(SoundID.BathBombBurst, pos, 1.0f, 1.4f, 0);
+        AudioManager.PlaySound(SoundID.GolemShoot, pos, 1.0f, 1.5f);
         Timer = 0;
     }
     public new void Update()

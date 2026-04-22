@@ -78,6 +78,15 @@ public static class SoundID
         "Drop");
     public static SoundClip WoodBreak = new("World/",
         "WoodBreaking");
+
+    public static SoundClip GolemShoot = new("NPCs/",
+        "StoneGolemQuickShot");
+    public static SoundClip GolemMultiShoot = new("NPCs/",
+        "StoneGolemMultiShot");
+    public static SoundClip GolemCharge = new("NPCs/",
+        "StoneGolemCharging");
+    public static SoundClip GhostDeath = new("NPCs/",
+        "Forlikeaghost");
 }
 public class SoundClip
 {

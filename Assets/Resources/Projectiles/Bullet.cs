@@ -53,6 +53,6 @@ public class Bullet : Projectile
             ParticleManager.NewParticle((Vector2)transform.position, Utils.RandFloat(0.3f, 0.4f) * SizeMult, circular, 1f, 0.3f, 2, c);
             ParticleManager.NewParticle((Vector2)transform.position, Utils.RandFloat(2f, 4f) * SizeMult, circular, 1f, 0.3f, 3, c);
         }
-        AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 0.8f);
+        //AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 0.8f);
     }
 }

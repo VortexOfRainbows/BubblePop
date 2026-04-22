@@ -7,6 +7,7 @@ Do Later:
 2. Day/Night system (so we can have cooler lighting)
 	1. Shadows with the wall system?
 3. Wave bar on the top shows current wave card modifier information
+	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
 4. Integrate Compendium into the pause menu
 5. Grass shader to make grass more interesting and potentially slightly vary in the wind
 6. Update to Unity 6 to remove the silly splash screen
@@ -28,7 +29,7 @@ Need to do:
 	2. Make powers show which pools they belong to
 	3. Make blurbs appear in the equipment page
 	4. Add flavortext for all compendium elements
-9. New sounds for Rock Golem and battle music
+9. New battle music
 10. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
 11. Bombee and Kamikaze Enemies.
 12. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
@@ -52,6 +53,13 @@ Done:
 5. Fix issue where opening and closing the crucible menu repeatedly could bug out the UI
 6. Flavor Explosion sprite (David)
 7. Shadow for cola appears over walls now 
+8. Rock Golem now spawns in fewer segments 10 -> 8
+	1. Speed 0.24 -> 0.28
+	2. Attack cooldown 500 -> 400
+	3. Attack range 16 -> 20
+	4. Health 18 -> 20 (still overall health decrease with decrease in segments 180 -> 160)
+	5. Now has some new sounds for some attacks (Marcos)
+9. Bullets no longer make an expiration sound (generic enemy projectiles no longer "pop")
 
 4/19/26 to 4/20/26
 1. Reduce interaction range with crucible 15 -> 12, crucible no longer opens when you collide with it, instead always requiring input
