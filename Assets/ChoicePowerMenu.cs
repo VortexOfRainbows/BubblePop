@@ -93,22 +93,22 @@ public class ChoicePowerMenu : MonoBehaviour
         if (CoinManager.CurrentGems >= Cost) //Can afford
         {
             RerollButton.interactable = RemainingRerolls > 0;
-            GemCostUI.color = ColorHelper.UIDefaultColor;
+            GemCostUI.color = ColorHelper.UI.DefaultColor;
             //RerollButton.targetGraphic.color = ColorHelper.UIDefaultColor.WithAlpha(0.5f);
         }
         else //Cannot Afford
         {
             RerollButton.interactable = false;
-            GemCostUI.color = ColorHelper.UIRedColor;
+            GemCostUI.color = ColorHelper.UI.RedColor;
             //RerollButton.targetGraphic.color = ColorHelper.UIDefaultColor.WithAlpha(0.2f);
         }
         GemCostUI.text = Cost <= 0 ? "Free" : Cost.ToString();
         RemainingUI.text = $"Remaining: {RemainingRerolls}";
         if(RemainingRerolls > 0)
-            RemainingUI.color = ColorHelper.UIDefaultColor;
+            RemainingUI.color = ColorHelper.UI.DefaultColor;
         else
         {
-            RemainingUI.color = ColorHelper.UIRedColor;
+            RemainingUI.color = ColorHelper.UI.RedColor;
         }
 
         if (RerollButton.interactable)

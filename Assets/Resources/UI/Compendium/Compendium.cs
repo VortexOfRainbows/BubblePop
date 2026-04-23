@@ -115,10 +115,10 @@ public class Compendium : MonoBehaviour
     #region Display and description on the right side of the compendium
     public CompendiumElement ActiveElement => Elements[PageNumber];
     public CompendiumElement[] Elements;
-    public CompendiumPowerUpElement DisplayCPUE;
-    public CompendiumEquipmentElement DisplayCEE;
-    public CompendiumEnemyElement DisplayCPEnemy;
-    public CompendiumAchievementElement DisplayCPAchievement; 
+    public CompendiumPowerUpElement DisplayCPUE { get; set; }
+    public CompendiumEquipmentElement DisplayCEE { get; set; }
+    public CompendiumEnemyElement DisplayCPEnemy { get; set; }
+    public CompendiumAchievementElement DisplayCPAchievement { get; set; }
     public TextMeshProUGUI DisplayPortDescription;
     public RectTransform DescriptionContentRect;
     public GameObject[] Stars;

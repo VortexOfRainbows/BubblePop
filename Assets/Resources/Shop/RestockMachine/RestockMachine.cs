@@ -36,8 +36,8 @@ public class RestockMachine : MonoBehaviour
             {
                 bool canAfford = CoinManager.CurrentGems >= owner.RestockCost;
                 Image i = UI.GetComponent<Image>();
-                i.color = Color.Lerp(i.color, canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIDarkGreyColor, Utils.DeltaTimeLerpFactor(0.1f)).WithAlpha(0.5f);
-                RestockCost.color = canAfford ? ColorHelper.UIDefaultColor : ColorHelper.UIRedColor;
+                i.color = Color.Lerp(i.color, canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.DefaultColor, Utils.DeltaTimeLerpFactor(0.1f)).WithAlpha(0.5f);
+                RestockCost.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.DefaultColor;
                 if (Input.GetKeyDown(KeyCode.R) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
                 {
                     owner.TryAddingRemainingRestocks(owner.RestockCost);

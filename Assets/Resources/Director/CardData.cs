@@ -207,7 +207,7 @@ public class EnemyClause : CardClause
             while ((WaveDirector.WaveNum + 1) < e.StaticData.WaveNumber && ++failedRolls <= 100)
                 e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
             if(failedRolls >= 100)
-                Debug.Log($"FAILED TO ROLL ENEMY: {failedRolls}".WithColor(ColorHelper.UIRedColor.ToHexString()));
+                Debug.Log($"FAILED TO ROLL ENEMY: {failedRolls}".WithColor(ColorHelper.UI.RedColor.ToHexString()));
             newEnemy = new(e);
             bool searchingForNonMatch = false;
             if (firstPick)
