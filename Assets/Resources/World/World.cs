@@ -1,9 +1,6 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
@@ -426,7 +423,12 @@ public class World : MonoBehaviour
         //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         #endif
     }
-    private int FrameDelay = 0;
+    private int FrameDelay = 0; 
+    public static GameObject ShadowParent;
+    private static float StartTimeForLightSetup = 0;
+    public Light2D GlobalLight;
+    public Light2D OcclusionLight { get; private set; }
+    public List<TileLightSegment> TileShadows { get; private set; } = new();
     public void FixedUpdate()
     {
         //This is to account for the time it takes unity to set up the tilecollider physics and other tilemap stuff (ran on the first fixed update)
@@ -434,32 +436,47 @@ public class World : MonoBehaviour
         {
             CreateLightingVertices();
         }
+        if(FrameDelay > 100)
+        {
+            FrameDelay++;
+            float sin = 0.5f + 0.5f * Mathf.Sin(FrameDelay / 400f * Mathf.PI);
+            UpdateLightIntensity(sin);
+        }
     }
     public class TileLightSegment
     {
-        public List<Vector3> Vertices;
+        public List<Vector3> OriginalVertices;
+        public List<Vector3> FinalVertices;
+        public Light2D MyLight;
         public TileLightSegment(List<Vector3> Vertices)
         {
-            this.Vertices = Vertices;
+            OriginalVertices = Vertices;
+            FinalVertices = new(Vertices);
+            MyLight = null;
         }
         public void Extend(float x, float y) => Extend(new Vector2(x, y));
         public void Extend(Vector2 direction)
         {
-            for(int i = Vertices.Count - 1; i >= 0; --i)
+            if (FinalVertices.Count > OriginalVertices.Count)
+                FinalVertices = new(OriginalVertices);
+            for (int i = OriginalVertices.Count - 1; i >= 0; --i)
             {
-                Vector3 extend = Vertices[i];
+                Vector3 extend = OriginalVertices[i];
                 extend.x += direction.x;
                 extend.y += direction.y;
-                Vertices.Add(extend);
+                FinalVertices.Add(extend);
             }
-            Vertices.Reverse();
+            FinalVertices.Reverse();
         }
         public void Unleash()
         {
-            Light2D L = GameObject.Instantiate(tileShadowPrefab, Vector2.zero, Quaternion.identity).GetComponent<Light2D>();
-            L.SetShapePath(Vertices.ToArray());
-            L.transform.parent = ShadowParent.transform;
-            L.name = $"Shadow {Vertices.Count}";
+            if(MyLight == null)
+            {
+                MyLight = GameObject.Instantiate(tileShadowPrefab, Vector2.zero, Quaternion.identity).GetComponent<Light2D>();
+                MyLight.transform.parent = ShadowParent.transform;
+                MyLight.name = $"Shadow {FinalVertices.Count}";
+            }
+            MyLight.SetShapePath(FinalVertices.ToArray());
         }
     }
     public void PossibleEdgesAtIntersectionPoint(Vector3 point, out bool possibleBotEdge, out bool possibleTopEdge, out bool possibleRightEdge, out bool possibleLeftEdge)
@@ -498,16 +515,15 @@ public class World : MonoBehaviour
                 possibleBotEdge = possibleRightEdge = true;
         }
     }
-    public static GameObject ShadowParent;
-    private static float StartTimeForLightSetup = 0;
     public void CreateLightingVertices()
     {
+        GlobalLight = Camera.main.transform.parent.GetComponentInChildren<Light2D>();
         Debug.Log("SETTING UP LIGHTING");
         StartTimeForLightSetup = Time.realtimeSinceStartup;
         ShadowParent = new GameObject("Shadow Parent");
         TilemapCollider2D collider = RealTileMap.Map.GetComponent<TilemapCollider2D>(); //temp
         CompositeCollider2D composite = collider.composite;
-        List<TileLightSegment> Lights = new();
+        TileShadows = new();
         int paths = composite.pathCount;
         for(int i = 1; i < paths; ++i) //i = 1 to skip the first path, which is the exterior (does not need a shadow)
         {
@@ -538,37 +554,10 @@ public class World : MonoBehaviour
                 bool bot = posBotEdge && posBotEdgeN && movingHorizontal;
                 bool left = posLeftEdge && posLeftEdgeN && movingVertical;
                 bool right = posRightEdge && posRightEdgeN && movingVertical;
-                //bool nextTileTopRight = World.SolidTile(RealTileMap.Map.WorldToCell(next + new Vector3(0.5f, 0.5f)));
-                //bool nextTileTopLeft = World.SolidTile(RealTileMap.Map.WorldToCell(next + new Vector3(-0.5f, 0.5f)));
-                //bool nextTileBotRight = World.SolidTile(RealTileMap.Map.WorldToCell(next + new Vector3(0.5f, -0.5f)));
-                //bool nextTileBotLeft = World.SolidTile(RealTileMap.Map.WorldToCell(next + new Vector3(-0.5f, -0.5f)));
-
-                ////bool prevTileTopRight = World.SolidTile(RealTileMap.Map.WorldToCell(prev + new Vector3(0.5f, 0.5f)));
-                ////bool prevTileTopLeft = World.SolidTile(RealTileMap.Map.WorldToCell(prev + new Vector3(-0.5f, 0.5f)));
-                ////bool prevTileBotRight = World.SolidTile(RealTileMap.Map.WorldToCell(prev + new Vector3(0.5f, -0.5f)));
-                ////bool prevTileBotLeft = World.SolidTile(RealTileMap.Map.WorldToCell(prev + new Vector3(-0.5f, -0.5f)));
-
-                //Vector3 travelDirectionToPrev = prev - point;
-
-                //bool solidRightEdge = travelDirection.y != 0 && (travelDirection.y < 0 ? tileBotRight && nextTileTopRight : tileTopRight && nextTileBotRight);
-                //bool solidTopEdge = travelDirection .x != 0 && (travelDirection.x > 0 ? tileTopRight && nextTileTopLeft : tileTopLeft && nextTileTopRight);
-                //bool previousRightEdge = travelDirectionToPrev.y != 0 && (travelDirectionToPrev.y > 0 ? tileBotRight && prevTileTopRight : tileTopRight && prevTileBotRight);
-                //bool previousTopEdge = travelDirectionToPrev.x != 0 && (travelDirectionToPrev.x < 0 ? tileTopRight && prevTileTopLeft : tileTopLeft && prevTileTopRight);
-                //For this shadow scenario (tentative), the light source is in the top right
-
-                //if (!tileBotLeft) //Casting a shadow to the botLeft means if there is no tile there, we want a shadow
-                //    valid = true;
-                //else if(tileTopRight)
-                //    valid = true;
-                //if (bot || left)
-                //    valid = false;
-                //else 
-                if (right || top) // || previousRightEdge || previousTopEdge)
+                if (right || top)
                     valid = true;
                 else
                     valid = false;
-                //previousRightEdge = solidRightEdge;
-                //previousTopEdge = solidTopEdge;
                 if(prevValid == null)
                     prevValid = valid;
                 if(start == -1)
@@ -587,7 +576,7 @@ public class World : MonoBehaviour
                     if (continuityBroken)
                     {
                         if (lightPoints.Count >= 2)
-                            Lights.Add(new(lightPoints));
+                            TileShadows.Add(new(lightPoints));
                         lightPoints = new();
                         continuityBroken = false;
                     }
@@ -601,19 +590,20 @@ public class World : MonoBehaviour
                 prevValid = valid;
             }
             if (lightPoints.Count >= 2)
-                Lights.Add(new(lightPoints));
+                TileShadows.Add(new(lightPoints));
         }
-        foreach (TileLightSegment light in Lights)
+        foreach (TileLightSegment light in TileShadows)
         {
             light.Extend(-4, -2);
             light.Unleash();
         }
-        CreateOcclusionSpriteLighting();
+        Tilemap.Map.GetCorners(out int x, out int x2, out int y, out int y2);
+        CreateOcclusionSpriteLighting(x, x2, y, y2);
+        Debug.Log("FINISHED LIGHT SETUP: " + (Time.realtimeSinceStartup - StartTimeForLightSetup));
     }
     //TODO: This should probably be threaded and done in partitions rather than the whole map at once
-    public void CreateOcclusionSpriteLighting()
+    public void CreateOcclusionSpriteLighting(int left, int right, int bot, int top)
     {
-        Tilemap.Map.GetCorners(out int left, out int right, out int bot, out int top);
         int w = right - left;
         int h = top - bot;
         int Resolution = 2;
@@ -639,7 +629,38 @@ public class World : MonoBehaviour
         Vector3 pos2 = new(left * 2, bot * 2);
         Light2D L = GameObject.Instantiate(OcclusionShadowPrefab, pos2, Quaternion.identity).GetComponent<Light2D>();
         L.lightCookieSprite = lightSprite;
-        //L.transform.localScale *= 2;
-        Debug.Log("FINISHED LIGHT SETUP: " + (Time.realtimeSinceStartup - StartTimeForLightSetup));
+        OcclusionLight = L;
     }
+    public void UpdateLightIntensity(float intensity)
+    {
+        float intensityMultiplier = intensity;
+        GlobalLight.intensity = 1.0f * intensityMultiplier;
+        OcclusionLight.intensity = 0.2f * intensityMultiplier;
+        foreach(TileLightSegment light in TileShadows)
+            light.MyLight.intensity = 0.65f * intensityMultiplier;
+    }
+
+
+
+
+
+    #region stuff commented maybe for later
+
+    //int w = x2 - x;
+    //int h = y2 - y;
+    //int squarePartitions = 4;
+    //int segmentW = w / squarePartitions;
+    //int segmentH = h / squarePartitions;
+    //for (int i = 0; i < squarePartitions; ++i)
+    //{
+    //    for(int j = 0; j < squarePartitions; ++j)
+    //    {
+    //        int myLeft = x + segmentW * i;
+    //        int myRight = myLeft + segmentW;
+    //        int myBot = y + segmentH * j;
+    //        int myTop = myBot + segmentH;
+    //    }
+    //}
+
+    #endregion
 }
