@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ public class World : MonoBehaviour
     public static GameObject tileShadowPrefab => Resources.Load<GameObject>("Lighting/TileShadow");
     public static GameObject shadowPT => Resources.Load<GameObject>("Lighting/TileShadowPT");
     public static Tile DepthTile => Resources.Load<Tile>("World/Tiles/DepthTile");
-
+    public static int FloorSortingLayer { get; private set; }
     public struct TileData
     {
         public byte ProgressionNumber;
@@ -69,6 +70,7 @@ public class World : MonoBehaviour
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
     public DualGridTilemap Tilemap;
     [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap;
+    public Tilemap QuickAccessSolidTileMap;
     public NatureOrderer NatureParent;
     public Transform PylonParent;
     public Transform RoadblockParent;
@@ -115,6 +117,7 @@ public class World : MonoBehaviour
     public static readonly List<Roadblock> Roadblocks = new();
     public void Start()
     {
+        FloorSortingLayer = RealTileMap.GetComponent<TilemapRenderer>().sortingLayerID;
         GachaponShop.AllShops.Clear();
         GachaponShop.TotalPowersPurchased = 0;
         NodeID.LoadAllNodes();
@@ -126,7 +129,6 @@ public class World : MonoBehaviour
         {
             tile.Init();
         }
-
         PlaceNodeLocations();
         ApproximateWorldBounds();
         LoadNodesOntoWorld();
@@ -411,6 +413,8 @@ public class World : MonoBehaviour
                     else
                         Map.SetTile(pos, TileID.Grass.BorderTileType);
                 }
+                //if (Instance.QuickAccessSolidTileMap != null && SolidTile(pos)) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
+                //    Instance.QuickAccessSolidTileMap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
             }
         }
     }
@@ -426,7 +430,7 @@ public class World : MonoBehaviour
     public void FixedUpdate()
     {
         //This is to account for the time it takes unity to set up the tilecollider physics and other tilemap stuff (ran on the first fixed update)
-        if(++FrameDelay == 2)
+        if(++FrameDelay == 15)
         {
             CreateLightingVertices();
         }
@@ -495,8 +499,11 @@ public class World : MonoBehaviour
         }
     }
     public static GameObject ShadowParent;
+    private static float StartTimeForLightSetup = 0;
     public void CreateLightingVertices()
     {
+        Debug.Log("SETTING UP LIGHTING");
+        StartTimeForLightSetup = Time.realtimeSinceStartup;
         ShadowParent = new GameObject("Shadow Parent");
         TilemapCollider2D collider = RealTileMap.Map.GetComponent<TilemapCollider2D>(); //temp
         CompositeCollider2D composite = collider.composite;
@@ -603,31 +610,36 @@ public class World : MonoBehaviour
         }
         CreateOcclusionSpriteLighting();
     }
+    //TODO: This should probably be threaded and done in partitions rather than the whole map at once
     public void CreateOcclusionSpriteLighting()
     {
         Tilemap.Map.GetCorners(out int left, out int right, out int bot, out int top);
         int w = right - left;
         int h = top - bot;
-        Texture2D lightTexture = new(w * 2, h * 2);
+        int Resolution = 2;
+        Texture2D lightTexture = new(w * Resolution, h * Resolution);
         Color c1 = Color.clear;
         Color c2 = Color.white;
+        lightTexture.filterMode = FilterMode.Trilinear;
         for (int i = 0; i < w; ++i)
         {
             for (int j = 0; j < h; ++j)
             {
                 Vector3Int pos = new Vector3Int(i + left, j + bot);
                 Color c = World.SolidTile(pos) ? c2 : c1;
-                int i2 = i * 2;
-                int j2 = j * 2;
-                lightTexture.SetPixel(i2, j2, c);
-                lightTexture.SetPixel(i2 + 1, j2, c);
-                lightTexture.SetPixel(i2, j2 + 1, c);
-                lightTexture.SetPixel(i2 + 1, j2 + 1, c);
+                int i2 = i * Resolution;
+                int j2 = j * Resolution;
+                for(int x = 0; x < Resolution; ++x)
+                    for(int y = 0; y < Resolution; ++y)
+                        lightTexture.SetPixel(i2 + x, j2 + y, c);
             }
         }
         lightTexture.Apply();
         Sprite lightSprite = Sprite.Create(lightTexture, new Rect(0, 0, lightTexture.width, lightTexture.height), Vector2.zero, 1f, 0, SpriteMeshType.FullRect);
-        Light2D L = GameObject.Instantiate(OcclusionShadowPrefab, new Vector3(left * 2, bot * 2), Quaternion.identity).GetComponent<Light2D>();
+        Vector3 pos2 = new(left * 2, bot * 2);
+        Light2D L = GameObject.Instantiate(OcclusionShadowPrefab, pos2, Quaternion.identity).GetComponent<Light2D>();
         L.lightCookieSprite = lightSprite;
+        //L.transform.localScale *= 2;
+        Debug.Log("FINISHED LIGHT SETUP: " + (Time.realtimeSinceStartup - StartTimeForLightSetup));
     }
 }

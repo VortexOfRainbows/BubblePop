@@ -20,9 +20,10 @@ public class DualGridTilemap : MonoBehaviour
         WallDisplayMap = new();
         PrepareDisplayMap(Visual, DisplayMap, -50);
         AddDecor(Color.white, -20);
-        PrepareDisplayMap(Visual, BorderDisplayMap, -49, border: true);
+        //-49 is for occlusion for now
+        PrepareDisplayMap(Visual, BorderDisplayMap, -48, border: true);
         AddDecor(new Color(0.5f, 0.5f, 0.5f), -30, true);
-        PrepareDisplayMap(Visual, WallDisplayMap, -48, wall: true);
+        PrepareDisplayMap(Visual, WallDisplayMap, -47, wall: true);
         RefreshDisplayTilemap(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
         //GetComponent<TilemapRenderer>().enabled = false;
     }
@@ -37,6 +38,7 @@ public class DualGridTilemap : MonoBehaviour
             {
                 Tilemap t = Instantiate(VisualMapPrefab, Visual).GetComponent<Tilemap>();
                 DisplayMap[k] = t;
+                TilemapRenderer r = DisplayMap[k].GetComponent<TilemapRenderer>();
                 float layerOffset = tile.LayerOffset;
                 float wallGridTransform = 0;
                 int order = orderOffset;
@@ -51,9 +53,11 @@ public class DualGridTilemap : MonoBehaviour
                     c = new(0.75f, 0.75f, 0.75f);
                     order += 2; //TODO: make the player appear visually behind tiles if appropriate
                 }
+                else if(!border)
+                {
+                    r.sortingLayerID = World.FloorSortingLayer;
+                }
                 DisplayMap[k].transform.localPosition = new Vector3(0, wallGridTransform, layerOffset);
-
-                TilemapRenderer r = DisplayMap[k].GetComponent<TilemapRenderer>();
 
                 //TEMPORARILY DISABLING GRASS SHADER FOR LIGHT TEST
 
