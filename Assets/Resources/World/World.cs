@@ -10,6 +10,7 @@ using UnityEngine.Tilemaps;
 public class World : MonoBehaviour
 {
     //TODO: Update this so it doesn't use Resources.Load every time, maybe use a static constructor or something
+    public static GameObject OcclusionShadowPrefab => Resources.Load<GameObject>("Lighting/OcclusionTileShadow");
     public static GameObject tileShadowPrefab => Resources.Load<GameObject>("Lighting/TileShadow");
     public static GameObject shadowPT => Resources.Load<GameObject>("Lighting/TileShadowPT");
     public static Tile DepthTile => Resources.Load<Tile>("World/Tiles/DepthTile");
@@ -600,5 +601,33 @@ public class World : MonoBehaviour
             light.Extend(-4, -2);
             light.Unleash();
         }
+        CreateOcclusionSpriteLighting();
+    }
+    public void CreateOcclusionSpriteLighting()
+    {
+        Tilemap.Map.GetCorners(out int left, out int right, out int bot, out int top);
+        int w = right - left;
+        int h = top - bot;
+        Texture2D lightTexture = new(w * 2, h * 2);
+        Color c1 = Color.clear;
+        Color c2 = Color.white;
+        for (int i = 0; i < w; ++i)
+        {
+            for (int j = 0; j < h; ++j)
+            {
+                Vector3Int pos = new Vector3Int(i + left, j + bot);
+                Color c = World.SolidTile(pos) ? c2 : c1;
+                int i2 = i * 2;
+                int j2 = j * 2;
+                lightTexture.SetPixel(i2, j2, c);
+                lightTexture.SetPixel(i2 + 1, j2, c);
+                lightTexture.SetPixel(i2, j2 + 1, c);
+                lightTexture.SetPixel(i2 + 1, j2 + 1, c);
+            }
+        }
+        lightTexture.Apply();
+        Sprite lightSprite = Sprite.Create(lightTexture, new Rect(0, 0, lightTexture.width, lightTexture.height), Vector2.zero, 1f, 0, SpriteMeshType.FullRect);
+        Light2D L = GameObject.Instantiate(OcclusionShadowPrefab, new Vector3(left * 2, bot * 2), Quaternion.identity).GetComponent<Light2D>();
+        L.lightCookieSprite = lightSprite;
     }
 }
