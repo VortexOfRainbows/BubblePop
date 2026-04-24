@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
 public class World : MonoBehaviour
@@ -413,5 +416,78 @@ public class World : MonoBehaviour
         //if(Input.GetKey(KeyCode.R) && Main.DebugCheats)
         //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         #endif
+    }
+    private int FrameDelay = 0;
+    public void FixedUpdate()
+    {
+        //This is to account for the time it takes unity to set up the tilecollider physics and other tilemap stuff (ran on the first fixed update)
+        if(++FrameDelay == 2)
+        {
+            CreateLightingVertices();
+        }
+    }
+    public void CreateLightingVertices()
+    {
+        GameObject tileShadowPrefab = Resources.Load<GameObject>("Lighting/TileShadow");
+        GameObject shadowPT = Resources.Load<GameObject>("Lighting/TileShadowPT");
+        TilemapCollider2D collider = RealTileMap.Map.GetComponent<TilemapCollider2D>(); //temp
+        CompositeCollider2D composite = collider.composite;
+        int paths = composite.pathCount;
+        for(int i = 0; i < paths; ++i)
+        {
+            int count = composite.GetPathPointCount(i);
+            Vector2[] points = new Vector2[count];
+            List<Vector3> lightPoints = new(); //Unity why I need to do this? are you stupid? why is a light 2D use vector3 for its path
+            composite.GetPath(i, points);
+            Light2D L = GameObject.Instantiate(tileShadowPrefab, Vector2.zero, Quaternion.identity).GetComponent<Light2D>();
+            bool continuityBroken = false;
+            bool? prevValid = null;
+            int start = -1;
+            int continuityEnd = count;
+            for (int j = 0; j < continuityEnd; ++j)
+            {
+                Vector3 point = points[j % count];
+                bool valid = false;
+                bool tileTopRight = World.SolidTile(RealTileMap.Map.WorldToCell(point + new Vector3(0.5f, 0.5f)));
+                bool tileTopLeft = World.SolidTile(RealTileMap.Map.WorldToCell(point + new Vector3(-0.5f, 0.5f)));
+                bool tileBotRight = World.SolidTile(RealTileMap.Map.WorldToCell(point + new Vector3(0.5f, -0.5f)));
+                bool tileBotLeft = World.SolidTile(RealTileMap.Map.WorldToCell(point + new Vector3(-0.5f, -0.5f)));
+
+                //For this shadow scenario (tentative), the light source is in the top right
+
+                if (!tileBotLeft) //Casting a shadow to the botLeft means if there is no tile there, we want a shadow
+                    valid = true;
+                else if(tileTopRight)
+                    valid = true;
+                if (prevValid == null)
+                    prevValid = valid;
+                if(start == -1)
+                {
+                    if(prevValid != valid && valid) //ON A TRANSITIONPT
+                    {
+                        GameObject.Instantiate(shadowPT, point, Quaternion.identity).name = $"START[{i}:{j}]";
+                        start = j;
+                        continuityEnd += start;
+                    }
+                }
+                if(start != -1)
+                {
+                    if (continuityBroken)
+                    {
+                        L.SetShapePath(lightPoints.ToArray());
+                        L = GameObject.Instantiate(tileShadowPrefab, Vector2.zero, Quaternion.identity).GetComponent<Light2D>();
+                        continuityBroken = false;
+                        lightPoints.Clear();
+                    }
+                    if (valid)
+                        lightPoints.Add(point);
+                    else if(lightPoints.Count >= 3)
+                        continuityBroken = true;
+                }
+                prevValid = valid;
+            }
+            L.SetShapePath(lightPoints.ToArray());
+            //L.name = sum < 0 ? "Interior Light" : "Exterior Light";
+        }
     }
 }
