@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
@@ -439,7 +440,7 @@ public class World : MonoBehaviour
         if(FrameDelay > 100)
         {
             FrameDelay++;
-            float sin = 0.5f + 0.5f * Mathf.Sin(FrameDelay / 400f * Mathf.PI);
+            float sin = 0.75f + 0.25f * Mathf.Sin(FrameDelay / 1200f * Mathf.PI);
             UpdateLightIntensity(sin);
         }
     }
@@ -495,7 +496,7 @@ public class World : MonoBehaviour
         if (tileBotLeft) ++count;
         if (tileBotRight) ++count;
         //Debug.Log($"AdjacentTileCount[{point}] = {count}");
-        possibleBotEdge = possibleTopEdge = possibleRightEdge = possibleLeftEdge = false;
+        possibleBotEdge = possibleTopEdge = possibleRightEdge = possibleLeftEdge = count == 2;
         if(count == 3)
         {
             possibleBotEdge = tileBotRight && tileBotLeft;
