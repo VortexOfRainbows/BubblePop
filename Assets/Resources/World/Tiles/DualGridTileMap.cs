@@ -54,11 +54,15 @@ public class DualGridTilemap : MonoBehaviour
                 DisplayMap[k].transform.localPosition = new Vector3(0, wallGridTransform, layerOffset);
 
                 TilemapRenderer r = DisplayMap[k].GetComponent<TilemapRenderer>();
+
+                //TEMPORARILY DISABLING GRASS SHADER FOR LIGHT TEST
+
                 //TODO: Change this to not use string.Contains(string) this as the check system :sob:
-                if (tile.name.Contains("Grass")) // Applies overlay to tiles based on their names
-                {
-                    r.material = OverlayMats.Overlays[0];
-                }
+                //if (tile.name.Contains("Grass")) // Applies overlay to tiles based on their names
+                //{
+                //    r.material = OverlayMats.Overlays[0];
+                //}
+
                 r.sortingOrder = order;
                 t.gameObject.name = $"{(wall ? "WALL" : border ? "Solid" : "Floor")}[{k}]: {tile.name}";
                 t.color = c;
