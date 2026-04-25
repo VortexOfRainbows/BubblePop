@@ -146,7 +146,8 @@ public class Cola : Weapon
         //Final Stuff
         float r = SODAtoMouse.ToRotation() * Mathf.Rad2Deg - p.PointDirOffset - bonusPointDirOffset - p.MoveOffset + p.DashOffset;
         transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition + recoil, 0.25f);
-        gameObject.GetComponent<SpriteRenderer>().flipY = p.PointDirOffset < 0;
+        gameObject.GetComponent<SpriteRenderer>().flipY = attemptedPosition.x < 0;
+        gameObject.GetComponent<SpriteRenderer>().flipX = true;
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.18f);
         transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
         AttackLeft--;

@@ -420,20 +420,8 @@ public class World : MonoBehaviour
         //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         #endif
     }
-    private int FrameDelay = 0; 
-    public static float StartTimeForLightSetup = 0;
     public void FixedUpdate()
     {
-        //This is to account for the time it takes unity to set up the tilecollider physics and other tilemap stuff (ran on the first fixed update)
-        if(++FrameDelay == 15)
-        {
-            Lighting.CreateLightingVertices();
-        }
-        if(FrameDelay > 100)
-        {
-            FrameDelay++;
-            float sin = 0.75f + 0.25f * Mathf.Sin(FrameDelay / 1200f * Mathf.PI);
-            Lighting.UpdateLightIntensity(sin);
-        }
+        Lighting.FixedUpdate();
     }
 }
