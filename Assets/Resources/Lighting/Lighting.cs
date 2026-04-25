@@ -72,11 +72,14 @@ public static class Lighting
     }
     public class TileLightSegment
     {
-        //public Rect LightingBounds;
-        public List<Vector3> OriginalVertices;
-        public Vector3[] FinalVertices;
+        public readonly Rect LightingBounds;
+        public readonly List<Vector3> OriginalVertices;
+        public readonly Vector3[] FinalVertices;
+        private readonly int Size;
         public Light2D MyLight;
-        private int Size;
+        public bool IsWithinView { get; private set; }
+        private bool MyTurnToUpdate = false;
+        private bool PreviouslyView = false;
         public TileLightSegment(List<Vector3> Vertices)
         {
             OriginalVertices = Vertices;
@@ -88,18 +91,30 @@ public static class Lighting
             //{
             //    if (vert.x < LightingBounds.xMin)
             //        LightingBounds.xMin = vert.x;
-            //    if (vert.x > LightingBounds.xMax)
+            //    else if (vert.x > LightingBounds.xMax)
             //        LightingBounds.xMax = vert.x;
             //    if (vert.y < LightingBounds.yMin)
             //        LightingBounds.yMin = vert.y;
-            //    if (vert.y > LightingBounds.yMax)
+            //    else if (vert.y > LightingBounds.yMax)
             //        LightingBounds.yMax = vert.y;
             //}
+            //int padding = 8;
+            //LightingBounds.x -= padding;
+            //LightingBounds.y -= padding;
+            //LightingBounds.width += padding * 2;
+            //LightingBounds.height += padding * 2;
             int i = 0;
             for (; i < Size; ++i)
                 FinalVertices[i] = OriginalVertices[i];
             for (int j = Size - 1; j >= 0; --j)
                 FinalVertices[i++] = OriginalVertices[j];
+        }
+        public void UpdateViewable(Rect viewpoint)
+        {
+            IsWithinView = LightingBounds.Intersects(viewpoint);
+            if(!PreviouslyView && IsWithinView)
+                MyTurnToUpdate = true;
+            PreviouslyView = IsWithinView;
         }
         public void Extend(float x, float y) => Extend(new Vector2(x, y));
         public void Extend(Vector2 direction)
@@ -200,9 +215,13 @@ public static class Lighting
             }
         }
         foreach (TileLightSegment light in TileShadowsTopRight)
+        {
             light.Prepare(ShadowParentRight.transform);
+            light.Extend(-4, -2);
+        }
         foreach (TileLightSegment light in TileShadowsTopLeft)
             light.Prepare(ShadowParentLeft.transform);
+        ShadowParentLeft.SetActive(false);
         World.RealTileMap.Map.GetCorners(out int x, out int x2, out int y, out int y2);
         CreateOcclusionSpriteLighting(x, x2, y, y2);
         Debug.Log("FINISHED LIGHT SETUP: " + (Time.realtimeSinceStartup - StartTimeForLightSetup));
@@ -256,33 +275,13 @@ public static class Lighting
         L.lightCookieSprite = lightSprite;
         OcclusionLight = L;
     }
-    public static void UpdateLightDirection(Vector2 extends)
-    {
-        List<TileLightSegment> Lights;
-        if(extends.x < 0) //Shadows go left, so use right-side path
-            Lights = TileShadowsTopRight;
-        else //Shadows go right, so use left-side path
-            Lights = TileShadowsTopLeft;
-        foreach (TileLightSegment light in Lights)
-            light.Extend(extends);
-    }
-    public static void UpdateLightIntensity(float intensity)
-    {
-        float intensityMultiplier = intensity;
-        GlobalLight.intensity = 1.0f * intensityMultiplier;
-        OcclusionLight.intensity = 0.2f * intensityMultiplier;
-        foreach (TileLightSegment light in TileShadowsTopRight)
-            light.MyLight.intensity = 0.65f * intensityMultiplier;
-        foreach (TileLightSegment light in TileShadowsTopLeft)
-            light.MyLight.intensity = 0.65f * intensityMultiplier;
-    }
-
     public static float StartTimeForLightSetup = 0;
     public static bool FinishedSettingUpLighting = false;
     public static float TimeCounter = 0;
     public static Vector2 prevExtends = Vector2.zero;
+    public static Rect screenPort = new();
     private static bool IsPerformingVertexUpdate { get; set; } = false;
-    private static int LightingTickRate = 5;
+    private static int LightingTickRate = 50;
     private static int LightingCurrentTick = 0;
     public static void FixedUpdate()
     {
@@ -290,31 +289,39 @@ public static class Lighting
             FinishedSettingUpLighting = true;
         if(FinishedSettingUpLighting)
         {
-            TimeCounter += Time.fixedDeltaTime;
-
-            float percent = TimeCounter / 100f;
-            if (++LightingCurrentTick % LightingTickRate != 0)
-                return;
-
-            Vector2 orbit = new Vector2(-6, 0).RotatedBy(percent * Mathf.PI * 2);
-            orbit.y = orbit.y * 0.1f - 3;
-
-            Vector2 nextExtends = orbit;
-            if(!IsPerformingVertexUpdate)
-            {
-                prevExtends = nextExtends;
-                //Debug.Log("Performing Lighting Vertex Update");
-                StartTimeForLightSetup = Time.realtimeSinceStartup;
-                IsPerformingVertexUpdate = true;
-                var thread = new Thread(LightUpdate);
-                thread.Start();
-                //Debug.Log("Finished Lighting Vertex Update: " + (Time.realtimeSinceStartup - StartTimeForLightSetup));
-            }
-            if(!IsPerformingVertexUpdate)
-            {
-                ShadowParentRight.SetActive(prevExtends.x < 0);
-                ShadowParentLeft.SetActive(prevExtends.x >= 0);
-            }
+            //TimeCounter += Time.fixedDeltaTime;
+            //
+            //float percent = TimeCounter / 100f;
+            //if(!IsPerformingVertexUpdate)
+            //{
+            //    ShadowParentRight.SetActive(prevExtends.x < 0);
+            //    ShadowParentLeft.SetActive(prevExtends.x >= 0);
+            //    List<TileLightSegment> Lights;
+            //    if (prevExtends.x < 0) 
+            //        Lights = TileShadowsTopRight;
+            //    else
+            //        Lights = TileShadowsTopLeft;
+            //    foreach (TileLightSegment light in Lights)
+            //        light.MyLight.gameObject.SetActive(light.IsWithinView);
+            //}
+            //Vector2 orbit = new Vector2(-6, 0).RotatedBy(percent * Mathf.PI * 2);
+            //orbit.y = orbit.y * 0.1f - 3;
+            //Vector2 nextExtends = orbit;
+            //if(!IsPerformingVertexUpdate)
+            //{
+            //    prevExtends = nextExtends;
+            //    var cam = Camera.main;
+            //    float height = cam.orthographicSize * 2f;
+            //    float width = height * cam.aspect;
+            //    screenPort = new(cam.transform.position.x - width / 2, cam.transform.position.y - height / 2, width, height);
+            //    //Debug.Log(viewPoint);
+            //    //Debug.Log("Performing Lighting Vertex Update");
+            //    StartTimeForLightSetup = Time.realtimeSinceStartup;
+            //    LightUpdate();
+            //    //var thread = new Thread(LightUpdate);
+            //    //thread.Start();
+            //    //Debug.Log("Finished Lighting Vertex Update: " + (Time.realtimeSinceStartup - StartTimeForLightSetup));
+            //}
             //if (FrameDelay > 100)
             //{
             //    FrameDelay++;
@@ -326,7 +333,32 @@ public static class Lighting
     }
     public static void LightUpdate()
     {
-        UpdateLightDirection(prevExtends);
+        List<TileLightSegment> Lights;
+        if (prevExtends.x < 0) //Shadows go left, so use right-side path
+            Lights = TileShadowsTopRight;
+        else //Shadows go right, so use left-side path
+            Lights = TileShadowsTopLeft;
+        foreach (TileLightSegment light in Lights)
+            light.UpdateViewable(screenPort);
+        UpdateLightDirection(Lights, prevExtends);
         IsPerformingVertexUpdate = false;
+    }
+    public static void UpdateLightDirection(List<TileLightSegment> Lights, Vector2 extends)
+    {
+        foreach (TileLightSegment light in Lights)
+            if(light.IsWithinView)
+            {
+                light.Extend(extends);
+            }
+    }
+    public static void UpdateLightIntensity(float intensity)
+    {
+        float intensityMultiplier = intensity;
+        GlobalLight.intensity = 1.0f * intensityMultiplier;
+        OcclusionLight.intensity = 0.2f * intensityMultiplier;
+        foreach (TileLightSegment light in TileShadowsTopRight)
+            light.MyLight.intensity = 0.65f * intensityMultiplier;
+        foreach (TileLightSegment light in TileShadowsTopLeft)
+            light.MyLight.intensity = 0.65f * intensityMultiplier;
     }
 }
