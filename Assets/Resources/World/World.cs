@@ -1,19 +1,11 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
 public class World : MonoBehaviour
 {
-    //TODO: Update this so it doesn't use Resources.Load every time, maybe use a static constructor or something
-    public static GameObject OcclusionShadowPrefab => Resources.Load<GameObject>("Lighting/OcclusionTileShadow");
-    public static GameObject tileShadowPrefab => Resources.Load<GameObject>("Lighting/TileShadow");
-    public static GameObject shadowPT => Resources.Load<GameObject>("Lighting/TileShadowPT");
     public static Tile DepthTile => Resources.Load<Tile>("World/Tiles/DepthTile");
     public static int FloorSortingLayer { get; private set; }
     public struct TileData
@@ -163,6 +155,7 @@ public class World : MonoBehaviour
         }
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
         NodeID.ResetNodePositions(); //This is mostly for editor stuff
+        Lighting.FinishedSettingUpLighting = false;
     }
     /// <summary>
     /// Generates the positions for nodes on the map before they are fully loaded. Uses approximations to find the best spot to place the nodes.
@@ -426,220 +419,8 @@ public class World : MonoBehaviour
         //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         #endif
     }
-    private int FrameDelay = 0;
     public void FixedUpdate()
     {
-        //This is to account for the time it takes unity to set up the tilecollider physics and other tilemap stuff (ran on the first fixed update)
-        if(++FrameDelay == 15)
-        {
-            CreateLightingVertices();
-        }
-    }
-    public class TileLightSegment
-    {
-        public List<Vector3> Vertices;
-        public TileLightSegment(List<Vector3> Vertices)
-        {
-            this.Vertices = Vertices;
-        }
-        public void Extend(float x, float y) => Extend(new Vector2(x, y));
-        public void Extend(Vector2 direction)
-        {
-            for(int i = Vertices.Count - 1; i >= 0; --i)
-            {
-                Vector3 extend = Vertices[i];
-                extend.x += direction.x;
-                extend.y += direction.y;
-                Vertices.Add(extend);
-            }
-            Vertices.Reverse();
-        }
-        public void Unleash()
-        {
-            Light2D L = GameObject.Instantiate(tileShadowPrefab, Vector2.zero, Quaternion.identity).GetComponent<Light2D>();
-            L.SetShapePath(Vertices.ToArray());
-            L.transform.parent = ShadowParent.transform;
-            L.name = $"Shadow {Vertices.Count}";
-        }
-    }
-    public void PossibleEdgesAtIntersectionPoint(Vector3 point, out bool possibleBotEdge, out bool possibleTopEdge, out bool possibleRightEdge, out bool possibleLeftEdge)
-    {
-        Vector3Int forSpeed = RealTileMap.Map.WorldToCell(point + new Vector3(0.5f, 0.5f));
-        bool tileTopRight = World.SolidTile(forSpeed);
-        forSpeed.x -= 1;
-        bool tileTopLeft = World.SolidTile(forSpeed);
-        forSpeed.y -= 1;
-        bool tileBotLeft = World.SolidTile(forSpeed);
-        forSpeed.x += 1;
-        bool tileBotRight = World.SolidTile(forSpeed);
-        int count = 0;
-        if (tileTopRight) ++count;
-        if (tileTopLeft) ++count;
-        if (tileBotLeft) ++count;
-        if (tileBotRight) ++count;
-        //Debug.Log($"AdjacentTileCount[{point}] = {count}");
-        possibleBotEdge = possibleTopEdge = possibleRightEdge = possibleLeftEdge = false;
-        if(count == 3)
-        {
-            possibleBotEdge = tileBotRight && tileBotLeft;
-            possibleTopEdge = tileTopLeft && tileTopRight;
-            possibleRightEdge = tileTopRight && tileBotRight;
-            possibleLeftEdge = tileTopLeft && tileBotLeft;
-        }
-        else if(count == 1)
-        {
-            if (tileBotLeft)
-                possibleBotEdge = possibleLeftEdge = true;
-            if (tileTopRight)
-                possibleRightEdge = possibleTopEdge = true;
-            if (tileTopLeft)
-                possibleTopEdge = possibleLeftEdge = true;
-            if(tileBotRight)
-                possibleBotEdge = possibleRightEdge = true;
-        }
-    }
-    public static GameObject ShadowParent;
-    private static float StartTimeForLightSetup = 0;
-    public void CreateLightingVertices()
-    {
-        Debug.Log("SETTING UP LIGHTING");
-        StartTimeForLightSetup = Time.realtimeSinceStartup;
-        ShadowParent = new GameObject("Shadow Parent");
-        TilemapCollider2D collider = RealTileMap.Map.GetComponent<TilemapCollider2D>(); //temp
-        CompositeCollider2D composite = collider.composite;
-        List<TileLightSegment> Lights = new();
-        int paths = composite.pathCount;
-        for(int i = 1; i < paths; ++i) //i = 1 to skip the first path, which is the exterior (does not need a shadow)
-        {
-            int count = composite.GetPathPointCount(i);
-            Vector2[] points = new Vector2[count];
-            List<Vector3> lightPoints = new(); //Unity why I need to do this? are you stupid? why is a light 2D use vector3 for its path
-            composite.GetPath(i, points);
-            bool continuityBroken = false;
-            bool? prevValid = null;
-            int start = -1;
-            int end = count;
-            for (int j = 0; j < end; ++j)
-            {
-                Vector3 point = points[j % count];
-                Vector3 next = points[(j + 1) % count]; 
-                //int k = (j - 1) % count;
-                //if (k < 0)
-                //    k = k + count;
-                //Vector3 prev = points[k];
-                bool valid = false;
-
-                Vector3 travelDirection = next - point;
-                bool movingHorizontal = Mathf.Abs(travelDirection.x) > 0.2f;
-                bool movingVertical = Mathf.Abs(travelDirection.y) > 0.2f;
-                PossibleEdgesAtIntersectionPoint(point, out bool posBotEdge, out bool posTopEdge, out bool posRightEdge, out bool posLeftEdge);
-                PossibleEdgesAtIntersectionPoint(next, out bool posBotEdgeN, out bool posTopEdgeN, out bool posRightEdgeN, out bool posLeftEdgeN);
-                bool top = posTopEdge && posTopEdgeN && movingHorizontal;
-                bool bot = posBotEdge && posBotEdgeN && movingHorizontal;
-                bool left = posLeftEdge && posLeftEdgeN && movingVertical;
-                bool right = posRightEdge && posRightEdgeN && movingVertical;
-                //bool nextTileTopRight = World.SolidTile(RealTileMap.Map.WorldToCell(next + new Vector3(0.5f, 0.5f)));
-                //bool nextTileTopLeft = World.SolidTile(RealTileMap.Map.WorldToCell(next + new Vector3(-0.5f, 0.5f)));
-                //bool nextTileBotRight = World.SolidTile(RealTileMap.Map.WorldToCell(next + new Vector3(0.5f, -0.5f)));
-                //bool nextTileBotLeft = World.SolidTile(RealTileMap.Map.WorldToCell(next + new Vector3(-0.5f, -0.5f)));
-
-                ////bool prevTileTopRight = World.SolidTile(RealTileMap.Map.WorldToCell(prev + new Vector3(0.5f, 0.5f)));
-                ////bool prevTileTopLeft = World.SolidTile(RealTileMap.Map.WorldToCell(prev + new Vector3(-0.5f, 0.5f)));
-                ////bool prevTileBotRight = World.SolidTile(RealTileMap.Map.WorldToCell(prev + new Vector3(0.5f, -0.5f)));
-                ////bool prevTileBotLeft = World.SolidTile(RealTileMap.Map.WorldToCell(prev + new Vector3(-0.5f, -0.5f)));
-
-                //Vector3 travelDirectionToPrev = prev - point;
-
-                //bool solidRightEdge = travelDirection.y != 0 && (travelDirection.y < 0 ? tileBotRight && nextTileTopRight : tileTopRight && nextTileBotRight);
-                //bool solidTopEdge = travelDirection .x != 0 && (travelDirection.x > 0 ? tileTopRight && nextTileTopLeft : tileTopLeft && nextTileTopRight);
-                //bool previousRightEdge = travelDirectionToPrev.y != 0 && (travelDirectionToPrev.y > 0 ? tileBotRight && prevTileTopRight : tileTopRight && prevTileBotRight);
-                //bool previousTopEdge = travelDirectionToPrev.x != 0 && (travelDirectionToPrev.x < 0 ? tileTopRight && prevTileTopLeft : tileTopLeft && prevTileTopRight);
-                //For this shadow scenario (tentative), the light source is in the top right
-
-                //if (!tileBotLeft) //Casting a shadow to the botLeft means if there is no tile there, we want a shadow
-                //    valid = true;
-                //else if(tileTopRight)
-                //    valid = true;
-                //if (bot || left)
-                //    valid = false;
-                //else 
-                if (right || top) // || previousRightEdge || previousTopEdge)
-                    valid = true;
-                else
-                    valid = false;
-                //previousRightEdge = solidRightEdge;
-                //previousTopEdge = solidTopEdge;
-                if(prevValid == null)
-                    prevValid = valid;
-                if(start == -1)
-                {
-                    if(prevValid != valid && valid) //ON A TRANSITIONPT
-                    {
-                        var obj = GameObject.Instantiate(shadowPT, point, Quaternion.identity);
-                        obj.name = $"START[{i}:{j}]";
-                        obj.transform.parent = ShadowParent.transform;
-                        start = j;
-                        end += start;
-                    }
-                }
-                if(start != -1)
-                {
-                    if (continuityBroken)
-                    {
-                        if (lightPoints.Count >= 2)
-                            Lights.Add(new(lightPoints));
-                        lightPoints = new();
-                        continuityBroken = false;
-                    }
-                    if(!continuityBroken)
-                    {
-                        if (prevValid.Value || valid)
-                            lightPoints.Add(point);
-                        continuityBroken = !valid;
-                    }
-                }
-                prevValid = valid;
-            }
-            if (lightPoints.Count >= 2)
-                Lights.Add(new(lightPoints));
-        }
-        foreach (TileLightSegment light in Lights)
-        {
-            light.Extend(-4, -2);
-            light.Unleash();
-        }
-        CreateOcclusionSpriteLighting();
-    }
-    //TODO: This should probably be threaded and done in partitions rather than the whole map at once
-    public void CreateOcclusionSpriteLighting()
-    {
-        Tilemap.Map.GetCorners(out int left, out int right, out int bot, out int top);
-        int w = right - left;
-        int h = top - bot;
-        int Resolution = 2;
-        Texture2D lightTexture = new(w * Resolution, h * Resolution);
-        Color c1 = Color.clear;
-        Color c2 = Color.white;
-        lightTexture.filterMode = FilterMode.Trilinear;
-        for (int i = 0; i < w; ++i)
-        {
-            for (int j = 0; j < h; ++j)
-            {
-                Vector3Int pos = new Vector3Int(i + left, j + bot);
-                Color c = World.SolidTile(pos) ? c2 : c1;
-                int i2 = i * Resolution;
-                int j2 = j * Resolution;
-                for(int x = 0; x < Resolution; ++x)
-                    for(int y = 0; y < Resolution; ++y)
-                        lightTexture.SetPixel(i2 + x, j2 + y, c);
-            }
-        }
-        lightTexture.Apply();
-        Sprite lightSprite = Sprite.Create(lightTexture, new Rect(0, 0, lightTexture.width, lightTexture.height), Vector2.zero, 1f, 0, SpriteMeshType.FullRect);
-        Vector3 pos2 = new(left * 2, bot * 2);
-        Light2D L = GameObject.Instantiate(OcclusionShadowPrefab, pos2, Quaternion.identity).GetComponent<Light2D>();
-        L.lightCookieSprite = lightSprite;
-        //L.transform.localScale *= 2;
-        Debug.Log("FINISHED LIGHT SETUP: " + (Time.realtimeSinceStartup - StartTimeForLightSetup));
+        Lighting.FixedUpdate();
     }
 }
