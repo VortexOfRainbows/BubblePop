@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: VertexShaderTest4
-  m_Shader: {fileID: -6465566751694194690, guid: f0674e5490ec0cd46a9c3479664d3c84, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: de5fce6b17bb36c408dd6b28b1225ee3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -41,14 +41,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Boolean: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _SideMatrix: {r: 0, g: 0, b: 0, a: 1}
-    - _Sun: {r: -1, g: -1, b: 0, a: 0}
+    - _Sun: {r: 1, g: -1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &7542717453664207235
+--- !u!114 &2553737417882861137
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
