@@ -1,12 +1,11 @@
+using System;
 using System.Collections.Generic;
-using System.Threading;
-using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
-public static class Lighting
+[Obsolete]
+public static class OldLighting
 {
     //TODO: Update this so it doesn't use Resources.Load every time, maybe use a static constructor or something
     public static GameObject ShadowParentRight;

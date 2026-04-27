@@ -62,7 +62,8 @@ public class World : MonoBehaviour
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
     public DualGridTilemap Tilemap;
     [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap;
-    public Tilemap QuickAccessSolidTileMap;
+    public Tilemap LightingTilemapFront;
+    public Tilemap LightingTilemapBack;
     public NatureOrderer NatureParent;
     public Transform PylonParent;
     public Transform RoadblockParent;
@@ -155,7 +156,6 @@ public class World : MonoBehaviour
         }
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
         NodeID.ResetNodePositions(); //This is mostly for editor stuff
-        Lighting.FinishedSettingUpLighting = false;
     }
     /// <summary>
     /// Generates the positions for nodes on the map before they are fully loaded. Uses approximations to find the best spot to place the nodes.
@@ -406,8 +406,11 @@ public class World : MonoBehaviour
                     else
                         Map.SetTile(pos, TileID.Grass.BorderTileType);
                 }
-                //if (Instance.QuickAccessSolidTileMap != null && SolidTile(pos)) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
-                //    Instance.QuickAccessSolidTileMap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
+                if (Instance.LightingTilemapFront != null && Instance.LightingTilemapBack != null && SolidTile(pos)) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
+                {
+                    Instance.LightingTilemapFront.SetTile(pos, DepthTile);
+                    Instance.LightingTilemapBack.SetTile(pos, DepthTile);
+                }
             }
         }
     }
@@ -421,6 +424,10 @@ public class World : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        Lighting.FixedUpdate();
+
+    }
+    public void SetupLightingTilemap()
+    {
+
     }
 }

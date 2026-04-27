@@ -44,11 +44,12 @@ Multiplayer Task List:
 
 Done: 
 
-4/25/26 to 4/26/26
+4/25/26 to 4/27/26
 1. Shaders? More like you should go fucking shit myself
 2. MORE WIP Light shaders:
 	TODO: 
 	1. make the stretching aspect a subgraph then make two shaders. One for each side (this is probably easier than alternative solutions, as having it on one shader will requires extra bool input and making the GPU render both faces, which is 2x more expensive)
+3. Lighting jail
 
 4/23/26 to 4/24/26
 1. WIP Standardization of UI elements
