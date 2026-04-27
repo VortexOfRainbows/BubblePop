@@ -156,6 +156,8 @@ public class World : MonoBehaviour
         }
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
         NodeID.ResetNodePositions(); //This is mostly for editor stuff
+
+        Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack);
     }
     /// <summary>
     /// Generates the positions for nodes on the map before they are fully loaded. Uses approximations to find the best spot to place the nodes.
@@ -421,13 +423,5 @@ public class World : MonoBehaviour
         //if(Input.GetKey(KeyCode.R) && Main.DebugCheats)
         //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         #endif
-    }
-    public void FixedUpdate()
-    {
-
-    }
-    public void SetupLightingTilemap()
-    {
-
     }
 }
