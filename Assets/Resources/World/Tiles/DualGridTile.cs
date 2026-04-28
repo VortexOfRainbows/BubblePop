@@ -119,7 +119,12 @@ public class DualGridTile : ScriptableObject
             //} else 
             if (id != -1)
             {
-                if (BonusTileTextures != null && BonusTileTextures.Length > 0)
+                if(isBorder && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
+                {
+                    id += BorderVariantStartIndex;
+                    id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
+                }
+                else if (BonusTileTextures != null && BonusTileTextures.Length > 0)
                     id += Utils.RandInt(BonusTileTextures.Length + 1) * SpriteCount;
                 Tile t = DisplayTileVariants[id];
                 map.SetTile(newPos, t);
@@ -130,6 +135,8 @@ public class DualGridTile : ScriptableObject
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
     public Texture2D[] BonusTileTextures;
+    public Texture2D[] BorderOnlyTileTextures;
+    private int BorderVariantStartIndex = 0;
     public float LayerOffset { get; set; } = 0;
     [SerializeField]
     private Tile RealTileMapVariant;
@@ -149,7 +156,6 @@ public class DualGridTile : ScriptableObject
     public Tile FloorTileType => RealTileMapVariant;
     public Tile BorderTileType => BorderTileMapVariant;
     public List<Tile> DisplayTileVariants { get; private set; }
-    public Tile[] BonusCenterVariants { get; private set; }
     public void Init()
     {
         SetDisplayVariants();
@@ -180,6 +186,26 @@ public class DualGridTile : ScriptableObject
                     len = sprites.Length;
                     if (len < 3)
                         throw new Exception($"Could not find tile texture at \"{path + BonusTileTextures[j].name}\". Is it possible that the texture is not the same name as the directory?");
+                    for (int i = 0; i < len; ++i)
+                    {
+                        Tile tile = ScriptableObject.CreateInstance<Tile>();
+                        tile.colliderType = Tile.ColliderType.Grid;
+                        tile.color = ColorModifier;
+                        tile.sprite = sprites[i];
+                        DisplayTileVariants.Add(tile);
+                    }
+                }
+            }
+            if(BorderOnlyTileTextures != null)
+            {
+                if (BorderOnlyTileTextures.Length > 0)
+                    BorderVariantStartIndex = DisplayTileVariants.Count;
+                for (int j = 0; j < BorderOnlyTileTextures.Length; ++j)
+                {
+                    sprites = Resources.LoadAll<Sprite>(path + BorderOnlyTileTextures[j].name);
+                    len = sprites.Length;
+                    if (len < 3)
+                        throw new Exception($"Could not find tile texture at \"{path + BorderOnlyTileTextures[j].name}\". Is it possible that the texture is not the same name as the directory?");
                     for (int i = 0; i < len; ++i)
                     {
                         Tile tile = ScriptableObject.CreateInstance<Tile>();

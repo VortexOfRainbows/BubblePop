@@ -94,7 +94,7 @@ public class DualGridTilemap : MonoBehaviour
                         tile.UpdateDisplayTile(coords, BorderMap[tile.TypeIndex], true);
                         if(i > left && i < right - 1 && j > bottom && j < top - 1)
                         {
-                            if (tile.HasWallVariant() && //Although this is a lod of "hastile" checks, it should be faster than just loading the tile on every possible spot.
+                            if (tile.HasWallVariant() && //Although this is a lot of "SolidTile" checks, it should be faster than just loading the tile on every possible spot.
                                 (!World.SolidTile(new Vector3Int(i + 1, j - 1)) || !World.SolidTile(new Vector3Int(i, j + 1)) ||
                                 !World.SolidTile(new Vector3Int(i + 1, j + 1)) || !World.SolidTile(new Vector3Int(i, j - 1)) ||
                                 !World.SolidTile(new Vector3Int(i - 1, j + 1)) || !World.SolidTile(new Vector3Int(i + 1, j)) ||
