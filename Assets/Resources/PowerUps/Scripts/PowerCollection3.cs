@@ -16,10 +16,6 @@ public class BottleBlast : BubbleBlast
         description.WithDescription("Y:[Secondary attack] releases Y:4 G:(+4 per stack) additional bubbles on impact");
         description.WithShortDescription("Secondary attack releases extra bubbles");
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/WeaponUpgrade");
-    }
 }
 public class BottleFlip : PowerUp
 {
@@ -179,10 +175,6 @@ public class BombasticBrew : PowerUp
     public override void HeldEffect(Player p)
     {
         p.BombBrew += Stack;
-    }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
     }
 }
 public class CollateralDamage : PowerUp

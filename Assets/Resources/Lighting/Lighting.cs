@@ -196,6 +196,7 @@ public static class Lighting
         {
             float baseTexelSize = 4 / 1080f;
             ShadowRenderTexture.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+            ShadowRenderTexture.gameObject.SetActive(true);
         }
     }
 }
