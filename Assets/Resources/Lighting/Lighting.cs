@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public static class Lighting
 {
@@ -14,8 +15,8 @@ public static class Lighting
         {
             throw new System.Exception("ERROR: Could not find lighting tile maps");
         }
-        LightTile = Resources.Load<Tile>("World/Tiles/LightTile");
-        OcclusionTile = Resources.Load<Tile>("World/Tiles/OcclusionLightTile");
+        LightTile = Resources.Load<Tile>("Lighting/LightTile");
+        OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
         LightingCamera = Camera.main.transform.GetChild(0).GetComponent<Camera>();
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
@@ -43,7 +44,6 @@ public static class Lighting
         //Debug.Log($"{Screen.width}, {Screen.height}");
         if(LightRT.width != Screen.width || LightRT.height != Screen.height)
         {
-
             //// Set the provided RenderTexture as active
             //var prev = RenderTexture.active;
             //RenderTexture.active = LightRT;
@@ -56,12 +56,18 @@ public static class Lighting
             //System.IO.File.WriteAllBytes("texture.png", tex.EncodeToPNG());
             //RenderTexture.active = prev;
 
-
             LightRT.Release();
             LightRT.width = Screen.width;
             LightRT.height = Screen.height;
             LightRT.Create();
             LightingCamera.ResetAspect();
+            if (Main.Instance.TileLightRenderTarget != null)
+                Main.Instance.TileLightRenderTarget.SetMaterialDirty(); //Updates the texel size on the gaussian blur to make the shadows consistent on resize
+        }
+        if (Main.Instance.TileLightRenderTarget != null)
+        {
+            float baseTexelSize = 4 / 1080f;
+            Main.Instance.TileLightRenderTarget.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
         }
     }
 }

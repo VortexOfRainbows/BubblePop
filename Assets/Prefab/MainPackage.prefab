@@ -15293,6 +15293,7 @@ MonoBehaviour:
   DirectorCanvas: {fileID: 2528735675891889062}
   PowerupCheatCanvas: {fileID: 5702857135718872428}
   SpritebatchSuperParent: {fileID: 1755457766737359977}
+  TileLightRenderTarget: {fileID: 3417041292446755672}
   MyUIManager:
     PlayButtons: []
     MultiplayerButtons: []
@@ -20838,7 +20839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: -876546973899608171, guid: 5e42a97017ed04642b7c363631dfd901, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.8}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

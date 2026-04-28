@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public partial class Main : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public partial class Main : MonoBehaviour
     public GameObject DirectorCanvas;
     public GameObject PowerupCheatCanvas;
     public Transform SpritebatchSuperParent;
+    public RawImage TileLightRenderTarget;
     public static Transform SpritebatchParent => Instance.SpritebatchSuperParent;
     public static int UICameraLayerID { get; private set; } = -1;
     public static readonly int PylonActivationDist = 11;
