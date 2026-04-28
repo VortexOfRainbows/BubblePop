@@ -40,6 +40,20 @@ public static class Lighting
         //Debug.Log($"{Screen.width}, {Screen.height}");
         if(LightRT.width != Screen.width || LightRT.height != Screen.height)
         {
+
+            //// Set the provided RenderTexture as active
+            //var prev = RenderTexture.active;
+            //RenderTexture.active = LightRT;
+
+            //// Create a new Texture2D with the same dimensions
+            //Texture2D tex = new Texture2D(LightRT.width, LightRT.height);
+
+            //tex.ReadPixels(new Rect(0, 0, LightRT.width, LightRT.height), 0, 0);
+            //tex.Apply(); // Apply changes;
+            //System.IO.File.WriteAllBytes("texture.png", tex.EncodeToPNG());
+            //RenderTexture.active = prev;
+
+
             LightRT.Release();
             LightRT.width = Screen.width;
             LightRT.height = Screen.height;
