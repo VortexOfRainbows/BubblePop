@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
@@ -40,6 +42,8 @@ public static class Lighting
                 }
             }
         }
+        DayProgress = TimeInADay * 0.1f;
+        Update();
     }
     public static void Update() //Runs on normal delta time, not fixed
     {
@@ -47,16 +51,10 @@ public static class Lighting
         UpdateSun();
     }
     public static float DayProgress = 0;
-    public static readonly float TimeInADay = 120; //2 minutes per day, for now
+    public static readonly float TimeInADay = 240; //4 minutes per day, for now
     public static Vector2 SunVector = new(1, 0);
     public static bool IsDay => DayProgress < TimeInADay / 2;
     public static bool IsNight => !IsDay;
-    //public static bool SunRise => SunVector.x > 0.8f && SunVector.y > 0;
-    //public static bool MidDay => SunVector.x > -0.2f && SunVector.x < 0.2f && SunVector.y > 0;
-    //public static bool SunSet => SunVector.x < -0.8f && SunVector.y > 0;
-    //public static bool Nightwake => SunVector.x < -0.8f && SunVector.y < 0;
-    //public static bool Midnight => SunVector.x > -0.2f && SunVector.x < 0.2f && SunVector.y < 0;
-    //public static bool Twilight => SunVector.x > 0.8f && SunVector.y < 0;
     public static void UpdateSun()
     {
         DayProgress += Time.deltaTime;
@@ -85,31 +83,77 @@ public static class Lighting
                 alphaMult *= 0.4f;
             ShadowRenderTexture.color = new Color(0, 0, 0, 0.925f * alphaMult);
         }
+        GetSunlightColor();
+    }
+    internal class ColorWithRange
+    {
+        public float Start;
+        public float End;
+        public Color Color;
+        public float blendFront;
+        public float blendBack;
+        public ColorWithRange(Color color, float startRange, float endRange, float blendBack = 0.05f, float blendFront = 0.05f)
+        {
+            Color = color;
+            Start = startRange + blendBack * 0.5f;
+            End = endRange - blendFront * 0.5f;
+            this.blendBack = blendBack;
+            this.blendFront = blendFront;
+        }
+        public Color Get(float currentValue)
+        {
+            if (currentValue >= Start && currentValue < End)
+                return Color;
+            else
+            {
+                float p = 0;
+                if(currentValue < Start)
+                {
+                    currentValue -= Start;
+                    p = 1 + currentValue / blendBack;
+                }
+                else //currentValue >= End
+                {
+                    currentValue -= End;
+                    p = 1 - currentValue / blendFront;
+                }
+                if (p <= 0 || p >= 1)
+                    return Color.clear;
+                return Color * p;
+            }
+        }
     }
     public static void GetSunlightColor()
     {
         Color nightColor = new(.15f, .1f, 0.3f);
-        Color nightTransitionColor = new(.35f, .15f, .15f);
         Color dayBreak = new(.35f, .15f, .35f);
         Color sunRise = new(.5f, .35f, .15f);
         Color dayColor = new(1, 1, 1);
+        List<ColorWithRange> ColorRange = new();
+        Color final = Color.clear;
         if (IsDay)
         {
+            ColorRange.Add(new(dayBreak, -0.1f, 0.05f));
+            ColorRange.Add(new(sunRise, 0.05f, 0.10f));
+            ColorRange.Add(new(dayColor, 0.1f, 0.9f));
+            ColorRange.Add(new(sunRise, 0.9f, 0.95f));
+            ColorRange.Add(new(dayBreak, 0.95f, 1.1f));
             float percent = DayProgress / TimeInADay * 2;
-            /* -0.7 -> -0.9 : nightTransitionColor
-             * -0.9 ->  0.1 : daybreak
-             *  0.1 ->  0.2 : sunrise
-             *  0.2 ->  0.8 : daycolor
-             *  0.8 ->  0.9 : sunrise
-             *  0.9 -> -0.1 : daybreak
-             * -0.1 -> -0.3 : nightTransitionColor
-             * -0.3 -> -0.7 : nightColor
-             */
+            foreach(ColorWithRange c in ColorRange)
+                final += c.Get(percent);
         }
         else if(IsNight)
         {
+            ColorRange.Add(new(dayBreak, -0.1f, 0.05f));
+            //ColorRange.Add(new(nightWake, 0.05f, 0.10f));
+            ColorRange.Add(new(nightColor, 0.05f, 0.95f));
+            //ColorRange.Add(new(nightWake, 0.9f, 0.95f));
+            ColorRange.Add(new(dayBreak, 0.95f, 1.1f));
             float percent = DayProgress / TimeInADay * 2 - 1;
+            foreach (ColorWithRange c in ColorRange)
+                final += c.Get(percent);
         }
+        GlobalLight.color = final;//.WithAlpha(1.0f);
     }
     public static float PortionOfRange(float percent, float startingThresh, float endThresh)
     {

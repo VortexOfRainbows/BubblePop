@@ -5,6 +5,8 @@ Do Later:
 	1. Maybe allow player to hide behind the walls, but figure out a way to make the weapon not appear through the wall
 	2. Normalize player customization layering (not super important but part of a future task)
 2. Day/Night system (so we can have cooler lighting)
+	1. Figure out the appropriate behavior for actual lights to take upon this fake lighting-layer (probably additive?)
+	2. Normalize some materials for lighting behaviors
 3. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
 4. Integrate Compendium into the pause menu
@@ -47,33 +49,33 @@ Done:
 4/25/26 to 4/28/26
 1. Shaders? More like you should go fucking shit myself
 2. MORE WIP Light shaders: Should now be in a state that is almost usable
-	TODO: (DONE) Make sure sun can never point exactly x=0.0000, as that messes up the shader (just use x = 10^-10 or something)
-	1. (DONE) Put the lighting on the right layer
-	2. (DONE) colors are treated as a gestalt (proper treatment of overlap)
-	3. (DONE) Guassian blur to the layer to achieve a blur effect
-	4. Tune the colors until it is correct
-	5. Figure out the appropriate behavior for actual lights to take upon this fake lighting-layer (probably additive?)
+	1. (DONE) Make sure sun can never point exactly x=0.0000, as that messes up the shader (just use x = 10^-10 or something)
+	2. (DONE) Put the lighting on the right layer
+	3. (DONE) colors are treated as a gestalt (proper treatment of overlap)
+	4. (DONE) Guassian blur to the layer to achieve a blur effect
+	5. (DONE) Tune the colors until it is correct (roughly correct)
 	6. (DONE) Sun shifting animation (uses Tangent to find appropriate-ish shadow length)
 3. Lighting jail
 4. Make appropriate lighting shaders. Re-add occlusion through special tile-map tiles
 5. Slightly modify player collider size with chests and chest colliders to allow better pushing through corridors without soft locking
 6. Consistent shadows on different resolutions
 7. Modify "Highland" node
+8. Proof of concept day/night cycle (currently 4 minutes)
 
 4/23/26 to 4/24/26
 1. WIP Standardization of UI elements
 	1. Standard button class
 2. Working on an algorithm for generating tile shadow vertices
-3. WIP Lighting system!!
+3. (SCRAPPED) Lighting system!!
 	NEEDS: 
 	1. Keep an eye out for rendering issues (flickering). Might be fixed but idk for sure
-4. System to update lights (right now only works with intensity)
+4. (SCRAPPED) System to update lights (right now only works with intensity)
 	NEEDS: 
 	1. Ability to change color of lights and shadow (this has a WIP solution rn)
 	2. Ability for wall-lights to cycle with the time of day
 5. Diagonal wall sections should now have shadows + they should merge better
 6. Fix small bug where Cola was not flipping correctly when held
-7. WIP shadows in both directions for d/n cycle (THIS IS NOT WORKING AT ALL)
+7. (SCRAPPED) WIP shadows in both directions for d/n cycle (THIS IS NOT WORKING AT ALL)
 
 4/21/26 to 4/22/26
 1. Book left click now travels faster
