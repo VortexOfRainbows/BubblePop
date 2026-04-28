@@ -61,7 +61,7 @@ public class World : MonoBehaviour
     private static World m_Instance;
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
     public DualGridTilemap Tilemap;
-    [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap;
+    [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap, OcclusionMap;
     public Tilemap LightingTilemapFront;
     public Tilemap LightingTilemapBack;
     public NatureOrderer NatureParent;
@@ -157,7 +157,7 @@ public class World : MonoBehaviour
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
         NodeID.ResetNodePositions(); //This is mostly for editor stuff
 
-        Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack);
+        Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
     }
     /// <summary>
     /// Generates the positions for nodes on the map before they are fully loaded. Uses approximations to find the best spot to place the nodes.

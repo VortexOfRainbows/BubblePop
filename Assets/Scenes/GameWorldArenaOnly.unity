@@ -188,7 +188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2586605899954703500, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0012207031
+      value: -0.0013427734
       objectReference: {fileID: 0}
     - target: {fileID: 2671163631802409826, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_SizeDelta.y
@@ -212,7 +212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3073002857559638217, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1999.9998
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 3253462896526281300, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchorMax.y
@@ -230,10 +230,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3417041292446755672, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 2100000, guid: 60650731fca31dc4298cca6e0ea8be84, type: 2}
     - target: {fileID: 3914301646772711725, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -643,6 +639,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 209854725}
     - target: {fileID: 1866361830754972015, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
+      propertyPath: OcclusionMap
+      value: 
+      objectReference: {fileID: 1566057542}
+    - target: {fileID: 1866361830754972015, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: NodesToGenerate
       value: 0
       objectReference: {fileID: 0}
@@ -737,10 +737,6 @@ PrefabInstance:
     - target: {fileID: 8226170919199669443, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: m_Name
       value: World
-      objectReference: {fileID: 0}
-    - target: {fileID: 8226170919199669443, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9220566089928892612, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -966,6 +962,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afa9ccc0dd944df41aab56d5089b16cc, type: 3}
+--- !u!1839735485 &1566057542 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 9079875755328827697, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
+  m_PrefabInstance: {fileID: 364421151}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1711665455
 PrefabInstance:
   m_ObjectHideFlags: 0

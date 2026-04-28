@@ -3,17 +3,19 @@ using UnityEngine.Tilemaps;
 
 public static class Lighting
 {
-    public static Tile DepthTile;
+    public static Tile LightTile;
+    public static Tile OcclusionTile;
     public static RenderTexture LightRT;
     public static Camera LightingCamera;
     //public static Sprite LightRTSprite;
-    public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack)
+    public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
     {
         if(Map == null || LightingFront == null || LightingBack == null)
         {
             throw new System.Exception("ERROR: Could not find lighting tile maps");
         }
-        DepthTile = World.DepthTile;
+        LightTile = Resources.Load<Tile>("World/Tiles/LightTile");
+        OcclusionTile = Resources.Load<Tile>("World/Tiles/OcclusionLightTile");
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
         LightingCamera = Camera.main.transform.GetChild(0).GetComponent<Camera>();
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
@@ -25,8 +27,9 @@ public static class Lighting
                 Vector3Int pos = new(i, j);
                 if (World.SolidTile(pos)) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
                 {
-                    LightingFront.SetTile(pos, DepthTile);
-                    LightingBack.SetTile(pos, DepthTile);
+                    LightingFront.SetTile(pos, LightTile);
+                    LightingBack.SetTile(pos, LightTile);
+                    OcclusionMap.SetTile(pos, OcclusionTile);
                 }
             }
         }
