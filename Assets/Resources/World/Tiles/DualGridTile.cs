@@ -138,6 +138,7 @@ public class DualGridTile : ScriptableObject
     //public Tile[] TilesThatCountForBlending;
     //public Sprite[] BonusTileVariations;
     public Color ColorModifier = Color.white;
+    public Color BorderColor = new(0.4f, 0.4f, 0.4f);
     [SerializeField]
     private bool IsWall = false;
     #endregion

@@ -69,9 +69,9 @@ public static class Lighting
             if (SunVector.y == 0)
                 width = 0;
             else
-                width = SunVector.x / Mathf.Abs(SunVector.y);
+                width = SunVector.x / Mathf.Abs(SunVector.y); //TANGENT
             width = Mathf.Clamp(width, -maxWidth, maxWidth);
-            Vector2 Sun = new(-width, Mathf.Abs(SunVector.y) * 2 - 3); //TODO: Calculate this with tangent for more accurate shadows!
+            Vector2 Sun = new(-width, Mathf.Abs(SunVector.y) * 2 - 3.5f); 
             if (Sun.x == 0)
                 Sun.x = 0.001f; //CANNOT LET SUN.X BE 0
             FrontLight.SetVector("_Sun", Sun);
@@ -81,7 +81,7 @@ public static class Lighting
             alphaMult = Mathf.Clamp01(alphaMult);
             if (IsNight) //nightTime)
                 alphaMult *= 0.4f;
-            ShadowRenderTexture.color = new Color(0, 0, 0, 0.925f * alphaMult);
+            ShadowRenderTexture.color = new Color(0, 0, 0, 0.95f * alphaMult);
         }
         GetSunlightColor();
     }

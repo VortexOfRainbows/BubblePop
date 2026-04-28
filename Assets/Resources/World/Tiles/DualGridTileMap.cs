@@ -32,7 +32,7 @@ public class DualGridTilemap : MonoBehaviour
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
             DualGridTile tile = TileID.TileTypes[k];
-            Color c = border ? new Color(0.4f, 0.4f, 0.4f) : Color.white;
+            Color c = border ? tile.BorderColor : Color.white;
             DisplayMap.Add(k, null);
             if (tile.CountsAsWall() == wall)
             {
@@ -45,12 +45,11 @@ public class DualGridTilemap : MonoBehaviour
                 if(tile.CountsAsWall())
                 {
                     wallGridTransform = -0.425f;
-                    c = new(0.35f, 0.35f, 0.35f);
+                    c = tile.BorderColor;
                 }
                 else if(border && tile.HasWallVariant())
                 {
                     wallGridTransform = 0.25f;
-                    c = new(0.75f, 0.75f, 0.75f);
                     order += 2; //TODO: make the player appear visually behind tiles if appropriate
                 }
                 else if(!border)

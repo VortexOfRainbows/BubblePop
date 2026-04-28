@@ -16,8 +16,6 @@ MonoBehaviour:
   BonusTileTextures: []
   RealTileMapVariant: {fileID: 11400000, guid: 4407559d1212f9d4ca76928947ca2e27, type: 2}
   BorderTileMapVariant: {fileID: 11400000, guid: 9b5f774ba0eb49e4d86f9d73aee8935b, type: 2}
-  BonusTileVariations: []
   ColorModifier: {r: 1, g: 1, b: 1, a: 1}
+  BorderColor: {r: 0.35, g: 0.35, b: 0.35, a: 1}
   IsWall: 1
-  ViableTilesForThisWall:
-  - {fileID: 11400000, guid: 3af0efa1f01be4e4d83bdf0893b07a8c, type: 2}

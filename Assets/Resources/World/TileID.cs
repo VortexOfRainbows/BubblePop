@@ -14,7 +14,8 @@ public static class TileID
     public static readonly DualGridTile Plank = Load("Wood/WoodTile", 1);
     public static readonly DualGridTile DarkGrass = Load("DarkGrass/DarkGrassTile", 3);
     public static readonly DualGridTile TestTile = Load("TestTile/TestTile", 5);
-    public static readonly DualGridTile WallTest = LoadWall("WoodWall/WoodWall", 0);
+    public static readonly DualGridTile WoodWall = LoadWall("WoodWall/WoodWall", 0);
+    public static readonly DualGridTile GrassWall = LoadWall("GrassWall/GrassWall", 1);
     public static bool[,] WallTileRelations { get; private set; } = LoadWallTileRelations();
     private static bool[] HasWallTile { get; set; }
     private static DualGridTile[] MyWallTile { get; set; }
@@ -45,7 +46,8 @@ public static class TileID
         WallTileRelations = new bool[LoadIndexCount, LoadIndexCount];
         HasWallTile = new bool[LoadIndexCount];
         MyWallTile = new DualGridTile[LoadIndexCount];
-        AddWallRelation(Plank, WallTest);
+        AddWallRelation(Plank, WoodWall);
+        AddWallRelation(Grass, GrassWall);
         return WallTileRelations;
     }
     public static void AddWallRelation(DualGridTile tile, DualGridTile wallTile)
