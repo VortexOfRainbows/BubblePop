@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public static class Lighting
     public static Material FrontLight;
     public static Material BackLight;
     public static RawImage ShadowRenderTexture => Main.Instance.TileLightRenderTarget;
+    public static Light2D GlobalLight => Main.Instance.GlobalLight;
     public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
     {
         if (Map == null || LightingFront == null || LightingBack == null)
@@ -47,12 +49,14 @@ public static class Lighting
     public static float DayProgress = 0;
     public static readonly float TimeInADay = 120; //2 minutes per day, for now
     public static Vector2 SunVector = new(1, 0);
-    public static bool SunRise => SunVector.x > 0.8f && SunVector.y > 0;
-    public static bool MidDay => SunVector.x > -0.2f && SunVector.x < 0.2f && SunVector.y > 0;
-    public static bool SunSet => SunVector.x < -0.8f && SunVector.y > 0;
-    public static bool Nightwake => SunVector.x < -0.8f && SunVector.y < 0;
-    public static bool Midnight => SunVector.x > -0.2f && SunVector.x < 0.2f && SunVector.y < 0;
-    public static bool Twilight => SunVector.x > 0.8f && SunVector.y < 0;
+    public static bool IsDay => DayProgress < TimeInADay / 2;
+    public static bool IsNight => !IsDay;
+    //public static bool SunRise => SunVector.x > 0.8f && SunVector.y > 0;
+    //public static bool MidDay => SunVector.x > -0.2f && SunVector.x < 0.2f && SunVector.y > 0;
+    //public static bool SunSet => SunVector.x < -0.8f && SunVector.y > 0;
+    //public static bool Nightwake => SunVector.x < -0.8f && SunVector.y < 0;
+    //public static bool Midnight => SunVector.x > -0.2f && SunVector.x < 0.2f && SunVector.y < 0;
+    //public static bool Twilight => SunVector.x > 0.8f && SunVector.y < 0;
     public static void UpdateSun()
     {
         DayProgress += Time.deltaTime;
@@ -77,14 +81,47 @@ public static class Lighting
 
             float alphaMult = Mathf.Sqrt(Mathf.Abs(SunVector.y)) * (maxWidth - Mathf.Abs(width)) / maxWidth;
             alphaMult = Mathf.Clamp01(alphaMult);
-            if (Sun.y < 0) //nightTime)
+            if (IsNight) //nightTime)
                 alphaMult *= 0.4f;
             ShadowRenderTexture.color = new Color(0, 0, 0, 0.925f * alphaMult);
         }
     }
     public static void GetSunlightColor()
     {
-
+        Color nightColor = new(.15f, .1f, 0.3f);
+        Color nightTransitionColor = new(.35f, .15f, .15f);
+        Color dayBreak = new(.35f, .15f, .35f);
+        Color sunRise = new(.5f, .35f, .15f);
+        Color dayColor = new(1, 1, 1);
+        if (IsDay)
+        {
+            float percent = DayProgress / TimeInADay * 2;
+            /* -0.7 -> -0.9 : nightTransitionColor
+             * -0.9 ->  0.1 : daybreak
+             *  0.1 ->  0.2 : sunrise
+             *  0.2 ->  0.8 : daycolor
+             *  0.8 ->  0.9 : sunrise
+             *  0.9 -> -0.1 : daybreak
+             * -0.1 -> -0.3 : nightTransitionColor
+             * -0.3 -> -0.7 : nightColor
+             */
+        }
+        else if(IsNight)
+        {
+            float percent = DayProgress / TimeInADay * 2 - 1;
+        }
+    }
+    public static float PortionOfRange(float percent, float startingThresh, float endThresh)
+    {
+        percent -= startingThresh;
+        if(percent > 0 && percent < endThresh)
+        {
+            float p = percent / endThresh;
+            if (p > 1)
+                p = 1;
+            return p;
+        }
+        return 0;
     }
     public static void ResizeLightingRenderTexture()
     {

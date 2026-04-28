@@ -397,4 +397,8 @@ public static class Utils
 
         return myPos;
     }
+    public static Color Lerp(this Color start, Color end, float t)
+    {
+        return Color.Lerp(start, end, t);
+    }
 }
