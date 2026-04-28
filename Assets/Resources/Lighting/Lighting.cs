@@ -4,6 +4,9 @@ using UnityEngine.Tilemaps;
 public static class Lighting
 {
     public static Tile DepthTile;
+    public static RenderTexture LightRT;
+    public static Camera LightingCamera;
+    //public static Sprite LightRTSprite;
     public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack)
     {
         if(Map == null || LightingFront == null || LightingBack == null)
@@ -11,6 +14,9 @@ public static class Lighting
             throw new System.Exception("ERROR: Could not find lighting tile maps");
         }
         DepthTile = World.DepthTile;
+        LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
+        LightingCamera = Camera.main.transform.GetChild(0).GetComponent<Camera>();
+        //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
         for (int i = left; i < right; i++)
         {
@@ -23,6 +29,22 @@ public static class Lighting
                     LightingBack.SetTile(pos, DepthTile);
                 }
             }
+        }
+    }
+    public static void Update()
+    {
+        ResizeLightingRenderTexture();
+    }
+    public static void ResizeLightingRenderTexture()
+    {
+        //Debug.Log($"{Screen.width}, {Screen.height}");
+        if(LightRT.width != Screen.width || LightRT.height != Screen.height)
+        {
+            LightRT.Release();
+            LightRT.width = Screen.width;
+            LightRT.height = Screen.height;
+            LightRT.Create();
+            LightingCamera.ResetAspect();
         }
     }
 }

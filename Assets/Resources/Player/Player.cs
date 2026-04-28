@@ -427,6 +427,7 @@ public partial class Player : Entity
         PowerInit();
         WaveDirector.Reset();
         MainCamera.orthographicSize = 12;
+        Lighting.LightingCamera.orthographicSize = MainCamera.orthographicSize;
         DeathKillTimer = 0;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
         HasRunStartingGear = false;
@@ -657,6 +658,7 @@ public partial class Player : Entity
             }
             MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, size, 0.03f);
             MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(average.x, average.y, MainCamera.transform.position.z), 0.1f);
+            Lighting.LightingCamera.orthographicSize = MainCamera.orthographicSize;
         }
         ImmuneFlashing();
         if(!dead)
@@ -817,6 +819,7 @@ public partial class Player : Entity
                 MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 6f, 0.03f);
             else
                 MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 17f, 0.03f);
+            Lighting.LightingCamera.orthographicSize = MainCamera.orthographicSize;
         }
         RB.velocity *= 0.9f;
         Body.DeadUpdate();
