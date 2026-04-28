@@ -14,7 +14,7 @@ public static class TileID
     public static readonly DualGridTile Plank = Load("Wood/WoodTile", 1);
     public static readonly DualGridTile DarkGrass = Load("DarkGrass/DarkGrassTile", 3);
     public static readonly DualGridTile TestTile = Load("TestTile/TestTile", 5);
-    public static readonly DualGridTile WallTest = LoadWall("WallTest/WallTest", 0);
+    public static readonly DualGridTile WallTest = LoadWall("WoodWall/WoodWall", 0);
     public static bool[,] WallTileRelations { get; private set; } = LoadWallTileRelations();
     private static bool[] HasWallTile { get; set; }
     private static DualGridTile[] MyWallTile { get; set; }

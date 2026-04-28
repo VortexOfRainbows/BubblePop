@@ -30,6 +30,10 @@ public class TileToWallTool : ScriptableObject
         }
         WallSprite = new Texture2D(128 * 3, 128 * 3);
 
+        for (int i = 0; i < WallSprite.width; ++i)
+            for(int j = 0; j < WallSprite.height; ++j)
+                WallSprite.SetPixel(i, j, Color.clear);
+
         CopyFrom(1, 1, 0, 1);
         CopyFrom(2, 2, 1, 1);
         CopyFrom(2, 2, 1, 2);
