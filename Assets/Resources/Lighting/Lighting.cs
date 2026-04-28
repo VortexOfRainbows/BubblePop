@@ -8,7 +8,8 @@ public static class Lighting
     public static Tile OcclusionTile;
     public static RenderTexture LightRT;
     public static Camera LightingCamera;
-    //public static Sprite LightRTSprite;
+    public static Material FrontLight;
+    public static Material BackLight;
     public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
     {
         if(Map == null || LightingFront == null || LightingBack == null)
@@ -19,6 +20,8 @@ public static class Lighting
         OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
         LightingCamera = Camera.main.transform.GetChild(0).GetComponent<Camera>();
+        FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
+        BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
         for (int i = left; i < right; i++)
@@ -68,6 +71,12 @@ public static class Lighting
         {
             float baseTexelSize = 4 / 1080f;
             Main.Instance.TileLightRenderTarget.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+        }
+        if(FrontLight != null && BackLight != null)
+        {
+            Vector2 Sun = new Vector2(-3, -1);
+            FrontLight.SetVector("_Sun", Sun);
+            BackLight.SetVector("_Sun", Sun);
         }
     }
 }
