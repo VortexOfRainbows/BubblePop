@@ -45,7 +45,7 @@ public static class Lighting
         UpdateSun();
     }
     public static float DayProgress = 0;
-    public static readonly float TimeInADay = 60; //1 minutes per day, for now
+    public static readonly float TimeInADay = 120; //2 minutes per day, for now
     public static Vector2 SunVector = new(1, 0);
     public static bool SunRise => SunVector.x > 0.8f && SunVector.y > 0;
     public static bool MidDay => SunVector.x > -0.2f && SunVector.x < 0.2f && SunVector.y > 0;
@@ -62,14 +62,29 @@ public static class Lighting
         SunVector = new Vector2(1, 0).RotatedBy(dayPercent * Mathf.PI * 2);
         if (FrontLight != null && BackLight != null)
         {
-            Vector2 Sun = -SunVector; //TODO: Calculate this with tangent for more accurate shadows!
-            Sun.x *= 5;
-            Sun.y -= 1;
+            float maxWidth = 12;
+            float width;
+            if (SunVector.y == 0)
+                width = 0;
+            else
+                width = SunVector.x / Mathf.Abs(SunVector.y);
+            width = Mathf.Clamp(width, -maxWidth, maxWidth);
+            Vector2 Sun = new(-width, Mathf.Abs(SunVector.y) * 2 - 3); //TODO: Calculate this with tangent for more accurate shadows!
             if (Sun.x == 0)
                 Sun.x = 0.001f; //CANNOT LET SUN.X BE 0
             FrontLight.SetVector("_Sun", Sun);
             BackLight.SetVector("_Sun", Sun);
+
+            float alphaMult = Mathf.Sqrt(Mathf.Abs(SunVector.y)) * (maxWidth - Mathf.Abs(width)) / maxWidth;
+            alphaMult = Mathf.Clamp01(alphaMult);
+            if (Sun.y < 0) //nightTime)
+                alphaMult *= 0.4f;
+            ShadowRenderTexture.color = new Color(0, 0, 0, 0.925f * alphaMult);
         }
+    }
+    public static void GetSunlightColor()
+    {
+
     }
     public static void ResizeLightingRenderTexture()
     {

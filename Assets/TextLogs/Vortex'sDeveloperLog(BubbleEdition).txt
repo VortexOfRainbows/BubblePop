@@ -53,11 +53,12 @@ Done:
 	3. (DONE) Guassian blur to the layer to achieve a blur effect
 	4. Tune the colors until it is correct
 	5. Figure out the appropriate behavior for actual lights to take upon this fake lighting-layer (probably additive?)
-	6. Sun shifting animation
+	6. (DONE) Sun shifting animation (uses Tangent to find appropriate-ish shadow length)
 3. Lighting jail
 4. Make appropriate lighting shaders. Re-add occlusion through special tile-map tiles
 5. Slightly modify player collider size with chests and chest colliders to allow better pushing through corridors without soft locking
 6. Consistent shadows on different resolutions
+7. Modify "Highland" node
 
 4/23/26 to 4/24/26
 1. WIP Standardization of UI elements
