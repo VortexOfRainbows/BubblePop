@@ -47,7 +47,7 @@ Done:
 4/25/26 to 4/28/26
 1. Shaders? More like you should go fucking shit myself
 2. MORE WIP Light shaders: Should now be in a state that is almost usable
-	TODO: Make sure sun can never point exactly x=0.0000, as that messes up the shader (just use x = 10^-10 or something)
+	TODO: (DONE) Make sure sun can never point exactly x=0.0000, as that messes up the shader (just use x = 10^-10 or something)
 	1. (DONE) Put the lighting on the right layer
 	2. (DONE) colors are treated as a gestalt (proper treatment of overlap)
 	3. (DONE) Guassian blur to the layer to achieve a blur effect

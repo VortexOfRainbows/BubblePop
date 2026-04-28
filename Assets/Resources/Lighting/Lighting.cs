@@ -10,9 +10,10 @@ public static class Lighting
     public static Camera LightingCamera;
     public static Material FrontLight;
     public static Material BackLight;
+    public static RawImage ShadowRenderTexture => Main.Instance.TileLightRenderTarget;
     public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
     {
-        if(Map == null || LightingFront == null || LightingBack == null)
+        if (Map == null || LightingFront == null || LightingBack == null)
         {
             throw new System.Exception("ERROR: Could not find lighting tile maps");
         }
@@ -38,9 +39,37 @@ public static class Lighting
             }
         }
     }
-    public static void Update()
+    public static void Update() //Runs on normal delta time, not fixed
     {
         ResizeLightingRenderTexture();
+        UpdateSun();
+    }
+    public static float DayProgress = 0;
+    public static readonly float TimeInADay = 60; //1 minutes per day, for now
+    public static Vector2 SunVector = new(1, 0);
+    public static bool SunRise => SunVector.x > 0.8f && SunVector.y > 0;
+    public static bool MidDay => SunVector.x > -0.2f && SunVector.x < 0.2f && SunVector.y > 0;
+    public static bool SunSet => SunVector.x < -0.8f && SunVector.y > 0;
+    public static bool Nightwake => SunVector.x < -0.8f && SunVector.y < 0;
+    public static bool Midnight => SunVector.x > -0.2f && SunVector.x < 0.2f && SunVector.y < 0;
+    public static bool Twilight => SunVector.x > 0.8f && SunVector.y < 0;
+    public static void UpdateSun()
+    {
+        DayProgress += Time.deltaTime;
+        if (DayProgress > TimeInADay)
+            DayProgress -= TimeInADay;
+        float dayPercent = DayProgress / TimeInADay;
+        SunVector = new Vector2(1, 0).RotatedBy(dayPercent * Mathf.PI * 2);
+        if (FrontLight != null && BackLight != null)
+        {
+            Vector2 Sun = -SunVector; //TODO: Calculate this with tangent for more accurate shadows!
+            Sun.x *= 5;
+            Sun.y -= 1;
+            if (Sun.x == 0)
+                Sun.x = 0.001f; //CANNOT LET SUN.X BE 0
+            FrontLight.SetVector("_Sun", Sun);
+            BackLight.SetVector("_Sun", Sun);
+        }
     }
     public static void ResizeLightingRenderTexture()
     {
@@ -64,19 +93,13 @@ public static class Lighting
             LightRT.height = Screen.height;
             LightRT.Create();
             LightingCamera.ResetAspect();
-            if (Main.Instance.TileLightRenderTarget != null)
-                Main.Instance.TileLightRenderTarget.SetMaterialDirty(); //Updates the texel size on the gaussian blur to make the shadows consistent on resize
+            if (ShadowRenderTexture != null)
+                ShadowRenderTexture.SetMaterialDirty(); //Updates the texel size on the gaussian blur to make the shadows consistent on resize
         }
-        if (Main.Instance.TileLightRenderTarget != null)
+        if (ShadowRenderTexture != null)
         {
             float baseTexelSize = 4 / 1080f;
-            Main.Instance.TileLightRenderTarget.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
-        }
-        if(FrontLight != null && BackLight != null)
-        {
-            Vector2 Sun = new Vector2(-3, -1);
-            FrontLight.SetVector("_Sun", Sun);
-            BackLight.SetVector("_Sun", Sun);
+            ShadowRenderTexture.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
         }
     }
 }
