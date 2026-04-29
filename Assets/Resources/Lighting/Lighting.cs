@@ -58,6 +58,11 @@ public static class Lighting
     public static void UpdateSun()
     {
         DayProgress += Time.deltaTime;
+        if(Main.DebugCheats)
+        {
+            if (Input.GetKey(KeyCode.K))
+                DayProgress += Time.deltaTime * 10;
+        }
         if (DayProgress > TimeInADay)
             DayProgress -= TimeInADay;
         float dayPercent = DayProgress / TimeInADay;

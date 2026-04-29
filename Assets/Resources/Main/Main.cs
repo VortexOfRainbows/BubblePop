@@ -102,6 +102,7 @@ public partial class Main : MonoBehaviour
             CoinManager.InitCoinPrefabs();
             PlayerData.TryVersionResetProcedure(); //This should come last. Right now it resets equip values to fix lingering bugs from old equip system
             SpriteBatch.Setup();
+            LightBatch.Setup();
             GameFinishedLoading = true;
 
             OnGameOpen();
@@ -161,6 +162,7 @@ public partial class Main : MonoBehaviour
     public void LateUpdate()
     {
         SpriteBatch.OnUpdate();
+        LightBatch.OnUpdate();
     }
     public static Main Instance;
     public static class GlobalEquipData

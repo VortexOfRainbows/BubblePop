@@ -52,6 +52,10 @@ public class PowerUpObject : MonoBehaviour
                 PickUp(p);
         }
     }
+    public void Update()
+    {
+        LightBatch.Request(transform.position, MyPower.IsBlackMarket() ? ColorHelper.RarityColors[5] : ColorHelper.RarityColors[MyPower.GetRarity() - 1], 1f, 3.5f * transform.localScale.x, 0.5f);
+    }
     public void FixedUpdate()
     {
         if (inner.sprite == null)

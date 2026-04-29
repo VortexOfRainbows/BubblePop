@@ -7,7 +7,6 @@ Do Later:
 	3. Change where trees and such spawn to better match the new wall offsets
 2. Day/Night system (so we can have cooler lighting)
 	1. Figure out the appropriate behavior for actual lights to take upon this fake lighting-layer (probably additive?)
-	2. Normalize some materials for lighting behaviors
 3. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
 4. Integrate Compendium into the pause menu
@@ -52,6 +51,7 @@ Done:
 2. Grass Walls, Stone Walls, and positional adjustments to shadows
 3. Logic for border tiles to appear different sprites from normal tiles
 4. Particles are properly effected by light
+5. Add a "LightBatch" class for dynamically spawning lights through code (used for powerups right now)
 
 4/25/26 to 4/28/26
 1. Shaders? More like you should go fucking shit myself

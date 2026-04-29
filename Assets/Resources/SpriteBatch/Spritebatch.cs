@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 public static class SpriteBatch
 {
     public static ref GameObject Renderer => ref Main.PrefabAssets.SpritebatchPrefab;
@@ -68,5 +69,68 @@ public static class SpriteBatch
         if(Renderers[i] != null)
             GameObject.Destroy(Renderers[i].gameObject); 
         Renderers.RemoveAt(i);
+    }
+}
+public static class LightBatch
+{
+    public static ref GameObject Light => ref Main.PrefabAssets.LightPrefab;
+    public static void Request(Vector2 position, Color color, float intensity, float radius = 1.0f, float falloffStrength = 0.5f)
+    {
+        var call = new LightBatchCall
+        {
+            position = position,
+            color = color,
+            intensity = intensity,
+            radius = radius,
+            falloffStrength = falloffStrength,
+        };
+        Calls.Add(call);
+    }
+    public class LightBatchCall
+    {
+        public Vector2 position;
+        public Color color;
+        public float intensity;
+        public float radius;
+        public float falloffStrength;
+    }
+    public static readonly List<LightBatchCall> Calls = new();
+    public static readonly List<Light2D> Lights = new();
+    public static void Setup()
+    {
+        Calls.Clear();
+        Lights.Clear();
+        OnUpdate();
+    }
+    public static void OnUpdate()
+    {
+        int i = 0;
+        for (; i < Calls.Count; ++i)
+            SetLight(i, Calls[i]);
+        for (int j = Lights.Count - 1; j >= i; --j)
+            ClearLight(j);
+        Calls.Clear();
+    }
+    public static void SetLight(int i, LightBatchCall call)
+    {
+        if (Lights.Count <= i)
+        {
+            var rend = GameObject.Instantiate(Light, Main.SpritebatchParent).GetComponent<Light2D>();
+            Lights.Add(rend);
+        }
+        Light2D light = Lights[i];
+        if (light == null)
+            return;
+        light.falloffIntensity = call.falloffStrength;
+        light.pointLightOuterRadius = call.radius;
+        light.intensity = call.intensity;
+        light.color = call.color;
+        light.transform.position = call.position;
+    }
+    public static void ClearLight(int i)
+    {
+        if (Lights[i] != null)
+            GameObject.Destroy(Lights[i].gameObject);
+        Lights.RemoveAt(i);
     }
 }
