@@ -44,13 +44,15 @@ Multiplayer Task List:
 
 Done: 
 
-4/28/26
+4/28/26 to 4/29/26
 1. Wall generator tool
 2. Grass Walls, Stone Walls, and positional adjustments to shadows
 3. Logic for border tiles to appear different sprites from normal tiles
 4. Particles are properly effected by light
 5. Add a "LightBatch" class for dynamically spawning lights through code (used for powerups right now)
 6. Add Bubblemushroom, a glowing decor that spawns on dirt and under walls
+7. Dirt Walls and adjust some logic for wall generation to allow for better blending
+8. Optimize some wall spawning logic and fix wall cutoff bug using a jank matrix manip
 
 4/25/26 to 4/28/26
 1. Shaders? More like you should go fucking shit myself

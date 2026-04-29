@@ -86,7 +86,7 @@ public class World : MonoBehaviour
     }
     public static bool SolidTile(Vector3Int pos)
     {
-        return RealTileMap.Map.GetColliderType(pos) == Tile.ColliderType.Grid;
+        return RealTileMap.Map.GetColliderType(pos) != Tile.ColliderType.None;
     }
     public static bool SolidTile(int x, int y) => SolidTile(new Vector3Int(x, y));
     public static bool HasTile(Vector3Int pos)

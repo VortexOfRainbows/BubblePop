@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WallTest_0
+      name: Wall0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,7 +131,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WallTest_1
+      name: Wall1
       rect:
         serializedVersion: 2
         x: 128
@@ -152,7 +152,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WallTest_2
+      name: Wall2
       rect:
         serializedVersion: 2
         x: 256
@@ -173,7 +173,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WallTest_3
+      name: Wall3
       rect:
         serializedVersion: 2
         x: 0
@@ -194,7 +194,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WallTest_4
+      name: Wall4
       rect:
         serializedVersion: 2
         x: 128
@@ -215,7 +215,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WallTest_5
+      name: Wall5
       rect:
         serializedVersion: 2
         x: 256
@@ -236,7 +236,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WallTest_6
+      name: Wall6
       rect:
         serializedVersion: 2
         x: 0
@@ -257,7 +257,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WallTest_7
+      name: Wall7
       rect:
         serializedVersion: 2
         x: 128
@@ -278,7 +278,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WallTest_8
+      name: Wall8
       rect:
         serializedVersion: 2
         x: 256
@@ -309,15 +309,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      WallTest_0: -1902928346
-      WallTest_1: 1422907631
-      WallTest_2: -2052865755
-      WallTest_3: -1439516694
-      WallTest_4: 1650242860
-      WallTest_5: 1952161771
-      WallTest_6: 1500704714
-      WallTest_7: 641995090
-      WallTest_8: -1530213490
+      Wall0: -1902928346
+      Wall1: 1422907631
+      Wall2: -2052865755
+      Wall3: -1439516694
+      Wall4: 1650242860
+      Wall5: 1952161771
+      Wall6: 1500704714
+      Wall7: 641995090
+      Wall8: -1530213490
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

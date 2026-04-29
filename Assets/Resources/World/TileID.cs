@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -17,6 +16,7 @@ public static class TileID
     public static readonly DualGridTile WoodWall = LoadWall("WoodWall/WoodWall", 0);
     public static readonly DualGridTile GrassWall = LoadWall("GrassWall/GrassWall", 2);
     public static readonly DualGridTile StoneWall = LoadWall("StoneWall/StoneWall", 1);
+    public static readonly DualGridTile DirtWall = LoadWall("DirtWall/DirtWall", 3);
     public static bool[,] WallTileRelations { get; private set; } = LoadWallTileRelations();
     private static bool[] HasWallTile { get; set; }
     private static DualGridTile[] MyWallTile { get; set; }
@@ -50,6 +50,7 @@ public static class TileID
         AddWallRelation(Plank, WoodWall);
         AddWallRelation(Grass, GrassWall);
         AddWallRelation(Cobblestone, StoneWall);
+        AddWallRelation(Dirt, DirtWall);
         return WallTileRelations;
     }
     public static void AddWallRelation(DualGridTile tile, DualGridTile wallTile)
