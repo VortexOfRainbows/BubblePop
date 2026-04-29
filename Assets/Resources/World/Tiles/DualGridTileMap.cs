@@ -73,6 +73,21 @@ public class DualGridTilemap : MonoBehaviour
         }
     }
     //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
+    private static bool TileIsNotSolidOrRendersBelow(Tilemap Map, int i, int j, float myLayerOffset)
+    {
+        if (!World.SolidTile(new Vector3Int(i + 1, j - 1)))
+            return true;
+        Vector3Int coords = new(i, j);
+        var otherTile = TileID.GetTileIDFromTile(Map.GetTile(coords));
+        return otherTile.LayerOffset > myLayerOffset && !otherTile.HasWallVariant();
+    }
+    private static bool TileIsNotBlendableWall(Tilemap Map, int i, int j, float myLayerOffset)
+    {
+        return !TileIsNotSolidOrRendersBelow(Map, i + 1, j - 1, myLayerOffset) || !!TileIsNotSolidOrRendersBelow(Map, i, j + 1, myLayerOffset) ||
+                                !!TileIsNotSolidOrRendersBelow(Map, i + 1, j + 1, myLayerOffset) || !!TileIsNotSolidOrRendersBelow(Map, i, j - 1, myLayerOffset) ||
+                                !!TileIsNotSolidOrRendersBelow(Map, i - 1, j + 1, myLayerOffset) || !!TileIsNotSolidOrRendersBelow(Map, i + 1, j, myLayerOffset) ||
+                                !!TileIsNotSolidOrRendersBelow(Map, i - 1, j - 1, myLayerOffset) || !!TileIsNotSolidOrRendersBelow(Map, i - 1, j, myLayerOffset);
+    }
     public static void RefreshDisplayTilemap(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
@@ -95,10 +110,7 @@ public class DualGridTilemap : MonoBehaviour
                         if(i > left && i < right - 1 && j > bottom && j < top - 1)
                         {
                             if (tile.HasWallVariant() && //Although this is a lot of "SolidTile" checks, it should be faster than just loading the tile on every possible spot.
-                                (!World.SolidTile(new Vector3Int(i + 1, j - 1)) || !World.SolidTile(new Vector3Int(i, j + 1)) ||
-                                !World.SolidTile(new Vector3Int(i + 1, j + 1)) || !World.SolidTile(new Vector3Int(i, j - 1)) ||
-                                !World.SolidTile(new Vector3Int(i - 1, j + 1)) || !World.SolidTile(new Vector3Int(i + 1, j)) ||
-                                !World.SolidTile(new Vector3Int(i - 1, j - 1)) || !World.SolidTile(new Vector3Int(i - 1, j))))
+                               TileIsNotBlendableWall(Map, i, j, tile.LayerOffset))
                             {
                                 DualGridTile wall = tile.MyWallVariant();
                                 wall.UpdateDisplayTile(coords, WallMap[wall.TypeIndex]);
