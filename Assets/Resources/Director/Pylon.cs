@@ -92,6 +92,7 @@ public class Pylon : MonoBehaviour
             Crystal.color = Color.Lerp(Crystal.color, c, 0.1f).WithAlpha(Crystal.color.a);
             Glow.color = Color.Lerp(Glow.color, c * 0.55f, 0.1f);
             Glow.transform.localScale = Glow.transform.localScale.Lerp(Vector3.one * 20f, lerp);
+            Crystal.material = Main.TextureAssets.SpriteGlowmask;
         }
     }
     public void DisableAnimation()
@@ -300,6 +301,6 @@ public class Pylon : MonoBehaviour
             PointerAlpha -= Time.unscaledDeltaTime;
         PointerAlpha = Mathf.Clamp(PointerAlpha, -3f, scaleFactor);
 
-        SpriteBatch.Draw(Crystal.sprite, position, Vector2.one * 0.4f, 0, Color.white.WithAlpha(Mathf.Max(PointerAlpha * 0.7f, 0)), 21, Crystal.material);
+        SpriteBatch.Draw(Crystal.sprite, position, Vector2.one * 0.4f, 0, Color.white.WithAlpha(Mathf.Max(PointerAlpha * 0.7f, 0)), 21, Main.TextureAssets.SpriteGlowmask);
     }
 }

@@ -4,6 +4,7 @@ Do Later:
 1. Organize layers better for rendering, so player and enemies can be in front of stuff like trees, chests, etc. But also can be behind them depending on y position...
 	1. Maybe allow player to hide behind the walls, but figure out a way to make the weapon not appear through the wall
 	2. Normalize player customization layering (not super important but part of a future task)
+	3. Change where trees and such spawn to better match the new wall offsets
 2. Day/Night system (so we can have cooler lighting)
 	1. Figure out the appropriate behavior for actual lights to take upon this fake lighting-layer (probably additive?)
 	2. Normalize some materials for lighting behaviors

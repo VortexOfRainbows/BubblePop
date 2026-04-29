@@ -222,7 +222,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: abb84fb919ef5424eb9eb9dba621d6b2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -345,6 +345,7 @@ MonoBehaviour:
   EndlessPylon: 0
   animCounter: 0
   CompleteAnimCounter: 0
+  PointerAlpha: -3
 --- !u!1 &8833004702024622617
 GameObject:
   m_ObjectHideFlags: 0

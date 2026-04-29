@@ -6,6 +6,14 @@ public partial class Main : MonoBehaviour
 {
     public static class TextureAssets
     {
+        public static Material InfectorShader;
+        public static Material AdditiveShader;
+        public static Material AlphaShader;
+        public static Material SpriteLit;
+        public static Material SpriteGlowmask;
+        public static Material SpriteUnlit => SpriteGlowmask;
+
+
         public static Sprite BathBombSprite;
         public static Sprite BubbleSprite;
         public static Sprite BubbleSmall;
@@ -15,9 +23,6 @@ public partial class Main : MonoBehaviour
         public static Sprite Sparkle;
         public static Sprite Shadow;
         public static Sprite GradientLine;
-        public static Material InfectorShader;
-        public static Material AdditiveShader;
-        public static Material AlphaShader;
         public static Sprite T3ChestUma, T3ChestUmaOpen, T3Chest, T3ChestOpen, T2Chest, T2ChestOpen, T1Chest, T1ChestOpen, BlackMarketCrate;
         public static Sprite[] SlotSymbol = new Sprite[4];
         public static Sprite GoldProj, CoinProj, GemProj, TokenProj, FireProj;
@@ -40,6 +45,8 @@ public partial class Main : MonoBehaviour
             InfectorShader = Resources.Load<Material>("Materials/InfectionShader/Infection");
             AdditiveShader = Resources.Load<Material>("Materials/Additive");
             AlphaShader = Resources.Load<Material>("Materials/Alpha");
+            SpriteLit = Resources.Load<Material>("Materials/SpriteLit");
+            SpriteGlowmask = Resources.Load<Material>("Materials/SpriteGlowmask");
 
             T3ChestUma = Resources.Load<Sprite>("Chests/T3ChestClosed2");
             T3ChestUmaOpen = Resources.Load<Sprite>("Chests/T3ChestOpen2");
