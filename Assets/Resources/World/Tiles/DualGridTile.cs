@@ -64,7 +64,7 @@ public class DualGridTile : ScriptableObject
             {
                 if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex])
                     return true;
-                ghostReturn = true;
+                return tile.HasWallVariant() && tile.MyWallVariant().LayerOffset < LayerOffset;
             }
         }
         else if (GeneratingBorder)

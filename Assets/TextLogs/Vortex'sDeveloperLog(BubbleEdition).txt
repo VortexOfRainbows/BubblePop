@@ -28,10 +28,9 @@ Need to do:
 	2. Make blurbs appear in the equipment page
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
 9. New battle music
-10. Secret tile system that helps make it easier for multiple secret tiles to exist instead of just grass.
-11. Bombee and Kamikaze Enemies.
-12. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
-13. FIX NEEDED FOR CHOICE MENU (THE HIDE BUTTON IS CURRENTLY NOT CENTERED CORRECTLY DUE TO THE CRUCIBLE CHANGES)
+10. Bombee and Kamikaze Enemies.
+11. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
+12. FIX NEEDED FOR CHOICE MENU (THE HIDE BUTTON IS CURRENTLY NOT CENTERED CORRECTLY DUE TO THE CRUCIBLE CHANGES)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -51,8 +50,9 @@ Done:
 4. Particles are properly effected by light
 5. Add a "LightBatch" class for dynamically spawning lights through code (used for powerups right now)
 6. Add Bubblemushroom, a glowing decor that spawns on dirt and under walls
-7. Dirt Walls and adjust some logic for wall generation to allow for better blending
+7. Dirt Walls and adjust some logic for wall generation to allow for better blending (but it works, this time)
 8. Optimize some wall spawning logic and fix wall cutoff bug using a jank matrix manip
+9. Adjustment to castle node
 
 4/25/26 to 4/28/26
 1. Shaders? More like you should go fucking shit myself
