@@ -6,6 +6,7 @@ using static Enemy;
 public static class Utils
 {
     public static Unity.Mathematics.Random rand = InitRandSeed();
+    public static readonly float TWOPI = Mathf.PI * 2;
     private static Unity.Mathematics.Random InitRandSeed()
     {
         Unity.Mathematics.Random r = new();

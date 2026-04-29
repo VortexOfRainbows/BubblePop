@@ -326,6 +326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Visual: {fileID: 4160375949546410573}
   SpawnedIn: 0
+  HasCalledInit: 0
   RB: {fileID: 8914851087272067829}
   IndexInAllEnemyArray: -1
   AlreadyDead: 0
@@ -399,7 +400,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: f69bb59ee167cb742a6083809f2db78d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

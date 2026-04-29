@@ -5,14 +5,12 @@ Do Later:
 	1. Maybe allow player to hide behind the walls, but figure out a way to make the weapon not appear through the wall
 	2. Normalize player customization layering (not super important but part of a future task)
 	3. Change where trees and such spawn to better match the new wall offsets
-2. Day/Night system (so we can have cooler lighting)
-	1. Figure out the appropriate behavior for actual lights to take upon this fake lighting-layer (probably additive?)
-3. Wave bar on the top shows current wave card modifier information
+2. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
-4. Integrate Compendium into the pause menu
-5. Grass shader to make grass more interesting and potentially slightly vary in the wind
-6. Update to Unity 6 to remove the silly splash screen
-7. Localization and text organization system
+3. Integrate Compendium into the pause menu
+4. Grass shader to make grass more interesting and potentially slightly vary in the wind
+5. Update to Unity 6 to remove the silly splash screen
+6. Localization and text organization system
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -52,6 +50,7 @@ Done:
 3. Logic for border tiles to appear different sprites from normal tiles
 4. Particles are properly effected by light
 5. Add a "LightBatch" class for dynamically spawning lights through code (used for powerups right now)
+6. Add Bubblemushroom, a glowing decor that spawns on dirt and under walls
 
 4/25/26 to 4/28/26
 1. Shaders? More like you should go fucking shit myself

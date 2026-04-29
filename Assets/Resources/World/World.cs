@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.PlayerSettings;
 
 public class World : MonoBehaviour
 {
-    public static Tile DepthTile => Resources.Load<Tile>("World/Tiles/DepthTile");
+    public static Tile DepthTile;
     public static int FloorSortingLayer { get; private set; }
     public struct TileData
     {
@@ -87,6 +88,7 @@ public class World : MonoBehaviour
     {
         return RealTileMap.Map.GetColliderType(pos) == Tile.ColliderType.Grid;
     }
+    public static bool SolidTile(int x, int y) => SolidTile(new Vector3Int(x, y));
     public static bool HasTile(Vector3Int pos)
     {
         return RealTileMap.Map.HasTile(pos);
@@ -110,6 +112,7 @@ public class World : MonoBehaviour
     public static readonly List<Roadblock> Roadblocks = new();
     public void Start()
     {
+        DepthTile = Resources.Load<Tile>("World/Tiles/DepthTile");
         FloorSortingLayer = RealTileMap.GetComponent<TilemapRenderer>().sortingLayerID;
         GachaponShop.AllShops.Clear();
         GachaponShop.TotalPowersPurchased = 0;
@@ -416,6 +419,10 @@ public class World : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// This keeps track of elapsed time for the purpose of visual effects. Do not use for stuff that requires more precise logic
+    /// </summary>
+    public static float GlobalTimeElapsedCounter = 0.0f;
     public void Update()
     {
         m_Instance = this;
@@ -424,5 +431,6 @@ public class World : MonoBehaviour
                 //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         #endif
         Lighting.Update();
+        GlobalTimeElapsedCounter += Time.deltaTime;
     }
 }

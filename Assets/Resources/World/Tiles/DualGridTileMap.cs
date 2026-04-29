@@ -3,9 +3,10 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 public class DualGridTilemap : MonoBehaviour
 {
-    public static GameObject TallGrass => Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
-    public static GameObject Mushroom => Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
-    public static GameObject VisualMapPrefab => Resources.Load<GameObject>("World/Tiles/VisualMap");
+    public static GameObject TallGrass;
+    public static GameObject Mushroom;
+    public static GameObject BubbleMushroom;  
+    public static GameObject VisualMapPrefab;
     public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     public Transform Visual;
     public Transform DecorVisual;
@@ -15,6 +16,11 @@ public class DualGridTilemap : MonoBehaviour
     public Tilemap Map;
     public void Init()
     {
+        VisualMapPrefab = VisualMapPrefab != null ? VisualMapPrefab : Resources.Load<GameObject>("World/Tiles/VisualMap");
+        BubbleMushroom = BubbleMushroom != null ? BubbleMushroom : Resources.Load<GameObject>("World/Decor/Nature/BubbleMushroom");
+        Mushroom = Mushroom != null ? Mushroom : Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
+        TallGrass = TallGrass != null ? TallGrass : Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
+
         DisplayMap = new();
         BorderDisplayMap = new();
         WallDisplayMap = new();
@@ -132,7 +138,7 @@ public class DualGridTilemap : MonoBehaviour
         top -= 10;
         bool mushroom = false;
         float mult = 1.0f;
-        if (order == -30)
+        if (border)
         {
             mushroom = true;
             mult = 0.5f;
@@ -144,6 +150,7 @@ public class DualGridTilemap : MonoBehaviour
                 TileBase t = Map.GetTile(i, j);
                 bool isGrassTile = t == TileID.Grass.TileType(border);
                 bool isDirtTile = t == TileID.Dirt.TileType(border);
+                var pos = new Vector3(i + 1, j + 1, 0);
                 if(i % 3 == 0 && j % 3 == 0)
                 {
                     AddTrees(i + Utils.RandInt(2), j + Utils.RandInt(2));
@@ -152,7 +159,6 @@ public class DualGridTilemap : MonoBehaviour
                 {
                     int type = Utils.RandInt(3);
                     var g = Instantiate(TallGrass, DecorVisual).GetComponent<SpriteRenderer>();
-                    var pos = new Vector3(i + 1, j + 1, 0);
                     if (type == 0)
                     {
                         g.sprite = Main.TextureAssets.TallGrass[Utils.RandInt(Main.TextureAssets.TallGrass.Length)];
@@ -180,12 +186,31 @@ public class DualGridTilemap : MonoBehaviour
                     if (Utils.RandFloat() < chance)
                     {
                         var g = Instantiate(Mushroom, DecorVisual).GetComponent<SpriteRenderer>();
-                        g.transform.localPosition = new Vector3(i + 1, j + 1, 0) + (Vector3)Utils.RandCircle(0.2f);
+                        g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
                         g.color = c;
                         g.sortingOrder = order;
+                        continue;
                     }
-                    continue;
                 }
+                bool randomOccurence = Utils.RandFloat() < 0.05f && (isGrassTile || isDirtTile);
+                if ((isDirtTile && i % 3 == 0 && j % 3 == 0) || randomOccurence)
+                {
+                    bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
+                    float chance = edgeTile ? 0.5f : randomOccurence ? 0 : 0.1f;
+                    if (edgeTile)
+                        pos.y += border ? 0.25f : -0.45f;
+                    if (Utils.RandFloat() < chance)
+                    {
+                        var g = Instantiate(BubbleMushroom, DecorVisual).GetComponent<SpriteRenderer>();
+                        var childR = g.transform.GetChild(0).GetComponent<SpriteRenderer>();
+                        g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
+                        g.transform.localScale *= edgeTile ? Utils.RandFloat(0.9f, 1.0f) : Utils.RandFloat(0.7f, 0.9f);
+                        g.color = c;
+                        childR.color = c.WithAlpha(0.8f);
+                        g.sortingOrder = childR.sortingOrder = order;
+                        continue;
+                    }
+                }    
             }
         }
     }
