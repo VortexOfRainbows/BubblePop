@@ -112,8 +112,8 @@ public class Gachapon : Body
         int direction = stacks.Count % 2 * 2 - 1;
         stacks.Add(Instantiate(ChipStackPrefab, transform).GetComponent<ChipStack>());
         float totalOffset = (0.575f + 0.625f * total) * direction;
-        stacks[stacks.Count - 1].owner = Player;
-        stacks[stacks.Count - 1].transform.localPosition = new Vector3(totalOffset, -0.78f);
+        stacks[^1].owner = Player;
+        stacks[^1].transform.localPosition = new Vector3(totalOffset, -0.78f, -1.1f);
     }
     public void RemoveStack()
     {
@@ -203,7 +203,7 @@ public class Gachapon : Body
         if (looking.x < 0)
             toMouseR += Mathf.PI;
         Vector2 pos = new Vector2(0.07f * p.Direction, 0.325f) + looking;
-        Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
+        Face.transform.LerpLocalPosition(pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
         FaceR.flipX = toMouse.x > 0;
         FaceR.enabled = true;

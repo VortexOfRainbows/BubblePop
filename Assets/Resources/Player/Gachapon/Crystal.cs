@@ -33,7 +33,9 @@ public class Crystal : Accessory
         bool tbAdjustments = p.Body is ThoughtBubble;
         float scaleMult = tbAdjustments ? 0.9f : 1.0f;
         transform.localScale = new Vector3(p.Body.transform.localScale.x * (p.Body.Flipped ? -1 : 1) * scaleMult, p.Body.transform.localScale.y * scaleMult, p.Body.transform.localScale.z);
-        transform.localPosition = Vector3.Lerp(transform.localPosition + (tbAdjustments ? new Vector3(0.04f, 0) : Vector3.zero), p.Body.transform.localPosition + new Vector3(0, this is Cryskull ? (Player.Body is Gachapon ? 0.2125f : 0.1f) : .06f, 0), 0.3f);
+        transform.SetLocalXY(
+            Vector2.Lerp((Vector2)transform.localPosition + (tbAdjustments ? new Vector2(0.04f, 0) : Vector2.zero),
+            (Vector2)p.Body.transform.localPosition + new Vector2(0, this is Cryskull ? (Player.Body is Gachapon ? 0.2125f : 0.1f) : .06f), 0.3f));
         transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, Vector3.zero, 0.05f);
         bounceCount = 0.7f;
         velocity *= 0.9f;
@@ -52,7 +54,7 @@ public class Crystal : Accessory
         if (toBody < bounceArea)
         {
             velocity *= -bounceCount;
-            transform.localPosition = (Vector2)transform.localPosition + new Vector2(0, bounceArea - toBody);
+            transform.SetLocalXY((Vector2)transform.localPosition + new Vector2(0, bounceArea - toBody));
             bounceCount *= 0.5f;
         }
         else
@@ -60,6 +62,6 @@ public class Crystal : Accessory
             velocity.x *= 0.998f;
             velocity.y -= 0.005f;
         }
-        transform.localPosition = (Vector2)transform.localPosition + velocity;
+        transform.SetLocalXY((Vector2)transform.localPosition + velocity);
     }
 }

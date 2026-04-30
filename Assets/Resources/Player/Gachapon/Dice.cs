@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dice : Hat
@@ -28,9 +29,9 @@ public class Dice : Hat
         float r = p.MoveDashRotation();
         transform.localScale = new Vector3(p.Body.transform.localScale.x * (p.Body.Flipped ? -1 : 1), p.Body.transform.localScale.y, p.Body.transform.localScale.z);
         transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, r, 0.1f) * Vector3.forward;
-        transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
+        transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition,
             new Vector2(0, (-1.15f + 1.1f * p.Bobbing * p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
-            0.1f) + velocity;
+            0.1f) + velocity);
         bounceCount = 0.7f;
         velocity *= 0.9f;
     }
@@ -47,7 +48,7 @@ public class Dice : Hat
         if (toBody < -0.95f)
         {
             velocity *= -bounceCount;
-            transform.localPosition = (Vector2)transform.localPosition + new Vector2(0, -0.95f - toBody);
+            transform.SetLocalXY(transform.localPosition.x, transform.localPosition.y -0.95f - toBody);
             bounceCount *= 0.5f;
         }
         else
@@ -55,7 +56,7 @@ public class Dice : Hat
             velocity.x *= 0.998f;
             velocity.y -= 0.005f;
         }
-        transform.localPosition = (Vector2)transform.localPosition + velocity;
+        transform.SetLocalXY((Vector2)transform.localPosition + velocity);
         transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, 0, 0.1f) * Vector3.forward;
     }
 }
