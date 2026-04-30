@@ -156,7 +156,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2ca20f0958aae064191102a2991f4a2a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -326,7 +326,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bb2a31164c756e04d97d3a38f205e4cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_FlipX: 1
@@ -409,10 +409,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skateboard
       objectReference: {fileID: 0}
-    - target: {fileID: 3725885959336098932, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5327987897504141713, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -423,7 +419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5327987897504141713, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 5327987897504141713, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}
       propertyPath: m_LocalRotation.w

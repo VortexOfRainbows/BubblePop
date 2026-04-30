@@ -62,8 +62,8 @@ public class Fizzy : Body
         float xReduce = Player.Accessory is BubblemancerCape || Player.Accessory is LabCoat ? 0.7f : 1.0f;
         Skateboard.transform.LerpLocalScale(new Vector2(xReduce, 1) * scale, 0.1f);
         float jump = sin * 0.5f + 0.5f * Mathf.Sqrt(Mathf.Abs(sin));
-        Player.Visual.transform.localPosition = new Vector3(0, jump, 0);
-        Skateboard.transform.localPosition = new Vector3(0, (Player.Accessory is Kicks ? -1.75f : -1.3f) - jump, 0);
+        Player.Visual.transform.SetLocalXY(0, jump);
+        Skateboard.transform.SetLocalXY(0, (Player.Accessory is Kicks ? -1.75f : -1.3f) - jump);
         float speed = playerVelo.magnitude * 0.9f * -p.Direction;
         Wheel1.transform.SetLocalEulerZ(Wheel1.transform.localEulerAngles.z + speed);
         Wheel2.transform.SetLocalEulerZ(Wheel2.transform.localEulerAngles.z + speed);
@@ -127,7 +127,7 @@ public class Fizzy : Body
         Vector2 looking = new Vector2(0.08f, 0).RotatedBy(toMouseR);
         looking.x += 0.04f * p.Direction;
         Vector2 pos = looking;
-        Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
+        Face.transform.LerpLocalPosition(pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouse2.y * 12.5f * p.Direction);
         Face.transform.localScale = new Vector3(p.Direction, 1, 1);
     }

@@ -34,8 +34,8 @@ public class Kicks : Accessory
         velocity *= 0.9f;
         transform.localScale = new Vector3(Player.Body.FlipDir, 1, 1);
         transform.localPosition = new Vector3(-0.15f * Player.Body.FlipDir, 0, 0);
-        LeftKickAnchor.transform.localPosition = new Vector3(-0.4325f, -1.05f, -0.1f);
-        RightKickAnchor.transform.localPosition = new Vector3(0.4325f, -1.05f, 0.1f);
+        LeftKickAnchor.transform.localPosition = new Vector3(-0.4325f, -1.05f, -0.01f);
+        RightKickAnchor.transform.localPosition = new Vector3(0.4325f, -1.05f, 0.01f);
         float directionOffset = 0.025f;
         LeftKick.ReAnchorOffset = new Vector2(0.325f - directionOffset, -0.05f);
         RightKick.ReAnchorOffset = new Vector2(-0.325f - directionOffset, -0.05f);
@@ -75,8 +75,7 @@ public class Kicks : Accessory
                 velocities[i].x *= 0.998f;
                 velocities[i].y -= 0.005f;
             }
-            t.localPosition = (Vector2)t.localPosition + velocities[i];
-            t.localPosition = new Vector3(t.localPosition.x, t.localPosition.y, z);
+            t.localPosition = new Vector3(t.localPosition.x + velocities[i].x, t.localPosition.y + velocities[i].y, z);
         }
     }
 }
