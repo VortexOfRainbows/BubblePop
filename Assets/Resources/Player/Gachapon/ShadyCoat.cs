@@ -39,19 +39,18 @@ public class ShadyCoat : LabCoat
         float facingDir = p.Direction;
         toMouse = facingDir * LookingAtMouseScale * toMouse.normalized;
         float offset = p.Body is Gachapon ? 0.37f : 0.1f;
-        CapeB.transform.localPosition = CapeB.transform.localPosition
-            + new Vector3((toMouse.x * 0.06f) * facingDir, offset);
+        CapeB.transform.localPosition = CapeB.transform.localPosition + new Vector3(toMouse.x * 0.06f * facingDir, offset);
         if (p.Body is ThoughtBubble)
         {
             CapeB.transform.localScale = new Vector3(1.1f * facingDir, CapeB.transform.localScale.y, CapeB.transform.localScale.z);
             Mask.SetActive(false);
         }
-        Vector2 voffset = toMouse.normalized * 1f * facingDir;
+        Vector2 voffset = 1f * facingDir * toMouse.normalized;
         voffset.y *= 0.2f;
 
         Vector3 targetMaskPos = (Vector2)p.Body.transform.position + voffset * 0.08f;
         Mask.transform.position = Vector3.Lerp(Mask.transform.position, targetMaskPos, 0.1f);
-        Mask.transform.localPosition = new Vector3(Mask.transform.localPosition.x, Mask.transform.localPosition.y, 1);
+        Mask.transform.localPosition = new Vector3(Mask.transform.localPosition.x, Mask.transform.localPosition.y, -0.5f);
         Mask.transform.LerpLocalEulerZ(voffset.y * 35, 0.1f);
         //Mask.GetComponent<SpriteRenderer>().flipX = player.Body.FaceR.flipX;
         ArmL.flipX = !CapeLRend.flipX;
