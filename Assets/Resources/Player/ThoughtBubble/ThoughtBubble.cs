@@ -54,7 +54,7 @@ public class ThoughtBubble : Body
         if (looking.x < 0)
             toMouseR += Mathf.PI;
         Vector2 pos = new Vector2(0.17f * p.Direction, 0.05f) + looking;
-        Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.1f);
+        Face.transform.LerpLocalPosition(pos, 0.1f);
         Face.transform.eulerAngles = new Vector3(0, 0, toMouseR * Mathf.Rad2Deg);
         FaceR.flipX = toMouse.x > 0;
     }
@@ -186,7 +186,9 @@ public class ThoughtBubble : Body
             Tail.GetComponent<SpriteRenderer>().flipY = deg > 90 && deg < 270;
             Tail.transform.eulerAngles = new Vector3(0, 0, deg);
             Vector2 targetPos = (Vector2)previousPos - tailToBody;
-            Tail.transform.position = Vector2.Lerp(Tail.transform.position, targetPos, CurrentMarkedTail == -1 ? 0.5f : 0.15f); //Only update position in here so the light position stays the same
+            Vector3 pos = Vector2.Lerp(Tail.transform.position, targetPos, CurrentMarkedTail == -1 ? 0.5f : 0.15f); //Only update position in here so the light position stays the same
+            pos.z = Tail.transform.position.z;
+            Tail.transform.position = pos;
             UpdateTailOn(orig, i);
         }
         else

@@ -43,9 +43,9 @@ public class Crown : Bulb
         light2d.color = light2d.color.WithAlpha(Mathf.Lerp(light2d.color.a, 1f, 0.08f));
         light2d.gameObject.SetActive(true);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r, 0.05f));
-        transform.localPosition = Vector2.Lerp((Vector2)transform.localPosition,
+        transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition,
             new Vector2(0, 0.5f + 0.5f * p.Bobbing * p.squash - 0.2f * (1 - p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,
-            0.25f);
+            0.25f));
         bounceCount = 0.7f;
         UpdateShards();
         velocity *= 0.5f;
@@ -64,7 +64,7 @@ public class Crown : Bulb
             circular.z = Mathf.Sin(rot) * 0.4f;
             circular.y += Mathf.Sin(bobbing) * 0.04f;
             float scale = 1 - circular.z * 0.2f;
-            Shards[i].transform.localPosition = Shards[i].transform.localPosition.Lerp(circular, lerp);
+            Shards[i].transform.LerpLocalPosition(circular, lerp);
             Shards[i].transform.localEulerAngles = Mathf.LerpAngle(Shards[i].transform.localEulerAngles.z, circular.x * -15, lerp) * Vector3.forward;
             Shards[i].transform.LerpLocalScale(Vector2.one * scale, lerp);
             Glows[i].color = Glows[i].color.WithAlpha(Mathf.Lerp(Glows[i].color.a, 1f, 0.08f));

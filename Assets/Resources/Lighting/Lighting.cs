@@ -47,6 +47,8 @@ public static class Lighting
     }
     public static void Update() //Runs on normal delta time, not fixed
     {
+        if (Main.Instance == null)
+            return;
         ResizeLightingRenderTexture();
         UpdateSun();
     }
