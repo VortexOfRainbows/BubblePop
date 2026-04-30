@@ -200,12 +200,13 @@ public class DualGridTilemap : MonoBehaviour
                         pos.y += border ? 0.25f : -0.45f;
                     if (Utils.RandFloat() < chance)
                     {
+                        Color c2 = border ? new Color(0.825f, 0.825f, 0.825f) : c;
                         var g = Instantiate(BubbleMushroom, DecorVisual).GetComponent<SpriteRenderer>();
                         var childR = g.transform.GetChild(0).GetComponent<SpriteRenderer>();
                         g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
                         g.transform.localScale *= edgeTile ? Utils.RandFloat(0.9f, 1.0f) : Utils.RandFloat(0.7f, 0.9f);
-                        g.color = c;
-                        childR.color = c.WithAlpha(0.8f);
+                        g.color = c2;
+                        childR.color = c2.WithAlpha(0.8f);
                         g.sortingOrder = childR.sortingOrder = order;
                         continue;
                     }

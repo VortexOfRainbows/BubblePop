@@ -286,7 +286,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5527284930865947977, guid: 39c84bcde62fd6e429385d4e4200ba47, type: 3}
       propertyPath: m_Intensity
-      value: 0.6
+      value: 0.66
       objectReference: {fileID: 0}
     - target: {fileID: 5527284930865947977, guid: 39c84bcde62fd6e429385d4e4200ba47, type: 3}
       propertyPath: m_BlendStyleIndex
@@ -302,7 +302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5527284930865947977, guid: 39c84bcde62fd6e429385d4e4200ba47, type: 3}
       propertyPath: m_PointLightInnerRadius
-      value: 0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5527284930865947977, guid: 39c84bcde62fd6e429385d4e4200ba47, type: 3}
       propertyPath: m_PointLightOuterRadius

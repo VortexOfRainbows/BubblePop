@@ -9,7 +9,7 @@ public class BubbleMushroom : MonoBehaviour
     {
         float sin = 0.5f + 0.5f * Mathf.Sin(World.GlobalTimeElapsedCounter * Mathf.PI * 0.5f + transform.position.x + transform.position.y);
         Mushroom.transform.localScale = new Vector3(1 + sin * 0.05f, 1 + sin * 0.1f, 1);
-        MyLight.pointLightOuterRadius = (2.4f + Lighting.NightSin) * transform.localScale.x;
+        MyLight.pointLightOuterRadius = (2.4f + Lighting.NightSin) * transform.localScale.x * 5.5f;
     }
     public void FixedUpdate()
     {
