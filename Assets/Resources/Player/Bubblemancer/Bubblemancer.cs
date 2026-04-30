@@ -60,7 +60,7 @@ public class Bubblemancer : Body
             pos += new Vector2(0.0f, -0.3f * p.Direction).RotatedBy(r);
         }
 
-        Face.transform.localPosition = Vector2.Lerp(Face.transform.localPosition, pos, 0.065f);
+        Face.transform.LerpLocalPosition(pos, 0.065f);
         FaceR.flipX = !spriteRender.flipY;
     }
 }

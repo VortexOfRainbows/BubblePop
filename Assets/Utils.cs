@@ -222,6 +222,16 @@ public static class Utils
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, r);
         return transform;
     }
+    public static Transform SetLocalXY(this Transform t, float x, float y)
+    {
+        t.localPosition = new Vector3(x, y, t.localPosition.z);
+        return t;
+    }
+    public static Transform SetLocalXY(this Transform t, Vector2 v2)
+    {
+        t.localPosition = new Vector3(v2.x, v2.y, t.localPosition.z);
+        return t;
+    }
     public static Vector3 SetXY(this Vector3 v, float x, float y)
     {
         v.x = x;

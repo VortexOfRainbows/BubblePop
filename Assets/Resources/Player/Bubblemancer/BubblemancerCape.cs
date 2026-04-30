@@ -49,21 +49,21 @@ public class BubblemancerCape : Accessory
 
         float dashFactorL = 0.8f - p.squash + p.Bobbing * 0.2f;
         float dashFactorR = 0.8f - p.squash + p.Bobbing * 0.3f;
-        CapeR.transform.localPosition = new Vector3((RightCapeDefaultPos.x + RightInwardAnimDuringDash * dashFactorR) + 0.05f * toMouse.x, RightCapeDefaultPos.y);// + toMouse.x, 0, 0);
+        CapeR.transform.SetLocalXY(RightCapeDefaultPos.x + RightInwardAnimDuringDash * dashFactorR + 0.05f * toMouse.x, RightCapeDefaultPos.y);// + toMouse.x, 0, 0);
         CapeR.transform.localScale = new Vector3(1.05f + toMouse.x * 0.3f, 1, 1);
-        CapeL.transform.localPosition = new Vector3((LeftCapeDefaultPos.x - LeftInwardAnimDuringDash * dashFactorL), LeftCapeDefaultPos.y);// + toMouse.x + facingDir, 0, 0);
+        CapeL.transform.SetLocalXY(LeftCapeDefaultPos.x - LeftInwardAnimDuringDash * dashFactorL, LeftCapeDefaultPos.y);
         CapeL.transform.localScale = new Vector3(1.1f - toMouse.x * 0.45f, 1, 1);
 
         //float addedXOffset = 0.4f * Mathf.Sin(MimicHatEulerZ * Mathf.Deg2Rad);
         CapeL.transform.eulerAngles = new Vector3(0, 0, 15f * dashFactorL * facingDir);
         CapeR.transform.eulerAngles = new Vector3(0, 0, -25 * dashFactorR * facingDir);
-        CapeB.transform.localPosition = new Vector2(-0.05f * facingDir -0.05f * toMouse.x * facingDir, -.125f);
+        CapeB.transform.SetLocalXY(-0.05f * facingDir -0.05f * toMouse.x * facingDir, -.125f);
         //Debug.Log(CapeB.transform.localPosition.x);
         Vector2 scale = new Vector2((1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash);
         //if its 90% or 270%, we want the x scale reduced
         scale.x *= 0.2f + DashStretchAmt * Mathf.Cos(new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y).ToRotation());
         scale.x += 1;
-        CapeB.transform.localScale = Vector2.Lerp(CapeB.transform.localScale, scale * CapeScale, 0.5f);
+        CapeB.transform.LerpLocalScale(scale * CapeScale, 0.5f);
         CapeB.transform.eulerAngles = new Vector3(0, 0, 0);
         CapeB.transform.localScale = new Vector3(Mathf.Abs(CapeB.transform.localScale.x) * facingDir, CapeB.transform.localScale.y, CapeB.transform.localScale.z);
     }
@@ -73,12 +73,12 @@ public class BubblemancerCape : Accessory
         float facingDir = p.Direction;
         CapeL.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(CapeL.transform.eulerAngles.z, 15, 0.1f));
         CapeR.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(CapeR.transform.eulerAngles.z, -25, 0.1f));
-        CapeR.transform.localPosition = Vector3.Lerp(CapeR.transform.localPosition, new Vector3(-DeathRightMult, 0), 0.1f);
-        CapeL.transform.localPosition = Vector3.Lerp(CapeL.transform.localPosition, new Vector3(DeathLeftMult, 0), 0.1f);
-        CapeL.transform.localScale = Vector3.Lerp(CapeL.transform.localScale, Vector3.one, 0.1f);
-        CapeR.transform.localScale = Vector3.Lerp(CapeR.transform.localScale, Vector3.one, 0.1f);
-        CapeB.transform.localScale = Vector3.Lerp(CapeB.transform.localScale, new Vector3(1.25f, .55f, 1) * 0.9f, 0.1f);
-        CapeB.transform.localPosition = Vector3.Lerp(CapeB.transform.localPosition, new Vector3(0f, CapeB.transform.localPosition.y, 0), 0.1f);
+        CapeR.transform.LerpLocalPosition(new Vector2(-DeathRightMult, 0), 0.1f);
+        CapeL.transform.LerpLocalPosition(new Vector2(DeathLeftMult, 0), 0.1f);
+        CapeL.transform.LerpLocalScale(Vector2.one, 0.1f);
+        CapeR.transform.LerpLocalScale(Vector2.one, 0.1f);
+        CapeB.transform.LerpLocalScale(new Vector2(1.25f, .55f) * 0.9f, 0.1f);
+        CapeB.transform.LerpLocalPosition(new Vector2(0f, CapeB.transform.localPosition.y), 0.1f);
         CapeB.transform.localScale = new Vector3(Mathf.Abs(CapeB.transform.localScale.x) * facingDir, CapeB.transform.localScale.y, CapeB.transform.localScale.z);
     }
 }
