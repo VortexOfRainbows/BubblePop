@@ -160,6 +160,7 @@ public partial class Player : Entity
     public int BonusStocks = 0;
     public float BonusRestockChance = 0.0f;
     public int CoinsOnPowerPickup = 0;
+    public int SkateboardBonusDamage = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -218,6 +219,7 @@ public partial class Player : Entity
         BonusShrapnel = BonusRestockChance = 0.0f;
         HasMagnetBook = false;
         CoinsOnPowerPickup = 0;
+        SkateboardBonusDamage = 0;
     }
     private void UpdatePowerUps()
     {

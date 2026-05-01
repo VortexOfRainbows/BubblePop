@@ -131,12 +131,14 @@ public class Kickflip : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Kickflip");
-        description.WithDescription("Increases Y:[movement speed] by Y:15% G:(+15% per stack) while Y:mounting or Y:dismounting your Y:Skateboard");
+        description.WithDescription("Increases Y:[movement speed] by Y:15% G:(+15% per stack) while Y:mounting or Y:dismounting your Y:Skateboard " +
+            "\nIncreases Y:Skateboard Y:damage by Y:1 G:(+1 per stack)");
         description.WithShortDescription("Faster movement while mounting or dismounting Skateboard");
     }
     public override void HeldEffect(Player p)
     {
         p.Kickflip += Stack;
+        p.SkateboardBonusDamage += Stack;
     }
 }
 public class RetaliatoryBlast : PowerUp
@@ -165,7 +167,7 @@ public class BombasticBrew : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bombastic Brew");
-        description.WithDescription("Secondary attack drop a Y:2 G:(+2 per stack) Y:[damage bath bomb] \nY:[Explosion size] scales with Y:damage");
+        description.WithDescription("Secondary attack drops a Y:2 G:(+2 per stack) Y:[damage bath bomb] \nY:[Explosion size] scales with Y:damage");
         description.WithShortDescription("Secondary attack drops a bath bomb");
     }
     public override void HeldEffect(Player p)
