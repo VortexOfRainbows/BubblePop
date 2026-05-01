@@ -24,12 +24,12 @@ public class DualGridTilemap : MonoBehaviour
         DisplayMap = new();
         BorderDisplayMap = new();
         WallDisplayMap = new();
-        PrepareDisplayMap(Visual, DisplayMap, -50);
+        PrepareDisplayMap(Visual, DisplayMap, LayerHelper.FloorTileSortingOrder);
         AddDecor(Color.white, -20);
         //-49 is for occlusion for now
-        PrepareDisplayMap(Visual, BorderDisplayMap, -48, border: true);
+        PrepareDisplayMap(Visual, BorderDisplayMap, LayerHelper.SolidTileSortingOrder, border: true);
         AddDecor(new Color(0.5f, 0.5f, 0.5f), -30, true);
-        PrepareDisplayMap(Visual, WallDisplayMap, -47, wall: true);
+        PrepareDisplayMap(Visual, WallDisplayMap, LayerHelper.WallTileSortingOrder, wall: true);
         RefreshDisplayTilemap(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
         //GetComponent<TilemapRenderer>().enabled = false;
     }
@@ -56,7 +56,6 @@ public class DualGridTilemap : MonoBehaviour
                 else if(border && tile.HasWallVariant())
                 {
                     wallGridTransform = 0.25f;
-                    order += 2; //TODO: make the player appear visually behind tiles if appropriate
                 }
                 else if(!border)
                 {

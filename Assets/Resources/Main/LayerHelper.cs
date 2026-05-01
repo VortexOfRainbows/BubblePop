@@ -11,6 +11,10 @@ public static class LayerHelper
     //-----------------------------------
     public const int PlayerSortingOrder = 0;
     public const int EnemySortingOrder = 0;
+    public const int FloraSortingOrder = 0;
+    public const int SolidTileSortingOrder = 0;
+    public const int WallTileSortingOrder = 0;
+    public const int FloorTileSortingOrder = -1;
 
 
 
