@@ -104,7 +104,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2245f8b46850f954f80c2080056629ca, type: 3}
   m_Color: {r: 0.85, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -225,7 +225,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4eb26a7b2e6027848b656be797a81796, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -395,6 +395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Visual: {fileID: 4160375949546410573}
   SpawnedIn: 0
+  HasCalledInit: 0
   RB: {fileID: 8914851087272067829}
   IndexInAllEnemyArray: 9
   AlreadyDead: 0
@@ -487,7 +488,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1e966c8b568584746af4aa2a83938da9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -636,7 +637,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2245f8b46850f954f80c2080056629ca, type: 3}
   m_Color: {r: 0.5, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -742,7 +743,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1240539376217861881, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2483714818962199496, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_LocalPosition.z
@@ -794,7 +795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9110549648841337665, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -826,7 +827,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1240539376217861881, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2483714818962199496, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_LocalPosition.z
@@ -886,7 +887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9110549648841337665, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -922,7 +923,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1240539376217861881, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2483714818962199496, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_LocalPosition.z
@@ -982,7 +983,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9110549648841337665, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1004,7 +1005,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1240539376217861881, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2483714818962199496, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1064,7 +1065,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9110549648841337665, guid: 56c0d49288029714cbfbee9c1a48fb63, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

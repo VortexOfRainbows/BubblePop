@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5004b30d13b6db44db1d0839b5fd43ac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -105,6 +105,9 @@ MonoBehaviour:
   WalkSizeXMult: 0.325
   WalkTiltAngle: -7
   SqrtSpeed: 1
+  ResetRate: 0
+  FlipWithDirection: 0
+  walkSpeedMultiplier: 0
 --- !u!1 &1939668718483654785
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +213,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: cd9fb64140c64e048af53c6b375856d7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -242,6 +245,9 @@ MonoBehaviour:
   WalkSizeXMult: 0
   WalkTiltAngle: 25
   SqrtSpeed: 1
+  ResetRate: 0
+  FlipWithDirection: 0
+  walkSpeedMultiplier: 0
 --- !u!1 &2672754394845178884
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,11 +405,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Visual: {fileID: 8139902864747942865}
-  UniversalImmuneFrames: 0
-  DamageTaken: 0
   SpawnedIn: 0
-  lastPos: {x: 0, y: 0}
+  HasCalledInit: 0
   RB: {fileID: 1105666861243281285}
+  IndexInAllEnemyArray: -1
+  AlreadyDead: 0
   FirstStrike: 1
   moveSpeed: 0.65
   inertiaMult: 0.9125
@@ -482,7 +488,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b6fa5d545d89165418f016237e76563d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -587,7 +593,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9d3eeae4dc107fb4987c086e562e97b8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -619,6 +625,9 @@ MonoBehaviour:
   WalkSizeXMult: 0.325
   WalkTiltAngle: -7
   SqrtSpeed: 1
+  ResetRate: 0
+  FlipWithDirection: 0
+  walkSpeedMultiplier: 0
 --- !u!1 &8139902864747942865
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,7 +831,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5d47e66e5074da444b868dd616d4719c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -854,6 +863,9 @@ MonoBehaviour:
   WalkSizeXMult: 0
   WalkTiltAngle: 25
   SqrtSpeed: 1
+  ResetRate: 0
+  FlipWithDirection: 0
+  walkSpeedMultiplier: 0
 --- !u!1001 &1658337157528708190
 PrefabInstance:
   m_ObjectHideFlags: 0

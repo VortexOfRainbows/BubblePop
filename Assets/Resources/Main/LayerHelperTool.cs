@@ -8,6 +8,7 @@ public class LayerHelperTool : ScriptableObject
 {
     public string Path = string.Empty;
     public int ValidOrder = -1000;
+    public List<int> IgnoreOrder = new();
     public List<GameObject> final;
     public void Search()
     {
@@ -23,7 +24,7 @@ public class LayerHelperTool : ScriptableObject
                 concat += $"{obj.name}\n";
                 foreach (SpriteRenderer r in sr)
                 {
-                    if (r.sortingOrder != ValidOrder)
+                    if (r.sortingOrder != ValidOrder && !IgnoreOrder.Contains(r.sortingOrder))
                     {
                         hasFoundAtLeastOne = true;
                         concat += $"{r.name}: {r.sortingOrder.ToString().WithColor("#CCFF00")}\n";
