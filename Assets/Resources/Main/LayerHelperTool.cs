@@ -10,12 +10,15 @@ public class LayerHelperTool : ScriptableObject
     public int ValidOrder = -1000;
     public List<int> IgnoreOrder = new();
     public List<GameObject> final;
+    public bool IgnoreNodes = true;
     public void Search()
     {
         final = new();
         var objs = Resources.LoadAll<GameObject>(Path);
         foreach (GameObject obj in objs)
         {
+            if(obj.TryGetComponent<WorldNode>(out _) && IgnoreNodes)
+                continue; 
             var sr = obj.GetComponentsInChildren<SpriteRenderer>();
             if (sr.Length > 0)
             {
