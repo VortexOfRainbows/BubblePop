@@ -29,7 +29,7 @@ public static class LayerHelper
     //-------------FOREGROUND------------
     public const int PlayerSortingOrder = 0;
     public const int EnemySortingOrder = 0;
-    public const int FloraSortingOrder = 0;
+    public const int FloraSortingOrder = 0; //All ground decor
     public const int SolidTileSortingOrder = 0;
     public const int WallTileSortingOrder = 0;
     public const int WorldObjSortingOrder = 0; //Crucible, Chests, Stuff Like That
