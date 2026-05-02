@@ -13,19 +13,8 @@ MonoBehaviour:
   m_Name: LayerHelperTool
   m_EditorClassIdentifier: 
   Path: 
-  ValidOrder: 0
-  IgnoreOrder: ceffffff
+  IgnoreOrder: 00000000ffffffffceffffff0a0000001e000000
   final:
-  - {fileID: 8514278307800113147, guid: b25fd2f4a57f84342b7151f65b65f80c, type: 3}
-  - {fileID: 8514278307800113147, guid: 1269e923ae476ad4ba40f628025d2a13, type: 3}
-  - {fileID: 3179210699571088222, guid: a3287f256a71a6b47a7271f87e507f91, type: 3}
-  - {fileID: 6151528595978692226, guid: 3cd19bc9ab931c040aa88dd17c516228, type: 3}
-  - {fileID: 6151528595978692226, guid: db86add8d6014714888bd93caa3c22b3, type: 3}
-  - {fileID: 8514278307800113147, guid: b9648ce4173e8054e8212cc6d893f227, type: 3}
-  - {fileID: 7203644957859895472, guid: d4cabe085b6abbb4ca5e9e2ea949561d, type: 3}
-  - {fileID: 7203644957859895472, guid: 883382c2fc7049a4e8b94cc6cf55ef6b, type: 3}
-  - {fileID: 7361258354114611632, guid: 4f8b375fe57737f49ab5e30dfde6d9cb, type: 3}
-  - {fileID: 2040178675721209264, guid: e1fc2a84b6f7c574a99a70c8f10735fb, type: 3}
   - {fileID: 7462284700642931094, guid: 4ee10e6ca7971ca4683e9a86ad747cf3, type: 3}
   - {fileID: 7462284700642931094, guid: ebf32fc3247b295408faa7311e482525, type: 3}
   - {fileID: 7462284700642931094, guid: e7d67ac7adef0454a96cab6df826ac8e, type: 3}
@@ -36,13 +25,9 @@ MonoBehaviour:
   - {fileID: 6670607549082870492, guid: e551dd2a90ddf444a84a83c2ca0975fc, type: 3}
   - {fileID: 7462284700642931094, guid: 5a60e697bacaee34ba1bb0518c537b5d, type: 3}
   - {fileID: 7462284700642931094, guid: a61bab6a095b94d45b91cebfed126f4a, type: 3}
-  - {fileID: 4129955944552443134, guid: ed2b0754a4ce9f64ea77c2500a5c222a, type: 3}
   - {fileID: 5354334585636703099, guid: d866ed2d2fa03ea418d42382f103df58, type: 3}
   - {fileID: 6237840696253951040, guid: 5ed9042f2a2f5284ab627e211b6198a1, type: 3}
   - {fileID: 1268744164881615657, guid: 43038993f63705941a829d30db75cb5e, type: 3}
-  - {fileID: 1567906343509548320, guid: f96a03fd1a9d18447a12abd4b6fd6150, type: 3}
-  - {fileID: 2351920405521989925, guid: abf61b3700054144381c949754810a15, type: 3}
-  - {fileID: 2558685016078269719, guid: 690e474cbeebe6e439a94d1c4b2f4031, type: 3}
   - {fileID: 1995974927622926514, guid: 44ff52e9d63021247a6711ca36467448, type: 3}
   - {fileID: 3903325283074209523, guid: 278020b4474db6449983cd012c1b0b5b, type: 3}
   - {fileID: 7292651605949356905, guid: 40d16763ea377fd4596cfe1f2071c473, type: 3}
@@ -55,5 +40,4 @@ MonoBehaviour:
   - {fileID: 3903325283074209523, guid: 208fa4b52e84fe24f8d4c22a860761e8, type: 3}
   - {fileID: 7876601760641958136, guid: 57059b1e2b16b27499c28357a9332b83, type: 3}
   - {fileID: 7876601760641958136, guid: 0b26dc147182f5244972d420c420ce32, type: 3}
-  - {fileID: 273275225871329691, guid: eba4e0782aaee8842b49a72e0740555b, type: 3}
   IgnoreNodes: 1

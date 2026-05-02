@@ -24,6 +24,7 @@ public static class LayerHelper
     //-------------BACKGROUND------------
     public const int FloorObjSortingLayer = -2; //Power Pillows
     public const int PickupSortingOrder = -1; //Coins, Keys, Powers, Etc.
+    public const int PortalSortingOrder = -1;
 
     //-------------FOREGROUND------------
     public const int PlayerSortingOrder = 0;
@@ -44,4 +45,5 @@ public static class LayerHelper
     public const int Projectile = 5;
     public const int ShadowSortingOrder = -50;
     public const int InWorldUIElement = 10; //Boss/Skull health bars
+    public const int ArbitraryCompendiumUISpriteMask = 30;
 }
