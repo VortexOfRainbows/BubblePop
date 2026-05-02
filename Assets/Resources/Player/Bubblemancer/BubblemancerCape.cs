@@ -47,8 +47,8 @@ public class BubblemancerCape : Accessory
         float facingDir = p.Direction;
         toMouse = toMouse.normalized * LookingAtMouseScale * facingDir;
 
-        float dashFactorL = 0.8f - p.squash + p.Bobbing * 0.2f;
-        float dashFactorR = 0.8f - p.squash + p.Bobbing * 0.3f;
+        float dashFactorL = 0.8f - p.Squash + p.Bobbing * 0.2f;
+        float dashFactorR = 0.8f - p.Squash + p.Bobbing * 0.3f;
         CapeR.transform.SetLocalXY(RightCapeDefaultPos.x + RightInwardAnimDuringDash * dashFactorR + 0.05f * toMouse.x, RightCapeDefaultPos.y);// + toMouse.x, 0, 0);
         CapeR.transform.localScale = new Vector3(1.05f + toMouse.x * 0.3f, 1, 1);
         CapeL.transform.SetLocalXY(LeftCapeDefaultPos.x - LeftInwardAnimDuringDash * dashFactorL, LeftCapeDefaultPos.y);
@@ -59,7 +59,7 @@ public class BubblemancerCape : Accessory
         CapeR.transform.eulerAngles = new Vector3(0, 0, -25 * dashFactorR * facingDir);
         CapeB.transform.SetLocalXY(-0.05f * facingDir -0.05f * toMouse.x * facingDir, -.125f);
         //Debug.Log(CapeB.transform.localPosition.x);
-        Vector2 scale = new Vector2((1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash);
+        Vector2 scale = new Vector2((1 - p.Squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.Squash);
         //if its 90% or 270%, we want the x scale reduced
         scale.x *= 0.2f + DashStretchAmt * Mathf.Cos(new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y).ToRotation());
         scale.x += 1;

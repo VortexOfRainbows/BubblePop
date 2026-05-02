@@ -30,7 +30,7 @@ public class Dice : Hat
         transform.localScale = new Vector3(p.Body.transform.localScale.x * (p.Body.Flipped ? -1 : 1), p.Body.transform.localScale.y, p.Body.transform.localScale.z);
         transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, r, 0.1f) * Vector3.forward;
         transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition,
-            new Vector2(0, (-1.15f + 1.1f * p.Bobbing * p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
+            new Vector2(0, (-1.15f + 1.1f * p.Bobbing * p.Squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
             0.1f) + velocity);
         bounceCount = 0.7f;
         velocity *= 0.9f;

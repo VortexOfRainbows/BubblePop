@@ -14,12 +14,12 @@ public class PlayerAnimator : MonoBehaviour
             return p == null ? Utils.MouseWorld : p.Position;
         }
     }
-    public float PointDirOffset;
-    public float MoveOffset;
-    public float DashOffset;
+    public float PointDirOffset { get; set; }
+    public float MoveOffset { get; set; }
+    public float DashOffset { get; set; }
     public bool RealPlayer = false;
-    public float squash = 1f;
-    public float Bobbing = 1f;
+    public float Squash { get; set; } = 1f;
+    public float Bobbing { get; set; } = 1f;
     public Rigidbody2D rb;
     public Body Body;
     public Weapon Weapon;
@@ -31,9 +31,9 @@ public class PlayerAnimator : MonoBehaviour
     public float DeathKillTimer = 0;
     public void PostFixedUpdate()
     {
-        if (squash < 1)
-            squash += 0.005f;
-        squash = Mathf.Lerp(squash, 1, 0.025f);
+        if (Squash < 1)
+            Squash += 0.005f;
+        Squash = Mathf.Lerp(Squash, 1, 0.025f);
         //if(Body is Fizzy f && f.OnSkateboard)
         //    Bobbing = Mathf.Lerp(Bobbing, 1, 0.1f);
         //else

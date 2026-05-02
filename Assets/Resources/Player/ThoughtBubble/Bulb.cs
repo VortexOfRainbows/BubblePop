@@ -39,7 +39,7 @@ public class Bulb : Hat
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r - 10 * p.Direction, 0.2f));
         velocity = Vector2.Lerp(velocity, Vector2.zero, 0.15f);
         transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition,
-            new Vector2(-0.5f * p.Direction, 0.5f + 0.5f * p.Bobbing * p.squash - 0.2f * (1 - p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,
+            new Vector2(-0.5f * p.Direction, 0.5f + 0.5f * p.Bobbing * p.Squash - 0.2f * (1 - p.Squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,
             0.25f));
         bounceCount = 0.7f;
     }

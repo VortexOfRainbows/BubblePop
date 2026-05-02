@@ -44,7 +44,7 @@ public class Crown : Bulb
         light2d.gameObject.SetActive(true);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, r, 0.05f));
         transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition,
-            new Vector2(0, 0.5f + 0.5f * p.Bobbing * p.squash - 0.2f * (1 - p.squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,
+            new Vector2(0, 0.5f + 0.5f * p.Bobbing * p.Squash - 0.2f * (1 - p.Squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad) + velocity,
             0.25f));
         bounceCount = 0.7f;
         UpdateShards();

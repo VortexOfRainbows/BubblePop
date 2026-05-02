@@ -34,7 +34,7 @@ public class Bubblemancer : Body
         float speed = Player.DashDefault;
         Player.abilityTimer = Player.AbilityCD;
         velocity = velocity * Player.MaxSpeed + moveSpeed * speed;
-        p.squash = Player.SquashAmt;
+        p.Squash = Player.SquashAmt;
         spriteRender.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
         FaceR.transform.eulerAngles = new Vector3(0, 0, p.Direction < 0 ? (Mathf.PI + velocity.ToRotation()) * Mathf.Rad2Deg : velocity.ToRotation() * Mathf.Rad2Deg);
         AudioManager.PlaySound(SoundID.Dash.GetVariation(3), transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
@@ -45,7 +45,7 @@ public class Bubblemancer : Body
         Vector2 toMouse = p.LookPosition - (Vector2)transform.position;
         Vector2 pos = new Vector2(0.175f * p.Direction, 0) + toMouse.normalized * 0.175f;
         pos.y *= 0.7f;
-        pos *= p.squash;
+        pos *= p.Squash;
 
         if (Player.RB.velocity.magnitude < Player.MaxSpeed + 11.5f * Player.MoveSpeedMod)
         {

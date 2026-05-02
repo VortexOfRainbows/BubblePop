@@ -86,8 +86,8 @@ public class SlotMachineWeapon : Weapon
         }
         previousAttemptedPosition = attemptedPosition;
         Vector2 originalPosition = attemptedPosition;
-        p.PointDirOffset = 2 * dir * p.squash;
-        p.DashOffset = 100 * dir * (1 - p.squash);
+        p.PointDirOffset = 2 * dir * p.Squash;
+        p.DashOffset = 100 * dir * (1 - p.Squash);
         float armDefaultRotation = 0;
         Vector2 armDefaultPosition = new Vector2(0, 0.16f);
 

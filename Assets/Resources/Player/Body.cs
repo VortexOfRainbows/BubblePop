@@ -57,7 +57,7 @@ public class Body : Equipment
     protected sealed override void AnimationUpdate()
     {
         float angleMult = 0.5f * AngleMultiplier;
-        if (p.squash < 0.9f)
+        if (p.Squash < 0.9f)
             angleMult = 1;
         Vector2 lastVelo = new(p.lastVelo.sqrMagnitude > 0.1f ? p.lastVelo.x : p.Direction, p.lastVelo.y);
         #region modify rotation and direction
@@ -82,11 +82,11 @@ public class Body : Equipment
         #endregion
         gameObject.transform.localScale = new Vector3(1 + 0.1f * (1 - p.Bobbing), p.Bobbing, 1);
         spriteRender.transform.localScale = 
-            FaceR.transform.localScale = new Vector3(1 + (1 - p.squash) * 2.5f, p.squash, 1);
+            FaceR.transform.localScale = new Vector3(1 + (1 - p.Squash) * 2.5f, p.Squash, 1);
         spriteRender.transform.localScale = new Vector3(spriteRender.transform.localScale.x, 
             spriteRender.transform.localScale.y * FlipDir,
             spriteRender.transform.localScale.z);
-        Vector2 squashReAlign = new(0, p.Bobbing * p.squash - 1);
+        Vector2 squashReAlign = new(0, p.Bobbing * p.Squash - 1);
         transform.localPosition = squashReAlign;
         gameObject.SetActive(true);
         FaceUpdate();

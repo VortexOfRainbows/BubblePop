@@ -80,8 +80,8 @@ public class Cola : Weapon
         Vector2 clampedMousePos = toMouse.magnitude < 3 ? (Vector2)p.transform.position + toMouse.normalized * 3 : Player.Control.MousePosition;
 
         p.PointDirOffset = 0;
-        p.MoveOffset = -5 * bodyDir * p.squash;
-        p.DashOffset = 100 * dir * (1 - p.squash);
+        p.MoveOffset = -5 * bodyDir * p.Squash;
+        p.DashOffset = 100 * dir * (1 - p.Squash);
 
         Vector2 awayFromWand = new Vector2(0.8f, 0).RotatedBy((transform.eulerAngles.z - bonusPointDirOffset) * Mathf.Deg2Rad);
         bonusPointDirOffset = 0;

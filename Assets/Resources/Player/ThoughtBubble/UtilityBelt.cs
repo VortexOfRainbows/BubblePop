@@ -37,7 +37,7 @@ public class UtilityBelt : Accessory
         //Time.timeScale = 0.2f;
         Vector2 toMouse = p.LookPosition - (Vector2)p.Body.transform.position;
         float facingDir = p.Direction;
-        Vector2 scale = new Vector2((1 - p.squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.squash);
+        Vector2 scale = new Vector2((1 - p.Squash) * 2.5f + 0.1f * (1 - p.Bobbing), p.Bobbing * p.Squash);
         scale.x *= 0.2f + 0.875f * Mathf.Cos(new Vector2(Mathf.Abs(p.lastVelo.x), p.lastVelo.y).ToRotation());
         Vector2 pos = p.Body is ThoughtBubble ? new Vector2(-0.04f, 0.475f) : new Vector2(-0.08f, 0.375f);
         if(p.Body is ThoughtBubble)

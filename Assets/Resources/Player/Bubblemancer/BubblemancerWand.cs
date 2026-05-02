@@ -87,9 +87,9 @@ public class BubblemancerWand : Weapon
         attemptedPosition.y -= 0.1f;
         //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
 
-        p.PointDirOffset = -45f * dir * p.squash;
-        p.MoveOffset = -5 * bodyDir * p.squash;
-        p.DashOffset = 100 * dir * (1 - p.squash);
+        p.PointDirOffset = -45f * dir * p.Squash;
+        p.MoveOffset = -5 * bodyDir * p.Squash;
+        p.DashOffset = 100 * dir * (1 - p.Squash);
 
         float bonusPointDirOffset = 0;
         Vector2 awayFromWand = new Vector2(1, 0).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad);
@@ -128,7 +128,7 @@ public class BubblemancerWand : Weapon
                 }
             }
             float percent = AttackLeft/ 50f;
-            bonusPointDirOffset += 105f * percent * dir * p.squash;
+            bonusPointDirOffset += 105f * percent * dir * p.Squash;
         }
         if (AttackRight > 0)
         {
@@ -158,7 +158,7 @@ public class BubblemancerWand : Weapon
                         AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(2), Player.Position, 0.7f, 1f + scale * 0.05f);
                     }
                 }
-                bonusPointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * p.squash;
+                bonusPointDirOffset += -Mathf.Min(45f, (AttackRight - 50f) / 200f * 45f) * dir * p.Squash;
             }
             else
             {
@@ -166,7 +166,7 @@ public class BubblemancerWand : Weapon
                     AttackRight = 50;
                 AttackRight--;
                 float percent = AttackRight / 50f;
-                bonusPointDirOffset += 125 * percent * dir * p.squash;
+                bonusPointDirOffset += 125 * percent * dir * p.Squash;
             }
         }
         else

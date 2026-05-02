@@ -85,9 +85,9 @@ public class BubbleGun : BubblemancerWand
 
         //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
 
-        p.PointDirOffset = 2 * dir * p.squash;
-        p.MoveOffset = -0 * bodyDir * p.squash;
-        p.DashOffset = 100 * dir * (1 - p.squash);
+        p.PointDirOffset = 2 * dir * p.Squash;
+        p.MoveOffset = -0 * bodyDir * p.Squash;
+        p.DashOffset = 100 * dir * (1 - p.Squash);
 
         if (AttackLeft > 0)
         {
@@ -115,7 +115,7 @@ public class BubbleGun : BubblemancerWand
                 Player.bonusBubbles %= 5;
             }
             float percent = AttackLeft / 10f;
-            p.PointDirOffset -= 15 * percent * dir * p.squash;
+            p.PointDirOffset -= 15 * percent * dir * p.Squash;
         }
         if (AttackRight > 0)
         {
@@ -152,7 +152,7 @@ public class BubbleGun : BubblemancerWand
                     AttackRight = 50;
                 AttackRight--;
                 float percent = AttackRight / 50f;
-                p.PointDirOffset -= 40 * percent * dir * p.squash;
+                p.PointDirOffset -= 40 * percent * dir * p.Squash;
             }
         }
         else

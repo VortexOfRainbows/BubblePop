@@ -96,9 +96,9 @@ public class Book : Weapon
 
         Vector3 targetScale;
         float bonusPDirOffset = 0;
-        p.PointDirOffset = -20f * dir * p.squash;
-        p.MoveOffset = -5 * bodyDir * p.squash;
-        p.DashOffset = 20 * dir * (1 - p.squash);
+        p.PointDirOffset = -20f * dir * p.Squash;
+        p.MoveOffset = -5 * bodyDir * p.Squash;
+        p.DashOffset = 20 * dir * (1 - p.Squash);
 
         if (!hasDoneSelectAnimation)
             WantsOpen = false;
@@ -145,7 +145,7 @@ public class Book : Weapon
             }
             float sin = Mathf.Abs(MathF.Sin(percent * Mathf.PI));
             sin *= sin;
-            bonusPDirOffset += 5 * dir * p.squash - 15 * sin * dir;
+            bonusPDirOffset += 5 * dir * p.Squash - 15 * sin * dir;
             targetScale = new Vector3(1 + sin * 0.1f, 1.1f - sin * 0.1f, 1);
             attemptedPosition.y += sin * 0.1f;
             AttackRight--;
@@ -163,7 +163,7 @@ public class Book : Weapon
             float sin = MathF.Sin(percent * MathF.PI) * dir2;
             targetScale = new Vector3(1 + percent * 0.1f * iPer * dir2, 1 + sin * 0.4f * dir2 - percent * 0.4f * iPer * dir2, 1);
             attemptedPosition.y += sin * (Open ? .5f : 1.5f);
-            bonusPDirOffset += 52 * Mathf.Min(1, 2 * percent) * dir * p.squash;
+            bonusPDirOffset += 52 * Mathf.Min(1, 2 * percent) * dir * p.Squash;
             if (OpeningAnimationTimer >= timeToOpenClose)
             {
                 for (int i = 0; i < 36; ++i)
