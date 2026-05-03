@@ -23,14 +23,18 @@ public static class LayerHelper
     public const int TrailSortingOrder = -1;
     public const int ShopGachaponSortingOrder = -1;
     public const int ChestSortingOrder = -1;
+    public const int Enemy = -1;
 
-    public const int PlayerEnemyWorldObj = 0;
+    public const int Player = 0;
     public const int FloraSortingOrder = 0; //All ground decor
     public const int CrucibleSortingOrder = 0;
     public const int SolidTileSortingOrder = 1;
     public const int RestockMachineTopSortingOrder = 1; //Restock Machine (TOP)
     public const int SpecialHatSortingOrder = 2; //Bulb, Crown
+    public const int OverBorderShadowSortingOrder = 2;
     public const int WeaponSortingOrder = 3;
+
+    public const int TreeSortingOrder = 20;
 
     //-----------------------------------
     //       Player Sorting Group (sublayers)

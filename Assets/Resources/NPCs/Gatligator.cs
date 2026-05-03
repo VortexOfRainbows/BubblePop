@@ -129,6 +129,7 @@ public class Gatligator : Enemy
             b.localPosition = new Vector3(circular.x, circular.y, scaleFactor * 0.005f);
             b.localScale = Vector3.one * (1 - 0.1f * scaleFactor);
             var sr = b.GetComponent<SpriteRenderer>();
+            sr.sortingOrder = -(int)(scaleFactor * 5) - 5;
             if (!IsDummy)
                 sr.color = MainBodyRenderer.color;
             sr.color = Color.Lerp(sr.color, Color.black, 0.4f + 0.4f * scaleFactor);

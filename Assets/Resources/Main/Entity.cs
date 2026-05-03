@@ -92,7 +92,7 @@ public partial class Entity : MonoBehaviour
     }
     public void Update()
     {
-        if (this is not Player && (this is not Enemy e || !e.IsDummy))
+        if (this is not Player && (this is not Enemy e || !e.IsDummy) && !Main.GamePaused)
         {
             if (DamageTaken > 0)
             {

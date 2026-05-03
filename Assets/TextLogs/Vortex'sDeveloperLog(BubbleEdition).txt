@@ -2,8 +2,7 @@ Bubble Developer Log (Vortex)
 
 Do Later:
 1. Layer Fixes
-	1. Reintroduce tree-shadows to the border layer
-		1. Shadows from the cola bottle throw may not appear, but that's probably okay for now (a more advanced system for stuff like this can be developed later)
+	1. Shadows from the cola bottle throw may not appear, but that's probably okay for now (a more advanced system for stuff like this can be developed later)
 	2. Move particles to a higher-order layer
 	3. Move enemies back to layer -1 (and get as many of them to use sorting group as possible (rock golem might not be possible, or it might help a lot))
 	4. Playtest to double check that relations seem to be appropriate
@@ -34,7 +33,6 @@ Need to do:
 11. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
 12. FIX NEEDED FOR CHOICE MENU (THE HIDE BUTTON IS CURRENTLY NOT CENTERED CORRECTLY DUE TO THE CRUCIBLE CHANGES)
 13. Add glow to the crucible and fix the issue where the power-up glow disappears suddenly
-14. Ask art to do a progress check
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -49,10 +47,11 @@ Done:
 
 5/3/26
 1. Double back on a ton of sorting stuff
-2. Chicken Sorting Group
+2. Chicken, Sentinel, Super Sentinel, Crow, Ent, Gatligator Sorting Group and moved to -1
 3. Fix group display in compendium for enemies and equipment
 4. Fix stone wall asset issue
 5. Chest and Gachapon shop and Restock machine sorting changes
+6. Fix bug where enemy colors might change slightly while paused (especially noticeable on gatligator)
 
 5/2/26
 1. Sorting Groups WIP:
