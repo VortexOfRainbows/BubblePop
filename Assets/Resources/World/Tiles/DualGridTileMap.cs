@@ -8,7 +8,9 @@ public class DualGridTilemap : MonoBehaviour
     public static GameObject BubbleMushroom;  
     public static GameObject VisualMapPrefab;
     public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
-    public Transform Visual;
+    public Transform FloorMapParent;
+    public Transform WallMapParent;
+    public Transform BorderMapParent;
     public Transform DecorVisual;
     private Dictionary<int, Tilemap> DisplayMap;
     private Dictionary<int, Tilemap> BorderDisplayMap;
@@ -24,16 +26,16 @@ public class DualGridTilemap : MonoBehaviour
         DisplayMap = new();
         BorderDisplayMap = new();
         WallDisplayMap = new();
-        PrepareDisplayMap(Visual, DisplayMap, LayerHelper.FloorTileSortingOrder);
+        PrepareDisplayMap(FloorMapParent, DisplayMap);
         AddDecor(Color.white, -20);
         //-49 is for occlusion for now
-        PrepareDisplayMap(Visual, BorderDisplayMap, LayerHelper.SolidTileSortingOrder, border: true);
+        PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
         AddDecor(new Color(0.5f, 0.5f, 0.5f), -30, true);
-        PrepareDisplayMap(Visual, WallDisplayMap, LayerHelper.WallTileSortingOrder, wall: true);
+        PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
         RefreshDisplayTilemap(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
         //GetComponent<TilemapRenderer>().enabled = false;
     }
-    public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, int orderOffset, bool border = false, bool wall = false)
+    public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, bool border = false, bool wall = false)
     {
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
@@ -47,7 +49,6 @@ public class DualGridTilemap : MonoBehaviour
                 TilemapRenderer r = DisplayMap[k].GetComponent<TilemapRenderer>();
                 float layerOffset = tile.LayerOffset;
                 float wallGridTransform = 0;
-                int order = orderOffset;
                 if(tile.CountsAsWall())
                 {
                     wallGridTransform = -0.425f;
@@ -71,7 +72,7 @@ public class DualGridTilemap : MonoBehaviour
                 //    r.material = OverlayMats.Overlays[0];
                 //}
 
-                r.sortingOrder = order;
+                r.sortingOrder = -(int)layerOffset;
                 t.gameObject.name = $"{(wall ? "WALL" : border ? "Solid" : "Floor")}[{k}]: {tile.name}";
                 t.color = c;
             }

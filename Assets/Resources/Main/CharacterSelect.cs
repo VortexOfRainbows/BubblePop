@@ -363,7 +363,7 @@ public class CharacterSelect : MonoBehaviour
         }
 
         Equipment oldEquipment = equip;
-        equip = Instantiate(equipPrefab, player.Visual.transform).GetComponent<Equipment>();
+        equip = Instantiate(equipPrefab, oldEquipment.transform.parent).GetComponent<Equipment>();
         equip.Player = player;
         equip.p = player.Animator;
         if (i == 1)

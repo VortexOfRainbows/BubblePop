@@ -75,7 +75,7 @@ public class LayerToolEditor : Editor
         // Add a button in the inspector
         if (GUILayout.Button("Search"))
         {
-            myData.SearchForNests();
+            myData.Search();
 
             // Mark the object as dirty so changes are saved
             EditorUtility.SetDirty(myData);

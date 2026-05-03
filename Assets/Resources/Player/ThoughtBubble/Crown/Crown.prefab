@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8187517550139534184}
   - component: {fileID: 9156104136230805221}
+  - component: {fileID: 7637873511616163732}
   m_Layer: 3
   m_Name: Crown
   m_TagString: Untagged
@@ -67,6 +68,18 @@ MonoBehaviour:
   - {fileID: 7114408942994486371}
   - {fileID: 1840699159349059247}
   - {fileID: 299234862342262867}
+--- !u!210 &7637873511616163732
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4047993882583738873}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 2
+  m_SortAtRoot: 1
 --- !u!1001 &629446077959237718
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3187629306724120658
 Transform:
   m_ObjectHideFlags: 0
@@ -29,7 +29,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4439646451783487447}
   m_Father: {fileID: 7046234285421291866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &2159903354596140659
@@ -42,7 +43,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 3
   m_SortAtRoot: 1
 --- !u!1 &2904879408648245512
 GameObject:
@@ -54,6 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7046234285421291866}
   - component: {fileID: 6147547588852434854}
+  - component: {fileID: 2153764744254346390}
   m_Layer: 3
   m_Name: Visual
   m_TagString: Untagged
@@ -75,7 +77,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3187629306724120658}
-  - {fileID: 4439646451783487447}
   - {fileID: 4981973282153690138}
   - {fileID: 7232897044086735031}
   - {fileID: 4300367830045641871}
@@ -103,6 +104,18 @@ MonoBehaviour:
   Accessory: {fileID: 6990591328264648732}
   lastVelo: {x: 0, y: 0}
   DeathKillTimer: 0
+--- !u!210 &2153764744254346390
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904879408648245512}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &6670607549082870492
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +130,6 @@ GameObject:
   - component: {fileID: 3064196507933498685}
   - component: {fileID: 4611052802867087265}
   - component: {fileID: 6764482308808858809}
-  - component: {fileID: 2967719479654593176}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -406,18 +418,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!210 &2967719479654593176
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6670607549082870492}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_SortAtRoot: 1
 --- !u!1 &7404230446468568920
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,7 +876,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7046234285421291866}
+    m_TransformParent: {fileID: 3187629306724120658}
     m_Modifications:
     - target: {fileID: 5971252943124798424, guid: e7d67ac7adef0454a96cab6df826ac8e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

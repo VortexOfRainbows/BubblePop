@@ -382,10 +382,10 @@ public partial class Player : Entity
     public int GetShield() => Shield;
     public PowerUp MostRecentPower = null;
     #region Animator References
-    public Body Body { get => Animator.Body; set => Animator.Body = value; }
-    public Weapon Weapon { get => Animator.Weapon; set => Animator.Weapon = value; }
-    public Hat Hat { get => Animator.Hat; set => Animator.Hat = value; }
-    public Accessory Accessory { get => Animator.Accessory; set => Animator.Accessory = value; }
+    public ref Body Body => ref Animator.Body;
+    public ref Weapon Weapon => ref Animator.Weapon;
+    public ref Hat Hat => ref Animator.Hat;
+    public ref Accessory Accessory => ref Animator.Accessory;
     public Equipment[] Equips => new Equipment[] { Hat, Accessory, Weapon, Body };
     public PlayerAnimator Animator;
     public new Rigidbody2D RB => Animator.rb;

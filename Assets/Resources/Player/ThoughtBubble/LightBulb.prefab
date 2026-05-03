@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4202555129054916843}
   - component: {fileID: 5504552361687680898}
   - component: {fileID: 5501591291407721065}
+  - component: {fileID: 7552803833071186862}
   m_Layer: 3
   m_Name: LightBulb
   m_TagString: Untagged
@@ -104,6 +105,18 @@ MonoBehaviour:
   OnBulb: {fileID: 21300000, guid: e160e06f6faaa1d41bef273fd4a86171, type: 3}
   OffBulb: {fileID: 21300000, guid: 1307fb9504737084b8ef9c5138c73d45, type: 3}
   light2d: {fileID: 6309688847560465880}
+--- !u!210 &7552803833071186862
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4987507766819511455}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 2
+  m_SortAtRoot: 1
 --- !u!1001 &2730700649566332454
 PrefabInstance:
   m_ObjectHideFlags: 0

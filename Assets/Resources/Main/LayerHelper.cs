@@ -12,6 +12,7 @@ public static class LayerHelper
 
     //-------------BACKGROUND------------
     public const int FloorTileSortingOrder = -1;
+    public const int WallTileSortingOrder = 0;
 
 
 
@@ -28,12 +29,11 @@ public static class LayerHelper
     public const int TrailSortingOrder = -1;
 
     //-------------FOREGROUND------------
-    public const int PlayerSortingOrder = 0;
-    public const int EnemySortingOrder = 0;
+    public const int PlayerEnemyWorldObj = 0;
     public const int FloraSortingOrder = 0; //All ground decor
-    public const int SolidTileSortingOrder = 0;
-    public const int WallTileSortingOrder = 0;
-    public const int WorldObjSortingOrder = 0; //Crucible, Chests, Stuff Like That
+    public const int SolidTileSortingOrder = 1;
+    public const int SpecialHatSortingOrder = 2; //Bulb, Crown
+    public const int WeaponSortingOrder = 3;
 
 
     //-----------------------------------
@@ -46,14 +46,10 @@ public static class LayerHelper
     public const int Face = 1;
     public const int OverBody = 2;
     public const int Hat = 3;
-    public const int Weapon = 4;
-
-
 
     //-----------------------------------
     //          DEFAULT LAYER (not yet integrated)
     //-----------------------------------
-    public const int WeaponSortingOrder = 4;
     public const int Projectile = 5;
     public const int ShadowSortingOrder = -50;
     public const int InWorldUIElement = 10; //Boss/Skull health bars

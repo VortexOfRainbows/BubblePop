@@ -245,7 +245,7 @@ public class SlotMachineWeapon : Weapon
                     Hitbox.Friendly = true;
                     if (Trail == null)
                     {
-                        Trail = SpecialTrail.NewTrail(Hitbox.transform, ColorHelper.RarityColors[4] * 0.6f, 1.9f, 0.25f * (WindUpTime - RightClickEndLag) * Time.fixedDeltaTime / MathF.Sqrt(Player.SecondaryAttackSpeedModifier), 0.1f, true, orderInLayer: 0);
+                        Trail = SpecialTrail.NewTrail(Hitbox.transform, ColorHelper.RarityColors[4] * 0.6f, 1.9f, 0.25f * (WindUpTime - RightClickEndLag) * Time.fixedDeltaTime / MathF.Sqrt(Player.SecondaryAttackSpeedModifier), 0.1f, true, orderInLayer: 2);
                     }
                 }
                 UpdateCoins(1, iPer);
