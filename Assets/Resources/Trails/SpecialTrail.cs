@@ -5,7 +5,8 @@ using UnityEngine;
 public class SpecialTrail : MonoBehaviour
 {
     public static GameObject TrailPrefab => Resources.Load<GameObject>("Trails/FollowerTrail");
-    public static SpecialTrail NewTrail(Transform parent, Color c, float width = 1f, float length = 1f, float texScaleY = 0.2f, bool manuallyUpdated = false)
+    public static SpecialTrail NewTrail(Transform parent, Color c, 
+        float width = 1f, float length = 1f, float texScaleY = 0.2f, bool manuallyUpdated = false, int orderInLayer = 2)
     {
         SpecialTrail t = Instantiate(TrailPrefab).GetComponent<SpecialTrail>();
         t.Trail.startColor = c;
@@ -18,6 +19,7 @@ public class SpecialTrail : MonoBehaviour
         t.FakeParent = parent;
         t.transform.position = parent.transform.position;
         t.ManuallyUpdated = manuallyUpdated;
+        t.Trail.sortingOrder = orderInLayer;
         return t;
     }
     public Transform FakeParent;
@@ -38,7 +40,7 @@ public class SpecialTrail : MonoBehaviour
         }
         else
         {
-            transform.position = FakeParent.position;
+            transform.position = new Vector3(FakeParent.position.x, FakeParent.position.y, FakeParent.position.z + 0.01f);
         }
     }
     private void FixedUpdate()

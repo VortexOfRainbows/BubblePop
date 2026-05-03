@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 71fefb80e05ccf4499ac66d258510ff2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -156,7 +156,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 2ca20f0958aae064191102a2991f4a2a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8250932711219498875}
-  - component: {fileID: 2589045313495851660}
+  - component: {fileID: 8568634409820030331}
   m_Layer: 3
   m_Name: Face
   m_TagString: Untagged
@@ -202,7 +202,7 @@ Transform:
   - {fileID: 7906541514658284165}
   m_Father: {fileID: 5335490131377714205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &2589045313495851660
+--- !u!212 &8568634409820030331
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,16 +242,16 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 71fefb80e05ccf4499ac66d258510ff2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.52666664, y: 0.09777778}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7131982008464017312
@@ -389,7 +389,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0}
   hasInit: 0
   PrimaryColor: {r: 0.8, g: 0.7, b: 0.56, a: 0.5}
-  FaceR: {fileID: 2589045313495851660}
+  FaceR: {fileID: 8568634409820030331}
   Skateboard: {fileID: 2758288789175135842}
   Wheel1: {fileID: 8071887009297716239}
   Wheel2: {fileID: 4786371891637676462}
@@ -456,13 +456,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3725885959336098932, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1338822402992626554}
   m_SourcePrefab: {fileID: 100100000, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}
 --- !u!1 &2758288789175135842 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3725885959336098932, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}
   m_PrefabInstance: {fileID: 1581441319156191766}
   m_PrefabAsset: {fileID: 0}
+--- !u!210 &1338822402992626554
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758288789175135842}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -2
+  m_SortAtRoot: 0
 --- !u!4 &2930385766994779788 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4420488455939394714, guid: 274981063be497a4bbe511aa6d05b4c0, type: 3}

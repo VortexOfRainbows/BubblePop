@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 #if UNITY_EDITOR
 [CreateAssetMenu(fileName = "LayerHelperTool", menuName = "LayerHelperTool")]
@@ -10,6 +11,24 @@ public class LayerHelperTool : ScriptableObject
     public List<int> IgnoreOrder = new();
     public List<GameObject> final;
     public bool IgnoreNodes = true;
+    public void SearchForNests()
+    {
+        final = new();
+        var objs = Resources.LoadAll<GameObject>(Path);
+        foreach (GameObject obj in objs)
+        {
+            if (obj.TryGetComponent<WorldNode>(out _) && IgnoreNodes)
+                continue;
+            var sr = obj.GetComponentsInChildren<SpriteRenderer>();
+            if (sr.Length > 1)
+            {
+                if (obj.TryGetComponent<SortingGroup>(out _))
+                    continue;
+                Debug.Log("Discovered Object Without Sorting Group: " + obj.name, obj);
+                final.Add(obj);
+            }
+        }
+    }
     public void Search()
     {
         final = new();
@@ -56,7 +75,7 @@ public class LayerToolEditor : Editor
         // Add a button in the inspector
         if (GUILayout.Button("Search"))
         {
-            myData.Search();
+            myData.SearchForNests();
 
             // Mark the object as dirty so changes are saved
             EditorUtility.SetDirty(myData);

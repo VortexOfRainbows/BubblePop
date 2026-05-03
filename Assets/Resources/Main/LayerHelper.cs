@@ -25,6 +25,7 @@ public static class LayerHelper
     public const int FloorObjSortingLayer = -2; //Power Pillows
     public const int PickupSortingOrder = -1; //Coins, Keys, Powers, Etc.
     public const int PortalSortingOrder = -1;
+    public const int TrailSortingOrder = -1;
 
     //-------------FOREGROUND------------
     public const int PlayerSortingOrder = 0;
@@ -35,6 +36,17 @@ public static class LayerHelper
     public const int WorldObjSortingOrder = 0; //Crucible, Chests, Stuff Like That
 
 
+    //-----------------------------------
+    //       Player Sorting Group
+    //-----------------------------------
+    public const int CapeBack = -3;
+    public const int Skateboard = -2;
+    public const int BehindBody = -1;
+    public const int Body = 0;
+    public const int Face = 1;
+    public const int OverBody = 2;
+    public const int Hat = 3;
+    public const int Weapon = 4;
 
 
 

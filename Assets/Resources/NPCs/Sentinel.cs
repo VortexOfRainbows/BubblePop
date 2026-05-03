@@ -41,8 +41,7 @@ public class Sentinel : Enemy
     public Color Green => UsePurpleColors ? ColorHelper.SentinelMagenta : ColorHelper.SentinelGreen;
     public override void OnSpawn()
     {
-        MyTrail = SpecialTrail.NewTrail(Rings[0], Blue.WithAlpha(0.75f), 0.5f, 0.75f);
-        MyTrail.Trail.sortingOrder = -2;
+        MyTrail = SpecialTrail.NewTrail(Rings[0], Blue.WithAlpha(0.75f), 0.5f, 0.75f, orderInLayer: -2);
         MyTrail.Trail.endColor = Green.WithAlpha(0);
     }
     public override void AI()

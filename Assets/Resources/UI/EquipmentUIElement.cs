@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 public class EquipmentUIElement : MonoBehaviour
 {
     public const int UILayer = 5;
@@ -91,6 +92,11 @@ public class EquipmentUIElement : MonoBehaviour
     {
         //ActiveEquipment.spriteRender.sortingLayerID = ID;
         //ActiveEquipment.spriteRender.sortingOrder += offset;
+        if (ActiveEquipment.TryGetComponent<SortingGroup>(out SortingGroup s2))
+        {
+            s2.sortingLayerID = ID;
+            s2.sortingOrder += offset;
+        }
         foreach (SpriteRenderer s in ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
         {
             s.sortingLayerID = ID;

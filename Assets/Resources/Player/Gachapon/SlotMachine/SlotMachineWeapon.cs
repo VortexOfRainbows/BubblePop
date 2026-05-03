@@ -245,8 +245,7 @@ public class SlotMachineWeapon : Weapon
                     Hitbox.Friendly = true;
                     if (Trail == null)
                     {
-                        Trail = SpecialTrail.NewTrail(Hitbox.transform, ColorHelper.RarityColors[4] * 0.6f, 1.9f, 0.25f * (WindUpTime - RightClickEndLag) * Time.fixedDeltaTime / MathF.Sqrt(Player.SecondaryAttackSpeedModifier), 0.1f, true);
-                        Trail.Trail.sortingOrder = 2;
+                        Trail = SpecialTrail.NewTrail(Hitbox.transform, ColorHelper.RarityColors[4] * 0.6f, 1.9f, 0.25f * (WindUpTime - RightClickEndLag) * Time.fixedDeltaTime / MathF.Sqrt(Player.SecondaryAttackSpeedModifier), 0.1f, true, orderInLayer: 0);
                     }
                 }
                 UpdateCoins(1, iPer);
@@ -277,7 +276,9 @@ public class SlotMachineWeapon : Weapon
                     while (iPer > nextInterval)
                     {
                         AudioManager.PlaySound(SoundID.CoinPickup, BatterUpCenter.position, 0.3f, 1.4f + nextInterval * 0.1f, 0);
-                        BatterUpTokens.Add(Instantiate(BatterUpToken, BatterUpCenter.position, Quaternion.identity).transform);
+                        Transform t = Instantiate(BatterUpToken, BatterUpCenter.position, Quaternion.identity).transform;
+                        t.parent = Player.transform;
+                        BatterUpTokens.Add(t);
                         TokenShots++;
                         nextInterval = 1f / (Player.BatterUp + 1) * (TokenShots + 1);
                     }
@@ -346,7 +347,8 @@ public class SlotMachineWeapon : Weapon
             float sin = Mathf.Sin((iInter * 0.33f + 0.67f * iInter * iInter) * Mathf.PI);
             float angleOffset = MAXangleOffset * percent - MINangleOffset * percent * iInter;
             Vector2 target = ((Vector2)previousAttemptedPosition).RotatedBy(angleOffset) * (1.9f + bonus * sin - iInter * 0.3f);
-            coin.transform.position = coin.transform.position.Lerp(Player.Position + target, 0.04f + 0.12f * percent);
+            Vector3 pos = coin.transform.position.Lerp(Player.Position + target, 0.04f + 0.12f * percent);
+            coin.transform.position = pos;
 
             coin.transform.localScale = new Vector3(Mathf.Abs(coin.transform.localScale.x), coin.transform.localScale.y, 1);
             coin.transform.LerpLocalScale(Vector2.one * size, 0.1f);
