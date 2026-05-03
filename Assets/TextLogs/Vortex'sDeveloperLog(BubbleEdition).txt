@@ -1,7 +1,12 @@
 Bubble Developer Log (Vortex)
 
 Do Later:
-1. Layer Fixes (right now things should mostly be ok*, but make future content more organized)
+1. Layer Fixes
+	1. Reintroduce tree-shadows to the border layer
+		1. Shadows from the cola bottle throw may not appear, but that's probably okay for now (a more advanced system for stuff like this can be developed later)
+	2. Move particles to a higher-order layer
+	3. Move enemies back to layer -1 (and get as many of them to use sorting group as possible (rock golem might not be possible, or it might help a lot))
+	4. Playtest to double check that relations seem to be appropriate
 2. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
 3. Integrate Compendium into the pause menu
@@ -29,6 +34,7 @@ Need to do:
 11. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
 12. FIX NEEDED FOR CHOICE MENU (THE HIDE BUTTON IS CURRENTLY NOT CENTERED CORRECTLY DUE TO THE CRUCIBLE CHANGES)
 13. Add glow to the crucible and fix the issue where the power-up glow disappears suddenly
+14. Ask art to do a progress check
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -45,6 +51,8 @@ Done:
 1. Double back on a ton of sorting stuff
 2. Chicken Sorting Group
 3. Fix group display in compendium for enemies and equipment
+4. Fix stone wall asset issue
+5. Chest and Gachapon shop and Restock machine sorting changes
 
 5/2/26
 1. Sorting Groups WIP:
