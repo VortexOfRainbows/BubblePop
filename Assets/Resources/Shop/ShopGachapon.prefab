@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7710747734503710076}
   - component: {fileID: 7482800386599377654}
   - component: {fileID: 8691471864086795411}
-  - component: {fileID: 4870930668747883590}
   - component: {fileID: 326224477751605865}
   m_Layer: 10
   m_Name: ShopGachapon
@@ -51,12 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MyPlayer: {fileID: 0}
   DropShadow: {fileID: 0}
-  PointDirOffset: 0
-  MoveOffset: 0
-  DashOffset: 0
   RealPlayer: 0
-  squash: 1
-  Bobbing: 1
   rb: {fileID: 7482800386599377654}
   Body: {fileID: 5298368141808594849}
   Weapon: {fileID: 0}
@@ -108,58 +102,6 @@ MonoBehaviour:
   HasCalledInit: 0
   RB: {fileID: 0}
   p: {fileID: 7710747734503710076}
---- !u!212 &4870930668747883590
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268744164881615657}
-  m_Enabled: 0
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!114 &326224477751605865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,6 +387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4034649226375180949}
   - component: {fileID: 2873304989739514125}
+  - component: {fileID: 2520236277846385839}
   m_Layer: 10
   m_Name: GachaponVisual
   m_TagString: Untagged
@@ -506,6 +449,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.15}
   serializedVersion: 2
   m_Radius: 1.1
+--- !u!210 &2520236277846385839
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5057068482299052583}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -1
+  m_SortAtRoot: 0
 --- !u!1 &5365178420219167164
 GameObject:
   m_ObjectHideFlags: 0
