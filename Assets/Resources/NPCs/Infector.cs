@@ -72,6 +72,10 @@ public class Infector : Enemy
             circular.y += Mathf.Sin(bobbing) * 0.03f;
             float scale = 1 - circular.z * 0.2f;
             Shards[i].transform.localPosition = Shards[i].transform.localPosition.Lerp(circular, lerp);
+            if(Shards[i].transform.localPosition.z < 0)
+                Shards[i].sortingOrder = 0;
+            else
+                Shards[i].sortingOrder = -2;
             Shards[i].transform.localEulerAngles = Mathf.LerpAngle(Shards[i].transform.localEulerAngles.z, normX * -30, lerp) * Vector3.forward;
             Shards[i].transform.LerpLocalScale(Vector2.one * scale * 0.9f, lerp);
             Glows[i].color = Glows[i].color.WithAlpha(Mathf.Lerp(Glows[i].color.a, 1f, 0.08f));

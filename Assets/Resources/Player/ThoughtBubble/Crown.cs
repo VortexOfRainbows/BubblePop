@@ -64,7 +64,11 @@ public class Crown : Bulb
             circular.z = Mathf.Sin(rot) * 0.4f;
             circular.y += Mathf.Sin(bobbing) * 0.04f;
             float scale = 1 - circular.z * 0.2f;
-            Shards[i].transform.LerpLocalPosition(circular, lerp);
+            Shards[i].transform.localPosition = Shards[i].transform.localPosition.Lerp(circular, lerp);
+            if (Shards[i].transform.localPosition.z < 0)
+                Shards[i].GetComponent<SpriteRenderer>().sortingOrder = -1;
+            else
+                Shards[i].GetComponent<SpriteRenderer>().sortingOrder = -2;
             Shards[i].transform.localEulerAngles = Mathf.LerpAngle(Shards[i].transform.localEulerAngles.z, circular.x * -15, lerp) * Vector3.forward;
             Shards[i].transform.LerpLocalScale(Vector2.one * scale, lerp);
             Glows[i].color = Glows[i].color.WithAlpha(Mathf.Lerp(Glows[i].color.a, 1f, 0.08f));
