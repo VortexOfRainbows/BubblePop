@@ -343,10 +343,10 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 375
+    m_Bits: 3967
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -358,28 +358,28 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8514278307800113147}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 136
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 375
+    m_Bits: 3967
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 128
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -399,6 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 4832345194999399984}
+  c2D: {fileID: 8551533174166625518}
   YieldType: 4
   Value: 1
   AttractTimer: 0
@@ -406,6 +407,7 @@ MonoBehaviour:
   BeforeCollectableTimer: 0
   HeartVisual: {fileID: 7664207221050086021}
   Text: {fileID: 878937961216035241}
+  TimeStuckInTile: 0
 --- !u!1001 &6572024522367575513
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -52,5 +52,8 @@ public static class LayerHelper
     //-----------------------------------
     public const int Projectile = 5;
     public const int InWorldUIElement = 10; //Boss/Skull health bars
+    public const int ParticleFront = 10;
+    public const int ParticleBack = -15;
+    public const int ParticleLightning = -6;
     public const int ArbitraryCompendiumUISpriteMask = 30;
 }

@@ -2,9 +2,7 @@ Bubble Developer Log (Vortex)
 
 Do Later:
 1. Layer Fixes
-	1. Shadows from the cola bottle throw may not appear, but that's probably okay for now (a more advanced system for stuff like this can be developed later)
-	2. Move particles to a higher-order layer
-	3. Playtest to double check that relations seem to be appropriate
+	1. Playtest to double check that relations seem to be appropriate
 2. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
 3. Integrate Compendium into the pause menu
@@ -52,6 +50,7 @@ Done:
 5. Chest and Gachapon shop and Restock machine sorting changes
 6. Fix bug where enemy colors might change slightly while paused (especially noticeable on gatligator)
 7. Shadows from trees/stumps now appear over border
+8. Coin collider turned back on, but only for walls
 
 5/2/26
 1. Sorting Groups WIP:

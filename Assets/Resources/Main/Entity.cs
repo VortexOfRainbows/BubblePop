@@ -175,7 +175,7 @@ public partial class Entity : MonoBehaviour
         foreach (Animator a in ChildAnimators)
             a.UpdateAnimation();
     }
-    public static void PushIntoClosestPossibleTile(Transform transform, Rigidbody2D RB, int snapDist = 20, bool includeProgressionBounds = false, Vector2 offset = default)
+    public static bool PushIntoClosestPossibleTile(Transform transform, Rigidbody2D RB, int snapDist = 20, bool includeProgressionBounds = false, Vector2 offset = default)
     {
         Vector2[] dirs = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1),
             new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
@@ -188,6 +188,7 @@ public partial class Entity : MonoBehaviour
         RB.velocity *= 0.95f;
         Vector2 veloOffset = -RB.velocity * Time.fixedDeltaTime;
         float closestDist = float.MaxValue;
+        bool wasPushed = false;
         for (int j = 1; j < snapDist; ++j)
         {
             for (int i = 0; i < 8; ++i)
@@ -213,6 +214,9 @@ public partial class Entity : MonoBehaviour
             if (closestDist < snapDist * 1.5f)
                 break;
         }
+        if (finalPos != pos)
+            wasPushed = true;
         transform.position = finalPos;
+        return wasPushed;
     }
 }

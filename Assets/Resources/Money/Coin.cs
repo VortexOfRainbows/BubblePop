@@ -10,6 +10,7 @@ public class Coin : MonoBehaviour
     public bool IsGem => YieldType == 4;
     public bool IsShard => YieldType == 5;
     public Rigidbody2D rb;
+    public Collider2D c2D;
     public int YieldType = 0;
     public int Value;
     public float AttractTimer = 0;
@@ -80,6 +81,7 @@ public class Coin : MonoBehaviour
             attractDist *= 1.25f;
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
+        bool beingAttracted = false;
         if (length < attractDist && (BeforeCollectableTimer <= 0 || IsHeart) && CanCollect())
         {
             float attractSpeed = 3 + p.Magnet + (++AttractTimer) / 30f;
@@ -90,9 +92,8 @@ public class Coin : MonoBehaviour
             float speed = rb.velocity.magnitude;
             float maxSpeed = attractDist + attractSpeed;
             if (speed > maxSpeed)
-            {
                 rb.velocity *= maxSpeed / speed; //Max out the velocity at the length to player, so it doesn't move to fast when it is close
-            }
+            beingAttracted = true;
         }
         else
         {
@@ -186,7 +187,19 @@ public class Coin : MonoBehaviour
             }
             HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 200f) + 0.1f, HeartVisual.transform.localPosition.z);
         }
+
+        if (!beingAttracted && !World.WithinBorders(transform.position, false))
+        {
+            ++TimeStuckInTile;
+            if (TimeStuckInTile > 500)
+                Entity.PushIntoClosestPossibleTile(transform, rb, 20, false);
+        }
+        else
+            TimeStuckInTile = 0;
+
+        c2D.enabled = !beingAttracted;
     }
+    public float TimeStuckInTile = 0;
     public void OnCollected()
     {
         if(IsShard)
