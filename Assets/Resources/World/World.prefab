@@ -510,6 +510,37 @@ SortingGroup:
   m_SortingLayer: -1
   m_SortingOrder: 1
   m_SortAtRoot: 0
+--- !u!1 &4019289369470496616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7288830759750587840}
+  m_Layer: 0
+  m_Name: BorderVisuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7288830759750587840
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019289369470496616}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.5, y: -0.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5548875619580134651}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4755496157421195659
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,7 +825,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8109859531356348073}
   m_Layer: 0
-  m_Name: DecorVisual
+  m_Name: FloorVisuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -886,6 +917,7 @@ Transform:
   m_Children:
   - {fileID: 2479709917760063607}
   - {fileID: 8109859531356348073}
+  - {fileID: 7288830759750587840}
   - {fileID: 3422961828959495876}
   - {fileID: 4116022286876117940}
   - {fileID: 6011437181412127829}
@@ -1101,7 +1133,8 @@ MonoBehaviour:
   FloorMapParent: {fileID: 5160833004172421677}
   WallMapParent: {fileID: 1238802027179873516}
   BorderMapParent: {fileID: 3806874187643314450}
-  DecorVisual: {fileID: 8109859531356348073}
+  FloorDecorParent: {fileID: 8109859531356348073}
+  BorderDecorParent: {fileID: 7288830759750587840}
   Map: {fileID: 431813995446221663}
 --- !u!1 &7824214731170895280
 GameObject:

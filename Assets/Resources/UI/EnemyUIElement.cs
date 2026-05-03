@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class EnemyUIElement : MonoBehaviour
@@ -59,6 +60,11 @@ public class EnemyUIElement : MonoBehaviour
             foreach (Transform t in obj.GetComponentsInChildren<Transform>())
                 t.gameObject.layer = UILayer;
             int layer = Main.UICameraLayerID;
+            foreach (SortingGroup s in MyEnemy.GetComponentsInChildren<SortingGroup>())
+            {
+                s.sortingOrder += AddedDrawOrder;
+                s.sortingLayerID = layer; //UI camera layer
+            }
             foreach (SpriteRenderer r in MyEnemy.GetComponentsInChildren<SpriteRenderer>())
             {
                 if (r.sortingOrder <= -50) //This is shadow
@@ -69,7 +75,7 @@ public class EnemyUIElement : MonoBehaviour
                         r.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                     r.sortingOrder += AddedDrawOrder;
                 }
-                r.sortingLayerID =layer; //UI camera layer
+                r.sortingLayerID = layer; //UI camera layer
             }
         }
     }

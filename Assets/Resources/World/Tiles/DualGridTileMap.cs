@@ -11,7 +11,8 @@ public class DualGridTilemap : MonoBehaviour
     public Transform FloorMapParent;
     public Transform WallMapParent;
     public Transform BorderMapParent;
-    public Transform DecorVisual;
+    public Transform FloorDecorParent;
+    public Transform BorderDecorParent;
     private Dictionary<int, Tilemap> DisplayMap;
     private Dictionary<int, Tilemap> BorderDisplayMap;
     private Dictionary<int, Tilemap> WallDisplayMap;
@@ -27,10 +28,10 @@ public class DualGridTilemap : MonoBehaviour
         BorderDisplayMap = new();
         WallDisplayMap = new();
         PrepareDisplayMap(FloorMapParent, DisplayMap);
-        AddDecor(Color.white, -20);
+        AddDecor(Color.white);
         //-49 is for occlusion for now
         PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
-        AddDecor(new Color(0.5f, 0.5f, 0.5f), -30, true);
+        AddDecor(new Color(0.5f, 0.5f, 0.5f), true);
         PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
         RefreshDisplayTilemap(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
         //GetComponent<TilemapRenderer>().enabled = false;
@@ -128,9 +129,11 @@ public class DualGridTilemap : MonoBehaviour
             }
         }
     }
-    public void AddDecor(Color c, int order, bool border = false)
+    public void AddDecor(Color c, bool border = false)
     {
+        Transform Parent = border ? BorderDecorParent : FloorDecorParent;
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        int order = border ? LayerHelper.SolidTileSortingOrder : LayerHelper.FloorObjSortingLayer;
         left += 10;
         right -= 10;
         bottom += 10;
@@ -157,7 +160,7 @@ public class DualGridTilemap : MonoBehaviour
                 if (isGrassTile && Utils.RandFloat() < 0.16f * mult)
                 {
                     int type = Utils.RandInt(3);
-                    var g = Instantiate(TallGrass, DecorVisual).GetComponent<SpriteRenderer>();
+                    var g = Instantiate(TallGrass, Parent).GetComponent<SpriteRenderer>();
                     if (type == 0)
                     {
                         g.sprite = Main.TextureAssets.TallGrass[Utils.RandInt(Main.TextureAssets.TallGrass.Length)];
@@ -184,7 +187,7 @@ public class DualGridTilemap : MonoBehaviour
                     float chance = isDirtTile ? 0.1f : 0.05f;
                     if (Utils.RandFloat() < chance)
                     {
-                        var g = Instantiate(Mushroom, DecorVisual).GetComponent<SpriteRenderer>();
+                        var g = Instantiate(Mushroom, Parent).GetComponent<SpriteRenderer>();
                         g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
                         g.color = c;
                         g.sortingOrder = order;
@@ -201,7 +204,7 @@ public class DualGridTilemap : MonoBehaviour
                     if (Utils.RandFloat() < chance)
                     {
                         Color c2 = border ? new Color(0.825f, 0.825f, 0.825f) : c;
-                        var g = Instantiate(BubbleMushroom, DecorVisual).GetComponent<SpriteRenderer>();
+                        var g = Instantiate(BubbleMushroom, Parent).GetComponent<SpriteRenderer>();
                         var childR = g.transform.GetChild(0).GetComponent<SpriteRenderer>();
                         g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
                         g.transform.localScale *= edgeTile ? Utils.RandFloat(0.9f, 1.0f) : Utils.RandFloat(0.7f, 0.9f);
