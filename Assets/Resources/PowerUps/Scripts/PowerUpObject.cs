@@ -55,10 +55,13 @@ public class PowerUpObject : MonoBehaviour
                 PickUp(p);
         }
     }
+    private Color? GlowColor = null;
     public void Update()
     {
-        LightBatch.Request(transform.position, 
-            MyPower.IsBlackMarket() ? ColorHelper.RarityColors[5] : ColorHelper.RarityColors[MyPower.GetRarity() - 1], 1.0f, 3.5f * transform.localScale.x * LightingMultiplier, 0.5f);
+        if (GlowColor.HasValue)
+            LightBatch.Request(transform.position, GlowColor.Value, 1.0f, 3.5f * transform.localScale.x * LightingMultiplier, 0.5f);
+        else
+            GlowColor = MyPower.IsBlackMarket() ? ColorHelper.RarityColors[5] : ColorHelper.RarityColors[MyPower.GetRarity() - 1];
     }
     public void FixedUpdate()
     {

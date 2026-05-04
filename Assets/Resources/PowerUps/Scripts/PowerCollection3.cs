@@ -213,10 +213,6 @@ public class ClusterBombs : PowerUp
     {
         p.ClusterBomb += Stack;
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
-    }
 }
 public class SharpBombs : PowerUp
 {

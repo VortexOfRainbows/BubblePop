@@ -73,9 +73,20 @@ public static class SpriteBatch
 }
 public static class LightBatch
 {
+    public static bool IsInCameraView(Vector3 worldPos)
+    {
+        Vector3 viewportPos = Camera.main.WorldToViewportPoint(worldPos);
+
+        // Check if within viewport range (0 to 1 in X and Y, Z > 0 means in front of camera)
+        return viewportPos.z > 0 &&
+               viewportPos.x >= 0 && viewportPos.x <= 1 &&
+               viewportPos.y >= 0 && viewportPos.y <= 1;
+    }
     public static ref GameObject Light => ref Main.PrefabAssets.LightPrefab;
     public static void Request(Vector2 position, Color color, float intensity, float radius = 1.0f, float falloffStrength = 0.5f)
     {
+        //if (!IsInCameraView(position))
+        //    return;
         var call = new LightBatchCall
         {
             position = position,
