@@ -1,8 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PowerUpObject : MonoBehaviour
 {
+    public SortingGroup group;
     public SpriteRenderer outer;
     public SpriteRenderer adornment;
     public SpriteRenderer inner;
@@ -71,6 +73,7 @@ public class PowerUpObject : MonoBehaviour
             VeloEndTimer += VelocityStyle == 1 ? Time.fixedDeltaTime * 0.75f : Time.fixedDeltaTime;
             if (VeloEndTimer > 1)
                 VeloEndTimer = 1;
+            group.sortingOrder = VeloEndTimer > 0.25f ? LayerHelper.PowerOrder : LayerHelper.PowerAirborneSortingOrder;
             transform.position += (Vector3)velocity * Time.fixedDeltaTime;
             if(VelocityStyle == 1)
                 transform.position = transform.position.Lerp(FinalPosition, VeloEndTimer * VeloEndTimer);
@@ -81,6 +84,7 @@ public class PowerUpObject : MonoBehaviour
         }
         else if(!FakePower)
         {
+            group.sortingOrder = LayerHelper.PowerOrder;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 0.1f);
         }
         outer.transform.localScale = Vector3.Lerp(outer.transform.localScale, new Vector3(2f / scale, 2f * scale, 2), 0.1f);

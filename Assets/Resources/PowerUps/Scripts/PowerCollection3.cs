@@ -276,7 +276,7 @@ public class Restock : PowerUp
         if (GachaponShop.AllShops.Count > 0)
             foreach (GachaponShop shop in GachaponShop.AllShops)
             {
-                shop.RestockRemaining += 2;
+                shop.RestockRemaining += 2 * count;
                 shop.RestockMachine.UpdateUI(shop);
             }
     }

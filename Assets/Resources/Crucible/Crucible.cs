@@ -35,7 +35,9 @@ public class Crucible : MonoBehaviour
     public void Start()
     {
         foreach(SpriteRenderer r in transform.GetComponentsInChildren<SpriteRenderer>())
-            r.sortingOrder = LayerHelper.CrucibleSortingOrder;
+            if(!r.CompareTag("Power"))
+                r.sortingOrder = LayerHelper.CrucibleSortingOrder;
+        HeldPower.group.sortingOrder = LayerHelper.CrucibleSortingOrder;
         HeldPower.gameObject.SetActive(false);
         Text.transform.localScale = Vector2.zero;
         Text.text = "0";
