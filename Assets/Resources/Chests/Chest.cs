@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static Enemy;
 
 public class Chest : MonoBehaviour
@@ -59,6 +60,7 @@ public class Chest : MonoBehaviour
             Open();
         }
     }
+    public SortingGroup Group;
     public CapsuleCollider2D Collider;
     public Rigidbody2D RB;
     public Transform Visual;
@@ -180,6 +182,7 @@ public class Chest : MonoBehaviour
         }
         Collider.enabled = true;
         Hat.enabled = false;
+        Group.sortingOrder = LayerHelper.ChestAirborneSortingOrder;
     }
     public void Start()
     {
@@ -197,6 +200,7 @@ public class Chest : MonoBehaviour
         //}
         if (HasSpawned)
         {
+            Group.sortingOrder = LayerHelper.ChestSortingOrder;
             Visual.transform.LerpLocalEulerZ(0, 0.1f);
             Visual.transform.localPosition = Visual.transform.localPosition * 0.9f;
             if ((Input.GetKey(KeyCode.LeftControl) && Control.Tab && Main.DebugCheats) || OpenAnimation > 0)
@@ -225,6 +229,7 @@ public class Chest : MonoBehaviour
                 Velocity.y -= 0.25f;
                 if (Visual.transform.localPosition.y <= 0)
                 {
+                    Group.sortingOrder = LayerHelper.ChestSortingOrder;
                     Visual.transform.localPosition = new Vector3(0, 0, 0);
                     if (BounceCount > 0)
                     {

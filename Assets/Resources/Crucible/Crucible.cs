@@ -1,15 +1,9 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Crucible : MonoBehaviour
 {
-    //public void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Player"))
-    //        EnableUI();
-    //}
     public void EnableUI()
     {
         if(PowerUpCheatUI.CurrentType == 1)
@@ -41,7 +35,7 @@ public class Crucible : MonoBehaviour
     public void Start()
     {
         foreach(SpriteRenderer r in transform.GetComponentsInChildren<SpriteRenderer>())
-            r.sortingOrder = -6;
+            r.sortingOrder = LayerHelper.CrucibleSortingOrder;
         HeldPower.gameObject.SetActive(false);
         Text.transform.localScale = Vector2.zero;
         Text.text = "0";
@@ -192,6 +186,7 @@ public class Crucible : MonoBehaviour
                 TimeSinceAnim = 0;
                 AudioCounter = 0;
             }
+            Text.text = PowerQueue.Count > 0 ? PowerQueue.Count.ToString() : "";
             HeldPower.gameObject.SetActive(false);
         }
         if (per4 >= 0.5f || per6 > 0)
@@ -233,6 +228,7 @@ public class Crucible : MonoBehaviour
         rotateCounter %= 4;
         float r = (2 + rotateCounter) * 90;
         HeldPower.transform.SetLocalEulerZ(r);
+        HeldPower.LightingMultiplier = Mathf.Clamp(1 - per5 * 3, 0, 1);
         float sin2 = Mathf.Sin(r * Mathf.Deg2Rad);
         Joint1.transform.SetLocalEulerZ(sin2 * sin2 * 45 - 180);
         Joint2.transform.SetLocalEulerZ(sin2 * sin2 * 45 - 180);

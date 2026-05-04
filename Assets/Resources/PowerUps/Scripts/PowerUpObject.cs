@@ -21,6 +21,7 @@ public class PowerUpObject : MonoBehaviour
     public Vector2 FinalPosition { get; set; } = Vector2.zero;
     public int VelocityStyle { get; set; } = 0;
     public bool FakePower = false;
+    public float LightingMultiplier { get; set; } = 1.0f;
     public void Start()
     {
         inner.sprite = Sprite;
@@ -54,7 +55,8 @@ public class PowerUpObject : MonoBehaviour
     }
     public void Update()
     {
-        LightBatch.Request(transform.position, MyPower.IsBlackMarket() ? ColorHelper.RarityColors[5] : ColorHelper.RarityColors[MyPower.GetRarity() - 1], 1f, 3.5f * transform.localScale.x, 0.5f);
+        LightBatch.Request(transform.position, 
+            MyPower.IsBlackMarket() ? ColorHelper.RarityColors[5] : ColorHelper.RarityColors[MyPower.GetRarity() - 1], 1.0f, 3.5f * transform.localScale.x * LightingMultiplier, 0.5f);
     }
     public void FixedUpdate()
     {

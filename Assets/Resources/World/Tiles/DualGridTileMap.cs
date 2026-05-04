@@ -133,7 +133,7 @@ public class DualGridTilemap : MonoBehaviour
     {
         Transform Parent = border ? BorderDecorParent : FloorDecorParent;
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
-        int order = border ? LayerHelper.SolidTileSortingOrder : LayerHelper.FloorObjSortingLayer;
+        int order = border ? LayerHelper.SolidTileSortingOrder : LayerHelper.FloorObjAndFloraSortingLayer;
         left += 10;
         right -= 10;
         bottom += 10;

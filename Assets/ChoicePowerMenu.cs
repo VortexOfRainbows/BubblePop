@@ -78,7 +78,7 @@ public class ChoicePowerMenu : MonoBehaviour
         if (Hide)
         {
             transform.LerpLocalPosition(new Vector2(MyCanvas.GetComponent<RectTransform>().rect.width / 2, + 250), lerpT);
-            HideButton.transform.LerpLocalPosition(new Vector2(PowerUpCheatUI.Hide && PowerUpCheatUI.Instance.gameObject.activeSelf ? -110 : 0, -260), lerpT);
+            HideButton.transform.LerpLocalPosition(new Vector2(PowerUpCheatUI.Hide && PowerUpCheatUI.Instance.gameObject.activeSelf && PowerUpCheatUI.CurrentType != 0 && PowerUpCheatUI.CanOpenMenu ? -110 : 0, -260), lerpT);
             RerollButton.transform.LerpLocalPosition(new Vector2(0, -140), lerpT);
             HideButtonUI.text = "Show Choices";
             return;

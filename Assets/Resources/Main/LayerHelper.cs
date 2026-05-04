@@ -17,8 +17,9 @@ public static class LayerHelper
     //-----------------------------------
 
     public const int ShadowSortingOrder = -50; //Behind everything (shadows)
-    public const int FloorObjSortingLayer = -2; //Power Pillows
-    public const int PickupSortingOrder = -1; //Coins, Keys, Powers, Etc.
+    public const int FloorObjAndFloraSortingLayer = -5; //Power Pillows
+    public const int CrucibleSortingOrder = -3;
+    public const int PickupSortingOrder = -2; //Coins, Keys, Powers, Etc.
     public const int PortalSortingOrder = -1;
     public const int TrailSortingOrder = -1;
     public const int ShopGachaponSortingOrder = -1;
@@ -26,12 +27,11 @@ public static class LayerHelper
     public const int Enemy = -1;
 
     public const int Player = 0;
-    public const int FloraSortingOrder = 0; //All ground decor
-    public const int CrucibleSortingOrder = 0;
     public const int SolidTileSortingOrder = 1;
     public const int RestockMachineTopSortingOrder = 1; //Restock Machine (TOP)
     public const int SpecialHatSortingOrder = 2; //Bulb, Crown
     public const int OverBorderShadowSortingOrder = 2;
+    public const int ChestAirborneSortingOrder = 2;
     public const int WeaponSortingOrder = 3;
 
     public const int TreeSortingOrder = 20;

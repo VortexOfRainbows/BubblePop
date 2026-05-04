@@ -28,8 +28,6 @@ Need to do:
 9. New battle music
 10. Bombee and Kamikaze Enemies.
 11. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
-12. FIX NEEDED FOR CHOICE MENU (THE HIDE BUTTON IS CURRENTLY NOT CENTERED CORRECTLY DUE TO THE CRUCIBLE CHANGES)
-13. Add glow to the crucible and fix the issue where the power-up glow disappears suddenly
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -51,6 +49,11 @@ Done:
 6. Fix bug where enemy colors might change slightly while paused (especially noticeable on gatligator)
 7. Shadows from trees/stumps now appear over border
 8. Coin collider turned back on, but only for walls
+9. Shift more layer orders for bug fixing (like coins -> -2, floor obj -> -5, crucible -> -3)
+10. Chests appear above walls when in the air
+11. Crucible relayer and glow
+12. Crucible text should now update even at max speed
+12. Fix Choice menu positioning
 
 5/2/26
 1. Sorting Groups WIP:
