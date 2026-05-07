@@ -191,10 +191,6 @@ public class CollateralDamage : PowerUp
     {
         p.SkullBomb += Stack;
     }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
-    }
     public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<FizzyCoolGuys>();
 }
 public class ClusterBombs : PowerUp
@@ -250,10 +246,6 @@ public class PrizeBombs : PowerUp
     public override void HeldEffect(Player p)
     {
         p.PrizeBombCoins += 10 * Stack;
-    }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/Dice/InsightAddOn");
     }
 }
 public class Restock : PowerUp
