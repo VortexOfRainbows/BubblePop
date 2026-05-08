@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
 using static UnityEditor.PlayerSettings;
 
@@ -56,10 +57,23 @@ public class World : MonoBehaviour
             Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor(newData.ProgressionNumber), Matrix4x4.identity), true);
         tileData[pointPos.x, pointPos.y] = newData;
     }
-    private static Color RoadblockColor(int progNum)
+    public static Color RoadblockColor(byte progNum)
     {
-        float f = progNum / 255f;
-        return new Color(f, f, f);
+        int r = progNum % 8;
+        int g = progNum / 8 % 8;
+        int b = progNum / 64 % 4;
+        return new Color(r * 0.125f, g * 0.125f, b * 0.25f);
+    }
+    private static byte ConvertColorToProgNum(Color c)
+    {
+        return (byte)(c.r * 8 + c.g * 64 + c.b * 256);
+    }
+    private static void TestColorProgRelations()
+    {
+        Debug.Log("START COLOR PROG TEST (REMOVE THESE TESTS LATER PLEASE)".WithColor("#FF11AA"));
+        for(byte b = 0; b < 255; ++b)
+            Assert.AreEqual(ConvertColorToProgNum(RoadblockColor(b)), b);
+        Debug.Log("PASSED COLOR PROG TEST".WithColor("#FF11AA"));
     }
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
@@ -115,6 +129,7 @@ public class World : MonoBehaviour
     public static readonly List<Roadblock> Roadblocks = new();
     public void Start()
     {
+        TestColorProgRelations();
         DepthTile = Resources.Load<Tile>("World/Tiles/DepthTile");
         FloorSortingLayer = RealTileMap.GetComponent<TilemapRenderer>().sortingLayerID;
         GachaponShop.AllShops.Clear();
@@ -461,6 +476,11 @@ public class World : MonoBehaviour
                                 Instance.RoadblockTilemap.SetTile(new(tbot, DepthTile, c.Value, Matrix4x4.identity), true);
                                 //SetTileData(tbot, new(data.ProgressionNumber, true));
                             }
+                        }
+
+                        if(j == (bottom + top) / 2)
+                        {
+                            Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor((byte)i), Matrix4x4.identity), true);
                         }
                         //else if(passNum == 2 && !data.IsRoadblock)
                         //{
