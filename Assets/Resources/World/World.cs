@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEditor.PlayerSettings;
@@ -26,9 +27,9 @@ public class World : MonoBehaviour
     public static TileData GetTileData(Vector3Int pos)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
-        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.Length || pointPos.y >= tileData.GetLength(1))
+        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))
         {
-            Debug.Log($"Tile QUERY out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
+            //Debug.Log($"Tile QUERY out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
             return NoTileData;
         }
         return tileData[pointPos.x, pointPos.y];
@@ -36,7 +37,7 @@ public class World : MonoBehaviour
     public static void SetTileData(Vector3Int pos, TileData newData)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
-        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.Length || pointPos.y >= tileData.GetLength(1))
+        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))
         {
             Debug.Log($"Tile SET out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
             return;
@@ -51,17 +52,20 @@ public class World : MonoBehaviour
             Color c = Color.Lerp(Color.Lerp(Color.red, Color.blue, progNumber / 20f % 1), Color.green, (progNumber / 5f) % 1).WithAlpha(0.5f);
             Instance.DepthTilemap.SetTile(new (pos, DepthTile, c, Matrix4x4.identity), true);
         }
-        if (Instance.RoadblockTilemap != null && newData.IsRoadblock)
-        {   
-            Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
-        }
+        if (newData.IsRoadblock)
+            Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor(newData.ProgressionNumber), Matrix4x4.identity), true);
         tileData[pointPos.x, pointPos.y] = newData;
+    }
+    private static Color RoadblockColor(int progNum)
+    {
+        float f = progNum / 255f;
+        return new Color(f, f, f);
     }
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
     public static DualGridTilemap RealTileMap => Instance.Tilemap;
     public DualGridTilemap Tilemap;
-    [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap, OcclusionMap;
+    [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap, InverseRoadblockMap, OcclusionMap;
     public Tilemap LightingTilemapFront;
     public Tilemap LightingTilemapBack;
     public NatureOrderer NatureParent;
@@ -395,30 +399,76 @@ public class World : MonoBehaviour
         right += Padding;
         bottom -= Padding;
         top += Padding;
-        for (int i = left; i < right; i++)
+        for(int passNum = 0; passNum < 2; ++passNum)
         {
-            for (int j = bottom; j < top; j++)
+            for (int i = left; i < right; i++)
             {
-                Vector3Int pos = new(i, j);
-                if (!Map.HasTile(pos))
+                for (int j = bottom; j < top; j++)
                 {
-                    float f = Noise.GetNoise(i, j);
-                    if (f < 0.2f && f > -0.2f)
+                    Vector3Int pos = new(i, j);
+                    if (passNum == 0)
                     {
-                        Map.SetTile(pos, TileID.Dirt.BorderTileType);
+                        if (!Map.HasTile(pos))
+                        {
+                            float f = Noise.GetNoise(i, j);
+                            if (f < 0.2f && f > -0.2f)
+                            {
+                                Map.SetTile(pos, TileID.Dirt.BorderTileType);
+                            }
+                            else
+                                Map.SetTile(pos, TileID.Grass.BorderTileType);
+                        }
+                        if (SolidTile(pos))
+                        {
+                            if (Instance.LightingTilemapFront != null && Instance.LightingTilemapBack != null) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
+                            {
+                                Instance.LightingTilemapFront.SetTile(pos, DepthTile);
+                                Instance.LightingTilemapBack.SetTile(pos, DepthTile);
+                            }
+                        }
                     }
                     else
-                        Map.SetTile(pos, TileID.Grass.BorderTileType);
-                }
-                if(SolidTile(pos))
-                {
-                    if (Instance.LightingTilemapFront != null && Instance.LightingTilemapBack != null) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
                     {
-                        Instance.LightingTilemapFront.SetTile(pos, DepthTile);
-                        Instance.LightingTilemapBack.SetTile(pos, DepthTile);
+                        var data = GetTileData(pos);
+                        if (passNum == 1 && data.IsRoadblock)
+                        {
+                            Vector3Int tleft = new(pos.x - 1, pos.y);
+                            Vector3Int tright = new(pos.x + 1, pos.y);
+                            Vector3Int ttop = new(pos.x, pos.y + 1);
+                            Vector3Int tbot = new(pos.x, pos.y - 1);
+                            Color? c = null;
+                            if (SolidTile(tleft))
+                            {
+                                c ??= RoadblockColor(data.ProgressionNumber);
+                                Instance.RoadblockTilemap.SetTile(new(tleft, DepthTile, c.Value, Matrix4x4.identity), true);
+                                //SetTileData(tleft, new(data.ProgressionNumber, true));
+                            }
+                            if (SolidTile(tright))
+                            {
+                                c ??= RoadblockColor(data.ProgressionNumber);
+                                Instance.RoadblockTilemap.SetTile(new(tright, DepthTile, c.Value, Matrix4x4.identity), true);
+                                //SetTileData(tright, new(data.ProgressionNumber, true));
+                            }
+                            if (SolidTile(ttop))
+                            {
+                                c ??= RoadblockColor(data.ProgressionNumber);
+                                Instance.RoadblockTilemap.SetTile(new(ttop, DepthTile, c.Value, Matrix4x4.identity), true);
+                                //SetTileData(ttop, new(data.ProgressionNumber, true));
+                            }
+                            if (SolidTile(tbot))
+                            {
+                                c ??= RoadblockColor(data.ProgressionNumber);
+                                Instance.RoadblockTilemap.SetTile(new(tbot, DepthTile, c.Value, Matrix4x4.identity), true);
+                                //SetTileData(tbot, new(data.ProgressionNumber, true));
+                            }
+                        }
+                        //else if(passNum == 2 && !data.IsRoadblock)
+                        //{
+                        //    if(!SolidTile(pos))
+                        //        Instance.InverseRoadblockMap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
+                        //}
+                        //Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
                     }
-                    if (World.GetTileData(new Vector3Int(pos.x, pos.y - 1)).IsRoadblock)
-                        Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
                 }
             }
         }
