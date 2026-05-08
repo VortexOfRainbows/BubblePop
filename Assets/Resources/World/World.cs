@@ -129,7 +129,7 @@ public class World : MonoBehaviour
     public static readonly List<Roadblock> Roadblocks = new();
     public void Start()
     {
-        TestColorProgRelations();
+        //TestColorProgRelations();
         DepthTile = Resources.Load<Tile>("World/Tiles/DepthTile");
         FloorSortingLayer = RealTileMap.GetComponent<TilemapRenderer>().sortingLayerID;
         GachaponShop.AllShops.Clear();

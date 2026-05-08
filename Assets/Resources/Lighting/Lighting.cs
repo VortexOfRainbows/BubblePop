@@ -214,7 +214,9 @@ public static class Lighting
         {
             BorderRenderTexture.gameObject.SetActive(true);
             int targetProgNum = Main.PylonProgressionNumber;
-            if(PreviousProgNum != targetProgNum)
+            if (Main.PylonActive)
+                targetProgNum -= 1;
+            if (PreviousProgNum != targetProgNum)
             {
                 BorderRenderTexture.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
                 PreviousProgNum = Mathf.Lerp(PreviousProgNum, targetProgNum, Utils.DeltaTimeLerpFactor(0.02f));
