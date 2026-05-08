@@ -42,9 +42,8 @@ public class World : MonoBehaviour
             return;
         }
         bool drawMaps1 = Instance.DepthTilemap.isActiveAndEnabled;
-        bool drawMaps2 = Instance.DepthTilemap.isActiveAndEnabled;
         #if UNITY_EDITOR
-        drawMaps1 = drawMaps2 = true;
+        drawMaps1 = true;
         #endif
         if (Instance.DepthTilemap != null && drawMaps1)
         {
@@ -52,9 +51,12 @@ public class World : MonoBehaviour
             Color c = Color.Lerp(Color.Lerp(Color.red, Color.blue, progNumber / 20f % 1), Color.green, (progNumber / 5f) % 1).WithAlpha(0.5f);
             Instance.DepthTilemap.SetTile(new (pos, DepthTile, c, Matrix4x4.identity), true);
         }
-        if (Instance.RoadblockTilemap != null && drawMaps2 && newData.IsRoadblock)
-        {
+        if (Instance.RoadblockTilemap != null && newData.IsRoadblock)
+        {   
             Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
+            pos.y += 1;
+            if (SolidTile(pos))
+                Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
         }
         tileData[pointPos.x, pointPos.y] = newData;
     }

@@ -10,7 +10,9 @@ public static class Lighting
     public static Tile LightTile;
     public static Tile OcclusionTile;
     public static RenderTexture LightRT;
+    public static RenderTexture BorderRT;
     public static Camera LightingCamera;
+    public static Camera BorderCamera;
     public static Material FrontLight;
     public static Material BackLight;
     public static RawImage ShadowRenderTexture => Main.Instance.TileLightRenderTarget;
@@ -24,7 +26,9 @@ public static class Lighting
         LightTile = Resources.Load<Tile>("Lighting/LightTile");
         OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
+        BorderRT = Resources.Load<RenderTexture>("Lighting/TileBorderRenderTexture");
         LightingCamera = Camera.main.transform.GetChild(0).GetComponent<Camera>();
+        BorderCamera = Camera.main.transform.GetChild(1).GetComponent<Camera>();
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
@@ -180,21 +184,8 @@ public static class Lighting
     }
     public static void ResizeLightingRenderTexture()
     {
-        //Debug.Log($"{Screen.width}, {Screen.height}");
-        if(LightRT.width != Screen.width || LightRT.height != Screen.height)
+        if(LightRT.width != Screen.width || LightRT.height != Screen.height || BorderRT.width != Screen.width || BorderRT.height != Screen.height)
         {
-            //// Set the provided RenderTexture as active
-            //var prev = RenderTexture.active;
-            //RenderTexture.active = LightRT;
-
-            //// Create a new Texture2D with the same dimensions
-            //Texture2D tex = new Texture2D(LightRT.width, LightRT.height);
-
-            //tex.ReadPixels(new Rect(0, 0, LightRT.width, LightRT.height), 0, 0);
-            //tex.Apply(); // Apply changes;
-            //System.IO.File.WriteAllBytes("texture.png", tex.EncodeToPNG());
-            //RenderTexture.active = prev;
-
             LightRT.Release();
             LightRT.width = Screen.width;
             LightRT.height = Screen.height;
@@ -202,6 +193,14 @@ public static class Lighting
             LightingCamera.ResetAspect();
             if (ShadowRenderTexture != null)
                 ShadowRenderTexture.SetMaterialDirty(); //Updates the texel size on the gaussian blur to make the shadows consistent on resize
+
+            BorderRT.Release();
+            BorderRT.width = Screen.width;
+            BorderRT.height = Screen.height;
+            BorderRT.Create();
+            BorderCamera.ResetAspect();
+            //if (ShadowRenderTexture != null)
+            //    ShadowRenderTexture.SetMaterialDirty();
         }
         if (ShadowRenderTexture != null)
         {
