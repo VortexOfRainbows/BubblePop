@@ -183,6 +183,7 @@ public static class Lighting
         }
         return 0;
     }
+    public static float PreviousProgNum = -2;
     public static void ResizeLightingRenderTexture()
     {
         if(LightRT.width != Screen.width || LightRT.height != Screen.height || BorderRT.width != Screen.width || BorderRT.height != Screen.height)
@@ -212,6 +213,12 @@ public static class Lighting
         if (BorderRenderTexture != null)
         {
             BorderRenderTexture.gameObject.SetActive(true);
+            int targetProgNum = Main.PylonProgressionNumber;
+            if(PreviousProgNum != targetProgNum)
+            {
+                BorderRenderTexture.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
+                PreviousProgNum = Mathf.Lerp(PreviousProgNum, targetProgNum, Utils.DeltaTimeLerpFactor(0.02f));
+            }
         }
     }
 }

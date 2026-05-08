@@ -477,11 +477,6 @@ public class World : MonoBehaviour
                                 //SetTileData(tbot, new(data.ProgressionNumber, true));
                             }
                         }
-
-                        if(j == (bottom + top) / 2)
-                        {
-                            Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor((byte)i), Matrix4x4.identity), true);
-                        }
                         //else if(passNum == 2 && !data.IsRoadblock)
                         //{
                         //    if(!SolidTile(pos))
