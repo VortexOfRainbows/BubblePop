@@ -31,6 +31,7 @@ public partial class Main : MonoBehaviour
     public GameObject PowerupCheatCanvas;
     public Transform SpritebatchSuperParent;
     public RawImage TileLightRenderTarget;
+    public RawImage BorderRenderTarget;
     public Light2D GlobalLight;
     public static Transform SpritebatchParent => Instance.SpritebatchSuperParent;
     public static int UICameraLayerID { get; private set; } = -1;

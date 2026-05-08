@@ -54,9 +54,6 @@ public class World : MonoBehaviour
         if (Instance.RoadblockTilemap != null && newData.IsRoadblock)
         {   
             Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
-            pos.y += 1;
-            if (SolidTile(pos))
-                Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
         }
         tileData[pointPos.x, pointPos.y] = newData;
     }
@@ -413,10 +410,15 @@ public class World : MonoBehaviour
                     else
                         Map.SetTile(pos, TileID.Grass.BorderTileType);
                 }
-                if (Instance.LightingTilemapFront != null && Instance.LightingTilemapBack != null && SolidTile(pos)) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
+                if(SolidTile(pos))
                 {
-                    Instance.LightingTilemapFront.SetTile(pos, DepthTile);
-                    Instance.LightingTilemapBack.SetTile(pos, DepthTile);
+                    if (Instance.LightingTilemapFront != null && Instance.LightingTilemapBack != null) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
+                    {
+                        Instance.LightingTilemapFront.SetTile(pos, DepthTile);
+                        Instance.LightingTilemapBack.SetTile(pos, DepthTile);
+                    }
+                    if (World.GetTileData(new Vector3Int(pos.x, pos.y - 1)).IsRoadblock)
+                        Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
                 }
             }
         }

@@ -16,6 +16,7 @@ public static class Lighting
     public static Material FrontLight;
     public static Material BackLight;
     public static RawImage ShadowRenderTexture => Main.Instance.TileLightRenderTarget;
+    public static RawImage BorderRenderTexture => Main.Instance.BorderRenderTarget;
     public static Light2D GlobalLight => Main.Instance.GlobalLight;
     public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
     {
@@ -199,14 +200,18 @@ public static class Lighting
             BorderRT.height = Screen.height;
             BorderRT.Create();
             BorderCamera.ResetAspect();
-            //if (ShadowRenderTexture != null)
-            //    ShadowRenderTexture.SetMaterialDirty();
+            if (BorderRenderTexture != null)
+                BorderRenderTexture.SetMaterialDirty();
         }
         if (ShadowRenderTexture != null)
         {
             float baseTexelSize = 4 / 1080f;
             ShadowRenderTexture.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
             ShadowRenderTexture.gameObject.SetActive(true);
+        }
+        if (BorderRenderTexture != null)
+        {
+            BorderRenderTexture.gameObject.SetActive(true);
         }
     }
 }
