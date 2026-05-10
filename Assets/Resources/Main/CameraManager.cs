@@ -3,7 +3,7 @@ using UnityEngine;
 public static class CameraManager
 {
     private readonly static Camera[] Buffer = new Camera[] { Camera.main, null, null, null };
-    public static Camera MainCamera => Buffer[0];
+    public static Camera MainCamera => Buffer[0] == null ? Buffer[0] = Camera.main : Buffer[0];
     public static Camera LightingCamera => Buffer[1] == null ? Buffer[1]  = MainCamera.transform.GetChild(0).GetComponent<Camera>() : Buffer[1];
     public static Camera TileBorderCamera => Buffer[2] == null ? Buffer[2] = MainCamera.transform.GetChild(1).GetComponent<Camera>() : Buffer[2];
     public static Camera BorderMaskCamera => Buffer[3] == null ? Buffer[3] = MainCamera.transform.GetChild(2).GetComponent<Camera>() : Buffer[3];

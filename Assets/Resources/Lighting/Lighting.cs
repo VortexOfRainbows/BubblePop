@@ -204,6 +204,7 @@ public static class Lighting
             ResizeRenderTexture(LightRT, CameraManager.LightingCamera, ShadowImage);
             ResizeRenderTexture(BorderRT, CameraManager.TileBorderCamera, BorderImage);
             ResizeRenderTexture(BorderMaskRT, CameraManager.BorderMaskCamera, null);
+            BorderImage.material.SetTexture("_Mask", BorderMaskRT);
         }
         if (ShadowImage != null)
         {
