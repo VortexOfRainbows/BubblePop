@@ -220,12 +220,12 @@ public static class Lighting
             BorderImage.gameObject.SetActive(true);
             int targetProgNum = Main.PylonProgressionNumber;
             float targetMaskVal = -0.0001f;
-            float baseTexelSize = 6 / 1080f;
-            float lerpFactor = Utils.DeltaTimeLerpFactor(0.02f);
+            float baseTexelSize = 16 / 1080f;
+            float lerpFactor = Utils.DeltaTimeLerpFactor(0.02f * Time.timeScale);
             if (Main.PylonActive)
             {
                 targetProgNum -= 1;
-                targetMaskVal = .2f;
+                targetMaskVal = .15f + GlobalLight.color.r * 0.15f;
             }
 
             MaskValue = Mathf.Lerp(MaskValue, targetMaskVal, lerpFactor);
