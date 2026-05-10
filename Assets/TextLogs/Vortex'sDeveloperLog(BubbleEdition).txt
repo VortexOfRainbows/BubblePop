@@ -42,6 +42,9 @@ Done:
 5/7/26 to 5/10/26
 1. Collateral Damage and Prize Bombs power sprite (David)
 2. WIP border reworks
+	1. Shader is now in a FUNCTIONAL STATE!!!
+	2. NEEDED: Proper layering over floor elements (and maybe wall elements), additional shader mechanics for the border to shift and contort
+	3. NEEDED: change the way collision is handled to spawn linear borders (make use of Unity collision system rather than dynamically calcing borders from tile data)
 3. yay shader time yay (continuous)
 4. A little bit of text sanitizations + texture gen tool
 5. RT for transparent masking

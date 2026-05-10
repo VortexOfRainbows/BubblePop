@@ -47,6 +47,8 @@ public static class Lighting
             }
         }
         DayProgress = TimeInADay * 0.1f;
+        PreviousProgNum = 0;
+        BorderImage.material.SetFloat("_ProgressionThreshold", 0);
         Update();
     }
     public static void Update() //Runs on normal delta time, not fixed
@@ -183,6 +185,7 @@ public static class Lighting
         return 0;
     }
     public static float PreviousProgNum = -2;
+    public static float MaskValue = -0.01f;
     public static void ResizeRenderTexture(RenderTexture renderTexture, Camera relatedCamera, RawImage relatedImage)
     {
         if(renderTexture.width != Screen.width || renderTexture.height != Screen.height)
@@ -216,13 +219,22 @@ public static class Lighting
         {
             BorderImage.gameObject.SetActive(true);
             int targetProgNum = Main.PylonProgressionNumber;
+            float targetMaskVal = -0.0001f;
+            float baseTexelSize = 6 / 1080f;
+            float lerpFactor = Utils.DeltaTimeLerpFactor(0.02f);
             if (Main.PylonActive)
-                targetProgNum -= 1;
-            if (PreviousProgNum != targetProgNum)
             {
-                BorderImage.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
-                PreviousProgNum = Mathf.Lerp(PreviousProgNum, targetProgNum, Utils.DeltaTimeLerpFactor(0.02f));
+                targetProgNum -= 1;
+                targetMaskVal = .2f;
             }
+
+            MaskValue = Mathf.Lerp(MaskValue, targetMaskVal, lerpFactor);
+            PreviousProgNum = Mathf.Lerp(PreviousProgNum, targetProgNum, lerpFactor);
+
+            BorderImage.material.SetFloat("_MinMask", MaskValue);
+            BorderImage.material.SetFloat("_MaxMask", 0.5f + MaskValue);
+            BorderImage.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
+            BorderImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
         }
     }
 }

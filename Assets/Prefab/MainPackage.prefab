@@ -10589,7 +10589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: -876546973899608171, guid: 6b1abe5d661f80f44bc70f92c72346c3, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -15496,6 +15496,7 @@ MonoBehaviour:
   SpritebatchSuperParent: {fileID: 1755457766737359977}
   TileLightRenderTarget: {fileID: 3417041292446755672}
   BorderRenderTarget: {fileID: 4350487531371053383}
+  BorderMaskRenderTarget: {fileID: 0}
   GlobalLight: {fileID: 2378421495150645400}
   MyUIManager:
     PlayButtons: []

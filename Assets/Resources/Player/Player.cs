@@ -658,10 +658,10 @@ public partial class Player : Entity
             CameraManager.LerpCameraPosition(new Vector2(average.x, average.y), 0.1f);
         }
         ImmuneFlashing();
-        if(!dead)
-        {
-            Roadblock.DoRoadblockVisual(ref RoadblockCounter, transform.position, Main.PylonProgressionNumber + 1, 1);
-        }
+        //if(!dead)
+        //{
+        //    Roadblock.DoRoadblockVisual(ref RoadblockCounter, transform.position, Main.PylonProgressionNumber + 1, 1);
+        //}
     }
     public int RoadblockCounter = 0;
     public bool RunOnce { get; set; } = true;
