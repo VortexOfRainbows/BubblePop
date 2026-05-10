@@ -396,7 +396,6 @@ public partial class Player : Entity
     public static Player Instance => GetInstance(0);
     public Vector2 Position => (Vector2)transform.position;
     public static Vector2 Instance1Pos => Instance != null ? (Vector2)Instance.transform.position : Vector2.zero;
-    public Camera MainCamera => Camera.main;
     private readonly float speed = 2.5f;
     public readonly float MovementDeacceleration = 0.9f;
     public const float DashDefault = 25f;
@@ -426,8 +425,7 @@ public partial class Player : Entity
     {
         PowerInit();
         WaveDirector.Reset();
-        MainCamera.orthographicSize = 12;
-        Lighting.LightingCamera.orthographicSize = MainCamera.orthographicSize;
+        CameraManager.SetCameraOrthographicSize(12);
         DeathKillTimer = 0;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
         HasRunStartingGear = false;
@@ -656,9 +654,8 @@ public partial class Player : Entity
                     biggestDistToCenter = Mathf.Max(biggestDistToCenter, Mathf.Max(Mathf.Abs(p.Position.x - average.x), Mathf.Abs(p.Position.y - average.y)));
                 size = Mathf.Max(size, Mathf.Min(30, biggestDistToCenter * 1.16f + 6));
             }
-            MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, size, 0.03f);
-            MainCamera.transform.position = Vector3.Lerp(MainCamera.transform.position, new Vector3(average.x, average.y, MainCamera.transform.position.z), 0.1f);
-            Lighting.LightingCamera.orthographicSize = MainCamera.orthographicSize;
+            CameraManager.LerpCameraOrthographicSize(size, 0.03f);
+            CameraManager.LerpCameraPosition(new Vector2(average.x, average.y), 0.1f);
         }
         ImmuneFlashing();
         if(!dead)
@@ -816,10 +813,9 @@ public partial class Player : Entity
         if(InstanceID == 0)
         {
             if (DeathKillTimer > 100)
-                MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 6f, 0.03f);
+                CameraManager.LerpCameraOrthographicSize(6, 0.03f);
             else
-                MainCamera.orthographicSize = Mathf.Lerp(MainCamera.orthographicSize, 17f, 0.03f);
-            Lighting.LightingCamera.orthographicSize = MainCamera.orthographicSize;
+                CameraManager.LerpCameraOrthographicSize(17, 0.03f);
         }
         RB.velocity *= 0.9f;
         Body.DeadUpdate();

@@ -11,12 +11,12 @@ public static class Lighting
     public static Tile OcclusionTile;
     public static RenderTexture LightRT;
     public static RenderTexture BorderRT;
-    public static Camera LightingCamera;
-    public static Camera BorderCamera;
+    public static RenderTexture BorderMaskRT;
     public static Material FrontLight;
     public static Material BackLight;
-    public static RawImage ShadowRenderTexture => Main.Instance.TileLightRenderTarget;
-    public static RawImage BorderRenderTexture => Main.Instance.BorderRenderTarget;
+    public static RawImage ShadowImage => Main.Instance.TileLightRenderTarget;
+    public static RawImage BorderImage => Main.Instance.BorderRenderTarget;
+    //public static RawImage BorderMaskRenderTexture => Main.Instance.BorderMaskRenderTarget;
     public static Light2D GlobalLight => Main.Instance.GlobalLight;
     public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
     {
@@ -28,8 +28,7 @@ public static class Lighting
         OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
         BorderRT = Resources.Load<RenderTexture>("Lighting/TileBorderRenderTexture");
-        LightingCamera = Camera.main.transform.GetChild(0).GetComponent<Camera>();
-        BorderCamera = Camera.main.transform.GetChild(1).GetComponent<Camera>();
+        BorderMaskRT = Resources.Load<RenderTexture>("Lighting/BorderMaskRenderTexture");
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
@@ -97,7 +96,7 @@ public static class Lighting
             alphaMult = Mathf.Clamp01(alphaMult);
             if (IsNight) //nightTime)
                 alphaMult *= 0.4f;
-            ShadowRenderTexture.color = new Color(0, 0, 0, 0.95f * alphaMult);
+            ShadowImage.color = new Color(0, 0, 0, 0.95f * alphaMult);
         }
         GetSunlightColor();
     }
@@ -184,41 +183,43 @@ public static class Lighting
         return 0;
     }
     public static float PreviousProgNum = -2;
+    public static void ResizeRenderTexture(RenderTexture renderTexture, Camera relatedCamera, RawImage relatedImage)
+    {
+        if(renderTexture.width != Screen.width || renderTexture.height != Screen.height)
+        {
+            renderTexture.Release();
+            renderTexture.width = Screen.width;
+            renderTexture.height = Screen.height;
+            renderTexture.Create();
+            if (relatedCamera != null)
+                relatedCamera.ResetAspect();
+            if (relatedImage != null)
+                relatedImage.SetMaterialDirty(); //Updates the texel size on the gaussian blur to make the shadows consistent on resize
+        }
+    }
     public static void ResizeLightingRenderTexture()
     {
         if(LightRT.width != Screen.width || LightRT.height != Screen.height || BorderRT.width != Screen.width || BorderRT.height != Screen.height)
         {
-            LightRT.Release();
-            LightRT.width = Screen.width;
-            LightRT.height = Screen.height;
-            LightRT.Create();
-            LightingCamera.ResetAspect();
-            if (ShadowRenderTexture != null)
-                ShadowRenderTexture.SetMaterialDirty(); //Updates the texel size on the gaussian blur to make the shadows consistent on resize
-
-            BorderRT.Release();
-            BorderRT.width = Screen.width;
-            BorderRT.height = Screen.height;
-            BorderRT.Create();
-            BorderCamera.ResetAspect();
-            if (BorderRenderTexture != null)
-                BorderRenderTexture.SetMaterialDirty();
+            ResizeRenderTexture(LightRT, CameraManager.LightingCamera, ShadowImage);
+            ResizeRenderTexture(BorderRT, CameraManager.TileBorderCamera, BorderImage);
+            ResizeRenderTexture(BorderMaskRT, CameraManager.BorderMaskCamera, null);
         }
-        if (ShadowRenderTexture != null)
+        if (ShadowImage != null)
         {
             float baseTexelSize = 4 / 1080f;
-            ShadowRenderTexture.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
-            ShadowRenderTexture.gameObject.SetActive(true);
+            ShadowImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+            ShadowImage.gameObject.SetActive(true);
         }
-        if (BorderRenderTexture != null)
+        if (BorderImage != null)
         {
-            BorderRenderTexture.gameObject.SetActive(true);
+            BorderImage.gameObject.SetActive(true);
             int targetProgNum = Main.PylonProgressionNumber;
             if (Main.PylonActive)
                 targetProgNum -= 1;
             if (PreviousProgNum != targetProgNum)
             {
-                BorderRenderTexture.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
+                BorderImage.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
                 PreviousProgNum = Mathf.Lerp(PreviousProgNum, targetProgNum, Utils.DeltaTimeLerpFactor(0.02f));
             }
         }
