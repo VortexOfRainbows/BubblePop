@@ -27,7 +27,6 @@ Need to do:
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
 9. New battle music
 10. Bombee and Kamikaze Enemies.
-11. Change roadblock visuals to be more interesting, potentially with shaders or spritebatch shenangins
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -41,13 +40,11 @@ Done:
 
 5/7/26 to 5/10/26
 1. Collateral Damage and Prize Bombs power sprite (David)
-2. WIP border reworks
-	1. Shader is now in a FUNCTIONAL STATE!!!
-	2. NEEDED: Proper layering over floor elements (and maybe wall elements), gameplay testing
-	3. NEEDED: change the way collision is handled to spawn linear borders (make use of Unity collision system rather than dynamically calcing borders from tile data)
+2. Border reworks + cool af border shader + layer adjusted to be over grass and other floor elements
 3. yay shader time yay (continuous)
 4. A little bit of text sanitizations + texture gen tool
 5. RT for transparent masking
+6. Collision for roadblock barriers should now match tilemap collision more closely
 
 5/3/26
 1. Cluster bombs power sprite (David)

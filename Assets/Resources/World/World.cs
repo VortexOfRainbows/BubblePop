@@ -120,10 +120,15 @@ public class World : MonoBehaviour
     }
     public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds)
     {
+        bool roadblock = IncludeProgressionBounds && IsRoadblocked(position);
+        return WithinBorders(position) && !roadblock;
+    }
+    public static bool IsRoadblocked(Vector3 position)
+    {
         var data = GetTileData(RealTileMap.Map.WorldToCell(position));
         bool currentlyOnThisProgressionTier = data.ProgressionNumber > Main.PylonProgressionNumber;
-        bool roadblock = IncludeProgressionBounds && (currentlyOnThisProgressionTier || (data.IsRoadblock && Main.PylonActive));
-        return WithinBorders(position) && !roadblock;
+        bool roadblock = currentlyOnThisProgressionTier || (data.IsRoadblock && Main.PylonActive);
+        return roadblock;
     }
     public static readonly List<Pylon> Pylons = new();
     public static readonly List<Roadblock> Roadblocks = new();

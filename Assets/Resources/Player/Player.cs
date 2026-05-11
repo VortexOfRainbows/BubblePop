@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.Tilemaps;
 
 public class NewControls
 {
@@ -574,7 +576,8 @@ public partial class Player : Entity
         UpdatePowerUps();
         UpdateBuffs();
         HomingRangeSqrt = Mathf.Sqrt(HomingRange);
-        bool dead = DeathKillTimer > 0;
+        bool dead = DeathKillTimer > 0; 
+        CreateRoadblockBarriers();
         if (!World.WithinBorders(transform.position, true))
             Entity.PushIntoClosestPossibleTile(transform, base.RB, includeProgressionBounds: true);
         if (dead)
@@ -663,7 +666,41 @@ public partial class Player : Entity
         //    Roadblock.DoRoadblockVisual(ref RoadblockCounter, transform.position, Main.PylonProgressionNumber + 1, 1);
         //}
     }
-    public int RoadblockCounter = 0;
+    public GameObject RoadblockBarrier;
+    public void CreateRoadblockBarriers()
+    {
+        bool hasBarriersAround = false;
+        bool left = World.IsRoadblocked(Position + new Vector2(-2, 0));
+        bool right = World.IsRoadblocked(Position + new Vector2(2, 0));
+        bool top = World.IsRoadblocked(Position + new Vector2(0, 2));
+        bool bot = World.IsRoadblocked(Position + new Vector2(0, -2));
+        bool topLeft = World.IsRoadblocked(Position + new Vector2(-2, 2));
+        bool botRight = World.IsRoadblocked(Position + new Vector2(2, -2));
+        bool topRight = World.IsRoadblocked(Position + new Vector2(2, 2));
+        bool botLeft = World.IsRoadblocked(Position + new Vector2(-2, -2));
+        if (left || right || bot || top || topLeft || botRight || topRight || botLeft)
+            hasBarriersAround = true;
+
+        if(hasBarriersAround)
+        {
+            if (RoadblockBarrier == null)
+                RoadblockBarrier = GameObject.Instantiate(Main.PrefabAssets.Roadblocker, Position, Quaternion.identity);
+            RoadblockBarrier.transform.GetChild(0).gameObject.SetActive(left);
+            RoadblockBarrier.transform.GetChild(1).gameObject.SetActive(right);
+            RoadblockBarrier.transform.GetChild(2).gameObject.SetActive(top);
+            RoadblockBarrier.transform.GetChild(3).gameObject.SetActive(bot);
+            RoadblockBarrier.transform.GetChild(4).gameObject.SetActive(topLeft);
+            RoadblockBarrier.transform.GetChild(5).gameObject.SetActive(botRight);
+            RoadblockBarrier.transform.GetChild(6).gameObject.SetActive(topRight);
+            RoadblockBarrier.transform.GetChild(7).gameObject.SetActive(botLeft);
+            RoadblockBarrier.transform.position = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(Position));
+        }
+        else
+        {
+            if (RoadblockBarrier != null)
+                Destroy(RoadblockBarrier);
+        }
+    }
     public bool RunOnce { get; set; } = true;
     public new void Update()
     {
