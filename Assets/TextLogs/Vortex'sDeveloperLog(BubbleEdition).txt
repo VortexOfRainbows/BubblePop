@@ -29,6 +29,7 @@ Need to do:
 9. New battle music
 10. Bombee and Kamikaze Enemies.
 11. Need to make buff/debuff layered over walls rather than behind them (probably caused by being grouped by enemies)
+12. Add small Gaussian blur to border shaders for smoother visuals
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -39,7 +40,7 @@ Multiplayer Task List:
 n/a
 
 Bug Watchlist:
-1. Bubble shield may not be refreshing on repeated pickup (not sure I am able to replicate this)
+1. Bubble shield may not be refreshing on pickup (might have something to do with allplayer list not being cleared)
 2. Compendium menu may not be scrolling to the bottom
 
 Done: 
