@@ -1,0 +1,55 @@
+Dev Build 2.5 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+New:
+1. Added lighting, shadow, and day/night systems that should make the world feel more alive
+2. Added 2.5 Dimensional walls to give the world more depth
+3. Reworked roadblock visuals to now use custom masking and shaders instead of particles to indicate where players can not yet go
+4. 1 new character, 2 new hats, 2 new weapons, and 1 new accessory
+5. 16 new powers (15 special, 1 universal)
+6. 4 New Achievements/unlocks
+7. 5+ new map nodes
+8. Some new and cool environmental assets!
+9. New, more procedural world gen system (less softlocks) and a branching "secret" room generates with the world
+10. Shop now has a RESTOCK machine for pre-endless shops
+11. 1 New Enemy
+12. Quite a few performance improvements (though these will probably not take effect due to uh... new features)
+
+Changes:
+1. (NERF) Choice now costs 2 shards to replicate
+2. (BUFF) Soapy soap stack factor 5 (+3) -> 4 (+4)
+3. Crucibles no longer appear in the first node
+4. A Choice will always be given as a reward for completing the first wave
+5. (REWORK) Shady coat now has a different effect, old effect still exists but with (NERF) +200% -> +100% potency
+6. Chests should now be pushable through 1-tile paths
+Multiplayer:
+7. (BUFF) Eureka is now more powerful from Black Market
+8. (REWORK) Book now recalls with Right click instead of when not firing. Orbs individually expire when going over the limit
+9. (BUFF) Rock Golem now spawns in fewer segments 10 -> 8
+	1. Speed 0.24 -> 0.28
+	2. Attack cooldown 500 -> 400
+	3. Attack range 16 -> 20
+	4. Health 18 -> 20 (still overall health decrease with decrease in segments 180 -> 160)
+	5. Has some new sounds!
+
+Misc:
+1. Damage popup numbers are now put into a small buffer to reduce the amount of numbers that popup by summing the damage values. This doesn't actually change damage calculations at all, but makes the game more readable and less laggy (think of PVZ GW2 peashooter damage number)
+2. Bubble shield bubbles released capped at 1024
+3. Achievements now have "chains" which hide visibility until prerequisites are complete. Achievement menu is now better sorted, including where "covered" achievements are placed in the menu
+4. Equipment page now uses the same sorting system as the achievement sort, meaning "covered" equips are now placed at the bottom, etc.  Equipment page now defaults to a "Group" sorting system which replaces the "ID" sort for this page.
+5. Gachapon: Yummy Achievement can no longer be completed on any character, now requires Gachapon
+6. Reduce interaction range with crucible 15 -> 12, crucible no longer opens when you collide with it, instead always requiring input + shard menu integration should be less confusing
+7. Bullets no longer make an expiration sound (generic enemy projectiles no longer "pop")
+8. Compendium (equip page) now shows the powers that belong to each equipment (nothing fancy, uses colored text)
+9. Some normalization of how much whitespace is used in the compendium for lists and other patterns
+10. Coins collide with walls again (we'll keep an eye on this to make sure it doesn't lag too much)
+11. Resort the layering of objects to be more consistent
+
+Fixes:
+1. Fix bug where in multiplayer only one player's dash is used for hat tipping visual
+2. Fix where unlock popups are located in the pre-round
+3. Fix bug where Bounty Hunter had a 5% chance to be triggered even if you died not have it picked up
+4. Fix bug where sentinel lasers were sometimes too big
+5. Fix some compendium issues where power unlocks displayed the wrong hover text in grid display mode
+6. Reduce hitbox size on shop Gachapon by .10 units which should make getting stuck impossible now
