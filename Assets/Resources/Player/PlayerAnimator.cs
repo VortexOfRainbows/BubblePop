@@ -38,7 +38,10 @@ public class PlayerAnimator : MonoBehaviour
         //    Bobbing = Mathf.Lerp(Bobbing, 1, 0.1f);
         //else
         Bobbing = BobbingUpdate();
-        if (Mathf.Abs(rb.velocity.x) > 0.1f)
+        float switchingRange = 0.1f;
+        if (MyPlayer != null && MyPlayer.RoadblockBarrier != null)
+            switchingRange = Mathf.Sign(rb.velocity.x) != Direction ? 2.5f : .4f; //Try fixing bug where bouncing back from the roadblock barrier sometimes switches player direction
+        if (Mathf.Abs(rb.velocity.x) > switchingRange)
             lastVelo.x = rb.velocity.x;
         else if (lastVelo.x == 0)
             lastVelo.x = 0.01f;

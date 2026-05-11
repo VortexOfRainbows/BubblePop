@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
-using static UnityEditor.PlayerSettings;
-
 public class World : MonoBehaviour
 {
     public static Tile DepthTile;

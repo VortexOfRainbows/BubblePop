@@ -88,7 +88,7 @@ public class FlavorExplosion : PowerUp
         p.ExplodingBubbles += Stack;
     }
 }
-public class ExplosionRadius : PowerUp
+public class SplashRadius : PowerUp
 {
     public override void Init()
     {
@@ -225,10 +225,6 @@ public class SharpBombs : PowerUp
     public override void HeldEffect(Player p)
     {
         p.BonusShrapnel += 0.5f * Stack;
-    }
-    public override Sprite GetAdornment()
-    {
-        return Resources.Load<Sprite>("PowerUps/Dice/InitiativeAddOn");
     }
 }
 public class PrizeBombs : PowerUp

@@ -15,7 +15,7 @@ public class Cola : Weapon
     {
         powerPool.Add<FlavorExplosion>();
         powerPool.Add<BonusFizz>();
-        powerPool.Add<ExplosionRadius>();
+        powerPool.Add<SplashRadius>();
         powerPool.Add<BottleBlast>();
         powerPool.Add<BottleFlip>();
         powerPool.Add<CarbonForce>();

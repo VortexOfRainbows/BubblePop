@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-
 public static class Lighting
 {
     public static Tile LightTile;
