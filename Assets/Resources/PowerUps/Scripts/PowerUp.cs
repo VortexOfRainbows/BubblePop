@@ -334,6 +334,7 @@ public abstract class PowerUp
         Stack = Stack + count;
         player.PowerCountIncludingStacks += count;
         player.BestPowerCountIncludingStacks = Math.Max(player.PowerCountIncludingStacks, player.BestPowerCountIncludingStacks);
+        Debug.Log($"Current Power Count: {player.PowerCountIncludingStacks}, {player.BestPowerCountIncludingStacks}");
         return Stack;
     }
     public virtual void Init()

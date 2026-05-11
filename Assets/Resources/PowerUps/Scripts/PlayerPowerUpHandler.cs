@@ -8,7 +8,7 @@ public partial class Player : Entity
     
     }
     public int PowerCount => Powers.Count;
-    public int PowerCountIncludingStacks = 0;
+    public int PowerCountIncludingStacks { get; set; } = 0;
     public int BestPowerCountIncludingStacks = 0;
     /// <summary>
     /// Returns the PowerUpID of the power at the given index

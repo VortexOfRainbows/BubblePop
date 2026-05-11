@@ -28,6 +28,7 @@ Need to do:
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
 9. New battle music
 10. Bombee and Kamikaze Enemies.
+11. Need to make buff/debuff layered over walls rather than behind them (probably caused by being grouped by enemies)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -39,6 +40,9 @@ Multiplayer Task List:
 
 Done: 
 
+5/11/26
+1. Fix bug where Dragonslots looked a bit weird in the menu
+2. Mitosis now removes itself first before assimilating, which means it should no longer count as 2x the items for purpose of Gachapon: Blackjack
 
 -- A2.5 --
 

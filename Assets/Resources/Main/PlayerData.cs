@@ -13,7 +13,7 @@ public static class PlayerData
         public static int MeadowsStars { get; set; } = 0;
         public static int TotalMeadowsStars { get; set; } = 0;
     }
-    public static readonly float CurrentPlayerVersion = 2.5f;
+    public static readonly float CurrentPlayerVersion = 2.51f;
     public static int PlayerDeaths;
     public static float SFXVolume = 1;
     public static float MusicVolume = 1;
@@ -145,6 +145,8 @@ public static class PlayerData
     }
     public static void VersionResetProcedure()
     {
+        if(CurrentPlayerVersion < 2.51)
+        UnlockCondition.Get<FizzyUnlock>().SetComplete(false, false);
         SaveData.DeleteKey<int>("LastSelectedChar");
         string TypeName;
         for(int i = 0; i < Main.GlobalEquipData.Characters.Count; ++i)
