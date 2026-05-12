@@ -597,7 +597,8 @@ public partial class Player : Entity
                 PlayerStatUI.UpdateHearts(this);
             }
             BonusChoices = false;
-            foreach (Equipment e in Equips)
+            CoinsOnPowerPickup = 0; //This update needs to happen here so the reset works for mitosis
+            foreach (Equipment e in Equips) 
                 e.EquipUpdate();
             PostEquipUpdate();
             foreach (Equipment e in Equips)
@@ -809,10 +810,12 @@ public partial class Player : Entity
         float immuneMult = ImmunityFrameMultiplier;
         if (skipDamageStep)
             immuneMult *= 0.75f;
-        if(Shield > 0)
+        int shieldDamage = Mathf.Min(damage, Shield);
+        int lifeDamage = damage - shieldDamage;
+        if (shieldDamage > 0)
         {
             if(!skipDamageStep)
-                SetShield(Shield - damage);
+                SetShield(Shield - shieldDamage);
             immuneMult *= ShieldImmunityFrameMultiplier;
             if(BubbleShields > 0)
             {
@@ -824,10 +827,10 @@ public partial class Player : Entity
                     Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1, this);
             }
         }
-        else
+        if(lifeDamage > 0)
         {
             if(!skipDamageStep)
-                SetLife(Life - damage);
+                SetLife(Life - lifeDamage);
         }
         UniversalImmuneFrames = defaultImmuneFrames * immuneMult;
         if (Life <= 0)

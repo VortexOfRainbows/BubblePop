@@ -313,8 +313,8 @@ public abstract class PowerUp
         AmountPickedUpAcrossAllRuns += amt;
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;
-        if (player.CoinsOnPowerPickup > 0)
-            CoinManager.SpawnCoin(player.transform.position, player.CoinsOnPowerPickup, 1.5f);
+        if (player.CoinsOnPowerPickup > 0 && amt > 0)
+            CoinManager.SpawnCoin(player.transform.position, player.CoinsOnPowerPickup * amt, 1.5f);
         if(player.Body is Gachapon)
         {
             if (this is Burger && Stack >= 3)
@@ -334,7 +334,7 @@ public abstract class PowerUp
         Stack = Stack + count;
         player.PowerCountIncludingStacks += count;
         player.BestPowerCountIncludingStacks = Math.Max(player.PowerCountIncludingStacks, player.BestPowerCountIncludingStacks);
-        Debug.Log($"Current Power Count: {player.PowerCountIncludingStacks}, {player.BestPowerCountIncludingStacks}");
+        //Debug.Log($"Current Power Count: {player.PowerCountIncludingStacks}, {player.BestPowerCountIncludingStacks}");
         return Stack;
     }
     public virtual void Init()

@@ -218,7 +218,6 @@ public partial class Player : Entity
         ExplodingBubbles = BonusBoards = Kickflip = RetaliatoryBomb = BombBrew = SkullBomb = ClusterBomb = PrizeBombCoins = BonusStocks = 0;
         BonusShrapnel = BonusRestockChance = 0.0f;
         HasMagnetBook = false;
-        CoinsOnPowerPickup = 0;
         SkateboardBonusDamage = 0;
     }
     private void UpdatePowerUps()

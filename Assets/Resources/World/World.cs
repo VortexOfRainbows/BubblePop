@@ -85,6 +85,7 @@ public class World : MonoBehaviour
     public Transform ProceduralGenParent;
     public List<Transform> PlayerSpawnPosition = new();
     public int NodesToGenerate = 7;
+    public static byte FinalProgNumber { get; set; }
     public Rect ApproximateSize { get; set; }
     [SerializeField]
     public List<Transform> nodes;
@@ -199,6 +200,7 @@ public class World : MonoBehaviour
                 prevNode = node;
             }
         }
+        FinalProgNumber = (byte)(NodesToGenerate - 1); //Minus 1 as the final node is never cleared. the first node starts cleared
         if (prevNode == null)
             throw new System.Exception("BUBBLE: FAILED TO FIND STARTING PROCEDURAL NODE");
         Vector2 toPrev = Utils.RandCircleEdge();
@@ -391,7 +393,7 @@ public class World : MonoBehaviour
         n.transform.parent = ProceduralGenParent;
 
         WorldNode node = NodeID.GetRandomNodeWithParameters(NodeID.SecretNodes, 0, null, null, null);
-        node.Generate(n.transform.position, this, bestGenOwner, null, false);
+        node.Generate(n.transform.position, this, (byte)(MathF.Min(FinalProgNumber, bestGenOwner + 1)), null, false);
 
         Vector2 dir = (Vector2)n.transform.position - new Vector2(bestEndLocation.x, bestEndLocation.y);
         node.GeneratePath(new Vector2(bestEndLocation.x, bestEndLocation.y) * 2, (Vector2)n.transform.position - dir.normalized * 10, false, -1);

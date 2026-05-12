@@ -502,7 +502,7 @@ public class Enemy : Entity
             }
             if(Player.Instance.BountyHunter > 0)
             {
-                float chance = Player.Instance.BountyHunter * 0.05f + 0.05f;
+                float chance = Player.Instance.BountyHunter * 0.02f + 0.02f;
                 while (Utils.RollWithLuck(chance))
                 {
                     float luck = Utils.RollWithLuckRaw();
@@ -517,9 +517,9 @@ public class Enemy : Entity
                     else if (luck < 0.4f)
                         CoinManager.SpawnKey(transform.position, 0.2f);
                     else if (luck < 0.6f)
-                        CoinManager.SpawnGem(transform.position, 0.2f, 5);
+                        CoinManager.SpawnGem(transform.position, 0.2f, 3);
                     else
-                        CoinManager.SpawnCoin(transform.position, 100, 0.2f);
+                        CoinManager.SpawnCoin(transform.position, 50, 0.2f);
                     --chance;
                 }
             }

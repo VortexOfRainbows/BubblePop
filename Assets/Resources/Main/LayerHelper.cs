@@ -54,6 +54,7 @@ public static class LayerHelper
     //          DEFAULT LAYER (not yet integrated)
     //-----------------------------------
     public const int Projectile = 5;
+    public const int InWorldUIBuff = 11; //Boss/Skull health bars
     public const int InWorldUIElement = 10; //Boss/Skull health bars
     public const int ParticleFront = 10;
     public const int ParticleBack = -15;

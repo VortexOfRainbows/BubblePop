@@ -20,7 +20,9 @@ public class GachaponShop : MonoBehaviour
         public Vector2 startPosition;
     }
     public RestockMachine RestockMachine;
-    public int RestockCost { get; set; } = 3;
+    public static int SetDefaultGemRestockCost() => 3;
+    public static int GlobalRestockCost { get; set; } = SetDefaultGemRestockCost();
+    public int RestockCost => GlobalRestockCost;
     public int RestockRemaining { get; set; } = 3;
     public int PreviousStock { get; set; } = 3;
     public static List<GachaponShop> AllShops { get; set; } = new();
@@ -51,16 +53,16 @@ public class GachaponShop : MonoBehaviour
         CoinManager.ModifyGems(-gemCost);
         float bonusChance = Player.Instance.BonusRestockChance;
         int extra = (int)bonusChance;
-        float roll = bonusChance - extra;
-        if (Utils.RandFloat() < roll)
-            extra++;
+        //float roll = bonusChance - extra;
+        //if (Utils.RandFloat() < roll)
+        //    extra++;
         int restockAmt = 3 + extra;
-        RestockCost += 1;
+        GlobalRestockCost += 1;
         NextFillUp = restockAmt;
 
         FillUpTimer = 1;
-        if (RestockCost > 50)
-            RestockCost = 50;
+        if (GlobalRestockCost > 50)
+            GlobalRestockCost = 50;
         int gemAnimation = Mathf.Min(50, gemCost);
         for(int i = 0; i < gemAnimation; ++i)
         {

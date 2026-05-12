@@ -141,7 +141,10 @@ public class BubbleShield : PowerUp
     public override void OnPickup(int count)
     {
         foreach(Player player in Player.AllPlayers)
+        {
+            //Debug.Log("Shield Pickup");
             player.SetShield(player.GetShield() + count);
+        }
     }
     public override void HeldEffect(Player p)
     {
@@ -430,7 +433,7 @@ public class PerpetualBubbleMachine : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription($"Adds Y:1 G:(+1 per stack) <color={DetailedDescription.Rares[0]}>Choice</color> to Y:[wave start] \nR:[Rainbow Shard replication cost increases with stack size]");
+        description.WithDescription($"Adds Y:1 G:(+1 per stack) <color={DetailedDescription.Rares[0]}>Choice</color> to Y:[wave end] \nR:[Rainbow Shard replication cost increases with stack size]");
         description.WithShortDescription("The key to infinite bubble forever?");
     }
     public override void HeldEffect(Player p)
@@ -790,7 +793,7 @@ public class BountyHunter : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bounty Hunter");
-        description.WithDescription($"Y:[Skull enemies] have a Y:10% G:(+5% per stack) chance to drop a Y:[Pirate chest, a key, 5 gems, or 100 coins]");
+        description.WithDescription($"Y:[Skull enemies] have a Y:4% G:(+2% per stack) chance to drop a Y:[Pirate chest, a key, 3 gems, or 50 coins]");
         description.WithShortDescription("Skull enemies have a chance to drop extra loot");
     }
     public override void HeldEffect(Player p)

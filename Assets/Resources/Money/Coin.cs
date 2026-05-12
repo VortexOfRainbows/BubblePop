@@ -41,6 +41,7 @@ public class Coin : MonoBehaviour
                 if (!CanCollect())
                     return;
                 OnCollected();
+                return;
             }
             else if (p.HasMagnetBook && p.Weapon is PhysicsBook pb)
             {
@@ -55,6 +56,7 @@ public class Coin : MonoBehaviour
                         if (!CanCollect())
                             return;
                         OnCollected();
+                        return;
                     }
                 }
             }

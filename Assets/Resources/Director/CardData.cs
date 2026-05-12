@@ -501,10 +501,10 @@ public class RewardClause : CardClause
             PowerReward reward = new(PowerUp.Get<Choice>().MyID)
             {
                 Free = true,
-                BeforeWaveEndReward = true,
+                BeforeWaveEndReward = false,
                 Amt = choices
             };
-            AddPowerReward(reward, PreRewards);
+            AddPowerReward(reward, PostRewards);
         }
         float Rubies = Player.Instance.Ruby * 0.1f * Mathf.Sqrt(HealingChance);
         while (Utils.RandFloat(1) < Rubies)

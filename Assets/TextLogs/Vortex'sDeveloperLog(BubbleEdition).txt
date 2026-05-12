@@ -28,22 +28,33 @@ Need to do:
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
 9. New battle music
 10. Bombee and Kamikaze Enemies.
-11. Need to make buff/debuff layered over walls rather than behind them (probably caused by being grouped by enemies)
-12. Add small Gaussian blur to border shaders for smoother visuals
+11. Add small Gaussian blur to border shaders for smoother visuals
+12. Update settings UI and include settings for modifying soft shadows
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
-2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
 
 Multiplayer Task List:
 n/a
 
 Bug Watchlist:
-1. Bubble shield may not be refreshing on pickup (might have something to do with allplayer list not being cleared)
-2. Compendium menu may not be scrolling to the bottom
+1. Compendium menu may not be scrolling to the bottom
+2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
 
 Done: 
+
+5/12/26
+1. Fix bug where Guide to Physics thunder orbs could each pick up the same instance of a pickup, triggering multiplied yields
+2. Debuff and buffs are layered over walls rather than behind
+3. (NERF) Bounty Hunter stack rate 10% (+5%) -> 4% (+2%). Gem drops 5 -> 3, Coin drops 100 -> 50
+4. (NERF) Perpetual Bubble Machine gives choice at the end of a wave rather than the start
+5. (FIX) Bubble Shield no longer blocks all instances of Glass Knife damage with a single shield, setting shield to a negative value and making it hard to gain back
+6. (NERF) Restock Cost for Restock Machines is now global and shared, rather than each having its own scaling
+7. (NERF) The final restock machine is no longer infinite
+8. (BUFF, FIX) Cat Ear coin gain now scales with the amount of powers obtained at once, rather than always being 1
+9. (REBALANCE) Restock now provides +2 (+2) -> +1 (+1) stocks upon pickup. Restock bonus 0.5 (+0.5) -> +1 (+1)
+10 (FIX) "Secret Rooms" now generate with +1 progression, meaning they can only be accessed after their parent room is cleared, except for the final node (since that would be unreachable)
 
 5/11/26
 1. Fix bug where Dragonslots looked a bit weird in the menu
