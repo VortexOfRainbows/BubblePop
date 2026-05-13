@@ -200,7 +200,7 @@ public class World : MonoBehaviour
                 prevNode = node;
             }
         }
-        FinalProgNumber = (byte)(NodesToGenerate - 1); //Minus 1 as the final node is never cleared. the first node starts cleared
+        FinalProgNumber = (NodesToGenerate < 1 ? (byte)0 : (byte)(NodesToGenerate - 1)); //Minus 1 as the final node is never cleared. the first node starts cleared
         if (prevNode == null)
             throw new System.Exception("BUBBLE: FAILED TO FIND STARTING PROCEDURAL NODE");
         Vector2 toPrev = Utils.RandCircleEdge();
