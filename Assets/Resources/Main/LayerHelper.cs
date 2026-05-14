@@ -32,6 +32,7 @@ public static class LayerHelper
     public const int Player = 0;
     public const int SolidTileSortingOrder = 1;
     public const int RestockMachineTopSortingOrder = 1; //Restock Machine (TOP)
+    public const int ForgeTopSortingOrder = 1; //Forge Machine (TOP)
     public const int SpecialHatSortingOrder = 2; //Bulb, Crown
     public const int OverBorderShadowSortingOrder = 2;
     public const int ChestAirborneSortingOrder = 2;

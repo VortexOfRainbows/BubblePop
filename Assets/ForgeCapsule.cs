@@ -9,6 +9,7 @@ public class ForgeCapsule : MonoBehaviour
     public TextMeshProUGUI RestockCost;
     public PowerUpObject HeldPower;
     public SpriteRenderer Fluid;
+    public ForgeHammer MyHammer { get; set; }
     public void UpdateUI(object owner = null)
     {
         Player p = Player.FindClosest(transform.position, out Vector2 norm, out float distance, 100);
@@ -24,7 +25,7 @@ public class ForgeCapsule : MonoBehaviour
                 RestockCost.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
                 if (Input.GetKeyDown(KeyCode.R) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
                 {
-                    DeployPower();
+                    MyHammer.Begin(this, 5);
                     UI.gameObject.SetActive(false);
                 }
             }
@@ -45,6 +46,7 @@ public class ForgeCapsule : MonoBehaviour
         HeldPower.Type = powerType;
         HeldPower.Start();
         HeldPower.adornment.enabled = false;
+        HeldPower.LightingMultiplier = 0.6f;
         Fluid.color = ColorHelper.RarityColors[PowerUp.Get(powerType).GetRarity() - 1].WithAlpha(0.2f);
         HasSelectedPower = true;
     }
@@ -53,10 +55,6 @@ public class ForgeCapsule : MonoBehaviour
         if (!HasSelectedPower)
             InitPower();
         HeldPower.gameObject.SetActive(true);
-    }
-    public void Update()
-    {
-        UpdateUI();
     }
     public void DeployPower()
     {

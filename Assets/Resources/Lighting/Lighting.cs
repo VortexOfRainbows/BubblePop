@@ -57,19 +57,24 @@ public static class Lighting
         UpdateSun();
     }
     public static float DayProgress = 0;
-    public static readonly float TimeInADay = 480; //6 minutes per day, for now (night progresses faster, so 4 + 2 = 6)
+    public static readonly float TimeInADay = 960; //12 minutes per day, for now (night progresses faster, so 8 + 4 = 6)
     public static Vector2 SunVector = new(1, 0);
     public static bool IsDay => DayProgress < TimeInADay / 2;
     public static bool IsNight => !IsDay;
     public static float DaySin = 0;
     public static float NightSin = 0;
+    public static bool PauseDayNightCycle { get; set; } = false;
     public static void UpdateSun()
     {
         float factor = 1.0f;
         if (IsNight)
             factor = 2.0f;
         if (Main.DebugCheats && Input.GetKey(KeyCode.K))
-            factor *= 20;
+            factor *= 80;
+        if (Main.DebugCheats && Input.GetKeyDown(KeyCode.Y))    
+            PauseDayNightCycle = !PauseDayNightCycle;
+        if (PauseDayNightCycle)
+            factor = 0;
         DayProgress += Time.deltaTime * factor;
         if (DayProgress > TimeInADay)
             DayProgress -= TimeInADay;

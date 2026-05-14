@@ -3,6 +3,10 @@ Bubble Developer Log (Vortex)
 Do Later:
 1. Layer Fixes
 	1. Playtest to double check that relations seem to be appropriate
+	2. Fix layering on complex entities:
+		1. Rock Golem: Needs a sorting order on the golems. Parent golem determines other golems order. The legs render out of step
+		2. Crucible: Start by getting the sorting orders defined
+	3. True y-layering still does not exist. A true fix may be difficult. Best to case-by-case address issues..?
 2. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
 3. Integrate Compendium into the pause menu
@@ -10,6 +14,11 @@ Do Later:
 5. Update to Unity 6 to remove the silly splash screen
 6. Localization and text organization system
 7. Make fizzy bubble bottle shadow properly travel over walls
+8. Lighting: it may be possible to make the shadows accurate to the shapes of the tiles (so far I think this logic gets you part way there)
+	1. Use render target to load terrain top onto layer from a camera offset negative the sunlight vector
+	2. Use the existing shadow texture. Mask it to clear out half a tile negative the sun direction. Then mask that onto the top terrain?
+		1. Maybe also mask an additional time the create a thin band where the shape would matter, so the inside of the tile is not considered?
+	3. After that, mask the top terrain onto the shadow texture?
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -43,6 +52,13 @@ Bug Watchlist:
 2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
 
 Done: 
+
+5/14/26
+1. Pause day night cycle debug key with (CTRL+Y)
+2. More WIP Forge
+3. Crucible hitbox is now a little bigger and more capsule-like (temporary bandage for layering issues)
+	1. Enemies also collide with it now
+4. Extend the Day-Night cycle 6 min -> 12 min (8 day, 4 night)
 
 -- A2.61 --
 
