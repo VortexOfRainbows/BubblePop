@@ -21,6 +21,7 @@ public static class LayerHelper
     public const int BarrierVisualLayer = -4; //Red shadermask visual
     public const int CrucibleSortingOrder = -3;
     public const int ChestSortingOrder = -3;
+    public const int ForgeChamberSortingOrder = -3;
     public const int PickupSortingOrder = -2; //Coins, Keys, Etc.
     public const int PowerOrder = -1; //Powers
     public const int PortalSortingOrder = -1;
