@@ -137,6 +137,7 @@ public class World : MonoBehaviour
         FloorSortingLayer = RealTileMap.GetComponent<TilemapRenderer>().sortingLayerID;
         GachaponShop.AllShops.Clear();
         GachaponShop.TotalPowersPurchased = 0;
+        GachaponShop.GlobalRestockCost = GachaponShop.SetDefaultGemRestockCost();
         NodeID.LoadAllNodes();
         NextToGenerate.Clear();
         Pylons.Clear();

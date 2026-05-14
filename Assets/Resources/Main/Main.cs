@@ -164,7 +164,7 @@ public partial class Main : MonoBehaviour
         UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
         if (CharacterSelect.Instance != null)
         {
-            if (DebugCheats && Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.LeftControl))
+            if (DebugCheats && Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.LeftControl) && !Main.WavesUnleashed)
             {
                 CharacterSelect.Instance.SwapPlayerEquipment(Player.Instance, Main.GlobalEquipData.Characters[Utils.RandInt(Main.GlobalEquipData.Characters.Count)].GetComponent<Equipment>());
                 CharacterSelect.Instance.SwapPlayerEquipment(Player.Instance, Main.GlobalEquipData.Hats[Utils.RandInt(Main.GlobalEquipData.Hats.Count)].GetComponent<Equipment>());
