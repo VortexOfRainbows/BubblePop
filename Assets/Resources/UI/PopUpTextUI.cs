@@ -10,13 +10,16 @@ public class PopUpTextUI : MonoBehaviour
     public const int DefaultAchievementPopupDuration = 300;
     public static readonly Queue<PowerUp> PowerupQueue = new();
     public static readonly Queue<UnlockCondition> UnlockQueue = new();
+    public static bool ForceHide = false;
     public static void Enable(string name, string desc, int duration = 4)
     {
         Enable(HoverTextInstance, name, desc, duration);
     }
     public static void Enable(PopUpTextUI instance, string name, string desc, int duration = DefaultPopupDuration)
     {
-        if(instance.Type == AchievementPopUpUI)
+        if (ForceHide)
+            return;
+        if (instance.Type == AchievementPopUpUI)
         {
             if (instance.AchievementElement.NameText.text != name || instance.AchievementElement.DescriptionText.text != desc)
             {

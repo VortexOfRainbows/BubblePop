@@ -157,9 +157,22 @@ public partial class Main : MonoBehaviour
             Main.WavesUnleashed = true;
             PylonProgressionNumber++;
         }
+        if (DebugCheats && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl))
+        {
+            PopUpTextUI.ForceHide = !PopUpTextUI.ForceHide;
+        }
         UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
         if (CharacterSelect.Instance != null)
+        {
+            if (DebugCheats && Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.LeftControl))
+            {
+                CharacterSelect.Instance.SwapPlayerEquipment(Player.Instance, Main.GlobalEquipData.Characters[Utils.RandInt(Main.GlobalEquipData.Characters.Count)].GetComponent<Equipment>());
+                CharacterSelect.Instance.SwapPlayerEquipment(Player.Instance, Main.GlobalEquipData.Hats[Utils.RandInt(Main.GlobalEquipData.Hats.Count)].GetComponent<Equipment>());
+                CharacterSelect.Instance.SwapPlayerEquipment(Player.Instance, Main.GlobalEquipData.Accessories[Utils.RandInt(Main.GlobalEquipData.Accessories.Count)].GetComponent<Equipment>());
+                CharacterSelect.Instance.SwapPlayerEquipment(Player.Instance, Main.GlobalEquipData.Weapons[Utils.RandInt(Main.GlobalEquipData.Weapons.Count)].GetComponent<Equipment>());
+            }
             CharacterSelect.Instance.OnUpdate();
+        }
     }
     public void LateUpdate()
     {

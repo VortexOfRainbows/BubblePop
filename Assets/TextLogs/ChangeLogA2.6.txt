@@ -1,0 +1,19 @@
+Dev Build 2.6 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+Changes:
+1. (NERF) Bounty Hunter stack rate 10% (+5%) -> 4% (+2%). Gem drops 5 -> 3, Coin drops 100 -> 50
+2. (NERF) Perpetual Bubble Machine gives choice at the end of a wave rather than the start
+3. (NERF) Restock Cost for Restock Machines is now global and shared, rather than each having its own scaling
+4. (NERF) The final restock machine is no longer infinite
+5. (BUFF, FIX) Cat Ear coin gain now scales with the amount of powers obtained at once, rather than always being 1
+6. (REBALANCE) Restock now provides +2 (+2) -> +1 (+1) stocks upon pickup. Restock bonus 0.5 (+0.5) -> +1 (+1)
+7. (FIX) "Secret Rooms" now generate with +1 progression, meaning they can only be accessed after their parent room is cleared, except for the final node 
+
+Misc:
+1. Shadows are now slightly sharper 4 -> 3 blur to reduce lag as much as possible. setting slider will come later
+2. Added debugs keys for hiding popup UI and randomizing character equipments (CTRL+H, CTRL+R)
+
+Fixes:
+1. Fix bug where Guide to Physics thunder orbs could each pick up the same instance of a pickup, triggering multiplied yields

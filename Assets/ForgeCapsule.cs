@@ -12,7 +12,7 @@ public class ForgeCapsule : MonoBehaviour
     public void UpdateUI(object owner = null)
     {
         Player p = Player.FindClosest(transform.position, out Vector2 norm, out float distance, 100);
-        if (distance < 7 && p != null)
+        if (distance < 7 && p != null && p.ThisIsPlayerClosestInteractable(gameObject))
         {
             UI.LerpLocalScale(Vector2.one, 0.1f);
             UI.gameObject.SetActive(true);
@@ -60,7 +60,7 @@ public class ForgeCapsule : MonoBehaviour
     }
     public void DeployPower()
     {
-        Vector2 spawnPos = new Vector3(0, -0.4f);
+        Vector2 spawnPos = transform.position + new Vector3(0, -0.4f);
         AudioManager.PlaySound(SoundID.ChestDrop, spawnPos, 1, 1);
         PowerUpObject p = PowerUp.Spawn(HeldPower.Type, spawnPos).GetComponent<PowerUpObject>();
         p.FinalPosition = transform.position + new Vector3(0, -2);

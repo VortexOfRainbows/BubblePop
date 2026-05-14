@@ -102,14 +102,10 @@ public class Crucible : MonoBehaviour
     public void PreFixedUpdate()
     {
         Player p = Player.FindClosest(transform.position, out _, out float dist);
-        if (p == null || dist > 12)
-        {
+        if (p == null || dist > 12 || !p.ThisIsPlayerClosestInteractable(gameObject))
             DisableUI();
-        }
         else
-        {
             EnableUI();
-        }
         if(!Active && PowerQueue.TryDequeue(out int powerType))
         {
             HeldPower.Type = powerType;

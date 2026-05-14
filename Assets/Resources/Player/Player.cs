@@ -977,4 +977,19 @@ public partial class Player : Entity
     {
         AllPlayers.Remove(this);
     }
+    public GameObject ClosestInteractable { get; set; } = null;
+    public bool ThisIsPlayerClosestInteractable(GameObject self)
+    {
+        if (ClosestInteractable == null || ClosestInteractable == self)
+        {
+            ClosestInteractable = self;
+            return true;
+        }
+        if(((Vector2)ClosestInteractable.transform.position - Position).sqrMagnitude > ((Vector2)self.transform.position - Position).sqrMagnitude)
+        {
+            ClosestInteractable = self;
+            return true;
+        }
+        return false;
+    }
 }
