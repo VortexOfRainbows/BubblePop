@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ForgeHammer : GemUtility
@@ -10,6 +11,7 @@ public class ForgeHammer : GemUtility
     public ForgeCapsule RCapsuel { get; set; }
     public GameObject GemTemplate;
     public byte ProgressionNumber { get; set; } = 0;
+    public Transform BackPipe1, BackPipe2;
     public void Begin(ForgeCapsule requestingCapsule, int gems)
     {
         if (RCapsuel != null)
@@ -37,7 +39,7 @@ public class ForgeHammer : GemUtility
                 if(AnimationTimer > 2.6f)
                 {
                     float percent = 1 - ((AnimationTimer - 2.6f) / 0.4f);
-                    percent = percent * percent * percent * percent * 0.9f + percent * 0.1f;
+                    percent = percent * percent * percent * percent * 0.95f + percent * 0.05f;
                     HydraulicPress.SetLocalXY(Vector2.Lerp(new Vector2(0, 2.9f), new Vector2(0, 2.175f), percent));
                 }
                 else if(AnimationTimer > 1.0f)
@@ -45,8 +47,19 @@ public class ForgeHammer : GemUtility
                     HydraulicPress.SetLocalXY(new Vector2(0, 2.175f));
                     if (Gems.Count > 0)
                     {
+                        AudioManager.PlaySound(SoundID.Starbarbs, GemCrushPosition.position, 1.4f, 0.7f);
+                        AudioManager.PlaySound(SoundID.WoodBreak, GemCrushPosition.position, 0.5f, 1.7f);
+                        AudioManager.PlaySound(SoundID.ElectricZap, GemCrushPosition.position, 0.6f, 0.45f, 0);
                         foreach (GameObject gem in Gems)
+                        {
+                            for(int i = 0; i < 8; ++i)
+                            {
+                                Vector2 circular = new Vector2(0, -1).RotatedBy(Utils.RandFloat(-135, 135) * Mathf.Deg2Rad);
+                                circular.y *= 0.5f;
+                                ParticleManager.NewParticle((Vector2)GemCrushPosition.position + circular * 0.6f, Utils.RandFloat(1.2f, 1.5f), circular * Utils.RandFloat(2, 5), 1.0f, Utils.RandFloat(1.0f, 2.0f), ParticleManager.ID.Pixel, ColorHelper.SentinelGreen.WithAlpha(0.8f));
+                            }
                             Destroy(gem);
+                        }
                         Gems.Clear();
                         gemRemovalCount = 0;
                         nextGemThreshold = -5;
@@ -83,6 +96,14 @@ public class ForgeHammer : GemUtility
             }
             gem.transform.LerpLocalScale(new Vector3(-dir, 1, 1), t);
         }
+        if(AnimationTimer < 2.6f && AnimationTimer > 2.475f)
+            BackPipe1.transform.localScale = new Vector3(1.1f, 1.0f, 1.0f);
+        else
+            BackPipe1.LerpLocalScale(Vector2.one, t);
+        if (AnimationTimer < 2.575f && AnimationTimer > 2.45f)
+            BackPipe2.transform.localScale = new Vector3(1.05f, 1.0f, 1.0f);
+        else
+            BackPipe2.LerpLocalScale(Vector2.one, t);
     }
     public bool HasDelayed { get; set; } = false;
     public void DelayedStart()

@@ -27,7 +27,7 @@ Need to do:
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. (TENTATIVE, MIGHT NOT DO THESE) Economy: Gacha Capsule (dissolving in crucible gives random rewards), Crystal Syrum (Makes all enemies drop gems, chance)
-4. Add a FORGE which uses GEMS to print powers
+4. Forge needs some rooms to spawn in
 5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 6. Enemy Pathfinding
 7. Some UI classes to normalize UI colors, Button behaviors, etc.
@@ -56,8 +56,7 @@ Done:
 
 5/14/26 to 5/15/26
 1. Pause day night cycle debug key with (CTRL+Y)
-2. More WIP Forge animations + shaders
-	1. Needs: SFX, Particles
+2. Add the Forge with animations + shaders
 3. Crucible hitbox is now a little bigger and more capsule-like (temporary bandage for layering issues)
 	1. Enemies also collide with it now
 4. Extend the Day-Night cycle 6 min -> 12 min (8 day, 4 night)

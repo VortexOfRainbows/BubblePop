@@ -13,6 +13,7 @@ public class ForgeCapsule : MonoBehaviour
     public ForgeHammer MyHammer { get; set; }
     public Color ColoredWater { get; set; }
     public int GemCost { get; set; } = 5;
+    public Transform BackPipe1, BackPipe2;
     public void UpdateUI(object owner = null)
     {
         if (!HasSelectedPower)
@@ -115,7 +116,11 @@ public class ForgeCapsule : MonoBehaviour
             }
             if(percent > 0.3f && percent <= 0.7f)
             {
-                HeldPower.gameObject.SetActive(true);
+                if(!HeldPower.gameObject.activeSelf)
+                {
+                    AudioManager.PlaySound(SoundID.Infect, HeldPower.transform.position, 1.0f, 0.4f);
+                    HeldPower.gameObject.SetActive(true);
+                }
                 float newPercent = (percent - 0.3f) / 0.4f;
                 float newSin = Mathf.Sin(newPercent * Mathf.PI * 3) + newPercent;
                 float pSqr = newPercent * newPercent * 0.5f + 0.5f * Mathf.Sqrt( newPercent);
@@ -133,15 +138,30 @@ public class ForgeCapsule : MonoBehaviour
             fluidR.material.SetFloat("_CrystalLerp", 0);
             fluidR.material.SetFloat("_VerticalOffset", Mathf.Lerp(lerpyLerp, -2.1f, 0.1f));
         }
+        if (PowerAnimation > -2.55f && PowerAnimation < -2.35f)
+            BackPipe1.transform.localScale = new Vector3(1.04f, 1.0f, 1.0f);
+        else
+            BackPipe1.LerpLocalScale(Vector2.one, 0.1f);
+        if (PowerAnimation > -2.45f && PowerAnimation < -2.25f)
+            BackPipe2.transform.localScale = new Vector3(1.14f, 1.0f, 1.0f);
+        else
+            BackPipe2.LerpLocalScale(Vector2.one, 0.1f);
     }
     public void GivePower()
     {
-        Vector2 spawnPos = transform.position + new Vector3(0, -0.4f);
+        Vector2 spawnPos = transform.position + new Vector3(0, -0.2875f);
         AudioManager.PlaySound(SoundID.ChestDrop, spawnPos, 1, 1);
         PowerUpObject p = PowerUp.Spawn(HeldPower.Type, spawnPos).GetComponent<PowerUpObject>();
         p.FinalPosition = transform.position + new Vector3(0, -2);
         p.VelocityStyle = 1;
         p.velocity = new Vector2(0, 4);
+        float r = Utils.rand.NextFloat(Mathf.PI * 2);
+        for (int a = 0; a < 30; ++a)
+        {
+            Vector2 circular = new Vector2(1, 0).RotatedBy(Mathf.PI * a / 15f + r);
+            ParticleManager.NewParticle(spawnPos, Utils.RandFloat(2, 3), circular * Utils.RandFloat(2.5f, 4), 0.2f, Utils.RandFloat(0.7f, 1.5f), ParticleManager.ID.Pixel,
+                p.glow.color * 0.7f);
+        }
     }
     public void DeployPower()
     {
