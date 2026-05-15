@@ -54,9 +54,16 @@ public class GemUtility : MonoBehaviour
                         layer = maxLayer;
                     SpriteBatch.Draw(s, position, (0.5f + 0.5f * sin) * 0.5f * Vector2.one, 0, Color.white.WithAlpha(0.4f + 0.6f * sin), layer, defaultMat);
                     if (percent > 1)
+                    {
+                        OnGemRemoval();
                         GemAnimateList.RemoveAt(i);
+                    }
                 }
             }
         }
+    }
+    public virtual void OnGemRemoval()
+    {
+
     }
 }
