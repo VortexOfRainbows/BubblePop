@@ -580,6 +580,7 @@ public partial class Player : Entity
         CreateRoadblockBarriers();
         if (!World.WithinBorders(transform.position, true))
             Entity.PushIntoClosestPossibleTile(transform, base.RB, includeProgressionBounds: true);
+        CheckForClosestObjects();
         if (dead)
         {
             Pop();
@@ -977,19 +978,30 @@ public partial class Player : Entity
     {
         AllPlayers.Remove(this);
     }
-    public GameObject ClosestInteractable { get; set; } = null;
+    public static List<GameObject> ObjectsConsideredForUIInteraction = new();
+    public GameObject ClosestInteractable { get; private set; }
+    public void CheckForClosestObjects()
+    {
+        //if (lastPos != Position)
+        {
+            float bestPos = ClosestInteractable == null ? float.MaxValue : Utils.DistanceSquared(ClosestInteractable.transform.position, Position);
+            for (int i = 0; i < ObjectsConsideredForUIInteraction.Count; ++i)
+            {
+                var obj = ObjectsConsideredForUIInteraction[i];
+                if (obj == null)
+                    ObjectsConsideredForUIInteraction.RemoveAt(i--);
+                Vector2 toPlayer = Position - (Vector2)obj.transform.position;
+                float sqrMag = toPlayer.sqrMagnitude;
+                if (sqrMag < bestPos)
+                {
+                    bestPos = sqrMag;
+                    ClosestInteractable = obj;
+                }
+            }
+        }
+    }
     public bool ThisIsPlayerClosestInteractable(GameObject self)
     {
-        if (ClosestInteractable == null || ClosestInteractable == self)
-        {
-            ClosestInteractable = self;
-            return true;
-        }
-        if(((Vector2)ClosestInteractable.transform.position - Position).sqrMagnitude > ((Vector2)self.transform.position - Position).sqrMagnitude)
-        {
-            ClosestInteractable = self;
-            return true;
-        }
-        return false;
+        return ClosestInteractable == self;
     }
 }

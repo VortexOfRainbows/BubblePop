@@ -9,8 +9,12 @@ public class ForgeHammer : GemUtility
     public float AnimationTimer = 0;
     public ForgeCapsule RCapsuel { get; set; }
     public GameObject GemTemplate;
+    public byte ProgressionNumber { get; set; } = 0;
     public void Begin(ForgeCapsule requestingCapsule, int gems)
     {
+        if (RCapsuel != null)
+            return;
+        CoinManager.ModifyGems(-gems);
         float baseTime = 1.0f;
         int gemAnimation = gems;
         for (int i = 0; i < gemAnimation; ++i)
@@ -22,6 +26,8 @@ public class ForgeHammer : GemUtility
     }
     public void Update()
     {
+        if(!HasDelayed)
+            DelayedStart();
         AnimateGems(GemCrushPosition.position, -1, 2);
         if(AnimationTimer > 0)
         {
@@ -47,7 +53,7 @@ public class ForgeHammer : GemUtility
                     }
                     if (RCapsuel != null)
                     {
-                        RCapsuel.PowerAnimation = -2;
+                        RCapsuel.PowerAnimation = -2.6f;
                         RCapsuel = null;
                     }
                 }
@@ -78,10 +84,16 @@ public class ForgeHammer : GemUtility
             gem.transform.LerpLocalScale(new Vector3(-dir, 1, 1), t);
         }
     }
-    public void Start()
+    public bool HasDelayed { get; set; } = false;
+    public void DelayedStart()
     {
-        foreach(ForgeCapsule c in MyCapsules)
+        HasDelayed = true;
+        foreach (ForgeCapsule c in MyCapsules)
+        {
+            Player.ObjectsConsideredForUIInteraction.Add(c.gameObject);
             c.MyHammer = this;
+        }
+        ProgressionNumber = World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).ProgressionNumber;
     }
     public List<GameObject> Gems;
     public int gemRemovalCount = 0;

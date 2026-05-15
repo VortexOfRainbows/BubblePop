@@ -412,4 +412,10 @@ public static class Utils
     {
         return Color.Lerp(start, end, t);
     }
+    public static float DistanceSquared(Vector2 a, Vector2 b)
+    {
+        float num = a.x - b.x;
+        float num2 = a.y - b.y;
+        return num * num + num2 * num2;
+    }
 }

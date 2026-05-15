@@ -39,6 +39,7 @@ Need to do:
 10. Bombee and Kamikaze Enemies.
 11. Add small Gaussian blur to border shaders for smoother visuals
 12. Update settings UI and include settings for modifying soft shadows
+13. Fix power popup UI (descriptions when you pick up a power) not having soft fadeout
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -53,12 +54,14 @@ Bug Watchlist:
 
 Done: 
 
-5/14/26
+5/14/26 to 5/15/26
 1. Pause day night cycle debug key with (CTRL+Y)
-2. More WIP Forge animations
+2. More WIP Forge animations + shaders
+	1. Needs: SFX, Particles
 3. Crucible hitbox is now a little bigger and more capsule-like (temporary bandage for layering issues)
 	1. Enemies also collide with it now
 4. Extend the Day-Night cycle 6 min -> 12 min (8 day, 4 night)
+5. UI popups can now only show one at a time (Crucible, Restock, Forge)
 
 -- A2.61 --
 

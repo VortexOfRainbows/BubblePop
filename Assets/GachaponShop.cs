@@ -28,6 +28,7 @@ public class GachaponShop : GemUtility
         RestockRemaining += Player.Instance.BonusStocks;
         RestockMachine.SetRestockAmountToShopStock(this);
         RestockMachine.UpdateUI(this);
+        Player.ObjectsConsideredForUIInteraction.Add(RestockMachine.gameObject);
     }
     public void TryAddingRemainingRestocks(int gemCost = 0)
     {

@@ -41,6 +41,7 @@ public class Crucible : MonoBehaviour
         HeldPower.gameObject.SetActive(false);
         Text.transform.localScale = Vector2.zero;
         Text.text = "0";
+        Player.ObjectsConsideredForUIInteraction.Add(gameObject);
     }
     public void ConnectArms()
     {

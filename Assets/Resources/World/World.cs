@@ -157,8 +157,9 @@ public class World : MonoBehaviour
             NatureParent.Init();
 
         Player.AllPlayers.Clear();
+        Player.ObjectsConsideredForUIInteraction.Clear();
 
-        foreach(Transform spawnPos in PlayerSpawnPosition)
+        foreach (Transform spawnPos in PlayerSpawnPosition)
         {
             var p = Instantiate(Main.PrefabAssets.PlayerPrefab, spawnPos.position, Quaternion.identity).GetComponent<Player>();
             p.InstanceID = Player.AllPlayers.Count;
