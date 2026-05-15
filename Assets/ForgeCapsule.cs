@@ -48,7 +48,7 @@ public class ForgeCapsule : MonoBehaviour
         HeldPower.Start();
         HeldPower.adornment.enabled = false;
         HeldPower.LightingMultiplier = 0.45f;
-        ColoredWater = Fluid.color = ColorHelper.RarityColors[PowerUp.Get(powerType).GetRarity() - 1].WithAlpha(0.5f);
+        ColoredWater = Fluid.color = ColorHelper.RarityColors[PowerUp.Get(powerType).GetRarity() - 1].WithAlpha(1);
         HasSelectedPower = true;
     }
     public void FixedUpdate()
@@ -79,7 +79,8 @@ public class ForgeCapsule : MonoBehaviour
                 GivePower();
                 HeldPower.gameObject.SetActive(false);
             }
-            Fluid.color = Color.Lerp(ColoredWater, Color.gray, percent).WithAlpha(0.5f);
+            Fluid.color = Color.Lerp(ColoredWater, ColoredWater * 0.7f, percent).WithAlpha(1);
+            Fluid.transform.localScale = new Vector3(1, 1 - percent, 1);
         }
         else if(PowerAnimation < 0)
         {
@@ -90,14 +91,15 @@ public class ForgeCapsule : MonoBehaviour
                 float pSqr = percent * 0.5f + 0.5f * percent * percent;
                 powerParent.localPosition = new Vector3(0, 1.9f, 0);
                 powerParent.localScale = new Vector3(0.6f * pSqr, 0.6f * pSqr, 1);
-                Fluid.color = Color.Lerp(Color.green * 0.5f, ColoredWater, Mathf.Sqrt(percent)).WithAlpha(0.5f);
+                Fluid.color = Color.Lerp(Color.green * 0.5f, ColoredWater, Mathf.Sqrt(percent)).WithAlpha(1);
                 HeldPower.LightingMultiplier = 0.45f * percent;
             }
             else
             {
                 float percent = 2 + PowerAnimation;
                 percent *= percent;
-                Fluid.color = Color.Lerp(Color.gray, Color.green * 0.5f, percent).WithAlpha(0.5f);
+                Fluid.color = Color.Lerp(ColoredWater * 0.7f, Color.green * 0.5f, percent).WithAlpha(1);
+                Fluid.transform.localScale = new Vector3(1, percent * percent, 1);
             }
             if (PowerAnimation > 0)
                 PowerAnimation = 0;
