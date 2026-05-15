@@ -54,7 +54,7 @@ public static class NodeID
         foreach (WorldNode n in SecretNodes)
             n.transform.position = Vector3.zero;
     }
-    public static WorldNode GetRandomNodeWithParameters(List<WorldNode> pool, int zoneID = 0, bool? shop = null, bool? crucible =  null, bool? needsLarge = null, float maxWeight = 5f)
+    public static WorldNode GetRandomNodeWithParameters(List<WorldNode> pool, int zoneID = 0, bool? shop = null, bool? crucible =  null, bool? needsLarge = null, bool? needsForge = null, float maxWeight = 5f)
     {
         List<WorldNode> viableNodes = new();
         int bestScore = 0;
@@ -69,6 +69,8 @@ public static class NodeID
                 if (shop == null || shop.Value == n.HasShop)
                     score += 1;
                 if (crucible == null || crucible.Value == n.HasCrucible)
+                    score += 1;
+                if (needsForge == null || needsForge.Value == n.HasForge)
                     score += 1;
                 if (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode)
                     score += 2;
@@ -92,6 +94,8 @@ public static class NodeID
                     if (shop == null || shop.Value == n.HasShop)
                         score += 1;
                     if (crucible == null || crucible.Value == n.HasCrucible)
+                        score += 1;
+                    if (needsForge == null || needsForge.Value == n.HasForge)
                         score += 1;
                     if (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode)
                         score += 2;
@@ -214,6 +218,7 @@ public class WorldNode : MonoBehaviour
     public static bool OverrideTiles = true;
     public bool HasShop = false;
     public bool HasCrucible = false;
+    public bool HasForge = false;
     public bool CountsAsLargeNode = false;
     public void GetClosestConnectors(List<NodeConnector> starts, List<NodeConnector> ends, 
         out NodeConnector bestStart, out NodeConnector bestEnd, out float bestDist)
@@ -315,11 +320,14 @@ public class WorldNode : MonoBehaviour
         GenerateLine(prev, end, radius);
         if(withSubNode && !IsSubNode && attempts <= 10)    
         {
-            WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes, 
-                0, 
+            bool? forge = false;
+            if (GenerationNumber > 4)
+                forge = GenerationNumber == 5 ? true : null;
+            WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes,
+                0,
                 GenerationNumber % 2 == 0 ? Utils.RollWithLuck(0.75f) ? false : null : (GenerationNumber == 7 || Utils.RandFloat(1) < 0.66f),
-                null, null, 
-                GenerationNumber == 7 ? 0.5f : 5.0f);
+                null, null, forge,
+                GenerationNumber == 7 ? 0.15f : 5.0f);
             sub.Generate(subNodePos, World, GenerationNumber, null);
             sub.GetClosestSingleNode(subNodeConPos, sub.Connectors, out NodeConnector best, out float _);
             OverrideTiles = best.OverrideTiles;

@@ -217,13 +217,13 @@ public class World : MonoBehaviour
             nodes.Add(arbitraryGameObject.transform);
             Rect prev = node.TileMap.GetRect(prevPosition.ToTilePosition(), true, 4);
             Rect current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), true, 4);
-            float att = (current.width + current.height + prev.width + prev.height) * 0.4f;
+            float att = (current.width + current.height + prev.width + prev.height) * 0.45f;
             float start = att;
             while (IntersectionCount(current) > 0)
             {
                 float r = Utils.RandFloat(-att, att);
                 r += Mathf.Sign(r) * 10;
-                arbitraryGameObject.transform.position = prevPosition - (Vector3)((toPrev * (att + Utils.RandFloat(25))).RotatedBy(r * Mathf.Deg2Rad));
+                arbitraryGameObject.transform.position = prevPosition - (Vector3)((toPrev * (att + Utils.RandFloat(30))).RotatedBy(r * Mathf.Deg2Rad));
                 current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), false, 5);
                 if(att > 360)
                     throw new Exception("BUBBLE: FAILED TO PLACE PROCEDURAL NODE");
@@ -256,12 +256,14 @@ public class World : MonoBehaviour
         bool shop = i == 2 || i == 4 || i == 6 || i == totalNodes - 1;
         bool largo = i == totalNodes - 1;
         bool? crucible = i % 3 == 1 && !largo ? Utils.RollWithLuck(0.5f) : null;
+        bool? forge = i > 4 ? Utils.RollWithLuck(0.5f) : false;
         if (i <= 1) //Don't want crucible on first room
             crucible = false;
         WorldNode node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0,
             shop,
         crucible,
-            largo);
+            largo,
+            forge);
         NodeID.PreviousNode = node;
         NextToGenerate.Enqueue(node);
         return node;
@@ -394,7 +396,7 @@ public class World : MonoBehaviour
         n.transform.position = bestLocation * 2;
         n.transform.parent = ProceduralGenParent;
 
-        WorldNode node = NodeID.GetRandomNodeWithParameters(NodeID.SecretNodes, 0, null, null, null);
+        WorldNode node = NodeID.GetRandomNodeWithParameters(NodeID.SecretNodes, 0, null, null, null, null);
         node.Generate(n.transform.position, this, (byte)(MathF.Min(FinalProgNumber, bestGenOwner + 1)), null, false);
 
         Vector2 dir = (Vector2)n.transform.position - new Vector2(bestEndLocation.x, bestEndLocation.y);

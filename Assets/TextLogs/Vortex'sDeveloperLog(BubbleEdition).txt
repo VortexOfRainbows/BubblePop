@@ -27,10 +27,10 @@ Need to do:
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. (TENTATIVE, MIGHT NOT DO THESE) Economy: Gacha Capsule (dissolving in crucible gives random rewards), Crystal Syrum (Makes all enemies drop gems, chance)
-4. Forge needs some rooms to spawn in
+4. Forge needs some rooms to spawn in (ALSO SORT THE EXISTING ROOMS INTO FOLDERS FOR SHOP,CRUCIBLE,FORGE, ALL 8 COMBOS, then BOSS
 5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 6. Enemy Pathfinding
-7. Some UI classes to normalize UI colors, Button behaviors, etc.
+7. Some UI classes to normalize UI colors, Button behaviors, etc... settings menu
 8. Compendium TODO:
 	1. Make powers show which pools they belong to
 	2. Make blurbs appear in the equipment page
@@ -61,6 +61,10 @@ Done:
 	1. Enemies also collide with it now
 4. Extend the Day-Night cycle 6 min -> 12 min (8 day, 4 night)
 5. UI popups can now only show one at a time (Crucible, Restock, Forge)
+6. Adjust some worldgen variables and add forge tag for nodes
+7. Forges can now appear in a few subnodes and has the maximum priority secret room node
+8. Adjusted the BoxesShop12 node -> BoxesShopWithForge and changed geometry
+9. Forges appear in the final node
 
 -- A2.61 --
 

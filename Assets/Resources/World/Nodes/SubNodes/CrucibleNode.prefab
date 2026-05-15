@@ -2474,9 +2474,10 @@ MonoBehaviour:
   FeatureParent: {fileID: 4968511932184236685}
   PylonParent: {fileID: 0}
   Zone: 0
-  Weighting: 1
+  Weighting: 0.2
   HasShop: 0
   HasCrucible: 1
+  HasForge: 0
   CountsAsLargeNode: 0
 --- !u!1 &7558453631014675353
 GameObject:
