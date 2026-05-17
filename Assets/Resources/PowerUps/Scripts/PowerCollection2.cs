@@ -458,7 +458,7 @@ public class ConsolationPrize : PowerUp
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
-        description.WithDescription("Increases Y:[non-winning spin damage] and Y:[secondary attack damage] by Y:10% G:(+10% per stack) \nY:7.77% chance to gain Y:2 G:(+2 per stack) Y:coins on Y:[non-winning spins] " +
+        description.WithDescription("Increases Y:[non-winning spin damage] and Y:[secondary attack damage] by Y:10% G:(+10% per stack) \nY:7.77% Y:chance to gain Y:2 G:(+2 per stack) Y:coins on Y:[non-winning spins] " +
             "\nR:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins");
         description.WithShortDescription("Increases non-winning spin damage, secondary attack damage, and gives a chance for consolation coins");
     }
@@ -596,7 +596,7 @@ public class PiratesBooty : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Pirate's Booty");
-        description.WithDescription("Y:[Skull enemies] have a Y:10% G:(+10% per stack) chance to drop a Y:[Pirate chest] or Y:key G:(consumed on use) \nDrops a Y:key when Y:dissolved in a Y:Crucible");
+        description.WithDescription("Y:[Skull enemies] have a Y:10% G:(+10% per stack) Y:chance to drop a Y:[Pirate chest] or Y:key G:(consumed on use) \nDrops a Y:key when Y:dissolved in a Y:Crucible");
         description.WithShortDescription("Next killed Skull enemy has a chance to drop a chest or key");
     }
     public override void HeldEffect(Player p)
@@ -640,7 +640,7 @@ public class BlackMarketDelivery : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Special Delivery");
-        description.WithDescription("Each Y:[Skull Wave] has a Y:10% G:(+10% per stack) chance to drop a Y:[Black Market crate] G:(consumed on use)");
+        description.WithDescription("Each Y:[Skull Wave] has a Y:10% G:(+10% per stack) Y:chance to drop a Y:[Black Market crate] G:(consumed on use)");
         description.WithShortDescription("The next Skull Wave has a chance to deliver a Black Market crate");
     }
     public override void HeldEffect(Player p)
@@ -705,7 +705,7 @@ public class RainbowFlower : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         //Y:5% G:(+5% per stack) Y:chance to replace powers with {this.UnlockedName} \n
-        description.WithDescription($"Drops a Y:[Rainbow Shard] when Y:dissolved in a Y:Crucible, with a Y:50% chance for an Y:[additional shard, rolled until failure] \nY:[Rainbow Shards] can be used to Y:duplicate any Y:power you have");
+        description.WithDescription($"Drops a Y:[Rainbow Shard] when Y:dissolved in a Y:Crucible, with a Y:[50% chance] for an Y:[additional shard, rolled until failure] \nY:[Rainbow Shards] can be used to Y:duplicate any Y:power you have");
         description.WithShortDescription("Power Propagation");
     }
     public override void HeldEffect(Player p)
@@ -793,7 +793,7 @@ public class BountyHunter : PowerUp
     public override void InitializeDescription(ref DetailedDescription description)
     {
         description.WithName("Bounty Hunter");
-        description.WithDescription($"Y:[Skull enemies] have a Y:4% G:(+2% per stack) chance to drop a Y:[Pirate chest, a key, 3 gems, or 50 coins]");
+        description.WithDescription($"Y:[Skull enemies] have a Y:4% G:(+2% per stack) Y:chance to drop a Y:[Pirate chest, a key, 3 gems, or 50 coins]");
         description.WithShortDescription("Skull enemies have a chance to drop extra loot");
     }
     public override void HeldEffect(Player p)

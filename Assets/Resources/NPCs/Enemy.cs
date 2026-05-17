@@ -543,12 +543,11 @@ public class Enemy : Entity
         WaveDirector.Point += (int)MaxCoins;
         //if (LuckyDrop)
         //    PowerUp.Spawn(PowerUp.RandomFromPool(0.15f), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 8));
-        if (IsSkull)
-        {
-            int amt = Utils.RandInt((int)StaticData.BaseMinGem, (int)StaticData.BaseMaxGem + 1);
-            if(amt > 0)
-                CoinManager.SpawnGem(transform.position, 0.0f, amt);
-        }
+        int amt = IsSkull ? Utils.RandInt((int)StaticData.BaseMinGem, (int)StaticData.BaseMaxGem + 1) : 0;
+        if (Utils.RollWithLuck(Player.Instance.GemDropChance))
+            amt += Player.Instance.BonusGems;
+        if(amt > 0)
+            CoinManager.SpawnGem(transform.position, 0.0f, amt);
         Destroy(gameObject);
     }
     public virtual void AI()

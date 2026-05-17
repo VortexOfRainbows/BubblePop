@@ -40,6 +40,7 @@ Need to do:
 11. Add small Gaussian blur to border shaders for smoother visuals
 12. Update settings UI and include settings for modifying soft shadows
 13. Fix power popup UI (descriptions when you pick up a power) not having soft fadeout
+14. Truncate copper coin spawning at a certain point
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -53,6 +54,10 @@ Bug Watchlist:
 2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
 
 Done: 
+
+5/16/26
+1. Add crystal serum powerup (5-star)
+2. Make chance yellow in more tooltips
 
 5/14/26 to 5/15/26
 1. Pause day night cycle debug key with (CTRL+Y)

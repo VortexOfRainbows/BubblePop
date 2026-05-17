@@ -270,3 +270,20 @@ public class Restock : PowerUp
         p.BonusRestockChance += 1f * Stack + 0.01f;
     }
 }
+public class CrystalSerum : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Legendary;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithDescription($"Enemies have a Y:20% chance to drop Y:1 G:(+1 per stack) Y:gems");
+        description.WithShortDescription("Enemies have a chance to drop gems");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.GemDropChance += 0.2f;
+        p.BonusGems += Stack;
+    }
+}

@@ -89,6 +89,7 @@ public abstract class PowerUp
         AddPowerUpToAvailability<Magnet>();
         AddPowerUpToAvailability<Coupons>();
         AddPowerUpToAvailability<Restock>();
+        AddPowerUpToAvailability<CrystalSerum>();
 
         //Powers that give powers
         AddPowerUpToAvailability<Choice>();
