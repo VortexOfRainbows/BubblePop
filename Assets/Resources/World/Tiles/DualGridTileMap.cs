@@ -74,6 +74,7 @@ public class DualGridTilemap : MonoBehaviour
                 //}
 
                 r.sortingOrder = -(int)layerOffset;
+                t.gameObject.layer = 14; //Border Layer
                 t.gameObject.name = $"{(wall ? "WALL" : border ? "Solid" : "Floor")}[{k}]: {tile.name}";
                 t.color = c;
             }
