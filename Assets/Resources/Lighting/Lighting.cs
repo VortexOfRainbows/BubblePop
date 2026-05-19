@@ -15,6 +15,7 @@ public static class Lighting
     public static Material BackLight;
     public static RawImage ShadowImage => Main.Instance.TileLightRenderTarget;
     public static RawImage BorderImage => Main.Instance.BorderRenderTarget;
+    public static RawImage LightShapeVisualizer => Main.Instance.LightShapeVisualizer;
     //public static RawImage BorderMaskRenderTexture => Main.Instance.BorderMaskRenderTarget;
     public static Light2D GlobalLight => Main.Instance.GlobalLight;
     public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
@@ -243,6 +244,11 @@ public static class Lighting
             BorderImage.material.SetFloat("_MaxMask", 0.5f + MaskValue);
             BorderImage.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
             BorderImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+        }
+        if(LightShapeVisualizer != null)
+        {
+            float baseTexelSize = 1;
+            LightShapeVisualizer.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
         }
     }
 }
