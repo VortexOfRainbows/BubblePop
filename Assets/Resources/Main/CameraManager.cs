@@ -2,17 +2,19 @@ using UnityEngine;
 
 public static class CameraManager
 {
-    private readonly static Camera[] Buffer = new Camera[] { Camera.main, null, null, null };
+    private readonly static Camera[] Buffer = new Camera[] { Camera.main, null, null, null, null };
     public static Camera MainCamera => Buffer[0] == null ? Buffer[0] = Camera.main : Buffer[0];
     public static Camera LightingCamera => Buffer[1] == null ? Buffer[1]  = MainCamera.transform.GetChild(0).GetComponent<Camera>() : Buffer[1];
     public static Camera TileBorderCamera => Buffer[2] == null ? Buffer[2] = MainCamera.transform.GetChild(1).GetComponent<Camera>() : Buffer[2];
     public static Camera BorderMaskCamera => Buffer[3] == null ? Buffer[3] = MainCamera.transform.GetChild(2).GetComponent<Camera>() : Buffer[3];
+    public static Camera SolidTileCamera => Buffer[4] == null ? Buffer[4] = MainCamera.transform.GetChild(3).GetComponent<Camera>() : Buffer[4];
     public static void SetCameraOrthographicSize(float value)
     {
         MainCamera.orthographicSize = value;
         LightingCamera.orthographicSize = value;
         TileBorderCamera.orthographicSize = value;
         BorderMaskCamera.orthographicSize = value;
+        SolidTileCamera.orthographicSize = value;
     }
     public static void LerpCameraOrthographicSize(float target, float t)
     {
@@ -25,5 +27,9 @@ public static class CameraManager
     public static void LerpCameraPosition(Vector2 vector3, float t)
     {
         SetCameraPosition(Vector3.Lerp(MainCamera.transform.position, vector3, t));
+    }
+    public static void SetSolidTileLightingOffset(Vector2 sunlightVector)
+    {
+        SolidTileCamera.transform.localPosition = -sunlightVector * 2;
     }
 }

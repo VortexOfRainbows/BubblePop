@@ -618,8 +618,8 @@ public partial class Player : Entity
                     Weapon.StartAttack(true);
                 }
             }
-            if (InstanceID == 0 && Main.GameUpdateCount % 200 == 0)
-                Debug.Log($"Has Attacked: {HasAttacked}, Picked Lower Card: {PickedLowerDifficultyWaveCard}, Has Taken Damage: {HasBeenHit}:{TimesHitThisRun}");
+            //if (InstanceID == 0 && Main.GameUpdateCount % 200 == 0)
+            //    Debug.Log($"Has Attacked: {HasAttacked}, Picked Lower Card: {PickedLowerDifficultyWaveCard}, Has Taken Damage: {HasBeenHit}:{TimesHitThisRun}");
             if (Weapon.IsAttacking())
             {
                 if(Weapon.IsPrimaryAttacking())

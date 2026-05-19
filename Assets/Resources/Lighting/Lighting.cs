@@ -10,6 +10,7 @@ public static class Lighting
     public static RenderTexture LightRT;
     public static RenderTexture BorderRT;
     public static RenderTexture BorderMaskRT;
+    public static RenderTexture SolidTileRT;
     public static Material FrontLight;
     public static Material BackLight;
     public static RawImage ShadowImage => Main.Instance.TileLightRenderTarget;
@@ -27,6 +28,7 @@ public static class Lighting
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
         BorderRT = Resources.Load<RenderTexture>("Lighting/TileBorderRenderTexture");
         BorderMaskRT = Resources.Load<RenderTexture>("Lighting/BorderMaskRenderTexture");
+        SolidTileRT = Resources.Load<RenderTexture>("Lighting/SolidTileRenderTexture");
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
@@ -102,6 +104,8 @@ public static class Lighting
             if (IsNight) //nightTime)
                 alphaMult *= 0.4f;
             ShadowImage.color = new Color(0, 0, 0, 0.95f * alphaMult);
+
+            CameraManager.SetSolidTileLightingOffset(Sun);
         }
         GetSunlightColor();
     }
@@ -210,6 +214,7 @@ public static class Lighting
             ResizeRenderTexture(LightRT, CameraManager.LightingCamera, ShadowImage);
             ResizeRenderTexture(BorderRT, CameraManager.TileBorderCamera, BorderImage);
             ResizeRenderTexture(BorderMaskRT, CameraManager.BorderMaskCamera, null);
+            ResizeRenderTexture(SolidTileRT, CameraManager.SolidTileCamera, null);
             BorderImage.material.SetTexture("_Mask", BorderMaskRT);
         }
         if (ShadowImage != null)
