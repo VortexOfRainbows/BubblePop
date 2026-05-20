@@ -277,6 +277,9 @@ public static class Lighting
         ///Graphics.Blit(rt1, rt2, materialB);
 
         ShadowImage.material.SetTexture("_Mask", target);
+        ShadowImage.material.SetFloat("_SizeMult", .5f / CameraManager.LightingCamera.orthographicSize);
+        ShadowImage.material.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
+        ShadowImage.material.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
         // 4. Pass the final literal output to your target object's material
         ///targetRenderer.material.mainTexture = rt2;
 
