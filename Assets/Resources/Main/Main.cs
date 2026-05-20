@@ -32,7 +32,6 @@ public partial class Main : MonoBehaviour
     public Transform SpritebatchSuperParent;
     public RawImage TileLightRenderTarget;
     public RawImage BorderRenderTarget;
-    public RawImage BorderMaskRenderTarget;
     public RawImage LightShapeVisualizer;
     public Light2D GlobalLight;
     public static Transform SpritebatchParent => Instance.SpritebatchSuperParent;

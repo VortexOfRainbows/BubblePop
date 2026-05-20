@@ -11,6 +11,7 @@ public static class Lighting
     public static RenderTexture BorderRT;
     public static RenderTexture BorderMaskRT;
     public static RenderTexture SolidTileRT;
+    public static RenderTexture OcclusionTileRT;
     public static Material FrontLight;
     public static Material BackLight;
     public static RawImage ShadowImage => Main.Instance.TileLightRenderTarget;
@@ -30,6 +31,7 @@ public static class Lighting
         BorderRT = Resources.Load<RenderTexture>("Lighting/TileBorderRenderTexture");
         BorderMaskRT = Resources.Load<RenderTexture>("Lighting/BorderMaskRenderTexture");
         SolidTileRT = Resources.Load<RenderTexture>("Lighting/SolidTileRenderTexture");
+        OcclusionTileRT = Resources.Load<RenderTexture>("Lighting/OcclusionTileRenderTexture");
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
@@ -216,7 +218,9 @@ public static class Lighting
             ResizeRenderTexture(BorderRT, CameraManager.TileBorderCamera, BorderImage);
             ResizeRenderTexture(BorderMaskRT, CameraManager.BorderMaskCamera, null);
             ResizeRenderTexture(SolidTileRT, CameraManager.SolidTileCamera, null);
-            BorderImage.material.SetTexture("_Mask", BorderMaskRT);
+            ResizeRenderTexture(OcclusionTileRT, CameraManager.OcclusionTileCamera, null);
+            //BorderImage.material.SetTexture("_Mask", BorderMaskRT);
+            //LightShapeVisualizer.material.SetTexture("_Mask", OcclusionTileRT);
         }
         if (ShadowImage != null)
         {
@@ -249,6 +253,7 @@ public static class Lighting
         {
             float baseTexelSize = 1;
             LightShapeVisualizer.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+            LightShapeVisualizer.material.SetFloat("_SizeMult", .5f / CameraManager.OcclusionTileCamera.orthographicSize);
         }
     }
 }
