@@ -298,6 +298,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 75.00006
       objectReference: {fileID: 0}
+    - target: {fileID: 4225295846818021169, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4712602720300777183, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -346,10 +350,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6041766213755510078, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6058524192385007519, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: LightShapeVisualizer
       value: 
-      objectReference: {fileID: 1474495432}
+      objectReference: {fileID: 0}
     - target: {fileID: 6832113984107350593, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_Color.a
       value: 0.9019608
@@ -731,14 +743,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1474495431}
   - component: {fileID: 1474495433}
-  - component: {fileID: 1474495432}
+  - component: {fileID: 1474495434}
   m_Layer: 0
   m_Name: NewLightingVisualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1474495431
 RectTransform:
   m_ObjectHideFlags: 0
@@ -758,7 +770,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1474495432
+--- !u!222 &1474495433
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474495430}
+  m_CullTransparentMesh: 1
+--- !u!114 &1474495434
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -770,29 +790,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: -876546973899608171, guid: 4420f729721999546bdf44cb2cb37509, type: 3}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 9c4adea3afffd80438926e72c1a2e41a, type: 2}
+  m_Texture: {fileID: 8400000, guid: 00080a596e8d43949abc660e847bcced, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
     y: 0
     width: 1
     height: 1
---- !u!222 &1474495433
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474495430}
-  m_CullTransparentMesh: 1
 --- !u!224 &1626998105 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3396028564151542213, guid: 5aa70733119c04e47a090e10049808a4, type: 3}

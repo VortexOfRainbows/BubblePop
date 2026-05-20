@@ -17,7 +17,6 @@ public static class CameraManager
         BorderMaskCamera.orthographicSize = value;
         SolidTileCamera.orthographicSize = value + 2; //2 is the size of tiles we need on the edge of these cameras to help with rendering
         OcclusionTileCamera.orthographicSize = value + 2;
-
     }
     public static void LerpCameraOrthographicSize(float target, float t)
     {

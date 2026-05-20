@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -14,6 +16,7 @@ public static class Lighting
     public static RenderTexture OcclusionTileRT;
     public static Material FrontLight;
     public static Material BackLight;
+    public static Material LightShaper;
     public static RawImage ShadowImage => Main.Instance.TileLightRenderTarget;
     public static RawImage BorderImage => Main.Instance.BorderRenderTarget;
     public static RawImage LightShapeVisualizer => Main.Instance.LightShapeVisualizer;
@@ -32,6 +35,7 @@ public static class Lighting
         BorderMaskRT = Resources.Load<RenderTexture>("Lighting/BorderMaskRenderTexture");
         SolidTileRT = Resources.Load<RenderTexture>("Lighting/SolidTileRenderTexture");
         OcclusionTileRT = Resources.Load<RenderTexture>("Lighting/OcclusionTileRenderTexture");
+        LightShaper = Resources.Load<Material>("Lighting/ShaderSlop/LightShaper");
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
@@ -222,12 +226,12 @@ public static class Lighting
             //BorderImage.material.SetTexture("_Mask", BorderMaskRT);
             //LightShapeVisualizer.material.SetTexture("_Mask", OcclusionTileRT);
         }
-        if (ShadowImage != null)
-        {
-            float baseTexelSize = 4 / 1080f;
-            ShadowImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
-            ShadowImage.gameObject.SetActive(true);
-        }
+        //if (ShadowImage != null)
+        //{
+        //    float baseTexelSize = 4 / 1080f;
+        //    ShadowImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+        //    ShadowImage.gameObject.SetActive(true);
+        // }
         if (BorderImage != null)
         {
             BorderImage.gameObject.SetActive(true);
@@ -249,11 +253,35 @@ public static class Lighting
             BorderImage.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
             BorderImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
         }
-        if(LightShapeVisualizer != null)
-        {
-            float baseTexelSize = 1;
-            LightShapeVisualizer.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
-            LightShapeVisualizer.material.SetFloat("_SizeMult", .5f / CameraManager.OcclusionTileCamera.orthographicSize);
-        }
+        //if(LightShapeVisualizer != null)
+        //{
+        //    float baseTexelSize = 1;
+        //    LightShapeVisualizer.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+        //    LightShapeVisualizer.material.SetFloat("_SizeMult", .5f / CameraManager.OcclusionTileCamera.orthographicSize);
+        //}
+        Lighting.PrepareSpecialShadowMask();
+    }
+    public static void PrepareSpecialShadowMask()
+    {
+        CameraManager.OcclusionTileCamera.Render();
+        CameraManager.SolidTileCamera.Render();
+        RenderTexture target = Resources.Load<RenderTexture>("Lighting/ShadowBonusMaskingInfo");
+        LightShaper.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
+        LightShaper.SetFloat("_SizeMult", .5f / CameraManager.OcclusionTileCamera.orthographicSize);
+        LightShaper.SetTexture("_Mask", OcclusionTileRT);
+        LightShaper.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
+
+        // 2. Process: Source -> Shader A -> rt1
+        Graphics.Blit(SolidTileRT, target, LightShaper);
+        // 3. Process: rt1 -> Shader B -> rt2
+        ///Graphics.Blit(rt1, rt2, materialB);
+
+        ShadowImage.material.SetTexture("_Mask", target);
+        // 4. Pass the final literal output to your target object's material
+        ///targetRenderer.material.mainTexture = rt2;
+
+        // 5. Clean up temporary memory
+        ///RenderTexture.ReleaseTemporary(rt1);
+        // Note: Release rt2 only when you are completely done using it on the renderer
     }
 }
