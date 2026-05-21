@@ -56,6 +56,9 @@ Done:
 3. (REVERTED, NOT IN EFFECT)  and the iterations 7^2 -> 5^2 (r=3 -> r=2), which should further reduce lag
 4. Occlusion effect on tiles now uses tile sprites, which makes the occlusion more closely match the tiles
 5. Occlusion effect now applies to walls as well...
+6. Forge becomes red with black market powers
+7. Fix bug where debug button was clickable always
+8. Forge now rolls for an additional chance for higher rarity powers
 
 5/20/26 to 5/21/26
 1. Put in the new meadows theme (apparently been using the wrong one on accident for a while... I never noticed...

@@ -271,7 +271,7 @@ public static class Lighting
 
         Graphics.Blit(SolidTileRT, target, LightShaper);
 
-        float occlusionScale = 7.25f;
+        float occlusionScale = 8.0f;
         float baseTexelSize = occlusionScale / 1080f;
         ShadowSpecialMaskMaterial.SetTexture("_Mask", target);
         ShadowSpecialMaskMaterial.SetFloat("_SizeMult", CameraManager.LightingCamera.orthographicSize / CameraManager.OcclusionTileCamera.orthographicSize);

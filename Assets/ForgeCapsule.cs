@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -47,13 +48,13 @@ public class ForgeCapsule : MonoBehaviour
     {
         HeldPower.group.sortingOrder = LayerHelper.CrucibleSortingOrder;
         HeldPower.transform.parent.localPosition = new Vector3(0, 1.7f, 0);
-        int powerType = PowerUp.RandomFromPool(0f, 0.04f, -1);
+        int powerType = PowerUp.RandomFromPool(0f, 0.05f, (int)(Utils.RandFloat() * Utils.RandFloat() * 6));
         HeldPower.transform.parent.localScale = new Vector3(0f, 0f, 1);
         HeldPower.Type = powerType;
         HeldPower.Start();
         HeldPower.adornment.enabled = false;
         HeldPower.LightingMultiplier = 0.45f;
-        ColoredWater = Fluid.color = ColorHelper.RarityColors[PowerUp.Get(powerType).GetRarity() - 1].WithAlpha(1);
+        ColoredWater = Fluid.color = HeldPower.MyPower.IsBlackMarket() ? Color.red : ColorHelper.RarityColors[HeldPower.MyPower.GetRarity() - 1].WithAlpha(1);
         HasSelectedPower = true;
         HeldPower.gameObject.SetActive(true);
         GemCost = HeldPower.MyPower.CrucibleGems();
