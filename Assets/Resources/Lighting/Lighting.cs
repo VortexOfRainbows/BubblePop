@@ -267,6 +267,7 @@ public static class Lighting
     {
         CameraManager.OcclusionTileCamera.Render();
         CameraManager.SolidTileCamera.Render();
+        CameraManager.LightingCamera.Render();
         RenderTexture target = Resources.Load<RenderTexture>("Lighting/ShadowBonusMaskingInfo");
         RenderTexture finalLight = Resources.Load<RenderTexture>("Lighting/FinalLightingRenderTexture");
         LightShaper.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
@@ -276,27 +277,11 @@ public static class Lighting
 
         Graphics.Blit(SolidTileRT, target, LightShaper);
 
-        ///Graphics.Blit(rt1, rt2, materialB);
-
-        ShadowImage.material.SetTexture("_Mask", target);
-        ShadowImage.material.SetFloat("_SizeMult", .5f / CameraManager.LightingCamera.orthographicSize);
-        ShadowImage.material.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
-        ShadowImage.material.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
+        ShadowSpecialMaskMaterial.SetTexture("_Mask", target);
+        ShadowSpecialMaskMaterial.SetFloat("_SizeMult", .5f / CameraManager.LightingCamera.orthographicSize);
+        ShadowSpecialMaskMaterial.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
+        ShadowSpecialMaskMaterial.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
         
-        //ShadowSpecialMaskMaterial.SetTexture("_Mask", target);
-        //ShadowSpecialMaskMaterial.SetFloat("_SizeMult", .5f / CameraManager.LightingCamera.orthographicSize);
-        //ShadowSpecialMaskMaterial.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
-        //ShadowSpecialMaskMaterial.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
-        //
-        //Graphics.Blit(LightRT, finalLight, ShadowSpecialMaskMaterial);
-        // 2. Process: Source -> Shader A -> rt1
-        // 3. Process: rt1 -> Shader B -> rt2
-        ///Graphics.Blit(rt1, rt2, materialB);
-
-        // 4. Pass the final literal output to your target object's material
-        ///targetRenderer.material.mainTexture = rt2;
-
-        // 5. Clean up temporary memory
-        // Note: Release rt2 only when you are completely done using it on the renderer
+        Graphics.Blit(LightRT, finalLight, ShadowSpecialMaskMaterial);
     }
 }
