@@ -92,8 +92,10 @@ public class World : MonoBehaviour
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
         Vector3Int posi = RealTileMap.Map.WorldToCell(pos);
+        var data = GetTileData(posi);
+        bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
         bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.FloorTileType && !GetTileData(posi).IsRoadblock;
-        return WithinBorders(pos) && validSpawnTile;
+        return WithinBorders(pos) && validSpawnTile && currentlyOnThisProgressionTier;
     }
     public static bool WithinBorders(Vector3 position)
     {
