@@ -130,6 +130,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 295106142699740318, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_VolumeLayerMask.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 308086386943253683, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -386,9 +390,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 707875159385321644, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 1347826472039502334, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: m_Name
       value: SolidMap
+      objectReference: {fileID: 0}
+    - target: {fileID: 1393582143937070085, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1866361830754972015, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: GlobalLight

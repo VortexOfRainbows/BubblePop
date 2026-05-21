@@ -14,11 +14,6 @@ Do Later:
 5. Update to Unity 6 to remove the silly splash screen
 6. Localization and text organization system
 7. Make fizzy bubble bottle shadow properly travel over walls
-8. Lighting: it may be possible to make the shadows accurate to the shapes of the tiles (so far I think this logic gets you part way there)
-	1. Use render target to load terrain top onto layer from a camera offset negative the sunlight vector
-	2. Use the existing shadow texture. Mask it to clear out half a tile negative the sun direction. Then mask that onto the top terrain?
-		1. Maybe also mask an additional time the create a thin band where the shape would matter, so the inside of the tile is not considered?
-	3. After that, mask the top terrain onto the shadow texture?
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -59,6 +54,8 @@ Done:
 1. Rework light shaders. They should now roughly follow the contours of the terrain better than before.
 2. The strength of the Gaussian blur has been greatly reduced.
 3. (REVERTED, NOT IN EFFECT)  and the iterations 7^2 -> 5^2 (r=3 -> r=2), which should further reduce lag
+4. Occlusion effect on tiles now uses tile sprites, which makes the occlusion more closely match the tiles
+5. Occlusion effect now applies to walls as well...
 
 5/20/26 to 5/21/26
 1. Put in the new meadows theme (apparently been using the wrong one on accident for a while... I never noticed...

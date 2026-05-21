@@ -230,6 +230,7 @@ public static class Lighting
         }
         if (ShadowImage != null)
         {
+            float baseTexelSize = 1.125f / 1080f;
             ShadowImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
         }
         if (BorderImage != null)
@@ -270,8 +271,11 @@ public static class Lighting
 
         Graphics.Blit(SolidTileRT, target, LightShaper);
 
+        float occlusionScale = 7.25f;
+        float baseTexelSize = occlusionScale / 1080f;
         ShadowSpecialMaskMaterial.SetTexture("_Mask", target);
         ShadowSpecialMaskMaterial.SetFloat("_SizeMult", CameraManager.LightingCamera.orthographicSize / CameraManager.OcclusionTileCamera.orthographicSize);
+        ShadowSpecialMaskMaterial.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect * 1.0f, baseTexelSize));
         ShadowSpecialMaskMaterial.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
         ShadowSpecialMaskMaterial.SetFloat("_FinalAlphaMult", 0.7f);
 
