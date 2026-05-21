@@ -228,12 +228,10 @@ public static class Lighting
             //BorderImage.material.SetTexture("_Mask", BorderMaskRT);
             //LightShapeVisualizer.material.SetTexture("_Mask", OcclusionTileRT);
         }
-        //if (ShadowImage != null)
-        //{
-        //    float baseTexelSize = 4 / 1080f;
-        //    ShadowImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
-        //    ShadowImage.gameObject.SetActive(true);
-        // }
+        if (ShadowImage != null)
+        {
+            ShadowImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+        }
         if (BorderImage != null)
         {
             BorderImage.gameObject.SetActive(true);
@@ -255,16 +253,11 @@ public static class Lighting
             BorderImage.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
             BorderImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
         }
-        //if(LightShapeVisualizer != null)
-        //{
-        //    float baseTexelSize = 1;
-        //    LightShapeVisualizer.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
-        //    LightShapeVisualizer.material.SetFloat("_SizeMult", .5f / CameraManager.OcclusionTileCamera.orthographicSize);
-        //}
         Lighting.PrepareSpecialShadowMask();
     }
     public static void PrepareSpecialShadowMask()
     {
+        ShadowImage.gameObject.SetActive(true);
         CameraManager.OcclusionTileCamera.Render();
         CameraManager.SolidTileCamera.Render();
         CameraManager.LightingCamera.Render();
@@ -278,10 +271,10 @@ public static class Lighting
         Graphics.Blit(SolidTileRT, target, LightShaper);
 
         ShadowSpecialMaskMaterial.SetTexture("_Mask", target);
-        ShadowSpecialMaskMaterial.SetFloat("_SizeMult", .5f / CameraManager.LightingCamera.orthographicSize);
-        ShadowSpecialMaskMaterial.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
+        ShadowSpecialMaskMaterial.SetFloat("_SizeMult", CameraManager.LightingCamera.orthographicSize / CameraManager.OcclusionTileCamera.orthographicSize);
         ShadowSpecialMaskMaterial.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
-        
+        ShadowSpecialMaskMaterial.SetFloat("_FinalAlphaMult", 0.7f);
+
         Graphics.Blit(LightRT, finalLight, ShadowSpecialMaskMaterial);
     }
 }
