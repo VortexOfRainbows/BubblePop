@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class StandardButton : Button
 {
     public int Type = 0;
+    public int VisualType = 0;
     public bool SoundOnHover = true;
     public new void Awake()
     {
@@ -24,11 +25,30 @@ public class StandardButton : Button
         var colors = this.colors;
         colors.colorMultiplier = 1.0f;
         colors.fadeDuration = 0.1f;
-        colors.normalColor = ColorHelper.UI.DefaultColor;
-        colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
-        colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
-        colors.selectedColor = colors.highlightedColor;
-        colors.disabledColor = ColorHelper.UI.DarkGreyColor;
+        if (VisualType == 0)
+        {
+            colors.normalColor = ColorHelper.UI.DefaultColor;
+            colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
+            colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = ColorHelper.UI.DarkGreyColor;
+        }
+        else if(VisualType == 1)
+        {
+            colors.normalColor = ColorHelper.New255(0x6E, 0xCB, 0xDC);
+            colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
+            colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = colors.normalColor * 0.6f;
+        }
+        else if (VisualType == 2)
+        {
+            colors.normalColor = ColorHelper.New255(0xBF, 0xB8, 0x34);
+            colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
+            colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = colors.normalColor * 0.6f;
+        }
         base.colors = colors;
     }
     public override void OnPointerEnter(PointerEventData eventData)

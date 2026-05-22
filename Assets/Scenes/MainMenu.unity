@@ -390,6 +390,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 0
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1 &98047322
 GameObject:
@@ -1347,6 +1348,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Type: 0
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1 &580150824
 GameObject:
@@ -1482,6 +1484,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 1
+  VisualType: 0
   SoundOnHover: 0
 --- !u!1 &686339038
 GameObject:
@@ -1751,6 +1754,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 1
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1 &796789538
 GameObject:
@@ -2668,6 +2672,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 0
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1 &976774812
 GameObject:
@@ -2937,6 +2942,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 0
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1 &1000212027
 GameObject:
@@ -3072,6 +3078,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 0
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1 &1028423522
 GameObject:
@@ -3666,6 +3673,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 0
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1 &1155790617
 GameObject:
@@ -4194,6 +4202,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 1
+  VisualType: 0
   SoundOnHover: 0
 --- !u!224 &1265268097 stripped
 RectTransform:
@@ -4931,6 +4940,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 0
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1 &1515101896
 GameObject:
@@ -5066,6 +5076,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 1
+  VisualType: 0
   SoundOnHover: 0
 --- !u!1 &1515259657
 GameObject:
@@ -5825,6 +5836,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 0
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1 &1717797415
 GameObject:
@@ -6769,6 +6781,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 0
+  VisualType: 0
   SoundOnHover: 1
 --- !u!1001 &2058729467
 PrefabInstance:
@@ -7573,6 +7586,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Type: 1
+  VisualType: 0
   SoundOnHover: 0
 --- !u!1 &2133538416
 GameObject:
@@ -8275,6 +8289,34 @@ PrefabInstance:
     - target: {fileID: 762838189439438064, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1358780812154342646, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 0.20392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 1358780812154342646, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 0.72156864
+      objectReference: {fileID: 0}
+    - target: {fileID: 1358780812154342646, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 0.7490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 1358780812154342646, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1358780812154342646, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.12235295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1358780812154342646, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.4329412
+      objectReference: {fileID: 0}
+    - target: {fileID: 1358780812154342646, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.44941178
       objectReference: {fileID: 0}
     - target: {fileID: 2470561130422119690, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
       propertyPath: m_AnchorMax.x

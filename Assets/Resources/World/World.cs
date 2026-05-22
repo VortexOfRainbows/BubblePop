@@ -265,7 +265,7 @@ public class World : MonoBehaviour
         bool shop = i == 2 || i == 4 || i == 6 || i == totalNodes - 1;
         bool largo = i == totalNodes - 1;
         bool? crucible = i % 3 == 1 && !largo ? Utils.RollWithLuck(0.5f) : null;
-        bool? forge = i > 4 ? Utils.RollWithLuck(0.5f) : false;
+        bool? forge = i > 4 && Utils.RollWithLuck(0.75f) ? true : null;
         if (i <= 1) //Don't want crucible on first room
             crucible = false;
         WorldNode node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0,
