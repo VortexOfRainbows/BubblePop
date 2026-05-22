@@ -218,6 +218,7 @@ public static class Lighting
     }
     public static void ResizeLightingRenderTexture()
     {
+        if(LightRT == null || BorderRT == null) return;
         if(LightRT.width != Screen.width || LightRT.height != Screen.height || BorderRT.width != Screen.width || BorderRT.height != Screen.height)
         {
             ResizeRenderTexture(LightRT, CameraManager.LightingCamera, ShadowImage);

@@ -67,7 +67,7 @@ public static class NodeID
                 if (n.Zone == zoneID)
                     score += 2;
                 if (shop == null || shop.Value == n.HasShop)
-                    score += 1;
+                    score += 2;
                 if (crucible == null || crucible.Value == n.HasCrucible)
                     score += 1;
                 if (needsForge == null || needsForge.Value == n.HasForge)
@@ -76,7 +76,7 @@ public static class NodeID
                     score += 2;
                 if (n.Weighting >= maxWeight)
                     score -= 2;
-                if(score >= 6)
+                if(score >= 8)
                     viableNodes.Add(n);
                 bestScore = Mathf.Max(bestScore, score);
                 bestWeight = Mathf.Max(n.Weighting, bestWeight);
@@ -92,7 +92,7 @@ public static class NodeID
                     if (n.Zone == zoneID)
                         score += 2;
                     if (shop == null || shop.Value == n.HasShop)
-                        score += 1;
+                        score += 2;
                     if (crucible == null || crucible.Value == n.HasCrucible)
                         score += 1;
                     if (needsForge == null || needsForge.Value == n.HasForge)

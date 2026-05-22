@@ -3294,8 +3294,8 @@ Tilemap:
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -22, y: 0, z: 0}
-  m_Size: {x: 22, y: 34, z: 1}
+  m_Origin: {x: -21, y: 14, z: 0}
+  m_Size: {x: 19, y: 20, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -3426,11 +3426,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileMap: {fileID: 7573328573185486376}
   IsSubNode: 0
+  IsSecretRoomNode: 0
   ConnectorParent: {fileID: 8506701859119401103}
   FeatureParent: {fileID: 2972912366013332114}
   PylonParent: {fileID: 0}
   Zone: -1
   Weighting: 1
+  HasShop: 0
+  HasCrucible: 0
+  HasForge: 0
+  CountsAsLargeNode: 0
 --- !u!1 &8320451359221314429
 GameObject:
   m_ObjectHideFlags: 0
