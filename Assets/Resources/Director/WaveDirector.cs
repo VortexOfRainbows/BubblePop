@@ -106,6 +106,8 @@ public static class WaveDirector
     }
     public static void FixedUpdate()
     {
+        if ((SkullEnemiesActive > 0 || WaveActive) && WaveNum >= 15)
+            AudioManager.SetMusic(AudioManager.BattleTheme, 1);
         if (!Main.WavesUnleashed)
         {
             Reset();

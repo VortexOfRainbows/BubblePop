@@ -74,6 +74,6 @@ public class EnemyBossDuck : EnemyDuck
     {
         base.Update();
         if(PlayMusic)
-            AudioManager.SetMusic(AudioManager.LeonardTheme, 1);
+            AudioManager.SetMusic(AudioManager.LeonardTheme, 3);
     }
 }

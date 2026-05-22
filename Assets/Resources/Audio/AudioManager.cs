@@ -43,11 +43,12 @@ public class AudioManager : MonoBehaviour
     {
         m_Instance = this;
     }
-
     private static AudioClip CurrentTheme = null;
     public static AudioClip MenuTheme = null;
     public static AudioClip MeadowTheme = null;
     public static AudioClip LeonardTheme = null;
+    public static AudioClip BattleTheme = null;
+    public static AudioClip MountainTheme = null;
     private static float MusicTransition = 0f;
     private static int MusicPriority = 0;
     private void Update()
@@ -55,7 +56,8 @@ public class AudioManager : MonoBehaviour
         MenuTheme = MenuTheme != null ? MenuTheme : Resources.Load<AudioClip>("Audio/Music/BubbleBathBonanza");
         MeadowTheme = MeadowTheme != null ? MeadowTheme : Resources.Load<AudioClip>("Audio/Music/Meadow");
         LeonardTheme = LeonardTheme != null ? LeonardTheme : Resources.Load<AudioClip>("Audio/Music/Leonard");
-
+        BattleTheme = BattleTheme != null ? BattleTheme : Resources.Load<AudioClip>("Audio/Music/ForestFight");
+        MountainTheme = MountainTheme != null ? MountainTheme : Resources.Load<AudioClip>("Audio/Music/Mountain");
 
         if (MusicSource.clip != CurrentTheme)
         {
