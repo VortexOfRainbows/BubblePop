@@ -52,7 +52,8 @@ STUFF TO FINISH RIGHT BEFORE PLAYTEST:
 1. Google form + QR code to reach it
 2. UI color adjustments
 3. Some more nodes with forges!
-4. A standardized save data set we can give to players that lets them use all the characters with some achievements unlocked
+4. Build the game and send it!
+5. A standardized save data set we can give to players that lets them use all the characters with some achievements unlocked
 
 Done: 
 
@@ -64,6 +65,7 @@ Done:
 3. Some UI Buttons in the main menu now play a sound when hovered
 4. Roadblock color relations are now stored in a dictionary after being pregenned at the beginning in hopes of speeding up worldgen 
 5. The power description that pops up when you pick up a power now has some fade-in and out with the box which roughly matches the fade-in-out of the power
+6. Move things around in the menu to fit the new screen
 
 5/21/26
 1. Rework light shaders. They should now roughly follow the contours of the terrain better than before.
