@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public class PopUpTextUI : MonoBehaviour
@@ -109,6 +110,7 @@ public class PopUpTextUI : MonoBehaviour
         float percent = 1 - enabledDuration / DefaultPopupDuration;
         if (Type == PowerPopUpUI)
         {
+            Image fadeImage = visualRect.GetChild(0).GetComponent<Image>();
             float growPercent = 1 + 0.036f * Mathf.Sin(Mathf.Min(1, percent * 15) * Mathf.PI);
             transform.localScale = Vector3.one * growPercent;
             float halfPercent = Mathf.Max(0, percent * 2 - 1);
@@ -138,6 +140,7 @@ public class PopUpTextUI : MonoBehaviour
                 Description.color = defaultColors[i++].WithAlphaMultiplied(colPer);
                 UpdateStars(colPer, 1 + (growPercent - 1) * 3);
             }
+            fadeImage.color = fadeImage.color.WithAlpha(0.55f * Mathf.Sqrt(colPer));
         }
         else if(Type == AchievementPopUpUI)
         {

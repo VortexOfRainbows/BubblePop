@@ -14,7 +14,7 @@ Do Later:
 5. Update to Unity 6 to remove the silly splash screen
 6. Localization and text organization system
 7. Make fizzy bubble bottle shadow properly travel over walls
-8. Worldgen loading screen
+8. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -35,8 +35,7 @@ Need to do:
 10. Snow Golem Enemy
 11. Add small Gaussian blur to border shaders for smoother visuals
 12. Update settings UI and include settings for modifying soft shadows
-13. Fix power popup UI (descriptions when you pick up a power) not having soft fadeout
-14. Truncate copper coin spawning at a certain point
+13. Truncate copper coin spawning at a certain point
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -49,6 +48,12 @@ Bug Watchlist:
 1. Compendium menu may not be scrolling to the bottom
 2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
 
+STUFF TO FINISH RIGHT BEFORE PLAYTEST:
+1. Google form + QR code to reach it
+2. UI color adjustments
+3. Some more nodes with forges!
+4. A standardized save data set we can give to players that lets them use all the characters with some achievements unlocked
+
 Done: 
 
 5/21/26 to 5/22/26
@@ -58,7 +63,7 @@ Done:
 	1. Normalize some UI sounds, button resizing, and colors (revert to white for now, working on color systems)
 3. Some UI Buttons in the main menu now play a sound when hovered
 4. Roadblock color relations are now stored in a dictionary after being pregenned at the beginning in hopes of speeding up worldgen 
-5. 
+5. The power description that pops up when you pick up a power now has some fade-in and out with the box which roughly matches the fade-in-out of the power
 
 5/21/26
 1. Rework light shaders. They should now roughly follow the contours of the terrain better than before.

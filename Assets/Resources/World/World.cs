@@ -54,7 +54,7 @@ public class World : MonoBehaviour
             Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor(newData.ProgressionNumber), Matrix4x4.identity), true);
         tileData[pointPos.x, pointPos.y] = newData;
     }
-    private static Dictionary<byte, Color> RoadblockColorStorage = CreateRoadblockColors();
+    private static readonly Dictionary<byte, Color> RoadblockColorStorage = CreateRoadblockColors();
     private static Dictionary<byte, Color> CreateRoadblockColors()
     {
         Dictionary<byte, Color> storage = new(byte.MaxValue + 1);

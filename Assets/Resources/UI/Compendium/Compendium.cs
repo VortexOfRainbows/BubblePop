@@ -15,7 +15,7 @@ public class Compendium : MonoBehaviour
     { 
         get
         {
-            return m_PageNumber;
+            return m_PageNumber == -1 ? 1 : m_PageNumber;
         }
         set
         {
@@ -24,7 +24,7 @@ public class Compendium : MonoBehaviour
     }
     public void SetPage(int value)
     {
-        if(m_PageNumber != value)
+        if(m_PageNumber != -1)
             Main.CanvasManager.StaticPlaySound(); 
         m_PageNumber = value;
         for (int i = 0; i < Pages.Length; ++i)
@@ -41,7 +41,7 @@ public class Compendium : MonoBehaviour
         CurrentlySelectedPage.UpdateAllButtons(SortText, TierListText, UnlockButton, CountButton, ReverseButton);
         AutoButton.targetGraphic.color = CurrentlySelectedPage.AutoNextTierList ? Color.yellow : Color.white;
     }
-    private int m_PageNumber = 1;
+    private int m_PageNumber = -1;
     public static BasicTierListCompendiumPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber] as BasicTierListCompendiumPage;
     public Canvas MyCanvas;
     public RectTransform MyCanvasRectTransform => MyCanvas.GetComponent<RectTransform>();
