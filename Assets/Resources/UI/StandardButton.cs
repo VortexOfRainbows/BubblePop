@@ -1,7 +1,12 @@
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class StandardButton : Button
 {
+    public int Type = 0;
+    public bool SoundOnHover = true;
     public new void Awake()
     {
         base.Awake();
@@ -25,5 +30,61 @@ public class StandardButton : Button
         colors.selectedColor = colors.highlightedColor;
         colors.disabledColor = ColorHelper.UI.DarkGreyColor;
         base.colors = colors;
+    }
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        base.OnPointerEnter(eventData);
+        if(interactable && SoundOnHover)
+        {
+            if (Type == 1)
+            {
+                AudioManager.PlaySound(SoundID.BubblePop, CameraManager.MainCamera.transform.position, 1, 1.1f, 1);
+            }
+        }
+    }
+    public void Update()
+    {
+        if(Type == 1)
+        {
+            if (IsHighlighted())
+            {
+                transform.LerpLocalScale(Vector2.one * 1.1f, Utils.DeltaTimeLerpFactor(0.16f));
+            }
+            else
+            {
+                transform.LerpLocalScale(Vector2.one, Utils.DeltaTimeLerpFactor(0.12f));
+            }
+        }
+    }
+}
+
+[CustomEditor(typeof(StandardButton))]
+[CanEditMultipleObjects]
+public class StandardButtonEditor : UnityEditor.UI.ButtonEditor
+{
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+
+        // Draw the original Button inspector (specifically onclick, which is the only non-standed field for now)
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Interactable"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_TargetGraphic"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_OnClick"));
+
+        //If other fields are needed look here: 
+        //base.OnInspectorGUI();
+
+        SerializedProperty prop = serializedObject.GetIterator();
+        bool enterChildren = true;
+        while (prop.NextVisible(enterChildren))
+        {
+            // Skip script reference and already drawn Button fields
+            if (prop.name == "m_Script" || prop.name.StartsWith("m_") || prop.name == "size")
+                continue;
+
+            EditorGUILayout.PropertyField(prop, true);
+            enterChildren = false;
+        }
+        serializedObject.ApplyModifiedProperties();
     }
 }

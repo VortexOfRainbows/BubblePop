@@ -54,13 +54,20 @@ public class World : MonoBehaviour
             Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor(newData.ProgressionNumber), Matrix4x4.identity), true);
         tileData[pointPos.x, pointPos.y] = newData;
     }
-    public static Color RoadblockColor(byte progNum)
+    private static Dictionary<byte, Color> RoadblockColorStorage = CreateRoadblockColors();
+    private static Dictionary<byte, Color> CreateRoadblockColors()
     {
-        int r = progNum % 8;
-        int g = progNum / 8 % 8;
-        int b = progNum / 64 % 4;
-        return new Color(r * 0.125f, g * 0.125f, b * 0.25f);
+        Dictionary<byte, Color> storage = new(byte.MaxValue + 1);
+        for (byte i = 0; i < 255; ++i)
+        {
+            int r = i % 8;
+            int g = i / 8 % 8;
+            int b = i / 64 % 4;
+            storage[i] = new Color(r * 0.125f, g * 0.125f, b * 0.25f);
+        }
+        return storage;
     }
+    public static Color RoadblockColor(byte progNum) => RoadblockColorStorage[progNum];
     private static byte ConvertColorToProgNum(Color c)
     {
         return (byte)(c.r * 8 + c.g * 64 + c.b * 256);
@@ -461,31 +468,19 @@ public class World : MonoBehaviour
                             Vector3Int tright = new(pos.x + 1, pos.y);
                             Vector3Int ttop = new(pos.x, pos.y + 1);
                             Vector3Int tbot = new(pos.x, pos.y - 1);
-                            Color? c = null;
+                            Color c = RoadblockColor(data.ProgressionNumber);
                             if (SolidTile(tleft))
-                            {
-                                c ??= RoadblockColor(data.ProgressionNumber);
-                                Instance.RoadblockTilemap.SetTile(new(tleft, DepthTile, c.Value, Matrix4x4.identity), true);
+                                Instance.RoadblockTilemap.SetTile(new(tleft, DepthTile, c, Matrix4x4.identity), true);
                                 //SetTileData(tleft, new(data.ProgressionNumber, true));
-                            }
                             if (SolidTile(tright))
-                            {
-                                c ??= RoadblockColor(data.ProgressionNumber);
-                                Instance.RoadblockTilemap.SetTile(new(tright, DepthTile, c.Value, Matrix4x4.identity), true);
+                                Instance.RoadblockTilemap.SetTile(new(tright, DepthTile, c, Matrix4x4.identity), true);
                                 //SetTileData(tright, new(data.ProgressionNumber, true));
-                            }
                             if (SolidTile(ttop))
-                            {
-                                c ??= RoadblockColor(data.ProgressionNumber);
-                                Instance.RoadblockTilemap.SetTile(new(ttop, DepthTile, c.Value, Matrix4x4.identity), true);
+                                Instance.RoadblockTilemap.SetTile(new(ttop, DepthTile, c, Matrix4x4.identity), true);
                                 //SetTileData(ttop, new(data.ProgressionNumber, true));
-                            }
                             if (SolidTile(tbot))
-                            {
-                                c ??= RoadblockColor(data.ProgressionNumber);
-                                Instance.RoadblockTilemap.SetTile(new(tbot, DepthTile, c.Value, Matrix4x4.identity), true);
+                                Instance.RoadblockTilemap.SetTile(new(tbot, DepthTile, c, Matrix4x4.identity), true);
                                 //SetTileData(tbot, new(data.ProgressionNumber, true));
-                            }
                         }
                         //else if(passNum == 2 && !data.IsRoadblock)
                         //{

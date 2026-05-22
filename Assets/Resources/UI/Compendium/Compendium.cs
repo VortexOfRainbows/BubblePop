@@ -24,6 +24,8 @@ public class Compendium : MonoBehaviour
     }
     public void SetPage(int value)
     {
+        if(m_PageNumber != value)
+            Main.CanvasManager.StaticPlaySound(); 
         m_PageNumber = value;
         for (int i = 0; i < Pages.Length; ++i)
         {
@@ -56,6 +58,7 @@ public class Compendium : MonoBehaviour
     public RectTransform SortBar;
     public void ToggleActive()
     {
+        Main.CanvasManager.StaticPlaySound(); 
         ToggleActive(!Active);
     }
     public void ToggleActive(bool on)

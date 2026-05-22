@@ -497,7 +497,9 @@ public abstract class TierListCompendiumPage : CompendiumPage
         }
         Utils.LerpSnap(Owner.TopBar, newTopBarPositon);
         Utils.LerpSnap(Owner.SideBar, newSideBarPosition);
-        Utils.LerpSnap(Owner.OpenCompendiumButton.gameObject.transform, newOpenButtonPosition);
+        Vector2 buttonbounds = Owner.OpenCompendiumButton.GetComponent<RectTransform>().rect.size;
+        buttonbounds.y *= -1;
+        Utils.LerpSnap(Owner.OpenCompendiumButton.gameObject.transform, newOpenButtonPosition + buttonbounds / 2);
         Utils.LerpSnap(ViewPort.transform, targetViewport);
         //Utils.LerpSnap(SortBar.transform, sortBarTarget);
         ViewPort.sizeDelta = Vector2.Lerp(ViewPort.sizeDelta, new Vector2(0, TierListActive ? 200 : 0), 0.1f);

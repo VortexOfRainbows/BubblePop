@@ -146,12 +146,15 @@ public partial class Main : MonoBehaviour
         {
             StaticPlaySound();
         }
+        /// <summary>
+        /// TODO: Replace this with smarter behavior in the standard button system
+        /// </summary>
         public static void StaticPlaySound()
         {
             //Vector3 pos = Vector3.zero;
             //if (Player.Instance != null)
             //    pos = Player.Instance1Pos;
-            AudioManager.PlaySound(SoundID.BubblePop, Vector3.zero, 1f, 1.0f);
+            AudioManager.PlaySound(SoundID.BubblePop, Vector3.zero, 1f, 0.8f, 4);
         }
         public void QuitGame()
         {

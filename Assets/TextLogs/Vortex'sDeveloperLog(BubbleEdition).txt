@@ -14,6 +14,7 @@ Do Later:
 5. Update to Unity 6 to remove the silly splash screen
 6. Localization and text organization system
 7. Make fizzy bubble bottle shadow properly travel over walls
+8. Worldgen loading screen
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -25,7 +26,7 @@ Need to do:
 4. Forge needs some rooms to spawn in (ALSO SORT THE EXISTING ROOMS INTO FOLDERS FOR SHOP,CRUCIBLE,FORGE, ALL 8 COMBOS, then BOSS
 5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 6. Enemy Pathfinding
-7. Some UI classes to normalize UI colors, Button behaviors, etc... settings menu
+7. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 8. Compendium TODO:
 	1. Make powers show which pools they belong to
 	2. Make blurbs appear in the equipment page
@@ -51,7 +52,13 @@ Bug Watchlist:
 Done: 
 
 5/21/26 to 5/22/26
-1. WIP Rework to the title screen
+1. Rework to the title screen (uses placeholder art)
+	1. Shaders for distorting the clouds since we didn't layer them LOL
+2. WIP Normalization of button behaviors through StandardButton class changes and improvements (right now only applies to the main menu)
+	1. Normalize some UI sounds, button resizing, and colors (revert to white for now, working on color systems)
+3. Some UI Buttons in the main menu now play a sound when hovered
+4. Roadblock color relations are now stored in a dictionary after being pregenned at the beginning in hopes of speeding up worldgen 
+5. 
 
 5/21/26
 1. Rework light shaders. They should now roughly follow the contours of the terrain better than before.
