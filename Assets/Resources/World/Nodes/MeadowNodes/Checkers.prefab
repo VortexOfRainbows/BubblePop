@@ -313,6 +313,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7573328573185486376, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
+      propertyPath: m_TileColorArray.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7573328573185486376, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
       propertyPath: m_TileSpriteArray.Array.size
       value: 3
       objectReference: {fileID: 0}

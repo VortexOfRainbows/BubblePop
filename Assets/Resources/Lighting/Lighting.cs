@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 public static class Lighting
 {
     public static Tile LightTile;
@@ -14,6 +15,8 @@ public static class Lighting
     public static RenderTexture BorderMaskRT;
     public static RenderTexture SolidTileRT;
     public static RenderTexture OcclusionTileRT;
+    public static RenderTexture ShadowMaskInfo;
+    public static RenderTexture FinalLight;
     public static Material FrontLight;
     public static Material BackLight;
     public static Material LightShaper;
@@ -29,6 +32,7 @@ public static class Lighting
         {
             throw new System.Exception("ERROR: Could not find lighting tile maps");
         }
+
         LightTile = Resources.Load<Tile>("Lighting/LightTile");
         OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
@@ -37,6 +41,13 @@ public static class Lighting
         SolidTileRT = Resources.Load<RenderTexture>("Lighting/SolidTileRenderTexture");
         OcclusionTileRT = Resources.Load<RenderTexture>("Lighting/OcclusionTileRenderTexture");
         LightShaper = Resources.Load<Material>("Lighting/ShaderSlop/LightShaper");
+        ShadowMaskInfo = Resources.Load<RenderTexture>("Lighting/ShadowBonusMaskingInfo");
+        FinalLight = Resources.Load<RenderTexture>("Lighting/FinalLightingRenderTexture");
+
+        BorderImage.texture = BorderRT;
+        LightShapeVisualizer.texture = ShadowMaskInfo;
+        ShadowImage.texture = FinalLight;
+
         ShadowSpecialMaskMaterial = Resources.Load<Material>("Lighting/ShaderSlop/ShadowSpecialMasker");
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
@@ -218,7 +229,15 @@ public static class Lighting
     }
     public static void ResizeLightingRenderTexture()
     {
-        if(LightRT == null || BorderRT == null) return;
+        if(LightRT == null || BorderRT == null) 
+        {
+            LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
+            BorderRT = Resources.Load<RenderTexture>("Lighting/TileBorderRenderTexture");
+            BorderMaskRT = Resources.Load<RenderTexture>("Lighting/BorderMaskRenderTexture");
+            SolidTileRT = Resources.Load<RenderTexture>("Lighting/SolidTileRenderTexture");
+            OcclusionTileRT = Resources.Load<RenderTexture>("Lighting/OcclusionTileRenderTexture");
+            return;
+        }
         if(LightRT.width != Screen.width || LightRT.height != Screen.height || BorderRT.width != Screen.width || BorderRT.height != Screen.height)
         {
             ResizeRenderTexture(LightRT, CameraManager.LightingCamera, ShadowImage);
@@ -255,7 +274,10 @@ public static class Lighting
             BorderImage.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
             BorderImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
         }
-        Lighting.PrepareSpecialShadowMask();
+    }
+    public static void LateUpdate()
+    {
+        PrepareSpecialShadowMask();
     }
     public static void PrepareSpecialShadowMask()
     {
@@ -263,23 +285,48 @@ public static class Lighting
         CameraManager.OcclusionTileCamera.Render();
         CameraManager.SolidTileCamera.Render();
         CameraManager.LightingCamera.Render();
-        RenderTexture target = Resources.Load<RenderTexture>("Lighting/ShadowBonusMaskingInfo");
-        RenderTexture finalLight = Resources.Load<RenderTexture>("Lighting/FinalLightingRenderTexture");
+
         LightShaper.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
         LightShaper.SetFloat("_SizeMult", .5f / CameraManager.OcclusionTileCamera.orthographicSize);
         LightShaper.SetTexture("_Mask", OcclusionTileRT);
         LightShaper.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
 
-        Graphics.Blit(SolidTileRT, target, LightShaper);
+        BlitWithClear(SolidTileRT, ShadowMaskInfo, LightShaper);
 
         float occlusionScale = 8.0f;
         float baseTexelSize = occlusionScale / 1080f;
-        ShadowSpecialMaskMaterial.SetTexture("_Mask", target);
+        ShadowSpecialMaskMaterial.SetTexture("_Mask", ShadowMaskInfo);
         ShadowSpecialMaskMaterial.SetFloat("_SizeMult", CameraManager.LightingCamera.orthographicSize / CameraManager.OcclusionTileCamera.orthographicSize);
         ShadowSpecialMaskMaterial.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect * 1.0f, baseTexelSize));
         ShadowSpecialMaskMaterial.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
         ShadowSpecialMaskMaterial.SetFloat("_FinalAlphaMult", 0.7f);
 
-        Graphics.Blit(LightRT, finalLight, ShadowSpecialMaskMaterial);
+        BlitWithClear(LightRT, FinalLight, ShadowSpecialMaskMaterial);
     }
+    private static void BlitWithClear(RenderTexture source, RenderTexture destination, Material m)
+    {
+        var activeRT = RenderTexture.active;
+        RenderTexture.active = destination;
+
+        GL.Clear(true, true, Color.clear);
+        Graphics.Blit(source, destination, m, -1);
+
+        RenderTexture.active = activeRT;
+    }
+    //public static void OnEnable()
+    //{
+    //    RenderPipelineManager.endContextRendering += OnEndContextRendering;
+    //}
+    //public static void OnDisable()
+    //{
+    //    RenderPipelineManager.endContextRendering -= OnEndContextRendering;
+    //}
+    //private static void OnEndContextRendering(ScriptableRenderContext context, List<Camera> cameras)
+    //{
+    //    foreach (var cam in cameras)
+    //        Debug.Log($"Finished rendering camera: {cam.name}");
+    //    CommandBuffer cmd = CommandBufferPool.Get("CustomPostRendering");
+    //    Lighting.PrepareSpecialShadowMask();
+    //    CommandBufferPool.Release(cmd);
+    //}
 }

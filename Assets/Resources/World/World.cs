@@ -507,4 +507,16 @@ public class World : MonoBehaviour
         Lighting.Update();
         GlobalTimeElapsedCounter += Time.deltaTime;
     }
+    public void LateUpdate()
+    {
+        Lighting.LateUpdate();
+    }
+    //public void OnDisable()
+    //{
+    //    Lighting.OnDisable();
+    //}
+    //public void OnEnable()
+    //{
+    //    Lighting.OnEnable();
+    //}
 }
