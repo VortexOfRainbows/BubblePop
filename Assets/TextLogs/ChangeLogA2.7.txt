@@ -1,0 +1,31 @@
+Dev Build 2.7 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+1. Overhauled the lighting system again. Sun-shadows and occlusion shadows should both better follow the contours of the terrain.
+
+New:
+1. Add a new 5-star generic power
+2. Update the meadows theme with a more modern version (apparently it's slightly different, according to the audio team, but I can't tell)
+3. After Wave-15, battle music plays during the wave (this is experimental)
+4. Add a new structure, The Forge and Forge Capsule
+5. New title screen art and animations (placeholder art in preparation for steam-page artwork)
+6. Added quite a few new nodes with the Forge
+
+Changes:
+1. Crucible hitbox is now a little bigger and more capsule-like (temporary bandage for layering issues)
+	1. Enemies also collide with it now
+2. Strength of Lighting Gaussian Blur is weakened
+3. Extend the Day-Night cycle 6 min -> 12 min (8 day, 4 night)
+4. Changed some Node geometries
+5. Main menu buttons now have some standardized animations and sounds
+6. Some internal optimizations
+
+Misc:
+1. Edit some power descriptions (normalization)
+2. UI popups can now only show one at a time (Crucible, Restock, Forge)
+3. In order to reduce lag, when passing wave 20 and 30, copper and silver coins no longer spawn respectively. Instead their yield is converted to a chance of becoming a higher value coin.
+
+Fixes:
+1. Fix bug where debug button was clickable always
+2. Fix bug where enemies were spawning in non-progression areas
