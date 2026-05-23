@@ -35,7 +35,6 @@ Need to do:
 10. Snow Golem Enemy
 11. Add small Gaussian blur to border shaders for smoother visuals
 12. Update settings UI and include settings for modifying soft shadows
-13. Truncate copper coin spawning at a certain point
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -59,6 +58,7 @@ Done:
 5. Buildable
 6. Fix render target bug on buildable version
 7. Tuning the light shader to hopefully make it work better on higher and more specific resolutions
+8. In order to reduce lag, when passing wave 20 and 30, copper and silver coins no longer spawn respectively. Instead their yield is converted to a chance of becoming a higher value coin.
 
 5/21/26 to 5/22/26
 1. Rework to the title screen (uses placeholder art)

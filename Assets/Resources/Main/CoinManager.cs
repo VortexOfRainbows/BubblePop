@@ -29,11 +29,29 @@ public static class CoinManager
     public static GameObject Heart;
     public static GameObject Key;
     public static GameObject Chest, Token, Gem, Shard;
-    public static void SpawnCoin(Vector2 pos, int value = 1, float collectDelay = 0f)
+    public static void SpawnCoin(Vector2 pos, int value = 1, float collectDelay = 0f, bool skipTruncating = false)
     {
         int bronze = value % 5;
         int silver = value / 5 % 5;
         int gold = value / 25;
+        if(!skipTruncating)
+        {
+            if (WaveDirector.WaveNum >= 30)
+            {
+                float odds = bronze * 0.04f + silver * 0.2f;
+                bronze = 0;
+                silver = 0;
+                if (Utils.RandFloat(1) < odds)
+                    gold += 1;
+            }
+            else if (WaveDirector.WaveNum >= 20)
+            {
+                float odds = bronze * 0.2f;
+                bronze = 0;
+                if (Utils.RandFloat(1) < odds)
+                    silver += 1;
+            }
+        }
         for (; bronze > 0; --bronze)
             Spawn(Bronze, pos, collectDelay);
         for (; silver > 0; --silver)
