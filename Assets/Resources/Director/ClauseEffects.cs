@@ -347,7 +347,7 @@ public class GemReward : Reward
 {
     public GemReward(int value, int gems = 1)
     {
-        this.gems = gems; 
+        this.gems = (int)((gems + 4) / 5) * 5;
         coins = value;
     }
     public int coins;
@@ -358,8 +358,9 @@ public class GemReward : Reward
     }
     public override void GrantReward()
     {
-        for (int i = 0; i < gems; ++i)
-            CoinManager.SpawnGem(RewardPosition, 0.5f);
+        int count = gems / 5;
+        for (int i = 0; i < count; ++i)
+            CoinManager.SpawnGem(RewardPosition, 0.5f, 5);
     }
     public override string Description()
     {

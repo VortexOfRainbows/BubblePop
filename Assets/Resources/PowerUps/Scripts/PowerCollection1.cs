@@ -17,7 +17,7 @@ public class Choice : PowerUp
     public override int Cost => 50;
     public override int CrucibleGems(bool dissolve = false)
     {
-        return dissolve ? 10 : 25;
+        return dissolve ? 10 : 15;
     }
     public override int ShardReplicationCost(int stackSize = 1)
     {

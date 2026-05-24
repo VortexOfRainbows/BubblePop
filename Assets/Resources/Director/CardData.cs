@@ -606,14 +606,16 @@ public class RewardClause : CardClause
             {
                 reward = new CoinReward(beforeWaveReward ? (int)(PointsAvailable / 2f + 0.5f) : (int)(PointsAvailable + 0.5f));
             }
-            else if(RewardType == -1 && Utils.RandFloat(1) < 0.2f)
+            else if(RewardType == -1 && Utils.RandFloat(1) < 0.2f) //Gem reward
             {
                 RewardType = 3;
-                float conversionRate = (beforeWaveReward ? 5 : 4) + WaveDirector.WaveNum;
+                float conversionRate = (beforeWaveReward ? 4 : 3) + WaveDirector.WaveNum * 0.5f;
                 int maxGems = (int)Mathf.Max(1, PointsAvailable / conversionRate);
                 maxGems = (int)Mathf.Max(1, (maxGems + 1) * Utils.RandFloat());
-                int otherKeyValue = (int)Mathf.Max(1, (maxGems + 1) * Utils.RandFloat(0.6f, 1.0f) * Utils.RandFloat(0.6f, 1.0f));
-                maxGems = Mathf.Min(maxGems, otherKeyValue);
+                int otherValue = (int)Mathf.Max(1, (maxGems + 1) * Utils.RandFloat(0.5f, 1.0f));
+                maxGems = Mathf.Min(maxGems, otherValue);
+                if (maxGems < 5)
+                    maxGems = 5;
                 reward = new GemReward((int)(maxGems * conversionRate), maxGems);
             }
             if(reward == null)

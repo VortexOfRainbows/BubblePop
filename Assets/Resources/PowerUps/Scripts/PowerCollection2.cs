@@ -693,7 +693,7 @@ public class Contract : PowerUp
     public override int Cost => 150;
     public override int CrucibleGems(bool dissolve = false)
     {
-        return dissolve ? 10 : 25;
+        return dissolve ? 10 : 15;
     }
 }
 public class RainbowFlower : PowerUp

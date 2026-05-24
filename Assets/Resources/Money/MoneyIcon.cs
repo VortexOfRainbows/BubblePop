@@ -31,7 +31,7 @@ public class MoneyIcon : MonoBehaviour
             }
             else if(Type == 3)
             {
-                PopUpTextUI.Enable("Gems", "Can be used to reroll Choices");
+                PopUpTextUI.Enable("Gems", "Can be used to reroll Choices and power the Forge");
             }
             UpdateSparkle(Sparkle, true);
         }
