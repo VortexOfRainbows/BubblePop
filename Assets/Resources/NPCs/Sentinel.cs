@@ -20,8 +20,8 @@ public class Sentinel : Enemy
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 15;
-        data.BaseMaxCoin = 25;
-        data.BaseMinCoin = 5;
+        data.BaseMaxCoin = 10;
+        data.BaseMinCoin = 4;
         data.BaseMinGem = 1;
         data.BaseMaxGem = 3;
         data.Rarity = 3;

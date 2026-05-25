@@ -25,7 +25,8 @@ public class Gatligator : Enemy
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 25;
-        data.BaseMaxCoin = 40;
+        data.BaseMaxCoin = 10;
+        data.BaseMinCoin = 5;
         data.Rarity = 4;
         data.BaseMaxGem = 3;
         data.Cost = 5;

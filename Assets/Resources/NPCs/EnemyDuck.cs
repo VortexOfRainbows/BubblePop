@@ -12,7 +12,7 @@ public class EnemyDuck : Enemy
     protected float bobbingTimer = 0;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxCoin = 8;
+        data.BaseMaxCoin = 3;
         data.BaseMaxLife = 10;
         data.Cost = 1;
     }

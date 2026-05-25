@@ -17,7 +17,8 @@ public class EnemyBossDuck : EnemyDuck
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 45;
-        data.BaseMaxCoin = 50;
+        data.BaseMaxCoin = 30;
+        data.BaseMinCoin = 25;
         data.BaseMaxGem = 3;
         data.Cost = 10;
         data.Rarity = 5;

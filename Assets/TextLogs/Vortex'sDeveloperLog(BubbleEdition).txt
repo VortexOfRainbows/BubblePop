@@ -50,6 +50,22 @@ Bug Watchlist:
 
 Done: 	
 
+5/24/26
+1. Change enemy coin drop ranges (min, max). Coin drops are triple weighted towards the minimum drop, so changes there are relatively more impactful
+	1. Rock Spider (2, 10) -> (1, 4)
+	2. Leonard (2, 50) -> (25, 30)
+	3. Soap -> (1, 3)
+	4. Soap Fragment (1, 5) -> (1, 1)
+	5. Flamingo (1, 15) -> (2, 5)
+	6. Duck (1, 8) -> (1, 3)
+	7. Chicken (1, 10) -> (1, 3)
+	8. Crow (1, 15) -> (2, 5)
+	9. Ent (1, 18) -> (3, 10)
+	10. Gatligator (1, 40) -> (5, 10)
+	11. Infector (5, 25) -> (10, 15)
+	12. Sentinel (5, 25) -> (4, 10)
+	13. Super Sentinel (5, 35) -> (5, 15)
+
 5/23/26
 1. Reduce cost of Forging Choice and Contract 25 -> 15
 2. Gem rewards (from waves) are now slightly more generous and rounded to multiples of 5

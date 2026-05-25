@@ -16,8 +16,8 @@ public class Infector : Enemy
     private bool StartedMoving = false;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMinCoin = 5;
-        data.BaseMaxCoin = 25;
+        data.BaseMinCoin = 10;
+        data.BaseMaxCoin = 15;
         data.BaseMaxLife = 20;
         data.BaseMaxGem = 3;
         data.Rarity = 5;

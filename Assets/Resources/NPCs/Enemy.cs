@@ -531,9 +531,7 @@ public class Enemy : Entity
         OnKill();
         float rand = 1;
         for (int i = 0; i < CoinRandomizationAggressiveness; ++i)
-        {
             rand *= Utils.RandFloat();
-        }
         float coins = MinCoins + (Mathf.Max(0, MaxCoins - MinCoins)) * rand + 0.5f;
         if(IsSkull)
             coins += Player.Instance.FlatSkullCoinBonus;

@@ -16,7 +16,7 @@ public class Chicken : Enemy
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 7;
-        data.BaseMaxCoin = 10;
+        data.BaseMaxCoin = 3;
         data.Cost = 1;
         data.WaveNumber = 1;
     }

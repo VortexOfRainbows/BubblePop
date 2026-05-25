@@ -16,7 +16,7 @@ public class EnemySoap : Enemy
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 5;
-        data.BaseMaxCoin = 5;
+        data.BaseMaxCoin = 3;
         data.Cost = 2;
         data.WaveNumber = 2;
         data.Rarity = 2;

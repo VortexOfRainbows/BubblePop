@@ -16,7 +16,8 @@ public class Ent : Enemy
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 27;
-        data.BaseMaxCoin = 18;
+        data.BaseMaxCoin = 10;
+        data.BaseMinCoin = 3;
         data.BaseMaxGem = 2;
         data.Cost = 3.5f;
         data.WaveNumber = 4;
