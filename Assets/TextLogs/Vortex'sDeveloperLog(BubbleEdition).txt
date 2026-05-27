@@ -13,8 +13,7 @@ Do Later:
 4. Grass shader to make grass more interesting and potentially slightly vary in the wind
 5. Update to Unity 6 to remove the silly splash screen
 6. Localization and text organization system
-7. Make fizzy bubble bottle shadow properly travel over walls
-8. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
+7. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -23,7 +22,7 @@ Need to do:
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. (TENTATIVE, MIGHT NOT DO THESE) Economy: Gacha Capsule (dissolving in crucible gives random rewards), Crystal Syrum (Makes all enemies drop gems, chance)
-4. Forge needs some rooms to spawn in (ALSO SORT THE EXISTING ROOMS INTO FOLDERS FOR SHOP,CRUCIBLE,FORGE, ALL 8 COMBOS, then BOSS
+4. SORT THE EXISTING ROOMS INTO FOLDERS FOR SHOP,CRUCIBLE,FORGE, ALL 8 COMBOS, then BOSS
 5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 6. Enemy Pathfinding
 7. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
@@ -58,6 +57,7 @@ Done:
 4. Slightly reduced darkness of shadows 0.95 -> 0.85
 5. Mitosis Forge Cost 15 -> 25
 6. Flamingo Health 10 -> 12
+7. Shadows from Bath Bombs and Cola should now go over walls
 
 5/24/26
 1. Change enemy coin drop ranges (min, max). Coin drops are triple weighted towards the minimum drop, so changes there are relatively more impactful
