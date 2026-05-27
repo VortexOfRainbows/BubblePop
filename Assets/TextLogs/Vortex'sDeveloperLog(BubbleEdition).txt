@@ -21,7 +21,7 @@ Need to do:
 	2. Progress display for achievements
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
-	1. (TENTATIVE, MIGHT NOT DO THESE) Economy: Gacha Capsule (dissolving in crucible gives random rewards), Crystal Syrum (Makes all enemies drop gems, chance)
+	1. (TENTATIVE, MIGHT NOT DO THESE) Economy: Gacha Capsule (dissolving in crucible gives random rewards)
 4. SORT THE EXISTING ROOMS INTO FOLDERS FOR SHOP,CRUCIBLE,FORGE, ALL 8 COMBOS, then BOSS
 5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 6. Enemy Pathfinding
@@ -58,6 +58,9 @@ Done:
 5. Mitosis Forge Cost 15 -> 25
 6. Flamingo Health 10 -> 12
 7. Shadows from Bath Bombs and Cola should now go over walls
+8. Adjustments to the shadow shadow to only extend to the opposite direction of the light (to fill in gaps)
+	1. This should generally make the shadows more closely follow the shape of the terrain
+9. Rock Golem health 20 -> 24, speed 0.28 -> 0.32
 
 5/24/26
 1. Change enemy coin drop ranges (min, max). Coin drops are triple weighted towards the minimum drop, so changes there are relatively more impactful

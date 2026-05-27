@@ -15,7 +15,7 @@ public class RockGolem : RockSpider
     public override float HealthBarSizeModifier => .7f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 20;
+        data.BaseMaxLife = 24;
         data.BaseMaxCoin = 3;
         data.BaseMinCoin = 1;
         data.BaseMaxGem = 1;
@@ -94,7 +94,7 @@ public class RockGolem : RockSpider
             if (toPlayer.magnitude < 20 || Timer < 60 || Timer > beginShootingRange)
                 ++Timer;
             float percent = 1;
-            float speed = 0.28f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
+            float speed = 0.32f * Mathf.Clamp(Timer / 60f, 0, 1) * percent;
             if (Timer > beginShootingRange)
             {
                 percent = 1 - ((Timer - beginShootingRange) / ShotCooldownSlowdown);
