@@ -123,7 +123,7 @@ public static class Lighting
             alphaMult = Mathf.Clamp01(alphaMult);
             if (IsNight) //nightTime)
                 alphaMult *= 0.4f;
-            ShadowImage.color = new Color(0, 0, 0, 0.95f * alphaMult);
+            ShadowImage.color = new Color(0, 0, 0, 0.85f * alphaMult);
 
             CameraManager.SetSolidTileLightingOffset(Sun);
         }

@@ -24,6 +24,10 @@ public class BubbleMitosis : PowerUp
             }
         }
     }
+    public override int CrucibleGems(bool dissolve = false)
+    {
+        return dissolve ? base.CrucibleGems(dissolve) : 25;
+    }
 }
 public class RollForCharisma : PowerUp
 {
@@ -693,7 +697,7 @@ public class Contract : PowerUp
     public override int Cost => 150;
     public override int CrucibleGems(bool dissolve = false)
     {
-        return dissolve ? 10 : 15;
+        return dissolve ? 10 : 25;
     }
 }
 public class RainbowFlower : PowerUp

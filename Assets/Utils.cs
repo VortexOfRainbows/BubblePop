@@ -418,4 +418,8 @@ public static class Utils
         float num2 = a.y - b.y;
         return num * num + num2 * num2;
     }
+    public static bool RandBool(int denominator)
+    {
+        return RandInt(0, denominator) == 0;
+    }
 }

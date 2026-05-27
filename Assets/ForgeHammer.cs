@@ -30,7 +30,7 @@ public class ForgeHammer : GemUtility
     {
         if(!HasDelayed)
             DelayedStart();
-        AnimateGems(GemCrushPosition.position, -1, 2);
+        AnimateGems(GemCrushPosition.position + new Vector3(0, -0.25f, 0), -1, 2);
         if(AnimationTimer > 0)
         {
             AnimationTimer -= Time.deltaTime;

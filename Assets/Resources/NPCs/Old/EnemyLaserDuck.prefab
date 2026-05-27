@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3394753933866938757}
   - component: {fileID: 5627336714113378011}
   - component: {fileID: 1461567147869654019}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyLaserDuck
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -128,6 +128,10 @@ MonoBehaviour:
   AlreadyDead: 0
   FirstStrike: 1
   sRender: {fileID: 7870486419755120067}
+  aiState: 0
+  targetedLocation: {x: 0, y: 0}
+  aimingTimer: 240
+  movingTimer: 0
   PlayMusic: 0
 --- !u!1 &979492237864127347
 GameObject:
@@ -139,7 +143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 293182179415698555}
   - component: {fileID: 7870486419755120067}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

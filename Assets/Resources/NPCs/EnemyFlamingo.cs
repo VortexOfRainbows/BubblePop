@@ -10,7 +10,7 @@ public class EnemyFlamingo : EnemyDuck
     private int projectileTimer = 300;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 10;
+        data.BaseMaxLife = 12;
         data.BaseMaxCoin = 5;
         data.BaseMinCoin = 2;
         data.Cost = 3;
@@ -19,11 +19,8 @@ public class EnemyFlamingo : EnemyDuck
     }
     public override void AI()
     {
-        int soundChance = Random.Range(1, 500);
-        if (soundChance == 1)
-        {
+        if (Utils.RandBool(500))
             AudioManager.PlaySound(SoundID.FlamingoNoise, transform.position, 0.13f, 1.2f);
-        }
         MoveUpdate();
         if (projectileTimer <= 0)
         {
@@ -37,7 +34,7 @@ public class EnemyFlamingo : EnemyDuck
     }
     private void ShootProjectile() {
         Vector2 projectileDirection = (Target.Position - (Vector2)transform.position).normalized * ProjVelocity;
-        Projectile.NewProjectile<FlamingoFeather>(transform.position, projectileDirection.RotatedBy(Mathf.Deg2Rad * Utils.RandFloat(-15, 15)), 1, this);
+        Projectile.NewProjectile<FlamingoFeather>((Vector2)transform.position + projectileDirection * 0.5f, projectileDirection.RotatedBy(Mathf.Deg2Rad * Utils.RandFloat(-15, 15)), 1, this);
         AudioManager.PlaySound(SoundID.FlamingoShot.GetVariation(0), transform.position, 0.05f, 1.2f);
     }
     protected override Vector2 FindLocation()
@@ -47,6 +44,6 @@ public class EnemyFlamingo : EnemyDuck
     public override void OnKill()
     {
         DeathParticles(30, 0.6f, new Color(1, 0.85f, 0.99f));
-        AudioManager.PlaySound(SoundID.FlamingoShot.GetVariation(1), transform.position, 0.7f, 1.2f);
+        AudioManager.PlaySound(SoundID.FlamingoShot.GetVariation(1), transform.position, 0.9f, 1.2f);
     }
 }

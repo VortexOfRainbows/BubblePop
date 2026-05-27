@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3394753933866938757}
   - component: {fileID: -5184014310199510002}
   - component: {fileID: 5627336714113378011}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyFlamingo
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -83,6 +83,10 @@ MonoBehaviour:
   AlreadyDead: 0
   FirstStrike: 1
   sRender: {fileID: 7346615532675971073}
+  aiState: 0
+  targetedLocation: {x: 0, y: 0}
+  aimingTimer: 240
+  movingTimer: 0
 --- !u!61 &5627336714113378011
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -138,7 +142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8351522483754476036}
   - component: {fileID: 7346615532675971073}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
