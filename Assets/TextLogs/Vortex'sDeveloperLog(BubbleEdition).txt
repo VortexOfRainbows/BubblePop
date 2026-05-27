@@ -34,6 +34,12 @@ Need to do:
 10. Snow Golem Enemy
 11. Add small Gaussian blur to border shaders for smoother visuals
 12. Update settings UI and include settings for modifying soft shadows
+13. Overhaul enemy spawning statistics... Aim for:
+	1. Fast enemy spawns
+	2. Shorten card play cooldowns	
+	3. Cards start without delay
+	4. Director gets some credits to begin with (initial ambush)
+	5. Earlier and stronger enemy health scaling
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -61,6 +67,7 @@ Done:
 8. Adjustments to the shadow shadow to only extend to the opposite direction of the light (to fill in gaps)
 	1. This should generally make the shadows more closely follow the shape of the terrain
 9. Rock Golem health 20 -> 24, speed 0.28 -> 0.32
+10. Leonard Health 45 -> 50
 
 5/24/26
 1. Change enemy coin drop ranges (min, max). Coin drops are triple weighted towards the minimum drop, so changes there are relatively more impactful

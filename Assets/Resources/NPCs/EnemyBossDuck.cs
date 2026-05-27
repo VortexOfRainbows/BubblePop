@@ -16,7 +16,7 @@ public class EnemyBossDuck : EnemyDuck
     private int projectileTimer = -50;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 45;
+        data.BaseMaxLife = 50;
         data.BaseMaxCoin = 30;
         data.BaseMinCoin = 25;
         data.BaseMaxGem = 3;
@@ -27,11 +27,8 @@ public class EnemyBossDuck : EnemyDuck
     public override void AI()
     {
         PlayMusic = true;
-        int soundChance = Random.Range(1, 400);
-        if (soundChance == 1)
-        {
+        if (Utils.RandBool(400))
             AudioManager.PlaySound(SoundID.LenardNoise, transform.position, 0.3f, 0.9f);
-        }
         MoveUpdate();
         projectileTimer++;
         if (projectileTimer >= 500)
