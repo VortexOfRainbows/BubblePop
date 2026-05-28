@@ -92,7 +92,7 @@ public static class WaveDirector
         {
             return;
         }
-        float creditsNeededToPassWave = ((40 + WaveNum * 0.5f) * (0.5f * WaveMult + 0.5f * TemporaryModifiers.CreditGatherScaling)) + TemporaryModifiers.InitialAmbush * 0.5f;
+        float creditsNeededToPassWave = ((30 + WaveNum * 0.5f) * (0.5f * WaveMult + 0.5f * TemporaryModifiers.CreditGatherScaling)) + TemporaryModifiers.InitialAmbush * 0.5f;
         float cardsPlayedPercent = Mathf.Min(1, CardsPlayed / 10f);
         float creditsSpentPercent = Mathf.Min(1, CreditsSpent / creditsNeededToPassWave);
         float percentWaveComplete = cardsPlayedPercent * 0.2f + 0.8f * cardsPlayedPercent * creditsSpentPercent;
@@ -104,7 +104,7 @@ public static class WaveDirector
         {
             DrawNewCards();
             UpdateMulligans();
-            if (Utils.RandInt(1000) == 0) //roughly 10 seconds to mulligan a random card
+            if (Utils.RandBool(1000)) //roughly 10 seconds to mulligan a random card
                 MulliganRandomCard();
             if (PlayRecoil <= 0)
                 TryPlayingAssociatedWaveCards(WaveProgressPercent);

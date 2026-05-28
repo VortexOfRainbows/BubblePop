@@ -56,6 +56,17 @@ Done:
 
 5/28/26
 1. Remove some holdovers from very early systems that were used in wave director 
+2. Chance for Swarm and Circle cards
+	1. Base chance 1% -> 5%
+	2. Max Chance 25% -> 50%
+	3. Rate scaling 1% per wave -> 2.5% per wave
+3. Change cost for director to play cards:
+	1. Single Spawn c = (1 + 2 * e) -> (1 + e)
+	2. Multispawn c = (1 + me) -> (1 + me) (unchanged)
+	3. Circlespawn (1 + c + x) -> 0.75cx
+	4. The result of these changes is enemies should generally spawn faster and while spawn modifiers are more common, they will be relatively less powerful
+4. Base Minimum Credit cost to pass the wave 40 -> 30
+	1. This is mostly to counteract the cheaper enemy spawns, though more enemies should still spawn this patch in general
 
 5/26/26 to 5/27/26
 1. Update unity version because I'm now on david's computer

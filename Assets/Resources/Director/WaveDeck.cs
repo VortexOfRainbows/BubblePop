@@ -54,26 +54,26 @@ public static class WaveDeck
     public static WaveCard DrawCard()
     {
         Player target = Player.GetInstance(Utils.RandInt(Player.AllPlayers.Count));
-        float chanceForWaveSpawn = Mathf.Min(0.25f, 0.01f + WaveDirector.WaveNum * 0.01f);
-        float chanceForSwarm = Mathf.Min(0.25f, 0.01f + WaveDirector.WaveNum * 0.01f);
-        bool isSwarm = Utils.RandFloat() < chanceForSwarm;
-        int swarmCount = 1;
-        if(isSwarm)
+        float multipleEnemiesChance = Mathf.Min(0.5f, 0.05f + WaveDirector.WaveNum * 0.025f);
+        float swarmCircleChance = Mathf.Min(0.5f, 0.05f + WaveDirector.WaveNum * 0.025f);
+        bool isCircle = Utils.RandFloat() < swarmCircleChance;
+        int swarmCircleCount = 1;
+        if(isCircle)
         {
-            swarmCount = 3;
+            swarmCircleCount = 3;
             float bonusChance = 0.3f + Mathf.Sqrt(WaveDirector.WaveNum) * 0.1f;
             if (bonusChance > 0.9f)
                 bonusChance = 0.9f;
-            while (Utils.RandFloat() < bonusChance)
-                ++swarmCount;
+            while (Utils.RandFloat() < bonusChance) //Increase the amount of portals in the swarm circle
+                ++swarmCircleCount;
         }
-        if(Utils.RandFloat() < chanceForWaveSpawn)
+        if(Utils.RandFloat() < multipleEnemiesChance)
         {
             int TotalDudes = Utils.RandInt(2, 4);
             float bonusChance = 0.3f + WaveDirector.WaveNum * 0.1f;
             if (bonusChance > 0.8f)
                 bonusChance = 0.8f;
-            while (Utils.RandFloat() < bonusChance)
+            while (Utils.RandFloat() < bonusChance) //Increase the amount of enemies spawned from this circle
                 ++TotalDudes;
             GameObject enemyType = DrawEnemy(GetPossibleEnemies());
             GameObject[] enemies = new GameObject[TotalDudes];
@@ -83,20 +83,20 @@ public static class WaveDeck
             }
             float time = 1.25f;
             var card = DrawMultiSpawn(RandomPositionOnPlayerEdge(target), 10, 5, 1 + TotalDudes * enemyType.GetComponent<Enemy>().CostMultiplier, time, enemies);
-            if(isSwarm)
+            if(isCircle)
             {
                 if (Utils.RandFloat() < 0.5f)
                     card.Patterns[0].SpawnPattern = RightOnPlayer(target); //Circle center is on the player
-                card = card.ToSwarmCircle(swarmCount, 10, 1.0f, 0.5f);
+                card = card.ToSwarmCircle(swarmCircleCount, 10, .75f, .5f);
             }
             return card;
         }
         var card2 = DrawSingleSpawn(RandomPositionOnPlayerEdge(target), DrawEnemy(GetPossibleEnemies()));
-        if (isSwarm)
+        if (isCircle)
         {
-            if (Utils.RandFloat() < 0.5f)
+            if (Utils.RandFloat() < 0.5f) //50% chance for circle to spawn on top of the player. Otherwise it spawns on the originally determined location
                 card2.Patterns[0].SpawnPattern = RightOnPlayer(target); //Circle center is on the player
-            card2 = card2.ToSwarmCircle(swarmCount, 10, 1.0f, 0.5f);
+            card2 = card2.ToSwarmCircle(swarmCircleCount, 10, .75f, .5f);
         }
         return card2;
     }
@@ -114,7 +114,8 @@ public static class WaveDeck
     //}
     public static WaveCard DrawSingleSpawn(EnemySpawnPattern location, GameObject enemy)
     {
-        return DrawSingleSpawn(location, enemy, Utils.RandFloat(4, 10), Utils.RandFloat(1, 2), 1 + 2 * enemy.GetComponent<Enemy>().CostMultiplier);
+        Enemy e = enemy.GetComponent<Enemy>();
+        return DrawSingleSpawn(location, enemy, Utils.RandFloat(4, 10), Utils.RandFloat(1, 2), 1 + e.CostMultiplier);
     }
     public static WaveCard DrawSingleSpawn(EnemySpawnPattern location, GameObject enemy, float charge, float delay, float cost)
     {
@@ -154,7 +155,7 @@ public static class WaveDeck
             card.Patterns[i] = new(new SpawnWithOffset(original.SpawnPattern.Target, original.SpawnPattern, circular), 
                 original.EndDelay, original.BetweenEnemyDelay, original.Skull, original.EnemyPrefabs);
         }
-        card.Cost = (1 + card.Cost + count) * costMult;
+        card.Cost = card.Cost * count * costMult;
         return card;
     }
 }
