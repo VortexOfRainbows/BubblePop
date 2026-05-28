@@ -666,7 +666,7 @@ public class ShardsOfPower : PowerUp
     }
     public override int CrucibleGems(bool dissolve)
     {
-        return -3;
+        return dissolve ? -3 : 25;
     }
 }
 public class Contract : PowerUp
@@ -726,7 +726,7 @@ public class RainbowFlower : PowerUp
                 ++count;
             return -count;
         }
-        return 5;
+        return 15;
     }
     public override int ShardReplicationCost(int stackSize = 1)
     {

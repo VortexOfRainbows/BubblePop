@@ -143,8 +143,8 @@ public class LatentCharge : Projectile
         }
         if (isSpecial)
         {
-            timer3++;
-            float timeToOpenClose = 80f * (0.6f + 0.4f * PlayerOwner.SecondaryAttackSpeedModifier);
+            timer3 += PlayerOwner.PrimaryAttackSpeedModifier;
+            float timeToOpenClose = 80f * (0.6f + 0.4f * PlayerOwner.PrimaryAttackSpeedModifier);
             percent = timer3 / timeToOpenClose;
         }
         if ((book != null && book.InClosingAnimation) || isSpecial)

@@ -52,10 +52,9 @@ Bug Watchlist:
 1. Compendium menu may not be scrolling to the bottom
 2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
 
-
 Done: 	
 
-5/26/26
+5/26/26 to 5/27/26
 1. Update unity version because I'm now on david's computer
 2. Ducks now aggro you when they take damage
 	1. Also modified their colliders so they also collide with other enemies as is standard now
@@ -68,6 +67,9 @@ Done:
 	1. This should generally make the shadows more closely follow the shape of the terrain
 9. Rock Golem health 20 -> 24, speed 0.28 -> 0.32
 10. Leonard Health 45 -> 50
+11. Shards of Power Forge Cost -3 -> 25 (bug fix..?)
+12. Rainbow Flower Forge cost 5 -> 15
+13. Fix bug where higher attack speed was making echo bubbles slower for the left-click
 
 5/24/26
 1. Change enemy coin drop ranges (min, max). Coin drops are triple weighted towards the minimum drop, so changes there are relatively more impactful
