@@ -141,7 +141,7 @@ public abstract class PowerUp
         PowerUpObject obj = GameObject.Instantiate(Main.PrefabAssets.PowerUpObj, pos, Quaternion.identity);
         obj.Type = powerUpID;
         obj.FinalPosition = pos;
-        WaveDirector.TotalPowersSpawned += 1;
+        //WaveDirector.TotalPowersSpawned += 1;
         return obj.gameObject;
     }
     public static PowerUp Get(string powerTypeName)

@@ -538,7 +538,6 @@ public class Enemy : Entity
         CoinManager.SpawnCoin(transform.position, (int)coins);
         //float reduceRelativeDropRates = Mathf.Max(0.25f, Mathf.Min(1, 0.25f + (200 - WaveDirector.TotalPowersSpawned) / 200f)); //At 200 powers, this number is 0.25, meaning power drop rates will be reduced
         //bool LuckyDrop = Utils.RandFloat(1) < (IsSkull ? SkullPowerDropChance : PowerDropChance) * reduceRelativeDropRates;
-        WaveDirector.Point += (int)MaxCoins;
         //if (LuckyDrop)
         //    PowerUp.Spawn(PowerUp.RandomFromPool(0.15f), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 8));
         int amt = IsSkull ? Utils.RandInt((int)StaticData.BaseMinGem, (int)StaticData.BaseMaxGem + 1) : 0;

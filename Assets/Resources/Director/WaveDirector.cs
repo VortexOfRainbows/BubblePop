@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public static class WaveDirector
 {
@@ -39,39 +35,19 @@ public static class WaveDirector
         List<GameObject> result = new(EnemyPool);
         if (TemporaryModifiers.WaveSpecialBonusEnemy != null && result.Count <= 0)
             result.Add(TemporaryModifiers.WaveSpecialBonusEnemy);
-        //if (result.Count < 0)
-        //    result.Add(EnemyID.OldDuck);
         return result;
     }
     public static List<WaveCard> AssociatedWaveCards;
     public static readonly List<GameObject> EnemyPool = new();
     public static readonly WaveModifiers PermanentModifiers = new();
     public static readonly WaveModifiers TemporaryModifiers = new(); //Permanent modifiers, but with bonuses applied after cloning values
-    public static float PointsSpent = 0;
-    private static float PointTimer = 0;
     private static int CurrentAssociatedWaveCardNumber = 0;
     public static float WaveProgressPercent { get; set; } = 0f;
-    public static int Point { get; set; }
-    public static void PointUpdate()
-    {
-        PointTimer += Time.deltaTime;
-        if (Player.Instance.IsDead)
-        {
-            PointTimer = 0;
-        }
-        if (PointTimer > 1)
-        {
-            Point++;
-            PointTimer--;
-        }
-    }
     public static void Update()
     {
         if (!Main.WavesUnleashed)
             return;
     }
-    public static float PityPowersSpawned = 0;
-    public static float TotalPowersSpawned = 0;
     public static int MaxCards = 6;
     public static float Credits = 0, CreditsSpent = 0;
     public static float PlayRecoil;
@@ -96,7 +72,6 @@ public static class WaveDirector
         CreditsSpent = 0;
         Deck.Clear();
         Board.Clear();
-        PointsSpent = PointTimer = PityPowersSpawned = TotalPowersSpawned = Point = 0;
         WaveProgressPercent = 0;
         EnemyPool.Clear();
         PermanentModifiers.Reset();
@@ -117,7 +92,6 @@ public static class WaveDirector
         {
             return;
         }
-        PointUpdate();
         float creditsNeededToPassWave = ((40 + WaveNum * 0.5f) * (0.5f * WaveMult + 0.5f * TemporaryModifiers.CreditGatherScaling)) + TemporaryModifiers.InitialAmbush * 0.5f;
         float cardsPlayedPercent = Mathf.Min(1, CardsPlayed / 10f);
         float creditsSpentPercent = Mathf.Min(1, CreditsSpent / creditsNeededToPassWave);
