@@ -11,7 +11,7 @@ Do Later:
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
 3. Integrate Compendium into the pause menu
 4. Grass shader to make grass more interesting and potentially slightly vary in the wind
-5. Update to Unity 6 to remove the silly splash screen
+5. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 6. Localization and text organization system
 7. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
 
@@ -50,6 +50,7 @@ Done:
 
 5/29/26
 1. Purge some old assets and remove them from scenes
+2. NOT Buildable due to bug with this UNITY version (the one on David's laptop)
 
 5/28/26 to 5/29/26
 1. Remove some holdovers from very early systems that were used in wave director 
