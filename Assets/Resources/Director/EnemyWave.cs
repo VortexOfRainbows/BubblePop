@@ -6,30 +6,30 @@ public class WaveCard
 {
     public override string ToString()
     {
-        return $"[P: {Patterns.Length}, C: {Cost}, MS: {mulliganDelay}]";
+        return $"[P: {Patterns.Length}, C: {Cost}, MS: {MulliganDelay}]";
     }
     public WaveCard(float cost, float startUpDelay, float endDelay, List<EnemyPattern> patterns)
     {
-        this.mulliganDelay = fullDelay = startUpDelay;
-        this.postPlayDelay = endDelay;
+        this.MulliganDelay = startUpDelay;
+        this.PlayRecoil = endDelay;
         this.Patterns = patterns.ToArray();
         this.Cost = cost;
     }
+    public WaveCard(float cost, params EnemyPattern[] patterns)
+    {
+        Cost = cost;
+        Patterns = patterns;
+    }
     public WaveCard(float cost, float startUpDelay, float endDelay, params EnemyPattern[] patterns)
     {
-        this.mulliganDelay = fullDelay = startUpDelay;
-        this.postPlayDelay = endDelay;
+        this.MulliganDelay = startUpDelay;
+        this.PlayRecoil = endDelay;
         this.Patterns = patterns;
         this.Cost = cost;
     }
     public EnemyPattern[] Patterns;
-    public float fullDelay = 1;
-    public float mulliganDelay = 1;
-    /// <summary>
-    /// Additional delay put on the next card drawn.
-    /// Currently unimplemented
-    /// </summary>
-    public float postPlayDelay = 1;
+    public float MulliganDelay { get; private set; } = 1;
+    public float PlayRecoil { get; private set; } = 1;
     private int patternNum = 0;
     public bool Resolved = false;
     public float Cost = 100;
@@ -47,7 +47,7 @@ public class WaveCard
             }
             else
             {
-                if(resolveCounter > postPlayDelay)
+                if(resolveCounter > PlayRecoil)
                 {
                     Finish();
                 }

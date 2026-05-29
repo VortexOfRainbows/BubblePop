@@ -50,7 +50,7 @@ public static class WaveDirector
     }
     public static int MaxCards = 6;
     public static float Credits = 0, CreditsSpent = 0;
-    public static float PlayRecoil;
+    public static float PlayRecoil { get; private set; }
     public static readonly List<WaveCard> Deck = new();
     public static readonly List<WaveCard> Board = new();
     public static int CardsPlayed = 0;
@@ -206,7 +206,7 @@ public static class WaveDirector
     public static void MulliganRandomCard()
     {
         int rand = Utils.RandInt(Deck.Count);
-        if (Deck[rand].Cost > 0 && Deck[rand].mulliganDelay <= 0)
+        if (Deck[rand].Cost > 0 && Deck[rand].MulliganDelay <= 0)
             Deck[rand] = WaveDeck.DrawCard();
     }
     public static void MulliganAllCards()
@@ -219,7 +219,7 @@ public static class WaveDirector
         for(int i = Deck.Count - 1; i >= 0; --i)
         {
             WaveCard card = Deck[i];
-            bool canPlay = card.mulliganDelay <= 0;
+            bool canPlay = card.MulliganDelay <= 0;
             bool canAfford = card.Cost <= Credits;
             if(canPlay && canAfford)
             {
@@ -256,7 +256,7 @@ public static class WaveDirector
     public static void PlayCard(WaveCard card, bool incrementCardsPlayed = true, float overridePlayDelay = -1)
     {
         Board.Add(card);
-        PlayRecoil += overridePlayDelay > 0 ? overridePlayDelay : card.postPlayDelay;
+        PlayRecoil += overridePlayDelay >= 0 ? overridePlayDelay : card.PlayRecoil;
         Credits -= card.Cost;
         CreditsSpent += card.Cost;
         if(incrementCardsPlayed)
