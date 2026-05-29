@@ -134,7 +134,8 @@ public class GachaponShop : GemUtility
         obj.velocity = new Vector2(0, 8);
         if (RestockMachine != null)
         {
-            AudioManager.PlaySound(SoundID.ChestDrop, spawnPosition, 1, 1);
+            if(spawnPosition.Distance(CameraManager.MainCamera.transform.position) < 32)
+                AudioManager.PlaySound(SoundID.ChestDrop, spawnPosition, 1, 1);
             float r = Utils.rand.NextFloat(Mathf.PI * 2);
             for (int a = 0; a < 30; ++a)
             {

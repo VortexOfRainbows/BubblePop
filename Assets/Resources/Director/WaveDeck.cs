@@ -60,7 +60,7 @@ public static class WaveDeck
         int swarmCircleCount = 1;
         if(isCircle)
         {
-            swarmCircleCount = 3;
+            swarmCircleCount = 2;
             float bonusChance = 0.3f + Mathf.Sqrt(WaveDirector.WaveNum) * 0.1f;
             if (bonusChance > 0.9f)
                 bonusChance = 0.9f;
@@ -69,7 +69,7 @@ public static class WaveDeck
         }
         if(Utils.RandFloat() < multipleEnemiesChance)
         {
-            int TotalDudes = Utils.RandInt(2, 4);
+            int TotalDudes = 2;
             float bonusChance = 0.3f + WaveDirector.WaveNum * 0.1f;
             if (bonusChance > 0.8f)
                 bonusChance = 0.8f;
@@ -82,7 +82,7 @@ public static class WaveDeck
                 enemies[i] = enemyType;
             }
             float time = 1.25f;
-            var card = DrawMultiSpawn(RandomPositionOnPlayerEdge(target), 10, 5, 1 + TotalDudes * enemyType.GetComponent<Enemy>().CostMultiplier, time, enemies);
+            var card = DrawMultiSpawn(RandomPositionOnPlayerEdge(target), 1 + TotalDudes * enemyType.GetComponent<Enemy>().CostMultiplier, time, enemies);
             if(isCircle)
             {
                 if (Utils.RandFloat() < 0.5f)
@@ -115,31 +115,19 @@ public static class WaveDeck
     public static WaveCard DrawSingleSpawn(EnemySpawnPattern location, GameObject enemy)
     {
         Enemy e = enemy.GetComponent<Enemy>();
-        return DrawSingleSpawn(location, enemy, Utils.RandFloat(4, 10), Utils.RandFloat(1, 2), 1 + e.CostMultiplier);
+        return DrawSingleSpawn(location, enemy, 1 + e.CostMultiplier);
     }
-    public static WaveCard DrawSingleSpawn(EnemySpawnPattern location, GameObject enemy, float charge, float delay, float cost)
+    public static WaveCard DrawSingleSpawn(EnemySpawnPattern location, GameObject enemy, float cost)
     {
-        return new WaveCard(
-            cost,
-            charge,
-            delay,
-            new EnemyPattern(location, 0, 0, false, enemy));
+        return new WaveCard(cost, new EnemyPattern(location, 0, 0, false, enemy));
     }
-    public static WaveCard DrawSingleSpawn(EnemyPattern p, float charge, float delay, float cost)
+    public static WaveCard DrawSingleSpawn(EnemyPattern p, float cost)
     {
-        return new WaveCard(
-            cost,
-            charge,
-            delay,
-            p);
+        return new WaveCard(cost, p);
     }
-    public static WaveCard DrawMultiSpawn(EnemySpawnPattern location, float charge, float delay, float cost, float interval, params GameObject[] enemy)
+    public static WaveCard DrawMultiSpawn(EnemySpawnPattern location, float cost, float interval, params GameObject[] enemy)
     {
-        return new WaveCard(
-            cost,
-            charge,
-            delay,
-            new EnemyPattern(location, 0, interval, false, enemy));
+        return new WaveCard(cost, new EnemyPattern(location, 0, interval, false, enemy));
     }
     public static WaveCard ToSwarmCircle(this WaveCard card, int count, float radius = 10f, float costMult = 1f, float endDelay = -1f)
     {

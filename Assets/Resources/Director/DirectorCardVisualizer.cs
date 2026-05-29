@@ -19,6 +19,6 @@ public class DirectorCardVisualizer : MonoBehaviour
         WaveCard card = WaveDirector.Deck[i];
         Cost.text = card.Cost.ToString();
         Enemy.text = card.Patterns[0].EnemyPrefabs[0].GetComponent<Enemy>().name;
-        Fill.fillAmount = card.MulliganDelay / card.fullDelay;
+        Fill.fillAmount = card.MulliganDelay / card.MaxMulliganDelay;
     }
 }

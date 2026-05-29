@@ -1,35 +1,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using static UnityEngine.GraphicsBuffer;
+
 public class WaveCard 
 {
     public override string ToString()
     {
         return $"[P: {Patterns.Length}, C: {Cost}, MS: {MulliganDelay}]";
     }
-    public WaveCard(float cost, float startUpDelay, float endDelay, List<EnemyPattern> patterns)
+    public WaveCard(float cost, List<EnemyPattern> patterns)
     {
-        this.MulliganDelay = startUpDelay;
-        this.PlayRecoil = endDelay;
-        this.Patterns = patterns.ToArray();
-        this.Cost = cost;
+        Cost = cost;
+        Patterns = patterns.ToArray();
+        SetBaseValues();
     }
     public WaveCard(float cost, params EnemyPattern[] patterns)
     {
         Cost = cost;
         Patterns = patterns;
+        SetBaseValues();
     }
-    public WaveCard(float cost, float startUpDelay, float endDelay, params EnemyPattern[] patterns)
+    public void SetBaseValues()
     {
-        this.MulliganDelay = startUpDelay;
-        this.PlayRecoil = endDelay;
-        this.Patterns = patterns;
-        this.Cost = cost;
+        SetPlayRecoil(0.5f + Cost * 0.25f);
+        SetMulliganDelay(4 + Cost / WaveDirector.WaveMult);
+    }
+    public WaveCard SetMulliganDelay(float startUpDelay)
+    {
+        MulliganDelay = startUpDelay * Utils.RandFloat(0.8f, 1.2f);
+        MaxMulliganDelay = MulliganDelay;
+        return this;
+    }
+    public WaveCard SetPlayRecoil(float endDelay)
+    {
+        PlayRecoil = endDelay * Utils.RandFloat(0.8f, 1.2f);
+        return this;
     }
     public EnemyPattern[] Patterns;
-    public float MulliganDelay { get; private set; } = 1;
-    public float PlayRecoil { get; private set; } = 1;
+    public float MaxMulliganDelay { get; private set; } = 1;
+    public float MulliganDelay { get; set; } = 1;
+    public float PlayRecoil { get; set; } = 1;
     private int patternNum = 0;
     public bool Resolved = false;
     public float Cost = 100;

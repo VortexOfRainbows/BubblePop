@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class WaveDirector
@@ -48,7 +49,7 @@ public static class WaveDirector
         if (!Main.WavesUnleashed)
             return;
     }
-    public static int MaxCards = 6;
+    public const int MaxCards = 5;
     public static float Credits = 0, CreditsSpent = 0;
     public static float PlayRecoil { get; private set; }
     public static readonly List<WaveCard> Deck = new();
@@ -104,8 +105,8 @@ public static class WaveDirector
         {
             DrawNewCards();
             UpdateMulligans();
-            if (Utils.RandBool(1000)) //roughly 10 seconds to mulligan a random card
-                MulliganRandomCard();
+            //if (Utils.RandBool(1000)) //roughly 10 seconds to mulligan a random card
+            //    MulliganRandomCard();
             if (PlayRecoil <= 0)
                 TryPlayingAssociatedWaveCards(WaveProgressPercent);
             if (PlayRecoil <= 0)
@@ -134,6 +135,7 @@ public static class WaveDirector
         CardManager.ApplyChosenCard(); //Applies permanent modifiers, updates temp modifiers, spawns loot
         CardsPlayed = 0;
         Credits = TemporaryModifiers.InitialAmbush;
+        Credits += WaveNum;
         CreditsSpent = 0;
         if(WaveNum != 1)
             MulliganAllCards();
@@ -183,12 +185,16 @@ public static class WaveDirector
     }
     public static void GatherCredits()
     {
-        Credits += 1.1f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
+        Credits += 1.0f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
     }
     public static void DrawNewCards()
     {
         while (Deck.Count < MaxCards)
-            Deck.Add(WaveDeck.DrawCard());
+        {
+            var v = WaveDeck.DrawCard();
+            v.MulliganDelay *= 0.3f;
+            Deck.Add(v);
+        }
     }
     public static void UpdateMulligans()
     {
@@ -200,7 +206,7 @@ public static class WaveDirector
         }
         foreach(WaveCard card in Deck)
         {
-            card.mulliganDelay -= Time.fixedDeltaTime * ambushMult;
+            card.MulliganDelay -= Time.fixedDeltaTime * ambushMult * TemporaryModifiers.CreditGatherScaling;
         }
     }
     public static void MulliganRandomCard()
@@ -211,8 +217,11 @@ public static class WaveDirector
     }
     public static void MulliganAllCards()
     {
-        for(int i = 0; i < Deck.Count; ++i)
+        for (int i = 0; i < Deck.Count; ++i)
+        {
             Deck[i] = WaveDeck.DrawCard();
+            Deck[i].MulliganDelay *= 0.3f;
+        }
     }
     public static void TryPlayingCard()
     {

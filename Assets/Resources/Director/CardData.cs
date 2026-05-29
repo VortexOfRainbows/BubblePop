@@ -41,6 +41,11 @@ public class CardData
             else
                 m.TemporaryModifiers.Insert(0, e.AlternativeModifier);
         }
+        if (UpcomingWave == 4)
+        {
+            float strength = 10;
+            m.PermanentModifiers.Insert(0, new EnemyStrengthModifier() { ApplicationStrength = strength * 10, IsPermanent = true, Free = true });
+        }
         RegisterClause(e);
         RegisterClause(m);
         RegisterClause(r);
@@ -76,25 +81,24 @@ public class CardData
             float strength = waveNum >= 25 ? 200 : 50;
             if(waveNum % 10 == 0)
                 m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { 
-                    ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, 
-                    new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum },
-                    new EnemyStrengthModifier() { ApplicationStrength = 1000, IsPermanent = true, Free = true });
+                    ApplicationStrength = strength, IsPermanent = waveNum >= 25 });
             else
-                m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 }, new DirectorSkullWaveModifier() { ApplicationStrength = 50 * difficultyNum });
+                m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 });
         }
         if (waveNum >= 5 && m == null)
         {
             if (waveNum % 3 == 0) //Previously, there was a 10% power boost with each wave number, so this should mimic the old system
             {
-                float strength = 240 + 20 * (int)(waveNum / 3);
+                float strength = 240 + 30 * (int)(waveNum / 3);
                 m = new ModifierClause(AvailablePoints, 1, new DirectorCreditPowerModifier() { ApplicationStrength = strength, IsPermanent = true, Free = true });
             }
             else if (waveNum % 3 == 1) //Previously, there was a 5% health boost with each wave number, so this should mimic the old system (with some changed scaling)
             {
-                float strength = 10 + 5 * (int)(waveNum / 5);
+                int roundedTo5 = waveNum / 5;
+                float strength = 5 + 5 * roundedTo5 * roundedTo5;
                 m = new ModifierClause(AvailablePoints, 1, new EnemyStrengthModifier() { ApplicationStrength = strength * 10, IsPermanent = true, Free = true });
             }
-            else if (waveNum % 3 == 2 && waveNum >= 17)
+            else if (waveNum % 3 == 2 && waveNum >= 14)
             {
                 m = new ModifierClause(AvailablePoints, 1, new DirectorSkullWaveModifier() { ApplicationStrength = 50, IsPermanent = true, Free = true });
             }
@@ -276,7 +280,7 @@ public class EnemyClause : CardClause
             GameObject[] enemies = new GameObject[TotalDudes];
             for (int j = 0; j < TotalDudes; ++j)
                 enemies[j] = enemyType;
-            var card = WaveDeck.DrawMultiSpawn(WaveDeck.RandomPositionOnPlayerEdge(Player.GetInstance(Utils.RandInt(Player.AllPlayers.Count))), 0, 0.5f, 0, 1.75f, enemies);
+            var card = WaveDeck.DrawMultiSpawn(WaveDeck.RandomPositionOnPlayerEdge(Player.GetInstance(Utils.RandInt(Player.AllPlayers.Count))), 0, 1.75f, enemies);
             card.Patterns[0].Skull = true;
             float chance = wavesWithoutSwarm * (0.05f * difficultMult * WaveDirector.WaveNum);
             if ((wavesWithoutSwarm >= 1 && chance > Utils.RandFloat()) || i == max)

@@ -34,12 +34,6 @@ Need to do:
 10. Snow Golem Enemy
 11. Add small Gaussian blur to border shaders for smoother visuals
 12. Update settings UI and include settings for modifying soft shadows
-13. Overhaul enemy spawning statistics... Aim for:
-	1. Fast enemy spawns
-	2. Shorten card play cooldowns	
-	3. Cards start without delay
-	4. Director gets some credits to begin with (initial ambush)
-	5. Earlier and stronger enemy health scaling
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -54,7 +48,7 @@ Bug Watchlist:
 
 Done: 	
 
-5/28/26
+5/28/26 to 5/29/26
 1. Remove some holdovers from very early systems that were used in wave director 
 2. Chance for Swarm and Circle cards
 	1. Base chance 1% -> 5%
@@ -67,6 +61,32 @@ Done:
 	4. The result of these changes is enemies should generally spawn faster and while spawn modifiers are more common, they will be relatively less powerful
 4. Base Minimum Credit cost to pass the wave 40 -> 30
 	1. This is mostly to counteract the cheaper enemy spawns, though more enemies should still spawn this patch in general
+5. Crucible now yields 50% less coins (originally the coins were added as a placeholder until gems were fully implemented)
+6. Standardized some director card statistics (base times, not including certain modifiers):
+	1. Mulligan Time (time before the card can be played after being drawn)
+	Single: 4-10 seconds -> 4 + cost / wavemult (wavemult = 1.0 + 0.1 per wave) seconds
+	Multi: 10 seconds -> same as Single
+	2. Play Recoil (time before another card can be played after this card has been played)
+	Single: 1-2 seconds -> 0.5 + 0.25 * cost seconds
+	Multi: 5 seconds -> same as Single
+	Wavemult also applied here, but is not part of the base algorithm
+	3. Boths stats receive a 80% to 120% random multiplier after being selected
+7. The Mulligan Time is now speed up by the wave power stat, in addition to ambush stat
+8. The first cards drawn at the start of a wave now bypass 70% of their mulligan time, leading to faster wave starts
+9. Swarm Circle spawns may now have 2 portals instead of minimum 3 (less of a circle shape and more of a line)
+10. Multispawns no longer have 2-3 enemies to start with (only 2, then rolls for extra)
+11. Director credit gathering speed 1.1 -> 1.0
+12. Random 1/1000 per tick card mulligans no longer happen. If director is stuck with a ton of expensive cards, they can no longer be randomly replaced.
+13. Director now only holds 6 -> 5 cards at once, increasing the chance they will get a hand of expensive cards
+14. More adjustments to Duck AI
+15. Wave power growth rate (rate at which it permanently grows every 3rd wave) increased 240 + 20 * scaling factor -> 240 + 30 * scaling factor
+16. Enemy Health growth rate 10% + 5% * scaling factor -> 5% + 5% * scaling factor^2
+	1. Removed the large 100% permanent health scaling from waves 20, 30, 40 (the square scaling will outpace it)
+17. Permanent bonus skull wave scaling moved from wave 17 -> wave 14
+	1. Removed the temporary skull wave modifier on wave 15, 20, 25, etc.
+18. On wave 4, enemies permanently gain 10% max health
+19. Director will now start with waveNum bonus credits on wave start, allowing more immediate purchasing of enemy spawns
+20. Restock sounds will no longer play for far away shops
 
 5/26/26 to 5/27/26
 1. Update unity version because I'm now on david's computer

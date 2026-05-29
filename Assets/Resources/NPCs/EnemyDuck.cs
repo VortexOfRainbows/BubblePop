@@ -18,6 +18,7 @@ public class EnemyDuck : Enemy
     }
     public void MoveUpdate()
     {
+        float inertia = 0.12f;
         float bobSpeed = 80f;
         if (this is EnemyFlamingo)
             bobSpeed = 100f;
@@ -50,18 +51,20 @@ public class EnemyDuck : Enemy
                 aimingTimer--;
             }
         }
-
-        float inertia = 0.12f;
+        if (aiState == 2)
+            inertia *= 0.2f;
         RB.velocity *= 1 - inertia;
         if (aiState == 1 || aiState == 2)
         {
             Vector2 toTarget = targetedLocation - (Vector2)transform.position;
             bobbingTimer += Mathf.Sqrt(toTarget.magnitude);
-            sRender.flipX = toTarget.x > 0;
+            if(Mathf.Abs(toTarget.x) > 0.1f)
+                sRender.flipX = toTarget.x > 0;
             if (this is EnemyFlamingo)
                 sRender.flipX = !sRender.flipX;
-            float speedScaling = aiState == 2 ? 0.7f : 0.1f;
-            float speed = Mathf.Min(0.9f + speedScaling + speedScaling * toTarget.magnitude, toTarget.magnitude);
+            float speedScaling = aiState == 2 ? 0.2f : 0.1f;
+            float BaseSpeed = aiState == 2 ? 4.4f : 1.0f;
+            float speed = Mathf.Min(BaseSpeed + speedScaling * toTarget.magnitude, 16);
             RB.velocity += inertia * speed * toTarget.normalized;// * Time.fixedDeltaTime;
             if(aiState != 2)
             {

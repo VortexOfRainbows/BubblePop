@@ -62,7 +62,7 @@ public class Crucible : MonoBehaviour
         Connect(HandConnector2L, HandJoint2L);
         Connect(HandConnector2R, HandJoint2R);
     }
-    float rotateCounter;
+    private float rotateCounter;
     public void SpinHands(Transform j1, Transform j2, float dirMult = 1)
     {
         float r = rotateCounter * Mathf.Deg2Rad * 90;
@@ -254,6 +254,7 @@ public class Crucible : MonoBehaviour
         AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 0.8f + 0.2f * SpeedMultiplier);
         int value = powerType >= 0 ? PowerUp.Get(powerType).CrucibleGems(true) : 3;
         int coinValue = powerType >= 0 ? PowerUp.Get(powerType).Cost : 15;
+        coinValue = (coinValue + Utils.RandInt(2)) / 2;
         int quant = Mathf.Abs(Mathf.Min(value, 5));
         float valuePerGem = value / (float)quant;
         Vector2 pos = transform.position + new Vector3(0, -1.4f);
