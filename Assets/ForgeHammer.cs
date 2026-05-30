@@ -12,10 +12,17 @@ public class ForgeHammer : GemUtility
     public GameObject GemTemplate;
     public byte ProgressionNumber { get; set; } = 0;
     public Transform BackPipe1, BackPipe2;
+    public float SpeedMultiplier { get; set; } = 0.95f;
+    public float AnimateCounter = 0.0f;
+    public override float SpeedMult => SpeedMultiplier;
+    public float AudioSpeedMultiplier => 0.8f + 0.2f * SpeedMultiplier;
     public void Begin(ForgeCapsule requestingCapsule, int gems)
     {
         if (RCapsuel != null)
             return;
+        SpeedMultiplier += 0.05f;
+        if (SpeedMultiplier > 10)
+            SpeedMultiplier = 10;
         CoinManager.ModifyGems(-gems);
         float baseTime = 1.0f;
         int gemAnimation = gems;
@@ -28,12 +35,24 @@ public class ForgeHammer : GemUtility
     }
     public void Update()
     {
-        if(!HasDelayed)
-            DelayedStart();
         AnimateGems(GemCrushPosition.position + new Vector3(0, -0.25f, 0), -1, 2);
+    }
+    public void FixedUpdate()
+    {
+        if (!HasDelayed)
+            DelayedStart();
+        AnimateCounter += AnimationTimer > 0 ? SpeedMultiplier : 1.0f;
+        while(AnimateCounter >= 1)
+        {
+            UpdateMe();
+            AnimateCounter -= 1;
+        }
+    }
+    public void UpdateMe()
+    {
         if(AnimationTimer > 0)
         {
-            AnimationTimer -= Time.deltaTime;
+            AnimationTimer -= Time.fixedDeltaTime;
             if(AnimationTimer <= 3)
             {
                 if(AnimationTimer > 2.6f)
@@ -47,9 +66,9 @@ public class ForgeHammer : GemUtility
                     HydraulicPress.SetLocalXY(new Vector2(0, 2.175f));
                     if (Gems.Count > 0)
                     {
-                        AudioManager.PlaySound(SoundID.Starbarbs, GemCrushPosition.position, 1.4f, 0.7f);
-                        AudioManager.PlaySound(SoundID.WoodBreak, GemCrushPosition.position, 0.5f, 1.7f);
-                        AudioManager.PlaySound(SoundID.ElectricZap, GemCrushPosition.position, 0.6f, 0.45f, 0);
+                        AudioManager.PlaySound(SoundID.Starbarbs, GemCrushPosition.position, 1.4f, 0.7f * AudioSpeedMultiplier);
+                        AudioManager.PlaySound(SoundID.WoodBreak, GemCrushPosition.position, 0.5f, 1.7f * AudioSpeedMultiplier);
+                        AudioManager.PlaySound(SoundID.ElectricZap, GemCrushPosition.position, 0.6f, 0.45f * AudioSpeedMultiplier, 0);
                         foreach (GameObject gem in Gems)
                         {
                             for(int i = 0; i < 8; ++i)
@@ -83,7 +102,7 @@ public class ForgeHammer : GemUtility
             foreach (ForgeCapsule c in MyCapsules)
                 c.UpdateUI();
         }
-        float t = Utils.DeltaTimeLerpFactor(0.1f);
+        float t = 0.1f;
         for (int i = 0; i < Gems.Count; ++i)
         {
             var gem = Gems[i];
@@ -104,6 +123,8 @@ public class ForgeHammer : GemUtility
             BackPipe2.transform.localScale = new Vector3(1.05f, 1.0f, 1.0f);
         else
             BackPipe2.LerpLocalScale(Vector2.one, t);
+        foreach (ForgeCapsule c in MyCapsules)
+            c.UpdateMe();
     }
     public bool HasDelayed { get; set; } = false;
     public void DelayedStart()

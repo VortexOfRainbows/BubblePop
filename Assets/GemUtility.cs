@@ -20,6 +20,7 @@ public class GemUtility : MonoBehaviour
         GemAnimateList.Add(new GemAnimationVisual(time));
     }
     public List<GemAnimationVisual> GemAnimateList = new();
+    public virtual float SpeedMult => 1.0f;
     public void AnimateGems(Vector2 destination, int minLayer = -12, int maxLayer = -12)
     {
         if (GemAnimateList.Count > 0)
@@ -35,7 +36,7 @@ public class GemUtility : MonoBehaviour
                     GemAnimateList.RemoveAt(i);
                     continue;
                 }
-                GemAnimateList[i].startTime -= Time.deltaTime;
+                GemAnimateList[i].startTime -= Time.deltaTime * SpeedMult;
                 if (GemAnimateList[i].startTime <= 0)
                 {
                     if (GemAnimateList[i].endDuration == 0)
@@ -43,7 +44,7 @@ public class GemUtility : MonoBehaviour
                         GemAnimateList[i].startPosition = Player.FindClosest(destination, out Vector2 _, out float _).Position;
                         AudioManager.PlaySound(SoundID.CoinPickup, GemAnimateList[i].startPosition, 1, 1, 0);
                     }
-                    GemAnimateList[i].endDuration += Time.deltaTime * 2;
+                    GemAnimateList[i].endDuration += Time.deltaTime * 2 * SpeedMult;
                     float percent = GemAnimateList[i].endDuration;
                     Vector2 position = Vector2.Lerp(GemAnimateList[i].startPosition, finalPos, percent);
                     float sin = Mathf.Sin(percent * Mathf.PI);

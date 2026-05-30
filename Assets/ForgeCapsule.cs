@@ -61,7 +61,7 @@ public class ForgeCapsule : MonoBehaviour
         if (HeldPower.MyPower.IsBlackMarket())
             GemCost *= 2;
     }
-    public void FixedUpdate()
+    public void UpdateMe()
     {
         if (MyHammer == null)
             return;
@@ -119,7 +119,7 @@ public class ForgeCapsule : MonoBehaviour
             {
                 if(!HeldPower.gameObject.activeSelf)
                 {
-                    AudioManager.PlaySound(SoundID.Infect, HeldPower.transform.position, 1.0f, 0.4f);
+                    AudioManager.PlaySound(SoundID.Infect, HeldPower.transform.position, 1.0f, 0.4f * MyHammer.AudioSpeedMultiplier);
                     HeldPower.gameObject.SetActive(true);
                 }
                 float newPercent = (percent - 0.3f) / 0.4f;
@@ -151,7 +151,7 @@ public class ForgeCapsule : MonoBehaviour
     public void GivePower()
     {
         Vector2 spawnPos = transform.position + new Vector3(0, -0.2875f);
-        AudioManager.PlaySound(SoundID.ChestDrop, spawnPos, 1, 1);
+        AudioManager.PlaySound(SoundID.ChestDrop, spawnPos, 1, MyHammer.AudioSpeedMultiplier);
         PowerUpObject p = PowerUp.Spawn(HeldPower.Type, spawnPos).GetComponent<PowerUpObject>();
         p.FinalPosition = transform.position + new Vector3(0, -2);
         p.VelocityStyle = 1;
