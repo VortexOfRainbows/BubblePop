@@ -2,9 +2,76 @@ Dev Build 2.8 (tentative version number)
 
 THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
 
-Changes:
+1. Enemy waves should be faster, bigger, and more intense
 
+Changes:
+1. (BUFF) Gem rewards (from waves) are now slightly more generous and rounded to multiples of 5
+2. (MOSTLY NERF) Change enemy coin drop ranges (min, max). Coin drops are triple weighted towards the minimum drop, so changes there are relatively more impactful
+	1. Rock Spider (2, 10) -> (1, 4)
+	2. Leonard (2, 50) -> (25, 30)
+	3. Soap (1, 5) -> (1, 3)
+	4. Soap Fragment (1, 5) -> (1, 1)
+	5. Flamingo (1, 15) -> (2, 5)
+	6. Duck (1, 8) -> (1, 3)
+	7. Chicken (1, 10) -> (1, 3)
+	8. Crow (1, 15) -> (2, 5)
+	9. Ent (1, 18) -> (3, 10)
+	10. Gatligator (1, 40) -> (5, 10)
+	11. Infector (5, 25) -> (10, 15)
+	12. Sentinel (5, 25) -> (4, 10)
+	13. Super Sentinel (5, 35) -> (5, 15)
+3. (BUFF) Ducks now attack when hurt
+4. (BUFF) Flamingo projectiles now home on the nearest player and accelerate faster, but they time out quicker (6 -> 5 seconds)
+5. (BUFF) Flamingo Health 10 -> 12
+6. (BUFF) Rock Golem health 20 -> 24, speed 0.28 -> 0.32
+7. (BUFF) Leonard Health 45 -> 50
+
+8. (NERF) Rainbow Flower Forge cost 5 -> 15
+9. (NERF) Crucible now yields 50% less coins (originally the coins were added as a placeholder until gems were fully implemented)
+10. (NERF) Mitosis Forge Cost 15 -> 25
 
 Misc:
+1. Slightly reduced darkness of shadows 0.95 -> 0.85
+2. Adjustments to the shadow shadow to only extend to the opposite direction of the light (to fill in gaps)
+	1. This should generally make the shadows more closely follow the shape of the terrain
 
 Fixes:
+1. Shadows from Bath Bombs and Cola should now go over walls
+2. Shards of Power Forge Cost -3 -> 25
+3. Restock sounds will no longer play for far away shops
+
+Changes to the Director System:
+1. Chance for Swarm and Circle cards
+	1. Base chance 1% -> 5%
+	2. Max Chance 25% -> 50%
+	3. Rate scaling 1% per wave -> 2.5% per wave
+2. Change cost for director to play cards:
+	1. Single Spawn c = (1 + 2 * e) -> (1 + e)
+	2. Multispawn c = (1 + me) -> (1 + me) (unchanged)
+	3. Circlespawn (1 + c + x) -> 0.75cx
+	4. The result of these changes is enemies should generally spawn faster and while spawn modifiers are more common, they will be relatively less powerful
+3. Base Minimum Credit cost to pass the wave 40 -> 30
+	1. This is mostly to counteract the cheaper enemy spawns, though more enemies should still spawn this patch in general
+4. Standardized some director card statistics (base times, not including certain modifiers):
+	1. Mulligan Time (time before the card can be played after being drawn)
+	Single: 4-10 seconds -> 4 + cost / wavemult (wavemult = 1.0 + 0.1 per wave) seconds
+	Multi: 10 seconds -> same as Single
+	2. Play Recoil (time before another card can be played after this card has been played)
+	Single: 1-2 seconds -> 0.5 + 0.25 * cost seconds
+	Multi: 5 seconds -> same as Single
+	Wavemult also applied here, but is not part of the base algorithm
+	3. Boths stats receive a 80% to 120% random multiplier after being selected
+5. The Mulligan Time is now speed up by the wave power stat, in addition to ambush stat
+6. The first cards drawn at the start of a wave now bypass 70% of their mulligan time, leading to faster wave starts
+7. Swarm Circle spawns may now have 2 portals instead of minimum 3 (less of a circle shape and more of a line)
+8. Multispawns no longer have 2-3 enemies to start with (only 2, then rolls for extra)
+9. Director credit gathering speed 1.1 -> 1.0
+10. Random 1/1000 per tick card mulligans no longer happen. If director is stuck with a ton of expensive cards, they can no longer be randomly replaced.
+11. Director now only holds 6 -> 5 cards at once, increasing the chance they will get a hand of expensive cards
+12. Wave power growth rate (rate at which it permanently grows every 3rd wave) increased 240 + 20 * scaling factor -> 240 + 30 * scaling factor
+13. Enemy Health growth rate 10% + 5% * scaling factor -> 5% + 5% * scaling factor^2
+	1. Removed the large 100% permanent health scaling from waves 20, 30, 40 (the square scaling will outpace it)
+14. Permanent bonus skull wave scaling moved from wave 17 -> wave 14
+	1. Removed the temporary skull wave modifier on wave 15, 20, 25, etc.
+15. On wave 4, enemies permanently gain 10% max health
+16. Director will now start with waveNum bonus credits on wave start, allowing more immediate purchasing of enemy spawns
