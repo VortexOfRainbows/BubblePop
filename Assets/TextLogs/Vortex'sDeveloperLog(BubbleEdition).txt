@@ -45,13 +45,13 @@ n/a
 Bug Watchlist:
 1. Compendium menu may not be scrolling to the bottom
 2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
-3. Border shader is weird for the secret room when it is attached to the first node
-4. Rainbow flower costs 15 in contract due to costing 15 to forge (should this be changed)?
+3. Rainbow flower costs 15 in contract due to costing 15 to forge (should this be changed)?
 
 Done: 	
 
 5/29/26
-1. 
+1. Fix bug where border shader did not display it's outline properly when different tier borders were adjacent
+	1. The fix for this is rather heavy-handed and potentially laggy, so I will keep an eye on this and potential alternative solutiosn
 
 
 -- A2.8 --
