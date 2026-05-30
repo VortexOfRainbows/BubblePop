@@ -22,7 +22,7 @@ public class WaveCard
     }
     public void SetBaseValues()
     {
-        SetPlayRecoil(0.5f + Cost * 0.25f);
+        SetPlayRecoil(0.75f + Cost * 0.25f);
         SetMulliganDelay(4 + Cost / WaveDirector.WaveMult);
     }
     public WaveCard SetMulliganDelay(float startUpDelay)

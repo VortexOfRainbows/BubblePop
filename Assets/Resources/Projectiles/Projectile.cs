@@ -303,10 +303,10 @@ public class FlamingoFeather : Projectile
         timer++;
         if (timer < 300)
         {
-            float magnitude = RB.velocity.magnitude + 0.04f;
+            float magnitude = RB.velocity.magnitude + 0.03f;
             if(target != null)
             {
-                RB.velocity += (target.Position - (Vector2)transform.position).normalized * 0.2f;
+                RB.velocity += (target.Position - (Vector2)transform.position).normalized * 0.12f;
                 RB.velocity = RB.velocity.normalized * magnitude;
             }
         }

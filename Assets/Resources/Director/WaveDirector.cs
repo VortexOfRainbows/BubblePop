@@ -57,7 +57,7 @@ public static class WaveDirector
     public static int CardsPlayed = 0;
     public static int WaveNum = 0;
     public static int HighScoreWaveNum = 0;
-    public static float WaveMult = 1.0f;
+    public static float WaveMult { get; private set; } = 1.0f;
     public static float EnemyScalingFactor => TemporaryModifiers.EnemyScaling;
     public static bool WaveActive { get; set; } = false;
     public static bool WaitingForCardDraw { get; set; } = false;
@@ -93,7 +93,7 @@ public static class WaveDirector
         {
             return;
         }
-        float creditsNeededToPassWave = ((30 + WaveNum * 0.5f) * (0.5f * WaveMult + 0.5f * TemporaryModifiers.CreditGatherScaling)) + TemporaryModifiers.InitialAmbush * 0.5f;
+        float creditsNeededToPassWave = ((25 + WaveNum * 0.25f) * (0.5f * WaveMult + 0.5f * TemporaryModifiers.CreditGatherScaling)) + TemporaryModifiers.InitialAmbush * 0.5f;
         float cardsPlayedPercent = Mathf.Min(1, CardsPlayed / 10f);
         float creditsSpentPercent = Mathf.Min(1, CreditsSpent / creditsNeededToPassWave);
         float percentWaveComplete = cardsPlayedPercent * 0.2f + 0.8f * cardsPlayedPercent * creditsSpentPercent;
@@ -185,14 +185,14 @@ public static class WaveDirector
     }
     public static void GatherCredits()
     {
-        Credits += 1.0f * Time.fixedDeltaTime * TemporaryModifiers.CreditGatherScaling;
+        Credits += 0.75f * TemporaryModifiers.CreditGatherScaling * Time.fixedDeltaTime;
     }
     public static void DrawNewCards()
     {
         while (Deck.Count < MaxCards)
         {
             var v = WaveDeck.DrawCard();
-            v.MulliganDelay *= 0.3f;
+            v.MulliganDelay *= 0.5f;
             Deck.Add(v);
         }
     }
@@ -220,7 +220,7 @@ public static class WaveDirector
         for (int i = 0; i < Deck.Count; ++i)
         {
             Deck[i] = WaveDeck.DrawCard();
-            Deck[i].MulliganDelay *= 0.3f;
+            Deck[i].MulliganDelay *= 0.5f;
         }
     }
     public static void TryPlayingCard()

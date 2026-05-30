@@ -49,10 +49,18 @@ Bug Watchlist:
 
 Done: 	
 
-5/29/26
+5/30/26
+1. The mulligan delay for initially drawn cards during a wave 30% -> 50%
+2. The minimum base credits needed to pass a wave 30 -> 25
+3. Bonus base credit scaling to finish a wave per wave 0.5 -> 0.25
+4. Increase base play recoil of cards 0.5 + 0.25c seconds -> 0.75 + 0.25c seconds (time until next card can be played)
+5. Base rate at which director gathers credits 1.0 -> 0.75
+6. Flaming Feather acceleration 0.04 -> 0.03, homing-turn strength 0.2 -> 0.12
+
+5/29/26 to 5/30/26
 1. Fix bug where border shader did not display it's outline properly when different tier borders were adjacent
 	1. The fix for this is rather heavy-handed and potentially laggy, so I will keep an eye on this and potential alternative solutiosn
-
+2. Shards of Power cost to replicate 3 -> 5 (you know who you are)
 
 -- A2.8 --
 

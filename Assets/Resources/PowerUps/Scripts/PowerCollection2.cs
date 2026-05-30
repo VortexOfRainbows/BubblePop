@@ -668,6 +668,10 @@ public class ShardsOfPower : PowerUp
     {
         return dissolve ? -3 : 25;
     }
+    public override int ShardReplicationCost(int stackSize = 1)
+    {
+        return stackSize * 5;
+    }
 }
 public class Contract : PowerUp
 {
