@@ -237,7 +237,7 @@ public class SkateboardProj : Projectile
                 starTimer += 4f / (PlayerOwner.PassiveAttackSpeedModifier * (trail + 3f)); //4/4, 4/5, 4/6, 4/7, etc
                 Vector2 circular = (Utils.RandCircle(1.3f) - RB.velocity).normalized;
                 Vector2 randPos = (Vector2)transform.position + Utils.RandCircleEdge(3);
-                Projectile.NewProjectile<StarProj>((Vector2)transform.position + circular * 2 + new Vector2(0, 0.3f), circular * 8, 2, PlayerOwner, randPos.x, randPos.y);
+                Projectile.NewProjectile<StarProj>((Vector2)transform.position + circular * 2 + new Vector2(0, 0.3f), circular * 8, 2, PlayerOwner, randPos.x, randPos.y, Utils.RandFloat(-1, 1));
             }
         }
         Vector2 norm = RB.velocity.normalized;

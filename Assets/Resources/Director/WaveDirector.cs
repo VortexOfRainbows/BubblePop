@@ -105,8 +105,8 @@ public static class WaveDirector
         {
             DrawNewCards();
             UpdateMulligans();
-            //if (Utils.RandBool(1000)) //roughly 10 seconds to mulligan a random card
-            //    MulliganRandomCard();
+            if (Utils.RandBool(1000)) //roughly 10 seconds to mulligan a random card
+                MulliganRandomCard();
             if (PlayRecoil <= 0)
                 TryPlayingAssociatedWaveCards(WaveProgressPercent);
             if (PlayRecoil <= 0)

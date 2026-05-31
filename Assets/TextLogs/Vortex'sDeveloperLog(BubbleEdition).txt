@@ -54,6 +54,17 @@ Bug Watchlist:
 Done: 	
 
 5/30/26
+1. Research notes should no longer cause choices to be 5x without being consumed
+2. Director 1/1000 chance to mulligan a card each frame is brought back (to hopefully prevent getting stuck on expensive cards)
+3. Director should also draw generally cheaper cards, especially on later waves
+	1. Recursive chance to add additional portals to a circle spawn card 0.5 + 0.1sqrt(wavenum) -> 0.25 + 0.05sqrt(wavenum), max 0.9 (same as before)
+	2. Recursive chance to add additional spawns to a swarm spawn card 0.3 + 0.1wavenum -> 0.25 + 0.05sqrt(wavenum), max 0.8 -> 0.75
+4. Fizzy should now work with Blueblemancy Hat sparkle-sparkle
+
+-- A2.81 --
+
+
+5/30/26
 1. The mulligan delay for initially drawn cards during a wave 30% -> 50%
 2. The minimum base credits needed to pass a wave 30 -> 25
 3. Bonus base credit scaling to finish a wave per wave 0.5 -> 0.25
@@ -64,8 +75,9 @@ Done:
 
 5/29/26 to 5/30/26
 1. Fix bug where border shader did not display it's outline properly when different tier borders were adjacent
-	1. The fix for this is rather heavy-handed and potentially laggy, so I will keep an eye on this and potential alternative solutiosn
+	1. The fix for this is rather heavy-handed and potentially laggy, so I will keep an eye on this and potential alternative solutions
 2. Shards of Power cost to replicate 3 -> 5 (you know who you are)
+
 
 -- A2.8 --
 

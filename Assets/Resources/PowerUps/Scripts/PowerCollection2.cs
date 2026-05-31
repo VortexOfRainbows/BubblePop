@@ -243,11 +243,11 @@ public class ResearchNotes : PowerUp
     public override void HeldEffect(Player p)
     {
         p.HasResearchNotes = true;
-        while (p.ResearchNoteKillCounter >= 3)
+        if (p.ResearchNoteKillCounter >= 3)
         {
-            p.ResearchNoteBonuses++;
             if (Stack > 0 && !PowerUp.PickingPowerUps)
             {
+                p.ResearchNoteBonuses++;
                 p.RemovePower(Type);
                 PowerUp.Get<Choice>().PickUp(p); //Choice is ID 0
             }

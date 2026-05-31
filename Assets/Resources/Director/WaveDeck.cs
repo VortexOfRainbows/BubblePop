@@ -61,7 +61,7 @@ public static class WaveDeck
         if(isCircle)
         {
             swarmCircleCount = 2;
-            float bonusChance = 0.3f + Mathf.Sqrt(WaveDirector.WaveNum) * 0.1f;
+            float bonusChance = 0.25f + Mathf.Sqrt(WaveDirector.WaveNum) * 0.05f;
             if (bonusChance > 0.9f)
                 bonusChance = 0.9f;
             while (Utils.RandFloat() < bonusChance) //Increase the amount of portals in the swarm circle
@@ -70,9 +70,9 @@ public static class WaveDeck
         if(Utils.RandFloat() < multipleEnemiesChance)
         {
             int TotalDudes = 2;
-            float bonusChance = 0.3f + WaveDirector.WaveNum * 0.1f;
-            if (bonusChance > 0.8f)
-                bonusChance = 0.8f;
+            float bonusChance = 0.25f + Mathf.Sqrt(WaveDirector.WaveNum) * 0.05f;
+            if (bonusChance > 0.75f)
+                bonusChance = 0.75f;
             while (Utils.RandFloat() < bonusChance) //Increase the amount of enemies spawned from this circle
                 ++TotalDudes;
             GameObject enemyType = DrawEnemy(GetPossibleEnemies());
