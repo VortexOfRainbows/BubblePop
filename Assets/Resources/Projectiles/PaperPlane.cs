@@ -128,6 +128,8 @@ public class LatentCharge : Projectile
     public float timer3 = 0;
     public override void AI()
     {
+        if (PlayerOwner.IsDead)
+            Kill();
         SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, ColorVar.WithAlphaMultiplied(0.5f), 0.1f);
         SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, ColorVar * 1f, 0.1f);
         transform.localScale = transform.localScale.Lerp(Vector3.one * 0.85f, 0.2f);

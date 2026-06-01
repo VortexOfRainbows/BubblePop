@@ -223,6 +223,8 @@ public class Book : Weapon
         }
         AttackLeft = 0;
         AttackRight = 0;
+        WantsOpen = false;
+        InClosingAnimation = false;
         transform.LerpLocalScale(Vector2.one, 0.1f);
     }
 }
