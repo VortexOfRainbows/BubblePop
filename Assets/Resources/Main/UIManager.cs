@@ -126,7 +126,7 @@ public partial class Main : MonoBehaviour
         }
         public void PlayMult()
         {
-            Play(4);
+            Play(2);
         }
         public void Play(int scene)
         {
