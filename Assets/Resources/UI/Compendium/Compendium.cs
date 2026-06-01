@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +10,8 @@ public class Compendium : MonoBehaviour
 {
     public static Compendium Instance { get => m_Instance != null ? m_Instance : m_Instance = FindFirstObjectByType<Compendium>(); set => m_Instance = value; }
     private static Compendium m_Instance;
-    public static float ScreenResolution { get; set; }
-    public static float HalfResolution { get; set; }
+    public static Vector2 ScreenResolution { get; set; }
+    public static Vector2 HalfResolution { get; set; }
     public int PageNumber
     { 
         get
@@ -82,7 +83,7 @@ public class Compendium : MonoBehaviour
     public void Update()
     {
         m_Instance = this;
-        ScreenResolution = MyCanvasRectTransform.rect.width; //1920 in most cases
+        ScreenResolution = new Vector2(MyCanvasRectTransform.rect.width, MyCanvasRectTransform.rect.height); //1920 in most cases
         HalfResolution = ScreenResolution / 2f;
         foreach (BasicTierListCompendiumPage page in Pages.Cast<BasicTierListCompendiumPage>())
         {
@@ -107,7 +108,7 @@ public class Compendium : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        Vector2 startingPosition = new Vector3(-ScreenResolution, 0);
+        Vector2 startingPosition = new Vector3(-ScreenResolution.x, 0);
         UpdatePage(EquipPage);
         UpdatePage(EnemyPage);
         UpdatePage(AchievementPage);

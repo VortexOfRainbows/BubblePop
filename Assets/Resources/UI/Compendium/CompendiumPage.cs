@@ -234,16 +234,19 @@ public abstract class TierListCompendiumPage : CompendiumPage
             return;
         Vector3 lastElement = PowerUpLayoutGroup.transform.GetChild(c - 1).localPosition;
         RectTransform r = PowerUpLayoutGroup.GetComponent<RectTransform>();
-        float defaultDist = (TierList != null ? TierList.TotalDistanceCovered : 800f) - 200;
+        float tierListOffset = 0; 
+        if(TierListActive && TierList != null)
+            tierListOffset = TierList.TotalDistanceCovered - 200;
         float paddingBonus = PowerUpLayoutGroup.padding.bottom + PowerUpLayoutGroup.cellSize.y;
+        float cellDefaultDistance = Compendium.ScreenResolution.y - 300 - paddingBonus - tierListOffset; //300 is the space taken up by the top bar
         float dist = -lastElement.y;
-        r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(defaultDist, dist));
-        ContentRectangle.sizeDelta = Vector2.Lerp(ContentRectangle.sizeDelta, new Vector2(0, dist - defaultDist + (TierListActive ? defaultDist : 0)), 0.1f);
+        r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(tierListOffset, dist));
+        ContentRectangle.sizeDelta = Vector2.Lerp(ContentRectangle.sizeDelta, new Vector2(0, Mathf.Max(dist - cellDefaultDistance, 0)), 0.1f);
         if(SpriteMaskRectangle != null)
         {
             SpriteMaskRectangle.localScale = new Vector3(ViewPort.rect.width, ViewPort.rect.height, 1);
         }
-        PowerUpLayoutGroup.transform.localPosition = new Vector3(0, Mathf.Min(0, 600 - defaultDist), 0);
+        PowerUpLayoutGroup.transform.localPosition = new Vector3(0, Mathf.Min(0, 600 - tierListOffset), 0);
     }
     public static List<CompendiumElement> GetCPUEChildren(Transform parent, out int count)
     {
@@ -486,10 +489,10 @@ public abstract class TierListCompendiumPage : CompendiumPage
         Owner.OpenCompendiumButton.interactable = !TierListActive;
         foreach(Button b in Owner.PageButtons)
             b.interactable = !TierListActive;
-        Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, 540f) : new Vector2(0, 740f);
-        Vector2 newSideBarPosition = !TierListActive ? new Vector2(Compendium.HalfResolution, 340f) : new Vector2(Compendium.HalfResolution, 540f);
-        Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-Compendium.HalfResolution + 37f, 515f) : new Vector2(-Compendium.HalfResolution + 25.5f, 715f);
-        Vector2 targetViewport = !TierListActive ? new Vector2(-Compendium.HalfResolution + 200, 390f) : new Vector2(-Compendium.HalfResolution + 200, 590f);
+        Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, Compendium.HalfResolution.y) : new Vector2(0, Compendium.HalfResolution.y + 200);
+        Vector2 newSideBarPosition = !TierListActive ? new Vector2(Compendium.HalfResolution.x, Compendium.HalfResolution.y - 200) : new Vector2(Compendium.HalfResolution.x, Compendium.HalfResolution.y);
+        Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-Compendium.HalfResolution.x + 37f, Compendium.HalfResolution.y - 25) : new Vector2(-Compendium.HalfResolution.x + 25.5f, Compendium.HalfResolution.y + 175);
+        Vector2 targetViewport = !TierListActive ? new Vector2(-Compendium.HalfResolution.x + 200, Compendium.HalfResolution.y - 150) : new Vector2(-Compendium.HalfResolution.x + 200, Compendium.HalfResolution.y + 50);
         if(TierList != null)
         {
             Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);

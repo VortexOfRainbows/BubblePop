@@ -95,3 +95,20 @@ Director Changes:
 Fixes:
 1. Fix bug where border shader did not display it's outline properly when different tier borders were adjacent
 	1. The fix for this is rather heavy-handed and potentially laggy, so I will keep an eye on this and potential alternative solutions
+
+
+Dev Build 2.82 (tentative version number)
+
+1. Director should get stuck saving up less often
+
+Director Changes:
+1. Director 1/1000 chance to mulligan a card each frame is brought back (to hopefully prevent getting stuck on expensive cards)
+2. Director should also draw generally cheaper cards, especially on later waves
+	1. Recursive chance to add additional portals to a circle spawn card 0.5 + 0.1sqrt(wavenum) -> 0.25 + 0.05sqrt(wavenum), max 0.9 (same as before)
+	2. Recursive chance to add additional spawns to a swarm spawn card 0.3 + 0.1wavenum -> 0.25 + 0.05sqrt(wavenum), max 0.8 -> 0.75
+
+Fixes:
+1. Research notes should no longer cause choices to be 5x without being consumed
+2. Fizzy should now work with Blueblemancy Hat sparkle-sparkle
+3. Standardize the math on the compendium menu scaling, which should make it so it can always scroll to the last viewable element and be more consistent across different resolutions
+

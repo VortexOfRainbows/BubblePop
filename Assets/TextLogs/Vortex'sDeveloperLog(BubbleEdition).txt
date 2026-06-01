@@ -2,11 +2,10 @@ Bubble Developer Log (Vortex)
 
 Do Later:
 1. Layer Fixes
-	1. Playtest to double check that relations seem to be appropriate
-	2. Fix layering on complex entities:
+	1. Fix layering on complex entities:
 		1. Rock Golem: Needs a sorting order on the golems. Parent golem determines other golems order. The legs render out of step
 		2. Crucible: Start by getting the sorting orders defined
-	3. True y-layering still does not exist. A true fix may be difficult. Best to case-by-case address issues..?
+	2. True y-layering still does not exist. A true fix may be difficult. Best to case-by-case address issues..?
 2. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
 3. Integrate Compendium into the pause menu
@@ -30,11 +29,10 @@ Need to do:
 	1. Make powers show which pools they belong to
 	2. Make blurbs appear in the equipment page
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
-9. New battle music
-10. Snow Golem Enemy
-11. Add small Gaussian blur to border shaders for smoother visuals
-12. Update settings UI and include settings for modifying soft shadows
-13. "Ascension" Ideas:
+9. Snow Golem Enemy
+10. Add small Gaussian blur to border shaders for smoother visuals
+11. Update settings UI and include settings for modifying soft shadows
+12. "Ascension" Ideas:
 	1. No Escape: All enemies that are added are added permanently
 	2. Double Trouble: All enemy cards are "double-trouble" cards (adds two enemies to the pool at once, both appear as skull enemies)
 	3. Pandemic: Enemies can spawn infected
@@ -47,11 +45,14 @@ Multiplayer Task List:
 n/a
 
 Bug Watchlist:
-1. Compendium menu may not be scrolling to the bottom
-2. Fix issue where Pylons unpurify when far away from the player (like after a few waves); not sure why this happens (can't replicate either)
-3. Rainbow flower costs 15 in contract due to costing 15 to forge (should this be changed)?
+n/a
 
 Done: 	
+
+-- A2.82 --
+
+5/31/26
+1. Standardize the math on the compendium menu scaling, which should make it so it can always scroll to the last viewable element and be more consistent across different resolutions
 
 5/30/26
 1. Research notes should no longer cause choices to be 5x without being consumed
