@@ -1,33 +1,56 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public partial class Entity : MonoBehaviour
 {
-    public readonly Dictionary<Type, int> UniqueBuffTypes = new();
     public readonly List<Buff> buffs = new();
     private GameObject BuffIconParent = null;
     private readonly List<BuffIcon> BuffIcons = new();
-    public void AddBuff<T>(float time) where T: Buff, new()
+    public void AddBuff<T>(float time, int stacks = 1) where T: Buff, new()
     {
         if(BuffIconParent == null)
             BuffIconParent = Instantiate(BuffIcon.BuffIconParentPrefab, transform, false);
-        Buff b = new T
+        Buff existing = GetBuff<T>();
+        if (existing == null)
         {
-            timeLeft = time,
-            initiallyAppliedDuration = time,
-            owner = this,
-        };
-        buffs.Add(b);
-        Type t = b.GetType();
-        if (!UniqueBuffTypes.ContainsKey(t))
-        {
+            Buff b = new T();
+            b.Apply(this, time, stacks);
+            buffs.Add(b);
             SpawnBuffIcon(b);
-            UniqueBuffTypes.Add(t, 1);
+            Debug.Log($"Added buff: {b.GetType().Name} for {time} seconds");
         }
         else
-            UniqueBuffTypes[t]++;
-        Debug.Log($"Added buff: {b.GetType().Name} for {b.timeLeft} seconds");
+        {
+            existing.Apply(this, time, stacks);
+            Debug.Log($"Incremented buff: {existing.GetType().Name} for {time} seconds");
+        }
+    }
+    public bool RemoveBuff<T>(int stacks = 1) where T : Buff
+    {
+        for (int i = 0; i < buffs.Count; i++)
+        {
+            Buff b = buffs[i];
+            if (typeof(T) == b.GetType() && b.Active)
+            {
+                b.RemoveStack(stacks);
+                return true;
+            }
+        }
+        return false;
+    }
+    public Buff GetBuff<T>() where T : Buff
+    {
+        for (int i = 0; i < buffs.Count; i++)
+        {
+            Buff b = buffs[i];
+            if (typeof(T) == b.GetType())
+                return b;
+        }
+        return null;
+    }
+    public bool HasBuff<T>() where T : Buff
+    {
+        return GetBuff<T>() != null;
     }
     public void UpdateBuffs()
     {
@@ -35,18 +58,8 @@ public partial class Entity : MonoBehaviour
         {
             Buff b = buffs[i];
             b.Update();
-            if (!b.active)
-            {
+            if (!b.Active)
                 buffs.RemoveAt(i);
-                Type t = b.GetType();
-                if(UniqueBuffTypes.ContainsKey(t))
-                {
-                    if (--UniqueBuffTypes[t] <= 0)
-                    {
-                        UniqueBuffTypes.Remove(t);
-                    }
-                }
-            }
         }
         for(int i = BuffIcons.Count- 1; i >= 0; --i)
         {

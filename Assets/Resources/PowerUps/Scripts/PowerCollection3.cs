@@ -287,3 +287,20 @@ public class CrystalSerum : PowerUp
         p.BonusGems += Stack;
     }
 }
+public class LightningInABottle : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Rare;
+    }
+    public override void InitializeDescription(ref DetailedDescription description)
+    {
+        description.WithName("Lightning in a Bottle");
+        description.WithDescription($"After starting a Y:[wave,] your next Y:2 G:(+2 per stack) attacks will Y:[instantly kill] enemies");
+        description.WithShortDescription("First few attacks in a wave do infinite damage");
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.InstakillsOnWaveStart += 2 * Stack;
+    }
+}

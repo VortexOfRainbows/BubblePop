@@ -32,6 +32,7 @@ public class ThoughtBubble : Body
     {
         powerPool.Add<TrailOfThoughts>();
         powerPool.Add<BrainBlast>();
+        powerPool.Add<LightningInABottle>();
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -298,6 +299,31 @@ public class ThoughtBubble : Body
             int end = Tails.Count - 1;
             Destroy(Tails[end].gameObject);
             Tails.RemoveAt(end);
+        }
+    }
+    public static void DoLightningInstakillEffect(Vector2 pos)
+    {
+        Color lColor = new(0.4f, 0.6f, 1.0f);
+        AudioManager.PlaySound(SoundID.Infect, pos, 0.75f, 0.75f, 0);
+        Pylon.SummonLightning2(pos, pos + new Vector2(0, 10), lColor, 1.25f, scaleX: 2.5f, scaleY: 0.25f);
+        int particleType = ParticleManager.ID.Trail;
+        int aura = 20;
+        for (int i = 0; i < aura; ++i)
+        {
+            float r2 = Utils.RandFloat(1.0f, 1.2f);
+            Vector2 circular = new Vector2(r2, 0).RotatedBy(i / (float)(0.5f * aura) * Mathf.PI);
+            float size = 0.7f - r2 * 0.1f;
+            ParticleManager.NewParticle(pos, Mathf.Clamp(size, 0.1f, 1), circular * 12f, 2, Utils.RandFloat(0.5f, 1.0f), particleType, lColor);
+        }
+        for (int i = 0; i < 6; ++i)
+        {
+            Vector2 pos2 = pos + new Vector2(2.5f, 0).RotatedBy(i * Utils.TWOPI / 6f) + Utils.RandCircle(1);
+            Pylon.SummonLightning2(pos, pos2, lColor, Utils.RandFloat(1.0f, 1.25f), scaleX: 2f, scaleY: 0.25f);
+        }
+        for (int i = 0; i < 8; ++i)
+        {
+            Vector2 pos2 = pos + Utils.RandCircleEdge(1);
+            PopupText.NewPopupText(pos2, Utils.RandCircle(4), lColor.Lerp( new Color(0.8f, 0.9f, 1.0f), Utils.RandFloat()), "314159", true, Utils.RandFloat(0.5f, 0.6f), 70);
         }
     }
 }

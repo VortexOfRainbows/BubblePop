@@ -187,6 +187,12 @@ public class Projectile : MonoBehaviour
             }
         }
         OnHitTarget(target);
+        if (Penetrate != -1)
+        {
+            --Penetrate;
+            if (Penetrate <= 0)
+                Kill();
+        }
     }
     /// <summary>
     /// Called after damage is registered on the enemy, including when the projectile would kill the enemy

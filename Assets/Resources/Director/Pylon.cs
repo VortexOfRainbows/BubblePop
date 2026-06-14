@@ -260,7 +260,7 @@ public class Pylon : MonoBehaviour
             prev = pos;
         }
     }
-    public static void SummonLightning2(Vector2 start, Vector2 end, Color c, float lifeMult = 0.6f, float whiteMult = 1.0f)
+    public static void SummonLightning2(Vector2 start, Vector2 end, Color c, float lifeMult = 0.6f, float whiteMult = 1.0f, float scaleX = 1.0f, float scaleY = 0.5f)
     {
         float dist = Vector2.Distance(start, end);
         float distRounded = (int)(dist * 2.25f);
@@ -270,7 +270,7 @@ public class Pylon : MonoBehaviour
         for (int i = 0; i <= distRounded; i++)
         {
             float perc = i / distRounded;
-            float scaleMult = 1 - 0.5f * perc;
+            float scaleMult = Mathf.Lerp(scaleX, scaleY, perc);
             Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
             Vector2 toPrev = prev - pos;
             float mag = toPrev.magnitude + 0.1f;

@@ -331,10 +331,19 @@ public class Enemy : Entity
             return;
         if (proj.Friendly && !AlreadyDead)
         {
-            float damage = proj.Damage + Player.Instance.GlassShards;
-            damage *= Player.Instance.DamageMultiplier;
+            Player projOwner = proj.PlayerOwner;
+            bool InstantKill = projOwner.RemoveBuff<LightningBottle>(1);
+            if (InstantKill)
+            {
+                ThoughtBubble.DoLightningInstakillEffect(transform.position);
+                proj.HitTarget(this);
+                Kill();
+                return;
+            }
+            float damage = proj.Damage + projOwner.GlassShards;
+            damage *= projOwner.DamageMultiplier;
             bool rollForInitiative = false;
-            float critChance = Player.Instance.CriticalStrikeChance;
+            float critChance = projOwner.CriticalStrikeChance;
             int crit = (int)critChance;
             critChance -= crit;
             if(Utils.RandFloat() < critChance)
@@ -342,7 +351,7 @@ public class Enemy : Entity
             if (FirstStrike)
             {
                 FirstStrike = false;
-                int initiative = Player.Instance.RollInit;
+                int initiative = projOwner.RollInit;
                 if (initiative > 0)
                 {
                     if (initiative >= 81 || Utils.RandFloat(1) < 0.19f + initiative * 0.01f)
@@ -364,16 +373,8 @@ public class Enemy : Entity
             }
             Injure(finalDamage, crit, c, 0);
             proj.HitTarget(this);
-            if (proj.Penetrate != -1)
-            {
-                --proj.Penetrate;
-                if (proj.Penetrate <= 0)
-                    proj.Kill();
-            }
             if (piercingProjectile)
-            {
                 SpecializedImmuneFrames.Add(new ImmunityData(proj, proj.immunityFrames));
-            }
         }
     }
     private Color PickCriticalStrikeColor(int critValue)
@@ -382,6 +383,12 @@ public class Enemy : Entity
             return Color.Lerp(new Color(1f, 0.85f, 0.15f), new Color(1f, 0.1f, 1.0f), (critValue - 1) /  10f);
         return new(1f, 0.5f, 0.4f);
     }
+    /// <summary>
+    /// Called when the enemy is injured from any source <br></br>
+    /// Not called on the killing blow
+    /// </summary>
+    /// <param name="damage">The damage the enemy took from the injury</param>
+    /// <param name="critLevel">The level of crit from the injury</param>
     public virtual void OnInjured(float damage, int critLevel)
     {
 
@@ -393,17 +400,14 @@ public class Enemy : Entity
             return;
         Life -= damage;
         DamageTaken += damage;
-        OnInjured(damage, critLevel);
         if(bufferNum == 0)
             DamageBuffer.Add(new DamageData(damage, critLevel, popupTextColor));
         else
             DoPopupText(new DamageData(damage, critLevel, popupTextColor));
         if (Life <= 0 && !AlreadyDead)
-        {
-            ResolveDamageBuffer(true);
-            SetDead();
             Kill();
-        }
+        else
+            OnInjured(damage, critLevel);
     }
     public class DamageData
     {
@@ -471,6 +475,8 @@ public class Enemy : Entity
     public float CostMultiplier => StaticData.Cost;
     public sealed override void Kill()
     {
+        SetDead();
+        ResolveDamageBuffer(true);
         if (IsSkull)
         {
             StaticData.TimesKilledSkull++;
@@ -526,7 +532,6 @@ public class Enemy : Entity
         }
         StaticData.TimesKilled++;
         StaticData.SaveData();
-        //Debug.Log($"[{IndexInAllEnemyArray}] Killed: {StaticData.TimesKilled}");
         Enemies.Remove(this);
         OnKill();
         float rand = 1;
@@ -536,10 +541,6 @@ public class Enemy : Entity
         if(IsSkull)
             coins += Player.Instance.FlatSkullCoinBonus;
         CoinManager.SpawnCoin(transform.position, (int)coins);
-        //float reduceRelativeDropRates = Mathf.Max(0.25f, Mathf.Min(1, 0.25f + (200 - WaveDirector.TotalPowersSpawned) / 200f)); //At 200 powers, this number is 0.25, meaning power drop rates will be reduced
-        //bool LuckyDrop = Utils.RandFloat(1) < (IsSkull ? SkullPowerDropChance : PowerDropChance) * reduceRelativeDropRates;
-        //if (LuckyDrop)
-        //    PowerUp.Spawn(PowerUp.RandomFromPool(0.15f), transform.position, LuckyDrop ? 0 : (100 + (int)WaveDirector.PityPowersSpawned * 8));
         int amt = IsSkull ? Utils.RandInt((int)StaticData.BaseMinGem, (int)StaticData.BaseMaxGem + 1) : 0;
         if (Utils.RollWithLuck(Player.Instance.GemDropChance))
             amt += Player.Instance.BonusGems;

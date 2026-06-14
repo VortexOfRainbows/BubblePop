@@ -46,8 +46,15 @@ n/a
 
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangly offset from their cards (seemingly only minez can replicate this)
+2. Coupons purchased from shop might not be activating fast enough
 
 Done: 	
+
+6/14/26
+1. WIP Lightning in a Bottle powerup
+2. Rework BUFF STACKING to no longer creates as many buff instances, which should reduce lag on Snake Eyes and Roll for Dexterity
+3. WIP Rework buff icon displays:
+	1. Right now, they no longer show background... more reworks imminent
 
 6/5/26
 1. WIP Steamworks integration

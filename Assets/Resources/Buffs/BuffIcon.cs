@@ -11,19 +11,19 @@ public class BuffIcon : MonoBehaviour
     }
     public static GameObject BuffIconParentPrefab;
     public static GameObject Prefab;
-    public Type myBuff;
+    public Buff Buff { get; private set; }
     public Entity owner;
     public SpriteRenderer Render;
     public TextMeshPro Text;
     public SpriteRenderer Visual;
-    public int Total => owner.UniqueBuffTypes.Keys.Count;
     public bool UpdateBuff(int i)
     {
         Visual.gameObject.SetActive(true);
-        if (!owner.UniqueBuffTypes.TryGetValue(myBuff, out int value))
-            value = 0;
-        Text.text = value.ToString();
-        if (value <= 0)
+        int stack = 0;
+        if (Buff != null)
+            stack = Buff.Stacks;
+        Text.text = stack.ToString();
+        if (stack <= 0)
         {
             Destroy(gameObject);
             return false;
@@ -32,8 +32,7 @@ public class BuffIcon : MonoBehaviour
     }
     public void SetBuff(Buff buff)
     {
-        myBuff = buff.GetType();
+        Buff = buff;
         Render.sprite = buff.GetSprite();
-        Visual.color = buff.BackgroundColor();
     }
 }

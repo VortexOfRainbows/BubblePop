@@ -972,6 +972,8 @@ public partial class Player : Entity
                 RemovePower(PowerUp.Get<EatenCake>().MyID);
             }
         }
+        if(InstakillsOnWaveStart > 0)
+            AddBuff<LightningBottle>(-1, InstakillsOnWaveStart);
         LuckyStarItemsAcquiredThisWave = 0;
     }
     public void OnDestroy()

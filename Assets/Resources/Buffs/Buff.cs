@@ -1,12 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Buff
 {
     #region Buff Datastructure Related Stuff
-    private static int typeCounter = 0;
-    private static int maximumTypes = 0;
     public static Buff Get(string typeName)
     {
         if (Reverses == null)
@@ -20,17 +17,6 @@ public abstract class Buff
             InitDict();
         return Buffs[unlockID];
     }
-    private static void AddToDictionary(Buff unlock)
-    {
-        string typeName = unlock.GetType().Name;
-        if (Reverses.ContainsKey(typeName))
-            return;
-        unlock.MyID = typeCounter;
-        Buffs[typeCounter] = unlock;
-        Reverses[typeName] = typeCounter;
-        typeCounter++;
-        maximumTypes++;
-    }
     private static Dictionary<int, Buff> Buffs;
     private static Dictionary<string, int> Reverses;
     public static void InitDict()
@@ -41,69 +27,115 @@ public abstract class Buff
     }
     public int MyID = -1;
     #endregion
-    public Entity owner { get; set; }
-    public float initiallyAppliedDuration;
-    public float timeLeft;
-    public bool active = true;
+    public Entity Owner { get; private set; }
+    public readonly List<Vector2> BuffStack = new(); //Vector where x is the counter and y is the original time applied
+    public bool Active { get; private set; } = true;
+    public bool SkipTimeUpdate { get; protected set; } = false;
     public void Update()
     {
         UpdateDuration();
-        if(active)
-            Apply(owner);
+        if(Active)
+            Update(Owner);
     }
     public void UpdateDuration()
     {
-        timeLeft -= Time.fixedDeltaTime;
-        if(timeLeft < 0)
-            active = false;
+        if (!SkipTimeUpdate)
+        {
+            for (int i = BuffStack.Count - 1; i >= 0; --i)
+            {
+                Vector2 orig = BuffStack[i];
+                orig.x -= Time.fixedDeltaTime;
+                BuffStack[i] = orig;
+                if (orig.x < 0)
+                {
+                    Stacks -= 1;
+                    BuffStack.RemoveAt(i);
+                }
+            }
+        }
+        if(BuffStack.Count <= 0 || Stacks <= 0)
+            Active = false;
     }
-    public virtual void Apply(Entity e)
+    public virtual void Apply(Entity e, float duration, int addStacks = 1)
+    {
+        if (StackSeparately || BuffStack.Count <= 0)
+        {
+            if (duration == -1)
+                SkipTimeUpdate = true;
+            BuffStack.Insert(0, new Vector2(duration, duration));
+            Owner = e;
+        }
+        else
+            BuffStack[0] = new Vector2(duration, duration);
+        Stacks += addStacks;
+    }
+    public virtual void RemoveStack(int stacksToRemove = 1)
+    {
+        if(StackSeparately) //Completely remove the buff if it stacks separately
+        {
+            Stacks = -1000;
+        }
+        else
+            Stacks -= stacksToRemove;
+        if (Stacks <= 0)
+            Active = false;
+    }
+    public virtual void Update(Entity e)
     {
 
-    }
-    public int GetCurrentStacks(Entity e)
-    {
-        return e.UniqueBuffTypes.GetValueOrDefault(GetType());
     }
     public virtual Sprite GetSprite()
     {
         return Resources.Load<Sprite>($"Buffs/{GetType().Name}");
     }
-    public virtual Color BackgroundColor()
+    public int Stacks { get; set; } = 0;
+    public virtual bool StackSeparately => false;
+}
+public class LightningBottle : Buff
+{
+    public override void Update(Entity e)
     {
-        return new Color(200 / 255f, 255 / 255f, 255 / 255f, 150 / 255f);
+
+    }
+    public override Sprite GetSprite()
+    {
+        return Resources.Load<Sprite>($"Buffs/LightningBuff");
     }
 }
 public class SpeedBoost : Buff
 {
-    public override void Apply(Entity e)
+    public override void Update(Entity e)
     {
-        float boost = 0.15f * timeLeft / initiallyAppliedDuration;
-        if(e is Player p)
+        if (e is Player p)
         {
-            p.TrueMoveModifier += boost;
-        }
-    }
-}
-public class Poison : Buff
-{
-    public float dot = 0;
-    public override Color BackgroundColor()
-    {
-        return new Color(0.9f, 0.7f, 0.6f);
-    }
-    public override void Apply(Entity e)
-    {
-        if (e is Enemy enemy)
-        {
-            float damage = 3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes;
-            float tickRate = Mathf.Min(1, Mathf.Max(0.25f, 20f / damage));
-            dot += Time.fixedDeltaTime;
-            while (dot >= tickRate / 2f)
+            foreach (Vector2 v in BuffStack)
             {
-                enemy.Injure(damage / initiallyAppliedDuration * tickRate, -1, new Color(0.8f, 0.27f, 0.9f), 1);
-                dot -= tickRate;
+                float boost = 0.15f * v.x / v.y;
+                p.TrueMoveModifier += boost;
             }
         }
     }
+    public override bool StackSeparately => true;
+}
+public class Poison : Buff
+{
+    public float DamageOverTime = 0;
+    public override void Update(Entity e)
+    {
+        if (e is Enemy enemy)
+        {
+            foreach (Vector2 v in BuffStack)
+            {
+                float damage = 3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes;
+                float tickRate = Mathf.Min(1, Mathf.Max(0.25f, 20f / damage));
+                DamageOverTime += Time.fixedDeltaTime;
+                while (DamageOverTime >= tickRate / 2f)
+                {
+                    enemy.Injure(damage / v.y * tickRate, -1, new Color(0.8f, 0.27f, 0.9f), 1);
+                    DamageOverTime -= tickRate;
+                }
+            }
+        }
+    }
+    public override bool StackSeparately => true;
 }
