@@ -51,10 +51,12 @@ Bug Watchlist:
 Done: 	
 
 6/14/26
-1. WIP Lightning in a Bottle powerup
+1. Add Lightning in a Bottle powerup
 2. Rework BUFF STACKING to no longer creates as many buff instances, which should reduce lag on Snake Eyes and Roll for Dexterity
-3. WIP Rework buff icon displays:
+3. WIP rework buff icon displays:
 	1. Right now, they no longer show background... more reworks imminent
+4. Add foreground lightning particle, now used for the pylon start animation and lightning in a bottle
+5. Fix bug where Light Bulb death animation was not working properly
 
 6/5/26
 1. WIP Steamworks integration

@@ -55,7 +55,7 @@ public class Bulb : Hat
         if (toBody < -0.5f)
         {
             velocity *= -bounceCount;
-            transform.localPosition.SetXY(transform.localPosition.x, transform.localPosition.y -0.5f -toBody);
+            transform.localPosition = transform.localPosition.SetXY(transform.localPosition.x, transform.localPosition.y -0.5f -toBody);
             bounceCount *= 0.5f;
         }
         else
@@ -70,7 +70,7 @@ public class Bulb : Hat
             light2d.color = light2d.color.WithAlpha(Mathf.Lerp(light2d.color.a, 0.0f, 0.08f));
         spriteRender.sprite = on ? OnBulb : OffBulb;
         light2d.gameObject.SetActive(on);
-        transform.localPosition.SetXY((Vector2)transform.localPosition + velocity);
+        transform.localPosition = transform.localPosition.SetXY((Vector2)transform.localPosition + velocity);
         float deathAngle = 90 * Mathf.Min(p.DeathKillTimer / 100f, 1);
         transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, (deathAngle - 20) * p.Direction, 0.2f));
     }

@@ -335,7 +335,7 @@ public class Enemy : Entity
             bool InstantKill = projOwner.RemoveBuff<LightningBottle>(1);
             if (InstantKill)
             {
-                ThoughtBubble.DoLightningInstakillEffect(transform.position);
+                ParticleManager.LightningKillEffect(transform.position);
                 proj.HitTarget(this);
                 Kill();
                 return;

@@ -12,6 +12,7 @@ public class ParticleManager : MonoBehaviour
         public const int Pixel = 3;
         public const int Line = 4;
         public const int Trail = 5;
+        public const int LineForeground = 6;
     }
     public static readonly Color DefaultColor = new Color(0.89f, 206 / 255f, 240 / 255f, 0.5f);
     public static readonly Color BathColor = new Color(189 / 255f, 227 / 255f, 246 / 255f, 0.6f);
@@ -51,12 +52,52 @@ public class ParticleManager : MonoBehaviour
         };
         Instance.thisSystem[type].Emit(style, 1);
     }
-    void Start()
+    public static void ForegroundLightning(Vector2 start, Vector2 end, Color c, float lifeMult = 0.6f, float whiteMult = 1.0f, float scaleX = 1.0f, float scaleY = 0.5f)
     {
-        Instance = this;
+        float dist = Vector2.Distance(start, end);
+        float distRounded = (int)(dist * 2.25f);
+        Vector2 prev = start;
+        if (distRounded <= 0)
+            return;
+        for (int i = 0; i <= distRounded; i++)
+        {
+            float perc = i / distRounded;
+            float scaleMult = Mathf.Lerp(scaleX, scaleY, perc);
+            Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
+            Vector2 toPrev = prev - pos;
+            float mag = toPrev.magnitude + 0.1f;
+            float r = -toPrev.ToRotation() * Mathf.Rad2Deg;
+            NewParticle(pos, new Vector2(mag * 1.0f, .5f * scaleMult), Vector2.zero, 0, lifeMult, ID.LineForeground, c, r);
+            NewParticle(pos, new Vector2(mag * 1.0f, .3f * scaleMult), Vector2.zero, 0, lifeMult, ID.LineForeground, Color.white * whiteMult, r);
+            NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, lifeMult, 3, Color.white * whiteMult);
+            prev = pos;
+        }
     }
-    void Update()
+    public static void LightningKillEffect(Vector2 pos)
     {
-        Instance = this;
+        Color lColor = new(0.4f, 0.6f, 1.0f);
+        AudioManager.PlaySound(SoundID.Infect, pos, 0.75f, 0.75f, 0);
+        ForegroundLightning(pos, pos + new Vector2(0, 10), lColor, 1.25f, scaleX: 2.5f, scaleY: 0.25f);
+        int particleType = ID.Trail;
+        int aura = 20;
+        for (int i = 0; i < aura; ++i)
+        {
+            float r2 = Utils.RandFloat(1.0f, 1.2f);
+            Vector2 circular = new Vector2(r2, 0).RotatedBy(i / (float)(0.5f * aura) * Mathf.PI);
+            float size = 0.7f - r2 * 0.1f;
+            NewParticle(pos, Mathf.Clamp(size, 0.1f, 1), circular * 12f, 2, Utils.RandFloat(0.5f, 1.0f), particleType, lColor);
+        }
+        for (int i = 0; i < 6; ++i)
+        {
+            Vector2 pos2 = pos + new Vector2(2.5f, 0).RotatedBy(i * Utils.TWOPI / 6f) + Utils.RandCircle(1);
+            ForegroundLightning(pos, pos2, lColor, Utils.RandFloat(1.0f, 1.25f), scaleX: 2f, scaleY: 0.25f);
+        }
+        for (int i = 0; i < 8; ++i)
+        {
+            Vector2 pos2 = pos + new Vector2(1.0f, 0).RotatedBy(i * Utils.TWOPI / 8f) + Utils.RandCircle(0.5f);
+            PopupText.NewPopupText(pos2, Utils.RandCircle(4), lColor.Lerp(new Color(0.8f, 0.9f, 1.0f), Utils.RandFloat()), "314159", true, Utils.RandFloat(0.5f, 0.6f), 70);
+        }
     }
+    private void Start() => Instance = this;
+    private void Update() => Instance = this;
 }
