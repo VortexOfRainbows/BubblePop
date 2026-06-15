@@ -11,8 +11,12 @@ public class BuffAnchorLayoutGroup : MonoBehaviour
     {
         float totalWidth = 0f;
         float childWidth = 1f;
-        for (int i = 1; i < transform.childCount; ++i)
+        for (int i = 1; i < transform.childCount; ++i){
+            BuffIcon icon = transform.GetChild(i).GetComponent<BuffIcon>();
+            if (icon == null || !icon.Visual.gameObject.activeSelf)
+                continue;
             totalWidth += childWidth;
+        }
         float startX = -totalWidth / 2f;
         for (int i = 1; i < transform.childCount; ++i)
         {
