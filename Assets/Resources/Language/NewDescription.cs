@@ -8,16 +8,16 @@ public class Description
         if(owner is PowerUp p)
         {
             string Name = p.GetType().FullName;
-            NameText = Localization.Get(Name);
-            FlavorText = "N/A";
-            DescriptionText = "N/A";
-            ExtendedText = "N/A";
+            NameText = Localization.Get($"{Name}.Title");
+            Short = Localization.Get($"{Name}.Short");
+            Desc = Localization.Get($"{Name}.Description");
+            FlavorText = Localization.Get($"{Name}.Flavor");
         }
     }
     public string NameText { get; set; }
     public string FlavorText { get; set; }
-    public string DescriptionText { get; set; }
-    public string ExtendedText { get; set; }
+    public string Short { get; set; }
+    public string Desc { get; set; }
 }
 public class PowerDescription : Description
 {
