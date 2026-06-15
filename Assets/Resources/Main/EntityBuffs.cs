@@ -3,13 +3,13 @@ using UnityEngine;
 
 public partial class Entity : MonoBehaviour
 {
+    private BuffAnchorLayoutGroup BuffIconParent = null;
     public readonly List<Buff> buffs = new();
-    private GameObject BuffIconParent = null;
     private readonly List<BuffIcon> BuffIcons = new();
     public void AddBuff<T>(float time, int stacks = 1) where T: Buff, new()
     {
         if(BuffIconParent == null)
-            BuffIconParent = Instantiate(BuffIcon.BuffIconParentPrefab, transform, false);
+            BuffIconParent = Instantiate(BuffIcon.BuffIconParentPrefab, transform, false).GetComponent<BuffAnchorLayoutGroup>();
         Buff existing = GetBuff<T>();
         if (existing == null)
         {
@@ -54,7 +54,9 @@ public partial class Entity : MonoBehaviour
     }
     public void UpdateBuffs()
     {
-        for(int i = buffs.Count - 1; i >= 0; --i)
+        if (BuffIconParent != null && !Main.GamePaused)
+            BuffIconParent.UpdateLayout();
+        for (int i = buffs.Count - 1; i >= 0; --i)
         {
             Buff b = buffs[i];
             b.Update();
