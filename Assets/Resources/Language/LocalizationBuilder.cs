@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 public static class Localization
@@ -165,7 +166,7 @@ public static class LocalizationBuilder
         }
         else
         {
-            Debug.LogWarning($"Unexpected value type for key: {fullKey}. Expected string or dictionary, got {value.GetType()}".WithColor("#FF0000"));
+            Debug.LogWarning($"Unexpected value type for key: {fullKey}. Expected string or dictionary, got {(value == null ? "None" : value.GetType())}".WithColor("#FF0000"));
         }
     }
     public static Dictionary<string, object> LoadFromJson()
@@ -188,6 +189,29 @@ public static class LocalizationBuilder
         ExpandedTranslation = new();
         SaveToJson();
         return ExpandedTranslation;
+    }
+    public static void CopyOldPowerDescriptionsToNewSystem()
+    {
+        Debug.Log("Porting Old Power Descriptions To Updated System".WithColor("#00FFFF"));
+        foreach(PowerUp p in PowerUp.PowerUps.Values)
+        {
+            string Name = p.GetType().FullName;
+            if (ExpandedTranslation["Power"] is Dictionary<string, object> value)
+            {
+                if (value[Name] is Dictionary<string, object> power)
+                {
+                    power["Title"] = p.DetailedDescription.Name == null ? "None" : p.DetailedDescription.Name;
+                    power["Brief"] = p.DetailedDescription.ShortDescription == null ? "None" : p.DetailedDescription.ShortDescription;
+                    power["Description"] = p.DetailedDescription.Description == null ? "None" : p.DetailedDescription.Description;
+                }
+                else
+                    Debug.Log("Type Error: 2");
+            }
+            else
+                Debug.Log("Type Error: 1");
+        }
+        SaveToJson();
+        Debug.Log("Done".WithColor("#00FFFF"));
     }
 }
 #endif

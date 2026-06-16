@@ -19,12 +19,12 @@ public class PowerDescription : Description
     private readonly Dictionary<Type, string> ShortAltText = new();
     public string BlackMarketShort { get; set; }
     public string BlackMarketDesc { get; set; }
-    public PowerDescription(PowerUp owner) : base(owner)
+    public PowerDescription(PowerUp owner, bool separateBriefAndLong = true) : base(owner)
     {
         StartingText = "Power." + owner.GetType().FullName;
         NameText = Localization.Get($"{StartingText}.Title");
         BriefDesc = Localization.Get($"{StartingText}.Brief");
-        LongDesc = Localization.Get($"{StartingText}.Description");
+        LongDesc = separateBriefAndLong ? Localization.Get($"{StartingText}.Description") : BriefDesc;
         LoreText = Localization.Get($"{StartingText}.Lore");
     }
     public PowerDescription WithAlt<T>(bool newLong = true, bool newBrief = false) where T : Equipment

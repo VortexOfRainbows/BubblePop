@@ -23,6 +23,7 @@ public class Choice : PowerUp
     {
         return stackSize * 2;
     }
+    public override bool LongDescriptionIsBriefDescription => true;
 }
 public class ChargeShot : PowerUp
 {

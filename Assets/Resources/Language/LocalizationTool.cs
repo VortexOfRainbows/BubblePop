@@ -66,6 +66,10 @@ public class LocalizationToolEditor : Editor
         {
             PowerDescription _ = new(PowerUp.Get<Choice>());
         }
+        if (GUILayout.Button("Port Old Power Descriptions To New System"))
+        {
+            LocalizationBuilder.CopyOldPowerDescriptionsToNewSystem();
+        }
     }
 }
 

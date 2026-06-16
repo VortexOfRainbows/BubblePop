@@ -4,9 +4,706 @@
     Choice:
     {
       Title: Choice
-      Short: Pick which power you want from a given selection
+      Brief: None
+      Lore: A curious bubble that shifts and reforms itself into other power bubbles.
       Description: Pick which power you want from a given selection
-      Flavor: "A curious bubble that shifts and reforms itself into other power bubbles. "
+    }
+    ChargeShot:
+    {
+      Title: Charge Shot
+      Brief: Increases the size and damage of your secondary attack
+      Description: Increases the Y:damage of your Y:[secondary attack] by Y:50% G:(+50% per stack) and the Y:size of your Y:[secondary attacks] by 40% G:(+40% per stack)
+      Lore: Power.ChargeShot.Lore
+    }
+    Shotgun:
+    {
+      Title: Shotgun
+      Brief: Increases the amount of bubbles shot by your primary attack
+      Description: Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
+      Lore: Power.Shotgun.Lore
+    }
+    Dash:
+    {
+      Title: Sparkle Sparkle
+      Brief: Adds damaging stars to your ability
+      Description: Y:Dashing releases Y:2 G:(+1 per stack) damaging stars
+      Lore: Power.Dash.Lore
+    }
+    ShotSpeed:
+    {
+      Title: Bubble Propulsion
+      Brief: Small bubbles travel further and faster
+      Description: Small bubbles travel Y:10% G:(+10% per stack) further and faster
+      Lore: Power.ShotSpeed.Lore
+    }
+    Starbarbs:
+    {
+      Title: Starbarbs
+      Brief: Enemies killed by stars explode into stars
+      Description: Enemies Y:[killed by stars] explode into Y:3 G:(+1 per stack) stars
+      Lore: Power.Starbarbs.Lore
+    }
+    SoapySoap:
+    {
+      Title: Soapy Soap
+      Brief: Secondary attack leaves behind a trail of bubbles
+      Description: Y:[Secondary attack] releases Y:4 G:(+4 per stack) bubbles while traveling, plus Y:[2 more bubbles for each charge level]
+      Lore: Power.SoapySoap.Lore
+    }
+    BubbleBlast:
+    {
+      Title: Bubble Blast
+      Brief: Secondary attack releases bubbles upon expiring
+      Description: Y:[Secondary attack] releases Y:4 G:(+3 per stack) bubbles upon expiring, plus Y:1 G:(+1 per stack) Y:[more bubbles for each charge level]
+      Lore: Power.BubbleBlast.Lore
+    }
+    Starshot:
+    {
+      Title: Starshot
+      Brief: Launch stars with your primary attack
+      Description:
+        '''
+        Y:15% G:(+5% per stack) Y:chance to launch stars with your Y:[primary attack] 
+        Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
+        '''
+      Lore: Power.Starshot.Lore
+    }
+    WeaponUpgrade:
+    {
+      Title: Haste
+      Brief: Increases attack speed
+      Description: Increases Y:[attack speed] by Y:7% G:(+7% per stack)
+      Lore: Power.WeaponUpgrade.Lore
+    }
+    BinaryStars:
+    {
+      Title: Binary Stars
+      Brief: Periodically release stars
+      Description: Release Y:2 G:(+1 per stack) stars every Y:[1.5 seconds]
+      Lore: Power.BinaryStars.Lore
+    }
+    EternalBubbles:
+    {
+      Title: Elder Bubbles
+      Brief: Increases lifespan of small bubbles
+      Description: Increases lifespan of Y:[small bubbles] by Y:[0.8 seconds] G:(+0.4 seconds per stack)
+      Lore: Power.EternalBubbles.Lore
+    }
+    BubbleBirb:
+    {
+      Title: Bubble Birb
+      Brief: Resurrect in a dance of flames after death
+      Description: Resurrect in a dance of flames after death G:(consumed on use)
+      Lore: Power.BubbleBirb.Lore
+    }
+    BubbleTrail:
+    {
+      Title: Bubble Trail
+      Brief: Periodically release bubbles
+      Description: Release a bubble every Y:[0.67 seconds] G:(-33% per stack)
+      Lore: Power.BubbleTrail.Lore
+    }
+    Coalescence:
+    {
+      Title: Coalescence
+      Brief: Small bubbles may fuse with nearby bubbles for bonus damage and pierce
+      Description: Y:[Small bubbles] may fuse with up to Y:1 G:(+1 per stack) other nearby Y:[small bubbles,] gaining Y:[+2 damage] and Y:[+1 pierce] each fusion
+      Lore: Power.Coalescence.Lore
+    }
+    LuckyStar:
+    {
+      Title: Lucky Star
+      Brief: Enemies killed by stars have an additional chance to drop powers
+      Description:
+        '''
+        Enemies Y:[killed by stars] have an additional Y:4% G:(+1% per stack) Y:chance to Y:[drop powers] 
+        This effect can only happen Y:3 G:(+1 per stack) Y:times per Y:wave
+        '''
+      Lore: Power.LuckyStar.Lore
+    }
+    TrailOfThoughts:
+    {
+      Title: Trail of Thoughts
+      Brief: Increases thought trail length and zap radius
+      Description: Increases the Y:[maximum length] of your Y:[thought trail] by Y:3 G:(+3 per stacK) and Y:[zap radius] of your Y:[thought trail] by Y:10% G:(+10 per stack)
+      Lore: Power.TrailOfThoughts.Lore
+    }
+    Magnet:
+    {
+      Title: Magnet
+      Brief: Collect coins from farther away
+      Description: Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack)
+      Lore: Power.Magnet.Lore
+    }
+    SpearOfLight:
+    {
+      Title: Spear of Light
+      Brief: Periodically fire beams of light at nearby enemies
+      Description: Fire Y:[beams of light] at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2 damage] every Y:[2.2 seconds] and increase Y:[beam of light damage] by Y:0.5 G:(+0.5 per stack)
+      Lore: Power.SpearOfLight.Lore
+    }
+    Overclock:
+    {
+      Title: Overclock
+      Brief: Reduces ability cooldown
+      Description: Reduces Y:[ability cooldown] by Y:20% G:(+20% per stack)
+      Lore: Power.Overclock.Lore
+    }
+    NeuronActivation:
+    {
+      Title: Reflection
+      Brief: Enemies struck by beams of light fire beams of light at nearby enemies
+      Description: Enemies Y:[struck by beams of light] bounce Y:[beams of light] to nearby enemies once; bounced Y:[beams of light gain 20%] G:(+60% per stack) Y:damage
+      Lore: Power.NeuronActivation.Lore
+    }
+    BrainBlast:
+    {
+      Title: Brain Blast
+      Brief: Release additional bubbles when recalling and increase thought trail zap damage
+      Description:
+        '''
+        Release Y:20% G:(+10% per stack) more bubbles when Y:[channeling recall] and explode into Y:1 G:(+0.5 per stack) additional bubbles per segment Y:[after recall] 
+        Increase Y:[thought trail zap damage] by Y:20% G:(+20% per stack)
+        '''
+      Lore: Power.BrainBlast.Lore
+    }
+    Raise:
+    {
+      Title: Raise
+      Brief: Increases maximum chip stack height and slightly reduces ability cooldown
+      Description: Increases Y:[maximum chip stack height] by Y:1 G:(+1 per stack) and reduces Y:[ability cooldown] by Y:10% G:(+10% per stack)
+      Lore: Power.Raise.Lore
+    }
+    AllIn:
+    {
+      Title: All-In
+      Brief: Greatly increases the potency of your chips
+      Description:
+        '''
+        Increases Y:[total chip stacks] by Y:2 G:(+2 per stack) and grants a Y:5% G:(+5% per stack) Y:chance for chips to be enhanced 
+        Increases Y:[maximum chip stack height] by Y:2 G:(+2 per stack) and reduces Y:[ability cooldown] Y:multiplicatively by Y:60% G:(+60% per stack)
+        '''
+      Lore: Power.AllIn.Lore
+    }
+    SnakeEyes:
+    {
+      Title: Snake Eyes
+      Brief: Chance to poison enemies on hit
+      Description: Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:4 G:(+1 per stack) Y: damage plus Y:damage equal to Y:4% of the Y:[victim's max life] over Y:[10 seconds]
+      Lore: Power.SnakeEyes.Lore
+    }
+    Refraction:
+    {
+      Title: Refraction
+      Brief: Beams of light can target an additional enemy
+      Description: Y:[Beams of light] target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units, but they Y:[lose 20% damage] each hit after the first
+      Lore: Power.Refraction.Lore
+    }
+    Calculator:
+    {
+      Title: Calculator
+      Brief: Grants aim assist
+      Description: Friendly projectiles Y:[seek out] enemies within Y:4 G:(+2 per stack) Y:units
+      Lore: Power.Calculator.Lore
+    }
+    BubbleMitosis:
+    {
+      Title: Mitosis
+      Brief: Assimilated into next power you obtain
+      Description: Y:[Upon obtaining your next power,] gain Y:[additional stacks] equal to the amount of <color=#BAE3FE>Mitosis</color> stacks G:(consumed on use)
+      Lore: Power.BubbleMitosis.Lore
+    }
+    RollForCharisma:
+    {
+      Title: Roll For Charisma
+      Brief: Chance to heal or refund a portion of money spent when purchasing power
+      Description: Y:20% G:(+1% per stack) Y:chance to Y:heal after Y:[purchasing a power] or gain Y:25 G:(+25 per stack) Y:coins if uninjured
+      Lore: Power.RollForCharisma.Lore
+    }
+    RollForDexterity:
+    {
+      Title: Roll For Dexterity
+      Brief: Chance to gain increased speed after using your ability
+      Description: Y:20% G:(+1% per stack) Y:chance to gain Y:15% increased Y:[movement speed] after using Y:[your ability,] stacking up to Y:2 G:(+1 per stack) times and lasting Y:[5 seconds]
+      Lore: Power.RollForDexterity.Lore
+    }
+    RollForInitiative:
+    {
+      Title: Roll For Initiative
+      Brief: Chance for first hit to deal additional damage
+      Description: Y:20% G:(+1% per stack) Y:chance to deal Y:200% G:(+20% per stack) Y:[bonus damage] on Y:[first strike]
+      Lore: Power.RollForInitiative.Lore
+    }
+    RollForPerception:
+    {
+      Title: Roll For Perception
+      Brief: Chance of seeing rare powers increased
+      Description: Increases weights of Y:[rare powers] in the Y:[power pool] by Y:20% G:(+20% per stack)
+      Lore: Power.RollForPerception.Lore
+    }
+    BubbleShield:
+    {
+      Title: Bubble Shield
+      Brief:
+        '''
+        Gain a shield on even-numbered waves
+        When shields are broken, extend immunity frames and release bubbles
+        '''
+      Description:
+        '''
+        Gain Y:[1 shield slot] and Y:[recover 1 shield] on pickup or at the start of Y:[even-numbered waves] 
+        When a Y:[shield is broken,] extend Y:[immunity frames] by Y:40% G:(+20% per stack) and release Y:24 G:(+8 per stack) bubbles
+        '''
+      Lore: Power.BubbleShield.Lore
+    }
+    ZapRadius:
+    {
+      Title: Zap Radius
+      Brief: Increases thunder bubble radius
+      Description: Increases Y:[thunder bubble radius] by Y:10% G:(+10% per stack)
+      Lore: Power.ZapRadius.Lore
+    }
+    Electroluminescence:
+    {
+      Title: Electroluminescence
+      Brief: Thunder bubbles fire beams of light at nearby enemies
+      Description: Y:[Thunder bubbles] fire Y:1 G:(+1 per stack) Y:[beams of light] at enemies within Y:3 G:(+0.5 per stack) Y:units of the Y:[thunder bubble radius] for Y:[2 damage]
+      Lore: Power.Electroluminescence.Lore
+    }
+    Burger:
+    {
+      Title: Burger
+      Brief: Burger!?
+      Description:
+        '''
+        Increases Y:[attack speed] and Y:damage by Y:10% G:(+10% per stack) 
+        Reduces Y:[movement speed] by Y:10% G:(+10% per stack)
+        '''
+      Lore: Power.Burger.Lore
+    }
+    BonusBatteries:
+    {
+      Title: Bonus Batteries
+      Brief: Increases the number of thunder bubbles you can cast
+      Description: Increases the number of Y:[thunder bubbles] you can cast by Y:1 G:(+1 per stack)
+      Lore: Power.BonusBatteries.Lore
+    }
+    ResearchNotes:
+    {
+      Title: Research Notes
+      Brief: After killing 3 Skull enemies, become a Choice with 5 options
+      Description: Y:[After killing 3 Skull enemies,] become a <color=#CFCFFF>Choice</color> with 5 options G:(consumed on use)
+      Lore: Power.ResearchNotes.Lore
+    }
+    ResearchGrants:
+    {
+      Title: Research Grants
+      Brief: Skull enemies drop additional coins
+      Description: Y:[Skull enemies] drop Y:3 G:(+2 per stack) additional Y:coins
+      Lore: Power.ResearchGrants.Lore
+    }
+    Boomerang:
+    {
+      Title: Electric Boomerang
+      Brief: Increases thunder bubble recall damage
+      Description: Increases Y:[thunder bubble] recall damage by Y:50% G:(+50% per stack)
+      Lore: Power.Boomerang.Lore
+    }
+    ThunderBubbles:
+    {
+      Title: Echo Bubbles
+      Brief: Thunder bubbles release bubbles when recalled or expired
+      Description: When recalled or after expiring, Y:[thunder bubbles] leave behind a Y:[latent charge] that dissipates into Y:3 G:(+1 per stack) bubbles after Y:[thunder bubbles] are fully recalled
+      Lore: Power.ThunderBubbles.Lore
+    }
+    Supernova:
+    {
+      Title: Supernova
+      Brief: Stars have a chance to explode
+      Description:
+        '''
+        Stars have a Y:[20% chance] to Y:detonate on hit for Y:10 G:(+5 per stack) Y:damage 
+        Activates <color=#BAE3FE>Starbarbs</color> and <color=#BAE3FE>Lucky Star</color>
+        '''
+      Lore: Power.Supernova.Lore
+    }
+    ResonanceRuby:
+    {
+      Title: Resonance Ruby
+      Brief: Improves wave rewards
+      Description:
+        '''
+        Increases the Y:quality of Y:[wave rewards] by Y:20% G:(+20% per stack) 
+        <color=#FFED75>Wave end</color> gains an additional Y:10% G:(+10% per stack) Y:chance to contain a Y:[bonus power reward]
+        '''
+      Lore: Power.ResonanceRuby.Lore
+    }
+    DoubleDown:
+    {
+      Title: Double Down
+      Brief: Enemies killed by chips drop additional coins and increases chip damage
+      Description:
+        '''
+        Enemies Y:[killed by chips] drop additional Y:coins equal to the Y:[overkill damage dealt] up to a Y:[maximum of 5 coins] G:(+3 per stack) 
+        Increases Y:[chip damage] by Y:1 G:(+1 per stack)
+        '''
+      Lore: Power.DoubleDown.Lore
+    }
+    FocusFizz:
+    {
+      Title: Focus Fizz
+      Brief: Increases critical strike chance
+      Description: Increases Y:[critical strike chance] by Y:5% G:(+5% per stack)
+      Lore: Power.FocusFizz.Lore
+    }
+    Coupons:
+    {
+      Title: Coupons
+      Brief: Reduces the cost of powers in the shop
+      Description: Reduces the cost of Y:powers in the Y:shop by Y:12% G:(+12% per stack)
+      Lore: Power.Coupons.Lore
+    }
+    CloudWalker:
+    {
+      Title: Cloud Walkers
+      Brief: Increases movement speed
+      Description: Increases Y:[movement speed] by Y:10% G:(+10% per stack)
+      Lore: Power.CloudWalker.Lore
+    }
+    PerpetualBubbleMachine:
+    {
+      Title: Perpetual Bubble Machine
+      Brief: The key to infinite bubble forever?
+      Description:
+        '''
+        Adds Y:1 G:(+1 per stack) <color=#CFCFFF>Choice</color> to Y:[wave end] 
+        R:[Rainbow Shard replication cost increases with stack size]
+        '''
+      Lore: Power.PerpetualBubbleMachine.Lore
+    }
+    ConsolationPrize:
+    {
+      Title: Consolation Prize
+      Brief: Increases non-winning spin damage, secondary attack damage, and gives a chance for consolation coins
+      Description:
+        '''
+        Increases Y:[non-winning spin damage] and Y:[secondary attack damage] by Y:10% G:(+10% per stack) 
+        Y:7.77% Y:chance to gain Y:2 G:(+2 per stack) Y:coins on Y:[non-winning spins] 
+        R:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins
+        '''
+      Lore: Power.ConsolationPrize.Lore
+    }
+    Pity:
+    {
+      Title: Pity Charm
+      Brief: Increases Jackpot chance after consecutive spins without a Jackpot
+      Description:
+        '''
+        Each consecutive Y:[non-Jackpot spin] increases Y:[Jackpot chance] by Y:4% G:(+2% per stack) 
+        R:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins
+        '''
+      Lore: Power.Pity.Lore
+    }
+    TokenPouch:
+    {
+      Title: Token Pouch
+      Brief: Hold more tokens
+      Description:
+        '''
+        Increases the number of Y:tokens you can hold by Y:2 G:(+2 per stack) 
+        R:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins
+        '''
+      Lore: Power.TokenPouch.Lore
+    }
+    BOGOSpin:
+    {
+      Title: Buy One Get One
+      Brief: Sometimes get a Bonus spin for free
+      Description:
+        '''
+        Get a Y:[Bonus spin] on Y:10% G:(+10% per stack) of Y:spins 
+        Each Y:[Bonus spin] has Y:77.7% increased Y:[attack speed] for Y:[every spin that came before it] 
+        R:[Increases spin price by] R:1 G:(+1 per stack) R:coins
+        '''
+      Lore: Power.BOGOSpin.Lore
+    }
+    PhilosophersStone:
+    {
+      Title: Philosopher's Stone
+      Brief: Increases the damage dealt and coins dropped by high-rarity spins
+      Description:
+        '''
+        Increases Y:damage of Y:[high-rarity spins] by Y:10% G:(+10% per stack) and Y:[high-rarity spins] drop Y:50% G:(+50% per stack) more Y:coins on hit 
+        R:[Increases spin price by] R:2 G:(+2 per stack) R:coins
+        '''
+      Lore: Power.PhilosophersStone.Lore
+    }
+    RouletteWheel:
+    {
+      Title: Roulette Wheel
+      Brief: Keep that ball rolling!
+      Description:
+        '''
+        Increases the Y:[burst count] of your Y:[primary attack] by Y:1 G:(+1 per stack) 
+        Each Y:[burst] has Y:7.77% increased Y:[attack speed] for Y:[every burst in the same spin that came before it] 
+        R:[Increases spin price by] R:4 G:(+4 per stack) R:coins
+        '''
+      Lore: Power.RouletteWheel.Lore
+    }
+    BatterUp:
+    {
+      Title: Batter Up
+      Brief: Let's hit it out of the park!
+      Description: Y:[Secondary attack] launches Y:1 G:(+1 per stack) Y:[Curveball Tokens] for Y:[50% secondary attack damage] that drop Y:1 Y:token on kill
+      Lore: Power.BatterUp.Lore
+    }
+    PiratesBooty:
+    {
+      Title: Pirate's Booty
+      Brief: Next killed Skull enemy has a chance to drop a chest or key
+      Description:
+        '''
+        Y:[Skull enemies] have a Y:10% G:(+10% per stack) Y:chance to drop a Y:[Pirate chest] or Y:key G:(consumed on use) 
+        Drops a Y:key when Y:dissolved in a Y:Crucible
+        '''
+      Lore: Power.PiratesBooty.Lore
+    }
+    Eureka:
+    {
+      Title: Eureka!
+      Brief: Reduces Choice Reroll cost and increases Reroll count
+      Description: Reduces <color=#CFCFFF>Choice</color> Y:Reroll cost by Y:5 G:(+5 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)
+      Lore: Power.Eureka.Lore
+    }
+    BlackMarketDelivery:
+    {
+      Title: Special Delivery
+      Brief: The next Skull Wave has a chance to deliver a Black Market crate
+      Description: Each Y:[Skull Wave] has a Y:10% G:(+10% per stack) Y:chance to drop a Y:[Black Market crate] G:(consumed on use)
+      Lore: Power.BlackMarketDelivery.Lore
+    }
+    ShardsOfPower:
+    {
+      Title: Shards of Power
+      Brief: Drops Rainbow Shards when dissolved
+      Description:
+        '''
+        Drops Y:[3 Rainbow Shards] when Y:dissolved in a Y:Crucible 
+        Y:[Rainbow Shards] can be used to Y:duplicate any Y:power you have
+        '''
+      Lore: Power.ShardsOfPower.Lore
+    }
+    Contract:
+    {
+      Title: Contract
+      Brief: !TRADE OFFER!
+      Description: Y:Trade for a Y:power from a given selection
+      Lore: Power.Contract.Lore
+    }
+    RainbowFlower:
+    {
+      Title: Rainbow Flower
+      Brief: Power Propagation
+      Description:
+        '''
+        Drops a Y:[Rainbow Shard] when Y:dissolved in a Y:Crucible, with a Y:[50% chance] for an Y:[additional shard, rolled until failure] 
+        Y:[Rainbow Shards] can be used to Y:duplicate any Y:power you have
+        '''
+      Lore: Power.RainbowFlower.Lore
+    }
+    QuantumCake:
+    {
+      Title: Quantum Cake
+      Brief: And you can eat it too!
+      Description: Drops a Y:[Heart] and becomes a <color=#FFAAAA>Schrodinger's Cake</color> when Y:dissolved in a Y:Crucible
+      Lore: Power.QuantumCake.Lore
+    }
+    EatenCake:
+    {
+      Title: Schrodinger's Cake
+      Brief: And you can have it too!
+      Description: Becomes a <color=#FFAAAA>Quantum Cake</color> at the start of a Y:wave G:(consumed on use)
+      Lore: Power.EatenCake.Lore
+    }
+    GlassShard:
+    {
+      Title: Glass Knife
+      Brief: Don't pop yourself
+      Description:
+        '''
+        All attacks deal Y:+1 G:(+1 per stack) Y:[bonus damage] 
+        R:[When hurt,] roll Y:1 G:(+1 per stack) times for a Y:[50% chance] to take Y:[additional damage]
+        '''
+      Lore: Power.GlassShard.Lore
+    }
+    BountyHunter:
+    {
+      Title: Bounty Hunter
+      Brief: Skull enemies have a chance to drop extra loot
+      Description: Y:[Skull enemies] have a Y:4% G:(+2% per stack) Y:chance to drop a Y:[Pirate chest, a key, 3 gems, or 50 coins]
+      Lore: Power.BountyHunter.Lore
+    }
+    BonusFizz:
+    {
+      Title: Bottle Burst
+      Brief: Increases the amount of bubbles shot by your primary attack
+      Description: Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
+      Lore: Power.BonusFizz.Lore
+    }
+    BottleBlast:
+    {
+      Title: Bottle Blast
+      Brief: Secondary attack releases extra bubbles
+      Description: Y:[Secondary attack] releases Y:4 G:(+4 per stack) additional bubbles on impact
+      Lore: Power.BottleBlast.Lore
+    }
+    BottleFlip:
+    {
+      Title: Bottle Flip
+      Brief: Secondary attack bounces and explodes an additional time
+      Description: Y:[Secondary attack] bounces and Y:explodes Y:1 G:(+1 per stack) additional times
+      Lore: Power.BottleFlip.Lore
+    }
+    FancyFootwork:
+    {
+      Title: Fancy Footwork
+      Brief: Chance to dodge attacks
+      Description:
+        '''
+        Gain a Y:20% G:(+10% per stack) chance to Y:[dodge damage] 
+        Chance to Y:dodge reduced by Y:50% for each Y:[consecutive dodge]
+        '''
+      Lore: Power.FancyFootwork.Lore
+    }
+    CarbonForce:
+    {
+      Title: Carbon Force
+      Brief: Small bubbles get additional pierce and travel further
+      Description: Small bubbles gain Y:+1 G:(+1 per stack) Y:pierce and travel Y:10% G:(+10% per stack) further and faster
+      Lore: Power.CarbonForce.Lore
+    }
+    FlavorExplosion:
+    {
+      Title: Flavor Explosion
+      Brief: Small bubbles splash on hit or upon expiring
+      Description:
+        '''
+        Small bubbles Y:splash on hit or upon expiring for Y:20% G:(+5% per stack) Y:damage 
+        Y:[Splash size] scales with Y:damage
+        '''
+      Lore: Power.FlavorExplosion.Lore
+    }
+    SplashRadius:
+    {
+      Title: Splash Radius
+      Brief: Increases cola splash radius
+      Description: Increases Y:[cola splash radius] by Y:10% G:(+10% per stack)
+      Lore: Power.SplashRadius.Lore
+    }
+    BonusBoards:
+    {
+      Title: Bonus Boards
+      Brief: Release additional Skateboards on dismount
+      Description: Release Y:1 G:(+1 per stack) additional Y:Skateboards on Y:dismount
+      Lore: Power.BonusBoards.Lore
+    }
+    Kickflip:
+    {
+      Title: Kickflip
+      Brief: Faster movement while mounting or dismounting Skateboard
+      Description:
+        '''
+        Increases Y:[movement speed] by Y:15% G:(+15% per stack) while Y:mounting or Y:dismounting your Y:Skateboard 
+        Increases Y:Skateboard Y:damage by Y:1 G:(+1 per stack)
+        '''
+      Lore: Power.Kickflip.Lore
+    }
+    RetaliatoryBlast:
+    {
+      Title: Retaliatory Blast
+      Brief: Drop a high-damage bath bomb when hurt
+      Description:
+        '''
+        Drop a Y:10 G:(+10 per stack) Y:[damage bath bomb when hurt] 
+        Y:[Explosion size] scales with Y:damage
+        '''
+      Lore: Power.RetaliatoryBlast.Lore
+    }
+    BombasticBrew:
+    {
+      Title: Bombastic Brew
+      Brief: Secondary attack drops a bath bomb
+      Description:
+        '''
+        Secondary attack drops a Y:2 G:(+2 per stack) Y:[damage bath bomb] 
+        Y:[Explosion size] scales with Y:damage
+        '''
+      Lore: Power.BombasticBrew.Lore
+    }
+    CollateralDamage:
+    {
+      Title: Collateral Damage
+      Brief: Skull enemies drop a bath bomb when killed
+      Description:
+        '''
+        Y:[Skull enemies] drop a Y:5 G:(+5 per stack) Y:[damage bath bomb] 
+        Y:[Explosion size] scales with Y:damage
+        '''
+      Lore: Power.CollateralDamage.Lore
+    }
+    ClusterBombs:
+    {
+      Title: Cluster Bombs
+      Brief: Bath bombs drop smaller bath bombs
+      Description:
+        '''
+        Y:[Bath bombs] drop Y:smaller Y:50% G:(+50% per stack) Y:[damage bath bombs] 
+        Y:[Explosion size] scales with Y:damage
+        '''
+      Lore: Power.ClusterBombs.Lore
+    }
+    SharpBombs:
+    {
+      Title: Sharp Bombs
+      Brief: Bath bombs release extra shrapnel
+      Description:
+        '''
+        Y:[Bath bombs] release Y:50% G:(+50% per stack) more Y:shrapnel 
+        Increases lifespan of Y:shrapnel by Y:10% G:(+10% per stack)
+        '''
+      Lore: Power.SharpBombs.Lore
+    }
+    PrizeBombs:
+    {
+      Title: Prize Bombs
+      Brief: Enemies drop coins when killed by bath bombs
+      Description: Enemies drop Y:10 G:(+10 per stack) additional Y:coins when killed by Y:[bath bombs] or Y:shrapnel
+      Lore: Power.PrizeBombs.Lore
+    }
+    Restock:
+    {
+      Title: Restock
+      Brief: All shops gain additional stock and bonus stock on restock
+      Description:
+        '''
+        All Y:shops gain Y:+1 G:(+1 per stack) Y:stock 
+        Y:[Gems restock] an additional Y:1 G:(+1 per stack) extra Y:powers
+        '''
+      Lore: Power.Restock.Lore
+    }
+    CrystalSerum:
+    {
+      Title: Crystal Serum
+      Brief: Enemies have a chance to drop gems
+      Description: Enemies have a Y:20% chance to drop Y:1 G:(+1 per stack) Y:gems
+      Lore: Power.CrystalSerum.Lore
+    }
+    LightningInABottle:
+    {
+      Title: Lightning in a Bottle
+      Brief: First few attacks in a wave do infinite damage
+      Description: After starting a Y:[wave,] your next Y:3 G:(+3 per stack) attacks will Y:[instantly kill enemies]
+      Lore: Power.LightningInABottle.Lore
     }
   }
 }

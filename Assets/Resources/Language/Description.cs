@@ -151,9 +151,9 @@ public class DetailedDescription
     private readonly Dictionary<Type, string> CompleteAltDescriptions = new();
     private readonly Dictionary<Type, string> ShortAltDescriptions = new();
     private readonly Dictionary<Type, string> CompleteShortAltDescriptions = new();
-    private string Name;
-    private string Description;
-    private string ShortDescription = null;
+    public string Name;
+    public string Description;
+    public string ShortDescription = null;
     private string CompleteDescription = string.Empty;
     private string CompleteShortDescription = string.Empty;
     public string FullDescription()
