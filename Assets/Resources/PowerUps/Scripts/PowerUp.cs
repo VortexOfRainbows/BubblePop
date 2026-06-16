@@ -280,7 +280,7 @@ public abstract class PowerUp
     private readonly string InternalName;
     protected PowerUp()
     {
-        NewDescription = new(this, !LongDescriptionIsBriefDescription);
+        NewDescription = new(this, BriefDescIsSameAsLong);
         TrueDescription = new(this);
         InitializeDescription(ref TrueDescription);
         InternalName = GetType().Name;
@@ -289,7 +289,7 @@ public abstract class PowerUp
         Init();
         TrueDescription.Rarity = GetRarity() - 1;
     }
-    public virtual bool LongDescriptionIsBriefDescription => false;
+    public virtual bool BriefDescIsSameAsLong => false;
     public virtual Sprite GetTexture()
     {
         var s = Resources.Load<Sprite>($"PowerUps/{InternalName}");

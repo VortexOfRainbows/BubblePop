@@ -200,9 +200,12 @@ public static class LocalizationBuilder
             {
                 if (value[Name] is Dictionary<string, object> power)
                 {
-                    power["Title"] = p.DetailedDescription.Name == null ? "None" : p.DetailedDescription.Name;
-                    power["Brief"] = p.DetailedDescription.ShortDescription == null ? "None" : p.DetailedDescription.ShortDescription;
-                    power["Description"] = p.DetailedDescription.Description == null ? "None" : p.DetailedDescription.Description;
+                    if(p.DetailedDescription.Name != null)
+                        power["Title"] = p.DetailedDescription.Name;
+                    if (p.DetailedDescription.ShortDescription != null)
+                        power["Brief"] = p.DetailedDescription.ShortDescription;
+                    if(p.DetailedDescription.Description != null)
+                        power["Description"] = p.DetailedDescription.Description;
                 }
                 else
                     Debug.Log("Type Error: 2");
