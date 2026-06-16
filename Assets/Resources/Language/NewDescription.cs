@@ -7,18 +7,18 @@ public class Description
     {
 
     }
-    public string NameText { get; set; }
-    public string LoreText { get; set; }
-    public string BriefDesc { get; set; }
-    public string LongDesc { get; set; }
+    protected string NameText { get; set; }
+    protected string LoreText { get; set; }
+    protected string BriefDesc { get; set; }
+    protected string LongDesc { get; set; }
 }
 public class PowerDescription : Description
 {
     private readonly string StartingText;
     private readonly Dictionary<Type, string> AltText = new();
     private readonly Dictionary<Type, string> ShortAltText = new();
-    public string BlackMarketShort { get; set; }
-    public string BlackMarketDesc { get; set; }
+    protected string BlackMarketShort { get; set; }
+    protected string BlackMarketDesc { get; set; }
     public PowerDescription(PowerUp owner, bool briefIsLong = false) : base(owner)
     {
         StartingText = "Power." + owner.GetType().FullName;

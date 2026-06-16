@@ -212,7 +212,7 @@ public abstract class PowerUp
             List<int> temp = new();
             foreach(int i in avail)
             {
-                if (PowerUps[i].GetRarity() >= rarity)
+                if (PowerUps[i].Rarity >= rarity)
                 {
                     highestSeen = PowerUps[i].Weighting > highestSeen ? PowerUps[i].Weighting : highestSeen;
                     temp.Add(i);
@@ -227,7 +227,7 @@ public abstract class PowerUp
         int type = avail[Utils.RandInt(avail.Count)];
         if (Player.Instance.RollPerc > 0)
         {
-            int rare = PowerUps[type].GetRarity();
+            int rare = PowerUps[type].Rarity;
             if (rare >= 3) //Increase odds of seeing blue, purple, yellow
                 weightMult += 0.2f * Player.Instance.RollPerc;
             else //Slightly decrease odds of seeing white, green
@@ -274,6 +274,7 @@ public abstract class PowerUp
         Time.timeScale = 1;
     }
     public int Stack;
+    public int Rarity { get; private set; }
     public float Weighting = 1;
     //Returns the MyID of this power
     public int Type => MyID;
@@ -287,7 +288,8 @@ public abstract class PowerUp
         sprite = GetTexture();
         AddToDictionary(this);
         Init();
-        TrueDescription.Rarity = GetRarity() - 1;
+        Rarity = CalculateRarity();
+        TrueDescription.Rarity = Rarity - 1;
     }
     public virtual bool BriefDescIsSameAsLong => false;
     public virtual Sprite GetTexture()
@@ -379,7 +381,7 @@ public abstract class PowerUp
     public virtual int Cost => GetDefaultCost();
     public int GetDefaultCost()
     {
-        int rare = GetRarity();
+        int rare = Rarity;
         int cost = 15;
         if (rare == 5)
             cost = 250;
@@ -393,7 +395,7 @@ public abstract class PowerUp
             cost *= 3;
         return cost;
     }
-    public int CalculateRarity()
+    public virtual int CalculateRarity()
     {
         if(Weighting <= 0.05f)
             return 5;
@@ -407,7 +409,7 @@ public abstract class PowerUp
     }
     public virtual int CrucibleGems(bool dissolve = false)
     {
-        int rare = GetRarity();
+        int rare = Rarity;
         int gems = dissolve ? 3 : 5;
         if (rare == 5)
             gems = dissolve ? 20 : 25;
@@ -424,7 +426,7 @@ public abstract class PowerUp
     public virtual int ShardReplicationCost(int stackSize = 1)
     {
         int shards = 1;
-        int rare = GetRarity();
+        int rare = Rarity;
         if (rare == 5)
             shards = 3;
         else if (rare == 3 || rare == 4)
@@ -433,15 +435,15 @@ public abstract class PowerUp
             shards *= 2;
         return shards * stackSize;
     }
-    public virtual int GetRarity()
-    {
-        return CalculateRarity();
-    }
+    //public virtual int GetRarity()
+    //{
+    //    return CalculateRarity();
+    //}
     public virtual Material GetBorder(bool thin = false)
     {
         if (IsBlackMarket())
             return thin ? RedOutlineThin : RedOutline;
-        int rare = GetRarity();
+        int rare = Rarity;
         if (rare == 5)
             return thin ? GoldOutlineThin : GoldOutline;
         if (rare == 4)

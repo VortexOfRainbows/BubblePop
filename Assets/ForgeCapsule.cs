@@ -54,7 +54,7 @@ public class ForgeCapsule : MonoBehaviour
         HeldPower.Start();
         HeldPower.adornment.enabled = false;
         HeldPower.LightingMultiplier = 0.45f;
-        ColoredWater = Fluid.color = HeldPower.MyPower.IsBlackMarket() ? Color.red : ColorHelper.RarityColors[HeldPower.MyPower.GetRarity() - 1].WithAlpha(1);
+        ColoredWater = Fluid.color = HeldPower.MyPower.IsBlackMarket() ? Color.red : ColorHelper.RarityColors[HeldPower.MyPower.Rarity - 1].WithAlpha(1);
         HasSelectedPower = true;
         HeldPower.gameObject.SetActive(true);
         GemCost = HeldPower.MyPower.CrucibleGems();

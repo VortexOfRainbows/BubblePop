@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class BlueCape : BubblemancerCape
 {
@@ -18,7 +16,7 @@ public class BlueCape : BubblemancerCape
         int i = Utils.RandInt(PowerUp.AvailablePowers.Count);
         for(int j = 0; j < 50; ++j)
         {
-            if (PowerUp.Get(PowerUp.AvailablePowers[i]).GetRarity() == 3)
+            if (PowerUp.Get(PowerUp.AvailablePowers[i]).Rarity == 3)
                 break;
             i = Utils.RandInt(PowerUp.AvailablePowers.Count);
         }

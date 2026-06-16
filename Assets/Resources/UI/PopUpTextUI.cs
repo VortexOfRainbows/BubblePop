@@ -96,7 +96,7 @@ public class PopUpTextUI : MonoBehaviour
     public StarUI[] stars;
     public void UpdateStars(float per, float grow)
     {
-        int i = PowerUpVisual.MyPower.GetRarity() - 1;
+        int i = PowerUpVisual.MyPower.Rarity - 1;
         for(int j = 0; j < stars.Length; ++j)
         {
             stars[j].gameObject.SetActive(i == j);

@@ -42,15 +42,6 @@ public static class Utils
         list.Remove(PowerUp.Get<T>());
         return list;
     }
-    public static string ToSpacedString(this string str)
-    {
-        for(int i = str.Length - 1; i > 0; --i)
-        {
-            if (char.IsUpper(str[i]))
-                str = str.Insert(i, " ");
-        }
-        return str;
-    }
     public const float PixelsPerUnit = 4;
     public static Vector2 RotatedBy(this Vector2 spinningpoint, float radians, Vector2 center = default(Vector2))
     {
@@ -304,14 +295,6 @@ public static class Utils
         else
             target.position = target.position.Lerp(position, amt);
         return target.position;
-    }
-    public static string WithSizeAndColor(this string s, int size, string color)
-    {
-        return $"<size={size}><color={color}>{s}</color></size>";
-    }
-    public static string WithColor(this string s, string color)
-    {
-        return $"<color={color}>{s}</color>";
     }
     public static TileBase GetTile(this Tilemap map, int i, int j)
     {

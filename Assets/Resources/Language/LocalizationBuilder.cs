@@ -190,31 +190,31 @@ public static class LocalizationBuilder
         SaveToJson();
         return ExpandedTranslation;
     }
-    public static void CopyOldPowerDescriptionsToNewSystem()
-    {
-        Debug.Log("Porting Old Power Descriptions To Updated System".WithColor("#00FFFF"));
-        foreach(PowerUp p in PowerUp.PowerUps.Values)
-        {
-            string Name = p.GetType().FullName;
-            if (ExpandedTranslation["Power"] is Dictionary<string, object> value)
-            {
-                if (value[Name] is Dictionary<string, object> power)
-                {
-                    if(p.DetailedDescription.Name != null)
-                        power["Title"] = p.DetailedDescription.Name;
-                    if (p.DetailedDescription.ShortDescription != null)
-                        power["Brief"] = p.DetailedDescription.ShortDescription;
-                    if(p.DetailedDescription.Description != null)
-                        power["Description"] = p.DetailedDescription.Description;
-                }
-                else
-                    Debug.Log("Type Error: 2");
-            }
-            else
-                Debug.Log("Type Error: 1");
-        }
-        SaveToJson();
-        Debug.Log("Done".WithColor("#00FFFF"));
-    }
+    //public static void CopyOldPowerDescriptionsToNewSystem()
+    //{
+    //    Debug.Log("Porting Old Power Descriptions To Updated System".WithColor("#00FFFF"));
+    //    foreach(PowerUp p in PowerUp.PowerUps.Values)
+    //    {
+    //        string Name = p.GetType().FullName;
+    //        if (ExpandedTranslation["Power"] is Dictionary<string, object> value)
+    //        {
+    //            if (value[Name] is Dictionary<string, object> power)
+    //            {
+    //                if(p.DetailedDescription.Name != null)
+    //                    power["Title"] = p.DetailedDescription.Name;
+    //                if (p.DetailedDescription.ShortDescription != null)
+    //                    power["Brief"] = p.DetailedDescription.ShortDescription;
+    //                if(p.DetailedDescription.Description != null)
+    //                    power["Description"] = p.DetailedDescription.Description;
+    //            }
+    //            else
+    //                Debug.Log("Type Error: 2");
+    //        }
+    //        else
+    //            Debug.Log("Type Error: 1");
+    //    }
+    //    SaveToJson();
+    //    Debug.Log("Done".WithColor("#00FFFF"));
+    //}
 }
 #endif

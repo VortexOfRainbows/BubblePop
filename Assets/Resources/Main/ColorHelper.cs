@@ -28,4 +28,9 @@ public static class ColorHelper
     {
         return purple ? Color.Lerp(SentinelPurple, SentinelMagenta, t) : Color.Lerp(SentinelGreen, SentinelBlue, t);
     }
+
+    public static readonly string[] RarityColorHex = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934", "#FFAAAA" };
+    public static readonly string YellowHex = "#FFED75";
+    public static readonly string GrayHex = "#999999";
+    public static readonly string LesserGrayHex = "#DDDDDD";
 }

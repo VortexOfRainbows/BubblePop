@@ -115,7 +115,7 @@ public class Equipment : MonoBehaviour
     {
         List<PowerUp> powerPool = new();
         ModifyPowerPool(powerPool);
-        powerPool.Sort((PowerUp first, PowerUp second) => first.GetRarity() - second.GetRarity());
+        powerPool.Sort((PowerUp first, PowerUp second) => first.Rarity - second.Rarity);
         return powerPool;
     }
     protected virtual void ModifyPowerPool(List<PowerUp> powerPool)

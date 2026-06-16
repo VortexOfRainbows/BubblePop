@@ -151,7 +151,7 @@ public class Compendium : MonoBehaviour
             if (PageNumber == 0)
             {
                 PowerUp p = PowerUp.Get(SelectedType);
-                rare = p.GetRarity() - 1;
+                rare = p.Rarity - 1;
                 var AltDescriptions = p.DetailedDescription.LoadAllAlternativeDescriptions();
                 bool hasAlt = AltDescriptions.Count > 0;
                 float size = 42;
@@ -203,7 +203,7 @@ public class Compendium : MonoBehaviour
                     string powerStr = string.Empty;
                     foreach (PowerUp p in powers)
                     {
-                        string name = p.PickedUpCountAllRuns > 0 ? p.DetailedDescription.GetName(false, false) : "???".WithColor(DetailedDescription.Rares[p.GetRarity() - 1]);
+                        string name = p.PickedUpCountAllRuns > 0 ? p.DetailedDescription.GetName(false, false) : "???".WithColor(DetailedDescription.Rares[p.Rarity - 1]);
                         powerStr += " " + name + "\n";
                     }
                     concat += $"<size=26>{powerStr}</size>";

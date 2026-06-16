@@ -771,7 +771,7 @@ public class EatenCake : PowerUp
     {
 
     }
-    public override int GetRarity() => 3;
+    public override int CalculateRarity() => 3;
     public override bool IsBlackMarket() => true;
 }
 public class GlassShard : PowerUp

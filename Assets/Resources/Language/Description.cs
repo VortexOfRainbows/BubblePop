@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+[Obsolete]
 public class DetailedDescription
 {
     public static string BastardizeText(string s, char bChar)
@@ -28,10 +29,10 @@ public class DetailedDescription
         return ret;
     }
     public int Rarity;
-    public static readonly string[] Rares = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934", "#FFAAAA" };
-    public static readonly string Yellow = "#FFED75";
-    public static readonly string Gray = "#999999";
-    public static readonly string LesserGray = "#DDDDDD";
+    public static string[] Rares => ColorHelper.RarityColorHex;
+    public static string Yellow => ColorHelper.YellowHex;
+    public static string Gray => ColorHelper.GrayHex;
+    public static string LesserGray => ColorHelper.LesserGrayHex;
     private static readonly string TabForMoreDetail = " (TAB for more detail)".WithSizeAndColor(24, "#CB8A8A");
     private static readonly int NormalTextSize = 28;
     private static readonly int GrayTextSize = 24;
