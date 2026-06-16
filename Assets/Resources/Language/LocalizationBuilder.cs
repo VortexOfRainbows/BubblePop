@@ -7,15 +7,36 @@ using UnityEngine;
 
 public static class Localization
 {
+    public static string CurrentLanguage => "en-US";
+    public static string ResourceDirectory => "Assets/Resources/Language/";
+    public static string JsonFilePath => $"Assets/Resources/Language/{CurrentLanguage}.json";
+    public static Dictionary<string, string> CondensedTranslation = new();
+    public static string Get(string key)
+    {
+        if (CondensedTranslation.TryGetValue(key, out string value))
+            return value;
+        else
+        {
+#if !UNITY_EDITOR
+            Debug.LogWarning($"Localization key: {key} not found in dictionary. Returning key as placeholder.".WithColor("#FF0000"));
+            return "";
+#else
+            return LocalizationBuilder.RequestPlaceholderValue(key);
+#endif
+        }
+    }
+}
+#if UNITY_EDITOR
+public static class LocalizationBuilder
+{
     public static string ResourcePath => "Assets/Resources/Language/";
     public static string ResourceName => "en-US.hjson";
     public static string CondensedName => "en-US.json";
     public static string ResourceDirectory => ResourcePath + ResourceName;
     public static string CondensedDirectory => ResourcePath + CondensedName;
     public static Dictionary<string, object> ExpandedTranslation = LoadFromJson();
-    public static Dictionary<string, string> CondensedTranslation = new();
+    public static ref Dictionary<string, string> CondensedTranslation => ref Localization.CondensedTranslation;
     //public static Dictionary<string, string> FinalizedTranslation = new();
-
     public static FileSystemWatcher Watcher;
     /// <summary>
     /// Update the localization file if:
@@ -53,13 +74,7 @@ public static class Localization
         }
     }
     public static bool RequiresDictionaryReload { get; set; } = false;
-    public static string Get(string key)
-    {
-        if (CondensedTranslation.TryGetValue(key, out string value))
-            return value;
-        return RequestPlaceholderValue(key);
-    }
-    private static string RequestPlaceholderValue(string key)
+    public static string RequestPlaceholderValue(string key)
     {
         RequiresDictionaryReload = true;
         string[] keys = key.Split('.');
@@ -103,6 +118,7 @@ public static class Localization
         Debug.Log("Building Dictionary...".WithColor("#FF8800"));
         ResetDictionaries();
         ExpandedTranslation = LoadFromJson();
+        SaveToJson();
         Debug.Log("Done...".WithColor("#FF8800"));
     }
     public static void SaveToJson()
@@ -111,13 +127,7 @@ public static class Localization
         string standardJson = JsonConvert.SerializeObject(ExpandedTranslation, Formatting.Indented); 
         var jsonObject = HjsonValue.Parse(standardJson);
         using StringWriter stringWriter = new();
-        // Configure output preferences (e.g., drop the root curly braces for cleaner configs)
-        HjsonOptions options = new()
-        {
-            EmitRootBraces = false, // Hjson's signature style (removes outer { })
-            KeepWsc = false        // Drops unnecessary whitespace/comments logic
-        };
-        // Process and save the structure into our text stream layout
+        HjsonOptions options = new();
         HjsonValue.Save(jsonObject, stringWriter, options);
         File.WriteAllText(ResourceDirectory, stringWriter.ToString());
         ProcessExpandedToCondensed();
@@ -131,7 +141,7 @@ public static class Localization
             CondensedTranslation = new();
         foreach (var kvp in ExpandedTranslation)
         {
-            Debug.Log($"Adding Key: {kvp.Key} with Value Type: {kvp.GetType()}");
+            //Debug.Log($"Adding Key: {kvp.Key} with Value Type: {kvp.GetType()}");
             ProcessNode(kvp.Key, kvp.Value, string.Empty);
         }
         string standardJson = JsonConvert.SerializeObject(CondensedTranslation, Formatting.Indented);
@@ -149,7 +159,7 @@ public static class Localization
         {
             foreach (var kvp in dict)
             {
-                Debug.Log($"Adding Key: {kvp.Key} with Value Type: {kvp.GetType()}");
+                //Debug.Log($"Adding Key: {kvp.Key} with Value Type: {kvp.GetType()}");
                 ProcessNode(kvp.Key, kvp.Value, fullKey);
             }
         }
@@ -180,3 +190,4 @@ public static class Localization
         return ExpandedTranslation;
     }
 }
+#endif

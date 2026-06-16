@@ -23,24 +23,25 @@ public class LocalizationTool : MonoBehaviour
     }
     public void RunUpdate()
     {
-        Localization.UpdateLocalizationFiles();
+        LocalizationBuilder.UpdateLocalizationFiles();
     }
 #if UNITY_EDITOR
     public void Update()
     {
-        if (Localization.RequiresDictionaryReload)
-            Localization.ReloadRequiredUpdate();
+        if (LocalizationBuilder.RequiresDictionaryReload)
+            LocalizationBuilder.ReloadRequiredUpdate();
     }
     public void OnEnable()
     {
-        Localization.InstallHandler();
+        LocalizationBuilder.InstallHandler();
     }
     public void OnDisable()
     {
-        Localization.UninstallHandler();
+        LocalizationBuilder.UninstallHandler();
     }
 #endif
 }
+#if UNITY_EDITOR
 //custom editor for pressing button to run update in inspector
 [CustomEditor(typeof(LocalizationTool))]
 public class LocalizationToolEditor : Editor
@@ -63,7 +64,7 @@ public class LocalizationToolEditor : Editor
         }
         if (GUILayout.Button("Test Adding Power"))
         {
-            Description _ = new(PowerUp.Get<Choice>());
+            PowerDescription _ = new(PowerUp.Get<Choice>());
         }
     }
 }
@@ -122,3 +123,4 @@ public class HjsonInspectorPreview : Editor
         }
     }
 }
+#endif

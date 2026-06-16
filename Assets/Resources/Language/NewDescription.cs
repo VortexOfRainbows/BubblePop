@@ -5,14 +5,7 @@ public class Description
 {
     public Description(object owner)
     {
-        if(owner is PowerUp p)
-        {
-            string Name = p.GetType().FullName;
-            NameText = Localization.Get($"{Name}.Title");
-            Short = Localization.Get($"{Name}.Short");
-            Desc = Localization.Get($"{Name}.Description");
-            FlavorText = Localization.Get($"{Name}.Flavor");
-        }
+
     }
     public string NameText { get; set; }
     public string FlavorText { get; set; }
@@ -23,8 +16,12 @@ public class PowerDescription : Description
 {
     private readonly Dictionary<Type, string> AltText = new();
     private readonly Dictionary<Type, string> ShortAltText = new();
-
-    public PowerDescription(object owner) : base(owner)
+    public PowerDescription(PowerUp owner) : base(owner)
     {
+        string Name = owner.GetType().FullName;
+        NameText = Localization.Get($"Power.{Name}.Title");
+        Short = Localization.Get($"Power.{Name}.Short");
+        Desc = Localization.Get($"Power.{Name}.Description");
+        FlavorText = Localization.Get($"Power.{Name}.Flavor");
     }
 }

@@ -1,10 +1,12 @@
-Choice:
 {
-  Title: Choice
-  Short: Pick which power you want from a given selection
-  Description: Pick which power you want from a given selection
-  Flavor: 
-  '''
-  The choice is yours, but choose wisely. Each power has its own strengths and weaknesses, and the right choice can make all the difference in your journey. - Copilot
-  '''
+  Power:
+  {
+    Choice:
+    {
+      Title: Choice
+      Short: Pick which power you want from a given selection
+      Description: Pick which power you want from a given selection
+      Flavor: "A curious bubble that shifts and reforms itself into other power bubbles. "
+    }
+  }
 }
