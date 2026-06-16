@@ -21,7 +21,7 @@ public class BottleFlip : PowerUp
 {
     public override void Init()
     {
-        Weighting = Epic;
+        Weighting = SuperRare;
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -38,7 +38,7 @@ public class FancyFootwork : CloudWalker
 {
     public override void Init()
     {
-        Weighting = Epic;
+        Weighting = SuperRare;
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {
@@ -231,7 +231,7 @@ public class PrizeBombs : PowerUp
 {
     public override void Init()
     {
-        Weighting = Epic;
+        Weighting = SuperRare;
     }
     public override void InitializeDescription(ref DetailedDescription description)
     {

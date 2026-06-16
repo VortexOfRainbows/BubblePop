@@ -23,7 +23,6 @@ public abstract class PowerUp
     public static readonly float Uncommon = 0.7f;
     public static readonly float Rare = 0.27f;
     public static readonly float SuperRare = 0.1f;
-    public static float Epic => SuperRare;
     public static readonly float Legendary = 0.05f;
     public static readonly Material WhiteOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderWhite");
     public static readonly Material GreenOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderGreen");
@@ -349,6 +348,10 @@ public abstract class PowerUp
     private DetailedDescription TrueDescription;
     public DetailedDescription DetailedDescription => TrueDescription;
     public virtual void InitializeDescription(ref DetailedDescription description)
+    {
+
+    }
+    public virtual void ModifyDescription(ref PowerDescription description)
     {
 
     }
