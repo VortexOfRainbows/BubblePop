@@ -54,7 +54,7 @@ public class LocalizationToolEditor : Editor
         LocalizationTool myData = (LocalizationTool)target;
 
         // Add a button in the inspector
-        if (GUILayout.Button("Update Localization"))
+        if (GUILayout.Button("Reset/Update Localization"))
         {
             myData.RunUpdate();
 
