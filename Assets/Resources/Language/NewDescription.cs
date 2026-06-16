@@ -7,37 +7,66 @@ public class Description
     {
 
     }
-    protected string NameText { get; set; }
-    protected string LoreText { get; set; }
-    protected string BriefDesc { get; set; }
-    protected string LongDesc { get; set; }
+    public string NameText { get; protected set; }
+    public string LoreText { get; protected set; }
+    public string Brief { get; protected set; }
+    public string Full { get; protected set; }
 }
 public class PowerDescription : Description
 {
     private readonly string StartingText;
-    private readonly Dictionary<Type, string> AltText = new();
-    private readonly Dictionary<Type, string> ShortAltText = new();
-    protected string BlackMarketShort { get; set; }
-    protected string BlackMarketDesc { get; set; }
+    private readonly Dictionary<Type, string> FullAlts = new();
+    private readonly Dictionary<Type, string> ShortAlts = new();
+    public string BlackMarketShort { get; protected set; }
+    public string BlackMarketFull { get; protected set; }
     public PowerDescription(PowerUp owner, bool briefIsLong = false) : base(owner)
     {
         StartingText = "Power." + owner.GetType().FullName;
         NameText = Localization.Get($"{StartingText}.Title");
-        LongDesc = Localization.Get($"{StartingText}.Description");
-        BriefDesc = briefIsLong ? LongDesc : Localization.Get($"{StartingText}.Brief");
+        Full = Localization.Get($"{StartingText}.Description");
+        Brief = briefIsLong ? Full : Localization.Get($"{StartingText}.Brief");
         LoreText = Localization.Get($"{StartingText}.Lore");
+
+        BlackMarketShort = Brief;
+        BlackMarketFull = Full;
     }
     public PowerDescription WithAlt<T>(bool newLong = true, bool newBrief = false) where T : Equipment
     {
         Type t = typeof(T);
-        ShortAltText[t] = newBrief ? Localization.Get($"{StartingText}.Brief{t.FullName}") : BriefDesc;
-        AltText[t] = newLong ? Localization.Get($"{StartingText}.Description{t.FullName}") : LongDesc;
+        ShortAlts[t] = newBrief ? Localization.Get($"{StartingText}.Brief{t.FullName}") : Brief;
+        FullAlts[t] = newLong ? Localization.Get($"{StartingText}.Description{t.FullName}") : Full;
         return this;
     }
     public PowerDescription WithBlackMarketVariant(bool newLong = true, bool newBrief = false)
     {
-        BlackMarketShort = newBrief ? Localization.Get($"{StartingText}.BriefBlackMarket") : BriefDesc;
-        BlackMarketDesc = newLong ? Localization.Get($"{StartingText}.DescriptionBlackMarket") : LongDesc;
+        BlackMarketShort = newBrief ? Localization.Get($"{StartingText}.BriefBlackMarket") : Brief;
+        BlackMarketFull = newLong ? Localization.Get($"{StartingText}.DescriptionBlackMarket") : Full;
         return this;
+    }
+    public string GetDescription(bool brief)
+    {
+        if (Player.Instance != null) //Only need to check instanced player, as that's the only player that will see the description (future: multiplayer, other players will be Player.Instance on their clients)
+        {
+            Dictionary<Type, string> dict = brief ? ShortAlts : FullAlts;
+            if(dict.Count > 0) //Look for alternate descriptions based on equipment
+            {
+                List<Type> equipTypes = new();
+                for (int i = 0; i < 4; ++i)
+                {
+                    Type t = Player.Instance.Equips[i].GetType();
+                    equipTypes.Add(t);
+
+                    //In the case of inherited equipment, such as Slots/Dragonslots, they should share the descriptions from Slots
+                    Type b = t.BaseType;
+                    if (b != typeof(Equipment))
+                        equipTypes.Add(b);
+                }
+                foreach (Type t in equipTypes)
+                    if (dict.TryGetValue(t, out string lines))
+                        return lines;
+            }
+        }
+        return brief ? Brief : Full;
+        //return CompleteShortDescription + (withDetails ? TabForMoreDetail : string.Empty);
     }
 }

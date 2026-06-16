@@ -13,7 +13,7 @@ public static class StringUtils
         }
         return str;
     }
-    public static string TextBoundedByRarityColor(int rare, string text, bool blackMarket)
+    public static string WithRarityColor(this string text, int rare, bool blackMarket)
     {
         if (rare == -1)
             return text.WithColor(ColorHelper.LesserGrayHex);

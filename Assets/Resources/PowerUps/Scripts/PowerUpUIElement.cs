@@ -123,7 +123,7 @@ public class PowerUpUIElement : MonoBehaviour
             if(myLayout != null)
                 myLayout.isHovering = true;
             string name = AppearLocked ? DetailedDescription.TextBoundedByRarityColor(MyPower.Rarity - 1, PowerUp.LockedName, MyPower.IsBlackMarket()) : MyPower.UnlockedName;
-            string desc = AppearLocked ? PowerUp.LockedDescription : CompendiumElement ? "" : MyPower.FullDescription;
+            string desc = AppearLocked ? PowerUp.LockedDescription : CompendiumElement ? "" : MyPower.GetFullDescription();
             PopUpTextUI.Enable(name, desc);
             float scaleUP = 1.125f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);

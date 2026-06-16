@@ -362,11 +362,26 @@ public abstract class PowerUp
     }
     public static readonly string LockedName = "???";
     public static readonly string LockedDescription = "Powerup not yet discovered";
-    public string UnlockedName => TrueDescription.GetName(false, IsBlackMarket());
-    public string ShortDescription => TrueDescription.BriefDescription();
-    public bool HasBriefDescription => TrueDescription.HasBriefDescription;
-    public string TrueFullDescription => TrueDescription.FullDescription();
-    public string FullDescription => (Control.Tab || !PlayerData.BriefDescriptionsByDefault) ? TrueFullDescription : TrueDescription.BriefDescription(true);
+    public string UnlockedName => NewDescription.NameText.WithRarityColor(Rarity - 1, IsBlackMarket()); //TrueDescription.GetName(false, IsBlackMarket());
+    public string ShortDescription => NewDescription.GetDescription(true);
+    public string TrueFullDescription => NewDescription.GetDescription(false);
+    public string BlackMarketShortDescription => NewDescription.BlackMarketShort;
+    public string BlackMarketFullDescription => NewDescription.BlackMarketFull;
+    public string GetFullDescription()
+    {
+        //(Control.Tab || !PlayerData.BriefDescriptionsByDefault) ? TrueFullDescription : TrueDescription.BriefDescription(true);
+        bool isBlackMarket = IsBlackMarket();
+        if (Control.Tab || !PlayerData.BriefDescriptionsByDefault)
+            return isBlackMarket ? BlackMarketFullDescription : TrueFullDescription;
+        else
+        {
+            string shortText = isBlackMarket ? BlackMarketShortDescription : ShortDescription;
+            if (!BriefDescIsSameAsLong)
+                shortText += Localization.Get("Common.TabForMoreInformation");
+            return shortText;
+
+        }
+    }
     public virtual void HeldEffect(Player p)
     {
 
@@ -456,10 +471,11 @@ public abstract class PowerUp
     }
     public virtual bool IsBlackMarket()
     {
-        if (ForceBlackMarket)
+        if (ForceBlackMarket) //Only used in the compendium
             return true;
-        else if (ForceNOTBlackMarket)
+        else if (ForceNOTBlackMarket) //Used in power preview (when hovering over equipment)
             return false;
+
         bool NoAltsForCompendium = Compendium.Instance != null && Compendium.Instance.PageNumber == 0;
         if (Main.GameFinishedLoading && !IsInPowerPool && HasBlackMarketAlternate && BlackMarketVariantUnlockCondition.Unlocked && !NoAltsForCompendium)
             return true;

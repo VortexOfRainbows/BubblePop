@@ -158,7 +158,7 @@ public class Compendium : MonoBehaviour
                 if (p is Electroluminescence)
                     size = 39.9f;
                 string concat = $"<size={size}>{p.UnlockedName}</size>" + shortLineBreak;
-                if (p.HasBriefDescription)
+                if (!p.BriefDescIsSameAsLong)
                 {
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n", p.IsBlackMarket())}</size>";
                     concat += p.ShortDescription + shortLineBreak;
