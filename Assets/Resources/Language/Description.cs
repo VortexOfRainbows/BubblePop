@@ -208,27 +208,27 @@ public class DetailedDescription
             return TextBoundedByColor(Gray, text);
         return TextBoundedByColor(Rares[blackMarket ? 5 : rare], text);
     }
-    public string TextBoundedByRarityColor(string text)
-    {
-        return TextBoundedByRarityColor(Rarity, text, false);
-    }
+    //public string TextBoundedByRarityColor(string text)
+    //{
+    //    return TextBoundedByRarityColor(Rarity, text, false);
+    //}
     public string GetName(bool noColor = false, bool blackMarket = false)
     {
         if (noColor)
             return Name;
         return TextBoundedByRarityColor(Rarity, Name, blackMarket);
     }
-    private bool hasLoaded = false;
-    public Dictionary<Type, string> LoadAllAlternativeDescriptions()
-    {
-        if(hasLoaded)
-            return CompleteAltDescriptions;
-        foreach (Type t in AltDescriptions.Keys)
-        {
-            if (AltDescriptions.TryGetValue(t, out string lines) && !CompleteAltDescriptions.TryGetValue(t, out string lines2))
-                CompleteAltDescriptions[t] = ToRichText(lines);
-        }
-        hasLoaded = true;
-        return CompleteAltDescriptions;
-    }
+    //private bool hasLoaded = false;
+    //public Dictionary<Type, string> LoadAllAlternativeDescriptions()
+    //{
+    //    if(hasLoaded)
+    //        return CompleteAltDescriptions;
+    //    foreach (Type t in AltDescriptions.Keys)
+    //    {
+    //        if (AltDescriptions.TryGetValue(t, out string lines) && !CompleteAltDescriptions.TryGetValue(t, out string lines2))
+    //            CompleteAltDescriptions[t] = ToRichText(lines);
+    //    }
+    //    hasLoaded = true;
+    //    return CompleteAltDescriptions;
+    //}
 }

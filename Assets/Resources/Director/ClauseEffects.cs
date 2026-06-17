@@ -248,10 +248,10 @@ public class ChestReward : Reward
     public override string Description()
     {
         if(ChestType == 2)
-            return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[5], ChestQuantity > 1 ? $"{ChestQuantity} Gem Chests" : $"{ChestQuantity} Gem Chest")}";
+            return (ChestQuantity > 1 ? $"{ChestQuantity} Gem Chests" : $"{ChestQuantity} Gem Chest").WithColor(ColorHelper.RarityColorHex[5]);
         if (ChestType == 1)
-            return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[2], ChestQuantity > 1 ? $"{ChestQuantity} Blue Chests" : $"{ChestQuantity} Blue Chest")}";
-        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[0], ChestQuantity > 1 ? $"{ChestQuantity} Chests" : $"{ChestQuantity} Chest")}";
+            return (ChestQuantity > 1 ? $"{ChestQuantity} Blue Chests" : $"{ChestQuantity} Blue Chest").WithColor(ColorHelper.RarityColorHex[2]);
+        return (ChestQuantity > 1 ? $"{ChestQuantity} Chests" : $"{ChestQuantity} Chest").WithColor(ColorHelper.RarityColorHex[0]);
     }
 }
 public class CoinReward : Reward
@@ -271,7 +271,7 @@ public class CoinReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.YellowHex, coins > 1 ? $"{coins} coins" : $"{coins} coin")}";
+        return (coins > 1 ? $"{coins} coins" : $"{coins} coin").WithColor(ColorHelper.YellowHex);
     }
 }
 public class HealReward : Reward
@@ -296,7 +296,7 @@ public class HealReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[5], heals > 1 ? $"{heals} hearts" : $"{heals} heart")}";
+        return (heals > 1 ? $"{heals} hearts" : $"{heals} heart").WithColor(ColorHelper.RarityColorHex[5]);
     }
 }
 public class KeyReward : Reward
@@ -319,7 +319,7 @@ public class KeyReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.LesserGrayHex, keys > 1 ? $"{keys} keys" : $"{keys} key")}";
+        return (keys > 1 ? $"{keys} keys" : $"{keys} key").WithColor(ColorHelper.LesserGrayHex);
     }
 }
 public class TokenReward : Reward
@@ -340,7 +340,7 @@ public class TokenReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.TokenColor.ToHexString(), tokens > 1 ? $"{tokens} Tokens" : $"{tokens} Token")}";
+        return (tokens > 1 ? $"{tokens} Tokens" : $"{tokens} Token").WithColor(ColorHelper.TokenColor.ToHexString());
     }
 }
 public class GemReward : Reward
@@ -364,6 +364,6 @@ public class GemReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[1], gems > 1 ? $"{gems} Gems" : $"{gems} Gem")}";
+        return (gems > 1 ? $"{gems} Gems" : $"{gems} Gem").WithColor(ColorHelper.RarityColorHex[1]);
     }
 }

@@ -168,29 +168,29 @@ public class Compendium : MonoBehaviour
                 if (!p.BriefDescIsSameAsLong)
                 {
                     bool hasAlt = UnlockedAlts.Count > 0 || (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.Unlocked);
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n", isBlackMarket)}</size>";
+                    concat += $"<size=26>{"Brief\n".WithRarityColor(rare, isBlackMarket)}</size>";
                     concat += p.ShortDescription + shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, hasAlt ? "Detailed (Default)\n" : "Detailed\n", isBlackMarket)}</size>";
+                    concat += $"<size=26>{(hasAlt ? "Detailed (Default)\n" : "Detailed\n").WithRarityColor(rare, isBlackMarket)}</size>";
                 }
                 else
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n", isBlackMarket)}</size>";
+                    concat += $"<size=26>{"Description\n".WithRarityColor(rare, isBlackMarket)}</size>";
                 concat += p.TrueFullDescription;
                 if(p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.Unlocked)
                 {
-                    concat += shortLineBreak + $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, $"Detailed (Black Market)\n", true)}</size>";
+                    concat += shortLineBreak + $"<size=26>{$"Detailed (Black Market)\n".WithRarityColor(rare, true)}</size>";
                     concat += p.BlackMarketFullDescription;
                 }
                 foreach(Equipment e in UnlockedAlts.Keys)
                 {
-                    concat += shortLineBreak + $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, $"Detailed ({e.GetName(true)})\n", isBlackMarket)}</size>";
+                    concat += shortLineBreak + $"<size=26>{$"Detailed ({e.GetName(true)})\n".WithRarityColor(rare, isBlackMarket)}</size>";
                     concat += UnlockedAlts[e];
                 }
                 if (!DisplayCPUE.IsLocked())
                 {
                     concat += shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n", isBlackMarket)}</size>";
+                    concat += $"<size=26>{"Times Obtained\n".WithRarityColor(rare, isBlackMarket)}</size>";
                     concat += p.PickedUpCountAllRuns + shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n", isBlackMarket)}</size>";
+                    concat += $"<size=26>{"Greatest Stack\n".WithRarityColor(rare, isBlackMarket)}</size>";
                     concat += p.PickedUpBestAllRuns + shortLineBreak;
                 }
                 DisplayPortDescription.text = DisplayCPUE.IsLocked() ? concat.Bastardize('?') : concat;
@@ -211,18 +211,18 @@ public class Compendium : MonoBehaviour
                 if (!DisplayCEE.IsLocked())
                 {
                     //power pool contributions
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Power Pool\n", false)}</size>";
+                    concat += $"<size=26>{"Power Pool\n".WithRarityColor(rare, false)}</size>";
                     var powers = e.GetPowerPoolForDisplay();
                     string powerStr = string.Empty;
                     foreach (PowerUp p in powers)
                     {
-                        string name = p.PickedUpCountAllRuns > 0 ? p.Description.NameText : "???".WithColor(ColorHelper.RarityColorHex[p.Rarity - 1]);
+                        string name = (p.PickedUpCountAllRuns > 0 ? p.Description.NameText : "???").WithColor(ColorHelper.RarityColorHex[p.Rarity - 1]);
                         powerStr += " " + name + "\n";
                     }
                     concat += $"<size=26>{powerStr}</size>";
                     concat += shortLineBreak;
                 }
-                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n", false)}</size>";
+                concat += $"<size=26>{"Description\n".WithRarityColor(rare, false)}</size>";
                 if (!u.PreReqComplete && !e.IsUnlocked)
                     concat += e.GetDescription().WithColor(ColorHelper.GrayHex) + shortLineBreak;
                 else
@@ -230,7 +230,7 @@ public class Compendium : MonoBehaviour
                 if (!DisplayCEE.IsLocked())
                 {
                     //times used
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Used\n", false)}</size>";
+                    concat += $"<size=26>{"Times Used\n".WithRarityColor(rare, false)}</size>";
                     concat += e.TotalTimesUsed + shortLineBreak;
                 }
                 else
@@ -245,23 +245,23 @@ public class Compendium : MonoBehaviour
             {
                 EnemyID.StaticEnemyData e = DisplayCPEnemy.MyElem.StaticData;
                 rare = e.Rarity - 1;
-                string concat = $"<size=42>{DetailedDescription.TextBoundedByRarityColor(rare, DisplayCPEnemy.MyElem.MyEnemyPrefab.Name(), false)}</size>" + shortLineBreak;
-                concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Stats\n", false)}</size>";
-                concat += $" {DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[5], "Base Health: ")}{e.BaseMaxLife}\n";
+                string concat = $"<size=42>{DisplayCPEnemy.MyElem.MyEnemyPrefab.Name().WithRarityColor(rare, false)}</size>" + shortLineBreak;
+                concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
+                concat += $" {"Base Health: ".WithColor(ColorHelper.RarityColorHex[5])}{e.BaseMaxLife}\n";
                 string coinRange = e.BaseMinCoin != e.BaseMaxCoin ? $"{e.BaseMinCoin}-{e.BaseMaxCoin}" : $"{e.BaseMinCoin}";
-                concat += $" {DetailedDescription.TextBoundedByColor(ColorHelper.YellowHex, "Coin Range: ")}{coinRange}\n";
+                concat += $" {"Coin Range: ".WithColor(ColorHelper.YellowHex)}{coinRange}\n";
                 string gemRange = e.BaseMinGem != e.BaseMaxGem ? $"{e.BaseMinGem}-{e.BaseMaxGem}" : $"{e.BaseMaxGem}";
-                concat += $" {DetailedDescription.TextBoundedByColor(ColorHelper.RarityColors[1].ToHexString(), "Gem Bounty: ")}{gemRange}\n";
-                concat += $" {DetailedDescription.TextBoundedByColor(ColorHelper.LesserGrayHex, "Summon Cost: ")}{e.Cost:#.0}\n";
-                concat += $" {DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[2], "Wave: ")}{e.WaveNumber:#.#}\n";
+                concat += $" {"Gem Bounty: ".WithColor(ColorHelper.RarityColors[1].ToHexString())}{gemRange}\n";
+                concat += $" {"Summon Cost: ".WithColor(ColorHelper.LesserGrayHex)}{e.Cost:#.0}\n";
+                concat += $" {"Wave: ".WithColor(ColorHelper.RarityColorHex[2])}{e.WaveNumber:#.#}\n";
 
                 if (!DisplayCPEnemy.IsLocked())
                 {
                     concat += shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Kills\n", false)}</size>";
+                    concat += $"<size=26>{"Kills\n".WithRarityColor(rare, false)}</size>";
                     concat += e.TimesKilled + shortLineBreak;
 
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Skull Kills\n", false)}</size>";
+                    concat += $"<size=26>{"Skull Kills\n".WithRarityColor(rare, false)}</size>";
                     concat += e.TimesKilledSkull + shortLineBreak;
                 }
                 concat = DisplayCPEnemy.IsLocked() ? concat.Bastardize('?') : concat;
