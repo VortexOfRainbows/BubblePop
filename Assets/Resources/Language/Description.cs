@@ -4,30 +4,6 @@ using System.Collections.Generic;
 [Obsolete]
 public class DetailedDescription
 {
-    public static string BastardizeText(string s, char bChar)
-    {
-        string ret = string.Empty;
-        bool open = false;
-        for (int i = 0; i < s.Length; ++i)
-        {
-            char c = s[i];
-            if (!open)
-            {
-                if (c == '<')
-                {
-                    open = true;
-                }
-                else if (char.IsLetterOrDigit(c))
-                {
-                    c = bChar;
-                }
-            }
-            else if (c == '>')
-                open = false;
-            ret += c;
-        }
-        return ret;
-    }
     public int Rarity;
     public static string[] Rares => ColorHelper.RarityColorHex;
     public static string Yellow => ColorHelper.YellowHex;

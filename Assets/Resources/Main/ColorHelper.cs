@@ -15,7 +15,14 @@ public static class ColorHelper
         return new Color(r / 255f, g / 255f, b / 255f);
     }
     public static readonly Color[] RarityColors = { New255(207, 207, 255), New255(194, 255, 170), New255(170, 211, 254), New255(212, 170, 254), New255(252, 185, 52), New255(255, 170, 170) };
-
+    public static string[] ConvertAllColorsToHex(Color[] colors)
+    {
+        string[] result = new string[colors.Length];
+        for (int i = 0; i < colors.Length; i++)
+            result[i] = colors[i].ToHexString();
+        return result;
+    }
+    public static readonly string[] RarityColorHex = ConvertAllColorsToHex(RarityColors);
     public static readonly Color TokenColor = New255(176, 147, 58);
     public static readonly Color SentinelGreen = new(0.18f, 1.0f, .55f);
     public static readonly Color SentinelBlue = new(0.26f, 0.95f, 1.0f);
@@ -28,8 +35,6 @@ public static class ColorHelper
     {
         return purple ? Color.Lerp(SentinelPurple, SentinelMagenta, t) : Color.Lerp(SentinelGreen, SentinelBlue, t);
     }
-
-    public static readonly string[] RarityColorHex = new string[] { "#CFCFFF", "#C2FFAA", "#AAD3FE", "#D4AAFE", "#FCB934", "#FFAAAA" };
     public static readonly string YellowHex = "#FFED75";
     public static readonly string GrayHex = "#999999";
     public static readonly string LesserGrayHex = "#DDDDDD";

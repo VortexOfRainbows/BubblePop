@@ -50,7 +50,7 @@ Bug Watchlist:
 
 Done: 	
 
-6/15/26 to 6/16/26
+6/15/26 to 6/17/26
 1. Very preliminary stuff to introduce localization and fixup the text system in general
 	1. WIP Localization Class (Autoupdates when modified or information in game is requested)
 		1. probably does not need: Clear out unused keys when auto-updating (instead, this can just be done manually. Most of the time we will not add keys manually so it should be fine)
@@ -59,7 +59,7 @@ Done:
 2. WIP replacing old description class with new one
 	1. Right now the main area impacted is that powers now load straight from localization files instead of the code
 	2. Needs: old stuff still needs to be replaced/removed
-	3. Needs: post-processing like adding colors to the finalized json file storage
+	3. WIP post-processing
 3. Powerup rarities are now calculating once on load using power weights, and never again. Previously the rarity value (discrete 1-5) would be calculated every time it was asked for
 	1. Should reduce some lag relating to powerups
 4. Some internal code organization improvements (more util classes)

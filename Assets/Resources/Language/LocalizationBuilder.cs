@@ -28,7 +28,7 @@ public static class Localization
     }
 }
 #if UNITY_EDITOR
-public static class LocalizationBuilder
+public static partial class LocalizationBuilder
 {
     public static string ResourcePath => "Assets/Resources/Language/";
     public static string ResourceName => "en-US.hjson";
@@ -36,7 +36,6 @@ public static class LocalizationBuilder
     public static string ResourceDirectory => ResourcePath + ResourceName;
     public static string CondensedDirectory => ResourcePath + CondensedName;
     public static Dictionary<string, object> ExpandedTranslation = LoadFromJson();
-    public static ref Dictionary<string, string> CondensedTranslation => ref Localization.CondensedTranslation;
     //public static Dictionary<string, string> FinalizedTranslation = new();
     public static FileSystemWatcher Watcher;
     /// <summary>
@@ -112,7 +111,7 @@ public static class LocalizationBuilder
     public static void ResetDictionaries()
     {
         ExpandedTranslation = new();
-        CondensedTranslation = new();
+        Localization.CondensedTranslation = new();
     }
     public static void UpdateLocalizationFiles()
     {
@@ -136,16 +135,21 @@ public static class LocalizationBuilder
     public static void ProcessExpandedToCondensed()
     {
         Debug.Log("Creating Finalized Dictionary (.json)".WithColor("#FF00FF"));
-        if (CondensedTranslation != null) 
-            CondensedTranslation.Clear();
+        if (Localization.CondensedTranslation != null)
+            Localization.CondensedTranslation.Clear();
         else
-            CondensedTranslation = new();
+            Localization.CondensedTranslation = new();
         foreach (var kvp in ExpandedTranslation)
         {
             //Debug.Log($"Adding Key: {kvp.Key} with Value Type: {kvp.GetType()}");
             ProcessNode(kvp.Key, kvp.Value, string.Empty);
         }
-        string standardJson = JsonConvert.SerializeObject(CondensedTranslation, Formatting.Indented);
+
+        Debug.Log("Processing Final JSON Into Rich Text".WithColor("#8800FF"));
+        Localization.CondensedTranslation = PreProcessLocalization(Localization.CondensedTranslation);
+        Debug.Log("Done...".WithColor("#8800FF"));
+
+        string standardJson = JsonConvert.SerializeObject(Localization.CondensedTranslation, Formatting.Indented);
         File.WriteAllText(CondensedDirectory, standardJson);
         Debug.Log("Done...".WithColor("#FF00FF"));
     }
@@ -154,7 +158,7 @@ public static class LocalizationBuilder
         string fullKey = string.IsNullOrEmpty(parentKey) ? key : $"{parentKey}.{key}";
         if (value is string str)
         {
-            CondensedTranslation[fullKey] = str;
+            Localization.CondensedTranslation[fullKey] = str;
         }
         else if (value is Dictionary<string, object> dict)
         {

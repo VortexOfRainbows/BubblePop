@@ -180,7 +180,7 @@ public class Compendium : MonoBehaviour
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n", p.IsBlackMarket())}</size>";
                     concat += p.PickedUpBestAllRuns + shortLineBreak;
                 }
-                DisplayPortDescription.text = DisplayCPUE.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
+                DisplayPortDescription.text = DisplayCPUE.IsLocked() ? concat.Bastardize('?') : concat;
             }
             else if (PageNumber == 1)
             {
@@ -222,7 +222,7 @@ public class Compendium : MonoBehaviour
                 }
                 else
                 {
-                    concat = DetailedDescription.BastardizeText(concat, '?');
+                    concat = concat.Bastardize('?');
                 }
                 concat += "Associated Achievement: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
                 concat += u.GetName();
@@ -251,7 +251,7 @@ public class Compendium : MonoBehaviour
                     concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Skull Kills\n", false)}</size>";
                     concat += e.TimesKilledSkull + shortLineBreak;
                 }
-                concat = DisplayCPEnemy.IsLocked() ? DetailedDescription.BastardizeText(concat, '?') : concat;
+                concat = DisplayCPEnemy.IsLocked() ? concat.Bastardize('?') : concat;
                 DisplayPortDescription.text = concat;
             }
             else if(PageNumber == 3)
@@ -266,7 +266,7 @@ public class Compendium : MonoBehaviour
                         concat += "Associated Unlocks: \n".WithSizeAndColor(30, DetailedDescription.LesserGray);
                         foreach (Equipment e in DisplayCPAchievement.MyUnlock.AssociatedUnlocks)
                         {
-                            string name = e.IsUnlocked ? e.GetName() : DetailedDescription.BastardizeText(e.GetName(), '?');
+                            string name = e.IsUnlocked ? e.GetName() : e.GetName().Bastardize('?');
                             concat += " " + name + '\n';
                         }
                         concat += shortLineBreak;
