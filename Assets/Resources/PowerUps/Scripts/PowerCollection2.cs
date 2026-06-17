@@ -192,7 +192,7 @@ public class ResearchNotes : PowerUp
     }
     //public override void InitializeDescription(ref DetailedDescription description)
     //{
-    //    description.WithDescription($"Y:[After killing 3 Skull enemies,] become a <color={DetailedDescription.Rares[0]}>Choice</color> with 5 options G:(consumed on use)");
+    //    description.WithDescription($"Y:[After killing 3 Skull enemies,] become a <color={ColorHelper.RarityColorHex[0]}>Choice</color> with 5 options G:(consumed on use)");
     //    description.WithShortDescription("After killing 3 Skull enemies, become a Choice with 5 options");
     //}
     public override void HeldEffect(Player p)
@@ -346,7 +346,7 @@ public class PerpetualBubbleMachine : PowerUp
     }
     //public override void InitializeDescription(ref DetailedDescription description)
     //{
-    //    description.WithDescription($"Adds Y:1 G:(+1 per stack) <color={DetailedDescription.Rares[0]}>Choice</color> to Y:[wave end] \nR:[Rainbow Shard replication cost increases with stack size]");
+    //    description.WithDescription($"Adds Y:1 G:(+1 per stack) <color={ColorHelper.RarityColorHex[0]}>Choice</color> to Y:[wave end] \nR:[Rainbow Shard replication cost increases with stack size]");
     //    description.WithShortDescription("The key to infinite bubble forever?");
     //}
     public override void HeldEffect(Player p)
@@ -572,7 +572,7 @@ public class QuantumCake : PowerUp
     //public override void InitializeDescription(ref DetailedDescription description)
     //{
     //    description.WithName("Quantum Cake");
-    //    description.WithDescription($"Drops a Y:[Heart] and becomes a {"Schrodinger's Cake".WithColor(DetailedDescription.Rares[5])} when Y:dissolved in a Y:Crucible");
+    //    description.WithDescription($"Drops a Y:[Heart] and becomes a {"Schrodinger's Cake".WithColor(ColorHelper.RarityColorHex[5])} when Y:dissolved in a Y:Crucible");
     //    description.WithShortDescription("And you can eat it too!");
     //}
     public override void HeldEffect(Player p)

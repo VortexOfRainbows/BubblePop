@@ -186,13 +186,13 @@ public abstract class UnlockCondition
     public string GetName()
     {
         if(!PreReqComplete && !Completed)
-            return "???".WithColor(DetailedDescription.LesserGray);
+            return "???".WithColor(ColorHelper.LesserGrayHex);
         return DetailedDescription.TextBoundedByRarityColor(Rarity - 1, Description.GetName(true), false);
     }
     public string GetDescription(bool brief = false)
     {
         if (!PreReqComplete && !Completed)
-            return "Play more to uncover".WithColor(DetailedDescription.Gray);
+            return "Play more to uncover".WithColor(ColorHelper.GrayHex);
         return brief ? Description.BriefDescription() : Description.FullDescription();
     }
     public virtual int Rarity => AssociatedUnlocks.Count > 0 ? FrontPageUnlock().GetRarity() : 1;

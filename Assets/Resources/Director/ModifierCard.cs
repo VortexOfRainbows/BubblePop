@@ -49,7 +49,7 @@ public class ModifierCard : MonoBehaviour
         concat = string.Empty;
         if (cardData.RewardClause.PreRewards.Count > 0)
         {
-            concat = "Immediately: \n".WithSizeAndColor(28, DetailedDescription.LesserGray);
+            concat = "Immediately: \n".WithSizeAndColor(28, ColorHelper.LesserGrayHex);
             foreach (Reward r in cardData.RewardClause.PreRewards)
                 concat += r.Description() + '\n';
             if (cardData.RewardClause.PostRewards.Count > 0)
@@ -57,7 +57,7 @@ public class ModifierCard : MonoBehaviour
         }
         if(cardData.RewardClause.PostRewards.Count > 0)
         {
-            concat += "On Completion: \n".WithSizeAndColor(28, DetailedDescription.LesserGray);
+            concat += "On Completion: \n".WithSizeAndColor(28, ColorHelper.LesserGrayHex);
             foreach (Reward r in cardData.RewardClause.PostRewards)
                 concat += r.Description() + '\n';
         }

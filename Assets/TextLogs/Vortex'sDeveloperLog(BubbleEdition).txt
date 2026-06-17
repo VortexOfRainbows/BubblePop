@@ -64,6 +64,7 @@ Done:
 3. Powerup rarities are now calculating once on load using power weights, and never again. Previously the rarity value (discrete 1-5) would be calculated every time it was asked for
 	1. Should reduce some lag relating to powerups
 4. Some internal code organization improvements (more util classes)
+5. Lightning bottle buff resprite
 
 6/14/26 to 6/15/26
 1. Add Lightning in a Bottle powerup

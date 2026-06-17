@@ -28,7 +28,7 @@ public class Crown : Bulb
     }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"{"Choice".WithColor(DetailedDescription.Rares[0])} powers have Y:[5 options]"));
+        abilities.Add(new Ability(Ability.ID.Passive, $"{"Choice".WithColor(ColorHelper.RarityColorHex[0])} powers have Y:[5 options]"));
     }
     public override void EquipUpdate()
     {

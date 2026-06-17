@@ -40,9 +40,9 @@ public class PricedButton : MonoBehaviour
             if (!StartButton.interactable)
             {
                 if(Player.AllPlayers.Count > 1)
-                    PopUpTextUI.Enable("All players must be near a pylon to begin!".WithColor(DetailedDescription.Rares[5]), " ");
+                    PopUpTextUI.Enable("All players must be near a pylon to begin!".WithColor(ColorHelper.RarityColorHex[5]), " ");
                 else
-                    PopUpTextUI.Enable("Must be near a pylon to begin!".WithColor(DetailedDescription.Rares[5]), "");
+                    PopUpTextUI.Enable("Must be near a pylon to begin!".WithColor(ColorHelper.RarityColorHex[5]), "");
             }
             Player.Instance.Control.BlockAttack = true;
         }

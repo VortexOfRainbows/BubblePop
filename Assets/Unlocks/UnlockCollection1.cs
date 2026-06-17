@@ -280,7 +280,7 @@ public class ThoughtBubbleIndistinguishable : UnlockCondition
     {
         description.WithName("Thought Bubble: Indistinguishable");
         description.WithDescription($"As Y:[Thought Bubble,] reach the end of a" +
-            $" {"Infector".WithColor(DetailedDescription.Rares[5])} Y:[Skull Wave]");
+            $" {"Infector".WithColor(ColorHelper.RarityColorHex[5])} Y:[Skull Wave]");
     }
     public override void SetAchievementCategories(ref int zone, ref int category)
     {

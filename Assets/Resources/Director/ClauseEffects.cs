@@ -58,7 +58,7 @@ public class EnemyCard : ClauseEffect
     }
     public override string Description()
     {
-        return $"{"New enemy:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(EnemyToAdd.Name())}";
+        return $"{"New enemy:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(EnemyToAdd.Name())}";
     }
 }
 public abstract class DirectorModifier : ClauseEffect
@@ -91,7 +91,7 @@ public class EnemyStrengthModifier : DirectorModifier
     }
     public override string Description()
     {
-        return $"{"Enemy Health:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
+        return $"{"Enemy Health:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(PercentAsText)}";
     }
 }
 public class DirectorCreditPowerModifier : DirectorModifier
@@ -102,7 +102,7 @@ public class DirectorCreditPowerModifier : DirectorModifier
     }
     public override string Description()
     {
-        return $"{"Wave Power:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(PercentAsText)}";
+        return $"{"Wave Power:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(PercentAsText)}";
     }
 }
 public class DirectorSwarmModifier : DirectorModifier
@@ -127,7 +127,7 @@ public class DirectorAmbushBonusModifier : DirectorModifier
     }
     public override string Description()
     {
-        return $"{"Initial Ambush:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(NumberText)}";
+        return $"{"Initial Ambush:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(NumberText)}";
     }
 }
 public class DirectorSwarmSpeedModifier : DirectorModifier
@@ -149,7 +149,7 @@ public class DirectorSkullWaveModifier : DirectorModifier
     }
     public override string Description()
     {
-        return $"{"Skull Waves:".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(NumberText)}";
+        return $"{"Skull Waves:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(NumberText)}";
     }
 }
 public class DirectorSkullSwarmModifier : DirectorModifier
@@ -176,11 +176,11 @@ public class DirectorSkullSwarmModifier : DirectorModifier
     public override string Description()
     {
         if(IsPermanent)
-            return $"{$"Skull Swarm (".WithSizeAndColor(28, DetailedDescription.LesserGray)}" +
-            $"{Parent.EnemyToAdd.Name().WithSizeAndColor(28, DetailedDescription.Rares[5])}" +
-            $"{"):".WithSizeAndColor(28, DetailedDescription.LesserGray)} {RedText(NumberText)}";
+            return $"{$"Skull Swarm (".WithSizeAndColor(28, ColorHelper.LesserGrayHex)}" +
+            $"{Parent.EnemyToAdd.Name().WithSizeAndColor(28, ColorHelper.RarityColorHex[5])}" +
+            $"{"):".WithSizeAndColor(28, ColorHelper.LesserGrayHex)} {RedText(NumberText)}";
         else
-            return $"{$"Skull Swarm".WithSizeAndColor(30, DetailedDescription.LesserGray)} {RedText(NumberText)}";
+            return $"{$"Skull Swarm".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(NumberText)}";
 
     }
 }
@@ -248,10 +248,10 @@ public class ChestReward : Reward
     public override string Description()
     {
         if(ChestType == 2)
-            return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], ChestQuantity > 1 ? $"{ChestQuantity} Gem Chests" : $"{ChestQuantity} Gem Chest")}";
+            return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[5], ChestQuantity > 1 ? $"{ChestQuantity} Gem Chests" : $"{ChestQuantity} Gem Chest")}";
         if (ChestType == 1)
-            return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[2], ChestQuantity > 1 ? $"{ChestQuantity} Blue Chests" : $"{ChestQuantity} Blue Chest")}";
-        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[0], ChestQuantity > 1 ? $"{ChestQuantity} Chests" : $"{ChestQuantity} Chest")}";
+            return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[2], ChestQuantity > 1 ? $"{ChestQuantity} Blue Chests" : $"{ChestQuantity} Blue Chest")}";
+        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[0], ChestQuantity > 1 ? $"{ChestQuantity} Chests" : $"{ChestQuantity} Chest")}";
     }
 }
 public class CoinReward : Reward
@@ -271,7 +271,7 @@ public class CoinReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Yellow, coins > 1 ? $"{coins} coins" : $"{coins} coin")}";
+        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.YellowHex, coins > 1 ? $"{coins} coins" : $"{coins} coin")}";
     }
 }
 public class HealReward : Reward
@@ -296,7 +296,7 @@ public class HealReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[5], heals > 1 ? $"{heals} hearts" : $"{heals} heart")}";
+        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[5], heals > 1 ? $"{heals} hearts" : $"{heals} heart")}";
     }
 }
 public class KeyReward : Reward
@@ -319,7 +319,7 @@ public class KeyReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.LesserGray, keys > 1 ? $"{keys} keys" : $"{keys} key")}";
+        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.LesserGrayHex, keys > 1 ? $"{keys} keys" : $"{keys} key")}";
     }
 }
 public class TokenReward : Reward
@@ -364,6 +364,6 @@ public class GemReward : Reward
     }
     public override string Description()
     {
-        return $"{DetailedDescription.TextBoundedByColor(DetailedDescription.Rares[1], gems > 1 ? $"{gems} Gems" : $"{gems} Gem")}";
+        return $"{DetailedDescription.TextBoundedByColor(ColorHelper.RarityColorHex[1], gems > 1 ? $"{gems} Gems" : $"{gems} Gem")}";
     }
 }

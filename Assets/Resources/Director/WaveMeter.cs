@@ -119,9 +119,9 @@ public class WaveMeter : MonoBehaviour
         else if(Utils.IsMouseHoveringOverThis(true, NextWaveBG.rectTransform, 0, CardManager.Instance.MyCanvas))
         {
             if (Player.AllPlayers.Count > 1)
-                PopUpTextUI.Enable("All players must be near a pylon to start!".WithColor(DetailedDescription.Rares[5]), " ");
+                PopUpTextUI.Enable("All players must be near a pylon to start!".WithColor(ColorHelper.RarityColorHex[5]), " ");
             else
-                PopUpTextUI.Enable("Must be near a pylon to start!".WithColor(DetailedDescription.Rares[5]), "");
+                PopUpTextUI.Enable("Must be near a pylon to start!".WithColor(ColorHelper.RarityColorHex[5]), "");
         }
         if (!AwaitingNextCard || Main.PlayerNearPylon)
             Pylon.color = Color.Lerp(Pylon.color, Color.white, Utils.DeltaTimeLerpFactor(0.2f));
