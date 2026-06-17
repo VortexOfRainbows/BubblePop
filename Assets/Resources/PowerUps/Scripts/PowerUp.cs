@@ -284,6 +284,7 @@ public abstract class PowerUp
         NewDescription = new(this, BriefDescIsSameAsLong);
         TrueDescription = new(this);
         InitializeDescription(ref TrueDescription);
+        ModifyDescription(ref NewDescription); //Search for alternative relationships when loading the localization
         InternalName = GetType().Name;
         sprite = GetTexture();
         AddToDictionary(this);

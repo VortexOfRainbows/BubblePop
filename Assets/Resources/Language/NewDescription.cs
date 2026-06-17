@@ -33,14 +33,14 @@ public class PowerDescription : Description
     public PowerDescription WithAlt<T>(bool newLong = true, bool newBrief = false) where T : Equipment
     {
         Type t = typeof(T);
-        ShortAlts[t] = newBrief ? Localization.Get($"{StartingText}.Brief{t.FullName}") : Brief;
-        FullAlts[t] = newLong ? Localization.Get($"{StartingText}.Description{t.FullName}") : Full;
+        ShortAlts[t] = newBrief ? Localization.Get($"{StartingText}.{t.FullName}Brief") : Brief;
+        FullAlts[t] = newLong ? Localization.Get($"{StartingText}.{t.FullName}Description") : Full;
         return this;
     }
     public PowerDescription WithBlackMarketVariant(bool newLong = true, bool newBrief = false)
     {
-        BlackMarketShort = newBrief ? Localization.Get($"{StartingText}.BriefBlackMarket") : Brief;
-        BlackMarketFull = newLong ? Localization.Get($"{StartingText}.DescriptionBlackMarket") : Full;
+        BlackMarketShort = newBrief ? Localization.Get($"{StartingText}.BlackMarketBrief") : Brief;
+        BlackMarketFull = newLong ? Localization.Get($"{StartingText}.BlackMarketDescription") : Full;
         return this;
     }
     public string GetDescription(bool brief)

@@ -32,6 +32,9 @@
       Description: Y:Dashing releases Y:2 G:(+1 per stack) damaging stars
       Brief: Adds damaging stars to your ability
       Lore: Power.Dash.Lore
+      ThoughtBubbleDescription: Y:[Channeling recall] has a Y:33% G:(+17% per stack) Y:chance to release damaging stars
+      GachaponDescription: Y:Chips have a Y:50% G:(+25% per stack) Y:chance to release damaging stars
+      FizzyDescription: Y:Skateboard releases a damaging star every Y:[1.0 seconds] G:(-25% per stack)
     }
     ShotSpeed:
     {
@@ -138,6 +141,8 @@
       Description: Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack)
       Brief: Collect coins from farther away
       Lore: Power.Magnet.Lore
+      SlotMachineWeaponBrief: Collect coins and tokens from farther away
+      SlotMachineWeaponDescription: Extends the distance Y:coins and Y:tokens are collected from by Y:75% G:(+75% per stack)
     }
     SpearOfLight:
     {
@@ -244,6 +249,12 @@
       Description: Increases weights of Y:[rare powers] in the Y:[power pool] by Y:20% G:(+20% per stack)
       Brief: Chance of seeing rare powers increased
       Lore: Power.RollForPerception.Lore
+      SlotMachineWeaponBrief: Chance of seeing rare powers and rare spins increased
+      SlotMachineWeaponDescription: 
+        '''
+        Increases weights of Y:[rare powers] in the Y:[power pool] by Y:20% G:(+20% per stack) 
+        Increases the likelihood of Y:[high-rarity spins] by Y:20% G:(+20% per stack)
+        '''
     }
     BubbleShield:
     {
@@ -337,7 +348,7 @@
       Description:
         '''
         Increases the Y:quality of Y:[wave rewards] by Y:20% G:(+20% per stack) 
-        <color=#FFED75>Wave end</color> gains an additional Y:10% G:(+10% per stack) Y:chance to contain a Y:[bonus power reward]
+        Y:Wave Y:end gains an additional Y:10% G:(+10% per stack) Y:chance to contain a Y:[bonus power reward]
         '''
       Brief: Improves wave rewards
       Lore: Power.ResonanceRuby.Lore
@@ -475,9 +486,10 @@
     Eureka:
     {
       Title: Eureka!
-      Description: Reduces <color=#CFCFFF>Choice</color> Y:Reroll cost by Y:5 G:(+5 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)
+      Description: Reduces <color=#CFCFFF>Choice</color> Y:Reroll cost by Y:2 G:(+2 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)
       Brief: Reduces Choice Reroll cost and increases Reroll count
       Lore: Power.Eureka.Lore
+      BlackMarketDescription: Reduces <color=#CFCFFF>Choice</color> Y:Reroll cost by Y:5 G:(+5 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)
     }
     BlackMarketDelivery:
     {

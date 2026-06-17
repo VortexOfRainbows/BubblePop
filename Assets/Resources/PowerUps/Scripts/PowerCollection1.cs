@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class Choice : PowerUp
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Pick which power you want from a given selection");
-    }
     public override void HeldEffect(Player p)
     {
         if (Stack > 0 && !PowerUp.PickingPowerUps)
@@ -27,11 +23,6 @@ public class Choice : PowerUp
 }
 public class ChargeShot : PowerUp
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Increases the Y:damage of your Y:[secondary attack] by Y:50% G:(+50% per stack) and the Y:size of your Y:[secondary attacks] by 40% G:(+40% per stack)");
-        description.WithShortDescription("Increases the size and damage of your secondary attack");
-    }
     public override void HeldEffect(Player p)
     {
         p.ChargeShotDamage += Stack;
@@ -39,11 +30,6 @@ public class ChargeShot : PowerUp
 }
 public class Shotgun : PowerUp
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)");
-        description.WithShortDescription("Increases the amount of bubbles shot by your primary attack");
-    }
     public override void HeldEffect(Player p)
     {
         p.ShotgunPower += Stack;
@@ -55,14 +41,9 @@ public class Dash : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
+    public override void ModifyDescription(ref PowerDescription description)
     {
-        description.WithName("Sparkle Sparkle");
-        description.WithDescription("Y:Dashing releases Y:2 G:(+1 per stack) damaging stars");
-        description.WithDescriptionVariant<ThoughtBubble>("Y:[Channeling recall] has a Y:33% G:(+17% per stack) Y:chance to release damaging stars");
-        description.WithDescriptionVariant<Gachapon>("Y:Chips have a Y:50% G:(+25% per stack) Y:chance to release damaging stars");
-        description.WithDescriptionVariant<Fizzy>("Y:Skateboard releases a damaging star every Y:[1.0 seconds] G:(-25% per stack)");
-        description.WithShortDescription("Adds damaging stars to your ability");
+        description.WithAlt<ThoughtBubble>().WithAlt<Gachapon>().WithAlt<Fizzy>();
     }
     public override void HeldEffect(Player p)
     {
@@ -71,12 +52,6 @@ public class Dash : PowerUp
 }
 public class ShotSpeed : PowerUp
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Bubble Propulsion");
-        description.WithDescription("Small bubbles travel Y:10% G:(+10% per stack) further and faster");
-        description.WithShortDescription("Small bubbles travel further and faster");
-    }
     public override void HeldEffect(Player p)
     {
         p.FasterBulletSpeed += Stack;
@@ -87,11 +62,6 @@ public class Starbarbs : PowerUp
     public override void Init()
     {
         Weighting = Rare;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Enemies Y:[killed by stars] explode into Y:3 G:(+1 per stack) stars");
-        description.WithShortDescription("Enemies killed by stars explode into stars");
     }
     public override void HeldEffect(Player p)
     {
@@ -104,11 +74,6 @@ public class SoapySoap : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Y:[Secondary attack] releases Y:4 G:(+4 per stack) bubbles while traveling, plus Y:[2 more bubbles for each charge level]");
-        description.WithShortDescription("Secondary attack leaves behind a trail of bubbles");
-    }
     public override void HeldEffect(Player p)
     {
         p.SoapySoap += Stack;
@@ -119,11 +84,6 @@ public class BubbleBlast : PowerUp
     public override void Init()
     {
         Weighting = Uncommon;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Y:[Secondary attack] releases Y:4 G:(+3 per stack) bubbles upon expiring, plus Y:1 G:(+1 per stack) Y:[more bubbles for each charge level]");
-        description.WithShortDescription("Secondary attack releases bubbles upon expiring");
     }
     public override void HeldEffect(Player p)
     {
@@ -136,12 +96,6 @@ public class Starshot : PowerUp
     {
         Weighting = SuperRare;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Y:15% G:(+5% per stack) Y:chance to launch stars with your Y:[primary attack] " + //This isn't quite accurate, but is a good approximation
-            "\nIncreases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)");
-        description.WithShortDescription("Launch stars with your primary attack");
-    }
     public override void HeldEffect(Player p)
     {
         p.Starshot += Stack;
@@ -153,12 +107,6 @@ public class WeaponUpgrade : PowerUp
     public override void Init()
     {
         Weighting = Uncommon;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Haste");
-        description.WithDescription("Increases Y:[attack speed] by Y:7% G:(+7% per stack)");
-        description.WithShortDescription("Increases attack speed");
     }
     public override void HeldEffect(Player p)
     {
@@ -175,11 +123,6 @@ public class BinaryStars : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Release Y:2 G:(+1 per stack) stars every Y:[1.5 seconds]");
-        description.WithShortDescription("Periodically release stars");
-    }
     public override void HeldEffect(Player p)
     {
         p.BinaryStars += Stack;
@@ -190,12 +133,6 @@ public class EternalBubbles : PowerUp
     public override void Init()
     {
         Weighting = Uncommon;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Elder Bubbles");
-        description.WithDescription("Increases lifespan of Y:[small bubbles] by Y:[0.8 seconds] G:(+0.4 seconds per stack)");
-        description.WithShortDescription("Increases lifespan of small bubbles");
     }
     public override Sprite GetAdornment()
     {
@@ -212,11 +149,6 @@ public class BubbleBirb : PowerUp
     {
         Weighting = Legendary;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Resurrect in a dance of flames after death G:(consumed on use)");
-        description.WithShortDescription("Resurrect in a dance of flames after death");
-    }
     public override void HeldEffect(Player p)
     {
         p.BonusPhoenixLives += Stack; 
@@ -232,11 +164,6 @@ public class BubbleTrail : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Release a bubble every Y:[0.67 seconds] G:(-33% per stack)");
-        description.WithShortDescription("Periodically release bubbles");
-    }
     public override void HeldEffect(Player p)
     {
         p.BubbleTrail += Stack;
@@ -247,11 +174,6 @@ public class Coalescence : PowerUp
     public override void Init()
     {
         Weighting = Legendary;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Y:[Small bubbles] may fuse with up to Y:1 G:(+1 per stack) other nearby Y:[small bubbles,] gaining Y:[+2 damage] and Y:[+1 pierce] each fusion");
-        description.WithShortDescription("Small bubbles may fuse with nearby bubbles for bonus damage and pierce");
     }
     public override void HeldEffect(Player p)
     {
@@ -265,11 +187,6 @@ public class LuckyStar : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Enemies Y:[killed by stars] have an additional Y:4% G:(+1% per stack) Y:chance to Y:[drop powers] \nThis effect can only happen Y:3 G:(+1 per stack) Y:times per Y:wave");
-        description.WithShortDescription("Enemies killed by stars have an additional chance to drop powers");
-    }
     public override void HeldEffect(Player p)
     {
         p.LuckyStar += Stack;
@@ -282,12 +199,6 @@ public class TrailOfThoughts : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Trail of Thoughts");
-        description.WithDescription("Increases the Y:[maximum length] of your Y:[thought trail] by Y:3 G:(+3 per stacK) and Y:[zap radius] of your Y:[thought trail] by Y:10% G:(+10 per stack)");
-        description.WithShortDescription("Increases thought trail length and zap radius");
-    }
     public override void HeldEffect(Player p)
     {
         p.TrailOfThoughts += Stack;
@@ -299,12 +210,9 @@ public class Magnet : PowerUp
     {
         Weighting = Common;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
+    public override void ModifyDescription(ref PowerDescription description)
     {
-        description.WithDescription("Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack)");
-        description.WithShortDescription("Collect coins from farther away");
-        description.WithDescriptionVariant<SlotMachineWeapon>("Extends the distance Y:coins and Y:tokens are collected from by Y:75% G:(+75% per stack)");
-        description.WithShortDescriptionVariant<SlotMachineWeapon>("Collect coins and tokens from farther away");
+        description.WithAlt<SlotMachineWeapon>(true, true);
     }
     public override void HeldEffect(Player p)
     {
@@ -317,12 +225,6 @@ public class SpearOfLight : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Spear of Light");
-        description.WithDescription("Fire Y:[beams of light] at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2 damage] every Y:[2.2 seconds] and increase Y:[beam of light damage] by Y:0.5 G:(+0.5 per stack)");
-        description.WithShortDescription("Periodically fire beams of light at nearby enemies");
-    }
     public override void HeldEffect(Player p)
     {
         p.LightSpear += Stack;
@@ -334,11 +236,6 @@ public class Overclock : PowerUp
     {
         Weighting = Uncommon;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Reduces Y:[ability cooldown] by Y:20% G:(+20% per stack)");
-        description.WithShortDescription("Reduces ability cooldown");
-    }
     public override void HeldEffect(Player p)
     {
         p.AbilityRecoverySpeed += 0.2f * Stack;
@@ -349,12 +246,6 @@ public class NeuronActivation : PowerUp
     public override void Init()
     {
         Weighting = Legendary;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Reflection");
-        description.WithDescription("Enemies Y:[struck by beams of light] bounce Y:[beams of light] to nearby enemies once; bounced Y:[beams of light gain 20%] G:(+60% per stack) Y:damage");
-        description.WithShortDescription("Enemies struck by beams of light fire beams of light at nearby enemies");
     }
     public override void HeldEffect(Player p)
     {
@@ -369,12 +260,6 @@ public class BrainBlast : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Release Y:20% G:(+10% per stack) more bubbles when Y:[channeling recall] and explode into Y:1 G:(+0.5 per stack) additional bubbles per segment Y:[after recall] \n" +
-            "Increase Y:[thought trail zap damage] by Y:20% G:(+20% per stack)");
-        description.WithShortDescription("Release additional bubbles when recalling and increase thought trail zap damage");
-    }
     public override void HeldEffect(Player p)
     {
         p.BrainBlast += Stack;
@@ -385,11 +270,6 @@ public class Raise : PowerUp
     public override void Init()
     {
         Weighting = Uncommon;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Increases Y:[maximum chip stack height] by Y:1 G:(+1 per stack) and reduces Y:[ability cooldown] by Y:10% G:(+10% per stack)");
-        description.WithShortDescription("Increases maximum chip stack height and slightly reduces ability cooldown");
     }
     public override void HeldEffect(Player p)
     {
@@ -402,13 +282,6 @@ public class AllIn : PowerUp
     public override void Init()
     {
         Weighting = Legendary;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("All-In");
-        description.WithDescription("Increases Y:[total chip stacks] by Y:2 G:(+2 per stack) and grants a Y:5% G:(+5% per stack) Y:chance for chips to be enhanced " +
-            "\nIncreases Y:[maximum chip stack height] by Y:2 G:(+2 per stack) and reduces Y:[ability cooldown] Y:multiplicatively by Y:60% G:(+60% per stack)");
-        description.WithShortDescription("Greatly increases the potency of your chips");
     }
     public override void HeldEffect(Player p)
     {
@@ -424,11 +297,6 @@ public class SnakeEyes : PowerUp
     {
         Weighting = Rare;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:4 G:(+1 per stack) Y: damage plus Y:damage equal to Y:4% of the Y:[victim's max life] over Y:[10 seconds]");
-        description.WithShortDescription("Chance to poison enemies on hit");
-    }
     public override void HeldEffect(Player p)
     {
         p.SnakeEyes += Stack;
@@ -440,11 +308,6 @@ public class Refraction : PowerUp
     {
         Weighting = SuperRare;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Y:[Beams of light] target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units, but they Y:[lose 20% damage] each hit after the first");
-        description.WithShortDescription("Beams of light can target an additional enemy");
-    }
     public override void HeldEffect(Player p)
     {
         p.Refraction += Stack;
@@ -455,11 +318,6 @@ public class Calculator : PowerUp
     public override void Init()
     {
         Weighting = SuperRare;
-    }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithDescription("Friendly projectiles Y:[seek out] enemies within Y:4 G:(+2 per stack) Y:units");
-        description.WithShortDescription("Grants aim assist");
     }
     public override void HeldEffect(Player p)
     {
