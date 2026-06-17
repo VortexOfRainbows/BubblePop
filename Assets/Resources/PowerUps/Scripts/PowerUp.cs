@@ -281,16 +281,13 @@ public abstract class PowerUp
     private readonly string InternalName;
     protected PowerUp()
     {
-        NewDescription = new(this, BriefDescIsSameAsLong);
-        TrueDescription = new(this);
-        InitializeDescription(ref TrueDescription);
-        ModifyDescription(ref NewDescription); //Search for alternative relationships when loading the localization
+        Description = new(this, BriefDescIsSameAsLong);
+        ModifyDescription(ref Description); //Search for alternative relationships when loading the localization
         InternalName = GetType().Name;
         sprite = GetTexture();
         AddToDictionary(this);
         Init();
         Rarity = CalculateRarity();
-        TrueDescription.Rarity = Rarity - 1;
     }
     public virtual bool BriefDescIsSameAsLong => false;
     public virtual Sprite GetTexture()
@@ -350,24 +347,18 @@ public abstract class PowerUp
     {
 
     }
-    private DetailedDescription TrueDescription;
-    private readonly PowerDescription NewDescription;
-    public DetailedDescription DetailedDescription => TrueDescription;
-    public virtual void InitializeDescription(ref DetailedDescription description)
-    {
-
-    }
+    public readonly PowerDescription Description;
     public virtual void ModifyDescription(ref PowerDescription description)
     {
 
     }
     public static readonly string LockedName = "???";
     public static readonly string LockedDescription = "Powerup not yet discovered";
-    public string UnlockedName => NewDescription.NameText.WithRarityColor(Rarity - 1, IsBlackMarket()); //TrueDescription.GetName(false, IsBlackMarket());
-    public string ShortDescription => NewDescription.GetDescription(true);
-    public string TrueFullDescription => NewDescription.GetDescription(false);
-    public string BlackMarketShortDescription => NewDescription.BlackMarketShort;
-    public string BlackMarketFullDescription => NewDescription.BlackMarketFull;
+    public string UnlockedName => Description.NameText.WithRarityColor(Rarity - 1, IsBlackMarket()); //TrueDescription.GetName(false, IsBlackMarket());
+    public string ShortDescription => Description.GetDescription(true);
+    public string TrueFullDescription => Description.GetDescription(false);
+    public string BlackMarketShortDescription => Description.BlackMarketShort;
+    public string BlackMarketFullDescription => Description.BlackMarketFull;
     public string GetFullDescription()
     {
         //(Control.Tab || !PlayerData.BriefDescriptionsByDefault) ? TrueFullDescription : TrueDescription.BriefDescription(true);

@@ -151,33 +151,46 @@ public class Compendium : MonoBehaviour
             if (PageNumber == 0)
             {
                 PowerUp p = PowerUp.Get(SelectedType);
+                bool isBlackMarket = p.IsBlackMarket();
                 rare = p.Rarity - 1;
-                var AltDescriptions = p.DetailedDescription.LoadAllAlternativeDescriptions();
-                bool hasAlt = AltDescriptions.Count > 0;
+                Dictionary<Type, string> AltDescriptions = p.Description.FullAlts;
+                Dictionary<Equipment, string> UnlockedAlts = new();
+                foreach (Type t in AltDescriptions.Keys)
+                {
+                    Equipment e = Main.GlobalEquipData.EquipFromType(t);
+                    if (e.IsUnlocked)
+                        UnlockedAlts[e] = AltDescriptions[t];
+                }
                 float size = 42;
                 if (p is Electroluminescence)
                     size = 39.9f;
                 string concat = $"<size={size}>{p.UnlockedName}</size>" + shortLineBreak;
                 if (!p.BriefDescIsSameAsLong)
                 {
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n", p.IsBlackMarket())}</size>";
+                    bool hasAlt = UnlockedAlts.Count > 0 || (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.Unlocked);
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Brief\n", isBlackMarket)}</size>";
                     concat += p.ShortDescription + shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, hasAlt ? "Detailed (Default)\n" : "Detailed\n", p.IsBlackMarket())}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, hasAlt ? "Detailed (Default)\n" : "Detailed\n", isBlackMarket)}</size>";
                 }
                 else
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n", p.IsBlackMarket())}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Description\n", isBlackMarket)}</size>";
                 concat += p.TrueFullDescription;
-                foreach(Type t in AltDescriptions.Keys)
+                if(p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.Unlocked)
                 {
-                    concat += shortLineBreak + $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, $"Detailed ({Main.GlobalEquipData.EquipFromType(t).GetName(true)})\n", p.IsBlackMarket())}</size>";
-                    concat += AltDescriptions[t];
+                    concat += shortLineBreak + $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, $"Detailed (Black Market)\n", true)}</size>";
+                    concat += p.BlackMarketFullDescription;
+                }
+                foreach(Equipment e in UnlockedAlts.Keys)
+                {
+                    concat += shortLineBreak + $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, $"Detailed ({e.GetName(true)})\n", isBlackMarket)}</size>";
+                    concat += UnlockedAlts[e];
                 }
                 if (!DisplayCPUE.IsLocked())
                 {
                     concat += shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n", p.IsBlackMarket())}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Times Obtained\n", isBlackMarket)}</size>";
                     concat += p.PickedUpCountAllRuns + shortLineBreak;
-                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n", p.IsBlackMarket())}</size>";
+                    concat += $"<size=26>{DetailedDescription.TextBoundedByRarityColor(rare, "Greatest Stack\n", isBlackMarket)}</size>";
                     concat += p.PickedUpBestAllRuns + shortLineBreak;
                 }
                 DisplayPortDescription.text = DisplayCPUE.IsLocked() ? concat.Bastardize('?') : concat;
@@ -203,7 +216,7 @@ public class Compendium : MonoBehaviour
                     string powerStr = string.Empty;
                     foreach (PowerUp p in powers)
                     {
-                        string name = p.PickedUpCountAllRuns > 0 ? p.DetailedDescription.GetName(false, false) : "???".WithColor(ColorHelper.RarityColorHex[p.Rarity - 1]);
+                        string name = p.PickedUpCountAllRuns > 0 ? p.Description.NameText : "???".WithColor(ColorHelper.RarityColorHex[p.Rarity - 1]);
                         powerStr += " " + name + "\n";
                     }
                     concat += $"<size=26>{powerStr}</size>";
@@ -276,7 +289,7 @@ public class Compendium : MonoBehaviour
                         concat += "Black Market Unlocks: \n".WithSizeAndColor(30, ColorHelper.LesserGrayHex);
                         foreach (PowerUp p in DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks)
                         {
-                            string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.DetailedDescription.GetName() : "???".WithColor(ColorHelper.RarityColorHex[rare]);
+                            string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.Description.NameText.WithRarityColor(p.Rarity - 1, false) : "???".WithColor(ColorHelper.RarityColorHex[rare]);
                             concat += " " + name + '\n';
                         }
                         concat += shortLineBreak;

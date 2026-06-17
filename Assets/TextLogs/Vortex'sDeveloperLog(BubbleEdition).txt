@@ -65,6 +65,10 @@ Done:
 	1. Should reduce some lag relating to powerups
 4. Some internal code organization improvements (more util classes)
 5. Lightning bottle buff resprite
+6. Compendium Changes:
+	1. Now has ability to show special black market variant effects (such as Eureka having +5 instead of +2 when bm)
+	2. Compendium no longer shows alternate variant effects (such as the new black market, and also equipment variants, such as sparkle-sparkle's varying effects per character) when the unlock conditions for those variants are unfulfilled.
+		1. ex) Previously, it was possible to see Sparkle-Sparkle's effect on Gachapon, TB, Fizzy before they were unlocked. No longer possible.
 
 6/14/26 to 6/15/26
 1. Add Lightning in a Bottle powerup

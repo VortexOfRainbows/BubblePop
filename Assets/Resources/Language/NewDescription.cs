@@ -15,10 +15,11 @@ public class Description
 public class PowerDescription : Description
 {
     private readonly string StartingText;
-    private readonly Dictionary<Type, string> FullAlts = new();
-    private readonly Dictionary<Type, string> ShortAlts = new();
+    public readonly Dictionary<Type, string> FullAlts = new();
+    public readonly Dictionary<Type, string> ShortAlts = new();
     public string BlackMarketShort { get; protected set; }
     public string BlackMarketFull { get; protected set; }
+    public bool HasBlackMarketVariants { get; protected set; }
     public PowerDescription(PowerUp owner, bool briefIsLong = false) : base(owner)
     {
         StartingText = "Power." + owner.GetType().FullName;
@@ -29,6 +30,7 @@ public class PowerDescription : Description
 
         BlackMarketShort = Brief;
         BlackMarketFull = Full;
+        HasBlackMarketVariants = false;
     }
     public PowerDescription WithAlt<T>(bool newLong = true, bool newBrief = false) where T : Equipment
     {
@@ -41,6 +43,7 @@ public class PowerDescription : Description
     {
         BlackMarketShort = newBrief ? Localization.Get($"{StartingText}.BlackMarketBrief") : Brief;
         BlackMarketFull = newLong ? Localization.Get($"{StartingText}.BlackMarketDescription") : Full;
+        HasBlackMarketVariants = newLong || newBrief;
         return this;
     }
     public string GetDescription(bool brief)
