@@ -1,10 +1,6 @@
 using UnityEngine;
 public class Ent : Enemy
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Ent");
-    }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.06f; //This is intentionally very precise

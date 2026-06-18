@@ -1,10 +1,6 @@
 using UnityEngine;
 public class Crow : Enemy
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Crow");
-    }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.02f;

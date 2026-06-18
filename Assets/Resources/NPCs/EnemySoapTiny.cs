@@ -19,8 +19,4 @@ public class EnemySoapTiny : EnemySoap
         DeathParticles(10, 0.4f, new Color(1, 0.85f, 0.99f));
         AudioManager.PlaySound(SoundID.SoapDie, transform.position, 0.9f, 1.1f);
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Soap Fragment");
-    }
 }

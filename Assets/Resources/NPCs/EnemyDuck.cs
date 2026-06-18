@@ -95,10 +95,6 @@ public class EnemyDuck : Enemy
         DeathParticles(20, 0.5f, new Color(1, .97f, .52f));
         AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.25f, 1.2f);
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Duck");
-    }
     public override void UIAI()
     {
         if (this is not EnemyFlamingo)

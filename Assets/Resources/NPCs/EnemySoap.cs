@@ -75,8 +75,4 @@ public class EnemySoap : Enemy
         float offsetY = Random.Range(-5f, 5f);
         return Target.Position + new Vector2 (offsetX, offsetY);
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Soap");
-    }
 }

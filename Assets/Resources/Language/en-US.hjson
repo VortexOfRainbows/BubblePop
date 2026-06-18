@@ -1091,4 +1091,91 @@
       Description: As Y:Fizzy, kill 5 or more enemies with a single bath bomb explosion
     }
   }
+  Enemy:
+  {
+    EnemyDuck:
+    {
+      Title: Duck
+      Description: Angers when attacked
+      Lore: Enemy.EnemyDuck.Lore
+    }
+    EnemyBossDuck:
+    {
+      Title: Leonard
+      Description: The leader of bath-shaped avian critters
+      Lore: Enemy.EnemyBossDuck.Lore
+    }
+    EnemyFlamingo:
+    {
+      Title: Flamingo
+      Description: Launches smart-feathers that seek out and pop innocent bubbles
+      Lore: Enemy.EnemyFlamingo.Lore
+    }
+    EnemySoap:
+    {
+      Title: Soap
+      Description: Splits in two
+      Lore: Enemy.EnemySoap.Lore
+    }
+    EnemySoapTiny:
+    {
+      Title: Soap Fragment
+      Description: One of two
+      Lore: Enemy.EnemySoapTiny.Lore
+    }
+    Chicken:
+    {
+      Title: Chicken
+      Description: An egg-laying avian gone rogue
+      Lore: Enemy.Chicken.Lore
+    }
+    Gatligator:
+    {
+      Title: Gatligator
+      Description: This skater gator shoots fast and moves faster!
+      Lore: Enemy.Gatligator.Lore
+    }
+    Crow:
+    {
+      Title: Crow
+      Description: An intelligent bird that knows it's best to keep distance
+      Lore: Enemy.Crow.Lore
+    }
+    Ent:
+    {
+      Title: Ent
+      Description: Explodes into eight bullets
+      Lore: Enemy.Ent.Lore
+    }
+    Infector:
+    {
+      Title: Infector
+      Description: A weird parasite that seems to be controlled from elsewhere
+      Lore: Enemy.Infector.Lore
+    }
+    RockSpider:
+    {
+      Title: Rock Spider
+      Description: Technically not a spider
+      Lore: Enemy.RockSpider.Lore
+    }
+    Sentinel:
+    {
+      Title: Sentinel
+      Description: Thought Bubble's laboratory defenses gone rogue!
+      Lore: Enemy.Sentinel.Lore
+    }
+    RockGolem:
+    {
+      Title: Rock Golem
+      Description: Technically not a golem
+      Lore: Enemy.RockGolem.Lore
+    }
+    SuperSentinel:
+    {
+      Title: Super Sentinel
+      Description: Thought Bubble's superior laboratory defenses gone even-more rogue!
+      Lore: Enemy.SuperSentinel.Lore
+    }
+  }
 }

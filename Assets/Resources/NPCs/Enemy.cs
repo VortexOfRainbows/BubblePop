@@ -10,7 +10,6 @@ public static class EnemyID
         public StaticEnemyData(string saveTag)
         {
             SaveTag = saveTag;
-            Description = new(Rarity, "UnnamedEnemy");
             LoadData();
         }
         public void LoadData() //Only called on load
@@ -35,7 +34,7 @@ public static class EnemyID
         public float BaseMinGem { get; set; } = 0;
         public float BaseMaxGem { get; set; } = 1;
         public bool Unlocked => TimesKilled > 0;
-        public DetailedDescription Description;
+        public EnemyDescription EnemyDescription { get; set; }
         public GameObject OriginalPrefab;
     }
     public static Dictionary<int, StaticEnemyData> EnemyData { get; private set; } = new();
@@ -51,8 +50,7 @@ public static class EnemyID
         string saveTag = e.name;
         var d = new StaticEnemyData(saveTag);
         e.InitStaticDefaults(ref d);
-        d.Description.Rarity = d.Rarity - 1;
-        e.InitializeDescription(ref d.Description);
+        d.EnemyDescription = new(e);
         EnemyData.Add(CurrentIndex, d);
         e.SetIndexInAllEnemyArray(CurrentIndex++);
         AllEnemiesList.Add(e);
@@ -80,14 +78,10 @@ public static class EnemyID
 public class Enemy : Entity
 {
     public Player Target => Player.FindClosest(transform.position, out _, out _);
-    public DetailedDescription MyDescription => StaticData.Description;
-    public virtual void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName(StaticData.OriginalPrefab.name);
-    }
+    public EnemyDescription MyDescription => StaticData.EnemyDescription;
     public string Name()
     {
-        return MyDescription.GetName(false, this is Infector);
+        return MyDescription.Name.WithRarityColor(GetRarity() - 1, this is Infector);
     }
     #region Champion
     public float ChampionBonusActionsCounter { get; set; } = 0;

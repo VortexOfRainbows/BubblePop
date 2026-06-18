@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class Infector : Enemy
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Infector");
-    }
     public SpriteRenderer DropShadow;
     public GameObject Head;
     public Enemy Host;

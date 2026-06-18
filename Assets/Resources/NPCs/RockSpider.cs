@@ -6,10 +6,6 @@ public class RockSpider : Enemy
     public SpriteRenderer[] LegConnectors;
     public SpriteRenderer[] LegPoints;
     public Transform Body;
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Rock Spider");
-    }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.04f;

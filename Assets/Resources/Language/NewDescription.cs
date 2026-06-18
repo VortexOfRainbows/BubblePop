@@ -101,3 +101,13 @@ public class UnlockDescription : Description
         Lore = string.Empty; //Unlocks don't have lore
     }
 }
+public class EnemyDescription : Description
+{
+    public EnemyDescription(Enemy owner) : base(owner)
+    {
+        StartingText = "Enemy." + owner.GetType().FullName;
+        Name = Localization.Get($"{StartingText}.Title");
+        Full = Localization.Get($"{StartingText}.Description");
+        Lore = Localization.Get($"{StartingText}.Lore");
+    }
+}

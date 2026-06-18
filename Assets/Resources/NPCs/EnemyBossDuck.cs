@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class EnemyBossDuck : EnemyDuck
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Leonard");
-    }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
         //scale *= 2;

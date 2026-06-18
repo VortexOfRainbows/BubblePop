@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class Chicken : Enemy
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Chicken");
-    }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.1f;

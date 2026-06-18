@@ -2,10 +2,6 @@ using UnityEngine;
 public class RockGolem : RockSpider
 {
     private Color ShotColor => InfectionTarget ? new Color(1, .1f, .1f, 1.0f) : new Color(.2f, .3f, 1f, 1.0f);
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Rock Golem");
-    }
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.05f;

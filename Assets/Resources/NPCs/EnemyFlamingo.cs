@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class EnemyFlamingo : EnemyDuck
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Flamingo");
-    }
     private static readonly float ProjVelocity = 3f;
     private int projectileTimer = 300;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
