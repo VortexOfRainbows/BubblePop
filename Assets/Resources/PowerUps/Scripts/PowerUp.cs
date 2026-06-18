@@ -354,7 +354,7 @@ public abstract class PowerUp
     }
     public static readonly string LockedName = "???";
     public static readonly string LockedDescription = "Powerup not yet discovered";
-    public string UnlockedName => Description.NameText.WithRarityColor(Rarity - 1, IsBlackMarket()); //TrueDescription.GetName(false, IsBlackMarket());
+    public string UnlockedName => Description.Name.WithRarityColor(Rarity - 1, IsBlackMarket()); //TrueDescription.GetName(false, IsBlackMarket());
     public string ShortDescription => Description.GetDescription(true);
     public string TrueFullDescription => Description.GetDescription(false);
     public string BlackMarketShortDescription => Description.BlackMarketShort;

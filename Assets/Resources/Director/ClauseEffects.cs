@@ -4,7 +4,7 @@ public abstract class ClauseEffect
 {
     protected static string RedText(string s)
     {
-        return DetailedDescription.TextBoundedByRarityColor(1, s, true);
+        return s.WithRarityColor(1, true);
     }
     /// <summary>
     /// Called when the wave starts

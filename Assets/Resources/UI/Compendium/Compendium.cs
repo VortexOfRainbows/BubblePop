@@ -216,7 +216,7 @@ public class Compendium : MonoBehaviour
                     string powerStr = string.Empty;
                     foreach (PowerUp p in powers)
                     {
-                        string name = (p.PickedUpCountAllRuns > 0 ? p.Description.NameText : "???").WithColor(ColorHelper.RarityColorHex[p.Rarity - 1]);
+                        string name = (p.PickedUpCountAllRuns > 0 ? p.Description.Name : "???").WithColor(ColorHelper.RarityColorHex[p.Rarity - 1]);
                         powerStr += " " + name + "\n";
                     }
                     concat += $"<size=26>{powerStr}</size>";
@@ -289,7 +289,7 @@ public class Compendium : MonoBehaviour
                         concat += "Black Market Unlocks: \n".WithSizeAndColor(30, ColorHelper.LesserGrayHex);
                         foreach (PowerUp p in DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks)
                         {
-                            string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.Description.NameText.WithRarityColor(p.Rarity - 1, false) : "???".WithColor(ColorHelper.RarityColorHex[rare]);
+                            string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.Description.Name.WithRarityColor(p.Rarity - 1, false) : "???".WithColor(ColorHelper.RarityColorHex[rare]);
                             concat += " " + name + '\n';
                         }
                         concat += shortLineBreak;

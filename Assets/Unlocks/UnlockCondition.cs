@@ -166,12 +166,12 @@ public abstract class UnlockCondition
             {
                 if (!p.IsInPowerPool)
                 {
-                    Debug.Log($"Unlock: Adding to black market pool! {DetailedDescription.TextBoundedByColor("#ff0000", p.UnlockedName)}");
+                    Debug.Log($"Unlock: Adding to black market pool! {p.UnlockedName.WithColor("#ff0000")}");
                     PowerUp.AddBlackMarketPowerToPool(p);
                 }
                 else
                 {
-                    Debug.Log($"Unlock SKIPPED: already in normal pool! {DetailedDescription.TextBoundedByColor("#ff0000", p.UnlockedName)}");
+                    Debug.Log($"Unlock SKIPPED: already in normal pool! {p.UnlockedName.WithColor("#ff0000")}");
                 }
             }
         }
@@ -187,7 +187,7 @@ public abstract class UnlockCondition
     {
         if(!PreReqComplete && !Completed)
             return "???".WithColor(ColorHelper.LesserGrayHex);
-        return DetailedDescription.TextBoundedByRarityColor(Rarity - 1, Description.GetName(true), false);
+        return Description.GetName(true).WithRarityColor(Rarity - 1, false);
     }
     public string GetDescription(bool brief = false)
     {

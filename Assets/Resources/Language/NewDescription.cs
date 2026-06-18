@@ -3,30 +3,30 @@ using System.Collections.Generic;
 
 public class Description
 {
+    protected string StartingText { get; set; }
     public Description(object owner)
     {
 
     }
-    public string NameText { get; protected set; }
-    public string LoreText { get; protected set; }
-    public string Brief { get; protected set; }
+    public string Name { get; protected set; }
+    public string Lore { get; protected set; }
     public string Full { get; protected set; }
 }
 public class PowerDescription : Description
 {
-    private readonly string StartingText;
     public readonly Dictionary<Type, string> FullAlts = new();
     public readonly Dictionary<Type, string> ShortAlts = new();
+    public string Brief { get; protected set; }
     public string BlackMarketShort { get; protected set; }
     public string BlackMarketFull { get; protected set; }
     public bool HasBlackMarketVariants { get; protected set; }
     public PowerDescription(PowerUp owner, bool briefIsLong = false) : base(owner)
     {
         StartingText = "Power." + owner.GetType().FullName;
-        NameText = Localization.Get($"{StartingText}.Title");
+        Name = Localization.Get($"{StartingText}.Title");
         Full = Localization.Get($"{StartingText}.Description");
         Brief = briefIsLong ? Full : Localization.Get($"{StartingText}.Brief");
-        LoreText = Localization.Get($"{StartingText}.Lore");
+        Lore = Localization.Get($"{StartingText}.Lore");
 
         BlackMarketShort = Brief;
         BlackMarketFull = Full;
@@ -71,5 +71,15 @@ public class PowerDescription : Description
         }
         return brief ? Brief : Full;
         //return CompleteShortDescription + (withDetails ? TabForMoreDetail : string.Empty);
+    }
+}
+public class EquipDescription : Description
+{
+    public EquipDescription(Equipment owner) : base(owner)
+    {
+        StartingText = "Equip." + owner.GetType().FullName;
+        Name = Localization.Get($"{StartingText}.Title");
+        Full = Localization.Get($"{StartingText}.Description");
+        Lore = Localization.Get($"{StartingText}.Lore");
     }
 }

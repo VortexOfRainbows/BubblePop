@@ -128,7 +128,7 @@ public class EnemyUIElement : MonoBehaviour
         if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || HasHoverVisual))
         {
             //Debug.Log(MyEnemy.StaticData.Rarity);
-            string name = DetailedDescription.TextBoundedByRarityColor(StaticData.Rarity - 1, Unlocked ? MyEnemy.Name() : "???", false);
+            string name = (Unlocked ? MyEnemy.Name() : "???").WithRarityColor(StaticData.Rarity - 1, false);
             //string desc = Unlocked ? (CompendiumElement ? "" : ActiveEquipment.GetDescription()) : ActiveEquipment.GetUnlockReq();
             PopUpTextUI.Enable(name, "");
             float scaleUp = 1.1f;

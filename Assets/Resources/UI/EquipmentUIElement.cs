@@ -145,7 +145,7 @@ public class EquipmentUIElement : MonoBehaviour
                     }
                     else
                     {
-                        name = DetailedDescription.TextBoundedByRarityColor(ActiveEquipment.GetRarity() - 1, "???", false);
+                        name = "???".WithRarityColor(ActiveEquipment.GetRarity() - 1, false);
                         desc = ActiveEquipment.GetUnlockReq();
                     }
                 }

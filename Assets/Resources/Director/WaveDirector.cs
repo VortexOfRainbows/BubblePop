@@ -247,7 +247,7 @@ public static class WaveDirector
             {
                 var card = AssociatedWaveCards[CurrentAssociatedWaveCardNumber++];
                 PlayCard(card, false, 1.25f);
-                Debug.Log($"Played Special Wave Card At: [{interval * 100:##}%], {DetailedDescription.TextBoundedByColor("#FF0000",card.Patterns[0].EnemyPrefabs[0].GetComponent<Enemy>().Name())}"); 
+                Debug.Log($"Played Special Wave Card At: [{interval * 100:##}%], {card.Patterns[0].EnemyPrefabs[0].GetComponent<Enemy>().Name().WithColor("#FF0000")}"); 
                 OnSkullWavePlayed();
             }
         }
