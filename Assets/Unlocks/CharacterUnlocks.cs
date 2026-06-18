@@ -4,36 +4,17 @@ using UnityEngine;
 
 public class BubblemancerUnlock : UnlockCondition
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Unlikely Hero");
-        description.WithDescription("Starts unlocked");
-    }
     protected override bool TryUnlockCondition => true;
 }
 public class ThoughtBubbleUnlock : UnlockCondition
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Gatekeeper");
-        description.WithDescription("Reach and complete wave 15");
-    }
     protected override bool TryUnlockCondition => WaveDirector.HighScoreWaveNum > 15;
 }
 public class GachaponUnlock : UnlockCondition
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("In For A Penny");
-        description.WithDescription("Spend Y:[5000 coins] across multiple runs");
-    }
+    protected override bool TryUnlockCondition => false;
 }
 public class FizzyUnlock : UnlockCondition
 {
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Kickflip");
-        description.WithDescription($"Reach the end of a {"Gatligator".WithColor(ColorHelper.RarityColorHex[3])} Y:[Skull Wave]");
-    }
     protected override bool TryUnlockCondition => false;
 }

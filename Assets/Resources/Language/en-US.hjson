@@ -957,4 +957,138 @@
       Abl1: Gain Y:[5 coins] when a Y:power is acquired
     }
   }
+  Unlock:
+  {
+    BubblemancerUnlock:
+    {
+      Title: Unlikely Hero
+      Description: Starts unlocked
+    }
+    ThoughtBubbleUnlock:
+    {
+      Title: Gatekeeper
+      Description: Reach and complete wave 15
+    }
+    GachaponUnlock:
+    {
+      Title: In For A Penny
+      Description: Spend Y:[5000 coins] across multiple runs
+    }
+    FizzyUnlock:
+    {
+      Title: Kickflip
+      Description: Reach the end of a <color=#D4AAFEFF>Gatligator</color> Y:[Skull Wave]
+    }
+    StartsUnlocked:
+    {
+      Title: Into the Bubblebath
+      Description: Launch the game for the first time
+    }
+    WaveUnlock10:
+    {
+      Title: You birds don't scare me!
+      Description: Reach and complete wave 10
+    }
+    ChargeShot10:
+    {
+      Title: Bubblemancer: Kamehameha
+      Description: Possess 10 <color=#CFCFFFFF>Charge Shot</color> in a single run
+    }
+    ShotSpeed10:
+    {
+      Title: Bubblemancer: Gas-Operated
+      Description: Possess 10 <color=#CFCFFFFF>Bubble Propulsion</color> in a single run
+    }
+    StarbarbUnlock5:
+    {
+      Title: Bubblemancer: Superstar
+      Description: Possess 5 <color=#AAD3FEFF>Starbarbs</color> in a single run
+    }
+    PlayerDeathUnlock10:
+    {
+      Title: Bubblemancer: First Steps
+      Description: Die 10 times
+    }
+    BubbleBirbUnlock10:
+    {
+      Title: Bubblemancer: From the Dead
+      Description: Pick up 10 <color=#FCB934FF>Bubble Birb</color> across multiple runs
+    }
+    ThoughtBubbleWave15NoAttack:
+    {
+      Title: Thought Bubble: Calculated
+      Description: As Y:[Thought Bubble,] reach and complete wave 15 without using your weapon
+    }
+    GachaponWave15AllSkullWaves:
+    {
+      Title: Gachapon: Triple Down
+      Description: Reach and complete wave 15 as Y:[Gachapon] while choosing only max-difficulty Y:[Wave Cards]
+    }
+    GachaponBurger:
+    {
+      Title: Gachapon: Yummy!
+      Description: As Y:Gachapon, possess 3 <color=#FFAAAAFF>Burger</color> in a single run
+    }
+    GachaponBubblebirb:
+    {
+      Title: Gachapon: Kamikaze
+      Description: As Y:Gachapon, kill <color=#FCB934FF>Leonard</color> with <color=#FCB934FF>Bubble Birb</color> resurrection flames
+    }
+    BubblemancerPerfection:
+    {
+      Title: Bubblemancer: Bath Bomb
+      Description: As Y:Bubblemancer, reach and complete wave 15 without taking damage
+    }
+    GachaponAddicted:
+    {
+      Title: Gachapon: Addicted
+      Description: As Y:Gachapon, reach and complete wave 30
+    }
+    ThoughtBubbleShortForCalc:
+    {
+      Title: Thought Bubble: Short for Calc
+      Description: Assimilate 5 or more <color=#AAD3FEFF>Mitosis</color> into a single <color=#D4AAFEFF>Calculator</color>
+    }
+    ThoughtBubbleDecisionsDecisions:
+    {
+      Title: Thought Bubble: Decisions Decisions
+      Description: Reroll a single <color=#CFCFFFFF>Choice</color> 10 times
+    }
+    GachaponClover:
+    {
+      Title: Gachapon: Clover
+      Description: Using Y:[Gacha Slots,] roll Y:Jackpot 3 times in a row
+    }
+    GachaponHealer:
+    {
+      Title: Gachapon: Healer
+      Description: As Y:Gachapon, take damage 15 times in one run
+    }
+    ThoughtBubbleArsenal:
+    {
+      Title: Thought Bubble: Arsenal
+      Description: As Y:[Thought Bubble,] possess 20 different powers in a single run
+      Name: Thought Bubble: Arsenal
+    }
+    ThoughtBubbleIndistinguishable:
+    {
+      Title: Thought Bubble: Indistinguishable
+      Description: As Y:[Thought Bubble,] reach the end of a <color=#FFAAAAFF>Infector</color> Y:[Skull Wave]
+    }
+    FizzyThinkImJustGonnaStandThereAndTakeIt:
+    {
+      Title: Fizzy: Dodge Tank
+      Description: As Y:Fizzy, dodge damage 3 times in a row
+    }
+    GachaponBlackjack:
+    {
+      Title: Gachapon: Blackjack
+      Description: As Y:Gachapon, reach and complete wave 15 without ever having more than 21 total powers
+    }
+    FizzyCoolGuys:
+    {
+      Title: Fizzy: Don't Look At Explosions
+      Description: As Y:Fizzy, kill 5 or more enemies with a single bath bomb explosion
+    }
+  }
 }

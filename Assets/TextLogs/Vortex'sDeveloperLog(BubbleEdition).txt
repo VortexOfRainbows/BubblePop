@@ -57,10 +57,10 @@ Done:
 	2. WIP new Description Class (Which will read from the localization files)
 	3. WIP HJSON and JSON file storage
 2. WIP replacing old description class with new one
-	1. Right now the main area impacted is that powers now load straight from localization files instead of the code
-	2. Now has support for black market variant descriptions (Eureka now says "When using black market" rather than "when using bulb")
-	3. Needs: old stuff still needs to be replaced/removed
-	4. WIP post-processing
+	1. Now load straight from localization files instead of the code
+	2. Needs: old stuff still needs to be replaced/removed
+		1. Finished: Powers, Descriptions, Abilities
+	3. WIP post-processing
 3. Powerup rarities are now calculating once on load using power weights, and never again. Previously the rarity value (discrete 1-5) would be calculated every time it was asked for
 	1. Should reduce some lag relating to powerups
 4. Some internal code organization improvements (more util classes)

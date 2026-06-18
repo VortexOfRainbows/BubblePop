@@ -102,7 +102,10 @@ public abstract class UnlockCondition
         AssociatedBlackMarketUnlocks = new();
         Description = new(Rarity, SaveString);
         Description.WithoutSizeAugments();
+        UnlockDescription = new(this);
+
         InitializeDescription(ref Description);
+        //LocalizationBuilder.CopyOldUnlockDescriptionsToNewSystem(this);
         SetAchievementCategories(ref AchievementZone, ref AchievementCategory);
         AddToDictionary(this);
     }
@@ -182,7 +185,8 @@ public abstract class UnlockCondition
             SetComplete();
         return Completed;
     }
-    protected DetailedDescription Description;
+    public DetailedDescription Description;
+    protected UnlockDescription UnlockDescription;
     public string GetName()
     {
         if(!PreReqComplete && !Completed)
