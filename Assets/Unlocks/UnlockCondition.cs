@@ -100,12 +100,7 @@ public abstract class UnlockCondition
     {
         AssociatedUnlocks = new();
         AssociatedBlackMarketUnlocks = new();
-        Description = new(Rarity, SaveString);
-        Description.WithoutSizeAugments();
         UnlockDescription = new(this);
-
-        InitializeDescription(ref Description);
-        //LocalizationBuilder.CopyOldUnlockDescriptionsToNewSystem(this);
         SetAchievementCategories(ref AchievementZone, ref AchievementCategory);
         AddToDictionary(this);
     }
@@ -123,7 +118,7 @@ public abstract class UnlockCondition
     }
     public bool Unlocked => FakeComplete || TryUnlock();
     protected virtual bool TryUnlockCondition => false;
-    public string LockedText() => GetDescription(true);
+    public string LockedText() => GetDescription();
     protected bool Completed { get; set; } = false;
     private bool HasShownCompletionMessage { get; set; } = false;
     private bool FakeComplete = false;
@@ -185,25 +180,20 @@ public abstract class UnlockCondition
             SetComplete();
         return Completed;
     }
-    public DetailedDescription Description;
     protected UnlockDescription UnlockDescription;
     public string GetName()
     {
         if(!PreReqComplete && !Completed)
             return "???".WithColor(ColorHelper.LesserGrayHex);
-        return Description.GetName(true).WithRarityColor(Rarity - 1, false);
+        return UnlockDescription.Name.WithRarityColor(Rarity - 1, false);
     }
-    public string GetDescription(bool brief = false)
+    public string GetDescription()
     {
         if (!PreReqComplete && !Completed)
             return "Play more to uncover".WithColor(ColorHelper.GrayHex);
-        return brief ? Description.BriefDescription() : Description.FullDescription();
+        return UnlockDescription.Full;
     }
     public virtual int Rarity => AssociatedUnlocks.Count > 0 ? FrontPageUnlock().GetRarity() : 1;
-    public virtual void InitializeDescription(ref DetailedDescription description)
-    {
-
-    }
     public void AddAssociatedEquip(Equipment e)
     {
         AssociatedUnlocks.Add(e);
