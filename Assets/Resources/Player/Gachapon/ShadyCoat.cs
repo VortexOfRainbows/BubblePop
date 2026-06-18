@@ -19,10 +19,9 @@ public class ShadyCoat : LabCoat
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponBurger>();
     protected override Vector2 CapeScale => new(1f, 1f);
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"Increases the rate at which Y:[Black Market powers] appear in the shop by Y:100%"));
-        abilities.Add(new Ability(Ability.ID.Passive, $"Y:[Black Market crates] have a Y:5% chance to Y:[replace chest rewards]"));
+        description.RequestAbilitySlots(Ability.ID.Passive, Ability.ID.Passive);
     }
     public override void Init()
     {

@@ -11,9 +11,9 @@ public class BunceHat : BubblemancerHat
         offset.y -= 0.35f;
         offset.x += 0.1f;
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));
+        description.RequestAbilitySlots(Ability.ID.Passive);
     }
     public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int MaxShield, ref int Shield)
     {

@@ -24,9 +24,9 @@ public class Fizzy : Body
         powerPool.Add(PowerUp.Get<BonusBoards>());
         powerPool.Add(PowerUp.Get<Kickflip>());
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Ability, "Do a Y:[Cool Kickflip] and Y:mount a Y:Skateboard"));
+        description.RequestAbilitySlots(Ability.ID.Ability);
     }
     public float SkateboardPercent => SkateboardMountCounter / SkateboardMountTime;
     public float starTimer = 1.0f;

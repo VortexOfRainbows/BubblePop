@@ -13,10 +13,9 @@ public class DragonSlots : SlotMachineWeapon
     {
         base.ModifyPowerPool(powerPool);
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Primary, "Spend Y:coins or a Y:token to spin! Losing spins Y:[spew fire]"));
-        abilities.Add(new Ability(Ability.ID.Secondary, "Slam! Killed enemies drop a Y:token"));
+        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary);
     }
     public Transform Jaw;
     public Transform OpenMouth;

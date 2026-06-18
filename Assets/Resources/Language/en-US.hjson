@@ -729,6 +729,7 @@
       Title: Bubblemancer
       Description: A humble shepard from the quaint Bubble Fields
       Lore: Equip.Bubblemancer.Lore
+      Abl1: Y:Dash forward a short distance
     }
     BubblemancerHat:
     {
@@ -747,12 +748,16 @@
       Title: Bubble Wand
       Description: A magical bubble-blowing wand given to The Bubblemancer by a suspicious scientist
       Lore: Equip.BubblemancerWand.Lore
+      Abl1: Blow a Y:[volley of bubbles]
+      Abl2: Y:Charge a big bubble that can Y:pierce multiple enemies
     }
     ThoughtBubble:
     {
       Title: Thought Bubble
       Description: A mysterious Bubbletech Scientist. His origin is unknown. He appeared before Bubblemancer shortly after the first waves... why was he there?
       Lore: Equip.ThoughtBubble.Lore
+      Abl1: Y:Charge a teleport to a segment of your Y:[thought trail]
+      Abl2: Generate a Y:[thought trail] while moving
     }
     Bulb:
     {
@@ -771,12 +776,20 @@
       Title: Electrodynamics Grimoire
       Description: Thought Bubble's trusty tome, 'only used for self defense'
       Lore: Equip.Book.Lore
+      Abl1:
+        '''
+        Cast a Y:[thunder bubble] 
+        Only a few may exist at a time
+        '''
+      Abl2: Recall Y:[thunder bubbles] for additional return damage
     }
     Gachapon:
     {
       Title: Gachapon
       Description: A greedy shopkeeper? No! I'm the most honest gal around!
       Lore: Equip.Gachapon.Lore
+      Abl1: Unleash Y:[homing chips] from the top of each Y:[chip stack]
+      Abl2: Generate Y:[chips] over time
     }
     Dice:
     {
@@ -789,30 +802,37 @@
       Title: Wishing Emerald
       Description: Grants an additional heart
       Lore: Equip.Crystal.Lore
+      Abl1: Y:+1 Y:Heart
     }
     BlueblemancerHat:
     {
       Title: Bluebblemancy Hat
       Description: Stars last longer and orbit you
       Lore: Equip.BlueblemancerHat.Lore
+      Abl1: Stars last longer and orbit you
     }
     BlueCape:
     {
       Title: Bluebblemancy Cape
       Description: Start with a random <color=#AAD3FEFF>3-star power</color>
       Lore: Equip.BlueCape.Lore
+      Abl1: Start with a random <color=#AAD3FEFF>3-star power</color>
     }
     BubbleStaff:
     {
       Title: Bubble Staff
       Description: An expertly crafted bubble-tech weapon
       Lore: Equip.BubbleStaff.Lore
+      Abl1: Blow a Y:[volley of bubbles]
+      Abl2: Y:Charge an Y:extra big bubble that can Y:pierce multiple enemies
     }
     BubbleGun:
     {
       Title: Bubble Gun
       Description: The right to bare bubble shall not be infringed
       Lore: Equip.BubbleGun.Lore
+      Abl1: Fire a Y:[stream of bubbles]
+      Abl2: Y:Charge a big bubble that can Y:pierce multiple enemies
     }
     BunceHat:
     {
@@ -823,24 +843,28 @@
         You stupid!
         '''
       Lore: Equip.BunceHat.Lore
+      Abl1: Y:+1 Y:Heart
     }
     RedHat:
     {
       Title: Red Bubblemancy Hat
       Description: Start with <color=#FCB934FF>Bubble Birb</color>
       Lore: Equip.RedHat.Lore
+      Abl1: Start with <color=#FCB934FF>Bubble Birb</color>
     }
     RedCape:
     {
       Title: Red Bubblemancy Cape
       Description: Gain a <color=#FFAAAAFF>Contract</color> everytime you resurrect
       Lore: Equip.RedCape.Lore
+      Abl1: Gain a <color=#FFAAAAFF>Contract</color> everytime you resurrect
     }
     Crown:
     {
       Title: Crown of Command
       Description: Choice powers have 5 options
       Lore: Equip.Crown.Lore
+      Abl1: <color=#CFCFFFFF>Choice</color> powers have Y:[5 options]
     }
     Cryskull:
     {
@@ -851,36 +875,46 @@
         Increases wave card difficulty and rewards
         '''
       Lore: Equip.Cryskull.Lore
+      Abl1: Y:+1 Y:Heart
+      Abl2: Increases Y:[wave card difficulty] and Y:rewards
     }
     ShadyCoat:
     {
       Title: Suspicious Disguise
       Description: Gachapon must know something about the black market dealer... why else would she have his coat?
       Lore: Equip.ShadyCoat.Lore
+      Abl1: Increases the rate at which Y:[Black Market powers] appear in the shop by Y:100%
+      Abl2: Y:[Black Market crates] have a Y:5% chance to Y:[replace chest rewards]
     }
     SlotMachineWeapon:
     {
       Title: Gacha Slots
       Description: 99% of bubbles pop before hitting it big
       Lore: Equip.SlotMachineWeapon.Lore
+      Abl1: Spend Y:coins or a Y:token to spin! Winning spins do Y:[more damage]
+      Abl2: Slam! Killed enemies drop a Y:token
     }
     DragonSlots:
     {
       Title: Dragon Slots
-      Description: Ignite enemies on failed rolls
+      Description: Ignite enemies on losing spins
       Lore: Equip.DragonSlots.Lore
+      Abl1: Spend Y:coins or a Y:token to spin! Losing spins Y:[spew fire]
+      Abl2: Slam! Killed enemies drop a Y:token
     }
     UtilityBelt:
     {
       Title: Utility Belt
       Description: Start with a <color=#CFCFFFFF>Magnet</color>, a Y:Key, and Y:[100 coins]
       Lore: Equip.UtilityBelt.Lore
+      Abl1: Start with a <color=#CFCFFFFF>Magnet</color>, a Y:Key, and Y:[100 coins]
     }
     Fizzy:
     {
       Title: Fizzy
       Description: He's a pretty cool bubble
       Lore: Equip.Fizzy.Lore
+      Abl1: Do a Y:[Cool Kickflip] and Y:mount a Y:Skateboard
     }
     Cap:
     {
@@ -899,18 +933,28 @@
       Title: Cola Pop
       Description: A popular bubble beverage that tastes sweet with a hint of vanilla, caramel, and citrus
       Lore: Equip.Cola.Lore
+      Abl1: Unleash a Y:[stream of bubbles] in a burst
+      Abl2: Y:Throw an Y:[explosive bottle of pop]
     }
     PhysicsBook:
     {
       Title: Guide to Physics
       Description: An encyclopedia of everything physics
       Lore: Equip.PhysicsBook.Lore
+      Abl1:
+        '''
+        Cast a Y:[thunder bubble] 
+        Only a few may exist at a time
+        '''
+      Abl2: Recall Y:[thunder bubbles] for additional return damage
+      Abl3: Y:[Thunder bubbles] have Y:[magnetic properties] and can pick up Y:coins
     }
     CatEars:
     {
       Title: Cat Ears
       Description: Tail not included
       Lore: Equip.CatEars.Lore
+      Abl1: Gain Y:[5 coins] when a Y:power is acquired
     }
   }
 }

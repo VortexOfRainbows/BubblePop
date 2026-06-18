@@ -4,9 +4,9 @@ using System.Linq;
 public class RedHat : BubblemancerHat
 {
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<BubbleBirbUnlock10>();
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"Start with {PowerUp.Get<BubbleBirb>().UnlockedName}"));
+        description.RequestAbilitySlots(Ability.ID.Passive);
     }
     public override void OnStartWith()
     {

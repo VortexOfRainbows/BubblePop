@@ -8,10 +8,9 @@ public class Cryskull : Crystal
         offset = Vector2.zero;
         scale = 2f;
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));
-        abilities.Add(new Ability(Ability.ID.Passive, $"Increases Y:[wave card difficulty] and Y:rewards"));
+        description.RequestAbilitySlots(Ability.ID.Passive, Ability.ID.Passive);
     }
     public override void EquipUpdate()
     {

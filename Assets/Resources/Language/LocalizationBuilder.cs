@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 
@@ -220,18 +221,36 @@ public static partial class LocalizationBuilder
     //    SaveToJson();
     //    Debug.Log("Done".WithColor("#00FFFF"));
     //}
-    public static void CopyOldEquipmentDescriptionToNewSystem(Equipment e, DetailedDescription old)
+    //public static void CopyOldEquipmentDescriptionToNewSystem(Equipment e, DetailedDescription old)
+    //{
+    //    Debug.Log($"Porting Old Power Equip To Updated System: {old.Name}".WithColor("#00FFFF"));
+    //    string Name = e.GetType().FullName;
+    //    if (ExpandedTranslation["Equip"] is Dictionary<string, object> value)
+    //    {
+    //        if (value[Name] is Dictionary<string, object> equip)
+    //        {
+    //            if(old.Name != null)
+    //                equip["Title"] = old.Name;
+    //            if(old.Description != null)
+    //                equip["Description"] = old.Description;
+    //        }
+    //        else
+    //            Debug.Log("Type Error: 2");
+    //    }
+    //    else
+    //        Debug.Log("Type Error: 1");
+    //    SaveToJson();
+    //}
+    public static void CopyOldEquipmentAbilitiesToNewSystem(Equipment e, List<Ability> abls)
     {
-        Debug.Log($"Porting Old Power Equip To Updated System: {old.Name}".WithColor("#00FFFF"));
         string Name = e.GetType().FullName;
+        Debug.Log($"Porting Old Power Equip To Updated System: {Name}".WithColor("#00FFFF"));
         if (ExpandedTranslation["Equip"] is Dictionary<string, object> value)
         {
             if (value[Name] is Dictionary<string, object> equip)
             {
-                if(old.Name != null)
-                    equip["Title"] = old.Name;
-                if(old.Description != null)
-                    equip["Description"] = old.Description;
+                for(int i = 0; i < abls.Count; ++i)
+                    equip[$"Abl{i + 1}"] = abls[i].Blurb;
             }
             else
                 Debug.Log("Type Error: 2");

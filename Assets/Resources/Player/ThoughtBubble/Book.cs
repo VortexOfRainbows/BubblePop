@@ -28,10 +28,9 @@ public class Book : Weapon
     {
         Player.TotalBookBalls = 0;
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Primary, "Cast a Y:[thunder bubble] \nOnly a few may exist at a time"));
-        abilities.Add(new Ability(Ability.ID.Secondary, "Recall Y:[thunder bubbles] for additional return damage"));
+        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary);
     }
     protected override void AnimationUpdate()
     {

@@ -19,10 +19,9 @@ public class BubblemancerWand : Weapon
         powerPool.Add<ShotSpeed>();
         powerPool.Add<Starshot>();
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Primary, "Blow a Y:[volley of bubbles]"));
-        abilities.Add(new Ability(Ability.ID.Secondary, "Y:Charge a big bubble that can Y:pierce multiple enemies"));
+        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary);
     }
     protected override void AnimationUpdate()
     {

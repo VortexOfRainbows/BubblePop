@@ -175,11 +175,12 @@ public class Equipment : MonoBehaviour
     {
         Main.GlobalEquipData.EquipTypeToIndex.Add(GetType(), index);
         EquipDescription newDescription = new(this);
-        List<Ability> MyAbilities = new();
+        ModifyDescription(ref newDescription);
+
         //LocalizationBuilder.CopyOldEquipmentDescriptionToNewSystem(this, descData);
-        InitializeAbilities(ref MyAbilities);
+        //InitializeAbilities(ref MyAbilities);
+
         Main.GlobalEquipData.DescriptionData.Add(newDescription);
-        Main.GlobalEquipData.AbilityData.Add(MyAbilities);
         Main.GlobalEquipData.TimesUsedList.Add(0);
         LoadGlobalData();
         UnlockCondition.AddAssociatedEquip(this);
@@ -219,9 +220,9 @@ public class Equipment : MonoBehaviour
     }
     public List<Ability> GetAbility()
     {
-        return Main.GlobalEquipData.AbilityData[IndexInAllEquipPool];
+        return GetMyDescription().Abilities;
     }
-    public virtual void InitializeAbilities(ref List<Ability> abilities)
+    public virtual void ModifyDescription(ref EquipDescription description)
     {
 
     }

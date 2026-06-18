@@ -13,10 +13,6 @@ public class Kicks : Accessory
         offset = new Vector2(-0.12f, 1.15f);
         scale = 1.8f;
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
-    {
-        //abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));
-    }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

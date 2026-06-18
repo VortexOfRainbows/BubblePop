@@ -3,9 +3,9 @@ using System.Collections.Generic;
 public class BlueCape : BubblemancerCape
 {
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<WaveUnlock10>();
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"Start with a random {"3-star power".WithColor(ColorHelper.RarityColorHex[2])}"));
+        description.RequestAbilitySlots(Ability.ID.Passive);
     }
     public override void OnStartWith()
     {

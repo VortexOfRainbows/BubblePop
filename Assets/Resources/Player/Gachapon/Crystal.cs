@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class Crystal : Accessory
 {
@@ -15,9 +13,9 @@ public class Crystal : Accessory
         offset = Vector2.zero;
         scale = 2.0f;
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));
+        description.RequestAbilitySlots(Ability.ID.Passive);
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)

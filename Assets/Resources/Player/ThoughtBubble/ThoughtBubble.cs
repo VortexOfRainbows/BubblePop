@@ -34,10 +34,9 @@ public class ThoughtBubble : Body
         powerPool.Add<BrainBlast>();
         powerPool.Add<LightningInABottle>();
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Ability, "Y:Charge a teleport to a segment of your Y:[thought trail]"));
-        abilities.Add(new Ability(Ability.ID.Passive, "Generate a Y:[thought trail] while moving"));
+        description.RequestAbilitySlots(Ability.ID.Ability, Ability.ID.Passive);
     }
     public override void FaceUpdate()
     {

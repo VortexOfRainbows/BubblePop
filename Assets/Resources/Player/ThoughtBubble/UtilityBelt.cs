@@ -18,9 +18,9 @@ public class UtilityBelt : Accessory
         powerPool.Add<Calculator>();
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleArsenal>();
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"Start with a {"Magnet".WithColor(ColorHelper.RarityColorHex[0])}, a Y:Key, and Y:[100 coins]"));
+        description.RequestAbilitySlots(Ability.ID.Passive);
     }
     public override void OnStartWith()
     {

@@ -6,10 +6,9 @@ public class PhysicsBook : Book
     public List<GameObject> MagnetBalls { get; set; } = new();
     public int MagnetBallCounter = 0;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleIndistinguishable>();
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        base.InitializeAbilities(ref abilities);
-        abilities.Add(new Ability(Ability.ID.Passive, "Y:[Thunder bubbles] have Y:[magnetic properties] and can pick up Y:coins"));
+        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary, Ability.ID.Passive);
     }
     public override int GetRarity() => 2;
     public override Sprite OpenBook => Resources.Load<Sprite>("Player/ThoughtBubble/Book2Open");

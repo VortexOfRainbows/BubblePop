@@ -22,9 +22,9 @@ public class Crown : Bulb
     {
         base.ModifyPowerPool(powerPool);
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, $"{"Choice".WithColor(ColorHelper.RarityColorHex[0])} powers have Y:[5 options]"));
+        description.RequestAbilitySlots(Ability.ID.Passive);
     }
     public override void EquipUpdate()
     {

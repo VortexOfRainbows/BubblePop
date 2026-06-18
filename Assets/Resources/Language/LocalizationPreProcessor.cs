@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static partial class LocalizationBuilder
@@ -8,6 +9,7 @@ public static partial class LocalizationBuilder
     private const int GrayTextSize = 24;
     public static Dictionary<string, string> PreProcessLocalization(Dictionary<string, string> translation)
     {
+        //Doesn't really matter how optimized this is, as it will only be run once to preprocess all localizations. Players will not even run these
         Dictionary<string, string> completeDictionary = new();
         foreach (string key in translation.Keys)
         {
@@ -15,12 +17,20 @@ public static partial class LocalizationBuilder
             if(key.EndsWith("Description"))
             {
                 bool augmentSize = true;
-                if (key.StartsWith("Blurb") || key.StartsWith("Equip") || key.StartsWith("Unlock"))
+                if (key.StartsWith("Equip") || key.StartsWith("Unlock"))
                     augmentSize = false;
                 value = ToRichText(value, augmentSize);
             }
             else if(key.EndsWith("TabForMoreInformation"))
                 value = value.WithSizeAndColor(24, "#CB8A8A");
+            else if(key.StartsWith("Equip"))
+            {
+                var segments = key.Split('.');
+                if(segments.Last().StartsWith("Abl"))
+                {
+                    value = ToRichText(value, false);
+                }
+            }
             completeDictionary[key] = value;
         }
         return completeDictionary;

@@ -23,10 +23,9 @@ public class SlotMachineWeapon : Weapon
         powerPool.Add<RouletteWheel>(); //Blue, Roulette Wheel (Keep that ball rolling!
         powerPool.Add<BatterUp>(); //Purple, Batter Up
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Primary, "Spend Y:coins or a Y:token to spin! Winning spins do Y:[more damage]"));
-        abilities.Add(new Ability(Ability.ID.Secondary, "Slam! Killed enemies drop a Y:token"));
+        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary);
     }
     public override void EquipUpdate()
     {

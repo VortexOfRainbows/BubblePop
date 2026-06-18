@@ -21,10 +21,9 @@ public class Cola : Weapon
         powerPool.Add<CarbonForce>();
         powerPool.Add<BombasticBrew>();
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Primary, "Unleash a Y:[stream of bubbles] in a burst"));
-        abilities.Add(new Ability(Ability.ID.Secondary, "Y:Throw an Y:[explosive bottle of pop]"));
+        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary);
     }
     protected override void AnimationUpdate()
     {

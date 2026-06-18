@@ -38,19 +38,17 @@ public class Ability
         public const int Ability = 2;
         public const int Passive = 3;
     }
-    public DetailedDescription Blurb;
+    public string Blurb;
     public int Type { get; set; }
     public Ability(int type, string blurb)
     {
-        Blurb = new DetailedDescription(1, "Ability Blurb");
-        Blurb.WithoutSizeAugments();
-        Blurb.WithDescription(blurb);
+        Blurb = blurb;
         Type = type;
     }
     public GameObject CreateAbilityBlurb(Transform parent, Canvas canvas)
     {
         var g = GameObject.Instantiate(Main.PrefabAssets.AbilityBlurbPrefab, parent);
-        g.GetComponent<TextMeshProUGUI>().text = Blurb.FullDescription();
+        g.GetComponent<TextMeshProUGUI>().text = Blurb;
         var b = g.GetComponent<AbilityBlurb>();
         b.MyCanvas = canvas;
         b.Type = Type;

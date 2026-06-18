@@ -168,10 +168,9 @@ public class Gachapon : Body
         powerPool.Add<AllIn>();
         powerPool.Add<DoubleDown>();
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Ability, "Unleash Y:[homing chips] from the top of each Y:[chip stack]"));
-        abilities.Add(new Ability(Ability.ID.Passive, "Generate Y:[chips] over time"));
+        description.RequestAbilitySlots(Ability.ID.Ability, Ability.ID.Passive);
     }
     public GameObject top;
     public override void FaceUpdate()

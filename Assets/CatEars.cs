@@ -13,9 +13,9 @@ public class CatEars : Dice
         scale = 1.8f;
         rotation = 5f;
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Passive, "Gain Y:[5 coins] when a Y:power is acquired"));
+        description.RequestAbilitySlots(Ability.ID.Passive);
     }
     public override void EquipUpdate()
     {

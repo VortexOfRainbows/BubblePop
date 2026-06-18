@@ -14,9 +14,9 @@ public class Bubblemancer : Body
         powerPool.Add<BubbleTrail>();
         powerPool.Add<Coalescence>();
     }
-    public override void InitializeAbilities(ref List<Ability> abilities)
+    public override void ModifyDescription(ref EquipDescription description)
     {
-        abilities.Add(new Ability(Ability.ID.Ability, "Y:Dash forward a short distance"));
+        description.RequestAbilitySlots(Ability.ID.Ability);
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
