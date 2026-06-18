@@ -11,8 +11,7 @@ Do Later:
 3. Integrate Compendium into the pause menu
 4. Grass shader to make grass more interesting and potentially slightly vary in the wind
 5. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
-6. Localization and text organization system
-7. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
+6. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -51,16 +50,15 @@ Bug Watchlist:
 Done: 	
 
 6/15/26 to 6/18/26
-1. Very preliminary stuff to introduce localization and fixup the text system in general
+1. Preliminary stuff to introduce localization and fixup the text system in general
 	1. WIP Localization Class (Autoupdates when modified or information in game is requested)
-		1. probably does not need: Clear out unused keys when auto-updating (instead, this can just be done manually. Most of the time we will not add keys manually so it should be fine)
-	2. WIP new Description Class (Which will read from the localization files)
-	3. WIP HJSON and JSON file storage
-2. WIP replacing old description class with new one
+	2. Add new Description Class (Which will read from the localization files)
+	3. Add HJSON and JSON file storage
+2. Replaced old description class with new one that is more refined for specific purposes
 	1. Now load straight from localization files instead of the code
 	2. Needs: old stuff still needs to be replaced/removed
 		1. Finished: Powers, Descriptions, Abilities, Unlocks, Enemies
-	3. WIP post-processing
+	3. Some post-processing
 3. Powerup rarities are now calculating once on load using power weights, and never again. Previously the rarity value (discrete 1-5) would be calculated every time it was asked for
 	1. Should reduce some lag relating to powerups
 4. Some internal code organization improvements (more util classes)
