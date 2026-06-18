@@ -24,10 +24,6 @@ public class Fizzy : Body
         powerPool.Add(PowerUp.Get<BonusBoards>());
         powerPool.Add(PowerUp.Get<Kickflip>());
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Fizzy").WithDescription("He's a pretty cool bubble");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Ability, "Do a Y:[Cool Kickflip] and Y:mount a Y:Skateboard"));

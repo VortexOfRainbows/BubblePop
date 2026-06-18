@@ -21,10 +21,6 @@ public class Bulb : Hat
         powerPool.Add<NeuronActivation>();
         powerPool.Add<Refraction>();
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Light Bulb").WithDescription("Brighten your day with this technological marvel!");
-    }
     public override void OnStartWith()
     {
 

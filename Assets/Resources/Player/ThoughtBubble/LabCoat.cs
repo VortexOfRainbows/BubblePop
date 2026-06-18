@@ -18,10 +18,6 @@ public class LabCoat : BubblemancerCape
     public SpriteRenderer ArmR;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleUnlock>();
     protected override Vector2 CapeScale => new Vector2(1f, 1f);
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Lab Coat").WithDescription("Comes with Thought Bubble's favorite tools");
-    }
     public override void Init()
     {
         base.Init();

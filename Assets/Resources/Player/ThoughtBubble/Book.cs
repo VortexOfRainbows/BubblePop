@@ -28,10 +28,6 @@ public class Book : Weapon
     {
         Player.TotalBookBalls = 0;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Electrodynamics Grimoire").WithDescription("Thought Bubble's trusty tome, 'only used for self defense'");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Primary, "Cast a Y:[thunder bubble] \nOnly a few may exist at a time"));

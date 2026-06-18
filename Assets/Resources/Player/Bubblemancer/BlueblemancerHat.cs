@@ -5,10 +5,6 @@ using UnityEngine;
 public class BlueblemancerHat : BubblemancerHat
 {
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<StarbarbUnlock5>();
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Bluebblemancy Hat").WithDescription("Stars last longer and orbit you");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Passive, "Stars last longer and orbit you"));

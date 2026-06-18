@@ -18,10 +18,6 @@ public class BubblemancerHat : Hat
         powerPool.Add<Starbarbs>();
         powerPool.Add<Supernova>();
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Bubblemancy Hat").WithDescription("A stylish hat fashioned with wool from his precious sheep");
-    }
     protected override void AnimationUpdate()
     {
         spriteRender.flipX = !p.Body.Flipped;

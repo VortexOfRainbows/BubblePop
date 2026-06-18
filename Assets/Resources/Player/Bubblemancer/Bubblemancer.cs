@@ -14,10 +14,6 @@ public class Bubblemancer : Body
         powerPool.Add<BubbleTrail>();
         powerPool.Add<Coalescence>();
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Bubblemancer").WithDescription("A humble shepard from the quaint Bubble Fields");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Ability, "Y:Dash forward a short distance"));

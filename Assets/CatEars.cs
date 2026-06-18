@@ -13,10 +13,6 @@ public class CatEars : Dice
         scale = 1.8f;
         rotation = 5f;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Cat Ears").WithDescription("Tail not included");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Passive, "Gain Y:[5 coins] when a Y:power is acquired"));

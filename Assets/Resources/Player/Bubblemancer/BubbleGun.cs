@@ -18,10 +18,6 @@ public class BubbleGun : BubblemancerWand
     {
         base.ModifyPowerPool(powerPool);
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Bubble Gun").WithDescription("The right to bare bubble shall not be infringed");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Primary, "Fire a Y:[stream of bubbles]"));

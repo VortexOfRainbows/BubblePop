@@ -13,10 +13,6 @@ public class DragonSlots : SlotMachineWeapon
     {
         base.ModifyPowerPool(powerPool);
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Dragon Slots").WithDescription("99% of bubble hit it big before popping");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Primary, "Spend Y:coins or a Y:token to spin! Losing spins Y:[spew fire]"));

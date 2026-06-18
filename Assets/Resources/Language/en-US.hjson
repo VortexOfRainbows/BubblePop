@@ -250,7 +250,7 @@
       Brief: Chance of seeing rare powers increased
       Lore: Power.RollForPerception.Lore
       SlotMachineWeaponBrief: Chance of seeing rare powers and rare spins increased
-      SlotMachineWeaponDescription: 
+      SlotMachineWeaponDescription:
         '''
         Increases weights of Y:[rare powers] in the Y:[power pool] by Y:20% G:(+20% per stack) 
         Increases the likelihood of Y:[high-rarity spins] by Y:20% G:(+20% per stack)
@@ -720,6 +720,197 @@
       Description: After starting a Y:[wave,] your next Y:3 G:(+3 per stack) attacks will Y:[instantly kill enemies]
       Brief: First few attacks in a wave do infinite damage
       Lore: Power.LightningInABottle.Lore
+    }
+  }
+  Equip:
+  {
+    Bubblemancer:
+    {
+      Title: Bubblemancer
+      Description: A humble shepard from the quaint Bubble Fields
+      Lore: Equip.Bubblemancer.Lore
+    }
+    BubblemancerHat:
+    {
+      Title: Bubblemancy Hat
+      Description: A stylish hat fashioned with wool from his precious sheep
+      Lore: Equip.BubblemancerHat.Lore
+    }
+    BubblemancerCape:
+    {
+      Title: Bubblemancy Cape
+      Description: A stylish robe fashioned with wool from his precious sheep
+      Lore: Equip.BubblemancerCape.Lore
+    }
+    BubblemancerWand:
+    {
+      Title: Bubble Wand
+      Description: A magical bubble-blowing wand given to The Bubblemancer by a suspicious scientist
+      Lore: Equip.BubblemancerWand.Lore
+    }
+    ThoughtBubble:
+    {
+      Title: Thought Bubble
+      Description: A mysterious Bubbletech Scientist. His origin is unknown. He appeared before Bubblemancer shortly after the first waves... why was he there?
+      Lore: Equip.ThoughtBubble.Lore
+    }
+    Bulb:
+    {
+      Title: Light Bulb
+      Description: Brighten your day with this technological marvel!
+      Lore: Equip.Bulb.Lore
+    }
+    LabCoat:
+    {
+      Title: Lab Coat
+      Description: Comes with Thought Bubble's favorite tools
+      Lore: Equip.LabCoat.Lore
+    }
+    Book:
+    {
+      Title: Electrodynamics Grimoire
+      Description: Thought Bubble's trusty tome, 'only used for self defense'
+      Lore: Equip.Book.Lore
+    }
+    Gachapon:
+    {
+      Title: Gachapon
+      Description: A greedy shopkeeper? No! I'm the most honest gal around!
+      Lore: Equip.Gachapon.Lore
+    }
+    Dice:
+    {
+      Title: Plush Dice
+      Description: Gachapon thinks it's always valuable to keep a pair of dice nearby
+      Lore: Equip.Dice.Lore
+    }
+    Crystal:
+    {
+      Title: Wishing Emerald
+      Description: Grants an additional heart
+      Lore: Equip.Crystal.Lore
+    }
+    BlueblemancerHat:
+    {
+      Title: Bluebblemancy Hat
+      Description: Stars last longer and orbit you
+      Lore: Equip.BlueblemancerHat.Lore
+    }
+    BlueCape:
+    {
+      Title: Bluebblemancy Cape
+      Description: Start with a random <color=#AAD3FEFF>3-star power</color>
+      Lore: Equip.BlueCape.Lore
+    }
+    BubbleStaff:
+    {
+      Title: Bubble Staff
+      Description: An expertly crafted bubble-tech weapon
+      Lore: Equip.BubbleStaff.Lore
+    }
+    BubbleGun:
+    {
+      Title: Bubble Gun
+      Description: The right to bare bubble shall not be infringed
+      Lore: Equip.BubbleGun.Lore
+    }
+    BunceHat:
+    {
+      Title: Bunce Cap
+      Description:
+        '''
+        Grants an additional heart
+        You stupid!
+        '''
+      Lore: Equip.BunceHat.Lore
+    }
+    RedHat:
+    {
+      Title: Red Bubblemancy Hat
+      Description: Start with <color=#FCB934FF>Bubble Birb</color>
+      Lore: Equip.RedHat.Lore
+    }
+    RedCape:
+    {
+      Title: Red Bubblemancy Cape
+      Description: Gain a <color=#FFAAAAFF>Contract</color> everytime you resurrect
+      Lore: Equip.RedCape.Lore
+    }
+    Crown:
+    {
+      Title: Crown of Command
+      Description: Choice powers have 5 options
+      Lore: Equip.Crown.Lore
+    }
+    Cryskull:
+    {
+      Title: Cryskull
+      Description:
+        '''
+        Grants an additional heart
+        Increases wave card difficulty and rewards
+        '''
+      Lore: Equip.Cryskull.Lore
+    }
+    ShadyCoat:
+    {
+      Title: Suspicious Disguise
+      Description: Gachapon must know something about the black market dealer... why else would she have his coat?
+      Lore: Equip.ShadyCoat.Lore
+    }
+    SlotMachineWeapon:
+    {
+      Title: Gacha Slots
+      Description: 99% of bubbles pop before hitting it big
+      Lore: Equip.SlotMachineWeapon.Lore
+    }
+    DragonSlots:
+    {
+      Title: Dragon Slots
+      Description: Ignite enemies on failed rolls
+      Lore: Equip.DragonSlots.Lore
+    }
+    UtilityBelt:
+    {
+      Title: Utility Belt
+      Description: Start with a <color=#CFCFFFFF>Magnet</color>, a Y:Key, and Y:[100 coins]
+      Lore: Equip.UtilityBelt.Lore
+    }
+    Fizzy:
+    {
+      Title: Fizzy
+      Description: He's a pretty cool bubble
+      Lore: Equip.Fizzy.Lore
+    }
+    Cap:
+    {
+      Title: Rad Cap
+      Description: Now this is a cool hat!
+      Lore: Equip.Cap.Lore
+    }
+    Kicks:
+    {
+      Title: Fresh Kicks
+      Description: Ain't got style without these!
+      Lore: Equip.Kicks.Lore
+    }
+    Cola:
+    {
+      Title: Cola Pop
+      Description: A popular bubble beverage that tastes sweet with a hint of vanilla, caramel, and citrus
+      Lore: Equip.Cola.Lore
+    }
+    PhysicsBook:
+    {
+      Title: Guide to Physics
+      Description: An encyclopedia of everything physics
+      Lore: Equip.PhysicsBook.Lore
+    }
+    CatEars:
+    {
+      Title: Cat Ears
+      Description: Tail not included
+      Lore: Equip.CatEars.Lore
     }
   }
 }

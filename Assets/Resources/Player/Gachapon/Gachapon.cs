@@ -168,10 +168,6 @@ public class Gachapon : Body
         powerPool.Add<AllIn>();
         powerPool.Add<DoubleDown>();
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Gachapon").WithDescription("A greedy shopkeeper? No! I'm the most honest gal around!");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Ability, "Unleash Y:[homing chips] from the top of each Y:[chip stack]"));

@@ -29,10 +29,6 @@ public class BubblemancerCape : Accessory
     {
         powerPool.Add<BubbleShield>();
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Bubblemancy Cape").WithDescription("A stylish robe fashioned with wool from his precious sheep");
-    }
     public GameObject CapeB;
     public GameObject CapeL;
     public GameObject CapeR;

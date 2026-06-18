@@ -21,10 +21,6 @@ public class Cola : Weapon
         powerPool.Add<CarbonForce>();
         powerPool.Add<BombasticBrew>();
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Cola Pop").WithDescription("A popular bubble beverage that tastes sweet with a hint of vanilla, caramel, and citrus");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Primary, "Unleash a Y:[stream of bubbles] in a burst"));

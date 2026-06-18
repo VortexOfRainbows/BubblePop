@@ -183,7 +183,7 @@ public partial class Main : MonoBehaviour
     public static class GlobalEquipData
     {
         public static readonly Dictionary<Type, int> EquipTypeToIndex = new();
-        public static readonly List<DetailedDescription> DescriptionData = new();
+        public static readonly List<EquipDescription> DescriptionData = new();
         public static readonly List<List<Ability>> AbilityData = new();
         public static readonly List<int> TimesUsedList = new();
         public static readonly Dictionary<Type, Equipment> TypeToEquipPrefab = new();

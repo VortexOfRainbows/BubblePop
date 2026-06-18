@@ -220,5 +220,25 @@ public static partial class LocalizationBuilder
     //    SaveToJson();
     //    Debug.Log("Done".WithColor("#00FFFF"));
     //}
+    public static void CopyOldEquipmentDescriptionToNewSystem(Equipment e, DetailedDescription old)
+    {
+        Debug.Log($"Porting Old Power Equip To Updated System: {old.Name}".WithColor("#00FFFF"));
+        string Name = e.GetType().FullName;
+        if (ExpandedTranslation["Equip"] is Dictionary<string, object> value)
+        {
+            if (value[Name] is Dictionary<string, object> equip)
+            {
+                if(old.Name != null)
+                    equip["Title"] = old.Name;
+                if(old.Description != null)
+                    equip["Description"] = old.Description;
+            }
+            else
+                Debug.Log("Type Error: 2");
+        }
+        else
+            Debug.Log("Type Error: 1");
+        SaveToJson();
+    }
 }
 #endif

@@ -19,10 +19,6 @@ public class BubblemancerWand : Weapon
         powerPool.Add<ShotSpeed>();
         powerPool.Add<Starshot>();
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Bubble Wand").WithDescription("A magical bubble-blowing wand given to The Bubblemancer by a suspicious scientist");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Primary, "Blow a Y:[volley of bubbles]"));

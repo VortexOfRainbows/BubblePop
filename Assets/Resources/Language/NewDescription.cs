@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class Description
 {
@@ -75,11 +76,28 @@ public class PowerDescription : Description
 }
 public class EquipDescription : Description
 {
+    public List<Ability> Abilities { get; private set; } = new();
     public EquipDescription(Equipment owner) : base(owner)
     {
         StartingText = "Equip." + owner.GetType().FullName;
         Name = Localization.Get($"{StartingText}.Title");
         Full = Localization.Get($"{StartingText}.Description");
         Lore = Localization.Get($"{StartingText}.Lore");
+    }
+    public EquipDescription RequestAbilitySlots(params int[] types)
+    {
+        for(int i = 0; i < types.Length; ++i)
+            Abilities.Add(new Ability(types[i], Localization.Get($"{StartingText}.Abl{i + 1}")));
+        return this;
+    }
+}
+public class UnlockDescription : Description
+{
+    public UnlockDescription(UnlockCondition owner) : base(owner)
+    {
+        StartingText = "Unlock." + owner.GetType().FullName;
+        Name = Localization.Get($"{StartingText}.Title");
+        Full = Localization.Get($"{StartingText}.Description");
+        Lore = string.Empty; //Unlocks don't have lore
     }
 }

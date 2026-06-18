@@ -13,10 +13,6 @@ public class Kicks : Accessory
         offset = new Vector2(-0.12f, 1.15f);
         scale = 1.8f;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Fresh Kicks").WithDescription("Ain't got style without these!");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         //abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));

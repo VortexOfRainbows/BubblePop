@@ -15,10 +15,6 @@ public class BubbleStaff : BubblemancerWand
     {
         base.ModifyPowerPool(powerPool);
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Bubble Staff").WithDescription("An expertly crafted bubble-tech weapon");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Primary, "Blow a Y:[volley of bubbles]"));

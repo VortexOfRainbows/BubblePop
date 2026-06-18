@@ -15,10 +15,6 @@ public class Crystal : Accessory
         offset = Vector2.zero;
         scale = 2.0f;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Wishing Emerald").WithDescription("Grants an additional heart");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));

@@ -11,10 +11,6 @@ public class BunceHat : BubblemancerHat
         offset.y -= 0.35f;
         offset.x += 0.1f;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Bunce Cap").WithDescription("Grants an additional heart\nYou stupid!");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));

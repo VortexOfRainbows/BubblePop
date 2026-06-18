@@ -18,8 +18,4 @@ public class Cap : BubblemancerHat
         powerPool.Add<SharpBombs>();
         powerPool.Add<PrizeBombs>();
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Rad Cap").WithDescription("Now this is a cool hat!");
-    }
 }

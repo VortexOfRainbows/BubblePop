@@ -11,10 +11,6 @@ public class Dice : Hat
         scale = 1.5f;
         rotation = 15f;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Plush Dice").WithDescription("Gachapon thinks it's always valuable to keep a pair of dice nearby");
-    }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

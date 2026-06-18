@@ -152,14 +152,8 @@ public class Equipment : MonoBehaviour
 
     }
     #region DescriptionStuff
-    public string GetName(bool noColor = false)
-    {
-        return GetMyDescription().GetName(noColor);
-    }
-    public string GetDescription()
-    {
-        return GetMyDescription().FullDescription();
-    }
+    public string GetName(bool noColor = false) => noColor ? GetMyDescription().Name : GetMyDescription().Name.WithRarityColor(GetRarity() - 1, false);
+    public string GetDescription() => GetMyDescription().Full;
     public string GetUnlockReq()
     {
         return "Unlock by:\n" + UnlockCondition.LockedText();
@@ -180,12 +174,11 @@ public class Equipment : MonoBehaviour
     public void SetUpData(int index)
     {
         Main.GlobalEquipData.EquipTypeToIndex.Add(GetType(), index);
-        DetailedDescription descData = new(GetRarity() - 1, TypeName.ToSpacedString());
+        EquipDescription newDescription = new(this);
         List<Ability> MyAbilities = new();
-        descData.WithoutSizeAugments();
-        InitializeDescription(ref descData);
+        //LocalizationBuilder.CopyOldEquipmentDescriptionToNewSystem(this, descData);
         InitializeAbilities(ref MyAbilities);
-        Main.GlobalEquipData.DescriptionData.Add(descData);
+        Main.GlobalEquipData.DescriptionData.Add(newDescription);
         Main.GlobalEquipData.AbilityData.Add(MyAbilities);
         Main.GlobalEquipData.TimesUsedList.Add(0);
         LoadGlobalData();
@@ -220,17 +213,13 @@ public class Equipment : MonoBehaviour
     {
         return 1;
     }
-    public DetailedDescription GetMyDescription()
+    public EquipDescription GetMyDescription()
     {
         return Main.GlobalEquipData.DescriptionData[IndexInAllEquipPool];
     }
     public List<Ability> GetAbility()
     {
         return Main.GlobalEquipData.AbilityData[IndexInAllEquipPool];
-    }
-    public virtual void InitializeDescription(ref DetailedDescription description)
-    {
-
     }
     public virtual void InitializeAbilities(ref List<Ability> abilities)
     {

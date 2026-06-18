@@ -8,10 +8,6 @@ public class Cryskull : Crystal
         offset = Vector2.zero;
         scale = 2f;
     }
-    public override void InitializeDescription(ref DetailedDescription description)
-    {
-        description.WithName("Cryskull").WithDescription("Grants an additional heart\nIncreases wave card difficulty and rewards");
-    }
     public override void InitializeAbilities(ref List<Ability> abilities)
     {
         abilities.Add(new Ability(Ability.ID.Passive, $"Y:+1 Y:Heart"));
