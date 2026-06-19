@@ -7,8 +7,9 @@ public class Ent : Enemy
         additiveColorPower = 0.4f;
     }
     private Vector2 targetedLocation;
-    public float moveSpeed = 0.12f;
-    public float inertiaMult = 0.96f;
+    public virtual float MoveSpeed => 0.12f;
+    public virtual float InertiaMultiplier => 0.96f;
+    public float OriginalScaler = 1;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 27;
@@ -30,15 +31,17 @@ public class Ent : Enemy
             i = 1;
         else
             i = -1;
-        Visual.transform.localScale = new Vector3(i * 1.45f, 1.45f, 1);
+        if (OriginalScaler == 1)
+            OriginalScaler = Mathf.Abs(Visual.transform.localScale.x);
+        Visual.transform.localScale = new Vector3(i * OriginalScaler, OriginalScaler, 1);
     }
     public void MoveUpdate()
     {
         float dir = Utils.SignNoZero(Visual.transform.localScale.x);
         targetedLocation = Target.Position;
         Vector2 toTarget = targetedLocation - (Vector2)transform.position;
-        RB.velocity += toTarget.normalized * moveSpeed;
-        RB.velocity *= inertiaMult;
+        RB.velocity += toTarget.normalized * MoveSpeed;
+        RB.velocity *= InertiaMultiplier;
         if (Mathf.Abs(RB.velocity.x) > 0.1f)
             UpdateDirection(RB.velocity.x);
         float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * dir * -1f;
