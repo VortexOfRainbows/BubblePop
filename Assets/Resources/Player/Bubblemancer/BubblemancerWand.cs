@@ -132,7 +132,7 @@ public class BubblemancerWand : Weapon
                 int maxCharge = 250 + 100 * Player.OldCoalescence;
                 if (AttackRight == 50)
                 {
-                    AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.5f);
+                    AudioManager.PlaySound(SoundID.ChargeWindup, Player.Position, 0.3f, 1.0f + 0.5f * Player.SecondaryAttackSpeedModifier, 0);
                     AudioManager.PlaySound(SoundID.ChargePoint.GetVariation(0), Player.Position, 0.6f, 1f);
                     Projectile.NewProjectile<BigBubble>((Vector2)transform.position + awayFromWand, Vector2.zero, 1, Player, 149, 0);
                 }

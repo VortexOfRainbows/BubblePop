@@ -256,21 +256,13 @@ public class EnemyClause : CardClause
     public void PrepareWaveCards()
     {
         AssociatedWaveCards.Clear();
-        int maxSwarmDifficulty = 6;
-        float difficultMult = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
-        if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is Gatligator 
-            || Enemy.EnemyToAdd is Sentinel || Enemy.EnemyToAdd is RockGolem) //1 mid-wave by default for bosses, 3 at max card difficulty
-        {
-            difficultMult -= 1;
-            if (Enemy.EnemyToAdd is EnemyBossDuck || Enemy.EnemyToAdd is RockGolem)
-                maxSwarmDifficulty -= 3;
-            else
-                maxSwarmDifficulty -= 1;
-        }
-        if (Enemy.EnemyToAdd is Infector)
-            maxSwarmDifficulty = 1;
+        int enemyRarity = Enemy.EnemyToAdd.GetRarity();
+        int maxSwarmDifficulty = Mathf.Max(7 - enemyRarity, 3);
+        float skullWaveCount = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
+        if (enemyRarity >= 4)
+            skullWaveCount -= 1;
         int wavesWithoutSwarm = 0;
-        int max = (int)difficultMult;
+        int max = (int)skullWaveCount;
         for (int i = 0; i < max; ++i)
         {
             GameObject enemyType = Enemy.EnemyToAdd.gameObject;
@@ -282,7 +274,7 @@ public class EnemyClause : CardClause
                 enemies[j] = enemyType;
             var card = WaveDeck.DrawMultiSpawn(WaveDeck.RandomPositionOnPlayerEdge(Player.GetInstance(Utils.RandInt(Player.AllPlayers.Count))), 0, 1.75f, enemies);
             card.Patterns[0].Skull = true;
-            float chance = wavesWithoutSwarm * (0.05f * difficultMult * WaveDirector.WaveNum);
+            float chance = wavesWithoutSwarm * (0.05f * skullWaveCount * WaveDirector.WaveNum);
             if ((wavesWithoutSwarm >= 1 && chance > Utils.RandFloat()) || i == max)
             {
                 wavesWithoutSwarm = 0;

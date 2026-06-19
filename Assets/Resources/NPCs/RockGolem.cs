@@ -131,8 +131,10 @@ public class RockGolem : RockSpider
                             Vector2 norm2 = headToPlayer.normalized;
                             for(int i = -4; i <= 4; ++i)
                             {
-                                Projectile.NewProjectile<Bullet>(Head.transform.position, 
-                                    norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, this, 1.25f - Mathf.Abs(i) * 0.125f, InfectionTarget ? 0 : 1);
+                                if (!InfectionTarget)
+                                    Projectile.NewProjectile<Bullet>(Head.transform.position, norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, this, 1.25f - Mathf.Abs(i) * 0.125f, 0.2f, 0.3f, 1f);
+                                else
+                                    Projectile.NewProjectile<Bullet>(Head.transform.position, norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, this, 1.25f - Mathf.Abs(i) * 0.125f, 0.2f, 0.3f, 1f);
                             }
                             AudioManager.PlaySound(SoundID.GolemMultiShoot, Head.transform.position, 1.5f, 1.1f);
                             Head.transform.position -= (Vector3)(norm2 * 0.35f);
@@ -216,7 +218,10 @@ public class RockGolem : RockSpider
             ParticleManager.NewParticle(pos, Utils.RandFloat(2, 4), Utils.RandCircle(5) - tnorm * Utils.RandFloat(3), .2f, Utils.RandFloat(0.8f, 1.5f), 
                 ParticleManager.ID.Pixel, Color.Lerp(ShotColor, Color.white, Utils.RandFloat()));
         }
-        Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, this, 1.25f, InfectionTarget ? 0 : 1);
+        if(InfectionTarget)
+            Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, this, 1.25f);
+        else
+            Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, this, 1.25f, 0.2f, 0.3f, 1f);
         AudioManager.PlaySound(SoundID.GolemShoot, pos, 1.0f, 1.5f);
         Timer = 0;
     }

@@ -15,7 +15,7 @@ public class Sound : MonoBehaviour
     }
     private void Update()
     {
-        if(Source.clip == SoundID.ChargeWindup.GetVariation(0))
+        if(Source.clip == SoundID.ChargeWindup.GetVariation(0) || Source.clip == SoundID.ChargeWindup.GetVariation(1))
         {
             transform.position = Player.Instance.transform.position;
             if(Player.Instance.Weapon.AttackRight < 50)

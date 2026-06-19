@@ -62,4 +62,5 @@ public static class LayerHelper
     public const int ParticleBack = -15;
     public const int ParticleLightning = -6;
     public const int ArbitraryCompendiumUISpriteMask = 30;
+    public const int ParticleSnow = 4;
 }

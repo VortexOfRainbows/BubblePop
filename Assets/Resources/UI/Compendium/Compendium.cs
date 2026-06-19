@@ -246,6 +246,9 @@ public class Compendium : MonoBehaviour
                 EnemyID.StaticEnemyData e = DisplayCPEnemy.MyElem.StaticData;
                 rare = e.Rarity - 1;
                 string concat = $"<size=42>{DisplayCPEnemy.MyElem.MyEnemyPrefab.Name().WithRarityColor(rare, false)}</size>" + shortLineBreak;
+
+                concat += e.EnemyDescription.Full.WithSize(26) + shortLineBreak;
+
                 concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
                 concat += $" {"Base Health: ".WithColor(ColorHelper.RarityColorHex[5])}{e.BaseMaxLife}\n";
                 string coinRange = e.BaseMinCoin != e.BaseMaxCoin ? $"{e.BaseMinCoin}-{e.BaseMaxCoin}" : $"{e.BaseMinCoin}";

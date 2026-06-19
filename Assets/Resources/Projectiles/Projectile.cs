@@ -38,6 +38,7 @@ public class Projectile : MonoBehaviour
     public int immunityFrames = 100;
     public Vector2 startPos = Vector2.zero;
     public Player PlayerOwner { get; private set; }
+    public Enemy EnemyOwner { get; private set; }
     public Entity Owner { get; private set; }
     //public static GameObject NewProjectile<T>(Vector2 pos, Vector2 velo, float damage = 1, params float[] data) where T : Projectile
     //{
@@ -81,6 +82,8 @@ public class Projectile : MonoBehaviour
             proj.Owner = owner;
             if (owner is Player p2)
                 proj.PlayerOwner = p2;
+            else if(owner is Enemy e2)
+                proj.EnemyOwner = e2;
         }
         if (proj is BoxProjectile)
         {

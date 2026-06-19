@@ -13,6 +13,7 @@ public class ParticleManager : MonoBehaviour
         public const int Line = 4;
         public const int Trail = 5;
         public const int LineForeground = 6;
+        public const int Snow = 7;
     }
     public static readonly Color DefaultColor = new Color(0.89f, 206 / 255f, 240 / 255f, 0.5f);
     public static readonly Color BathColor = new Color(189 / 255f, 227 / 255f, 246 / 255f, 0.6f);
@@ -89,12 +90,12 @@ public class ParticleManager : MonoBehaviour
         }
         for (int i = 0; i < 6; ++i)
         {
-            Vector2 pos2 = pos + new Vector2(2.5f, 0).RotatedBy(i * Utils.TWOPI / 6f) + Utils.RandCircle(1);
+            Vector2 pos2 = pos + new Vector2(2.5f, 0).RotatedBy(i * Utils.TwoPI / 6f) + Utils.RandCircle(1);
             ForegroundLightning(pos, pos2, lColor, Utils.RandFloat(1.0f, 1.25f), scaleX: 2f, scaleY: 0.25f);
         }
         for (int i = 0; i < 8; ++i)
         {
-            Vector2 pos2 = pos + new Vector2(1.0f, 0).RotatedBy(i * Utils.TWOPI / 8f) + Utils.RandCircle(0.5f);
+            Vector2 pos2 = pos + new Vector2(1.0f, 0).RotatedBy(i * Utils.TwoPI / 8f) + Utils.RandCircle(0.5f);
             PopupText.NewPopupText(pos2, Utils.RandCircle(4), lColor.Lerp(new Color(0.8f, 0.9f, 1.0f), Utils.RandFloat()), "314159", true, Utils.RandFloat(0.5f, 0.6f), 70);
         }
     }

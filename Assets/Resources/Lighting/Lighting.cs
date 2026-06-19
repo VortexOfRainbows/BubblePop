@@ -101,7 +101,7 @@ public static class Lighting
         if (DayProgress > TimeInADay)
             DayProgress -= TimeInADay;
         float dayPercent = DayProgress / TimeInADay;
-        SunVector = new Vector2(1, 0).RotatedBy(dayPercent * Utils.TWOPI);
+        SunVector = new Vector2(1, 0).RotatedBy(dayPercent * Utils.TwoPI);
         DaySin = SunVector.y > 0 ? SunVector.y : 0;
         NightSin = SunVector.y < 0 ? -SunVector.y : 0;
         if (FrontLight != null && BackLight != null)

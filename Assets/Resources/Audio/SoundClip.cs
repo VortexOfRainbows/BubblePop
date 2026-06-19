@@ -39,7 +39,7 @@ public static class SoundID
     public static SoundClip ChargePoint = new("Player/",
         "ChargePoint1", "ChargePoint2", "ChargePoint3");
     public static SoundClip ChargeWindup = new("Player/",
-        "ChargeWindup");
+        "ChargeWindup", "ChargeWindNew");
     public static SoundClip ShootBubbles = new("Player/",
         "Shoot");
 

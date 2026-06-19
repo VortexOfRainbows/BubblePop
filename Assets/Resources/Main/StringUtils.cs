@@ -25,6 +25,10 @@ public static class StringUtils
     {
         return $"<size={size}><color={color}>{s}</color></size>";
     }
+    public static string WithSize(this string s, int size)
+    {
+        return $"<size={size}>{s}</size>";
+    }
     public static string WithColor(this string s, string color)
     {
         return $"<color={color}>{s}</color>";
