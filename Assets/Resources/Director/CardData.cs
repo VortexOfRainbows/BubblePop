@@ -167,7 +167,7 @@ public abstract class CardClause
 }
 public class EnemyClause : CardClause
 {
-    public readonly List<WaveCard> AssociatedWaveCards = new();
+    public readonly List<WaveCard> SkullWaveCards = new();
     public EnemyCard Enemy;
     public bool AlreadyInPool = false;
     public DirectorSkullSwarmModifier AlternativeModifier = null;
@@ -248,14 +248,14 @@ public class EnemyClause : CardClause
     public void Apply()
     {
         PrepareWaveCards();
-        WaveDirector.AssociatedWaveCards = AssociatedWaveCards;
-        WaveMeter.Instance.SetTicks(AssociatedWaveCards.Count);
+        WaveDirector.SkullWaveCards = SkullWaveCards;
+        WaveMeter.Instance.SetTicks(SkullWaveCards.Count);
         Enemy.Apply();
     }
     public void Resolve() => Enemy.Resolve();
     public void PrepareWaveCards()
     {
-        AssociatedWaveCards.Clear();
+        SkullWaveCards.Clear();
         int enemyRarity = Enemy.EnemyToAdd.GetRarity();
         int maxSwarmDifficulty = Mathf.Max(7 - enemyRarity, 3);
         float skullWaveCount = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
@@ -284,7 +284,7 @@ public class EnemyClause : CardClause
             {
                 ++wavesWithoutSwarm;
             }
-            AssociatedWaveCards.Add(card);
+            SkullWaveCards.Add(card);
         }
     }
 }

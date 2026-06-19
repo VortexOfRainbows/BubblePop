@@ -21,11 +21,11 @@ public class LocalizationTool : MonoBehaviour
         else
             GameObject.Destroy(this.gameObject);
     }
+#if UNITY_EDITOR
     public void RunUpdate()
     {
         LocalizationBuilder.UpdateLocalizationFiles();
     }
-#if UNITY_EDITOR
     public void Update()
     {
         if (LocalizationBuilder.RequiresDictionaryReload)

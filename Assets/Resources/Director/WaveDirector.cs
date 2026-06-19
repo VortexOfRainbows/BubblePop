@@ -38,7 +38,7 @@ public static class WaveDirector
             result.Add(TemporaryModifiers.WaveSpecialBonusEnemy);
         return result;
     }
-    public static List<WaveCard> AssociatedWaveCards;
+    public static List<WaveCard> SkullWaveCards;
     public static readonly List<GameObject> EnemyPool = new();
     public static readonly WaveModifiers PermanentModifiers = new();
     public static readonly WaveModifiers TemporaryModifiers = new(); //Permanent modifiers, but with bonuses applied after cloning values
@@ -240,12 +240,12 @@ public static class WaveDirector
     }
     public static void TryPlayingAssociatedWaveCards(float waveProgress)
     {
-        if(AssociatedWaveCards != null && AssociatedWaveCards.Count > 0 && CurrentAssociatedWaveCardNumber < AssociatedWaveCards.Count)
+        if(SkullWaveCards != null && SkullWaveCards.Count > 0 && CurrentAssociatedWaveCardNumber < SkullWaveCards.Count)
         {
-            float interval = (CurrentAssociatedWaveCardNumber + 1f) / (AssociatedWaveCards.Count + 1f);
+            float interval = (CurrentAssociatedWaveCardNumber + 1f) / (SkullWaveCards.Count + 1f);
             if(waveProgress > interval)
             {
-                var card = AssociatedWaveCards[CurrentAssociatedWaveCardNumber++];
+                var card = SkullWaveCards[CurrentAssociatedWaveCardNumber++];
                 PlayCard(card, false, 1.25f);
                 Debug.Log($"Played Special Wave Card At: [{interval * 100:##}%], {card.Patterns[0].EnemyPrefabs[0].GetComponent<Enemy>().Name().WithColor("#FF0000")}"); 
                 OnSkullWavePlayed();

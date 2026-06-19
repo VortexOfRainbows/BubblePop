@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 public abstract class ClauseEffect
 {
@@ -39,26 +40,27 @@ public class EnemyCard : ClauseEffect
     public WaveDirector.WaveModifiers MyModifier => IsPermanent ? WaveDirector.PermanentModifiers : WaveDirector.TemporaryModifiers;
     public float PermanentMultiplier => 1.75f;
     public bool IsPermanent { get; set; } = false;
-    public Enemy EnemyToAdd;
+    public Enemy EnemyToAdd => EnemiesToAdd[0]; //temp
+    public List<Enemy> EnemiesToAdd { get; set; } = new();
     public EnemyCard(Enemy prefabToAdd)
     {
-        EnemyToAdd = prefabToAdd;
+        EnemiesToAdd.Add(prefabToAdd);
     }
     public EnemyCard(GameObject prefabToAdd)
     {
-        EnemyToAdd = prefabToAdd.GetComponent<Enemy>();
+        EnemiesToAdd.Add(prefabToAdd.GetComponent<Enemy>());
     }
     public override void Apply()
     {
-        MyModifier.WaveSpecialBonusEnemy = EnemyToAdd.gameObject;
+        MyModifier.WaveSpecialBonusEnemy = EnemiesToAdd[0].gameObject;
     }
     protected override float Cost()
     {
-        return EnemyToAdd.CostMultiplier * 8 * (IsPermanent ? PermanentMultiplier : 1);
+        return EnemiesToAdd[0].CostMultiplier * 8 * (IsPermanent ? PermanentMultiplier : 1);
     }
     public override string Description()
     {
-        return $"{"New enemy:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(EnemyToAdd.Name())}";
+        return $"{"New enemy:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(EnemiesToAdd[0].Name())}";
     }
 }
 public abstract class DirectorModifier : ClauseEffect
@@ -167,7 +169,7 @@ public class DirectorSkullSwarmModifier : DirectorModifier
     }
     public override void Apply()
     {
-        Type enemyType = Parent.EnemyToAdd.GetType();
+        Type enemyType = Parent.EnemiesToAdd[0].GetType();
         if (MyModifier.BonusSkullSwarm.ContainsKey(enemyType))
             MyModifier.BonusSkullSwarm[enemyType] += (int)Percent;
         else
@@ -177,7 +179,7 @@ public class DirectorSkullSwarmModifier : DirectorModifier
     {
         if(IsPermanent)
             return $"{$"Skull Swarm (".WithSizeAndColor(28, ColorHelper.LesserGrayHex)}" +
-            $"{Parent.EnemyToAdd.Name().WithSizeAndColor(28, ColorHelper.RarityColorHex[5])}" +
+            $"{Parent.EnemiesToAdd[0].Name().WithSizeAndColor(28, ColorHelper.RarityColorHex[5])}" +
             $"{"):".WithSizeAndColor(28, ColorHelper.LesserGrayHex)} {RedText(NumberText)}";
         else
             return $"{$"Skull Swarm".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(NumberText)}";
