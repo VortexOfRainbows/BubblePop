@@ -67,14 +67,23 @@ public class Bullet : Projectile
 }
 public class Snowball : Projectile
 {
+    public override bool OnInsideTile()
+    {
+        return false;
+    }
+    public override bool OnTileCollide(Collider2D collision)
+    {
+        return false;
+    }
     public Vector2 Destination = Vector2.zero;
     public override void Init()
     {
         //SpriteRendererGlow.color = new Color(245 / 255f, 191 / 255f, 7 / 255f);
         SpriteRenderer.sprite = Main.TextureAssets.Snowball;
         SpriteRendererGlow.transform.localScale *= 1.1f;
-        SpriteRendererGlow.color = new Color(0.1f, 0.1f, 0.9f, 0.3f);
+        SpriteRendererGlow.color = new Color(0.5f, 0.9f, 1.0f, 1f);
         SpriteRendererGlow.material = Main.TextureAssets.AdditiveShader;
+        SpriteRendererGlow.transform.localScale *= 0.8f;
         Friendly = false;
         Hostile = false;
         if (Owner != null)

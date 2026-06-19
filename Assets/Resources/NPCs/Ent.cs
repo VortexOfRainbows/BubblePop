@@ -45,7 +45,7 @@ public class Ent : Enemy
         if (Mathf.Abs(RB.velocity.x) > 0.1f)
             UpdateDirection(RB.velocity.x);
         float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * dir * -1f;
-        tilt += RB.velocity.y * 2.0f * dir;
+        tilt += RB.velocity.y * 2.0f * dir * (this is IceGolem ? 0.5f : 1.0f);
         Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
     }
     public override void AI()
