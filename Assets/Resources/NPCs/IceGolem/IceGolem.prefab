@@ -497,6 +497,10 @@ MonoBehaviour:
   AlreadyDead: 0
   FirstStrike: 1
   OriginalScaler: 1
+  AICounter: 0
+  RightArmAnchor: {fileID: 7820193447529278183}
+  LeftArmAnchor: {fileID: 3271097875778682310}
+  Head: {fileID: 1839229913436459485}
 --- !u!1 &3256350801315482977
 GameObject:
   m_ObjectHideFlags: 0
