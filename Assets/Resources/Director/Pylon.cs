@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Pylon : MonoBehaviour
 {
@@ -76,7 +77,11 @@ public class Pylon : MonoBehaviour
             if (!Portal.activeSelf)
             {
                 for (int i = -1; i <= 1; ++i)
-                    SummonLightning((Vector2)Portal.transform.position + new Vector2(0, 24).RotatedBy(Mathf.Deg2Rad * 33 * i), Portal.transform.position, Color.red, Type: ParticleManager.ID.LineForeground);
+                {
+                    Vector2 offset = new Vector2(0, 1).RotatedBy(Mathf.Deg2Rad * 33 * i);
+                    SummonLightning((Vector2)Portal.transform.position + offset * 24, (Vector2)Portal.transform.position + offset * 2, Color.red, Type: ParticleManager.ID.LineForeground,
+                        2f, 0.5f);
+                }
                 Portal.SetActive(true);
                 AudioManager.PlaySound(SoundID.PylonStart, transform.position, 2f, 1, 0);
             }
@@ -217,7 +222,7 @@ public class Pylon : MonoBehaviour
         WaveActive = true;
 
     }
-    public static void SummonLightning(Vector2 start, Vector2 end, Color c, int Type = 4)
+    public static void SummonLightning(Vector2 start, Vector2 end, Color c, int Type = 4, float scaleX = 1.4f, float scaleY = 1.0f)
     {
         float dist = Vector2.Distance(start, end);
         float distRounded = (int)dist;
@@ -225,7 +230,7 @@ public class Pylon : MonoBehaviour
         for(int i = 0; i < distRounded; i++)
         {
             float perc = i / distRounded;
-            float scaleMult = 1f + 0.5f * (1 - perc);
+            float scaleMult = Mathf.Lerp(scaleX, scaleY, perc);
             Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
             Vector2 toPrev = prev - pos;
             ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .5f * scaleMult), Vector2.zero, 0, 1.2f, Type, c, -toPrev.ToRotation() * Mathf.Rad2Deg);

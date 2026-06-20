@@ -117,7 +117,12 @@ public class CardData
     }
     public string CardName()
     {
-        return EnemyClause.Enemy.EnemyToAdd.Name() + " Wave";
+        if(EnemyClause.Enemy.EnemiesToAdd.Count > 1)
+        {
+            return "Tag Team Wave"; //might change later
+        }
+        else 
+            return EnemyClause.Enemy.EnemiesToAdd[0].Name() + " Wave";
     }
     public void ApplyPermanentModifiers()
     {
@@ -178,27 +183,29 @@ public class EnemyClause : CardClause
         Enemy = newCard;
         GenerateData();
     }
-    private bool EnemyAlreadyInPool(EnemyCard p)
+    private bool EnemyAlreadyInPool(Enemy e)
     {
-        return WaveDirector.PossibleEnemies().Find(g => g.GetComponent<Enemy>().GetType() == p.EnemyToAdd.GetType()) != null;
+        return WaveDirector.PossibleEnemies().Find(g => g.GetComponent<Enemy>().GetType() == e.GetType()) != null;
     }
     public override void GenerateData()
     {
         Enemy ??= GenRandomEnemyPoolAddition((int)(difficultyMultiplier - 1), true);
         if (!Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
-        {
             Enemy.IsPermanent = true;
-        }
-        if (!EnemyAlreadyInPool(Enemy))
-            Points -= Enemy.GetCost();
-        else
+        float eCount = Enemy.EnemiesToAdd.Count;
+        foreach (Enemy e in Enemy.EnemiesToAdd)
         {
-            AlreadyInPool = true;
-            AlternativeModifier = new(Enemy)
+            if (!EnemyAlreadyInPool(e))
+                Points -= Enemy.GetCost() / eCount;
+            else
             {
-                ApplicationStrength = 1,
-                IsPermanent = Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier //In order for the alternative modifier to be permanent, it needs to pass the permanency cost check twice
-            };
+                AlreadyInPool = true;
+                AlternativeModifier = new(Enemy)
+                {
+                    ApplicationStrength = 1,
+                    IsPermanent = Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier / eCount //In order for the alternative modifier to be permanent, it needs to pass the permanency cost check twice
+                };
+            }
         }
     }
     public EnemyCard GenRandomEnemyPoolAddition(int costBias = 0, bool firstPick = false)
@@ -233,7 +240,11 @@ public class EnemyClause : CardClause
             if(costBias > 0)
             {
                 EnemyCard other = GenRandomEnemyPoolAddition(costBias - 1, false);
-                if (other.GetCost() > newEnemy.GetCost() || (searchingForNonMatch && !WaveDirector.EnemyPool.Contains(other.EnemyToAdd.gameObject)))
+                bool containsAll = true;
+                foreach(Enemy e2 in other.EnemiesToAdd)
+                    if(!WaveDirector.EnemyPool.Contains(e2.gameObject))
+                        containsAll = false;
+                if (other.GetCost() > newEnemy.GetCost() || (searchingForNonMatch && !containsAll))
                     newEnemy = other;
             }
             //if (WaveDirector.WaveNum > 10)
@@ -247,16 +258,19 @@ public class EnemyClause : CardClause
     }
     public void Apply()
     {
-        PrepareWaveCards();
+        PrepareSkullWaveCards();
         WaveDirector.SkullWaveCards = SkullWaveCards;
         WaveMeter.Instance.SetTicks(SkullWaveCards.Count);
         Enemy.Apply();
     }
     public void Resolve() => Enemy.Resolve();
-    public void PrepareWaveCards()
+    public void PrepareSkullWaveCards()
     {
         SkullWaveCards.Clear();
-        int enemyRarity = Enemy.EnemyToAdd.GetRarity();
+        int averageRarity = 0;
+        foreach(Enemy e in Enemy.EnemiesToAdd)
+            averageRarity += e.GetRarity();
+        int enemyRarity = averageRarity / Enemy.EnemiesToAdd.Count;
         int maxSwarmDifficulty = Mathf.Max(7 - enemyRarity, 3);
         float skullWaveCount = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
         if (enemyRarity >= 4)
@@ -265,9 +279,9 @@ public class EnemyClause : CardClause
         int max = (int)skullWaveCount;
         for (int i = 0; i < max; ++i)
         {
-            GameObject enemyType = Enemy.EnemyToAdd.gameObject;
+            GameObject enemyType = Enemy.EnemiesToAdd[0].gameObject;
             int TotalDudes = 1;
-            if (WaveDirector.TemporaryModifiers.BonusSkullSwarm.TryGetValue(Enemy.EnemyToAdd.GetType(), out int bonus))
+            if (WaveDirector.TemporaryModifiers.BonusSkullSwarm.TryGetValue(Enemy.EnemiesToAdd[0].GetType(), out int bonus))
                 TotalDudes += bonus;
             GameObject[] enemies = new GameObject[TotalDudes];
             for (int j = 0; j < TotalDudes; ++j)

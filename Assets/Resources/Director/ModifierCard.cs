@@ -30,7 +30,7 @@ public class ModifierCard : MonoBehaviour
         {
             concat = "Permanently: \n".WithSizeAndColor(28, "#FFAAAA");
             if(!cardData.EnemyClause.AlreadyInPool && cardData.EnemyClause.Enemy.IsPermanent)
-                concat += cardData.EnemyClause.Enemy.Description() + '\n';
+                concat += cardData.EnemyClause.Enemy.Description();
             foreach (DirectorModifier mod in cardData.ModifierClause.PermanentModifiers)
                 concat += mod.Description() + '\n';
             if (cardData.ModifierClause.TemporaryModifiers.Count > 0)
@@ -40,7 +40,7 @@ public class ModifierCard : MonoBehaviour
         {
             concat += "This Wave Only: \n".WithSizeAndColor(28, "#FFAAAA");
             if (!cardData.EnemyClause.AlreadyInPool && !cardData.EnemyClause.Enemy.IsPermanent)
-                concat += cardData.EnemyClause.Enemy.Description() + '\n';
+                concat += cardData.EnemyClause.Enemy.Description();
             foreach (DirectorModifier mod in cardData.ModifierClause.TemporaryModifiers)
                 concat += mod.Description() + '\n';
         }
@@ -64,7 +64,7 @@ public class ModifierCard : MonoBehaviour
         Rewards.SetText(concat);
 
         TitleText.text = cardData.CardName();
-        CardVisual.Init(cardData.EnemyClause.Enemy.EnemyToAdd.GetIndex());
+        CardVisual.Init(cardData.EnemyClause.Enemy.EnemiesToAdd[0].GetIndex());
         CardVisual.MaskActive(false);
     }
     public void GenerateCardData()

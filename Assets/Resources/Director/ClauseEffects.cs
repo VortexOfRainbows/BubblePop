@@ -40,15 +40,16 @@ public class EnemyCard : ClauseEffect
     public WaveDirector.WaveModifiers MyModifier => IsPermanent ? WaveDirector.PermanentModifiers : WaveDirector.TemporaryModifiers;
     public float PermanentMultiplier => 1.75f;
     public bool IsPermanent { get; set; } = false;
-    public Enemy EnemyToAdd => EnemiesToAdd[0]; //temp
     public List<Enemy> EnemiesToAdd { get; set; } = new();
-    public EnemyCard(Enemy prefabToAdd)
+    public EnemyCard(params Enemy[] prefabsToAdd)
     {
-        EnemiesToAdd.Add(prefabToAdd);
+        foreach(Enemy e in prefabsToAdd)
+            EnemiesToAdd.Add(e);
     }
-    public EnemyCard(GameObject prefabToAdd)
+    public EnemyCard(params GameObject[] prefabsToAdd)
     {
-        EnemiesToAdd.Add(prefabToAdd.GetComponent<Enemy>());
+        foreach(GameObject g in prefabsToAdd)
+            EnemiesToAdd.Add(g.GetComponent<Enemy>());
     }
     public override void Apply()
     {
@@ -56,11 +57,18 @@ public class EnemyCard : ClauseEffect
     }
     protected override float Cost()
     {
-        return EnemiesToAdd[0].CostMultiplier * 8 * (IsPermanent ? PermanentMultiplier : 1);
+        float costTotal = 0;
+        foreach (Enemy e in EnemiesToAdd)
+            costTotal += e.CostMultiplier * 8;
+        costTotal *= IsPermanent ? PermanentMultiplier : 1;
+        return costTotal;
     }
     public override string Description()
     {
-        return $"{"New enemy:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(EnemiesToAdd[0].Name())}";
+        string concat = string.Empty;
+        foreach (Enemy e in EnemiesToAdd)
+            concat += $"{"New enemy:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(e.Name())}\n";
+        return concat;
     }
 }
 public abstract class DirectorModifier : ClauseEffect
