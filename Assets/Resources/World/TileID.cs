@@ -17,12 +17,14 @@ public static class TileID
     public static readonly DualGridTile Plank = LoadTile("Wood/WoodTile", 1);
     public static readonly DualGridTile DarkGrass = LoadTile("DarkGrass/DarkGrassTile", 3);
     public static readonly DualGridTile TestTile = LoadTile("TestTile/TestTile", 5);
+    public static readonly DualGridTile Snow = LoadTile("Snow/Snow", 4);
 
 
     public static readonly DualGridTile WoodWall = LoadWall("WoodWall/WoodWall", Plank);
     public static readonly DualGridTile GrassWall = LoadWall("GrassWall/GrassWall", Grass);
     public static readonly DualGridTile StoneWall = LoadWall("StoneWall/StoneWall", Cobblestone);
     public static readonly DualGridTile DirtWall = LoadWall("DirtWall/DirtWall", Dirt);
+    public static readonly DualGridTile SnowWall = LoadWall("SnowWall/SnowWall", Snow);
     public static bool[,] WallTileRelations { get; private set; } = LoadWallTileRelations();
     private static bool[] HasWallTile { get; set; }
     private static DualGridTile[] MyWallTile { get; set; }

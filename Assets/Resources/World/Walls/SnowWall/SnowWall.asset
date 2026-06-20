@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 354ada615d12a894f938c2f1bac80208, type: 3}
+  m_Name: SnowWall
+  m_EditorClassIdentifier: 
+  TileTexture: {fileID: 2800000, guid: 8cc2253d31f41144a8ce4ac9eeb5073f, type: 3}
+  BonusTileTextures: []
+  BorderOnlyTileTextures: []
+  RealTileMapVariant: {fileID: 11400000, guid: b57605abc77cca04b9bccc61b8e1b3d1, type: 2}
+  BorderTileMapVariant: {fileID: 11400000, guid: b523f1e8b2799044299036290e0a2712, type: 2}
+  ColorModifier: {r: 1, g: 1, b: 1, a: 1}
+  BorderColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  IsWall: 1
