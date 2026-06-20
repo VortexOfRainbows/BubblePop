@@ -12,6 +12,7 @@ Do Later:
 4. Grass shader to make grass more interesting and potentially slightly vary in the wind
 5. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 6. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
+7. Lighting: Fix the size so it also encompasses the bottom half of wall tiles for purpose of shadow size and shape (may be as simple as stretching the diagonal and occlusion parts, then including walls in the render target for shape)
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -67,6 +68,7 @@ Done:
 4. Added Enemy "Descriptions" to the compendium, mostly experimental/placeholder
 5. WIP enemy card changes to allow for "double trouble" cards
 6. Some more adjustments to pylon lightning visuals on startup
+7. Rework some rooms
 
 6/15/26 to 6/18/26
 1. Preliminary stuff to introduce localization and fixup the text system in general
