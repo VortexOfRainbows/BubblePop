@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -167,7 +166,7 @@ public class Compendium : MonoBehaviour
                 string concat = $"<size={size}>{p.UnlockedName}</size>" + shortLineBreak;
                 if (!p.BriefDescIsSameAsLong)
                 {
-                    bool hasAlt = UnlockedAlts.Count > 0 || (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.Unlocked);
+                    bool hasAlt = UnlockedAlts.Count > 0 || (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.IsComplete);
                     concat += $"<size=26>{"Brief\n".WithRarityColor(rare, isBlackMarket)}</size>";
                     concat += p.ShortDescription + shortLineBreak;
                     concat += $"<size=26>{(hasAlt ? "Detailed (Default)\n" : "Detailed\n").WithRarityColor(rare, isBlackMarket)}</size>";
@@ -175,7 +174,7 @@ public class Compendium : MonoBehaviour
                 else
                     concat += $"<size=26>{"Description\n".WithRarityColor(rare, isBlackMarket)}</size>";
                 concat += p.TrueFullDescription;
-                if(p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.Unlocked)
+                if(p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.IsComplete)
                 {
                     concat += shortLineBreak + $"<size=26>{$"Detailed (Black Market)\n".WithRarityColor(rare, true)}</size>";
                     concat += p.BlackMarketFullDescription;
@@ -273,9 +272,13 @@ public class Compendium : MonoBehaviour
             else if(PageNumber == 3)
             {
                 rare = DisplayCPAchievement.GetRare() - 1;
+                bool isSecret = DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Secret;
                 string concat = $"<size=42>{DisplayCPAchievement.MyUnlock.GetName()}</size>" + shortLineBreak;
-                concat += DisplayCPAchievement.MyUnlock.GetDescription() + shortLineBreak;
-                if(DisplayCPAchievement.MyUnlock.PreReqComplete)
+                if(isSecret && !DisplayCPAchievement.MyUnlock.IsComplete)
+                    concat += Localization.Get("Common.UnlockSecret") + shortLineBreak;
+                else
+                    concat += DisplayCPAchievement.MyUnlock.GetDescription() + shortLineBreak;
+                if (DisplayCPAchievement.MyUnlock.PreReqComplete)
                 {
                     if (DisplayCPAchievement.MyUnlock.AssociatedUnlocks.Count > 0)
                     {
@@ -292,7 +295,7 @@ public class Compendium : MonoBehaviour
                         concat += "Black Market Unlocks: \n".WithSizeAndColor(30, ColorHelper.LesserGrayHex);
                         foreach (PowerUp p in DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks)
                         {
-                            string name = DisplayCPAchievement.MyUnlock.Unlocked ? p.Description.Name.WithRarityColor(p.Rarity - 1, false) : "???".WithColor(ColorHelper.RarityColorHex[rare]);
+                            string name = DisplayCPAchievement.MyUnlock.IsComplete ? p.Description.Name.WithRarityColor(p.Rarity - 1, false) : "???".WithColor(ColorHelper.RarityColorHex[rare]);
                             concat += " " + name + '\n';
                         }
                         concat += shortLineBreak;
@@ -308,7 +311,7 @@ public class Compendium : MonoBehaviour
                         concat += " Completionist\n".WithColor(ColorHelper.RarityColorHex[4]);
                     else if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Challenge)
                         concat += " Challenge\n".WithColor(ColorHelper.RarityColorHex[5]);
-                    else if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Secret)
+                    else if (isSecret)
                         concat += " Secret\n".WithColor(ColorHelper.RarityColorHex[0]);
                 }
                 else

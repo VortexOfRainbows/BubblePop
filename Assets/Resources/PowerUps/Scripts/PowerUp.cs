@@ -469,7 +469,7 @@ public abstract class PowerUp
             return false;
 
         bool NoAltsForCompendium = Compendium.Instance != null && Compendium.Instance.PageNumber == 0;
-        if (Main.GameFinishedLoading && !IsInPowerPool && HasBlackMarketAlternate && BlackMarketVariantUnlockCondition.Unlocked && !NoAltsForCompendium)
+        if (Main.GameFinishedLoading && !IsInPowerPool && HasBlackMarketAlternate && BlackMarketVariantUnlockCondition.IsComplete && !NoAltsForCompendium)
             return true;
         if (Compendium.Instance != null && Compendium.Instance.PageNumber == 3)
             return true; //All powers on the achievement page are going to show up as black market powers, so this should make sense as an extra fail-safe
@@ -479,7 +479,7 @@ public abstract class PowerUp
     {
         return IsBlackMarket() || (HasBlackMarketAlternate
                             && PickedUpCountAllRuns > 0
-                            && BlackMarketVariantUnlockCondition.Unlocked);
+                            && BlackMarketVariantUnlockCondition.IsComplete);
     }
     public bool HasBlackMarketAlternate => BlackMarketVariantUnlockCondition != null;
     public virtual UnlockCondition BlackMarketVariantUnlockCondition => null;

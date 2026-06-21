@@ -116,7 +116,7 @@ public abstract class UnlockCondition
         if(complete)
             SetComplete(true);
     }
-    public bool Unlocked => FakeComplete || TryUnlock();
+    public bool IsComplete => FakeComplete || TryUnlock();
     protected virtual bool TryUnlockCondition => false;
     public string LockedText() => GetDescription();
     protected bool Completed { get; set; } = false;
@@ -152,6 +152,7 @@ public abstract class UnlockCondition
         else if(!completeStatus)
         {
             Completed = false;
+            HasShownCompletionMessage = false;
             if (!skipSave)
                 SaveData();
         }
@@ -185,7 +186,7 @@ public abstract class UnlockCondition
     {
         if(!PreReqComplete && !Completed)
             return "???".WithColor(ColorHelper.LesserGrayHex);
-        return UnlockDescription.Name.WithRarityColor(Rarity - 1, false);
+        return UnlockDescription.Name.WithRarityColor(Rarity - 1, AchievementCategory == Secret);
     }
     public string GetDescription()
     {

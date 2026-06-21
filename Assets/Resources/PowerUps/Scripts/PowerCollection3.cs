@@ -198,3 +198,19 @@ public class LightningInABottle : PowerUp
         p.InstakillsOnWaveStart += 3 * Stack;
     }
 }
+public class SnowLeopardTale : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = SuperRare;
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.SlowDuration += 3 * Stack;
+    }
+    public override bool IsBlackMarket()
+    {
+        return true;
+    }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<SlowThingsDownALittle>();
+}

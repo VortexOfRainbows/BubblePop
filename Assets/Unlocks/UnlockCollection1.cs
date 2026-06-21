@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 
 public class StartsUnlocked : UnlockCondition
@@ -221,4 +222,13 @@ public class FizzyCoolGuys : UnlockCondition
     }
     public override int Rarity => 3;
     public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
+}
+public class SlowThingsDownALittle : UnlockCondition
+{
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Lab;
+        category = Secret;
+    }
+    public override int Rarity => 4;
 }

@@ -3,13 +3,14 @@
   {
     TabForMoreInformation: " (TAB for more detail)"
     PlayMore: Play more to unveil this mystery!
+    UnlockSecret: The unlock condition for this achievement is Y:secret
   }
   Power:
   {
     Choice:
     {
       Title: Choice
-      Description: Pick which power you want from a given selection 
+      Description: Pick which power you want from a given selection
       Lore: A curious bubble that shifts and reforms itself into other power bubbles.
     }
     ChargeShot:
@@ -721,6 +722,13 @@
       Brief: First few attacks in a wave do infinite damage
       Lore: Power.LightningInABottle.Lore
     }
+    SnowLeopardTale:
+    {
+      Title: Tale of Frostbite
+      Description: Apply a Y:[stacking chill] to enemies on hit, reducing their Y:[movement and attack speed] by Y:10% for Y:3 G:(+1 per stack) Y:seconds
+      Brief: Freeze enemies on hit
+      Lore: Power.SnowLeopardTale.Lore
+    }
   }
   Equip:
   {
@@ -1089,6 +1097,11 @@
     {
       Title: Fizzy: Don't Look At Explosions
       Description: As Y:Fizzy, kill 5 or more enemies with a single bath bomb explosion
+    }
+    SlowThingsDownALittle:
+    {
+      Title: Let's Slow Things Down a Little
+      Description: Lag the game until the update rate drops Y:[below 10 updates per second]
     }
   }
   Enemy:

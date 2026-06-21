@@ -35,7 +35,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         MyElem.Visual.SetActive(!IsPowerUnlock);
         MyElem.ParentAchieve = this;
         TypeID = i;
-        if (MyUnlock.Unlocked && !Selected && Style != 3 && Style != 5)
+        if (MyUnlock.IsComplete && !Selected && Style != 3 && Style != 5)
         {
             Color c = new(.1f, .7f, .1f, 0.431372549f);
             DescriptionImage.color = c;
@@ -47,8 +47,8 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public void InitPowerUpVersion(PowerUp p)
     {
         AlternativeDisplayElement.SetPowerType(p.Type);
-        AlternativeDisplayElement.SpecialLockedSprite = !MyUnlock.Unlocked;
-        AlternativeDisplayElement.ForceUnhideElement = MyUnlock.Unlocked;
+        AlternativeDisplayElement.SpecialLockedSprite = !MyUnlock.IsComplete;
+        AlternativeDisplayElement.ForceUnhideElement = MyUnlock.IsComplete;
     }
     /// <summary>
     /// Currently unused, as this element does not have a tier list
@@ -59,7 +59,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     }
     public override int GetRare(bool reverse = false)
     {
-        return MyUnlock.PreReqComplete || MyUnlock.Unlocked ? MyUnlock.Rarity : MyUnlock.Rarity + (reverse ? -10 : 10);
+        return MyUnlock.PreReqComplete || MyUnlock.IsComplete ? MyUnlock.Rarity : MyUnlock.Rarity + (reverse ? -10 : 10);
     }
     public override int GetCount()
     {
@@ -68,18 +68,20 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     public override int GetIDForSorting(bool reverse = false)
     {
         int id = TypeID;
+        int dir = reverse ? -1 : 1;
         if (MyUnlock.PreReqUnlock != null)
         {
-            int dir = reverse ? -1 : 1;
             id += (MyUnlock.PreReqUnlock.MyID + 1) * 1000 * dir;
-            if (!MyUnlock.PreReqComplete && !MyUnlock.Unlocked)
+            if (!MyUnlock.PreReqComplete && !MyUnlock.IsComplete)
                 id += 10000 * dir;
         }
+        if (MyUnlock.AchievementCategory == UnlockCondition.Secret)
+            id += 5000 * dir;
         return id;
     }
     public override bool IsLocked()
     {
-        return MyUnlock.Unlocked; //In this case, more like it is completed
+        return MyUnlock.IsComplete; //In this case, more like it is completed
     }
     public new void Update()
     {
@@ -104,7 +106,11 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         DescriptionArea.gameObject.SetActive(Compendium.Instance.AchievementPage.WideDisplayStyle);
 
         NameText.text = MyUnlock.GetName();
-        DescriptionText.text = MyUnlock.GetDescription();
+
+        if (MyUnlock.AchievementCategory == UnlockCondition.Secret && !MyUnlock.IsComplete)
+            DescriptionText.text = Localization.Get("Common.UnlockSecret");
+        else
+            DescriptionText.text = MyUnlock.GetDescription();
 
         CombinedRect.sizeDelta = new Vector2(DescriptionArea.sizeDelta.x, 0);
     }

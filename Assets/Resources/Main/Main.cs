@@ -7,9 +7,11 @@ using UnityEngine.UI;
 
 public partial class Main : MonoBehaviour
 {
+    public static float FramesPerSeconds { get; private set; }
+    public static float TimeElapsedDuringLowFPS { get; private set; } = 0;
+    public static float FramesElapsedDuringLowFPS { get; private set; } = 0;
     public static bool GameFinishedLoading { get; private set; }
     public static int GameUpdateCount = 0;
-    public const float SnakeEyeChance = 0.0278f;
     public static bool DebugCheats { get; set; } = false;
     public static bool PlayerNearPylon => CurrentPylon != null && CurrentPylon.PlayersNearby && !CurrentPylon.Complete;
     public static Vector2 PylonPositon => CurrentPylon == null ? Player.Instance1Pos : CurrentPylon.transform.position;
@@ -178,6 +180,20 @@ public partial class Main : MonoBehaviour
     {
         SpriteBatch.OnUpdate();
         LightBatch.OnUpdate();
+
+        FramesPerSeconds = 1.0f / Time.unscaledDeltaTime;
+        //Debug.Log(FramesPerSeconds);
+        if(FramesPerSeconds <= 11) //The achievement says 10, but we'll do 11
+        {
+            FramesElapsedDuringLowFPS += 1;
+            TimeElapsedDuringLowFPS += Time.unscaledDeltaTime;
+            if(TimeElapsedDuringLowFPS >= 3 && FramesElapsedDuringLowFPS >= 11)
+                UnlockCondition.Get<SlowThingsDownALittle>().SetComplete();
+        }
+        else
+        {
+            TimeElapsedDuringLowFPS = FramesElapsedDuringLowFPS = 0;
+        }
     }
     public static Main Instance;
     public static class GlobalEquipData

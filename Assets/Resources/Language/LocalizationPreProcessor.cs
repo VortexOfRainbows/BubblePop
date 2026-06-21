@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public static partial class LocalizationBuilder
 {
@@ -14,11 +12,9 @@ public static partial class LocalizationBuilder
         foreach (string key in translation.Keys)
         {
             string value = translation[key];
-            if(key.EndsWith("Description"))
+            if(key.EndsWith("Description") || key.EndsWith("Secret"))
             {
-                bool augmentSize = true;
-                if (key.StartsWith("Equip") || key.StartsWith("Unlock"))
-                    augmentSize = false;
+                bool augmentSize = key.StartsWith("Power");
                 value = ToRichText(value, augmentSize);
             }
             else if(key.EndsWith("TabForMoreInformation"))

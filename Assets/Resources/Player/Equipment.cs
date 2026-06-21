@@ -63,7 +63,7 @@ public class Equipment : MonoBehaviour
         for (int i = 0; i < PowerUp.Reverses.Count; ++i)
         {
             PowerUp p = PowerUp.Get(i);
-            if (p.IsBlackMarket() && p.Weighting > 0)
+            if (p.IsBlackMarket() && p.Weighting > 0 && (!p.HasBlackMarketAlternate || p.BlackMarketVariantUnlockCondition.IsComplete))
                 PowerUp.AddBlackMarketPowerToPool(p);
         }
         PowerPool.Clear();
@@ -79,7 +79,7 @@ public class Equipment : MonoBehaviour
     }
     //protected virtual UnlockCondition CategoryUnlockCondition => UnlockCondition.Get<StartsUnlocked>();
     //public bool CategoryUnlocked => CategoryUnlockCondition.Unlocked || this is Body || isSubEquipment;
-    public bool IsUnlocked => UnlockCondition.Unlocked /*&& CategoryUnlocked) || (SameUnlockAsBody(Player.Instance.Body) && !isSubEquipment)*/;
+    public bool IsUnlocked => UnlockCondition.IsComplete /*&& CategoryUnlocked) || (SameUnlockAsBody(Player.Instance.Body) && !isSubEquipment)*/;
     public virtual void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
 

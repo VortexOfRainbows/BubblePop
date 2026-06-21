@@ -70,7 +70,7 @@ public class CompendiumEquipmentElement : CompendiumElement
                 Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
                 if (this is CompendiumAchievementElement achieve2 && achieve2.DescriptionImage != null)
                 {
-                    if(achieve2.MyUnlock.Unlocked && !Selected)
+                    if(achieve2.MyUnlock.IsComplete && !Selected)
                     {
                         target = new Color(.1f, .7f, .1f, 0.431372549f);
                     }
@@ -107,7 +107,7 @@ public class CompendiumEquipmentElement : CompendiumElement
     public override int GetRare(bool reverse = false)
     {
         UnlockCondition MyUnlock = MyElem.ActiveEquipment.GetUnlockCondition();
-        return MyUnlock.PreReqComplete || MyUnlock.Unlocked ? MyElem.ActiveEquipment.GetRarity() : MyUnlock.Rarity + (reverse ? -10 : 10);
+        return MyUnlock.PreReqComplete || MyUnlock.IsComplete ? MyElem.ActiveEquipment.GetRarity() : MyUnlock.Rarity + (reverse ? -10 : 10);
     }
     public override int GetIDForSorting(bool reverse = false)
     {
@@ -118,7 +118,7 @@ public class CompendiumEquipmentElement : CompendiumElement
             int dir = reverse ? -1 : 1;
             id += MyUnlock.Rarity * 100;
             id += (MyUnlock.PreReqUnlock.MyID + 1) * 1000 * dir;
-            if (!MyUnlock.PreReqComplete && !MyUnlock.Unlocked)
+            if (!MyUnlock.PreReqComplete && !MyUnlock.IsComplete)
                 id += 10000 * dir;
         }
         return id;
