@@ -62,7 +62,16 @@ public abstract class Buff
         {
             if (duration == -1)
                 SkipTimeUpdate = true;
-            BuffStack.Insert(0, new Vector2(duration, duration));
+            for(int i = addStacks; i > 0; --i)
+                BuffStack.Insert(0, new Vector2(duration, duration));
+            if(MaxStackSize != -1) //Clear out older stacks when going over the max size rather than preventing new application
+            {
+                while (BuffStack.Count > MaxStackSize)
+                {
+                    Stacks -= 1;
+                    BuffStack.RemoveAt(BuffStack.Count - 1);
+                }
+            }
             Owner = e;
         }
         else
@@ -90,6 +99,7 @@ public abstract class Buff
     }
     public int Stacks { get; set; } = 0;
     public virtual bool StackSeparately => false;
+    public virtual int MaxStackSize => -1;
 }
 public class LightningBottle : Buff
 {
@@ -138,4 +148,14 @@ public class Poison : Buff
         }
     }
     public override bool StackSeparately => true;
+}
+public class Chill : Buff
+{
+    public override int MaxStackSize => 10;
+    public override bool StackSeparately => true;
+    public override void Update(Entity e)
+    {
+        if (e is Enemy enemy)
+            enemy.ExternalSpeedMultiplier -= Stacks * 0.1f;
+    }
 }

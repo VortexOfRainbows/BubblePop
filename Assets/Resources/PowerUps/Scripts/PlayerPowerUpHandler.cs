@@ -164,7 +164,7 @@ public partial class Player : Entity
     public float GemDropChance = 0.0f;
     public int BonusGems = 0;
     public int InstakillsOnWaveStart = 0;
-    public float SlowDuration = 0;
+    public float ChillDuration = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -226,7 +226,7 @@ public partial class Player : Entity
         GemDropChance = 0;
         BonusGems = 0;
         InstakillsOnWaveStart = 0;
-        SlowDuration = 0;
+        ChillDuration = 0;
     }
     private void UpdatePowerUps()
     {

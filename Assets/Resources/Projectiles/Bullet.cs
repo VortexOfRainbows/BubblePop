@@ -121,7 +121,6 @@ public class Snowball : Projectile
         }
         else
         {
-            timer2++;
             transform.localScale = 1.4f * percent * Vector3.one;
         }
         if (percent >= 1 || timer >= 0)

@@ -151,18 +151,6 @@ public class Projectile : MonoBehaviour
     }
     public void HitTarget(Entity target)
     {
-        //if(PlayerOwner.RecursiveSubspaceLightning > 0)
-        //{
-            //int eyes = PlayerOwner.RecursiveSubspaceLightning + 2;
-            //float recursiveDepth = 1;
-            //if (this is SnakeLightning)
-            //{
-                //recursiveDepth += Data1 * 1.2f;
-            //}
-            //float chanceOfSuccess = Main.SnakeEyeChance * (eyes - recursiveDepth);
-            //if(Utils.RandFloat() < chanceOfSuccess)
-                //NewProjectile<SnakeLightning>(transform.position, (target.transform.position - transform.position).normalized * 2.5f, 10, recursiveDepth);
-        //}
         if(target is RockGolem)
         {
             if (Damage > 0.1f)
@@ -179,6 +167,11 @@ public class Projectile : MonoBehaviour
                     target.AddBuff<Poison>(duration);
                 }
             }
+        }
+        if(PlayerOwner.ChillDuration > 0)
+        {
+            //if(target is not IceGolem)
+            target.AddBuff<Chill>(PlayerOwner.ChillDuration);
         }
         if(PlayerOwner.SkullBomb > 0)
         {

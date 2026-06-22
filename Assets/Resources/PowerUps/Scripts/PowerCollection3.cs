@@ -206,7 +206,7 @@ public class SnowLeopardTale : PowerUp
     }
     public override void HeldEffect(Player p)
     {
-        p.SlowDuration += 3 * Stack;
+        p.ChillDuration += 3 * Stack;
     }
     public override bool IsBlackMarket()
     {

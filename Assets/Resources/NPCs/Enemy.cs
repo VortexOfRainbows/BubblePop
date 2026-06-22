@@ -85,8 +85,10 @@ public class Enemy : Entity
         return MyDescription.Name.WithRarityColor(GetRarity() - 1, this is Infector);
     }
     #region Champion
-    public float ChampionBonusActionsCounter { get; set; } = 0;
-    public float ChampionSpeedBonus { get; set; } = 0;
+    public float ActionCounter { get; set; } = 0;
+    public float ChampionSpeedBonus { get; protected set; } = 0;
+    public float ExternalSpeedMultiplier { get; set; } = 1;
+    public float ActSpeed { get; private set; } = 1;
     public int ChampionType { get; set; } = -1;
     public float ChampionDefenseBonus { get; set; } = 0;
     public bool InfectionTarget { get; set; } = false;
@@ -277,10 +279,7 @@ public class Enemy : Entity
             return;
         }
         else
-        {
             ResolveDamageBuffer();
-            Animate();
-        }
         if (JustSpawnedIn)
         {
             if (IsSkull)
@@ -302,16 +301,27 @@ public class Enemy : Entity
         if(ChampionType != -1)
         {
             UpdateImplantShader();
-            ChampionBonusActionsCounter += ChampionSpeedBonus;
         }
         UpdateBuffs();
-        AI();
-        while(ChampionBonusActionsCounter >= 1)
+        int actCount = 0;
+        ActSpeed = Mathf.Max((1 + ChampionSpeedBonus) * ExternalSpeedMultiplier, 0);
+        ExternalSpeedMultiplier = 1; //Reset after applying
+
+        bool ForceRunOnce = ActSpeed == 1;
+        if (!ForceRunOnce)
+            ActionCounter += ActSpeed;
+        else
+            ActionCounter = 1.001f;
+        if(!ForceRunOnce)
+            RB.position -= RB.velocity * Time.fixedDeltaTime;
+        while (ActionCounter >= 1)
         {
-            RB.position += RB.velocity * Time.fixedDeltaTime;
+            if(!ForceRunOnce)
+                RB.position += RB.velocity * Time.fixedDeltaTime;
             AI();
             Animate();
-            ChampionBonusActionsCounter -= 1;
+            ActionCounter -= 1;
+            actCount++;
         }
     }
     public bool AlreadyDead = false;

@@ -28,8 +28,13 @@ public class IceGolem : Ent
     public Transform RightArmAnchor;
     public Transform LeftArmAnchor;
     public Transform Head;
+    public Projectile currentSnowball = null;
     public override void AI()
     {
+        if (currentSnowball != null)
+        {
+            currentSnowball.timer2++;
+        }
         if (AICounter > 100)
         {
             Vector2 toTarget = Target.Position - (Vector2)transform.position;
@@ -52,12 +57,12 @@ public class IceGolem : Ent
                 RightArmAnchor.LerpLocalEulerZ(-35 * iPer, 0.1f);
                 LeftArmAnchor.LerpLocalEulerZ(35 * iPer, 0.1f);
                 Head.LerpLocalPosition(new Vector2(0, percent * 0.3f), 0.1f);
-                if(AICounter == 101)
+                if (AICounter == 101)
                 {
-                    AudioManager.PlaySound(SoundID.GolemCharge, transform.position, 1, 0.9f * (1 + ChampionSpeedBonus), 0);
-                    Projectile.NewProjectile<Snowball>(transform.position, Vector2.zero, 1, this, 150 / (1 + ChampionSpeedBonus));
+                    AudioManager.PlaySound(SoundID.GolemCharge, transform.position, 1, 0.9f * ActSpeed, 0);
+                    currentSnowball = Projectile.NewProjectile<Snowball>(transform.position, Vector2.zero, 1, this, 150).GetComponent<Projectile>();
                 }
-                else if(Utils.RandFloat() < 0.2f)
+                else if (Utils.RandFloat() < 0.2f)
                 {
                     Vector3 circle = Utils.RandCircleEdge() * (0.5f + percent);
                     ParticleManager.NewParticle(transform.position + new Vector3(Utils.SignNoZero(Visual.transform.localScale.x) * 0.1f, -0.5f)
