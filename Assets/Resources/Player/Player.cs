@@ -874,7 +874,7 @@ public partial class Player : Entity
     }
     public void RegisterDeath()
     {
-        if(InstanceID == 1)
+        if(InstanceID == 1 || Player.AllPlayers.Count <= 1)
             PlayerData.PlayerDeaths++;
         if(BonusPhoenixLives > 0)
         {
