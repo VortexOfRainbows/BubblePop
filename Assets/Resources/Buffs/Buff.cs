@@ -156,6 +156,6 @@ public class Chill : Buff
     public override void Update(Entity e)
     {
         if (e is Enemy enemy)
-            enemy.ExternalSpeedMultiplier -= Stacks * 0.1f;
+            enemy.FreezeMultiplier -= Stacks * 0.1f;
     }
 }

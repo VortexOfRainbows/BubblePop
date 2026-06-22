@@ -123,6 +123,7 @@ public class Chest : MonoBehaviour
                 Hat.material.SetFloat("_InlineThreshold", inlineThreshold);
                 Hat.material.SetFloat("_OutlineSize", 0.0125f);
                 Hat.material.SetFloat("_AdditivePower", additiveColorPower);
+                Hat.material.SetFloat("_IsInfected", 1);
                 #endregion
             }
         }

@@ -87,12 +87,16 @@ public class Enemy : Entity
     #region Champion
     public float ActionCounter { get; set; } = 0;
     public float ChampionSpeedBonus { get; protected set; } = 0;
-    public float ExternalSpeedMultiplier { get; set; } = 1;
+    public float FreezeMultiplier { get; set; } = 1;
+    private float FreezeFollower { get; set; } = 0;
+    public bool FullyFrozen { get; private set; } = false;
     public float ActSpeed { get; private set; } = 1;
     public int ChampionType { get; set; } = -1;
     public float ChampionDefenseBonus { get; set; } = 0;
     public bool InfectionTarget { get; set; } = false;
     private float outlineThreshold = 0.0125f;
+    public bool HasBeenImplantedOnce = false;
+    private bool HasBeenFrozenOnce = false;
     public void ImplantChampion(Infector Infector)
     {
         for(int i = 0; i < 30; i++)
@@ -109,6 +113,11 @@ public class Enemy : Entity
         MaxLife += originalMax;
         Life += originalMax;
         ImplantShader();
+        foreach (SpriteRenderer renderer in ChildRenderers)
+        {
+            renderer.material.SetFloat("_IsInfected", 1);
+            renderer.material.SetFloat("_OutlineSize", 0.5f);
+        }
         OnImplantChampion(Infector);
     }
     public virtual Vector3 CrownPositionOffset()
@@ -123,12 +132,14 @@ public class Enemy : Entity
     {
 
     }
-    public virtual void ImplantShader()
+    public void ImplantShader()
     {
+        if(HasBeenImplantedOnce)
+            return;
         if(ChildRenderers != null)
         {
-            Color outlineColor = new Color(1, 0, 0);
-            Color inlineColor = new Color(0.275f, 0, 0);
+            Color outlineColor = new(1, 0, 0);
+            Color inlineColor = new(0.275f, 0, 0);
             float inlineThreshold = 0.2f;
             float additiveColorPower = 0.1f;
             ModifyInfectionShaderProperties(ref outlineColor, ref inlineColor, ref inlineThreshold, ref outlineThreshold, ref additiveColorPower);
@@ -138,15 +149,20 @@ public class Enemy : Entity
                 renderer.material.SetColor("_OutlineColor", outlineColor);
                 renderer.material.SetColor("_InnerColor", inlineColor);
                 renderer.material.SetFloat("_InlineThreshold", inlineThreshold);
-                renderer.material.SetFloat("_OutlineSize", 0.5f);
                 renderer.material.SetFloat("_AdditivePower", additiveColorPower);
             }
+            HasBeenImplantedOnce = true;
         }
     }
     private float ImplantTimer = 1f;
     public void UpdateImplantShader()
     {
-        if (ImplantTimer == -1)
+        if(HasBeenFrozenOnce)
+        {
+            foreach (SpriteRenderer renderer in ChildRenderers)
+                renderer.material.SetFloat("_FreezeStrength", FreezeFollower);
+        }
+        if (ImplantTimer == -1 || ChampionType == -1)
             return;
         ImplantTimer -= Time.fixedDeltaTime * 7f;
         if (ImplantTimer < 0)
@@ -298,14 +314,27 @@ public class Enemy : Entity
         else
             ++FramesAlive;
         UpdateSpecialImmuneFrames();
-        if(ChampionType != -1)
-        {
-            UpdateImplantShader();
-        }
         UpdateBuffs();
+        if(ChampionType != -1 || HasBeenImplantedOnce)
+            UpdateImplantShader();
         int actCount = 0;
-        ActSpeed = Mathf.Max((1 + ChampionSpeedBonus) * ExternalSpeedMultiplier, 0);
-        ExternalSpeedMultiplier = 1; //Reset after applying
+        if(FreezeMultiplier != 1 || HasBeenFrozenOnce)
+        {
+            if(!HasBeenFrozenOnce)
+            {
+                ImplantShader();
+                HasBeenFrozenOnce = true;
+            }
+            else
+            {
+                float inverseFreeze = Mathf.Clamp01(1 - FreezeMultiplier);
+                float freezeTarget = 0.5f * Mathf.Sqrt(inverseFreeze) + 0.5f * (inverseFreeze * inverseFreeze * inverseFreeze);
+                FreezeFollower = Mathf.Lerp(FreezeFollower, freezeTarget, 0.125f);
+            }
+            FullyFrozen = FreezeMultiplier <= 0.05f;
+        }
+        ActSpeed = Mathf.Max((1 + ChampionSpeedBonus) * FreezeMultiplier, 0);
+        FreezeMultiplier = 1; //Reset after applying
 
         bool ForceRunOnce = ActSpeed == 1;
         if (!ForceRunOnce)

@@ -41,9 +41,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AdditivePower: 0.4
+    - _FreezeStrength: 0
     - _InlineThreshold: 0.2
+    - _IsInfected: 0
     - _OutlineSize: 0.0125
     m_Colors:
+    - _FreezeInner: {r: 0.6980392, g: 0.8509804, b: 1, a: 0}
+    - _FreezeOuter: {r: 0.29999998, g: 0.6, b: 1, a: 0}
     - _InnerColor: {r: 0.29999998, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

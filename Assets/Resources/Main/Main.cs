@@ -183,11 +183,11 @@ public partial class Main : MonoBehaviour
 
         FramesPerSeconds = 1.0f / Time.unscaledDeltaTime;
         //Debug.Log(FramesPerSeconds);
-        if(FramesPerSeconds <= 11) //The achievement says 10, but we'll do 11
+        if(FramesPerSeconds <= 12) //The achievement says 10, but we'll do 12
         {
             FramesElapsedDuringLowFPS += 1;
             TimeElapsedDuringLowFPS += Time.unscaledDeltaTime;
-            if(TimeElapsedDuringLowFPS >= 3 && FramesElapsedDuringLowFPS >= 11)
+            if(TimeElapsedDuringLowFPS >= 3 && FramesElapsedDuringLowFPS >= 10)
                 UnlockCondition.Get<SlowThingsDownALittle>().SetComplete();
         }
         else
