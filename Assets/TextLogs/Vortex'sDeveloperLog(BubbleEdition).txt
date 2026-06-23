@@ -50,7 +50,7 @@ Bug Watchlist:
 
 Done: 	
 
-6/20/26 and 6/23/26
+6/20/26 and 6/22/26 to 6/23/26
 1. Snow Leopard's Tale Powerup
 	1. Effect now works!
 	2. Now has a shader! Works in tandem with infection shader!
@@ -58,6 +58,11 @@ Done:
 3. Add ability for black market powers to be out of the pool until unlocked
 4. Added new Achievment "Let's Slow Things Down a Little"
 5. Fix bug where player death count was only being incremented in multiplayer (now Bunce hat should be unlockable again)
+6. Rework the Life and Shield system
+	1. Now shields no longer have "slots", instead they act like soul hearts in Isaac
+	2. The max life + shield you are allowed to have is 10*
+	3. Reworked the way heart and shields are loaded into the UI. Generally the system should be faster, and lag when acquiring shields or switching equips or getting hit should be reduced
+	4. Bubbleshield tooltip updated accordingly
 
 6/18/26 to 6/20/26
 1. Bubblewand charge sound now gets higher pitch with more attack speed

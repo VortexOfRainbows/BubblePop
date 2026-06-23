@@ -378,7 +378,6 @@ public partial class Player : Entity
         return AllPlayers.Count <= instanceID ? null : AllPlayers[instanceID];
     }
     private int Shield = 0;
-    private int MaxShield = 0;
     public new int Life = 0;
     public new int MaxLife = 0;
     public int GetShield() => Shield;
@@ -563,9 +562,9 @@ public partial class Player : Entity
         WaveDirector.FixedUpdate();
         if (!HasRunStartingGear)
         {
-            MaxLife = Life = Shield = MaxShield = 0;
+            MaxLife = Life = Shield = 0;
             foreach (Equipment e in Equips)
-                e.ModifyLifeStats(ref MaxLife, ref Life, ref Shield, ref MaxShield);
+                e.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
             if(AllPlayers.Count > 1)
             {
                 MaxLife += 2;
@@ -595,7 +594,7 @@ public partial class Player : Entity
                     Life = TotalMaxLife;
                 if (TotalMaxShield < Shield)
                     Shield = TotalMaxShield;
-                PlayerStatUI.UpdateHearts(this);
+                PlayerStatUI.SetHeartsToPlayerLife();
             }
             BonusChoices = false;
             CoinsOnPowerPickup = 0; //This update needs to happen here so the reset works for mitosis
@@ -912,13 +911,15 @@ public partial class Player : Entity
     public void OnSetLife(int value)
     {
         if(InstanceID == 0)
-            PlayerStatUI.SetHearts(value, Shield);
+            PlayerStatUI.SetHeartsToPlayerLife();
     }
     public void SetShield(int num)
     {
         Shield = num;
+        if(Shield > TotalMaxShield)
+            Shield = TotalMaxShield;
         if(InstanceID == 0)
-            PlayerStatUI.SetHearts(Life, num);
+            PlayerStatUI.SetHeartsToPlayerLife();
     }
     public void ImmuneFlashing()
     {

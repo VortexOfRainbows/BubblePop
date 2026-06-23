@@ -120,15 +120,11 @@ public class BubbleShield : PowerUp
     public override void OnPickup(int count)
     {
         foreach(Player player in Player.AllPlayers)
-        {
-            //Debug.Log("Shield Pickup");
             player.SetShield(player.GetShield() + count);
-        }
     }
     public override void HeldEffect(Player p)
     {
         p.BubbleShields += Stack;
-        p.TotalMaxShield += 1;
         //p.ImmunityFrameMultiplier += 0.05f * Stack;
         p.ShieldImmunityFrameMultiplier += 0.2f + 0.2f * Stack;
     }

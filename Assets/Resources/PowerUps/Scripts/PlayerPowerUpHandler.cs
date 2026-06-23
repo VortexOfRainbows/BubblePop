@@ -103,7 +103,7 @@ public partial class Player : Entity
     public int ChipStacks = 2;
     public bool HasBubbleShield => BubbleShields > 0;
     public int BubbleShields = 0;
-    public int TotalMaxShield { get; set; }
+    public int TotalMaxShield => 10 - TotalMaxLife; //experimental setting it to 10
     public int TotalMaxLife { get; set; }
     public float ImmunityFrameMultiplier = 1.0f;
     public float ShieldImmunityFrameMultiplier = 1.0f;
@@ -183,7 +183,6 @@ public partial class Player : Entity
         BlueChipChance = HomingRange = 0.0f;
         ChipHeight = 5;
         ChipStacks = 2;
-        TotalMaxShield = MaxShield;
         TotalMaxLife = MaxLife;
         BubbleShields = Coalescence = 0;
         RollDex = RollInit = RollChar = RollPerc = SnakeEyes = 0;
