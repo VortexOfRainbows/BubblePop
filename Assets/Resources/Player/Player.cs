@@ -826,6 +826,10 @@ public partial class Player : Entity
                 for (int i = 0; i < amt; ++i)
                     Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1, this);
             }
+            if(GladiatorDuration > 0)
+            {
+                AddBuff<OmniBoost>(GladiatorDuration, 1);
+            }
         }
         if(lifeDamage > 0)
         {

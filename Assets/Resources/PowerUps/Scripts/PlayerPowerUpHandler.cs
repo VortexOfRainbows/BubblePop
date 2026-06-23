@@ -78,6 +78,7 @@ public partial class Player : Entity
     public float AbilityRecoverySpeed = 1.0f, AbilityRecoverySpeedMult = 1.0f;
     public float TrueMoveModifier = 1.0f;
     public float LightMultiplierBonusDamage = 0.0f;
+    public int GladiatorDuration = 0;
     public float MoveSpeedMod 
     {   
         get
@@ -226,6 +227,7 @@ public partial class Player : Entity
         BonusGems = 0;
         InstakillsOnWaveStart = 0;
         ChillDuration = 0;
+        GladiatorDuration = 0;
     }
     private void UpdatePowerUps()
     {

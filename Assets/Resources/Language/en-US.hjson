@@ -729,6 +729,20 @@
       Brief: Freeze enemies on hit
       Lore: Power.SnowLeopardTale.Lore
     }
+    Gladiator:
+    {
+      Title: Gladiator
+      Description: 
+        '''
+        Gain a Y:shield 
+        When a Y:[shield is broken,] increase Y:[damage, attack speed,] and Y:[movement speed] by Y:50% for Y:10 G:(+2 per stack) Y:seconds
+        '''
+      Brief:
+        '''
+        Gain a shield and increase all stats temporarily when it breaks
+        '''
+      Lore: Power.Gladiator.Lore
+    }
   }
   Equip:
   {
@@ -1145,7 +1159,7 @@
     Gatligator:
     {
       Title: Gatligator
-      Description: This skater gator shoots fast and moves faster!
+      Description: This skater gator doesn't wanna see ya later
       Lore: Enemy.Gatligator.Lore
     }
     Crow:

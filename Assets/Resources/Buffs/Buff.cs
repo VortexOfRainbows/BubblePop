@@ -159,3 +159,17 @@ public class Chill : Buff
             enemy.FreezeMultiplier -= Stacks * 0.1f;
     }
 }
+public class OmniBoost : Buff
+{
+    public override void Update(Entity e)
+    {
+        if (e is Player p)
+        {
+            float boost = 0.5f * Stacks;
+            p.TrueMoveModifier += boost;
+            p.DamageMultiplier += boost;
+            p.AttackSpeedModifier += boost;
+        }
+    }
+    public override bool StackSeparately => true;
+}

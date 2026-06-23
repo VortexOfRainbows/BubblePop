@@ -214,3 +214,27 @@ public class SnowLeopardTale : PowerUp
     }
     public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<SlowThingsDownALittle>();
 }
+public class Gladiator : PowerUp
+{
+    public override void Init()
+    {
+        Weighting = Uncommon;
+    }
+    public override void OnPickup(int count)
+    {
+        foreach (Player player in Player.AllPlayers)
+            player.SetShield(player.GetShield() + count);
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.GladiatorDuration = 8 + Stack * 2;
+    }
+    public override bool IsBlackMarket()
+    {
+        return true;
+    }
+    public override Sprite GetTexture()
+    {
+        return Resources.Load<Sprite>("PowerUps/KurtPower");
+    }
+}
