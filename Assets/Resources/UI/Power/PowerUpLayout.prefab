@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7939839568757531349
 RectTransform:
   m_ObjectHideFlags: 0
@@ -82,6 +82,8 @@ MonoBehaviour:
   bg: {fileID: 8709217341721619203}
   isInGameLayout: 0
   isHovering: 0
+  RowCount: 1
+  ScaleFactor: 1
 --- !u!222 &8844401954639892719
 CanvasRenderer:
   m_ObjectHideFlags: 0

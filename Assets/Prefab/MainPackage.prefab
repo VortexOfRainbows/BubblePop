@@ -31195,7 +31195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: -876546973899608171, guid: 5e42a97017ed04642b7c363631dfd901, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.8}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.69803923}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -41395,10 +41395,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 3657281034133755898}
-    - target: {fileID: 4486974618734333983, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6144921308525389545, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
       propertyPath: m_text
       value: Restart
