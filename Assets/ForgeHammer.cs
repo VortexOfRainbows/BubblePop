@@ -36,6 +36,11 @@ public class ForgeHammer : GemUtility
     public void Update()
     {
         AnimateGems(GemCrushPosition.position + new Vector3(0, -0.25f, 0), -1, 2);
+        if (AnimationTimer <= 0)
+        {
+            foreach (ForgeCapsule c in MyCapsules)
+                c.UpdateUI();
+        }
     }
     public void FixedUpdate()
     {
@@ -96,11 +101,6 @@ public class ForgeHammer : GemUtility
                     HydraulicPress.SetLocalXY(Vector2.Lerp(new Vector2(0, 2.175f), new Vector2(0, 2.9f), percent));
                 }
             }
-        }
-        else
-        {
-            foreach (ForgeCapsule c in MyCapsules)
-                c.UpdateUI();
         }
         float t = 0.1f;
         for (int i = 0; i < Gems.Count; ++i)

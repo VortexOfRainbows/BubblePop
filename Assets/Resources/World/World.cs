@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 public class World : MonoBehaviour
 {
     public static Tile DepthTile;
@@ -103,6 +104,10 @@ public class World : MonoBehaviour
         bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
         bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.FloorTileType && !GetTileData(posi).IsRoadblock;
         return WithinBorders(pos) && validSpawnTile && currentlyOnThisProgressionTier;
+    }
+    public static Vector3Int WorldPosition(Vector3 position)
+    {
+        return RealTileMap.Map.WorldToCell(position);
     }
     public static bool WithinBorders(Vector3 position)
     {

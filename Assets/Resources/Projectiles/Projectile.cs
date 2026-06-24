@@ -179,7 +179,7 @@ public class Projectile : MonoBehaviour
             {
                 Vector2 velo = Utils.RandCircle(3);
                 Vector2 endPos = velo + (Vector2)transform.position;
-                Projectile.NewProjectile<BathBomb>(transform.position, velo, PlayerOwner.SkullBomb * 5, PlayerOwner, endPos.x, endPos.y, 4, 0.8f);
+                Projectile.NewProjectile<BathBomb>(e.transform.position, velo, PlayerOwner.SkullBomb * 5, PlayerOwner, endPos.x, endPos.y, 4, 0.8f);
             }
         }
         OnHitTarget(target);

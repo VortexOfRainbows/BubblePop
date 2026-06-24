@@ -84,6 +84,8 @@ public class PowerUpObject : MonoBehaviour
                 transform.position = transform.position.Lerp(FinalPosition, VeloEndTimer);
             float scale2 = VelocityStyle == 1 ? (0.3f + 0.7f * Mathf.Sqrt(Mathf.Min(1, VeloEndTimer * 2f))) : (0.25f + 0.75f * Mathf.Sqrt(Mathf.Min(1, VeloEndTimer * 2f)));
             transform.localScale = Vector3.Lerp(transform.localScale, scale2 * Vector3.one, VelocityStyle == 1 ? 0.12f : 0.1f);
+            if (VeloEndTimer >= 1)
+                velocity = Vector2.zero;
         }
         else if(!FakePower)
         {
@@ -107,6 +109,11 @@ public class PowerUpObject : MonoBehaviour
         else
         {
             CostObj.SetActive(false);
+        }
+        if (!World.WithinBorders(transform.position) && VeloEndTimer >= 1)
+        {
+            if(Entity.PushIntoClosestPossibleTile(transform, null, 5, false))
+                FinalPosition = transform.position;
         }
         TryCollecting();
     }

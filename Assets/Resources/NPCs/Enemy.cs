@@ -352,6 +352,14 @@ public class Enemy : Entity
             ActionCounter -= 1;
             actCount++;
         }
+        if (!World.WithinBorders(transform.position))
+        {
+            CircleCollider2D circle = GetComponent<CircleCollider2D>();
+            BoxCollider2D box = GetComponent<BoxCollider2D>();
+            bool collidersOn = (circle != null && circle.enabled) || (box != null && box.enabled);
+            if(collidersOn)
+                Entity.PushIntoClosestPossibleTile(transform, RB, 10, false);
+        }
     }
     public bool AlreadyDead = false;
     private void SetDead() => AlreadyDead = true;
