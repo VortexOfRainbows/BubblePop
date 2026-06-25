@@ -444,12 +444,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1624198296}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
-      propertyPath: MyUIManager.QuitButtons.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.DebugButtons.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.QuitButtons.Array.data[0]
@@ -461,7 +457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.SettingsButton.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.DebugButtons.Array.data[0]
@@ -776,6 +772,34 @@ PrefabInstance:
     - target: {fileID: 4648045220826043896, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -42.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396866491923571669, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 0.8627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396866491923571669, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 0.79607844
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396866491923571669, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 0.43137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396866491923571669, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396866491923571669, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.5176471
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396866491923571669, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.4776471
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396866491923571669, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.25882354
       objectReference: {fileID: 0}
     - target: {fileID: 5451589742721077302, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
       propertyPath: m_AnchorMax.x
