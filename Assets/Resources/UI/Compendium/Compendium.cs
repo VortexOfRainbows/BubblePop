@@ -67,6 +67,7 @@ public class Compendium : MonoBehaviour
     }
     public void Start()
     {
+        MyCanvas.worldCamera = CameraManager.UICamera;
         PowerPage = Pages[0] as BasicTierListCompendiumPage;
         EquipPage = Pages[1] as BasicTierListCompendiumPage;
         EnemyPage = Pages[2] as BasicTierListCompendiumPage;
