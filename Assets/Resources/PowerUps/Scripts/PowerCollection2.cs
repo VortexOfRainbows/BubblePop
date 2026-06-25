@@ -468,10 +468,10 @@ public class Eureka : PowerUp
     }
     public override void OnPickup(int count)
     {
-        if(Player.Instance.Hat is Bulb b)
-            ChoicePowerMenu.Instance.CostScaling -= count * 2;
-        else
+        if(IsBlackMarket())
             ChoicePowerMenu.Instance.CostScaling -= count * 5;
+        else
+            ChoicePowerMenu.Instance.CostScaling -= count * 2;
         ChoicePowerMenu.Instance.RemainingRerolls += count;
     }
     public override void HeldEffect(Player p)

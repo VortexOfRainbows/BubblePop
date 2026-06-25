@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class EnemyID
@@ -377,6 +379,14 @@ public class Enemy : Entity
             bool InstantKill = projOwner.RemoveBuff<LightningBottle>(1);
             if (InstantKill)
             {
+                if(IsSkull)
+                {
+                    Type myType = this.GetType();
+                    if (!Player.DifferentTypesOfSkullEnemiesZappedThisRun.Contains(myType))
+                        Player.DifferentTypesOfSkullEnemiesZappedThisRun.Add(myType);
+                    if (Player.DifferentTypesOfSkullEnemiesZappedThisRun.Count >= 10)
+                        UnlockCondition.Get<ThoughtBubbleCatchThis>().SetComplete();
+                }
                 ParticleManager.LightningKillEffect(transform.position);
                 proj.HitTarget(this);
                 Kill();

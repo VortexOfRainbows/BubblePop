@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -405,6 +406,7 @@ public partial class Player : Entity
     public static bool HasBeenHit => TimesHitThisRun > 0;
     public static int TimesHitThisRun = 0;
     public static int GoldSpentTotal = 0;
+    public static List<Type> DifferentTypesOfSkullEnemiesZappedThisRun { get; set; } = new();
     /// <summary>
     /// Shorthand for abilityTimer <= 0;
     /// </summary>
@@ -558,6 +560,7 @@ public partial class Player : Entity
             HasRunStartingGear = true;
             HasAttacked = false;
             TimesHitThisRun = 0;
+            DifferentTypesOfSkullEnemiesZappedThisRun.Clear();
         }
         WaveDirector.FixedUpdate();
         if (!HasRunStartingGear)

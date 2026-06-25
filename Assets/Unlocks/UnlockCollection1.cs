@@ -232,3 +232,13 @@ public class SlowThingsDownALittle : UnlockCondition
     }
     public override int Rarity => 4;
 }
+public class ThoughtBubbleCatchThis: UnlockCondition
+{
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Lab;
+        category = Challenge;
+    }
+    public override int Rarity => 3;
+    public override UnlockCondition PreReqUnlock => Get<ThoughtBubbleUnlock>();
+}

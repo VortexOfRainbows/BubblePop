@@ -721,6 +721,7 @@
       Description: After starting a Y:[wave,] your next Y:3 G:(+3 per stack) attacks will Y:[instantly kill enemies]
       Brief: First few attacks in a wave do infinite damage
       Lore: Power.LightningInABottle.Lore
+      BlackMarketDescription: After starting a Y:[wave,] your next Y:5 G:(+5 per stack) attacks will Y:[instantly kill enemies]
     }
     SnowLeopardTale:
     {
@@ -732,15 +733,12 @@
     Gladiator:
     {
       Title: Gladiator
-      Description: 
+      Description:
         '''
         Gain a Y:shield 
         When a Y:[shield is broken,] increase Y:[damage, attack speed,] and Y:[movement speed] by Y:50% for Y:10 G:(+2 per stack) Y:seconds
         '''
-      Brief:
-        '''
-        Gain a shield and increase all stats temporarily when it breaks
-        '''
+      Brief: Gain a shield and increase all stats temporarily when it breaks
       Lore: Power.Gladiator.Lore
     }
   }
@@ -1116,6 +1114,11 @@
     {
       Title: Let's Slow Things Down a Little
       Description: Lag the game until the update rate drops Y:[below 10 updates per second]
+    }
+    ThoughtBubbleCatchThis:
+    {
+      Title: Thought Bubble: Catch This
+      Description: Kill 10 different skull enemies with <color=#AAD3FEFF>Lightning in a Bottle</color> in a single run
     }
   }
   Enemy:

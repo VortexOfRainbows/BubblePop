@@ -189,14 +189,22 @@ public class CrystalSerum : PowerUp
 }
 public class LightningInABottle : PowerUp
 {
+    public override void ModifyDescription(ref PowerDescription description)
+    {
+        description.WithBlackMarketVariant(true);
+    }
     public override void Init()
     {
         Weighting = Rare;
     }
     public override void HeldEffect(Player p)
     {
-        p.InstakillsOnWaveStart += 3 * Stack;
+        if (IsBlackMarket())
+            p.InstakillsOnWaveStart += 5 * Stack;
+        else
+            p.InstakillsOnWaveStart += 3 * Stack;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<ThoughtBubbleCatchThis>();
 }
 public class SnowLeopardTale : PowerUp
 {
