@@ -141,7 +141,7 @@ public class StandardButton : Button
             GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
         }
 
-        //ON GAME OVER
+        //ON GAME OVER (THIS IS PROBABLY UNNECESSARY AND SHOULD BE REWORKED)
         if (Player.Instance != null && Player.Instance.IsDead)
         {
             if (DestinationType == ButtonDestinationType.Settings)
