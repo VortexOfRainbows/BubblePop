@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -38,16 +39,16 @@ public class StandardButton : Button
     {
         Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonToActionDict = new();
         ButtonToActionDict[ButtonDestinationType.None] = DoNothing;
-        ButtonToActionDict[ButtonDestinationType.Play] = Main.UIManager.Play;
-        ButtonToActionDict[ButtonDestinationType.LocalMultiplayer] = Main.UIManager.PlayMult;
-        ButtonToActionDict[ButtonDestinationType.Resume] = Main.UIManager.Resume;
-        ButtonToActionDict[ButtonDestinationType.ReturnToMenu] = Main.UIManager.MainMenu;
-        ButtonToActionDict[ButtonDestinationType.Restart] = Main.UIManager.Restart;
+        ButtonToActionDict[ButtonDestinationType.Play] = Main.CanvasManager.Play;
+        ButtonToActionDict[ButtonDestinationType.LocalMultiplayer] = Main.CanvasManager.PlayMult;
+        ButtonToActionDict[ButtonDestinationType.Resume] = Main.CanvasManager.Resume;
+        ButtonToActionDict[ButtonDestinationType.ReturnToMenu] = Main.CanvasManager.MainMenu;
+        ButtonToActionDict[ButtonDestinationType.Restart] = Main.CanvasManager.Restart;
         ButtonToActionDict[ButtonDestinationType.UnleashWave] = Main.StartGame;
-        ButtonToActionDict[ButtonDestinationType.Settings] = Main.UIManager.ToggleSettings;
-        ButtonToActionDict[ButtonDestinationType.Quit] = Main.UIManager.QuitGame;
-        ButtonToActionDict[ButtonDestinationType.DebugMenu] = Main.UIManager.OpenDebugMenu;
-        ButtonToActionDict[ButtonDestinationType.CloseTutorial] = Main.UIManager.CloseMultiplayerMenu;
+        ButtonToActionDict[ButtonDestinationType.Settings] = Main.CanvasManager.ToggleSettings;
+        ButtonToActionDict[ButtonDestinationType.Quit] = Main.CanvasManager.QuitGame;
+        ButtonToActionDict[ButtonDestinationType.DebugMenu] = Main.CanvasManager.OpenDebugMenu;
+        ButtonToActionDict[ButtonDestinationType.CloseTutorial] = Main.CanvasManager.CloseMultiplayerMenu;
         ButtonToActionDict[ButtonDestinationType.OpenCompendium] = Compendium.StaticToggleActive;
         return ButtonToActionDict;
     }
@@ -120,6 +121,7 @@ public class StandardButton : Button
             }
         }
     }
+    private static Button ArbitrarySceneResumeButton = null;
     public void Update()
     {
         if(AnimationType == ButtonAnimationType.ScaleUp)
@@ -131,6 +133,35 @@ public class StandardButton : Button
             else
             {
                 transform.LerpLocalScale(Vector2.one, Utils.DeltaTimeLerpFactor(0.12f));
+            }
+        }
+        if(DestinationType == ButtonDestinationType.DebugMenu && Main.DebugCheats)
+        {
+            interactable = true;
+            GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
+        }
+
+        //ON GAME OVER
+        if (Player.Instance != null && Player.Instance.IsDead)
+        {
+            if (DestinationType == ButtonDestinationType.Settings)
+            {
+                gameObject.SetActive(false);
+            }
+            if (DestinationType == ButtonDestinationType.Resume)
+            {
+                gameObject.SetActive(false);
+                ArbitrarySceneResumeButton = this;
+            }
+            if (DestinationType == ButtonDestinationType.Restart)
+            {
+                if (ArbitrarySceneResumeButton != null)
+                {
+                    GetComponent<RectTransform>().sizeDelta = ArbitrarySceneResumeButton.GetComponent<RectTransform>().sizeDelta;
+                    GetComponent<RectTransform>().pivot = ArbitrarySceneResumeButton.GetComponent<RectTransform>().pivot;
+                    transform.localPosition = ArbitrarySceneResumeButton.transform.localPosition;
+                }
+                GetComponentInChildren<TextMeshProUGUI>().text = "Try Again";
             }
         }
     }

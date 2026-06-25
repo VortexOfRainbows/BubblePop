@@ -99,6 +99,12 @@ public class PlayerStatUI : MonoBehaviour
             }
         }
     }
+    public static void ResetLife()
+    {
+        Hearts.Clear();
+        Shields.Clear();
+        SetHeartsToPlayerLife();
+    }
     public static void SetHeartsToPlayerLife()
     {
         Prefab = Prefab != null ? Prefab : Resources.Load<GameObject>("UI/PlayerStats/Heart");

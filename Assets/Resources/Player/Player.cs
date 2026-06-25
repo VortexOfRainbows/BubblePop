@@ -433,7 +433,7 @@ public partial class Player : Entity
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
         HasRunStartingGear = false;
         Life = MaxLife = 3;
-        PlayerStatUI.SetHeartsToPlayerLife();
+        PlayerStatUI.ResetLife();
         Control = new(AllPlayers.Count > 1 ? InstanceID + 1 : 0);
         Debug.Log($"Initialized Player With Control Scheme: [{Control.ControlSchemeType}]");
         if(Main.UIManager.MPControls1 != null && Main.UIManager.MPControls2 != null)
@@ -890,7 +890,7 @@ public partial class Player : Entity
             return;
         }
         CoinManager.AfterDeathReset();
-        Main.UIManager.GameOver();
+        Main.CanvasManager.GameOver();
     }
     public void Rebirth()
     {

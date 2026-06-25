@@ -120,7 +120,6 @@ public partial class Main : MonoBehaviour
     {
         Main.WavesUnleashed = false; //Basically this needs to run at the start of each scene. If/once main is made persistent, the way this is handled may have to be changed
         Instance = this;
-        UIManager.AddListeners();
     }
     public void Update()
     {
@@ -133,18 +132,18 @@ public partial class Main : MonoBehaviour
                 if (GamePaused)
                 {
                     if (UIManager.SettingsMenu.activeSelf)
-                        UIManager.ToggleSettings();
+                        CanvasManager.ToggleSettings();
                     else if (UIManager.DebugMenu.activeSelf)
-                        UIManager.OpenDebugMenu();
+                        CanvasManager.OpenDebugMenu();
                     else
-                        UIManager.Resume();
+                        CanvasManager.Resume();
                 }
                 else
-                    UIManager.Pause();
+                    CanvasManager.Pause();
             }
             else if (UIManager.MultiplayerMenu != null)
             {
-                UIManager.CloseMultiplayerMenu();
+                CanvasManager.CloseMultiplayerMenu();
             }
         }
         //if(Main.DebugCheats && Input.GetKey(KeyCode.B))
@@ -310,12 +309,7 @@ public partial class Main : MonoBehaviour
         public static void Update(Main instance)
         {
             if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.I) && Input.GetKey(KeyCode.N))
-            {
-                UIManager.EnableDebugButtons();
                 DebugCheats = true;
-            }
-            if(DebugCheats)
-                UIManager.EnableDebugButtons();
             if (Input.GetKeyDown(KeyCode.F) && DebugCheats)
                 DirectorView = !DirectorView;
             if (Input.GetKeyDown(KeyCode.P) && DebugCheats)

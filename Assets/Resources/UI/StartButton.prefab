@@ -640,8 +640,8 @@ GameObject:
   - component: {fileID: 1213232518809787981}
   - component: {fileID: 8670754607094099453}
   - component: {fileID: 5709642886519387334}
-  - component: {fileID: 6913079670113530045}
   - component: {fileID: 7558895275838473008}
+  - component: {fileID: 5935818058846910823}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -710,7 +710,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6913079670113530045
+--- !u!114 &7558895275838473008
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -719,11 +719,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 8980551393198275346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 09ef1c48916651c45a1ffd77940dc053, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartButton: {fileID: 0}
+  StartButtonImage: {fileID: 5709642886519387334}
+  StartButtonCoinVisual: {fileID: 2170754812150282087}
+  Text: {fileID: 7461124150184268035}
+  PylonVisual: {fileID: 8328235122467503596}
+  InteractVisual: {fileID: 4280379922688585104}
+  MyCanvas: {fileID: 0}
+--- !u!114 &5935818058846910823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980551393198275346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93d1e3dc614ec27468459577a3b4a416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -732,10 +751,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
+    m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
+    m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
+    m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -754,22 +773,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7558895275838473008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8980551393198275346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09ef1c48916651c45a1ffd77940dc053, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartButton: {fileID: 6913079670113530045}
-  StartButtonImage: {fileID: 5709642886519387334}
-  StartButtonCoinVisual: {fileID: 2170754812150282087}
-  Text: {fileID: 7461124150184268035}
-  PylonVisual: {fileID: 8328235122467503596}
-  InteractVisual: {fileID: 4280379922688585104}
-  MyCanvas: {fileID: 0}
+  AnimationType: 0
+  ColorType: 0
+  DestinationType: 0
+  SoundOnHover: 1

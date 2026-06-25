@@ -14,41 +14,8 @@ public partial class Main : MonoBehaviour
     [Serializable]
     public class CanvasManager
     {
-        public List<Button> PlayButtons = new();
-        public List<Button> MultiplayerButtons = new();
-        public List<Button> ResumeButtons = new();
-        public List<Button> ReturnToMenuButtons = new();
-        public List<Button> RestartButtons = new();
-        public List<Button> UnleashWaveButton = new();
-        public List<Button> SettingsButton = new();
-        public List<Button> QuitButtons = new();
-        public List<Button> DebugButtons = new();
-        public List<Button> CloseTutorialMenuButton = new();
         public GameObject MPMenu1, MPMenu2, SPMenu;
         public TextMeshProUGUI PauseMenuTopText, MPControls1, MPControls2, SPControls;
-        public void AddListeners()
-        {
-            foreach (Button b in PlayButtons)
-                b.onClick.AddListener(Play);
-            foreach (Button b in MultiplayerButtons)
-                b.onClick.AddListener(PlayMult);
-            foreach (Button b in ResumeButtons)
-                b.onClick.AddListener(Resume);
-            foreach (Button b in ReturnToMenuButtons)
-                b.onClick.AddListener(MainMenu);
-            foreach (Button b in RestartButtons)
-                b.onClick.AddListener(Restart);
-            foreach (Button b in UnleashWaveButton)
-                b.onClick.AddListener(StartGame);
-            foreach (Button b in SettingsButton)
-                b.onClick.AddListener(ToggleSettings);
-            foreach (Button b in QuitButtons)
-                b.onClick.AddListener(QuitGame);
-            foreach (Button b in DebugButtons)
-                b.onClick.AddListener(OpenDebugMenu);
-            foreach (Button b in CloseTutorialMenuButton)
-                b.onClick.AddListener(CloseMultiplayerMenu);
-        }
         public Canvas MainCanvas;
         public GameObject PauseMenu, SettingsMenu, DebugMenu, MultiplayerMenu;
         public TextMeshProUGUI DeadHighscoreText;
@@ -56,90 +23,72 @@ public partial class Main : MonoBehaviour
         {
             if (pause)
                 PauseGame();
-            MPMenu1.SetActive(Player.AllPlayers.Count > 1);
-            MPMenu2.SetActive(Player.AllPlayers.Count > 1);
-            SPMenu.SetActive(Player.AllPlayers.Count <= 1);
-            MultiplayerMenu.SetActive(true);
+            UIManager.MPMenu1.SetActive(Player.AllPlayers.Count > 1);
+            UIManager.MPMenu2.SetActive(Player.AllPlayers.Count > 1);
+            UIManager.SPMenu.SetActive(Player.AllPlayers.Count <= 1);
+            UIManager.MultiplayerMenu.SetActive(true);
         }
-        public void CloseMultiplayerMenu()
+        public static void CloseMultiplayerMenu()
         {
-            if(!PauseMenu.activeSelf && Main.GamePaused)
+            if(!UIManager.PauseMenu.activeSelf && Main.GamePaused)
                 UnpauseGame();
-            MultiplayerMenu.SetActive(false);
+            UIManager.MultiplayerMenu.SetActive(false);
         }
-        public void Pause()
+        public static void Pause()
         {
-            PauseMenu.SetActive(true);
+            UIManager.PauseMenu.SetActive(true);
             PauseGame(); 
             StaticPlaySound();
         }
-        public void Resume()
+        public static void Resume()
         {
-            PauseMenu.SetActive(false);
-            if (SettingsMenu.activeSelf)
+            UIManager.PauseMenu.SetActive(false);
+            if (UIManager.SettingsMenu.activeSelf)
                 ToggleSettings();
-            else if(DebugMenu.activeSelf)
+            else if(UIManager.DebugMenu.activeSelf)
                 OpenDebugMenu();
             else
                 StaticPlaySound();
             UnpauseGame();
         }
-        public void MainMenu()
+        public static void MainMenu()
         {
             CoinManager.AfterDeathReset();
             UnpauseGame();
             StaticPlaySound();
             SceneManager.LoadScene("MainMenu");
         }
-        public void GameOver()
+        public static void GameOver()
         {
-            Button resumeButton = null;
-            foreach (Button b in SettingsButton)
-                b.gameObject.SetActive(false);
-            foreach (Button b in ResumeButtons)
-            {
-                b.gameObject.SetActive(false);
-                resumeButton = b;
-            }
-            foreach (Button b in RestartButtons)
-            {
-                if(resumeButton != null)
-                {
-                    b.GetComponent<RectTransform>().sizeDelta = resumeButton.GetComponent<RectTransform>().sizeDelta;
-                    b.GetComponent<RectTransform>().pivot = resumeButton.GetComponent<RectTransform>().pivot;
-                    b.transform.localPosition = resumeButton.transform.localPosition;
-                }
-                b.GetComponentInChildren<TextMeshProUGUI>().text = "Try Again";
-            }
-            PauseMenuTopText.text = "Game Over";
+            UIManager.PauseMenuTopText.text = "Game Over";
 
-            PauseMenu.SetActive(true);
+            UIManager.PauseMenu.SetActive(true);
             PauseGame();
         }
-        public void Restart()
+        public static void Restart()
         {
             Play(SceneManager.GetActiveScene().buildIndex);
         }
-        public void Play()
+        public static void Play()
         {
             Play(1);
         }
-        public void PlayMult()
+        public static void PlayMult()
         {
             Play(2);
         }
-        public void Play(int scene)
+        public static void Play(int scene)
         {
             CoinManager.AfterDeathReset();
             SceneManager.LoadScene(scene);
             UnpauseGame();
             StaticPlaySound();
         }
-        public void ToggleSettings()
+        public static void ToggleSettings()
         {
-            if (!SettingsMenu.activeSelf)
-                DebugMenu.SetActive(false);
-            SettingsMenu.SetActive(!SettingsMenu.activeSelf);
+            if (!UIManager.SettingsMenu.activeSelf)
+                UIManager.DebugMenu.SetActive(false);
+            UIManager.SettingsMenu.SetActive(!UIManager.SettingsMenu.activeSelf);
             StaticPlaySound();
         }
         public void PlaySound()
@@ -156,26 +105,15 @@ public partial class Main : MonoBehaviour
             //    pos = Player.Instance1Pos;
             AudioManager.PlaySound(SoundID.BubblePop, Vector3.zero, 1f, 0.8f, 4);
         }
-        public void QuitGame()
+        public static void QuitGame()
         {
             Application.Quit();
         }
-        public void EnableDebugButtons()
+        public static void OpenDebugMenu()
         {
-            if(Main.DebugCheats)
-            {
-                foreach(Button b in DebugButtons)
-                {
-                    b.interactable = true;
-                    b.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
-                }
-            }
-        }
-        public void OpenDebugMenu()
-        {
-            if (!DebugMenu.activeSelf)
-                SettingsMenu.SetActive(false);
-            DebugMenu.SetActive(!DebugMenu.activeSelf);
+            if (!UIManager.DebugMenu.activeSelf)
+                UIManager.SettingsMenu.SetActive(false);
+            UIManager.DebugMenu.SetActive(!UIManager.DebugMenu.activeSelf);
             StaticPlaySound();
         }
     }

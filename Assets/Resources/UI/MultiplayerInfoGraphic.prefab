@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5114271909675158079}
   - component: {fileID: 3744961310283799897}
   - component: {fileID: 6892368796780824222}
-  - component: {fileID: 3793512765951735515}
+  - component: {fileID: 5819282599873155920}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -60,14 +60,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.69803923}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 68433232140797940a6178bd14cecd2f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3496ff446ca8ad9448d0d4597923889c, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3793512765951735515
+--- !u!114 &5819282599873155920
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1024041637404137345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 93d1e3dc614ec27468459577a3b4a416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -98,11 +98,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9921569, g: 1, b: 0.2901961, a: 1}
-    m_PressedColor: {r: 0.85098046, g: 0.76470596, b: 0.23529413, a: 1}
-    m_SelectedColor: {r: 0.9921569, g: 1, b: 0.2901961, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.43137255, g: 0.79607844, b: 0.8627451, a: 1}
+    m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
+    m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
+    m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
+    m_DisabledColor: {r: 0.25882354, g: 0.4776471, b: 0.5176471, a: 0.6}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -121,6 +121,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+  AnimationType: 0
+  ColorType: 1
+  DestinationType: 10
+  SoundOnHover: 1
 --- !u!1 &1210887032135656582
 GameObject:
   m_ObjectHideFlags: 0
