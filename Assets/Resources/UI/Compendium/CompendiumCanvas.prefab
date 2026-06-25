@@ -384,8 +384,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 0
-  VisualType: 0
+  AnimationType: 0
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &1001033448085075320
 GameObject:
@@ -520,8 +520,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 1
-  VisualType: 0
+  AnimationType: 1
+  ColorType: 0
   SoundOnHover: 0
 --- !u!1 &1070231719813105410
 GameObject:
@@ -824,8 +824,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 0
-  VisualType: 0
+  AnimationType: 0
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &1516895735010538487
 GameObject:
@@ -960,8 +960,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 0
-  VisualType: 0
+  AnimationType: 0
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &1648483953172042228
 GameObject:
@@ -1096,8 +1096,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 1
-  VisualType: 0
+  AnimationType: 1
+  ColorType: 0
   SoundOnHover: 0
 --- !u!1 &1673574431655368847
 GameObject:
@@ -1441,8 +1441,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 1
-  VisualType: 0
+  AnimationType: 1
+  ColorType: 0
   SoundOnHover: 0
 --- !u!1 &2396590207243177386
 GameObject:
@@ -1718,8 +1718,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 0
-  VisualType: 0
+  AnimationType: 0
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &3093213175521008665
 GameObject:
@@ -1967,8 +1967,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 0
-  VisualType: 0
+  AnimationType: 0
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &3811225215596418256
 GameObject:
@@ -2821,8 +2821,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 1
-  VisualType: 0
+  AnimationType: 1
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &5158117263789296433
 GameObject:
@@ -4326,8 +4326,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 0
-  VisualType: 0
+  AnimationType: 0
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &7373975373593419140
 GameObject:
@@ -4795,8 +4795,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  Type: 0
-  VisualType: 0
+  AnimationType: 0
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &7939692378923852447
 GameObject:
@@ -5036,8 +5036,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 0
-  VisualType: 0
+  AnimationType: 0
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &8234318251333831742
 GameObject:
@@ -5453,8 +5453,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 1
-  VisualType: 0
+  AnimationType: 1
+  ColorType: 0
   SoundOnHover: 0
 --- !u!1 &9017356128244663058
 GameObject:
@@ -5589,8 +5589,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Type: 0
-  VisualType: 0
+  AnimationType: 0
+  ColorType: 0
   SoundOnHover: 1
 --- !u!1 &9040446465704021585
 GameObject:
@@ -5830,6 +5830,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3059890052185110949, guid: abf61b3700054144381c949754810a15, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311961247606532406, guid: abf61b3700054144381c949754810a15, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3397903508002384650, guid: abf61b3700054144381c949754810a15, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -5910,10 +5918,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4908151001298268714, guid: abf61b3700054144381c949754810a15, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5897254683677151430, guid: abf61b3700054144381c949754810a15, type: 3}
       propertyPath: MyCanvas
       value: 
       objectReference: {fileID: 1573706575503376629}
+    - target: {fileID: 6030742471380968962, guid: abf61b3700054144381c949754810a15, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8312508432611384787, guid: abf61b3700054144381c949754810a15, type: 3}
       propertyPath: SpriteMaskRectangle
       value: 
@@ -6668,6 +6684,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4469381348718002269, guid: 690e474cbeebe6e439a94d1c4b2f4031, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5978164228467584244, guid: 690e474cbeebe6e439a94d1c4b2f4031, type: 3}
       propertyPath: MyCanvas
       value: 
@@ -6679,6 +6699,10 @@ PrefabInstance:
     - target: {fileID: 6896671281078439184, guid: 690e474cbeebe6e439a94d1c4b2f4031, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7159944561510750702, guid: 690e474cbeebe6e439a94d1c4b2f4031, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6711,6 +6735,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 442704940910189642, guid: 6b3ef238927c06f4da08ff3021d0a478, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 600873073769408714, guid: 6b3ef238927c06f4da08ff3021d0a478, type: 3}
+      propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1724149388990036521, guid: 6b3ef238927c06f4da08ff3021d0a478, type: 3}
@@ -6821,6 +6849,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8507662014693976062, guid: 6b3ef238927c06f4da08ff3021d0a478, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6850,6 +6882,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2380170368960855348}
     m_Modifications:
+    - target: {fileID: 596298537278742634, guid: f96a03fd1a9d18447a12abd4b6fd6150, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1567906343509548320, guid: f96a03fd1a9d18447a12abd4b6fd6150, type: 3}
       propertyPath: m_Name
       value: AchievementPage
@@ -6934,6 +6970,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6133110291930872281, guid: f96a03fd1a9d18447a12abd4b6fd6150, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6970,6 +7010,10 @@ PrefabInstance:
     - target: {fileID: 455335959969863653, guid: 918e0ced83fd0594e9f39ff9360bc41f, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 653372883272524492, guid: 918e0ced83fd0594e9f39ff9360bc41f, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 800705528305079855, guid: 918e0ced83fd0594e9f39ff9360bc41f, type: 3}
       propertyPath: m_Pivot.x
@@ -7054,6 +7098,10 @@ PrefabInstance:
     - target: {fileID: 3103353355267657416, guid: 918e0ced83fd0594e9f39ff9360bc41f, type: 3}
       propertyPath: InitOnStart
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8599285159639952888, guid: 918e0ced83fd0594e9f39ff9360bc41f, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

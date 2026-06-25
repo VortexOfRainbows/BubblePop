@@ -5,8 +5,24 @@ using UnityEngine.UI;
 
 public class StandardButton : Button
 {
-    public int Type = 0;
-    public int VisualType = 0;
+    public enum ButtonAnimationType
+    {
+        None = 0,
+        ScaleUp = 1,
+    }
+    public enum ButtonColorType
+    {
+        WhiteToYellow = 0,
+        CyanToYellow = 1,
+        DarkYellowToYellow = 2,
+    }
+    public enum ButtonDestinationType
+    {
+        None = 0,
+    }
+    public ButtonAnimationType AnimationType = ButtonAnimationType.None;
+    public ButtonColorType ColorType = ButtonColorType.WhiteToYellow;
+    public ButtonDestinationType DestinationType = ButtonDestinationType.None;
     public bool SoundOnHover = true;
     public new void Awake()
     {
@@ -25,7 +41,7 @@ public class StandardButton : Button
         var colors = this.colors;
         colors.colorMultiplier = 1.0f;
         colors.fadeDuration = 0.1f;
-        if (VisualType == 0)
+        if (ColorType == ButtonColorType.WhiteToYellow)
         {
             colors.normalColor = ColorHelper.UI.DefaultColor;
             colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
@@ -33,7 +49,7 @@ public class StandardButton : Button
             colors.selectedColor = colors.highlightedColor;
             colors.disabledColor = ColorHelper.UI.DarkGreyColor;
         }
-        else if(VisualType == 1)
+        else if(ColorType == ButtonColorType.CyanToYellow)
         {
             colors.normalColor = ColorHelper.New255(0x6E, 0xCB, 0xDC);
             colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
@@ -41,7 +57,7 @@ public class StandardButton : Button
             colors.selectedColor = colors.highlightedColor;
             colors.disabledColor = colors.normalColor * 0.6f;
         }
-        else if (VisualType == 2)
+        else if (ColorType == ButtonColorType.DarkYellowToYellow)
         {
             colors.normalColor = ColorHelper.New255(0xBF, 0xB8, 0x34);
             colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
@@ -56,7 +72,7 @@ public class StandardButton : Button
         base.OnPointerEnter(eventData);
         if(interactable && SoundOnHover)
         {
-            if (Type == 1)
+            if (AnimationType == ButtonAnimationType.ScaleUp)
             {
                 AudioManager.PlaySound(SoundID.BubblePop, CameraManager.MainCamera.transform.position, 1, 1.1f, 1);
             }
@@ -64,7 +80,7 @@ public class StandardButton : Button
     }
     public void Update()
     {
-        if(Type == 1)
+        if(AnimationType == ButtonAnimationType.ScaleUp)
         {
             if (IsHighlighted())
             {
