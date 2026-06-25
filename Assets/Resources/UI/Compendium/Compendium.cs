@@ -56,6 +56,10 @@ public class Compendium : MonoBehaviour
     public Transform TopBar;
     public Transform SideBar;
     public RectTransform SortBar;
+    public static void StaticToggleActive()
+    {
+        Instance.ToggleActive();
+    }
     public void ToggleActive()
     {
         Main.CanvasManager.StaticPlaySound(); 

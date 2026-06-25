@@ -386,6 +386,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 0
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 1
 --- !u!1 &1001033448085075320
 GameObject:
@@ -522,6 +523,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 1
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 0
 --- !u!1 &1070231719813105410
 GameObject:
@@ -826,6 +828,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 0
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 1
 --- !u!1 &1516895735010538487
 GameObject:
@@ -962,6 +965,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 0
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 1
 --- !u!1 &1648483953172042228
 GameObject:
@@ -1098,6 +1102,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 1
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 0
 --- !u!1 &1673574431655368847
 GameObject:
@@ -1443,6 +1448,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 1
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 0
 --- !u!1 &2396590207243177386
 GameObject:
@@ -1720,6 +1726,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 0
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 1
 --- !u!1 &3093213175521008665
 GameObject:
@@ -1969,6 +1976,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 0
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 1
 --- !u!1 &3811225215596418256
 GameObject:
@@ -2808,21 +2816,10 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8876976785381198327}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5256289457154290076}
-        m_TargetAssemblyTypeName: Compendium, Assembly-CSharp
-        m_MethodName: ToggleActive
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   AnimationType: 1
   ColorType: 0
+  DestinationType: 11
   SoundOnHover: 1
 --- !u!1 &5158117263789296433
 GameObject:
@@ -4328,6 +4325,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 0
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 1
 --- !u!1 &7373975373593419140
 GameObject:
@@ -4797,6 +4795,7 @@ MonoBehaviour:
       m_Calls: []
   AnimationType: 0
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 1
 --- !u!1 &7939692378923852447
 GameObject:
@@ -5038,6 +5037,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 0
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 1
 --- !u!1 &8234318251333831742
 GameObject:
@@ -5455,6 +5455,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 1
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 0
 --- !u!1 &9017356128244663058
 GameObject:
@@ -5591,6 +5592,7 @@ MonoBehaviour:
         m_CallState: 2
   AnimationType: 0
   ColorType: 0
+  DestinationType: 0
   SoundOnHover: 1
 --- !u!1 &9040446465704021585
 GameObject:

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -19,6 +21,44 @@ public class StandardButton : Button
     public enum ButtonDestinationType
     {
         None = 0,
+        Play = 1,
+        LocalMultiplayer = 2,
+        Resume = 3,
+        ReturnToMenu = 4,
+        Restart = 5,
+        UnleashWave = 6,
+        Settings = 7,
+        Quit = 8,
+        DebugMenu = 9,
+        CloseTutorial = 10,
+        OpenCompendium = 11,
+    }
+    public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonActions;
+    private static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> InitDict()
+    {
+        Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonToActionDict = new();
+        ButtonToActionDict[ButtonDestinationType.None] = DoNothing;
+        ButtonToActionDict[ButtonDestinationType.Play] = Main.UIManager.Play;
+        ButtonToActionDict[ButtonDestinationType.LocalMultiplayer] = Main.UIManager.PlayMult;
+        ButtonToActionDict[ButtonDestinationType.Resume] = Main.UIManager.Resume;
+        ButtonToActionDict[ButtonDestinationType.ReturnToMenu] = Main.UIManager.MainMenu;
+        ButtonToActionDict[ButtonDestinationType.Restart] = Main.UIManager.Restart;
+        ButtonToActionDict[ButtonDestinationType.UnleashWave] = Main.StartGame;
+        ButtonToActionDict[ButtonDestinationType.Settings] = Main.UIManager.ToggleSettings;
+        ButtonToActionDict[ButtonDestinationType.Quit] = Main.UIManager.QuitGame;
+        ButtonToActionDict[ButtonDestinationType.DebugMenu] = Main.UIManager.OpenDebugMenu;
+        ButtonToActionDict[ButtonDestinationType.CloseTutorial] = Main.UIManager.CloseMultiplayerMenu;
+        ButtonToActionDict[ButtonDestinationType.OpenCompendium] = Compendium.StaticToggleActive;
+        return ButtonToActionDict;
+    }
+    private static void DoNothing()
+    {
+
+    }
+    public static void RegisterButtonBehavior(StandardButton button)
+    {
+        ButtonActions ??= InitDict();
+        button.onClick.AddListener(ButtonActions[button.DestinationType]);
     }
     public ButtonAnimationType AnimationType = ButtonAnimationType.None;
     public ButtonColorType ColorType = ButtonColorType.WhiteToYellow;
@@ -66,6 +106,8 @@ public class StandardButton : Button
             colors.disabledColor = colors.normalColor * 0.6f;
         }
         base.colors = colors;
+
+        RegisterButtonBehavior(this);
     }
     public override void OnPointerEnter(PointerEventData eventData)
     {
