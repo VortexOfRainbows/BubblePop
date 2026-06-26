@@ -330,6 +330,10 @@ public class Compendium : MonoBehaviour
         float minH = 460;
         DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + 40));
     }
+    public string GetDescriptionForElement()
+    {
+        return string.Empty;
+    }
     public void UpdateStars(int rare)
     {
         for (int j = 0; j < Stars.Length; ++j)

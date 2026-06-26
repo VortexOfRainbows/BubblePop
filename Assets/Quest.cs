@@ -10,6 +10,7 @@ public class Quest : MonoBehaviour
         SurviveAgainstInvaders,
         ActivatePylon,
         StabilizePylon,
+        StartGame,
     }
     public class QuestData
     {
