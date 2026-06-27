@@ -379,7 +379,7 @@ GameObject:
   - component: {fileID: 6387739611511136018}
   - component: {fileID: 1059993504668043725}
   m_Layer: 5
-  m_Name: CharacterSelectCanvas
+  m_Name: InGameCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4674,6 +4674,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaveCardDisplay1
       objectReference: {fileID: 0}
+    - target: {fileID: 3944589936784024206, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3971332244060510764, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
       propertyPath: RestPosition.x
       value: -450
@@ -4684,6 +4688,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4776078222096946895, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
       propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5258529549609856442, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
+      propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8023311624928070996, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
@@ -5359,6 +5367,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaveCardDisplay3
       objectReference: {fileID: 0}
+    - target: {fileID: 3944589936784024206, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3971332244060510764, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
       propertyPath: RestPosition.x
       value: 450
@@ -5377,6 +5389,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4776078222096946895, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
       propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5258529549609856442, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
+      propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8083216120684192731, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
@@ -6646,6 +6662,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaveCardDisplay2
       objectReference: {fileID: 0}
+    - target: {fileID: 3944589936784024206, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3971332244060510764, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
       propertyPath: DifficultyMultiplier
       value: 2
@@ -6664,6 +6684,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4776078222096946895, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
       propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5258529549609856442, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}
+      propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8083216120684192731, guid: 546c417d5193910458cd8979eb6f0ac1, type: 3}

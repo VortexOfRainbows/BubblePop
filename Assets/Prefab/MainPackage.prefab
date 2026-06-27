@@ -20327,16 +20327,6 @@ MonoBehaviour:
   LightShapeVisualizer: {fileID: 7592838932300860367}
   GlobalLight: {fileID: 2378421495150645400}
   MyUIManager:
-    PlayButtons: []
-    MultiplayerButtons: []
-    ResumeButtons: []
-    ReturnToMenuButtons: []
-    RestartButtons: []
-    UnleashWaveButton: []
-    SettingsButton: []
-    QuitButtons: []
-    DebugButtons: []
-    CloseTutorialMenuButton: []
     MPMenu1: {fileID: 7036996115653228830}
     MPMenu2: {fileID: 1291878249187154560}
     SPMenu: {fileID: 7095551927986238683}
@@ -41619,7 +41609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 695185414417699684, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_Name
-      value: CharacterSelectCanvas
+      value: InGameCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 805541592938224784, guid: 672a7e40876233a4c8c08b2b0bccd217, type: 3}
       propertyPath: m_AnchoredPosition.y
