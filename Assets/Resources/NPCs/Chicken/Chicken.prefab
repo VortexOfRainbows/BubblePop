@@ -343,7 +343,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_SortAtRoot: 0
 --- !u!1 &1902503097788714657
 GameObject:
@@ -906,6 +906,7 @@ MonoBehaviour:
   SpawnedIn: 0
   HasCalledInit: 0
   RB: {fileID: 5502792803788001209}
+  HasBeenImplantedOnce: 0
   IndexInAllEnemyArray: -1
   AlreadyDead: 0
   FirstStrike: 1

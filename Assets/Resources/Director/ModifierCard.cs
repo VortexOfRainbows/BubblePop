@@ -14,6 +14,7 @@ public class ModifierCard : MonoBehaviour
     public CardScrollArea Rewards;
     public float DifficultyMultiplier = 1f;
     public EnemyUIElement CardVisual;
+    public EnemyUIElement SecondaryCardVisual;
     public Transform SkullAnchor;
     public Transform RotateFaker;
     public Canvas SkullAnchorCanvas;
@@ -66,6 +67,17 @@ public class ModifierCard : MonoBehaviour
         TitleText.text = cardData.CardName();
         CardVisual.Init(cardData.EnemyClause.Enemy.EnemiesToAdd[0].GetIndex());
         CardVisual.MaskActive(false);
+        if(cardData.EnemyClause.Enemy.EnemiesToAdd.Count > 1)
+        {
+            SecondaryCardVisual.AddedDrawOrder = CardVisual.AddedDrawOrder - 4;
+            SecondaryCardVisual.Init(cardData.EnemyClause.Enemy.EnemiesToAdd[1].GetIndex());
+            SecondaryCardVisual.MaskActive(false);
+
+            CardVisual.EnemyScaler.transform.localPosition = new Vector3(-70, -55);
+            SecondaryCardVisual.EnemyScaler.transform.localPosition = new Vector3(70, 55, 5);
+        }
+        else
+            CardVisual.EnemyScaler.transform.localPosition = Vector3.zero;
     }
     public void GenerateCardData()
     {
@@ -87,6 +99,7 @@ public class ModifierCard : MonoBehaviour
         transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
         BG.color = Color.Lerp(BG.color, selected ? Color.yellow : (hovering ? Color.Lerp(Color.yellow, Color.white, 0.8f) : Color.white), Utils.DeltaTimeLerpFactor(0.2f));
         CardVisual.EnemyScaler.transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
+        SecondaryCardVisual.EnemyScaler.transform.LerpLocalScale(selected ? new Vector2(-1.05f, 1.05f) : new Vector2(-1.0f, 1.0f), growSpeed);
     }
     public bool HasBeenFlipped { get; set; } = false;
     private float FlipTimer = 0;
@@ -94,6 +107,7 @@ public class ModifierCard : MonoBehaviour
     public void ResetAnimation()
     {
         CardVisual.MaskActive(false);
+        SecondaryCardVisual.MaskActive(false);
         SkullAnchorCanvas.gameObject.SetActive(false);
         TextCanvas.gameObject.SetActive(false);
         SkullAnchorCanvas.sortingLayerID = TextCanvas.sortingLayerID = SortingLayer.NameToID("UICamera");
@@ -105,6 +119,13 @@ public class ModifierCard : MonoBehaviour
         transform.localEulerAngles = Vector3.zero;
         BackSide.SetActive(true);
         CardVisual.UpdateColor(!WaveDirector.EnemyPool.Contains(CardVisual.MyEnemyPrefab.gameObject), false);
+        if (SecondaryCardVisual.MyEnemyPrefab != null)
+        {
+            SecondaryCardVisual.gameObject.SetActive(true);
+            SecondaryCardVisual.UpdateColor(!WaveDirector.EnemyPool.Contains(SecondaryCardVisual.MyEnemyPrefab.gameObject), false);
+        }
+        else
+            SecondaryCardVisual.gameObject.SetActive(false);
     }
     public void SpawnAnimation()
     {
@@ -132,6 +153,7 @@ public class ModifierCard : MonoBehaviour
     public void UpdateFlippage()
     {
         CardVisual.MaskActive(FlipTimer >= 1);
+        //SecondaryCardVisual.MaskActive(FlipTimer >= 1);
         SkullAnchorCanvas.gameObject.SetActive(FlipTimer >= 1);
         TextCanvas.gameObject.SetActive(FlipTimer >= 1);
         BackSide.SetActive(FlipTimer < 1);

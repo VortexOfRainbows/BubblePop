@@ -119,7 +119,14 @@ public class CardData
     {
         if(EnemyClause.Enemy.EnemiesToAdd.Count > 1)
         {
-            return "Tag Team Wave"; //might change later
+            string concat = "Tag Team!\n";
+            for (int i = 0; i < EnemyClause.Enemy.EnemiesToAdd.Count; ++i)
+            {
+                concat += EnemyClause.Enemy.EnemiesToAdd[i].Name();
+                if (i < EnemyClause.Enemy.EnemiesToAdd.Count - 1)
+                    concat += " + ";
+            }
+            return concat; //might change later
         }
         else 
             return EnemyClause.Enemy.EnemiesToAdd[0].Name() + " Wave";
@@ -183,63 +190,78 @@ public class EnemyClause : CardClause
         Enemy = newCard;
         GenerateData();
     }
-    private bool EnemyAlreadyInPool(Enemy e)
+    public static bool EnemyAlreadyInPool(Enemy e)
     {
         return WaveDirector.PossibleEnemies().Find(g => g.GetComponent<Enemy>().GetType() == e.GetType()) != null;
     }
     public override void GenerateData()
     {
-        Enemy ??= GenRandomEnemyPoolAddition((int)(difficultyMultiplier - 1), true);
+        Enemy ??= GenRandomEnemyPoolAddition((int)(difficultyMultiplier - 1), true, Utils.RandFloat() < 0.1f * difficultyMultiplier);
         if (!Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
             Enemy.IsPermanent = true;
         float eCount = Enemy.EnemiesToAdd.Count;
+        bool allInPool = true; 
+        AlternativeModifier = null;
         foreach (Enemy e in Enemy.EnemiesToAdd)
         {
             if (!EnemyAlreadyInPool(e))
-                Points -= Enemy.GetCost() / eCount;
-            else
             {
-                AlreadyInPool = true;
-                AlternativeModifier = new(Enemy)
+                Points -= Enemy.GetCost() / eCount;
+                allInPool = false;
+            }
+            else AlternativeModifier ??= new(Enemy)
                 {
                     ApplicationStrength = 1,
                     IsPermanent = Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier / eCount //In order for the alternative modifier to be permanent, it needs to pass the permanency cost check twice
                 };
-            }
         }
+        AlreadyInPool = allInPool;
     }
-    public EnemyCard GenRandomEnemyPoolAddition(int costBias = 0, bool firstPick = false)
+    public Enemy GetEnemy(Enemy blacklist)
     {
         int failedRolls = 0;
+        Enemy enemy = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+        while (((WaveDirector.WaveNum + 1) < enemy.StaticData.WaveNumber || blacklist == enemy) && ++failedRolls <= 100)
+            enemy = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
+        if (failedRolls >= 100)
+            Debug.Log($"FAILED TO ROLL ENEMY: {failedRolls}".WithColor(ColorHelper.UI.RedColor.ToHexString()));
+        return enemy;
+    }
+    public EnemyCard GenRandomEnemyPoolAddition(int costBias = 0, bool firstPick = false, bool doubleTrouble = false)
+    {
         EnemyCard newEnemy = null;
         while (newEnemy == null)
         {
-            Enemy e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
-            while ((WaveDirector.WaveNum + 1) < e.StaticData.WaveNumber && ++failedRolls <= 100)
-                e = EnemyID.SpawnableEnemiesList[Utils.RandInt(EnemyID.MaxRandom)];
-            if(failedRolls >= 100)
-                Debug.Log($"FAILED TO ROLL ENEMY: {failedRolls}".WithColor(ColorHelper.UI.RedColor.ToHexString()));
-            newEnemy = new(e);
+            Enemy enemy = GetEnemy(null);
+            if(!doubleTrouble)
+            {
+                newEnemy = new(enemy);
+            }
+            else
+            {
+                Enemy secondEnemy = GetEnemy(enemy);
+                newEnemy = new(enemy, secondEnemy);
+            }
             bool searchingForNonMatch = false;
             if (firstPick)
             {
-                if (WaveDirector.EnemyPool.Contains(e.gameObject))
+                if (WaveDirector.EnemyPool.Contains(enemy.gameObject)) //If the pool already contains my primary enemy, search for a non-match that is more expensive
                 {
                     searchingForNonMatch = true;
                     costBias++;
                 }
-                else if (newEnemy.GetCost() > Points)
+                else if (newEnemy.GetCost() > Points) //If I am too expensive, look for a cheaper card
                     costBias--;
             }
             if (costBias < 0)
             {
-                EnemyCard other = GenRandomEnemyPoolAddition(costBias + 1, false);
+                EnemyCard other = GenRandomEnemyPoolAddition(costBias + 1, false, doubleTrouble);
                 if (other.GetCost() < newEnemy.GetCost())
                     newEnemy = other;
             }
             if(costBias > 0)
             {
-                EnemyCard other = GenRandomEnemyPoolAddition(costBias - 1, false);
+                EnemyCard other = GenRandomEnemyPoolAddition(costBias - 1, false, doubleTrouble);
                 bool containsAll = true;
                 foreach(Enemy e2 in other.EnemiesToAdd)
                     if(!WaveDirector.EnemyPool.Contains(e2.gameObject))
@@ -277,15 +299,19 @@ public class EnemyClause : CardClause
             skullWaveCount -= 1;
         int wavesWithoutSwarm = 0;
         int max = (int)skullWaveCount;
+        int tagTeamNumber = Enemy.EnemiesToAdd.Count;
         for (int i = 0; i < max; ++i)
         {
-            GameObject enemyType = Enemy.EnemiesToAdd[0].gameObject;
-            int TotalDudes = 1;
-            if (WaveDirector.TemporaryModifiers.BonusSkullSwarm.TryGetValue(Enemy.EnemiesToAdd[0].GetType(), out int bonus))
-                TotalDudes += bonus;
+            int TotalDudes = tagTeamNumber;
+            for (int j = 0; j < tagTeamNumber; ++j)
+                if (WaveDirector.TemporaryModifiers.BonusSkullSwarm.TryGetValue(Enemy.EnemiesToAdd[j].GetType(), out int bonus))
+                    TotalDudes += bonus;
             GameObject[] enemies = new GameObject[TotalDudes];
             for (int j = 0; j < TotalDudes; ++j)
+            {
+                GameObject enemyType = Enemy.EnemiesToAdd[j % tagTeamNumber].gameObject;
                 enemies[j] = enemyType;
+            }
             var card = WaveDeck.DrawMultiSpawn(WaveDeck.RandomPositionOnPlayerEdge(Player.GetInstance(Utils.RandInt(Player.AllPlayers.Count))), 0, 1.75f, enemies);
             card.Patterns[0].Skull = true;
             float chance = wavesWithoutSwarm * (0.05f * skullWaveCount * WaveDirector.WaveNum);

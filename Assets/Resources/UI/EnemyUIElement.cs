@@ -14,7 +14,6 @@ public class EnemyUIElement : MonoBehaviour
     public Transform SpriteMask;
     public Transform EnemyScaler;
     public Image CardGraphicBG;
-    private Vector3 originalMaskScale = Vector3.zero;
     public EnemyID.StaticEnemyData StaticData => MyEnemyPrefab.StaticData;
     public Enemy MyEnemyPrefab { get; private set; } = null;
     private Enemy MyEnemy { get; set; } = null;
@@ -26,8 +25,6 @@ public class EnemyUIElement : MonoBehaviour
     public bool IsMainSelectedInCompendium = false;
     public void SetEnemy(Enemy enemyBasePrefab)
     {
-        if (originalMaskScale == Vector3.zero)
-            originalMaskScale = SpriteMask.transform.localScale;
         MyEnemyPrefab = enemyBasePrefab;
         if (MyEnemy != null)
         {
@@ -36,15 +33,17 @@ public class EnemyUIElement : MonoBehaviour
         }
         if (MyEnemy == null)
         {
-            float size = CardGraphicBG.rectTransform.rect.width / 130f; //The default UI box is 130, so that is what we change the scale factor by
-            SpriteMask.transform.localScale = new Vector3(originalMaskScale.x * size * 1.0864f, originalMaskScale.y * size * .97083f, 1f);
+            float enemySizeScaler = CardGraphicBG.rectTransform.rect.width / 130f;
+            float sizeX = CardGraphicBG.rectTransform.rect.width * 0.75f; //Magic number yay 
+            float sizeY = CardGraphicBG.rectTransform.rect.height * 0.75f;
+            SpriteMask.transform.localScale = new Vector3(sizeX, sizeY, 1f);
             MyEnemy = Enemy.Spawn(MyEnemyPrefab.gameObject, transform.position, false);
             MyEnemy.SetDummy();
             MyEnemy.Animate();
             MyEnemy.UIAI();
             MyEnemy.transform.SetParent(EnemyScaler);
             Vector2 offset = Vector2.zero;
-            float scale = 40f / (MyEnemy.Visual.transform.localScale.x) * size;
+            float scale = 40f / (MyEnemy.Visual.transform.localScale.x) * enemySizeScaler;
             MyEnemy.ModifyUIOffsets(ref offset, ref scale);
             MyEnemy.transform.localScale = Vector3.one;
             MyEnemy.transform.localScale *= scale;

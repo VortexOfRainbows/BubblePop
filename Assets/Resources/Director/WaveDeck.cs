@@ -13,7 +13,7 @@ public static class WaveDeck
     }
     public static GameObject TryDrawingExpensiveEnemy(List<GameObject> possibleEnemies, int tries = 2)
     {
-        List<GameObject> considerations = new List<GameObject>();
+        List<GameObject> considerations = new();
         while (tries-- > 0)
         {
             considerations.Add(DrawEnemy(possibleEnemies));
@@ -33,7 +33,7 @@ public static class WaveDeck
     }
     public static GameObject TryDrawingCheapEnemy(List<GameObject> possibleEnemies, int tries = 2)
     {
-        List<GameObject> considerations = new List<GameObject>();
+        List<GameObject> considerations = new();
         while (tries-- > 0)
         {
             considerations.Add(DrawEnemy(possibleEnemies));

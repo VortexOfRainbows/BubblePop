@@ -1044,6 +1044,7 @@ MonoBehaviour:
   SpawnedIn: 0
   HasCalledInit: 0
   RB: {fileID: 8628457919241732162}
+  HasBeenImplantedOnce: 0
   IndexInAllEnemyArray: 10
   AlreadyDead: 0
   FirstStrike: 1
@@ -1356,7 +1357,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_SortAtRoot: 0
 --- !u!1 &7205388087124609693
 GameObject:

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
 public abstract class ClauseEffect
 {
     protected static string RedText(string s)
@@ -54,6 +55,8 @@ public class EnemyCard : ClauseEffect
     public override void Apply()
     {
         MyModifier.WaveSpecialBonusEnemy = EnemiesToAdd[0].gameObject;
+        if(EnemiesToAdd.Count > 1)
+            MyModifier.WaveSecondaryBonusEnemy = EnemiesToAdd[1].gameObject;
     }
     protected override float Cost()
     {
@@ -67,7 +70,8 @@ public class EnemyCard : ClauseEffect
     {
         string concat = string.Empty;
         foreach (Enemy e in EnemiesToAdd)
-            concat += $"{"New enemy:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(e.Name())}\n";
+            if(!EnemyClause.EnemyAlreadyInPool(e))
+                concat += $"{"New enemy:".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(e.Name())}\n";
         return concat;
     }
 }
@@ -177,21 +181,39 @@ public class DirectorSkullSwarmModifier : DirectorModifier
     }
     public override void Apply()
     {
-        Type enemyType = Parent.EnemiesToAdd[0].GetType();
-        if (MyModifier.BonusSkullSwarm.ContainsKey(enemyType))
-            MyModifier.BonusSkullSwarm[enemyType] += (int)Percent;
-        else
-            MyModifier.BonusSkullSwarm[enemyType] = (int)Percent;
+        foreach (Enemy e in Parent.EnemiesToAdd)
+        {
+            Type enemyType = e.GetType();
+            if (MyModifier.BonusSkullSwarm.ContainsKey(enemyType))
+                MyModifier.BonusSkullSwarm[enemyType] += (int)Percent;
+            else
+                MyModifier.BonusSkullSwarm[enemyType] = (int)Percent;
+        }
     }
     public override string Description()
     {
-        if(IsPermanent)
-            return $"{$"Skull Swarm (".WithSizeAndColor(28, ColorHelper.LesserGrayHex)}" +
-            $"{Parent.EnemiesToAdd[0].Name().WithSizeAndColor(28, ColorHelper.RarityColorHex[5])}" +
-            $"{"):".WithSizeAndColor(28, ColorHelper.LesserGrayHex)} {RedText(NumberText)}";
-        else
-            return $"{$"Skull Swarm".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText(NumberText)}";
-
+        string concat = string.Empty;
+        int solid = 0;
+        for (int i = 0; i < Parent.EnemiesToAdd.Count; ++i)
+        {
+            Enemy e = Parent.EnemiesToAdd[i];
+            if (EnemyClause.EnemyAlreadyInPool(e))
+            {
+                if (IsPermanent)
+                {
+                    if (concat.Length > 0)
+                        concat += '\n';
+                    concat += $"{$"Skull Swarm (".WithSizeAndColor(28, ColorHelper.LesserGrayHex)}" +
+                    $"{e.Name().WithSizeAndColor(28, ColorHelper.RarityColorHex[5])}" +
+                    $"{"):".WithSizeAndColor(28, ColorHelper.LesserGrayHex)} {RedText(NumberText)}";
+                }
+                else
+                    solid += (int)Percent;
+            }
+        }
+        if (solid > 0)
+            concat += $"{$"Skull Swarm".WithSizeAndColor(30, ColorHelper.LesserGrayHex)} {RedText($"+{solid}")}";
+        return concat;
     }
 }
 public abstract class Reward : ClauseEffect

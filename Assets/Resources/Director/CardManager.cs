@@ -141,6 +141,11 @@ public class CardManager : MonoBehaviour
             WaveDirector.EnemyPool.Add(WaveDirector.PermanentModifiers.WaveSpecialBonusEnemy);
             WaveDirector.PermanentModifiers.WaveSpecialBonusEnemy = null;
         }
+        if (WaveDirector.PermanentModifiers.WaveSecondaryBonusEnemy != null) //If it was permanent, add the previous wave's special enemy to the enemy pool
+        {
+            WaveDirector.EnemyPool.Add(WaveDirector.PermanentModifiers.WaveSecondaryBonusEnemy);
+            WaveDirector.PermanentModifiers.WaveSecondaryBonusEnemy = null;
+        }
         WaveDirector.TemporaryModifiers.CloneValues(WaveDirector.PermanentModifiers); //Apply permanent modifiers to temporary modifiers
 
         ChooseCard(-1);
@@ -156,6 +161,8 @@ public class CardManager : MonoBehaviour
         ChosenCard.cardData.ApplyEnemies(); //Enemies has to applied after the modifiers so they take full effect on the enemies
         if (WaveDirector.TemporaryModifiers.WaveSpecialBonusEnemy == null)//If there are no temporary enemies...
             WaveDirector.TemporaryModifiers.WaveSpecialBonusEnemy = WaveDirector.PermanentModifiers.WaveSpecialBonusEnemy; //set it to the permanent enemy
+        if (WaveDirector.TemporaryModifiers.WaveSecondaryBonusEnemy == null && WaveDirector.PermanentModifiers.WaveSecondaryBonusEnemy != null)//If there are no temporary secondary enemies...
+            WaveDirector.TemporaryModifiers.WaveSecondaryBonusEnemy = WaveDirector.PermanentModifiers.WaveSecondaryBonusEnemy; //set it to the permanent secondary
 
         ChosenCard.cardData.GrantImmediateRewards();
 

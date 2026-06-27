@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public static class WaveDirector
@@ -8,6 +7,7 @@ public static class WaveDirector
     public class WaveModifiers
     {
         public GameObject WaveSpecialBonusEnemy { get; set; } = null;
+        public GameObject WaveSecondaryBonusEnemy { get; set; } = null;
         public float EnemyScaling { get; set; } = 1.0f;
         public float CreditGatherScaling { get; set; } = 1.0f;
         public float InitialAmbush { get; set; } = 0.0f;
@@ -15,7 +15,7 @@ public static class WaveDirector
         public Dictionary<Type, int> BonusSkullSwarm { get; set; } = new();
         public void Reset()
         {
-            WaveSpecialBonusEnemy = null;
+            WaveSpecialBonusEnemy = WaveSecondaryBonusEnemy = null;
             EnemyScaling = CreditGatherScaling = 1;
             InitialAmbush = 0.0f;
             BonusSkullWaves = 0;
@@ -24,6 +24,7 @@ public static class WaveDirector
         public void CloneValues(WaveModifiers other)
         {
             WaveSpecialBonusEnemy = other.WaveSpecialBonusEnemy;
+            WaveSecondaryBonusEnemy = other.WaveSecondaryBonusEnemy;
             EnemyScaling = other.EnemyScaling;
             CreditGatherScaling = other.CreditGatherScaling;
             InitialAmbush = other.InitialAmbush;
@@ -35,7 +36,11 @@ public static class WaveDirector
     {
         List<GameObject> result = new(EnemyPool);
         if (TemporaryModifiers.WaveSpecialBonusEnemy != null && result.Count <= 0)
+        {
             result.Add(TemporaryModifiers.WaveSpecialBonusEnemy);
+            if (TemporaryModifiers.WaveSecondaryBonusEnemy != null)
+                result.Add(TemporaryModifiers.WaveSecondaryBonusEnemy);
+        }
         return result;
     }
     public static List<WaveCard> SkullWaveCards;
