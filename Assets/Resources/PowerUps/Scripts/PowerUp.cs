@@ -191,7 +191,11 @@ public abstract class PowerUp
     {
         return PickRandomPower(0, bonusChoiceChance, Utils.RandFloat(1) < blackMarketChance, rarity);
     }
-    private static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false, int rarity = -1)
+    public static int PickRandomPower(int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false, int rarity = -1)
+    {
+        return PickRandomPower(BlackMarket ? AvailableBlackMarketPowers : AvailablePowers, recursionDepth, addedChoiceChance, BlackMarket, rarity);
+    }
+    public static int PickRandomPower(List<int> availabilityPool, int recursionDepth = 0, float addedChoiceChance = 0.15f, bool BlackMarket = false, int rarity = -1)
     {
         //float flowerChance = Player.Instance.RainbowFlowers * 0.05f;
         //if(Utils.RollWithLuck(flowerChance))
@@ -199,12 +203,10 @@ public abstract class PowerUp
         //    return Get<RainbowFlower>().MyID;
         //}
         if (Utils.RandFloat() < addedChoiceChance && (rarity == -1 || rarity == 1))
-        {
             return BlackMarket ? Get<Contract>().MyID : Get<Choice>().MyID;
-        }
         if (rarity == 1 || rarity == 0)
             rarity = -1;
-        List<int> avail = BlackMarket ? AvailableBlackMarketPowers : AvailablePowers;
+        List<int> avail = availabilityPool;
         float highestWeight = 1.0f;
         float highestSeen = 0.0f;
         if(rarity != -1)
@@ -248,7 +250,7 @@ public abstract class PowerUp
         }
         else
         {
-            return PickRandomPower(recursionDepth + 1, addedChoiceChance < 0 ? -1 : addedChoiceChance + 0.02f, BlackMarket, rarity);
+            return PickRandomPower(availabilityPool, recursionDepth + 1, addedChoiceChance < 0 ? -1 : addedChoiceChance + 0.02f, BlackMarket, rarity);
         }
     }
     public static void TurnOnPowerUpSelectors()
@@ -308,7 +310,7 @@ public abstract class PowerUp
     public void PickUp(Player player, int amt = 1)
     {
         AddToDisplayQueue();
-        AddToPlayer(player, amt);
+        AddToPlayer(player, amt); //Increase stack
         OnPickup(amt);
         foreach(Player p in Player.AllPlayers)
             p.MostRecentPower = this;

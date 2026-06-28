@@ -242,3 +242,12 @@ public class ThoughtBubbleCatchThis: UnlockCondition
     public override int Rarity => 3;
     public override UnlockCondition PreReqUnlock => Get<ThoughtBubbleUnlock>();
 }
+public class BubblemancerCatalyst : UnlockCondition
+{
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Meadows;
+        category = Completionist;
+    }
+    public override int Rarity => 5;
+}

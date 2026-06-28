@@ -227,12 +227,12 @@ public class Gladiator : PowerUp
     public override void Init()
     {
         Weighting = Uncommon;
-    }
-    public override void OnPickup(int count)
-    {
-        foreach (Player player in Player.AllPlayers)
-            player.SetShield(player.GetShield() + count);
-    }
+        }
+        public override void OnPickup(int count)
+        {
+            foreach (Player player in Player.AllPlayers)
+                player.SetShield(player.GetShield() + count);
+        }
     public override void HeldEffect(Player p)
     {
         p.GladiatorDuration = 8 + Stack * 2;
@@ -245,4 +245,25 @@ public class Gladiator : PowerUp
     {
         return Resources.Load<Sprite>("PowerUps/KurtPower");
     }
+}
+public class AstralJelly : PowerUp
+{
+    public override void OnPickup(int count)
+    {
+        foreach (Player player in Player.AllPlayers)
+            player.SetShield(player.GetShield() + 2);
+    }
+    public override void Init()
+    {
+        Weighting = Legendary;
+    }
+    public override void HeldEffect(Player p)
+    {
+        p.CatalystJellies += Stack;
+    }
+    public override bool IsBlackMarket()
+    {
+        return true;
+    }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<BubblemancerCatalyst>();
 }

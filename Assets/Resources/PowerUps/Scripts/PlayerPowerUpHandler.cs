@@ -166,6 +166,7 @@ public partial class Player : Entity
     public int BonusGems = 0;
     public int InstakillsOnWaveStart = 0;
     public float ChillDuration = 0;
+    public int CatalystJellies = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -228,6 +229,7 @@ public partial class Player : Entity
         InstakillsOnWaveStart = 0;
         ChillDuration = 0;
         GladiatorDuration = 0;
+        CatalystJellies = 0;
     }
     private void UpdatePowerUps()
     {

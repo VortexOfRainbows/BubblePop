@@ -819,22 +819,10 @@ public partial class Player : Entity
         {
             if(!skipDamageStep)
                 SetShield(Shield - shieldDamage);
+            OnShieldHurtEffects();
             immuneMult *= ShieldImmunityFrameMultiplier;
-            if(BubbleShields > 0)
-            {
-                float velocity = 2;
-                int amt = 16 + 8 * BubbleShields;
-                if (amt > 1024)
-                    amt = 1024;
-                for (int i = 0; i < amt; ++i)
-                    Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1, this);
-            }
-            if(GladiatorDuration > 0)
-            {
-                AddBuff<OmniBoost>(GladiatorDuration, 1);
-            }
         }
-        if(lifeDamage > 0)
+        if (lifeDamage > 0)
         {
             if(!skipDamageStep)
                 SetLife(Life - lifeDamage);
@@ -852,6 +840,29 @@ public partial class Player : Entity
             Vector2 velo = Utils.RandCircle(3);
             Vector2 endPos = velo + (Vector2)transform.position;
             Projectile.NewProjectile<BathBomb>(transform.position, velo, RetaliatoryBomb * 10, this, endPos.x, endPos.y);
+        }
+    }
+    public void OnShieldHurtEffects()
+    {
+        if (BubbleShields > 0)
+        {
+            float velocity = 2;
+            int amt = 16 + 8 * BubbleShields;
+            if (amt > 1024)
+                amt = 1024;
+            for (int i = 0; i < amt; ++i)
+                Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1, this);
+        }
+        if (GladiatorDuration > 0)
+        {
+            AddBuff<OmniBoost>(GladiatorDuration);
+        }
+        if(CatalystJellies > 0)
+        {
+            int stack = CatalystJellies;
+            List<int> types = new() { PowerUp.Get<Dash>().Type, PowerUp.Get<BinaryStars>().Type, PowerUp.Get<Starbarbs>().Type, PowerUp.Get<LuckyStar>().Type, PowerUp.Get<Supernova>().Type };
+            int type = PowerUp.PickRandomPower(types, 0, 0, false, -1);
+            PowerUp.Get(type).PickUp(this, stack);
         }
     }
     public void Pop()
