@@ -741,6 +741,21 @@
       Brief: Gain a shield and increase all stats temporarily when it breaks
       Lore: Power.Gladiator.Lore
     }
+    AstralJelly:
+    {
+      Title: Astra Jelly
+      Description:
+        '''
+        Gain Y:[2 shields] 
+        When a Y:[shield is broken,] gain Y:1 G:(+1 per stack) stacks of a random Y:[star-synergy power]
+        '''
+      Brief: 
+        '''
+        Gain 2 shields 
+        When shields are broken, gain a star-synergy power
+        '''
+      Lore: Power.AstralJelly.Lore
+    }
   }
   Equip:
   {
@@ -1119,6 +1134,11 @@
     {
       Title: Thought Bubble: Catch This
       Description: Kill 10 different skull enemies with <color=#AAD3FEFF>Lightning in a Bottle</color> in a single run
+    }
+    BubblemancerCatalyst:
+    {
+      Title: Bubblemancer: Catalyst
+      Description: As Y:Bubblemancer, do something... I've not yet decided what, but you'll have to do it!
     }
   }
   Enemy:

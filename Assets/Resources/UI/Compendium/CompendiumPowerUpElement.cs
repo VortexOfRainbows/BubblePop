@@ -55,9 +55,8 @@ public class CompendiumPowerUpElement : CompendiumElement
         }
         else if(BlackMarketButton != null)
         {
-            bool canAppearAsBlackMarket = (MyElem.MyPower.IsBlackMarket() || MyElem.MyPower.HasBlackMarketAlternate)
-                && (MyElem.MyPower.PickedUpCountAllRuns > 0 &&
-                (MyElem.MyPower.BlackMarketVariantUnlockCondition == null || MyElem.MyPower.BlackMarketVariantUnlockCondition.IsComplete))
+            bool canAppearAsBlackMarket = MyElem.MyPower.PickedUpCountAllRuns > 0
+                && (MyElem.MyPower.IsBlackMarket() || (MyElem.MyPower.HasBlackMarketAlternate && MyElem.MyPower.BlackMarketVariantUnlockCondition.IsComplete))
                 && !Compendium.Instance.PowerPage.TierListActive;
             BlackMarketButton.gameObject.SetActive(canAppearAsBlackMarket);
             if (BlackMarketButton.isActiveAndEnabled)
