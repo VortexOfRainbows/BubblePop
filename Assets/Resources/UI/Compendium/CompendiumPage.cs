@@ -445,7 +445,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             }
         }
     }
-    public void OnFixedUpdate()
+    public void SecondaryUpdate()
     {
         UpdateSizing();
         UpdateSelectedType(SelectedType);
@@ -486,6 +486,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public void TierListUpdate()
     {
         UpdateContentSize();
+        float lerpFactor = Utils.DeltaTimeLerpFactor(0.1f);
         Owner.OpenCompendiumButton.interactable = !TierListActive;
         foreach(Button b in Owner.PageButtons)
             b.interactable = !TierListActive;
@@ -496,21 +497,21 @@ public abstract class TierListCompendiumPage : CompendiumPage
         if(TierList != null)
         {
             Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);
-            Utils.LerpSnap(TierListParent.transform, targetTierList);
+            Utils.LerpSnap(TierListParent.transform, targetTierList, lerpFactor);
         }
-        Utils.LerpSnap(Owner.TopBar, newTopBarPositon);
-        Utils.LerpSnap(Owner.SideBar, newSideBarPosition);
+        Utils.LerpSnap(Owner.TopBar, newTopBarPositon, lerpFactor);
+        Utils.LerpSnap(Owner.SideBar, newSideBarPosition, lerpFactor);
         Vector2 buttonbounds = Owner.OpenCompendiumButton.GetComponent<RectTransform>().rect.size;
         buttonbounds.y *= -1;
-        Utils.LerpSnap(Owner.OpenCompendiumButton.gameObject.transform, newOpenButtonPosition + buttonbounds / 2);
-        Utils.LerpSnap(ViewPort.transform, targetViewport);
+        Utils.LerpSnap(Owner.OpenCompendiumButton.gameObject.transform, newOpenButtonPosition + buttonbounds / 2, lerpFactor);
+        Utils.LerpSnap(ViewPort.transform, targetViewport, lerpFactor);
         //Utils.LerpSnap(SortBar.transform, sortBarTarget);
-        ViewPort.sizeDelta = Vector2.Lerp(ViewPort.sizeDelta, new Vector2(0, TierListActive ? 200 : 0), 0.1f);
+        ViewPort.sizeDelta = Vector2.Lerp(ViewPort.sizeDelta, new Vector2(0, TierListActive ? 200 : 0), lerpFactor);
 
         if (HasSnappedTierList != TierListActive)
         {
             if (ContentRectangle.transform.localPosition.Distance(Vector2.zero) > 0.5f)
-                ContentRectangle.transform.localPosition = ContentRectangle.transform.localPosition.Lerp(Vector2.zero, 0.1f);
+                ContentRectangle.transform.localPosition = ContentRectangle.transform.localPosition.Lerp(Vector2.zero, lerpFactor);
             else
             {
                 ContentRectangle.transform.localPosition = Vector2.zero;
@@ -525,7 +526,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         {
             Vector3 targetPosition = Utils.MouseWorld + new Vector2(2, 1);
             Rect boundingRect = ViewPort.rect;
-            HoverCPUE.gameObject.transform.position = HoverCPUE.gameObject.transform.position.Lerp(targetPosition, 0.1f);
+            HoverCPUE.gameObject.transform.position = HoverCPUE.gameObject.transform.position.Lerp(targetPosition, lerpFactor);
             Vector3 pos = Utils.ClampToRect(HoverCPUE.gameObject.transform.localPosition, boundingRect, 66);
             HoverCPUE.gameObject.transform.localPosition = pos;
 

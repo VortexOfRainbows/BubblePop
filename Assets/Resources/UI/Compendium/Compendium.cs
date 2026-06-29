@@ -95,12 +95,13 @@ public class Compendium : MonoBehaviour
             if (page != null)
                 page.OnUpdate();
         }
+        ThisWasFixedUpdatePreviously();
     }
     public void UpdatePage(BasicTierListCompendiumPage page)
     {
         if (page != null && Active && page.isActiveAndEnabled)
         {
-            page.OnFixedUpdate();
+            page.SecondaryUpdate();
         }
         else
         {
@@ -111,14 +112,14 @@ public class Compendium : MonoBehaviour
             }
         }
     }
-    public void FixedUpdate()
+    public void ThisWasFixedUpdatePreviously()
     {
         Vector2 startingPosition = new Vector3(-ScreenResolution.x, 0);
         UpdatePage(EquipPage);
         UpdatePage(EnemyPage);
         UpdatePage(AchievementPage);
         UpdatePage(PowerPage); //Init this one last!
-        Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, 0.1f, 0.1f);
+        Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, Utils.DeltaTimeLerpFactor(0.1f), 0.1f);
     }
     #region Display and description on the right side of the compendium
     public CompendiumElement ActiveElement => Elements[PageNumber];

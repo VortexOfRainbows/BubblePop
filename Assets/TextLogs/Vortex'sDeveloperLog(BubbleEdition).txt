@@ -58,6 +58,7 @@ Done:
 	2. Pause behavior and esc key behavior
 	3. Double check rest of UI in MAINCANVAS (Since the render mode was changed) to make sure it still works. (and potentially move it to a different canvas)
 	4. Right now compendium loads in all the content in the game even if it isn't needed... is this a problem? (AI SAYS IT IS NOT A PROBLEM)
+	5. Fix the way UI is layered when paused (Disable the in-game UI like hp, high score, char picker, etc.)
 
 6/23/26 to 6/28/26
 1. (FIX) Powers and Enemies should now be pushed out of walls if they somehow get inside of them
