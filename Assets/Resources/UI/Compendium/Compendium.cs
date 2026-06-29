@@ -86,8 +86,9 @@ public class Compendium : MonoBehaviour
     }
     public void Update()
     {
+        MyCanvas.worldCamera = CameraManager.UICamera;
         m_Instance = this;
-        ScreenResolution = new Vector2(MyCanvasRectTransform.rect.width, MyCanvasRectTransform.rect.height); //1920 in most cases
+        ScreenResolution = new Vector2(MyCanvasRectTransform.rect.width, MyCanvasRectTransform.rect.height); //1920, 1080 in most cases
         HalfResolution = ScreenResolution / 2f;
         foreach (BasicTierListCompendiumPage page in Pages.Cast<BasicTierListCompendiumPage>())
         {
@@ -119,7 +120,6 @@ public class Compendium : MonoBehaviour
         UpdatePage(PowerPage); //Init this one last!
         Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, 0.1f, 0.1f);
     }
-
     #region Display and description on the right side of the compendium
     public CompendiumElement ActiveElement => Elements[PageNumber];
     public CompendiumElement[] Elements;

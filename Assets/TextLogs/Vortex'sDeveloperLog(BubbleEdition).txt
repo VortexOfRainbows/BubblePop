@@ -50,6 +50,15 @@ Bug Watchlist:
 
 Done: 	
 
+6/29/26
+1. Fix issue where the tooltip UI would be in different positions based on screen resolution
+2. VERY WIP persistent compendium loading/UI (this is currently quite broken and NEEDS many changes and fixes)
+	NEEDS:
+	1. Right now it just doesn't work
+	2. Pause behavior and esc key behavior
+	3. Double check rest of UI in MAINCANVAS (Since the render mode was changed) to make sure it still works. (and potentially move it to a different canvas)
+	4. Right now compendium loads in all the content in the game even if it isn't needed... is this a problem? (AI SAYS IT IS NOT A PROBLEM)
+
 6/23/26 to 6/28/26
 1. (FIX) Powers and Enemies should now be pushed out of walls if they somehow get inside of them
 2. (FIX) Reliability of Forge R-key to process should no longer be frame dependent (previously it was somewhat unreliable and would not always register)

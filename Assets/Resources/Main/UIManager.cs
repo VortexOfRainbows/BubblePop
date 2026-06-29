@@ -7,16 +7,20 @@ using UnityEngine.UI;
 
 public partial class Main : MonoBehaviour
 {
-    public static Canvas ActivePrimaryCanvas => UIManager.MainCanvas;
+    public static Canvas ActivePrimaryCanvas => UIManager.ScalingHelperCanvas;
     public static CanvasManager UIManager => Instance.MyUIManager;
     [SerializeField]
     private CanvasManager MyUIManager = new();
     [Serializable]
     public class CanvasManager
     {
+        public static bool PauseUIActive()
+        {
+            return UIManager.PauseMenu.activeSelf;
+        }
         public GameObject MPMenu1, MPMenu2, SPMenu;
         public TextMeshProUGUI PauseMenuTopText, MPControls1, MPControls2, SPControls;
-        public Canvas MainCanvas;
+        public Canvas MainCanvas, ScalingHelperCanvas;
         public GameObject PauseMenu, SettingsMenu, DebugMenu, MultiplayerMenu;
         public TextMeshProUGUI DeadHighscoreText;
         public void OpenMultiplayerMenu(bool pause)
@@ -30,7 +34,7 @@ public partial class Main : MonoBehaviour
         }
         public static void CloseMultiplayerMenu()
         {
-            if(!UIManager.PauseMenu.activeSelf && Main.GamePaused)
+            if(!PauseUIActive() && Main.GamePaused)
                 UnpauseGame();
             UIManager.MultiplayerMenu.SetActive(false);
         }

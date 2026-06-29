@@ -64,7 +64,7 @@ public class PopUpTextUI : MonoBehaviour
     public static PopUpTextUI PopupAchievementInstance { get; private set; }
     public PowerUpUIElement PowerUpVisual;
     public CompendiumAchievementElement AchievementElement;
-    public Canvas MainGameCanvas;
+    public Canvas MainGameCanvas => Main.UIManager.ScalingHelperCanvas;
     public GameObject Visual;
     public TMPro.TextMeshProUGUI Name;
     public TMPro.TextMeshProUGUI Description;
@@ -261,7 +261,7 @@ public class PopUpTextUI : MonoBehaviour
         {
             if (Type == HoverUI)
             {
-                transform.position = Input.mousePosition + new Vector3(40, -40);
+                transform.position = Input.mousePosition + new Vector3(40, -40) * MainGameCanvas.scaleFactor;
                 SnapToScreen();
             }
         }

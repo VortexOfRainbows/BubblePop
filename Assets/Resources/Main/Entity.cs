@@ -92,7 +92,9 @@ public partial class Entity : MonoBehaviour
     }
     public void Update()
     {
-        if (this is not Player && (this is not Enemy e || !e.IsDummy) && !Main.GamePaused)
+        if (Main.GamePaused)
+            return;
+        if (this is not Player && (this is not Enemy e || !e.IsDummy))
         {
             if (DamageTaken > 0)
             {
@@ -105,12 +107,6 @@ public partial class Entity : MonoBehaviour
                 UpdateRendererColorToDefault(Utils.DeltaTimeLerpFactor(0.1f));
             }
         }
-        //if (Utils.RandFloat(1) < 0.5f && lastPos != (Vector2)transform.position)
-        //{
-        //    Vector2 toLastPos = lastPos - (Vector2)transform.position;
-        //    if(toLastPos.sqrMagnitude > 0.002f)
-        //        ParticleManager.NewParticle(transform.position + new Vector3(Utils.RandFloat(-transform.lossyScale.x, transform.lossyScale.x) * 1.1f, -transform.lossyScale.y * 0.7f), Utils.RandFloat(0.35f, 0.45f), toLastPos * Utils.RandFloat(0.9f, 1.1f), .5f, Utils.RandFloat(0.4f, 0.5f), 0, ParticleManager.BathColor);
-        //}
         lastPos = transform.position;
     }
     public SpriteRenderer[] ChildrenRenders()
