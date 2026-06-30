@@ -29,13 +29,17 @@ public class PersistentGameObjectLoader : MonoBehaviour
         if (isMainMenu)
             return;
 
-        if(Main.CanvasManager.PauseUIActive())
+        if (Main.CanvasManager.PauseUIActive())
         {
             CompendiumCanvas.SetActive(true);
+            if (CharacterSelect.Instance != null)
+                CharacterSelect.Instance.gameObject.SetActive(false);
         }
         else
         {
             CompendiumCanvas.SetActive(false);
+            if (CharacterSelect.Instance != null)
+                CharacterSelect.Instance.gameObject.SetActive(true);
         }
     }
 }
