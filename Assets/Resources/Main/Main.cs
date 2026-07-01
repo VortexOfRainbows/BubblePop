@@ -131,7 +131,9 @@ public partial class Main : MonoBehaviour
             {
                 if (GamePaused)
                 {
-                    if (UIManager.SettingsMenu.activeSelf)
+                    if(Compendium.Instance != null && Compendium.Instance.Active)
+                        Compendium.Instance.ToggleActive();
+                    else if (UIManager.SettingsMenu.activeSelf)
                         CanvasManager.ToggleSettings();
                     else if (UIManager.DebugMenu.activeSelf)
                         CanvasManager.OpenDebugMenu();

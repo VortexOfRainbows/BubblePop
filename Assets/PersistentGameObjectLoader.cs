@@ -23,7 +23,7 @@ public class PersistentGameObjectLoader : MonoBehaviour
     {
         CompendiumCanvas = Instantiate(CompendiumPrefab, transform);
     }
-    private void Update()
+    public void Update()
     {
         bool isMainMenu = SceneManager.GetActiveScene().buildIndex == 0;
         if (isMainMenu)

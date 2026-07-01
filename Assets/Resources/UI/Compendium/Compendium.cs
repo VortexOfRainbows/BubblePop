@@ -51,7 +51,7 @@ public class Compendium : MonoBehaviour
     public BasicTierListCompendiumPage EquipPage { get; private set; }
     public BasicTierListCompendiumPage EnemyPage { get; private set; }
     public BasicTierListCompendiumPage AchievementPage { get; private set; }
-    private bool Active { get; set; }
+    public bool Active { get; private set; }
     public Button OpenCompendiumButton;
     public Transform TopBar;
     public Transform SideBar;

@@ -41,12 +41,14 @@ public partial class Main : MonoBehaviour
         public static void Pause()
         {
             UIManager.PauseMenu.SetActive(true);
-            PauseGame(); 
+            PersistentGameObjectLoader.Instance.Update();
+            PauseGame();
             StaticPlaySound();
         }
         public static void Resume()
         {
             UIManager.PauseMenu.SetActive(false);
+            PersistentGameObjectLoader.Instance.Update();
             if (UIManager.SettingsMenu.activeSelf)
                 ToggleSettings();
             else if(UIManager.DebugMenu.activeSelf)
