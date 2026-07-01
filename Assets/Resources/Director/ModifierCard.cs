@@ -119,13 +119,18 @@ public class ModifierCard : MonoBehaviour
         transform.localEulerAngles = Vector3.zero;
         BackSide.SetActive(true);
         CardVisual.UpdateColor(!WaveDirector.EnemyPool.Contains(CardVisual.MyEnemyPrefab.gameObject), false);
-        if (SecondaryCardVisual.MyEnemyPrefab != null)
+        if (cardData.EnemyClause.Enemy.EnemiesToAdd.Count > 1)
         {
-            SecondaryCardVisual.gameObject.SetActive(true);
-            SecondaryCardVisual.UpdateColor(!WaveDirector.EnemyPool.Contains(SecondaryCardVisual.MyEnemyPrefab.gameObject), false);
+            if (SecondaryCardVisual.MyEnemyPrefab != null)
+            {
+                SecondaryCardVisual.gameObject.SetActive(true);
+                SecondaryCardVisual.UpdateColor(!WaveDirector.EnemyPool.Contains(SecondaryCardVisual.MyEnemyPrefab.gameObject), false);
+            }
         }
         else
+        {
             SecondaryCardVisual.gameObject.SetActive(false);
+        }
     }
     public void SpawnAnimation()
     {

@@ -45,7 +45,7 @@ n/a
 
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
-2. Coupons purchased from shop might not be activating fast enough
+
 
 Done: 	
 
@@ -54,7 +54,11 @@ Done:
 2. Persistent Compendium Loading/UI
 	1. Now the compendium should be available while playing
 	2. Some UI changes also mean that other UI disappears when you open the pause menu
+	3. Should also be generally more performant, as the compendium is not reloaded every time the main menu is opened
 3. Keybinds can be used in the main menu to close settings and compendium/tier list now.
+4. (WORKING AS INTENDED) Coupons purchased from shop DO activate fast enough (previously thought it wasn't working, but it seems to be...)
+5. Fix bug where tag team UI would persist for non-tag-team waves
+6. (FIX) Fix bug where Compendium was occasionally moving across the screen when first loaded
 
 6/23/26 to 6/28/26
 1. (FIX) Powers and Enemies should now be pushed out of walls if they somehow get inside of them
