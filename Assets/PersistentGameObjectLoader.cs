@@ -25,7 +25,7 @@ public class PersistentGameObjectLoader : MonoBehaviour
     }
     public void Update()
     {
-        bool isMainMenu = SceneManager.GetActiveScene().buildIndex == 0;
+        bool isMainMenu = Main.SceneMainMenu;
         if (isMainMenu)
             return;
 
@@ -40,6 +40,9 @@ public class PersistentGameObjectLoader : MonoBehaviour
             CompendiumCanvas.SetActive(false);
             if (CharacterSelect.Instance != null)
                 CharacterSelect.Instance.gameObject.SetActive(true);
+            if(Compendium.CurrentlySelectedPage.TierListActive)
+                Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
+            Compendium.Instance.MoveCompendiumUpdate(1.0f);
         }
     }
 }

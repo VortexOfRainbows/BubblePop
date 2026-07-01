@@ -445,11 +445,11 @@ public abstract class TierListCompendiumPage : CompendiumPage
             }
         }
     }
-    public void SecondaryUpdate()
+    public void SecondaryUpdate(float lerpFactor)
     {
         UpdateSizing();
         UpdateSelectedType(SelectedType);
-        TierListUpdate();
+        TierListUpdate(lerpFactor);
     }
     public void UpdateSizing()
     {
@@ -483,10 +483,9 @@ public abstract class TierListCompendiumPage : CompendiumPage
 
         PowerUpLayoutGroup.spacing = new Vector2(spacing, 10);
     }
-    public void TierListUpdate()
+    public void TierListUpdate(float lerpFactor)
     {
         UpdateContentSize();
-        float lerpFactor = Utils.DeltaTimeLerpFactor(0.1f);
         Owner.OpenCompendiumButton.interactable = !TierListActive;
         foreach(Button b in Owner.PageButtons)
             b.interactable = !TierListActive;

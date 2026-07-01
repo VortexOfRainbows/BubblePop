@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public partial class Main : MonoBehaviour
 {
+    public static bool SceneMainMenu => SceneManager.GetActiveScene().buildIndex == 0;
     public static float FramesPerSeconds { get; private set; }
     public static float TimeElapsedDuringLowFPS { get; private set; } = 0;
     public static float FramesElapsedDuringLowFPS { get; private set; } = 0;
@@ -125,27 +126,50 @@ public partial class Main : MonoBehaviour
     {
         Instance = this;
         DebugSettings.Update(this);
-        if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().buildIndex != 0)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(UIManager.MultiplayerMenu == null || !UIManager.MultiplayerMenu.activeSelf)
+            bool isMainMenu = SceneMainMenu;
+            if(!isMainMenu)
             {
-                if (GamePaused)
+                if (UIManager.MultiplayerMenu == null || !UIManager.MultiplayerMenu.activeSelf)
                 {
-                    if(Compendium.Instance != null && Compendium.Instance.Active)
-                        Compendium.Instance.ToggleActive();
-                    else if (UIManager.SettingsMenu.activeSelf)
-                        CanvasManager.ToggleSettings();
-                    else if (UIManager.DebugMenu.activeSelf)
-                        CanvasManager.OpenDebugMenu();
+                    if (GamePaused)
+                    {
+                        if (Compendium.Instance != null && Compendium.Instance.Active)
+                        {
+                            if (Compendium.CurrentlySelectedPage.TierListActive)
+                                Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
+                            else
+                                Compendium.Instance.ToggleActive();
+                        }
+                        else if (UIManager.SettingsMenu.activeSelf)
+                            CanvasManager.ToggleSettings();
+                        else if (UIManager.DebugMenu.activeSelf)
+                            CanvasManager.ToggleDebugMenu();
+                        else
+                            CanvasManager.Resume();
+                    }
                     else
-                        CanvasManager.Resume();
+                        CanvasManager.Pause();
                 }
-                else
-                    CanvasManager.Pause();
+                else if (UIManager.MultiplayerMenu != null)
+                {
+                    CanvasManager.CloseMultiplayerMenu();
+                }
             }
-            else if (UIManager.MultiplayerMenu != null)
+            else
             {
-                CanvasManager.CloseMultiplayerMenu();
+                if (Compendium.Instance != null && Compendium.Instance.Active)
+                {
+                    if (Compendium.CurrentlySelectedPage.TierListActive)
+                        Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
+                    else
+                        Compendium.Instance.ToggleActive();
+                }
+                else if (UIManager.SettingsMenu.activeSelf)
+                    CanvasManager.ToggleSettings();
+                else if (UIManager.DebugMenu.activeSelf)
+                    CanvasManager.ToggleDebugMenu();
             }
         }
         //if(Main.DebugCheats && Input.GetKey(KeyCode.B))

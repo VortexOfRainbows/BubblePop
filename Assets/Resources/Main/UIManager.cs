@@ -52,7 +52,7 @@ public partial class Main : MonoBehaviour
             if (UIManager.SettingsMenu.activeSelf)
                 ToggleSettings();
             else if(UIManager.DebugMenu.activeSelf)
-                OpenDebugMenu();
+                ToggleDebugMenu();
             else
                 StaticPlaySound();
             UnpauseGame();
@@ -115,7 +115,7 @@ public partial class Main : MonoBehaviour
         {
             Application.Quit();
         }
-        public static void OpenDebugMenu()
+        public static void ToggleDebugMenu()
         {
             if (!UIManager.DebugMenu.activeSelf)
                 UIManager.SettingsMenu.SetActive(false);

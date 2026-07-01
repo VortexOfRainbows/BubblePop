@@ -8,11 +8,10 @@ Do Later:
 	2. True y-layering still does not exist. A true fix may be difficult. Best to case-by-case address issues..?
 2. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
-3. Integrate Compendium into the pause menu
-4. Grass shader to make grass more interesting and potentially slightly vary in the wind
-5. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
-6. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
-7. Lighting: Fix the size so it also encompasses the bottom half of wall tiles for purpose of shadow size and shape (may be as simple as stretching the diagonal and occlusion parts, then including walls in the render target for shape)
+3. Grass shader to make grass more interesting and potentially slightly vary in the wind
+4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
+5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
+6. Lighting: Fix the size so it also encompasses the bottom half of wall tiles for purpose of shadow size and shape (may be as simple as stretching the diagonal and occlusion parts, then including walls in the render target for shape)
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -52,12 +51,10 @@ Done:
 
 6/29/26 to 6/30/26
 1. Fix issue where the tooltip UI would be in different positions based on screen resolution
-2. VERY WIP persistent compendium loading/UI (this is currently quite broken and NEEDS many changes and fixes)
-	NEEDS:
-	1. Pause behavior and esc key behavior
-	2. Double check rest of UI in MAINCANVAS (Since the render mode was changed) to make sure it still works. (and potentially move it to a different canvas)
-	3. Right now compendium loads in all the content in the game even if it isn't needed... is this a problem? (AI SAYS IT IS NOT A PROBLEM)
-	4. Fix the way UI is layered when paused (Disable the in-game UI like hp, high score, char picker, etc.)
+2. Persistent Compendium Loading/UI
+	1. Now the compendium should be available while playing
+	2. Some UI changes also mean that other UI disappears when you open the pause menu
+3. Keybinds can be used in the main menu to close settings and compendium/tier list now.
 
 6/23/26 to 6/28/26
 1. (FIX) Powers and Enemies should now be pushed out of walls if they somehow get inside of them

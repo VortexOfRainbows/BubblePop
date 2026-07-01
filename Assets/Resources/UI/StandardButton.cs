@@ -47,7 +47,7 @@ public class StandardButton : Button
         ButtonToActionDict[ButtonDestinationType.UnleashWave] = Main.StartGame;
         ButtonToActionDict[ButtonDestinationType.Settings] = Main.CanvasManager.ToggleSettings;
         ButtonToActionDict[ButtonDestinationType.Quit] = Main.CanvasManager.QuitGame;
-        ButtonToActionDict[ButtonDestinationType.DebugMenu] = Main.CanvasManager.OpenDebugMenu;
+        ButtonToActionDict[ButtonDestinationType.DebugMenu] = Main.CanvasManager.ToggleDebugMenu;
         ButtonToActionDict[ButtonDestinationType.CloseTutorial] = Main.CanvasManager.CloseMultiplayerMenu;
         ButtonToActionDict[ButtonDestinationType.OpenCompendium] = Compendium.StaticToggleActive;
         return ButtonToActionDict;

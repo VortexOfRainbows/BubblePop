@@ -83,6 +83,7 @@ public class Compendium : MonoBehaviour
         AchievementPage.ToggleDisplayMode(TierListText);
         m_Instance = this;
         SetPage(0);
+        MoveCompendiumUpdate(1.0f);
     }
     public void Update()
     {
@@ -95,13 +96,13 @@ public class Compendium : MonoBehaviour
             if (page != null)
                 page.OnUpdate();
         }
-        ThisWasFixedUpdatePreviously();
+        MoveCompendiumUpdate(Utils.DeltaTimeLerpFactor(.1f));
     }
-    public void UpdatePage(BasicTierListCompendiumPage page)
+    public void UpdatePage(BasicTierListCompendiumPage page, float lerpFactor)
     {
-        if (page != null && Active && page.isActiveAndEnabled)
+        if (page != null && (Active || page == CurrentlySelectedPage) && page.isActiveAndEnabled)
         {
-            page.SecondaryUpdate();
+            page.SecondaryUpdate(lerpFactor);
         }
         else
         {
@@ -112,14 +113,14 @@ public class Compendium : MonoBehaviour
             }
         }
     }
-    public void ThisWasFixedUpdatePreviously()
+    public void MoveCompendiumUpdate(float lerpFactor)
     {
         Vector2 startingPosition = new Vector3(-ScreenResolution.x, 0);
-        UpdatePage(EquipPage);
-        UpdatePage(EnemyPage);
-        UpdatePage(AchievementPage);
-        UpdatePage(PowerPage); //Init this one last!
-        Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, Utils.DeltaTimeLerpFactor(0.1f), 0.1f);
+        UpdatePage(EquipPage, lerpFactor);
+        UpdatePage(EnemyPage, lerpFactor);
+        UpdatePage(AchievementPage, lerpFactor);
+        UpdatePage(PowerPage, lerpFactor); //Init this one last!
+        Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, lerpFactor, 0.1f);
     }
     #region Display and description on the right side of the compendium
     public CompendiumElement ActiveElement => Elements[PageNumber];
