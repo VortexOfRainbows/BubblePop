@@ -959,6 +959,10 @@ PrefabInstance:
       propertyPath: PlayerSpawnPosition.Array.data[0]
       value: 
       objectReference: {fileID: 364421152}
+    - target: {fileID: 4019289369470496616, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
+      propertyPath: m_Name
+      value: BorderNatureParent
+      objectReference: {fileID: 0}
     - target: {fileID: 4348580091444727035, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -998,6 +1002,10 @@ PrefabInstance:
     - target: {fileID: 4348580091444727035, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6374199145323361842, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
+      propertyPath: m_Name
+      value: FloorNatureParent
       objectReference: {fileID: 0}
     - target: {fileID: 8226170919199669443, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: m_Name

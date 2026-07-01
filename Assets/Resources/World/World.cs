@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,9 +94,9 @@ public class World : MonoBehaviour
     public Transform ProceduralGenParent;
     public List<Transform> PlayerSpawnPosition = new();
     public int NodesToGenerate = 7;
+    private int OriginalNodeCount { get; set; } = 0;
     public static byte FinalProgNumber { get; set; }
     public Rect ApproximateSize { get; set; }
-    [SerializeField]
     public List<Transform> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
@@ -146,6 +147,7 @@ public class World : MonoBehaviour
     public static readonly List<Roadblock> Roadblocks = new();
     public void FirstInitialization()
     {
+        OriginalNodeCount = nodes.Count;
         //TestColorProgRelations();
         m_Instance = this;
         DepthTile = Resources.Load<Tile>("World/Tiles/DepthTile");
@@ -220,6 +222,7 @@ public class World : MonoBehaviour
     }
     public void ResetTransformParents()
     {
+        nodes = new List<Transform>(nodes.GetRange(0, OriginalNodeCount));
         NatureOrderer newOrderer = new GameObject(NatureParent.gameObject.name + "_NEW").AddComponent<NatureOrderer>();
         GameObject newPylonParent = new(PylonParent.gameObject.name + "_NEW");
         GameObject newRoadblockParent = new(RoadblockParent.gameObject.name + "_NEW");
