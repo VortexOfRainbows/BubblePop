@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class DualGridTilemap : MonoBehaviour
@@ -17,8 +18,20 @@ public class DualGridTilemap : MonoBehaviour
     private Dictionary<int, Tilemap> BorderDisplayMap;
     private Dictionary<int, Tilemap> WallDisplayMap;
     public Tilemap Map;
+    public void ClearDict(Dictionary<int, Tilemap> dict)
+    {
+        if (dict != null)
+        {
+            foreach (var kvp in dict)
+                if (kvp.Value != null)
+                    Destroy(kvp.Value.gameObject);
+        }
+    }
     public void Init()
     {
+        ClearDict(DisplayMap);
+        ClearDict(BorderDisplayMap);
+        ClearDict(WallDisplayMap);
         VisualMapPrefab = VisualMapPrefab != null ? VisualMapPrefab : Resources.Load<GameObject>("World/Tiles/VisualMap");
         BubbleMushroom = BubbleMushroom != null ? BubbleMushroom : Resources.Load<GameObject>("World/Decor/Nature/BubbleMushroom");
         Mushroom = Mushroom != null ? Mushroom : Resources.Load<GameObject>("World/Decor/Nature/Mushroom");

@@ -26,13 +26,8 @@ public static class Lighting
     public static RawImage LightShapeVisualizer => Main.Instance.LightShapeVisualizer;
     //public static RawImage BorderMaskRenderTexture => Main.Instance.BorderMaskRenderTarget;
     public static Light2D GlobalLight => Main.Instance.GlobalLight;
-    public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
+    public static void LoadTextures()
     {
-        if (Map == null || LightingFront == null || LightingBack == null)
-        {
-            throw new System.Exception("ERROR: Could not find lighting tile maps");
-        }
-
         LightTile = Resources.Load<Tile>("Lighting/LightTile");
         OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
@@ -49,6 +44,14 @@ public static class Lighting
         ShadowImage.texture = FinalLight;
 
         ShadowSpecialMaskMaterial = Resources.Load<Material>("Lighting/ShaderSlop/ShadowSpecialMasker");
+    }
+    public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
+    {
+        if (Map == null || LightingFront == null || LightingBack == null)
+        {
+            throw new System.Exception("ERROR: Could not find lighting tile maps");
+        }
+
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));

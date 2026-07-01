@@ -144,23 +144,32 @@ public class World : MonoBehaviour
     }
     public static readonly List<Pylon> Pylons = new();
     public static readonly List<Roadblock> Roadblocks = new();
-    public void Start()
+    public void FirstInitialization()
     {
         //TestColorProgRelations();
+        m_Instance = this;
         DepthTile = Resources.Load<Tile>("World/Tiles/DepthTile");
         FloorSortingLayer = RealTileMap.GetComponent<TilemapRenderer>().sortingLayerID;
-        GachaponShop.AllShops.Clear();
+        NodeID.LoadAllNodes();
+        Lighting.LoadTextures();
+
+        ResetWorld(true);
+
         GachaponShop.TotalPowersPurchased = 0;
         GachaponShop.GlobalRestockCost = GachaponShop.SetDefaultGemRestockCost();
-        NodeID.LoadAllNodes();
+    }
+    public void ResetWorld(bool firstInit)
+    {
+        if(!firstInit)
+            ResetTransformParents();
+        ResetAllTilemaps();
+        Player.ObjectsConsideredForUIInteraction.Clear();
+        GachaponShop.AllShops.Clear();
         NextToGenerate.Clear();
         Pylons.Clear();
         Roadblocks.Clear();
-        m_Instance = this;
         foreach (DualGridTile tile in TileID.TileTypes)
-        {
             tile.Init();
-        }
         PlaceNodeLocations();
         ApproximateWorldBounds();
         LoadNodesOntoWorld();
@@ -170,20 +179,27 @@ public class World : MonoBehaviour
         if (NatureParent != null)
             NatureParent.Init();
 
-        Player.AllPlayers.Clear();
-        Player.ObjectsConsideredForUIInteraction.Clear();
-
-        foreach (Transform spawnPos in PlayerSpawnPosition)
+        if (firstInit)
         {
-            var p = Instantiate(Main.PrefabAssets.PlayerPrefab, spawnPos.position, Quaternion.identity).GetComponent<Player>();
-            p.InstanceID = Player.AllPlayers.Count;
-            Player.AllPlayers.Add(p);
-            Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
-            spawnPos.gameObject.SetActive(false);
+            Player.AllPlayers.Clear();
+            foreach (Transform spawnPos in PlayerSpawnPosition)
+            {
+                var p = Instantiate(Main.PrefabAssets.PlayerPrefab, spawnPos.position, Quaternion.identity).GetComponent<Player>();
+                p.InstanceID = Player.AllPlayers.Count;
+                Player.AllPlayers.Add(p);
+                Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
+                spawnPos.gameObject.SetActive(false);
+            }
         }
+        else
+        {
+            foreach(Player p in Player.AllPlayers)
+                p.transform.position = PlayerSpawnPosition[p.InstanceID].position;
+        }
+
         Tilemap.GetComponent<TilemapRenderer>().enabled = false;
         int i = 0;
-        foreach(Pylon pylon in PylonParent.GetComponentsInChildren<Pylon>())
+        foreach (Pylon pylon in PylonParent.GetComponentsInChildren<Pylon>())
         {
             pylon.name = $"Pylon:{i}";
             pylon.ProgressionNumber = (byte)i++;
@@ -196,8 +212,40 @@ public class World : MonoBehaviour
         }
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
         NodeID.ResetNodePositions(); //This is mostly for editor stuff
-
         Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
+    }
+    public void Start()
+    {
+        FirstInitialization();
+    }
+    public void ResetTransformParents()
+    {
+        NatureOrderer newOrderer = new GameObject(NatureParent.gameObject.name + "_NEW").AddComponent<NatureOrderer>();
+        GameObject newPylonParent = new(PylonParent.gameObject.name + "_NEW");
+        GameObject newRoadblockParent = new(RoadblockParent.gameObject.name + "_NEW");
+        GameObject newProceduralGenParent = new(ProceduralGenParent.gameObject.name + "_NEW");
+        Destroy(NatureParent.gameObject);
+        Destroy(PylonParent.gameObject);
+        Destroy(RoadblockParent.gameObject);
+        Destroy(ProceduralGenParent.gameObject);
+        NatureParent = newOrderer;
+        PylonParent = newPylonParent.transform;
+        RoadblockParent = newRoadblockParent.transform;
+        ProceduralGenParent = newProceduralGenParent.transform;
+        NatureParent.transform.parent = Tilemap.transform;
+        PylonParent.parent = Tilemap.transform;
+        RoadblockParent.parent = Tilemap.transform;
+        ProceduralGenParent.parent = Tilemap.transform;
+    }
+    public void ResetAllTilemaps()
+    {
+        Tilemap.Map.ClearAllTiles();
+        DepthTilemap.ClearAllTiles();
+        RoadblockTilemap.ClearAllTiles();
+        InverseRoadblockMap.ClearAllTiles();
+        OcclusionMap.ClearAllTiles();
+        LightingTilemapFront.ClearAllTiles();
+        LightingTilemapBack.ClearAllTiles();
     }
     /// <summary>
     /// Generates the positions for nodes on the map before they are fully loaded. Uses approximations to find the best spot to place the nodes.
@@ -505,10 +553,10 @@ public class World : MonoBehaviour
     public void Update()
     {
         m_Instance = this;
-        #if UNITY_EDITOR
-                //if(Input.GetKey(KeyCode.R) && Main.DebugCheats)
-                //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        #endif
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
+            ResetWorld(false);
+#endif
         Lighting.Update();
         GlobalTimeElapsedCounter += Time.deltaTime;
     }
