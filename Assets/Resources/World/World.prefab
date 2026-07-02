@@ -520,7 +520,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7288830759750587840}
   m_Layer: 0
-  m_Name: BorderVisuals
+  m_Name: BorderNatureParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -825,7 +825,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8109859531356348073}
   m_Layer: 0
-  m_Name: FloorVisuals
+  m_Name: FloorNatureParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1134,8 +1134,6 @@ MonoBehaviour:
   FloorMapParent: {fileID: 5160833004172421677}
   WallMapParent: {fileID: 1238802027179873516}
   BorderMapParent: {fileID: 3806874187643314450}
-  FloorDecorParent: {fileID: 8109859531356348073}
-  BorderDecorParent: {fileID: 7288830759750587840}
   Map: {fileID: 431813995446221663}
 --- !u!1 &7824214731170895280
 GameObject:
@@ -1375,6 +1373,8 @@ MonoBehaviour:
   PylonParent: {fileID: 3086789562115081537}
   RoadblockParent: {fileID: 3878835022692404742}
   ProceduralGenParent: {fileID: 2174558821135791763}
+  FloorDecorParent: {fileID: 8109859531356348073}
+  BorderDecorParent: {fileID: 7288830759750587840}
   PlayerSpawnPosition:
   - {fileID: 0}
   NodesToGenerate: 8

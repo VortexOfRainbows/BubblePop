@@ -92,6 +92,8 @@ public class World : MonoBehaviour
     public Transform PylonParent;
     public Transform RoadblockParent;
     public Transform ProceduralGenParent;
+    public Transform FloorDecorParent;
+    public Transform BorderDecorParent;
     public List<Transform> PlayerSpawnPosition = new();
     public int NodesToGenerate = 7;
     private int OriginalNodeCount { get; set; } = 0;
@@ -220,25 +222,36 @@ public class World : MonoBehaviour
     {
         FirstInitialization();
     }
+    private void ReplaceTransform(ref Transform original, Transform replacement)
+    {
+        Vector3 originalScale = original.localScale;
+        Vector3 originalPos = original.localPosition;
+        Destroy(original.gameObject);
+        original = replacement;
+        original.parent = Tilemap.transform;
+        original.localScale = originalScale;
+        original.localPosition = originalPos;
+    }
+    private int ReloadNumber { get; set; } = 0;
     public void ResetTransformParents()
     {
+        ReloadNumber++;
+        string bonus = ReloadNumber.ToString();
         nodes = new List<Transform>(nodes.GetRange(0, OriginalNodeCount));
-        NatureOrderer newOrderer = new GameObject(NatureParent.gameObject.name + "_NEW").AddComponent<NatureOrderer>();
-        GameObject newPylonParent = new(PylonParent.gameObject.name + "_NEW");
-        GameObject newRoadblockParent = new(RoadblockParent.gameObject.name + "_NEW");
-        GameObject newProceduralGenParent = new(ProceduralGenParent.gameObject.name + "_NEW");
+        NatureOrderer newOrderer = new GameObject(NatureParent.gameObject.name + bonus).AddComponent<NatureOrderer>();
+        GameObject newPylonParent = new(PylonParent.gameObject.name + bonus);
+        GameObject newRoadblockParent = new(RoadblockParent.gameObject.name + bonus);
+        GameObject newProceduralGenParent = new(ProceduralGenParent.gameObject.name + bonus);
+        GameObject newFloorDecorParent = new(FloorDecorParent.gameObject.name + bonus);
+        GameObject newBorderDecorParent = new(BorderDecorParent.gameObject.name + bonus);
+        ReplaceTransform(ref PylonParent, newPylonParent.transform);
+        ReplaceTransform(ref RoadblockParent, newRoadblockParent.transform);
+        ReplaceTransform(ref ProceduralGenParent, newProceduralGenParent.transform);
+        ReplaceTransform(ref FloorDecorParent, newFloorDecorParent.transform);
+        ReplaceTransform(ref BorderDecorParent, newBorderDecorParent.transform);
         Destroy(NatureParent.gameObject);
-        Destroy(PylonParent.gameObject);
-        Destroy(RoadblockParent.gameObject);
-        Destroy(ProceduralGenParent.gameObject);
         NatureParent = newOrderer;
-        PylonParent = newPylonParent.transform;
-        RoadblockParent = newRoadblockParent.transform;
-        ProceduralGenParent = newProceduralGenParent.transform;
         NatureParent.transform.parent = Tilemap.transform;
-        PylonParent.parent = Tilemap.transform;
-        RoadblockParent.parent = Tilemap.transform;
-        ProceduralGenParent.parent = Tilemap.transform;
     }
     public void ResetAllTilemaps()
     {

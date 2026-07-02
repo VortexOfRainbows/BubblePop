@@ -100,7 +100,9 @@ public class Compendium : MonoBehaviour
     }
     public void UpdatePage(BasicTierListCompendiumPage page, float lerpFactor)
     {
-        if (page != null && (Active || page == CurrentlySelectedPage) && page.isActiveAndEnabled)
+        if (page == null)
+            return;
+        if ((Active || page == CurrentlySelectedPage) && page.isActiveAndEnabled)
         {
             page.SecondaryUpdate(lerpFactor);
         }

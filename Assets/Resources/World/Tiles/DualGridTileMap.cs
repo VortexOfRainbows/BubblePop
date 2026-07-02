@@ -12,8 +12,6 @@ public class DualGridTilemap : MonoBehaviour
     public Transform FloorMapParent;
     public Transform WallMapParent;
     public Transform BorderMapParent;
-    public Transform FloorDecorParent;
-    public Transform BorderDecorParent;
     private Dictionary<int, Tilemap> DisplayMap;
     private Dictionary<int, Tilemap> BorderDisplayMap;
     private Dictionary<int, Tilemap> WallDisplayMap;
@@ -148,7 +146,7 @@ public class DualGridTilemap : MonoBehaviour
     }
     public void AddDecor(Color c, bool border = false)
     {
-        Transform Parent = border ? BorderDecorParent : FloorDecorParent;
+        Transform Parent = border ? World.Instance.BorderDecorParent : World.Instance.FloorDecorParent;
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
         int order = border ? LayerHelper.SolidTileSortingOrder : LayerHelper.FloorObjAndFloraSortingLayer;
         left += 10;
