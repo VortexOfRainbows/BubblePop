@@ -20,21 +20,20 @@ Need to do:
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. (TENTATIVE, MIGHT NOT DO THESE) Economy: Gacha Capsule (dissolving in crucible gives random rewards)
-4. SORT THE EXISTING ROOMS INTO FOLDERS FOR SHOP,CRUCIBLE,FORGE, ALL 8 COMBOS, then BOSS
-5. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-6. Enemy Pathfinding
-7. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
-8. Compendium TODO:
+4. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
+5. Enemy Pathfinding
+6. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
+7. Compendium TODO:
 	1. Make powers show which pools they belong to
 	2. Make blurbs appear in the equipment page
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
-9. Add small Gaussian blur to border shaders for smoother visuals
-10. Update settings UI and include settings for modifying soft shadows
-11. "Ascension" Ideas:
+8. Add small Gaussian blur to border shaders for smoother visuals
+9. Update settings UI and include settings for modifying soft shadows
+10. "Ascension" Ideas:
 	1. No Escape: All enemies that are added are added permanently
 	2. Double Trouble: All enemy cards are "double-trouble" cards (adds two enemies to the pool at once, both appear as skull enemies)
 	3. Pandemic: Enemies can spawn infected
-12. Allow looping
+11. Allow looping
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -52,6 +51,8 @@ Done:
 7/1/26 to 7/2/26
 1. Resetting the world for looping behavior (I figured this would be easier than loading a new scene...)
 	1. Reorganized the way some things are instantiated in World
+2. Sort the nodes into subfolders for organization
+	1. Add a new boss room node!
 
 
 6/29/26 to 6/30/26
