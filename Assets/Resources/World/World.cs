@@ -165,7 +165,10 @@ public class World : MonoBehaviour
     public void ResetWorld(bool firstInit)
     {
         if(!firstInit)
+        {
+            Main.PylonProgressionNumber = 0;
             ResetTransformParents();
+        }
         ResetAllTilemaps();
         Player.ObjectsConsideredForUIInteraction.Clear();
         GachaponShop.AllShops.Clear();

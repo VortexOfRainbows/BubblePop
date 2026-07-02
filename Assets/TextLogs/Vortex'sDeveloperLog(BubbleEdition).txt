@@ -49,11 +49,10 @@ Bug Watchlist:
 
 Done: 	
 
-7/1/26
-1. Very WIP resetting the world for looping behavior (I figured this would be easier than loading a new scene...)
-	1. Reorganize the way some things are instantiated in World
-	2. Right now it doesn't really work...
-		1. Floor and Border nature parents need to be reinstantiated
+7/1/26 to 7/2/26
+1. Resetting the world for looping behavior (I figured this would be easier than loading a new scene...)
+	1. Reorganized the way some things are instantiated in World
+
 
 6/29/26 to 6/30/26
 1. Fix issue where the tooltip UI would be in different positions based on screen resolution
