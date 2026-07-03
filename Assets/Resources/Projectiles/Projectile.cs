@@ -74,7 +74,7 @@ public class Projectile : MonoBehaviour
                 }
             }
         }
-        GameObject Proj = Instantiate(Main.PrefabAssets.DefaultProjectile, pos, Quaternion.identity);
+        GameObject Proj = Instantiate(Main.PrefabAssets.DefaultProjectile, pos, Quaternion.identity, Main.GenericSuperParent);
         Projectile proj = Proj.AddComponent<T>();
         proj.cmp = Proj.GetComponent<ProjComponents>();
         if (owner != null)

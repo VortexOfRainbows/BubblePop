@@ -1025,4 +1025,12 @@ public partial class Player : Entity
     {
         return ClosestInteractable == self;
     }
+    public void OnWorldReset()
+    {
+        //This is just to reset animation and weapon related stuff
+        Weapon.DeadUpdate();
+        Body.DeadUpdate();
+        Hat.DeadUpdate();
+        Accessory.DeadUpdate();
+    }
 }

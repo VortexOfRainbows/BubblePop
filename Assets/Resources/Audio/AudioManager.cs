@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerData.SFXVolume <= 0)
             return null;
-        Sound sound = Instantiate(Instance.AudioObject, position, Quaternion.identity).GetComponent<Sound>();
+        Sound sound = Instantiate(Instance.AudioObject, position, Quaternion.identity, Main.GenericSuperParent).GetComponent<Sound>();
         sound.Init(soundID, volume * PlayerData.SFXVolume, pitch);
         return sound;
     }

@@ -6,15 +6,13 @@ public static class NodeID
     public static readonly List<WorldNode> Nodes = new();
     public static readonly List<WorldNode> SubNodes = new();
     public static readonly List<WorldNode> SecretNodes = new();
+    public static readonly List<WorldNode> EndNodes = new();
     public static WorldNode PreviousNode { get; set; } = null;
     public static bool LoadAllNodes()
     {
-        if (Nodes.Count > 0 && SubNodes.Count > 0 && SecretNodes.Count > 0)
+        if (Nodes.Count > 0 && SubNodes.Count > 0 && SecretNodes.Count > 0 && EndNodes.Count > 0)
             return true;
         PreviousNode = null;
-        Nodes.Clear();
-        SubNodes.Clear();
-        SecretNodes.Clear();
         var nodes = Resources.LoadAll<GameObject>("World/Nodes");
         //var subNodes = Resources.LoadAll<GameObject>("World/Nodes/SubNodes");
         Debug.Log("Loading Nodes...".WithColor("FFFF00"));
@@ -31,6 +29,11 @@ public static class NodeID
                 {
                     SubNodes.Add(n);
                     Debug.Log($"Loaded SubNode: {obj.name.WithColor("#FFFF00")}");
+                }
+                else if(n.IsEndNode)
+                {
+                    EndNodes.Add(n);
+                    Debug.Log($"Loaded EndNode: {obj.name.WithColor("#00FFFF")}");
                 }
                 else
                 {
@@ -52,6 +55,8 @@ public static class NodeID
         foreach (WorldNode n in SubNodes)
             n.transform.position = Vector3.zero;
         foreach (WorldNode n in SecretNodes)
+            n.transform.position = Vector3.zero;
+        foreach (WorldNode n in SubNodes)
             n.transform.position = Vector3.zero;
     }
     public static WorldNode GetRandomNodeWithParameters(List<WorldNode> pool, int zoneID = 0, bool? shop = null, bool? crucible =  null, bool? needsLarge = null, bool? needsForge = null, float maxWeight = 5f)
@@ -127,7 +132,15 @@ public static class NodeID
 #endif
 public class WorldNode : MonoBehaviour
 {
-    #if UNITY_EDITOR
+    public enum NodeType
+    {
+        Normal,
+        SubNode,
+        SecretRoom,
+        End,
+    }
+    public NodeType Type;
+#if UNITY_EDITOR
     public void Update() => RoundPosition();
     #endif
     public void Start()
@@ -142,8 +155,10 @@ public class WorldNode : MonoBehaviour
     public World World { get; set; }
     public byte GenerationNumber { get; set; } = 0;
     public Tilemap TileMap;
-    public bool IsSubNode = false;
-    public bool IsSecretRoomNode = false;
+    public bool IsNormal => Type == NodeType.Normal;
+    public bool IsSubNode => Type == NodeType.SubNode;
+    public bool IsSecretRoomNode => Type == NodeType.SecretRoom;
+    public bool IsEndNode => Type == NodeType.End;
     public Tilemap GetTileMap()
     {
         TileMap = TileMap != null ? TileMap : GetComponentInChildren<Tilemap>();
@@ -181,7 +196,7 @@ public class WorldNode : MonoBehaviour
                 }
             }
         }
-        GeneratePaths(PreviousNode, PreviousNode != null && !PreviousNode.IsSubNode);
+        GeneratePaths(PreviousNode, PreviousNode != null && !PreviousNode.IsSubNode && !IsEndNode);
         if(FeatureParent != null)
         {
             for (int i = FeatureParent.childCount - 1; i >= 0; --i)

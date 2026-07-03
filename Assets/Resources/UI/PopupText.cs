@@ -11,7 +11,7 @@ public class PopupText : MonoBehaviour
     public Vector3 targetScale = Vector3.one;
     public static GameObject NewPopupText(Vector3 pos, Vector3 velo, Color clr, string text, bool bold = false, float size = 1f, int time = 100)
     {
-        GameObject obj = Instantiate(PopupTextPrefab, pos, Quaternion.identity);
+        GameObject obj = Instantiate(PopupTextPrefab, pos, Quaternion.identity, Main.GenericSuperParent);
         TextMeshPro tmp = obj.GetComponent<TextMeshPro>();
         int indexOfDot = text.IndexOf('.');
         if(indexOfDot >= 0)

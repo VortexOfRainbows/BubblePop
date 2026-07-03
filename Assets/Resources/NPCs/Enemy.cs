@@ -219,7 +219,7 @@ public class Enemy : Entity
     }
     public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false)
     {
-        Enemy e = Instantiate(EnemyPrefab, position, Quaternion.identity).GetComponent<Enemy>();
+        Enemy e = Instantiate(EnemyPrefab, position, Quaternion.identity, Main.GenericSuperParent).GetComponent<Enemy>();
         e.SetSkullEnemy(skull);
         return e;
     }

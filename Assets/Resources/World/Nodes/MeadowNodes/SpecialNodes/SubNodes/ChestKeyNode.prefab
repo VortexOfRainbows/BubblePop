@@ -6243,6 +6243,10 @@ PrefabInstance:
       value: 65535
       objectReference: {fileID: 0}
     - target: {fileID: 7718600988708278758, guid: 19f2b86cdaee7a04c99a7a81e9d99203, type: 3}
+      propertyPath: Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718600988708278758, guid: 19f2b86cdaee7a04c99a7a81e9d99203, type: 3}
       propertyPath: Weighting
       value: 0.25
       objectReference: {fileID: 0}

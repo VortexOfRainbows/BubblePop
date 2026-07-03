@@ -119,6 +119,7 @@ public partial class Main : MonoBehaviour
     }
     public void Start()
     {
+        ResetContainers();
         Main.WavesUnleashed = false; //Basically this needs to run at the start of each scene. If/once main is made persistent, the way this is handled may have to be changed
         Instance = this;
     }

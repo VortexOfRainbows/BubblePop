@@ -4473,6 +4473,10 @@ PrefabInstance:
       value: 65535
       objectReference: {fileID: 0}
     - target: {fileID: 7718600988708278758, guid: b119d1de817781641a428b707249eda5, type: 3}
+      propertyPath: Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718600988708278758, guid: b119d1de817781641a428b707249eda5, type: 3}
       propertyPath: HasShop
       value: 1
       objectReference: {fileID: 0}

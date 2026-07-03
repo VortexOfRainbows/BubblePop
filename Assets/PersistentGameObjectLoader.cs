@@ -21,6 +21,10 @@ public class PersistentGameObjectLoader : MonoBehaviour
     }
     public void LoadPersistentObjects()
     {
+        LoadCompendium();
+    }
+    private void LoadCompendium()
+    {
         CompendiumCanvas = Instantiate(CompendiumPrefab, transform);
         Compendium c = CompendiumCanvas.transform.GetChild(0).GetComponent<Compendium>();
         Compendium.ScreenResolution = new Vector2(c.MyCanvasRectTransform.rect.width, c.MyCanvasRectTransform.rect.height); //1920, 1080 in most cases

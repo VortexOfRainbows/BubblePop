@@ -468,6 +468,11 @@ public class ThunderBubble : Projectile
                 NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, PlayerOwner, PlayerOwner.EchoBubbles, North ? 1 : -1, -1);
         }
     }
+    public void OnDestroy()
+    {
+        if (PlayerOwner.Weapon is PhysicsBook pb)
+            pb.MagnetBalls.Remove(gameObject);
+    }
     public override bool OnInsideTile()
     {
         return !Recalled;

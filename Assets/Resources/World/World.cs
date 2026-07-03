@@ -166,6 +166,9 @@ public class World : MonoBehaviour
     {
         if(!firstInit)
         {
+            foreach(Player p in Player.AllPlayers)
+                p.OnWorldReset();
+            Main.ResetContainers();
             Main.PylonProgressionNumber = 0;
             ResetTransformParents();
         }
@@ -217,8 +220,8 @@ public class World : MonoBehaviour
             rb.name = $"{(rb.IsEndRoadblock ? "EndRoadblock" : "Roadblock")}:{rb.ProgressionLevel}";
             Roadblocks.Add(rb);
         }
-        Pylons.Last().EndlessPylon = true; //temporary endless pylon
-        NodeID.ResetNodePositions(); //This is mostly for editor stuff
+        Pylons.Last().WavesRequired = 1;
+        NodeID.ResetNodePositions();
         Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
     }
     public void Start()
@@ -271,7 +274,7 @@ public class World : MonoBehaviour
     /// </summary>
     public void PlaceNodeLocations()
     {
-        int nodeCount = NodesToGenerate + nodes.Count;
+        int nodeCount = NodesToGenerate + nodes.Count + 1; //+1 for the end node
         WorldNode prevNode = null;
         for (int i = 0; i < nodes.Count; ++i) //Assign all nodes 
         {
@@ -313,7 +316,7 @@ public class World : MonoBehaviour
             Debug.Log($"Placing Node [{i}] took {att - start} attempts".WithColor("#5500FF"));
             toPrev = prevPosition - arbitraryGameObject.transform.position;
             toPrev = toPrev.normalized;
-            prevNode = node;
+            //prevNode = node;
         }
     }
     public int IntersectionCount(Rect r)
@@ -334,17 +337,17 @@ public class World : MonoBehaviour
     public WorldNode AssignNodeToTransform(Transform t, int i, int totalNodes)
     {
         t.gameObject.SetActive(false);
-        bool shop = i == 2 || i == 4 || i == 6 || i == totalNodes - 1;
-        bool largo = i == totalNodes - 1;
+        bool shop = i == 2 || i == 4 || i == 6 || i == totalNodes - 2;
+        bool largo = i == totalNodes - 2;
         bool? crucible = i % 3 == 1 && !largo ? Utils.RollWithLuck(0.5f) : null;
         bool? forge = i > 4 && Utils.RollWithLuck(0.75f) ? true : null;
         if (i <= 1) //Don't want crucible on first room
             crucible = false;
-        WorldNode node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0,
-            shop,
-        crucible,
-            largo,
-            forge);
+        WorldNode node;
+        if(i == totalNodes - 1)
+            node = NodeID.GetRandomNodeWithParameters(NodeID.EndNodes, 0, null, null, null, null);
+        else
+            node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0, shop, crucible, largo, forge);
         NodeID.PreviousNode = node;
         NextToGenerate.Enqueue(node);
         return node;
