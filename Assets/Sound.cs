@@ -43,7 +43,7 @@ public class Sound : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void PylonSoundUpdate(Pylon p)
+    public void PylonSoundUpdate(WavePylon p)
     {
         if (Source.clip == SoundID.PylonDrone.GetVariation(0))
         {

@@ -155,6 +155,7 @@ public static class PlayerData
             SaveData.DeleteKey<int>($"{TypeName}Hat");
             SaveData.DeleteKey<int>($"{TypeName}Acc");
             SaveData.DeleteKey<int>($"{TypeName}Wep");
+            SaveData.DeleteKey<int>($"{TypeName}UsedTotal"); //Replace with new tag "Total"
         }
     }
 }

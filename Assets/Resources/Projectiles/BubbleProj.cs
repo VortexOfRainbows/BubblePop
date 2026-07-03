@@ -419,7 +419,7 @@ public class ThunderBubble : Projectile
         {
             Vector2 norm = velo.normalized;
             Vector2 targetPos = Recalled ? PlayerOwner.Weapon.transform.position : RB.position - norm * transform.localScale.x * 2.5f;
-            Pylon.SummonLightning2(transform.position, targetPos, ColorVar, 0.15f);
+            ParticleManager.SummonLightningPylon2(transform.position, targetPos, ColorVar, 0.15f);
         }
         RB.velocity = velo;
         if(timer % 50 == 0)
@@ -463,7 +463,7 @@ public class ThunderBubble : Projectile
                 ParticleManager.NewParticle(RB.position, transform.localScale.x * 2.3f, Vector2.zero, 0.4f, 0.4f, 2,
                     SpriteRendererGlow.color.WithAlphaMultiplied(.6f));
             }
-            Pylon.SummonLightning2(transform.position, PlayerOwner.Weapon.transform.position, ColorVar * 0.66f, 0.33f, 0.66f);
+            ParticleManager.SummonLightningPylon2(transform.position, PlayerOwner.Weapon.transform.position, ColorVar * 0.66f, 0.33f, 0.66f);
             if (PlayerOwner.EchoBubbles > 0)
                 NewProjectile<LatentCharge>(transform.position, Vector2.zero, 0, PlayerOwner, PlayerOwner.EchoBubbles, North ? 1 : -1, -1);
         }
@@ -498,7 +498,7 @@ public class ThunderBubble : Projectile
     {
         float recalled = Recalled ? 0.8f : 1.2f;
         AudioManager.PlaySound(SoundID.ElectricZap, target.transform.position, 0.2f, recalled);
-        Pylon.SummonLightning2(transform.position, target.transform.position, ColorVar, 0.6f);
+        ParticleManager.SummonLightningPylon2(transform.position, target.transform.position, ColorVar, 0.6f);
     }
 }
 public class ThoughtBubbleThunderAura : Projectile
@@ -555,6 +555,6 @@ public class ThoughtBubbleThunderAura : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        Pylon.SummonLightning2(transform.position, target.transform.position, c, 0.6f);
+        ParticleManager.SummonLightningPylon2(transform.position, target.transform.position, c, 0.6f);
     }
 }

@@ -101,4 +101,67 @@ public class ParticleManager : MonoBehaviour
     }
     private void Start() => Instance = this;
     private void Update() => Instance = this;
+
+    public static void SummonLightningPylon(Vector2 start, Vector2 end, Color c, int Type = 4, float scaleX = 1.4f, float scaleY = 1.0f)
+    {
+        float dist = Vector2.Distance(start, end);
+        float distRounded = (int)dist;
+        Vector2 prev = start;
+        for (int i = 0; i < distRounded; i++)
+        {
+            float perc = i / distRounded;
+            float scaleMult = Mathf.Lerp(scaleX, scaleY, perc);
+            Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
+            Vector2 toPrev = prev - pos;
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .5f * scaleMult), Vector2.zero, 0, 1.2f, Type, c, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.2f, Type, Color.white * 1f, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 1.2f) * 1.0f, .4f * scaleMult), Vector2.zero, 0, 1.2f, Type, c * 0.8f, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 1.2f) * 1.0f, .2f * scaleMult), Vector2.zero, 0, 1.2f, Type, Color.white * 0.8f, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 2.3f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.2f, Type, c * 0.6f, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 2.3f) * 1.0f, .1f * scaleMult), Vector2.zero, 0, 1.2f, Type, Color.white * 0.6f, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, Utils.RandFloat(0.7f, 1.5f), 3, c * 1.5f);
+            prev = pos;
+        }
+    }
+    public static void SummonLightningPylon(Vector2 start, Vector2 end, Color c1, Color c2)
+    {
+        float dist = Vector2.Distance(start, end);
+        float distRounded = (int)dist;
+        Vector2 prev = start;
+        for (int i = 0; i < distRounded; i++)
+        {
+            float perc = i / distRounded;
+            float iPer = 1 - perc;
+            float iPer2 = 1 - perc * perc;
+            Color c = Color.Lerp(c1, c2, perc);
+            float scaleMult = 1.25f + 0.75f * iPer;
+            Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
+            Vector2 toPrev = prev - pos;
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .6f * scaleMult), Vector2.zero, 0, 1.5f, 4, c * iPer2, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.5f, 4, Color.white * iPer2, -toPrev.ToRotation() * Mathf.Rad2Deg);
+            ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, Utils.RandFloat(0.7f, 1.5f), 3, c * 1.5f);
+            prev = pos;
+        }
+    }
+    public static void SummonLightningPylon2(Vector2 start, Vector2 end, Color c, float lifeMult = 0.6f, float whiteMult = 1.0f, float scaleX = 1.0f, float scaleY = 0.5f)
+    {
+        float dist = Vector2.Distance(start, end);
+        float distRounded = (int)(dist * 2.25f);
+        Vector2 prev = start;
+        if (distRounded <= 0)
+            return;
+        for (int i = 0; i <= distRounded; i++)
+        {
+            float perc = i / distRounded;
+            float scaleMult = Mathf.Lerp(scaleX, scaleY, perc);
+            Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
+            Vector2 toPrev = prev - pos;
+            float mag = toPrev.magnitude + 0.1f;
+            float r = -toPrev.ToRotation() * Mathf.Rad2Deg;
+            ParticleManager.NewParticle(pos, new Vector2(mag * 1.0f, .5f * scaleMult), Vector2.zero, 0, lifeMult, 4, c, r);
+            ParticleManager.NewParticle(pos, new Vector2(mag * 1.0f, .3f * scaleMult), Vector2.zero, 0, lifeMult, 4, Color.white * whiteMult, r);
+            ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, lifeMult, 3, Color.white * whiteMult);
+            prev = pos;
+        }
+    }
 }

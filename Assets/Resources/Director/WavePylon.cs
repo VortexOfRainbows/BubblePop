@@ -1,10 +1,7 @@
 using UnityEngine;
 
-public class Pylon : MonoBehaviour
+public class WavePylon : PylonBase
 {
-    public SpriteRenderer Crystal;
-    public SpriteRenderer Glow;
-    public SpriteRenderer Base;
     public GameObject Portal;
     public Sound sound;
     public bool SoundActive => sound != null;
@@ -45,7 +42,7 @@ public class Pylon : MonoBehaviour
                 int nextLevel = ProgressionNumber + 1;
                 foreach (Roadblock rb in World.Roadblocks)
                     if ((rb.ProgressionLevel == nextLevel && !rb.IsEndRoadblock) || (rb.ProgressionLevel == ProgressionNumber && rb.IsEndRoadblock))
-                        SummonLightning(Crystal.transform.position, rb.transform.position, CompletionColor(), Color.red);
+                        ParticleManager.SummonLightningPylon(Crystal.transform.position, rb.transform.position, CompletionColor(), Color.red);
                 Main.FinishPylon();
             }
         }
@@ -78,7 +75,7 @@ public class Pylon : MonoBehaviour
                 for (int i = -1; i <= 1; ++i)
                 {
                     Vector2 offset = new Vector2(0, 1).RotatedBy(Mathf.Deg2Rad * 33 * i);
-                    SummonLightning((Vector2)Portal.transform.position + offset * 24, (Vector2)Portal.transform.position + offset * 2, Color.red, Type: ParticleManager.ID.LineForeground,
+                    ParticleManager.SummonLightningPylon((Vector2)Portal.transform.position + offset * 24, (Vector2)Portal.transform.position + offset * 2, Color.red, Type: ParticleManager.ID.LineForeground,
                         2f, 0.5f);
                 }
                 Portal.SetActive(true);
@@ -86,7 +83,7 @@ public class Pylon : MonoBehaviour
             }
             else if(Utils.RandFloat(1) < 0.01f)
             {
-                SummonLightning((Vector2)Portal.transform.position + new Vector2(0, Utils.RandFloat(3, 6.5f)).RotatedBy(Utils.RandFloat(-Mathf.PI, Mathf.PI)), Portal.transform.position, Color.red);
+                ParticleManager.SummonLightningPylon((Vector2)Portal.transform.position + new Vector2(0, Utils.RandFloat(3, 6.5f)).RotatedBy(Utils.RandFloat(-Mathf.PI, Mathf.PI)), Portal.transform.position, Color.red);
             }
             //float percent = WaveDirector.WaveProgressPercent >= 1 ? 0 : WaveDirector.WaveProgressPercent;
             //percent = (WavesPassed + percent) / Mathf.Max(1, WavesRequired);
@@ -220,89 +217,5 @@ public class Pylon : MonoBehaviour
     {
         WaveActive = true;
 
-    }
-    public static void SummonLightning(Vector2 start, Vector2 end, Color c, int Type = 4, float scaleX = 1.4f, float scaleY = 1.0f)
-    {
-        float dist = Vector2.Distance(start, end);
-        float distRounded = (int)dist;
-        Vector2 prev = start;
-        for(int i = 0; i < distRounded; i++)
-        {
-            float perc = i / distRounded;
-            float scaleMult = Mathf.Lerp(scaleX, scaleY, perc);
-            Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
-            Vector2 toPrev = prev - pos;
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .5f * scaleMult), Vector2.zero, 0, 1.2f, Type, c, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.2f, Type, Color.white * 1f, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 1.2f) * 1.0f, .4f * scaleMult), Vector2.zero, 0, 1.2f, Type, c * 0.8f, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 1.2f) * 1.0f, .2f * scaleMult), Vector2.zero, 0, 1.2f, Type, Color.white * 0.8f, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 2.3f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.2f, Type, c * 0.6f, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 2.3f) * 1.0f, .1f * scaleMult), Vector2.zero, 0, 1.2f, Type, Color.white * 0.6f, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, Utils.RandFloat(0.7f, 1.5f), 3, c * 1.5f);
-            prev = pos;
-        }
-    }
-    public static void SummonLightning(Vector2 start, Vector2 end, Color c1, Color c2)
-    {
-        float dist = Vector2.Distance(start, end);
-        float distRounded = (int)dist;
-        Vector2 prev = start;
-        for (int i = 0; i < distRounded; i++)
-        {
-            float perc = i / distRounded;
-            float iPer = 1 - perc;
-            float iPer2 = 1 - perc * perc;
-            Color c = Color.Lerp(c1, c2, perc);
-            float scaleMult = 1.25f + 0.75f * iPer;
-            Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
-            Vector2 toPrev = prev - pos;
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .6f * scaleMult), Vector2.zero, 0, 1.5f, 4, c * iPer2, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(pos, new Vector2((toPrev.magnitude + 0.1f) * 1.0f, .3f * scaleMult), Vector2.zero, 0, 1.5f, 4, Color.white * iPer2, -toPrev.ToRotation() * Mathf.Rad2Deg);
-            ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, Utils.RandFloat(0.7f, 1.5f), 3, c * 1.5f);
-            prev = pos;
-        }
-    }
-    public static void SummonLightning2(Vector2 start, Vector2 end, Color c, float lifeMult = 0.6f, float whiteMult = 1.0f, float scaleX = 1.0f, float scaleY = 0.5f)
-    {
-        float dist = Vector2.Distance(start, end);
-        float distRounded = (int)(dist * 2.25f);
-        Vector2 prev = start;
-        if (distRounded <= 0)
-            return;
-        for (int i = 0; i <= distRounded; i++)
-        {
-            float perc = i / distRounded;
-            float scaleMult = Mathf.Lerp(scaleX, scaleY, perc);
-            Vector2 pos = Vector2.Lerp(start, end, perc) + 0.8f * Utils.RandCircle(Mathf.Sqrt(Mathf.Abs(Mathf.Sin(perc * Mathf.PI))));
-            Vector2 toPrev = prev - pos;
-            float mag = toPrev.magnitude + 0.1f;
-            float r = -toPrev.ToRotation() * Mathf.Rad2Deg;
-            ParticleManager.NewParticle(pos, new Vector2(mag * 1.0f, .5f * scaleMult), Vector2.zero, 0, lifeMult, 4, c, r);
-            ParticleManager.NewParticle(pos, new Vector2(mag * 1.0f, .3f * scaleMult), Vector2.zero, 0, lifeMult, 4, Color.white * whiteMult, r);
-            ParticleManager.NewParticle(Vector2.Lerp(pos, prev, Utils.RandFloat(1)), Utils.RandFloat(2, 3), Vector2.zero, 5, lifeMult, 3, Color.white * whiteMult);
-            prev = pos;
-        }
-    }
-    public float PointerAlpha = -3.0f;
-    public void CreatePointers()
-    {
-        Vector3 position = Crystal.transform.position;
-
-        Vector2 clamped = Utils.ClampToScreenEdge(position, 40);
-        position.x = clamped.x;
-        position.y = clamped.y;
-
-
-        Vector2 toPointer = position - Crystal.transform.position;
-        float distanceFromPointer = toPointer.magnitude;
-        float scaleFactor = Mathf.Clamp(distanceFromPointer - 1, 0, 1);
-
-        if (distanceFromPointer > 1)
-            PointerAlpha += Time.unscaledDeltaTime * 1.5f;
-        else
-            PointerAlpha -= Time.unscaledDeltaTime;
-        PointerAlpha = Mathf.Clamp(PointerAlpha, -3f, scaleFactor);
-
-        SpriteBatch.Draw(Crystal.sprite, position, Vector2.one * 0.4f, 0, Color.white.WithAlpha(Mathf.Max(PointerAlpha * 0.7f, 0)), 21, Main.TextureAssets.SpriteGlowmask);
     }
 }

@@ -448,7 +448,7 @@ public class SnakeLightning : Projectile
             Vector2 circular = new Vector2(3 + Utils.RandFloat(6), 0).RotatedBy(Mathf.PI * (i / 5f * 2) + Utils.RandFloat(Mathf.PI * 0.4f));
             ParticleManager.NewParticle(transform.position, Utils.RandFloat(2, 3), circular, 5, Utils.RandFloat(0.5f, 1.5f), 3, Color.green * 1.5f);
         }
-        Pylon.SummonLightning((Vector2)transform.position - RB.velocity * 0.4f, (Vector2)transform.position + RB.velocity * 2.4f, Color.green);
+        ParticleManager.SummonLightningPylon((Vector2)transform.position - RB.velocity * 0.4f, (Vector2)transform.position + RB.velocity * 2.4f, Color.green);
     }
     public override void AI()
     {

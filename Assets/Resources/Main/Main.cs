@@ -16,9 +16,9 @@ public partial class Main : MonoBehaviour
     public static bool DebugCheats { get; set; } = false;
     public static bool PlayerNearPylon => CurrentPylon != null && CurrentPylon.PlayersNearby && !CurrentPylon.Complete;
     public static Vector2 PylonPositon => CurrentPylon == null ? Player.Instance1Pos : CurrentPylon.transform.position;
-    public static Pylon CurrentPylon { get; private set; } = null;
-    public static Pylon NextPylon => World.Pylons.Count > PylonProgressionNumber ? World.Pylons[PylonProgressionNumber] : CurrentPylon;
-    private static Pylon PrevPylon { get; set; } = null;
+    public static WavePylon CurrentPylon { get; private set; } = null;
+    public static WavePylon NextPylon => World.Pylons.Count > PylonProgressionNumber ? World.Pylons[PylonProgressionNumber] : CurrentPylon;
+    private static WavePylon PrevPylon { get; set; } = null;
     public static bool PylonActive => CurrentPylon != null && !CurrentPylon.Purified && CurrentPylon.WaveActive;
     public static bool JustSwitchedPylons => PrevPylon != CurrentPylon && PrevPylon != null;
     public static byte PylonProgressionNumber { get; set; } = 0;
@@ -40,7 +40,7 @@ public partial class Main : MonoBehaviour
     public static Transform SpritebatchParent => Instance.SpritebatchSuperParent;
     public static int UICameraLayerID { get; private set; } = -1;
     public static readonly int PylonActivationDist = 11;
-    public static void SetClosestPylon(Pylon pylon)
+    public static void SetClosestPylon(WavePylon pylon)
     {
         if ((WavesUnleashed && CurrentPylon != null) || pylon.Complete) //Might need to replace WavesUnleashed with something else
             return;
@@ -223,9 +223,21 @@ public partial class Main : MonoBehaviour
     public static Main Instance;
     public static class GlobalEquipData
     {
+        public class EquipData
+        {
+            public EquipData(int timesUsed, int victoryCount, int highestDifficultyCleared)
+            {
+                TimesUsed = timesUsed;
+                VictoryCount = victoryCount;
+                HighestDifficultyCleared = highestDifficultyCleared;
+            }
+            public int TimesUsed;
+            public int VictoryCount;
+            public int HighestDifficultyCleared;
+        }
         public static readonly Dictionary<Type, int> EquipTypeToIndex = new();
         public static readonly List<EquipDescription> DescriptionData = new();
-        public static readonly List<int> TimesUsedList = new();
+        public static List<EquipData> EquipDataList { get; private set; } = new();
         public static readonly Dictionary<Type, Equipment> TypeToEquipPrefab = new();
         public static readonly List<GameObject>[] PrimaryEquipments = new List<GameObject>[4];
         public static readonly List<GameObject> Hats = new();
@@ -242,7 +254,7 @@ public partial class Main : MonoBehaviour
             }
             TypeToEquipPrefab.Clear();
             EquipTypeToIndex.Clear();
-            TimesUsedList.Clear();
+            EquipDataList.Clear();
             DescriptionData.Clear();
             AllEquipmentsList.Clear();
             PrimaryEquipments[0] = Characters;

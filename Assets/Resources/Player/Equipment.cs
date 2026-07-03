@@ -181,34 +181,56 @@ public class Equipment : MonoBehaviour
         //InitializeAbilities(ref MyAbilities);
 
         Main.GlobalEquipData.DescriptionData.Add(newDescription);
-        Main.GlobalEquipData.TimesUsedList.Add(0);
+        Main.GlobalEquipData.EquipDataList.Add(new Main.GlobalEquipData.EquipData(0, 0, 0));
         LoadGlobalData();
         UnlockCondition.AddAssociatedEquip(this);
         //LoadGlobalData();
     }
+    public Main.GlobalEquipData.EquipData MyStaticData()
+    {
+        return Main.GlobalEquipData.EquipDataList[IndexInAllEquipPool];
+    }
     public int TotalTimesUsed
     {
-        get
-        {
-            //Debug.Log($"Fetched {IndexInAllEquipPool}: {Main.GlobalEquipData.TimesUsedList[IndexInAllEquipPool]}");
-            return Main.GlobalEquipData.TimesUsedList[IndexInAllEquipPool];
-        }
+        get => MyStaticData().TimesUsed;
         set
         {
-            Main.GlobalEquipData.TimesUsedList[IndexInAllEquipPool] = value;
+            MyStaticData().TimesUsed = value;
             SaveGlobalData();
             //Debug.Log($"Saved {IndexInAllEquipPool}: {TotalTimesUsed}");
+        }
+    }
+    public int VictoryCount
+    {
+        get => MyStaticData().VictoryCount;
+        set
+        {
+            MyStaticData().VictoryCount = value;
+            SaveGlobalData();
+        }
+    }
+    public int HighestDifficultyCleared
+    {
+        get => MyStaticData().HighestDifficultyCleared;
+        set
+        {
+            MyStaticData().HighestDifficultyCleared = value;
+            SaveGlobalData();
         }
     }
     public void LoadGlobalData()
     {
         //Debug.Log("Load Tag: " + $"{TypeName}UsedTotal");
-        TotalTimesUsed = PlayerData.GetInt($"{TypeName}UsedTotal", 0);
+        TotalTimesUsed = PlayerData.GetInt($"{TypeName}Total", 0);
+        VictoryCount = PlayerData.GetInt($"{TypeName}Wins", 0);
+        HighestDifficultyCleared = PlayerData.GetInt($"{TypeName}LVL", 0);
     }
     public void SaveGlobalData()
     {
         //Debug.Log("Save Tag: " + $"{TypeName}UsedTotal");
-        PlayerData.SaveInt($"{TypeName}UsedTotal", TotalTimesUsed);
+        PlayerData.SaveInt($"{TypeName}Total", TotalTimesUsed);
+        PlayerData.SaveInt($"{TypeName}Wins", VictoryCount);
+        PlayerData.SaveInt($"{TypeName}LVL", HighestDifficultyCleared);
     }
     public virtual int GetRarity()
     {

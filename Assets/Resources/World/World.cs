@@ -145,7 +145,7 @@ public class World : MonoBehaviour
         bool roadblock = currentlyOnThisProgressionTier || (data.IsRoadblock && Main.PylonActive);
         return roadblock;
     }
-    public static readonly List<Pylon> Pylons = new();
+    public static readonly List<WavePylon> Pylons = new();
     public static readonly List<Roadblock> Roadblocks = new();
     public void FirstInitialization()
     {
@@ -206,7 +206,7 @@ public class World : MonoBehaviour
 
         Tilemap.GetComponent<TilemapRenderer>().enabled = false;
         int i = 0;
-        foreach (Pylon pylon in PylonParent.GetComponentsInChildren<Pylon>())
+        foreach (WavePylon pylon in PylonParent.GetComponentsInChildren<WavePylon>())
         {
             pylon.name = $"Pylon:{i}";
             pylon.ProgressionNumber = (byte)i++;
