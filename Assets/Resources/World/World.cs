@@ -146,6 +146,7 @@ public class World : MonoBehaviour
         return roadblock;
     }
     public static readonly List<WavePylon> Pylons = new();
+    public static WarpPylon FinalPylon { get; private set; }
     public static readonly List<Roadblock> Roadblocks = new();
     public void FirstInitialization()
     {
@@ -221,6 +222,7 @@ public class World : MonoBehaviour
             Roadblocks.Add(rb);
         }
         Pylons.Last().WavesRequired = 1;
+        FinalPylon = PylonParent.GetChild(PylonParent.childCount - 1).GetComponent<WarpPylon>();
         NodeID.ResetNodePositions();
         Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
     }

@@ -9,6 +9,7 @@ public class WarpPylon : PylonBase
     public byte ProgressionNumber { get; set; } = 0;
     public bool PlayersNearby { get; private set; } = false;
     public Player ClosestPlayer => Player.FindClosest(transform.position, out _, out _);
+    public float animCounter = 0;
     public void FixedUpdate()
     {
         PlayersNearby = true;
@@ -17,28 +18,34 @@ public class WarpPylon : PylonBase
                 PlayersNearby = false;
         if (PlayersNearby)
         {
+            ActiveAnim();
             if (!SoundActive)
                 sound = AudioManager.PlaySound(SoundID.PylonDrone, transform.position, 1f, 1, 0);
         }
         else
             IdleAnimation();
+        if (SoundActive)
+            sound.PylonSoundUpdate(this);
+    }
+    public void ActiveAnim()
+    {
+        animCounter++;
+
+        float sin = Mathf.Sin(animCounter * Mathf.Deg2Rad * 1.4f) * 0.3f;
+        float lerp = 0.035f;
+        Crystal.transform.localPosition = Crystal.transform.localPosition.Lerp(new Vector3(0, 3 + sin, 1), lerp);
+        Crystal.transform.localScale = Crystal.transform.localScale.Lerp(Vector3.one * 0.8f, lerp);
     }
     public void Update()
     {
-        bool nextPylon = (this == Main.NextPylon && Main.CurrentPylon == null) || (Main.CurrentPylon == this && !WaveDirector.WaveActive);
+        bool nextPylon = (Main.CurrentPylon == Main.NextPylon) && !WaveDirector.WaveActive;
         if (nextPylon)
             CreatePointers();
     }
-    public float animCounter = 0;
-    public int CompleteAnimCounter = 0;
     public void IdleAnimation()
     {
         float lerp = 0.045f;
         Crystal.transform.localPosition = Crystal.transform.localPosition.Lerp(new Vector3(0, 1, 1), lerp);
         Crystal.transform.localScale = Crystal.transform.localScale.Lerp(Vector3.one * 0.6f, lerp);
-    }
-    public void AddQuests()
-    {
-        WaveMeter.Instance.AddQuest(new Quest.QuestData("Begin your adventure", $"Distance: 0", Quest.QuestType.StartGame));
     }
 }

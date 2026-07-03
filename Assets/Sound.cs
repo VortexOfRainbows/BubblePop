@@ -43,7 +43,7 @@ public class Sound : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void PylonSoundUpdate(WavePylon p)
+    public void PylonSoundUpdate(PylonBase p)
     {
         if (Source.clip == SoundID.PylonDrone.GetVariation(0))
         {
@@ -57,9 +57,9 @@ public class Sound : MonoBehaviour
             }
             float vol = 1 - Mathf.Min(1, Mathf.Pow(dist / Main.PylonActivationDist, 2));
             Source.volume = vol * 0.9f * PlayerData.SFXVolume;
-            if (p.Complete)
+            if (p is WavePylon p2 && p2.Complete)
             {
-                float percent = p.CompleteAnimCounter >= 200 ? 1 : p.CompleteAnimCounter / 200f * 0.75f;
+                float percent = p2.CompleteAnimCounter >= 200 ? 1 : p2.CompleteAnimCounter / 200f * 0.75f;
                 if(percent >= 1)
                     Source.pitch = Mathf.Lerp(Source.pitch, 0.5f, 0.04f);
                 else

@@ -11,6 +11,7 @@ public class Quest : MonoBehaviour
         ActivatePylon,
         StabilizePylon,
         StartGame,
+        Escape,
     }
     public class QuestData
     {
@@ -72,6 +73,21 @@ public class Quest : MonoBehaviour
                         dist -= Main.PylonActivationDist * 1.0f;
                         if(dist <= 0)
                             ProgressText = "Ready";
+                        else
+                            ProgressText = $"Distance: {(int)(dist + 0.9999f):#}";
+                    }
+                    break;
+                case QuestType.Escape:
+                    if (Main.PylonProgressionNumber == 0) //Pylon progression number only resets at the start of a loop, so this covers the completion check
+                        setComplete = true;
+                    else
+                    {
+                        Player.FindFarthest(World.FinalPylon.transform.position, out _, out float dist);
+                        dist -= Main.PylonActivationDist * 0.9f;
+                        if (dist <= 0)
+                        {
+                            ProgressText = "Arrived";
+                        }
                         else
                             ProgressText = $"Distance: {(int)(dist + 0.9999f):#}";
                     }

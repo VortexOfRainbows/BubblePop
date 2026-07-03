@@ -190,7 +190,14 @@ public class WavePylon : PylonBase
     }
     public void AddQuests()
     {
-        if(WavesPassed == 0)
+        if (WavesRequired == 1) //Right now, all final pylons have 1 wave (later different logic might be required)
+        {
+            WaveMeter.Instance.AddQuest(new Quest.QuestData(
+                "Survive against the invaders", $"Waves: 0/{WavesRequired}", Quest.QuestType.SurviveAgainstInvaders, new Quest.QuestData(
+                    "Stabilize the Pylon,", "Distance: 0", Quest.QuestType.StabilizePylon, new Quest.QuestData(
+                        "Travel to the next Destination,", "Distance: 0", Quest.QuestType.Escape))));
+        }
+        else if (WavesPassed == 0)
         {
             WaveMeter.Instance.AddQuest(new Quest.QuestData(
                 "Survive against the invaders", $"Waves: 0/{WavesRequired}", Quest.QuestType.SurviveAgainstInvaders, new Quest.QuestData(
@@ -216,6 +223,5 @@ public class WavePylon : PylonBase
     public void Enable()
     {
         WaveActive = true;
-
     }
 }

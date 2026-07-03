@@ -7211,9 +7211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb8d3e6183c7a34483a478b42e72e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 0
   TileMap: {fileID: 7573328573185486376}
-  IsSubNode: 0
-  IsSecretRoomNode: 0
   ConnectorParent: {fileID: 6312478758362309955}
   FeatureParent: {fileID: 4968511932184236685}
   PylonParent: {fileID: 8220060907457125657}
