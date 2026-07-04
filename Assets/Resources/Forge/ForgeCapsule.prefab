@@ -336,7 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067eb41294e6508438df4ef6f3dd2ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UI: {fileID: 4541473619012722456}
+  PopupUI: {fileID: 8298584189824193331}
   RestockCost: {fileID: 5873675985813088805}
   HeldPower: {fileID: 1461031459924179411}
   Fluid: {fileID: 7145705023482365487}
@@ -719,11 +719,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
---- !u!224 &4541473619012722456 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3779540398557704989, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
-  m_PrefabInstance: {fileID: 825585650610383877}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5873675985813088805 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6554546111643321888, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}

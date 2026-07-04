@@ -1507,6 +1507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd484ac44ad5f1c41a6c56fa3ccab23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PopupUI: {fileID: 8298584189824193331}
   Numbers:
   - {fileID: 6230392575188569384}
   - {fileID: 4229053759815009470}
@@ -1521,7 +1522,6 @@ MonoBehaviour:
   - {fileID: 753799040116949405}
   - {fileID: 7889048477678679719}
   DisplayNumber: {fileID: 4722081164639472117}
-  UI: {fileID: 4541473619012722456}
   RestockCost: {fileID: 5873675985813088805}
   GumballMachine: {fileID: 3442890662085972500}
   Smile: {fileID: 5179496624769080946}
@@ -1911,11 +1911,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
---- !u!224 &4541473619012722456 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3779540398557704989, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
-  m_PrefabInstance: {fileID: 825585650610383877}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5873675985813088805 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6554546111643321888, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}

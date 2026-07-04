@@ -2,23 +2,21 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Crucible : MonoBehaviour
+public class Crucible : InteractableWorldObject
 {
-    public void EnableUI()
+    public override void EnableUI(bool fixedTime = false)
     {
         if(PowerUpCheatUI.CurrentType == 1)
             PowerUpCheatUI.PrevHadCrucible = false;
         if (PowerUpCheatUI.CurrentCrucible == null)
             PowerUpCheatUI.CurrentCrucible = this;
-        PopUpUI.gameObject.SetActive(true);
-        PopUpUI.LerpLocalScale(Vector2.one, 0.1f);
+        base.EnableUI(fixedTime);
     }
-    public void DisableUI()
+    public override void DisableUI(bool fixedTime = false)
     {
         if (PowerUpCheatUI.CurrentCrucible == this)
             PowerUpCheatUI.CurrentCrucible = null;
-        PopUpUI.gameObject.SetActive(false);
-        PopUpUI.LerpLocalScale(Vector2.one * 0.8f, 0.5f);
+        base.DisableUI(fixedTime);
     }
     public Transform Connector1, Joint1, Connector2, Joint2;
 
@@ -99,14 +97,13 @@ public class Crucible : MonoBehaviour
     public bool HasSpawnedChestLoot = false;
     public Queue<int> PowerQueue { get; private set; } = new();
     public int NextConsumedPower { get; set; } = -1;
-    public Transform PopUpUI;
     public void PreFixedUpdate()
     {
         Player p = Player.FindClosest(transform.position, out _, out float dist);
         if (p == null || dist > 12 || !p.ThisIsPlayerClosestInteractable(gameObject))
-            DisableUI();
+            DisableUI(true);
         else
-            EnableUI();
+            EnableUI(true);
         if(!Active && PowerQueue.TryDequeue(out int powerType))
         {
             HeldPower.Type = powerType;

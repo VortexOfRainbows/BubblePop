@@ -2,11 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RestockMachine : MonoBehaviour
+public class RestockMachine : InteractableWorldObject
 {
     public SpriteRenderer[] Numbers;
     public SpriteRenderer DisplayNumber;
-    public Transform UI;
     public TextMeshProUGUI RestockCost;
     public Transform GumballMachine;
     public GameObject Smile, OpenSmile;
@@ -30,26 +29,22 @@ public class RestockMachine : MonoBehaviour
         Player p = Player.FindClosest(transform.position, out Vector2 norm, out float distance, 100);
         if (distance < 7 && p != null && p.ThisIsPlayerClosestInteractable(gameObject) && owner.FillUpTimer <= 0 && owner.RestockRemaining <= 0)
         {
-            UI.LerpLocalScale(Vector2.one, 0.1f);
-            UI.gameObject.SetActive(true);
+            EnableUI();
             if(owner.RestockRemaining <= 0)
             {
                 bool canAfford = CoinManager.CurrentGems >= owner.RestockCost;
-                Image i = UI.GetComponent<Image>();
+                Image i = PopupUI.GetChild(0).GetComponent<Image>();
                 i.color = Color.Lerp(i.color, canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.DefaultColor, Utils.DeltaTimeLerpFactor(0.1f)).WithAlpha(0.5f);
                 RestockCost.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
                 if (Input.GetKeyDown(KeyCode.R) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
                 {
                     owner.TryAddingRemainingRestocks(owner.RestockCost);
-                    UI.gameObject.SetActive(false);
+                    PopupUI.GetChild(0).gameObject.SetActive(false);
                 }
             }
         }
         else
-        {
-            UI.gameObject.SetActive(false);
-            UI.LerpLocalScale(Vector2.one * 0.8f, 0.5f);
-        }
+            DisableUI();
         RestockCost.text = owner.RestockCost.ToString();
     }
     public void FixedUpdate()

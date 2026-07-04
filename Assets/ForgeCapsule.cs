@@ -1,13 +1,10 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class ForgeCapsule : MonoBehaviour
+public class ForgeCapsule : InteractableWorldObject
 {
     public bool HasSelectedPower { get; set; } = false;
-    public Transform UI;
     public TextMeshProUGUI RestockCost;
     public PowerUpObject HeldPower;
     public SpriteRenderer Fluid;
@@ -15,33 +12,26 @@ public class ForgeCapsule : MonoBehaviour
     public Color ColoredWater { get; set; }
     public int GemCost { get; set; } = 5;
     public Transform BackPipe1, BackPipe2;
-    public void UpdateUI(object owner = null)
+    public void UpdateUI()
     {
         if (!HasSelectedPower)
             return;
         Player p = Player.FindClosest(transform.position, out Vector2 norm, out float distance, 100);
         if (distance < 7 && p != null && p.ThisIsPlayerClosestInteractable(gameObject))
         {
-            UI.LerpLocalScale(Vector2.one, 0.1f);
-            UI.gameObject.SetActive(true);
-            //if (owner.RestockRemaining <= 0)
+            EnableUI();
+            bool canAfford = CoinManager.CurrentGems >= GemCost;
+            Image i = PopupUI.GetChild(0).GetComponent<Image>();
+            i.color = Color.Lerp(i.color, canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.DefaultColor, Utils.DeltaTimeLerpFactor(0.1f)).WithAlpha(0.5f);
+            RestockCost.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
+            if (Input.GetKeyDown(KeyCode.R) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
             {
-                bool canAfford = CoinManager.CurrentGems >= GemCost;
-                Image i = UI.GetComponent<Image>();
-                i.color = Color.Lerp(i.color, canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.DefaultColor, Utils.DeltaTimeLerpFactor(0.1f)).WithAlpha(0.5f);
-                RestockCost.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
-                if (Input.GetKeyDown(KeyCode.R) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
-                {
-                    MyHammer.Begin(this, GemCost);
-                    UI.gameObject.SetActive(false);
-                }
+                MyHammer.Begin(this, GemCost);
+                PopupUI.GetChild(0).gameObject.SetActive(false);
             }
         }
         else
-        {
-            UI.gameObject.SetActive(false);
-            UI.LerpLocalScale(Vector2.one * 0.8f, 0.5f);
-        }
+            DisableUI();
         RestockCost.text = GemCost.ToString();
     }
     public void InitPower()

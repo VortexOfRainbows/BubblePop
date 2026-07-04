@@ -99,10 +99,17 @@ public class WaveMeter : MonoBehaviour
         bool AwaitingNextCard = !WaveDirector.WaveActive && WaveDirector.WaitingForCardDraw && WaveDirector.SkullEnemiesActive <= 0;
         Utils.LerpSnap(NextWaveButton, new Vector2(BarLeftPosition().x, BarLeftPosition().y + (AwaitingNextCard ? -130 : 150)), Utils.DeltaTimeLerpFactor(0.05f), 0.1f);
         Color targetColor = !Main.PlayerNearPylon ? new Color(0.9f, 0.5f, 0.5f, 1f) : Color.white;
+        WavePylon UIPylon = Main.CurrentPylon == null ? Main.NextPylon : Main.CurrentPylon;
+        if ((!Main.PlayerNearPylon || !AwaitingNextCard) && UIPylon != null)
+            UIPylon.DisableUI();
         if (Main.PlayerNearPylon)
         {
+            if(!Main.WavesUnleashed && UIPylon != null)
+                UIPylon.EnableUI();
             if(AwaitingNextCard)
             {
+                if(UIPylon != null && Main.WavesUnleashed)
+                    UIPylon.EnableUI();
                 bool press = Control.Interact;
                 if(Utils.IsMouseHoveringOverThis(true, NextWaveBG.rectTransform, 0, CardManager.Instance.MyCanvas))
                 {
@@ -112,6 +119,8 @@ public class WaveMeter : MonoBehaviour
                 }
                 if(press)
                 {
+                    if(UIPylon != null)
+                        UIPylon.DisableUI();
                     CardManager.DrawCards();
                 }
             }

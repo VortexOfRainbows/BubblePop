@@ -3297,6 +3297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6031ad2975133844b1e323ded61688a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PopupUI: {fileID: 7924824235857803482}
   Connector1: {fileID: 813508295474818463}
   Joint1: {fileID: 8676601890381405434}
   Connector2: {fileID: 896578193748873672}
@@ -3322,7 +3323,6 @@ MonoBehaviour:
   AudioCounter: 0
   Active: 0
   HasSpawnedChestLoot: 0
-  PopUpUI: {fileID: 2438226185463706865}
 --- !u!70 &7559640252861196895
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -3985,11 +3985,6 @@ PrefabInstance:
       addedObject: {fileID: 3009896297622943182}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
---- !u!224 &2438226185463706865 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3779540398557704989, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
-  m_PrefabInstance: {fileID: 1559879601249552364}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4845955467180043717 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6261556993702193705, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}

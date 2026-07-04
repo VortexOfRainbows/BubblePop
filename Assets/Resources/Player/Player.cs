@@ -1003,21 +1003,18 @@ public partial class Player : Entity
     public GameObject ClosestInteractable { get; private set; }
     public void CheckForClosestObjects()
     {
-        //if (lastPos != Position)
+        float bestPos = ClosestInteractable == null ? float.MaxValue : Utils.DistanceSquared(ClosestInteractable.transform.position, Position);
+        for (int i = 0; i < ObjectsConsideredForUIInteraction.Count; ++i)
         {
-            float bestPos = ClosestInteractable == null ? float.MaxValue : Utils.DistanceSquared(ClosestInteractable.transform.position, Position);
-            for (int i = 0; i < ObjectsConsideredForUIInteraction.Count; ++i)
+            var obj = ObjectsConsideredForUIInteraction[i];
+            if (obj == null)
+                ObjectsConsideredForUIInteraction.RemoveAt(i--);
+            Vector2 toPlayer = Position - (Vector2)obj.transform.position;
+            float sqrMag = toPlayer.sqrMagnitude;
+            if (sqrMag < bestPos)
             {
-                var obj = ObjectsConsideredForUIInteraction[i];
-                if (obj == null)
-                    ObjectsConsideredForUIInteraction.RemoveAt(i--);
-                Vector2 toPlayer = Position - (Vector2)obj.transform.position;
-                float sqrMag = toPlayer.sqrMagnitude;
-                if (sqrMag < bestPos)
-                {
-                    bestPos = sqrMag;
-                    ClosestInteractable = obj;
-                }
+                bestPos = sqrMag;
+                ClosestInteractable = obj;
             }
         }
     }

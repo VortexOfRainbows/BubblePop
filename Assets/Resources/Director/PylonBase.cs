@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PylonBase : MonoBehaviour
+public class PylonBase : InteractableWorldObject
 {
     public SpriteRenderer Crystal;
     public SpriteRenderer Glow;

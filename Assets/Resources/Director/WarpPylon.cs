@@ -38,7 +38,7 @@ public class WarpPylon : PylonBase
     }
     public void Update()
     {
-        bool nextPylon = (Main.CurrentPylon == Main.NextPylon) && !WaveDirector.WaveActive;
+        bool nextPylon = (Main.CurrentPylon == Main.NextPylon) && !WaveDirector.WaveActive && Main.WavesUnleashed;
         if (nextPylon)
             CreatePointers();
     }
