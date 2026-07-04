@@ -25,7 +25,7 @@ public class World : MonoBehaviour
     public static TileData GetTileData(Vector3Int pos)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
-        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.Length || pointPos.y >= tileData.GetLength(1))
+        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))
         {
             Debug.Log($"Tile QUERY out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
             return NoTileData;
@@ -44,7 +44,7 @@ public class World : MonoBehaviour
         bool drawMaps2 = Instance.DepthTilemap.isActiveAndEnabled;
         #if UNITY_EDITOR
         drawMaps1 = drawMaps2 = true;
-        #endif
+#endif
         if (Instance.DepthTilemap != null && drawMaps1)
         {
             byte progNumber = newData.ProgressionNumber;
@@ -106,7 +106,6 @@ public class World : MonoBehaviour
     }
     public static readonly List<Pylon> Pylons = new();
     public static readonly List<Roadblock> Roadblocks = new();
-    public GameObject WaypointManager;
     public void Start()
     {
         GachaponShop.AllShops.Clear();
@@ -155,15 +154,6 @@ public class World : MonoBehaviour
         }
         Pylons.Last().EndlessPylon = true; //temporary endless pylon
         NodeID.ResetNodePositions(); //This is mostly for editor stuff
-    }
-
-    int frames = 0;
-    private void FixedUpdate()
-    {
-        if (frames++ == 1)
-        {
-            WaypointManager.GetComponent<WaypointGraphManager>().GenerateGraphFromTiles();
-        }
     }
 
     /// <summary>

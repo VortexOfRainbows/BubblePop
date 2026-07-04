@@ -5,9 +5,12 @@ public class Waypoint : MonoBehaviour
 {
     public List<Waypoint> listNeighbors = new List<Waypoint>();
     public Waypoint[] neighbors;
+    [SerializeField] bool draw = true;
 
     private void OnDrawGizmos()
     {
+        if (!draw) return;
+
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, 0.3f);
 

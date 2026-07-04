@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEngine.GraphicsBuffer;
 
-public class WaypointGraphManager : MonoBehaviour
+public class Old2WaypointGraphManager : MonoBehaviour
 {
     public Tilemap nodeTilemap;
     public GameObject waypointPrefab;
@@ -135,13 +135,8 @@ public class WaypointGraphManager : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(curWaypoint.transform.position, direction.normalized, direction.magnitude, LayerMask.GetMask("World"));
                 if (hit.collider == null)
                 {
-                    Debug.Log(hit.distance);
                     curWaypoint.listNeighbors.Add(checkWaypoint);
                     checkWaypoint.listNeighbors.Add(curWaypoint);
-                }
-                else
-                {
-                    Debug.Log(hit.collider);
                 }
             }
         }

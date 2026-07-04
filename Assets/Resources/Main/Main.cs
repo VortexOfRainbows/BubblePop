@@ -107,11 +107,14 @@ public partial class Main : MonoBehaviour
     {
         OnGameClose();
     }
+    [SerializeField] TilePathfinding pathing;
     public void Start()
     {
         Main.WavesUnleashed = false; //Basically this needs to run at the start of each scene. If/once main is made persistent, the way this is handled may have to be changed
         Instance = this;
         UIManager.AddListeners();
+        print("Pathing");
+        pathing.SetZone(NextPylon.transform.position); // TODO (DAVID): Verify this works
     }
     public void Update()
     {
