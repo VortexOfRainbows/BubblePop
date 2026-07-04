@@ -11,35 +11,41 @@
     {
       Title: Choice
       Description: Pick which power you want from a given selection
-      Lore: A curious bubble that shifts and reforms itself into other power bubbles.
+      Lore: 
+      '''
+      A curious bubble that shifts and reforms itself into other power bubbles.
       All my attempts to control the forms it shifts into have failed. The only rule it seems to abide by is chaos.
       - Thought Bubble
       Not knowing what you’re gonna get makes it more fun!
       - Gachapon
-
+      '''
     }
     ChargeShot:
     {
       Title: Charge Shot
       Description: Increases the Y:damage of your Y:[secondary attack] by Y:50% G:(+50% per stack) and the Y:size of your Y:[secondary attacks] by 40% G:(+40% per stack)
       Brief: Increases the size and damage of your secondary attack
-      Lore: Through concentration, allows one to greatly increase the size of a single bubble.
+      Lore: 
+      '''
+      Through concentration, allows one to greatly increase the size of a single bubble.
       Bigger is always better!
       - Gachapon
       That is not true.
       - Thought Bubble
       It is true
       - Bubblemancer
-
+      '''
     }
     Shotgun:
     {
       Title: Shotgun
       Description: Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
       Brief: Increases the amount of bubbles shot by your primary attack
-      Lore: The extra bubbles seem to split from others included in the attack...with perfect replication.
+      Lore: 
+      '''
+      The extra bubbles seem to split from others included in the attack with perfect replication.
       - Thought Bubble
-
+      '''
     }
     Dash:
     {
@@ -56,7 +62,10 @@
       Title: Bubble Propulsion
       Description: Small bubbles travel Y:10% G:(+10% per stack) further and faster
       Brief: Small bubbles travel further and faster
-      Lore: Makes bubbles more aerodynamic, even beyond the realm that science would allow.
+      Lore: 
+      '''
+      Makes bubbles more aerodynamic, even beyond the realm that science would allow.
+      
       This must come from a universe where bubbles are faster!
       - Bubblemancer
 
@@ -65,7 +74,7 @@
 
       That makes a lotta sense
       - Gachapon
-
+      '''
     }
     Starbarbs:
     {
