@@ -35,8 +35,10 @@ public class PersistentGameObjectLoader : MonoBehaviour
     {
         bool isMainMenu = Main.SceneMainMenu;
         if (isMainMenu)
+        {
+            CompendiumCanvas.SetActive(true);
             return;
-
+        }
         if (Main.CanvasManager.PauseUIActive())
         {
             CompendiumCanvas.SetActive(true);

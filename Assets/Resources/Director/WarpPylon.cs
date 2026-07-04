@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -38,12 +39,22 @@ public class WarpPylon : PylonBase
     }
     public void Update()
     {
-        bool nextPylon = (Main.CurrentPylon == Main.NextPylon) && !WaveDirector.WaveActive && Main.WavesUnleashed;
+        bool nextPylon = Main.WavesUnleashed && World.Pylons.Count <= Main.PylonProgressionNumber;
         if (nextPylon)
             CreatePointers();
+        if (!WarpUI.IsCurrentlyOpen && PlayersNearby)
+        {
+            EnableUI();
+            if (Control.Interact)
+            {
+                DisableUI();
+                WarpUI.Open();
+            }
+        }
     }
     public void IdleAnimation()
     {
+        DisableUI();
         float lerp = 0.045f;
         Crystal.transform.localPosition = Crystal.transform.localPosition.Lerp(new Vector3(0, 1, 1), lerp);
         Crystal.transform.localScale = Crystal.transform.localScale.Lerp(Vector3.one * 0.6f, lerp);

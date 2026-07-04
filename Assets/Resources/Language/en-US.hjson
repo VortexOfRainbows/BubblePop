@@ -11,41 +11,41 @@
     {
       Title: Choice
       Description: Pick which power you want from a given selection
-      Lore: 
-      '''
-      A curious bubble that shifts and reforms itself into other power bubbles.
-      All my attempts to control the forms it shifts into have failed. The only rule it seems to abide by is chaos.
-      - Thought Bubble
-      Not knowing what you’re gonna get makes it more fun!
-      - Gachapon
-      '''
+      Lore:
+        '''
+        A curious bubble that shifts and reforms itself into other power bubbles.
+        All my attempts to control the forms it shifts into have failed. The only rule it seems to abide by is chaos.
+        - Thought Bubble
+        Not knowing what you're gonna get makes it more fun!
+        - Gachapon
+        '''
     }
     ChargeShot:
     {
       Title: Charge Shot
       Description: Increases the Y:damage of your Y:[secondary attack] by Y:50% G:(+50% per stack) and the Y:size of your Y:[secondary attacks] by 40% G:(+40% per stack)
       Brief: Increases the size and damage of your secondary attack
-      Lore: 
-      '''
-      Through concentration, allows one to greatly increase the size of a single bubble.
-      Bigger is always better!
-      - Gachapon
-      That is not true.
-      - Thought Bubble
-      It is true
-      - Bubblemancer
-      '''
+      Lore:
+        '''
+        Through concentration, allows one to greatly increase the size of a single bubble.
+        Bigger is always better!
+        - Gachapon
+        That is not true.
+        - Thought Bubble
+        It is true
+        - Bubblemancer
+        '''
     }
     Shotgun:
     {
       Title: Shotgun
       Description: Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
       Brief: Increases the amount of bubbles shot by your primary attack
-      Lore: 
-      '''
-      The extra bubbles seem to split from others included in the attack with perfect replication.
-      - Thought Bubble
-      '''
+      Lore:
+        '''
+        The extra bubbles seem to split from others included in the attack with perfect replication.
+        - Thought Bubble
+        '''
     }
     Dash:
     {
@@ -62,19 +62,19 @@
       Title: Bubble Propulsion
       Description: Small bubbles travel Y:10% G:(+10% per stack) further and faster
       Brief: Small bubbles travel further and faster
-      Lore: 
-      '''
-      Makes bubbles more aerodynamic, even beyond the realm that science would allow.
-      
-      This must come from a universe where bubbles are faster!
-      - Bubblemancer
+      Lore:
+        '''
+        Makes bubbles more aerodynamic, even beyond the realm that science would allow.
 
-      That almost makes sense, but no.
-      - Thought Bubble
+        This must come from a universe where bubbles are faster!
+        - Bubblemancer
 
-      That makes a lotta sense
-      - Gachapon
-      '''
+        That almost makes sense, but no.
+        - Thought Bubble
+
+        That makes a lotta sense
+        - Gachapon
+        '''
     }
     Starbarbs:
     {
@@ -88,12 +88,12 @@
       Title: Soapy Soap
       Description: Y:[Secondary attack] releases Y:4 G:(+4 per stack) bubbles while traveling, plus Y:[2 more bubbles for each charge level]
       Brief: Secondary attack leaves behind a trail of bubbles
-      Lore: 
-      '''
-      Coats your secondary attack with soap. More soap means more bubbles!
-      Imagine how much money I could make with this one! Too bad it always disintegrates...
-      - Gachapon
-      '''
+      Lore:
+        '''
+        Coats your secondary attack with soap. More soap means more bubbles!
+        Imagine how much money I could make with this one! Too bad it always disintegrates...
+        - Gachapon
+        '''
     }
     BubbleBlast:
     {
@@ -118,56 +118,56 @@
       Title: Haste
       Description: Increases Y:[attack speed] by Y:7% G:(+7% per stack)
       Brief: Increases attack speed
-      Lore: 
-      '''
-      Grants supernatural alacrity to the bearer.
-      Using this power reminds me of the stories my grandpa used to tell me about the Winged Bubble, the savior who could drift upon the winds with wings of finest cotton. It makes me feel like...even I could be a part of that legend.
-      - Bubblemancer
-      
-      Sword not included. What a disappointment.
-      - Gachapon
-      '''
+      Lore:
+        '''
+        Grants supernatural alacrity to the bearer.
+        Using this power reminds me of the stories my grandpa used to tell me about the Winged Bubble, the savior who could drift upon the winds with wings of finest cotton. It makes me feel like...even I could be a part of that legend.
+        - Bubblemancer
+
+        Sword not included. What a disappointment.
+        - Gachapon
+        '''
     }
     BinaryStars:
     {
       Title: Binary Stars
       Description: Release Y:2 G:(+1 per stack) stars every Y:[1.5 seconds]
       Brief: Periodically release stars
-      Lore: 
-      '''
-      Two stars locked by gravitational forces. A blessing from beyond the sky.
-      Does this mean I’m a planet?!
-      - Bubblemancer
-      
-      Stars do not orbit planets. But yes, you have satellites.
-      - Thought Bubble
-      '''
+      Lore:
+        '''
+        Two stars locked by gravitational forces. A blessing from beyond the sky.
+        Does this mean I'm a planet?!
+        - Bubblemancer
+
+        Stars do not orbit planets. But yes, you have satellites.
+        - Thought Bubble
+        '''
     }
     EternalBubbles:
     {
       Title: Elder Bubbles
       Description: Increases lifespan of Y:[small bubbles] by Y:[0.8 seconds] G:(+0.4 seconds per stack)
       Brief: Increases lifespan of small bubbles
-      Lore: 
-      '''
-      Grants the wisdom of age to smaller bubble projectiles, making them last longer before popping.
-      “Don’t go livin’ yer life in one shot, y’hear?” That's what my Grandpa used to say to me.
-      - Bubblemancer
-      '''
+      Lore:
+        '''
+        Grants the wisdom of age to smaller bubble projectiles, making them last longer before popping.
+        "Don't go livin' yer life in one shot, y'hear?" That's what my Grandpa used to say to me.
+        - Bubblemancer
+        '''
     }
     BubbleBirb:
     {
       Title: Bubble Birb
       Description: Resurrect in a dance of flames after death G:(consumed on use)
       Brief: Resurrect in a dance of flames after death
-      Lore: 
-      '''
-      I know this one! The Bubble Birb is a mythical creature said to be able to grant a second chance after being popped.
-      - Bubblemancer
+      Lore:
+        '''
+        I know this one! The Bubble Birb is a mythical creature said to be able to grant a second chance after being popped.
+        - Bubblemancer
 
-      There was one long ago who danced with those flames. I remember.
-      - Thought Bubble
-      '''
+        There was one long ago who danced with those flames. I remember.
+        - Thought Bubble
+        '''
     }
     BubbleTrail:
     {
@@ -192,13 +192,13 @@
         This effect can only happen Y:3 G:(+1 per stack) Y:times per Y:wave
         '''
       Brief: Enemies killed by stars have an additional chance to drop powers
-      Lore: 
-      '''
-      Some say the fortunes of bubblekind are written in the stars.
-      
-      Gimme dat
-      - Gachapon
-      '''
+      Lore:
+        '''
+        Some say the fortunes of bubblekind are written in the stars.
+
+        Gimme dat
+        - Gachapon
+        '''
     }
     TrailOfThoughts:
     {
@@ -212,21 +212,21 @@
       Title: Magnet
       Description: Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack)
       Brief: Collect coins from farther away
-      Lore: 
-      '''
-      Imbues the user’s very essence with magnetism, allowing the easy attraction and collection of money.
-      I wonder why magnetism doesn’t work on bubbles
-      - Bubblemancer
+      Lore:
+        '''
+        Imbues the user's very essence with magnetism, allowing the easy attraction and collection of money.
+        I wonder why magnetism doesn't work on bubbles
+        - Bubblemancer
 
-      Bubbles are not made of metal.
-      - Thought Bubble
+        Bubbles are not made of metal.
+        - Thought Bubble
 
-      Oh
-      - Bubblemancer
+        Oh
+        - Bubblemancer
 
-      I don’t get it
-      - Bubblemancer
-      '''
+        I don't get it
+        - Bubblemancer
+        '''
       SlotMachineWeaponBrief: Collect coins and tokens from farther away
       SlotMachineWeaponDescription: Extends the distance Y:coins and Y:tokens are collected from by Y:75% G:(+75% per stack)
     }
@@ -235,27 +235,26 @@
       Title: Spear of Light
       Description: Fire Y:[beams of light] at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2 damage] every Y:[2.2 seconds] and increase Y:[beam of light damage] by Y:0.5 G:(+0.5 per stack)
       Brief: Periodically fire beams of light at nearby enemies
-      Lore: So many thoughts rush through TB’s head at times that he simply must get some of them out there.
+      Lore: So many thoughts rush through TB's head at times that he simply must get some of them out there.
     }
     Overclock:
     {
       Title: Overclock
       Description: Reduces Y:[ability cooldown] by Y:20% G:(+20% per stack)
       Brief: Reduces ability cooldown
-      Lore: 
-      '''
-      Increases the speed of a bubble can use their unique abilities with the ruthlessness efficiency of a machine.
-      A very interesting power bubble. Its power seems to affect time itself, but in a very limited manner.
-      - Thought Bubble
-      '''
-
+      Lore:
+        '''
+        Increases the speed of a bubble can use their unique abilities with the ruthlessness efficiency of a machine.
+        A very interesting power bubble. Its power seems to affect time itself, but in a very limited manner.
+        - Thought Bubble
+        '''
     }
     NeuronActivation:
     {
       Title: Reflection
       Description: Enemies Y:[struck by beams of light] bounce Y:[beams of light] to nearby enemies once; bounced Y:[beams of light gain 20%] G:(+60% per stack) Y:damage
       Brief: Enemies struck by beams of light fire beams of light at nearby enemies
-      Lore: All creatures are but prisms for Thought Bubble’s thoughts.
+      Lore: All creatures are but prisms for Thought Bubble's thoughts.
     }
     BrainBlast:
     {
@@ -273,18 +272,18 @@
       Title: Raise
       Description: Increases Y:[maximum chip stack height] by Y:1 G:(+1 per stack) and reduces Y:[ability cooldown] by Y:10% G:(+10% per stack)
       Brief: Increases maximum chip stack height and slightly reduces ability cooldown
-      Lore: 
-      '''
-      Allows a chaotic bubble to increase the stakes.
-      If you’re losing you just gotta bet more!
-      - Gachapon
+      Lore:
+        '''
+        Allows a chaotic bubble to increase the stakes.
+        If you're losing you just gotta bet more!
+        - Gachapon
 
-      Got it
-      - Bubblemancer
+        Got it
+        - Bubblemancer
 
-      Don’t listen to her.
-      - Thought Bubble
-      '''
+        Don't listen to her.
+        - Thought Bubble
+        '''
     }
     AllIn:
     {
@@ -295,13 +294,13 @@
         Increases Y:[maximum chip stack height] by Y:2 G:(+2 per stack) and reduces Y:[ability cooldown] Y:multiplicatively by Y:60% G:(+60% per stack)
         '''
       Brief: Greatly increases the potency of your chips
-      Lore: 
-      '''
-      No one knows what Gachapon is risking to achieve such power, but all can agree it is tremendous.
+      Lore:
+        '''
+        No one knows what Gachapon is risking to achieve such power, but all can agree it is tremendous.
 
-      “Nowhere to go but up, baby!”
-      - Gachapon
-      '''
+        "Nowhere to go but up, baby!"
+        - Gachapon
+        '''
     }
     SnakeEyes:
     {
@@ -322,51 +321,51 @@
       Title: Calculator
       Description: Friendly projectiles Y:[seek out] enemies within Y:4 G:(+2 per stack) Y:units
       Brief: Grants aim assist
-      Lore: 
-      '''
-      A machine that allows one to analyze and calculate the movement of enemies.
-      
-      Do not ever play darts with this guy.
-      - Gachapon
-      '''
+      Lore:
+        '''
+        A machine that allows one to analyze and calculate the movement of enemies.
+
+        Do not ever play darts with this guy.
+        - Gachapon
+        '''
     }
     BubbleMitosis:
     {
       Title: Mitosis
       Description: Y:[Upon obtaining your next power,] gain Y:[additional stacks] equal to the amount of <color=#BAE3FE>Mitosis</color> stacks G:(consumed on use)
       Brief: Assimilated into next power you obtain
-      Lore: 
-      '''
-      Containing powerful replicating abilities, this can be used on any other power bubble.
-      In principle, this is the opposite of the Choice bubble, containing similar powers of replication but only triggering when coming into contact with another power bubble.
-      - TB
-      '''
+      Lore:
+        '''
+        Containing powerful replicating abilities, this can be used on any other power bubble.
+        In principle, this is the opposite of the Choice bubble, containing similar powers of replication but only triggering when coming into contact with another power bubble.
+        - TB
+        '''
     }
     RollForCharisma:
     {
       Title: Roll For Charisma
       Description: Y:20% G:(+1% per stack) Y:chance to Y:heal after Y:[purchasing a power] or gain Y:25 G:(+25 per stack) Y:coins if uninjured
       Brief: Chance to heal or refund a portion of money spent when purchasing power
-      Lore: 
-      '''
-      Gachapon is not easily haggled with, but she’s a sucker for bubbles in sunglasses.
-      They’re just so versatile!"
-      - Gachapon
+      Lore:
+        '''
+        Gachapon is not easily haggled with, but she's a sucker for bubbles in sunglasses.
+        They're just so versatile!"
+        - Gachapon
 
-      Waitwait, who wrote this one?!
-      - Gachapon
-      '''
+        Waitwait, who wrote this one?!
+        - Gachapon
+        '''
     }
     RollForDexterity:
     {
       Title: Roll For Dexterity
       Description: Y:20% G:(+1% per stack) Y:chance to gain Y:15% increased Y:[movement speed] after using Y:[your ability,] stacking up to Y:2 G:(+1 per stack) times and lasting Y:[5 seconds]
       Brief: Chance to gain increased speed after using your ability
-      Lore: 
-      '''
-      The Winged Bubble was known to be a rogue who favored games of chance. However, he was always ready to slip away if the game went awry for him.
-      - Bubblemancer
-      '''
+      Lore:
+        '''
+        The Winged Bubble was known to be a rogue who favored games of chance. However, he was always ready to slip away if the game went awry for him.
+        - Bubblemancer
+        '''
     }
     RollForInitiative:
     {
@@ -380,13 +379,13 @@
       Title: Roll For Perception
       Description: Increases weights of Y:[rare powers] in the Y:[power pool] by Y:20% G:(+20% per stack)
       Brief: Chance of seeing rare powers increased
-      Lore: 
-      '''
-      Perhaps that which you were looking for was always right there in front of you.
+      Lore:
+        '''
+        Perhaps that which you were looking for was always right there in front of you.
 
-      GIMME DAT
-      - Gachapon
-      '''
+        GIMME DAT
+        - Gachapon
+        '''
       SlotMachineWeaponBrief: Chance of seeing rare powers and rare spins increased
       SlotMachineWeaponDescription:
         '''
@@ -407,11 +406,11 @@
         Gain a shield on even-numbered waves
         When shields are broken, extend immunity frames and release bubbles
         '''
-      Lore: 
-      '''
-      “Whatcha really need is this here bubble shield: quality assured by real bubbles! If it doesn’t actually work, it’s not like our customers will come back to complain.”
-      - Unknown
-      '''
+      Lore:
+        '''
+        "Whatcha really need is this here bubble shield: quality assured by real bubbles! If it doesn't actually work, it's not like our customers will come back to complain."
+        - Unknown
+        '''
     }
     ZapRadius:
     {
@@ -425,7 +424,7 @@
       Title: Electroluminescence
       Description: Y:[Thunder bubbles] fire Y:1 G:(+1 per stack) Y:[beams of light] at enemies within Y:3 G:(+0.5 per stack) Y:units of the Y:[thunder bubble radius] for Y:[2 damage]
       Brief: Thunder bubbles fire beams of light at nearby enemies
-      Lore: The learned one’s revelations shall be declared like a thunderous bell from above.
+      Lore: The learned one's revelations shall be declared like a thunderous bell from above.
     }
     Burger:
     {
@@ -436,16 +435,16 @@
         Reduces Y:[movement speed] by Y:10% G:(+10% per stack)
         '''
       Brief: Burger!?
-      Lore: 
-      '''
-      Delicious and nutritious.
+      Lore:
+        '''
+        Delicious and nutritious.
 
-      And auspicious!
-      - Gachapon
+        And auspicious!
+        - Gachapon
 
-      Just try not to pack down too many at once.
-      - Fizzy
-      '''
+        Just try not to pack down too many at once.
+        - Fizzy
+        '''
     }
     BonusBatteries:
     {
@@ -453,10 +452,10 @@
       Description: Increases the number of Y:[thunder bubbles] you can cast by Y:1 G:(+1 per stack)
       Brief: Increases the number of thunder bubbles you can cast
       Lore:
-      '''
-      I developed these batteries to contain thunder essence. My research into thunder is still ongoing, but the current disaster necessitated its unfortunate weaponization.
-      - Thought Bubble
-      '''
+        '''
+        I developed these batteries to contain thunder essence. My research into thunder is still ongoing, but the current disaster necessitated its unfortunate weaponization.
+        - Thought Bubble
+        '''
     }
     ResearchNotes:
     {
@@ -464,10 +463,10 @@
       Description: Y:[After killing 3 Skull enemies,] become a <color=#CFCFFF>Choice</color> with 5 options G:(consumed on use)
       Brief: After killing 3 Skull enemies, become a Choice with 5 options
       Lore:
-      '''
-      The energy signature of enhanced Bubbleverse creatures closely matches that of power bubbles. My working hypothesis is that they both draw power from the same source, yet that power remains very unwieldy.
-      - Thought Bubble
-      '''
+        '''
+        The energy signature of enhanced Bubbleverse creatures closely matches that of power bubbles. My working hypothesis is that they both draw power from the same source, yet that power remains very unwieldy.
+        - Thought Bubble
+        '''
     }
     ResearchGrants:
     {
@@ -475,10 +474,10 @@
       Description: Y:[Skull enemies] drop Y:3 G:(+2 per stack) additional Y:coins
       Brief: Skull enemies drop additional coins
       Lore:
-      '''
-      I don’t know who is providing these grants, but they are appreciated nonetheless.
-      - Thought Bubble
-      '''
+        '''
+        I don't know who is providing these grants, but they are appreciated nonetheless.
+        - Thought Bubble
+        '''
     }
     Boomerang:
     {
@@ -486,12 +485,12 @@
       Description: Increases Y:[thunder bubble] recall damage by Y:50% G:(+50% per stack)
       Brief: Increases thunder bubble recall damage
       Lore:
-      '''
-      A pre-Bubblespace Disaster Power Bubble. Channels the essence of a weapon that always comes back to increase the recall damage of thunder orbs.
+        '''
+        A pre-Bubblespace Disaster Power Bubble. Channels the essence of a weapon that always comes back to increase the recall damage of thunder orbs.
 
-      Boomerang not included. What a disappointment.
-      - Gachapon
-      '''
+        Boomerang not included. What a disappointment.
+        - Gachapon
+        '''
     }
     ThunderBubbles:
     {
@@ -499,12 +498,12 @@
       Description: When recalled or after expiring, Y:[thunder bubbles] leave behind a Y:[latent charge] that dissipates into Y:3 G:(+1 per stack) bubbles after Y:[thunder bubbles] are fully recalled
       Brief: Thunder bubbles release bubbles when recalled or expired
       Lore:
-      '''
-      Synthesizes bubbles from thunder essence, after the thunderclap.
+        '''
+        Synthesizes bubbles from thunder essence, after the thunderclap.
 
-      In my research of the Mt. Bubble thunderstorms, I found that the thunder’s echoing sound itself could occasionally generate bubbles.
-      - Thought Bubble
-      '''
+        In my research of the Mt. Bubble thunderstorms, I found that the thunder's echoing sound itself could occasionally generate bubbles.
+        - Thought Bubble
+        '''
     }
     Supernova:
     {
@@ -527,24 +526,24 @@
         '''
       Brief: Improves wave rewards
       Lore:
-      '''
-      A musical gem attuned to the resonance of pylons that attracts rarer power bubbles.
+        '''
+        A musical gem attuned to the resonance of pylons that attracts rarer power bubbles.
 
-      In this case, I am truly stumped as to the workings of this gem. A musician would probably find more sense in it than I can. Anybody?
-      - TB
+        In this case, I am truly stumped as to the workings of this gem. A musician would probably find more sense in it than I can. Anybody?
+        - TB
 
-      Nope.
-      - Fizzy
+        Nope.
+        - Fizzy
 
-      Nuh-uh.
-      - Gachapon
+        Nuh-uh.
+        - Gachapon
 
-      I used to play a bit of flute, but all I can say is the pylon's hum sounds kind of like the ruby
-      - Bubblemancer
+        I used to play a bit of flute, but all I can say is the pylon's hum sounds kind of like the ruby
+        - Bubblemancer
 
-      Sigh. I guess I'll just have to accept that for now.
-      - TB
-      '''
+        Sigh. I guess I'll just have to accept that for now.
+        - TB
+        '''
     }
     DoubleDown:
     {
@@ -555,32 +554,32 @@
         Increases Y:[chip damage] by Y:1 G:(+1 per stack)
         '''
       Brief: Enemies killed by chips drop additional coins and increases chip damage
-      Lore: 
-      '''
-      Imbues a token exchanged for money with the abilty to generate more money.
+      Lore:
+        '''
+        Imbues a token exchanged for money with the abilty to generate more money.
 
-      My favorite part!
-      - Gachapon
-      '''
+        My favorite part!
+        - Gachapon
+        '''
     }
     FocusFizz:
     {
       Title: Focus Fizz
       Description: Increases Y:[critical strike chance] by Y:5% G:(+5% per stack)
       Brief: Increases critical strike chance
-      Lore: 
-      '''
-      A tasty beverage that heightens the consumer's combat abilities.
-      
-      10/10, just wish it came in a wider variety of flavors.
-      - Fizzy
+      Lore:
+        '''
+        A tasty beverage that heightens the consumer's combat abilities.
 
-      Drinking it makes me feel weird...is it making me angrier? More violent? Or just more focused?
-      - Bubblemancer
+        10/10, just wish it came in a wider variety of flavors.
+        - Fizzy
 
-      Trust the process buddy.
-      - Fizzy
-      '''
+        Drinking it makes me feel weird...is it making me angrier? More violent? Or just more focused?
+        - Bubblemancer
+
+        Trust the process buddy.
+        - Fizzy
+        '''
     }
     Coupons:
     {
@@ -588,12 +587,12 @@
       Description: Reduces the cost of Y:powers in the Y:shop by Y:12% G:(+12% per stack)
       Brief: Reduces the cost of powers in the shop
       Lore:
-      '''
-      Some coupons for Gachapon's shop. Perhaps the concept of a discount itself is contained within this power bubble.
+        '''
+        Some coupons for Gachapon's shop. Perhaps the concept of a discount itself is contained within this power bubble.
 
-      TOO MANY COUPONS!!! If I ever catch the bubble who powerfied this...
-      - Gachapon
-      '''
+        TOO MANY COUPONS!!! If I ever catch the bubble who powerfied this...
+        - Gachapon
+        '''
     }
     CloudWalker:
     {

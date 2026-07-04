@@ -1030,4 +1030,13 @@ public partial class Player : Entity
         Hat.DeadUpdate();
         Accessory.DeadUpdate();
     }
+    public static void GameWin()
+    {
+        foreach(Player p in AllPlayers)
+            p.OnGameWin();
+    }
+    public void OnGameWin()
+    {
+
+    }
 }

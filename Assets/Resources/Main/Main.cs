@@ -134,7 +134,9 @@ public partial class Main : MonoBehaviour
             {
                 if (UIManager.MultiplayerMenu == null || !UIManager.MultiplayerMenu.activeSelf)
                 {
-                    if (GamePaused)
+                    if (WarpUI.IsCurrentlyOpen)
+                        WarpUI.Close();
+                    else if(GamePaused)
                     {
                         if (Compendium.Instance != null && Compendium.Instance.Active)
                         {

@@ -29,7 +29,7 @@ Need to do:
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
 8. Add small Gaussian blur to border shaders for smoother visuals
 9. Update settings UI and include settings for modifying soft shadows
-10. "Ascension" Ideas:
+10. "Ascension" system:
 	1. No Escape: All enemies that are added are added permanently
 	2. Double Trouble: All enemy cards are "double-trouble" cards (adds two enemies to the pool at once, both appear as skull enemies)
 	3. Pandemic: Enemies can spawn infected
@@ -59,7 +59,8 @@ Done:
 3. WIP Warp Pylon
 	1. Sort some code for pylons
 	2. Has special quest (basically reskin for now)
-	3. NEEDS: Popup UI, Explanation UI, Looping Button (more gaming), Victory Button (main menu, for now)
+	3. Has Popup UI, Explanation UI, Looping Button (more gaming), Victory Button (main menu, for now)
+	4. NEEDS: Player to track victories on each equipment
 4. Add an "END ROOM" for warp pylons to spawn in
 
 6/29/26 to 6/30/26

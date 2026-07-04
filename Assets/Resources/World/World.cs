@@ -578,7 +578,7 @@ public class World : MonoBehaviour
     {
         m_Instance = this;
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
             ResetWorld(false);
 #endif
         Lighting.Update();
