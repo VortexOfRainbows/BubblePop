@@ -431,7 +431,7 @@ public partial class Player : Entity
         CameraManager.SetCameraOrthographicSize(12);
         DeathKillTimer = 0;
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
-        HasRunStartingGear = false;
+        HasRunStartingGear = HasWonThisCycle = false;
         Life = MaxLife = 3;
         PlayerStatUI.ResetLife();
         Control = new(AllPlayers.Count > 1 ? InstanceID + 1 : 0);
@@ -1032,11 +1032,18 @@ public partial class Player : Entity
     }
     public static void GameWin()
     {
-        foreach(Player p in AllPlayers)
-            p.OnGameWin();
+        //Only need to do this for 1 player for now, as the other player will use the same equipment (for now)
+        Player.Instance.OnGameWin();
     }
+    public bool HasWonThisCycle = false;
     public void OnGameWin()
     {
-
+        if (HasWonThisCycle)
+            return;
+        HasWonThisCycle = true;
+        Weapon.VictoryCount += 1;
+        Body.VictoryCount += 1;
+        Hat.VictoryCount += 1;
+        Accessory.VictoryCount += 1;
     }
 }

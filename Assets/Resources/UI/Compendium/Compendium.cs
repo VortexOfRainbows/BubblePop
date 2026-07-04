@@ -104,15 +104,12 @@ public class Compendium : MonoBehaviour
             return;
         if ((Active || page == CurrentlySelectedPage) && page.isActiveAndEnabled)
         {
-            page.SecondaryUpdate(lerpFactor);
-        }
-        else
-        {
             if (!page.HasInit)
             {
                 page.Init(CountButton, SortText);
                 page.HasInit = true;
             }
+            page.SecondaryUpdate(lerpFactor);
         }
     }
     public void MoveCompendiumUpdate(float lerpFactor)

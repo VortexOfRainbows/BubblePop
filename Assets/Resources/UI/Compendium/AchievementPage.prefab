@@ -136,7 +136,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 622996367
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 30
   m_Sprite: {fileID: 7482667652216324306, guid: f936d6975eb877e4c99fd60fa796aeba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -194,8 +194,8 @@ SpriteMask:
   m_MaskAlphaCutoff: 0.2
   m_FrontSortingLayerID: 622996367
   m_BackSortingLayerID: 622996367
-  m_FrontSortingLayer: 2
-  m_BackSortingLayer: 2
+  m_FrontSortingLayer: 1
+  m_BackSortingLayer: 1
   m_FrontSortingOrder: 80
   m_BackSortingOrder: 30
   m_IsCustomRangeActive: 1
@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 0
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 50
+  m_ScrollSensitivity: 0.1
   m_Viewport: {fileID: 1538878206394837804}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
