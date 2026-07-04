@@ -12,27 +12,41 @@
       Title: Choice
       Description: Pick which power you want from a given selection
       Lore: A curious bubble that shifts and reforms itself into other power bubbles.
+      All my attempts to control the forms it shifts into have failed. The only rule it seems to abide by is chaos.
+      - Thought Bubble
+      Not knowing what you’re gonna get makes it more fun!
+      - Gachapon
+
     }
     ChargeShot:
     {
       Title: Charge Shot
       Description: Increases the Y:damage of your Y:[secondary attack] by Y:50% G:(+50% per stack) and the Y:size of your Y:[secondary attacks] by 40% G:(+40% per stack)
       Brief: Increases the size and damage of your secondary attack
-      Lore: Power.ChargeShot.Lore
+      Lore: Through concentration, allows one to greatly increase the size of a single bubble.
+      Bigger is always better!
+      - Gachapon
+      That is not true.
+      - Thought Bubble
+      It is true
+      - Bubblemancer
+
     }
     Shotgun:
     {
       Title: Shotgun
       Description: Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
       Brief: Increases the amount of bubbles shot by your primary attack
-      Lore: Power.Shotgun.Lore
+      Lore: The extra bubbles seem to split from others included in the attack...with perfect replication.
+      - Thought Bubble
+
     }
     Dash:
     {
       Title: Sparkle Sparkle
       Description: Y:Dashing releases Y:2 G:(+1 per stack) damaging stars
       Brief: Adds damaging stars to your ability
-      Lore: Power.Dash.Lore
+      Lore: Sharpens stars out of the friction created by the use of a signature ability.
       ThoughtBubbleDescription: Y:[Channeling recall] has a Y:33% G:(+17% per stack) Y:chance to release damaging stars
       GachaponDescription: Y:Chips have a Y:50% G:(+25% per stack) Y:chance to release damaging stars
       FizzyDescription: Y:Skateboard releases a damaging star every Y:[1.0 seconds] G:(-25% per stack)
@@ -42,28 +56,40 @@
       Title: Bubble Propulsion
       Description: Small bubbles travel Y:10% G:(+10% per stack) further and faster
       Brief: Small bubbles travel further and faster
-      Lore: Power.ShotSpeed.Lore
+      Lore: Makes bubbles more aerodynamic, even beyond the realm that science would allow.
+      This must come from a universe where bubbles are faster!
+      - Bubblemancer
+
+      That almost makes sense, but no.
+      - Thought Bubble
+
+      That makes a lotta sense
+      - Gachapon
+
     }
     Starbarbs:
     {
       Title: Starbarbs
       Description: Enemies Y:[killed by stars] explode into Y:3 G:(+1 per stack) stars
       Brief: Enemies killed by stars explode into stars
-      Lore: Power.Starbarbs.Lore
+      Lore: The end of one creature's existence gives rise to more stars.
     }
     SoapySoap:
     {
       Title: Soapy Soap
       Description: Y:[Secondary attack] releases Y:4 G:(+4 per stack) bubbles while traveling, plus Y:[2 more bubbles for each charge level]
       Brief: Secondary attack leaves behind a trail of bubbles
-      Lore: Power.SoapySoap.Lore
+      Lore: Coats your secondary attack with soap. More soap means more bubbles!
+      Imagine how much money I could make with this one! Too bad it always disintegrates...
+      - Gachapon
+
     }
     BubbleBlast:
     {
       Title: Bubble Blast
       Description: Y:[Secondary attack] releases Y:4 G:(+3 per stack) bubbles upon expiring, plus Y:1 G:(+1 per stack) Y:[more bubbles for each charge level]
       Brief: Secondary attack releases bubbles upon expiring
-      Lore: Power.BubbleBlast.Lore
+      Lore: The greatest of bubbles always leave behind a legacy for the next generation.
     }
     Starshot:
     {
@@ -74,49 +100,68 @@
         Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
         '''
       Brief: Launch stars with your primary attack
-      Lore: Power.Starshot.Lore
+      Lore: Bravely shepherded by a hero pure of being, the paths of Star and Bubble become one.
     }
     WeaponUpgrade:
     {
       Title: Haste
       Description: Increases Y:[attack speed] by Y:7% G:(+7% per stack)
       Brief: Increases attack speed
-      Lore: Power.WeaponUpgrade.Lore
+      Lore: Grants supernatural alacrity to the bearer.
+      Using this power reminds me of the stories my grandpa used to tell me about the Winged Bubble, the savior who could drift upon the winds with wings of finest cotton. It makes me feel like...even I could be a part of that legend.
+      - Bubblemancer
+
+      Sword not included. What a disappointment.
+      - Gachapon
     }
     BinaryStars:
     {
       Title: Binary Stars
       Description: Release Y:2 G:(+1 per stack) stars every Y:[1.5 seconds]
       Brief: Periodically release stars
-      Lore: Power.BinaryStars.Lore
+      Lore: Two stars locked by gravitational forces. A blessing from beyond the sky.
+      Does this mean I’m a planet?!
+      - Bubblemancer
+      
+      Stars do not orbit planets. But yes, you have satellites.
+      - Thought Bubble
+
     }
     EternalBubbles:
     {
       Title: Elder Bubbles
       Description: Increases lifespan of Y:[small bubbles] by Y:[0.8 seconds] G:(+0.4 seconds per stack)
       Brief: Increases lifespan of small bubbles
-      Lore: Power.EternalBubbles.Lore
+      Lore: Grants the wisdom of age to smaller bubble projectiles, making them last longer before popping.
+      “Don’t go livin’ yer life in one shot, y’hear?” That's what my Grandpa used to say to me.
+      - Bubblemancer
+
     }
     BubbleBirb:
     {
       Title: Bubble Birb
       Description: Resurrect in a dance of flames after death G:(consumed on use)
       Brief: Resurrect in a dance of flames after death
-      Lore: Power.BubbleBirb.Lore
+      Lore: “I know this one! The Bubble Birb is a mythical creature said to be able to grant a second chance after being popped.”
+      - Bubblemancer
+
+      “There was one long ago who danced with those flames. I remember.”
+      - Thought Bubble
+
     }
     BubbleTrail:
     {
       Title: Bubble Trail
       Description: Release a bubble every Y:[0.67 seconds] G:(-33% per stack)
       Brief: Periodically release bubbles
-      Lore: Power.BubbleTrail.Lore
+      Lore: Bubbles are never alone.
     }
     Coalescence:
     {
       Title: Coalescence
       Description: Y:[Small bubbles] may fuse with up to Y:1 G:(+1 per stack) other nearby Y:[small bubbles,] gaining Y:[+2 damage] and Y:[+1 pierce] each fusion
       Brief: Small bubbles may fuse with nearby bubbles for bonus damage and pierce
-      Lore: Power.Coalescence.Lore
+      Lore: The diminutive, united, shall become the gestalt one.
     }
     LuckyStar:
     {
@@ -127,21 +172,36 @@
         This effect can only happen Y:3 G:(+1 per stack) Y:times per Y:wave
         '''
       Brief: Enemies killed by stars have an additional chance to drop powers
-      Lore: Power.LuckyStar.Lore
+      Lore: Some say the fortunes of bubblekind are written in the stars.
+      Gimme
+      - Gachapon
+
     }
     TrailOfThoughts:
     {
       Title: Trail of Thoughts
       Description: Increases the Y:[maximum length] of your Y:[thought trail] by Y:3 G:(+3 per stacK) and Y:[zap radius] of your Y:[thought trail] by Y:10% G:(+10 per stack)
       Brief: Increases thought trail length and zap radius
-      Lore: Power.TrailOfThoughts.Lore
+      Lore: Allows a learned bubble to further manifest their thoughts as projectile bubbles.
     }
     Magnet:
     {
       Title: Magnet
       Description: Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack)
       Brief: Collect coins from farther away
-      Lore: Power.Magnet.Lore
+      Lore: Imbues the user’s very essence with magnetism, allowing the easy attraction and collection of money.
+      I wonder why magnetism doesn’t work on bubbles
+      - Bubblemancer
+
+      Bubbles are not made of metal.
+      - Thought Bubble
+
+      Oh
+      - Bubblemancer
+
+      I don’t get it
+      - Bubblemancer
+
       SlotMachineWeaponBrief: Collect coins and tokens from farther away
       SlotMachineWeaponDescription: Extends the distance Y:coins and Y:tokens are collected from by Y:75% G:(+75% per stack)
     }
@@ -150,21 +210,25 @@
       Title: Spear of Light
       Description: Fire Y:[beams of light] at enemies within Y:9 G:(+2.25 per stack) Y:units for Y:[2 damage] every Y:[2.2 seconds] and increase Y:[beam of light damage] by Y:0.5 G:(+0.5 per stack)
       Brief: Periodically fire beams of light at nearby enemies
-      Lore: Power.SpearOfLight.Lore
+      Lore: So many thoughts rush through TB’s head at times that he simply must get some of them out there.
     }
     Overclock:
     {
       Title: Overclock
       Description: Reduces Y:[ability cooldown] by Y:20% G:(+20% per stack)
       Brief: Reduces ability cooldown
-      Lore: Power.Overclock.Lore
+      Lore: Increases the speed of a bubble can use their unique abilities with the ruthlessness efficiency of a machine.
+      A very interesting power bubble. Its power seems to affect time itself, but in a very limited manner.
+      - Thought Bubble
+
+
     }
     NeuronActivation:
     {
       Title: Reflection
       Description: Enemies Y:[struck by beams of light] bounce Y:[beams of light] to nearby enemies once; bounced Y:[beams of light gain 20%] G:(+60% per stack) Y:damage
       Brief: Enemies struck by beams of light fire beams of light at nearby enemies
-      Lore: Power.NeuronActivation.Lore
+      Lore: All creatures are but prisms for Thought Bubble’s thoughts.
     }
     BrainBlast:
     {
@@ -175,14 +239,22 @@
         Increase Y:[thought trail zap damage] by Y:20% G:(+20% per stack)
         '''
       Brief: Release additional bubbles when recalling and increase thought trail zap damage
-      Lore: Power.BrainBlast.Lore
+      Lore: One must go back through all they have learned to obtain progress.
     }
     Raise:
     {
       Title: Raise
       Description: Increases Y:[maximum chip stack height] by Y:1 G:(+1 per stack) and reduces Y:[ability cooldown] by Y:10% G:(+10% per stack)
       Brief: Increases maximum chip stack height and slightly reduces ability cooldown
-      Lore: Power.Raise.Lore
+      Lore: Allows a chaotic bubble to increase the stakes.
+      If you’re losing you just gotta bet more!
+      - Gachapon
+
+      Got it
+      - Bubblemancer
+
+      Don’t listen to her.
+      - Thought Bubble
     }
     AllIn:
     {
@@ -193,49 +265,62 @@
         Increases Y:[maximum chip stack height] by Y:2 G:(+2 per stack) and reduces Y:[ability cooldown] Y:multiplicatively by Y:60% G:(+60% per stack)
         '''
       Brief: Greatly increases the potency of your chips
-      Lore: Power.AllIn.Lore
+      Lore: No one knows what Gachapon is risking to achieve such power, but all can agree it is tremendous.
+
+      “Nowhere to go but up, baby!”
+      - Gachapon
     }
     SnakeEyes:
     {
       Title: Snake Eyes
       Description: Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:4 G:(+1 per stack) Y: damage plus Y:damage equal to Y:4% of the Y:[victim's max life] over Y:[10 seconds]
       Brief: Chance to poison enemies on hit
-      Lore: Power.SnakeEyes.Lore
+      Lore: Those who know not that their luck has run out are relegated to a slow and insidious demise.
     }
     Refraction:
     {
       Title: Refraction
       Description: Y:[Beams of light] target up to Y:1 G:(+1 per stack) additional enemies within Y:9 G:(+2 per stack) Y:units, but they Y:[lose 20% damage] each hit after the first
       Brief: Beams of light can target an additional enemy
-      Lore: Power.Refraction.Lore
+      Lore: But what do YOU think?
     }
     Calculator:
     {
       Title: Calculator
       Description: Friendly projectiles Y:[seek out] enemies within Y:4 G:(+2 per stack) Y:units
       Brief: Grants aim assist
-      Lore: Power.Calculator.Lore
+      Lore: A machine that allows one to analyze and calculate the movement of enemies.
+      Do not ever play darts with this guy.
+      - Gachapon
     }
     BubbleMitosis:
     {
       Title: Mitosis
       Description: Y:[Upon obtaining your next power,] gain Y:[additional stacks] equal to the amount of <color=#BAE3FE>Mitosis</color> stacks G:(consumed on use)
       Brief: Assimilated into next power you obtain
-      Lore: Power.BubbleMitosis.Lore
+      Lore: Containing powerful replicating abilities, this can be used on any other power bubble.
+      In principle, this is the opposite of the Choice bubble, containing similar powers of replication but only triggering when coming into contact with another power bubble.
+      - TB
     }
     RollForCharisma:
     {
       Title: Roll For Charisma
       Description: Y:20% G:(+1% per stack) Y:chance to Y:heal after Y:[purchasing a power] or gain Y:25 G:(+25 per stack) Y:coins if uninjured
       Brief: Chance to heal or refund a portion of money spent when purchasing power
-      Lore: Power.RollForCharisma.Lore
+      Lore: Gachapon is not easily haggled with, but she’s a sucker for bubbles in sunglasses.
+      They’re just so versatile!"
+      - Gachapon
+
+      Waitwait, who wrote this one?!
+      - Gachapon
     }
     RollForDexterity:
     {
       Title: Roll For Dexterity
       Description: Y:20% G:(+1% per stack) Y:chance to gain Y:15% increased Y:[movement speed] after using Y:[your ability,] stacking up to Y:2 G:(+1 per stack) times and lasting Y:[5 seconds]
       Brief: Chance to gain increased speed after using your ability
-      Lore: Power.RollForDexterity.Lore
+      Lore: The Winged Bubble was known to be a rogue who favored games of chance. However, he was always ready to slip away if the game went awry for him.
+      - Bubblemancer
     }
     RollForInitiative:
     {
