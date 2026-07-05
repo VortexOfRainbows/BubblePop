@@ -8933,18 +8933,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5935818058846910823, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
-      propertyPath: DestinationType
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 7558895275838473008, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
       propertyPath: MyCanvas
       value: 
       objectReference: {fileID: 7563945110523091720}
-    - target: {fileID: 7558895275838473008, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
-      propertyPath: StartButton
-      value: 
-      objectReference: {fileID: 2039261851289030702}
     - target: {fileID: 8980551393198275346, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
       propertyPath: m_Name
       value: StartButton
@@ -8955,17 +8947,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
---- !u!114 &2039261851289030702 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5935818058846910823, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
-  m_PrefabInstance: {fileID: 5633065019215030601}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93d1e3dc614ec27468459577a3b4a416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6844044569959577348 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1213232518809787981, guid: 99d060ee65c348747b46acc1905a819b, type: 3}
