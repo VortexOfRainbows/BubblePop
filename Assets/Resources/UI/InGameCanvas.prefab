@@ -1758,7 +1758,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 31
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 50
+  m_SortingOrder: 40
   m_TargetDisplay: 0
 --- !u!114 &2097712395900646483
 MonoBehaviour:
@@ -4245,6 +4245,7 @@ MonoBehaviour:
   MyCanvas: {fileID: 7563945110523091720}
   ContinueButton: {fileID: 5322624825795706263}
   FinalizeButton: {fileID: 2632030336224473952}
+  HasBeenOpenForMoreThan1Second: 0
 --- !u!1 &5775038504317838203
 GameObject:
   m_ObjectHideFlags: 0

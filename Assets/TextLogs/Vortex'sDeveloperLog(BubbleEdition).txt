@@ -35,16 +35,11 @@ Need to do:
 	3. Pandemic: Enemies can spawn infected
 11. Allow looping
 	1. Rework achievements to activate on victory rather than "wave 15"
-12. Compendium Double Check: Make sure things are being updated live, now that the compendium is accessible at all times.
-	1. Make sure you do not need to wait for a full game-reload to see new stuff in the compendium!
-		1. Power Page: doesn't resort
-		2. Equip Page: not checked yet
-		3. Enemy Page: not checked yet
-		4. Achie Page: not checked yet
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
+2. Compendium does not resort when items are revealed mid run, though it does update so they aren't blacked out
 
 Multiplayer Task List:
 n/a
@@ -55,7 +50,7 @@ Bug Watchlist:
 
 Done: 	
 
-7/1/26 to 7/3/26
+7/1/26 to 7/4/26 AMERICA DAY
 1. Resetting the world for looping behavior (I figured this would be easier than loading a new scene...)
 	1. Reorganized the way some things are instantiated in World
 	2. Also now reset coins, powerups, projectiles (basically all things instantiated into the world that must be removed on reload)
@@ -69,7 +64,11 @@ Done:
 	3. Has Popup UI, Explanation UI, Looping Button (more gaming), Victory Button (main menu, for now)
 	4. Track victories on each equipment
 4. Add an "END ROOM" for warp pylons to spawn in
-5. Rework scroll sensitivity in the compendium and power menu slightly (the compendium persistence resulted in wackily high sensitivity for some reason)
+5. Rework scroll sensitivity in the compendium, power menu, modifier cards slightly (the compendium persistence resulted in wackily high sensitivity for some reason)
+6. Fix bug with new canvas changes where achievement popups would appear strangely layered
+7. Wave 20, 30, 40, etc. no longer come with a guaranteed ambush modifier
+8. Waves 15, 20, 25, 30, etc. no longer are guaranteed to be Infector, Leonard, or Rock Golem waves
+9. Waves 15, 30, 45, etc. are now guaranteed double trouble with Infector, with a double bias for expensive enemies
 
 6/29/26 to 6/30/26
 1. Fix issue where the tooltip UI would be in different positions based on screen resolution

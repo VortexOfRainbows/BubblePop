@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public class CardData
 {
@@ -70,20 +71,11 @@ public class CardData
             if(Utils.RandFloat(1) < 0.5f)
                 e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = false });
         }
-        if (waveNum >= 15 && waveNum % 5 == 0)
+        if(waveNum % 15 == 0) //Every 15th wave is a "boss wave" for now
         {
-            if(waveNum % 10 == 0 && Utils.RandFloat(1) < 0.5f)
-                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = true });
-            else if(Utils.RandFloat(1) < 0.75f)
-                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = true });
-            else
-                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.RockGolem) { IsPermanent = true });
-            float strength = waveNum >= 25 ? 200 : 50;
-            if(waveNum % 10 == 0)
-                m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { 
-                    ApplicationStrength = strength, IsPermanent = waveNum >= 25 });
-            else
-                m = new ModifierClause(AvailablePoints, 1, new DirectorAmbushBonusModifier() { ApplicationStrength = strength, IsPermanent = waveNum >= 25 });
+            EnemyCard baseCard = EnemyClause.GenRandomEnemyPoolAddition(2, true, false);
+            Enemy enemy = baseCard.EnemiesToAdd.First();
+            e = new EnemyClause(AvailablePoints, new EnemyCard((enemy is Infector ? EnemyID.SuperSentinel : enemy.gameObject), EnemyID.Infector) { IsPermanent = true });
         }
         if (waveNum >= 5 && m == null)
         {
