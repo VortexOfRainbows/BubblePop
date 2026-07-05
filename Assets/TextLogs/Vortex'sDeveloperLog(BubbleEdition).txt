@@ -33,8 +33,6 @@ Need to do:
 	1. No Escape: All enemies that are added are added permanently
 	2. Double Trouble: All enemy cards are "double-trouble" cards (adds two enemies to the pool at once, both appear as skull enemies)
 	3. Pandemic: Enemies can spawn infected
-11. Allow looping
-	1. Rework achievements to activate on victory rather than "wave 15"
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -69,6 +67,8 @@ Done:
 7. Wave 20, 30, 40, etc. no longer come with a guaranteed ambush modifier
 8. Waves 15, 20, 25, 30, etc. no longer are guaranteed to be Infector, Leonard, or Rock Golem waves
 9. Waves 15, 30, 45, etc. are now guaranteed double trouble with Infector, with a double bias for expensive enemies
+10. Wave 15 achievements now activate on win rather than on wave 15
+11. Fix bug where if achievement page was open in compendium all powers would appear black market
 
 6/29/26 to 6/30/26
 1. Fix issue where the tooltip UI would be in different positions based on screen resolution

@@ -54,9 +54,6 @@ public class CardData
     public void AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r)
     {
         int difficultyNum = (int)Owner.DifficultyMultiplier;
-        bool MinDifficultyCard = difficultyNum == 1;
-        bool MidDifficulty = difficultyNum == 2;
-        bool MaxDifficultyCard = difficultyNum == 3;
         e = null;
         m = null;
         r = null;
@@ -75,6 +72,7 @@ public class CardData
         {
             EnemyCard baseCard = EnemyClause.GenRandomEnemyPoolAddition(2, true, false);
             Enemy enemy = baseCard.EnemiesToAdd.First();
+            //We don't want "Infector + Infector" tag teams, so it will replace with super sentinel if it rolls that
             e = new EnemyClause(AvailablePoints, new EnemyCard((enemy is Infector ? EnemyID.SuperSentinel : enemy.gameObject), EnemyID.Infector) { IsPermanent = true });
         }
         if (waveNum >= 5 && m == null)

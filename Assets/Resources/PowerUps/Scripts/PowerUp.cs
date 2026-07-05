@@ -473,7 +473,7 @@ public abstract class PowerUp
         bool NoAltsForCompendium = Compendium.Instance != null && Compendium.Instance.PageNumber == 0;
         if (Main.GameFinishedLoading && !IsInPowerPool && HasBlackMarketAlternate && BlackMarketVariantUnlockCondition.IsComplete && !NoAltsForCompendium)
             return true;
-        if (Compendium.Instance != null && Compendium.Instance.PageNumber == 3)
+        if (Compendium.Instance != null && Compendium.Instance.PageNumber == 3 && Compendium.Instance.Active)
             return true; //All powers on the achievement page are going to show up as black market powers, so this should make sense as an extra fail-safe
         return false;
     }

@@ -1038,6 +1038,24 @@ public partial class Player : Entity
     public bool HasWonThisCycle = false;
     public void OnGameWin()
     {
+        if (WaveDirector.WaveNum >= 15)
+        {
+            if (Player.Instance.Body is ThoughtBubble && !Player.HasAttacked)
+                UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
+            if (Player.Instance.Body is Gachapon)
+            {
+                if (!Player.PickedLowerDifficultyWaveCard)
+                    UnlockCondition.Get<GachaponWave15AllSkullWaves>().SetComplete();
+                if (Player.Instance.BestPowerCountIncludingStacks <= 21)
+                    UnlockCondition.Get<GachaponBlackjack>().SetComplete();
+
+            }
+            if (Player.Instance.Body is Bubblemancer && !Player.HasBeenHit)
+                UnlockCondition.Get<BubblemancerPerfection>().SetComplete();
+            UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
+        }
+        if (WaveDirector.WaveNum >= 20 && Player.Instance.Body is Gachapon && HasWonThisCycle)
+            UnlockCondition.Get<GachaponAddicted>().SetComplete();
         if (HasWonThisCycle)
             return;
         HasWonThisCycle = true;

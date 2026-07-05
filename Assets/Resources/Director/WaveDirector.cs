@@ -155,25 +155,6 @@ public static class WaveDirector
             p.OnWaveEnd(WaveNum);
         WaveActive = false;
         WaveMult += 0.1f;
-        if(WaveNum >= 15)
-        {
-            if(Player.Instance.Body is ThoughtBubble && !Player.HasAttacked)
-                UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
-            if(Player.Instance.Body is Gachapon)
-            {
-                if(!Player.PickedLowerDifficultyWaveCard)
-                    UnlockCondition.Get<GachaponWave15AllSkullWaves>().SetComplete();
-                if(Player.Instance.BestPowerCountIncludingStacks <= 21)
-                    UnlockCondition.Get<GachaponBlackjack>().SetComplete();
-
-            }
-            if (Player.Instance.Body is Bubblemancer && !Player.HasBeenHit)
-                UnlockCondition.Get<BubblemancerPerfection>().SetComplete();
-        }
-        if(WaveNum >= 15)
-            UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
-        if(WaveNum >= 30 && Player.Instance.Body is Gachapon)
-            UnlockCondition.Get<GachaponAddicted>().SetComplete();
         if(TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator || PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator)
             UnlockCondition.Get<FizzyUnlock>().SetComplete();
         if (Player.Instance.Body is ThoughtBubble && 
