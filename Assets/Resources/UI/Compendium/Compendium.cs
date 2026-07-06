@@ -219,10 +219,11 @@ public class Compendium : MonoBehaviour
                     concat += $"<size=26>{"Power Pool\n".WithRarityColor(rare, false)}</size>";
                     var powers = e.GetPowerPoolForDisplay();
                     string powerStr = string.Empty;
-                    foreach (PowerUp p in powers)
+                    for (int i = 0; i < powers.Count; ++i)
                     {
+                        PowerUp p = powers[i];
                         string name = (p.PickedUpCountAllRuns > 0 ? p.Description.Name : "???").WithColor(ColorHelper.RarityColorHex[p.Rarity - 1]);
-                        powerStr += " " + name + "\n";
+                        powerStr += " " + name + (i == powers.Count - 1 ? "" : "\n");
                     }
                     concat += $"<size=26>{powerStr}</size>";
                     concat += shortLineBreak;
@@ -235,14 +236,18 @@ public class Compendium : MonoBehaviour
                 if (!DisplayCEE.IsLocked())
                 {
                     //times used
-                    concat += $"<size=26>{"Times Used\n".WithRarityColor(rare, false)}</size>";
-                    concat += e.TotalTimesUsed + shortLineBreak;
+                    concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
+                    if (e.HighestDifficultyUnlocked > 0)
+                        concat += $"{"Ascension: ".WithColor(ColorHelper.AscColorHex)}{e.HighestDifficultyUnlocked}\n";
+                    concat += $"{"Times Used: ".WithColor(ColorHelper.LesserGrayHex)}{e.TotalTimesUsed}\n";
+                    concat += $"{"Victories: ".WithColor(ColorHelper.YellowHex)}{e.VictoryCount}";
+                    concat += shortLineBreak;
                 }
                 else
                 {
                     concat = concat.Bastardize('?');
                 }
-                concat += "Associated Achievement: \n".WithSizeAndColor(30, ColorHelper.LesserGrayHex);
+                concat += "Associated Achievement: \n".WithSizeAndColor(26, ColorHelper.LesserGrayHex);
                 concat += u.GetName();
                 DisplayPortDescription.text = concat;
             }

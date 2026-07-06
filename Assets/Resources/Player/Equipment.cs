@@ -196,7 +196,7 @@ public class Equipment : MonoBehaviour
         set
         {
             MyStaticData().TimesUsed = value;
-            SaveGlobalData();
+            SaveGlobalData(0);
             //Debug.Log($"Saved {IndexInAllEquipPool}: {TotalTimesUsed}");
         }
     }
@@ -206,16 +206,16 @@ public class Equipment : MonoBehaviour
         set
         {
             MyStaticData().VictoryCount = value;
-            SaveGlobalData();
+            SaveGlobalData(1);
         }
     }
-    public int HighestDifficultyCleared
+    public int HighestDifficultyUnlocked
     {
         get => MyStaticData().HighestDifficultyCleared;
         set
         {
             MyStaticData().HighestDifficultyCleared = value;
-            SaveGlobalData();
+            SaveGlobalData(2);
         }
     }
     public void LoadGlobalData()
@@ -223,14 +223,17 @@ public class Equipment : MonoBehaviour
         //Debug.Log("Load Tag: " + $"{TypeName}UsedTotal");
         TotalTimesUsed = PlayerData.GetInt($"{TypeName}Total", 0);
         VictoryCount = PlayerData.GetInt($"{TypeName}Wins", 0);
-        HighestDifficultyCleared = PlayerData.GetInt($"{TypeName}LVL", 0);
+        HighestDifficultyUnlocked = PlayerData.GetInt($"{TypeName}LVL", 0);
     }
-    public void SaveGlobalData()
+    public void SaveGlobalData(int num = -1)
     {
         //Debug.Log("Save Tag: " + $"{TypeName}UsedTotal");
-        PlayerData.SaveInt($"{TypeName}Total", TotalTimesUsed);
-        PlayerData.SaveInt($"{TypeName}Wins", VictoryCount);
-        PlayerData.SaveInt($"{TypeName}LVL", HighestDifficultyCleared);
+        if(num == -1 || num == 0)
+            PlayerData.SaveInt($"{TypeName}Total", TotalTimesUsed);
+        if(num == -1 || num == 1)
+            PlayerData.SaveInt($"{TypeName}Wins", VictoryCount);
+        if(num == -1 || num == 2)
+            PlayerData.SaveInt($"{TypeName}LVL", HighestDifficultyUnlocked);
     }
     public virtual int GetRarity()
     {

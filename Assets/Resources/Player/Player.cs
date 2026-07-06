@@ -436,12 +436,12 @@ public partial class Player : Entity
         PlayerStatUI.ResetLife();
         Control = new(AllPlayers.Count > 1 ? InstanceID + 1 : 0);
         Debug.Log($"Initialized Player With Control Scheme: [{Control.ControlSchemeType}]");
-        if(Main.UIManager.MPControls1 != null && Main.UIManager.MPControls2 != null)
+        if (Main.UIManager.MPControls1 != null && Main.UIManager.MPControls2 != null)
         {
             var target = InstanceID == 0 ? Main.UIManager.MPControls1 : Main.UIManager.MPControls2;
             string s = Control.AllBindings();
             target.text = s;
-            if (InstanceID == 0  && Main.UIManager.SPControls != null)
+            if (InstanceID == 0 && Main.UIManager.SPControls != null)
             {
                 Main.UIManager.SPControls.text = s;
             }
@@ -449,7 +449,7 @@ public partial class Player : Entity
         PlayerNumber.color = InstanceID == 0 ? ColorHelper.Player1Color : ColorHelper.Player2Color;
         PlayerNumber.text = InstanceID == 0 ? "P1" : "P2";
         PlayerNumber.gameObject.SetActive(AllPlayers.Count > 1);
-        PowerCountIncludingStacks = 0; 
+        PowerCountIncludingStacks = 0;
         BestPowerCountIncludingStacks = 0;
     }
     public float abilityTimer = 0;
@@ -463,7 +463,7 @@ public partial class Player : Entity
         {
             if (f.SkateboardPercent > 0)
             {
-                if(!f.OnSkateboard || f.SkateboardPercent >= 1)
+                if (!f.OnSkateboard || f.SkateboardPercent >= 1)
                 {
                     cDeaccel = Mathf.Lerp(cDeaccel, 0.9985f, f.SkateboardPercent);
                     cSpeed *= Mathf.Lerp(1, 0.225f, f.SkateboardPercent);
@@ -475,7 +475,7 @@ public partial class Player : Entity
                     cSpeed *= 0.1f + 0.9f * iPer * iPer;
                     velocity *= 0.98f;
                 }
-                if(!f.OnSkateboard || f.SkateboardPercent < 1)
+                if (!f.OnSkateboard || f.SkateboardPercent < 1)
                 {
                     float bonusSkateboardSpeed = 1.0f + Kickflip * (f.OnSkateboard ? 0.3f : 0.15f);
                     cSpeed *= bonusSkateboardSpeed;
@@ -512,7 +512,7 @@ public partial class Player : Entity
         else
             velocity.x *= cDeaccel;
         movespeed = movespeed.normalized;
-            
+
         abilityTimer -= Time.fixedDeltaTime * AbilityRecoverySpeed;
         if (abilityTimer < 0)
             abilityTimer = 0;
@@ -526,7 +526,7 @@ public partial class Player : Entity
         {
             Vector2 norm = velocity.normalized;
             velocity = norm * (cMaxSpeed + (currentSpeed - cMaxSpeed) * 0.8f);
-            if(Body is Bubblemancer)
+            if (Body is Bubblemancer)
             {
                 if (currentSpeed > cMaxSpeed + 15f * MoveSpeedMod)
                 {
@@ -538,7 +538,7 @@ public partial class Player : Entity
         if (Body is Fizzy fiz && fiz.OnSkateboard)
         {
             Vector2 norm = velocity.normalized;
-            if(currentSpeed > cMaxSpeed || Utils.RandFloat() < 0.15f)
+            if (currentSpeed > cMaxSpeed || Utils.RandFloat() < 0.15f)
                 ParticleManager.NewParticle((Vector2)fiz.Skateboard.transform.position + new Vector2(0, .3f) + Utils.RandCircle(0.25f) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, Body.PrimaryColor);
         }
         RB.velocity = velocity;
@@ -552,7 +552,7 @@ public partial class Player : Entity
         Body.Player = Accessory.Player = Weapon.Player = Hat.Player = this; //There's probably a better way to do this
         if (!HasRunStartingGear && Main.WavesUnleashed)
         {
-            foreach(Equipment e in Equips)
+            foreach (Equipment e in Equips)
             {
                 e.OnStartWith();
                 e.TotalTimesUsed = e.TotalTimesUsed + 1;
@@ -568,17 +568,18 @@ public partial class Player : Entity
             MaxLife = Life = Shield = 0;
             foreach (Equipment e in Equips)
                 e.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
-            if(AllPlayers.Count > 1)
+            if (AllPlayers.Count > 1)
             {
                 MaxLife += 2;
                 Life += 2;
             }
             PlayerStatUI.SetHeartsToPlayerLife();
+            ModifyAscensionLevel(0); //Might be better to move this to the place where body is set or changed, but this works for now.
         }
         UpdatePowerUps();
         UpdateBuffs();
         HomingRangeSqrt = Mathf.Sqrt(HomingRange);
-        bool dead = DeathKillTimer > 0; 
+        bool dead = DeathKillTimer > 0;
         CreateRoadblockBarriers();
         if (!World.WithinBorders(transform.position, true))
             Entity.PushIntoClosestPossibleTile(transform, base.RB, includeProgressionBounds: true);
@@ -601,7 +602,7 @@ public partial class Player : Entity
             }
             BonusChoices = false;
             CoinsOnPowerPickup = 0; //This update needs to happen here so the reset works for mitosis
-            foreach (Equipment e in Equips) 
+            foreach (Equipment e in Equips)
                 e.EquipUpdate();
             PostEquipUpdate();
             foreach (Equipment e in Equips)
@@ -624,9 +625,9 @@ public partial class Player : Entity
             //    Debug.Log($"Has Attacked: {HasAttacked}, Picked Lower Card: {PickedLowerDifficultyWaveCard}, Has Taken Damage: {HasBeenHit}:{TimesHitThisRun}");
             if (Weapon.IsAttacking())
             {
-                if(Weapon.IsPrimaryAttacking())
+                if (Weapon.IsPrimaryAttacking())
                     AttackUpdateTimer += PrimaryAttackSpeedModifier;
-                if(Weapon.IsSecondaryAttacking())
+                if (Weapon.IsSecondaryAttacking())
                     AttackUpdateTimer += SecondaryAttackSpeedModifier;
             }
             else
@@ -641,7 +642,7 @@ public partial class Player : Entity
             Hat.AliveUpdate();
             Accessory.AliveUpdate();
         }
-        if(InstanceID == 0)
+        if (InstanceID == 0)
         {
             int playerCount = 0;
             Vector2 average = Vector2.zero;
@@ -685,7 +686,7 @@ public partial class Player : Entity
         if (left || right || bot || top || topLeft || botRight || topRight || botLeft)
             hasBarriersAround = true;
 
-        if(hasBarriersAround)
+        if (hasBarriersAround)
         {
             if (RoadblockBarrier == null)
                 RoadblockBarrier = GameObject.Instantiate(Main.PrefabAssets.Roadblocker, Position, Quaternion.identity);
@@ -708,7 +709,7 @@ public partial class Player : Entity
     public bool RunOnce { get; set; } = true;
     public new void Update()
     {
-        if(RunOnce && InstanceID == 0 && Main.UIManager.MultiplayerMenu != null)
+        if (RunOnce && InstanceID == 0 && Main.UIManager.MultiplayerMenu != null)
         {
             Main.UIManager.OpenMultiplayerMenu(false);
             RunOnce = false;
@@ -729,13 +730,13 @@ public partial class Player : Entity
     public void LateUpdate()
     {
         Control.UpdateMouse(transform.position);
-        if(Control.ControlSchemeType <= 1)
+        if (Control.ControlSchemeType <= 1)
         {
             AimIndicator.gameObject.SetActive(false);
         }
         else
         {
-            if(InstanceID == 0)
+            if (InstanceID == 0)
                 AimIndicator.color = new Color(0.5f, 0.5f, 1f);
             else
                 AimIndicator.color = new Color(1f, 0.5f, 0.5f);
@@ -744,7 +745,7 @@ public partial class Player : Entity
             AimIndicator.transform.localPosition = toMouse.normalized * 2.5f;
             AimIndicator.transform.SetLocalEulerZ(toMouse.ToRotation() * Mathf.Rad2Deg);
         }
-        if(Control.PrimaryAttackHold || Control.SecondaryAttackHold)
+        if (Control.PrimaryAttackHold || Control.SecondaryAttackHold)
         {
 
         }
@@ -782,7 +783,7 @@ public partial class Player : Entity
             {
                 UnlockCondition.Get<GachaponHealer>().SetComplete();
             }
-            if(AllPlayers.Count > 1)
+            if (AllPlayers.Count > 1)
             {
                 if (InstanceID == 0)
                     AllPlayers[1].Hurt(-damage);
@@ -793,10 +794,10 @@ public partial class Player : Entity
         else
             damage = -damage;
         bool skipDamageStep = false;
-        if(DodgeStat > 0)
+        if (DodgeStat > 0)
         {
             bool dodge = Utils.RandFloat() < DodgeStat / Mathf.Pow(2, ConsecutiveDodges);
-            if(dodge)
+            if (dodge)
                 skipDamageStep = true;
         }
         if (!skipDamageStep)
@@ -805,7 +806,7 @@ public partial class Player : Entity
         {
             PopupText.NewPopupText(transform.position, Vector2.up * 8 + Utils.RandCircle(4), Color.gray, "DODGE", true, 0.8f, 100);
             ConsecutiveDodges++;
-            if(ConsecutiveDodges >= 3)
+            if (ConsecutiveDodges >= 3)
                 if (Body is Fizzy)
                     UnlockCondition.Get<FizzyThinkImJustGonnaStandThereAndTakeIt>().SetComplete();
         }
@@ -817,14 +818,14 @@ public partial class Player : Entity
         int lifeDamage = damage - shieldDamage;
         if (shieldDamage > 0)
         {
-            if(!skipDamageStep)
+            if (!skipDamageStep)
                 SetShield(Shield - shieldDamage);
             OnShieldHurtEffects();
             immuneMult *= ShieldImmunityFrameMultiplier;
         }
         if (lifeDamage > 0)
         {
-            if(!skipDamageStep)
+            if (!skipDamageStep)
                 SetLife(Life - lifeDamage);
         }
         UniversalImmuneFrames = defaultImmuneFrames * immuneMult;
@@ -857,7 +858,7 @@ public partial class Player : Entity
         {
             AddBuff<OmniBoost>(GladiatorDuration);
         }
-        if(CatalystJellies > 0)
+        if (CatalystJellies > 0)
         {
             int stack = CatalystJellies;
             List<int> types = new() { PowerUp.Get<Dash>().Type, PowerUp.Get<BinaryStars>().Type, PowerUp.Get<Starbarbs>().Type, PowerUp.Get<LuckyStar>().Type, PowerUp.Get<Supernova>().Type };
@@ -868,7 +869,7 @@ public partial class Player : Entity
     public void Pop()
     {
         //Time.timeScale = 0.5f + 0.5f * Mathf.Sqrt(Mathf.Max(0, 1 - DeathKillTimer / 200f));
-        if(InstanceID == 0)
+        if (InstanceID == 0)
         {
             if (DeathKillTimer > 100)
                 CameraManager.LerpCameraOrthographicSize(6, 0.03f);
@@ -881,7 +882,7 @@ public partial class Player : Entity
         Weapon.DeadUpdate();
         Accessory.DeadUpdate();
         DeathKillTimer++;
-        if(Input.GetKey(KeyCode.R) && Main.DebugCheats)
+        if (Input.GetKey(KeyCode.R) && Main.DebugCheats)
         {
             DeathKillTimer = 0;
             //Body.SetActive(true);
@@ -891,11 +892,11 @@ public partial class Player : Entity
     }
     public void RegisterDeath()
     {
-        if(InstanceID == 1 || Player.AllPlayers.Count <= 1)
+        if (InstanceID == 1 || Player.AllPlayers.Count <= 1)
             PlayerData.PlayerDeaths++;
-        if(BonusPhoenixLives > 0)
+        if (BonusPhoenixLives > 0)
         {
-            if(InstanceID == 1 || Player.AllPlayers.Count <= 1)
+            if (InstanceID == 1 || Player.AllPlayers.Count <= 1)
                 RemovePower(PowerUp.Get<BubbleBirb>().Type, 1);
             Rebirth();
             return;
@@ -905,9 +906,9 @@ public partial class Player : Entity
     }
     public void Rebirth()
     {
-        if(Accessory is RedCape)
+        if (Accessory is RedCape)
             PowerUp.Spawn<Contract>(transform.position);
-        for(int i = 0; i < 30; i++)
+        for (int i = 0; i < 30; i++)
         {
             Projectile.NewProjectile<PhoenixFire>(transform.position, new Vector2(32, 0).RotatedBy(i / 15f * Mathf.PI), 15, this);
         }
@@ -928,15 +929,15 @@ public partial class Player : Entity
     }
     public void OnSetLife(int value)
     {
-        if(InstanceID == 0)
+        if (InstanceID == 0)
             PlayerStatUI.SetHeartsToPlayerLife();
     }
     public void SetShield(int num)
     {
         Shield = num;
-        if(Shield > TotalMaxShield)
+        if (Shield > TotalMaxShield)
             Shield = TotalMaxShield;
-        if(InstanceID == 0)
+        if (InstanceID == 0)
             PlayerStatUI.SetHeartsToPlayerLife();
     }
     public void ImmuneFlashing()
@@ -964,10 +965,10 @@ public partial class Player : Entity
             {
                 int allowedBoosts = 1 + dex;
                 int existingSpeedBoosts = 0;
-                foreach(Buff b in buffs)
+                foreach (Buff b in buffs)
                     if (b is SpeedBoost)
                         existingSpeedBoosts++;
-                if(existingSpeedBoosts < allowedBoosts)
+                if (existingSpeedBoosts < allowedBoosts)
                     AddBuff<SpeedBoost>(5);
             }
         }
@@ -983,7 +984,7 @@ public partial class Player : Entity
             if (HasBubbleShield && Shield < TotalMaxShield)
                 SetShield(Shield + 1);
         }
-        if(InstanceID == 0)
+        if (InstanceID == 0)
         {
             if (PowerUp.Get<EatenCake>().Stack > 0)
             {
@@ -991,7 +992,7 @@ public partial class Player : Entity
                 RemovePower(PowerUp.Get<EatenCake>().MyID);
             }
         }
-        if(InstakillsOnWaveStart > 0)
+        if (InstakillsOnWaveStart > 0)
             AddBuff<LightningBottle>(-1, InstakillsOnWaveStart);
         LuckyStarItemsAcquiredThisWave = 0;
     }
@@ -1063,5 +1064,26 @@ public partial class Player : Entity
         Body.VictoryCount += 1;
         Hat.VictoryCount += 1;
         Accessory.VictoryCount += 1;
+    }
+    public static int AscensionLevel { get; set; } = 0;
+    public static int PlayerHighestAscensionAvailable()
+    {
+        int lowest = 3; //Max ascension available
+        foreach (Player p in AllPlayers)
+            lowest = Math.Min(lowest, p.Body.HighestDifficultyUnlocked);
+        return lowest;
+    }
+    public static void ModifyAscensionLevel(int change)
+    {
+        int max = PlayerHighestAscensionAvailable() + 1;
+        if(change == 0)
+        {
+            AscensionLevel = Mathf.Clamp(AscensionLevel, 0, max);
+            return;
+        }
+        AscensionLevel += change;
+        if (AscensionLevel < 0)
+            AscensionLevel += max;
+        AscensionLevel %= max;
     }
 }

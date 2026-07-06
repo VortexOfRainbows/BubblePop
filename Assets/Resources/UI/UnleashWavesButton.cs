@@ -2,8 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PricedButton : MonoBehaviour
+public class UnleashWavesButton : MonoBehaviour
 {
+    public TextMeshProUGUI AscensionText;
+    public TextMeshProUGUI AscensionNum;
     public Button StartButton;
     public Image StartButtonImage;
     public GameObject StartButtonCoinVisual;
@@ -11,6 +13,7 @@ public class PricedButton : MonoBehaviour
     public Image PylonVisual;
     public Image InteractVisual;
     public Canvas MyCanvas;
+    public int LoadedAscLevel { get; private set; } = -1;
     public bool CanAfford => true; // (CoinManager.TotalEquipCost <= CoinManager.Savings || CoinManager.TotalEquipCost <= 0);
     public bool CanUse => (PylonVisual == null || Main.PlayerNearPylon);
     public void SimulatePress()
@@ -46,9 +49,22 @@ public class PricedButton : MonoBehaviour
             }
             Player.Instance.Control.BlockAttack = true;
         }
+        UpdateAscensionDisplay();
         PylonUpdate();
         //StartButtonCoinVisual.SetActive(CoinManager.TotalEquipCost > 0);
         //Text.text = $"${CoinManager.TotalEquipCost}";
+    }
+    public void UpdateAscensionDisplay()
+    {
+        AscensionText.transform.parent.gameObject.SetActive(Player.PlayerHighestAscensionAvailable() != 0);
+        if (LoadedAscLevel != Player.AscensionLevel)
+        {
+            LoadedAscLevel = Player.AscensionLevel;
+            AscensionNum.text = LoadedAscLevel.ToString();
+            AscensionText.text = $"<size=32><color={ColorHelper.AscColorHex}>{Localization.Get($"Common.Asc{LoadedAscLevel}Title")}</color></size>\n{(LoadedAscLevel <= 1 ? "" : "+")}{Localization.Get($"Common.Asc{LoadedAscLevel}Description")}";
+        }
+        if (Utils.IsMouseHoveringOverThis(true, AscensionText.transform.parent.GetComponent<RectTransform>(), 0, MyCanvas))
+            Player.Instance.Control.BlockAttack = true;
     }
     public void PylonUpdate()
     {

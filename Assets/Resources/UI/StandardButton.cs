@@ -33,9 +33,10 @@ public class StandardButton : Button
         DebugMenu = 9,
         CloseTutorial = 10,
         OpenCompendium = 11,
+        ChangeAscensionLevel = 12,
     }
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonActions;
-    private static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> InitDict()
+    public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> InitDict()
     {
         Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonToActionDict = new();
         ButtonToActionDict[ButtonDestinationType.None] = DoNothing;
@@ -50,9 +51,15 @@ public class StandardButton : Button
         ButtonToActionDict[ButtonDestinationType.DebugMenu] = Main.CanvasManager.ToggleDebugMenu;
         ButtonToActionDict[ButtonDestinationType.CloseTutorial] = Main.CanvasManager.CloseMultiplayerMenu;
         ButtonToActionDict[ButtonDestinationType.OpenCompendium] = Compendium.StaticToggleActive;
+        ButtonToActionDict[ButtonDestinationType.ChangeAscensionLevel] = IncrementAscensionLevel;
         return ButtonToActionDict;
     }
-    private static void DoNothing()
+    public static void IncrementAscensionLevel() 
+    {
+        Player.ModifyAscensionLevel(1); 
+        AudioManager.PlaySound(SoundID.GhostDeath, CameraManager.MainCamera.transform.position, 1, 1.25f - Player.AscensionLevel * 0.15f, 0);
+    }
+    public static void DoNothing()
     {
 
     }
@@ -121,7 +128,7 @@ public class StandardButton : Button
             }
         }
     }
-    private static Button ArbitrarySceneResumeButton = null;
+    public static Button ArbitrarySceneResumeButton { get; private set; } = null;
     public void Update()
     {
         if(AnimationType == ButtonAnimationType.ScaleUp)
@@ -167,7 +174,6 @@ public class StandardButton : Button
     }
 }
 
-#if UNITY_EDITOR
 [CustomEditor(typeof(StandardButton))]
 [CanEditMultipleObjects]
 public class StandardButtonEditor : UnityEditor.UI.ButtonEditor
@@ -198,4 +204,3 @@ public class StandardButtonEditor : UnityEditor.UI.ButtonEditor
         serializedObject.ApplyModifiedProperties();
     }
 }
-#endif
