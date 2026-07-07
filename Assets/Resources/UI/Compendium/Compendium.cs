@@ -52,6 +52,7 @@ public class Compendium : MonoBehaviour
     public BasicTierListCompendiumPage EnemyPage { get; private set; }
     public BasicTierListCompendiumPage AchievementPage { get; private set; }
     public bool Active { get; private set; }
+    public bool PrevActive { get; private set; } = false;
     public Button OpenCompendiumButton;
     public Transform TopBar;
     public Transform SideBar;
@@ -97,6 +98,12 @@ public class Compendium : MonoBehaviour
                 page.OnUpdate();
         }
         MoveCompendiumUpdate(Utils.DeltaTimeLerpFactor(.1f));
+        if (PrevActive != Active && !PrevActive) //On reopen behavior (update stuff that is needed here)
+        {
+            UpdateDescription(true, ActiveElement.TypeID);
+
+        }
+        PrevActive = Active;
     }
     public void UpdatePage(BasicTierListCompendiumPage page, float lerpFactor)
     {

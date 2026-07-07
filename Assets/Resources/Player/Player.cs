@@ -1039,33 +1039,39 @@ public partial class Player : Entity
     public bool HasWonThisCycle = false;
     public void OnGameWin()
     {
+        Body body = Instance.Body;
         if (WaveDirector.WaveNum >= 15)
         {
-            if (Player.Instance.Body is ThoughtBubble && !Player.HasAttacked)
+            if (body is ThoughtBubble && !HasAttacked)
                 UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
-            if (Player.Instance.Body is Gachapon)
+            if (body is Gachapon)
             {
-                if (!Player.PickedLowerDifficultyWaveCard)
+                if (!PickedLowerDifficultyWaveCard)
                     UnlockCondition.Get<GachaponWave15AllSkullWaves>().SetComplete();
-                if (Player.Instance.BestPowerCountIncludingStacks <= 21)
+                if (Instance.BestPowerCountIncludingStacks <= 21)
                     UnlockCondition.Get<GachaponBlackjack>().SetComplete();
-
             }
-            if (Player.Instance.Body is Bubblemancer && !Player.HasBeenHit)
-                UnlockCondition.Get<BubblemancerPerfection>().SetComplete();
+            if (body is Bubblemancer)
+            {
+                if(!HasBeenHit)
+                    UnlockCondition.Get<BubblemancerPerfection>().SetComplete();
+                if(AscensionLevel >= 3)
+                    UnlockCondition.Get<BubblemancerCatalyst>().SetComplete();
+            }
             UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
         }
-        if (WaveDirector.WaveNum >= 20 && Player.Instance.Body is Gachapon && HasWonThisCycle)
+        if (WaveDirector.WaveNum >= 20 && body is Gachapon && HasWonThisCycle)
             UnlockCondition.Get<GachaponAddicted>().SetComplete();
         if (HasWonThisCycle)
             return;
         HasWonThisCycle = true;
-        Weapon.VictoryCount += 1;
-        Body.VictoryCount += 1;
-        Hat.VictoryCount += 1;
-        Accessory.VictoryCount += 1;
+        foreach(Equipment e in Equips)
+        {
+            e.VictoryCount += 1;
+            e.HighestDifficultyUnlocked = Math.Max(e.HighestDifficultyUnlocked, AscensionLevel + 1);
+        }
     }
-    public static int AscensionLevel { get; set; } = 0;
+    public static int AscensionLevel { get; set; } = 3;
     public static int PlayerHighestAscensionAvailable()
     {
         int lowest = 3; //Max ascension available
@@ -1078,12 +1084,18 @@ public partial class Player : Entity
         int max = PlayerHighestAscensionAvailable() + 1;
         if(change == 0)
         {
-            AscensionLevel = Mathf.Clamp(AscensionLevel, 0, max);
+            AscensionLevel = Mathf.Clamp(AscensionLevel, 0, max - 1);
             return;
         }
         AscensionLevel += change;
         if (AscensionLevel < 0)
             AscensionLevel += max;
         AscensionLevel %= max;
+    }
+    public static class AscensionModifiers
+    { 
+        public static bool AllEnemiesPermanent => AscensionLevel >= 1;
+        public static bool AllEnemiesTagTeam => AscensionLevel >= 2;
+        public static bool Pandemic => AscensionLevel >= 3;
     }
 }

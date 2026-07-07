@@ -21,20 +21,21 @@ public class CardData
     public float DifficultyMult => Owner.DifficultyMultiplier + Player.Instance.PersonalWaveCardBonus;
     public static int UpcomingWave => WaveDirector.WaveNum + 1;
     //private CardClause[] Clauses => new CardClause[] { EnemyClause, ModifierClause, RewardClause };
-    public void GetPointsAllowed()
+    public void UpdatePointsAllowed()
     {
-        AvailablePoints = 10 + (5 + UpcomingWave * 5) * DifficultyMult; //This should be tied to the wave number in some way
+        AvailablePoints = 10 + (5 + UpcomingWave * 5) * DifficultyMult;
     }
     public void Generate()
     {
-        GetPointsAllowed();
+        UpdatePointsAllowed();
         float originalAvailablePoints = AvailablePoints;
+        AvailablePoints *= 1 + Player.AscensionLevel * 0.1f; //Ascension scaling will not effect the points spendable on rewards
         AddClauses(out EnemyClause e, out ModifierClause m, out RewardClause r);
         e ??= new EnemyClause(AvailablePoints, difficultyMultiplier: DifficultyMult);
         m ??= new ModifierClause(AvailablePoints - 20);
         float bonusMult = Player.Instance.Ruby * 0.2f + 1f;
-        float pointsAllocatedToPowers = originalAvailablePoints * bonusMult;
-        r ??= new RewardClause(pointsAllocatedToPowers, -1, DifficultyMult);
+        float pointsAllocatedForRewards = originalAvailablePoints * bonusMult;
+        r ??= new RewardClause(pointsAllocatedForRewards, -1, DifficultyMult);
         if(e.AlternativeModifier != null)
         {
             if (e.AlternativeModifier.IsPermanent)
@@ -58,22 +59,12 @@ public class CardData
         m = null;
         r = null;
         int waveNum = UpcomingWave;
-        if (waveNum == 10 || (waveNum > 11 && !WaveDirector.EnemyPool.Contains(EnemyID.OldLeonard)))
-        {
-            if (Utils.RandFloat(1) < 0.25f * difficultyNum)
-                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.OldLeonard) { IsPermanent = false });
-        }
-        if(waveNum == 13 || (waveNum > 13 && !WaveDirector.EnemyPool.Contains(EnemyID.Infector)))
-        {
-            if(Utils.RandFloat(1) < 0.5f)
-                e = new EnemyClause(AvailablePoints, new EnemyCard(EnemyID.Infector) { IsPermanent = false });
-        }
         if(waveNum % 15 == 0) //Every 15th wave is a "boss wave" for now
         {
             EnemyCard baseCard = EnemyClause.GenRandomEnemyPoolAddition(2, true, false);
             Enemy enemy = baseCard.EnemiesToAdd.First();
             //We don't want "Infector + Infector" tag teams, so it will replace with super sentinel if it rolls that
-            e = new EnemyClause(AvailablePoints, new EnemyCard((enemy is Infector ? EnemyID.SuperSentinel : enemy.gameObject), EnemyID.Infector) { IsPermanent = true });
+            e = new EnemyClause(AvailablePoints, new EnemyCard((enemy is Infector ? EnemyID.SuperSentinel : enemy.gameObject), EnemyID.Infector) { IsPermanent = true, Free = true });
         }
         if (waveNum >= 5 && m == null)
         {
@@ -109,7 +100,7 @@ public class CardData
     {
         if(EnemyClause.Enemy.EnemiesToAdd.Count > 1)
         {
-            string concat = "Tag Team!\n";
+            string concat = " Tag Team! \n".WithSize(36);
             for (int i = 0; i < EnemyClause.Enemy.EnemiesToAdd.Count; ++i)
             {
                 concat += EnemyClause.Enemy.EnemiesToAdd[i].Name();
@@ -186,8 +177,8 @@ public class EnemyClause : CardClause
     }
     public override void GenerateData()
     {
-        Enemy ??= GenRandomEnemyPoolAddition((int)(difficultyMultiplier - 1), true, Utils.RandFloat() < 0.1f * difficultyMultiplier);
-        if (!Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier) //If I can afford it at the current price, make it permanent
+        Enemy ??= GenRandomEnemyPoolAddition((int)(difficultyMultiplier - 1), true, Player.AscensionModifiers.AllEnemiesTagTeam || (Utils.RandFloat() < 0.1f * difficultyMultiplier));
+        if (Player.AscensionModifiers.AllEnemiesPermanent || (!Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier)) //If I can afford it at the current price, make it permanent
             Enemy.IsPermanent = true;
         float eCount = Enemy.EnemiesToAdd.Count;
         bool allInPool = true; 
@@ -202,7 +193,7 @@ public class EnemyClause : CardClause
             else AlternativeModifier ??= new(Enemy)
                 {
                     ApplicationStrength = 1,
-                    IsPermanent = Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier / eCount //In order for the alternative modifier to be permanent, it needs to pass the permanency cost check twice
+                    IsPermanent = Player.AscensionModifiers.AllEnemiesPermanent || (Enemy.IsPermanent && Points > Enemy.GetCost() * Enemy.PermanentMultiplier / eCount) //In order for the alternative modifier to be permanent, it needs to pass the permanency cost check twice
                 };
         }
         AlreadyInPool = allInPool;
@@ -279,23 +270,24 @@ public class EnemyClause : CardClause
     public void PrepareSkullWaveCards()
     {
         SkullWaveCards.Clear();
-        int averageRarity = 0;
+        int highestRarity = 0;
         foreach(Enemy e in Enemy.EnemiesToAdd)
-            averageRarity += e.GetRarity();
-        int enemyRarity = averageRarity / Enemy.EnemiesToAdd.Count;
+            highestRarity = Mathf.Max(e.GetRarity(), highestRarity);
+        int enemyRarity = highestRarity;
         int maxSwarmDifficulty = Mathf.Max(7 - enemyRarity, 3);
         float skullWaveCount = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
         if (enemyRarity >= 4)
             skullWaveCount -= 1;
         int wavesWithoutSwarm = 0;
         int max = (int)skullWaveCount;
+        int highestBonusSkullSwarm = 0;
         int tagTeamNumber = Enemy.EnemiesToAdd.Count;
+        for (int j = 0; j < tagTeamNumber; ++j)
+            if (WaveDirector.TemporaryModifiers.BonusSkullSwarm.TryGetValue(Enemy.EnemiesToAdd[j].GetType(), out int bonus))
+                highestBonusSkullSwarm = Mathf.Max(highestBonusSkullSwarm, bonus);
         for (int i = 0; i < max; ++i)
         {
-            int TotalDudes = tagTeamNumber;
-            for (int j = 0; j < tagTeamNumber; ++j)
-                if (WaveDirector.TemporaryModifiers.BonusSkullSwarm.TryGetValue(Enemy.EnemiesToAdd[j].GetType(), out int bonus))
-                    TotalDudes += bonus;
+            int TotalDudes = tagTeamNumber + highestBonusSkullSwarm;
             GameObject[] enemies = new GameObject[TotalDudes];
             for (int j = 0; j < TotalDudes; ++j)
             {

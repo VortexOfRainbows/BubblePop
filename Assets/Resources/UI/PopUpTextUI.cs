@@ -150,7 +150,9 @@ public class PopUpTextUI : MonoBehaviour
             float totalWidthPlusSome = myRect.rect.width;
             var rect = MainGameCanvas.GetComponent<RectTransform>();
             float xPos = rect.rect.width - (myRect.rect.width / 2) + 21;
-            float yPosFromBottom = 270 - rect.rect.height;
+            float yPosFromBottom = 260 - rect.rect.height;
+            if (!Main.WavesUnleashed && Player.PlayerHighestAscensionAvailable() > 0)
+                yPosFromBottom += 120;
             if (enabledDuration >= 0)
             {
                 transform.LerpLocalPosition(new Vector2(xPos, yPosFromBottom), Utils.DeltaTimeLerpFactor(0.1f));

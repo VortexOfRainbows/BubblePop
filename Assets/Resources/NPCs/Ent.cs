@@ -7,8 +7,8 @@ public class Ent : Enemy
         additiveColorPower = 0.4f;
     }
     private Vector2 targetedLocation;
-    public virtual float MoveSpeed => 0.12f;
-    public virtual float InertiaMultiplier => 0.96f;
+    public virtual float MoveSpeed => 0.65f;
+    public virtual float InertiaMultiplier => 0.9125f;
     public float OriginalScaler = 1;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {

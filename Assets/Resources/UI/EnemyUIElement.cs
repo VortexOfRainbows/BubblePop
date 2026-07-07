@@ -37,8 +37,7 @@ public class EnemyUIElement : MonoBehaviour
             float sizeX = CardGraphicBG.rectTransform.rect.width * 0.75f; //Magic number yay 
             float sizeY = CardGraphicBG.rectTransform.rect.height * 0.75f;
             SpriteMask.transform.localScale = new Vector3(sizeX, sizeY, 1f);
-            MyEnemy = Enemy.Spawn(MyEnemyPrefab.gameObject, transform.position, false);
-            MyEnemy.SetDummy();
+            MyEnemy = Enemy.Spawn(MyEnemyPrefab.gameObject, transform.position, false, true);
             MyEnemy.Animate();
             MyEnemy.UIAI();
             MyEnemy.transform.SetParent(EnemyScaler);

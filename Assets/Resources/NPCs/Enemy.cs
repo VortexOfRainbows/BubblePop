@@ -96,16 +96,20 @@ public class Enemy : Entity
     public int ChampionType { get; set; } = -1;
     public float ChampionDefenseBonus { get; set; } = 0;
     public bool InfectionTarget { get; set; } = false;
+    public bool IsInfected => InfectionTarget && ChampionType != -1;
     private float outlineThreshold = 0.0125f;
-    public bool HasBeenImplantedOnce = false;
-    private bool HasBeenFrozenOnce = false;
+    public bool HasBeenImplantedOnce { get; set; } = false;
+    private bool HasBeenFrozenOnce { get; set; } = false;
     public void ImplantChampion(Infector Infector)
     {
-        for(int i = 0; i < 30; i++)
+        if (Infector != null)
         {
-            Vector2 circular = new Vector2(6, 0).RotatedBy(Mathf.PI * i / 15f);
-            ParticleManager.NewParticle(Infector.transform.position, 0.5f, circular, 0.3f, 0.75f, ParticleManager.ID.Trail, Color.red);
-            ParticleManager.NewParticle(Infector.transform.position, Utils.RandFloat(4, 7), circular * Utils.RandFloat(2), 0.5f, 1f, ParticleManager.ID.Pixel, Color.red);
+            for (int i = 0; i < 30; i++)
+            {
+                Vector2 circular = new Vector2(6, 0).RotatedBy(Mathf.PI * i / 15f);
+                ParticleManager.NewParticle(Infector.transform.position, 0.5f, circular, 0.3f, 0.75f, ParticleManager.ID.Trail, Color.red);
+                ParticleManager.NewParticle(Infector.transform.position, Utils.RandFloat(4, 7), circular * Utils.RandFloat(2), 0.5f, 1f, ParticleManager.ID.Pixel, Color.red);
+            }
         }
         ImplantTimer = 1;
         ChampionType = 0;
@@ -115,12 +119,13 @@ public class Enemy : Entity
         MaxLife += originalMax;
         Life += originalMax;
         ImplantShader();
-        foreach (SpriteRenderer renderer in ChildRenderers)
+        foreach (SpriteRenderer renderer in GetChildRenderers())
         {
             renderer.material.SetFloat("_IsInfected", 1);
             renderer.material.SetFloat("_OutlineSize", 0.5f);
         }
-        OnImplantChampion(Infector);
+        if(Infector != null)
+            OnImplantChampion(Infector);
     }
     public virtual Vector3 CrownPositionOffset()
     {
@@ -138,30 +143,27 @@ public class Enemy : Entity
     {
         if(HasBeenImplantedOnce)
             return;
-        if(ChildRenderers != null)
+        Color outlineColor = new(1, 0, 0);
+        Color inlineColor = new(0.275f, 0, 0);
+        float inlineThreshold = 0.2f;
+        float additiveColorPower = 0.1f;
+        ModifyInfectionShaderProperties(ref outlineColor, ref inlineColor, ref inlineThreshold, ref outlineThreshold, ref additiveColorPower);
+        foreach (SpriteRenderer renderer in GetChildRenderers())
         {
-            Color outlineColor = new(1, 0, 0);
-            Color inlineColor = new(0.275f, 0, 0);
-            float inlineThreshold = 0.2f;
-            float additiveColorPower = 0.1f;
-            ModifyInfectionShaderProperties(ref outlineColor, ref inlineColor, ref inlineThreshold, ref outlineThreshold, ref additiveColorPower);
-            foreach(SpriteRenderer renderer in ChildRenderers)
-            {
-                renderer.material = Main.TextureAssets.InfectorShader;
-                renderer.material.SetColor("_OutlineColor", outlineColor);
-                renderer.material.SetColor("_InnerColor", inlineColor);
-                renderer.material.SetFloat("_InlineThreshold", inlineThreshold);
-                renderer.material.SetFloat("_AdditivePower", additiveColorPower);
-            }
-            HasBeenImplantedOnce = true;
+            renderer.material = Main.TextureAssets.InfectorShader;
+            renderer.material.SetColor("_OutlineColor", outlineColor);
+            renderer.material.SetColor("_InnerColor", inlineColor);
+            renderer.material.SetFloat("_InlineThreshold", inlineThreshold);
+            renderer.material.SetFloat("_AdditivePower", additiveColorPower);
         }
+        HasBeenImplantedOnce = true;
     }
     private float ImplantTimer = 1f;
     public void UpdateImplantShader()
     {
         if(HasBeenFrozenOnce)
         {
-            foreach (SpriteRenderer renderer in ChildRenderers)
+            foreach (SpriteRenderer renderer in GetChildRenderers())
                 renderer.material.SetFloat("_FreezeStrength", FreezeFollower);
         }
         if (ImplantTimer == -1 || ChampionType == -1)
@@ -169,13 +171,13 @@ public class Enemy : Entity
         ImplantTimer -= Time.fixedDeltaTime * 7f;
         if (ImplantTimer < 0)
             ImplantTimer = 0;
-        foreach (SpriteRenderer renderer in ChildRenderers)
+        foreach (SpriteRenderer renderer in GetChildRenderers())
         {
             renderer.material.SetFloat("_OutlineSize", Mathf.Lerp(outlineThreshold, 0.5f, ImplantTimer * ImplantTimer));
         }
         if (ImplantTimer <= 0)
         {
-            foreach (SpriteRenderer renderer in ChildRenderers)
+            foreach (SpriteRenderer renderer in GetChildRenderers())
                 renderer.material.SetFloat("_OutlineSize", outlineThreshold);
             ImplantTimer = -1;
         }
@@ -217,10 +219,25 @@ public class Enemy : Entity
         MinCoins = StaticData.BaseMinCoin;
         MaxCoins = StaticData.BaseMaxCoin;
     }
-    public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false)
+    public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false, bool isDummy = false)
     {
         Enemy e = Instantiate(EnemyPrefab, position, Quaternion.identity, Main.GenericSuperParent).GetComponent<Enemy>();
+        e.IsDummy = isDummy;
         e.SetSkullEnemy(skull);
+        if(!e.HasCalledInit)
+        {
+            e.Init();
+            e.HasCalledInit = true;
+        }
+        if (Player.AscensionModifiers.Pandemic && !e.IsDummy)
+        {
+            float championChance = Math.Min(0.24f, 0.04f + 0.01f * WaveDirector.WaveNum);
+            if (Utils.RollWithLuck(championChance))
+            {
+                e.InfectionTarget = true;
+                e.ImplantChampion(null);
+            }
+        }
         return e;
     }
     public static HashSet<Enemy> Enemies = new();
@@ -287,7 +304,6 @@ public class Enemy : Entity
     }
     private bool JustSpawnedIn = true;
     public int FramesAlive { get; private set; } = 0;
-    public void SetDummy() => IsDummy = true;
     public bool IsDummy { get; private set; }
     public sealed override void OnFixedUpdate()
     {

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -57,7 +56,7 @@ public class StandardButton : Button
     public static void IncrementAscensionLevel() 
     {
         Player.ModifyAscensionLevel(1); 
-        AudioManager.PlaySound(SoundID.GhostDeath, CameraManager.MainCamera.transform.position, 1, 1.25f - Player.AscensionLevel * 0.15f, 0);
+        AudioManager.PlaySound(SoundID.GhostDeath, CameraManager.MainCamera.transform.position, 0.7f, 1.2f - Player.AscensionLevel * 0.2f, 0);
     }
     public static void DoNothing()
     {

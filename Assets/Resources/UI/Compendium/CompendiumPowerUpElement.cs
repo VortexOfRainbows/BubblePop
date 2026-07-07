@@ -24,7 +24,7 @@ public class CompendiumPowerUpElement : CompendiumElement
     {
         MyElem.SetPowerType(TypeID = i);
         MyElem.myCanvas = canvas;
-        MyElem.Count.text = PowerUp.Get(TypeID).PickedUpCountAllRuns.ToString();
+        MyElem.Count.text = GetCount().ToString();
         MyElem.GrayOut = GrayOut;
         int forceInitUpdates = 1;
         if (Style == 2)
@@ -75,6 +75,8 @@ public class CompendiumPowerUpElement : CompendiumElement
                 }
             }
         }
+        if(Compendium.Instance.PowerPage.ShowCounts)
+            MyElem.Count.text = GetCount().ToString();
     }
     public override void SetHovering(bool canHover)
     {

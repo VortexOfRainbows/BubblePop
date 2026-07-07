@@ -44,8 +44,8 @@ public class Sentinel : Enemy
     {
         if(MyTrail != null)
         {
-            MyTrail.Trail.startColor = InfectionTarget ? ColorHelper.CommandInfector.WithAlpha(0.75f) : Blue.WithAlpha(0.75f);
-            MyTrail.Trail.endColor = InfectionTarget ? ColorHelper.CommandInfector.WithAlpha(0) : Green.WithAlpha(0);
+            MyTrail.Trail.startColor = IsInfected ? ColorHelper.CommandInfector.WithAlpha(0.75f) : Blue.WithAlpha(0.75f);
+            MyTrail.Trail.endColor = IsInfected ? ColorHelper.CommandInfector.WithAlpha(0) : Green.WithAlpha(0);
         }
         float moveSpeed = 1.45f;
         float inertiaMult = 0.98125f;
@@ -76,7 +76,7 @@ public class Sentinel : Enemy
                     Vector2 circular = new Vector2(0, 1.5f + 0.5f * Mathf.Sin(p * 4)).RotatedBy(p - Mathf.PI / 8f);
                     ParticleManager.NewParticle((Vector2)Head.position + circular * 0.1f, Utils.RandFloat(2.5f, 3.0f), 
                         circular * Utils.RandFloat(3, 4f), .2f, Utils.RandFloat(0.65f, 1.35f), ParticleManager.ID.Pixel,
-                        InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(p), UsePurpleColors));
+                        IsInfected ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(p), UsePurpleColors));
                 }
                 AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.5f, 1.2f);
                 AudioManager.PlaySound(SoundID.Teleport, Head.position, 1, 0.67f, 0);
@@ -86,7 +86,7 @@ public class Sentinel : Enemy
                 for (int j = -k; j <= k; ++j)
                 {
                     Vector2 norm2 = norm.RotatedBy(j * 45 * Mathf.Deg2Rad);
-                    Projectile.NewProjectile<SentinelLaser>(Head.position, norm2, 1, this, InfectionTarget ? 1 : UsePurpleColors ? 2 : 0);
+                    Projectile.NewProjectile<SentinelLaser>(Head.position, norm2, 1, this, IsInfected ? 1 : UsePurpleColors ? 2 : 0);
                 }
                 AttackCounter = -50;
             }
@@ -134,7 +134,7 @@ public class Sentinel : Enemy
                     Vector2 circular = new Vector2(0.5f, 0).RotatedBy(r);
                     circular.y *= 0.25f;
                     circular.y += 0.05f;
-                    ParticleManager.NewParticle(Rings[0].position + (Vector3)circular, Utils.RandFloat(1.25f, 1.5f), Vector2.up * 8 + circular * 10 + RB.velocity, 0.1f, 1f, ParticleManager.ID.Pixel, InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(r), UsePurpleColors).WithAlpha(0.5f));
+                    ParticleManager.NewParticle(Rings[0].position + (Vector3)circular, Utils.RandFloat(1.25f, 1.5f), Vector2.up * 8 + circular * 10 + RB.velocity, 0.1f, 1f, ParticleManager.ID.Pixel, IsInfected ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(r), UsePurpleColors).WithAlpha(0.5f));
                 }
             }
         }
@@ -142,7 +142,7 @@ public class Sentinel : Enemy
         {
             ParticleManager.NewParticle(Rings[0].position - (Vector3)(RB.velocity.normalized * 0.65f + Utils.RandCircle(0.25f)), 
                 Utils.RandFloat(1.5f, 2.5f), -RB.velocity * 0.2f, 1f, Utils.RandFloat(0.8f, 1.2f), ParticleManager.ID.Pixel, 
-                InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Utils.RandFloat(), UsePurpleColors).WithAlpha(0.5f));
+                IsInfected ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Utils.RandFloat(), UsePurpleColors).WithAlpha(0.5f));
         }
     }
     public new void Update()
@@ -154,8 +154,8 @@ public class Sentinel : Enemy
         float iPer = 1 - percent * percent;
         float sqrt = Mathf.Sqrt(percent);
         Vector2 norm = targetedLocation - (Vector2)Head.position;
-        Color g = InfectionTarget ? ColorHelper.CommandInfector : Green * sqrt * 0.9f;
-        Color b = InfectionTarget ? ColorHelper.CommandInfector : Blue * sqrt;
+        Color g = IsInfected ? ColorHelper.CommandInfector : Green * sqrt * 0.9f;
+        Color b = IsInfected ? ColorHelper.CommandInfector : Blue * sqrt;
         int k = UsePurpleColors ? 1 : 0;
         for(int j = -k; j <= k; ++j)
         {
@@ -182,7 +182,7 @@ public class Sentinel : Enemy
             float p = i / amt * Mathf.PI * 2;
             Vector2 circular = new Vector2(0, 1.5f + 0.5f * Mathf.Sin(p * 5)).RotatedBy(p - Mathf.PI / 10f);
             ParticleManager.NewParticle((Vector2)Head.position + circular * 0.1f, Utils.RandFloat(2.5f, 4.0f), circular * Utils.RandFloat(4, 6), 2f, Utils.RandFloat(0.6f, 2.5f), ParticleManager.ID.Pixel, 
-                InfectionTarget ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(p), UsePurpleColors));
+                IsInfected ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(p), UsePurpleColors));
         }
         for (int i = 0; i < 15; ++i)
         {

@@ -39,7 +39,7 @@ public abstract class ClauseEffect
 public class EnemyCard : ClauseEffect
 {
     public WaveDirector.WaveModifiers MyModifier => IsPermanent ? WaveDirector.PermanentModifiers : WaveDirector.TemporaryModifiers;
-    public float PermanentMultiplier => 1.75f;
+    public float PermanentMultiplier => Player.AscensionModifiers.AllEnemiesPermanent ? 1.0f : 1.75f;
     public bool IsPermanent { get; set; } = false;
     public List<Enemy> EnemiesToAdd { get; set; } = new();
     public EnemyCard(params Enemy[] prefabsToAdd)
@@ -63,6 +63,8 @@ public class EnemyCard : ClauseEffect
         float costTotal = 0;
         foreach (Enemy e in EnemiesToAdd)
             costTotal += e.CostMultiplier * 8;
+        if(Player.AscensionModifiers.AllEnemiesTagTeam && EnemiesToAdd.Count > 0) //When ASC 2, tag team will no longer consume additional card points, instead it will use the average. 
+            costTotal /= EnemiesToAdd.Count;
         costTotal *= IsPermanent ? PermanentMultiplier : 1;
         return costTotal;
     }

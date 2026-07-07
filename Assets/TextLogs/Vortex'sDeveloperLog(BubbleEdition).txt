@@ -8,6 +8,7 @@ Do Later:
 	2. True y-layering still does not exist. A true fix may be difficult. Best to case-by-case address issues..?
 2. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
+	2. Maybe also make it so universal rewards and modifiers are shown in a separate box (stuff that is the same no matter what for the wave)
 3. Grass shader to make grass more interesting and potentially slightly vary in the wind
 4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
@@ -29,10 +30,6 @@ Need to do:
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
 8. Add small Gaussian blur to border shaders for smoother visuals
 9. Update settings UI and include settings for modifying soft shadows
-10. "Ascension" system:
-	1. No Escape: All enemies that are added are added permanently
-	2. Double Trouble: All enemy cards are "double-trouble" cards (adds two enemies to the pool at once, both appear as skull enemies)
-	3. Pandemic: Enemies can spawn infected
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -47,6 +44,24 @@ Bug Watchlist:
 
 
 Done: 	
+
+7/7/26
+1. More UI for the Ascension system
+2. Wave 10 and waves 12+ (when not already in the pool) no longer have a higher artificial chance to be Leonard
+3. Wave 13 and waves 13+ (when not already in the pool) no longer have a higher chance to be Infector
+4. Add Ascension modifiers
+	1. Unlock an ascension after winning a game on previous ascension
+5. Fix bug where some enemy visuals were colored red when they were targeted by an infector, even when not implanted
+6 (THIS WAS TECHNICALLY FROM WHEN I ADDED ICE BOOK): Modified the way infected enemies speeds are increased (now inertia should also scale)
+7. The rarity of a Tag Team wave is now based on the highest member instead of the average, which should make more forgiving
+8. The bonus enemies of a Tag Team wave is now the highest member's skull bonus instead of the sum of both enemies, which should make them more forgiving but less lucrative
+9. Catalyst achievement is now unlockable
+10. Fix bug where Ents were moving slower than intended when Ice Golems were added
+11. Achievement completion UI now moves out of the way if you have ascension ui in the spot it is supposed to be in
+12. (FIX) Black market shops should be appropriately rare again (normal subnode shop weighting increased 0.2 -> 0.7)
+	1. Also added a new "abandoned shop" node with 0.3 weighting
+13. Compendium now updates the display for stats you already had selected when reopening (so if they changed, it will display such change)
+	1. It also now properly updates powerup counts
 
 7/5/26 to 7/6/26
 1. WIP UI for "Ascension" system

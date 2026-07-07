@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class WaveMeter : MonoBehaviour
@@ -18,6 +16,8 @@ public class WaveMeter : MonoBehaviour
     public TextMeshProUGUI WaveNumber;
     public Transform DeckPosition;
     public Transform Mask, QuestAnchor;
+    public GameObject BlueSkull;
+    public TextMeshProUGUI BlueSkullNum;
     public GameObject SkullTick => Resources.Load<GameObject>("Director/SkullTick");
     public void Update()
     {
@@ -74,6 +74,13 @@ public class WaveMeter : MonoBehaviour
         {
             AddQuest(new Quest.QuestData("Arbitrary Test Quest", "Incomplete", Quest.QuestType.Dummy, new Quest.QuestData("Arbitrary Sequel Quest", "Incomplete", Quest.QuestType.Dummy)));
         }
+        if(Player.AscensionLevel != 0)
+        {
+            BlueSkullNum.text = Player.AscensionLevel.ToString();
+            BlueSkull.SetActive(true);
+        }
+        else
+            BlueSkull.SetActive(false);
         UpdateSkullsRemaining();
         UpdateNextWaveButton();
         UpdateTicks();

@@ -109,15 +109,12 @@ public partial class Entity : MonoBehaviour
         }
         lastPos = transform.position;
     }
-    public SpriteRenderer[] ChildrenRenders()
-    {
-        return ChildRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
-    }
-    public SpriteRenderer[] ChildRenderers { get; protected set; } = null;
+    public SpriteRenderer[] GetChildRenderers() => ChildRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
+    private SpriteRenderer[] ChildRenderers { get; set; } = null;
     public Color[] DefaultColors { get; private set; } = null;
     public void UpdateRendererColor(Color c, float lerp)
     {
-        ChildrenRenders();
+        GetChildRenderers();
         if (DefaultColors == null)
         {
             DefaultColors = new Color[ChildRenderers.Length];
@@ -129,7 +126,7 @@ public partial class Entity : MonoBehaviour
     }
     public void UpdateRendererColorToDefault(float lerp)
     {
-        ChildrenRenders();
+        GetChildRenderers();
         if (DefaultColors == null)
         {
             DefaultColors = new Color[ChildRenderers.Length];
@@ -141,7 +138,7 @@ public partial class Entity : MonoBehaviour
     }
     public void AdjustRenderColorFromDefault(Color other, float lerp)
     {
-        ChildrenRenders();
+        GetChildRenderers();
         if (DefaultColors == null)
         {
             DefaultColors = new Color[ChildRenderers.Length];

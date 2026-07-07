@@ -1,7 +1,7 @@
 using UnityEngine;
 public class RockGolem : RockSpider
 {
-    private Color ShotColor => InfectionTarget ? new Color(1, .1f, .1f, 1.0f) : new Color(.2f, .3f, 1f, 1.0f);
+    private Color ShotColor => IsInfected ? new Color(1, .1f, .1f, 1.0f) : new Color(.2f, .3f, 1f, 1.0f);
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.05f;
@@ -131,7 +131,7 @@ public class RockGolem : RockSpider
                             Vector2 norm2 = headToPlayer.normalized;
                             for(int i = -4; i <= 4; ++i)
                             {
-                                if (!InfectionTarget)
+                                if (!IsInfected)
                                     Projectile.NewProjectile<Bullet>(Head.transform.position, norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, this, 1.25f - Mathf.Abs(i) * 0.125f, 0.2f, 0.3f, 1f);
                                 else
                                     Projectile.NewProjectile<Bullet>(Head.transform.position, norm2.RotatedBy(Mathf.PI * i / 4f * 0.125f) * 12, 1, this, 1.25f - Mathf.Abs(i) * 0.125f, 0.2f, 0.3f, 1f);
@@ -218,7 +218,7 @@ public class RockGolem : RockSpider
             ParticleManager.NewParticle(pos, Utils.RandFloat(2, 4), Utils.RandCircle(5) - tnorm * Utils.RandFloat(3), .2f, Utils.RandFloat(0.8f, 1.5f), 
                 ParticleManager.ID.Pixel, Color.Lerp(ShotColor, Color.white, Utils.RandFloat()));
         }
-        if(InfectionTarget)
+        if(IsInfected)
             Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, this, 1.25f);
         else
             Projectile.NewProjectile<Bullet>(pos, tnorm * 12, 1, this, 1.25f, 0.2f, 0.3f, 1f);
