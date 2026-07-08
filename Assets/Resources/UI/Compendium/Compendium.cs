@@ -102,7 +102,7 @@ public class Compendium : MonoBehaviour
         if (PrevActive != Active && !PrevActive) //On reopen behavior (update stuff that is needed here)
         {
             UpdateDescription(true, ActiveElement.TypeID);
-
+            CurrentlySelectedPage.Sort();
         }
         PrevActive = Active;
     }

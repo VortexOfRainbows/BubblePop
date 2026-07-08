@@ -357,9 +357,8 @@ public partial class Main : MonoBehaviour
                 PowerUpCheat = !PowerUpCheat;
             if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
             {
-                foreach (UnlockCondition condition in UnlockCondition.Unlocks.Values) {
+                foreach (UnlockCondition condition in UnlockCondition.Unlocks.Values)
                     condition.ForceUnlock();
-                }
                 UnlockCondition.ForceUnlockAll = true;
             }
             if (Input.GetKeyDown(KeyCode.L) && DebugCheats)

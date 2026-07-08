@@ -937,6 +937,8 @@ public partial class Player : Entity
         Shield = num;
         if (Shield > TotalMaxShield)
             Shield = TotalMaxShield;
+        if(Shield < 0)
+            Shield = 0;
         if (InstanceID == 0)
             PlayerStatUI.SetHeartsToPlayerLife();
     }
