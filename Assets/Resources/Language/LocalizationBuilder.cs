@@ -3,8 +3,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using UnityEditor;
 using UnityEngine;
 
 public static class Localization
@@ -12,7 +10,13 @@ public static class Localization
     public static string CurrentLanguage => "en-US";
     public static string ResourceDirectory => "Assets/Resources/Language/";
     public static string JsonFilePath => $"Assets/Resources/Language/{CurrentLanguage}.json";
-    public static Dictionary<string, string> CondensedTranslation = new();
+    public static Dictionary<string, string> CondensedTranslation = RetrieveTranslation();
+    public static Dictionary<string, string> RetrieveTranslation()
+    {
+        string json = File.ReadAllText(JsonFilePath);
+        var data = (Dictionary<string, string>)JsonConvert.DeserializeObject(json, typeof(Dictionary<string, string>));
+        return data;
+    }
     public static string Get(string key)
     {
         if (CondensedTranslation.TryGetValue(key, out string value))

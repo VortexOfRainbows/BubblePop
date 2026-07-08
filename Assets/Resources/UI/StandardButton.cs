@@ -173,6 +173,7 @@ public class StandardButton : Button
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(StandardButton))]
 [CanEditMultipleObjects]
 public class StandardButtonEditor : UnityEditor.UI.ButtonEditor
@@ -203,3 +204,4 @@ public class StandardButtonEditor : UnityEditor.UI.ButtonEditor
         serializedObject.ApplyModifiedProperties();
     }
 }
+#endif
