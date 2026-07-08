@@ -43,8 +43,10 @@ public abstract class TierListCompendiumPage : CompendiumPage
     public TierList TierList;
     public bool HoldingAPower => SelectedType >= 0; // set => SelectedType = value ? SelectedType : -3; }
     public bool HoldingALockedPower => HoldingAPower && HoverCPUE.IsLocked();
-    public void UpdateSelectedType(int i)
+    public void UpdateSelectedType(int i, object source = null)
     {
+        if (Compendium.JustPlacedAnElemOntoTierList && source != null)
+            return;
         SelectedType = i;
         if (Owner.ActiveElement.TypeID != SelectedType && SelectedType >= 0)
         {
@@ -159,18 +161,9 @@ public abstract class TierListCompendiumPage : CompendiumPage
         countButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
         reverseButton.targetGraphic.color = ReverseSort ? Color.yellow : Color.white;
     }
-    public void Start()
-    {
-        //Instance = this;
-        SelectedType = 0;
-        if(this == Compendium.Instance.AchievementPage)
-        {
-            SelectedType = GetCPUEChildren(out int i)[0].TypeID;
-        }
-        ShowOnlyUnlocked = ShowCounts = TierListActive = MouseInCompendiumArea = AutoNextTierList = false;
-    }
     public void Init(Button countButton, TextMeshProUGUI sortText)
     {
+        ShowOnlyUnlocked = ShowCounts = TierListActive = MouseInCompendiumArea = AutoNextTierList = false;
         if (HoverCPUE is CompendiumPowerUpElement)
         {
             for (int i = 0; i < PowerUp.Reverses.Count; ++i)
@@ -223,7 +216,9 @@ public abstract class TierListCompendiumPage : CompendiumPage
             SortMode = HoverCPUE is CompendiumEquipmentElement ? FavSort : ArbitrarySort;
             ToggleSort(sortText); //default sort is rare
         }
-
+        SelectedType = 0;
+        if (this == Compendium.Instance.AchievementPage)
+            SelectedType = GetCPUEChildren(out int i)[0].TypeID;
         Owner.UpdateDisplay(SelectedType);
         Owner.UpdateDescription(true, SelectedType);
     }
@@ -523,14 +518,13 @@ public abstract class TierListCompendiumPage : CompendiumPage
         HoverCPUE.gameObject.SetActive(hasSelectedPower && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
         if (TierListActive)
         {
-            Vector3 targetPosition = Utils.MouseWorld + new Vector2(2, 1);
+            Vector3 targetPosition = Utils.MouseUI + new Vector2(2, 1);
             Rect boundingRect = ViewPort.rect;
             HoverCPUE.gameObject.transform.position = HoverCPUE.gameObject.transform.position.Lerp(targetPosition, lerpFactor);
             Vector3 pos = Utils.ClampToRect(HoverCPUE.gameObject.transform.localPosition, boundingRect, 66);
             HoverCPUE.gameObject.transform.localPosition = pos;
 
             TierList.OnUpdate();
-
             //Debug.Log(SelectedType);
         }
     }

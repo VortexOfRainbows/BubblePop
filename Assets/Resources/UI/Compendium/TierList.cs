@@ -129,7 +129,7 @@ public class TierList : MonoBehaviour
         childs.Remove(newestCPU);
         --c;
         bool autoSelectPosition = position == -1;
-        Vector2 mousePos = autoSelectPosition ? Utils.MouseWorld : Vector2.zero;
+        Vector2 mousePos = autoSelectPosition ? Utils.MouseUI : Vector2.zero;
         if(autoSelectPosition)
         {
             List<float> RoundedMousePos = UniqueYValues(childs, currentPosY);
@@ -226,6 +226,7 @@ public class TierList : MonoBehaviour
                 cpue.SetGrayOut(true);
             else
             {
+                Compendium.JustPlacedAnElemOntoTierList = true;
                 cpue.SetGrayOut(false);
                 ModifyOnTierList(i, true);
             }

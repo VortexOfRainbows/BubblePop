@@ -59,7 +59,7 @@ public class CompendiumEnemyElement : CompendiumElement
         MyElem.UpdateActive(MyCanvas, out bool hovering, out bool clicked, rectTransform);
         if (clicked)
         {
-            Compendium.Instance.EnemyPage.UpdateSelectedType(TypeID);
+            Compendium.Instance.EnemyPage.UpdateSelectedType(TypeID, this);
         }
         if (hovering && Control.RightMouseClick)
         {

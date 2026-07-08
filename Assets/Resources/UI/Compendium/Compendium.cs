@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class Compendium : MonoBehaviour
     public static Vector2 ScreenResolution { get; set; }
     public static Vector2 HalfResolution { get; set; }
     public int PageNumber
-    { 
+    {
         get
         {
             return m_PageNumber == -1 ? 1 : m_PageNumber;
@@ -24,8 +25,8 @@ public class Compendium : MonoBehaviour
     }
     public void SetPage(int value)
     {
-        if(m_PageNumber != -1)
-            Main.CanvasManager.StaticPlaySound(); 
+        if (m_PageNumber != -1)
+            Main.CanvasManager.StaticPlaySound();
         m_PageNumber = value;
         for (int i = 0; i < Pages.Length; ++i)
         {
@@ -33,7 +34,7 @@ public class Compendium : MonoBehaviour
             Pages[i].gameObject.SetActive(isSelectedPage);
             PageButtons[i].targetGraphic.color = (isSelectedPage ? Color.yellow : Color.white).WithAlpha(0.8f);
         }
-        if(ActiveElement.TypeID >= 0)
+        if (ActiveElement.TypeID >= 0)
         {
             UpdateDisplay(ActiveElement.TypeID);
             UpdateDescription(true, ActiveElement.TypeID);
@@ -63,7 +64,7 @@ public class Compendium : MonoBehaviour
     }
     public void ToggleActive()
     {
-        Main.CanvasManager.StaticPlaySound(); 
+        Main.CanvasManager.StaticPlaySound();
         ToggleActive(!Active);
     }
     public void ToggleActive(bool on)
@@ -105,11 +106,15 @@ public class Compendium : MonoBehaviour
         }
         PrevActive = Active;
     }
+    public void LateUpdate()
+    {
+        JustPlacedCounter--;
+    }
     public void UpdatePage(BasicTierListCompendiumPage page, float lerpFactor)
     {
         if (page == null)
             return;
-        if ((Active || page == CurrentlySelectedPage) && page.isActiveAndEnabled)
+        if ((Active || (page == CurrentlySelectedPage && page.HasInit)) && page.isActiveAndEnabled)
         {
             if (!page.HasInit)
             {
@@ -138,6 +143,15 @@ public class Compendium : MonoBehaviour
     public TextMeshProUGUI DisplayPortDescription;
     public RectTransform DescriptionContentRect;
     public GameObject[] Stars;
+    public static int JustPlacedCounter = 0;
+    public static bool JustPlacedAnElemOntoTierList
+    {
+        get => JustPlacedCounter > 0;
+        set 
+        {
+            JustPlacedCounter = value ? 3 : 0;
+        }
+    }
     public void UpdateDisplay(int SelectedType)
     {
         if(PageNumber == 1)

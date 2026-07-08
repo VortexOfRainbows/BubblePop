@@ -35,6 +35,7 @@ Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
 2. Compendium does not resort when items are revealed mid run, though it does update so they aren't blacked out
+	1. It also does not update completed achievements when they are completed mid-run (fix this soon!)
 
 Multiplayer Task List:
 n/a
@@ -44,6 +45,14 @@ Bug Watchlist:
 
 
 Done: 	
+
+7/7/36
+1. (FIX) Tier list mode in the compendium should now work again
+	1. Fixed issue where elements would be picked up again the frame after placing	
+	2. Fixed issue where the power offset was incorrect
+	3. Fixed issue where the placement position was incorrectly offset
+2. Fix issue where compendium sometimes broke based on frame-dependent interactions (causing double elements to appear and losing functionality)
+3. Fix issue where trails from Sentinels were spawning on the compendium displays
 
 -- A3.0 ON STEAM --
 

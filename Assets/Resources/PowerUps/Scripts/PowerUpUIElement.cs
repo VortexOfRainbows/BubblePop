@@ -131,7 +131,7 @@ public class PowerUpUIElement : MonoBehaviour
             if(CompendiumElement)
             {
                 if (Control.LeftMouseClick)
-                    Compendium.Instance.PowerPage.UpdateSelectedType(Index);
+                    Compendium.Instance.PowerPage.UpdateSelectedType(Index, this);
                 else if (Control.RightMouseClick)
                     Compendium.Instance.PowerPage.TierList.QueueRemoval = Index;
             }

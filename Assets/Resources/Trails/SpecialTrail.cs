@@ -8,7 +8,7 @@ public class SpecialTrail : MonoBehaviour
     public static SpecialTrail NewTrail(Transform parent, Color c, 
         float width = 1f, float length = 1f, float texScaleY = 0.2f, bool manuallyUpdated = false, int orderInLayer = 2)
     {
-        SpecialTrail t = Instantiate(TrailPrefab).GetComponent<SpecialTrail>();
+        SpecialTrail t = Instantiate(TrailPrefab, Main.GenericSuperParent).GetComponent<SpecialTrail>();
         t.Trail.startColor = c;
         t.originalAlpha = c.a;
         t.Trail.endColor = c.WithAlpha(0);

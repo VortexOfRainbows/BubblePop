@@ -20,10 +20,11 @@ public static class Localization
     {
 #if UNITY_EDITOR
         return new();
-#endif
+#else
         string json = Resources.Load<TextAsset>(JsonFilePath).text;
         var data = (Dictionary<string, string>)JsonConvert.DeserializeObject(json, typeof(Dictionary<string, string>));
         return data;
+#endif
     }
     public static string Get(string key)
     {

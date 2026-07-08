@@ -56,9 +56,9 @@ public class CompendiumEquipmentElement : CompendiumElement
             if (clicked)
             {
                 if (!isAchieve)
-                    Compendium.Instance.EquipPage.UpdateSelectedType(TypeID);
+                    Compendium.Instance.EquipPage.UpdateSelectedType(TypeID, this);
                 else
-                    Compendium.Instance.AchievementPage.UpdateSelectedType(TypeID);
+                    Compendium.Instance.AchievementPage.UpdateSelectedType(TypeID, this);
             }
             if (hovering && Control.RightMouseClick)
             {
