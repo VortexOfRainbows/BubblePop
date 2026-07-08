@@ -34,14 +34,14 @@ Need to do:
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
-2. Compendium does not update completed achievements when they are completed mid-run (fix this soon!)
 
 Multiplayer Task List:
-n/a
+1. (BUG) Multiplayer health not working
 
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Sometimes the barrier are not appearing before the game starts..?
+3. Sometimes black market items are not appearing as red (specifically roll for charisma observed)
 
 Done: 	
 
@@ -52,6 +52,8 @@ Done:
 	3. Fixed issue where the placement position was incorrectly offset
 2. Fix issue where compendium sometimes broke based on frame-dependent interactions (causing double elements to appear and losing functionality)
 3. Fix issue where trails from Sentinels were spawning on the compendium displays
+4. (FIX) Now compendium resorts on refresh
+5. (FIX) Compendium should now update achievements when they are unlocked
 
 -- A3.0 ON STEAM --
 

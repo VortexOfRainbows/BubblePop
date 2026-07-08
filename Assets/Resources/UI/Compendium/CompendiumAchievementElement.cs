@@ -92,6 +92,12 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         {
             if (AlternativeDisplayElement != null)
             {
+                if(AlternativeDisplayElement.SpecialLockedSprite == MyUnlock.IsComplete)
+                {
+                    AlternativeDisplayElement.SpecialLockedSprite = !MyUnlock.IsComplete;
+                    AlternativeDisplayElement.ForceUnhideElement = MyUnlock.IsComplete;
+                    AlternativeDisplayElement.TurnedOn();
+                }
                 AlternativeDisplayElement.MyPower.ForceBlackMarket = true;
                 AlternativeDisplayElement.transform.localScale = MyElem.transform.localScale;
                 AlternativeDisplayElement.OnUpdate();
