@@ -1,0 +1,77 @@
+Dev Build 3.0 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+1. Text is now stored in a Localization system rather than generated on-demand, which should make the startup time for the game faster (and will support more languages in the future)
+2. Compendium is now available during runs
+3. Runs can now loop through the map instead of going forever in the same node
+
+New:
+1. Lightning in a Bottle, Tale of Frostbite, Gladiator, Astra Jelly power
+2. New Enemy (Ice Golem)
+3. Added some new nodes, including a new wave 15 node
+4. Added 3 new achievements
+
+Changes:
+1. Reworked the buff system to no longer create as many buff instances, which should reduce lag for Snake Eyes and Roll for Dexterity
+2. The buff display is also capable of supporting multiple buffs and is slightly smaller
+3. Swap position of key and gem in UI since I think that would make more sense
+	1. Gem is now slightly bigger, key slightly smaller, and position adjusted
+4. Bubblewand charge sound now gets higher pitch with more attack speed
+5. Reworked some rooms
+6. Rework the Life and Shield system
+	1. Now shields no longer have "slots", instead they act like soul hearts in Isaac
+	2. The max life + shield you are allowed to have is 10*
+	3. Reworked the way heart and shields are loaded into the UI. Generally the system should be faster, and lag when acquiring shields or switching equips or getting hit should be reduced
+	4. Bubbleshield tooltip updated accordingly
+
+Misc:
+1. Powerup Rarities are now calculated once on game load, reducing lag
+2. Internal code improvements
+3. More standardization of UI Buttons
+	1. The more animated behaviors (such as growing when hovered) of buttons should be more present across more in-game buttons
+4. Rework scroll sensitivity in the compendium, power menu, modifier cards slightly
+5. Wave 15 achievements now activate on win rather than on wave 15
+6. Change UI text border thickness by 20%
+
+Fixes:
+1. Book should no longer softlock your attack when recalling shortly before dying and getting resurrected by bubblebirb
+	1. Thunderbubble projectile and Echo Bubble projectiles now expire immediately upon dying
+2. Fix bug where Light Bulb death animation was not working properly
+3. Fix bug where player death count was only being incremented in multiplayer (now Bunce hat should be unlockable again)
+4. Powers and Enemies should now be pushed out of walls if they somehow get inside of them
+5. Reliability of Forge R-key to process should no longer be frame dependent (previously it was somewhat unreliable and would not always register)
+6. (Collateral damage bath bombs now spawn where enemies were killed, rather than on the position of the killing projectile (fixes spear of light)
+7. Fix issue where the tooltip UI would be in different positions based on screen resolution
+8. Fix bug where Compendium was occasionally moving across the screen when first loaded
+9. Fix bug where some enemy visuals were colored red when they were targeted by an infector, even when not implanted
+10. Modified the way infected enemies speeds are increased (now inertia should also scale)
+11. Black market shops should be appropriately rare again (normal subnode shop weighting increased 0.2 -> 0.7)
+	1. Also added a new "abandoned shop" node with 0.3 weighting
+
+
+Changes to the Wave Card System:
+1. Standardized quantity of skull-wave spawns
+	1. Previously, Leonard and Rock Golem had greatly reduced swarm rates in waves (3), Sentinels and Gatligator (5), others (6)
+		1. These four/five enemies also would reduce skull wave count by 1 always (instead of 2/3/4, it was 1/2/3 based wave card)
+		1. Infector was guaranteed to only ever swarm as a single infector (1), but wave count was the same
+	2. Now, swarm quantity is based on max(3, 7 - rarity), or (6, 5, 4, 3, 3) for all enemies
+		1. Main enemies affected: Infectors (1 -> 3), Gatligators/Super Sentinel (5 -> 3), Sentinel (5 -> 4)
+		2. All other enemies will also have varied spawns, but generally it means smaller skull wave variance and less skull enemies in general (except for infectors, potentially)
+	3. Now, skull wave count is only reduced for rarities 4 and 5, which means Sentinels will now swarm as (3 -> 4) and Infectors (4 -> 3), assuming no external modifiers
+		1. Leonard, Rock Golem, Gatligator, Super Sentinel unchanged
+2. Remove all "scripted" waves, except for 15, 30, 45, etc.
+	1. Wave 20, 30, 40, etc. no longer come with a guaranteed ambush modifier
+	2. Waves 15, 20, 25, 30, etc. no longer are guaranteed to be Infector, Leonard, or Rock Golem waves
+	3. Waves 15, 30, 45, etc. are now guaranteed double trouble with Infector, with a double bias for expensive enemies
+	4. Wave 10 and waves 12+ (when not already in the pool) no longer have a higher artificial chance to be Leonard
+	5. Wave 13 and waves 13+ (when not already in the pool) no longer have a higher chance to be Infector
+
+Compendium Changes:
+1. Now shows black-market power variation effects
+2. Compendium no longer shows alternate effects before they are unlocked (like character specific sparkle-sparkle descriptions)
+3. Changed Dragon Slots description
+4. Enemies now have descriptions
+5. Some achievements can now be "secret"
+6. Keybinds can be used in the main menu to close settings and compendium/tier list now.
+7. Compendium now tracks Ascensions and Victories for each equip
