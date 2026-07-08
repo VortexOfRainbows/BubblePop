@@ -8,12 +8,20 @@ using UnityEngine;
 public static class Localization
 {
     public static string CurrentLanguage => "en-US";
+#if !UNITY_EDITOR
+    public static string ResourceDirectory => "Language/";
+    public static string JsonFilePath => $"Language/{CurrentLanguage}";
+#else
     public static string ResourceDirectory => "Assets/Resources/Language/";
     public static string JsonFilePath => $"Assets/Resources/Language/{CurrentLanguage}.json";
+#endif
     public static Dictionary<string, string> CondensedTranslation = RetrieveTranslation();
     public static Dictionary<string, string> RetrieveTranslation()
     {
-        string json = File.ReadAllText(JsonFilePath);
+#if UNITY_EDITOR
+        return new();
+#endif
+        string json = Resources.Load<TextAsset>(JsonFilePath).text;
         var data = (Dictionary<string, string>)JsonConvert.DeserializeObject(json, typeof(Dictionary<string, string>));
         return data;
     }
