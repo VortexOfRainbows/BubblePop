@@ -470,7 +470,7 @@ public abstract class PowerUp
         else if (ForceNOTBlackMarket) //Used in power preview (when hovering over equipment)
             return false;
 
-        bool NoAltsForCompendium = Compendium.Instance != null && Compendium.Instance.PageNumber == 0;
+        bool NoAltsForCompendium = Compendium.Instance != null && Compendium.Instance.PageNumber == 0 && Compendium.Instance.Active;
         if (Main.GameFinishedLoading && !IsInPowerPool && HasBlackMarketAlternate && BlackMarketVariantUnlockCondition.IsComplete && !NoAltsForCompendium)
             return true;
         if (Compendium.Instance != null && Compendium.Instance.PageNumber == 3 && Compendium.Instance.Active)

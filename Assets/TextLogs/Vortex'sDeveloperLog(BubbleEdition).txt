@@ -41,7 +41,6 @@ Multiplayer Task List:
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Sometimes the barrier are not appearing before the game starts..?
-3. Sometimes black market items are not appearing as red (specifically roll for charisma observed)
 
 Done: 	
 
@@ -54,6 +53,7 @@ Done:
 3. Fix issue where trails from Sentinels were spawning on the compendium displays
 4. (FIX) Now compendium resorts on refresh
 5. (FIX) Compendium should now update achievements when they are unlocked
+6. (FIX) Fix bug where in-game black market power borders weren't red if compendium page was power, even when closed
 
 -- A3.0 ON STEAM --
 
