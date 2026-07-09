@@ -33536,6 +33536,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[1296].second.m_TileObjectToInstantiateIndex
       value: 65535
       objectReference: {fileID: 0}
+    - target: {fileID: 7718600988708278758, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
+      propertyPath: Weighting
+      value: 0.4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

@@ -433,7 +433,8 @@ public partial class Player : Entity
         PickedUpPhoenixLivesThisRound = SpentBonusLives = 0;
         HasRunStartingGear = HasWonThisCycle = false;
         Life = MaxLife = 3;
-        PlayerStatUI.ResetLife();
+        if(InstanceID == 0)
+            PlayerStatUI.ResetLife();
         Control = new(AllPlayers.Count > 1 ? InstanceID + 1 : 0);
         Debug.Log($"Initialized Player With Control Scheme: [{Control.ControlSchemeType}]");
         if (Main.UIManager.MPControls1 != null && Main.UIManager.MPControls2 != null)
@@ -573,7 +574,8 @@ public partial class Player : Entity
                 MaxLife += 2;
                 Life += 2;
             }
-            PlayerStatUI.SetHeartsToPlayerLife();
+            if(InstanceID == 0)
+                PlayerStatUI.SetHeartsToPlayerLife();
             ModifyAscensionLevel(0); //Might be better to move this to the place where body is set or changed, but this works for now.
         }
         UpdatePowerUps();
@@ -598,7 +600,8 @@ public partial class Player : Entity
                     Life = TotalMaxLife;
                 if (TotalMaxShield < Shield)
                     Shield = TotalMaxShield;
-                PlayerStatUI.SetHeartsToPlayerLife();
+                if(InstanceID == 0)
+                    PlayerStatUI.SetHeartsToPlayerLife();
             }
             BonusChoices = false;
             CoinsOnPowerPickup = 0; //This update needs to happen here so the reset works for mitosis

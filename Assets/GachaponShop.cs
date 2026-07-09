@@ -4,7 +4,7 @@ using UnityEngine;
 public class GachaponShop : GemUtility
 {
     public RestockMachine RestockMachine;
-    public static int SetDefaultGemRestockCost() => 3;
+    public static int SetDefaultGemRestockCost() => 5;
     public static int GlobalRestockCost { get; set; } = SetDefaultGemRestockCost();
     public int RestockCost => GlobalRestockCost;
     public int RestockRemaining { get; set; } = 3;
