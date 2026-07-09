@@ -75,3 +75,35 @@ Compendium Changes:
 5. Some achievements can now be "secret"
 6. Keybinds can be used in the main menu to close settings and compendium/tier list now.
 7. Compendium now tracks Ascensions and Victories for each equip
+
+Dev Build 3.01 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+1. Modified the "Forge Land" node to be more open but have less forges
+2. Added a new node and changed spawn rate for some other nodes
+3. Compendium should now be less buggy
+
+Changes:
+1. First and second node can no longer spawn with a forge
+2. (NERF) Mitosis Forge cost 25 -> 50
+3. (NERF) Shards of Power Forge cost 25 -> 50
+4. (NERF) Crystal Serum Forge cost 25 -> 100
+5. (NERF) Coupons Forge cost 10 -> 15
+6. (BUFF) Contract Forge cost 50 -> 30
+7. (NERF) Gem cost to restock shops starts at 3 -> 5
+
+Misc:
+1. No longer debug log buff applications
+
+Fixes:
+1. Tier list mode in the compendium should now work again
+	1. Fixed issue where elements would be picked up again the frame after placing	
+	2. Fixed issue where the power offset was incorrect
+	3. Fixed issue where the placement position was incorrectly offset
+2. Fix issue where compendium sometimes broke based on frame-dependent interactions (causing double elements to appear and losing functionality)
+3. Fix issue where trails from Sentinels were spawning on the compendium displays
+4. Now compendium resorts on refresh
+5. Compendium should now update achievements when they are unlocked
+6. Fix bug where in-game black market power borders weren't red if compendium page was power, even when closed
+7. Player health now displays properly in multiplayer
