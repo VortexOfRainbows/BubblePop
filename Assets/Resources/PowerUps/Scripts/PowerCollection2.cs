@@ -26,7 +26,7 @@ public class BubbleMitosis : PowerUp
     }
     public override int CrucibleGems(bool dissolve = false)
     {
-        return dissolve ? base.CrucibleGems(dissolve) : 25;
+        return dissolve ? base.CrucibleGems(dissolve) : 50;
     }
 }
 public class RollForCharisma : PowerUp
@@ -322,6 +322,10 @@ public class Coupons : PowerUp
     {
         return stackSize * 1;
     }
+    public override int CrucibleGems(bool dissolve = false)
+    {
+        return dissolve ? base.CrucibleGems(dissolve) : 15;
+    }
 }
 public class CloudWalker : PowerUp
 {
@@ -499,7 +503,7 @@ public class ShardsOfPower : PowerUp
     }
     public override int CrucibleGems(bool dissolve)
     {
-        return dissolve ? -3 : 25;
+        return dissolve ? -3 : 50;
     }
     public override int ShardReplicationCost(int stackSize = 1)
     {
@@ -529,7 +533,7 @@ public class Contract : PowerUp
     public override int Cost => 150;
     public override int CrucibleGems(bool dissolve = false)
     {
-        return dissolve ? 10 : 25;
+        return dissolve ? 10 : 15;
     }
 }
 public class RainbowFlower : PowerUp

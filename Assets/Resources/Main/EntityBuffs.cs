@@ -17,12 +17,12 @@ public partial class Entity : MonoBehaviour
             b.Apply(this, time, stacks);
             buffs.Add(b);
             SpawnBuffIcon(b);
-            Debug.Log($"Added buff: {b.GetType().Name} for {time} seconds");
+            //Debug.Log($"Added buff: {b.GetType().Name} for {time} seconds");
         }
         else
         {
             existing.Apply(this, time, stacks);
-            Debug.Log($"Incremented buff: {existing.GetType().Name} for {time} seconds");
+            //Debug.Log($"Incremented buff: {existing.GetType().Name} for {time} seconds");
         }
     }
     public bool RemoveBuff<T>(int stacks = 1) where T : Buff

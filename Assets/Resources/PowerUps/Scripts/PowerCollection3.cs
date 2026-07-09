@@ -186,6 +186,10 @@ public class CrystalSerum : PowerUp
         p.GemDropChance += 0.2f;
         p.BonusGems += Stack;
     }
+    public override int CrucibleGems(bool dissolve = false)
+    {
+        return dissolve ? base.CrucibleGems(dissolve) : 100;
+    }
 }
 public class LightningInABottle : PowerUp
 {
