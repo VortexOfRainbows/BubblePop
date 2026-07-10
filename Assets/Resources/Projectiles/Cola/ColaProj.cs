@@ -131,11 +131,11 @@ public class ColaExplode : SupernovaExplode
     {
         if (Data.Length > 2)
         {
-            ColorVar = Color.red;
+            ColorVar = Color.red * PlayerData.SpecialVisualOpacity;
         }
         else
         {
-            ColorVar = Player.ProjectileColor;
+            ColorVar = Player.ProjectileColor * PlayerData.SpecialVisualOpacity;
             Data1 *= PlayerOwner.ExplodeRadiusMult;
             if (Data.Length > 1)
                 ColorVar *= Data2;

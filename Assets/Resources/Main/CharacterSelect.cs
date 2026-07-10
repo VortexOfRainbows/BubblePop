@@ -214,6 +214,7 @@ public class CharacterSelect : MonoBehaviour
         SecondaryPage.prevHoveringElement = SecondaryPage.hoveringElement;
         if (!PowerUpPageIsOpen)
         {
+            Equipment.ModifyPowerPoolAll();
             //PowerLayout.Generate(PowerUp.AvailablePowers);
             PowerUpPageIsOpen = true;
         }
@@ -385,8 +386,8 @@ public class CharacterSelect : MonoBehaviour
         if (player.InstanceID == 0)
             SaveCurrentSelects();
         Destroy(oldEquipment.gameObject);
-        //if(player.InstanceID == 0)
-        //    PowerLayout.Generate(PowerUp.AvailablePowers);
+        if(player.InstanceID == 0)
+            Equipment.ModifyPowerPoolAll();
     }
     public void SwapBody(Player player, Body oldBody, Body newBody)
     {
