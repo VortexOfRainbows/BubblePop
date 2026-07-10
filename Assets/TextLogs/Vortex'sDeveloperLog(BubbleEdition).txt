@@ -28,8 +28,7 @@ Need to do:
 	1. Make powers show which pools they belong to
 	2. Make blurbs appear in the equipment page
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
-8. Add small Gaussian blur to border shaders for smoother visuals
-9. Update settings UI and include settings for modifying soft shadows
+8. Update settings UI and include settings for modifying soft shadows
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -51,6 +50,7 @@ Done:
 4. Try fixing barrier not appearing bug (reset pylon progression number at the start of any run)
 5. Compendium: Fix bug where the scroll menu would have incorrect bounds with a large tier list (when tier list was loaded then closed)
 6. Fix bug where tier list categories would briefly glitch out when moving elements in such a way that increases the size of each row
+7. Adjustments to the power border shader that should make it generally smoother-looking on most powerups
 
 -- A3.01 HOTFIX ON STEAM --
 
