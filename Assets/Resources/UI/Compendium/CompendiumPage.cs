@@ -230,7 +230,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         Vector3 lastElement = PowerUpLayoutGroup.transform.GetChild(c - 1).localPosition;
         RectTransform r = PowerUpLayoutGroup.GetComponent<RectTransform>();
         float tierListOffset = 0;
-        float tierListSizeOverflow = 0;
+        float tierListSizeOverflow;
         if (TierList != null)
         {
             tierListSizeOverflow = TierList.TotalDistanceCovered - 200;
@@ -530,7 +530,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             Vector3 pos = Utils.ClampToRect(HoverCPUE.gameObject.transform.localPosition, boundingRect, 66);
             HoverCPUE.gameObject.transform.localPosition = pos;
 
-            TierList.OnUpdate();
+            TierList.OnUpdate(hasSelectedPower);
             //Debug.Log(SelectedType);
         }
     }

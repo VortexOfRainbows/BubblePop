@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TierList : MonoBehaviour
 {
@@ -49,7 +50,7 @@ public class TierList : MonoBehaviour
             cat.Text.text = TierNames[i].ToString();
         }
     }
-    public void OnUpdate()
+    public void OnUpdate(bool rebuild = false)
     {
         Color unselectColor = new(0.24706f, 0.24706f, 0.24706f);
         Color selectColor = new(.6f, .6f, .25f); 
@@ -68,13 +69,20 @@ public class TierList : MonoBehaviour
                 cat.TierRect.color = Color.Lerp(cat.TierRect.color, unselectColor, 0.25f);
             }
             cat.CalculateSizeNeededToHousePowerups(this);
+            if(rebuild)
+                LayoutRebuilder.MarkLayoutForRebuild(cat.RectTransform);
         }
-        if(QueueRemoval >= 0)
+        if(rebuild)
+        {
+            Canvas.ForceUpdateCanvases();
+            Owner.UpdateContentSize();
+        }
+        if (QueueRemoval >= 0)
         {
             RemovePower(QueueRemoval, false);
             QueueRemoval = -1;
         }
-        if(SelectedCat == null && Owner.HoverCPUE.TypeID >= 0)
+        if (SelectedCat == null && Owner.HoverCPUE.TypeID >= 0)
         {
             RemovePower(Owner.HoverCPUE.TypeID);
         }
@@ -227,7 +235,7 @@ public class TierList : MonoBehaviour
                 ModifyOnTierList(i, true);
             }
         }
-        OnUpdate();
+        OnUpdate(true);
     }
     public void RemovePower(int i, bool OnlyIfGray = true)
     {
