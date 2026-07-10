@@ -1,11 +1,7 @@
 using JetBrains.Annotations;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 public class TierList : MonoBehaviour
 {
@@ -231,6 +227,7 @@ public class TierList : MonoBehaviour
                 ModifyOnTierList(i, true);
             }
         }
+        OnUpdate();
     }
     public void RemovePower(int i, bool OnlyIfGray = true)
     {

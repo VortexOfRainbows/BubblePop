@@ -21,6 +21,8 @@ public class TierCategory : MonoBehaviour
             RectTransform.sizeDelta = new Vector2(RectTransform.sizeDelta.x, DefaultDist);
             return;
         }
+        LayoutRebuilder.MarkLayoutForRebuild(RectTransform);
+        Canvas.ForceUpdateCanvases();
         Transform lastElement = Grid.transform.GetChild(c - 1);
         float paddingBonus = lastElement.GetComponent<RectTransform>().rect.height / 2f;
         float dist = -lastElement.localPosition.y + paddingBonus + (DefaultDist - Grid.cellSize.y) / 2f;

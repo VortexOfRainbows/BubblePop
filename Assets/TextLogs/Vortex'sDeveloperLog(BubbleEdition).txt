@@ -41,7 +41,6 @@ N/A
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Sometimes the barrier are not appearing before the game starts..?
-3. Tier list spazzes out crazily when holding power in certain spot.
 
 Done: 	
 
@@ -51,6 +50,7 @@ Done:
 3. Picking up multiple astrajelly (through shards or mitosis) now gives proper amount of shields
 4. Try fixing barrier not appearing bug (reset pylon progression number at the start of any run)
 5. Compendium: Fix bug where the scroll menu would have incorrect bounds with a large tier list (when tier list was loaded then closed)
+6. Fix bug where tier list categories would briefly glitch out when moving elements in such a way that increases the size of each row
 
 -- A3.01 HOTFIX ON STEAM --
 
