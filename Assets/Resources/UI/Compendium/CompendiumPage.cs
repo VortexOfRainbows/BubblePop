@@ -229,9 +229,15 @@ public abstract class TierListCompendiumPage : CompendiumPage
             return;
         Vector3 lastElement = PowerUpLayoutGroup.transform.GetChild(c - 1).localPosition;
         RectTransform r = PowerUpLayoutGroup.GetComponent<RectTransform>();
-        float tierListOffset = 0; 
-        if(TierListActive && TierList != null)
-            tierListOffset = TierList.TotalDistanceCovered - 200;
+        float tierListOffset = 0;
+        float tierListSizeOverflow = 0;
+        if (TierList != null)
+        {
+            tierListSizeOverflow = TierList.TotalDistanceCovered - 200;
+            tierListOffset = TierListActive ? TierList.TotalDistanceCovered - 200 : 0;
+        }
+        else
+            tierListSizeOverflow = 600;
         float paddingBonus = PowerUpLayoutGroup.padding.bottom + PowerUpLayoutGroup.cellSize.y;
         float cellDefaultDistance = Compendium.ScreenResolution.y - 300 - paddingBonus - tierListOffset; //300 is the space taken up by the top bar
         float dist = -lastElement.y;
@@ -241,7 +247,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         {
             SpriteMaskRectangle.localScale = new Vector3(ViewPort.rect.width, ViewPort.rect.height, 1);
         }
-        PowerUpLayoutGroup.transform.localPosition = new Vector3(0, Mathf.Min(0, 600 - tierListOffset), 0);
+        PowerUpLayoutGroup.transform.localPosition = new Vector3(0, 600 - tierListSizeOverflow, 0);
     }
     public static List<CompendiumElement> GetCPUEChildren(Transform parent, out int count)
     {
