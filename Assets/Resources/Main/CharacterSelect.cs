@@ -92,7 +92,6 @@ public class CharacterSelect : MonoBehaviour
     public EquipmentInfoScreen InfoScreen;
     public int LastSelectedBody = 0;
     public EquipmentUIElement EquipmentUISlotPrefab;
-    public PowerUpLayout PowerLayout;
     public GameObject visual;
     public EquipmentUIElement[] DisplayBoxes;
     private Canvas myCanvas;
@@ -109,7 +108,7 @@ public class CharacterSelect : MonoBehaviour
         Instance = this;
         SecondaryPage = new EquipmentPage(this, false);
         PrimaryPage = new EquipmentPage(this, true);
-        PowerUpLayout.MenuLayout = PowerLayout;
+        //PowerUpLayout.MenuLayout = PowerLayout;
         myCanvas = GetComponent<Canvas>();
         HasLoaded = false;
         Utils.LerpSnap(Slider.transform, new Vector2(0, 645), 1f);
@@ -215,7 +214,7 @@ public class CharacterSelect : MonoBehaviour
         SecondaryPage.prevHoveringElement = SecondaryPage.hoveringElement;
         if (!PowerUpPageIsOpen)
         {
-            PowerLayout.Generate(PowerUp.AvailablePowers);
+            //PowerLayout.Generate(PowerUp.AvailablePowers);
             PowerUpPageIsOpen = true;
         }
         //if (player != null)
@@ -386,8 +385,8 @@ public class CharacterSelect : MonoBehaviour
         if (player.InstanceID == 0)
             SaveCurrentSelects();
         Destroy(oldEquipment.gameObject);
-        if(player.InstanceID == 0)
-            PowerLayout.Generate(PowerUp.AvailablePowers);
+        //if(player.InstanceID == 0)
+        //    PowerLayout.Generate(PowerUp.AvailablePowers);
     }
     public void SwapBody(Player player, Body oldBody, Body newBody)
     {

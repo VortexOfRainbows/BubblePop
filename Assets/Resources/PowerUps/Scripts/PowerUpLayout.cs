@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class PowerUpLayout : MonoBehaviour
 {
     public static PowerUpLayout InGameLayout;
-    public static PowerUpLayout MenuLayout;
     public GameObject PowerUpUISlotPrefab;
     public List<PowerUpUIElement> PowerUpElems;
     public GridLayoutGroup layout;
@@ -22,10 +21,6 @@ public class PowerUpLayout : MonoBehaviour
         {
             InGameLayout = this;
             GenerateInventory();
-        }
-        else
-        {
-            MenuLayout = this;
         }
     }
     public void Update()
@@ -51,6 +46,8 @@ public class PowerUpLayout : MonoBehaviour
             rowCount = 1 + PowerUpElems.Count / 4;
             r.sizeDelta = new Vector2(r.sizeDelta.x, 170 + (rowCount - 1) * powerupSize);
         }
+        else if(isInGameLayout)
+            powerupSize = 140;
         float height = r.rect.height;
         float remainingPaddingAllowedForHeight = height - powerupSize * rowCount;
         int paddingX = powerupSize / 2 - 30;
@@ -85,9 +82,7 @@ public class PowerUpLayout : MonoBehaviour
         if (gameObject.activeSelf)
         {
             for (int i = 0; i < PowerUp.AvailablePowers.Count; ++i)
-            {
                 AddNewPower(PowerUpUISlotPrefab, gameObject, AvailablePowers[i]);
-            }
             UpdateSizing();
         }
     }

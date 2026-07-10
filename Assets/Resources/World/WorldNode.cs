@@ -56,7 +56,7 @@ public static class NodeID
             n.transform.position = Vector3.zero;
         foreach (WorldNode n in SecretNodes)
             n.transform.position = Vector3.zero;
-        foreach (WorldNode n in SubNodes)
+        foreach (WorldNode n in EndNodes)
             n.transform.position = Vector3.zero;
     }
     public static WorldNode GetRandomNodeWithParameters(List<WorldNode> pool, int zoneID = 0, bool? shop = null, bool? crucible =  null, bool? needsLarge = null, bool? needsForge = null, float maxWeight = 5f)
