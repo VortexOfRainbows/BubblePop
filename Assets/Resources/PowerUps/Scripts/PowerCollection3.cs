@@ -255,7 +255,7 @@ public class AstralJelly : PowerUp
     public override void OnPickup(int count)
     {
         foreach (Player player in Player.AllPlayers)
-            player.SetShield(player.GetShield() + 2);
+            player.SetShield(player.GetShield() + 2 * count);
     }
     public override void Init()
     {

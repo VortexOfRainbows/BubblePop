@@ -165,12 +165,12 @@ public class World : MonoBehaviour
     }
     public void ResetWorld(bool firstInit)
     {
+        Main.PylonProgressionNumber = 0;
         if(!firstInit)
         {
             foreach(Player p in Player.AllPlayers)
                 p.OnWorldReset();
             Main.ResetContainers();
-            Main.PylonProgressionNumber = 0;
             ResetTransformParents();
         }
         ResetAllTilemaps();
