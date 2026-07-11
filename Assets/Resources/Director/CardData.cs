@@ -48,6 +48,8 @@ public class CardData
             float strength = 10;
             m.PermanentModifiers.Insert(0, new EnemyStrengthModifier() { ApplicationStrength = strength * 10, IsPermanent = true, Free = true });
         }
+        if(Player.Instance.BonusCoinFromWaveRewards > 0)
+            r.AddCashReward(new CoinReward(Player.Instance.BonusCoinFromWaveRewards), r.PostRewards);
         RegisterClause(e);
         RegisterClause(m);
         RegisterClause(r);

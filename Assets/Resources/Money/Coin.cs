@@ -81,6 +81,8 @@ public class Coin : MonoBehaviour
             attractDist *= 3;
         else
             attractDist *= 1.25f;
+        if (IsCoin && !WaveDirector.WaveActive && WaveDirector.SkullEnemiesActive <= 0)
+            attractDist *= 5;
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
         bool beingAttracted = false;

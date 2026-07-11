@@ -212,11 +212,12 @@ public class Magnet : PowerUp
     }
     public override void ModifyDescription(ref PowerDescription description)
     {
-        description.WithAlt<SlotMachineWeapon>(true, true);
+        description.WithAlt<SlotMachineWeapon>(true, false);
     }
     public override void HeldEffect(Player p)
     {
         p.Magnet += Stack;
+        p.BonusCoinFromWaveRewards += Stack * 5;
     }
 }
 public class SpearOfLight : PowerUp

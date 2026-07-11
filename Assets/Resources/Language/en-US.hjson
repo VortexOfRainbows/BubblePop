@@ -218,8 +218,12 @@
     Magnet:
     {
       Title: Magnet
-      Description: Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack)
-      Brief: Collect coins from farther away
+      Description: 
+        '''
+        Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack) 
+        Y:[Wave end] reward gives Y:5 G:(+5 per stack) additional Y:coins 
+        '''
+      Brief: Collect coins from farther away and gain bonus coins from wave rewards
       Lore:
         '''
         Imbues the user's very essence with magnetism, allowing the easy attraction and collection of money.
@@ -235,8 +239,11 @@
         I don't get it
         - Bubblemancer
         '''
-      SlotMachineWeaponBrief: Collect coins and tokens from farther away
-      SlotMachineWeaponDescription: Extends the distance Y:coins and Y:tokens are collected from by Y:75% G:(+75% per stack)
+      SlotMachineWeaponDescription:
+        '''
+        Extends the distance Y:coins and Y:tokens are collected from by Y:75% G:(+75% per stack) 
+        Y:[Wave end] reward gives Y:5 G:(+5 per stack) additional Y:coins 
+        ''' 
     }
     SpearOfLight:
     {
@@ -614,7 +621,7 @@
       Title: Perpetual Bubble Machine
       Description:
         '''
-        Adds Y:1 G:(+1 per stack) <color=#CFCFFF>Choice</color> to Y:[wave end] 
+        Adds Y:1 G:(+1 per stack) <color=#CFCFFF>Choice</color> to Y:[wave end] rewards
         R:[Rainbow Shard replication cost increases with stack size]
         '''
       Brief: The key to infinite bubble forever?
