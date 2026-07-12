@@ -1230,6 +1230,15 @@
       Abl2: Y:Throw an Y:[explosive bottle of pop]
       Abl3: Start with a random <color=#AAD3FEFF>3-star power</color>
     }
+    SaltSoda:
+    {
+      Title: Professor Salt
+      Description: Has a slightly spicy, fruity flavor
+      Lore: Equip.SaltSoda.Lore
+      Abl1: Unleash a Y:[stream of bubbles] in a burst
+      Abl2: Y:Throw an Y:[explosive bottle of pop]
+      Abl3: Start with Y:[empty heart containers,] but gain a <color=#CFCFFF>Choice</color> whenever Y:healed 
+    }
   }
   Unlock:
   {
@@ -1381,18 +1390,18 @@
     }
     FizzyFocus:
     {
-      Title: Unlock.FizzyFocus.Title
-      Description: Unlock.FizzyFocus.Description
+      Title: Fizzy: Focus
+      Description: As Y:Fizzy, win on Y:Ascension Y:1 with Y:[10 or more] <color=#AAD3FEFF>Focus Fizz</color>
     }
     FizzyFakeDoctor:
     {
-      Title: Unlock.FizzyFakeDoctor.Title
-      Description: Unlock.FizzyFakeDoctor.Description
+      Title: Fizzy: Fake Doctor
+      Description: As Y:Fizzy, win while imitating a Y:[certain scientist]
     }
     FizzyStuffed:
     {
-      Title: Unlock.FizzyStuffed.Title
-      Description: Unlock.FizzyStuffed.Description
+      Title: Fizzy: Deep Dish
+      Description: As Y:Fizzy, win while picking up Y:[10 or fewer] non-<color=#FFAAAAFF>Black Market</color> powers
     }
   }
   Enemy:

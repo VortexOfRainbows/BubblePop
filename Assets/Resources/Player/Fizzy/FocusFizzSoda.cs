@@ -13,10 +13,6 @@ public class FocusFizzSoda : Cola
         description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary, Ability.ID.Passive);
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyFocus>();
-    public override void Init()
-    {
-        transform.localScale = Vector3.zero;
-    }
     public override void EquipUpdate()
     {
         base.EquipUpdate();
@@ -36,5 +32,9 @@ public class FocusFizzSoda : Cola
             i = Utils.RandInt(PowerUp.AvailablePowers.Count);
         }
         PowerUp.Spawn(PowerUp.AvailablePowers[i], Player.Position);
+    }
+    public override int GetRarity()
+    {
+        return 3;
     }
 }

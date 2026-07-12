@@ -565,8 +565,11 @@ public partial class Player : Entity
         if (!HasRunStartingGear)
         {
             MaxLife = Life = Shield = 0;
-            foreach (Equipment e in Equips)
-                e.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
+            //These must go in a certain order, since body establishes the health first, so dont change this to a for loop
+            Body.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
+            Hat.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
+            Accessory.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
+            Weapon.ModifyLifeStats(ref MaxLife, ref Life, ref Shield);
             if (AllPlayers.Count > 1)
             {
                 MaxLife += 2;
@@ -768,6 +771,12 @@ public partial class Player : Entity
     {
         if (num > TotalMaxLife)
             num = TotalMaxLife;
+        if(num > Life)
+        {
+            if(ChoiceOnHeal > 0)
+                for (int i = 0; i < ChoiceOnHeal; i++)
+                    PowerUp.Spawn<Choice>(transform.position);
+        }
         Life = num;
         OnSetLife(Life);
     }
@@ -916,8 +925,7 @@ public partial class Player : Entity
         UniversalImmuneFrames = 200 * ImmunityFrameMultiplier;
         SpentBonusLives++;
         DeathKillTimer = 0;
-        Life = TotalMaxLife;
-        OnSetLife(Life);
+        SetLife(TotalMaxLife);
     }
     public override void OnHurtByProjectile(Projectile proj)
     {

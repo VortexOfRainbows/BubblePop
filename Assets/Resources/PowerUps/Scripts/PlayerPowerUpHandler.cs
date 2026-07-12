@@ -168,6 +168,7 @@ public partial class Player : Entity
     public float ChillDuration = 0;
     public int CatalystJellies = 0;
     public int BonusCoinFromWaveRewards = 0;
+    public int ChoiceOnHeal = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -231,7 +232,7 @@ public partial class Player : Entity
         ChillDuration = 0;
         GladiatorDuration = 0;
         CatalystJellies = 0;
-        BonusCoinFromWaveRewards = 0;
+        BonusCoinFromWaveRewards = ChoiceOnHeal = 0;
     }
     private void UpdatePowerUps()
     {
