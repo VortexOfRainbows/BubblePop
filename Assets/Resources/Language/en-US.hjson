@@ -218,7 +218,7 @@
     Magnet:
     {
       Title: Magnet
-      Description: 
+      Description:
         '''
         Extends the distance Y:coins are collected from by Y:75% G:(+75% per stack) 
         Y:[Wave end] reward gives Y:5 G:(+5 per stack) additional Y:coins 
@@ -243,7 +243,7 @@
         '''
         Extends the distance Y:coins and Y:tokens are collected from by Y:75% G:(+75% per stack) 
         Y:[Wave end] reward gives Y:5 G:(+5 per stack) additional Y:coins 
-        ''' 
+        '''
     }
     SpearOfLight:
     {
@@ -1221,6 +1221,15 @@
       Lore: Equip.CatEars.Lore
       Abl1: Gain Y:[5 coins] when a Y:power is acquired
     }
+    FocusFizzSoda:
+    {
+      Title: Focus Fizz
+      Description: Sponsored by a popular bubble influencer
+      Lore: Equip.FocusFizzSoda.Lore
+      Abl1: Unleash a Y:[stream of bubbles] in a burst
+      Abl2: Y:Throw an Y:[explosive bottle of pop]
+      Abl3: Start with a random <color=#AAD3FEFF>3-star power</color>
+    }
   }
   Unlock:
   {
@@ -1368,7 +1377,22 @@
     BubblemancerCatalyst:
     {
       Title: Bubblemancer: Catalyst
-      Description: As Y:Bubblemancer, win on Y:Ascension Y:3 
+      Description: As Y:Bubblemancer, win on Y:Ascension Y:3
+    }
+    FizzyFocus:
+    {
+      Title: Unlock.FizzyFocus.Title
+      Description: Unlock.FizzyFocus.Description
+    }
+    FizzyFakeDoctor:
+    {
+      Title: Unlock.FizzyFakeDoctor.Title
+      Description: Unlock.FizzyFakeDoctor.Description
+    }
+    FizzyStuffed:
+    {
+      Title: Unlock.FizzyStuffed.Title
+      Description: Unlock.FizzyStuffed.Description
     }
   }
   Enemy:

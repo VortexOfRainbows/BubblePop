@@ -248,3 +248,33 @@ public class BubblemancerCatalyst : UnlockCondition
     }
     public override int Rarity => 5;
 }
+public class FizzyFocus : UnlockCondition //As Fizzy, beat ascension 1 with 10 copies of focus fizz
+{
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Completionist;
+    }
+    public override int Rarity => 3;
+    public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
+}
+public class FizzyFakeDoctor : UnlockCondition //As fizzy, pick up a heart while wearing lab coat
+{
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Completionist;
+    }
+    public override int Rarity => 2;
+    public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
+}
+public class FizzyStuffed : UnlockCondition //As fizzy reach the health cap 
+{
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Challenge;
+    }
+    public override int Rarity => 4;
+    public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
+}

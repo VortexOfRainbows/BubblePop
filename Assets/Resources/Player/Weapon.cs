@@ -7,9 +7,9 @@ public class Weapon : Equipment
         offset = new Vector2(-0.7f, -0.7f);
         rotation = 45f;
     }
-    public float AttackLeft = 0;
-    public float AttackRight = 0;
-    public Vector3 WandEulerAngles = new Vector3(0, 0, 0);
+    public float AttackLeft { get; set; } = 0;
+    public float AttackRight { get; set; } = 0;
+    public Vector3 WandEulerAngles = Vector3.zero;
     public virtual void StartAttack(bool alternate)
     {
 

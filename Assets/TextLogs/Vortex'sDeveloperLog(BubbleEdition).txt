@@ -13,6 +13,7 @@ Do Later:
 4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
 6. Lighting: Fix the size so it also encompasses the bottom half of wall tiles for purpose of shadow size and shape (may be as simple as stretching the diagonal and occlusion parts, then including walls in the render target for shape)
+	1. Time of day settings (such as the ability to pause time or make it real-world accurate)
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -46,6 +47,10 @@ Done:
 7/11/26
 1. Coins now attract from 5x the distance when waves end (and skull enemies killed)
 2. Magnet now has a secondary effect (+5 coins per wave per stack)
+3. Cola is slightly bigger in UI
+4. Throw animation for Cola should now better preserve the correct rotation of the bottle from during windup to the projectile
+5. Cola explosion is now angled based on throw direction
+6. Cola should now more accurately track the mouse when shooting (previously would shoot slightly below)
 
 7/9/26 to 7/10/26
 1. Power UI (layout on the bottom) is 25% smaller

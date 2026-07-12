@@ -319,13 +319,17 @@ public abstract class PowerUp
             HighestAmountPickedUpInASingleRun = Stack;
         if (player.CoinsOnPowerPickup > 0 && amt > 0)
             CoinManager.SpawnCoin(player.transform.position, player.CoinsOnPowerPickup * amt, 1.5f, true);
-        if(player.Body is Gachapon)
+        if (player.Body is Gachapon)
         {
             if (this is Burger && Stack >= 3)
                 UnlockCondition.Get<GachaponBurger>().SetComplete();
         }
         else if (player.PowerCount >= 20 && player.Body is ThoughtBubble)
             UnlockCondition.Get<ThoughtBubbleArsenal>().SetComplete();
+        else if(player.Body is Fizzy)
+        {
+            
+        }
     }
     public void AddToDisplayQueue()
     {

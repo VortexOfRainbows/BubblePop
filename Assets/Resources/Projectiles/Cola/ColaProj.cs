@@ -9,8 +9,9 @@ public class ColaProj : Projectile
     public override void Init()
     {
         SpriteRenderer.color = SpriteRenderer.color.WithAlpha(0.85f);
-        SpriteRenderer.sprite = Resources.Load<Sprite>("Player/Fizzy/bottle");
-        SpriteRenderer.flipX = Data[2] < 0;
+        SpriteRenderer.sprite = PlayerOwner.Weapon.spriteRender.sprite;
+        SpriteRenderer.flipY = Data[2] < 0;
+        SpriteRenderer.flipX = true;
         timer2 = 0;
         transform.localScale *= 1f;
         Penetrate = -1;
@@ -18,11 +19,12 @@ public class ColaProj : Projectile
         SpriteRendererGlow.gameObject.SetActive(false);
         startPos = transform.position;
         playerStartPos = PlayerOwner.lastPos;
-        if(Data.Length > 4)
+        if (Data.Length > 4 && Data[4] != 0)
         {
             playerStartPos = startPos;
             SpeedLockContribution = 0.8f * (10f / (10f + Data[4]));
         }
+        transform.SetLocalEulerZ(PlayerOwner.Weapon.transform.eulerAngles.z);
     }
     public override void AI()
     {
@@ -83,10 +85,12 @@ public class ColaProj : Projectile
                 Utils.RandFloat(0.33f, .44f), circular * Utils.RandFloat(2, 4), 4f, 
                 0.9f, 0, Player.ProjectileColor);
         }
+        float spread = Mathf.Deg2Rad * Data[5];
+        Vector2 dir = RB.velocity.normalized * exitSpeed;
         for(int i = 0; i < projCount; ++i)
         {
-            float p = (float)i / projCount;
-            Vector2 direction = new Vector2(exitSpeed, 0).RotatedBy(p * Mathf.PI * 2);
+            float p = (float)(i + 0.5f) / projCount;
+            Vector2 direction = dir.RotatedBy(Mathf.Lerp(-spread, spread, p));
             Projectile.NewProjectile<SmallBubble>(Destination, 
                 direction, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
         }
@@ -103,7 +107,7 @@ public class ColaProj : Projectile
             toBouncePosition += toPlayer.normalized;
             Vector2 bouncePosition = toBouncePosition + (Vector2)transform.position;
             Projectile.NewProjectile<ColaProj>(Destination, toBouncePosition.normalized * (RB.velocity.magnitude * 1.25f), Damage,
-                PlayerOwner, bouncePosition.x, bouncePosition.y, Data[2], Data[3] - 1, Data.Length > 4 ? Data[4] + 1 : 1);
+                PlayerOwner, bouncePosition.x, bouncePosition.y, Data[2], Data[3] - 1, Data[4] + 1, Data[5]);
         }
         Projectile.NewProjectile<ColaExplode>(Destination, Vector2.zero, Damage, PlayerOwner, exitSpeed / 8f * 1.2f);
         AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.5f, 1.1f);

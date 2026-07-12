@@ -8,7 +8,7 @@ public class Cola : Weapon
         base.ModifyUIOffsets(isBubble, ref offset, ref rotation, ref scale);
         offset.y += 0.5f;
         offset.x += 0.5f;
-        scale *= 1.25f;
+        scale *= 1.3f;
     }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
@@ -35,15 +35,15 @@ public class Cola : Weapon
         {
             transform.localScale = Vector3.zero;
             Vector2 endpos = Player.Position + Utils.RandCircle(6f);
-            Projectile.NewProjectile<ColaProj>(transform.position, Vector2.up * 400, 3, Player, endpos.x, endpos.y, p.Direction, Player.BottleFlip);
+            Projectile.NewProjectile<ColaProj>(transform.position, Vector2.up * 400, 3, Player, endpos.x, endpos.y, p.Direction, Player.BottleFlip, 0, SpreadDegrees);
         }
     }
     public override void Init()
     {
         transform.localScale = Vector3.zero;
     }
-    private float AttackCooldown => Mathf.Max(30, 62f - Player.AttackSpeedModifier * 2);
-    private float RightAttackSpeed => 70 + Player.SecondaryAttackSpeedModifier * 50;
+    protected virtual float AttackCooldown => Mathf.Max(30, 62f - Player.AttackSpeedModifier * 2);
+    protected virtual float RightAttackSpeed => 70 + Player.SecondaryAttackSpeedModifier * 50;
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft < -AttackCooldown && AttackRight < -AttackCooldown)
@@ -51,7 +51,7 @@ public class Cola : Weapon
             if (!alternate)
             {
                 //AudioManager.PlaySound(SoundID.BathBombSizzle, transform.position, 1, 2);
-                AttackLeft = 50 + Player.ShotgunPower * 10;
+                AttackLeft = (5 + Player.ShotgunPower) * AttackRate;
             }
         }
         if (AttackRight < -AttackCooldown && AttackLeft < 0)
@@ -64,6 +64,8 @@ public class Cola : Weapon
     }
     public Vector2 recoil = Vector2.zero;
     public float bonusPointDirOffset = 0;
+    protected virtual int AttackRate => 10;
+    protected virtual float SpreadDegrees => 180;
     private void WandUpdate()
     {
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.transform.position;
@@ -83,7 +85,7 @@ public class Cola : Weapon
         Vector2 SODAtoMouse = clampedMousePos - (Vector2)transform.position - awayFromWand;
         if (AttackLeft > 0)
         {
-            bool canAttack = AttackLeft % 10 == 0;
+            bool canAttack = AttackLeft % AttackRate == 0;
             bool bonusBubble = Player.bonusBubbles > 0;
             if (!canAttack && bonusBubble)
             {
@@ -95,13 +97,20 @@ public class Cola : Weapon
                 AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1.2f);
                 float speed = Utils.RandFloat(15, 16);
                 float spread = 5;
-                Vector2 shotDirection = toMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad)
-                    * speed + awayFromWand * Utils.RandFloat(2, 4) + Utils.RandCircle(2f);
+                Vector2 randomAddition = awayFromWand * Utils.RandFloat(2, 4) + Utils.RandCircle(2f);
+                if(this is FocusFizzSoda)
+                {
+                    spread = 0;
+                    randomAddition *= 0.1f;
+                    speed += 5;
+                }    
+                Vector2 shotDirection = SODAtoMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad)
+                    * speed + randomAddition;
                 Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2,
                    shotDirection, 1, Player);
                 recoil -= awayFromWand * 0.8f;
             }
-            float percent = AttackLeft / (50f + Player.ShotgunPower * 10f);
+            //float percent = AttackLeft / (50f + Player.ShotgunPower * 10f);
         }
         if (AttackRight > 0)
         {
@@ -125,7 +134,7 @@ public class Cola : Weapon
                 dist = Mathf.Clamp(dist, 7, 16);
                 Vector2 targetPosition = (Vector2)p.transform.position + velo * dist;
                 int explodeDamage = 3;
-                Projectile.NewProjectile<ColaProj>(transform.position, velo * 24, explodeDamage, Player, targetPosition.x, targetPosition.y, dir, Player.BottleFlip);
+                Projectile.NewProjectile<ColaProj>(transform.position, velo * 24, explodeDamage, Player, targetPosition.x, targetPosition.y, dir, Player.BottleFlip, 0, SpreadDegrees);
                 AudioManager.PlaySound(SoundID.Teleport, transform.position, 1, 1.7f, 0);
                 transform.localScale = Vector3.zero;
             }
