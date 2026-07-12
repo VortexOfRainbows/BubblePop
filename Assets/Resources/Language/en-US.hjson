@@ -1400,7 +1400,7 @@
     FizzyFocus:
     {
       Title: Fizzy: Focus
-      Description: As Y:Fizzy, win on Y:Ascension Y:1 with Y:[10 or more] <color=#AAD3FEFF>Focus Fizz</color>
+      Description: As Y:Fizzy, win on Y:[Ascension 1 or higher] with Y:[10 or more] <color=#AAD3FEFF>Focus Fizz</color>
     }
     FizzyFakeDoctor:
     {
@@ -1410,7 +1410,7 @@
     FizzyStuffed:
     {
       Title: Fizzy: Deep Dish
-      Description: As Y:Fizzy, win while picking up Y:[10 or fewer] non-<color=#FFAAAAFF>Black Market</color> powers
+      Description: As Y:Fizzy, win while picking up more <color=#FFAAAAFF>Black Market</color> powers than non-<color=#FFAAAAFF>Black Market</color> powers
     }
   }
   Enemy:

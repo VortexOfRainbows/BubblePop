@@ -450,6 +450,8 @@ public partial class Player : Entity
         PlayerNumber.gameObject.SetActive(AllPlayers.Count > 1);
         PowerCountIncludingStacks = 0;
         BestPowerCountIncludingStacks = 0;
+        TotalBlackMarketPowersPickedUp = 0;
+        TotalNonBlackMarketPowersPickedUp = 0;
     }
     public float abilityTimer = 0;
     private void MovementUpdate()
@@ -1053,21 +1055,40 @@ public partial class Player : Entity
         Body body = Instance.Body;
         if (WaveDirector.WaveNum >= 15)
         {
-            if (body is ThoughtBubble && !HasAttacked)
-                UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
-            if (body is Gachapon)
+            if (body is ThoughtBubble)
+            {
+                if(!!HasAttacked)
+                    UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
+            }
+            else if (body is Gachapon)
             {
                 if (!PickedLowerDifficultyWaveCard)
                     UnlockCondition.Get<GachaponWave15AllSkullWaves>().SetComplete();
                 if (Instance.BestPowerCountIncludingStacks <= 21)
                     UnlockCondition.Get<GachaponBlackjack>().SetComplete();
             }
-            if (body is Bubblemancer)
+            else if (body is Bubblemancer)
             {
                 if(!HasBeenHit)
                     UnlockCondition.Get<BubblemancerPerfection>().SetComplete();
                 if(AscensionLevel >= 3)
                     UnlockCondition.Get<BubblemancerCatalyst>().SetComplete();
+            }
+            else if(body is Fizzy)
+            {
+                int tbImitation = 0;
+                if(Accessory is LabCoat || (Accessory.IsSubEquip && Accessory.SubEquipParent is LabCoat))
+                    tbImitation++;
+                if (Weapon is Book || (Weapon.IsSubEquip && Weapon.SubEquipParent is Book))
+                    tbImitation++;
+                if (Hat is Bulb || (Hat.IsSubEquip && Hat.SubEquipParent is Bulb))
+                    tbImitation++;
+                if(tbImitation >= 2)
+                    UnlockCondition.Get<FizzyFakeDoctor>().SetComplete();
+                if (AscensionLevel >= 1 && PowerUp.Get<FocusFizz>().Stack >= 10)
+                    UnlockCondition.Get<FizzyFocus>().SetComplete();
+                if(TotalBlackMarketPowersPickedUp >= TotalNonBlackMarketPowersPickedUp)
+                    UnlockCondition.Get<FizzyStuffed>().SetComplete();
             }
             UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
         }

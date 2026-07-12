@@ -22,8 +22,8 @@ public class SaltSoda : Cola
         base.EquipUpdate();
         Player.ChoiceOnHeal += 1;
     }
-    protected override int AttackRate => 11;
-    protected override float AttackCooldown => base.AttackCooldown - 5;
+    protected override int AttackRate => 12;
+    protected override float AttackCooldown => base.AttackCooldown - 10;
     public override int GetRarity()
     {
         return 2;

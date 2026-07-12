@@ -340,6 +340,10 @@ public abstract class PowerUp
     {
         player.PickUpPower(MyID);
         Stack = Stack + count;
+        if (IsBlackMarket())
+            player.TotalBlackMarketPowersPickedUp += count;
+        else
+            player.TotalNonBlackMarketPowersPickedUp += count;
         player.PowerCountIncludingStacks += count;
         player.BestPowerCountIncludingStacks = Math.Max(player.PowerCountIncludingStacks, player.BestPowerCountIncludingStacks);
         //Debug.Log($"Current Power Count: {player.PowerCountIncludingStacks}, {player.BestPowerCountIncludingStacks}");
