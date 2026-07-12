@@ -24,11 +24,13 @@ public class ColaProj : Projectile
             playerStartPos = startPos;
             SpeedLockContribution = 0.8f * (10f / (10f + Data[4]));
         }
-        transform.SetLocalEulerZ(PlayerOwner.Weapon.transform.eulerAngles.z);
+        else
+            transform.SetLocalEulerZ(PlayerOwner.Weapon.transform.eulerAngles.z);
     }
     public override void AI()
     {
-        float speedMult = PlayerOwner.SecondaryAttackSpeedModifier * 0.5f + 0.5f;
+        bool isHeavy = Data[5] < 0;
+        float speedMult = PlayerOwner.SecondaryAttackSpeedModifier * 0.5f + (isHeavy ? 0.7f : 0.5f);
         float speed = RB.velocity.magnitude;
         if (speed < 1)
             speed = 1;
@@ -53,7 +55,7 @@ public class ColaProj : Projectile
             return;
         }
         Vector2 pos = Vector2.Lerp(startPos, Destination, percent);
-        float arcY = Mathf.Sin(percent * Mathf.PI) * dist * 0.4f;
+        float arcY = Mathf.Sin(percent * Mathf.PI) * dist * (isHeavy ? 0.3f : 0.4f);
         pos.y += arcY;
         RB.MovePosition(pos);
     }
@@ -85,14 +87,22 @@ public class ColaProj : Projectile
                 Utils.RandFloat(0.33f, .44f), circular * Utils.RandFloat(2, 4), 4f, 
                 0.9f, 0, Player.ProjectileColor);
         }
-        float spread = Mathf.Deg2Rad * Data[5];
+        bool randSpeed = false;
+        float deg = Data[5];
+        if(deg < 0) //Variant for Hill Droplet
+        {
+            randSpeed = true;
+            deg = -deg;
+            projCount += 4;
+        }
+        float spread = Mathf.Deg2Rad * deg;
         Vector2 dir = RB.velocity.normalized * exitSpeed;
         for(int i = 0; i < projCount; ++i)
         {
+            float speedMult = randSpeed ? Utils.RandFloat(0.25f, 1.5f) : 1.0f;
             float p = (float)(i + 0.5f) / projCount;
-            Vector2 direction = dir.RotatedBy(Mathf.Lerp(-spread, spread, p));
-            Projectile.NewProjectile<SmallBubble>(Destination, 
-                direction, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
+            Vector2 direction = dir.RotatedBy(Mathf.Lerp(-spread, spread, p)) * speedMult;
+            Projectile.NewProjectile<SmallBubble>(Destination, direction, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
         }
         if(PlayerOwner.BombBrew > 0)
         {

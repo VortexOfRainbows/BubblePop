@@ -329,6 +329,7 @@ public partial class Main : MonoBehaviour
         public static readonly GameObject CatEars = LoadSubEquipment(GachaponHat, "Gachapon/CatEars");
         public static readonly GameObject SaltCola = LoadSubEquipment(Cola, "Fizzy/SaltCola");
         public static readonly GameObject PinkCola = LoadSubEquipment(Cola, "Fizzy/PinkCola");
+        public static readonly GameObject HillCola = LoadSubEquipment(Cola, "Fizzy/HillCola");
         public static GameObject LoadEquipment(string path) => LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
         public static GameObject LoadEquipment(GameObject Prefab)
         {

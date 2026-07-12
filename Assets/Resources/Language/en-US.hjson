@@ -1237,7 +1237,16 @@
       Lore: Equip.SaltSoda.Lore
       Abl1: Unleash a Y:[stream of bubbles] in a burst
       Abl2: Y:Throw an Y:[explosive bottle of pop]
-      Abl3: Start with Y:[empty heart containers,] but gain a <color=#CFCFFF>Choice</color> whenever Y:healed 
+      Abl3: Start with Y:[empty heart containers,] but gain a <color=#CFCFFF>Choice</color> whenever Y:healed
+    }
+    HillSoda:
+    {
+      Title: Hill Droplet
+      Description: Created from dew that forms on certain flowers found in hilly regions
+      Lore: Equip.HillSoda.Lore
+      Abl1: Unleash a Y:[stream of bubbles] in a burst
+      Abl2: Y:Throw an Y:[explosive bottle of pop]
+      Abl3: Start with <color=#FFAAAAFF>Burger</color>
     }
   }
   Unlock:

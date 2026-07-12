@@ -94,21 +94,28 @@ public class Cola : Weapon
             }
             if (canAttack)
             {
-                AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1.2f);
-                float speed = Utils.RandFloat(15, 16);
-                float spread = 5;
-                Vector2 randomAddition = awayFromWand * Utils.RandFloat(2, 4) + Utils.RandCircle(2f);
-                if(this is FocusFizzSoda)
+                AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, this is HillSoda ? 0.9f : this is FocusFizzSoda ? 1.25f : 1.2f);
+                int i = this is HillSoda ? 3 : 1;
+                for (int j = 0; j < i; ++j)
                 {
-                    spread = 0;
-                    randomAddition *= 0.1f;
-                    speed += 5;
-                }    
-                Vector2 shotDirection = SODAtoMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad)
-                    * speed + randomAddition;
-                Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2,
-                   shotDirection, 1, Player);
-                recoil -= awayFromWand * 0.8f;
+                    Vector2 randomAddition = awayFromWand * Utils.RandFloat(2, 4) + Utils.RandCircle(2f);
+                    float speed = Utils.RandFloat(15, 16);
+                    float spread = 5;
+                    if (this is FocusFizzSoda)
+                    {
+                        spread = 0;
+                        randomAddition *= 0.1f;
+                        speed += 5;
+                    }
+                    else if (i == 3)
+                    {
+                        spread += 5;
+                        speed *= Utils.RandFloat(0.9f, 1.1f);
+                    }
+                    Vector2 shotDirection = SODAtoMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad) * speed + randomAddition;
+                    Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2, shotDirection, 1, Player);
+                }
+                recoil -= awayFromWand * (i == 3 ? 1.5f : 0.8f);
             }
             //float percent = AttackLeft / (50f + Player.ShotgunPower * 10f);
         }
@@ -131,9 +138,9 @@ public class Cola : Weapon
             {
                 Vector2 velo = toMouse.normalized;
                 float dist = toMouse.magnitude;
-                dist = Mathf.Clamp(dist, 7, 16);
+                dist = Mathf.Clamp(dist, this is HillSoda ? 6 : 7, this is HillSoda ? 14 : this is FocusFizzSoda ? 18 : 16);
                 Vector2 targetPosition = (Vector2)p.transform.position + velo * dist;
-                int explodeDamage = 3;
+                int explodeDamage = this is HillSoda ? 4 : 3;
                 Projectile.NewProjectile<ColaProj>(transform.position, velo * 24, explodeDamage, Player, targetPosition.x, targetPosition.y, dir, Player.BottleFlip, 0, SpreadDegrees);
                 AudioManager.PlaySound(SoundID.Teleport, transform.position, 1, 1.7f, 0);
                 transform.localScale = Vector3.zero;
