@@ -16,7 +16,7 @@ public class RockSpider : Enemy
     public float inertiaMult = 0.96f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 8;
+        data.BaseMaxLife = 7;
         data.BaseMaxCoin = 4;
         data.BaseMinCoin = 1;
         data.Cost = 1f;

@@ -98,7 +98,7 @@ public class Fizzy : Body
                 AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1.1f, 0.7f, 0);
                 int c = 1 + Player.BonusBoards;
                 for(int i = 0; i < c; ++i)
-                    Projectile.NewProjectile<SkateboardProj>(Skateboard.transform.position, Player.RB.velocity, 10 + Player.SkateboardBonusDamage, Player, Utils.RandFloat(-1, 1) * (0.5f + i * 0.1f));
+                    Projectile.NewProjectile<SkateboardProj>(Skateboard.transform.position, Player.RB.velocity, 8 + Player.SkateboardBonusDamage, Player, Utils.RandFloat(-1, 1) * (0.5f + i * 0.1f));
                 PopupText.NewPopupText(transform.position, new Vector2(0, 10) + Utils.RandCircle(5) + Player.RB.velocity * 0.5f, Utils.PastelRainbow(Utils.RandFloat(Mathf.PI * -0.75f, Mathf.PI * 0.25f), 0.55f, default), CoolWords2[Utils.RandInt(CoolWords2.Length)], true, 1.1f, 80);
             }
             else

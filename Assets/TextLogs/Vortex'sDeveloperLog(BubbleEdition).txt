@@ -30,6 +30,7 @@ Need to do:
 	2. Make blurbs appear in the equipment page
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
 8. Update settings UI and include settings for modifying soft shadows
+9. Overhaul the way bubble projectile colors are determined
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -56,6 +57,12 @@ Done:
 	2. Focus Fizz is more accurate, and comes with a free 3-star power
 	3. Hill Droplet shoots with a small scattershot and gives burger (and has more damaging, chaotic explosion)
 8. Add three new achievements to Fizzy for unlocking the soda weapons (tested, they should work...)
+9. The base minimum amount of credits director needs to spend before spawning skull waves and considering a wave complete reduced by 20%
+	1. And the minimum number of cards needed to be spent for the same purpose reduced 10 -> 9
+	2. In general, this should mean waves are generally faster and have slightly less enemies
+10. Fizzy base skateboard damage 10 -> 8
+11. Chicken health 7 -> 8
+12. Rock Spider health 8 -> 7
 
 7/9/26 to 7/10/26
 1. Power UI (layout on the bottom) is 25% smaller
