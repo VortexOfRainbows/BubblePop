@@ -227,7 +227,7 @@
       Lore:
         '''
         Imbues the user's very essence with magnetism, allowing the easy attraction and collection of money.
-        I wonder why magnetism doesn't work on bubbles
+        Why doesn't magnetism work on bubbles?
         - Bubblemancer
 
         Bubbles are not made of metal.
@@ -311,10 +311,7 @@
       Brief: Greatly increases the potency of your chips
       Lore:
         '''
-        No one knows what Gachapon is risking to achieve such power, but all can agree it is tremendous.
-
-        "Nowhere to go but up, baby!"
-        - Gachapon
+        The chaotic one shall risk everything for the sake of power, claiming that there's "nowhere to go but up, baby".
         '''
     }
     SnakeEyes:
@@ -553,7 +550,7 @@
         Nuh-uh.
         - Gachapon
 
-        I used to play a bit of flute, but all I can say is the pylon's hum sounds kind of like the ruby
+        I used to play a bit of flute, but all I can say is the pylon's hum sounds kind of like the ruby's resonance
         - Bubblemancer
 
         Sigh. I guess I'll just have to accept that for now.
@@ -605,7 +602,7 @@
         '''
         Some coupons for Gachapon's shop. Perhaps the concept of a discount itself is contained within this power bubble.
 
-        TOO MANY COUPONS!!! If I ever catch the bubble who powerfied this...
+        TOO MANY COUPONS NOW!!! If I ever catch the bubble who powerfied this...
         - Gachapon
         '''
     }
@@ -614,7 +611,22 @@
       Title: Cloud Walkers
       Description: Increases Y:[movement speed] by Y:10% G:(+10% per stack)
       Brief: Increases movement speed
-      Lore: Power.CloudWalker.Lore
+      Lore: 
+      '''
+      An ancient hero's artifact with its speediness now contained in a power bubble.
+
+      Another item from the Winged Bubble! These must be what he used to dance upon the clouds!
+      - Bubblemancer
+
+      If he had wings, why did he also need magic cloud-walking shoes?
+      - Gachapon
+
+      Uh...well...maybe he would just get tired at some point? Flying all the time sounds hard!
+      - Bubblemancer
+
+      You don't need an excuse to have some sweet kicks.
+      - Fizzy
+      '''
     }
     PerpetualBubbleMachine:
     {
@@ -625,7 +637,13 @@
         R:[Rainbow Shard replication cost increases with stack size]
         '''
       Brief: The key to infinite bubble forever?
-      Lore: Power.PerpetualBubbleMachine.Lore
+      Lore: 
+      '''
+      A mythical device that continuously pumps out power bubbles in a chaotic state, seemingly powered by a pylon.
+
+      Was this machine actually built, and then contained? Or is this power bubble merely the result of someone thinking they had made such a machine?
+      - TB
+      '''
     }
     ConsolationPrize:
     {
@@ -637,7 +655,7 @@
         R:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins
         '''
       Brief: Increases non-winning spin damage, secondary attack damage, and gives a chance for consolation coins
-      Lore: Power.ConsolationPrize.Lore
+      Lore: A power that appreciates a gambling bubble's time and effort, if nothing else.
     }
     Pity:
     {
@@ -648,7 +666,7 @@
         R:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins
         '''
       Brief: Increases Jackpot chance after consecutive spins without a Jackpot
-      Lore: Power.Pity.Lore
+      Lore: Allows a gambling bubble to eventually obtain what they seek. Eventually.
     }
     TokenPouch:
     {
@@ -659,7 +677,7 @@
         R:[Increases spin price by 0.25] G:(+0.25 per stack) R:coins
         '''
       Brief: Hold more tokens
-      Lore: Power.TokenPouch.Lore
+      Lore: Tokens are surprisingly bulky and inconvenient to carry. Maybe someone didn't want gamblers to stockpile too many of them.
     }
     BOGOSpin:
     {
@@ -671,7 +689,7 @@
         R:[Increases spin price by] R:1 G:(+1 per stack) R:coins
         '''
       Brief: Sometimes get a Bonus spin for free
-      Lore: Power.BOGOSpin.Lore
+      Lore: An nice shopping deal applied to the concept of gambling.
     }
     PhilosophersStone:
     {
@@ -682,7 +700,17 @@
         R:[Increases spin price by] R:2 G:(+2 per stack) R:coins
         '''
       Brief: Increases the damage dealt and coins dropped by high-rarity spins
-      Lore: Power.PhilosophersStone.Lore
+      Lore: 
+      '''
+      A strange stone that seems conducive to the generation of wealth in fortuitous circumstances.
+
+      An alien artifact that I cannot even begin to guess the origin of. It seems to hold a great amount of power given its ability to create precious metals so easily, but uncovering the method by which this occurs would take extensive research.
+      - TB
+
+      All I need to know is where I can get more of 'em!!!
+      - Gachapon
+      '''
+
     }
     RouletteWheel:
     {
@@ -694,14 +722,20 @@
         R:[Increases spin price by] R:4 G:(+4 per stack) R:coins
         '''
       Brief: Keep that ball rolling!
-      Lore: Power.RouletteWheel.Lore
+      Lore: A power bubble that uses the another form of spinning gambling devices to enhance the bubble output of one of Gachapon's slot machines.
     }
     BatterUp:
     {
       Title: Batter Up
       Description: Y:[Secondary attack] launches Y:1 G:(+1 per stack) Y:[Curveball Tokens] for Y:[50% secondary attack damage] that drop Y:1 Y:token on kill
       Brief: Let's hit it out of the park!
-      Lore: Power.BatterUp.Lore
+      Lore: 
+      '''
+      Embodies the concept of a certain pastime to allow the repurposing of tokens for a more...direct form of attack.
+
+      Bat not included...but this is so much more fun!
+      - Gachapon
+      '''
     }
     PiratesBooty:
     {
@@ -712,14 +746,20 @@
         Drops a Y:key when Y:dissolved in a Y:Crucible
         '''
       Brief: Next killed Skull enemy has a chance to drop a chest or key
-      Lore: Power.PiratesBooty.Lore
+      Lore:
+      '''
+      An ancient pirate's hoard contained in a power bubble, rewarding the user with treasure upon the defeat of powerful enemies. The treausure in the hoard can also be partially extracted using a crucible.
+      
+      I'm glad that we haven't run into any bubbleverse pirates yet. Not that the infectors are any better.
+      - TB
+      '''
     }
     Eureka:
     {
       Title: Eureka!
       Description: Reduces <color=#CFCFFF>Choice</color> Y:Reroll cost by Y:2 G:(+2 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)
       Brief: Reduces Choice Reroll cost and increases Reroll count
-      Lore: Power.Eureka.Lore
+      Lore: Sometimes the greatest of revelations come during the most mundane moments.
       BlackMarketDescription: Reduces <color=#CFCFFF>Choice</color> Y:Reroll cost by Y:5 G:(+5 per stack) Y:gems and increases Y:[Reroll] count by Y:1 G:(+1 per stack)
     }
     BlackMarketDelivery:
@@ -727,7 +767,7 @@
       Title: Special Delivery
       Description: Each Y:[Skull Wave] has a Y:10% G:(+10% per stack) Y:chance to drop a Y:[Black Market crate] G:(consumed on use)
       Brief: The next Skull Wave has a chance to deliver a Black Market crate
-      Lore: Power.BlackMarketDelivery.Lore
+      Lore: This was originally planned to be an actual air drop, but then someone got the idea to put the airdrop in a power bubble. As for who bubblefied it, no one knows.
     }
     ShardsOfPower:
     {
@@ -738,14 +778,32 @@
         Y:[Rainbow Shards] can be used to Y:duplicate any Y:power you have
         '''
       Brief: Drops Rainbow Shards when dissolved
-      Lore: Power.ShardsOfPower.Lore
+      Lore: 
+      '''
+      An extremely powerful substance that can be made into anything.
+
+      A pity that the crucible's melting process is too crude to extract the original shards. Actually...it's probably for the best that the crucible's engineer made it like it is.
+      - TB
+
+      Wonder if you could make a soda outta those rainbow things
+      - Fizzy
+      '''
     }
     Contract:
     {
       Title: Contract
       Description: Y:Trade for a Y:power from a given selection
       Brief: !TRADE OFFER!
-      Lore: Power.Contract.Lore
+      Lore: 
+      '''
+      A modified choice bubble that takes something from the user in return.
+      
+      Who's making the offer???
+      - Gachapon
+
+      I'm confused on that as well. My theory is that it simply represents the concept of a deal, but whether the powers it takes from you are being used for something, somewhere, we can only wonder.
+      - TB
+      '''
     }
     RainbowFlower:
     {
@@ -756,21 +814,29 @@
         Y:[Rainbow Shards] can be used to Y:duplicate any Y:power you have
         '''
       Brief: Power Propagation
-      Lore: Power.RainbowFlower.Lore
+      Lore: 
+      '''
+      A wondrous flower with a gift that keeps on giving.
+
+      It's so pretty!
+      - Bubblemancer
+
+      It seems someone at some point chose to use their extreme power for the pursuit beauty. A romantic sentiment, but unfortunately the arts are of little use to us while we face our current disaster. It's only practical use is in breaking down its impressively dense composition of rainbow shards.
+      - TB
     }
     QuantumCake:
     {
       Title: Quantum Cake
       Description: Drops a Y:[Heart] and becomes a <color=#FFAAAA>Schrodinger's Cake</color> when Y:dissolved in a Y:Crucible
       Brief: And you can eat it too!
-      Lore: Power.QuantumCake.Lore
+      Lore: A tasty and scientifically confounding dessert. It's restorative properties can be extracted through a crucible.
     }
     EatenCake:
     {
       Title: Schrodinger's Cake
       Description: Becomes a <color=#FFAAAA>Quantum Cake</color> at the start of a Y:wave G:(consumed on use)
       Brief: And you can have it too!
-      Lore: Power.EatenCake.Lore
+      Lore: The "blueprint" of a quantum cake, requiring localized bubbleverse stabilization to materialize.
     }
     GlassShard:
     {
@@ -781,14 +847,20 @@
         R:[When hurt,] roll Y:1 G:(+1 per stack) times for a Y:[50% chance] to take Y:[additional damage]
         '''
       Brief: Don't pop yourself
-      Lore: Power.GlassShard.Lore
+      Lore: 
+      '''
+      A sharp implement that makes the user stronger but more fragile.
+
+      Scary! Who would make such a thing?!
+      - Bubblemancer
+      '''
     }
     BountyHunter:
     {
       Title: Bounty Hunter
       Description: Y:[Skull enemies] have a Y:4% G:(+2% per stack) Y:chance to drop a Y:[Pirate chest, a key, 3 gems, or 50 coins]
       Brief: Skull enemies have a chance to drop extra loot
-      Lore: Power.BountyHunter.Lore
+      Lore: A targeting scope that likely belonged to an experienced merceneary. Rewards the user for taking down powerful enemies.
     }
     BonusFizz:
     {
