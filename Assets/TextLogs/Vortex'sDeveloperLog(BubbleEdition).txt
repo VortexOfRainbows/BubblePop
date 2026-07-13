@@ -34,6 +34,7 @@ Need to do:
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
 	1. To help with the thought bubble achievement now that there are more elements to be clicked
+2. TB trail needs to always release white bubbles
 
 Multiplayer Task List:
 N/A
@@ -44,11 +45,15 @@ Bug Watchlist:
 
 Done: 	
 
+-- A3.1 HOTFIX ON STEAM --
+
 7/12/26
 1. Reworks to bubble projectile colors (now has a more unified system for varying colors based on equipment and projectile source)
 	1. Colors are averaged in a way for Coalescence
 	2. New colors for Cryskull (when worn by Gachapon) and Soda Variants
-2. A new node with just a forge, called Silly Forge
+2. A new node with just a forge, called Silly Forge (removed key from it)
+3. Try fixing bug where astrajelly gave no powers when shield was broken
+4. Buildable
 
 7/11/26 to 7/12/26
 1. Coins now attract from 5x the distance when waves end (and skull enemies killed)

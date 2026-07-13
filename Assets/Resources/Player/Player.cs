@@ -905,14 +905,12 @@ public partial class Player : Entity
                 Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1, this, 0, 1);
         }
         if (GladiatorDuration > 0)
-        {
             AddBuff<OmniBoost>(GladiatorDuration);
-        }
         if (CatalystJellies > 0)
         {
             int stack = CatalystJellies;
             List<int> types = new() { PowerUp.Get<Dash>().Type, PowerUp.Get<BinaryStars>().Type, PowerUp.Get<Starbarbs>().Type, PowerUp.Get<LuckyStar>().Type, PowerUp.Get<Supernova>().Type };
-            int type = PowerUp.PickRandomPower(types, 0, 0, false, -1);
+            int type = PowerUp.PickRandomPower(types, 0, 0, false, 2);
             PowerUp.Get(type).PickUp(this, stack);
         }
     }
