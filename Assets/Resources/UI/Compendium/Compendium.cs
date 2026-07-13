@@ -431,5 +431,21 @@ public class Compendium : MonoBehaviour
             rare = -1;
         return concat;
     }
+    public string GetLoreSegment(object loreObject)
+    {
+        if (loreObject is PowerUp power)
+        {
+            throw new NotImplementedException();
+        }
+        else if (loreObject is Equipment equip)
+        {
+            throw new NotImplementedException();
+        }
+        else if (loreObject is EnemyID.StaticEnemyData enemy)
+        {
+            throw new NotImplementedException();
+        }
+        throw new Exception("THIS OBJECT HAS NO ASSOCIATED LORE");
+    }
     #endregion
 }
