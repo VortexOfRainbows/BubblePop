@@ -30,7 +30,6 @@ Need to do:
 	2. Make blurbs appear in the equipment page
 	3. Add flavortext for all compendium elements and systemize the way compendium display is created
 8. Update settings UI and include settings for modifying soft shadows
-9. Overhaul the way bubble projectile colors are determined
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -46,8 +45,9 @@ Bug Watchlist:
 Done: 	
 
 7/12/26
-1. WIP reworks to projectile colors
-	1. Needs: variant for cryskull, and ability for some bubbles to be the secondary color (like bubble trail bubblemancer), average the colors for coalescence (use a lerp factor)?
+1. Reworks to bubble projectile colors (now has a more unified system for varying colors based on equipment and projectile source)
+	1. Colors are averaged in a way for Coalescence
+	2. New colors for Cryskull (when worn by Gachapon) and Soda Variants
 
 7/11/26 to 7/12/26
 1. Coins now attract from 5x the distance when waves end (and skull enemies killed)

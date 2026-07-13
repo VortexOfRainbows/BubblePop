@@ -225,7 +225,7 @@ public class SkateboardProj : Projectile
     {
         SpriteRenderer.enabled = false;
         SpriteRendererGlow.enabled = false;
-        SpriteRenderer.color = PlayerOwner.SecondaryColor();
+        SpriteRenderer.color = PlayerOwner.SecondColor;
         Friendly = true;
         GameObject t = Instantiate(Resources.Load<GameObject>("Player/Fizzy/Skateboard"), transform, false);
         float xReduce = PlayerOwner.Accessory is BubblemancerCape || PlayerOwner.Accessory is LabCoat ? 0.7f : 1.0f;

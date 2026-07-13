@@ -66,6 +66,16 @@ public class Projectile : MonoBehaviour
                     otherBubbles.Damage += 2;
                     otherBubbles.Penetrate += 1;
                     otherBubbles.Data1 += 1;
+                    if(otherBubbles.Data.Length > 1 || data.Length > 1)
+                    {
+                        float d1 = otherBubbles.Data.Length > 1 ? otherBubbles.Data[1] : 0;
+                        float d2 = data.Length > 1 ? data[1] : 0;
+                        if (otherBubbles.Data.Length <= 1)
+                            otherBubbles.Data = new float[] { otherBubbles.Data1, 0 };
+                        otherBubbles.Data2 = (d1 + d2) * 0.5f;
+                        Color c = Color.Lerp(Player.ProjectileColor, (owner as Player).SecondColor, otherBubbles.Data2).WithAlpha(0.68f);
+                        otherBubbles.SpriteRenderer.color = c.WithAlpha(otherBubbles.SpriteRenderer.color.a);
+                    }
                     float startingSpeed = otherBubbles.RB.velocity.magnitude;
                     otherBubbles.RB.velocity = Vector2.Lerp(otherBubbles.RB.velocity * 1.5f, velo, 3f / (otherBubbles.Data1 + 3f)).normalized * startingSpeed;
                     if(otherBubbles.Data1 >= p.Coalescence)
@@ -97,7 +107,7 @@ public class Projectile : MonoBehaviour
         proj.RB.velocity = velo;
         if(!hasMerged)
         {
-            proj.Data = new float[] { 0 };
+            proj.Data = new float[] { 0, data.Length > 1 ? data[1] : 0 };
             RecentlySpawnedSmallBubbles.Add(proj as SmallBubble);
         }
         else

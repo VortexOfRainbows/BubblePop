@@ -322,7 +322,9 @@ public static class Control
 }
 public partial class Player : Entity
 {
-    public Color PrimaryColor()
+    public Color FirstColor { get; private set; }
+    public Color SecondColor { get; private set; }
+    private Color PrimaryColor()
     {
         if(Weapon is Cola)
         {
@@ -337,13 +339,15 @@ public partial class Player : Entity
         }
         return SecondaryColor();
     }
-    public Color SecondaryColor()
+    private Color SecondaryColor()
     {
         if (Body is ThoughtBubble)
             return new Color(1.00f, 1.05f, 1.1f);
         else if (Body is Gachapon)
         {
-            if (Accessory is Crystal)
+            if (Accessory is Cryskull)
+                return new Color(1f, 0.4f, 0.3f);
+            else if (Accessory is Crystal)
                 return new Color(0.6f, 0.933f, 0.35f);
             else
                 return new Color(0.95f, 1f, 0.7f);
@@ -423,7 +427,8 @@ public partial class Player : Entity
     public float SquashAmt { get; private set; } = 0.6f;
     private float DeathKillTimer { get => Animator.DeathKillTimer; set => Animator.DeathKillTimer = value; }
     #endregion
-    public static Color ProjectileColor => Instance.PrimaryColor();
+    public static Color ProjectileColor => Player.Instance.FirstColor;
+    public static Color SecondaryProjectileColor => Player.Instance.SecondColor;
     public static Player Instance => GetInstance(0);
     public Vector2 Position => (Vector2)transform.position;
     public static Vector2 Instance1Pos => Instance != null ? (Vector2)Instance.transform.position : Vector2.zero;
@@ -611,6 +616,8 @@ public partial class Player : Entity
             if(InstanceID == 0)
                 PlayerStatUI.SetHeartsToPlayerLife();
             ModifyAscensionLevel(0); //Might be better to move this to the place where body is set or changed, but this works for now.
+            FirstColor = PrimaryColor();
+            SecondColor = SecondaryColor();
         }
         UpdatePowerUps();
         UpdateBuffs();
@@ -895,7 +902,7 @@ public partial class Player : Entity
             if (amt > 1024)
                 amt = 1024;
             for (int i = 0; i < amt; ++i)
-                Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1, this);
+                Projectile.NewProjectile<SmallBubble>(transform.position, Utils.RandCircle(0, 1) * Utils.RandFloat(0.5f + i * 0.2f, velocity + i * 0.4f), 1, this, 0, 1);
         }
         if (GladiatorDuration > 0)
         {

@@ -288,7 +288,7 @@ public partial class Player : Entity
             {
                 BubbleTrailTimer += 2f / (PassiveAttackSpeedModifier * (BubbleTrail + 2f)); //.5, 2/5, 2/6, 2/7, 1/4
                 Vector2 circular = (Utils.RandCircle(1.3f) - Animator.lastVelo * 0.4f).normalized;
-                Projectile.NewProjectile<SmallBubble>(transform.position, circular * 2, 1, this);
+                Projectile.NewProjectile<SmallBubble>(transform.position, circular * 2, 1, this, 0, 1);
             }
         }
         else

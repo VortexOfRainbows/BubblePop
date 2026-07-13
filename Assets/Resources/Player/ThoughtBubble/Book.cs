@@ -116,7 +116,7 @@ public class Book : Weapon
 
                     if (!JustOpened)
                     {
-                        Color c = Color.Lerp(Player.PrimaryColor(), Color.blue, 0.75f);
+                        Color c = Color.Lerp(Player.ProjectileColor, Color.blue, 0.75f);
                         for (int i = 0; i < 20; ++i)
                         {
                             Vector2 circular = new Vector2(Utils.RandFloat(7, 8), 0).RotatedBy(i / 10f * Mathf.PI);
