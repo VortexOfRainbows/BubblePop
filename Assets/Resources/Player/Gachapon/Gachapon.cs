@@ -6,12 +6,13 @@ public class Gachapon : Body
     public static Sprite BlueChip => bChip == null ? bChip = Resources.Load<Sprite>("Projectiles/BlueChip") : bChip;
     private static Sprite bChip = null;
     public List<ChipStack> stacks;
-    private List<GameObject> notYetResizedCips = new();
+    private readonly List<GameObject> notYetResizedCips = new();
     public GameObject ChipPrefab;
     public GameObject ChipStackPrefab;
+    public int TotalChips { get; private set; } = 0;
     public void AddChip()
     {
-        List<int> possibleStacks = new List<int>();
+        List<int> possibleStacks = new();
         int stacksWithAppropriateChips = 2;
         for (int i = 0; i < stacks.Count; ++i)
         {
@@ -45,6 +46,7 @@ public class Gachapon : Body
         stack.Chips.Add(r.gameObject);
         int total = stacks[index].Chips.Count - 1;
         stack.Chips[total].transform.localPosition = new Vector3(total % 2 * -0.1f * direction, total * 0.15f, total * -0.025f);
+        ++TotalChips;
     }
     public bool RemoveChip()
     {
@@ -63,6 +65,7 @@ public class Gachapon : Body
                 stack.Chips.RemoveAt(top);
             }
         }
+        TotalChips -= totalCount;
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)transform.position;
         toMouse = toMouse.normalized * 14;
         float rotation = 12.5f * (totalCount - 1);
@@ -101,9 +104,7 @@ public class Gachapon : Body
         }
         bool ret = totalCount > 0;
         if(ret)
-        {
             Player.OnUseAbility();
-        }
         return ret;
     }
     public void AddStack()
@@ -117,7 +118,7 @@ public class Gachapon : Body
     }
     public void RemoveStack()
     {
-        ChipStack stack = stacks[stacks.Count - 1];
+        ChipStack stack = stacks[^1];
         foreach(GameObject chip in stack.Chips)
         {
             Destroy(chip);
@@ -259,5 +260,9 @@ public class Gachapon : Body
         FaceR.enabled = false;
         top.SetActive(false);
         spriteRender.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(spriteRender.transform.localEulerAngles.z, FlipDir == -1 ? 180 : 0, 0.1f);
+    }
+    public override int AbilityCount()
+    {
+        return TotalChips;
     }
 }

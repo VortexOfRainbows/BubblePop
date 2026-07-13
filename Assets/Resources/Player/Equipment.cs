@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -92,6 +93,15 @@ public class Equipment : MonoBehaviour
         {
             Init();
             hasInit = true;
+            if (this is Body b)
+            {
+                List<Ability> abilities = GetAbility();
+                if(abilities.Count > 0)
+                {
+                    abilities[0].SetProgressDisplayFunc(b.AbilityProgess);
+                    abilities[0].SetNumberDisplayFunc(b.AbilityCount);
+                }
+            }
         }
         AnimationUpdate();
     }

@@ -138,4 +138,12 @@ public class Body : Equipment
     {
         return 5;
     }
+    public virtual float AbilityProgess()
+    {
+        return Mathf.Clamp01(Player.abilityTimer / AbilityCD);
+    }
+    public virtual int AbilityCount()
+    {
+        return -1;
+    }
 }

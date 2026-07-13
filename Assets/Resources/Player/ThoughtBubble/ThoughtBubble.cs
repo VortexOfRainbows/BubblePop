@@ -153,7 +153,7 @@ public class ThoughtBubble : Body
         while (BrainBlastNum >= 1)
         {
             float speed = 5f + Player.BrainBlast * Utils.RandFloat(1.5f, 2.5f);
-            Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.5f)), 0).RotatedBy((BrainBlastNum + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1, Player); 
+            Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(speed * Mathf.Sqrt(Utils.RandFloat(0.2f, 1.5f)), 0).RotatedBy((BrainBlastNum + Utils.RandFloat(1)) / (int)amt * Mathf.PI * 2f), 1, Player, 0, 1); 
             --BrainBlastNum;
         }
         ThunderAuraNum = 0;
@@ -231,7 +231,7 @@ public class ThoughtBubble : Body
         int amt = 1 + (int)BrainBlastTrailNum;
         for(int i = 0; i < amt; ++i)
         {
-            Projectile.NewProjectile<SmallBubble>(current.transform.position, UnityEngine.Random.insideUnitCircle * Utils.RandFloat(0.1f + i * 0.05f, 1.0f + i * 0.2f), 1, Player);
+            Projectile.NewProjectile<SmallBubble>(current.transform.position, UnityEngine.Random.insideUnitCircle * Utils.RandFloat(0.1f + i * 0.05f, 1.0f + i * 0.2f), 1, Player, 0, 1);
             if (i > 0)
                 BrainBlastTrailNum--;
         }

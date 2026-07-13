@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 public class AbilityBlurb : MonoBehaviour
@@ -62,4 +63,17 @@ public class Ability
             b.IconText.text = "PSV";
         return g;
     }
+
+
+
+    //This is for the new stuff
+
+    private static float NoProgress() => 0;
+    private static int NoNumber() => -1;
+    public float ProgressDisplay => ProgressDisplayFunc();
+    public int NumberDisplay => NumberDisplayFunc();
+    public Func<float> ProgressDisplayFunc { get; private set; } = NoProgress;
+    public Func<int> NumberDisplayFunc { get; private set; } = NoNumber;
+    public void SetProgressDisplayFunc(Func<float> func) => ProgressDisplayFunc = func;
+    public void SetNumberDisplayFunc(Func<int> func) => NumberDisplayFunc = func;
 }

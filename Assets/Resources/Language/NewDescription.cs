@@ -86,7 +86,16 @@ public class EquipDescription : Description
     public EquipDescription RequestAbilitySlots(params int[] types)
     {
         for(int i = 0; i < types.Length; ++i)
-            Abilities.Add(new Ability(types[i], Localization.Get($"{StartingText}.Abl{i + 1}")));
+        {
+            Ability a = new(types[i], Localization.Get($"{StartingText}.Abl{i + 1}"));
+            Abilities.Add(a);
+        }
+        return this;
+    }
+    public EquipDescription SetAbilityProgressFunctions(params Func<float>[] func)
+    {
+        for(int i = 0; i < func.Length; ++i)
+            Abilities[i].SetProgressDisplayFunc(func[i]);
         return this;
     }
 }
