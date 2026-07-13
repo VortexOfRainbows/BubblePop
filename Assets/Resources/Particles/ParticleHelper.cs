@@ -15,8 +15,6 @@ public class ParticleManager : MonoBehaviour
         public const int LineForeground = 6;
         public const int Snow = 7;
     }
-    public static readonly Color DefaultColor = new Color(0.89f, 206 / 255f, 240 / 255f, 0.5f);
-    public static readonly Color BathColor = new Color(189 / 255f, 227 / 255f, 246 / 255f, 0.6f);
     public static ParticleManager Instance;
     public List<ParticleSystem> thisSystem;
     public static void NewParticle(Vector2 pos, float size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f, int type = 0, Color color = default)
@@ -24,7 +22,7 @@ public class ParticleManager : MonoBehaviour
         if (ParticleManager.Instance == null)
             return;
         if (color == default)
-            color = DefaultColor;
+            color = Color.white;
         ParticleSystem.EmitParams style = new()
         {
             position = pos,
@@ -41,7 +39,7 @@ public class ParticleManager : MonoBehaviour
         if (ParticleManager.Instance == null)
             return;
         if (color == default)
-            color = DefaultColor;
+            color = Color.white;
         ParticleSystem.EmitParams style = new()
         {
             position = pos,

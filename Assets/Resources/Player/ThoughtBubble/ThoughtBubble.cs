@@ -23,7 +23,6 @@ public class ThoughtBubble : Body
     public GameObject CurrentTail => Tails[(CurrentMarkedTail + StartTail) % Tails.Count];
     public override void Init()
     {
-        PrimaryColor = new Color(1.00f, 1.05f, 1.1f);
         Tails = null;
     }
     protected override float AngleMultiplier => 0.1f;

@@ -17,7 +17,6 @@ public class Fizzy : Body
     public override void Init()
     {
         Player.abilityTimer = 0;
-        PrimaryColor = new Color(0.8f, 0.7f, 0.56f, 0.7f);
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

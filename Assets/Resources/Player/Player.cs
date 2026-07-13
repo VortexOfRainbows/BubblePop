@@ -322,6 +322,37 @@ public static class Control
 }
 public partial class Player : Entity
 {
+    public Color PrimaryColor()
+    {
+        if(Weapon is Cola)
+        {
+            if (Weapon is FocusFizzSoda)
+                return new Color(0.95f, .635f, .8f, 0.7f);
+            else if (Weapon is SaltSoda)
+                return new Color(.345f, .227f, .169f, 0.7f);
+            else if (Weapon is HillSoda)
+                return new Color(.573f, .835f, .05f, 0.7f);
+            else
+                return new Color(0.8f, 0.7f, 0.56f, 0.7f);
+        }
+        return SecondaryColor();
+    }
+    public Color SecondaryColor()
+    {
+        if (Body is ThoughtBubble)
+            return new Color(1.00f, 1.05f, 1.1f);
+        else if (Body is Gachapon)
+        {
+            if (Accessory is Crystal)
+                return new Color(0.6f, 0.933f, 0.35f);
+            else
+                return new Color(0.95f, 1f, 0.7f);
+        }
+        else if (Body is Fizzy)
+            return new Color(0.8f, 0.7f, 0.56f, 0.7f);
+        else //BUBBLEMANCER
+            return new Color(0.8f, 0.85f, 0.9f, 0.6f);
+    }
     public TextMeshPro PlayerNumber;
     public static readonly List<Player> AllPlayers = new();
     //TODO: Make this output the distance so it can be used in situations requiring distance easily
@@ -392,7 +423,7 @@ public partial class Player : Entity
     public float SquashAmt { get; private set; } = 0.6f;
     private float DeathKillTimer { get => Animator.DeathKillTimer; set => Animator.DeathKillTimer = value; }
     #endregion
-    public static Color ProjectileColor => Instance.Body.PrimaryColor;
+    public static Color ProjectileColor => Instance.PrimaryColor();
     public static Player Instance => GetInstance(0);
     public Vector2 Position => (Vector2)transform.position;
     public static Vector2 Instance1Pos => Instance != null ? (Vector2)Instance.transform.position : Vector2.zero;
@@ -532,7 +563,7 @@ public partial class Player : Entity
                 if (currentSpeed > cMaxSpeed + 15f * MoveSpeedMod)
                 {
                     for (float i = 0; i < 1; i += 0.5f)
-                        ParticleManager.NewParticle((Vector2)transform.position + i * Time.fixedDeltaTime * velocity + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, Body.PrimaryColor);
+                        ParticleManager.NewParticle((Vector2)transform.position + i * Time.fixedDeltaTime * velocity + Utils.RandCircle(i * 2) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, SecondaryColor());
                 }
             }
         }
@@ -540,7 +571,7 @@ public partial class Player : Entity
         {
             Vector2 norm = velocity.normalized;
             if (currentSpeed > cMaxSpeed || Utils.RandFloat() < 0.15f)
-                ParticleManager.NewParticle((Vector2)fiz.Skateboard.transform.position + new Vector2(0, .3f) + Utils.RandCircle(0.25f) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, Body.PrimaryColor);
+                ParticleManager.NewParticle((Vector2)fiz.Skateboard.transform.position + new Vector2(0, .3f) + Utils.RandCircle(0.25f) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, SecondaryColor());
         }
         RB.velocity = velocity;
         Control.LastAbility = Control.Ability;

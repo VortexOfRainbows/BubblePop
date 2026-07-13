@@ -43,7 +43,6 @@ public class Body : Equipment
     public int LastSelectedHat { get; set; } = -1;
     public int LastSelectedAcc { get; set; } = -1;
     public int LastSelectedWep { get; set; } = -1;
-    public Color PrimaryColor = ParticleManager.DefaultColor;
     public GameObject Face => FaceR.gameObject;
     public SpriteRenderer FaceR;
     protected virtual float AngleMultiplier => 0.3f;
