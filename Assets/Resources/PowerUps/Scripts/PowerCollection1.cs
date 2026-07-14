@@ -106,7 +106,7 @@ public class WeaponUpgrade : PowerUp
 {
     public override void Init()
     {
-        Weighting = Uncommon;
+        Weighting = Common;
     }
     public override void HeldEffect(Player p)
     {
