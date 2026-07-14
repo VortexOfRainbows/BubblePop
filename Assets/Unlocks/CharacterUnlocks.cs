@@ -18,3 +18,7 @@ public class FizzyUnlock : UnlockCondition
 {
     protected override bool TryUnlockCondition => false;
 }
+public class KingOilUnlock : UnlockCondition
+{
+    protected override bool TryUnlockCondition => false;
+}

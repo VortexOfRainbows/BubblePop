@@ -354,6 +354,8 @@ public partial class Player : Entity
         }
         else if (Body is Fizzy)
             return new Color(0.8f, 0.7f, 0.56f, 0.7f);
+        else if (Body is KingOil)
+            return new Color(0.5411f, .5176f, .6666f);
         else //BUBBLEMANCER
             return new Color(0.8f, 0.85f, 0.9f, 0.6f);
     }
@@ -1095,6 +1097,8 @@ public partial class Player : Entity
             {
                 if(!!HasAttacked)
                     UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
+                if (AscensionLevel >= 3)
+                    UnlockCondition.Get<KingOilUnlock>().SetComplete();
             }
             else if (body is Gachapon)
             {

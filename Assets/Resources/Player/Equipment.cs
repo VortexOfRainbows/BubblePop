@@ -34,7 +34,7 @@ public class Equipment : MonoBehaviour
     /// </summary>
     public SpriteRenderer spriteRender;
     public Vector2 velocity;
-    public bool hasInit = false;
+    public bool HasInit { get; protected set; } = false;
     public int IndexInAllEquipPool
     {
         get
@@ -89,10 +89,10 @@ public class Equipment : MonoBehaviour
     {
         if (Player != null && Player.Control == null)
             return;
-        if(!hasInit)
+        if(!HasInit)
         {
             Init();
-            hasInit = true;
+            HasInit = true;
             if (this is Body b)
             {
                 List<Ability> abilities = GetAbility();

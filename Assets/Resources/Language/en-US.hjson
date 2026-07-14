@@ -1318,6 +1318,13 @@
       Abl2: Y:Throw an Y:[explosive bottle of pop]
       Abl3: Start with <color=#FFAAAAFF>Burger</color>
     }
+    KingOil:
+    {
+      Title: King Oil
+      Description: The richest bubble on the planet, in wealth and style
+      Lore: Equip.KingOil.Lore
+      Abl1: (WIP) Request a drone strike from your personal arsenal
+    }
   }
   Unlock:
   {
@@ -1481,6 +1488,11 @@
     {
       Title: Fizzy: Deep Dish
       Description: As Y:Fizzy, win while picking up more <color=#FFAAAAFF>Black Market</color> powers than non-<color=#FFAAAAFF>Black Market</color> powers
+    }
+    KingOilUnlock:
+    {
+      Title: Soul Seller
+      Description: As Y:[Thought Bubble,] win on Y:Ascension Y:3
     }
   }
   Enemy:

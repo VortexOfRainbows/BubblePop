@@ -329,7 +329,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: b324cffeab4b5874da27c3c01bd041e7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5411765, g: 0.5176471, b: 0.6666667, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
@@ -413,7 +413,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 85c1126378f0aec40a2b30f94bc2762d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 1
   m_DrawMode: 0
@@ -432,7 +432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5335490131377714205}
-  - component: {fileID: 830610592241657495}
+  - component: {fileID: 5547835776502294936}
   m_Layer: 3
   m_Name: KingOil
   m_TagString: Untagged
@@ -457,26 +457,18 @@ Transform:
   - {fileID: 5676044016334763756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &830610592241657495
+--- !u!114 &5547835776502294936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132037870103020878}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c631b426d2915464a99453f68ce4c559, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ce7fdd98038edd4fb3eb3066e519e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 1645974944771865728}
   velocity: {x: 0, y: 0}
-  hasInit: 0
   FaceR: {fileID: 8568634409820030331}
-  Skateboard: {fileID: 0}
-  Wheel1: {fileID: 0}
-  Wheel2: {fileID: 0}
-  Board: {fileID: 0}
-  FinishedSkateAnim: 0
-  SkateboardMountCounter: 0
-  starTimer: 1
