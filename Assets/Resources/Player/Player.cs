@@ -1166,4 +1166,8 @@ public partial class Player : Entity
         public static bool AllEnemiesTagTeam => AscensionLevel >= 2;
         public static bool Pandemic => AscensionLevel >= 3;
     }
+    public void OnDrawGizmos()
+    {
+        Utils.TileOnlyRaycast(Position, (Utils.MouseWorld - Position).normalized, 20);
+    }
 }

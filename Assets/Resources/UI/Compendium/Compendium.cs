@@ -240,17 +240,19 @@ public class Compendium : MonoBehaviour
         if (reset && SelectedType >= 0)
         {
             int rare = 0;
+            string finalText = string.Empty;
             if (PageNumber == 0)
             {
                 string concat = GenerateTierListDescription(PowerUp.Get(SelectedType), ref rare);
-                DisplayPortDescription.text = DisplayCPUE.IsLocked() ? concat.Bastardize('?') : concat;
+                finalText = DisplayCPUE.IsLocked() ? concat.Bastardize('?') : concat;
             }
             else if (PageNumber == 1)
-                DisplayPortDescription.text = GenerateTierListDescription(DisplayCEE.MyElem.ActiveEquipment, ref rare);
+                finalText = GenerateTierListDescription(DisplayCEE.MyElem.ActiveEquipment, ref rare);
             else if (PageNumber == 2)
-                DisplayPortDescription.text = GenerateTierListDescription(DisplayCPEnemy.MyElem.StaticData, ref rare);
+                finalText = GenerateTierListDescription(DisplayCPEnemy.MyElem.StaticData, ref rare);
             else if (PageNumber == 3)
-                DisplayPortDescription.text = GenerateTierListDescription(DisplayCPAchievement, ref rare);
+                finalText = GenerateTierListDescription(DisplayCPAchievement, ref rare);
+            DisplayPortDescription.text = finalText;
             UpdateStars(rare);
         }
         Vector2 target = DisplayPortDescription.GetRenderedValues();
@@ -434,17 +436,11 @@ public class Compendium : MonoBehaviour
     public string GetLoreSegment(object loreObject)
     {
         if (loreObject is PowerUp power)
-        {
-            throw new NotImplementedException();
-        }
+            return Localization.Get($"Power.{power.GetType().FullName}.Lore");
         else if (loreObject is Equipment equip)
-        {
-            throw new NotImplementedException();
-        }
+            return Localization.Get($"Equip.{equip.GetType().FullName}.Lore");
         else if (loreObject is EnemyID.StaticEnemyData enemy)
-        {
-            throw new NotImplementedException();
-        }
+            return Localization.Get($"Enemy.{enemy.OriginalPrefab.GetComponent<Enemy>().GetType().FullName}.Lore");
         throw new Exception("THIS OBJECT HAS NO ASSOCIATED LORE");
     }
     #endregion

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 using static Enemy;
 public static class Utils
 {
@@ -405,5 +407,50 @@ public static class Utils
     public static bool RandBool(int denominator)
     {
         return RandInt(0, denominator) == 0;
+    }
+    public static readonly int WorldLayerMask = LayerMask.GetMask("World");
+    public static void RaycastWithTileSupport(Vector2 start, Vector2 norm, float distance)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(start, norm, distance, WorldLayerMask);
+        if(hit.distance == 0)
+        {
+            float dist = hit.distance == 0 ? distance : hit.distance;
+            if (dist > distance)
+                dist = distance;
+        }
+    }
+    /// <summary>
+    /// Performs a raycast only scanning for tiles
+    /// </summary>
+    /// <param name="start">start position</param>
+    /// <param name="norm">direction of the cast</param>
+    /// <param name="distance">distance to cast</param>
+    public static void TileOnlyRaycast(Vector2 start, Vector2 norm, float distance)
+    {
+        norm = norm.normalized;
+        Vector2 scanPosition = start;
+        float stepAmount = 1;
+        for (float i = 0; i < distance; i += stepAmount)
+        {
+            scanPosition = start + norm * i;
+            if (stepAmount <= 0.001f)
+                break;
+            if (!World.WithinBorders(scanPosition))
+            {
+                distance = i;
+                i -= stepAmount;
+                stepAmount *= 0.5f;
+            }
+        }
+        Gizmos.DrawLine(start, scanPosition);
+    }
+    /// <summary>
+    /// Performs a raycast only scanning for tiles
+    /// </summary>
+    /// <param name="start">start position</param>
+    /// <param name="end">end position</param>
+    public static void TileOnlyRaycast(Vector2 start, Vector2 end)
+    {
+        return TileOnlyRaycast(start, end - start);
     }
 }
