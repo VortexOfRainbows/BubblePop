@@ -40,8 +40,6 @@ N/A
 
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
-2. Sometimes the barrier are not appearing before the game starts..?
-3. Fix sentinels shooting through walls
 
 Done: 	
 
@@ -51,6 +49,8 @@ Done:
 3. WIP reorganization of compendium description creation in preparation for lore support
 4. Remote play now works
 5. Fix oversight with particle colors being set to white
+6. Add a custom raycast check for Tiles using custom logic, which is also now used for Sentinels
+	1. This should make it much less likely for Sentinels to hit you through walls, though some terrain may still be possible if the geometry is weird
 
 -- A3.1 HOTFIX ON STEAM --
 

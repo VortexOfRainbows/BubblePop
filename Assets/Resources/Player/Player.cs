@@ -1168,6 +1168,7 @@ public partial class Player : Entity
     }
     public void OnDrawGizmos()
     {
-        Utils.TileOnlyRaycast(Position, (Utils.MouseWorld - Position).normalized, 20);
+        float distance = 20;
+        Gizmos.DrawLine(Position, Utils.RaycastWithTileSupport(Position, (Utils.MouseWorld - Position).normalized, ref distance));
     }
 }

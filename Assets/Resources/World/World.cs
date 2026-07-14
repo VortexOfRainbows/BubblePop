@@ -116,6 +116,10 @@ public class World : MonoBehaviour
     {
         return RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) == Tile.ColliderType.None;
     }
+    public static bool SolidTile(Vector3 position)
+    {
+        return RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) != Tile.ColliderType.None;
+    }
     public static bool SolidTile(Vector3Int pos)
     {
         return RealTileMap.Map.GetColliderType(pos) != Tile.ColliderType.None;

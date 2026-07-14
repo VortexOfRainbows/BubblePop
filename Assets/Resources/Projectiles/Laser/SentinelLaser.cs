@@ -20,10 +20,9 @@ public class SentinelLaser : BoxProjectile
             Vector2 position = transform.position;
             timer = 0;
             Vector2 norm = RB.velocity;
-            RaycastHit2D hit = Physics2D.Raycast(position, norm, 24, LayerMask.GetMask("World"));
-            float dist = hit.distance == 0 ? 24 : hit.distance;
-            if (dist > 24)
-                dist = 24;
+            float distanceScan = 24f;
+            Vector2 _ = Utils.RaycastWithTileSupport(position, norm, ref distanceScan, .1f);
+            float dist = distanceScan;
             C2D.size = new Vector2(dist, 0.5f);
             C2D.offset = new Vector2(dist / 2, 0);
             float increment = 0.25f;

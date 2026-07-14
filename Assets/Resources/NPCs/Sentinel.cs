@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Sentinel : Enemy
 {
@@ -165,8 +166,9 @@ public class Sentinel : Enemy
             Vector2 toTarget = norm.RotatedBy(j * 45 * Mathf.Deg2Rad);
             for (int i = -1; i <= 1; i += 2)
             {
-                RaycastHit2D hit = Physics2D.Raycast(Head.position, toTarget.normalized.RotatedBy(i * iPer * 20 * Mathf.Deg2Rad), 24, LayerMask.GetMask("World"));
-                float dist = hit.distance == 0 ? 24 : hit.distance;
+                float distanceScan = 24;
+                Vector2 _ = Utils.RaycastWithTileSupport(Head.position, toTarget.normalized.RotatedBy(i * iPer * 20 * Mathf.Deg2Rad), ref distanceScan, .1f);
+                float dist = distanceScan;
                 dist /= 4f;
                 SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),
                     new Vector2(dist * percent, 6 + percent * 10f),

@@ -409,15 +409,34 @@ public static class Utils
         return RandInt(0, denominator) == 0;
     }
     public static readonly int WorldLayerMask = LayerMask.GetMask("World");
-    public static void RaycastWithTileSupport(Vector2 start, Vector2 norm, float distance)
+    /// <summary>
+    /// Performs a raycast using unity and tile systems.
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="norm"></param>
+    /// <param name="distance"></param>
+    /// <returns>The final location of the ray and the minimum distance of the unity and tile versions</returns>
+    public static Vector2 RaycastWithTileSupport(Vector2 start, Vector2 norm, ref float distance, float tileCollisionSize = 0.0f)
     {
         RaycastHit2D hit = Physics2D.Raycast(start, norm, distance, WorldLayerMask);
-        if(hit.distance == 0)
+        float dist = distance;
+        if (hit.distance == 0)
         {
-            float dist = hit.distance == 0 ? distance : hit.distance;
+            if (hit.distance == 0)
+            {
+                hit.point = (distance * norm) + start;
+                dist = distance;
+            }
+            else
+                dist = hit.distance;
             if (dist > distance)
                 dist = distance;
         }
+        Vector2 endPosition = TileOnlyRaycast(start, norm, ref distance, tileCollisionSize);
+        if (distance <= dist)
+            return endPosition;
+        distance = dist;
+        return hit.point;
     }
     /// <summary>
     /// Performs a raycast only scanning for tiles
@@ -425,32 +444,39 @@ public static class Utils
     /// <param name="start">start position</param>
     /// <param name="norm">direction of the cast</param>
     /// <param name="distance">distance to cast</param>
-    public static void TileOnlyRaycast(Vector2 start, Vector2 norm, float distance)
+    public static Vector2 TileOnlyRaycast(Vector2 start, Vector2 norm, ref float distance, float collisionRange = 0)
     {
         norm = norm.normalized;
         Vector2 scanPosition = start;
-        float stepAmount = 1;
+        float stepAmount = 0.5f;
         for (float i = 0; i < distance; i += stepAmount)
         {
             scanPosition = start + norm * i;
-            if (stepAmount <= 0.001f)
+            if (stepAmount <= 0.00025f)
                 break;
-            if (!World.WithinBorders(scanPosition))
+            bool otherTilesAreSolid = collisionRange > 0 &&
+                (World.SolidTile(scanPosition + new Vector2(-collisionRange, -collisionRange)) ||
+                World.SolidTile(scanPosition + new Vector2(collisionRange, collisionRange)) ||
+                World.SolidTile(scanPosition + new Vector2(-collisionRange, collisionRange)) || 
+                World.SolidTile(scanPosition + new Vector2(collisionRange, -collisionRange)));
+            if (otherTilesAreSolid || World.SolidTile(scanPosition))
             {
                 distance = i;
                 i -= stepAmount;
                 stepAmount *= 0.5f;
             }
         }
-        Gizmos.DrawLine(start, scanPosition);
+        return scanPosition;
     }
     /// <summary>
     /// Performs a raycast only scanning for tiles
     /// </summary>
     /// <param name="start">start position</param>
     /// <param name="end">end position</param>
-    public static void TileOnlyRaycast(Vector2 start, Vector2 end)
+    public static Vector2 TileOnlyRaycastStartToEnd(Vector2 start, Vector2 end, out float distance, float collisionRange = 0)
     {
-        return TileOnlyRaycast(start, end - start);
+        Vector2 toEnd = end - start;
+        distance = toEnd.magnitude;
+        return TileOnlyRaycast(start, toEnd, ref distance);
     }
 }
