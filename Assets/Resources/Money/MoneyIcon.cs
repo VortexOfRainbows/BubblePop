@@ -18,21 +18,13 @@ public class MoneyIcon : MonoBehaviour
         {
             Icon.gameObject.transform.localScale = Vector3.Lerp(Icon.gameObject.transform.localScale, InitialScale * ScaleFactor, 0.1f);
             if(Type == 0)
-            {
                 PopUpTextUI.Enable("Money", "Can be used to purchase fancy powerups");
-            }
             else if(Type == 1)
-            {
                 PopUpTextUI.Enable("Keys", "Can be used to open chests");
-            }
             else if(Type == 2)
-            {
                 PopUpTextUI.Enable("Tokens", "Can be used to play Gacha Slots instead of money");
-            }
             else if(Type == 3)
-            {
                 PopUpTextUI.Enable("Gems", "Can be used to reroll Choices and power the Forge");
-            }
             UpdateSparkle(Sparkle, true);
         }
         else
