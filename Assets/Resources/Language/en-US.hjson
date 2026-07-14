@@ -12,6 +12,7 @@
     Asc2Description: All encounters are Tag Teams
     Asc3Title: Pandemic
     Asc3Description: Enemies can spawn infected
+    LoreMissing: This entry has no associated notes
   }
   Power:
   {
@@ -196,10 +197,10 @@
       Title: Lucky Star
       Description:
         '''
-        Enemies Y:[killed by stars] have an additional Y:4% G:(+1% per stack) Y:chance to Y:[drop powers] 
+        Enemies Y:[killed by stars] have a Y:4% G:(+1% per stack) Y:chance to Y:[drop powers] 
         This effect can only happen Y:3 G:(+1 per stack) Y:times per Y:wave
         '''
-      Brief: Enemies killed by stars have an additional chance to drop powers
+      Brief: Enemies killed by stars have a chance to drop powers
       Lore:
         '''
         Some say the fortunes of bubblekind are written in the stars.

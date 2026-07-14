@@ -26,6 +26,15 @@ public static partial class LocalizationBuilder
                 {
                     value = ToRichText(value, false);
                 }
+            } 
+            if(key.EndsWith("Lore"))
+            {
+                if (value.EndsWith("Lore")) //This usually means the lore entry is unfinished (we haven't written an entry yet)
+                    value = (ExpandedTranslation["Common"] as Dictionary<string, object>)["LoreMissing"] as string;
+                else //Preprocess the lore if it is finished
+                {
+
+                }
             }
             completeDictionary[key] = value;
         }

@@ -276,33 +276,32 @@ public class Compendium : MonoBehaviour
         if (p is Electroluminescence)
             size = 39.9f;
         string concat = $"<size={size}>{p.UnlockedName}</size>" + shortLineBreak;
-        if (!p.BriefDescIsSameAsLong)
-        {
-            bool hasAlt = UnlockedAlts.Count > 0 || (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.IsComplete);
-            concat += $"<size=26>{"Brief\n".WithRarityColor(rare, isBlackMarket)}</size>";
-            concat += p.ShortDescription + shortLineBreak;
-            concat += $"<size=26>{(hasAlt ? "Detailed (Default)\n" : "Detailed\n").WithRarityColor(rare, isBlackMarket)}</size>";
-        }
-        else
-            concat += $"<size=26>{"Description\n".WithRarityColor(rare, isBlackMarket)}</size>";
+        //if (!p.BriefDescIsSameAsLong)
+        //{
+        //    concat += $"<size=26>{"Brief\n".WithRarityColor(rare, isBlackMarket)}</size>";
+        //    concat += p.ShortDescription + shortLineBreak;
+        //    concat += $"<size=26>{(hasAlt ? "Detailed (Default)\n" : "Detailed\n").WithRarityColor(rare, isBlackMarket)}</size>";
+        //}
+        bool hasAlt = UnlockedAlts.Count > 0 || (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.IsComplete);
+        concat += $"<size=26>{(hasAlt ? "Description (Default)\n" : "Description\n").WithRarityColor(rare, isBlackMarket)}</size>";
         concat += p.TrueFullDescription;
         if (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.IsComplete)
         {
-            concat += shortLineBreak + $"<size=26>{$"Detailed (Black Market)\n".WithRarityColor(rare, true)}</size>";
+            concat += shortLineBreak + $"<size=26>{$"Description (Black Market)\n".WithRarityColor(rare, true)}</size>";
             concat += p.BlackMarketFullDescription;
         }
         foreach (Equipment e in UnlockedAlts.Keys)
         {
-            concat += shortLineBreak + $"<size=26>{$"Detailed ({e.GetName(true)})\n".WithRarityColor(rare, isBlackMarket)}</size>";
+            concat += shortLineBreak + $"<size=26>{$"Description ({e.GetName(true)})\n".WithRarityColor(rare, isBlackMarket)}</size>";
             concat += UnlockedAlts[e];
         }
         if (!DisplayCPUE.IsLocked())
         {
             concat += shortLineBreak;
-            concat += $"<size=26>{"Times Obtained\n".WithRarityColor(rare, isBlackMarket)}</size>";
-            concat += p.PickedUpCountAllRuns + shortLineBreak;
-            concat += $"<size=26>{"Greatest Stack\n".WithRarityColor(rare, isBlackMarket)}</size>";
-            concat += p.PickedUpBestAllRuns + shortLineBreak;
+            concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
+            concat += $" {"Times Obtained: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpCountAllRuns}\n";
+            concat += $" {"Greatest Stack: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpBestAllRuns}";
+            concat += shortLineBreak + GetLoreSegment(p);
         }
         return concat;
     }
@@ -335,22 +334,26 @@ public class Compendium : MonoBehaviour
         }
         concat += $"<size=26>{"Description\n".WithRarityColor(rare, false)}</size>";
         if (!u.PreReqComplete && !e.IsUnlocked)
-            concat += e.GetDescription().WithColor(ColorHelper.GrayHex) + shortLineBreak;
+            concat += e.GetDescription().WithSizeAndColor(26, ColorHelper.GrayHex) + shortLineBreak;
         else
-            concat += e.GetDescription() + shortLineBreak;
+            concat += e.GetDescription().WithSize(26) + shortLineBreak;
         if (!DisplayCEE.IsLocked())
         {
             //times used
             concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
             if (e.HighestDifficultyUnlocked > 0)
-                concat += $"{"Ascension: ".WithColor(ColorHelper.AscColorHex)}{e.HighestDifficultyUnlocked}\n";
-            concat += $"{"Times Used: ".WithColor(ColorHelper.LesserGrayHex)}{e.TotalTimesUsed}\n";
-            concat += $"{"Victories: ".WithColor(ColorHelper.YellowHex)}{e.VictoryCount}";
-            concat += shortLineBreak;
+                concat += $" {"Ascension: ".WithColor(ColorHelper.AscColorHex)}{e.HighestDifficultyUnlocked}\n";
+            concat += $" {"Times Used: ".WithColor(ColorHelper.LesserGrayHex)}{e.TotalTimesUsed}\n";
+            concat += $" {"Victories: ".WithColor(ColorHelper.YellowHex)}{e.VictoryCount}";
         }
         else
         {
             concat = concat.Bastardize('?');
+        }
+        if (!DisplayCEE.IsLocked())
+        {
+            concat += shortLineBreak + GetLoreSegment(e);
+            concat += shortLineBreak;
         }
         concat += "Associated Achievement: \n".WithSizeAndColor(26, ColorHelper.LesserGrayHex);
         concat += u.GetName();
@@ -358,9 +361,11 @@ public class Compendium : MonoBehaviour
     }
     public string GenerateTierListDescription(EnemyID.StaticEnemyData e, ref int rare)
     {
+        bool locked = DisplayCPEnemy.IsLocked();
         rare = e.Rarity - 1;
         string concat = $"<size=42>{DisplayCPEnemy.MyElem.MyEnemyPrefab.Name().WithRarityColor(rare, false)}</size>" + shortLineBreak;
 
+        concat += $"<size=26>{$"Description\n".WithRarityColor(rare, false)}</size>";
         concat += e.EnemyDescription.Full.WithSize(26) + shortLineBreak;
 
         concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
@@ -370,18 +375,15 @@ public class Compendium : MonoBehaviour
         string gemRange = e.BaseMinGem != e.BaseMaxGem ? $"{e.BaseMinGem}-{e.BaseMaxGem}" : $"{e.BaseMaxGem}";
         concat += $" {"Gem Bounty: ".WithColor(ColorHelper.RarityColors[1].ToHexString())}{gemRange}\n";
         concat += $" {"Summon Cost: ".WithColor(ColorHelper.LesserGrayHex)}{e.Cost:#.0}\n";
-        concat += $" {"Wave: ".WithColor(ColorHelper.RarityColorHex[2])}{e.WaveNumber:#.#}\n";
-
-        if (!DisplayCPEnemy.IsLocked())
+        concat += $" {"Wave: ".WithColor(ColorHelper.RarityColorHex[2])}{e.WaveNumber:#.#}";
+        if (!locked)
         {
-            concat += shortLineBreak;
-            concat += $"<size=26>{"Kills\n".WithRarityColor(rare, false)}</size>";
-            concat += e.TimesKilled + shortLineBreak;
-
-            concat += $"<size=26>{"Skull Kills\n".WithRarityColor(rare, false)}</size>";
-            concat += e.TimesKilledSkull + shortLineBreak;
+            concat += $"\n {"Kills: ".WithColor(ColorHelper.RarityColorHex[3])}{e.TimesKilled}\n";
+            concat += $" {"Skull Kills: ".WithColor(ColorHelper.RarityColorHex[3])}{e.TimesKilledSkull}";
         }
-        concat = DisplayCPEnemy.IsLocked() ? concat.Bastardize('?') : concat;
+        concat = locked ? concat.Bastardize('?') : concat;
+        if(!locked)
+            concat += shortLineBreak + GetLoreSegment(e);
         return concat;
     }
     public string GenerateTierListDescription(CompendiumAchievementElement DisplayCPAchievement, ref int rare)
@@ -435,13 +437,30 @@ public class Compendium : MonoBehaviour
     }
     public string GetLoreSegment(object loreObject)
     {
+        string concat = string.Empty;
+        string loreSegment = string.Empty;
+        int rare = 0;
         if (loreObject is PowerUp power)
-            return Localization.Get($"Power.{power.GetType().FullName}.Lore");
+        {
+            loreSegment = Localization.Get($"Power.{power.GetType().FullName}.Lore");
+            rare = power.Rarity - 1;
+        }
         else if (loreObject is Equipment equip)
-            return Localization.Get($"Equip.{equip.GetType().FullName}.Lore");
+        {
+            loreSegment = Localization.Get($"Equip.{equip.GetType().FullName}.Lore");
+            rare = equip.GetRarity() - 1;
+        }
         else if (loreObject is EnemyID.StaticEnemyData enemy)
-            return Localization.Get($"Enemy.{enemy.OriginalPrefab.GetComponent<Enemy>().GetType().FullName}.Lore");
-        throw new Exception("THIS OBJECT HAS NO ASSOCIATED LORE");
+        {
+            loreSegment = Localization.Get($"Enemy.{enemy.OriginalPrefab.GetComponent<Enemy>().GetType().FullName}.Lore");
+            rare = enemy.Rarity - 1;
+        }
+        else
+            throw new Exception("THIS OBJECT HAS NO ASSOCIATED LORE");
+
+        concat += $"<size=26>{"Notes\n".WithRarityColor(rare, false)}</size>";
+        concat += loreSegment;
+        return concat;
     }
     #endregion
 }

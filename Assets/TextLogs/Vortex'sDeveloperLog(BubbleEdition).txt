@@ -40,6 +40,7 @@ N/A
 
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
+2. Hovering over coin and other resource icons does not work right now
 
 Done: 	
 
@@ -51,6 +52,10 @@ Done:
 5. Fix oversight with particle colors being set to white
 6. Add a custom raycast check for Tiles using custom logic, which is also now used for Sentinels
 	1. This should make it much less likely for Sentinels to hit you through walls, though some terrain may still be possible if the geometry is weird
+7. Brief descriptions no longer appear in the compendium for powers
+8. A section called "Notes" now appears in the compendium, showing lore
+9. Powers, Equips, and Enemies now have more standardized compendium sections
+	1. All have a "Description" then a "Stats" section
 
 -- A3.1 HOTFIX ON STEAM --
 
