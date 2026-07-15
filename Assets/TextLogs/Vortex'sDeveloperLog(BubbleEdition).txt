@@ -28,7 +28,6 @@ Need to do:
 7. Compendium TODO:
 	1. Make powers show which pools they belong to
 	2. Make blurbs appear in the equipment page
-	3. Add flavortext for all compendium elements
 8. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
 
 Less Important (mostly non-issues or complete already), but in consideration:
@@ -45,7 +44,9 @@ Done:
 
 7/14/26
 1. WIP King Oil
-2. WIP Lore coloration
+2. Add lore section to Elements in the compendium, which appear in a separate sections
+	1. Characters have quotes for certain lore entries, which do not appear if the character has not been unlocked (or preceding characters in a quote chain)
+	2. Also fix bug where black market powers did not have certain headers colored correctly
 
 7/13/26 to 7/14/26
 1. WIP Ability UI display

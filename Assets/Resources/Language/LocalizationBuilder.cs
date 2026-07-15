@@ -40,6 +40,10 @@ public static class Localization
 #endif
         }
     }
+    public static bool TryGet(string key, out string value)
+    {
+        return CondensedTranslation.TryGetValue(key, out value);
+    }
 }
 #if UNITY_EDITOR
 public static partial class LocalizationBuilder

@@ -12,7 +12,8 @@
     Asc2Description: All encounters are Tag Teams
     Asc3Title: Pandemic
     Asc3Description: Enemies can spawn infected
-    LoreMissing: This entry has no associated notes
+    LoreMissing: ENTRY UNDER CONSTRUCTION
+    LoreUnfilled: Entry yet to be discovered
   }
   Power:
   {
@@ -45,10 +46,7 @@
       Title: Shotgun
       Description: Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
       Brief: Increases the amount of bubbles shot by your primary attack
-      Lore:
-        '''
-        ThoughtBubble: The extra bubbles seem to split from others included in the attack with perfect replication.
-        '''
+      Lore: ThoughtBubble: The extra bubbles seem to split from others included in the attack with perfect replication.
     }
     Dash:
     {
@@ -141,7 +139,8 @@
       Lore:
         '''
         Grants the wisdom of age to smaller bubble projectiles, making them last longer before popping.
-        Bubblemancer: "Don't go livin' yer life in one shot, y'hear?" That's what my Grandpa used to say to me.
+        Bubblemancer: <i>Don't go livin' yer life in one shot, y'hear?</i>
+        Bubblemancer: That's what my Grandpa used to say to me.
         '''
     }
     BubbleBirb:
@@ -327,10 +326,7 @@
       Title: Roll For Dexterity
       Description: Y:20% G:(+1% per stack) Y:chance to gain Y:15% increased Y:[movement speed] after using Y:[your ability,] stacking up to Y:2 G:(+1 per stack) times and lasting Y:[5 seconds]
       Brief: Chance to gain increased speed after using your ability
-      Lore:
-        '''
-        Bubblemancer: The Winged Bubble was known to be a rogue who favored games of chance. However, he was always ready to slip away if the game went awry for him.
-        '''
+      Lore: Bubblemancer: The Winged Bubble was known to be a rogue who favored games of chance. However, he was always ready to slip away if the game went awry for him.
     }
     RollForInitiative:
     {
@@ -369,10 +365,7 @@
         Gain a shield on even-numbered waves
         When shields are broken, extend immunity frames and release bubbles
         '''
-      Lore:
-        '''
-        Unknown: "Whatcha really need is this here bubble shield: quality assured by real bubbles! If it doesn't actually work, it's not like our customers will come back to complain."
-        '''
+      Lore: Unknown: Whatcha really need is this here bubble shield: quality assured by real bubbles! If it doesn't actually work, it's not like our customers will come back to complain.
     }
     ZapRadius:
     {
@@ -409,30 +402,21 @@
       Title: Bonus Batteries
       Description: Increases the number of Y:[thunder bubbles] you can cast by Y:1 G:(+1 per stack)
       Brief: Increases the number of thunder bubbles you can cast
-      Lore:
-        '''
-        ThoughtBubble: I developed these batteries to contain thunder essence. My research into thunder is still ongoing, but the current disaster necessitated its unfortunate weaponization.
-        '''
+      Lore: ThoughtBubble: I developed these batteries to contain thunder essence. My research into thunder is still ongoing, but the current disaster necessitated its unfortunate weaponization.
     }
     ResearchNotes:
     {
       Title: Research Notes
       Description: Y:[After killing 3 Skull enemies,] become a <color=#CFCFFF>Choice</color> with 5 options G:(consumed on use)
       Brief: After killing 3 Skull enemies, become a Choice with 5 options
-      Lore:
-        '''
-        ThoughtBubble: The energy signature of enhanced Bubbleverse creatures closely matches that of power bubbles. My working hypothesis is that they both draw power from the same source, yet that power remains very unwieldy.
-        '''
+      Lore: ThoughtBubble: The energy signature of enhanced Bubbleverse creatures closely matches that of power bubbles. My working hypothesis is that they both draw power from the same source, yet that power remains very unwieldy.
     }
     ResearchGrants:
     {
       Title: Research Grants
       Description: Y:[Skull enemies] drop Y:3 G:(+2 per stack) additional Y:coins
       Brief: Skull enemies drop additional coins
-      Lore:
-        '''
-        TB: I don't know who is providing these grants, but they are appreciated nonetheless.
-        '''
+      Lore: TB: I don't know who is providing these grants, but they are appreciated nonetheless.
     }
     Boomerang:
     {

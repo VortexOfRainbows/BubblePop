@@ -23,9 +23,11 @@ public static partial class LocalizationBuilder
                     for (int i = 0; i < segments.Length; ++i)
                     {
                         var segment = segments[i];
-                        finalValue += LoreSegmentToRichText(segment);
-                        if(i < segments.Length - 1)
-                            finalValue += "\n";
+                        string loreSegment = LoreSegmentToRichText(segment, out int charID);
+                        if (i < segments.Length - 1)
+                            loreSegment += "\n\n".WithSize(i == 0 ? 30 : 11);
+                        completeDictionary[key + i.ToString()] = (charID != -1 ? $"[{charID}]" : "") + loreSegment;
+                        finalValue += loreSegment;
                     }
                     value = finalValue;
                 }
@@ -120,30 +122,50 @@ public static partial class LocalizationBuilder
         }
         return start2 + t;
     }
-    private static string LoreSegmentToRichText(string segment)
+    private static string LoreSegmentToRichText(string segment, out int charID)
     {
         var segments = segment.Split(": ", 2);
-        if(segments.Length < 2)
-            return segment;
+        charID = -1;
+        if (segments.Length < 2)
+            return segment.WithSize(26);
         string first = segments[0];
         string second = segments[1];
-        string hex = GetCharacterLoreColor(first);
-        return second.WithColor(hex);
+        string hex = GetCharacterLoreColor(first, out charID);
+        return $"\"{second}\"".WithColor(hex);
     }
-    private static string GetCharacterLoreColor(string character)
+    private static string GetCharacterLoreColor(string character, out int charID)
     {
         if (character.StartsWith("B")) //B for Bubblemancer
+        {
+            charID = 0;
             return "#DBF7FA"; //Bluish Color
+        }
         else if (character.StartsWith("T")) //T for Thought Bubble
+        {
+            charID = 1;
             return "#E3B3D8"; //Pinkish Color
+        }
         else if (character.StartsWith("G")) //G for Gachapon
+        {
+            charID = 2;
             return "#F3ECB7"; //Yellowish Color
+        }
         else if (character.StartsWith("F")) //F for Fizzy
-            return "#D8454D"; //Red
+        {
+            charID = 3;
+            return "#B4946B"; //Brown-ish
+        }
         else if (character.StartsWith("K")) //K for King Oil
+        {
+            charID = 4;
             return "#8A84AA"; //Purple-ish Color
+        }
         else if (character.StartsWith("U")) //U for Unknown
-            return ColorHelper.GrayHex;
+        {
+            charID = 9;
+            return ColorHelper.LesserGrayHex;
+        }
+        charID = -1;
         return "#FFFFFF";
     }
 }

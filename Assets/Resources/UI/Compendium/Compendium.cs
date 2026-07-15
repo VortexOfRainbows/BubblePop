@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class Compendium : MonoBehaviour
@@ -246,9 +247,12 @@ public class Compendium : MonoBehaviour
             object loreObject = null;
             if (PageNumber == 0)
             {
-                loreObject = PowerUp.Get(SelectedType);
-                string concat = GenerateTierListDescription(loreObject as PowerUp, ref rare);
+                PowerUp p = PowerUp.Get(SelectedType);
+                loreObject = p;
+                string concat = GenerateTierListDescription(p, ref rare);
                 finalText = DisplayCPUE.IsLocked() ? concat.Bastardize('?') : concat;
+                if (p.IsBlackMarket())
+                    rare = 5;
             }
             else if (PageNumber == 1)
             {
@@ -280,7 +284,10 @@ public class Compendium : MonoBehaviour
         Vector2 loreTarget = LoreSection.GetRenderedValues();
         float minW = 361;
         float minH = 100; // 460;
-        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + loreTarget.y));
+        float paddingBonusMain = 15; //5 + 10
+        float paddingBonusLore = 10;
+        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + loreTarget.y + paddingBonusLore + paddingBonusMain));
+        LoreSectionRect.sizeDelta = new Vector2(LoreSectionRect.sizeDelta.x, loreTarget.y + paddingBonusLore); //10 since the padding is 5, 5 (5 + 5 = 10)
     }
     public string GenerateTierListDescription(PowerUp p, ref int rare)
     {
@@ -320,7 +327,7 @@ public class Compendium : MonoBehaviour
         if (!DisplayCPUE.IsLocked())
         {
             concat += shortLineBreak;
-            concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
+            concat += $"<size=26>{"Stats\n".WithRarityColor(rare, isBlackMarket)}</size>";
             concat += $" {"Times Obtained: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpCountAllRuns}\n";
             concat += $" {"Greatest Stack: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpBestAllRuns}";
         }
@@ -371,7 +378,7 @@ public class Compendium : MonoBehaviour
         {
             concat = concat.Bastardize('?');
         }
-        concat += "Associated Achievement: \n".WithSizeAndColor(26, ColorHelper.LesserGrayHex);
+        concat += shortLineBreak + "Associated Achievement: \n".WithSizeAndColor(26, ColorHelper.LesserGrayHex);
         concat += u.GetName();
         return concat;
     }
@@ -451,23 +458,49 @@ public class Compendium : MonoBehaviour
     }
     public string GetLoreSegment(object loreObject)
     {
-        string loreSegment;
-        int rare;
+        string localizationKey;
         if (loreObject is PowerUp power)
-        {
-            loreSegment = Localization.Get($"Power.{power.GetType().FullName}.Lore");
-        }
+            localizationKey = $"Power.{power.GetType().FullName}.Lore";
         else if (loreObject is Equipment equip)
-        {
-            loreSegment = Localization.Get($"Equip.{equip.GetType().FullName}.Lore");
-        }
+            localizationKey = $"Equip.{equip.GetType().FullName}.Lore";
         else if (loreObject is EnemyID.StaticEnemyData enemy)
-        {
-            loreSegment = Localization.Get($"Enemy.{enemy.OriginalPrefab.GetComponent<Enemy>().GetType().FullName}.Lore");
-        }
+            localizationKey = $"Enemy.{enemy.OriginalPrefab.GetComponent<Enemy>().GetType().FullName}.Lore";
         else
             throw new Exception("THIS OBJECT HAS NO ASSOCIATED LORE");
+
+        string loreSegment = string.Empty;
+
+        int i = 0;
+        while (Localization.TryGet(localizationKey + i.ToString(), out string segment))
+        {
+            bool textSegmentUnlocked = true;
+            if (segment.StartsWith("["))
+            { 
+                int number = int.Parse(segment.Substring(1, 1));
+                textSegmentUnlocked = LoreSegmentCharacterOwnerUnlocked(number);
+                if (textSegmentUnlocked)
+                    segment = segment[3..];
+            }
+            ++i;
+            if (textSegmentUnlocked)
+                loreSegment += segment;
+            else
+                break;
+        }
+        if(i == 0)
+            return Localization.Get(localizationKey);
+        else if(loreSegment.Length <= 0)
+            return Localization.Get("Common.LoreUnfilled");
         return loreSegment;
+    }
+    public bool LoreSegmentCharacterOwnerUnlocked(int charID)
+    {
+        if(charID == 0) return true; //Bubblemancer always unlocked
+        if(charID == 1) return UnlockCondition.Get<ThoughtBubbleUnlock>().IsComplete;
+        if (charID == 2) return UnlockCondition.Get<GachaponUnlock>().IsComplete;
+        if (charID == 3) return UnlockCondition.Get<FizzyUnlock>().IsComplete;
+        if (charID == 4) return UnlockCondition.Get<KingOilUnlock>().IsComplete;
+        return true;
     }
     #endregion
 }
