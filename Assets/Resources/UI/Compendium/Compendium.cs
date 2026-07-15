@@ -141,8 +141,6 @@ public class Compendium : MonoBehaviour
     public CompendiumEquipmentElement DisplayCEE { get; set; }
     public CompendiumEnemyElement DisplayCPEnemy { get; set; }
     public CompendiumAchievementElement DisplayCPAchievement { get; set; }
-    public TextMeshProUGUI DisplayPortDescription;
-    public RectTransform DescriptionContentRect;
     public GameObject[] Stars;
     public static int JustPlacedCounter = 0;
     public static bool JustPlacedAnElemOntoTierList
@@ -234,6 +232,10 @@ public class Compendium : MonoBehaviour
     #endregion
 
     #region Description
+    public TextMeshProUGUI DisplayPortDescription;
+    public RectTransform DescriptionContentRect;
+    public TextMeshProUGUI LoreSection;
+    public RectTransform LoreSectionRect => LoreSection.transform.parent.GetComponent<RectTransform>();
     public static readonly string shortLineBreak = "<size=12>\n\n</size>";
     public void UpdateDescription(bool reset, int SelectedType)
     {
@@ -241,24 +243,44 @@ public class Compendium : MonoBehaviour
         {
             int rare = 0;
             string finalText = string.Empty;
+            object loreObject = null;
             if (PageNumber == 0)
             {
-                string concat = GenerateTierListDescription(PowerUp.Get(SelectedType), ref rare);
+                loreObject = PowerUp.Get(SelectedType);
+                string concat = GenerateTierListDescription(loreObject as PowerUp, ref rare);
                 finalText = DisplayCPUE.IsLocked() ? concat.Bastardize('?') : concat;
             }
             else if (PageNumber == 1)
-                finalText = GenerateTierListDescription(DisplayCEE.MyElem.ActiveEquipment, ref rare);
+            {
+                loreObject = DisplayCEE.MyElem.ActiveEquipment;
+                finalText = GenerateTierListDescription(loreObject as Equipment, ref rare);
+            }
             else if (PageNumber == 2)
-                finalText = GenerateTierListDescription(DisplayCPEnemy.MyElem.StaticData, ref rare);
+            {
+                loreObject = DisplayCPEnemy.MyElem.StaticData;
+                finalText = GenerateTierListDescription(loreObject as EnemyID.StaticEnemyData, ref rare);
+            }
             else if (PageNumber == 3)
                 finalText = GenerateTierListDescription(DisplayCPAchievement, ref rare);
-            DisplayPortDescription.text = finalText;
             UpdateStars(rare);
+
+            if(PageNumber == 3) //Achievement page has no NOTES section for now, so it should disable it
+            {
+                //Disable notes section
+            }
+            else if(loreObject != null)//Enable notes section for other descriptions
+            {
+                finalText += shortLineBreak + $"<size=26>{"Notes".WithRarityColor(rare, false)}</size>";
+                string loreText = GetLoreSegment(loreObject);
+                LoreSection.text = loreText;
+            }
+            DisplayPortDescription.text = finalText;
         }
         Vector2 target = DisplayPortDescription.GetRenderedValues();
+        Vector2 loreTarget = LoreSection.GetRenderedValues();
         float minW = 361;
-        float minH = 460;
-        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + 40));
+        float minH = 100; // 460;
+        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + loreTarget.y));
     }
     public string GenerateTierListDescription(PowerUp p, ref int rare)
     {
@@ -301,7 +323,6 @@ public class Compendium : MonoBehaviour
             concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
             concat += $" {"Times Obtained: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpCountAllRuns}\n";
             concat += $" {"Greatest Stack: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpBestAllRuns}";
-            concat += shortLineBreak + GetLoreSegment(p);
         }
         return concat;
     }
@@ -350,11 +371,6 @@ public class Compendium : MonoBehaviour
         {
             concat = concat.Bastardize('?');
         }
-        if (!DisplayCEE.IsLocked())
-        {
-            concat += shortLineBreak + GetLoreSegment(e);
-            concat += shortLineBreak;
-        }
         concat += "Associated Achievement: \n".WithSizeAndColor(26, ColorHelper.LesserGrayHex);
         concat += u.GetName();
         return concat;
@@ -382,8 +398,6 @@ public class Compendium : MonoBehaviour
             concat += $" {"Skull Kills: ".WithColor(ColorHelper.RarityColorHex[3])}{e.TimesKilledSkull}";
         }
         concat = locked ? concat.Bastardize('?') : concat;
-        if(!locked)
-            concat += shortLineBreak + GetLoreSegment(e);
         return concat;
     }
     public string GenerateTierListDescription(CompendiumAchievementElement DisplayCPAchievement, ref int rare)
@@ -437,30 +451,23 @@ public class Compendium : MonoBehaviour
     }
     public string GetLoreSegment(object loreObject)
     {
-        string concat = string.Empty;
-        string loreSegment = string.Empty;
-        int rare = 0;
+        string loreSegment;
+        int rare;
         if (loreObject is PowerUp power)
         {
             loreSegment = Localization.Get($"Power.{power.GetType().FullName}.Lore");
-            rare = power.Rarity - 1;
         }
         else if (loreObject is Equipment equip)
         {
             loreSegment = Localization.Get($"Equip.{equip.GetType().FullName}.Lore");
-            rare = equip.GetRarity() - 1;
         }
         else if (loreObject is EnemyID.StaticEnemyData enemy)
         {
             loreSegment = Localization.Get($"Enemy.{enemy.OriginalPrefab.GetComponent<Enemy>().GetType().FullName}.Lore");
-            rare = enemy.Rarity - 1;
         }
         else
             throw new Exception("THIS OBJECT HAS NO ASSOCIATED LORE");
-
-        concat += $"<size=26>{"Notes\n".WithRarityColor(rare, false)}</size>";
-        concat += loreSegment;
-        return concat;
+        return loreSegment;
     }
     #endregion
 }
