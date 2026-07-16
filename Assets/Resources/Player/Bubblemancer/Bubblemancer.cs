@@ -30,7 +30,9 @@ public class Bubblemancer : Body
         Player.abilityTimer = Player.AbilityCD;
         velocity = velocity * Player.MaxSpeed + moveSpeed * speed;
         p.Squash = Player.SquashAmt;
-        spriteRender.transform.eulerAngles = new Vector3(0, 0, velocity.ToRotation() * Mathf.Rad2Deg);
+        Vector2 velocityForRotationPurposes = velocity;
+        velocityForRotationPurposes.x = Mathf.Abs(velocityForRotationPurposes.x);
+        spriteRender.transform.eulerAngles = new Vector3(0, 0, velocityForRotationPurposes.ToRotation() * Mathf.Rad2Deg * FlipDir);
         FaceR.transform.eulerAngles = new Vector3(0, 0, p.Direction < 0 ? (Mathf.PI + velocity.ToRotation()) * Mathf.Rad2Deg : velocity.ToRotation() * Mathf.Rad2Deg);
         AudioManager.PlaySound(SoundID.Dash.GetVariation(3), transform.position, 1f, Utils.RandFloat(1.2f, 1.3f));
         Player.OnDash(velocity);
@@ -56,6 +58,6 @@ public class Bubblemancer : Body
         }
 
         Face.transform.LerpLocalPosition(pos, 0.065f);
-        FaceR.flipX = !spriteRender.flipY;
+        FaceR.flipX = !Flipped;
     }
 }

@@ -44,6 +44,12 @@ Done:
 
 7/15/26
 1. Import and animate new steam banner asset from Sam onto the menu screen
+2. All character bodies now turn around instantly when direction is changed (Previously only TB and Gachapon did this)
+	1. This is part of a standardization to make animating simpler (as such, animations should also feel slightly more consistent for player body movement)
+3. Fizzy and King Oil character highlights now properly appear on the top of the bubble instead of the bottom
+4. WIP King Oil hat
+	1. Has functional death animation (same as bubblemancer hat)
+	2. Needs: Smoke animation, powers, etc.
 
 7/14/26
 1. WIP King Oil

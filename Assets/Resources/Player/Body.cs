@@ -58,33 +58,28 @@ public class Body : Equipment
         float angleMult = 0.5f * AngleMultiplier;
         if (p.Squash < 0.9f)
             angleMult = 1;
+        Transform spriteTransform = spriteRender.transform;
         Vector2 lastVelo = new(p.lastVelo.sqrMagnitude > 0.1f ? p.lastVelo.x : p.Direction, p.lastVelo.y);
         #region modify rotation and direction
-        float r = spriteRender.transform.eulerAngles.z;
-        float angle = lastVelo.ToRotation() * Mathf.Rad2Deg;
-        if (angle < 0)
-            angle += 360;
-        if (angle > 90 && angle <= 270)
+
+        int nextDir = (int)Utils.SignNoZero(lastVelo.x);
+        float r = spriteTransform.localEulerAngles.z;
+        if (nextDir != FlipDir)
         {
-            angle = angle - 180;
-            angle = 180 + angle * angleMult;
+            FlipDir = nextDir;
+            r = FlipDir * Mathf.Abs(Utils.WrapAngleDegrees(r));
+            spriteTransform.SetLocalEulerZ(r);
         }
-        else
-        {
-            if (angle >= 270)
-                angle -= 360;
-            angle *= angleMult;
-        }
-        r = Mathf.LerpAngle(r, angle, RotationSpeed);
-        FlipDir = r >= 90 && r < 270 ? -1 : 1;
-        spriteRender.transform.eulerAngles = new Vector3(0, 0, r);
+        lastVelo.x *= FlipDir;
+        r = Mathf.LerpAngle(r, angleMult * Mathf.Rad2Deg * lastVelo.ToRotation() * FlipDir, RotationSpeed);
+        spriteTransform.SetLocalEulerZ(r);
+
         #endregion
         gameObject.transform.localScale = new Vector3(1 + 0.1f * (1 - p.Bobbing), p.Bobbing, 1);
-        spriteRender.transform.localScale = 
-            FaceR.transform.localScale = new Vector3(1 + (1 - p.Squash) * 2.5f, p.Squash, 1);
-        spriteRender.transform.localScale = new Vector3(spriteRender.transform.localScale.x, 
-            spriteRender.transform.localScale.y * FlipDir,
-            spriteRender.transform.localScale.z);
+        spriteTransform.localScale = FaceR.transform.localScale = new Vector3(1 + (1 - p.Squash) * 2.5f, p.Squash, 1);
+        spriteTransform.localScale = new Vector3(spriteTransform.localScale.x * FlipDir, 
+            spriteTransform.localScale.y,
+            spriteTransform.localScale.z);
         Vector2 squashReAlign = new(0, p.Bobbing * p.Squash - 1);
         transform.localPosition = squashReAlign;
         gameObject.SetActive(true);

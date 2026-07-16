@@ -1194,9 +1194,15 @@
     KingOil:
     {
       Title: King Oil
-      Description: The richest bubble on the planet, in wealth and style
+      Description: The richest bubble on the planet, in wealth and fashion
       Lore: Equip.KingOil.Lore
       Abl1: (WIP) Request a drone strike from your personal arsenal
+    }
+    OilHat:
+    {
+      Title: Top Hat
+      Description: A big-business bubble needs a big-business hat
+      Lore: Equip.OilHat.Lore
     }
   }
   Unlock:

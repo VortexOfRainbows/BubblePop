@@ -77,6 +77,13 @@ public static class Utils
             x += Mathf.PI * 2;
         return x - Mathf.PI;
     }
+    public static float WrapAngleDegrees(this float x)
+    {
+        x = (x + 180) % 360;
+        if (x < 0)
+            x += 360;
+        return x - 180;
+    }
     public static Vector2 MouseWorld => Camera.main.ScreenToWorldPoint(Input.mousePosition);
     public static Vector2 MouseUI => CameraManager.UICamera.ScreenToWorldPoint(Input.mousePosition);
     public static float RandFloat(float max = 1)

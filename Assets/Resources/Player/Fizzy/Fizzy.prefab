@@ -330,7 +330,7 @@ SpriteRenderer:
   m_Sprite: {fileID: 21300000, guid: bb2a31164c756e04d97d3a38f205e4cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_FlipX: 1
-  m_FlipY: 1
+  m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
@@ -387,8 +387,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 1645974944771865728}
   velocity: {x: 0, y: 0}
-  hasInit: 0
-  PrimaryColor: {r: 0.8, g: 0.7, b: 0.56, a: 0.5}
   FaceR: {fileID: 8568634409820030331}
   Skateboard: {fileID: 2758288789175135842}
   Wheel1: {fileID: 8071887009297716239}
