@@ -116,7 +116,7 @@ public static class Lighting
             else
                 width = SunVector.x / Mathf.Abs(SunVector.y); //TANGENT
             width = Mathf.Clamp(width, -maxWidth, maxWidth);
-            Vector2 Sun = new(-width, Mathf.Abs(SunVector.y) * 2 - 3.5f); 
+            Vector2 Sun = new(-width, Mathf.Abs(SunVector.y) * 1.5f - 2.8f); 
             if (Sun.x == 0)
                 Sun.x = 0.001f; //CANNOT LET SUN.X BE 0
             FrontLight.SetVector("_Sun", Sun);

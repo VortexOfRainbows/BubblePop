@@ -33,7 +33,9 @@ public static class CameraManager
     }
     public static void SetSolidTileLightingOffset(Vector2 sunlightVector)
     {
-        SolidTileCamera.transform.localPosition = -sunlightVector * 2;
-        OcclusionTileCamera.transform.localPosition = (Vector2)SolidTileCamera.transform.localPosition; // - new Vector2(Utils.SignNoZero(sunlightVector.x), Utils.SignNoZero(sunlightVector.y));
+        float tileScaleFactor = 2.0f;
+        Vector2 scaledPosition = -sunlightVector * tileScaleFactor;
+        SolidTileCamera.transform.localPosition = scaledPosition + new Vector2(0, 0.7f) * tileScaleFactor; //0.2f is the offset for tile tops, -0.5f is the offset for tile bottoms
+        OcclusionTileCamera.transform.localPosition = scaledPosition; // - new Vector2(Utils.SignNoZero(sunlightVector.x), Utils.SignNoZero(sunlightVector.y));
     }
 }

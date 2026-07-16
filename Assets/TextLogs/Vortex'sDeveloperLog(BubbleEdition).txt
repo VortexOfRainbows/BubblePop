@@ -12,8 +12,7 @@ Do Later:
 3. Grass shader to make grass more interesting and potentially slightly vary in the wind
 4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
-6. Lighting: Fix the size so it also encompasses the bottom half of wall tiles for purpose of shadow size and shape (may be as simple as stretching the diagonal and occlusion parts, then including walls in the render target for shape)
-	1. Time of day settings (such as the ability to pause time or make it real-world accurate)
+6. Lighting: Time of day settings (such as the ability to pause time or make it real-world accurate)
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -50,6 +49,7 @@ Done:
 4. WIP King Oil hat
 	1. Has functional death animation (same as bubblemancer hat)
 	2. Needs: Smoke animation, powers, etc.
+5. LIGHTING FIX: Shifting lighting downward, making shadows more accurate and realistic
 
 7/14/26
 1. WIP King Oil
