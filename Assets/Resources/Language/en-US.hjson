@@ -1201,8 +1201,14 @@
     OilHat:
     {
       Title: Top Hat
-      Description: A big-business bubble needs a big-business hat
+      Description: A big-business gentlebubble needs a big-business hat
       Lore: Equip.OilHat.Lore
+    }
+    Tie:
+    {
+      Title: Dapper Tie
+      Description: A fashionable gentlebubble needs a fashionable tie
+      Lore: Equip.Tie.Lore
     }
   }
   Unlock:

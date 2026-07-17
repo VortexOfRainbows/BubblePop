@@ -21,9 +21,9 @@ public class OilHat : BubblemancerHat
     protected override void AnimationUpdate()
     {
         float r = p.MoveDashRotation() * 0.4f;
-        transform.localScale = new Vector3(p.Body.transform.localScale.x * (p.Body.Flipped ? -1 : 1), 0.8f + 0.2f * p.Body.transform.localScale.y, p.Body.transform.localScale.z);
+        transform.localScale = new Vector3(p.Body.transform.localScale.x * (p.Body.Flipped ? -1 : 1), 0.75f + 0.225f * p.Body.transform.localScale.y, p.Body.transform.localScale.z);
         transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, r, 0.1f) * Vector3.forward;
-        transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition, new Vector2(0, 0.05f + 0.65f * p.Bobbing * p.Squash).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad), 0.1f) + velocity);
+        transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition, new Vector2(0, 0.15f + 0.575f * p.Bobbing * p.Squash).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad), 0.1f) + velocity);
         velocity *= 0.9f;
     }
 }
