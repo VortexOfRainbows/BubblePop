@@ -25,8 +25,8 @@ public class Tie : Accessory
     {
         float dir = p.Body.Flipped ? -1 : 1;
         transform.localScale = new Vector3(p.Body.transform.localScale.x * dir, p.Body.transform.localScale.y * 0.5f + 0.475f, 1);
-        transform.LerpLocalPosition(new Vector2(0.1625f * dir, -0.825f), 0.05f);
-        transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, Vector3.zero, 0.05f);
+        transform.LerpLocalPosition(new Vector2(0.1625f * dir, -0.825f), 0.15f);
+        transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, Vector3.zero, 0.15f);
         TiePart.LerpLocalScale(Vector2.one, 0.05f);
         TiePart.LerpLocalEulerZ(0, 0.05f);
     }
