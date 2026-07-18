@@ -81,6 +81,7 @@ public partial class Player : Entity
     public float TrueMoveModifier = 1.0f;
     public float LightMultiplierBonusDamage = 0.0f;
     public int GladiatorDuration = 0;
+    public int TarShots = 0;
     public float MoveSpeedMod 
     {   
         get
@@ -235,6 +236,7 @@ public partial class Player : Entity
         GladiatorDuration = 0;
         CatalystJellies = 0;
         BonusCoinFromWaveRewards = ChoiceOnHeal = 0;
+        TarShots = 0;
     }
     private void UpdatePowerUps()
     {

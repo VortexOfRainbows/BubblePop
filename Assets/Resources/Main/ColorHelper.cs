@@ -31,6 +31,7 @@ public static class ColorHelper
     public static readonly Color CommandInfector = new(1, .1f, .1f);
     public static readonly Color Player1Color = New255(0x88, 0xF4, 0xFF);
     public static readonly Color Player2Color = New255(0xFF, 0x96, 0x96);
+    public static readonly Color KingOilColor = new(0.5411f, .5176f, .6666f);
     public static Color SentinelColorsLerp(float t, bool purple = false)
     {
         return purple ? Color.Lerp(SentinelPurple, SentinelMagenta, t) : Color.Lerp(SentinelGreen, SentinelBlue, t);

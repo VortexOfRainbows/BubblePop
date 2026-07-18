@@ -41,7 +41,7 @@ Bug Watchlist:
 
 Done: 	
 
-7/15/26 to 7/17/26
+7/15/26 to 7/18/26
 1. Import and animate new steam banner asset from Sam onto the menu screen
 2. All character bodies now turn around instantly when direction is changed (Previously only TB and Gachapon did this)
 	1. This is part of a standardization to make animating simpler (as such, animations should also feel slightly more consistent for player body movement)
@@ -50,13 +50,12 @@ Done:
 	1. Has functional death animation (same as bubblemancer hat for the hat)
 	2. Needs: Smoke animation, powers, etc.
 5. WIP King Oil Scepter (right now it is a slightly changed clone of SODA)
-	1. Needs: death animation, powers
-	2. IDEA:
-		1. Left click is simple shots like bubble gun (but shots will have oil splats on the floor when they land)
-		2. Right click sends out the gem in an arc (sliding on the ground like infector), and it leaves a trail of fire
-			1. You can shoot again when it returns
-			2. Fire ignites oil splats
+	1. Needs: death animation, powers, attack mechanics (like igniting + more sound for right click (infector slide sounds maybe))
+	2. Needs: Oil splats! tar trails!
+	3. Needs: Right click doesn't currently work with Calculator (maybe make it home the target instantly, but only to the enemy nearest the cast-end target?)
 6. LIGHTING FIX: Shifting lighting downward, making shadows more accurate and realistic
+7. Import Tachyon Accelerator sprite (David)
+8. Tarred Debuff sprit (Me)
 
 7/14/26
 1. WIP King Oil

@@ -27,6 +27,10 @@ public class OilScepter : Weapon
     {
         description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary);
     }
+    public override void EquipUpdate()
+    {
+        Player.TarShots += 1;
+    }
     protected override void AnimationUpdate()
     {
         WandUpdate();

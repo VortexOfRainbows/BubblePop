@@ -149,6 +149,28 @@ public class Poison : Buff
     }
     public override bool StackSeparately => true;
 }
+public class Tarred : Buff
+{
+    public float DamageOverTime = 0;
+    public override void Update(Entity e)
+    {
+        if (e is Enemy enemy)
+        {
+            foreach (Vector2 v in BuffStack)
+            {
+                float damage = 1;
+                float tickRate = 1;
+                DamageOverTime += Time.fixedDeltaTime;
+                while (DamageOverTime >= tickRate / 2f)
+                {
+                    enemy.Injure(damage / v.y * tickRate, -1, ColorHelper.KingOilColor, 1);
+                    DamageOverTime -= tickRate;
+                }
+            }
+        }
+    }
+    public override bool StackSeparately => true;
+}
 public class Chill : Buff
 {
     public override int MaxStackSize => 10;

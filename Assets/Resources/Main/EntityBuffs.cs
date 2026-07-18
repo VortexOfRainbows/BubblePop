@@ -38,6 +38,11 @@ public partial class Entity : MonoBehaviour
         }
         return false;
     }
+    public bool TryGetBuff<T>(out T buff) where T : Buff
+    {
+        buff = GetBuff<T>() as T;
+        return buff != null;
+    }
     public Buff GetBuff<T>() where T : Buff
     {
         for (int i = 0; i < buffs.Count; i++)

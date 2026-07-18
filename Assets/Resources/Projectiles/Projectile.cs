@@ -178,7 +178,13 @@ public class Projectile : MonoBehaviour
                 }
             }
         }
-        if(PlayerOwner.ChillDuration > 0)
+        if(PlayerOwner.TarShots > 0 && this is SmallBubble)
+        {
+            float duration = 10;
+            if(!target.TryGetBuff(out Tarred b) || b.Stacks < 1)
+                target.AddBuff<Tarred>(duration);
+        }
+        if (PlayerOwner.ChillDuration > 0)
         {
             //if(target is not IceGolem)
             target.AddBuff<Chill>(PlayerOwner.ChillDuration);

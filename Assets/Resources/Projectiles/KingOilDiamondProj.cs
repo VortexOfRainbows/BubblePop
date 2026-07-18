@@ -68,7 +68,7 @@ public class KingOilDiamondProj : Projectile
         float speed = Mathf.Min(55f, toTarget.magnitude * 100);
         RB.velocity = toTarget.normalized * speed;
 
-        if (toTarget.magnitude < 0.15f && SwitchedPos && halfTimer >= 2)
+        if (toTarget.magnitude < 0.25f && SwitchedPos && halfTimer >= 2)
             Kill();
 
         float scaler = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(fullTimer * Mathf.PI)));
