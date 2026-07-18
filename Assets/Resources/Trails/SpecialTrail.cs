@@ -27,6 +27,7 @@ public class SpecialTrail : MonoBehaviour
     public float timer;
     public float originalAlpha;
     public bool ManuallyUpdated = false;
+    public bool ManualPosition { get; set; } = false;
     public float decayMultiplier = 1.0f;
     public List<Vector3> positions = new();
     public void AIUpdate()
@@ -38,7 +39,7 @@ public class SpecialTrail : MonoBehaviour
             float iPer = (1 - timer / Trail.time);
             Trail.startColor = Trail.startColor.WithAlpha(originalAlpha * iPer * iPer);
         }
-        else
+        else if (!ManualPosition)
         {
             transform.position = new Vector3(FakeParent.position.x, FakeParent.position.y, FakeParent.position.z + 0.01f);
         }
