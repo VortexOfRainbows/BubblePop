@@ -39,8 +39,8 @@ public class OilScepter : Weapon
     {
 
     }
-    protected virtual float AttackCooldown => 10;
-    protected virtual int AttackRate => 75;
+    protected virtual float AttackCooldown => 30;
+    protected virtual int LeftAttackSpeed => 75;
     protected virtual float RightAttackSpeed => 100;
     protected virtual float SpreadDegrees => 30;
     public override void StartAttack(bool alternate)
@@ -50,7 +50,7 @@ public class OilScepter : Weapon
             if (!alternate)
             {
                 //AudioManager.PlaySound(SoundID.BathBombSizzle, transform.position, 1, 2);
-                AttackLeft = AttackRate;
+                AttackLeft = LeftAttackSpeed;
             }
         }
         if (AttackRight < -AttackCooldown && AttackLeft < 0 && ActiveDiamondProjectile <= 0)
@@ -86,11 +86,9 @@ public class OilScepter : Weapon
             bonusPointDirOffset = Mathf.Lerp(bonusPointDirOffset, 90, 0.25f);
             attemptedPosition *= 0.9f;
             bool canAttack = AttackLeft <= 1;
-            //ParticleManager.NewParticle((Vector2)Gem.position + awayFromWand + circular, new Vector2(1, 1), Vector2.zero, 0, 0.5f, ParticleManager.ID.LineForeground, Color.red, 0);
-
             if (canAttack)
             {
-                AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, 1.2f);
+                AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1.0f, 1.3f);
                 Vector2 randomAddition = awayFromWand * Utils.RandFloat(2, 4) + Utils.RandCircle(2f);
                 float speed = Utils.RandFloat(15, 16);
                 float spread = SpreadDegrees;
@@ -116,6 +114,8 @@ public class OilScepter : Weapon
         }
         if (AttackRight > 0)
         {
+            if(AttackRight == RightAttackSpeed)
+                AudioManager.PlaySound(SoundID.ChargePoint, transform.position, 0.7f, Utils.RandFloat(0.67f, 0.73f), 0);
             bonusPointDirOffset = Mathf.Lerp(bonusPointDirOffset, 90, 0.1f);
             float percent = 1 - AttackRight / RightAttackSpeed;
             float sin = Mathf.Sin(percent * percent * Mathf.PI * 1.25f);
@@ -124,6 +124,8 @@ public class OilScepter : Weapon
             attemptedPosition.y += 0.5f * percent * sin;
             if (AttackRight == 1)
             {
+                AudioManager.PlaySound(SoundID.Teleport, transform.position, 1.8f, 0.4f, 0);
+                AudioManager.PlaySound(SoundID.Infect, transform.position, 0.8f, 0.8f, 0);
                 ++ActiveDiamondProjectile;
                 float distance = 16;
                 Vector2 final = Utils.RaycastWithTileSupport(Gem.transform.position, awayFromWand, ref distance, 0.1f);
@@ -134,7 +136,8 @@ public class OilScepter : Weapon
         else
         {
             bonusPointDirOffsetRight = Mathf.Lerp(bonusPointDirOffsetRight, 0, ActiveDiamondProjectile <= 0 ? 0.05f : 0.08f);
-            AttackRight--;
+            if (ActiveDiamondProjectile <= 0)
+                AttackRight--;
         }
         WalkMovementAnimation += Mathf.Sqrt(Player.RB.velocity.magnitude);
 
@@ -177,21 +180,31 @@ public class OilScepter : Weapon
     }
     public void Update()
     {
+        bool wasInactive = false;
+        if (!Gem.gameObject.activeSelf)
+            wasInactive = true;
         Gem.gameObject.SetActive(ActiveDiamondProjectile <= 0);
+        if (Gem.gameObject.activeSelf)
+        {
+            if (wasInactive)
+            {
+                AudioManager.PlaySound(SoundID.Infect, transform.position, 0.8f, 2f, 0);
+            }
+        }
         if(Trail != null)
         {
             if (AttackLeft >= 0)
             {
                 Vector2 toMouse = transform.localPosition;
                 toMouse = toMouse.normalized;
-                float attackPercent = 1 - AttackLeft / AttackRate;
+                float attackPercent = 1 - AttackLeft / LeftAttackSpeed;
                 float iPer = 1 - attackPercent;
                 float sin = Mathf.Sin(attackPercent * Mathf.PI);
                 sin = Mathf.Sqrt(sin);
                 int shotCount = 3;
                 for (int i = 1; i <= shotCount; ++i)
                 {
-                    Vector2 circular = new Vector2(1.5f - 1.75f * attackPercent * attackPercent, 0).RotatedBy(WandCounter / (float)AttackRate * Utils.TwoPI / 2f + i * Utils.TwoPI / shotCount);
+                    Vector2 circular = new Vector2(1.5f - 1.75f * attackPercent * attackPercent, 0).RotatedBy(WandCounter / (float)LeftAttackSpeed * Utils.TwoPI / 2f + i * Utils.TwoPI / shotCount);
                     circular.x *= 0.5f;
                     circular = circular.RotatedBy(toMouse.ToRotation());
                     circular += (Vector2)Gem.transform.position;

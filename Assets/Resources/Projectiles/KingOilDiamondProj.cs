@@ -25,6 +25,7 @@ public class KingOilDiamondProj : Projectile
         trail = SpecialTrail.NewTrail(transform, c * 0.7f, 1.0f, 0.2f, 0.25f);
         Direction = Utils.SignNoZero(Data1 - startPos.x);
         immunityFrames = 20;
+        SpriteRenderer.flipX = Direction == 1;
     }
     public bool SwitchedPos = false;
     public float deathPercent = 1f;
@@ -67,7 +68,7 @@ public class KingOilDiamondProj : Projectile
         float speed = Mathf.Min(55f, toTarget.magnitude * 100);
         RB.velocity = toTarget.normalized * speed;
 
-        if (toTarget.magnitude < 0.5f && SwitchedPos && halfTimer >= 2)
+        if (toTarget.magnitude < 0.15f && SwitchedPos && halfTimer >= 2)
             Kill();
 
         float scaler = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(fullTimer * Mathf.PI)));
@@ -81,7 +82,7 @@ public class KingOilDiamondProj : Projectile
         AudioManager.PlaySound(SoundID.SoapDie, transform.position, 1.125f, 1.7f, 0);
         for (int i = 0; i < 15; ++i)
             ParticleManager.NewParticle(target.transform.position + new Vector3(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)), 3, RB.velocity * Utils.RandFloat(0.3f) + Utils.RandCircle(5), 5, Utils.RandFloat(0.7f, 0.8f), 3,
-                Color.Lerp(ColorHelper.RarityColors[0], ColorHelper.RarityColors[4], Utils.RandFloat()) * 0.95f);
+                Color.Lerp(Color.red, ColorHelper.RarityColors[5], Utils.RandFloat()) * 0.95f);
     }
     public override void OnKill()
     {
