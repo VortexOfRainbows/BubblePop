@@ -485,12 +485,13 @@ public class Compendium : MonoBehaviour
             if (textSegmentUnlocked)
                 loreSegment += segment;
             else
+            {
+                loreSegment += Localization.Get("Common.LoreUnfilled").WithSizeAndColor(21, ColorHelper.GrayHex);
                 break;
+            }
         }
         if(i == 0)
             return Localization.Get(localizationKey);
-        else if(loreSegment.Length <= 0)
-            return Localization.Get("Common.LoreUnfilled");
         return loreSegment;
     }
     public bool LoreSegmentCharacterOwnerUnlocked(int charID)

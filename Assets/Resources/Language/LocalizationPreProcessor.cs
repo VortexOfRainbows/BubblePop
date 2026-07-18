@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+#if UNITY_EDITOR
 public static partial class LocalizationBuilder
 {
     private const int NormalTextSize = 28;
@@ -169,3 +170,4 @@ public static partial class LocalizationBuilder
         return "#FFFFFF";
     }
 }
+#endif
