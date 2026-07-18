@@ -738,21 +738,36 @@
       Title: Bottle Burst
       Description: Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
       Brief: Increases the amount of bubbles shot by your primary attack
-      Lore: Power.BonusFizz.Lore
+      Lore:
+      '''
+      A soda bottle contained at the moment of its explosion, probably after someone shook it too much.
+
+      Fizzy: It was me I shook it.
+      '''
     }
     BottleBlast:
     {
       Title: Bottle Blast
       Description: Y:[Secondary attack] releases Y:2 G:(+2 per stack) additional bubbles on impact
       Brief: Secondary attack releases extra bubbles
-      Lore: Power.BottleBlast.Lore
+      Lore:
+      '''
+      An enlarged and overfilled soda bottle fit to explode under its own girth. Pushing its limits in this way allows it to add a nigh-infinite capacity to soda bottles.
+
+      Fizzy: chonky
+      '''
     }
     BottleFlip:
     {
       Title: Bottle Flip
       Description: Y:[Secondary attack] bounces and Y:explodes Y:1 G:(+1 per stack) additional times
       Brief: Secondary attack bounces and explodes an additional time
-      Lore: Power.BottleFlip.Lore
+      Lore:
+      '''
+      A soda bottle contained during its use in an iconic maneuver, now able to make bottles flip themselves.
+
+      Fizzy: Using this kinda takes the skill out of it, but now I can do some new tricks!
+      '''
     }
     FancyFootwork:
     {
@@ -763,14 +778,24 @@
         Chance to Y:dodge reduced by Y:50% for each Y:[consecutive dodge]
         '''
       Brief: Chance to dodge attacks
-      Lore: Power.FancyFootwork.Lore
+      Lore:
+      '''
+      Grants the user legendary evasiveness, bordering on prescience.
+
+      Bubblemancer: The Winged Bubble was a frustrating foe, almost impossible to hit. However, this trait also made him the target for certain ambitious challengers.
+      '''
     }
     CarbonForce:
     {
       Title: Carbon Force
       Description: Small bubbles gain Y:+1 G:(+1 per stack) Y:pierce and travel Y:10% G:(+10% per stack) further and faster
       Brief: Small bubbles get additional pierce and travel further
-      Lore: Power.CarbonForce.Lore
+      Lore:
+      '''
+      A soda bottle contained at the moment of a forceful chemical reaction.
+
+      Fizzy: Some tricks never get old.
+      '''
     }
     FlavorExplosion:
     {
@@ -781,14 +806,31 @@
         Y:[Splash size] scales with Y:damage
         '''
       Brief: Small bubbles splash on hit or upon expiring
-      Lore: Power.FlavorExplosion.Lore
+      Lore:
+      '''
+      Spread the flavor.
+
+      Fizzy: Guess someone took a literal interpretation of "explodes in your mouth".
+      '''
     }
     SplashRadius:
     {
       Title: Splash Radius
       Description: Increases Y:[cola splash radius] by Y:10% G:(+10% per stack)
       Brief: Increases cola splash radius
-      Lore: Power.SplashRadius.Lore
+      Lore:
+      '''
+      A soda bottle used as a grenade striking a pool of soda, the resulting ripples of which add to the splash radius of said grenades.
+
+      TB: I'm glad that Fizzy can provide his own bottles. Manufacturing them as munitions would be...costly.
+      Gachapon: Come to think of it, where does he keep getting all those new bottles?
+      Fizzy: I just pull them out of thin air.
+      Bubblemancer: what
+      TB: To explain, he replicates his bottles in the same way any of us can generate bubbles. Soda bubbles are more volatile and harder to use than normal bubbles, so they require a container. You can think of it like the bottle itself is part of the bubble.
+      Fizzy: Bubbles in bubbles, bro!
+      TB: Sorry, I should have clarified. The bottle has a mixed composition and is not actually made of pure bubbles. You'll have to explain to me how you can do that later.
+      Fizzy: Oh ok.
+      '''
     }
     BonusBoards:
     {
