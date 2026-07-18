@@ -38,9 +38,9 @@ public class OilScepter : Weapon
 
     }
     protected virtual float AttackCooldown => 10;
-    protected virtual int AttackRate => 45;
+    protected virtual int AttackRate => 75;
     protected virtual float RightAttackSpeed => 50;
-    protected virtual float SpreadDegrees => 10;
+    protected virtual float SpreadDegrees => 30;
     public override void StartAttack(bool alternate)
     {
         if (AttackLeft <= 0 && AttackRight < -AttackCooldown)
@@ -64,6 +64,7 @@ public class OilScepter : Weapon
     public Vector2 recoil = Vector2.zero;
     public float bonusPointDirOffset = 0;
     public int WandCounter = 0;
+    public float WalkMovementAnimation = 0;
     private void WandUpdate()
     {
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.transform.position;
@@ -75,13 +76,12 @@ public class OilScepter : Weapon
         p.DashOffset = 100 * dir * (1 - p.Squash);
 
         Vector2 awayFromWand = attemptedPosition.normalized;
-        float attackPercent = 1 - AttackLeft / AttackRate;
         if (AttackLeft > 0)
         {
             ++WandCounter;
             bonusPointDirOffset = Mathf.Lerp(bonusPointDirOffset, 90, 0.25f);
+            attemptedPosition *= 0.9f;
             bool canAttack = AttackLeft <= 1;
-
             //ParticleManager.NewParticle((Vector2)Gem.position + awayFromWand + circular, new Vector2(1, 1), Vector2.zero, 0, 0.5f, ParticleManager.ID.LineForeground, Color.red, 0);
 
             if (canAttack)
@@ -90,8 +90,18 @@ public class OilScepter : Weapon
                 Vector2 randomAddition = awayFromWand * Utils.RandFloat(2, 4) + Utils.RandCircle(2f);
                 float speed = Utils.RandFloat(15, 16);
                 float spread = SpreadDegrees;
-                Vector2 shotDirection = attemptedPosition.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad) * speed + randomAddition;
-                Projectile.NewProjectile<SmallBubble>(Player.Position + awayFromWand * 2, shotDirection, 1, Player);
+                int shotCount = 3;
+                Vector2 spawnPos = (Vector2)Gem.transform.position + awayFromWand * 1.1f;
+                for (int i = 0; i < 10; ++i)
+                {
+                    ParticleManager.NewParticle(spawnPos, Utils.RandFloat(0.5f, 0.75f), Utils.RandCircle(4) + awayFromWand * Utils.RandFloat(3, 5), 1.0f, Utils.RandFloat(0.3f, 0.5f), ParticleManager.ID.Circle, Color.red.WithAlpha(0.5f));
+                }
+                for (int i = 0; i < shotCount; ++i)
+                {
+                    float spreadPercent = (i + 0.5f) / shotCount;
+                    Vector2 shotDirection = attemptedPosition.normalized.RotatedBy(Mathf.Lerp(-spread, spread, spreadPercent) * Mathf.Deg2Rad) * speed + randomAddition;
+                    Projectile.NewProjectile<SmallBubble>(spawnPos, shotDirection, 1, Player);
+                }
                 recoil -= awayFromWand * .1f;
             }
             //float percent = AttackLeft / (50f + Player.ShotgunPower * 10f);
@@ -108,16 +118,21 @@ public class OilScepter : Weapon
         {
             AttackRight--;
         }
+        WalkMovementAnimation += Mathf.Sqrt(Player.RB.velocity.magnitude);
+
         //Final Stuff
         float leftClickPercent = bonusPointDirOffset / 90f;
         float pointPercent = 1 - leftClickPercent;
         float direction = -Utils.SignNoZero(attemptedPosition.x);
+
         Vector2 tiltAugment = toMouse.normalized;
         tiltAugment.x = Mathf.Abs(tiltAugment.x) + 2 * pointPercent;
         tiltAugment.y *= -direction;
         float tiltRotation = tiltAugment.ToRotation() * Mathf.Rad2Deg;
         float r = tiltRotation + p.DashOffset + bonusPointDirOffset * direction;
+        attemptedPosition.y *= 1 - 0.5f * pointPercent;
         attemptedPosition.y -= 0.75f * pointPercent;
+
         transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition + recoil, 0.25f);
         if (Utils.SignNoZero(transform.localScale.x) != direction)
             transform.localScale = new Vector3(direction, 1, 1);
@@ -126,24 +141,40 @@ public class OilScepter : Weapon
         AttackLeft--;
         recoil *= 0.925f;
 
-        if(AttackLeft > 0)
-        {
-            for (int i = 1; i <= 3; ++i)
-            {
-                Vector2 circular = new Vector2(1 - attackPercent, 0).RotatedBy(WandCounter / (float)AttackRate * Utils.TwoPI / 2f + i * Utils.TwoPI / 3f);
-                circular.x *= 0.5f;
-                circular = circular.RotatedBy(awayFromWand.ToRotation());
-                circular += (Vector2)Gem.transform.position;
-                circular += awayFromWand;
-                //ParticleManager.NewParticle(circular, 2f, Vector2.zero + Player.RB.velocity * 0.75f, 0.1f, 0.4f, ParticleManager.ID.Pixel, Color.red);
-                //Trails[i].transform.position = circular;
-            }
-        }
         
         if(Trail == null)
         {
-            Trail = SpecialTrail.NewTrail(Gem, Color.red.WithAlpha(0.4f), .5f, .4f, 0.2f, manuallyUpdated: false, orderInLayer: 3);
+            Trail = SpecialTrail.NewTrail(Gem, Color.red.WithAlpha(0.4f), .4f, .4f, 0.2f, manuallyUpdated: false, orderInLayer: 3);
             Trail.Trail.minVertexDistance *= 10;
+        }
+    }
+    public void Update()
+    {
+        if(Trail != null)
+        {
+            if (AttackLeft >= 0)
+            {
+                Vector2 toMouse = transform.localPosition;
+                toMouse = toMouse.normalized;
+                float attackPercent = 1 - AttackLeft / AttackRate;
+                float iPer = 1 - attackPercent;
+                float sin = Mathf.Sin(attackPercent * Mathf.PI);
+                sin = Mathf.Sqrt(sin);
+                int shotCount = 3;
+                for (int i = 1; i <= shotCount; ++i)
+                {
+                    Vector2 circular = new Vector2(1.5f - 1.75f * attackPercent * attackPercent, 0).RotatedBy(WandCounter / (float)AttackRate * Utils.TwoPI / 2f + i * Utils.TwoPI / shotCount);
+                    circular.x *= 0.5f;
+                    circular = circular.RotatedBy(toMouse.ToRotation());
+                    circular += (Vector2)Gem.transform.position;
+                    circular += toMouse;
+                    Vector2 scale = Vector2.one * (0.5f + attackPercent * iPer);
+                    SpriteBatch.Draw(Main.TextureAssets.Shadow, circular, scale, 0, Color.red * sin, 3, Main.TextureAssets.AdditiveShader);
+                    SpriteBatch.Draw(Main.TextureAssets.Shadow, circular, scale * 0.75f, 0, Color.white * sin, 3, Main.TextureAssets.AdditiveShader);
+                    //ParticleManager.NewParticle(circular, 2f, Vector2.zero + Player.RB.velocity * 0.75f, 0.1f, 0.4f, ParticleManager.ID.Pixel, Color.red);
+                    //Trails[i].transform.position = circular;
+                }
+            }
         }
     }
 }
