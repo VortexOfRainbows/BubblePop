@@ -73,7 +73,7 @@ public class Infector : Enemy
             else
                 Shards[i].sortingOrder = -2;
             Shards[i].transform.localEulerAngles = Mathf.LerpAngle(Shards[i].transform.localEulerAngles.z, normX * -30, lerp) * Vector3.forward;
-            Shards[i].transform.LerpLocalScale(Vector2.one * scale * 0.9f, lerp);
+            Shards[i].transform.LerpLocalScale(0.9f * scale * Vector2.one, lerp);
             Glows[i].color = Glows[i].color.WithAlpha(Mathf.Lerp(Glows[i].color.a, 1f, 0.08f));
             //velocities[i] *= 1 - lerp;
         }

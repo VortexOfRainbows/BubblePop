@@ -31,6 +31,7 @@ public partial class Main : MonoBehaviour
         public static Sprite[] TallGrass; //= Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/TallGrass");
         public static Sprite[] ShortGrass;// = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/ShortGrass");
         public static Sprite Snowball;
+        public static Sprite KingOilDiamond;
         public static void Load()
         {
             BubbleSmall = Resources.Load<Sprite>("Projectiles/SmallBubble");
@@ -84,6 +85,7 @@ public partial class Main : MonoBehaviour
                 Resources.Load<Sprite>("World/Decor/Nature/Sprites/TallGrass3"),
             };
             Snowball = Resources.Load<Sprite>("Projectiles/Snowball");
+            KingOilDiamond = Resources.Load<Sprite>("Player/KingOil/Diamond");
         }
     }
     public static class PrefabAssets

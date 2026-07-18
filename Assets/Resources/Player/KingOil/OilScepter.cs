@@ -1,5 +1,7 @@
+using Steamworks;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class OilScepter : Weapon
 {
@@ -39,11 +41,11 @@ public class OilScepter : Weapon
     }
     protected virtual float AttackCooldown => 10;
     protected virtual int AttackRate => 75;
-    protected virtual float RightAttackSpeed => 50;
+    protected virtual float RightAttackSpeed => 100;
     protected virtual float SpreadDegrees => 30;
     public override void StartAttack(bool alternate)
     {
-        if (AttackLeft <= 0 && AttackRight < -AttackCooldown)
+        if (AttackLeft <= 0 && AttackRight < -AttackCooldown && ActiveDiamondProjectile <= 0)
         {
             if (!alternate)
             {
@@ -51,7 +53,7 @@ public class OilScepter : Weapon
                 AttackLeft = AttackRate;
             }
         }
-        if (AttackRight < -AttackCooldown && AttackLeft < 0)
+        if (AttackRight < -AttackCooldown && AttackLeft < 0 && ActiveDiamondProjectile <= 0)
         {
             if (alternate)
             {
@@ -63,8 +65,10 @@ public class OilScepter : Weapon
     public Transform Gem;
     public Vector2 recoil = Vector2.zero;
     public float bonusPointDirOffset = 0;
+    public float bonusPointDirOffsetRight = 0;
     public int WandCounter = 0;
     public float WalkMovementAnimation = 0;
+    public int ActiveDiamondProjectile { get; set; } = 0;
     private void WandUpdate()
     {
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.transform.position;
@@ -106,16 +110,30 @@ public class OilScepter : Weapon
             }
             //float percent = AttackLeft / (50f + Player.ShotgunPower * 10f);
         }
-        else
+        else if (AttackRight <= 0)
         {
-            bonusPointDirOffset = Mathf.Lerp(bonusPointDirOffset, 0, 0.2f);
+            bonusPointDirOffset = Mathf.Lerp(bonusPointDirOffset, 0, ActiveDiamondProjectile <= 0 ? 0.05f : 0.08f);
         }
         if (AttackRight > 0)
         {
+            bonusPointDirOffset = Mathf.Lerp(bonusPointDirOffset, 90, 0.1f);
+            float percent = 1 - AttackRight / RightAttackSpeed;
+            float sin = Mathf.Sin(percent * percent * Mathf.PI * 1.25f);
+            bonusPointDirOffsetRight = Mathf.Lerp(sin * (-120 - 45 * percent) - bonusPointDirOffset, 0, 0.2f);
+            attemptedPosition *= 1f - 0.5f * sin + .2f * percent;
+            attemptedPosition.y += 0.5f * percent * sin;
+            if (AttackRight == 1)
+            {
+                ++ActiveDiamondProjectile;
+                float distance = 16;
+                Vector2 final = Utils.RaycastWithTileSupport(Gem.transform.position, awayFromWand, ref distance, 0.1f);
+                Projectile.NewProjectile<KingOilDiamondProj>(Gem.transform.position, awayFromWand * 5, 1, Player, final.x, final.y);
+            }
             AttackRight--;
         }
         else
         {
+            bonusPointDirOffsetRight = Mathf.Lerp(bonusPointDirOffsetRight, 0, ActiveDiamondProjectile <= 0 ? 0.05f : 0.08f);
             AttackRight--;
         }
         WalkMovementAnimation += Mathf.Sqrt(Player.RB.velocity.magnitude);
@@ -129,27 +147,37 @@ public class OilScepter : Weapon
         tiltAugment.x = Mathf.Abs(tiltAugment.x) + 2 * pointPercent;
         tiltAugment.y *= -direction;
         float tiltRotation = tiltAugment.ToRotation() * Mathf.Rad2Deg;
-        float r = tiltRotation + p.DashOffset + bonusPointDirOffset * direction;
+        float r = tiltRotation + p.DashOffset + bonusPointDirOffset * direction + bonusPointDirOffsetRight * direction;
         attemptedPosition.y *= 1 - 0.5f * pointPercent;
         attemptedPosition.y -= 0.75f * pointPercent;
 
-        transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition + recoil, 0.25f);
+        transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition + recoil, ActiveDiamondProjectile <= 0 ? 0.08f : 0.2f);
         if (Utils.SignNoZero(transform.localScale.x) != direction)
             transform.localScale = new Vector3(direction, 1, 1);
-        WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.18f);
+        WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
         transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);
         AttackLeft--;
         recoil *= 0.925f;
 
-        
-        if(Trail == null)
+
+        if (Trail == null)
         {
             Trail = SpecialTrail.NewTrail(Gem, Color.red.WithAlpha(0.4f), .4f, .4f, 0.2f, manuallyUpdated: false, orderInLayer: 3);
             Trail.Trail.minVertexDistance *= 10;
         }
+        else
+        {
+            Trail.gameObject.SetActive(Gem.gameObject.activeSelf);
+            if (!Trail.gameObject.activeSelf)
+            {
+                Trail.Trail.Clear();
+                Trail.transform.position = Gem.transform.position;
+            }
+        }
     }
     public void Update()
     {
+        Gem.gameObject.SetActive(ActiveDiamondProjectile <= 0);
         if(Trail != null)
         {
             if (AttackLeft >= 0)
