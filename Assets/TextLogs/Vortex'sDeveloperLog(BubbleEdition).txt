@@ -42,7 +42,7 @@ Bug Watchlist:
 
 Done: 	
 
-7/15/26 to 7/18/26
+7/15/26 to 7/19/26
 1. Import and animate new steam banner asset from Sam onto the menu screen
 2. All character bodies now turn around instantly when direction is changed (Previously only TB and Gachapon did this)
 	1. This is part of a standardization to make animating simpler (as such, animations should also feel slightly more consistent for player body movement)
@@ -56,8 +56,10 @@ Done:
 	3. Needs: Right click doesn't currently work with Calculator (maybe make it home the target instantly, but only to the enemy nearest the cast-end target?)
 6. LIGHTING FIX: Shifting lighting downward, making shadows more accurate and realistic
 7. Import Tachyon Accelerator sprite (David)
-8. Tarred Debuff sprit (Me)
+8. WIP Tarred Debuff
+	1. Now slows and has a slight tint on enemy color
 9. Now lore segments have special text when the lore has not all been unlocked ("Play more to complete this anecdote")
+10. Buff Icons no longer show stack count unless above 1
 
 7/14/26
 1. WIP King Oil

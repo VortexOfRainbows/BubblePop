@@ -25,7 +25,7 @@ public class OilScepter : Weapon
     }
     public override void ModifyDescription(ref EquipDescription description)
     {
-        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary);
+        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary, Ability.ID.Passive);
     }
     public override void EquipUpdate()
     {
@@ -77,9 +77,7 @@ public class OilScepter : Weapon
     {
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.transform.position;
         float dir = Mathf.Sign(toMouse.x);
-        float bodyDir = Mathf.Sign(p.rb.velocity.x);
         Vector2 attemptedPosition = new Vector2(1.5f, 0).RotatedBy(toMouse.ToRotation());
-        Vector2 clampedMousePos = toMouse.magnitude < 3 ? (Vector2)p.transform.position + toMouse.normalized * 3 : Player.Control.MousePosition;
 
         p.DashOffset = 100 * dir * (1 - p.Squash);
 

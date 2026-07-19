@@ -100,6 +100,7 @@ public class Enemy : Entity
     private float outlineThreshold = 0.0125f;
     public bool HasBeenImplantedOnce { get; set; } = false;
     private bool HasBeenFrozenOnce { get; set; } = false;
+    public int TarStacks { get; set; } = 0;
     public void ImplantChampion(Infector Infector)
     {
         if (Infector != null)
@@ -305,6 +306,27 @@ public class Enemy : Entity
     private bool JustSpawnedIn = true;
     public int FramesAlive { get; private set; } = 0;
     public bool IsDummy { get; private set; }
+    public void HurtColorUpdate()
+    {
+        if (DamageTaken > 0)
+        {
+            UpdateRendererColor(Color.Lerp(Color.white, Color.red, 0.8f), Utils.DeltaTimeLerpFactor(0.05f + DamageTaken / 500f));
+            DamageTaken -= 20f * Time.deltaTime;
+        }
+        else
+        {
+            DamageTaken = 0;
+            float dtlf = Utils.DeltaTimeLerpFactor(0.1f);
+            if (TarStacks > 0)
+                UpdateRendererColorToAugmentedDefault(dtlf, ColorHelper.KingOilColor, .5f);
+            else
+                UpdateRendererColorToDefault(dtlf);
+        }
+    }
+    private void ResetBuffStats()
+    {
+        TarStacks = 0;
+    }
     public sealed override void OnFixedUpdate()
     {
         if(IsDummy)
@@ -332,8 +354,9 @@ public class Enemy : Entity
         else
             ++FramesAlive;
         UpdateSpecialImmuneFrames();
+        ResetBuffStats();
         UpdateBuffs();
-        if(ChampionType != -1 || HasBeenImplantedOnce)
+        if (ChampionType != -1 || HasBeenImplantedOnce)
             UpdateImplantShader();
         int actCount = 0;
         if(FreezeMultiplier != 1 || HasBeenFrozenOnce)
@@ -360,15 +383,25 @@ public class Enemy : Entity
         else
             ActionCounter = 1.001f;
         if(!ForceRunOnce)
+        {
             RB.position -= RB.velocity * Time.fixedDeltaTime;
+        }
         while (ActionCounter >= 1)
         {
             if(!ForceRunOnce)
                 RB.position += RB.velocity * Time.fixedDeltaTime;
+            if (TarStacks > 0)
+            {
+                float slowDown = 0.2f * TarStacks;
+                float postProcessSlowdown = slowDown / (slowDown + 0.8f);
+                RB.position -= postProcessSlowdown * Time.fixedDeltaTime * RB.velocity;
+            }
             AI();
             Animate();
             ActionCounter -= 1;
             actCount++;
+            if (ForceRunOnce)
+                break;
         }
         if (!World.WithinBorders(transform.position))
         {

@@ -22,6 +22,7 @@ public class BuffIcon : MonoBehaviour
         int stack = 0;
         if (Buff != null)
             stack = Buff.Stacks;
+        Text.gameObject.SetActive(stack > 1);
         Text.text = stack.ToString();
         if (stack <= 0)
         {

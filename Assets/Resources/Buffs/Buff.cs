@@ -89,6 +89,19 @@ public abstract class Buff
         if (Stacks <= 0)
             Active = false;
     }
+    public void Detonate(Entity e)
+    {
+        OnDetonate(e);
+        Active = false;
+    }
+    /// <summary>
+    /// Called when a debuff is forcefully removed by a detonate trigger, such as King Oil's ignition
+    /// </summary>
+    /// <param name="e"></param>
+    public virtual void OnDetonate(Entity e)
+    {
+
+    }
     public virtual void Update(Entity e)
     {
 
@@ -147,6 +160,10 @@ public class Poison : Buff
             }
         }
     }
+    public override void OnDetonate(Entity e)
+    {
+        
+    }
     public override bool StackSeparately => true;
 }
 public class Tarred : Buff
@@ -156,18 +173,23 @@ public class Tarred : Buff
     {
         if (e is Enemy enemy)
         {
-            foreach (Vector2 v in BuffStack)
-            {
-                float damage = 1;
-                float tickRate = 1;
-                DamageOverTime += Time.fixedDeltaTime;
-                while (DamageOverTime >= tickRate / 2f)
-                {
-                    enemy.Injure(damage / v.y * tickRate, -1, ColorHelper.KingOilColor, 1);
-                    DamageOverTime -= tickRate;
-                }
-            }
+            //foreach (Vector2 v in BuffStack)
+            //{
+            //    float damage = 1;
+            //    float tickRate = 1;
+            //    DamageOverTime += Time.fixedDeltaTime;
+            //    while (DamageOverTime >= tickRate / 2f)
+            //    {
+            //        enemy.Injure(damage / v.y * tickRate, -1, ColorHelper.KingOilColor, 1);
+            //        DamageOverTime -= tickRate;
+            //    }
+            //}
+            enemy.TarStacks += Stacks;
         }
+    }
+    public override void OnDetonate(Entity e)
+    {
+        
     }
     public override bool StackSeparately => true;
 }

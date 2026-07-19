@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public partial class Entity : MonoBehaviour
@@ -90,23 +91,13 @@ public partial class Entity : MonoBehaviour
             Life *= 2;
         }
     }
+    public static readonly Color NearlyRed = Color.Lerp(Color.white, Color.red, 0.8f);
     public void Update()
     {
         if (Main.GamePaused)
             return;
-        if (this is not Player && (this is not Enemy e || !e.IsDummy))
-        {
-            if (DamageTaken > 0)
-            {
-                UpdateRendererColor(Color.Lerp(Color.white, Color.red, 0.8f), Utils.DeltaTimeLerpFactor(0.05f + DamageTaken / 500f));
-                DamageTaken -= 20f * Time.deltaTime;
-            }
-            else
-            {
-                DamageTaken = 0;
-                UpdateRendererColorToDefault(Utils.DeltaTimeLerpFactor(0.1f));
-            }
-        }
+        if (this is Enemy e && !e.IsDummy)
+            e.HurtColorUpdate();
         lastPos = transform.position;
     }
     public SpriteRenderer[] GetChildRenderers() => ChildRenderers ??= Visual.GetComponentsInChildren<SpriteRenderer>();
@@ -115,26 +106,32 @@ public partial class Entity : MonoBehaviour
     public void UpdateRendererColor(Color c, float lerp)
     {
         GetChildRenderers();
-        if (DefaultColors == null)
-        {
-            DefaultColors = new Color[ChildRenderers.Length];
-            for (int i = 0; i < DefaultColors.Length; ++i)
-                DefaultColors[i] = ChildRenderers[i].color;
-        }
+        InitializeDefaultColors();
         foreach (SpriteRenderer r in ChildRenderers)
             r.color = Color.Lerp(r.color, c, lerp);
     }
     public void UpdateRendererColorToDefault(float lerp)
     {
         GetChildRenderers();
+        InitializeDefaultColors();
+        for (int i = 0; i < DefaultColors.Length; ++i)
+            ChildRenderers[i].color = Color.Lerp(ChildRenderers[i].color, DefaultColors[i], lerp);
+    }
+    public void UpdateRendererColorToAugmentedDefault(float lerpSpeed, Color augment, float lerpToAugment)
+    {
+        GetChildRenderers();
+        InitializeDefaultColors();
+        for (int i = 0; i < DefaultColors.Length; ++i)
+            ChildRenderers[i].color = Color.Lerp(ChildRenderers[i].color, Color.Lerp(DefaultColors[i], augment.WithAlpha(DefaultColors[i].a), lerpToAugment), lerpSpeed);
+    }
+    private void InitializeDefaultColors()
+    {
         if (DefaultColors == null)
         {
             DefaultColors = new Color[ChildRenderers.Length];
             for (int i = 0; i < DefaultColors.Length; ++i)
                 DefaultColors[i] = ChildRenderers[i].color;
         }
-        for (int i = 0; i < DefaultColors.Length; ++i)
-            ChildRenderers[i].color = Color.Lerp(ChildRenderers[i].color, DefaultColors[i], lerp);
     }
     public void AdjustRenderColorFromDefault(Color other, float lerp)
     {
