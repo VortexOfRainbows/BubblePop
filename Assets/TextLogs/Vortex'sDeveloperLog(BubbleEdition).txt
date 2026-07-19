@@ -29,6 +29,18 @@ Need to do:
 	1. Make powers show which pools they belong to
 	2. Make blurbs appear in the equipment page
 8. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
+9. King Oil (Power Ideas)
+	1. Hat: wip
+	2. Wand: Rarities not set in stone
+		1. (white) Corrosion: tar does damage over time
+		2. (white) Oil Spill: tar puddles last longer
+		3. (green) Combustion: deal additional flat damage when debuffs are detonated
+		4. (green) Gasoline: fires released by detonated tar puddles deal more damage
+		5. (blue) Covalence/Binding Concoction/Epoxy/Drown: allows additional stacks of tar
+		6. (blue) Gunpowder: tar detonates in a small radius when removed
+		7. (purple) Royal Reserves/Burn Brighter/Opulent Ring/Black Diamond: allows control over an additional gemstone
+	3. Tie: wip
+	4. Body: wip
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -56,7 +68,7 @@ Done:
 	2. Needs: Smoke animation, powers, etc.
 5. WIP King Oil Scepter (has unique left click, right click)
 	1. Needs: death animation, powers, attack mechanics (like igniting + more sound for right click (infector slide sounds maybe))
-	2. Needs: Oil splats! tar trails!
+	2. Needs: Oil splats! tar trails! (tar should be permanently applied to enemies standing in puddles)
 	3. Needs: Right click doesn't currently work with Calculator (maybe make it home the target instantly, but only to the enemy nearest the cast-end target?)
 6. LIGHTING FIX: Shifting lighting downward, making shadows more accurate and realistic
 7. Import Tachyon Accelerator sprite (David)
