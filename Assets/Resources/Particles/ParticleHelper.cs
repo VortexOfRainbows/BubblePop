@@ -14,33 +14,27 @@ public class ParticleManager : MonoBehaviour
         public const int Trail = 5;
         public const int LineForeground = 6;
         public const int Snow = 7;
+        public const int Fire = 8;
     }
     public static readonly Color DefaultColor = new(0.89f, 0.8078f, 0.9412f, 0.5f);
     public static ParticleManager Instance;
-    public List<ParticleSystem> thisSystem;
+    public Transform ParticleSuperParent;
+    public List<ParticleSystem> ParticleSystems { get; private set; }
+    public List<ParticleSystem> FetchMySystems()
+    {
+        List<ParticleSystem> list = new List<ParticleSystem>();
+        int childCount = ParticleSuperParent.childCount;
+        for (int i = 0; i < childCount; i++)
+            list.Add(ParticleSuperParent.GetChild(i).GetComponent<ParticleSystem>());
+        return list;
+    }
     public static void NewParticle(Vector2 pos, float size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f, int type = 0, Color color = default)
     {
-        if (ParticleManager.Instance == null)
+        if (Instance == null)
             return;
-        if (color == default) //In the future, this should only apply to bubble particles
-            color = DefaultColor;
-        ParticleSystem.EmitParams style = new()
-        {
-            position = pos,
-            rotation = Utils.RandFloat(360),
-            startColor = color,
-            velocity = new Vector2(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)) * randomizeFactor + velo,
-            startLifetime = lifeTime,
-            startSize = Instance.thisSystem[type].main.startSizeMultiplier * size * Utils.RandFloat(0.9f, 1.1f),
-        };
-        Instance.thisSystem[type].Emit(style, 1);
-    }
-    public static void NewParticle(Vector2 pos, Vector2 size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f, int type = 0, Color color = default, float rotation = 0)
-    {
-        if (ParticleManager.Instance == null)
-            return;
-        if (color == default) //In the future, this should only apply to bubble particles
-            color = DefaultColor;
+        float rotation = type == ID.Fire ? 0 : Utils.RandFloat(360);
+        if (color == default)
+            color = type == ID.Bubble ? DefaultColor : Color.white;
         ParticleSystem.EmitParams style = new()
         {
             position = pos,
@@ -48,9 +42,26 @@ public class ParticleManager : MonoBehaviour
             startColor = color,
             velocity = new Vector2(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)) * randomizeFactor + velo,
             startLifetime = lifeTime,
-            startSize3D = Instance.thisSystem[type].main.startSizeMultiplier * new Vector3(size.x, size.y, 1)
+            startSize = Instance.ParticleSystems[type].main.startSizeMultiplier * size * Utils.RandFloat(0.9f, 1.1f),
         };
-        Instance.thisSystem[type].Emit(style, 1);
+        Instance.ParticleSystems[type].Emit(style, 1);
+    }
+    public static void NewParticle(Vector2 pos, Vector2 size, Vector2 velo = default, float randomizeFactor = 0, float lifeTime = 0.5f, int type = 0, Color color = default, float rotation = 0)
+    {
+        if (Instance == null)
+            return;
+        if (color == default)
+            color = type == ID.Bubble ? DefaultColor : Color.white;
+        ParticleSystem.EmitParams style = new()
+        {
+            position = pos,
+            rotation = rotation,
+            startColor = color,
+            velocity = new Vector2(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)) * randomizeFactor + velo,
+            startLifetime = lifeTime,
+            startSize3D = Instance.ParticleSystems[type].main.startSizeMultiplier * new Vector3(size.x, size.y, 1)
+        };
+        Instance.ParticleSystems[type].Emit(style, 1);
     }
     public static void ForegroundLightning(Vector2 start, Vector2 end, Color c, float lifeMult = 0.6f, float whiteMult = 1.0f, float scaleX = 1.0f, float scaleY = 0.5f)
     {
@@ -98,7 +109,11 @@ public class ParticleManager : MonoBehaviour
             PopupText.NewPopupText(pos2, Utils.RandCircle(4), lColor.Lerp(new Color(0.8f, 0.9f, 1.0f), Utils.RandFloat()), "314159", true, Utils.RandFloat(0.5f, 0.6f), 70);
         }
     }
-    private void Start() => Instance = this;
+    private void Start()
+    {
+        ParticleSystems = FetchMySystems();
+        Instance = this;
+    }
     private void Update() => Instance = this;
 
     public static void SummonLightningPylon(Vector2 start, Vector2 end, Color c, int Type = 4, float scaleX = 1.4f, float scaleY = 1.0f)

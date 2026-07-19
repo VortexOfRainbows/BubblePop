@@ -560,7 +560,12 @@ public class Enemy : Entity
             velo.x *= 0.5f;
             velo.y += 0.5f;
         }
-        float scale = FinalDamageData.CritLevel == -1 ? 0.8f : 1f;
+        if (FinalDamageData.CritLevel == -2)
+        {
+            velo.x *= 1.5f;
+            velo.y += 1.2f;
+        }
+        float scale = FinalDamageData.CritLevel == -1 ? 0.8f : FinalDamageData.CritLevel == -2 ? 1.2f : 1f;
         if (FinalDamageData.CritLevel > 0)
         {
             scale = 1f + 0.1f * Mathf.Sqrt(FinalDamageData.CritLevel - 1);
@@ -680,5 +685,11 @@ public class Enemy : Entity
     public virtual bool ViableInfectionTarget()
     {
         return true;
+    }
+    public void DetonateAllDebuffs()
+    {
+        float detonationDamage = 0;
+        foreach(Buff b in buffs)
+            detonationDamage += b.Detonate(this);
     }
 }

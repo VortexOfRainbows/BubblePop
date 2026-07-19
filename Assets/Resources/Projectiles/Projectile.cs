@@ -166,29 +166,6 @@ public class Projectile : MonoBehaviour
             if (Damage > 0.1f)
                 Damage = Mathf.Max(0.1f, Damage * 0.875f);
         }
-        if(PlayerOwner.SnakeEyes > 0)
-        {
-            int poison = PlayerOwner.SnakeEyes;
-            if (poison > 0)
-            {
-                if (poison >= 81 || Utils.RandFloat(1) < 0.19f + poison * 0.01f)
-                {
-                    float duration = 10;
-                    target.AddBuff<Poison>(duration);
-                }
-            }
-        }
-        if(PlayerOwner.TarShots > 0 && this is SmallBubble)
-        {
-            float duration = 10;
-            if(!target.TryGetBuff(out Tarred b) || b.Stacks < 1)
-                target.AddBuff<Tarred>(duration);
-        }
-        if (PlayerOwner.ChillDuration > 0)
-        {
-            //if(target is not IceGolem)
-            target.AddBuff<Chill>(PlayerOwner.ChillDuration);
-        }
         if(PlayerOwner.SkullBomb > 0)
         {
             if(target.Life <= 0 && target is Enemy e && e.IsSkull)
@@ -204,6 +181,29 @@ public class Projectile : MonoBehaviour
             --Penetrate;
             if (Penetrate <= 0)
                 Kill();
+        }
+        if (PlayerOwner.SnakeEyes > 0)
+        {
+            int poison = PlayerOwner.SnakeEyes;
+            if (poison > 0)
+            {
+                if (poison >= 81 || Utils.RandFloat(1) < 0.19f + poison * 0.01f)
+                {
+                    float duration = 10;
+                    target.AddBuff<Poison>(duration);
+                }
+            }
+        }
+        if (PlayerOwner.TarShots > 0 && this is SmallBubble)
+        {
+            float duration = 10;
+            if (!target.TryGetBuff(out Tarred b) || b.Stacks < 1)
+                target.AddBuff<Tarred>(duration);
+        }
+        if (PlayerOwner.ChillDuration > 0)
+        {
+            //if(target is not IceGolem)
+            target.AddBuff<Chill>(PlayerOwner.ChillDuration);
         }
     }
     /// <summary>

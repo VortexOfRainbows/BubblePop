@@ -89,18 +89,18 @@ public abstract class Buff
         if (Stacks <= 0)
             Active = false;
     }
-    public void Detonate(Entity e)
+    public float Detonate(Entity e)
     {
-        OnDetonate(e);
         Active = false;
+        return OnDetonate(e);
     }
     /// <summary>
     /// Called when a debuff is forcefully removed by a detonate trigger, such as King Oil's ignition
     /// </summary>
     /// <param name="e"></param>
-    public virtual void OnDetonate(Entity e)
+    public virtual float OnDetonate(Entity e)
     {
-
+        return 0;
     }
     public virtual void Update(Entity e)
     {
@@ -160,9 +160,13 @@ public class Poison : Buff
             }
         }
     }
-    public override void OnDetonate(Entity e)
+    public override float OnDetonate(Entity e)
     {
-        
+        float damage = 3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes;
+        damage *= Stacks;
+        if (e is Enemy enemy)
+            enemy.Injure(damage, -2, new Color(0.8f, 0.27f, 0.9f), 1);
+        return damage;
     }
     public override bool StackSeparately => true;
 }
@@ -187,9 +191,16 @@ public class Tarred : Buff
             enemy.TarStacks += Stacks;
         }
     }
-    public override void OnDetonate(Entity e)
+    public override float OnDetonate(Entity e)
     {
-        
+        AudioManager.PlaySound(SoundID.BathBombBurst, e.transform.position, 1.0f, 0.7f);
+        for (int i = 0; i < 9; ++i)
+            ParticleManager.NewParticle(e.transform.position, Utils.RandFloat(0.5f, 1.2f), Utils.RandCircle(5), 1, Utils.RandFloat(0.6f, 1.2f), ParticleManager.ID.Fire);
+        float damage = 4;
+        damage *= Stacks;
+        if (e is Enemy enemy)
+            enemy.Injure(damage, -2, ColorHelper.KingOilColor, 1);
+        return damage;
     }
     public override bool StackSeparately => true;
 }
@@ -201,6 +212,14 @@ public class Chill : Buff
     {
         if (e is Enemy enemy)
             enemy.FreezeMultiplier -= Stacks * 0.1f;
+    }
+    public override float OnDetonate(Entity e)
+    {
+        //AudioManager.PlaySound(SoundID.WoodBreak, e.transform.position, 1.2f, 1.7f);
+        float damage = Stacks;
+        if (e is Enemy enemy)
+            enemy.Injure(damage, -2, ColorHelper.RarityColors[2], 1);
+        return damage;
     }
 }
 public class OmniBoost : Buff

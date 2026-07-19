@@ -20,7 +20,7 @@ public class KingOilDiamondProj : Projectile
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = Color.clear;
         SpriteRendererGlow.transform.localScale *= 0.5f;
-        C2D.radius *= 0.6f;
+        C2D.radius *= 0.65f;
         startPos = transform.position;
         trail = SpecialTrail.NewTrail(transform, c * 0.7f, 1.0f, 0.2f, 0.25f);
         Direction = Utils.SignNoZero(Data1 - startPos.x);
@@ -29,6 +29,7 @@ public class KingOilDiamondProj : Projectile
     }
     public bool SwitchedPos = false;
     public float deathPercent = 1f;
+    public Sound activeSound = null;
     public override void AI()
     {
         if (SwitchedPos && timer < 50)
@@ -75,6 +76,18 @@ public class KingOilDiamondProj : Projectile
         transform.localScale = Vector2.Lerp(Vector2.one, new Vector2(2f, 3f), scaler);
         SpriteRendererGlow.color = c * scaler;
         transform.SetLocalEulerZ(RB.velocity.x * -0.2f);
+
+        if(halfTimer > 0.25f && halfTimer < 1.7f)
+        {
+            if(activeSound == null || activeSound.Source.time > 0.2f)
+                activeSound = AudioManager.PlaySound(SoundID.ElectricZap, transform.position, 0.5f, 2f, 1);
+            float sin = Mathf.Sin(((halfTimer - 0.25f) / 1.45f) * Mathf.PI);
+            ParticleManager.NewParticle(new Vector2(transform.position.x, transform.position.y - 1f), Mathf.Lerp(0.5f, 1.0f, sin), Utils.RandCircle(2 + sin), 0, 0.3f + 0.2f * sin, ParticleManager.ID.Fire, new Color(1, 0.8f, 0.7f));
+            if(Utils.RandFloat() < 0.25f)
+            {
+                ParticleManager.NewParticle(new Vector2(transform.position.x, transform.position.y - 1f), Mathf.Lerp(1.0f, 1.2f, sin), Utils.RandCircle(0.1f), 0, 0.6f + 0.2f * sin, ParticleManager.ID.Fire, new Color(1, 0.8f, 0.7f));
+            }
+        }
     }
     public override void OnHitTarget(Entity target)
     {
@@ -83,6 +96,8 @@ public class KingOilDiamondProj : Projectile
         for (int i = 0; i < 15; ++i)
             ParticleManager.NewParticle(target.transform.position + new Vector3(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)), 3, RB.velocity * Utils.RandFloat(0.3f) + Utils.RandCircle(5), 5, Utils.RandFloat(0.7f, 0.8f), 3,
                 Color.Lerp(Color.red, ColorHelper.RarityColors[5], Utils.RandFloat()) * 0.95f);
+        if(target is Enemy e)
+            e.DetonateAllDebuffs();
     }
     public override void OnKill()
     {

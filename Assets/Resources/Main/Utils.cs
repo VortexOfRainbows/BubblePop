@@ -424,6 +424,7 @@ public static class Utils
     public static Vector2 RaycastWithTileSupport(Vector2 start, Vector2 norm, ref float distance, float tileCollisionSize = 0.0f)
     {
         RaycastHit2D hit = Physics2D.Raycast(start, norm, distance, WorldLayerMask);
+        float startingDistance = distance;
         float dist = distance;
         if (hit.distance == 0)
         {
@@ -439,8 +440,14 @@ public static class Utils
         }
         Vector2 endPosition = TileOnlyRaycast(start, norm, ref distance, tileCollisionSize);
         if (distance <= dist)
+        {
+            if (startingDistance < distance) 
+                distance = startingDistance;
             return endPosition;
+        }
         distance = dist;
+        if (startingDistance < distance)
+            distance = startingDistance;
         return hit.point;
     }
     /// <summary>
