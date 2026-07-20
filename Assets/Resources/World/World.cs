@@ -267,6 +267,7 @@ public class World : MonoBehaviour
     }
     public void ResetAllTilemaps()
     {
+        HazardSystem.ClearAll();
         Tilemap.Map.ClearAllTiles();
         DepthTilemap.ClearAllTiles();
         RoadblockTilemap.ClearAllTiles();
@@ -591,6 +592,10 @@ public class World : MonoBehaviour
     public void LateUpdate()
     {
         Lighting.LateUpdate();
+    }
+    public void FixedUpdate()
+    {
+        HazardSystem.FixedUpdate();
     }
     //public void OnDisable()
     //{

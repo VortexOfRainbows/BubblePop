@@ -61,7 +61,7 @@ Sounds Needed:
 
 Done: 	
 
-7/15/26 to 7/19/26
+7/15/26 to 7/20/26
 1. Import and animate new steam banner asset from Sam onto the menu screen
 2. All character bodies now turn around instantly when direction is changed (Previously only TB and Gachapon did this)
 	1. This is part of a standardization to make animating simpler (as such, animations should also feel slightly more consistent for player body movement)
@@ -84,6 +84,7 @@ Done:
 13. WIP Debuff detonation system (for now, all debuffs detonate for their own damage)
 14. Add fire Particles
 15. Astrajelly stacks now roll multiple powers instead of giving a huge amount of one power
+16. WIP Hazard system (for oil splats)
 
 7/14/26
 1. WIP King Oil
