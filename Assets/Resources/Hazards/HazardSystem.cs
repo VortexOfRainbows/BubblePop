@@ -3,6 +3,7 @@ using UnityEngine;
 
 public static class HazardSystem
 {
+    public static GameObject OilObject => Resources.Load<GameObject>("Hazards/OilSplat");
     public class Hazard
     {
         public Vector2Int Position;
@@ -20,9 +21,7 @@ public static class HazardSystem
         public void AttachGameObject()
         {
             if(Type == HazardType.Oil)
-            {
-
-            }
+                PairedObject = GameObject.Instantiate(OilObject, World.RealTileMap.Map.CellToWorld((Vector3Int)Position), Quaternion.identity, Main.GenericSuperParent);
         }
         public void Update()
         {

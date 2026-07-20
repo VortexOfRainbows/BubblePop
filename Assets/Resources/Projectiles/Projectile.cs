@@ -199,6 +199,7 @@ public class Projectile : MonoBehaviour
             float duration = 10;
             if (!target.TryGetBuff(out Tarred b) || b.Stacks < 1)
                 target.AddBuff<Tarred>(duration);
+            HazardSystem.AddHazard(transform.position, HazardSystem.HazardType.Oil, 100, true);
         }
         if (PlayerOwner.ChillDuration > 0)
         {
