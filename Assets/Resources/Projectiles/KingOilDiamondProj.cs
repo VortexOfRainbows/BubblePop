@@ -20,7 +20,7 @@ public class KingOilDiamondProj : Projectile
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = Color.clear;
         SpriteRendererGlow.transform.localScale *= 0.5f;
-        C2D.radius *= 0.65f;
+        C2D.radius *= 0.75f;
         startPos = transform.position;
         trail = SpecialTrail.NewTrail(transform, c * 0.7f, 1.0f, 0.2f, 0.25f);
         Direction = Utils.SignNoZero(Data1 - startPos.x);
@@ -30,6 +30,8 @@ public class KingOilDiamondProj : Projectile
     public bool SwitchedPos = false;
     public float deathPercent = 1f;
     public Sound activeSound = null;
+    public Vector2 PrimaryTarget;
+    public Vector2? SecondaryTarget = null;
     public override void AI()
     {
         if (SwitchedPos && timer < 50)
@@ -60,11 +62,26 @@ public class KingOilDiamondProj : Projectile
         timer += 16f / (Mathf.Max(8, toEnd.magnitude)) * (fullTimer > socketSlowdown ? 0.4f + 0.6f * (1 - (fullTimer - socketSlowdown) / (1 - socketSlowdown)) : 1.0f);
 
         float cosModifier = 0.5f - 0.5f * Mathf.Cos(halfTimer * Mathf.PI);
-        Vector2 target = Vector2.Lerp(startPos, endPoint, cosModifier);
+        PrimaryTarget = Vector2.Lerp(startPos, endPoint, cosModifier);
 
         float arcSize = Direction * ((toEnd.magnitude * 0.125f * cosModifier) - (halfTimer + Mathf.Sin(halfTimer * Mathf.PI)) * (0.5f + fullTimer * fullTimer * 1.5f) * Mathf.Cos(Mathf.PI * halfTimer));
 
-        target += new Vector2(0, arcSize * Mathf.Sin(halfTimer * Mathf.PI)).RotatedBy(toEnd.ToRotation());
+        PrimaryTarget += new Vector2(0, arcSize * Mathf.Sin(halfTimer * Mathf.PI)).RotatedBy(toEnd.ToRotation());
+        Vector2 target = PrimaryTarget;
+
+        float scaler = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(fullTimer * Mathf.PI)));
+        if (SecondaryTarget.HasValue)
+        {
+            float range = PlayerOwner.HomingRange * scaler;
+            float distance = target.Distance(SecondaryTarget.Value);
+            if (distance < range)
+            {
+                float percent = 1 - distance / range;
+                target = Vector2.Lerp(target, SecondaryTarget.Value, percent + scaler);
+            }
+        }
+
+
         Vector2 toTarget = target - (Vector2)transform.position;
         float speed = Mathf.Min(55f, toTarget.magnitude * 100);
         RB.velocity = toTarget.normalized * speed;
@@ -72,7 +89,6 @@ public class KingOilDiamondProj : Projectile
         if (toTarget.magnitude < 0.25f && SwitchedPos && halfTimer >= 2)
             Kill();
 
-        float scaler = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(fullTimer * Mathf.PI)));
         transform.localScale = Vector2.Lerp(Vector2.one, new Vector2(2f, 3f), scaler);
         SpriteRendererGlow.color = c * scaler;
         transform.SetLocalEulerZ(RB.velocity.x * -0.2f);
@@ -88,6 +104,8 @@ public class KingOilDiamondProj : Projectile
                 ParticleManager.NewParticle(new Vector2(transform.position.x, transform.position.y - 1f), Mathf.Lerp(1.0f, 1.2f, sin), Utils.RandCircle(0.1f), 0, 0.6f + 0.2f * sin, ParticleManager.ID.Fire, new Color(1, 0.8f, 0.7f));
             }
         }
+        SecondaryTarget = null;
+        homingCounter = 0;
     }
     public override void OnHitTarget(Entity target)
     {
@@ -107,9 +125,8 @@ public class KingOilDiamondProj : Projectile
     public override bool? CanBeAffectedByHoming() => null;
     public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
     {
-        Vector2 target2 = Vector2.Lerp(new Vector2(Data1, Data2), target.transform.position, 0.025f + PlayerOwner.HomingRangeSqrt * 0.05f);
-        Data[0] = target2.x;
-        Data[1] = target2.y;
+        if (target.transform.position.Distance(PlayerOwner.Position) > PrimaryTarget.Distance(PlayerOwner.Position) && !SwitchedPos)
+            SecondaryTarget = target.transform.position;
         return false;
     }
     public override bool OnInsideTile()

@@ -914,8 +914,11 @@ public partial class Player : Entity
         {
             int stack = CatalystJellies;
             List<int> types = new() { PowerUp.Get<Dash>().Type, PowerUp.Get<BinaryStars>().Type, PowerUp.Get<Starbarbs>().Type, PowerUp.Get<LuckyStar>().Type, PowerUp.Get<Supernova>().Type };
-            int type = PowerUp.PickRandomPower(types, 0, 0, false, 2);
-            PowerUp.Get(type).PickUp(this, stack);
+            for(int i = 0; i < stack; ++i)
+            {
+                int type = PowerUp.PickRandomPower(types, 0, 0, false, 2);
+                PowerUp.Get(type).PickUp(this, 1);
+            }
         }
     }
     public void Pop()

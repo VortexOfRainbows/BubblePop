@@ -162,11 +162,12 @@ public class Poison : Buff
     }
     public override float OnDetonate(Entity e)
     {
-        float damage = 3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes;
-        damage *= Stacks;
+        float totalDamage = 0;
+        foreach (Vector2 v in BuffStack)
+            totalDamage += (3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes) * v.x / v.y;
         if (e is Enemy enemy)
-            enemy.Injure(damage, -2, new Color(0.8f, 0.27f, 0.9f), 1);
-        return damage;
+            enemy.Injure(totalDamage, -2, new Color(0.8f, 0.27f, 0.9f), 1);
+        return totalDamage;
     }
     public override bool StackSeparately => true;
 }

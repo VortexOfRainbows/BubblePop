@@ -562,10 +562,10 @@ public class Enemy : Entity
         }
         if (FinalDamageData.CritLevel == -2)
         {
-            velo.x *= 1.5f;
-            velo.y += 1.2f;
+            velo.x *= 1.7f;
+            velo.y += 1.5f;
         }
-        float scale = FinalDamageData.CritLevel == -1 ? 0.8f : FinalDamageData.CritLevel == -2 ? 1.2f : 1f;
+        float scale = FinalDamageData.CritLevel == -1 ? 0.8f : FinalDamageData.CritLevel == -2 ? 1.1f : 1f;
         if (FinalDamageData.CritLevel > 0)
         {
             scale = 1f + 0.1f * Mathf.Sqrt(FinalDamageData.CritLevel - 1);
