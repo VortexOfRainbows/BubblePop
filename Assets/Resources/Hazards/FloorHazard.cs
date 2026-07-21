@@ -5,18 +5,15 @@ public class FloorHazard : MonoBehaviour
 {
     public Transform Visual;
     public SpriteRenderer Renderer;
-    public SpriteRenderer BorderRenderer;
     public float TimePassed { get; set; }
     public Vector2 TargetScale = Vector2.one;
     public float SizeMult {  get; set; }
     public int InitDuration { get; set; }
+    public int Counter { get; set; } = 0;
     public void Init(HazardSystem.HazardType type, int initialAppliedDuration, float sizeMultiplier = 1.0f)
     {
         if (type == HazardSystem.HazardType.Oil)
-        {
             Renderer.color = ColorHelper.KingOilColor.WithAlpha(0);
-            BorderRenderer.color = Renderer.color.Lerp(Color.black, 0.5f).WithAlpha(0);
-        }
         Visual.transform.localPosition += (Vector3)Utils.RandCircle(0.1f);
         float x = Utils.RandFloat(0.9f, 1.0f);
         float y = Utils.RandFloat(0.9f, 1.0f);
@@ -25,8 +22,11 @@ public class FloorHazard : MonoBehaviour
         InitDuration = initialAppliedDuration;
         Visual.transform.localScale = TargetScale * SizeMult;
     }
-    public void TickUpdate(float timeLeft)
+    public bool TickUpdate()
     {
+        float timeLeft = InitDuration - Counter;
+        if (timeLeft <= 0)
+            return false;
         float scaleMult = SizeMult;
         if (timeLeft < InitDuration && TimePassed > 10)
         {
@@ -41,8 +41,9 @@ public class FloorHazard : MonoBehaviour
             float timeRemaining = timeLeft / 20f;
             fadeIn *= timeRemaining;
         }
-        fadeIn *= 0.5f;
+        fadeIn *= 1f;
         Renderer.color = Renderer.color.WithAlpha(fadeIn);
-        BorderRenderer.color = BorderRenderer.color.WithAlpha(fadeIn);
+        Counter++;
+        return true;
     }
 }

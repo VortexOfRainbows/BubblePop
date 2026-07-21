@@ -51,6 +51,10 @@ public class SmallBubble : Projectile
             float duration = 5;
             if (!target.TryGetBuff(out Tarred b) || b.Stacks < 1)
                 target.AddBuff<Tarred>(duration);
+            else if (b.BuffStack[0].x < duration)
+            {
+                b.BuffStack[0] = new Vector2(duration, duration);
+            }
         }
     }
     public override void AI()

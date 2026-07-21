@@ -35,8 +35,16 @@ public static class HazardSystem
         }
         public void Update()
         {
-            foreach(FloorHazard h in PairedObjects)
-                h.TickUpdate(Duration);
+            for(int i = PairedObjects.Count - 1; i >= 0; --i)
+            {
+                var pairedObject = PairedObjects[i];
+                bool alive = pairedObject.TickUpdate();
+                if(!alive)
+                {
+                    GameObject.Destroy(pairedObject.gameObject);
+                    PairedObjects.RemoveAt(i);
+                }
+            }
             --Duration;
             if (Duration <= 0)
                 Dead = true;
@@ -85,8 +93,9 @@ public static class HazardSystem
     }
     public static void ClearAll()
     {
-        foreach (KeyValuePair<Vector2Int, Hazard> pair in HazardTilemap)
-            pair.Value.Kill();
+        //We don't actually need to kill, as the splatters are part of generic superparent which autoclears!
+        //foreach (KeyValuePair<Vector2Int, Hazard> pair in HazardTilemap)
+        //    pair.Value.Kill();
         HazardTilemap.Clear();
     }
     public static Vector2Int ToHazardPosition(Vector2 worldPosition)

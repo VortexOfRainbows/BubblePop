@@ -15,6 +15,7 @@ public static class Lighting
     public static RenderTexture BorderMaskRT;
     public static RenderTexture SolidTileRT;
     public static RenderTexture OcclusionTileRT;
+    public static RenderTexture OilRT;
     public static RenderTexture ShadowMaskInfo;
     public static RenderTexture FinalLight;
     public static Material FrontLight;
@@ -38,7 +39,7 @@ public static class Lighting
         LightShaper = Resources.Load<Material>("Lighting/ShaderSlop/LightShaper");
         ShadowMaskInfo = Resources.Load<RenderTexture>("Lighting/ShadowBonusMaskingInfo");
         FinalLight = Resources.Load<RenderTexture>("Lighting/FinalLightingRenderTexture");
-
+        OilRT = Resources.Load<RenderTexture>("Lighting/OilRenderTexture");
         BorderImage.texture = BorderRT;
         LightShapeVisualizer.texture = ShadowMaskInfo;
         ShadowImage.texture = FinalLight;
@@ -239,6 +240,7 @@ public static class Lighting
             BorderMaskRT = Resources.Load<RenderTexture>("Lighting/BorderMaskRenderTexture");
             SolidTileRT = Resources.Load<RenderTexture>("Lighting/SolidTileRenderTexture");
             OcclusionTileRT = Resources.Load<RenderTexture>("Lighting/OcclusionTileRenderTexture");
+            OilRT = Resources.Load<RenderTexture>("Lighting/OilRenderTexture");
             return;
         }
         if(LightRT.width != Screen.width || LightRT.height != Screen.height || BorderRT.width != Screen.width || BorderRT.height != Screen.height)
@@ -248,6 +250,7 @@ public static class Lighting
             ResizeRenderTexture(BorderMaskRT, CameraManager.BorderMaskCamera, null);
             ResizeRenderTexture(SolidTileRT, CameraManager.SolidTileCamera, null);
             ResizeRenderTexture(OcclusionTileRT, CameraManager.OcclusionTileCamera, null);
+            ResizeRenderTexture(OilRT, CameraManager.OilCamera, null);
             //BorderImage.material.SetTexture("_Mask", BorderMaskRT);
             //LightShapeVisualizer.material.SetTexture("_Mask", OcclusionTileRT);
         }
