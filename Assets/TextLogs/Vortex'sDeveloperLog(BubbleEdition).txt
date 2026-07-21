@@ -25,7 +25,7 @@ Need to do:
 	2. Progress display for achievements
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
-	1. (TENTATIVE, MIGHT NOT DO THESE) Economy: Gacha Capsule (dissolving in crucible gives random rewards)
+	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
 4. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 5. Enemy Pathfinding
 6. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
@@ -36,14 +36,15 @@ Need to do:
 9. King Oil (Power Ideas)
 	1. Hat: wip
 	2. Wand: Rarities not set in stone
-		1. (white) Corrosion: tar does damage over time
-		2. (white) Oil Spill: tar puddles last longer
-		3. (green) Combustion: deal additional flat damage when debuffs are detonated
-		4. (green) Gasoline: fires released by detonated tar puddles deal more damage
-		5. (blue) Covalence/Binding Concoction/Epoxy/Drown: allows additional stacks of tar
-		6. (blue) Gunpowder: tar detonates in a small radius when removed
-		7. (purple) Royal Reserves/Burn Brighter/Opulent Ring/Black Diamond: allows control over an additional gemstone
+		1. (white) Corrode: tar does damage over time
+		2. (white) Contaminate: tar lasts longer
+		3. (green) Combust: deal additional flat damage when debuffs are detonated
+		4. (green) Concoct: tarred enemies are further slowed
+		5. (blue) Gasoline: allows igniting tar puddles (stack size increases fire travel distance)
+		6. (blue) Oil Spill: killed enemies spill tar
+		7. (purple) Black Diamond: allows control over an additional (right click) gemstone 
 	3. Tie: wip
+		1. (purple) Defense Contract: grants a military helicopter companion that shoots bubbles at nearby enemies
 	4. Body: wip
 
 Less Important (mostly non-issues or complete already), but in consideration:

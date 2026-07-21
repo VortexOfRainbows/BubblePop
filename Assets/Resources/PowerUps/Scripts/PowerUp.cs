@@ -78,24 +78,25 @@ public abstract class PowerUp
     public static void AddUniversalPowerups()
     {
         //Statistical powers
-        AddPowerUpToAvailability<Overclock>();
-        AddPowerUpToAvailability<WeaponUpgrade>();
-        AddPowerUpToAvailability<FocusFizz>();
-        AddPowerUpToAvailability<CloudWalker>();
-        AddPowerUpToAvailability<BubbleBirb>();
+        AddPowerUpToAvailability<WeaponUpgrade>(); //white
+        AddPowerUpToAvailability<Overclock>(); //green
+        AddPowerUpToAvailability<FocusFizz>(); //blue
+        AddPowerUpToAvailability<CloudWalker>(); //purple
+        AddPowerUpToAvailability<BubbleBirb>(); //yellow
 
         //Economy powers
-        AddPowerUpToAvailability<Magnet>();
-        AddPowerUpToAvailability<Coupons>();
-        AddPowerUpToAvailability<Restock>();
-        AddPowerUpToAvailability<CrystalSerum>();
+        AddPowerUpToAvailability<Magnet>(); //white, gives money
+        AddPowerUpToAvailability<Coupons>(); //green, reduces prices
+        AddPowerUpToAvailability<Restock>(); //blue, reduces prices (gems)
+        //GACHA CAPSULE: //purple, gives money, gems, keys, hearts, or shields (make a shield pickup)
+        AddPowerUpToAvailability<CrystalSerum>(); //yellow, gives gems
 
         //Powers that give powers
-        AddPowerUpToAvailability<Choice>();
-        AddPowerUpToAvailability<PiratesBooty>();
-        AddPowerUpToAvailability<BubbleMitosis>();
-        AddPowerUpToAvailability<BlackMarketDelivery>();
-        AddPowerUpToAvailability<ShardsOfPower>();
+        AddPowerUpToAvailability<Choice>(); //white
+        AddPowerUpToAvailability<PiratesBooty>(); //green
+        AddPowerUpToAvailability<BubbleMitosis>(); //blue
+        AddPowerUpToAvailability<BlackMarketDelivery>(); //purple
+        AddPowerUpToAvailability<ShardsOfPower>(); //yellow
     }
     private static void AddPowerUpToAvailability<T>() where T: PowerUp => AddPowerUpToAvailability(Get<T>());
     public static void AddPowerUpToAvailability(PowerUp power)
