@@ -104,7 +104,7 @@ public class SmallBubble : Projectile
         if (exploding > 0)
         {
             AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 0.2f, 1.3f);
-            if(Penetrate > 0)
+            if (Penetrate > 0)
             {
                 float damage = Damage * (0.15f + 0.05f * exploding);
                 float size = 1.5f * damage * transform.localScale.x;
@@ -128,7 +128,10 @@ public class SmallBubble : Projectile
             AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 1.1f);
         }
         if (PlayerOwner.TarShots > 0 && timer >= 0)
-            HazardSystem.AddHazard(transform.position + new Vector3(0, -0.6f), HazardSystem.HazardType.Oil, 200, transform.localScale.x * 1.5f, true);
+        {
+            for(int i = 0; i < 3; ++i)
+                HazardSystem.AddHazard(transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f) * i, Utils.RandFloat(-0.3f, 0.3f) * i - 0.6f), HazardSystem.HazardType.Oil, 200, transform.localScale.x * 1.5f, true);
+        }
     }
 }
 public class BigBubble : Projectile

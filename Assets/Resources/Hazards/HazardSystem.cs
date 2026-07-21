@@ -3,7 +3,13 @@ using UnityEngine;
 
 public static class HazardSystem
 {
-    public static GameObject OilObject => Resources.Load<GameObject>("Hazards/OilSplat");
+    public static GameObject OilObject = Resources.Load<GameObject>("Hazards/OilSplat");
+    public static Sprite[] SplatterSprites = new Sprite[] { 
+        Resources.Load<Sprite>("Hazards/Splatter1"),
+        Resources.Load<Sprite>("Hazards/Splatter2"), 
+        Resources.Load<Sprite>("Hazards/Splatter3"), 
+        Resources.Load<Sprite>("Hazards/Splatter4"), 
+        Resources.Load<Sprite>("Hazards/Splatter5") };
     public class Hazard
     {
         public Vector2Int Position;

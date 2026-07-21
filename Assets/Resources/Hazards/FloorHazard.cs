@@ -14,7 +14,10 @@ public class FloorHazard : MonoBehaviour
     {
         if (type == HazardSystem.HazardType.Oil)
             Renderer.color = ColorHelper.KingOilColor.Lerp(Color.black, 0.2f).WithAlpha(0);
-        Visual.transform.localPosition += (Vector3)Utils.RandCircle(0.1f);
+        Renderer.flipX = Utils.RandBool(2);
+        Renderer.flipY = Utils.RandBool(2);
+        Renderer.sprite = HazardSystem.SplatterSprites[Utils.RandInt(HazardSystem.SplatterSprites.Length)];
+        Visual.transform.localPosition += (Vector3)Utils.RandCircle(0.25f);
         float x = Utils.RandFloat(0.9f, 1.0f);
         float y = Utils.RandFloat(0.9f, 1.0f);
         TargetScale = new Vector2(x, y);

@@ -62,7 +62,7 @@ Sounds Needed:
 
 Done: 	
 
-7/15/26 to 7/20/26
+7/15/26 to 7/21/26
 1. Import and animate new steam banner asset from Sam onto the menu screen
 2. All character bodies now turn around instantly when direction is changed (Previously only TB and Gachapon did this)
 	1. This is part of a standardization to make animating simpler (as such, animations should also feel slightly more consistent for player body movement)
@@ -71,22 +71,21 @@ Done:
 	1. Has functional death animation (same as bubblemancer hat for the hat)
 	2. Needs: Smoke animation, powers, etc.
 5. WIP King Oil Scepter (has unique left click, right click)
-	1. Needs: death animation, powers, attack mechanics (like igniting + more sound for right click (infector slide sounds maybe))
-	2. Needs: Oil splats! tar trails! (tar should be permanently applied to enemies standing in puddles)
-	3. Right click now works with calculator... (though the effect seems too potent?)
+	1. Needs: death animation, powers, attack mechanics (like igniting oil trails)
 6. LIGHTING FIX: Shifting lighting downward, making shadows more accurate and realistic
 7. Import Tachyon Accelerator sprite (David)
-8. WIP Tarred Debuff 
-	1. Now slows and has a slight tint on enemy color
+8. Add Tarred Debuff 
+	1. Now slows and has a slight tint on enemy color. Enemies leave tar trails
 9. Now lore segments have special text when the lore has not all been unlocked ("Play more to complete this anecdote")
 10. Buff Icons no longer show stack count unless above 1
 11. Some organizational changes to how particle systems are loaded (no longer serialized)
 12. Modified Trifecta Node to be more open
-13. WIP Debuff detonation system (for now, all debuffs detonate for their own damage)
+13. Add Debuff detonation system (all debuffs detonate for their own damage (rather than a combined total damage))
 14. Add fire Particles
 15. Astrajelly stacks now roll multiple powers instead of giving a huge amount of one power
-16. WIP Hazard system (for oil splats)
-	1. Needs: more variation to the visuals (different sprites or maybe a shader)
+16. Add a Hazard system (for oil splats)
+	1. Might need to adjusted in the future for other functionality, but should work for now
+
 
 7/14/26
 1. WIP King Oil
