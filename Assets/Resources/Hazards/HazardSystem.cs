@@ -9,22 +9,26 @@ public static class HazardSystem
         public Vector2Int Position;
         public int Duration { get; set; } = 0;
         public HazardType Type { get; private set; }
-        public GameObject PairedObject { get; private set; }
+        public FloorHazard PairedObject { get; private set; }
         public bool Dead { get; set; } = false;
-        public Hazard(Vector2Int pos, HazardType type, int DurationInTicks = 100)
+        public float SizeMultiplier { get; set; }
+        public Hazard(Vector2Int pos, HazardType type, int DurationInTicks, float sizeMultiplier)
         {
             Position = pos;
             Type = type;
             Duration = DurationInTicks;
+            SizeMultiplier = sizeMultiplier;
             AttachGameObject();
         }
         public void AttachGameObject()
         {
             if(Type == HazardType.Oil)
-                PairedObject = GameObject.Instantiate(OilObject, World.RealTileMap.Map.CellToWorld((Vector3Int)Position), Quaternion.identity, Main.GenericSuperParent);
+                PairedObject = GameObject.Instantiate(OilObject, World.RealTileMap.Map.CellToWorld((Vector3Int)Position), Quaternion.identity, Main.GenericSuperParent).GetComponent<FloorHazard>();
+            PairedObject.Init(Type, Duration, SizeMultiplier);
         }
         public void Update()
         {
+            PairedObject.TickUpdate(Duration);
             --Duration;
             if (Duration <= 0)
                 Dead = true;
@@ -32,7 +36,7 @@ public static class HazardSystem
         public void Kill()
         {
             if (PairedObject != null)
-                GameObject.Destroy(PairedObject);
+                GameObject.Destroy(PairedObject.gameObject);
         }
     }
     public enum HazardType
@@ -81,15 +85,23 @@ public static class HazardSystem
     {
         return (Vector2Int)World.WorldPosition(worldPosition);
     }
-    public static Hazard AddHazard (Vector2 worldPosition, HazardType type, int duration, bool overrideOld = true) => AddHazard(ToHazardPosition(worldPosition), type, duration, overrideOld);
-    public static Hazard AddHazard(Vector2Int position, HazardType type, int duration, bool overrideOld = true)
+    public static Hazard AddHazard (Vector2 worldPosition, HazardType type, int duration, float size, bool overrideOld = true) => AddHazard(ToHazardPosition(worldPosition), type, duration, size, overrideOld);
+    public static Hazard AddHazard(Vector2Int position, HazardType type, int duration, float size, bool overrideOld = true)
     {
         if(GetHazard(position, out Hazard existing))
         {
             if (existing.Type == type)
             {
                 if (existing.Duration < duration)
+                {
                     existing.Duration = duration;
+                    existing.PairedObject.InitDuration = duration;
+                }
+                if (existing.SizeMultiplier < size)
+                {
+                    existing.SizeMultiplier = size;
+                    existing.PairedObject.SizeMult = size;
+                }
                 return existing;
             }
             else if (!overrideOld)
@@ -97,6 +109,6 @@ public static class HazardSystem
             else
                 existing.Kill();
         }
-        return HazardTilemap[position] = new Hazard(position, type, duration);
+        return HazardTilemap[position] = new Hazard(position, type, duration, size);
     }
 }

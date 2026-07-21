@@ -177,20 +177,7 @@ public class Tarred : Buff
     public override void Update(Entity e)
     {
         if (e is Enemy enemy)
-        {
-            //foreach (Vector2 v in BuffStack)
-            //{
-            //    float damage = 1;
-            //    float tickRate = 1;
-            //    DamageOverTime += Time.fixedDeltaTime;
-            //    while (DamageOverTime >= tickRate / 2f)
-            //    {
-            //        enemy.Injure(damage / v.y * tickRate, -1, ColorHelper.KingOilColor, 1);
-            //        DamageOverTime -= tickRate;
-            //    }
-            //}
             enemy.TarStacks += Stacks;
-        }
     }
     public override float OnDetonate(Entity e)
     {
@@ -203,7 +190,7 @@ public class Tarred : Buff
             enemy.Injure(damage, -2, ColorHelper.KingOilColor, 1);
         return damage;
     }
-    public override bool StackSeparately => true;
+    public override bool StackSeparately => false;
 }
 public class Chill : Buff
 {

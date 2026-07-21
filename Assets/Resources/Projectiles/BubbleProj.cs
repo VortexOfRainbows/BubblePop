@@ -117,6 +117,9 @@ public class SmallBubble : Projectile
             }
             AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 1.1f);
         }
+
+        if (PlayerOwner.TarShots > 0)
+            HazardSystem.AddHazard(transform.position, HazardSystem.HazardType.Oil, 200, transform.localScale.x, true);
     }
 }
 public class BigBubble : Projectile

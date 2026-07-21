@@ -11,6 +11,7 @@ public static class LayerHelper
 
     public const int FloorTileSortingOrder = -1;
     public const int WallTileSortingOrder = 0;
+    public const int HazardSortingOrder = 1;
 
     //-----------------------------------
     //           DEFAULT LAYER (not effected by tile shadows)

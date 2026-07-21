@@ -325,6 +325,7 @@ public class Enemy : Entity
     }
     private void ResetBuffStats()
     {
+        BuffDetonatedCounter -= Time.fixedDeltaTime;
         TarStacks = 0;
     }
     public sealed override void OnFixedUpdate()
@@ -410,6 +411,16 @@ public class Enemy : Entity
             bool collidersOn = (circle != null && circle.enabled) || (box != null && box.enabled);
             if(collidersOn)
                 Entity.PushIntoClosestPossibleTile(transform, RB, 10, false);
+        }
+        if(TarStacks > 0)
+        {
+            if(TryGetBuff<Tarred>(out Tarred buff) && buff.BuffStack.Count > 0 && buff.BuffStack[0].x > .5f)
+                HazardSystem.AddHazard(transform.position, HazardSystem.HazardType.Oil, (int)(buff.BuffStack[0].x * 100), Mathf.Sqrt(Mathf.Abs(transform.localScale.x)), true);
+        }
+        else if(HazardSystem.GetHazard(transform.position, out HazardSystem.Hazard hazard))
+        {
+            if (hazard.Type == HazardSystem.HazardType.Oil && hazard.Duration > 50 && BuffDetonatedCounter <= 0)
+                AddBuff<Tarred>(hazard.Duration * 0.01f, 1);
         }
     }
     public bool AlreadyDead = false;
@@ -686,10 +697,12 @@ public class Enemy : Entity
     {
         return true;
     }
+    public float BuffDetonatedCounter = 0;
     public void DetonateAllDebuffs()
     {
         float detonationDamage = 0;
         foreach(Buff b in buffs)
             detonationDamage += b.Detonate(this);
+        BuffDetonatedCounter = 1f;
     }
 }
