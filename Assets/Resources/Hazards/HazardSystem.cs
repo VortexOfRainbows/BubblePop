@@ -7,7 +7,7 @@ public static class HazardSystem
     public class Hazard
     {
         public Vector2Int Position;
-        public Vector2 WorldPosition { get; private set; }
+        public Vector2 WorldPosition { get; set; }
         public int Duration { get; set; } = 0;
         public HazardType Type { get; private set; }
         public List<FloorHazard> PairedObjects { get; private set; }
@@ -113,8 +113,11 @@ public static class HazardSystem
                     existing.Duration = duration;
                 if (existing.SizeMultiplier < size)
                     existing.SizeMultiplier = size;
-                if(overrideOld || existing.WorldPosition.Distance(worldPosition) > 1.1f)
+                if(overrideOld || existing.WorldPosition.Distance(worldPosition) > 0.75f)
+                {
+                    existing.WorldPosition = worldPosition;
                     existing.AttachGameObject(worldPosition);
+                }
                 return existing;
             }
             else if (!overrideOld)

@@ -13,7 +13,7 @@ public class FloorHazard : MonoBehaviour
     public void Init(HazardSystem.HazardType type, int initialAppliedDuration, float sizeMultiplier = 1.0f)
     {
         if (type == HazardSystem.HazardType.Oil)
-            Renderer.color = ColorHelper.KingOilColor.WithAlpha(0);
+            Renderer.color = ColorHelper.KingOilColor.Lerp(Color.black, 0.2f).WithAlpha(0);
         Visual.transform.localPosition += (Vector3)Utils.RandCircle(0.1f);
         float x = Utils.RandFloat(0.9f, 1.0f);
         float y = Utils.RandFloat(0.9f, 1.0f);
@@ -28,20 +28,19 @@ public class FloorHazard : MonoBehaviour
         if (timeLeft <= 0)
             return false;
         float scaleMult = SizeMult;
-        if (timeLeft < InitDuration && TimePassed > 10)
+        if (timeLeft < InitDuration && TimePassed > 15)
         {
             float timeRemaining = timeLeft / (float)InitDuration;
             scaleMult *= timeRemaining;
         }
         Visual.transform.LerpLocalScale(TargetScale * scaleMult, 0.1f);
         ++TimePassed;
-        float fadeIn = Mathf.Clamp01(TimePassed / 10f);
-        if (timeLeft < 20)
+        float fadeIn = Mathf.Clamp01(TimePassed / 15f);
+        if (timeLeft < 15)
         {
-            float timeRemaining = timeLeft / 20f;
+            float timeRemaining = timeLeft / 15f;
             fadeIn *= timeRemaining;
         }
-        fadeIn *= 1f;
         Renderer.color = Renderer.color.WithAlpha(fadeIn);
         Counter++;
         return true;

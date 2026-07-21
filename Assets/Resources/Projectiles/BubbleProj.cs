@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 public class SmallBubble : Projectile
 {
     public int RandomLifeShorten = 0;
@@ -52,9 +50,7 @@ public class SmallBubble : Projectile
             if (!target.TryGetBuff(out Tarred b) || b.Stacks < 1)
                 target.AddBuff<Tarred>(duration);
             else if (b.BuffStack[0].x < duration)
-            {
                 b.BuffStack[0] = new Vector2(duration, duration);
-            }
         }
     }
     public override void AI()
