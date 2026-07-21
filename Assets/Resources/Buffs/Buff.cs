@@ -74,7 +74,7 @@ public abstract class Buff
             }
             Owner = e;
         }
-        else
+        else if(duration > BuffStack[0].x)
             BuffStack[0] = new Vector2(duration, duration);
         Stacks += addStacks;
     }

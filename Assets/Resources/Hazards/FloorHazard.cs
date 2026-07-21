@@ -30,15 +30,15 @@ public class FloorHazard : MonoBehaviour
         float scaleMult = SizeMult;
         if (timeLeft < InitDuration && TimePassed > 15)
         {
-            float timeRemaining = timeLeft / (float)InitDuration;
+            float timeRemaining = Mathf.Max(0.2f, timeLeft / InitDuration);
             scaleMult *= timeRemaining;
         }
         Visual.transform.LerpLocalScale(TargetScale * scaleMult, 0.1f);
         ++TimePassed;
         float fadeIn = Mathf.Clamp01(TimePassed / 15f);
-        if (timeLeft < 15)
+        if (timeLeft < 50)
         {
-            float timeRemaining = timeLeft / 15f;
+            float timeRemaining = timeLeft / 50f;
             fadeIn *= timeRemaining;
         }
         Renderer.color = Renderer.color.WithAlpha(fadeIn);

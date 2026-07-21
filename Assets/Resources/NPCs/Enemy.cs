@@ -416,19 +416,20 @@ public class Enemy : Entity
         {
             if(TryGetBuff<Tarred>(out Tarred buff) && buff.BuffStack.Count > 0) 
             {
-                int duration = (int)(buff.BuffStack[0].x * 40); //leave a trail of half the application duration
-                if (duration > 50)//If the buff has more than .5 seconds remaining, 
+                int duration = (int)(buff.BuffStack[0].x * 50); //leave a trail of half the application duration
+                if (duration > 100) //If the buff has more than 1 seconds remaining, 
                 {
+                    float scaleDowner = duration > 200 ? 1.0f : (duration - 100) / 100f;
                     //second child is typically the shadow
                     Vector2 shadowPos = transform.GetChild(1).position ;
-                    HazardSystem.AddHazard(shadowPos, HazardSystem.HazardType.Oil, duration, Mathf.Sqrt(Mathf.Abs(transform.localScale.x)) * 0.7f, false);
+                    HazardSystem.AddHazard(shadowPos, HazardSystem.HazardType.Oil, duration, Mathf.Sqrt(Mathf.Abs(transform.localScale.x)) * 0.7f * scaleDowner, false);
                 }
             }
         }
-        else if(HazardSystem.GetHazard(transform.position, out HazardSystem.Hazard hazard))
+        if(HazardSystem.GetHazard(transform.position, out HazardSystem.Hazard hazard))
         {
-            if (hazard.Type == HazardSystem.HazardType.Oil && hazard.Duration > 50 && BuffDetonatedCounter <= 0) //If you step into a trial with .5 seconds remaining, get a buff of the duration
-                AddBuff<Tarred>(hazard.Duration * 0.01f, 1);
+            if (hazard.Type == HazardSystem.HazardType.Oil && hazard.Duration > 100 && BuffDetonatedCounter <= 0) //If you step into a trial with 1 seconds remaining, get a buff of the duration
+                AddBuff<Tarred>(hazard.Duration * 0.01f, TarStacks > 0 ? 0 : 1);
         }
     }
     public bool AlreadyDead = false;
