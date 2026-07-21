@@ -19,7 +19,7 @@ public class SentinelLaser : BoxProjectile
         {
             Vector2 position = transform.position;
             timer = 0;
-            Vector2 norm = RB.velocity;
+            Vector2 norm = RB.velocity.normalized;
             float distanceScan = 24f;
             Vector2 _ = Utils.RaycastWithTileSupport(position, norm, ref distanceScan, .1f);
             float dist = distanceScan;

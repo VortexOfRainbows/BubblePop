@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 public class SmallBubble : Projectile
 {
     public int RandomLifeShorten = 0;
@@ -44,6 +46,12 @@ public class SmallBubble : Projectile
         }
         if (Penetrate <= PlayerOwner.BonusBubblePierce + 1)
             Damage *= 0.8f;
+        if (PlayerOwner.TarShots > 0)
+        {
+            float duration = 5;
+            if (!target.TryGetBuff(out Tarred b) || b.Stacks < 1)
+                target.AddBuff<Tarred>(duration);
+        }
     }
     public override void AI()
     {
@@ -74,7 +82,9 @@ public class SmallBubble : Projectile
         float FadeOutTime = 20;
         if (timer > deathTime + FadeOutTime)
         {
+            timer = -1;
             Kill();
+            return;
         }
         if ((int)timer % 4 == 0)
         {
@@ -117,9 +127,8 @@ public class SmallBubble : Projectile
             }
             AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 1.1f);
         }
-
-        if (PlayerOwner.TarShots > 0)
-            HazardSystem.AddHazard(transform.position, HazardSystem.HazardType.Oil, 200, transform.localScale.x, true);
+        if (PlayerOwner.TarShots > 0 && timer >= 0)
+            HazardSystem.AddHazard(transform.position + new Vector3(0, -0.6f), HazardSystem.HazardType.Oil, 200, transform.localScale.x * 1.5f, true);
     }
 }
 public class BigBubble : Projectile

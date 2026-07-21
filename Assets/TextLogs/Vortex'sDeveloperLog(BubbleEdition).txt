@@ -17,6 +17,7 @@ Do Later:
 8. Before next patch:
 	1. Nerf tag team skull wave count
 	2. Nerf enemy health for medium-hp enemies
+	3. Remove reroll base count 2 -> 1
 
 Need to do:
 1. Unlock system might need more reworks in the future
@@ -85,9 +86,7 @@ Done:
 14. Add fire Particles
 15. Astrajelly stacks now roll multiple powers instead of giving a huge amount of one power
 16. WIP Hazard system (for oil splats)
-	1. Needs: adjustment to visual offsets to be based on worldly position instantiation parameters
-	2. MAYBE: Ability for multiple paired objects if instantiated on the same tile from multiple worldly positions
-	3. Needs: Visual adjustments
+	1. Needs: more variation to the visuals (different sprites or maybe a shader)
 
 7/14/26
 1. WIP King Oil
