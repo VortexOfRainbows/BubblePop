@@ -421,7 +421,7 @@
     Boomerang:
     {
       Title: Electric Boomerang
-      Description: Increases Y:[thunder bubble] recall damage by Y:50% G:(+50% per stack)
+      Description: Increases Y:[thunder bubble recall damage] by Y:50% G:(+50% per stack)
       Brief: Increases thunder bubble recall damage
       Lore:
         '''
@@ -739,11 +739,11 @@
       Description: Increases the amount of bubbles shot by your Y:[primary attack] by Y:20% G:(+20% per stack)
       Brief: Increases the amount of bubbles shot by your primary attack
       Lore:
-      '''
-      A soda bottle contained at the moment of its explosion, probably after someone shook it too much.
+        '''
+        A soda bottle contained at the moment of its explosion, probably after someone shook it too much.
 
-      Fizzy: It was me I shook it.
-      '''
+        Fizzy: It was me I shook it.
+        '''
     }
     BottleBlast:
     {
@@ -751,11 +751,11 @@
       Description: Y:[Secondary attack] releases Y:2 G:(+2 per stack) additional bubbles on impact
       Brief: Secondary attack releases extra bubbles
       Lore:
-      '''
-      An enlarged and overfilled soda bottle fit to explode under its own girth. Pushing its limits in this way allows it to add a nigh-infinite capacity to soda bottles.
+        '''
+        An enlarged and overfilled soda bottle fit to explode under its own girth. Pushing its limits in this way allows it to add a nigh-infinite capacity to soda bottles.
 
-      Fizzy: chonky
-      '''
+        Fizzy: chonky
+        '''
     }
     BottleFlip:
     {
@@ -763,11 +763,11 @@
       Description: Y:[Secondary attack] bounces and Y:explodes Y:1 G:(+1 per stack) additional times
       Brief: Secondary attack bounces and explodes an additional time
       Lore:
-      '''
-      A soda bottle contained during its use in an iconic maneuver, now able to make bottles flip themselves.
+        '''
+        A soda bottle contained during its use in an iconic maneuver, now able to make bottles flip themselves.
 
-      Fizzy: Using this kinda takes the skill out of it, but now I can do some new tricks!
-      '''
+        Fizzy: Using this kinda takes the skill out of it, but now I can do some new tricks!
+        '''
     }
     FancyFootwork:
     {
@@ -779,11 +779,11 @@
         '''
       Brief: Chance to dodge attacks
       Lore:
-      '''
-      Grants the user legendary evasiveness, bordering on prescience.
+        '''
+        Grants the user legendary evasiveness, bordering on prescience.
 
-      Bubblemancer: The Winged Bubble was a frustrating foe, almost impossible to hit. However, this trait also made him the target for certain ambitious challengers.
-      '''
+        Bubblemancer: The Winged Bubble was a frustrating foe, almost impossible to hit. However, this trait also made him the target for certain ambitious challengers.
+        '''
     }
     CarbonForce:
     {
@@ -791,11 +791,11 @@
       Description: Small bubbles gain Y:+1 G:(+1 per stack) Y:pierce and travel Y:10% G:(+10% per stack) further and faster
       Brief: Small bubbles get additional pierce and travel further
       Lore:
-      '''
-      A soda bottle contained at the moment of a forceful chemical reaction.
+        '''
+        A soda bottle contained at the moment of a forceful chemical reaction.
 
-      Fizzy: Some tricks never get old.
-      '''
+        Fizzy: Some tricks never get old.
+        '''
     }
     FlavorExplosion:
     {
@@ -807,11 +807,11 @@
         '''
       Brief: Small bubbles splash on hit or upon expiring
       Lore:
-      '''
-      Spread the flavor.
+        '''
+        Spread the flavor.
 
-      Fizzy: Guess someone took a literal interpretation of "explodes in your mouth".
-      '''
+        Fizzy: Guess someone took a literal interpretation of "explodes in your mouth".
+        '''
     }
     SplashRadius:
     {
@@ -819,18 +819,18 @@
       Description: Increases Y:[cola splash radius] by Y:10% G:(+10% per stack)
       Brief: Increases cola splash radius
       Lore:
-      '''
-      A soda bottle used as a grenade striking a pool of soda, the resulting ripples of which add to the splash radius of said grenades.
+        '''
+        A soda bottle used as a grenade striking a pool of soda, the resulting ripples of which add to the splash radius of said grenades.
 
-      TB: I'm glad that Fizzy can provide his own bottles. Manufacturing them as munitions would be...costly.
-      Gachapon: Come to think of it, where does he keep getting all those new bottles?
-      Fizzy: I just pull them out of thin air.
-      Bubblemancer: what
-      TB: To explain, he replicates his bottles in the same way any of us can generate bubbles. Soda bubbles are more volatile and harder to use than normal bubbles, so they require a container. You can think of it like the bottle itself is part of the bubble.
-      Fizzy: Bubbles in bubbles, bro!
-      TB: Sorry, I should have clarified. The bottle has a mixed composition and is not actually made of pure bubbles. You'll have to explain to me how you can do that later.
-      Fizzy: Oh ok.
-      '''
+        TB: I'm glad that Fizzy can provide his own bottles. Manufacturing them as munitions would be...costly.
+        Gachapon: Come to think of it, where does he keep getting all those new bottles?
+        Fizzy: I just pull them out of thin air.
+        Bubblemancer: what
+        TB: To explain, he replicates his bottles in the same way any of us can generate bubbles. Soda bubbles are more volatile and harder to use than normal bubbles, so they require a container. You can think of it like the bottle itself is part of the bubble.
+        Fizzy: Bubbles in bubbles, bro!
+        TB: Sorry, I should have clarified. The bottle has a mixed composition and is not actually made of pure bubbles. You'll have to explain to me how you can do that later.
+        Fizzy: Oh ok.
+        '''
     }
     BonusBoards:
     {
@@ -970,6 +970,55 @@
         When shields are broken, gain a star-synergy power
         '''
       Lore: Power.AstralJelly.Lore
+    }
+    Corrode:
+    {
+      Title: Corrode
+      Description: Y:Tarred enemies take Y:0.2 G:(+0.2 per stack) Y:[damage per second]
+      Brief: Tarred enemies take damage over time
+      Lore: Power.Corrode.Lore
+    }
+    Contaminate:
+    {
+      Title: Contaminate
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Contaminate.Lore
+    }
+    Combust:
+    {
+      Title: Combust
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Combust.Lore
+    }
+    Concoct:
+    {
+      Title: Concoct
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Concoct.Lore
+    }
+    OilSpill:
+    {
+      Title: Oil Spill
+      Description: WIP
+      Brief: WIP
+      Lore: Power.OilSpill.Lore
+    }
+    Gasoline:
+    {
+      Title: Gasoline
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Gasoline.Lore
+    }
+    BlackDiamond:
+    {
+      Title: BlackDiamond
+      Description: WIP
+      Brief: WIP
+      Lore: Power.BlackDiamond.Lore
     }
   }
   Equip:

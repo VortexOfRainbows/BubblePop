@@ -172,6 +172,7 @@ public partial class Player : Entity
     public int CatalystJellies = 0;
     public int BonusCoinFromWaveRewards = 0;
     public int ChoiceOnHeal = 0;
+    public float CorrodeDamage = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -218,11 +219,9 @@ public partial class Player : Entity
         PityGrowthAmount = BuyOneGetOneMult = 0.0f;
         ConsolationPrize = PhilosophersStone = ExtraGachaBurst = 0;
         MaxTokens = 4;
-        BatterUp = PiratesBooty = Eureka = BlackMarketDelivery = RainbowFlowers = 0;
-        GlassShards = 0;
+        BatterUp = PiratesBooty = Eureka = BlackMarketDelivery = RainbowFlowers = GlassShards = 0;
         LightMultiplierBonusDamage = 0.0f;
-        BountyHunter = 0;
-        BottleFlip = 0;
+        BountyHunter = BottleFlip = 0;
         DodgeStat = 0.0f;
         BonusBubblePierce = 0;
         ExplodingBubbles = BonusBoards = Kickflip = RetaliatoryBomb = BombBrew = SkullBomb = ClusterBomb = PrizeBombCoins = BonusStocks = 0;
@@ -237,6 +236,7 @@ public partial class Player : Entity
         CatalystJellies = 0;
         BonusCoinFromWaveRewards = ChoiceOnHeal = 0;
         TarShots = 0;
+        CorrodeDamage = 0;
     }
     private void UpdatePowerUps()
     {

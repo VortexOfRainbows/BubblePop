@@ -1,7 +1,5 @@
-using Steamworks;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class OilScepter : Weapon
 {
@@ -15,13 +13,13 @@ public class OilScepter : Weapon
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<KingOilUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<WeaponUpgrade>();
-        powerPool.Add<WeaponUpgrade>();
-        powerPool.Add<WeaponUpgrade>();
-        powerPool.Add<WeaponUpgrade>();
-        powerPool.Add<WeaponUpgrade>();
-        powerPool.Add<WeaponUpgrade>();
-        powerPool.Add<WeaponUpgrade>();
+        powerPool.Add<Corrode>();
+        powerPool.Add<Contaminate>();
+        powerPool.Add<Combust>();
+        powerPool.Add<Concoct>();
+        powerPool.Add<Gasoline>();
+        powerPool.Add<OilSpill>();
+        powerPool.Add<BlackDiamond>();
     }
     public override void ModifyDescription(ref EquipDescription description)
     {

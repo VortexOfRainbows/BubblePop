@@ -177,7 +177,17 @@ public class Tarred : Buff
     public override void Update(Entity e)
     {
         if (e is Enemy enemy)
+        {
             enemy.TarStacks += Stacks;
+            float damage = Player.Instance.CorrodeDamage * Stacks;
+            float tickRate = Mathf.Min(1, Mathf.Max(0.25f, 20f / damage));
+            DamageOverTime += Time.fixedDeltaTime;
+            while (DamageOverTime >= tickRate / 2f)
+            {
+                enemy.Injure(damage * tickRate, -1, ColorHelper.KingOilColor, 1);
+                DamageOverTime -= tickRate;
+            }
+        }
     }
     public override float OnDetonate(Entity e)
     {
