@@ -172,7 +172,7 @@ public partial class Player : Entity
     public int CatalystJellies = 0;
     public int BonusCoinFromWaveRewards = 0;
     public int ChoiceOnHeal = 0;
-    public float CorrodeDamage = 0;
+    public float CorrodeDamage = 0, TarBonusDuration = 0, CombustBonusDamage = 0;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -236,7 +236,7 @@ public partial class Player : Entity
         CatalystJellies = 0;
         BonusCoinFromWaveRewards = ChoiceOnHeal = 0;
         TarShots = 0;
-        CorrodeDamage = 0;
+        CorrodeDamage = TarBonusDuration = CombustBonusDamage = 0;
     }
     private void UpdatePowerUps()
     {

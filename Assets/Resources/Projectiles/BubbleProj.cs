@@ -46,7 +46,7 @@ public class SmallBubble : Projectile
             Damage *= 0.8f;
         if (PlayerOwner.TarShots > 0)
         {
-            float duration = 5;
+            float duration = 5 + PlayerOwner.TarBonusDuration;
             if (!target.TryGetBuff(out Tarred b) || b.Stacks < 1)
                 target.AddBuff<Tarred>(duration);
             else

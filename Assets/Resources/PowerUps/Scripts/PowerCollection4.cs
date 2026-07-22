@@ -12,7 +12,8 @@ public class Contaminate : PowerUp
     public override void Init() => Weighting = Common;
     public override void HeldEffect(Player p)
     {
-        //p.ClusterBomb += Stack;
+        p.TarShots += 1; //Grant tar to the player if they do not already have it for this power... idk why im doing this but I feel like I should
+        p.TarBonusDuration += Stack;
     }
 }
 public class Combust : PowerUp
@@ -20,7 +21,7 @@ public class Combust : PowerUp
     public override void Init() => Weighting = Uncommon;
     public override void HeldEffect(Player p)
     {
-        //p.ClusterBomb += Stack;
+        p.CombustBonusDamage += Stack;
     }
 }
 public class Concoct : PowerUp

@@ -165,6 +165,7 @@ public class Poison : Buff
         float totalDamage = 0;
         foreach (Vector2 v in BuffStack)
             totalDamage += (3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes) * v.x / v.y;
+        totalDamage += Player.Instance.CombustBonusDamage;
         if (e is Enemy enemy)
             enemy.Injure(totalDamage, -2, new Color(0.8f, 0.27f, 0.9f), 1);
         return totalDamage;
@@ -197,7 +198,7 @@ public class Tarred : Buff
         AudioManager.PlaySound(SoundID.BathBombBurst, e.transform.position, 1.0f, 0.7f);
         for (int i = 0; i < 9; ++i)
             ParticleManager.NewParticle(e.transform.position, Utils.RandFloat(0.5f, 1.2f), Utils.RandCircle(5), 1, Utils.RandFloat(0.6f, 1.2f), ParticleManager.ID.Fire);
-        float damage = 4;
+        float damage = 4 + Player.Instance.CombustBonusDamage;
         damage *= Stacks;
         if (e is Enemy enemy)
             enemy.Injure(damage, -2, ColorHelper.KingOilColor, 1);
@@ -217,7 +218,7 @@ public class Chill : Buff
     public override float OnDetonate(Entity e)
     {
         //AudioManager.PlaySound(SoundID.WoodBreak, e.transform.position, 1.2f, 1.7f);
-        float damage = Stacks;
+        float damage = Stacks + Player.Instance.CombustBonusDamage;
         if (e is Enemy enemy)
             enemy.Injure(damage, -2, ColorHelper.RarityColors[2], 1);
         return damage;
