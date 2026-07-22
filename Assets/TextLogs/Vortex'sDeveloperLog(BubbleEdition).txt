@@ -65,7 +65,10 @@ Sounds Needed:
 Done: 	
 
 7/21/26 to 7/22/26
-1. Power functionality added: Corrode, Contaminate, Combust
+1. Power functionality added: Corrode, Contaminate, Combust, Black Diamond
+2. Fix an oversite in attack speed scaling for weapons that caused weapons to stall attacks and play a large amount of idle frames at enhanced speed after a full cycle had been finished
+	1. Effectively, this should make extremely high attack speeds more accurate to replicating weapon attack behavior
+	2. This was totally unnecessary, but basically should allow weapons to attack even faster than the frame limit (why did I do this)
 
 7/15/26 to 7/21/26
 1. Import and animate new steam banner asset from Sam onto the menu screen

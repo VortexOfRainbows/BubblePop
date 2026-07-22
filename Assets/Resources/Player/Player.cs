@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -686,6 +687,15 @@ public partial class Player : Entity
             {
                 Weapon.AliveUpdate();
                 AttackUpdateTimer -= 1;
+                if (!Weapon.IsAttacking() && AttackUpdateTimer > 0)
+                {
+                    if (Control.PrimaryAttackHold)
+                        Weapon.StartAttack(false);
+                    else if (Control.SecondaryAttackHold)
+                        Weapon.StartAttack(true);
+                    else
+                        break;
+                }
             }
             Hat.AliveUpdate();
             Accessory.AliveUpdate();

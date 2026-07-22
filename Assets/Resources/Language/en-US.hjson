@@ -1015,9 +1015,13 @@
     }
     BlackDiamond:
     {
-      Title: BlackDiamond
-      Description: WIP
-      Brief: WIP
+      Title: Black Diamond
+      Description: 
+      '''
+      Y:[Secondary attack] can control Y:1 G:(+1 per stack) additional Y:[Royal Rubies] 
+      Increases Y:[secondary attack] speed by Y:30% G:(+30% per stack)
+      '''
+      Brief: Secondary attack controls an additional Royal Ruby
       Lore: Power.BlackDiamond.Lore
     }
   }

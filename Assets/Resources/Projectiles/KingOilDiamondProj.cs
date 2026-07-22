@@ -22,7 +22,7 @@ public class KingOilDiamondProj : Projectile
         SpriteRendererGlow.transform.localScale *= 0.5f;
         C2D.radius *= 0.75f;
         startPos = transform.position;
-        trail = SpecialTrail.NewTrail(transform, c * 0.7f, 1.0f, 0.2f, 0.25f);
+        trail = SpecialTrail.NewTrail(transform, c.WithAlpha(0.5f), 1.0f, 0.2f, 0.25f);
         Direction = Utils.SignNoZero(Data1 - startPos.x);
         immunityFrames = 20;
         SpriteRenderer.flipX = Direction == 1;
@@ -32,13 +32,14 @@ public class KingOilDiamondProj : Projectile
     public Sound activeSound = null;
     public Vector2 PrimaryTarget;
     public Vector2? SecondaryTarget = null;
+    public float TravelSpeed = 60f;
     public override void AI()
     {
-        if (SwitchedPos && timer < 50)
+        if (SwitchedPos && timer < TravelSpeed)
         {
             Data1 = transform.position.x;
             Data2 = transform.position.y;
-            timer = 50;
+            timer = TravelSpeed;
         }
         if (SwitchedPos)
         {
@@ -47,8 +48,8 @@ public class KingOilDiamondProj : Projectile
             else
                 startPos = PlayerOwner.Weapon.transform.position;
         }
-        float halfTimer = timer / 50f;
-        float fullTimer = timer / 100f;
+        float halfTimer = timer / TravelSpeed;
+        float fullTimer = timer / TravelSpeed * 0.5f;
         if (fullTimer > 1)
             fullTimer = 1;
         if (halfTimer > 1)
@@ -120,7 +121,10 @@ public class KingOilDiamondProj : Projectile
     public override void OnKill()
     {
         if (PlayerOwner.Weapon is OilScepter scepter)
+        {
+            AudioManager.PlaySound(SoundID.Infect, transform.position, 0.8f, 2f, 0);
             scepter.ActiveDiamondProjectile--;
+        }
     }
     public override bool? CanBeAffectedByHoming() => null;
     public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)

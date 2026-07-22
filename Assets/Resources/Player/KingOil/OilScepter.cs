@@ -1,8 +1,11 @@
+using Steamworks;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class OilScepter : Weapon
 {
+    public int AllowedDiamonds => (Player != null ? 1 + Player.BonusBlackDiamond : 1);
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         rotation -= 45f;
@@ -69,12 +72,12 @@ public class OilScepter : Weapon
 
     }
     protected virtual float AttackCooldown => 30;
-    protected virtual int LeftAttackSpeed => 75;
-    protected virtual float RightAttackSpeed => 100;
+    protected virtual int LeftAttackSpeed => 80;
+    protected virtual float RightAttackSpeed => 90;
     protected virtual float SpreadDegrees => 30;
     public override void StartAttack(bool alternate)
     {
-        if (AttackLeft <= 0 && AttackRight < -AttackCooldown && ActiveDiamondProjectile <= 0)
+        if (AttackLeft <= 0 && AttackRight < -AttackCooldown && ActiveDiamondProjectile < AllowedDiamonds)
         {
             if (!alternate)
             {
@@ -82,7 +85,7 @@ public class OilScepter : Weapon
                 AttackLeft = LeftAttackSpeed;
             }
         }
-        if (AttackRight < -AttackCooldown && AttackLeft < 0 && ActiveDiamondProjectile <= 0)
+        if (AttackRight < -AttackCooldown && AttackLeft < 0 && ActiveDiamondProjectile < AllowedDiamonds)
         {
             if (alternate)
             {
@@ -134,9 +137,7 @@ public class OilScepter : Weapon
             //float percent = AttackLeft / (50f + Player.ShotgunPower * 10f);
         }
         else if (AttackRight <= 0)
-        {
-            bonusPointDirOffset = Mathf.Lerp(bonusPointDirOffset, 0, ActiveDiamondProjectile <= 0 ? 0.05f : 0.08f);
-        }
+            bonusPointDirOffset = Mathf.Lerp(bonusPointDirOffset, 0, 0.08f);
         if (AttackRight > 0)
         {
             if(AttackRight == RightAttackSpeed)
@@ -155,13 +156,16 @@ public class OilScepter : Weapon
                 float distance = 16;
                 Vector2 final = Utils.RaycastWithTileSupport(Gem.transform.position, awayFromWand, ref distance, 0.1f);
                 Projectile.NewProjectile<KingOilDiamondProj>(Gem.transform.position, awayFromWand * 5, 1, Player, final.x, final.y);
+
+                if(Player.Control.SecondaryAttackHold && ActiveDiamondProjectile < AllowedDiamonds)
+                    AttackRight = RightAttackSpeed + 1;
             }
             AttackRight--;
         }
         else
         {
-            bonusPointDirOffsetRight = Mathf.Lerp(bonusPointDirOffsetRight, 0, ActiveDiamondProjectile <= 0 ? 0.05f : 0.08f);
-            if (ActiveDiamondProjectile <= 0)
+            bonusPointDirOffsetRight = Mathf.Lerp(bonusPointDirOffsetRight, 0, 0.08f);
+            if (ActiveDiamondProjectile < AllowedDiamonds)
                 AttackRight--;
         }
         WalkMovementAnimation += Mathf.Sqrt(Player.RB.velocity.magnitude);
@@ -179,7 +183,7 @@ public class OilScepter : Weapon
         attemptedPosition.y *= 1 - 0.5f * pointPercent;
         attemptedPosition.y -= 0.75f * pointPercent;
 
-        transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition + recoil, ActiveDiamondProjectile <= 0 ? 0.08f : 0.2f);
+        transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition + recoil, 0.125f);
         if (Utils.SignNoZero(transform.localScale.x) != direction)
             transform.localScale = new Vector3(direction, 1, 1);
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.15f);
@@ -190,11 +194,12 @@ public class OilScepter : Weapon
 
         if (Trail == null)
         {
-            Trail = SpecialTrail.NewTrail(Gem, Color.red.WithAlpha(0.4f), .4f, .4f, 0.2f, manuallyUpdated: false, orderInLayer: 3);
+            Trail = SpecialTrail.NewTrail(Gem, Color.red.WithAlpha(0.5f), .4f, .4f, 0.2f, manuallyUpdated: false, orderInLayer: 3);
             Trail.Trail.minVertexDistance *= 10;
         }
         else
         {
+            Trail.Trail.startColor = Color.red.WithAlpha(0.5f * (1 - ActiveDiamondProjectile / (float)AllowedDiamonds));
             Trail.gameObject.SetActive(Gem.gameObject.activeSelf);
             if (!Trail.gameObject.activeSelf)
             {
@@ -202,6 +207,7 @@ public class OilScepter : Weapon
                 Trail.transform.position = Gem.transform.position;
             }
         }
+        Gem.gameObject.GetComponent<SpriteRenderer>().color = Color.black.Lerp(Color.white, 1 - ActiveDiamondProjectile / (float)AllowedDiamonds);
     }
     public void Update()
     {
@@ -210,18 +216,8 @@ public class OilScepter : Weapon
             Trail.gameObject.SetActive(Gem.gameObject.activeSelf);
             return;
         }
-        bool wasInactive = false;
-        if (!Gem.gameObject.activeSelf)
-            wasInactive = true;
-        Gem.gameObject.SetActive(ActiveDiamondProjectile <= 0);
-        if (Gem.gameObject.activeSelf)
-        {
-            if (wasInactive)
-            {
-                AudioManager.PlaySound(SoundID.Infect, transform.position, 0.8f, 2f, 0);
-            }
-        }
-        if(Trail != null)
+        Gem.gameObject.SetActive(ActiveDiamondProjectile < AllowedDiamonds);
+        if (Trail != null)
         {
             if (AttackLeft >= 0)
             {

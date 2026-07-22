@@ -53,6 +53,7 @@ public class BlackDiamond : PowerUp
     public override void Init() => Weighting = SuperRare;
     public override void HeldEffect(Player p)
     {
-        //p.ClusterBomb += Stack;
+        p.BonusBlackDiamond += Stack;
+        p.SecondaryAttackSpeedModifier += Stack * 0.3f;
     }
 }
