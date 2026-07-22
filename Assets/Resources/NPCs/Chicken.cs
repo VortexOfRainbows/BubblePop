@@ -30,9 +30,7 @@ public class Chicken : Enemy
     }
     public void MoveUpdate()
     {
-        targetedLocation = Target.Position;
-        Vector2 toTarget = targetedLocation - (Vector2)transform.position;
-        RB.velocity += toTarget.normalized * moveSpeed;
+        RB.velocity += World.GetDirection(transform.position) * moveSpeed;
         RB.velocity *= inertiaMult;
         if (Mathf.Abs(RB.velocity.x) > 0.1f)
             UpdateDirection(RB.velocity.x);
