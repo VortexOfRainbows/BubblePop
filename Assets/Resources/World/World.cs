@@ -14,10 +14,16 @@ public class World : MonoBehaviour
     {
         public byte ProgressionNumber;
         public bool IsRoadblock;
+        public float distance;
+        public Vector2 direction;
+        public int runID;
         public TileData(byte progressionNum = byte.MaxValue, bool roadBlock = false)
         {
             ProgressionNumber = progressionNum;
             IsRoadblock = roadBlock;
+            distance = float.MaxValue;
+            direction = Vector2.zero;
+            runID = 0;
         }
     }
     private static Vector2Int tileDataOffset;
@@ -33,6 +39,23 @@ public class World : MonoBehaviour
             return NoTileData;
         }
         return tileData[pointPos.x, pointPos.y];
+    }
+    public static ref TileData UnsafeGetTileData(Vector3Int pos)
+    {
+        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
+        return ref tileData[pointPos.x, pointPos.y];
+    }
+    public static Vector2 GetTileDirection(Vector3Int pos)
+    {
+        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
+        return tileData[pointPos.x, pointPos.y].direction;
+    }
+    public static Vector2 GetDirection(Vector3 pos)
+    {
+        float x = (pos.x) / TilePathfinding.tileSize.x;
+        float y = (pos.y) / TilePathfinding.tileSize.y;
+
+        return GetTileDirection(new Vector3Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
     }
     public static void SetTileData(Vector3Int pos, TileData newData)
     {
