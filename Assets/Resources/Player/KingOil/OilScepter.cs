@@ -29,13 +29,40 @@ public class OilScepter : Weapon
     {
         Player.TarShots += 1;
     }
+    public Vector2 DeathVelocity = Vector2.zero;
     protected override void AnimationUpdate()
     {
+        spriteRender.enabled = true;
+        DeathVelocity = Vector2.zero;
         WandUpdate();
     }
     protected override void DeathAnimation()
     {
-
+        ActiveDiamondProjectile = 0;
+        AttackLeft = 0;
+        AttackRight = 0;
+        if (p.DeathKillTimer <= 0)
+        {
+            Vector2 toMouse = (Player.Control.MousePosition - (Vector2)p.transform.position).normalized;
+            DeathVelocity = new Vector2(toMouse.x * 4 + Utils.SignNoZero(toMouse.x) * 2, 12);
+        }
+        else
+        {
+            DeathVelocity *= 0.985f;
+            DeathVelocity.y -= 0.1f;
+        }
+        transform.position += (Vector3)DeathVelocity * Time.fixedDeltaTime;
+        transform.SetLocalEulerZ(transform.localEulerAngles.z + DeathVelocity.x * 240f * Time.fixedDeltaTime);
+        if(p.DeathKillTimer > 110 && spriteRender.enabled)
+        {
+            spriteRender.enabled = false;
+            Gem.gameObject.SetActive(false);
+            for(int i = 0; i < 40; ++i)
+            {
+                float scale = Utils.RandFloat(0.2f, 1.0f);
+                ParticleManager.NewParticle(Gem.transform.position, scale, Utils.RandCircle(12 - scale * 8), 1.0f, Utils.RandFloat(0.4f, 0.8f), ParticleManager.ID.Circle, Color.red * 0.7f);
+            }
+        }
     }
     public override void Init()
     {
@@ -95,9 +122,7 @@ public class OilScepter : Weapon
                 int shotCount = 3;
                 Vector2 spawnPos = (Vector2)Gem.transform.position + awayFromWand * 1.1f;
                 for (int i = 0; i < 10; ++i)
-                {
                     ParticleManager.NewParticle(spawnPos, Utils.RandFloat(0.5f, 0.75f), Utils.RandCircle(4) + awayFromWand * Utils.RandFloat(3, 5), 1.0f, Utils.RandFloat(0.3f, 0.5f), ParticleManager.ID.Circle, Color.red.WithAlpha(0.5f));
-                }
                 for (int i = 0; i < shotCount; ++i)
                 {
                     float spreadPercent = (i + 0.5f) / shotCount;
@@ -180,6 +205,11 @@ public class OilScepter : Weapon
     }
     public void Update()
     {
+        if (!spriteRender.enabled)
+        {
+            Trail.gameObject.SetActive(Gem.gameObject.activeSelf);
+            return;
+        }
         bool wasInactive = false;
         if (!Gem.gameObject.activeSelf)
             wasInactive = true;

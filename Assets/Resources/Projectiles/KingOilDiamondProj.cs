@@ -86,7 +86,7 @@ public class KingOilDiamondProj : Projectile
         float speed = Mathf.Min(55f, toTarget.magnitude * 100);
         RB.velocity = toTarget.normalized * speed;
 
-        if (toTarget.magnitude < 0.25f && SwitchedPos && halfTimer >= 2)
+        if ((toTarget.magnitude < 0.25f && SwitchedPos && halfTimer >= 2) || (PlayerOwner.Weapon is not OilScepter o || o.ActiveDiamondProjectile <= 0))
             Kill();
 
         transform.localScale = Vector2.Lerp(Vector2.one, new Vector2(2f, 3f), scaler);

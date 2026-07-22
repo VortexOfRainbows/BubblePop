@@ -267,12 +267,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2a9c2be0d092774db2ced6b821d9e90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRender: {fileID: 8973945380139369154}
+  spriteRender: {fileID: 7790185944261372035}
   velocity: {x: 0, y: 0}
   WandEulerAngles: {x: 0, y: 0, z: 0}
+  DeathVelocity: {x: 0, y: 0}
   Gem: {fileID: 1840741477931265833}
   recoil: {x: 0, y: 0}
   bonusPointDirOffset: 0
+  bonusPointDirOffsetRight: 0
   WandCounter: 0
   WalkMovementAnimation: 0
-  WalkingStick: {fileID: 0}
