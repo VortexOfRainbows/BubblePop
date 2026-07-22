@@ -278,3 +278,5 @@ public class FizzyStuffed : UnlockCondition
     public override int Rarity => 4;
     public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
 }
+//Achievement idea for Oil King: Quagmire: afflict an enemy with tar, chill, and poison
+//Achievement idea for Oil King: Environmentalist: win without afflicting tar on any enemy

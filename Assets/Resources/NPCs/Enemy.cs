@@ -393,7 +393,7 @@ public class Enemy : Entity
                 RB.position += RB.velocity * Time.fixedDeltaTime;
             if (TarStacks > 0)
             {
-                float slowDown = 0.2f * TarStacks;
+                float slowDown = 0.2f * TarStacks + Player.Instance.BonusTarSlow;
                 float postProcessSlowdown = slowDown / (slowDown + 0.8f);
                 RB.position -= postProcessSlowdown * Time.fixedDeltaTime * RB.velocity;
             }
