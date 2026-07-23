@@ -29,7 +29,8 @@ public class Concoct : PowerUp
     public override void Init() => Weighting = Uncommon;
     public override void HeldEffect(Player p)
     {
-        p.BonusTarSlow += 0.1f * Stack;
+        p.TarConcoct += Stack;
+        //p.BonusTarSlow += 0.1f * Stack;
     }
 }
 public class OilSpill : PowerUp

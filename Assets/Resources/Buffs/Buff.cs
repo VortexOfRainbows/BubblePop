@@ -198,8 +198,8 @@ public class Tarred : Buff
         AudioManager.PlaySound(SoundID.BathBombBurst, e.transform.position, 1.0f, 0.7f);
         for (int i = 0; i < 9; ++i)
             ParticleManager.NewParticle(e.transform.position, Utils.RandFloat(0.5f, 1.2f), Utils.RandCircle(5), 1, Utils.RandFloat(0.6f, 1.2f), ParticleManager.ID.Fire);
-        float damage = 4 + Player.Instance.CombustBonusDamage;
-        damage *= Stacks;
+        float damage = 3 * Stacks;
+        damage += Player.Instance.CombustBonusDamage;
         if (e is Enemy enemy)
             enemy.Injure(damage, -2, ColorHelper.KingOilColor, 1);
         return damage;

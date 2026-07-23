@@ -995,8 +995,8 @@
     Concoct:
     {
       Title: Concoct
-      Description: Y:Tar reduces enemy Y:[movement speed] by a further Y:10% G:(+10% per stack)
-      Brief: Tar slows enemies more
+      Description: Allows Y:Tar to be stacked Y:1 G:(+1 per stack) additional time
+      Brief: Tar can be stacked to increase potency
       Lore: Power.Concoct.Lore
     }
     OilSpill:
@@ -1009,8 +1009,8 @@
     Gasoline:
     {
       Title: Gasoline
-      Description: WIP
-      Brief: WIP
+      Description: Y:Tar
+      Brief: Tar puddles can be set ablaze
       Lore: Power.Gasoline.Lore
     }
     BlackDiamond:

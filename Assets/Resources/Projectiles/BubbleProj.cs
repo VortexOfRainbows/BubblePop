@@ -46,10 +46,11 @@ public class SmallBubble : Projectile
             Damage *= 0.8f;
         if (PlayerOwner.TarShots > 0)
         {
+            int maxStack = 1 + PlayerOwner.TarConcoct;
             float duration = 5 + PlayerOwner.TarBonusDuration;
-            if (!target.TryGetBuff(out Tarred b) || b.Stacks < 1)
+            if (!target.TryGetBuff(out Tarred b) || b.Stacks < maxStack) //If the buff is not applied, or below the max stack
                 target.AddBuff<Tarred>(duration);
-            else
+            else //Simply refresh the duration if at max stacks
                 target.AddBuff<Tarred>(duration, 0);
         }
     }
