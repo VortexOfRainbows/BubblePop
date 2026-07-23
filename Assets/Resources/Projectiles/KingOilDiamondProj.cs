@@ -94,19 +94,22 @@ public class KingOilDiamondProj : Projectile
         SpriteRendererGlow.color = c * scaler;
         transform.SetLocalEulerZ(RB.velocity.x * -0.2f);
 
-        if(halfTimer > 0.25f && halfTimer < 1.7f)
+        if (halfTimer > 0.25f && halfTimer < 1.7f)
         {
-            if(activeSound == null || activeSound.Source.time > 0.2f)
+            if (activeSound == null || activeSound.Source.time > 0.2f)
                 activeSound = AudioManager.PlaySound(SoundID.ElectricZap, transform.position, 0.5f, 2f, 1);
             float sin = Mathf.Sin(((halfTimer - 0.25f) / 1.45f) * Mathf.PI);
             ParticleManager.NewParticle(new Vector2(transform.position.x, transform.position.y - 1f), Mathf.Lerp(0.5f, 1.0f, sin), Utils.RandCircle(2 + sin), 0, 0.3f + 0.2f * sin, ParticleManager.ID.Fire, new Color(1, 0.8f, 0.7f));
-            if(Utils.RandFloat() < 0.25f)
+            if (Utils.RandFloat() < 0.25f)
             {
                 ParticleManager.NewParticle(new Vector2(transform.position.x, transform.position.y - 1f), Mathf.Lerp(1.0f, 1.2f, sin), Utils.RandCircle(0.1f), 0, 0.6f + 0.2f * sin, ParticleManager.ID.Fire, new Color(1, 0.8f, 0.7f));
             }
         }
         SecondaryTarget = null;
         homingCounter = 0;
+
+        if(PlayerOwner.Gasoline > 0)
+            HazardSystem.TryDetonatingOil(transform.position, PlayerOwner, PlayerOwner.Gasoline);
     }
     public override void OnHitTarget(Entity target)
     {

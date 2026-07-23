@@ -995,7 +995,7 @@
     Concoct:
     {
       Title: Concoct
-      Description: Allows Y:Tar to be stacked Y:1 G:(+1 per stack) additional time
+      Description: Allows Y:Tar to be stacked Y:1 G:(+1 per stack) additional times
       Brief: Tar can be stacked to increase potency
       Lore: Power.Concoct.Lore
     }
@@ -1009,18 +1009,18 @@
     Gasoline:
     {
       Title: Gasoline
-      Description: Y:Tar
+      Description: Y:[Tar puddles] can be Y:[ignited,] causing a Y:[chain reaction] that can travel Y:2 G:(+1 per stack) tiles
       Brief: Tar puddles can be set ablaze
       Lore: Power.Gasoline.Lore
     }
     BlackDiamond:
     {
-      Title: Black Diamond
-      Description: 
-      '''
-      Y:[Secondary attack] can control Y:1 G:(+1 per stack) additional Y:[Royal Rubies] 
-      Increases Y:[secondary attack] speed by Y:30% G:(+30% per stack)
-      '''
+      Title: Royal Reserves
+      Description:
+        '''
+        Y:[Secondary attack] can control Y:1 G:(+1 per stack) additional Y:[Royal Rubies] 
+        Increases Y:[secondary attack] speed by Y:30% G:(+30% per stack)
+        '''
       Brief: Secondary attack controls an additional Royal Ruby
       Lore: Power.BlackDiamond.Lore
     }

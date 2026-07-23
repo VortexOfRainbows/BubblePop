@@ -46,7 +46,7 @@ public class Gasoline : PowerUp
     public override void Init() => Weighting = Rare;
     public override void HeldEffect(Player p)
     {
-        //p.ClusterBomb += Stack;
+        p.Gasoline += 1 + Stack;
     }
 }
 public class BlackDiamond : PowerUp

@@ -25,7 +25,7 @@ public partial class Main : MonoBehaviour
         public static Sprite GradientLine;
         public static Sprite T3ChestUma, T3ChestUmaOpen, T3Chest, T3ChestOpen, T2Chest, T2ChestOpen, T1Chest, T1ChestOpen, BlackMarketCrate;
         public static Sprite[] SlotSymbol = new Sprite[4];
-        public static Sprite GoldProj, CoinProj, GemProj, TokenProj, FireProj;
+        public static Sprite GoldProj, CoinProj, GemProj, TokenProj, FireProj, FireOffsetProj;
         public static Sprite PowerUpPlaceholder;
         public static Sprite[] Flowers; //= Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Flowers");
         public static Sprite[] TallGrass; //= Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/TallGrass");
@@ -68,6 +68,7 @@ public partial class Main : MonoBehaviour
             GemProj = Resources.Load<Sprite>("Projectiles/SlotMachine/GemProj");
             TokenProj = Resources.Load<Sprite>("Money/GachaslotTokenFlat");
             FireProj = Resources.Load<Sprite>("Projectiles/Fire");
+            FireOffsetProj = Resources.Load<Sprite>("Projectiles/FireOffset");
             PowerUpPlaceholder = Resources.Load<Sprite>($"PowerUps/Random");
             BlackMarketCrate = Resources.Load<Sprite>("Chests/BlackMarketCrate");
             Flowers = new Sprite[] {

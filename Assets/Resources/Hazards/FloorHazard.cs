@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class FloorHazard : MonoBehaviour
 {
+    public HazardSystem.HazardType MyType;
     public Transform Visual;
     public SpriteRenderer Renderer;
     public float TimePassed { get; set; }
@@ -10,10 +11,17 @@ public class FloorHazard : MonoBehaviour
     public float SizeMult {  get; set; }
     public int InitDuration { get; set; }
     public int Counter { get; set; } = 0;
+    public float AlphaMult { get; private set; } = 1;
     public void Init(HazardSystem.HazardType type, int initialAppliedDuration, float sizeMultiplier = 1.0f)
     {
-        if (type == HazardSystem.HazardType.Oil)
+        MyType = type;
+        if (MyType == HazardSystem.HazardType.Oil)
             Renderer.color = ColorHelper.KingOilColor.Lerp(Color.black, 0.2f).WithAlpha(0);
+        else if (MyType == HazardSystem.HazardType.FireOil)
+        {
+            AlphaMult = 0.7f;
+            Renderer.color = ColorHelper.BurningOilColor.WithAlpha(0);
+        }
         Renderer.flipX = Utils.RandBool(2);
         Renderer.flipY = Utils.RandBool(2);
         Renderer.sprite = HazardSystem.SplatterSprites[Utils.RandInt(HazardSystem.SplatterSprites.Length)];
@@ -33,7 +41,7 @@ public class FloorHazard : MonoBehaviour
         float scaleMult = SizeMult;
         if (timeLeft < InitDuration && TimePassed > 15)
         {
-            float timeRemaining = Mathf.Max(0.01f, timeLeft / InitDuration);
+            float timeRemaining = Mathf.Max(0.00f, timeLeft / InitDuration);
             scaleMult *= timeRemaining;
         }
         Visual.transform.LerpLocalScale(TargetScale * scaleMult, 0.1f);
@@ -44,7 +52,7 @@ public class FloorHazard : MonoBehaviour
             float timeRemaining = timeLeft / 50f;
             fadeIn *= timeRemaining;
         }
-        Renderer.color = Renderer.color.WithAlpha(fadeIn);
+        Renderer.color = Renderer.color.WithAlpha(fadeIn * AlphaMult);
         Counter++;
         return true;
     }

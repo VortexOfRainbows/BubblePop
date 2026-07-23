@@ -382,62 +382,6 @@ public class Laser : Projectile
         timer++;
     }
 }
-public class PhoenixFire : Projectile
-{
-    public override void Init()
-    {
-        transform.localScale = Vector3.one * 0.5f;
-        SpriteRenderer.color = new Color(1, 1, 1, 0.5f);
-        SpriteRendererGlow.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-        SpriteRendererGlow.color = new Color(1f, 0.45f, .25f);
-        SpriteRenderer.sprite = Resources.Load<Sprite>("Projectiles/PhoenixFire");
-        immunityFrames = 100;
-        Penetrate = 3;
-        Friendly = true;
-        Hostile = false;
-    }
-    public override void AI()
-    {
-        FireAI();
-    }
-    public void FireAI()
-    {
-        float deathTime = 100;
-        float FadeOutTime = 20;
-        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 3 * (1f - 0.8f * timer / deathTime), 0.1f);
-
-        Vector2 velo = RB.velocity;
-        velo *= 0.99f;
-        RB.velocity = velo;
-
-        if (timer > deathTime + FadeOutTime)
-        {
-            Kill();
-        }
-        if ((int)timer % 5 == 0)
-        {
-            Vector2 norm = RB.velocity.normalized;
-            ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.8f, Utils.RandFloat(0.25f, 0.4f), 0, SpriteRendererGlow.color);
-        }
-        if (timer > deathTime)
-        {
-            float alphaOut = 1 - (timer - deathTime) / FadeOutTime;
-            SpriteRenderer.color = new Color(SpriteRenderer.color.r, SpriteRenderer.color.g, SpriteRenderer.color.b, 0.5f * alphaOut);
-            SpriteRendererGlow.color = new Color(SpriteRendererGlow.color.r, SpriteRendererGlow.color.g, SpriteRendererGlow.color.b) * alphaOut;
-        }
-        timer++;
-    }
-    public override void OnHitTarget(Entity target)
-    {
-        if(PlayerOwner.Body is Gachapon && target is EnemyBossDuck)
-        {
-            if(target.Life <= 0)
-            {
-                UnlockCondition.Get<GachaponBubblebirb>().SetComplete();
-            }
-        }
-    }
-}
 public class SnakeLightning : Projectile
 {
     public override void Init()

@@ -21,9 +21,9 @@ public class KingOil : Body
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
-        if (Player.Control.Ability && !Player.Control.LastAbility)
+        if (Player.Control.Ability)
         {
-            
+            //HazardSystem.AddHazard(transform.position, HazardSystem.HazardType.Oil, 1000, 1, 0, false);
         }
     }
     public override void FaceUpdate()

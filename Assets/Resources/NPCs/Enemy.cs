@@ -291,7 +291,7 @@ public class Enemy : Entity
         if (SpecializedImmuneFrames.Count > 0)
         {
             for (int i = SpecializedImmuneFrames.Count - 1; i >= 0; --i)
-                if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
+                if (--SpecializedImmuneFrames[i].immuneFrames <= 0 || SpecializedImmuneFrames[i].attacker == null)
                     SpecializedImmuneFrames.RemoveAt(i);
         }
     }
@@ -423,7 +423,7 @@ public class Enemy : Entity
                     float scaleDowner = duration > 200 ? 1.0f : (duration - 100) / 100f;
                     //second child is typically the shadow
                     Vector2 shadowPos = transform.GetChild(1).position ;
-                    HazardSystem.AddHazard(shadowPos, HazardSystem.HazardType.Oil, duration, Mathf.Sqrt(Mathf.Abs(transform.localScale.x)) * 0.7f * scaleDowner, false);
+                    HazardSystem.AddHazard(shadowPos, HazardSystem.HazardType.Oil, duration, Mathf.Sqrt(Mathf.Abs(transform.localScale.x)) * 0.7f * scaleDowner, 0, false);
                 }
             }
         }

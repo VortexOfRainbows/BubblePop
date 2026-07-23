@@ -131,7 +131,7 @@ public class SmallBubble : Projectile
         if (PlayerOwner.TarShots > 0 && timer >= 0)
         {
             for(int i = 0; i < 3; ++i)
-                HazardSystem.AddHazard(transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f) * i, Utils.RandFloat(-0.3f, 0.3f) * i - 0.6f), HazardSystem.HazardType.Oil, 200, transform.localScale.x * 1.5f, true);
+                HazardSystem.AddHazard(transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f) * i, Utils.RandFloat(-0.3f, 0.3f) * i - 0.6f), HazardSystem.HazardType.Oil, 200, transform.localScale.x * 1.5f, 0, false);
         }
     }
 }
