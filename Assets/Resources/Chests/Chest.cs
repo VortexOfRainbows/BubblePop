@@ -35,7 +35,7 @@ public class Chest : MonoBehaviour
         {
             if (RB.mass > 1.1f && collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p) && !SpecializedImmuneFrames.Contains(p) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
             {
-                if (--p.Penetrate == 0)
+                if (p.Penetrate != -1 && --p.Penetrate == 0)
                     p.Kill();
                 else
                     SpecializedImmuneFrames.Add(new ImmunityData(p, p.immunityFrames));

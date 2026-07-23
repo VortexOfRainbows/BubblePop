@@ -33,7 +33,7 @@ public class FloorHazard : MonoBehaviour
         float scaleMult = SizeMult;
         if (timeLeft < InitDuration && TimePassed > 15)
         {
-            float timeRemaining = Mathf.Max(0.2f, timeLeft / InitDuration);
+            float timeRemaining = Mathf.Max(0.01f, timeLeft / InitDuration);
             scaleMult *= timeRemaining;
         }
         Visual.transform.LerpLocalScale(TargetScale * scaleMult, 0.1f);

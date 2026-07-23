@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public static class EnemyID
 {
@@ -673,6 +674,17 @@ public class Enemy : Entity
         if(amt > 0)
             CoinManager.SpawnGem(transform.position, 0.0f, amt);
         Destroy(gameObject);
+
+        Player replaceThisWithStaticDataLater = Player.Instance;
+        if (replaceThisWithStaticDataLater.OilSpill > 0)
+        {
+            int count = replaceThisWithStaticDataLater.OilSpill;
+            for (float i = 0; i < count; i += 0.5f)
+            {
+                float radius = Mathf.Sqrt(i);
+                HazardSystem.AddHazard((Vector2)transform.position + Utils.RandCircle(radius), HazardSystem.HazardType.Oil, (int)(400 + 100 * replaceThisWithStaticDataLater.TarBonusDuration), 1);
+            }
+        }
     }
     public virtual void AI()
     {
