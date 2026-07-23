@@ -35,18 +35,21 @@ Need to do:
 	2. Make blurbs appear in the equipment page
 8. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
 9. King Oil (Power Ideas)
-	1. Hat: wip
-	2. Wand: Rarities not set in stone
-		1. (white) Corrode: tar does damage over time
-		2. (white) Contaminate: tar lasts longer
-		3. (green) Combust: deal additional flat damage when debuffs are detonated
-		4. (green) Concoct: tarred enemies are further slowed
-		5. (blue) Gasoline: allows igniting tar puddles (stack size increases fire travel distance)
-		6. (blue) Oil Spill: killed enemies spill tar
-		7. (purple) Black Diamond: allows control over an additional (right click) gemstone 
-	3. Tie: wip
+	1. Hat: Main idea is the hat replaces one of the options in any given choice with a "Investment" power, so this hat will have more powers than normal... chance to become loot at the end of a wave.
+		1. (Investment, white) Futures, gives coins
+		2. (Investment, green) Commodities, gives gems
+		3. (Investment, blue) Options, gives keys
+		4. (Investment, purple) Securities, gives shields
+		5. (Investment, yellow) Windfall, gives everything, and in double(?) quantity
+		It will also be accompanied by some normal powers
+		1. (green) Smokestack: increase attack speed for every investment you have (also makes the hat produce smoke)
+		2. (blue) Golden Gun: increase attack damage for every investment you have
+		3. (blue) Diversified Portfolio: acts as a choice power, but only shows investment options
+		4. (purple) Compound Interest: increases the return on investment (investments give more loot when expiring)
+		5. (yellow) Pumpjack: gain a random investment at the start of every wave
+	2. Tie: This is a powerful minion that all characters might want, but especially helps King Oil apply tar to nearby enemies
 		1. (purple) Defense Contract: grants a military helicopter companion that shoots bubbles at nearby enemies
-	4. Body: wip
+	3. Body: wip
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -71,6 +74,9 @@ Done:
 	2. This was totally unnecessary, but basically should allow weapons to attack even faster than the frame limit (why did I do this)
 3. Added Gasoline power and a system for floor hazards to spread and change!
 4. When a specialized immunity frame parent is null, it is now automatically expired (might slightly improve performance)
+5. Finish Oil Scepter weapon (now only needs power sprites from David)
+6. Import Sam's "Jesus" Fizzy variant assets (implementation will come later)
+7: TODO: standardize debuff detonation system (methods should be standardized and damages should be impacted by BURGER)
 
 7/15/26 to 7/21/26
 1. Import and animate new steam banner asset from Sam onto the menu screen
