@@ -1,28 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Dice : Hat
+public class FlowerCrown : Cap
 {
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
-        offset = new Vector2(0.6f, -0.8f);
-        scale = 1.5f;
-        rotation = 15f;
+        offset = new Vector2(0.1675f, -0.62f);
+        scale = 1.3f;
+        rotation = 12f;
     }
-    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
-    protected override void ModifyPowerPool(List<PowerUp> powerPool)
-    {
-        powerPool.Add<RollForDexterity>();
-        powerPool.Add<RollForCharisma>();
-        powerPool.Add<RollForInitiative>();
-        powerPool.Add<RollForPerception>();
-        powerPool.Add<SnakeEyes>();
-    }
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     protected override void AnimationUpdate()
     {
-        float r = p.MoveDashRotation() * (this is CatEars ? 0.75f : 1.0f);
+        float r = p.MoveDashRotation() * 0.5f;
         transform.localScale = new Vector3(p.Body.transform.localScale.x * (p.Body.Flipped ? -1 : 1), p.Body.transform.localScale.y, p.Body.transform.localScale.z);
         transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, r, 0.1f) * Vector3.forward;
         transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition,
@@ -44,7 +34,7 @@ public class Dice : Hat
         if (toBody < -0.95f)
         {
             velocity *= -bounceCount;
-            transform.SetLocalXY(transform.localPosition.x, transform.localPosition.y -0.95f - toBody);
+            transform.SetLocalXY(transform.localPosition.x, transform.localPosition.y - 0.95f - toBody);
             bounceCount *= 0.5f;
         }
         else

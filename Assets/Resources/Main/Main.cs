@@ -334,6 +334,7 @@ public partial class Main : MonoBehaviour
         public static readonly GameObject OilHat = LoadEquipment("KingOil/OilHat");
         public static readonly GameObject OilTie = LoadEquipment("KingOil/OilTie");
         public static readonly GameObject OilScepter = LoadEquipment("KingOil/OilScepter");
+        public static readonly GameObject FlowerCrown = LoadSubEquipment(Cap, "Fizzy/FlowerCrown");
         public static GameObject LoadEquipment(string path) => LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
         public static GameObject LoadEquipment(GameObject Prefab)
         {
