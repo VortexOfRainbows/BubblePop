@@ -151,6 +151,7 @@ public static class HazardSystem
         {
             if (existing.Type == type)
             {
+                existing.TimePassed = 0;
                 if (existing.Duration < duration)
                     existing.Duration = duration;
                 if (existing.SizeMultiplier < size)

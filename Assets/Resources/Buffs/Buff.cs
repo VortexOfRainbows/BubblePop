@@ -92,7 +92,12 @@ public abstract class Buff
     public float Detonate(Entity e)
     {
         Active = false;
-        return OnDetonate(e);
+        float damage = OnDetonate(e);
+        damage += Player.Instance.CombustBonusDamage + Player.Instance.GlassShards;
+        damage *= Player.Instance.DamageMultiplier;
+        if (e is Enemy enemy)
+            enemy.Injure(damage, -2, PopupTextColor(), 1);
+        return damage;
     }
     /// <summary>
     /// Called when a debuff is forcefully removed by a detonate trigger, such as King Oil's ignition
@@ -113,6 +118,7 @@ public abstract class Buff
     public int Stacks { get; set; } = 0;
     public virtual bool StackSeparately => false;
     public virtual int MaxStackSize => -1;
+    public virtual Color PopupTextColor() => Color.gray;
 }
 public class LightningBottle : Buff
 {
@@ -142,6 +148,7 @@ public class SpeedBoost : Buff
 }
 public class Poison : Buff
 {
+    public override Color PopupTextColor() => new Color(0.8f, 0.27f, 0.9f);
     public float DamageOverTime = 0;
     public override void Update(Entity e)
     {
@@ -154,7 +161,7 @@ public class Poison : Buff
                 DamageOverTime += Time.fixedDeltaTime;
                 while (DamageOverTime >= tickRate / 2f)
                 {
-                    enemy.Injure(damage / v.y * tickRate, -1, new Color(0.8f, 0.27f, 0.9f), 1);
+                    enemy.Injure(damage / v.y * tickRate, -1, PopupTextColor(), 1);
                     DamageOverTime -= tickRate;
                 }
             }
@@ -165,15 +172,13 @@ public class Poison : Buff
         float totalDamage = 0;
         foreach (Vector2 v in BuffStack)
             totalDamage += (3 + e.Life * 0.04f + Player.Instance.SnakeEyes) * v.x / v.y;
-        totalDamage += Player.Instance.CombustBonusDamage;
-        if (e is Enemy enemy)
-            enemy.Injure(totalDamage, -2, new Color(0.8f, 0.27f, 0.9f), 1);
         return totalDamage;
     }
     public override bool StackSeparately => true;
 }
 public class Tarred : Buff
 {
+    public override Color PopupTextColor() => ColorHelper.KingOilColor;
     public float DamageOverTime = 0;
     public override void Update(Entity e)
     {
@@ -187,7 +192,7 @@ public class Tarred : Buff
                 DamageOverTime += Time.fixedDeltaTime;
                 while (DamageOverTime >= tickRate / 2f)
                 {
-                    enemy.Injure(damage * tickRate, -1, ColorHelper.KingOilColor, 1);
+                    enemy.Injure(damage * tickRate, -1, PopupTextColor(), 1);
                     DamageOverTime -= tickRate;
                 }
             }
@@ -199,15 +204,13 @@ public class Tarred : Buff
         for (int i = 0; i < 9; ++i)
             ParticleManager.NewParticle(e.transform.position, Utils.RandFloat(0.5f, 1.2f), Utils.RandCircle(5), 1, Utils.RandFloat(0.6f, 1.2f), ParticleManager.ID.Fire);
         float damage = 3 * Stacks;
-        damage += Player.Instance.CombustBonusDamage;
-        if (e is Enemy enemy)
-            enemy.Injure(damage, -2, ColorHelper.KingOilColor, 1);
         return damage;
     }
     public override bool StackSeparately => false;
 }
 public class Chill : Buff
 {
+    public override Color PopupTextColor() => ColorHelper.RarityColors[2];
     public override int MaxStackSize => 10;
     public override bool StackSeparately => true;
     public override void Update(Entity e)
@@ -218,10 +221,7 @@ public class Chill : Buff
     public override float OnDetonate(Entity e)
     {
         //AudioManager.PlaySound(SoundID.WoodBreak, e.transform.position, 1.2f, 1.7f);
-        float damage = Stacks + Player.Instance.CombustBonusDamage;
-        if (e is Enemy enemy)
-            enemy.Injure(damage, -2, ColorHelper.RarityColors[2], 1);
-        return damage;
+        return Stacks;
     }
 }
 public class OmniBoost : Buff
