@@ -36,6 +36,8 @@ public abstract class PowerUp
     public static readonly Material GoldOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderGoldThin");
     public static readonly Material RedOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderRed");
     public static readonly Material RedOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderRedThin");
+    public static readonly Material OilOutline = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderOil");
+    public static readonly Material OilOutlineThin = Resources.Load<Material>("Materials/OutlineShader/OutlineShaderOilThin");
     public int PickedUpCountAllRuns => AmountPickedUpAcrossAllRuns;
     public int PickedUpBestAllRuns => HighestAmountPickedUpInASingleRun;
     protected int AmountPickedUpAcrossAllRuns = 0;
@@ -454,6 +456,8 @@ public abstract class PowerUp
     //}
     public virtual Material GetBorder(bool thin = false)
     {
+        if (thin && IsInvestmentPower())
+            return OilOutlineThin;
         if (IsBlackMarket())
             return thin ? RedOutlineThin : RedOutline;
         int rare = Rarity;
@@ -489,4 +493,5 @@ public abstract class PowerUp
     }
     public bool HasBlackMarketAlternate => BlackMarketVariantUnlockCondition != null;
     public virtual UnlockCondition BlackMarketVariantUnlockCondition => null;
+    public virtual bool IsInvestmentPower() => false;
 }

@@ -4,7 +4,6 @@ Shader "Shader Graphs/OutlineShader"
     {
         [MainTexture][NoScaleOffset]_MainTex("Texture2D", 2D) = "white" {}
         _OutlineColor("OutlineColor", Color) = (1, 0, 0, 0)
-        _OutlineColor("OutlineColor", Color) = (0.5, 0, 1, 1)
         _OutlineSize("OutlineSize", Range(0, 1000)) = 20
         [HideInInspector][NoScaleOffset]unity_Lightmaps("unity_Lightmaps", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset]unity_LightmapsInd("unity_LightmapsInd", 2DArray) = "" {}

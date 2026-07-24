@@ -100,7 +100,7 @@ public class CompendiumPowerUpElement : CompendiumElement
     public override int GetRare(bool reverse = false)
     {
         var p = PowerUp.Get(TypeID);
-        return p.Rarity + (p.IsBlackMarket() ? (Compendium.Instance.PowerPage.BlackMarketMode != reverse ? -5 : 5) : 0);
+        return p.Rarity + (p.IsBlackMarket() ? (Compendium.Instance.PowerPage.BlackMarketMode != reverse ? -5 : 5) : 0) + (p.IsInvestmentPower() ? (Compendium.Instance.PowerPage.BlackMarketMode != reverse ? -10 : 10) : 0);
     }
     public override int GetCount()
     {

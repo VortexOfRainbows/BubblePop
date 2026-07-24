@@ -58,3 +58,88 @@ public class BlackDiamond : PowerUp
         p.SecondaryAttackSpeedModifier += Stack * 0.3f;
     }
 }
+public class Smokestack : PowerUp
+{
+    public override void Init() => Weighting = Uncommon;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class GoldenGun : PowerUp
+{
+    public override void Init() => Weighting = Rare;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class DiversifiedPortfolio : PowerUp
+{
+    public override void Init() => Weighting = Rare;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class CompoundInterest : PowerUp
+{
+    public override void Init() => Weighting = SuperRare;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class Pumpjack : PowerUp
+{
+    public override void Init() => Weighting = Legendary;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class Futures : PowerUp
+{
+    public override bool IsInvestmentPower() => true;
+    public override void Init() => Weighting = Common;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class Commodities : PowerUp
+{
+    public override bool IsInvestmentPower() => true;
+    public override void Init() => Weighting = Uncommon;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class Options : PowerUp
+{
+    public override bool IsInvestmentPower() => true;
+    public override void Init() => Weighting = Rare;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class Securities : PowerUp
+{
+    public override bool IsInvestmentPower() => true;
+    public override void Init() => Weighting = SuperRare;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class Windfall : PowerUp
+{
+    public override bool IsInvestmentPower() => true;
+    public override void Init() => Weighting = Legendary;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}

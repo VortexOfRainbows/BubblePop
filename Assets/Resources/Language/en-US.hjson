@@ -1024,6 +1024,76 @@
       Brief: Secondary attack controls an additional Royal Ruby
       Lore: Power.BlackDiamond.Lore
     }
+    Smokestack:
+    {
+      Title: Smokestack
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Smokestack.Lore
+    }
+    GoldenGun:
+    {
+      Title: Golden Gun
+      Description: WIP
+      Brief: WIP
+      Lore: Power.GoldenGun.Lore
+    }
+    DiversifiedPortfolio:
+    {
+      Title: Diversified Portfolio
+      Description: WIP
+      Brief: WIP
+      Lore: Power.DiversifiedPortfolio.Lore
+    }
+    CompoundInterest:
+    {
+      Title: Compound Interest
+      Description: WIP
+      Brief: WIP
+      Lore: Power.CompoundInterest.Lore
+    }
+    Pumpjack:
+    {
+      Title: Pumpjack
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Pumpjack.Lore
+    }
+    Futures:
+    {
+      Title: Futures
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Futures.Lore
+    }
+    Commodities:
+    {
+      Title: Commodities
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Commodities.Lore
+    }
+    Options:
+    {
+      Title: Options
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Options.Lore
+    }
+    Securities:
+    {
+      Title: Securities
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Securities.Lore
+    }
+    Windfall:
+    {
+      Title: Windfall
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Windfall.Lore
+    }
   }
   Equip:
   {
@@ -1503,8 +1573,12 @@
     }
     KingOilUnlock:
     {
-      Title: Soul Seller
-      Description: As Y:[Thought Bubble,] win on Y:Ascension Y:3
+      Title: Thought Bubble: Former Employer
+      Description: 
+          '''
+          As Y:[Thought Bubble,] win on 
+          Y:Ascension Y:3
+          '''
     }
     FizzyTouchGrass:
     {
