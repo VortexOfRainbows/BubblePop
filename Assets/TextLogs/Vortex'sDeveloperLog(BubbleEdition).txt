@@ -29,7 +29,7 @@ Need to do:
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
 4. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-5. Enemy Pathfinding
+5. Enemy Pathfinding (implement line-of-sight behavior changes and integrate pathfinding with them)
 6. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 7. Compendium TODO:
 	1. Make powers show which pools they belong to
@@ -76,7 +76,7 @@ Done:
 3. Added Gasoline power and a system for floor hazards to spread and change!
 4. When a specialized immunity frame parent is null, it is now automatically expired (might slightly improve performance)
 5. Finish Oil Scepter weapon (now only needs power sprites from David)
-6. Import Sam's "Jesus" Fizzy variant assets (implementation will come later)
+6. Import Sam's "Jesus" Fizzy variant assets
 7. Cat Ears rotates less when moving
 8. Victory achievements are no longer trigger on the second loop and beyond
 9. Add Flower Crown + (Touch Grass) achievement
@@ -86,6 +86,8 @@ Done:
 13. Buff detonation damage is now effected by Burger and Glass Knife
 14. Add Sandals + (Speedrun) achievement
 15. The pause screen now shows elapsed time since start of the run rather than your current wave
+16. Lightning should now travel to the location of the end/loop node at the end of a wave (previously none did)
+17. Added a different loop/end node for more variety
 
 
 7/15/26 to 7/21/26

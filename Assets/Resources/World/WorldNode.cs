@@ -196,7 +196,7 @@ public class WorldNode : MonoBehaviour
                 }
             }
         }
-        GeneratePaths(PreviousNode, PreviousNode != null && !PreviousNode.IsSubNode && !IsEndNode);
+        GeneratePaths(PreviousNode, PreviousNode != null && !PreviousNode.IsSubNode && !IsEndNode, IsEndNode);
         if(FeatureParent != null)
         {
             for (int i = FeatureParent.childCount - 1; i >= 0; --i)
@@ -275,7 +275,7 @@ public class WorldNode : MonoBehaviour
             }
         }
     }
-    public void GeneratePaths(WorldNode prev, bool withSubNode)
+    public void GeneratePaths(WorldNode prev, bool withSubNode, bool hasRoadblock = false)
     {
         if (World == null || prev == null)
             return;
@@ -287,7 +287,7 @@ public class WorldNode : MonoBehaviour
         if (bestStart == null || bestEnd == null || bestDist <= 0 || bestDist > 2000)
             return;
         OverrideTiles = bestStart.OverrideTiles && bestEnd.OverrideTiles;
-        CanGenerateRoadBlock = withSubNode;
+        CanGenerateRoadBlock = withSubNode || hasRoadblock;
         GeneratePath(bestStart.Position, bestEnd.Position, withSubNode);
     }
     public void GeneratePath(Vector2 start, Vector2 end, bool withSubNode = true, int pathType = 0)
