@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ColaProj : Projectile
@@ -8,7 +9,7 @@ public class ColaProj : Projectile
     public float SpeedLockContribution = 0.8f;
     public override void Init()
     {
-        SpriteRenderer.color = SpriteRenderer.color.WithAlpha(0.85f);
+        SpriteRenderer.color = PlayerOwner.Weapon.spriteRender.color;
         SpriteRenderer.sprite = PlayerOwner.Weapon.spriteRender.sprite;
         SpriteRenderer.flipY = Data[2] < 0;
         SpriteRenderer.flipX = true;
@@ -29,7 +30,7 @@ public class ColaProj : Projectile
     }
     public override void AI()
     {
-        bool isHeavy = Data[5] < 0;
+        bool isHeavy = Data[5] < 0 && Data[5] > -200;
         float speedMult = PlayerOwner.SecondaryAttackSpeedModifier * 0.5f + (isHeavy ? 0.7f : 0.5f);
         float speed = RB.velocity.magnitude;
         if (speed < 1)
@@ -87,24 +88,44 @@ public class ColaProj : Projectile
                 Utils.RandFloat(0.33f, .44f), circular * Utils.RandFloat(2, 4), 4f, 
                 0.9f, 0, Player.ProjectileColor);
         }
+        bool isJuice = false;
         bool randSpeed = false;
         float deg = Data[5];
-        if(deg < 0) //Variant for Hill Droplet
+        if(deg < 0) //Variant for Hill Droplet and Juice
         {
             randSpeed = true;
             deg = -deg;
             projCount += 4;
+            isJuice = deg >= 360;
+            if (isJuice)
+                projCount -= 2;
         }
-        float spread = Mathf.Deg2Rad * deg;
-        Vector2 dir = RB.velocity.normalized * exitSpeed;
-        for(int i = 0; i < projCount; ++i)
+        if(!isJuice)
         {
-            float speedMult = randSpeed ? Utils.RandFloat(0.25f, 1.5f) : 1.0f;
-            float p = (float)(i + 0.5f) / projCount;
-            Vector2 direction = dir.RotatedBy(Mathf.Lerp(-spread, spread, p)) * speedMult;
-            Projectile.NewProjectile<SmallBubble>(Destination, direction, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
+            float spread = Mathf.Deg2Rad * deg;
+            Vector2 dir = RB.velocity.normalized * exitSpeed;
+            for (int i = 0; i < projCount; ++i)
+            {
+                float speedMult = randSpeed ? Utils.RandFloat(0.25f, 1.5f) : 1.0f;
+                float p = (float)(i + 0.5f) / projCount;
+                Vector2 direction = dir.RotatedBy(Mathf.Lerp(-spread, spread, p)) * speedMult;
+                Projectile.NewProjectile<SmallBubble>(Destination, direction, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
+            }
         }
-        if(PlayerOwner.BombBrew > 0)
+        else
+        {
+            exitSpeed *= 0.25f;
+            float spread = Mathf.Deg2Rad * 180;
+            Vector2 dir = RB.velocity.normalized;
+            for (int i = 0; i < projCount; ++i)
+            {
+                Vector2 direction = dir.RotatedBy(spread * i + (i % 4 > 1 ? MathF.PI / 2f : 0));
+                Projectile.NewProjectile<SmallBubble>(Destination, direction * exitSpeed, 1, PlayerOwner, 0, 0, Data[2] < 0 ? -1 : 1);
+                if (i % 4 == 3)
+                    exitSpeed += 2;
+            }
+        }
+        if (PlayerOwner.BombBrew > 0)
         {
             Vector2 velo = Utils.RandCircle(3);
             Vector2 endPos = velo + (Vector2)transform.position;

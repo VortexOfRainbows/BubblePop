@@ -288,6 +288,16 @@ public class FizzyTouchGrass : UnlockCondition
     public override int Rarity => 3;
     public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
 }
+public class FizzyThirdDay : UnlockCondition
+{
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Challenge;
+    }
+    public override int Rarity => 5;
+    public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
+}
 //Achievement idea for (2-star) Fizzy: Speedrun: As Fizzy, win in under 20 minutes (does not count paused time)
 //Achievement idea for (5-star) Fizzy: Third Day: As Fizzy, reach the third loop on Ascension 3 without dying, then resurrect
 //Achievement idea for (2-star) Oil King: Rock Feller: as Oil King, kill all segments of a Rock Golem with a single drone strike

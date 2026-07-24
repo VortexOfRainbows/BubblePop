@@ -335,6 +335,8 @@ public partial class Player : Entity
                 return new Color(.345f, .227f, .169f, 0.7f);
             else if (Weapon is HillSoda)
                 return new Color(.573f, .835f, .05f, 0.7f);
+            else if (Weapon is Juice)
+                return ColorHelper.New255(0x80, 0x01, 0x3f).WithAlpha(0.7f);
             else
                 return new Color(0.8f, 0.7f, 0.56f, 0.7f);
         }
@@ -1151,8 +1153,13 @@ public partial class Player : Entity
             }
             UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
         }
-        if (WaveDirector.WaveNum >= 20 && body is Gachapon && HasWonThisCycle)
-            UnlockCondition.Get<GachaponAddicted>().SetComplete();
+        if ((WaveDirector.WaveNum >= 20 || Main.DebugCheats) && HasWonThisCycle)
+        {
+            if(body is Gachapon)
+                UnlockCondition.Get<GachaponAddicted>().SetComplete();
+            else if (body is Fizzy && AscensionLevel >= 3 && SpentBonusLives <= 0)
+                UnlockCondition.Get<FizzyThirdDay>().SetComplete();
+        }
         if (HasWonThisCycle)
             return;
         HasWonThisCycle = true;

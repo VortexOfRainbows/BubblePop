@@ -276,7 +276,7 @@
     SnakeEyes:
     {
       Title: Snake Eyes
-      Description: Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:4 G:(+1 per stack) Y: damage plus Y:damage equal to Y:4% of the Y:[victim's max life] over Y:[10 seconds]
+      Description: Y:20% G:(+1% per stack) Y:chance to poison enemies on hit, dealing Y:4 G:(+1 per stack) Y: damage plus Y:damage equal to Y:4% of the Y:[victim's life] over Y:[10 seconds]
       Brief: Chance to poison enemies on hit
       Lore: Those who know not that their luck has run out are relegated to a slow and insidious demise.
     }
@@ -1317,9 +1317,18 @@
     FlowerCrown:
     {
       Title: Flower Crown
-      Description: Not Fizzy's usual style, but he thinks it fits him well
+      Description: Not Fizzy's usual style, but still fashionable
       Lore: Equip.FlowerCrown.Lore
       Abl1: Y:50% chance to drop a Y:heart whenever Y:healed
+    }
+    Juice:
+    {
+      Title: Juice
+      Description: A beverage all ages can enjoy
+      Lore: Equip.Juice.Lore
+      Abl1: Unleash a Y:[stream of bubbles] in a burst
+      Abl2: Y:Throw an Y:[explosive bottle of juice]
+      Abl3: Start with Y:[12 Keys,] but <color=#FFAAAAFF>chests can no longer contain keys</color>
     }
   }
   Unlock:
@@ -1407,7 +1416,7 @@
     GachaponAddicted:
     {
       Title: Gachapon: Addicted
-      Description: As Y:Gachapon, win on your second loop
+      Description: As Y:Gachapon, reach the Y:[third loop]
     }
     ThoughtBubbleShortForCalc:
     {
@@ -1494,6 +1503,11 @@
     {
       Title: Fizzy: Touch Grass
       Description: As Y:Fizzy, win while holding <color=#FFAAAAFF>Rainbow Flower,</color> <color=#C2FFAA>Pity Charm,</color> and <color=#AAD3FEFF>Lucky Star</color>
+    }
+    FizzyThirdDay:
+    {
+      Title: Fizzy: Third Day
+      Description: As Y:Fizzy, reach the Y:[third loop] on Y:Ascension Y:3 without dying
     }
   }
   Enemy:

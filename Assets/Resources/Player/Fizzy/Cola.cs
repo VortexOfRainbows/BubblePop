@@ -96,6 +96,7 @@ public class Cola : Weapon
             {
                 AudioManager.PlaySound(SoundID.ShootBubbles, transform.position, 1f, this is HillSoda ? 0.9f : this is FocusFizzSoda ? 1.25f : 1.2f);
                 int i = this is HillSoda ? 3 : 1;
+                int k = this is Juice ? 2 : 1;
                 for (int j = 0; j < i; ++j)
                 {
                     Vector2 randomAddition = awayFromWand * Utils.RandFloat(2, 4) + Utils.RandCircle(2f);
@@ -112,8 +113,17 @@ public class Cola : Weapon
                         spread += 5;
                         speed *= Utils.RandFloat(0.9f, 1.1f);
                     }
-                    Vector2 shotDirection = SODAtoMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad) * speed + randomAddition;
-                    Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2, shotDirection, 1, Player);
+                    else if(k == 2)
+                    {
+                        spread = 0.5f;
+                        speed += 10;
+                    }
+                    for (int l = 0; l < k; ++l)
+                    {
+                        Vector2 shotDirection = SODAtoMouse.normalized.RotatedBy(Utils.RandFloat(-spread, spread) * Mathf.Deg2Rad) * speed + randomAddition;
+                        Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + awayFromWand * 2, shotDirection, 1, Player);
+                        speed *= 0.9f;
+                    }
                 }
                 recoil -= awayFromWand * (i == 3 ? 1.5f : 0.8f);
             }
@@ -157,7 +167,8 @@ public class Cola : Weapon
         //Final Stuff
         float r = SODAtoMouse.ToRotation() * Mathf.Rad2Deg - p.PointDirOffset - bonusPointDirOffset - p.MoveOffset + p.DashOffset;
         transform.localPosition = Vector2.Lerp(transform.localPosition, attemptedPosition + recoil, 0.25f);
-        gameObject.GetComponent<SpriteRenderer>().flipY = attemptedPosition.x < 0;
+        if(AttackRight <= 0)
+            gameObject.GetComponent<SpriteRenderer>().flipY = attemptedPosition.x < 0;
         gameObject.GetComponent<SpriteRenderer>().flipX = true;
         WandEulerAngles.z = Mathf.LerpAngle(WandEulerAngles.z, r, 0.18f);
         transform.eulerAngles = new Vector3(0, 0, WandEulerAngles.z);

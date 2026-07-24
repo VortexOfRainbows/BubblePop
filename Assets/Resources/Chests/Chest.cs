@@ -421,7 +421,7 @@ public class Chest : MonoBehaviour
                 CoinManager.SpawnCoin(pos, coinAmt, 1);
             else if(Utils.RandFloat(1) < 0.10f + 0.05f * StarsAllocated)
                 CoinManager.SpawnHeart(pos, 1);
-            else if(!PirateChest && Utils.RandFloat(1) < 0.05f + 0.0125f * StarsAllocated)
+            else if(!PirateChest && Utils.RandFloat(1) < 0.05f + 0.0125f * StarsAllocated && !Player.Instance.HasJesusJuice)
                 CoinManager.SpawnKey(pos, 1);
             if(PirateChest)
                 CoinManager.SpawnCoin(pos, coinAmt, 1);

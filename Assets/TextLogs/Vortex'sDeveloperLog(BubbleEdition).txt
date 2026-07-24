@@ -18,6 +18,7 @@ Do Later:
 	1. Nerf tag team skull wave count
 	2. Nerf enemy health for medium-hp enemies
 	3. Remove reroll base count 2 -> 1
+	4. Nerf sentinel
 9. Convert player power handler to use structs for faster resetting 
 
 Need to do:
@@ -80,6 +81,9 @@ Done:
 7. Cat Ears rotates less when moving
 8. Victory achievements are no longer trigger on the second loop and beyond
 9. Add Flower Crown + achievement
+10. Add Jesus Juice + achievement
+11. (NERF) Scaling damage on Poison is now based on enemy current Life rather than Max Life, which is roughly a 50% nerf to the scaling damage
+12. Adjust some localizations
 
 
 7/15/26 to 7/21/26

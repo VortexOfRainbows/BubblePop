@@ -149,7 +149,7 @@ public class Poison : Buff
         {
             foreach (Vector2 v in BuffStack)
             {
-                float damage = 3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes;
+                float damage = 3 + e.Life * 0.04f + Player.Instance.SnakeEyes;
                 float tickRate = Mathf.Min(1, Mathf.Max(0.25f, 20f / damage));
                 DamageOverTime += Time.fixedDeltaTime;
                 while (DamageOverTime >= tickRate / 2f)
@@ -164,7 +164,7 @@ public class Poison : Buff
     {
         float totalDamage = 0;
         foreach (Vector2 v in BuffStack)
-            totalDamage += (3 + e.MaxLife * 0.04f + Player.Instance.SnakeEyes) * v.x / v.y;
+            totalDamage += (3 + e.Life * 0.04f + Player.Instance.SnakeEyes) * v.x / v.y;
         totalDamage += Player.Instance.CombustBonusDamage;
         if (e is Enemy enemy)
             enemy.Injure(totalDamage, -2, new Color(0.8f, 0.27f, 0.9f), 1);
