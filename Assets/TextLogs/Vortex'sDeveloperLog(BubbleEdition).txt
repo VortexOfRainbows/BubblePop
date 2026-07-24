@@ -68,7 +68,7 @@ Sounds Needed:
 
 Done: 	
 
-7/21/26 to 7/23/26
+7/21/26 to 7/24/26
 1. Power functionality added: Corrode, Contaminate, Combust, Concoct, Oil Spill, Black Diamond, Gasoline
 2. Fix an oversite in attack speed scaling for weapons that caused weapons to stall attacks and play a large amount of idle frames at enhanced speed after a full cycle had been finished
 	1. Effectively, this should make extremely high attack speeds more accurate to replicating weapon attack behavior
@@ -79,11 +79,13 @@ Done:
 6. Import Sam's "Jesus" Fizzy variant assets (implementation will come later)
 7. Cat Ears rotates less when moving
 8. Victory achievements are no longer trigger on the second loop and beyond
-9. Add Flower Crown + achievement
-10. Add Jesus Juice + achievement
+9. Add Flower Crown + (Touch Grass) achievement
+10. Add Jesus Juice + (Third Day) achievement
 11. (NERF) Scaling damage on Poison is now based on enemy current Life rather than Max Life, which is roughly a 50% nerf to the scaling damage
 12. Adjust some localizations
 13. Buff detonation damage is now effected by Burger and Glass Knife
+14. Add Sandals + (Speedrun) achievement
+15. The pause screen now shows elapsed time since start of the run rather than your current wave
 
 
 7/15/26 to 7/21/26

@@ -1330,6 +1330,13 @@
       Abl2: Y:Throw an Y:[explosive bottle of juice]
       Abl3: Start with Y:[12 Keys,] but <color=#FFAAAAFF>chests can no longer contain keys</color>
     }
+    Sandals:
+    {
+      Title: Sandals
+      Description: Sometimes it's best not to ask questions
+      Lore: Equip.Sandals.Lore
+      Abl1: Augments to Y:[movement speed] modify Y:[attack speed] instead
+    }
   }
   Unlock:
   {
@@ -1508,6 +1515,11 @@
     {
       Title: Fizzy: Third Day
       Description: As Y:Fizzy, reach the Y:[third loop] on Y:Ascension Y:3 without dying
+    }
+    FizzySpeedrun:
+    {
+      Title: Fizzy: Speedrun
+      Description: As Y:Fizzy, win in Y:[20 minutes] or less
     }
   }
   Enemy:

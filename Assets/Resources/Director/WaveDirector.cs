@@ -67,6 +67,7 @@ public static class WaveDirector
     public static bool WaveActive { get; set; } = false;
     public static bool WaitingForCardDraw { get; set; } = false;
     public static int SkullEnemiesActive { get; set; } = 0;
+    public static float ElapsedTime { get; private set; } = 0;
     public static void Reset()
     {
         Player.PickedLowerDifficultyWaveCard = false;
@@ -83,6 +84,16 @@ public static class WaveDirector
         TemporaryModifiers.CloneValues(PermanentModifiers);
         WaveActive = WaitingForCardDraw =false;
         SkullEnemiesActive = 0;
+        ElapsedTime = 0;
+        Main.UIManager.DeadHighscoreText.text = "";
+    }
+    public static void UpdateSpeedrunDisplay()
+    {
+        ElapsedTime += Time.fixedDeltaTime;
+        float seconds = ElapsedTime;
+        TimeSpan span = TimeSpan.FromSeconds(seconds);
+        string withMs = string.Format("{0:D2}:{1:D2}:{2:D2}", span.Hours, span.Minutes, span.Seconds);
+        Main.UIManager.DeadHighscoreText.text = withMs;
     }
     public static void FixedUpdate()
     {
@@ -93,9 +104,11 @@ public static class WaveDirector
             Reset();
             return;
         }
-        else if(!WaveActive)
+        else
         {
-            return;
+            UpdateSpeedrunDisplay();
+            if (!WaveActive)
+                return;
         }
         float creditsNeededToPassWave = ((20 + WaveNum * 0.2f) * (0.5f * WaveMult + 0.5f * TemporaryModifiers.CreditGatherScaling)) + TemporaryModifiers.InitialAmbush * 0.5f;
         float cardsPlayedPercent = Mathf.Min(1, CardsPlayed / 9f);

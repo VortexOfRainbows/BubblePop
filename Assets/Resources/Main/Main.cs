@@ -191,7 +191,6 @@ public partial class Main : MonoBehaviour
         {
             PopUpTextUI.ForceHide = !PopUpTextUI.ForceHide;
         }
-        UIManager.DeadHighscoreText.text = $"Wave: {WaveDirector.WaveNum}";
         if (CharacterSelect.Instance != null)
         {
             if (DebugCheats && Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.LeftControl) && !Main.WavesUnleashed)
@@ -335,6 +334,7 @@ public partial class Main : MonoBehaviour
         public static readonly GameObject OilTie = LoadEquipment("KingOil/OilTie");
         public static readonly GameObject OilScepter = LoadEquipment("KingOil/OilScepter");
         public static readonly GameObject FlowerCrown = LoadSubEquipment(Cap, "Fizzy/FlowerCrown");
+        public static readonly GameObject Sandals = LoadSubEquipment(Kicks, "Fizzy/Sandals");
         public static readonly GameObject Juice = LoadSubEquipment(Cola, "Fizzy/Juice");
         public static GameObject LoadEquipment(string path) => LoadEquipment(Resources.Load<GameObject>($"Player/{path}"));
         public static GameObject LoadEquipment(GameObject Prefab)

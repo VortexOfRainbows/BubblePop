@@ -1150,6 +1150,8 @@ public partial class Player : Entity
                     UnlockCondition.Get<FizzyStuffed>().SetComplete();
                 if(PowerUp.Get<RainbowFlower>().Stack >= 1 && PowerUp.Get<Pity>().Stack >= 1 && PowerUp.Get<LuckyStar>().Stack >= 1)
                     UnlockCondition.Get<FizzyTouchGrass>().SetComplete();
+                if(WaveDirector.ElapsedTime <= 1200)
+                    UnlockCondition.Get<FizzySpeedrun>().SetComplete();
             }
             UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
         }

@@ -87,6 +87,8 @@ public partial class Player : Entity
         get
         {
             float baseline = 1.0f;
+            if(IgnoreMovespeed)
+                return baseline;
             if(TrueMoveModifier > baseline)
             {
                 float amountAbove = (TrueMoveModifier - baseline) * 10;
@@ -174,7 +176,7 @@ public partial class Player : Entity
     public int ChoiceOnHeal = 0;
     public float CorrodeDamage = 0, TarBonusDuration = 0, CombustBonusDamage, BonusTarSlow = 0;
     public int BonusBlackDiamond, OilSpill, TarConcoct, Gasoline = 0;
-    public bool HasFlowerCrownRecursiveHeal = false, HasJesusJuice = false;
+    public bool HasFlowerCrownRecursiveHeal = false, HasJesusJuice = false, IgnoreMovespeed = false;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -228,7 +230,7 @@ public partial class Player : Entity
         BonusBubblePierce = 0;
         ExplodingBubbles = BonusBoards = Kickflip = RetaliatoryBomb = BombBrew = SkullBomb = ClusterBomb = PrizeBombCoins = BonusStocks = 0;
         BonusShrapnel = BonusRestockChance = 0.0f;
-        HasMagnetBook = HasJesusJuice = false;
+        HasMagnetBook = HasJesusJuice = IgnoreMovespeed = false;
         SkateboardBonusDamage = 0;
         GemDropChance = 0;
         BonusGems = 0;
@@ -254,6 +256,8 @@ public partial class Player : Entity
     }
     public void PostEquipUpdate()
     {
+        if(IgnoreMovespeed)
+            AttackSpeedModifier += Mathf.Max(0.0f, TrueMoveModifier - 1);
         PrimaryAttackSpeedModifier += AttackSpeedModifier;
         SecondaryAttackSpeedModifier += AttackSpeedModifier;
         PassiveAttackSpeedModifier += AttackSpeedModifier;
