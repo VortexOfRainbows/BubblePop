@@ -50,6 +50,7 @@ Need to do:
 	2. Tie: This is a powerful minion that all characters might want, but especially helps King Oil apply tar to nearby enemies
 		1. (purple) Defense Contract: grants a military helicopter companion that shoots bubbles at nearby enemies
 	3. Body: wip
+10: TODO: standardize debuff detonation system (methods should be standardized and damages should be impacted by BURGER)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -76,8 +77,10 @@ Done:
 4. When a specialized immunity frame parent is null, it is now automatically expired (might slightly improve performance)
 5. Finish Oil Scepter weapon (now only needs power sprites from David)
 6. Import Sam's "Jesus" Fizzy variant assets (implementation will come later)
-7. Cat Ears no longer rotates as much when moving
-8: TODO: standardize debuff detonation system (methods should be standardized and damages should be impacted by BURGER)
+7. Cat Ears rotates less when moving
+8. Victory achievements are no longer trigger on the second loop and beyond
+9. Add Flower Crown + achievement
+
 
 7/15/26 to 7/21/26
 1. Import and animate new steam banner asset from Sam onto the menu screen

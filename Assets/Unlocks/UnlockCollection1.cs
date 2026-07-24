@@ -278,8 +278,17 @@ public class FizzyStuffed : UnlockCondition
     public override int Rarity => 4;
     public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
 }
+public class FizzyTouchGrass : UnlockCondition
+{
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = City;
+        category = Completionist;
+    }
+    public override int Rarity => 3;
+    public override UnlockCondition PreReqUnlock => Get<FizzyUnlock>();
+}
 //Achievement idea for (2-star) Fizzy: Speedrun: As Fizzy, win in under 20 minutes (does not count paused time)
-//Achievement idea for (3-star) Fizzy: Touch Grass: As Fizzy, win while holding Rainbow Flower, Pity Charm, and Lucky Star
 //Achievement idea for (5-star) Fizzy: Third Day: As Fizzy, reach the third loop on Ascension 3 without dying, then resurrect
 //Achievement idea for (2-star) Oil King: Rock Feller: as Oil King, kill all segments of a Rock Golem with a single drone strike
 //Achievement idea for (3-star) Oil King: Quagmire: afflict an enemy with tar, chill, and poison, then detonate them for over 1000 total damage from debuffs

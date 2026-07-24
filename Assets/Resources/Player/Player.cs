@@ -830,6 +830,8 @@ public partial class Player : Entity
             if(ChoiceOnHeal > 0)
                 for (int i = 0; i < ChoiceOnHeal; i++)
                     PowerUp.Spawn<Choice>(transform.position);
+            if(HasFlowerCrownRecursiveHeal && Utils.RollWithLuck(0.5f))
+                CoinManager.SpawnHeart(transform.position, .5f);
         }
         Life = num;
         OnSetLife(Life);
@@ -1106,7 +1108,7 @@ public partial class Player : Entity
     public void OnGameWin()
     {
         Body body = Instance.Body;
-        if (WaveDirector.WaveNum >= 15)
+        if ((WaveDirector.WaveNum >= 15 || Main.DebugCheats) && !HasWonThisCycle)
         {
             if (body is ThoughtBubble)
             {
@@ -1144,6 +1146,8 @@ public partial class Player : Entity
                     UnlockCondition.Get<FizzyFocus>().SetComplete();
                 if(TotalBlackMarketPowersPickedUp >= TotalNonBlackMarketPowersPickedUp)
                     UnlockCondition.Get<FizzyStuffed>().SetComplete();
+                if(PowerUp.Get<RainbowFlower>().Stack >= 1 && PowerUp.Get<Pity>().Stack >= 1 && PowerUp.Get<LuckyStar>().Stack >= 1)
+                    UnlockCondition.Get<FizzyTouchGrass>().SetComplete();
             }
             UnlockCondition.Get<ThoughtBubbleUnlock>().SetComplete();
         }

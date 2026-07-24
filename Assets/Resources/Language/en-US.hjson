@@ -700,7 +700,7 @@
     QuantumCake:
     {
       Title: Quantum Cake
-      Description: Drops a Y:[Heart] and becomes a <color=#FFAAAA>Schrodinger's Cake</color> when Y:dissolved in a Y:Crucible
+      Description: Drops a Y:[heart] and becomes a <color=#FFAAAA>Schrodinger's Cake</color> when Y:dissolved in a Y:Crucible
       Brief: And you can eat it too!
       Lore: A tasty and scientifically confounding dessert. It's restorative properties can be extracted through a crucible.
     }
@@ -1308,11 +1308,18 @@
     OilScepter:
     {
       Title: Opulent Scepter
-      Description: A opulent staff for an opulent king
+      Description: An opulent staff for an opulent king
       Lore: Equip.OilScepter.Lore
       Abl1: Y:Tar enemies with a Y:[volley of bubbles]
       Abl2: Cast a Y:[Royal Ruby] that Y:[ignites tar]
       Abl3: Y:Tar Y:slows enemies by Y:20%
+    }
+    FlowerCrown:
+    {
+      Title: Flower Crown
+      Description: Not Fizzy's usual style, but he thinks it fits him well
+      Lore: Equip.FlowerCrown.Lore
+      Abl1: Y:50% chance to drop a Y:heart whenever Y:healed
     }
   }
   Unlock:
@@ -1482,6 +1489,11 @@
     {
       Title: Soul Seller
       Description: As Y:[Thought Bubble,] win on Y:Ascension Y:3
+    }
+    FizzyTouchGrass:
+    {
+      Title: Fizzy: Touch Grass
+      Description: As Y:Fizzy, win while holding <color=#FFAAAAFF>Rainbow Flower,</color> <color=#C2FFAA>Pity Charm,</color> and <color=#AAD3FEFF>Lucky Star</color>
     }
   }
   Enemy:

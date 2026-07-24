@@ -174,6 +174,7 @@ public partial class Player : Entity
     public int ChoiceOnHeal = 0;
     public float CorrodeDamage = 0, TarBonusDuration = 0, CombustBonusDamage, BonusTarSlow = 0;
     public int BonusBlackDiamond, OilSpill, TarConcoct, Gasoline = 0;
+    public bool HasFlowerCrownRecursiveHeal = false;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -210,7 +211,7 @@ public partial class Player : Entity
         FlatSkullCoinBonus = 0.0f;
         ThunderBubbleReturnDamageBonus = 0.0f;
         EchoBubbles = 0.0f;
-        OrbitalStars = false;
+        OrbitalStars = HasFlowerCrownRecursiveHeal = false;
         Supernova = Ruby = DoubleDownChip = 0;
         BlackmarketMult = 1.0f;
 

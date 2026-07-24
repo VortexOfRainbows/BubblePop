@@ -9,7 +9,13 @@ public class FlowerCrown : Cap
         scale = 1.3f;
         rotation = 12f;
     }
-    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
+    public override void ModifyDescription(ref EquipDescription description)
+    {
+        description.RequestAbilitySlots(Ability.ID.Passive);
+    }
+    public override void EquipUpdate() => Player.HasFlowerCrownRecursiveHeal = true;
+    public override int GetRarity() => 3;
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyTouchGrass>();
     protected override void AnimationUpdate()
     {
         float r = p.MoveDashRotation() * 0.5f;
@@ -18,31 +24,6 @@ public class FlowerCrown : Cap
         transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition,
             new Vector2(0, (-1.15f + 1.1f * p.Bobbing * p.Squash)).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad),
             0.1f) + velocity);
-        bounceCount = 0.7f;
         velocity *= 0.9f;
-    }
-    private float bounceCount = 0.7f;
-    protected override void DeathAnimation()
-    {
-        float toBody = transform.localPosition.y - p.Body.transform.localPosition.y;
-        if (p.DeathKillTimer <= 0)
-        {
-            velocity *= 0.1f;
-            velocity.x += Utils.RandFloat(-1, 1) * 0.05f;
-            velocity.y += 0.05f;
-        }
-        if (toBody < -0.95f)
-        {
-            velocity *= -bounceCount;
-            transform.SetLocalXY(transform.localPosition.x, transform.localPosition.y - 0.95f - toBody);
-            bounceCount *= 0.5f;
-        }
-        else
-        {
-            velocity.x *= 0.998f;
-            velocity.y -= 0.005f;
-        }
-        transform.SetLocalXY((Vector2)transform.localPosition + velocity);
-        transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, 0, 0.1f) * Vector3.forward;
     }
 }
