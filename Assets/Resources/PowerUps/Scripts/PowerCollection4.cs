@@ -104,7 +104,7 @@ public class Futures : PowerUp
     public override void Init() => Weighting = Common;
     public override void HeldEffect(Player p)
     {
-
+        p.HasFutures = true;
     }
 }
 public class Commodities : PowerUp
@@ -113,7 +113,7 @@ public class Commodities : PowerUp
     public override void Init() => Weighting = Uncommon;
     public override void HeldEffect(Player p)
     {
-
+        p.HasCommodities = true;
     }
 }
 public class Options : PowerUp
@@ -122,7 +122,7 @@ public class Options : PowerUp
     public override void Init() => Weighting = Rare;
     public override void HeldEffect(Player p)
     {
-
+        p.HasOptions = true;
     }
 }
 public class Securities : PowerUp
@@ -131,7 +131,7 @@ public class Securities : PowerUp
     public override void Init() => Weighting = SuperRare;
     public override void HeldEffect(Player p)
     {
-
+        p.HasSecurities = true;
     }
 }
 public class Windfall : PowerUp
@@ -140,6 +140,6 @@ public class Windfall : PowerUp
     public override void Init() => Weighting = Legendary;
     public override void HeldEffect(Player p)
     {
-
+        p.HasWindfall = true;
     }
 }

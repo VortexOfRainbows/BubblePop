@@ -14,21 +14,14 @@ public static class CoinManager
         Token = Resources.Load<GameObject>("Money/Token");
         Gem = Resources.Load<GameObject>("Money/GemPickup");
         Shard = Resources.Load<GameObject>("Money/ShardPickup");
+        Shield = Resources.Load<GameObject>("Money/ShieldPickup");
     }
-    //public static void Load()
-    //{
-    //Savings = PlayerData.GetInt("Savings");
-    //}
-    //public static void Save()
-    //{
-    //PlayerData.SaveInt("Savings", Savings);
-    //}
     public static GameObject Bronze;
     public static GameObject Silver;
     public static GameObject Gold;
     public static GameObject Heart;
     public static GameObject Key;
-    public static GameObject Chest, Token, Gem, Shard;
+    public static GameObject Chest, Token, Gem, Shard, Shield;
     public static void SpawnCoin(Vector2 pos, int value = 1, float collectDelay = 0f, bool skipTruncating = false)
     {
         int bronze = value % 5;
@@ -107,6 +100,15 @@ public static class CoinManager
     public static Coin SpawnHeart(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Heart, pos, Quaternion.identity, Main.GenericSuperParent);
+        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
+        Coin c = obj.GetComponent<Coin>();
+        c.BeforeCollectableTimer = collectDelay;
+        return c;
+    }
+    public static Coin SpawnShield(Func<Vector2> func, float collectDelay) => SpawnShield(func.Invoke(), collectDelay);
+    public static Coin SpawnShield(Vector2 pos, float collectDelay)
+    {
+        GameObject obj = GameObject.Instantiate(Shield, pos, Quaternion.identity, Main.GenericSuperParent);
         obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
         Coin c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;

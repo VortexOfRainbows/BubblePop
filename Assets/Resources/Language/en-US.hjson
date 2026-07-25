@@ -1062,36 +1062,36 @@
     Futures:
     {
       Title: Futures
-      Description: WIP
-      Brief: WIP
+      Description: Y:[75% chance] to gain Y:75 Y:coins at the Y:[end of a wave] G:(consumed on use)
+      Brief: Invest in your future
       Lore: Power.Futures.Lore
     }
     Commodities:
     {
       Title: Commodities
-      Description: WIP
-      Brief: WIP
+      Description: Y:[75% chance] to gain Y:15 Y:gems at the Y:[end of a wave] G:(consumed on use)
+      Brief: Invest in rare resources
       Lore: Power.Commodities.Lore
     }
     Options:
     {
       Title: Options
-      Description: WIP
-      Brief: WIP
+      Description: Y:[50% chance] to gain Y:3 Y:keys at the Y:[end of a wave] G:(consumed on use)
+      Brief: Invest in the unknown
       Lore: Power.Options.Lore
     }
     Securities:
     {
       Title: Securities
-      Description: WIP
-      Brief: WIP
+      Description: Y:[50% chance] to gain Y:2 Y:shields at the Y:[end of a wave] G:(consumed on use)
+      Brief: Invest in your safety
       Lore: Power.Securities.Lore
     }
     Windfall:
     {
       Title: Windfall
-      Description: WIP
-      Brief: WIP
+      Description: Y:[25% chance] to gain Y:[250 coins, 25 gems, 5 keys, and 3 shield] at the Y:[end of a wave] G:(consumed on use)
+      Brief: Invest in everything
       Lore: Power.Windfall.Lore
     }
   }
@@ -1428,7 +1428,7 @@
     FizzyUnlock:
     {
       Title: Kickflip
-      Description: Reach the end of a <color=#D4AAFEFF>Gatligator</color> Y:[Skull Wave]
+      Description: Defeat a <color=#D4AAFEFF>Gatligator</color> Y:[Skull Wave]
     }
     StartsUnlocked:
     {
@@ -1524,7 +1524,7 @@
     ThoughtBubbleIndistinguishable:
     {
       Title: Thought Bubble: Indistinguishable
-      Description: As Y:[Thought Bubble,] reach the end of a <color=#FFAAAAFF>Infector</color> Y:[Skull Wave]
+      Description: As Y:[Thought Bubble,] defeat a <color=#FFAAAAFF>Infector</color> Y:[Skull Wave]
     }
     FizzyThinkImJustGonnaStandThereAndTakeIt:
     {

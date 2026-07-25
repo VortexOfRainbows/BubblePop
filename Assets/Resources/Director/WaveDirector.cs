@@ -162,23 +162,18 @@ public static class WaveDirector
         if (Main.CurrentPylon != null)
             Main.CurrentPylon.AddQuests();
     }
+    public static bool WaveWasGatligator { get; private set; } = false;
+    public static bool WaveWasInfector { get; private set; } = false;
     public static void EndWave()
     {
-        foreach (Player p in Player.AllPlayers)
-            p.OnWaveEnd(WaveNum);
         WaveActive = false;
         WaveMult += 0.1f;
-        if(TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator || PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator)
-            UnlockCondition.Get<FizzyUnlock>().SetComplete();
-        if (Player.Instance.Body is ThoughtBubble && 
-            (TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Infector ||
-            PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Infector))
-            UnlockCondition.Get<ThoughtBubbleIndistinguishable>().SetComplete();
+        WaveWasGatligator = TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator || PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator;
+        WaveWasInfector = TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Infector || PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Infector;
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         CurrentAssociatedWaveCardNumber = 0;
         WaitingForCardDraw = true;
         UnlockCondition.CheckAllUnlocksForCompletion();
-
         Main.CurrentPylon.IncrementWave();
     }
     public static void GatherCredits()

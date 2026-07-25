@@ -3,15 +3,26 @@ using UnityEditor;
 using UnityEngine;
 public class Coin : MonoBehaviour
 {
-    public bool IsCoin => YieldType == 0;
-    public bool IsHeart => YieldType == 1;
-    public bool IsKey => YieldType == 2;
-    public bool IsToken => YieldType == 3;
-    public bool IsGem => YieldType == 4;
-    public bool IsShard => YieldType == 5;
+    public enum YieldType
+    {
+        Coin,
+        Heart,
+        Key,
+        Token,
+        Gem,
+        Shard,
+        Shield
+    }
+    public bool IsCoin => Type == YieldType.Coin;
+    public bool IsHeart => Type == YieldType.Heart;
+    public bool IsKey => Type == YieldType.Key;
+    public bool IsToken => Type == YieldType.Token;
+    public bool IsGem => Type == YieldType.Gem;
+    public bool IsShard => Type == YieldType.Shard;
+    public bool IsShield => Type == YieldType.Shield;
     public Rigidbody2D rb;
     public Collider2D c2D;
-    public int YieldType = 0;
+    public YieldType Type = 0;
     public int Value;
     public float AttractTimer = 0;
     public Color PopupColor;
@@ -24,13 +35,15 @@ public class Coin : MonoBehaviour
             return Player.Instance.MaxTokens > CoinManager.CurrentTokens;
         if (IsHeart)
             return Player.Instance.Life < Player.Instance.TotalMaxLife;
+        if (IsShield)
+            return Player.Instance.GetShield() < Player.Instance.TotalMaxShield;
         if (IsKey)
             return Main.WavesUnleashed;
         return true;
     }
     public void TryCollecting()
     {
-        float radius = IsHeart ? 0.35f : 0.7025f;
+        float radius = (IsHeart || IsShield) ? 0.35f : 0.7025f;
         radius *= transform.localScale.x;
         radius += 0.75f;
         Player p = Player.FindClosest(transform.position, out _, out float dist);
@@ -76,17 +89,17 @@ public class Coin : MonoBehaviour
             HeartVisual.transform.localEulerAngles = new Vector3(HeartVisual.transform.localEulerAngles.x, HeartVisual.transform.localEulerAngles.y, rb.velocity.x - 70);
         else if(IsShard)
             HeartVisual.transform.localEulerAngles = new Vector3(HeartVisual.transform.localEulerAngles.x, HeartVisual.transform.localEulerAngles.y, rb.velocity.x);
-        float attractDist = IsHeart || IsKey ? 3.5f : 4 + p.Magnet * 3f;
+        float attractDist = IsHeart || IsKey || IsShield ? 3.5f : 4 + p.Magnet * 3f;
         if (IsToken)
             attractDist *= 3;
         else
             attractDist *= 1.25f;
-        if (IsCoin && !WaveDirector.WaveActive && WaveDirector.SkullEnemiesActive <= 0)
+        if (IsCoin && !p.AwaitingWaveEnd)
             attractDist *= 5;
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
         bool beingAttracted = false;
-        if (length < attractDist && (BeforeCollectableTimer <= 0 || IsHeart) && CanCollect())
+        if (length < attractDist && (BeforeCollectableTimer <= 0 || IsHeart || IsShield) && CanCollect())
         {
             float attractSpeed = 3 + p.Magnet + (++AttractTimer) / 30f;
             if (IsToken)
@@ -101,7 +114,7 @@ public class Coin : MonoBehaviour
         }
         else
         {
-            rb.velocity *= IsKey ? 0.9725f : (IsHeart && Value > 0) ? 0.935f : 0.985f;
+            rb.velocity *= IsKey ? 0.9725f : ((IsHeart || IsShield) && Value > 0) ? 0.935f : 0.985f;
             AttractTimer = 0;
         }
         BeforeCollectableTimer -= Time.fixedDeltaTime;
@@ -128,7 +141,7 @@ public class Coin : MonoBehaviour
                 }
             }
         }
-        else if (IsHeart)
+        else if (IsHeart || IsShield)
         {
             if (Utils.RandFloat(1) < 0.2f)
             {
@@ -240,6 +253,14 @@ public class Coin : MonoBehaviour
                 player.SetLife(player.Life + Value);
             AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.1f, 0.76f, 0);
             AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 0.9f, 0.4f, 0);
+            PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}");
+        }
+        else if(IsShield)
+        {
+            foreach (Player player in Player.AllPlayers)
+                player.SetShield(player.GetShield() + Value);
+            AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.1f, 0.6f, 0);
+            AudioManager.PlaySound(SoundID.CoinPickup, transform.position, 0.9f, 0.25f, 0);
             PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}");
         }
         else

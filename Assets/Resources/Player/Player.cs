@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -323,6 +322,8 @@ public static class Control
 }
 public partial class Player : Entity
 {
+    public bool AwaitingWaveEnd { get; private set; } = false;
+    public bool AwaitingNewWave => !AwaitingNewWave;
     public Color FirstColor { get; private set; }
     public Color SecondColor { get; private set; }
     private Color PrimaryColor()
@@ -805,11 +806,7 @@ public partial class Player : Entity
             AimIndicator.transform.localPosition = toMouse.normalized * 2.5f;
             AimIndicator.transform.SetLocalEulerZ(toMouse.ToRotation() * Mathf.Rad2Deg);
         }
-        if (Control.PrimaryAttackHold || Control.SecondaryAttackHold)
-        {
-
-        }
-        else
+        if (!Control.PrimaryAttackHold && !Control.SecondaryAttackHold)
         {
             if (Control.PendingBlock) //pending block
                 Control.BlockAttackState = true; //block
@@ -822,6 +819,9 @@ public partial class Player : Entity
             float distToOtherPlayer = Distance(AllPlayers[InstanceID == 0 ? 1 : 0].gameObject);
             PlayerNumber.color = PlayerNumber.color.WithAlpha(Mathf.Lerp(PlayerNumber.color.a, distToOtherPlayer < 12 ? 1 : 0, Utils.DeltaTimeLerpFactor(0.15f)));
         }
+
+        if(!WaveDirector.WaveActive && AwaitingWaveEnd && WaveDirector.SkullEnemiesActive <= 0)
+            OnWaveEnd(WaveDirector.WaveNum);
     }
     public void SetLife(int num)
     {
@@ -1043,9 +1043,13 @@ public partial class Player : Entity
             }
         }
     }
-    public void OnWaveEnd(int oldWaveNumber)
+    public void OnWaveEnd(int newWaveNumber)
     {
-
+        AwaitingWaveEnd = false;
+        if(WaveDirector.WaveWasGatligator)
+            UnlockCondition.Get<FizzyUnlock>().SetComplete();
+        if (WaveDirector.WaveWasInfector && Instance.Body is ThoughtBubble)
+            UnlockCondition.Get<ThoughtBubbleIndistinguishable>().SetComplete();
     }
     public void OnWaveStart(int newWaveNumber)
     {
@@ -1065,6 +1069,7 @@ public partial class Player : Entity
         if (InstakillsOnWaveStart > 0)
             AddBuff<LightningBottle>(-1, InstakillsOnWaveStart);
         LuckyStarItemsAcquiredThisWave = 0;
+        AwaitingWaveEnd = true;
     }
     public void OnDestroy()
     {
