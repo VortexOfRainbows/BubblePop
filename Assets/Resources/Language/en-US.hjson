@@ -1366,8 +1366,9 @@
     OilHat:
     {
       Title: Top Hat
-      Description: A big-business gentlebubble needs a big-business hat
+      Description: A big-business bubble needs a big-business hat
       Lore: Equip.OilHat.Lore
+      Abl1: Every <color=#CFCFFFFF>Choice</color> contains an Y:[Investment power]
     }
     Tie:
     {
@@ -1574,11 +1575,11 @@
     KingOilUnlock:
     {
       Title: Thought Bubble: Former Employer
-      Description: 
-          '''
-          As Y:[Thought Bubble,] win on 
-          Y:Ascension Y:3
-          '''
+      Description:
+        '''
+        As Y:[Thought Bubble,] win on 
+        Y:Ascension Y:3
+        '''
     }
     FizzyTouchGrass:
     {

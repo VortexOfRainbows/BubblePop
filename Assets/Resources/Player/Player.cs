@@ -653,7 +653,7 @@ public partial class Player : Entity
                 if(InstanceID == 0)
                     PlayerStatUI.SetHeartsToPlayerLife();
             }
-            BonusChoices = false;
+            BonusChoices = FirstChoiceIsInvestment = false; //These updates need to happen here, so they are reset after powerups are updated but before equips (both come from equips and effect powers)
             CoinsOnPowerPickup = 0; //This update needs to happen here so the reset works for mitosis
             foreach (Equipment e in Equips)
                 e.EquipUpdate();

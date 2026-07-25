@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class OilHat : BubblemancerHat
 {
@@ -9,14 +10,30 @@ public class OilHat : BubblemancerHat
         scale *= 0.9425f;
         rotation = 5f;
     }
+    public override void ModifyDescription(ref EquipDescription description)
+    {
+        description.RequestAbilitySlots(Ability.ID.Passive);
+    }
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<KingOilUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<Burger>();
-        powerPool.Add<Burger>();
-        powerPool.Add<Burger>();
-        powerPool.Add<Burger>();
-        powerPool.Add<Burger>();
+        powerPool.Add<Smokestack>();
+        powerPool.Add<GoldenGun>();
+        powerPool.Add<DiversifiedPortfolio>();
+        powerPool.Add<CompoundInterest>();
+        powerPool.Add<Pumpjack>();
+    }
+    protected override void ModifyPowerPoolForDiplayOnly(List<PowerUp> powerPool)
+    {
+        powerPool.Add<Futures>();
+        powerPool.Add<Commodities>();
+        powerPool.Add<Options>();
+        powerPool.Add<Securities>();
+        powerPool.Add<Windfall>();
+    }
+    public override void EquipUpdate()
+    {
+        Player.FirstChoiceIsInvestment = true;
     }
     protected override void AnimationUpdate()
     {

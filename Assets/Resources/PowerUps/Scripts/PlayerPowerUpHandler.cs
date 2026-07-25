@@ -113,7 +113,7 @@ public partial class Player : Entity
     public int TotalMaxLife { get; set; }
     public float ImmunityFrameMultiplier = 1.0f;
     public float ShieldImmunityFrameMultiplier = 1.0f;
-    public bool BonusChoices = false;
+    public bool BonusChoices, FirstChoiceIsInvestment = false;
 
     public float ZapRadiusMult = 1.0f, ExplodeRadiusMult = 1.0f;
     public float DamageMultiplier = 1.0f;

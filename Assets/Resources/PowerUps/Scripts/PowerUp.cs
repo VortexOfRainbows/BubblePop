@@ -67,14 +67,16 @@ public abstract class PowerUp
         AmountPickedUpAcrossAllRuns = PlayerData.GetInt(InternalName + "Total");
         HighestAmountPickedUpInASingleRun = PlayerData.GetInt(InternalName + "Best");
     }
-    public static List<int> AvailablePowers = new();
-    public static List<int> AvailableBlackMarketPowers = new();
+    public static readonly List<int> AvailablePowers = new();
+    public static readonly List<int> AvailableBlackMarketPowers = new();
+    public static readonly List<int> AvailableInvestmentPowers = new();
     public static void ResetPowerAvailability()
     {
         for (int i = 0; i < maximumTypes; ++i)
             Get(i).IsInPowerPool = false;
         AvailablePowers.Clear();
         AvailableBlackMarketPowers.Clear();
+        AvailableInvestmentPowers.Clear();
         AddUniversalPowerups();
     }
     public static void AddUniversalPowerups()
@@ -99,6 +101,12 @@ public abstract class PowerUp
         AddPowerUpToAvailability<BubbleMitosis>(); //blue
         AddPowerUpToAvailability<BlackMarketDelivery>(); //purple
         AddPowerUpToAvailability<ShardsOfPower>(); //yellow
+
+        AvailableInvestmentPowers.Add(Get<Futures>().MyID);
+        AvailableInvestmentPowers.Add(Get<Commodities>().MyID);
+        AvailableInvestmentPowers.Add(Get<Options>().MyID);
+        AvailableInvestmentPowers.Add(Get<Securities>().MyID);
+        AvailableInvestmentPowers.Add(Get<Windfall>().MyID);
     }
     private static void AddPowerUpToAvailability<T>() where T: PowerUp => AddPowerUpToAvailability(Get<T>());
     public static void AddPowerUpToAvailability(PowerUp power)

@@ -139,6 +139,7 @@ public class PowerUpButton : MonoBehaviour
     {
         if (!NonChoiceButton)
         {
+            bool FirstChoiceIsInvestment = Player.Instance.FirstChoiceIsInvestment;
             PowerUp.PickingPowerUps = true;
             float bm = ChoicePowerMenu.IsBlackMarket ? 1 : -1;
             for (int i = RerollAttempsForSamePowerInPicker; i > 0; --i)
@@ -146,7 +147,10 @@ public class PowerUpButton : MonoBehaviour
                 int rare = -1;
                 if (ChoicePowerMenu.IsBlackMarket && index <= 2)
                     rare = Utils.RandInt(index + 2);
-                SetType(PowerUp.RandomFromPool(-1, bm, rare)); //This needs to happen first, before the button is turned on
+                if(bm <= 0 && FirstChoiceIsInvestment && index == 0)
+                    SetType(PowerUp.PickRandomPower(PowerUp.AvailableInvestmentPowers, 0, -1, false, -1)); //This needs to happen first, before the button is turned on
+                else
+                    SetType(PowerUp.RandomFromPool(-1, bm, rare)); //This needs to happen first, before the button is turned on
                 if (!SameTypeAsOthers())
                     break;
             }

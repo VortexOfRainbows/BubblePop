@@ -125,10 +125,18 @@ public class Equipment : MonoBehaviour
     {
         List<PowerUp> powerPool = new();
         ModifyPowerPool(powerPool);
-        powerPool.Sort((PowerUp first, PowerUp second) => first.Rarity - second.Rarity);
+        ModifyPowerPoolForDiplayOnly(powerPool);
+        if(this is OilHat)
+            powerPool.Sort((PowerUp first, PowerUp second) => (first.IsInvestmentPower() ? first.Rarity + 5 : first.Rarity) - (second.IsInvestmentPower() ? second.Rarity + 5 : second.Rarity));
+        else
+            powerPool.Sort((PowerUp first, PowerUp second) => first.Rarity - second.Rarity);
         return powerPool;
     }
     protected virtual void ModifyPowerPool(List<PowerUp> powerPool)
+    {
+
+    }
+    protected virtual void ModifyPowerPoolForDiplayOnly(List<PowerUp> powerPool)
     {
 
     }

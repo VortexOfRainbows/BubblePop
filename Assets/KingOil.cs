@@ -12,8 +12,8 @@ public class KingOil : Body
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add(PowerUp.Get<Burger>());
-        powerPool.Add(PowerUp.Get<GlassShard>());
+        powerPool.Add(PowerUp.Get<BubbleTrail>());
+        powerPool.Add(PowerUp.Get<SnakeEyes>());
     }
     public override void ModifyDescription(ref EquipDescription description)
     {
