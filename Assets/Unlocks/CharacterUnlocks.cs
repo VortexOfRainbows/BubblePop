@@ -21,4 +21,5 @@ public class FizzyUnlock : UnlockCondition
 public class KingOilUnlock : UnlockCondition
 {
     protected override bool TryUnlockCondition => false;
+    public override UnlockCondition PreReqUnlock => UnlockCondition.Get<ThoughtBubbleUnlock>();
 }

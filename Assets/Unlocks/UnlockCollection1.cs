@@ -247,6 +247,7 @@ public class BubblemancerCatalyst : UnlockCondition
         category = Completionist;
     }
     public override int Rarity => 5;
+    public override UnlockCondition PreReqUnlock => Get<BubblemancerUnlock>();
 }
 public class FizzyFocus : UnlockCondition
 {

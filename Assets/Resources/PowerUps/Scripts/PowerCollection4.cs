@@ -79,7 +79,20 @@ public class DiversifiedPortfolio : PowerUp
     public override void Init() => Weighting = Rare;
     public override void HeldEffect(Player p)
     {
-
+        if (Stack > 0 && !PowerUp.PickingPowerUps)
+        {
+            p.InvestmentChoices++;
+            p.RemovePower(Type);
+            PowerUp.TurnOnPowerUpSelectors();
+        }
+    }
+    public override int CrucibleGems(bool dissolve = false)
+    {
+        return dissolve ? 10 : 25;
+    }
+    public override Sprite GetTexture()
+    {
+        return Resources.Load<Sprite>("PowerUps/Choice");
     }
 }
 public class CompoundInterest : PowerUp

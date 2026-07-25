@@ -113,7 +113,7 @@ public partial class Player : Entity
     public int TotalMaxLife { get; set; }
     public float ImmunityFrameMultiplier = 1.0f;
     public float ShieldImmunityFrameMultiplier = 1.0f;
-    public bool BonusChoices, FirstChoiceIsInvestment = false;
+    public bool BonusChoices, FirstChoiceIsInvestment, AllChoicesAreInvestment = false;
 
     public float ZapRadiusMult = 1.0f, ExplodeRadiusMult = 1.0f;
     public float DamageMultiplier = 1.0f;
@@ -121,7 +121,7 @@ public partial class Player : Entity
     public static List<int> GlobalPowers { get; private set; } = new();
     private List<int> Powers => GlobalPowers;
     public bool HasResearchNotes = false;
-    public int ResearchNoteBonuses = 0;
+    public int ResearchNoteBonuses, InvestmentChoices = 0;
     public int ResearchNoteKillCounter = 0;
     public float PersonalWaveCardBonus = 1.0f;
     public float FlatSkullCoinBonus = 0.0f;

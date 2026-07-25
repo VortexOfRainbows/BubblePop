@@ -1041,8 +1041,8 @@
     DiversifiedPortfolio:
     {
       Title: Diversified Portfolio
-      Description: WIP
-      Brief: WIP
+      Description: Y:Invest in a Y:power from a given selection
+      Brief: Choose between investment plans
       Lore: Power.DiversifiedPortfolio.Lore
     }
     CompoundInterest:
@@ -1089,7 +1089,7 @@
     }
     Windfall:
     {
-      Title: Windfall
+      Title: Equities
       Description: Y:[25% chance] to gain Y:[150 coins, 15 gems, 3 keys, and 2 shield] at the Y:[end of a wave] G:(consumed on use)
       Brief: Invest in everything
       Lore: Power.Windfall.Lore

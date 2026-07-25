@@ -19,6 +19,7 @@ Do Later:
 	2. Nerf enemy health for medium-hp enemies
 	3. Remove reroll base count 2 -> 1
 	4. Nerf sentinel
+	5. Adjust enemy wave numbers (when enemies can appear at earliest)
 9. Convert player power handler to use structs for faster resetting 
 
 Need to do:
@@ -71,6 +72,10 @@ Done:
 7/25/26
 1. Oil Hat now shows investment powers in its display pool
 2. Oil Hat now allows obtaining of investment powers through choices!
+3. Choice power sprite is now slightly bigger (~5%)
+4. Added functionality for Diversified Portfolio! (choice but only between investments)
+5. Lore/Notes section in the compendium now disappears if the element is locked or an achievement
+6. Fixed the spacing in the compendium being different for equips that were locked
 
 7/24/26
 1. Add new power templates for the 10 powers associated with oil hat

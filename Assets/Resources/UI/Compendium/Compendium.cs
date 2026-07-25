@@ -245,31 +245,36 @@ public class Compendium : MonoBehaviour
             int rare = 0;
             string finalText = string.Empty;
             object loreObject = null;
+            bool locked = false;
             if (PageNumber == 0)
             {
                 PowerUp p = PowerUp.Get(SelectedType);
                 loreObject = p;
                 string concat = GenerateTierListDescription(p, ref rare);
-                finalText = DisplayCPUE.IsLocked() ? concat.Bastardize('?') : concat;
+                locked = DisplayCPUE.IsLocked();
+                finalText = locked ? concat.Bastardize('?') : concat;
                 if (p.IsBlackMarket())
                     rare = 5;
             }
             else if (PageNumber == 1)
             {
                 loreObject = DisplayCEE.MyElem.ActiveEquipment;
+                locked = DisplayCEE.IsLocked();
                 finalText = GenerateTierListDescription(loreObject as Equipment, ref rare);
             }
             else if (PageNumber == 2)
             {
                 loreObject = DisplayCPEnemy.MyElem.StaticData;
+                locked = DisplayCPEnemy.IsLocked();
                 finalText = GenerateTierListDescription(loreObject as EnemyID.StaticEnemyData, ref rare);
             }
             else if (PageNumber == 3)
                 finalText = GenerateTierListDescription(DisplayCPAchievement, ref rare);
             UpdateStars(rare);
 
-            if(PageNumber == 3) //Achievement page has no NOTES section for now, so it should disable it
+            if(PageNumber == 3 || locked) //Achievement page has no NOTES section for now, so it should disable it
             {
+                LoreSection.text = string.Empty;
                 //Disable notes section
             }
             else if(loreObject != null)//Enable notes section for other descriptions
@@ -372,13 +377,13 @@ public class Compendium : MonoBehaviour
             if (e.HighestDifficultyUnlocked > 0)
                 concat += $" {"Ascension: ".WithColor(ColorHelper.AscColorHex)}{e.HighestDifficultyUnlocked}\n";
             concat += $" {"Times Used: ".WithColor(ColorHelper.LesserGrayHex)}{e.TotalTimesUsed}\n";
-            concat += $" {"Victories: ".WithColor(ColorHelper.YellowHex)}{e.VictoryCount}";
+            concat += $" {"Victories: ".WithColor(ColorHelper.YellowHex)}{e.VictoryCount}" + shortLineBreak;
         }
         else
         {
             concat = concat.Bastardize('?');
         }
-        concat += shortLineBreak + "Associated Achievement: \n".WithSizeAndColor(26, ColorHelper.LesserGrayHex);
+        concat += "Associated Achievement: \n".WithSizeAndColor(26, ColorHelper.LesserGrayHex);
         concat += u.GetName();
         return concat;
     }

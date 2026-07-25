@@ -266,6 +266,11 @@ public abstract class PowerUp
             Player.Instance.BonusChoices = true;
             --Player.Instance.ResearchNoteBonuses;
         }
+        if(Player.Instance.InvestmentChoices > 0)
+        {
+            Player.Instance.AllChoicesAreInvestment = true;
+            --Player.Instance.InvestmentChoices;
+        }
         bool BlackMarket = false;
         if(Player.Instance.ChoiceContract > 0)
         {
@@ -464,8 +469,8 @@ public abstract class PowerUp
     //}
     public virtual Material GetBorder(bool thin = false)
     {
-        if (thin && IsInvestmentPower())
-            return OilOutlineThin;
+        if ((thin && IsInvestmentPower()))// || (!thin && this is DiversifiedPortfolio))
+            return OilOutlineThin; // thin ? OilOutlineThin : OilOutline;
         if (IsBlackMarket())
             return thin ? RedOutlineThin : RedOutline;
         int rare = Rarity;

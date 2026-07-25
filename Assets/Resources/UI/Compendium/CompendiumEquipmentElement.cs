@@ -113,6 +113,8 @@ public class CompendiumEquipmentElement : CompendiumElement
     {
         UnlockCondition MyUnlock = MyElem.ActiveEquipment.GetUnlockCondition();
         int id = TypeID;
+        if (MyUnlock is KingOilUnlock) //override sorting order for these ones, as they are a TB achievement required prereq but should be treated as an origin achievement
+            return TypeID;
         if (MyUnlock.PreReqUnlock != null)
         {
             int dir = reverse ? -1 : 1;
