@@ -80,7 +80,8 @@ public class Coin : MonoBehaviour
     private float timer;
     public void FixedUpdate()
     {
-        TryCollecting();
+        if(BeforeCollectableTimer <= 0 || IsHeart)
+            TryCollecting();
         if(++getPlayerTimer % 10 == 0 || p == null)
             p = Player.FindClosest(transform.position, out _, out _);
         if (IsCoin || IsToken)
@@ -99,7 +100,7 @@ public class Coin : MonoBehaviour
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
         bool beingAttracted = false;
-        if (length < attractDist && (BeforeCollectableTimer <= 0 || IsHeart || IsShield) && CanCollect())
+        if (length < attractDist && (BeforeCollectableTimer <= 0 || IsHeart) && CanCollect())
         {
             float attractSpeed = 3 + p.Magnet + (++AttractTimer) / 30f;
             if (IsToken)

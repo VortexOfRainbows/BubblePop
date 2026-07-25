@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -1046,10 +1047,66 @@ public partial class Player : Entity
     public void OnWaveEnd(int newWaveNumber)
     {
         AwaitingWaveEnd = false;
-        if(WaveDirector.WaveWasGatligator)
+        if (WaveDirector.WaveWasGatligator)
             UnlockCondition.Get<FizzyUnlock>().SetComplete();
         if (WaveDirector.WaveWasInfector && Instance.Body is ThoughtBubble)
             UnlockCondition.Get<ThoughtBubbleIndistinguishable>().SetComplete();
+
+        if (TotalInvestments > 0)
+        {
+            float investmentMultiplier = 1.0f;
+            int numCoins = (int)(75 * investmentMultiplier);
+            int numGems = (int)(15 * investmentMultiplier);
+            int numKeys = (int)(3 * investmentMultiplier);
+            int numShields = (int)(2 * investmentMultiplier);
+            if (HasFutures && Utils.RollWithLuck(0.75f))
+            {
+                if (PowerUp.Get<Futures>().Stack > 0)
+                {
+                    RemovePower(PowerUp.Get<Futures>().MyID, 1);
+                    CoinManager.SpawnCoin(Position, numCoins, 1f);
+                }
+            }
+            if (HasCommodities && Utils.RollWithLuck(0.75f))
+            {
+                if (PowerUp.Get<Commodities>().Stack > 0)
+                {
+                    RemovePower(PowerUp.Get<Commodities>().MyID, 1);
+                    CoinManager.SpawnGem(Position, 1f, numGems);
+                }
+            }
+            if (HasOptions && Utils.RollWithLuck(0.5f))
+            {
+                if (PowerUp.Get<Options>().Stack > 0)
+                {
+                    RemovePower(PowerUp.Get<Options>().MyID, 1);
+                    for (int i = 0; i < numKeys; i++)
+                        CoinManager.SpawnKey(Position, 1f);
+                }
+            }
+            if (HasSecurities && Utils.RollWithLuck(0.5f))
+            {
+                if (PowerUp.Get<Securities>().Stack > 0)
+                {
+                    RemovePower(PowerUp.Get<Securities>().MyID, 1);
+                    for (int i = 0; i < numShields; i++)
+                        CoinManager.SpawnShield(Position, 1f);
+                }
+            }
+            if (HasWindfall && Utils.RollWithLuck(0.25f))
+            {
+                if (PowerUp.Get<Windfall>().Stack > 0)
+                {
+                    RemovePower(PowerUp.Get<Windfall>().MyID, 1);
+                    CoinManager.SpawnCoin(Position, numCoins * 2, 1f);
+                    CoinManager.SpawnGem(Position, 1f, numGems);
+                    for (int i = 0; i < numKeys; i++)
+                        CoinManager.SpawnKey(Position, 1f);
+                    for (int i = 0; i < numShields; i++)
+                        CoinManager.SpawnShield(Position, 1f);
+                }
+            }
+        }
     }
     public void OnWaveStart(int newWaveNumber)
     {
