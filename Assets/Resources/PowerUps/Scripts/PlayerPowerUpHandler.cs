@@ -175,7 +175,7 @@ public partial class Player : Entity
     public int BonusCoinFromWaveRewards = 0;
     public int ChoiceOnHeal = 0;
     public float CorrodeDamage = 0, TarBonusDuration = 0, CombustBonusDamage, BonusTarSlow = 0;
-    public int BonusBlackDiamond, OilSpill, TarConcoct, Gasoline, TotalInvestments = 0;
+    public int BonusBlackDiamond, OilSpill, TarConcoct, Gasoline, TotalInvestments, SmokeStack, GoldenGun = 0;
     public bool HasFlowerCrownRecursiveHeal = false, HasJesusJuice = false, IgnoreMovespeed = false;
     public bool HasFutures, HasCommodities, HasOptions, HasSecurities, HasWindfall;
     private void PowerInit()
@@ -243,6 +243,7 @@ public partial class Player : Entity
         TarShots = BonusBlackDiamond = OilSpill = TarConcoct = Gasoline = TotalInvestments = 0;
         CorrodeDamage = TarBonusDuration = CombustBonusDamage = BonusTarSlow = 0;
         HasFutures = HasCommodities = HasOptions = HasSecurities = HasWindfall = false;
+        GoldenGun = SmokeStack = 0;
     }
     private void UpdatePowerUps()
     {
@@ -255,6 +256,17 @@ public partial class Player : Entity
                 //Debug.Log($"Doing held effect for {power.Stack}");
         }
         AbilityRecoverySpeed = AbilityRecoverySpeed * AbilityRecoverySpeedMult;
+        if(GoldenGun > 0)
+        {
+            float attackDamageBuff = 0.1f;
+            float bonus = TotalInvestments * attackDamageBuff;
+            DamageMultiplier += Mathf.Min(0.2f + 0.1f * GoldenGun, bonus);
+        }
+        if(SmokeStack > 0)
+        {
+            float attackSpeedBuff = 0.03f + 0.02f * SmokeStack;
+            AttackSpeedModifier += TotalInvestments * attackSpeedBuff;
+        }
     }
     public void PostEquipUpdate()
     {

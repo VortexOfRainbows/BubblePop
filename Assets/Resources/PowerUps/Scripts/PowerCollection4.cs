@@ -63,7 +63,7 @@ public class Smokestack : PowerUp
     public override void Init() => Weighting = Uncommon;
     public override void HeldEffect(Player p)
     {
-
+        p.SmokeStack += Stack;
     }
 }
 public class GoldenGun : PowerUp
@@ -71,7 +71,7 @@ public class GoldenGun : PowerUp
     public override void Init() => Weighting = Rare;
     public override void HeldEffect(Player p)
     {
-
+        p.GoldenGun += Stack;
     }
 }
 public class DiversifiedPortfolio : PowerUp
