@@ -1055,7 +1055,7 @@ public partial class Player : Entity
         if (TotalInvestments > 0)
         {
             float investmentMultiplier = 1.0f;
-            int numCoins = (int)(75 * investmentMultiplier);
+            int numCoins = (int)(75 * investmentMultiplier + CompoundInterest * 25);
             int numGems = (int)(15 * investmentMultiplier);
             int numKeys = (int)(3 * investmentMultiplier);
             int numShields = (int)(2 * investmentMultiplier);
@@ -1073,6 +1073,8 @@ public partial class Player : Entity
                 {
                     RemovePower(PowerUp.Get<Commodities>().MyID, 1);
                     CoinManager.SpawnGem(Position, 1f, numGems);
+                    if (CompoundInterest > 0)
+                        PowerUp.Get<Futures>().PickUp(this, CompoundInterest);
                 }
             }
             if (HasOptions && Utils.RollWithLuck(0.5f))
@@ -1082,6 +1084,12 @@ public partial class Player : Entity
                     RemovePower(PowerUp.Get<Options>().MyID, 1);
                     for (int i = 0; i < numKeys; i++)
                         CoinManager.SpawnKey(Position, 1f);
+                    if (CompoundInterest > 0)
+                    {
+                        int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID }, 0, -1, false, -1);
+                        for(int i = 0; i < CompoundInterest; ++i)
+                            PowerUp.Get(p).PickUp(this, CompoundInterest);
+                    }
                 }
             }
             if (HasSecurities && Utils.RollWithLuck(0.5f))
@@ -1091,6 +1099,12 @@ public partial class Player : Entity
                     RemovePower(PowerUp.Get<Securities>().MyID, 1);
                     for (int i = 0; i < numShields; i++)
                         CoinManager.SpawnShield(Position, 1f);
+                    if (CompoundInterest > 0)
+                    {
+                        int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID, PowerUp.Get<Options>().MyID }, 0, -1, false, -1);
+                        for (int i = 0; i < CompoundInterest; ++i)
+                            PowerUp.Get(p).PickUp(this, CompoundInterest);
+                    }
                 }
             }
             if (HasWindfall && Utils.RollWithLuck(0.25f))
@@ -1098,12 +1112,18 @@ public partial class Player : Entity
                 if (PowerUp.Get<Windfall>().Stack > 0)
                 {
                     RemovePower(PowerUp.Get<Windfall>().MyID, 1);
-                    CoinManager.SpawnCoin(Position, numCoins * 2, 1f);
+                    CoinManager.SpawnCoin(Position, numCoins + 75, 1f);
                     CoinManager.SpawnGem(Position, 1f, numGems);
                     for (int i = 0; i < numKeys; i++)
                         CoinManager.SpawnKey(Position, 1f);
                     for (int i = 0; i < numShields; i++)
                         CoinManager.SpawnShield(Position, 1f);
+                    if (CompoundInterest > 0)
+                    {
+                        int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID, PowerUp.Get<Options>().MyID, PowerUp.Get<Securities>().MyID }, 0, -1, false, -1);
+                        for (int i = 0; i < CompoundInterest; ++i)
+                            PowerUp.Get(p).PickUp(this, CompoundInterest);
+                    }
                 }
             }
         }

@@ -526,6 +526,20 @@ public class RewardClause : CardClause
             };
             AddPowerReward(reward, PostRewards);
         }
+        int investments = Player.Instance.Pumpjack;
+        if (investments > 0)
+        {
+            for(int i = 0; i< investments; ++i)
+            {
+                PowerReward reward = new(PowerUp.PickRandomPower(PowerUp.AvailableInvestmentPowers, 0, -1, false, -1))
+                {
+                    Free = true,
+                    BeforeWaveEndReward = false,
+                    Amt = 1
+                };
+                AddPowerReward(reward, PostRewards);
+            }
+        }
         float Rubies = Player.Instance.Ruby * 0.1f * Mathf.Sqrt(HealingChance);
         while (Utils.RandFloat(1) < Rubies)
         {

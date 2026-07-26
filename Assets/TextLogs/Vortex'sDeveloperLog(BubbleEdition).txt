@@ -20,6 +20,7 @@ Do Later:
 	3. Remove reroll base count 2 -> 1
 	4. Nerf sentinel
 	5. Adjust enemy wave numbers (when enemies can appear at earliest)
+	6. Nerf perp
 9. Convert player power handler to use structs for faster resetting 
 
 Need to do:
@@ -37,21 +38,9 @@ Need to do:
 	2. Make blurbs appear in the equipment page
 8. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
 9. King Oil (Power Ideas)
-	1. Hat: Main idea is the hat replaces one of the options in any given choice with a "Investment" power, so this hat will have more powers than normal... chance to become loot at the end of a wave.
-		1. (Investment, white) Futures, gives coins
-		2. (Investment, green) Commodities, gives gems
-		3. (Investment, blue) Options, gives keys
-		4. (Investment, purple) Securities, gives shields
-		5. (Investment, yellow) Windfall, gives everything, and in double(?) quantity
-		It will also be accompanied by some normal powers
-		1. (green) Smokestack: increase attack speed for every investment you have (also makes the hat produce smoke)
-		2. (blue) Golden Gun: increase attack damage for every investment you have
-		3. (blue) Diversified Portfolio: acts as a choice power, but only shows investment options
-		4. (purple) Compound Interest: increases the return on investment (investments give more loot when expiring)
-		5. (yellow) Pumpjack: gain a random investment at the start of every wave
-	2. Tie: This is a powerful minion that all characters might want, but especially helps King Oil apply tar to nearby enemies
+	1. Tie: This is a powerful minion that all characters might want, but especially helps King Oil apply tar to nearby enemies
 		1. (purple) Defense Contract: grants a military helicopter companion that shoots bubbles at nearby enemies
-	3. Body: wip
+	2. Body: wip
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -71,6 +60,8 @@ Done:
 
 7/26/26
 1. Add functionality for Smokestack and Golden Gun (they both seem very weak right now, but I'll keep them in this state so I can buff later)
+2. Add functionality to Pumpjack and Compound Interest
+3. Now all the Oil Hat powers are in! Though it is potentially underwhelming? Will have to wait for playtest!
 
 7/25/26
 1. Oil Hat now shows investment powers in its display pool

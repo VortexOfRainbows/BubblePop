@@ -1048,15 +1048,19 @@
     CompoundInterest:
     {
       Title: Compound Interest
-      Description: WIP
-      Brief: WIP
+      Description: 
+        '''
+        When <color=#C2FFAA>2-star or higher</color> Y:[investment powers] are consumed, gain Y:1 G:(+1 per stack) random Y:[lower-rarity investment powers] 
+        Gain Y:25 G:(+25 per stack) additional Y:coins from Y:investments that yield Y:coins
+        '''
+      Brief: Gain lower-rarity investments when high-rarity investments are consumed
       Lore: Power.CompoundInterest.Lore
     }
     Pumpjack:
     {
       Title: Pumpjack
-      Description: WIP
-      Brief: WIP
+      Description: Adds Y:1 G:(+1 per stack) random Y:[investment powers] to Y:[wave end] rewards
+      Brief: Gain a random investment power each wave
       Lore: Power.Pumpjack.Lore
     }
     Futures:

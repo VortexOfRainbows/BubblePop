@@ -97,18 +97,18 @@ public class DiversifiedPortfolio : PowerUp
 }
 public class CompoundInterest : PowerUp
 {
-    public override void Init() => Weighting = SuperRare;
+    public override void Init() => Weighting = Legendary;
     public override void HeldEffect(Player p)
     {
-
+        p.CompoundInterest += Stack;
     }
 }
 public class Pumpjack : PowerUp
 {
-    public override void Init() => Weighting = Legendary;
+    public override void Init() => Weighting = SuperRare;
     public override void HeldEffect(Player p)
     {
-
+        p.Pumpjack += Stack;
     }
 }
 public class Futures : PowerUp
