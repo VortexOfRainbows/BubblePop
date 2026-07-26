@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -35,6 +36,8 @@ public class OilHat : BubblemancerHat
     {
         Player.FirstChoiceIsInvestment = true;
     }
+    public Transform ExhaustPipe;
+    public float ExhaustAnimation { get; set; } = 0;
     protected override void AnimationUpdate()
     {
         float r = p.MoveDashRotation() * 0.4f;
@@ -42,5 +45,19 @@ public class OilHat : BubblemancerHat
         transform.localEulerAngles = Mathf.LerpAngle(transform.localEulerAngles.z, r, 0.1f) * Vector3.forward;
         transform.SetLocalXY(Vector2.Lerp((Vector2)transform.localPosition, new Vector2(0, 0.15f + 0.575f * p.Bobbing * p.Squash).RotatedBy(transform.eulerAngles.z * Mathf.Deg2Rad), 0.1f) + velocity);
         velocity *= 0.9f;
+
+        if(Player.TotalInvestments > 0 && Player.SmokeStack > 0)
+        {
+            ExhaustAnimation += Mathf.Sqrt(Player.TotalInvestments);
+            if(ExhaustAnimation > 75)
+            {
+                Color exhaustColor = Color.Lerp(Color.gray, Color.black, Utils.RandFloat(0.2f));
+                Vector2 velo = Player.RB.velocity;
+                if (velo.y < 0) 
+                    velo.y *= 0.1f;
+                ParticleManager.NewParticle((Vector2)ExhaustPipe.transform.position + Player.RB.velocity * Time.fixedDeltaTime, 1.0f, Vector2.up * 3 + velo, 0.5f, 3, ParticleManager.ID.Smoke, exhaustColor.WithAlpha(0.25f));
+                ExhaustAnimation -= Utils.RandFloat(50, 75);
+            }
+        }
     }
 }

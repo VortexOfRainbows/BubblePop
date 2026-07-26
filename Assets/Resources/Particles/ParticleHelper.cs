@@ -15,6 +15,7 @@ public class ParticleManager : MonoBehaviour
         public const int LineForeground = 6;
         public const int Snow = 7;
         public const int Fire = 8;
+        public const int Smoke = 9;
     }
     public static readonly Color DefaultColor = new(0.89f, 0.8078f, 0.9412f, 0.5f);
     public static ParticleManager Instance;
@@ -22,7 +23,7 @@ public class ParticleManager : MonoBehaviour
     public List<ParticleSystem> ParticleSystems { get; private set; }
     public List<ParticleSystem> FetchMySystems()
     {
-        List<ParticleSystem> list = new List<ParticleSystem>();
+        List<ParticleSystem> list = new();
         int childCount = ParticleSuperParent.childCount;
         for (int i = 0; i < childCount; i++)
             list.Add(ParticleSuperParent.GetChild(i).GetComponent<ParticleSystem>());
