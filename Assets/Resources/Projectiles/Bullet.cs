@@ -25,6 +25,12 @@ public class Bullet : Projectile
     public override void AI()
     {
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 0.5f * SizeMult, 0.06f);
+        if(Data.Length > 5)
+        {
+            float curveFactor = Data[5];
+            RB.velocity = RB.velocity.RotatedBy(curveFactor * Time.fixedDeltaTime);
+            Data[5] *= 0.99f;
+        }
         RB.velocity *= 1.001f;
         float deathTime = 330;
         float FadeOutTime = 15;

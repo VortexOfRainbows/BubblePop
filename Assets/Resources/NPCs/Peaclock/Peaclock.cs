@@ -15,6 +15,9 @@ public class Peaclock : Crow
     public float TailDefaultRotationSpeed { get; set; } = 5.0f;
     public float CogOutCounter { get; set; } = 0;
     public float TimeToCogOut => 50;
+    public float AttackTimer { get; set; } = 0;
+    public float BonusSpeed { get; set; } = 0;
+    protected float InnateRotationDirection = 0;
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.02f;
@@ -53,13 +56,16 @@ public class Peaclock : Crow
     }
     public override void AI()
     {
+        if(InnateRotationDirection == 0)
+            InnateRotationDirection = Utils.RandBool(2) ? 1 : -1;
         targetedLocation = Target.Position;
         //if you do not have line of sight with the player, this behavior should be changed
         Vector2 toTarget = targetedLocation - (Vector2)transform.position;
         float dist = toTarget.magnitude;
         toTarget = toTarget.normalized;
         float tailRotateSpeed = TailDefaultRotationSpeed;
-        if ((dist > 12 || JumpTimer != 0) && IdleTimer == 100 && CogOutCounter <= 0)
+        bool requestAttack = false;
+        if ((dist > 10 || JumpTimer != 0) && CogOutCounter <= 0)
         {
             JumpTimer++;
             if (JumpTimer >= 40) //Airborn
@@ -67,9 +73,12 @@ public class Peaclock : Crow
                 JumpTimer = -70;
                 RB.velocity *= 0.5f;
                 RB.velocity += 45 * MoveSpeed * toTarget;
-                //float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
-                //tilt += RB.velocity.y * 2.0f * Visual.transform.localScale.x;
-                //Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
+                
+                float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
+                tilt += RB.velocity.y * 2.0f * Visual.transform.localScale.x;
+                Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
+
+                AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 0.5f, 1.4f);
             }
             else
             {
@@ -89,7 +98,6 @@ public class Peaclock : Crow
             }
             if (Mathf.Abs(RB.velocity.x) > 0.1f)
                 UpdateDirection(RB.velocity.x);
-            IdleTimer = 100; 
             CogOutCounter = -50;
         }
         else
@@ -120,15 +128,27 @@ public class Peaclock : Crow
             JumpAnimation.LegAnchors[1].GetChild(0).LerpLocalPosition(new Vector2(0, sin * 0.05f), 0.2f);
             if (IdleTimer >= 200)
                 IdleTimer = 0;
-            if (CogOutCounter < TimeToCogOut && dist < 16)
-                CogOutCounter++;
-            else if (CogOutCounter > 0 && dist >= 12)
+            if (CogOutCounter < TimeToCogOut && dist < 20)
             {
-                if (CogOutCounter > TimeToCogOut)
+                if((int)CogOutCounter == 10)
+                {
+                    AudioManager.PlaySound(SoundID.Infect, transform.position, 0.5f, 2.4f);
+                    AudioManager.PlaySound(SoundID.Teleport, transform.position, 0.6f, 1.4f);
+                }
+                CogOutCounter++;
+            }
+            else if (CogOutCounter > 0 && dist >= 20)
+            {
+                if (CogOutCounter >= TimeToCogOut)
                     CogOutCounter = TimeToCogOut;
+                if ((int)CogOutCounter == 40)
+                {
+                    AudioManager.PlaySound(SoundID.Infect, transform.position, 0.5f, 3f);
+                    AudioManager.PlaySound(SoundID.Teleport, transform.position, 0.6f, 1.8f);
+                }
                 CogOutCounter--;
             }
-            if (CogOutCounter < TimeToCogOut && dist < 16)
+            if (CogOutCounter < TimeToCogOut && dist < 20)
             {
                 percent = CogOutCounter / TimeToCogOut;
                 sin = Mathf.Sin(percent * Mathf.PI / 2f);
@@ -140,15 +160,31 @@ public class Peaclock : Crow
                 CogOutCounter++;
                 percent = (CogOutCounter - TimeToCogOut) / TimeToCogOut;
                 sin = Mathf.Sin(percent * Mathf.PI * 2);
-                JumpAnimation.ArmAnchors[0].LerpLocalEulerZ(-40 + 10 * sin2 + sin * 5, 0.04f);
-                JumpAnimation.ArmAnchors[1].LerpLocalEulerZ(40 + 10 * sin2 + sin * 5, 0.04f);
+                JumpAnimation.ArmAnchors[0].LerpLocalEulerZ(-40 + 20 * sin2 + sin * 10, 0.04f);
+                JumpAnimation.ArmAnchors[1].LerpLocalEulerZ(40 + 20 * sin2 + sin * 10, 0.04f);
                 if (CogOutCounter >= TimeToCogOut * 2)
                     CogOutCounter -= TimeToCogOut;
+
+                AttackTimer += (TailDefaultRotationSpeed + BonusSpeed) * 0.2f;
+                if (AttackTimer >= 120)
+                {
+                    AttackTimer -= 120;
+                    requestAttack = true;
+                    ++BonusSpeed;
+                }
             }
         }
+        if (CogOutCounter < TimeToCogOut)
+        {
+            AttackTimer = 40;
+            BonusSpeed *= 0.95f;
+        }
+        if (BonusSpeed > 10)
+            BonusSpeed = 10;
+        tailRotateSpeed += BonusSpeed;
         TailRotationSpeed = Mathf.Lerp(TailRotationSpeed, tailRotateSpeed, 0.1f);
-        float degrees = TailCog.localEulerAngles.z - TailRotationSpeed * Time.fixedDeltaTime * 10;
-        TailCog.SetLocalEulerZ(degrees);
+        float degrees = TailCog.localEulerAngles.z * InnateRotationDirection - TailRotationSpeed * Time.fixedDeltaTime * 10;
+        TailCog.SetLocalEulerZ(degrees * InnateRotationDirection);
         for (int i = 0; i < Feathers.Length; i++)
         {
             float sin = Mathf.Sin(degrees * Mathf.Deg2Rad * 2 + i * Mathf.PI / 3f);
@@ -158,17 +194,28 @@ public class Peaclock : Crow
         cPercent *= cPercent;
         float dir = Utils.SignNoZero(Visual.transform.localScale.x);
         TailCog.parent.LerpLocalPosition(Vector2.Lerp(TailAnchorDefaultPosition, TailAnchorCentralPosition, cPercent), 0.1f);
+        float bulletVelocity = (5 + BonusSpeed * 0.34f) * 1.75f;
+        Color c = IsInfected ? new Color(1, 0.1f, 0.1f, 1f) : new Color(.8f, 0.7f, 0.1f, 1);
         for (int i = 0; i < Cogs.Length; i++)
         {
-            Vector2 circ = new Vector2(1.75f * cPercent, 0).RotatedBy(Mathf.Deg2Rad * degrees * -1 + i * Mathf.PI * 0.5f);
+            Vector2 circ = new Vector2(1.0f * cPercent, 0).RotatedBy(Mathf.Deg2Rad * degrees * -InnateRotationDirection + i * Mathf.PI * 0.5f);
+            if (requestAttack)
+            {
+                Projectile.NewProjectile<Bullet>((Vector2)Cogs[i].transform.position + circ * 0.1f, circ * bulletVelocity, 1, this, 1, c.r, c.g, c.b, c.a, TailRotationSpeed * 0.2f * InnateRotationDirection);
+            }
             circ.x *= dir;
-            Cogs[i].LerpLocalPosition(circ, 0.1f);
-            Cogs[i].SetLocalEulerZ(-4 * degrees);
+            Cogs[i].LerpLocalPosition(circ * 1.75f, 0.1f);
+            Cogs[i].SetLocalEulerZ(-4 * degrees * InnateRotationDirection);
         }
+        if (requestAttack)
+            AudioManager.PlaySound(SoundID.GolemShoot, transform.position, 1f, 1.4f + BonusSpeed * 0.05f);
     }
     public override void OnKill()
     {
-        DeathParticles(20, 0.5f, new Color(0.588f, 0.424f, 0.216f));
-        AudioManager.PlaySound(SoundID.FlamingoNoise, transform.position, 0.25f, 1.2f);
+        DeathParticles(30, 0.5f, new Color(0.588f, 0.424f, 0.216f));
+        for (int i = 0; i < 20; ++i)
+            ParticleManager.NewParticle(transform.position, Utils.RandFloat(0.3f, 0.6f), Utils.RandCircle(4), 2, Utils.RandFloat(0.4f, 0.8f), ParticleManager.ID.Trail, Color.yellow);
+        AudioManager.PlaySound(SoundID.FlamingoNoise, transform.position, 0.25f, 0.9f);
+        AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 0.25f, 1.2f);
     }
 }
