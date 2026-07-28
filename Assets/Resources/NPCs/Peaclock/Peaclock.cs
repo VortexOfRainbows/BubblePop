@@ -5,13 +5,14 @@ using UnityEngine;
 public class Peaclock : Crow
 {
     public Transform TailGear;
+    public Transform[] Feathers;
     public float TailRotationSpeed { get; set; } = 1.0f;
     public float TailDefaultRotationSpeed { get; set; } = 5.0f;
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.02f;
         inlineColor.r *= 2f;
-        additiveColorPower = 0.4f;
+        additiveColorPower = 0.1f;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
@@ -38,7 +39,7 @@ public class Peaclock : Crow
         if ((dist > 12 || JumpTimer != 0) && AttackTimer == 100)
         {
             JumpTimer++;
-            if (JumpTimer >= 40)
+            if (JumpTimer >= 40) //Airborn
             {
                 JumpTimer = -70;
                 RB.velocity *= 0.5f;
@@ -55,9 +56,11 @@ public class Peaclock : Crow
                     RB.velocity *= InertiaMult;
                     if (dist > 20)
                         RB.velocity += JumpAnimation.JumpPercent * MoveSpeed * toTarget;
+                    tailRotateSpeed *= 0.1f;
                 }
-                else
+                else //Airborn
                 {
+                    tailRotateSpeed *= 3;
                     JumpAnimation.JumpPercent = JumpTimer / 70f;
                 }
             }
@@ -71,18 +74,23 @@ public class Peaclock : Crow
             JumpAnimation.JumpPercent = 0;
             RB.velocity *= InertiaMult;
             AttackTimer++;
-            //if (dist > 12.5f)
-            //    RB.velocity += toTarget.normalized * MoveSpeed * 0.5f;
+            if(Mathf.Sign(toTarget.x) != Mathf.Sign(Visual.transform.localScale.x))
+            {
+                RB.velocity += 0.1f * MoveSpeed * toTarget;
+                UpdateDirection(RB.velocity.x);
+            }
             float percent = AttackTimer / 200f;
             float sin = Mathf.Sin(percent * Mathf.PI * 4);
             float sin2 = Mathf.Sin(percent * Mathf.PI * 2);
-            Vector2 bob = new(sin2 * 0.1f, sin * 0.1f);
+            Vector2 bob = new(sin2 * 0.07f, sin * 0.07f);
             JumpAnimation.BodyAnchor.LerpLocalPosition(bob, 0.2f);
-            JumpAnimation.BodyAnchor.LerpLocalEulerZ(5 * sin2, 0.2f);
+            JumpAnimation.BodyAnchor.LerpLocalEulerZ(2 * sin2, 0.2f);
             JumpAnimation.ArmAnchors[0].LerpLocalEulerZ(-10 * sin2, 0.2f);
             JumpAnimation.ArmAnchors[1].LerpLocalEulerZ(-10 * sin2, 0.2f);
-            //JumpAnimation.LegAnchors[0].GetChild(0).localPosition = bob;
-            //JumpAnimation.LegAnchors[1].GetChild(0).localPosition = bob;
+            JumpAnimation.LegAnchors[0].GetChild(0).localScale = new Vector2(1, 1.05f + sin * 0.05f);
+            JumpAnimation.LegAnchors[1].GetChild(0).localScale = new Vector2(1, 1.05f + sin * 0.05f);
+            JumpAnimation.LegAnchors[0].GetChild(0).localPosition = new Vector2(0, sin * 0.05f);
+            JumpAnimation.LegAnchors[1].GetChild(0).localPosition = new Vector2(0, sin * 0.05f);
             if (AttackTimer >= 200)
             {
                 AttackTimer = 0;
@@ -101,7 +109,13 @@ public class Peaclock : Crow
             RB.velocity *= InertiaMult;
         }
         TailRotationSpeed = Mathf.Lerp(TailRotationSpeed, tailRotateSpeed, 0.1f);
-        TailGear.SetLocalEulerZ(TailGear.localEulerAngles.z + TailRotationSpeed * Time.fixedDeltaTime * 4);
+        float degrees = TailGear.localEulerAngles.z - TailRotationSpeed * Time.fixedDeltaTime * 10;
+        TailGear.SetLocalEulerZ(degrees);
+        for (int i = 0; i < Feathers.Length; i++)
+        {
+            float sin = Mathf.Sin(degrees * Mathf.Deg2Rad * 2 + i * Mathf.PI / 3f);
+            Feathers[i].localScale = new Vector3(1, 1 + sin * 0.1f, 1);
+        }
     }
     public override void OnKill()
     {
