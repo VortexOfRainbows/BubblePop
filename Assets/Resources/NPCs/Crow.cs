@@ -12,7 +12,7 @@ public class Crow : Enemy
     public virtual float MoveSpeed => 0.15f;
     public virtual float InertiaMult => 0.9f;
     protected float JumpTimer = 0;
-    protected float AttackTimer = 100;
+    protected float IdleTimer = 100;
     protected float initialShootDelay = 100;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
@@ -46,7 +46,7 @@ public class Crow : Enemy
         {
             toTarget = -toTarget;
         }
-        if((dist < 11 || dist > 20 || JumpTimer != 0) && AttackTimer == 100)
+        if((dist < 11 || dist > 20 || JumpTimer != 0) && IdleTimer == 100)
         {
             JumpTimer++;
             if (JumpTimer >= 40)
@@ -74,7 +74,7 @@ public class Crow : Enemy
             }
             if (Mathf.Abs(RB.velocity.x) > 0.1f)
                 UpdateDirection(RB.velocity.x);
-            AttackTimer = 100;
+            IdleTimer = 100;
         }
         else if(--initialShootDelay <= 0)
         {
@@ -90,15 +90,15 @@ public class Crow : Enemy
                 if (Mathf.Abs(toTarget.x) > 0.1f)
                     UpdateDirection(toTarget.x);
             }
-            AttackTimer++;
-            float sin = -Mathf.Sin((1 - Mathf.Sqrt(AttackTimer / 100f)) * Mathf.PI);
+            IdleTimer++;
+            float sin = -Mathf.Sin((1 - Mathf.Sqrt(IdleTimer / 100f)) * Mathf.PI);
             JumpAnimation.BodyAnchor.localPosition = JumpAnimation.BodyAnchor.localPosition.Lerp( new Vector3(-0.15f * sin, -0.1f + sin * 0.1f, 0), 0.2f);
             JumpAnimation.BodyAnchor.LerpLocalEulerZ(20 * sin, 0.2f);
             JumpAnimation.ArmAnchors[0].LerpLocalEulerZ(-40 * sin, 0.2f);
             JumpAnimation.ArmAnchors[1].LerpLocalEulerZ(-30 * sin, 0.2f);
-            if (AttackTimer >= 200)
+            if (IdleTimer >= 200)
             {
-                AttackTimer = 0;
+                IdleTimer = 0;
                 Vector2 norm = (targetedLocation - (Vector2)transform.position).normalized;
                 AudioManager.PlaySound(SoundID.FlamingoShot, transform.position, 0.8f, 0.9f);
                 AudioManager.PlaySound(SoundID.LenardLaser, transform.position, 0.5f, 1.2f, 0);
