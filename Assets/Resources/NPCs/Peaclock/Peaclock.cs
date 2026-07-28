@@ -30,54 +30,62 @@ public class Peaclock : Crow
     public override void AI()
     {
         targetedLocation = Target.Position;
+        //if you do not have line of sight with the player, this behavior should be changed
         Vector2 toTarget = targetedLocation - (Vector2)transform.position;
         float dist = toTarget.magnitude;
-        if ((dist > 20 || timer != 0) && timer2 == 100)
+        toTarget = toTarget.normalized;
+        float tailRotateSpeed = TailDefaultRotationSpeed;
+        if ((dist > 12 || JumpTimer != 0) && AttackTimer == 100)
         {
-            timer++;
-            if (timer >= 40)
+            JumpTimer++;
+            if (JumpTimer >= 40)
             {
-                timer = -70;
+                JumpTimer = -70;
                 RB.velocity *= 0.5f;
-                RB.velocity += 45 * MoveSpeed * toTarget.normalized;
+                RB.velocity += 45 * MoveSpeed * toTarget;
                 //float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
                 //tilt += RB.velocity.y * 2.0f * Visual.transform.localScale.x;
                 //Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
             }
             else
             {
-                if (timer >= 0)
+                if (JumpTimer >= 0)
                 {
-                    JumpAnimation.JumpPercent = timer / 40f;
+                    JumpAnimation.JumpPercent = JumpTimer / 40f;
                     RB.velocity *= InertiaMult;
                     if (dist > 20)
-                        RB.velocity += JumpAnimation.JumpPercent * MoveSpeed * toTarget.normalized;
+                        RB.velocity += JumpAnimation.JumpPercent * MoveSpeed * toTarget;
                 }
                 else
                 {
-                    JumpAnimation.JumpPercent = timer / 70f;
+                    JumpAnimation.JumpPercent = JumpTimer / 70f;
                 }
             }
             if (Mathf.Abs(RB.velocity.x) > 0.1f)
                 UpdateDirection(RB.velocity.x);
-            timer2 = 100;
+            AttackTimer = 100;
         }
         else if (--initialShootDelay <= 0)
         {
-            timer = 0;
+            JumpTimer = 0;
             JumpAnimation.JumpPercent = 0;
             RB.velocity *= InertiaMult;
-            timer2++;
+            AttackTimer++;
             //if (dist > 12.5f)
             //    RB.velocity += toTarget.normalized * MoveSpeed * 0.5f;
-            //float sin = -Mathf.Sin((1 - Mathf.Sqrt(timer2 / 100f)) * Mathf.PI);
-            //JumpAnimation.BodyAnchor.localPosition = JumpAnimation.BodyAnchor.localPosition.Lerp(new Vector3(-0.15f * sin, -0.1f + sin * 0.1f, 0), 0.2f);
-            //JumpAnimation.BodyAnchor.LerpLocalEulerZ(20 * sin, 0.2f);
-            //JumpAnimation.ArmAnchors[0].LerpLocalEulerZ(-40 * sin, 0.2f);
-            //JumpAnimation.ArmAnchors[1].LerpLocalEulerZ(-30 * sin, 0.2f);
-            if (timer2 >= 200)
+            float percent = AttackTimer / 200f;
+            float sin = Mathf.Sin(percent * Mathf.PI * 4);
+            float sin2 = Mathf.Sin(percent * Mathf.PI * 2);
+            Vector2 bob = new(sin2 * 0.1f, sin * 0.1f);
+            JumpAnimation.BodyAnchor.LerpLocalPosition(bob, 0.2f);
+            JumpAnimation.BodyAnchor.LerpLocalEulerZ(5 * sin2, 0.2f);
+            JumpAnimation.ArmAnchors[0].LerpLocalEulerZ(-10 * sin2, 0.2f);
+            JumpAnimation.ArmAnchors[1].LerpLocalEulerZ(-10 * sin2, 0.2f);
+            //JumpAnimation.LegAnchors[0].GetChild(0).localPosition = bob;
+            //JumpAnimation.LegAnchors[1].GetChild(0).localPosition = bob;
+            if (AttackTimer >= 200)
             {
-                timer2 = 0;
+                AttackTimer = 0;
                 //Vector2 norm = (targetedLocation - (Vector2)transform.position).normalized;
                 //AudioManager.PlaySound(SoundID.FlamingoShot, transform.position, 0.8f, 0.9f);
                 //AudioManager.PlaySound(SoundID.LenardLaser, transform.position, 0.5f, 1.2f, 0);
@@ -92,6 +100,8 @@ public class Peaclock : Crow
         {
             RB.velocity *= InertiaMult;
         }
+        TailRotationSpeed = Mathf.Lerp(TailRotationSpeed, tailRotateSpeed, 0.1f);
+        TailGear.SetLocalEulerZ(TailGear.localEulerAngles.z + TailRotationSpeed * Time.fixedDeltaTime * 4);
     }
     public override void OnKill()
     {

@@ -11,8 +11,8 @@ public class Crow : Enemy
     protected Vector2 targetedLocation;
     public virtual float MoveSpeed => 0.15f;
     public virtual float InertiaMult => 0.9f;
-    protected float timer = 0;
-    protected float timer2 = 100;
+    protected float JumpTimer = 0;
+    protected float AttackTimer = 100;
     protected float initialShootDelay = 100;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
@@ -30,7 +30,7 @@ public class Crow : Enemy
     }
     public override void OnSpawn()
     {
-        timer = 0;
+        JumpTimer = 0;
     }
     public void UpdateDirection(float i)
     {
@@ -46,12 +46,12 @@ public class Crow : Enemy
         {
             toTarget = -toTarget;
         }
-        if((dist < 11 || dist > 20 || timer != 0) && timer2 == 100)
+        if((dist < 11 || dist > 20 || JumpTimer != 0) && AttackTimer == 100)
         {
-            timer++;
-            if (timer >= 40)
+            JumpTimer++;
+            if (JumpTimer >= 40)
             {
-                timer = -70;
+                JumpTimer = -70;
                 RB.velocity *= 0.5f;
                 RB.velocity += toTarget.normalized * MoveSpeed * 45;
                 //float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
@@ -60,25 +60,25 @@ public class Crow : Enemy
             }
             else
             {
-                if (timer >= 0)
+                if (JumpTimer >= 0)
                 {
-                    JumpAnimation.JumpPercent = timer / 40f;
+                    JumpAnimation.JumpPercent = JumpTimer / 40f;
                     RB.velocity *= InertiaMult;
                     if(dist > 20)
                         RB.velocity += toTarget.normalized * MoveSpeed * JumpAnimation.JumpPercent;
                 }
                 else
                 {
-                    JumpAnimation.JumpPercent = timer / 70f;
+                    JumpAnimation.JumpPercent = JumpTimer / 70f;
                 }
             }
             if (Mathf.Abs(RB.velocity.x) > 0.1f)
                 UpdateDirection(RB.velocity.x);
-            timer2 = 100;
+            AttackTimer = 100;
         }
         else if(--initialShootDelay <= 0)
         {
-            timer = 0;
+            JumpTimer = 0;
             JumpAnimation.JumpPercent = 0;
             RB.velocity *= InertiaMult;
             if (dist > 12.5f)
@@ -90,15 +90,15 @@ public class Crow : Enemy
                 if (Mathf.Abs(toTarget.x) > 0.1f)
                     UpdateDirection(toTarget.x);
             }
-            timer2++;
-            float sin = -Mathf.Sin((1 - Mathf.Sqrt(timer2 / 100f)) * Mathf.PI);
+            AttackTimer++;
+            float sin = -Mathf.Sin((1 - Mathf.Sqrt(AttackTimer / 100f)) * Mathf.PI);
             JumpAnimation.BodyAnchor.localPosition = JumpAnimation.BodyAnchor.localPosition.Lerp( new Vector3(-0.15f * sin, -0.1f + sin * 0.1f, 0), 0.2f);
             JumpAnimation.BodyAnchor.LerpLocalEulerZ(20 * sin, 0.2f);
             JumpAnimation.ArmAnchors[0].LerpLocalEulerZ(-40 * sin, 0.2f);
             JumpAnimation.ArmAnchors[1].LerpLocalEulerZ(-30 * sin, 0.2f);
-            if (timer2 >= 200)
+            if (AttackTimer >= 200)
             {
-                timer2 = 0;
+                AttackTimer = 0;
                 Vector2 norm = (targetedLocation - (Vector2)transform.position).normalized;
                 AudioManager.PlaySound(SoundID.FlamingoShot, transform.position, 0.8f, 0.9f);
                 AudioManager.PlaySound(SoundID.LenardLaser, transform.position, 0.5f, 1.2f, 0);
