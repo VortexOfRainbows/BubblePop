@@ -1048,7 +1048,7 @@
     CompoundInterest:
     {
       Title: Compound Interest
-      Description: 
+      Description:
         '''
         When <color=#C2FFAA>2-star or higher</color> Y:[investment powers] are consumed, gain Y:1 G:(+1 per stack) random Y:[lower-rarity investment powers] 
         Gain Y:25 G:(+25 per stack) additional Y:coins from Y:investments that yield Y:coins
@@ -1692,6 +1692,12 @@
       Title: Ice Golem
       Description: One might imagine the name Snow Golem more appropriate
       Lore: Enemy.IceGolem.Lore
+    }
+    Peaclock:
+    {
+      Title: Enemy.Peaclock.Title
+      Description: Enemy.Peaclock.Description
+      Lore: Enemy.Peaclock.Lore
     }
   }
 }

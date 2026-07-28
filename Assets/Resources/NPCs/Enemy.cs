@@ -78,6 +78,7 @@ public static class EnemyID
     public static readonly GameObject RockGolem = LoadNPC("Rock/Golem/RockGolem");
     public static readonly GameObject SuperSentinel = LoadNPC("Sentinel/SuperSentinel");
     public static readonly GameObject IceGolem = LoadNPC("IceGolem/IceGolem");
+    public static readonly GameObject Peaclock = LoadNPC("Peaclock/Peaclock");
 }
 public class Enemy : Entity
 {
@@ -435,7 +436,7 @@ public class Enemy : Entity
     }
     public bool AlreadyDead = false;
     private void SetDead() => AlreadyDead = true;
-    public bool FirstStrike = true;
+    public bool FirstStrike { get; protected set; } = true;
     public sealed override void OnHurtByProjectile(Projectile proj)
     {
         if (SpecializedImmuneFrames.Contains(proj) || proj.Penetrate == 0 || !SpawnedIn || proj.Damage <= 0)
@@ -718,7 +719,7 @@ public class Enemy : Entity
     {
         return true;
     }
-    public float BuffDetonatedCounter = 0;
+    public float BuffDetonatedCounter { get; private set; } = 0;
     public void DetonateAllDebuffs()
     {
         float detonationDamage = 0;

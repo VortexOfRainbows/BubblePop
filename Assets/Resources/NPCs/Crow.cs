@@ -8,12 +8,12 @@ public class Crow : Enemy
         additiveColorPower = 0.4f;
     }
     public JumpMotion JumpAnimation;
-    private Vector2 targetedLocation;
-    public float moveSpeed = 0.15f;
-    public float inertiaMult = 0.9f;
-    private float timer = 0;
-    private float timer2 = 100;
-    private float initialShootDelay = 100;
+    protected Vector2 targetedLocation;
+    public virtual float MoveSpeed => 0.15f;
+    public virtual float InertiaMult => 0.9f;
+    protected float timer = 0;
+    protected float timer2 = 100;
+    protected float initialShootDelay = 100;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 10;
@@ -34,13 +34,10 @@ public class Crow : Enemy
     }
     public void UpdateDirection(float i)
     {
-        if (i >= 0)
-            i = 1;
-        else
-            i = -1;
-        Visual.transform.localScale = new Vector3(i, 1, 1);
+        i = Utils.SignNoZero(i);
+        Visual.transform.localScale = new Vector3(i * Mathf.Abs(Visual.transform.localScale.x), 1 * Mathf.Abs(Visual.transform.localScale.y), 1);
     }
-    public void MoveUpdate()
+    public override void AI()
     {
         targetedLocation = Target.Position;
         Vector2 toTarget = targetedLocation - (Vector2)transform.position;
@@ -56,7 +53,7 @@ public class Crow : Enemy
             {
                 timer = -70;
                 RB.velocity *= 0.5f;
-                RB.velocity += toTarget.normalized * moveSpeed * 45;
+                RB.velocity += toTarget.normalized * MoveSpeed * 45;
                 //float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
                 //tilt += RB.velocity.y * 2.0f * Visual.transform.localScale.x;
                 //Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
@@ -66,9 +63,9 @@ public class Crow : Enemy
                 if (timer >= 0)
                 {
                     JumpAnimation.JumpPercent = timer / 40f;
-                    RB.velocity *= inertiaMult;
+                    RB.velocity *= InertiaMult;
                     if(dist > 20)
-                        RB.velocity += toTarget.normalized * moveSpeed * JumpAnimation.JumpPercent;
+                        RB.velocity += toTarget.normalized * MoveSpeed * JumpAnimation.JumpPercent;
                 }
                 else
                 {
@@ -83,10 +80,10 @@ public class Crow : Enemy
         {
             timer = 0;
             JumpAnimation.JumpPercent = 0;
-            RB.velocity *= inertiaMult;
+            RB.velocity *= InertiaMult;
             if (dist > 12.5f)
             {
-                RB.velocity += toTarget.normalized * moveSpeed * 0.5f;
+                RB.velocity += toTarget.normalized * MoveSpeed * 0.5f;
             }
             if(dist >= 11)
             {
@@ -114,12 +111,8 @@ public class Crow : Enemy
         }
         else
         {
-            RB.velocity *= inertiaMult;
+            RB.velocity *= InertiaMult;
         }
-    }
-    public override void AI()
-    {
-        MoveUpdate();
     }
     public override void OnKill()
     {

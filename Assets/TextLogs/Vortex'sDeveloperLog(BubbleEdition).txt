@@ -63,12 +63,17 @@ Sounds Needed:
 
 Done: 	
 
+7/27/26
+1. WIP Peaclock (right now basically functions as just a crow...)
+	1. Needs: animations, scaling, infector stuff, compendium stuff (localization+UI), attack pattern, balancing
+
 7/26/26
 1. Add functionality for Smokestack and Golden Gun (they both seem very weak right now, but I'll keep them in this state so I can buff later)
 2. Add functionality to Pumpjack and Compound Interest
 3. Now all the Oil Hat powers are in! Though it is potentially underwhelming? Will have to wait for playtest!
 4. Oil hat releases smoke when you have investment powers and smokestack!
-5. Import Peaclock assets
+5. Import Peaclock assets and assemble them
+6. Fix bug where Crows were incorrectly sized unless they were preparing to jump (now they should be 10% bigger)
 
 7/25/26
 1. Oil Hat now shows investment powers in its display pool

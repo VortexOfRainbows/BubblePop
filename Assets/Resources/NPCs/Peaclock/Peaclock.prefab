@@ -109,13 +109,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 866813088032601608}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.12940958, y: 0.12940949, z: 0.017037088, w: 0.98296297}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4314437442219265093}
-  m_LocalEulerAnglesHint: {x: -15, y: 15, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8913246232845924529
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 504b2bd3ad04ef64692a9e54c7581b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Parent: {fileID: 4166000504334002462}
+  Parent: {fileID: 2498542334597624788}
   LegAnchors:
   - {fileID: 6775712836913251778}
   - {fileID: 5405380076501321663}
@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 3840899534818641878}
   - component: {fileID: 3544240106715913891}
   - component: {fileID: 1586561365024757382}
-  - component: {fileID: 4166000504334002462}
+  - component: {fileID: 2498542334597624788}
   m_Layer: 9
   m_Name: Peaclock
   m_TagString: Enemy
@@ -447,7 +447,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
---- !u!114 &4166000504334002462
+--- !u!114 &2498542334597624788
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -456,7 +456,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3170802223728998985}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 370362ffd59476f48a34bc0a9f925647, type: 3}
+  m_Script: {fileID: 11500000, guid: ab59403d4b91b0c4b8d1e271c5d46c7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Visual: {fileID: 2024328903860409038}
@@ -465,11 +465,8 @@ MonoBehaviour:
   RB: {fileID: 3840899534818641878}
   IndexInAllEnemyArray: -1
   AlreadyDead: 0
-  FirstStrike: 1
-  BuffDetonatedCounter: 0
   JumpAnimation: {fileID: 2649602840955921877}
-  moveSpeed: 0.15
-  inertiaMult: 0.9
+  TailGear: {fileID: 8016899886988043880}
 --- !u!1 &3639378344344336283
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,7 +733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708d2680bec4d994d8d1e91f2e40c67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Parent: {fileID: 4166000504334002462}
+  Parent: {fileID: 2498542334597624788}
   SpeedMult: 1.5
   WalkCounter: 0
   AngleOffset: 180
@@ -1113,7 +1110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002c39456ca36f642a82937972b69b45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Parent: {fileID: 4166000504334002462}
+  Parent: {fileID: 2498542334597624788}
   SpeedMult: 1.5
   Counter: 0
   AngleOffset: 90
@@ -1535,7 +1532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708d2680bec4d994d8d1e91f2e40c67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Parent: {fileID: 4166000504334002462}
+  Parent: {fileID: 2498542334597624788}
   SpeedMult: 1.5
   WalkCounter: 0
   AngleOffset: 0
