@@ -17,11 +17,11 @@ Do Later:
 8. Before next patch:
 	1. Potentially increase enemy health scaling past wave 10?
 9. Convert player power handler to use structs for faster resetting 
+10. Tachyon Accelerator Power (not urgent, as programming this would likely take longer than expected)
 
 Need to do:
-1. Unlock system might need more reworks in the future
-	1. Hide unlocks from char select until they are unlocked, including subequipments
-	2. Progress display for achievements
+1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
+	1. Progress display for achievements
 2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
@@ -40,7 +40,6 @@ Need to do:
 		2. (Blue) Flint and Steel: drop an additional bomb after the first that spreads fire (like gasoline), also igniting debuffs
 		3. (Yellow) Thunderbolt: drop multiple smaller bomb alongside the main payload at once
 10. Snowball (Snobble) enemies
-11. Tachyon Accelerator Power
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -63,6 +62,7 @@ Done:
 2. WIP King Oil Drone Strike!
 	1. Needs: powers, cooldown, balancing adjustments
 3. Oil Spill now should spread more evenly
+4. Equipments that are not unlocked no longer appear in the character select (for subequips, they will still appear if the base equip is unlocked)
 
 7/27/26 to 7/28/26
 1. Add Peaclock 

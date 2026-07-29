@@ -32,10 +32,9 @@ public class CharacterSelect : MonoBehaviour
                 {
                     Equipment e = Equipments[j].GetComponent<Equipment>();
                     bool sortSoCurrentCharacterEquipmentShowsFirst = (i == 0 && e.SameUnlockAsBody(Player.Instance.Body)) || (i == 1 && !e.SameUnlockAsBody(Player.Instance.Body));
-                    if (start == 1 || sortSoCurrentCharacterEquipmentShowsFirst)
-                    {
+                    bool unlocked = (e.IsUnlocked || (e.IsSubEquip && e.SubEquipParent.IsUnlocked)) || e is Body;
+                    if ((start == 1 || sortSoCurrentCharacterEquipmentShowsFirst) && unlocked)
                         AddEquipToPage(parent, Equipments[j].GetComponent<Equipment>());
-                    }
                 }
             }
             Index = newIndex;
