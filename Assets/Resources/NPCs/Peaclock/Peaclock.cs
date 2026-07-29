@@ -26,8 +26,9 @@ public class Peaclock : Crow
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
-        offset.y += 0.2f;
-        scale *= 1.2f;
+        offset.y += -0.2f;
+        offset.x += 0.2f;
+        scale *= 0.85f;
     }
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
