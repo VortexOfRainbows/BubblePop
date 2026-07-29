@@ -1002,7 +1002,7 @@
     OilSpill:
     {
       Title: Oil Spill
-      Description: Enemies spill Y:tar in a Y:4 G:(+2 per stack) tile area when killed
+      Description: Enemies spill Y:tar in a Y:4 G:(+4 per stack) tile area when killed
       Brief: Enemies spill tar when killed
       Lore: Power.OilSpill.Lore
     }
@@ -1365,7 +1365,7 @@
       Title: King Oil
       Description: The richest bubble on the planet, in wealth and fashion
       Lore: Equip.KingOil.Lore
-      Abl1: (WIP) Request a drone strike from your personal arsenal
+      Abl1: Request an Y:[aerial oil-barrel deployment] from your Y:[private airforce]
     }
     OilHat:
     {

@@ -38,7 +38,7 @@ public class OilSpill : PowerUp
     public override void Init() =>  Weighting = Rare;
     public override void HeldEffect(Player p)
     {
-        p.OilSpill += 2 + 2 * Stack;
+        p.OilSpill += 4 * Stack;
     }
 }
 public class Gasoline : PowerUp

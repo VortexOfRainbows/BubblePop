@@ -31,7 +31,8 @@ public partial class Main : MonoBehaviour
         public static Sprite[] TallGrass; //= Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/TallGrass");
         public static Sprite[] ShortGrass;// = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/ShortGrass");
         public static Sprite Snowball;
-        public static Sprite KingOilDiamond;
+        public static Sprite KingOilDiamond, KingOilBomb;
+        public static Sprite CrosshairOuter, CrosshairInner, CrosshairFill, CrosshairEmblem;
         public static void Load()
         {
             BubbleSmall = Resources.Load<Sprite>("Projectiles/SmallBubble");
@@ -87,6 +88,12 @@ public partial class Main : MonoBehaviour
             };
             Snowball = Resources.Load<Sprite>("Projectiles/Snowball");
             KingOilDiamond = Resources.Load<Sprite>("Player/KingOil/Diamond");
+            KingOilBomb = Resources.Load<Sprite>("Projectiles/OilBomb");
+
+            CrosshairOuter = Resources.Load<Sprite>("UI/Telegraph/CrosshairOuter");
+            CrosshairInner = Resources.Load<Sprite>("UI/Telegraph/CrosshairCenter");
+            CrosshairFill = Resources.Load<Sprite>("UI/Telegraph/CrosshairFill");
+            CrosshairEmblem = Resources.Load<Sprite>("UI/Telegraph/OilKingEmblem");
         }
     }
     public static class PrefabAssets

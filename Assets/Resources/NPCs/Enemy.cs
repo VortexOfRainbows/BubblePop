@@ -680,11 +680,7 @@ public class Enemy : Entity
         if (replaceThisWithStaticDataLater.OilSpill > 0)
         {
             int count = replaceThisWithStaticDataLater.OilSpill;
-            for (float i = 0; i < count; i += 0.5f)
-            {
-                float radius = Mathf.Sqrt(i);
-                HazardSystem.AddHazard((Vector2)transform.position + Utils.RandCircle(radius), HazardSystem.HazardType.Oil, (int)(400 + 100 * replaceThisWithStaticDataLater.TarBonusDuration), 1);
-            }
+            HazardSystem.SpreadCircle(transform.position, (int)(400 + 100 * replaceThisWithStaticDataLater.TarBonusDuration), count, HazardSystem.HazardType.Oil);
         }
     }
     public virtual void AI()

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static HazardSystem;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public static class HazardSystem
 {
@@ -204,6 +205,23 @@ public static class HazardSystem
             Vector2 truePosition = World.RealTileMap.Map.CellToWorld((Vector3Int)pos) + new Vector3(1f, 1f);
             Vector2 visualPosition = existing.WorldPosition;
             Projectile.NewProjectile<OilFire>(Vector2.Lerp(truePosition, visualPosition, Utils.RandFloat(1)), Utils.RandCircle(0.5f), 1, data.player, scaleMult);
+        }
+    }
+    public static void SpreadCircle(Vector2 position, int duration, float area, HazardType t)
+    {
+        float radia = Mathf.Sqrt(area);
+        float halfRadia = radia + 0.5f; //add a bit of padding for calculations to be consistent
+        area += 0.5f;
+        for(float i = -halfRadia; i <= halfRadia; ++i)
+        {
+            for(float j = -halfRadia; j <= halfRadia; ++j)
+            {
+                float lenSq = i * i + j * j;
+                if(lenSq <= area)
+                {
+                    HazardSystem.AddHazard(position + new Vector2(i, j) + Utils.RandCircle(0.5f), t, duration, 1);
+                }
+            }
         }
     }
 }
