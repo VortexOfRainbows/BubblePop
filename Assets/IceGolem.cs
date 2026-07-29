@@ -16,7 +16,7 @@ public class IceGolem : Ent
     public override float InertiaMultiplier => 0.965f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 24;
+        data.BaseMaxLife = 20;
         data.BaseMaxCoin = 12;
         data.BaseMinCoin = 3;
         data.BaseMaxGem = 3;

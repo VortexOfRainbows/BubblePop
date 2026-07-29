@@ -20,7 +20,7 @@ public class Gatligator : Enemy
     private float ShootSpeed = 0.5f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 25;
+        data.BaseMaxLife = 22;
         data.BaseMaxCoin = 10;
         data.BaseMinCoin = 5;
         data.Rarity = 4;

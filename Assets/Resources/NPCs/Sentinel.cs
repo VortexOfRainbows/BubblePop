@@ -16,7 +16,7 @@ public class Sentinel : Enemy
     public bool UsePurpleColors { get; set; } = false;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 15;
+        data.BaseMaxLife = 12;
         data.BaseMaxCoin = 10;
         data.BaseMinCoin = 4;
         data.BaseMinGem = 1;

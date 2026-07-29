@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Build;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class Peaclock : Crow
 {
+    public static readonly float HopToPlayerDistance = 10;
+    public static readonly float AttackMaxDistance = 24;
     public static readonly Vector2 TailAnchorDefaultPosition = new(-0.45f, 0.575f);
     public static readonly Vector2 TailAnchorCentralPosition = new(0f, 0.35f);
     public Transform TailCog;
@@ -32,12 +30,13 @@ public class Peaclock : Crow
     }
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 10;
-        data.BaseMaxCoin = 5;
-        data.BaseMinCoin = 2;
-        data.Cost = 2;
-        data.WaveNumber = 100; //temp
-        data.Rarity = 2;
+        data.BaseMaxLife = 22;
+        data.BaseMaxCoin = 10;
+        data.BaseMinCoin = 3;
+        data.Cost = 5;
+        data.WaveNumber = 7;
+        data.Rarity = 3;
+        data.BaseMaxGem = 2;
     }
     public new void UpdateDirection(float i)
     {
@@ -66,7 +65,7 @@ public class Peaclock : Crow
         toTarget = toTarget.normalized;
         float tailRotateSpeed = TailDefaultRotationSpeed;
         bool requestAttack = false;
-        if ((dist > 10 || JumpTimer != 0) && CogOutCounter <= 0)
+        if ((dist > HopToPlayerDistance || JumpTimer != 0) && CogOutCounter <= 0)
         {
             JumpTimer++;
             if (JumpTimer >= 40) //Airborn
@@ -129,7 +128,7 @@ public class Peaclock : Crow
             JumpAnimation.LegAnchors[1].GetChild(0).LerpLocalPosition(new Vector2(0, sin * 0.05f), 0.2f);
             if (IdleTimer >= 200)
                 IdleTimer = 0;
-            if (CogOutCounter < TimeToCogOut && dist < 20)
+            if (CogOutCounter < TimeToCogOut && dist < AttackMaxDistance)
             {
                 if((int)CogOutCounter == 10)
                 {
@@ -138,7 +137,7 @@ public class Peaclock : Crow
                 }
                 CogOutCounter++;
             }
-            else if (CogOutCounter > 0 && dist >= 20)
+            else if (CogOutCounter > 0 && dist >= AttackMaxDistance)
             {
                 if (CogOutCounter >= TimeToCogOut)
                     CogOutCounter = TimeToCogOut;
@@ -149,7 +148,7 @@ public class Peaclock : Crow
                 }
                 CogOutCounter--;
             }
-            if (CogOutCounter < TimeToCogOut && dist < 20)
+            if (CogOutCounter < TimeToCogOut && dist < AttackMaxDistance)
             {
                 percent = CogOutCounter / TimeToCogOut;
                 sin = Mathf.Sin(percent * Mathf.PI / 2f);

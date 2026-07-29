@@ -9,7 +9,7 @@ public class SuperSentinel : Sentinel
     }
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 25;
+        data.BaseMaxLife = 20;
         data.BaseMaxCoin = 15;
         data.BaseMinCoin = 4;
         data.BaseMinGem = 2;
