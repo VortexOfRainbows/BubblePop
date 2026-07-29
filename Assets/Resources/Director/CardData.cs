@@ -272,18 +272,22 @@ public class EnemyClause : CardClause
     public void PrepareSkullWaveCards()
     {
         SkullWaveCards.Clear();
+        int tagTeamNumber = Enemy.EnemiesToAdd.Count;
         int highestRarity = 0;
-        foreach(Enemy e in Enemy.EnemiesToAdd)
+        foreach (Enemy e in Enemy.EnemiesToAdd)
             highestRarity = Mathf.Max(e.GetRarity(), highestRarity);
         int enemyRarity = highestRarity;
         int maxSwarmDifficulty = Mathf.Max(7 - enemyRarity, 3);
-        float skullWaveCount = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default
-        if (enemyRarity >= 4)
+        float skullWaveCount = 1 + Owner.DifficultyMult + WaveDirector.TemporaryModifiers.BonusSkullWaves; //2 mid-waves by default, 3 for 2-skull card, 4 for 3-skull card
+        if (enemyRarity >= 4) //Reduce skull count if any of the enemies have a rarity >= 4
             skullWaveCount -= 1;
+        if(tagTeamNumber > 1)
+        {
+            skullWaveCount = Mathf.Max(Mathf.Min(2, skullWaveCount), Mathf.Min(skullWaveCount * 0.75f, skullWaveCount - 1));
+        }
         int wavesWithoutSwarm = 0;
         int max = (int)skullWaveCount;
         int highestBonusSkullSwarm = 0;
-        int tagTeamNumber = Enemy.EnemiesToAdd.Count;
         for (int j = 0; j < tagTeamNumber; ++j)
             if (WaveDirector.TemporaryModifiers.BonusSkullSwarm.TryGetValue(Enemy.EnemiesToAdd[j].GetType(), out int bonus))
                 highestBonusSkullSwarm = Mathf.Max(highestBonusSkullSwarm, bonus);
@@ -515,16 +519,19 @@ public class RewardClause : CardClause
             };
             PreRewards.Add(reward);
         }
-        int choices = Player.Instance.PerpetualBubble;
-        if (choices > 0)
+        if (CardData.UpcomingWave % 2 == 0)
         {
-            PowerReward reward = new(PowerUp.Get<Choice>().MyID)
+            int choices = Player.Instance.PerpetualBubble;
+            if (choices > 0)
             {
-                Free = true,
-                BeforeWaveEndReward = false,
-                Amt = choices
-            };
-            AddPowerReward(reward, PostRewards);
+                PowerReward reward = new(PowerUp.Get<Choice>().MyID)
+                {
+                    Free = true,
+                    BeforeWaveEndReward = false,
+                    Amt = choices
+                };
+                AddPowerReward(reward, PostRewards);
+            }
         }
         int investments = Player.Instance.Pumpjack;
         if (investments > 0)

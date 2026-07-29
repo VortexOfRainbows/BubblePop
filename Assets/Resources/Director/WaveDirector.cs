@@ -168,8 +168,8 @@ public static class WaveDirector
     {
         WaveActive = false;
         WaveMult += 0.1f;
-        WaveWasGatligator = TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator || PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator;
-        WaveWasInfector = TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Infector || PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Infector;
+        WaveWasGatligator = TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator || PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Gatligator || TemporaryModifiers.WaveSecondaryBonusEnemy == EnemyID.Gatligator || PermanentModifiers.WaveSecondaryBonusEnemy == EnemyID.Gatligator;
+        WaveWasInfector = TemporaryModifiers.WaveSpecialBonusEnemy == EnemyID.Infector || PermanentModifiers.WaveSpecialBonusEnemy == EnemyID.Infector || TemporaryModifiers.WaveSecondaryBonusEnemy == EnemyID.Infector || PermanentModifiers.WaveSecondaryBonusEnemy == EnemyID.Infector;
         CardManager.ResolveChosenCard(); //Gives loot and resolves cards, also sets the current card to -1
         CurrentAssociatedWaveCardNumber = 0;
         WaitingForCardDraw = true;

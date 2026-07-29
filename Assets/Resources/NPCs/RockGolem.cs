@@ -17,7 +17,7 @@ public class RockGolem : RockSpider
         data.BaseMaxGem = 1;
         data.Cost = 10f;
         data.Rarity = 5;
-        data.WaveNumber = 9;
+        data.WaveNumber = 10;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {

@@ -16,7 +16,7 @@ public class SuperSentinel : Sentinel
         data.BaseMaxGem = 5;
         data.Rarity = 4;
         data.Cost = 8.0f;
-        data.WaveNumber = 12;
+        data.WaveNumber = 14;
     }
     public override void OnSpawn()
     {

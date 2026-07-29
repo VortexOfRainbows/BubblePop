@@ -17,9 +17,9 @@ public class ChoicePowerMenu : MonoBehaviour
     public int CostScaling { get; set; } = 3;
     public static int GetBaseRerolls()
     {
-        return 2 + Player.Instance.Eureka;
+        return 1 + Player.Instance.Eureka;
     }
-    public int RemainingRerolls { get; set; } = 2;
+    public int RemainingRerolls { get; set; } = 1;
     public int RerollsInARow { get; set; } = 0;
     public static bool Hide { get; set; } = false;
     public void Start()

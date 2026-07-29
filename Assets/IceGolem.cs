@@ -18,11 +18,11 @@ public class IceGolem : Ent
     {
         data.BaseMaxLife = 20;
         data.BaseMaxCoin = 12;
-        data.BaseMinCoin = 3;
+        data.BaseMinCoin = 4;
         data.BaseMaxGem = 3;
-        data.Cost = 5f;
-        data.WaveNumber = 7;
-        data.Rarity = 3;
+        data.Cost = 6f;
+        data.WaveNumber = 9;
+        data.Rarity = 4;
     }
     public float AICounter = 0;
     public Transform RightArmAnchor;

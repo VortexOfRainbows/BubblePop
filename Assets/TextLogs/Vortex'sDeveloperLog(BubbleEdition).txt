@@ -15,11 +15,7 @@ Do Later:
 6. Lighting: Time of day settings (such as the ability to pause time or make it real-world accurate)
 7. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
 8. Before next patch:
-	1. Nerf tag team skull wave count
-	2. Remove reroll base count 2 -> 1
-	3. Nerf sentinel (wave number)
-	4. Adjust enemy wave numbers (when enemies can appear at earliest)
-	5. Nerf perp
+	1. Potentially increase enemy health scaling past wave 10?
 9. Convert player power handler to use structs for faster resetting 
 
 Need to do:
@@ -66,11 +62,25 @@ Done:
 1. Add Peaclock 
 	1. Infector behavior is functional
 2. Oil Spill sprite (David!)
-3. Ent max Life 27 -> 24
+3. Ent max life 27 -> 24
 4. (Ice golem is called snow golem now) Snow Golem max life 24 -> 20
 5. Sentinel max life 15 -> 12
 6. Super Sentinel max life 25 -> 20
 7. Gatligator max life 25 -> 22
+8. (NERF) Perpetual bubble machine only triggers on even-numbered waves
+9. Tag team waves should be able to trigger wave-enemy related achievements
+10. Tag team waves now have 75% of the typical skull wave count or one less wave (whichever is lower), unless the skull wave count would go below 2 or the count was only 1 originally
+11. Snow golem is now considered 4-star, meaning it will come in lower counts, cost also adjusted to make rarer outside of skull waves
+	1. Cost 5 -> 6
+	2. Min coins 3 -> 4
+12. Wave number adjustments (these are experimental and may be reverted later)
+	1. Gatligator 6 -> 8
+	2. Snow Golem 7 -> 9
+	3. Sentinel 4 -> 9
+	4. Rock Golem and Leonard 9 -> 10
+	4. Super Sentinel 12 -> 14
+	5. Infector 8 -> 13
+13. Choice base reroll count 2 -> 1
 
 7/26/26
 1. Add functionality for Smokestack and Golden Gun (they both seem very weak right now, but I'll keep them in this state so I can buff later)
