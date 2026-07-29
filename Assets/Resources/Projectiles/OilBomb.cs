@@ -67,7 +67,8 @@ public class OilBomb : Projectile
         Vector2 sizeMult = 2 * scaleMult * Vector2.one;
         TargetRotation = Mathf.Lerp(TargetRotation, 90 * windUpPercent, Utils.DeltaTimeLerpFactor(0.1f));
         SpriteBatch.Draw(Main.TextureAssets.CrosshairOuter, startPos, sizeMult, TargetRotation, c, order + 2, Main.TextureAssets.SpriteGlowmask);
-        SpriteBatch.Draw(Main.TextureAssets.CrosshairInner, startPos, Vector2.one * scaleMult, 0, c, order + 2, Main.TextureAssets.SpriteGlowmask);
+        SpriteBatch.Draw(Main.TextureAssets.CrosshairInner, startPos, Vector2.one * scaleMult, 0, c, order + 3, Main.TextureAssets.SpriteGlowmask);
+        SpriteBatch.Draw(Main.TextureAssets.CrosshairEmblem, startPos, Vector2.one * scaleMult, 0, c.WithAlpha(c.a * 0.4f), order + 2, Main.TextureAssets.SpriteGlowmask);
         SpriteBatch.Draw(Main.TextureAssets.CrosshairFill, startPos, sizeMult, 0, c.WithAlpha(c.a * 0.2f), order + 1, Main.TextureAssets.SpriteGlowmask);
         SpriteBatch.Draw(Main.TextureAssets.Shadow, startPos, new Vector2(3, 2) * transform.localScale, 0, new Color(0, 0, 0, 0.3f * percent * windDownPercent), order, Main.TextureAssets.AlphaShader);
     }
