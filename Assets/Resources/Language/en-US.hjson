@@ -1098,6 +1098,27 @@
       Brief: Invest in everything
       Lore: Power.Windfall.Lore
     }
+    ReactorCore:
+    {
+      Title: Reactor Core
+      Description: Increases Y:[Oil Barrel] explosion size and bubbles released by Y:14% G:(+14% per stack)
+      Brief: Bigger barrels
+      Lore: Power.ReactorCore.Lore
+    }
+    FlintAndSteel:
+    {
+      Title: Flint and Steel
+      Description: WIP
+      Brief: WIP
+      Lore: Power.FlintAndSteel.Lore
+    }
+    Thunderbolt:
+    {
+      Title: Thunderbolt
+      Description: WIP
+      Brief: WIP
+      Lore: Power.Thunderbolt.Lore
+    }
   }
   Equip:
   {
@@ -1365,7 +1386,7 @@
       Title: King Oil
       Description: The richest bubble on the planet, in wealth and fashion
       Lore: Equip.KingOil.Lore
-      Abl1: Request an Y:[aerial oil-barrel deployment] from your Y:[private airforce]
+      Abl1: Deploy an Y:[Oil Barrel] from your Y:[private airforce]
     }
     OilHat:
     {

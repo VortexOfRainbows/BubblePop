@@ -6,6 +6,8 @@ public class OilBomb : Projectile
 {
     public Vector2 SkyPos;
     public bool OnSolidTile = false;
+    public float BarrelScaleMult { get; set; } = 1;
+    public float BarrelScaleMultSqrt { get; set; } = 1;
     public override void Init()
     {
         SpriteRendererGlow.enabled = false;
@@ -21,6 +23,8 @@ public class OilBomb : Projectile
             startPos.y += 0.25f;
         SkyPos = startPos + new Vector2(0, 26);
         AudioManager.PlaySound(SoundID.Infect, transform.position, 1, 3);
+        BarrelScaleMult = 1 + 0.14f * PlayerOwner.OilBarrelSize;
+        BarrelScaleMultSqrt = Mathf.Sqrt(BarrelScaleMult);
     }
     public override void AI()
     {
@@ -33,11 +37,10 @@ public class OilBomb : Projectile
         transform.LerpLocalScale(Vector2.one * (2f - percent * 1f), 0.1f);
         SpriteRenderer.color = Color.white.WithAlpha(percent);
     }
-    public override void OnKill()
+    public void DeathParticles()
     {
         AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1, 1);
-        Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, 5, PlayerOwner, 1.5f, 1.5f);
-        for(int i = 0; i < 40; ++i)
+        for (int i = 0; i < 40; ++i)
         {
             float size = Utils.RandFloat(0.5f, 1.0f);
             ParticleManager.NewParticle(transform.position, size, Utils.RandCircle(4 - size * 2) + Vector2.up * 2, 1, 1 + 2 * size, ParticleManager.ID.Smoke, Color.black.WithAlpha(0.5f));
@@ -45,14 +48,24 @@ public class OilBomb : Projectile
         for (int i = 0; i < 30; ++i)
         {
             float size = Utils.RandFloat(0.5f, 1.0f);
-            ParticleManager.NewParticle(transform.position + new Vector3(Utils.RandFloat(-1, 1), Utils.RandFloat(-1, 4)) * 0.75f, size, Utils.RandCircle(5 - size * 2) + Vector2.up * 3, 1, 0.5f + 1f * size, ParticleManager.ID.Square, 
+            ParticleManager.NewParticle(transform.position + new Vector3(Utils.RandFloat(-1, 1), Utils.RandFloat(-1, 4)) * 0.75f, size, Utils.RandCircle(5 - size * 2) + Vector2.up * 3, 1, 0.5f + 1f * size, ParticleManager.ID.Square,
                 Color.Lerp(Color.black, ColorHelper.KingOilColor, Utils.RandFloat(0.3f, 0.7f)).WithAlpha(0.8f));
         }
-        float sizeOil = 16;
-        float scaleMult = 1;
-        for (int i = 0; i < 8; ++i)
-            Projectile.NewProjectile<SmallBubble>(transform.position, new Vector2(Utils.RandFloat(sizeOil) * 0.5f, 0).RotatedBy(i * Mathf.PI / 4f) + Utils.RandCircle(sizeOil * 0.1f), 1, PlayerOwner);
-        HazardSystem.SpreadCircle(transform.position, (int)(400 + Player.Instance.TarBonusDuration * 100), sizeOil * scaleMult * scaleMult, HazardSystem.HazardType.Oil);
+    }
+    public override void OnKill()
+    {
+        DeathParticles();
+        float sizeOil = 16 * BarrelScaleMult;
+        int totalBubbles = Mathf.RoundToInt(8 * BarrelScaleMult);
+        Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, 5, PlayerOwner, 1.5f * BarrelScaleMultSqrt, 1.5f);
+        float projectileReleaseSize = 6 * BarrelScaleMultSqrt;
+        for (int i = 0; i < totalBubbles; ++i)
+        {
+            Vector2 spawnOffset = new Vector2(1f, 0).RotatedBy(i * Utils.TwoPI / totalBubbles);
+            float rand = Mathf.Max(Utils.RandFloat(1), Utils.RandFloat(1));
+            Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + ((1 - rand) * 0.5f * projectileReleaseSize * spawnOffset), projectileReleaseSize * rand * spawnOffset + Utils.RandCircle(projectileReleaseSize * 0.25f), 1, PlayerOwner);
+        }
+        HazardSystem.SpreadCircle(transform.position, (int)(400 + Player.Instance.TarBonusDuration * 100), sizeOil, HazardSystem.HazardType.Oil);
     }
     public float TargetRotation = 0;
     public void Update()
@@ -63,8 +76,8 @@ public class OilBomb : Projectile
         float windDownPercent = 1 - Mathf.Clamp01(percent * 3 - 2);
         float sin = Mathf.Sin(windUpPercent * Mathf.PI);
         float scaleMult = windUpPercent + sin * 0.5f;
-        Color c = new Color(0.7f, 0.1f, 0.1f, (windUpPercent * 0.5f + percent * 0.2f) * windDownPercent);
-        Vector2 sizeMult = 2 * scaleMult * Vector2.one;
+        Color c = new(0.7f, 0.1f, 0.1f, (windUpPercent * 0.5f + percent * 0.2f) * windDownPercent);
+        Vector2 sizeMult = 2 * scaleMult * BarrelScaleMultSqrt * Vector2.one;
         TargetRotation = Mathf.Lerp(TargetRotation, 90 * windUpPercent, Utils.DeltaTimeLerpFactor(0.1f));
         SpriteBatch.Draw(Main.TextureAssets.CrosshairOuter, startPos, sizeMult, TargetRotation, c, order + 2, Main.TextureAssets.SpriteGlowmask);
         SpriteBatch.Draw(Main.TextureAssets.CrosshairInner, startPos, Vector2.one * scaleMult, 0, c, order + 3, Main.TextureAssets.SpriteGlowmask);

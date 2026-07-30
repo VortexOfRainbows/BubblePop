@@ -161,3 +161,27 @@ public class Windfall : PowerUp
         p.HasWindfall = true;
     }
 }
+public class ReactorCore : PowerUp
+{
+    public override void Init() => Weighting = Uncommon;
+    public override void HeldEffect(Player p)
+    {
+        p.OilBarrelSize += Stack;
+    }
+}
+public class FlintAndSteel : PowerUp
+{
+    public override void Init() => Weighting = Rare;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
+public class Thunderbolt : PowerUp
+{
+    public override void Init() => Weighting = Legendary;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
