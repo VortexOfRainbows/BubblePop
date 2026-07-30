@@ -175,7 +175,7 @@ public partial class Player : Entity
     public int BonusCoinFromWaveRewards = 0;
     public int ChoiceOnHeal = 0;
     public float CorrodeDamage = 0, TarBonusDuration = 0, CombustBonusDamage, BonusTarSlow = 0;
-    public int BonusBlackDiamond, OilSpill, TarConcoct, Gasoline, TotalInvestments, SmokeStack, GoldenGun, CompoundInterest, Pumpjack, OilBarrelSize, BonusAerialBarrels = 0;
+    public int BonusBlackDiamond, OilSpill, TarConcoct, Gasoline, TotalInvestments, SmokeStack, GoldenGun, CompoundInterest, Pumpjack, OilBarrelSize, BonusAerialBarrels, FlintAndSteel = 0;
     public bool HasFlowerCrownRecursiveHeal = false, HasJesusJuice = false, IgnoreMovespeed = false;
     public bool HasFutures, HasCommodities, HasOptions, HasSecurities, HasWindfall;
     private void PowerInit()
@@ -240,7 +240,7 @@ public partial class Player : Entity
         GladiatorDuration = 0;
         CatalystJellies = 0;
         BonusCoinFromWaveRewards = ChoiceOnHeal = 0;
-        TarShots = BonusBlackDiamond = OilSpill = TarConcoct = Gasoline = TotalInvestments = BonusAerialBarrels = 0;
+        TarShots = BonusBlackDiamond = OilSpill = TarConcoct = Gasoline = TotalInvestments = BonusAerialBarrels = FlintAndSteel = 0;
         CorrodeDamage = TarBonusDuration = CombustBonusDamage = BonusTarSlow = 0;
         HasFutures = HasCommodities = HasOptions = HasSecurities = HasWindfall = false;
         GoldenGun = SmokeStack = CompoundInterest = Pumpjack = OilBarrelSize = 0;

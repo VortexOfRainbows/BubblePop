@@ -1109,8 +1109,12 @@
     FlintAndSteel:
     {
       Title: Flint and Steel
-      Description: WIP
-      Brief: WIP
+      Description: 
+        '''
+        Ability drops a Y:[Fire Barrel] after the main payload 
+        Y:[Fire Barrel detonates debuffs] and Y:ignites Y:[Tar puddles,] causing a Y:[chain reaction] that can travel Y:2 G:(+1 per stack) tiles
+        '''
+      Brief: Drop a secondary payload that detonates debuffs and ignites tar
       Lore: Power.FlintAndSteel.Lore
     }
     Thunderbolt:
@@ -1408,7 +1412,7 @@
       Description: An opulent staff for an opulent king
       Lore: Equip.OilScepter.Lore
       Abl1: Y:Tar enemies with a Y:[volley of bubbles]
-      Abl2: Cast a Y:[Royal Ruby] that Y:[ignites tar]
+      Abl2: Cast a Y:[Royal Ruby] that Y:[detonates debuffs]
       Abl3: Y:Tar Y:slows enemies by Y:20%
     }
     FlowerCrown:

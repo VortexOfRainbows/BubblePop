@@ -11,11 +11,20 @@ public class OilBomb : Projectile
     public float BarrelScaleMultSqrt { get; set; } = 1;
     public int BarrelsSpawned { get; set; } = 0;
     public float AudioVolumeMult { get; set; } = 1;
+    public bool IsFireBomb => Data.Length > 2 && Data[2] <= -1;
     public override void Init()
     {
         SpriteRendererGlow.enabled = false;
-        SpriteRenderer.sprite = Main.TextureAssets.KingOilBomb;
-        SpriteRenderer.color = Color.white.WithAlpha(0);
+        if(IsFireBomb) //REPLACE THIS WITH FIREBOMB SPRITE LATER
+        {
+            SpriteRenderer.sprite = Main.TextureAssets.KingOilBomb;
+            SpriteRenderer.color = new Color(1, 0.5f, 0).WithAlpha(0);
+        }
+        else
+        {
+            SpriteRenderer.sprite = Main.TextureAssets.KingOilBomb;
+            SpriteRenderer.color = Color.white.WithAlpha(0);
+        }
         SpriteRenderer.sortingOrder = LayerHelper.TreeSortingOrder + 1;
         Friendly = Hostile = false;
         transform.localScale = new Vector3(0, 0, 1);
@@ -25,16 +34,20 @@ public class OilBomb : Projectile
         if (OnSolidTile)
             startPos.y += 0.25f;
         SkyPos = startPos + new Vector2(0, 26);
-        BarrelScaleMult = 1 + 0.14f * PlayerOwner.OilBarrelSize;
+        BarrelScaleMult = 1;
+        if (!IsFireBomb)
+            BarrelScaleMult += .14f * PlayerOwner.OilBarrelSize;
         if (Data.Length > 0 && Data1 != 1)
             BarrelScaleMult *= Data[0] * 0.5f;
         BarrelScaleMultSqrt = Mathf.Sqrt(BarrelScaleMult);
         AudioVolumeMult = Mathf.Max(0.1f, (1 + Data[0]) / (1 + PlayerOwner.AttackSpeedModifier));
-        AudioManager.PlaySound(SoundID.Infect, transform.position * Data[0], AudioVolumeMult, 4 - Data[0]);
+        AudioManager.PlaySound(SoundID.Infect, transform.position * Data[0], AudioVolumeMult, (IsFireBomb ? 3 : 4) - Data[0]);
     }
     public override void AI()
     {
         timer += Mathf.Max(0.1f, PlayerOwner.AttackSpeedModifier);
+        if (IsFireBomb)
+            timer += 0.5f;
         timer *= 1.005f;
         if (Data.Length > 1)
         {
@@ -59,7 +72,7 @@ public class OilBomb : Projectile
         float percent = timer / 200f;
         transform.position = Vector2.Lerp(SkyPos, startPos, percent);
         transform.LerpLocalScale((2f - percent * 1f) * Data[0] * Vector2.one, 0.1f);
-        SpriteRenderer.color = Color.white.WithAlpha(percent);
+        SpriteRenderer.color = SpriteRenderer.color.WithAlpha(percent);
         startPos += RB.velocity * Time.fixedDeltaTime;
         transform.SetLocalEulerZ(RB.velocity.x * 2);
         RB.velocity *= 0.98f;
@@ -82,6 +95,11 @@ public class OilBomb : Projectile
     public override void OnKill()
     {
         DeathParticles();
+        if(IsFireBomb)
+        {
+            HazardSystem.TryDetonatingOil(transform.position, PlayerOwner, PlayerOwner.FlintAndSteel);
+            return;
+        }
         float sizeOil = 16 * BarrelScaleMult;
         int totalBubbles = Mathf.RoundToInt(8 * BarrelScaleMult);
         Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, Damage, PlayerOwner, 1.5f * BarrelScaleMultSqrt, 1.5f);
@@ -106,6 +124,12 @@ public class OilBomb : Projectile
             }
         }
         HazardSystem.SpreadCircle(transform.position, (int)(400 + Player.Instance.TarBonusDuration * 100), sizeOil, HazardSystem.HazardType.Oil);
+        if(PlayerOwner.FlintAndSteel > 0 && Data1 == 1)
+        { 
+            Vector2 spawnPos = startPos;
+            spawnPos.y += OnSolidTile ? 0.25f : 0.5f;
+            Projectile.NewProjectile<OilBomb>(spawnPos, Vector2.zero, 3, PlayerOwner, 0.95f, 0, -1);
+        }
     }
     public float TargetRotation = 0;
     public void Update()
@@ -116,9 +140,10 @@ public class OilBomb : Projectile
         float windDownPercent = 1 - Mathf.Clamp01(percent * 3 - 2);
         float sin = Mathf.Sin(windUpPercent * Mathf.PI);
         float scaleMult = windUpPercent + sin * 0.5f;
-        Color c = new(0.7f, 0.1f, 0.1f, (windUpPercent * 0.5f + percent * 0.2f) * windDownPercent);
+        float a = (windUpPercent * 0.5f + percent * 0.2f) * windDownPercent;
+        Color c = IsFireBomb ? new(0.8f, 0.6f, 0.2f, a) : new(0.7f, 0.1f, 0.1f, a);
         Vector2 sizeMult = 2 * scaleMult * BarrelScaleMultSqrt * Vector2.one;
-        TargetRotation = Mathf.Lerp(TargetRotation, 90 * windUpPercent, Utils.DeltaTimeLerpFactor(0.1f));
+        TargetRotation = Mathf.Lerp(TargetRotation, (IsFireBomb ? -90 : 90) * windUpPercent, Utils.DeltaTimeLerpFactor(0.1f));
         SpriteBatch.Draw(Main.TextureAssets.CrosshairOuter, startPos, sizeMult, TargetRotation, c, order + 2, Main.TextureAssets.SpriteGlowmask);
         SpriteBatch.Draw(Main.TextureAssets.CrosshairInner, startPos, Vector2.one * scaleMult, 0, c, order + 3, Main.TextureAssets.SpriteGlowmask);
         SpriteBatch.Draw(Main.TextureAssets.CrosshairEmblem, startPos, Vector2.one * scaleMult, 0, c.WithAlpha(c.a * 0.4f), order + 2, Main.TextureAssets.SpriteGlowmask);

@@ -174,7 +174,7 @@ public class FlintAndSteel : PowerUp
     public override void Init() => Weighting = Rare;
     public override void HeldEffect(Player p)
     {
-
+        p.FlintAndSteel += 1 + Stack;
     }
 }
 public class Thunderbolt : PowerUp
