@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class OilBomb : Projectile
@@ -8,6 +9,8 @@ public class OilBomb : Projectile
     public bool OnSolidTile = false;
     public float BarrelScaleMult { get; set; } = 1;
     public float BarrelScaleMultSqrt { get; set; } = 1;
+    public int BarrelsSpawned { get; set; } = 0;
+    public float AudioVolumeMult { get; set; } = 1;
     public override void Init()
     {
         SpriteRendererGlow.enabled = false;
@@ -22,33 +25,57 @@ public class OilBomb : Projectile
         if (OnSolidTile)
             startPos.y += 0.25f;
         SkyPos = startPos + new Vector2(0, 26);
-        AudioManager.PlaySound(SoundID.Infect, transform.position, 1, 3);
         BarrelScaleMult = 1 + 0.14f * PlayerOwner.OilBarrelSize;
+        if (Data.Length > 0 && Data1 != 1)
+            BarrelScaleMult *= Data[0] * 0.5f;
         BarrelScaleMultSqrt = Mathf.Sqrt(BarrelScaleMult);
+        AudioVolumeMult = Mathf.Max(0.1f, (1 + Data[0]) / (1 + PlayerOwner.AttackSpeedModifier));
+        AudioManager.PlaySound(SoundID.Infect, transform.position * Data[0], AudioVolumeMult, 4 - Data[0]);
     }
     public override void AI()
     {
         timer += Mathf.Max(0.1f, PlayerOwner.AttackSpeedModifier);
         timer *= 1.005f;
+        if (Data.Length > 1)
+        {
+            int bonusBarrels = (int)Data[1];
+            if (bonusBarrels > 0)
+            {
+                float upcomingPercent = (float)(BarrelsSpawned + 1) / (bonusBarrels + 1);
+                float upcoming = 100 * upcomingPercent;
+                while (timer > upcoming && bonusBarrels > BarrelsSpawned)
+                {
+                    Vector2 spawnPos = startPos + Utils.RandCircle(3);
+                    spawnPos.y += OnSolidTile ? 0.25f : 0.5f;
+                    Projectile.NewProjectile<OilBomb>(spawnPos, Utils.RandCircle(4 + BarrelsSpawned), 3, PlayerOwner, 0.75f);
+                    BarrelsSpawned++;
+                    upcomingPercent = (float)(BarrelsSpawned + 1) / (bonusBarrels + 1);
+                    upcoming = 100 * upcomingPercent;
+                }
+            }
+        }
         if (timer > 200)
             Kill();
         float percent = timer / 200f;
         transform.position = Vector2.Lerp(SkyPos, startPos, percent);
-        transform.LerpLocalScale(Vector2.one * (2f - percent * 1f), 0.1f);
+        transform.LerpLocalScale((2f - percent * 1f) * Data[0] * Vector2.one, 0.1f);
         SpriteRenderer.color = Color.white.WithAlpha(percent);
+        startPos += RB.velocity * Time.fixedDeltaTime;
+        transform.SetLocalEulerZ(RB.velocity.x * 2);
+        RB.velocity *= 0.98f;
     }
     public void DeathParticles()
     {
-        AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1, 1);
-        for (int i = 0; i < 40; ++i)
+        AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, AudioVolumeMult, 1);
+        for (int i = 0; i < 40 * Data[0]; ++i)
         {
             float size = Utils.RandFloat(0.5f, 1.0f);
-            ParticleManager.NewParticle(transform.position, size, Utils.RandCircle(4 - size * 2) + Vector2.up * 2, 1, 1 + 2 * size, ParticleManager.ID.Smoke, Color.black.WithAlpha(0.5f));
+            ParticleManager.NewParticle(transform.position, size * Data[0], Utils.RandCircle(4 - size * 2) + Vector2.up * 2, 1, 1 + 2 * size, ParticleManager.ID.Smoke, Color.black.WithAlpha(0.5f));
         }
-        for (int i = 0; i < 30; ++i)
+        for (int i = 0; i < 30 * Data[0]; ++i)
         {
             float size = Utils.RandFloat(0.5f, 1.0f);
-            ParticleManager.NewParticle(transform.position + new Vector3(Utils.RandFloat(-1, 1), Utils.RandFloat(-1, 4)) * 0.75f, size, Utils.RandCircle(5 - size * 2) + Vector2.up * 3, 1, 0.5f + 1f * size, ParticleManager.ID.Square,
+            ParticleManager.NewParticle(transform.position + 0.75f * Data[0] * new Vector3(Utils.RandFloat(-1, 1), Utils.RandFloat(-1, 4)), size * Data[0], Utils.RandCircle(5 - size * 2) + Vector2.up * 3, 1, 0.5f + 1f * size, ParticleManager.ID.Square,
                 Color.Lerp(Color.black, ColorHelper.KingOilColor, Utils.RandFloat(0.3f, 0.7f)).WithAlpha(0.8f));
         }
     }
@@ -57,13 +84,26 @@ public class OilBomb : Projectile
         DeathParticles();
         float sizeOil = 16 * BarrelScaleMult;
         int totalBubbles = Mathf.RoundToInt(8 * BarrelScaleMult);
-        Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, 5, PlayerOwner, 1.5f * BarrelScaleMultSqrt, 1.5f);
+        Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, Damage, PlayerOwner, 1.5f * BarrelScaleMultSqrt, 1.5f);
         float projectileReleaseSize = 6 * BarrelScaleMultSqrt;
         for (int i = 0; i < totalBubbles; ++i)
         {
             Vector2 spawnOffset = new Vector2(1f, 0).RotatedBy(i * Utils.TwoPI / totalBubbles);
             float rand = Mathf.Max(Utils.RandFloat(1), Utils.RandFloat(1));
             Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + ((1 - rand) * 0.5f * projectileReleaseSize * spawnOffset), projectileReleaseSize * rand * spawnOffset + Utils.RandCircle(projectileReleaseSize * 0.25f), 1, PlayerOwner);
+        }
+        if(PlayerOwner.DashSparkle > 0)
+        {
+            float speedMax = 18;
+            int c = (int)((PlayerOwner.DashSparkle * 2 + 2) * (Data1 != 1 ? 0.5f : 1.0f));
+            float spreadAmt = Mathf.PI * 2f / (float)c;
+            Vector2 circular = Utils.RandCircleEdge(1);
+            for (int i = 0; i < c; i++)
+            {
+                circular = circular.RotatedBy(spreadAmt);
+                Vector2 target = (Vector2)transform.position + circular * speedMax;
+                Projectile.NewProjectile<StarProj>(transform.position, circular.RotatedBy(Mathf.PI * 0.875f) * speedMax, 2, PlayerOwner, target.x, target.y, -1);
+            }
         }
         HazardSystem.SpreadCircle(transform.position, (int)(400 + Player.Instance.TarBonusDuration * 100), sizeOil, HazardSystem.HazardType.Oil);
     }

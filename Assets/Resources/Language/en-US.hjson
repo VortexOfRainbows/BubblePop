@@ -57,6 +57,7 @@
       ThoughtBubbleDescription: Y:[Channeling recall] has a Y:33% G:(+17% per stack) Y:chance to release damaging stars
       GachaponDescription: Y:Chips have a Y:50% G:(+25% per stack) Y:chance to release damaging stars
       FizzyDescription: Y:Skateboard releases a damaging star every Y:[1.0 seconds] G:(-25% per stack)
+      KingOilDescription: Y:[Oil Barrels] release Y:4 G:(+2 per stack) damaging stars on detonation
     }
     ShotSpeed:
     {
@@ -1102,7 +1103,7 @@
     {
       Title: Reactor Core
       Description: Increases Y:[Oil Barrel] explosion size and bubbles released by Y:14% G:(+14% per stack)
-      Brief: Bigger barrels
+      Brief: Increase payload explosion size
       Lore: Power.ReactorCore.Lore
     }
     FlintAndSteel:
@@ -1115,8 +1116,8 @@
     Thunderbolt:
     {
       Title: Thunderbolt
-      Description: WIP
-      Brief: WIP
+      Description: Drop Y:2 G:(+1 per stack) smaller Y:[Oil Barrels] alongside the main payload
+      Brief: Greater payload quantity
       Lore: Power.Thunderbolt.Lore
     }
   }

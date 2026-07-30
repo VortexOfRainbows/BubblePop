@@ -182,6 +182,6 @@ public class Thunderbolt : PowerUp
     public override void Init() => Weighting = Legendary;
     public override void HeldEffect(Player p)
     {
-
+        p.BonusAerialBarrels += 1 + Stack;
     }
 }

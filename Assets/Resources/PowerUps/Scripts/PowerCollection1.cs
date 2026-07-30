@@ -43,7 +43,7 @@ public class Dash : PowerUp
     }
     public override void ModifyDescription(ref PowerDescription description)
     {
-        description.WithAlt<ThoughtBubble>().WithAlt<Gachapon>().WithAlt<Fizzy>();
+        description.WithAlt<ThoughtBubble>().WithAlt<Gachapon>().WithAlt<Fizzy>().WithAlt<KingOil>();
     }
     public override void HeldEffect(Player p)
     {

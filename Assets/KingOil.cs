@@ -24,7 +24,7 @@ public class KingOil : Body
     {
         if (Player.Control.Ability && !Player.Control.LastAbility)
         {
-            Projectile.NewProjectile<OilBomb>(Utils.MouseWorld, Vector2.zero, 0, Player);
+            Projectile.NewProjectile<OilBomb>(Utils.MouseWorld, Vector2.zero, 5, Player, 1, Player.BonusAerialBarrels);
         }
     }
     public override void FaceUpdate()
