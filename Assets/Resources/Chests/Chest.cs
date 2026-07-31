@@ -2,22 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static Enemy;
 
-public class Chest : MonoBehaviour
+public class Chest : MonoBehaviour, IImpactedByProjIFrames
 {
-    #region TODO: Move this to a separate class later (alongside the implementation in Enemy.cs)
-    public List<ImmunityData> SpecializedImmuneFrames = new();
-    public void UpdateSpecialImmuneFrames()
-    {
-        if (SpecializedImmuneFrames.Count > 0)
-        {
-            for (int i = SpecializedImmuneFrames.Count - 1; i >= 0; --i)
-                if (--SpecializedImmuneFrames[i].immuneFrames <= 0)
-                    SpecializedImmuneFrames.RemoveAt(i);
-        }
-    }
-    #endregion
     public int HitsRequiredToKill { get; set; } = -1;
     public void OnCollisionEnter2D(Collision2D collision) => OnTriggerStay2D(collision.collider);
     public void OnCollisionStay2D(Collision2D collision) => OnTriggerStay2D(collision.collider);
@@ -33,19 +20,19 @@ public class Chest : MonoBehaviour
         }
         else
         {
-            if (RB.mass > 1.1f && collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p) && !SpecializedImmuneFrames.Contains(p) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
+            if (RB.mass > 1.1f && collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p) && !p.SpecializedImmuneFrames.Contains(this) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
             {
                 if (p.Penetrate != -1 && --p.Penetrate == 0)
                     p.Kill();
                 else
-                    SpecializedImmuneFrames.Add(new ImmunityData(p, p.immunityFrames));
+                    p.SpecializedImmuneFrames.Add(new Projectile.ImmunityData(this, p.immunityFrames));
+                HitsRequiredToKill -= (int)Mathf.Max(1, p.Damage);
                 if (HitsRequiredToKill <= 0 || p is MeleeHitbox)
                     TryOpening();
                 else
                 {
                     AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 0.6f, 1.6f);
                     SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.red, 0.5f);
-                    --HitsRequiredToKill;
                 }
             }
         }
@@ -273,10 +260,7 @@ public class Chest : MonoBehaviour
             SpriteRendererShadow.transform.localPosition = new Vector3(Visual.transform.localPosition.x * 0.5f, 0, 1);
         }
         if(ChestType == 3)
-        {
             SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.white, 0.07f);
-            UpdateSpecialImmuneFrames();
-        }
         RB.velocity *= 0.94f;
     }
     public bool SkipSpawnAnimation = false;

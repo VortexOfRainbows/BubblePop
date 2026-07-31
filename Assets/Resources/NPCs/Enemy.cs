@@ -80,7 +80,7 @@ public static class EnemyID
     public static readonly GameObject IceGolem = LoadNPC("IceGolem/IceGolem");
     public static readonly GameObject Peaclock = LoadNPC("Peaclock/Peaclock");
 }
-public class Enemy : Entity
+public class Enemy : Entity, IImpactedByProjIFrames
 {
     public Player Target => Player.FindClosest(transform.position, out _, out _);
     public EnemyDescription MyDescription => StaticData.EnemyDescription;
@@ -276,26 +276,6 @@ public class Enemy : Entity
         norm = norm.normalized;
         return best;
     }
-    public class ImmunityData
-    {
-        public ImmunityData(Projectile attacker, int frames)
-        {
-            this.attacker = attacker;
-            immuneFrames = frames;
-        }
-        public Projectile attacker;
-        public int immuneFrames;
-    }
-    public List<ImmunityData> SpecializedImmuneFrames = new();
-    public void UpdateSpecialImmuneFrames()
-    {
-        if (SpecializedImmuneFrames.Count > 0)
-        {
-            for (int i = SpecializedImmuneFrames.Count - 1; i >= 0; --i)
-                if (--SpecializedImmuneFrames[i].immuneFrames <= 0 || SpecializedImmuneFrames[i].attacker == null)
-                    SpecializedImmuneFrames.RemoveAt(i);
-        }
-    }
     public void DeathParticles(int count = 10, float size = 0, Color c = default)
     {
         BoxCollider2D c2D = GetComponent<BoxCollider2D>();
@@ -356,7 +336,6 @@ public class Enemy : Entity
         }
         else
             ++FramesAlive;
-        UpdateSpecialImmuneFrames();
         ResetBuffStats();
         UpdateBuffs();
         if (ChampionType != -1 || HasBeenImplantedOnce)
@@ -439,7 +418,7 @@ public class Enemy : Entity
     public bool FirstStrike { get; protected set; } = true;
     public sealed override void OnHurtByProjectile(Projectile proj)
     {
-        if (SpecializedImmuneFrames.Contains(proj) || proj.Penetrate == 0 || !SpawnedIn || proj.Damage <= 0)
+        if (proj.SpecializedImmuneFrames.Contains(this) || proj.Penetrate == 0 || !SpawnedIn || proj.Damage <= 0)
             return;
         bool piercingProjectile = proj.Penetrate > 1 || proj.Penetrate == -1;
         if (piercingProjectile && UniversalImmuneFrames > 0)
@@ -496,8 +475,6 @@ public class Enemy : Entity
             }
             Injure(finalDamage, crit, c, 0);
             proj.HitTarget(this);
-            if (piercingProjectile)
-                SpecializedImmuneFrames.Add(new ImmunityData(proj, proj.immunityFrames));
         }
     }
     private Color PickCriticalStrikeColor(int critValue)

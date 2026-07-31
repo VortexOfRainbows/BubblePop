@@ -4,6 +4,26 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public class ImmunityData
+    {
+        public ImmunityData(IImpactedByProjIFrames target, int frames)
+        {
+            this.target = target;
+            immuneFrames = frames;
+        }
+        public IImpactedByProjIFrames target;
+        public int immuneFrames;
+    }
+    public List<ImmunityData> SpecializedImmuneFrames = new();
+    public void UpdateSpecialImmuneFrames()
+    {
+        if (SpecializedImmuneFrames.Count > 0)
+        {
+            for (int i = SpecializedImmuneFrames.Count - 1; i >= 0; --i)
+                if (--SpecializedImmuneFrames[i].immuneFrames <= 0 || SpecializedImmuneFrames[i].target == null)
+                    SpecializedImmuneFrames.RemoveAt(i);
+        }
+    }
     public static void StaticUpdate()
     {
         if(Main.GameUpdateCount % 2 == 0)
@@ -128,11 +148,9 @@ public class Projectile : MonoBehaviour
     }
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.CompareTag("Tub") && this is not BathBomb)
-        {
+        if(collision.CompareTag("Tub"))
             if(OnTileCollide(collision))
                 Kill();
-        }
     }
     public virtual bool OnTileCollide(Collider2D collision)
     {
@@ -152,6 +170,7 @@ public class Projectile : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        UpdateSpecialImmuneFrames();
         AI();
         bool? homing = CanBeAffectedByHoming();
         if (((!homing.HasValue && Friendly) || (homing.HasValue && CanBeAffectedByHoming().Value)) && PlayerOwner.HomingRange > 0)
@@ -200,6 +219,9 @@ public class Projectile : MonoBehaviour
             //if(target is not IceGolem)
             target.AddBuff<Chill>(PlayerOwner.ChillDuration);
         }
+        bool piercingProjectile = Penetrate > 1 || Penetrate == -1;
+        if (piercingProjectile && target is Enemy enemy)
+            SpecializedImmuneFrames.Add(new ImmunityData(enemy, immunityFrames));
     }
     /// <summary>
     /// Called after damage is registered on the enemy, including when the projectile would kill the enemy
@@ -282,4 +304,8 @@ public class Projectile : MonoBehaviour
 public abstract class BoxProjectile : Projectile
 {
     public new BoxCollider2D C2D => cmp.rectCollider;
+}
+public interface IImpactedByProjIFrames
+{
+
 }

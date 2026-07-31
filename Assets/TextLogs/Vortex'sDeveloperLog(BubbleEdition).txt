@@ -68,6 +68,9 @@ Done:
 	1. Compared to the other two, this one has tighter hallways but more forges (the chest count is same as the original-5). No keys given
 9. Leonard Lasers now glow more noticeably (and should be more easily visible at night)
 10. Some internal code reorganization (move some child classes away from the Projectile.cs file)
+11. Move immunity frame code from Enemies to Projectiles
+	1. This is for mainly for future proofing and should have no immediate impact on anything
+	2. Black Market crates now break faster from higher-damage projectiles
 
 7/27/26 to 7/28/26
 1. Add Peaclock 

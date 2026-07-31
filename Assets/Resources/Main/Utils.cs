@@ -158,10 +158,10 @@ public static class Utils
         }
         return false;
     }
-    public static bool Contains(this List<ImmunityData> list, Projectile proj)
+    public static bool Contains(this List<Projectile.ImmunityData> list, IImpactedByProjIFrames target) //Might be better to replace with a hashset implementation in the future (though not ultimately necessary)
     {
-        foreach(ImmunityData data in list)
-            if (data.attacker == proj)
+        foreach(Projectile.ImmunityData data in list)
+            if (data.target == target)
                 return true;
         return false;
     }
