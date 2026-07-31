@@ -29,13 +29,15 @@ Need to do:
 5. Enemy Pathfinding (implement line-of-sight behavior changes and integrate pathfinding with them)
 6. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 7. Compendium TODO:
-	1. Make powers show which pools they belong to
+	1. Make powers show which pools they belong to (mostly this should just mean character)
 	2. Make blurbs appear in the equipment page
 8. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
 9. King Oil (Power Ideas)
 	1. Tie: This is a powerful minion that all characters might want, but especially helps King Oil apply tar to nearby enemies
 		1. (purple) Defense Contract: grants a military helicopter companion that shoots bubbles at nearby enemies
 10. Snowball (Snobble) enemies
+11. Ability meter for all characters (probably at the top left? ask in meeting)
+12. Breakable crates that spawn and can be destroyed for stuff (coins, shields, keys, etc.)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
