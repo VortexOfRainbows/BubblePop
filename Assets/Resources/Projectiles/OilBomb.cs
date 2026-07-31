@@ -96,6 +96,7 @@ public class OilBomb : Projectile
     public override void OnKill()
     {
         DeathParticles();
+        Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, Damage, PlayerOwner, 1.5f * BarrelScaleMultSqrt, 1.5f);
         if(IsFireBomb)
         {
             HazardSystem.TryDetonatingOil(transform.position, PlayerOwner, PlayerOwner.FlintAndSteel);
@@ -103,7 +104,6 @@ public class OilBomb : Projectile
         }
         float sizeOil = 16 * BarrelScaleMult;
         int totalBubbles = Mathf.RoundToInt(8 * BarrelScaleMult);
-        Projectile.NewProjectile<ColaExplode>(transform.position, Vector2.zero, Damage, PlayerOwner, 1.5f * BarrelScaleMultSqrt, 1.5f);
         float projectileReleaseSize = 6 * BarrelScaleMultSqrt;
         for (int i = 0; i < totalBubbles; ++i)
         {
