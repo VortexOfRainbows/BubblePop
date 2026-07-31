@@ -66,6 +66,8 @@ Done:
 7. Add a new Forge node: ForgeCastle
 8. Add a new Boss node: BossCastle
 	1. Compared to the other two, this one has tighter hallways but more forges (the chest count is same as the original-5). No keys given
+9. Leonard Lasers now glow more noticeably (and should be more easily visible at night)
+10. Some internal code reorganization (move some child classes away from the Projectile.cs file)
 
 7/27/26 to 7/28/26
 1. Add Peaclock 
