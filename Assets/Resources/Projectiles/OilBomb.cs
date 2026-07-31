@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class OilBomb : Projectile
@@ -150,7 +151,15 @@ public class OilBomb : Projectile
         SpriteBatch.Draw(Main.TextureAssets.CrosshairFill, startPos, sizeMult, 0, c.WithAlpha(c.a * 0.2f), order + 1, Main.TextureAssets.SpriteGlowmask);
         SpriteBatch.Draw(Main.TextureAssets.Shadow, startPos, new Vector2(3, 2) * transform.localScale, 0, new Color(0, 0, 0, 0.3f * percent * windDownPercent), order, Main.TextureAssets.AlphaShader);
     }
-    public override bool? CanBeAffectedByHoming() => false;
+    public override bool? CanBeAffectedByHoming() => !IsFireBomb;
+    public override Vector3 HomingStartPosition() => startPos;
+    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float range)
+    {
+        float currentSpeed = RB.velocity.magnitude + PlayerOwner.HomingRangeSqrt * 2.5f + 5;
+        float modAmt = 0.05f + PlayerOwner.HomingRangeSqrt * 0.025f;
+        RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm * currentSpeed, modAmt);
+        return false;
+    }
     public override bool OnInsideTile() => false;
     public override bool OnTileCollide(Collider2D collision) => false;
     public override void OnHitTarget(Entity target)
