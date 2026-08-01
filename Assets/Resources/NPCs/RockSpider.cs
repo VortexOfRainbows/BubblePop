@@ -48,7 +48,7 @@ public class RockSpider : Enemy
     }
     public override void UIAI()
     {
-        UpdateDirection(-1);
+        UpdateDirection(1);
     }
     public virtual void UpdateDirection(float i)
     {

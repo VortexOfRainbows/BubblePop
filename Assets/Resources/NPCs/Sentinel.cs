@@ -167,7 +167,7 @@ public class Sentinel : Enemy
             for (int i = -1; i <= 1; i += 2)
             {
                 float distanceScan = 24;
-                Vector2 _ = Utils.RaycastWithTileSupport(Head.position, toTarget.normalized.RotatedBy(i * iPer * 20 * Mathf.Deg2Rad), ref distanceScan, .1f);
+                Vector2 _ = Utils.RaycastWithTileSupport(Head.position, toTarget.normalized.RotatedBy(i * iPer * 20 * Mathf.Deg2Rad), ref distanceScan, .1f, out bool _);
                 float dist = distanceScan;
                 dist /= 4f;
                 SpriteBatch.Draw(Main.TextureAssets.GradientLine, new(Head.position.x, Head.position.y, 0.5f),

@@ -154,7 +154,7 @@ public class OilScepter : Weapon
                 AudioManager.PlaySound(SoundID.Infect, transform.position, 0.8f, 0.8f, 0);
                 ++ActiveDiamondProjectile;
                 float distance = 16;
-                Vector2 final = Utils.RaycastWithTileSupport(Gem.transform.position, awayFromWand, ref distance, 0.1f);
+                Vector2 final = Utils.RaycastWithTileSupport(Gem.transform.position, awayFromWand, ref distance, 0.1f, out bool _);
                 Projectile.NewProjectile<KingOilDiamondProj>(Gem.transform.position, awayFromWand * 5, 1, Player, final.x, final.y);
 
                 if(Player.Control.SecondaryAttackHold && ActiveDiamondProjectile < AllowedDiamonds)

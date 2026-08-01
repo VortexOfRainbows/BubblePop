@@ -26,7 +26,8 @@ Need to do:
 3. Make a distinct "Generic Power" pool, which contains: 
 	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
 4. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-5. Enemy Pathfinding (implement line-of-sight behavior changes and integrate pathfinding with them)
+5. Enemy Pathfinding
+	1. Enemies currently using pathfinding: Chicken, Snobble
 6. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 7. Compendium TODO:
 	1. Make powers show which pools they belong to (mostly this should just mean character)
@@ -35,9 +36,8 @@ Need to do:
 9. King Oil (Power Ideas)
 	1. Tie: This is a powerful minion that all characters might want, but especially helps King Oil apply tar to nearby enemies
 		1. (purple) Defense Contract: grants a military helicopter companion that shoots bubbles at nearby enemies
-10. Snowball (Snobble) enemies
-11. Ability meter for all characters (probably at the top left? ask in meeting)
-12. Breakable crates that spawn and can be destroyed for stuff (coins, shields, keys, etc.)
+10. Ability meter for all characters (probably at the top left? ask in meeting)
+11. Breakable crates that spawn and can be destroyed for stuff (coins, shields, keys, etc.)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -55,7 +55,7 @@ Sounds Needed:
 
 Done: 	
 
-7/28/26 to 7/31/26
+7/28/26 to 8/1/26
 1. Import some Crosshair assets
 2. WIP King Oil Drone Strike!
 	1. Needs: cooldown, sprite for Fire Barrel (sam)
@@ -75,8 +75,10 @@ Done:
 	2. Black Market crates now break faster from higher-damage projectiles
 12. Add Snobble enemy
 	1. Works with Infectors, Compendium
-	2. NEEDS: pathfinding adjustments
-13. Rock spider and snobble now face the correct direction in the compendium
+13. Rock spider and snobble now face the correct direction in the compendium (fixed rock spider issue that popped up the first time)
+	1. Also fix some asymmetries with Rock Spider legs being more prevalent in one direction than the other (barely noticeable)
+14. Adjustments to pathfinding to make it smoother (use Line of Sight)
+	1. Now enemies look for a target when they spawn and every 5 frames after, keeping track of whether they have the target in LOS
 
 7/27/26 to 7/28/26
 1. Add Peaclock 

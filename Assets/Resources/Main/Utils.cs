@@ -421,28 +421,29 @@ public static class Utils
     /// <param name="norm"></param>
     /// <param name="distance"></param>
     /// <returns>The final location of the ray and the minimum distance of the unity and tile versions</returns>
-    public static Vector2 RaycastWithTileSupport(Vector2 start, Vector2 norm, ref float distance, float tileCollisionSize = 0.0f)
+    public static Vector2 RaycastWithTileSupport(Vector2 start, Vector2 norm, ref float distance, float tileCollisionSize, out bool hitSomething)
     {
         RaycastHit2D hit = Physics2D.Raycast(start, norm, distance, WorldLayerMask);
         float startingDistance = distance;
         float dist = distance;
         if (hit.distance == 0)
         {
-            if (hit.distance == 0)
-            {
-                hit.point = (distance * norm) + start;
-                dist = distance;
-            }
-            else
-                dist = hit.distance;
-            if (dist > distance)
-                dist = distance;
+            hitSomething = false;
+            hit.point = (distance * norm) + start;
         }
+        else
+        {
+            hitSomething = true;
+            dist = hit.distance;
+        }
+        if (dist > distance)
+            dist = distance;
         Vector2 endPosition = TileOnlyRaycast(start, norm, ref distance, tileCollisionSize);
         if (distance <= dist)
         {
             if (startingDistance < distance) 
                 distance = startingDistance;
+            hitSomething = true;
             return endPosition;
         }
         distance = dist;
@@ -466,7 +467,7 @@ public static class Utils
             scanPosition = start + norm * i;
             if (stepAmount <= 0.00025f)
                 break;
-            bool otherTilesAreSolid = collisionRange > 0 &&
+            bool otherTilesAreSolid = collisionRange != 0 &&
                 (World.SolidTile(scanPosition + new Vector2(-collisionRange, -collisionRange)) ||
                 World.SolidTile(scanPosition + new Vector2(collisionRange, collisionRange)) ||
                 World.SolidTile(scanPosition + new Vector2(-collisionRange, collisionRange)) || 
@@ -489,6 +490,6 @@ public static class Utils
     {
         Vector2 toEnd = end - start;
         distance = toEnd.magnitude;
-        return TileOnlyRaycast(start, toEnd, ref distance);
+        return TileOnlyRaycast(start, toEnd, ref distance, collisionRange);
     }
 }

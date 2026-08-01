@@ -37,7 +37,7 @@ public class Snobble : Enemy
     }
     public override void AI()
     {
-        Player.FindClosest(transform.position, out Vector2 toPlayer, out float dist);
+        Player.FindClosest(transform.position, out Vector2 _, out float dist);
         MovementTimer++;
         float trueMoveSpeed = MoveSpeed * 2;
         if (MovementTimer < 100)
@@ -82,7 +82,7 @@ public class Snobble : Enemy
                 TopJaw.LerpLocalPosition(new Vector2(0, 0.2f * rate), 0.1f);
                 BotJaw.LerpLocalPosition(new Vector2(0, -0.3f * rate), 0.1f);
                 BackJaw.LerpLocalScale(new Vector2(1.0f + 0.1f * rate, 1f + rate * 1.75f), 0.1f);
-                trueMoveSpeed *= 2.9f;
+                trueMoveSpeed *= 2.85f;
             }
             if((Utils.RandBool(2) || PlayerNearby) && MovementTimer > 110)
                 ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.1f) + Utils.RandCircle(.5f), Utils.RandFloat(0.3f, 0.5f), Vector2.up * Utils.RandFloat(3, 6) - RB.velocity * Utils.RandFloat(0.4f, 0.6f), 0.5f, Utils.RandFloat(0.5f, 1.0f), ParticleManager.ID.SnowBG, Color.white);
@@ -91,13 +91,13 @@ public class Snobble : Enemy
         {
             MovementTimer = 0;
         }
-
-        RB.velocity += World.GetDirection(transform.position) * trueMoveSpeed;
+        Vector2 moveDir = HasLineOfSightWithTarget ? (Target.Position - (Vector2)transform.position).normalized : World.GetDirection(transform.position);
+        RB.velocity += moveDir * trueMoveSpeed;
         RB.velocity *= Inertia;
         if (Mathf.Abs(RB.velocity.x) > 0.1f)
             UpdateDirection(RB.velocity.x);
-        float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1f;
-        tilt += Mathf.Sqrt(Mathf.Abs(RB.velocity.y)) * -2.0f * Visual.transform.localScale.x;
+        float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -0.75f;
+        tilt += Mathf.Sqrt(Mathf.Abs(RB.velocity.y)) * -1.5f * Visual.transform.localScale.x;
         Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
     }
     public override void OnKill()

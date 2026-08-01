@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-
 public static class EnemyID
 {
     public class StaticEnemyData
@@ -83,7 +80,15 @@ public static class EnemyID
 }
 public class Enemy : Entity, IImpactedByProjIFrames
 {
-    public Player Target => Player.FindClosest(transform.position, out _, out _);
+    public bool HasLineOfSightWithTarget { get; private set; } = false;
+    public Player Target { get; private set; } = null;
+    public void TargetAcquisitionUpdate()
+    {
+        Target = Player.FindClosest(transform.position, out Vector2 norm, out float distance);
+        float startingDist = distance;
+        Utils.RaycastWithTileSupport(transform.position, norm, ref distance, 0.5f, out bool hitSomething); //This migth be a bit excessive for a line of sight check. If this is a performance issue, come back to this and optimize it (maybe make it so it doesn't find the exact collision position, just terminate upon any collision detected)
+        HasLineOfSightWithTarget = !hitSomething || (distance >= (startingDist - 0.1f)); //If nothing was hit or the distance to the hit was about the same as the distance to the player, that means we have line of sight (most likely)
+    }
     public EnemyDescription MyDescription => StaticData.EnemyDescription;
     public string Name()
     {
@@ -206,6 +211,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
     }
     public sealed override void Init()
     {
+        TargetAcquisitionUpdate();
         SetUpStats();
         OnSpawn();
     }
@@ -337,6 +343,8 @@ public class Enemy : Entity, IImpactedByProjIFrames
         }
         else
             ++FramesAlive;
+        if (FramesAlive % 5 == 0)
+            TargetAcquisitionUpdate();
         ResetBuffStats();
         UpdateBuffs();
         if (ChampionType != -1 || HasBeenImplantedOnce)

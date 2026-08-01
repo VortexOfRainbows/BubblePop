@@ -21,7 +21,7 @@ public class SentinelLaser : BoxProjectile
             timer = 0;
             Vector2 norm = RB.velocity.normalized;
             float distanceScan = 24f;
-            Vector2 _ = Utils.RaycastWithTileSupport(position, norm, ref distanceScan, .1f);
+            Vector2 _ = Utils.RaycastWithTileSupport(position, norm, ref distanceScan, .1f, out bool _);
             float dist = distanceScan;
             C2D.size = new Vector2(dist, 0.5f);
             C2D.offset = new Vector2(dist / 2, 0);
