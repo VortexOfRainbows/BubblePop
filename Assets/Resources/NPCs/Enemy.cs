@@ -79,6 +79,7 @@ public static class EnemyID
     public static readonly GameObject SuperSentinel = LoadNPC("Sentinel/SuperSentinel");
     public static readonly GameObject IceGolem = LoadNPC("IceGolem/IceGolem");
     public static readonly GameObject Peaclock = LoadNPC("Peaclock/Peaclock");
+    public static readonly GameObject Snobble = LoadNPC("Snobble/Snobble");
 }
 public class Enemy : Entity, IImpactedByProjIFrames
 {

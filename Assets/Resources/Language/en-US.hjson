@@ -1109,7 +1109,7 @@
     FlintAndSteel:
     {
       Title: Flint and Steel
-      Description: 
+      Description:
         '''
         Ability drops a Y:[Fire Barrel] after the main payload 
         Y:[Fire Barrel detonates debuffs] and Y:ignites Y:[Tar puddles,] causing a Y:[chain reaction] that can travel Y:2 G:(+1 per stack) tiles
@@ -1724,6 +1724,12 @@
       Title: Peaclock
       Description: Just wait 'til you meet his brother Peaglock
       Lore: Enemy.Peaclock.Lore
+    }
+    Snobble:
+    {
+      Title: Snobble
+      Description: Such a cute snowball creature couldn't possibly pose a threat
+      Lore: Enemy.Snobble.Lore
     }
   }
 }

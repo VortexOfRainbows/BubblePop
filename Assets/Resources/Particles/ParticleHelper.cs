@@ -16,6 +16,7 @@ public class ParticleManager : MonoBehaviour
         public const int Snow = 7;
         public const int Fire = 8;
         public const int Smoke = 9;
+        public const int SnowBG = 10;
     }
     public static readonly Color DefaultColor = new(0.89f, 0.8078f, 0.9412f, 0.5f);
     public static ParticleManager Instance;

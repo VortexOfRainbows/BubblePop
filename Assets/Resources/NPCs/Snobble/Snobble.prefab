@@ -108,14 +108,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611071436465620477}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1618711988480370759}
   - {fileID: 6732750285368390876}
-  m_Father: {fileID: 1153553836434842406}
+  m_Father: {fileID: 7553859955360790309}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1621425413243123699
 GameObject:
@@ -143,7 +143,7 @@ Transform:
   m_GameObject: {fileID: 1621425413243123699}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 1.473, z: 0}
+  m_LocalPosition: {x: 0.064, y: 1.473, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -227,11 +227,12 @@ Transform:
   m_GameObject: {fileID: 1793237860736786547}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1153553836434842406}
+  - {fileID: 7563669635948359379}
   m_Father: {fileID: 5087820909988891718}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &2402636021079644533
@@ -356,7 +357,7 @@ Transform:
   m_GameObject: {fileID: 2976841330855880594}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -0.05, z: 0}
   m_LocalScale: {x: 1.15, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -576,6 +577,7 @@ GameObject:
   - component: {fileID: 5502792803788001209}
   - component: {fileID: 7477060424341869273}
   - component: {fileID: 5622524243659616828}
+  - component: {fileID: 1622410784175592931}
   m_Layer: 9
   m_Name: Snobble
   m_TagString: Enemy
@@ -659,7 +661,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.05}
+  m_Offset: {x: 0, y: 0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -670,7 +672,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.55, y: 1.3}
+  m_Size: {x: 1.55, y: 1.45}
   m_EdgeRadius: 0
 --- !u!58 &5622524243659616828
 CircleCollider2D:
@@ -704,9 +706,33 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.1}
+  m_Offset: {x: 0, y: 0.3}
   serializedVersion: 2
-  m_Radius: 0.9
+  m_Radius: 1
+--- !u!114 &1622410784175592931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7675411063330100480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a6fc9d132e945489067f7374031e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Visual: {fileID: 1793237860736786547}
+  SpawnedIn: 0
+  HasCalledInit: 0
+  RB: {fileID: 5502792803788001209}
+  IndexInAllEnemyArray: -1
+  AlreadyDead: 0
+  Snow: {fileID: 1153553836434842406}
+  Face: {fileID: 7563669635948359379}
+  TopJaw: {fileID: 2729355485420184561}
+  BotJaw: {fileID: 4487350909509242290}
+  BackJaw: {fileID: 1312949907385067924}
+  Mouth: {fileID: 6732750285368390876}
 --- !u!1 &7800506007692769238
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,12 +759,11 @@ Transform:
   m_GameObject: {fileID: 7800506007692769238}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5680501669587004413}
-  - {fileID: 7563669635948359379}
   m_Father: {fileID: 7553859955360790309}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5182305156990587644
@@ -784,7 +809,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a198ab7d5eeb4da439ed8b0d760e3b83, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 2.9666667, y: 2.0656576}
