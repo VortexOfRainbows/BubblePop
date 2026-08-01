@@ -18,12 +18,12 @@ public class Snobble : Enemy
     public bool PlayerNearby { get; set; } = false;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 15;
+        data.BaseMaxLife = 12;
         data.BaseMaxCoin = 4;
         data.BaseMinCoin = 2;
         data.BaseMaxGem = 2;
         data.Cost = 2;
-        data.WaveNumber = 5;
+        data.WaveNumber = 4;
         data.Rarity = 2;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
@@ -55,6 +55,8 @@ public class Snobble : Enemy
             BotJaw.LerpLocalPosition(new Vector2(0, 0), 0.1f);
             BackJaw.LerpLocalScale(new Vector2(1.0f, 1f), 0.1f);
             PlayerNearby = dist < 9;
+            if (PlayerNearby && MovementTimer > 25)
+                MovementTimer++;
         }
         else if (MovementTimer < 150)
         {
@@ -80,10 +82,10 @@ public class Snobble : Enemy
                 TopJaw.LerpLocalPosition(new Vector2(0, 0.2f * rate), 0.1f);
                 BotJaw.LerpLocalPosition(new Vector2(0, -0.3f * rate), 0.1f);
                 BackJaw.LerpLocalScale(new Vector2(1.0f + 0.1f * rate, 1f + rate * 1.75f), 0.1f);
-                trueMoveSpeed *= 3.0f;
+                trueMoveSpeed *= 2.9f;
             }
             if((Utils.RandBool(2) || PlayerNearby) && MovementTimer > 110)
-                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, 0.3f) + Utils.RandCircle(.5f), Utils.RandFloat(0.3f, 0.5f), Vector2.up * Utils.RandFloat(3, 6) - RB.velocity * Utils.RandFloat(0.4f, 0.6f), 0.5f, Utils.RandFloat(0.5f, 1.0f), ParticleManager.ID.SnowBG, Color.white);
+                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.1f) + Utils.RandCircle(.5f), Utils.RandFloat(0.3f, 0.5f), Vector2.up * Utils.RandFloat(3, 6) - RB.velocity * Utils.RandFloat(0.4f, 0.6f), 0.5f, Utils.RandFloat(0.5f, 1.0f), ParticleManager.ID.SnowBG, Color.white);
         }
         else
         {
@@ -101,7 +103,7 @@ public class Snobble : Enemy
     public override void OnKill()
     {
         for(int i = 0; i < 20; ++i)
-            ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(.7f), Utils.RandFloat(0.6f, 1.0f), Vector2.up * Utils.RandFloat(5, 7.5f) + Utils.RandCircle(4), 0.5f, Utils.RandFloat(0.8f, 1.4f), ParticleManager.ID.SnowBG, Color.white);
-        AudioManager.PlaySound(SoundID.DuckNoise, transform.position, 0.25f, 2.5f);
+            ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.3f) + Utils.RandCircle(.7f), Utils.RandFloat(0.6f, 1.0f), Vector2.up * Utils.RandFloat(5, 7.5f) + Utils.RandCircle(4), 0.5f, Utils.RandFloat(0.8f, 1.4f), ParticleManager.ID.SnowBG, Color.white);
+        AudioManager.PlaySound(SoundID.DuckNoise, transform.position, 0.65f, 2.5f);
     }
 }

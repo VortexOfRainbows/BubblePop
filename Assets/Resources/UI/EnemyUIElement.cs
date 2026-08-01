@@ -42,7 +42,7 @@ public class EnemyUIElement : MonoBehaviour
             MyEnemy.UIAI();
             MyEnemy.transform.SetParent(EnemyScaler);
             Vector2 offset = Vector2.zero;
-            float scale = 40f / (MyEnemy.Visual.transform.localScale.x) * enemySizeScaler;
+            float scale = 40f / Mathf.Abs(MyEnemy.Visual.transform.localScale.x) * enemySizeScaler;
             MyEnemy.ModifyUIOffsets(ref offset, ref scale);
             MyEnemy.transform.localScale = Vector3.one;
             MyEnemy.transform.localScale *= scale;

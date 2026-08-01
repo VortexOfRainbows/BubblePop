@@ -1044,10 +1044,8 @@ MonoBehaviour:
   SpawnedIn: 0
   HasCalledInit: 0
   RB: {fileID: 8628457919241732162}
-  HasBeenImplantedOnce: 0
   IndexInAllEnemyArray: 10
   AlreadyDead: 0
-  FirstStrike: 1
   Head: {fileID: 6708375045059715549}
   LegConnectors:
   - {fileID: 5032935497533888104}
@@ -1339,7 +1337,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalScale: {x: -1.2, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7214364616371254904}
