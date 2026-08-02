@@ -91,7 +91,7 @@ public class Snobble : Enemy
         {
             MovementTimer = 0;
         }
-        Vector2 moveDir = HasLineOfSightWithTarget ? (Target.Position - (Vector2)transform.position).normalized : World.GetDirection(transform.position);
+        Vector2 moveDir = GetPathfindingToPlayerNorm();
         RB.velocity += moveDir * trueMoveSpeed;
         RB.velocity *= Inertia;
         if (Mathf.Abs(RB.velocity.x) > 0.1f)

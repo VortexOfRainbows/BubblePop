@@ -27,7 +27,7 @@ Need to do:
 	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
 4. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 5. Enemy Pathfinding
-	1. Enemies currently using pathfinding: Chicken, Snobble
+	1. Enemies currently using pathfinding: Chicken, Snobble, Ducks!
 6. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 7. Compendium TODO:
 	1. Make powers show which pools they belong to (mostly this should just mean character)
@@ -55,7 +55,7 @@ Sounds Needed:
 
 Done: 	
 
-7/28/26 to 8/1/26
+7/28/26 to 8/2/26
 1. Import some Crosshair assets
 2. WIP King Oil Drone Strike!
 	1. Needs: cooldown, sprite for Fire Barrel (sam)
@@ -80,6 +80,7 @@ Done:
 14. Adjustments to pathfinding to make it smoother (use Line of Sight)
 	1. Now enemies look for a target when they spawn and every 5 frames after, keeping track of whether they have the target in LOS
 15. Contaminate Sprite (David!)
+16. Ducks now pathfind!
 
 7/27/26 to 7/28/26
 1. Add Peaclock 

@@ -89,6 +89,10 @@ public class Enemy : Entity, IImpactedByProjIFrames
         Utils.RaycastWithTileSupport(transform.position, norm, ref distance, 0.5f, out bool hitSomething); //This migth be a bit excessive for a line of sight check. If this is a performance issue, come back to this and optimize it (maybe make it so it doesn't find the exact collision position, just terminate upon any collision detected)
         HasLineOfSightWithTarget = !hitSomething || (distance >= (startingDist - 0.1f)); //If nothing was hit or the distance to the hit was about the same as the distance to the player, that means we have line of sight (most likely)
     }
+    public Vector2 GetPathfindingToPlayerNorm()
+    {
+        return HasLineOfSightWithTarget ? (Target.Position - (Vector2)transform.position).normalized : World.GetDirection(transform.position);
+    }
     public EnemyDescription MyDescription => StaticData.EnemyDescription;
     public string Name()
     {

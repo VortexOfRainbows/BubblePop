@@ -6,7 +6,6 @@ public class Chicken : Enemy
     {
         inlineThreshold = 0.1f;
     }
-    private Vector2 targetedLocation;
     public float moveSpeed = 0.12f;
     public float inertiaMult = 0.96f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
@@ -22,15 +21,12 @@ public class Chicken : Enemy
     }
     public void UpdateDirection(float i)
     {
-        if (i >= 0)
-            i = 1;
-        else
-            i = -1;
+        i = i >= 0 ? 1 : -1;
         Visual.transform.localScale = new Vector3(i * 1.1f, 1.1f, 1);
     }
     public void MoveUpdate()
     {
-        Vector2 moveDir = HasLineOfSightWithTarget ? (Target.Position - (Vector2)transform.position).normalized : World.GetDirection(transform.position);
+        Vector2 moveDir = GetPathfindingToPlayerNorm();
         RB.velocity += moveDir * moveSpeed;
         RB.velocity *= inertiaMult;
         if (Mathf.Abs(RB.velocity.x) > 0.1f)
