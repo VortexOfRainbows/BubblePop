@@ -8,7 +8,6 @@ public class Crow : Enemy
         additiveColorPower = 0.4f;
     }
     public JumpMotion JumpAnimation;
-    protected Vector2 targetedLocation;
     public virtual float MoveSpeed => 0.15f;
     public virtual float InertiaMult => 0.9f;
     protected float JumpTimer = 0;
@@ -39,13 +38,10 @@ public class Crow : Enemy
     }
     public override void AI()
     {
-        targetedLocation = Target.Position;
-        Vector2 toTarget = targetedLocation - (Vector2)transform.position;
-        float dist = toTarget.magnitude;
-        if(dist < 11)
-        {
+        Vector2 toTarget = GetPathfindingToPlayerNorm();
+        float dist = Vector2.Distance(Target.Position, transform.position);
+        if(dist < 11 && HasLineOfSightWithTarget)
             toTarget = -toTarget;
-        }
         if((dist < 11 || dist > 20 || JumpTimer != 0) && IdleTimer == 100)
         {
             JumpTimer++;
@@ -53,7 +49,7 @@ public class Crow : Enemy
             {
                 JumpTimer = -70;
                 RB.velocity *= 0.5f;
-                RB.velocity += toTarget.normalized * MoveSpeed * 45;
+                RB.velocity += toTarget * (MoveSpeed * 45);
                 //float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
                 //tilt += RB.velocity.y * 2.0f * Visual.transform.localScale.x;
                 //Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
@@ -65,7 +61,7 @@ public class Crow : Enemy
                     JumpAnimation.JumpPercent = JumpTimer / 40f;
                     RB.velocity *= InertiaMult;
                     if(dist > 20)
-                        RB.velocity += toTarget.normalized * MoveSpeed * JumpAnimation.JumpPercent;
+                        RB.velocity += toTarget * (MoveSpeed * JumpAnimation.JumpPercent);
                 }
                 else
                 {
@@ -76,7 +72,7 @@ public class Crow : Enemy
                 UpdateDirection(RB.velocity.x);
             IdleTimer = 100;
         }
-        else if(--initialShootDelay <= 0)
+        else if(--initialShootDelay <= 0 && HasLineOfSightWithTarget)
         {
             JumpTimer = 0;
             JumpAnimation.JumpPercent = 0;
@@ -99,7 +95,7 @@ public class Crow : Enemy
             if (IdleTimer >= 200)
             {
                 IdleTimer = 0;
-                Vector2 norm = (targetedLocation - (Vector2)transform.position).normalized;
+                Vector2 norm = (Target.Position - (Vector2)transform.position).normalized;
                 AudioManager.PlaySound(SoundID.FlamingoShot, transform.position, 0.8f, 0.9f);
                 AudioManager.PlaySound(SoundID.LenardLaser, transform.position, 0.5f, 1.2f, 0);
                 for (int i = -1; i <= 1; ++i)

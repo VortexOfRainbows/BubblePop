@@ -58,11 +58,9 @@ public class Peaclock : Crow
     {
         if(InnateRotationDirection == 0)
             InnateRotationDirection = Utils.RandBool(2) ? 1 : -1;
-        targetedLocation = Target.Position;
         //if you do not have line of sight with the player, this behavior should be changed
-        Vector2 toTarget = targetedLocation - (Vector2)transform.position;
-        float dist = toTarget.magnitude;
-        toTarget = toTarget.normalized;
+        Vector2 toTarget = GetPathfindingToPlayerNorm();
+        float dist = Vector2.Distance(Target.Position, transform.position);
         float tailRotateSpeed = TailDefaultRotationSpeed;
         bool requestAttack = false;
         if ((dist > HopToPlayerDistance || JumpTimer != 0) && CogOutCounter <= 0)
