@@ -71,8 +71,8 @@ public class EnemySoap : Enemy
         }
     }
     private Vector2 FindTargetedPlayerPosition() {
-        float offsetX = Random.Range(-5f, 5f);
-        float offsetY = Random.Range(-5f, 5f);
-        return Target.Position + new Vector2 (offsetX, offsetY);
+        if(!HasLineOfSightWithTarget)
+            return GetPathfindingToPlayerNorm() * 5f + (Vector2)transform.position + new Vector2(Utils.RandFloat(-3f, 3f), Utils.RandFloat(-3f, 3f));
+        return Target.Position + new Vector2(Utils.RandFloat(-5f, 5f), Utils.RandFloat(-5f, 5f));
     }
 }

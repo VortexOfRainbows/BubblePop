@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1336996625515949569}
   - component: {fileID: 1561463213389821838}
   - component: {fileID: 3109061269767640983}
+  - component: {fileID: 8028642472306420045}
   m_Layer: 9
   m_Name: EnemySoap
   m_TagString: Enemy
@@ -54,7 +55,6 @@ MonoBehaviour:
   RB: {fileID: 1561463213389821838}
   IndexInAllEnemyArray: -1
   AlreadyDead: 0
-  FirstStrike: 1
   sRender: {fileID: 8660886952408476278}
   Soap1: {fileID: 21300000, guid: 8635ccc7d0b3bfc498756c3949706b62, type: 3}
   Soap2: {fileID: 21300000, guid: 782cdb13087e783428464b36fc0b7c23, type: 3}
@@ -97,27 +97,27 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 200
+    m_Bits: 72
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 72
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 72
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 72
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 72
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.024054408, y: 0.0068725348}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -128,8 +128,43 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.4984004, y: 1.4902918}
+  m_Size: {x: 2.5, y: 1.5}
   m_EdgeRadius: 0
+--- !u!58 &8028642472306420045
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191183863552249340}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: d62baf5a88e6d5a4cb903ffac62401e6, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 1664
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 1664
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 1664
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 1664
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 1664
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1
 --- !u!1 &7193143893330720848
 GameObject:
   m_ObjectHideFlags: 0

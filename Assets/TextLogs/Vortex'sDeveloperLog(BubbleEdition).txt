@@ -59,6 +59,10 @@ Done:
 1. Pathfinding for Ent, Snow Golem, and Crow, Peaclock (TESTED!)
 2. Pathfinding for Sentinel and Super Sentinel (TESTED!)
 3. Pathfinding for Rock Spider (TESTED!)
+4. Pathfinding for Soap (TESTED!)
+	1. Slightly modified size of collider
+	2. Now uses a Circular collider for tile/npc collision (rect collider for player/proj remains)
+	3. Soap, Soap Fragment, and Duck now have bouncy collision properties
 
 7/28/26 to 8/2/26
 1. Import some Crosshair assets
