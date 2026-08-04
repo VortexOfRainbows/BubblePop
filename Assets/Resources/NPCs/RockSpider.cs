@@ -74,9 +74,10 @@ public class RockSpider : Enemy
     }
     private Vector2 FindTargetedPlayerPosition()
     {
-        Vector2 toPlayer = Target.Position - RB.position;
-        float magnitude = Mathf.Min(5, toPlayer.magnitude);
-        toPlayer = toPlayer.normalized;
+        Vector2 toPlayer = !HasLineOfSightWithTarget ? GetPathfindingToPlayerNorm() : Target.Position - RB.position;
+        float magnitude = HasLineOfSightWithTarget ? Mathf.Min(5, toPlayer.magnitude) : 5;
+        if(HasLineOfSightWithTarget)
+            toPlayer = toPlayer.normalized;
         return RB.position + toPlayer * magnitude + new Vector2(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
     }
     public override void AI()
