@@ -27,7 +27,7 @@ Need to do:
 	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
 4. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 5. Enemy Pathfinding
-	1. Enemies currently using pathfinding: Chicken, Snobble, Ducks, Ents, Snow Golem, Crow, Peaclock!
+	1. Enemies currently using pathfinding: Chicken, Snobble, Ducks, Ents, Snow Golem, Crow, Peaclock, Sentinels, Rock Spider, Soaps, Gatligator!
 6. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 7. Compendium TODO:
 	1. Make powers show which pools they belong to (mostly this should just mean character)
@@ -63,6 +63,8 @@ Done:
 	1. Slightly modified size of collider
 	2. Now uses a Circular collider for tile/npc collision (rect collider for player/proj remains)
 	3. Soap, Soap Fragment, and Duck now have bouncy collision properties
+5. Pathfinding for Gatligator (TESTED!)
+	1. Only active during its direct to player movement state. Sometimes Gatligator will just wander aimlessly (no pathfinding when this is happening)
 
 7/28/26 to 8/2/26
 1. Import some Crosshair assets

@@ -63,6 +63,8 @@ public class Gatligator : Enemy
         if(movingMode == 0)
         {
             targetedLocation = Target.Position;
+            if (!HasLineOfSightWithTarget)
+                toTarget = GetPathfindingToPlayerNorm();
         }
         else if(toTarget.magnitude < 1)
         {
