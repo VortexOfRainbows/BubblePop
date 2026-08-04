@@ -54,10 +54,12 @@ public class Sentinel : Enemy
         float moveSpeed = 1.45f;
         float inertiaMult = 0.98125f;
         float percentShot = AttackCounter / 200f;
-        targetedLocation = Vector2.Lerp(targetedLocation, Target.Position, 0.9f * (1 - percentShot) * (1 - percentShot) * (1 - percentShot));
+        float iPer = (1 - percentShot);
+        targetedLocation = Vector2.Lerp(targetedLocation, Target.Position, 0.9f * iPer * iPer * iPer);
         Vector2 toTarget = targetedLocation - (Vector2)Head.position;
         float magnitude = toTarget.magnitude;
-        if (magnitude > 16 && AttackCounter <= 0)
+        Vector2 toTargetMovementDir = GetPathfindingToPlayerNorm();
+        if ((magnitude > 16 || !HasLineOfSightWithTarget) && AttackCounter <= 0)
         {
             if(AttackCounter < 0)
             {
@@ -65,7 +67,7 @@ public class Sentinel : Enemy
             }
             else
             {
-                RB.velocity += toTarget / magnitude * moveSpeed;
+                RB.velocity += toTargetMovementDir * moveSpeed;
                 inertiaMult = 0.95f;
             }
         }
@@ -95,7 +97,7 @@ public class Sentinel : Enemy
                 AttackCounter = -50;
             }
             ++AttackCounter;
-            RB.velocity += toTarget.RotatedBy(Mathf.PI * 0.4f) / magnitude * moveSpeed * 0.0225f;
+            RB.velocity += 0.0225f * moveSpeed * toTargetMovementDir.RotatedBy(Mathf.PI * 0.4f);
         }
         foreach (SpriteRenderer glow in Glows)
             glow.color = glow.color.WithAlpha(Mathf.Lerp(glow.color.a, 0.1f + percentShot * 0.9f, 0.04f));
