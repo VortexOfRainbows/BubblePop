@@ -149,7 +149,7 @@ public class RockGolem : RockSpider
                     speed *= percent;
                 }
             }
-            Vector2 norm = toPlayer.normalized;
+            Vector2 norm = HasLineOfSightWithTarget ? toPlayer.normalized : GetPathfindingToPlayerNorm();
             RB.velocity += norm * speed;
             RB.velocity *= 0.95f;
 
