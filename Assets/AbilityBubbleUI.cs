@@ -10,15 +10,15 @@ public class AbilityBubbleUI : MonoBehaviour
     }
     public Ability MyAbility => MyAbilityToDisplay_TEMP();
     public float FillPercent = 0;
-    public Image RadialFill;
-    public Image LinearFill;
+    public Image BarFill;
+    public Image BottleFill;
     public TextMeshProUGUI CountText;
     public void Update()
     {
         FillPercent = MyAbility.ProgressDisplay;
         FillPercent = Mathf.Clamp01(FillPercent);
-        RadialFill.fillAmount = 1 - FillPercent;
-        LinearFill.fillAmount = FillPercent;
+        BarFill.fillAmount = 1 - FillPercent;
+        BottleFill.fillAmount = FillPercent;
         int num = MyAbility.NumberDisplay;
         if (num >= 0)
         {
