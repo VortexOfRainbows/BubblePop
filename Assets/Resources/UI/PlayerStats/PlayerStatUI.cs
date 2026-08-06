@@ -9,6 +9,7 @@ public class PlayerStatUI : MonoBehaviour
     public static List<PlayerHeartUI> Shields = new();
     private static PlayerStatUI Instance { get => s_Instance == null ? s_Instance = FindFirstObjectByType<PlayerStatUI>() : s_Instance; set => s_Instance = value; }
     private static PlayerStatUI s_Instance;
+    public Transform LifeTranform;
     public TMPro.TextMeshProUGUI moneyText;
     public GameObject Money;
     public TMPro.TextMeshProUGUI keyText;
@@ -33,7 +34,7 @@ public class PlayerStatUI : MonoBehaviour
     {
         while (containerList.Count < cutoff)
         {
-            containerList.Add(Instantiate(shield ? PrefabShield: Prefab, Instance.transform.GetChild(0)).GetComponent<PlayerHeartUI>());
+            containerList.Add(Instantiate(shield ? PrefabShield: Prefab, Instance.LifeTranform).GetComponent<PlayerHeartUI>());
             int i = containerList.Count - 1;
             containerList[i].BobbingOffsetDegrees = 90 * i;
         }
