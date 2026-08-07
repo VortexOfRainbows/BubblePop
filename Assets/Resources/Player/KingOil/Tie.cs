@@ -19,7 +19,7 @@ public class Tie : Accessory
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<KingOilUnlock>();
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
-        powerPool.Add<BlackMarketDelivery>();
+        powerPool.Add<DefenseContract>();
     }
     protected override void AnimationUpdate()
     {

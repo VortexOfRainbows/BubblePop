@@ -185,3 +185,11 @@ public class Thunderbolt : PowerUp
         p.BonusAerialBarrels += 1 + Stack;
     }
 }
+public class DefenseContract : PowerUp
+{
+    public override void Init() => Weighting = SuperRare;
+    public override void HeldEffect(Player p)
+    {
+
+    }
+}
