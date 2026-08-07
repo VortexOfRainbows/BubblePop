@@ -1196,7 +1196,7 @@ public partial class Player : Entity
         {
             if (body is ThoughtBubble)
             {
-                if(!!HasAttacked)
+                if(!HasAttacked)
                     UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
                 if (AscensionLevel >= 3)
                     UnlockCondition.Get<KingOilUnlock>().SetComplete();
