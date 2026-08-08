@@ -357,14 +357,14 @@ public partial class Player : Entity
             else if (Accessory is Crystal)
                 return new Color(0.6f, 0.933f, 0.35f);
             else
-                return new Color(0.95f, 1f, 0.7f);
+                return ColorHelper.GachaponColor;
         }
         else if (Body is Fizzy)
-            return new Color(0.8f, 0.7f, 0.56f, 0.7f);
+            return ColorHelper.ColaColor;
         else if (Body is KingOil)
             return ColorHelper.KingOilColor;
         else //BUBBLEMANCER
-            return new Color(0.8f, 0.85f, 0.9f, 0.6f);
+            return ColorHelper.BubblemancerColor;
     }
     public TextMeshPro PlayerNumber;
     public static readonly List<Player> AllPlayers = new();

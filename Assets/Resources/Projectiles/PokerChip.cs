@@ -11,7 +11,7 @@ public class PokerChip : Projectile
         HomingNum = Utils.RandInt(10);
         Friendly = true;
         SpriteRendererGlow.gameObject.SetActive(true);
-        SpriteRendererGlow.color = new Color(0.7137f, 0.2352f, 0.2588f);
+        SpriteRendererGlow.color = ColorHelper.ChipColor;
         SpriteRendererGlow.transform.localScale *= 0.5f;
     }
     public override void AI()

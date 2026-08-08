@@ -1,9 +1,18 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MoneyIcon : MonoBehaviour
 {
-    public int Type = 0;
+    public enum MoneyType
+    {
+        Money = 0,
+        Keys = 1,
+        Tokens = 2,
+        Gems = 3,
+        Ability = 4
+    }
+    public MoneyType Type = MoneyType.Money;
     public static float ScaleFactor = 1.1f;
     public Canvas myCanvas;
     public Image Icon;
@@ -17,20 +26,24 @@ public class MoneyIcon : MonoBehaviour
         if (Utils.IsMouseHoveringOverThis(true, Icon.rectTransform, 0, myCanvas))
         {
             Icon.gameObject.transform.localScale = Vector3.Lerp(Icon.gameObject.transform.localScale, InitialScale * ScaleFactor, 0.1f);
-            if(Type == 0)
+            if(Type == MoneyType.Money)
                 PopUpTextUI.Enable("Money", "Can be used to purchase fancy powerups");
-            else if(Type == 1)
+            else if(Type == MoneyType.Keys)
                 PopUpTextUI.Enable("Keys", "Can be used to open chests");
-            else if(Type == 2)
+            else if(Type == MoneyType.Tokens)
                 PopUpTextUI.Enable("Tokens", "Can be used to play Gacha Slots instead of money");
-            else if(Type == 3)
+            else if(Type == MoneyType.Gems)
                 PopUpTextUI.Enable("Gems", "Can be used to reroll Choices and power the Forge");
-            UpdateSparkle(Sparkle, true);
+            else if(Type == MoneyType.Ability)
+                PopUpTextUI.Enable("Ability", Player.Instance.Body.GetAbility().First((Ability x) => x.Type == Ability.ID.Ability).Blurb); //REPLACE WITH ABILITY DESCRIPTION TAKEN FROM THE CHARACTER
+            if (Type != MoneyType.Ability)
+                UpdateSparkle(Sparkle, true);
         }
         else
         {
             Icon.gameObject.transform.localScale = Vector3.Lerp(Icon.gameObject.transform.localScale, InitialScale * 1.0f, 0.1f);
-            UpdateSparkle(Sparkle, false);
+            if(Type != MoneyType.Ability)
+                UpdateSparkle(Sparkle, false);
         }
     }
     private void UpdateSparkle(GameObject obj, bool on)

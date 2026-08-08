@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 public static class ColorHelper
@@ -33,6 +34,10 @@ public static class ColorHelper
     public static readonly Color Player2Color = New255(0xFF, 0x96, 0x96);
     public static readonly Color KingOilColor = new(0.5411f, .5176f, .6666f);
     public static readonly Color BurningOilColor = new(1f, .6f, .1f);
+    public static readonly Color GachaponColor = new(0.95f, 1f, 0.7f);
+    public static readonly Color ColaColor = new(0.8f, 0.7f, 0.56f, 0.7f);
+    public static readonly Color BubblemancerColor = new(0.8f, 0.85f, 0.9f, 0.6f);
+    public static readonly Color ChipColor = new(0.7137f, 0.2352f, 0.2588f);
     public static Color SentinelColorsLerp(float t, bool purple = false)
     {
         return purple ? Color.Lerp(SentinelPurple, SentinelMagenta, t) : Color.Lerp(SentinelGreen, SentinelBlue, t);
