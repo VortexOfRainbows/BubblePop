@@ -74,10 +74,11 @@ public class ThoughtBubble : Body
         }
         TailUpdate(ref empty);
     }
+    public int MaxTails => Player.TrailOfThoughts * 3 + 12;
     public void TailUpdate(ref Vector2 playerVelo)
     {
         //p.TrailOfThoughts = 10;
-        int maxTail = Player.TrailOfThoughts * 3 + 12;
+        int maxTail = MaxTails;
         Tails ??= new List<GameObject>();
         while(Tails.Count < maxTail && TailCount == Tails.Count)
         {
@@ -299,6 +300,6 @@ public class ThoughtBubble : Body
     {
         float progress = TailAddTimer / TailRegenTime;
 
-        return 1 - (TailCount + progress) / Mathf.Max(1, Tails.Count);
+        return 1 - (TailCount + progress) / Mathf.Max(1, MaxTails);
     }
 }

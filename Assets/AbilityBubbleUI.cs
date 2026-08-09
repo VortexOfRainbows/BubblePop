@@ -18,7 +18,7 @@ public class AbilityBubbleUI : MonoBehaviour
     public Image BarBottom;
     public void Update()
     {
-        FillPercent = MyAbility.ProgressDisplay;
+        FillPercent = Mathf.Lerp(FillPercent, MyAbility.ProgressDisplay, Utils.DeltaTimeLerpFactor(Mathf.Clamp01(0.1f + 2f * Mathf.Abs(FillPercent - MyAbility.ProgressDisplay))));
         FillPercent = Mathf.Clamp01(FillPercent);
         BarFill.fillAmount = 1 - FillPercent;
         BottleFill.fillAmount = FillPercent;
