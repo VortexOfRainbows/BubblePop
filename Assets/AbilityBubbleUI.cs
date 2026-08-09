@@ -16,6 +16,7 @@ public class AbilityBubbleUI : MonoBehaviour
     public Image[] PrimaryColorImages;
     public Image BarTop;
     public Image BarBottom;
+    public float OscillationTimer = 0;
     public void Update()
     {
         FillPercent = Mathf.Lerp(FillPercent, MyAbility.ProgressDisplay, Utils.DeltaTimeLerpFactor(Mathf.Clamp01(0.1f + 2f * Mathf.Abs(FillPercent - MyAbility.ProgressDisplay))));
@@ -71,5 +72,16 @@ public class AbilityBubbleUI : MonoBehaviour
             i.color = borderColor.WithAlpha(1);
         BarTop.color = barColor.WithAlpha(1);
         BarBottom.color = barBottomColor.WithAlpha(1);
+        if(MyAbility.ProgressDisplay <= 0)
+        {
+            float osc = -Mathf.Cos(OscillationTimer * Mathf.PI) * 0.2f + 0.2f;
+            BarTop.color = barColor.WithAlpha(1).Lerp(Color.white, osc);
+            BarBottom.color = barBottomColor.WithAlpha(1).Lerp(Color.white, osc);
+            OscillationTimer += Time.deltaTime * 5;
+        }
+        else
+        {  
+            OscillationTimer = 0; 
+        }
     }
 }

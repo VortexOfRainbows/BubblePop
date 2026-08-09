@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KingOil : Body
 {
-    public override float AbilityCD => 6;
+    public override float AbilityCD => 10;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<KingOilUnlock>();
     public override void Init()
     {
@@ -22,9 +22,10 @@ public class KingOil : Body
     }
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
-        if (Player.Control.Ability && !Player.Control.LastAbility)
+        if (Player.Control.Ability && !Player.Control.LastAbility && Player.abilityTimer <= 0)
         {
             Projectile.NewProjectile<OilBomb>(Utils.MouseWorld, Vector2.zero, 5, Player, 1, Player.BonusAerialBarrels);
+            Player.abilityTimer = AbilityCD;
         }
     }
     public override void FaceUpdate()
