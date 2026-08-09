@@ -78,10 +78,7 @@ public class ThoughtBubble : Body
     {
         //p.TrailOfThoughts = 10;
         int maxTail = Player.TrailOfThoughts * 3 + 12;
-        if (Tails == null)
-        {
-            Tails = new List<GameObject>();
-        }
+        Tails ??= new List<GameObject>();
         while(Tails.Count < maxTail && TailCount == Tails.Count)
         {
             TryAddingTail();
@@ -290,8 +287,18 @@ public class ThoughtBubble : Body
         while (Tails.Count > 0)
         {
             int end = Tails.Count - 1;
-            Destroy(Tails[end].gameObject);
+            Destroy(Tails[end]);
             Tails.RemoveAt(end);
         }
+    }
+    public override int AbilityCount()
+    {
+        return TailCount;
+    }
+    public override float AbilityProgess()
+    {
+        float progress = TailAddTimer / TailRegenTime;
+
+        return 1 - (TailCount + progress) / Mathf.Max(1, Tails.Count);
     }
 }
