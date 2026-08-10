@@ -16,11 +16,13 @@ public class AbilityBubbleUI : MonoBehaviour
     public Image[] PrimaryColorImages;
     public Image BarTop;
     public Image BarBottom;
+    public Image AbilityIcon;
     public float OscillationTimer = 0;
     public void Update()
     {
         if(Player.Instance == null || MyAbility == null)
             return;
+        AbilityIcon.sprite = Player.Instance.Body.AbilityIcon();
         float target = MyAbility.ProgressDisplay;
         //if (Player.Instance.Body is Gachapon)
         //    target *= target;

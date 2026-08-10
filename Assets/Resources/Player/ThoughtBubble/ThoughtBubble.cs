@@ -302,4 +302,8 @@ public class ThoughtBubble : Body
 
         return 1 - (TailCount + progress) / Mathf.Max(1, MaxTails);
     }
+    public override Sprite AbilityIcon()
+    {
+        return PowerUp.Get<TrailOfThoughts>().sprite;
+    }
 }

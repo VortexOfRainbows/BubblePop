@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Body : Equipment
@@ -140,5 +141,9 @@ public class Body : Equipment
     public virtual int AbilityCount()
     {
         return -1;
+    }
+    public virtual Sprite AbilityIcon()
+    {
+        return PowerUp.Get<Dash>().sprite;
     }
 }

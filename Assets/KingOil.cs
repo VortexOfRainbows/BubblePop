@@ -42,4 +42,8 @@ public class KingOil : Body
         Face.transform.eulerAngles = new Vector3(0, 0, toMouse2.y * 12.5f * p.Direction);
         Face.transform.localScale = new Vector3(p.Direction, 1, 1);
     }
+    public override Sprite AbilityIcon()
+    {
+        return PowerUp.Get<OilSpill>().sprite;
+    }
 }

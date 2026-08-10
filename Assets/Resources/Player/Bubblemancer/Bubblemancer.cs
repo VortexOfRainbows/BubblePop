@@ -73,4 +73,8 @@ public class Bubblemancer : Body
         Face.transform.LerpLocalPosition(pos, 0.065f);
         FaceR.flipX = !Flipped;
     }
+    public override Sprite AbilityIcon()
+    {
+        return Resources.Load<Sprite>("UI/Ability/Dash");
+    }
 }

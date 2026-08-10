@@ -1039,7 +1039,7 @@ public partial class Player : Entity
                     if (b is SpeedBoost)
                         existingSpeedBoosts++;
                 if (existingSpeedBoosts < allowedBoosts)
-                    AddBuff<SpeedBoost>(5);
+                    AddBuff<SpeedBoost>(7);
             }
         }
     }

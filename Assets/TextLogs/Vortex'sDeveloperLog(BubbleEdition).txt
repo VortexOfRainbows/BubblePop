@@ -34,8 +34,7 @@ Need to do:
 8. King Oil (Power Ideas)
 	1. Tie: This is a powerful minion that all characters might want, but especially helps King Oil apply tar to nearby enemies
 		1. (purple) Defense Contract: grants a military helicopter companion that shoots bubbles at nearby enemies
-9. Ability meter for all characters (probably at the top left? ask in meeting)
-10. Breakable crates that spawn and can be destroyed for stuff (coins, shields, keys, etc.)
+9. Breakable crates that spawn and can be destroyed for stuff (coins, shields, keys, etc.)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -54,23 +53,23 @@ Sounds Needed:
 Done: 	
 
 8/5/26 to 8/9/26
-1. WIP repositioning of UI elements for ability recharge UI
+1. Adjustments to top-left UI elements to include the ability recharge UI
 	1. Coin UI now uses the coin asset again
-	2. Changed the size and rotation of several of the UI elements
-	3. Ability UI colors differ per character (colors now flash a little when full)
-		1. Needs: Placeholder art (use powers?)
+	2. Changed the size and rotation of several of the UI elements to be generally smaller and more standardly sized
+	3. Ability UI colors differ per character and colors now flash a little when full
+		1. Right now uses placeholder assets (mostly power assets, and a "dash" asset for bubblemancer)
 2. Royal Reserves sprite (David)
 3. Some potential sprites and audio files imported
-4. WIP ability recharge UI
-5. Fix bug where Thought Bubble: Calculated was only unlocked if you DID use your weapon.
-6. Passive attack speed multiplier now take effect immediately instead of after a passive attack has cycled
-7. Bubblemancer dash now comes with 34 frames of invincibility
+4. Fix bug where Thought Bubble: Calculated was only unlocked if you DID use your weapon.
+5. Passive attack speed multiplier now take effect immediately instead of after a passive attack has cycled
+6. Bubblemancer dash now comes with 34 frames of invincibility
 	1. Sparkle Sparkle now releases 2(+1) -> 3(+1) stars on Bubblemancer
 	2. Cooldown 0.5 -> 3.0
 	3. During the dash, passive attacks (bubble trail, etc.) now act at 20x the speed, decreasing until the end of the dash (avg 10x speed)
 	4. Dash velocity 25 -> 45
-8. All references to "reduce ability cooldown" have been changed to "increase ability refresh speed", as this is more accurate
-9. Thought Bubble immunity frames on teleport 7 -> 25
+7. All references to "reduce ability cooldown" have been changed to "increase ability refresh speed", as this is more accurate
+8. Thought Bubble immunity frames on teleport 7 -> 25
+9. Roll for Dexterity buff duration 5s -> 7s
 
 8/2/26 to 8/4/26
 1. Pathfinding for Ent, Snow Golem, and Crow, Peaclock (TESTED!)

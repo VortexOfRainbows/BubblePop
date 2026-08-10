@@ -278,4 +278,8 @@ public class Gachapon : Body
     {
         return TotalChips;
     }
+    public override Sprite AbilityIcon()
+    {
+        return PowerUp.Get<Raise>().sprite;
+    }
 }
