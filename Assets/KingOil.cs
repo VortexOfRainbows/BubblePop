@@ -26,6 +26,7 @@ public class KingOil : Body
         {
             Projectile.NewProjectile<OilBomb>(Utils.MouseWorld, Vector2.zero, 5, Player, 1, Player.BonusAerialBarrels);
             Player.abilityTimer = AbilityCD;
+            Player.OnUseAbility();
         }
     }
     public override void FaceUpdate()

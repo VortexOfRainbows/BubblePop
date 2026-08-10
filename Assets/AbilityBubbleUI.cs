@@ -19,7 +19,12 @@ public class AbilityBubbleUI : MonoBehaviour
     public float OscillationTimer = 0;
     public void Update()
     {
-        FillPercent = Mathf.Lerp(FillPercent, MyAbility.ProgressDisplay, Utils.DeltaTimeLerpFactor(Mathf.Clamp01(0.1f + 2f * Mathf.Abs(FillPercent - MyAbility.ProgressDisplay))));
+        if(Player.Instance == null || MyAbility == null)
+            return;
+        float target = MyAbility.ProgressDisplay;
+        //if (Player.Instance.Body is Gachapon)
+        //    target *= target;
+        FillPercent = Mathf.Lerp(FillPercent, target, Utils.DeltaTimeLerpFactor(Mathf.Clamp01((0.1f + 2f * Mathf.Abs(FillPercent - target)) * Player.Instance.AbilityRecoverySpeed)));
         FillPercent = Mathf.Clamp01(FillPercent);
         BarFill.fillAmount = 1 - FillPercent;
         BottleFill.fillAmount = FillPercent;

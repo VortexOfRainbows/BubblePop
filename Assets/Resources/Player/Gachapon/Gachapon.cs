@@ -10,6 +10,10 @@ public class Gachapon : Body
     public GameObject ChipPrefab;
     public GameObject ChipStackPrefab;
     public int TotalChips { get; private set; } = 0;
+    public int GetMaximumChipsAllowed()
+    {
+        return Player.ChipStacks * Player.ChipHeight;
+    }
     public void AddChip()
     {
         List<int> possibleStacks = new();
@@ -157,6 +161,8 @@ public class Gachapon : Body
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<GachaponUnlock>();
     public override void Init()
     {
+        if(Player != null)
+            Player.abilityTimer = AbilityCD;
         stacks = new List<ChipStack>();
     }
     //public SpriteRenderer MouthR;
@@ -228,10 +234,17 @@ public class Gachapon : Body
                     break;
             }
         }
-        while(Player.AbilityReady)
+        int maxChips = GetMaximumChipsAllowed();
+        if (TotalChips < maxChips)
         {
-            Player.abilityTimer += AbilityCD;
-            AddChip();
+            while (Player.AbilityReady)
+            {
+                AddChip();
+                if (TotalChips < maxChips)
+                    Player.abilityTimer += AbilityCD;
+                else
+                    break;
+            }
         }
         //if (p.AbilityReady && Control.Ability && !Control.LastAbility)
         //{
