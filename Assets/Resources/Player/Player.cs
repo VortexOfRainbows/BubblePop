@@ -443,7 +443,7 @@ public partial class Player : Entity
     public static Vector2 Instance1Pos => Instance != null ? (Vector2)Instance.transform.position : Vector2.zero;
     private readonly float speed = 2.5f;
     public readonly float MovementDeacceleration = 0.9f;
-    public const float DashDefault = 25f;
+    public const float DashDefault = 45f;
     public static bool HasAttacked = false;
     public static bool PickedLowerDifficultyWaveCard = false;
     public static bool HasBeenHit => TimesHitThisRun > 0;
@@ -820,7 +820,6 @@ public partial class Player : Entity
             float distToOtherPlayer = Distance(AllPlayers[InstanceID == 0 ? 1 : 0].gameObject);
             PlayerNumber.color = PlayerNumber.color.WithAlpha(Mathf.Lerp(PlayerNumber.color.a, distToOtherPlayer < 12 ? 1 : 0, Utils.DeltaTimeLerpFactor(0.15f)));
         }
-
         if(!WaveDirector.WaveActive && AwaitingWaveEnd && WaveDirector.SkullEnemiesActive <= 0)
             OnWaveEnd(WaveDirector.WaveNum);
     }

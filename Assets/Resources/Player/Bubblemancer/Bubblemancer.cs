@@ -4,6 +4,8 @@ using UnityEngine;
 public class Bubblemancer : Body
 {
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<BubblemancerUnlock>();
+    public override float AbilityCD => 3;
+    public float DashTimer = 0;
     public override void Init()
     {
         Player.abilityTimer = 0;
@@ -17,11 +19,22 @@ public class Bubblemancer : Body
     {
         description.RequestAbilitySlots(Ability.ID.Ability);
     }
+    public float IFrames => 34;
     public override void AbilityUpdate(ref Vector2 playerVelo, Vector2 moveSpeed)
     {
         if (Player.Control.Ability && !Player.Control.LastAbility && moveSpeed.magnitude > 0 && Player.AbilityReady)
         {
             Dash(ref playerVelo, moveSpeed);
+            DashTimer = IFrames;
+            Player.UniversalImmuneFrames = Mathf.Max(Player.UniversalImmuneFrames, IFrames);
+        }
+    }
+    public override void EquipUpdate()
+    {
+        if(DashTimer > 0)
+        {
+            Player.PostPassiveAttackSpeedModifier += 19.0f * DashTimer / IFrames;
+            DashTimer--;
         }
     }
     public void Dash(ref Vector2 velocity, Vector2 moveSpeed)

@@ -70,10 +70,10 @@ public class Fizzy : Body
             int trail = Player.DashSparkle;
             if (trail > 0)
             {
-                starTimer -= Time.fixedDeltaTime;
+                starTimer -= Player.PassiveAttackSpeedModifier * Time.fixedDeltaTime;
                 while (starTimer <= 0)
                 {
-                    starTimer += 4f / (Player.PassiveAttackSpeedModifier * (trail + 3f)); //4/4, 4/5, 4/6, 4/7, etc
+                    starTimer += 4f / (trail + 3f); //4/4, 4/5, 4/6, 4/7, etc
                     Vector2 circular = (Utils.RandCircle(1.3f) - Player.RB.velocity).normalized;
                     Vector2 randPos = (Vector2)transform.position + Utils.RandCircleEdge(3);
                     Projectile.NewProjectile<StarProj>((Vector2)Skateboard.transform.position + circular * 2 + new Vector2(0, 0.3f), circular * 8, 2, Player, randPos.x, randPos.y, Utils.RandFloat(-1, 1));

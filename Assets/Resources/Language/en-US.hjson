@@ -51,7 +51,7 @@
     Dash:
     {
       Title: Sparkle Sparkle
-      Description: Y:Dashing releases Y:2 G:(+1 per stack) damaging stars
+      Description: Y:Dashing releases Y:3 G:(+1 per stack) damaging stars
       Brief: Adds damaging stars to your ability
       Lore: Sharpens stars out of the friction created by the use of a signature ability.
       ThoughtBubbleDescription: Y:[Channeling recall] has a Y:33% G:(+17% per stack) Y:chance to release damaging stars
@@ -224,8 +224,8 @@
     Overclock:
     {
       Title: Overclock
-      Description: Reduces Y:[ability cooldown] by Y:20% G:(+20% per stack)
-      Brief: Reduces ability cooldown
+      Description: Increases Y:[ability refresh speed] by Y:20% G:(+20% per stack)
+      Brief: Increases ability refresh speed
       Lore:
         '''
         Increases the speed of a bubble can use their unique abilities with the ruthlessness efficiency of a machine.
@@ -253,8 +253,8 @@
     Raise:
     {
       Title: Raise
-      Description: Increases Y:[maximum chip stack height] by Y:1 G:(+1 per stack) and reduces Y:[ability cooldown] by Y:10% G:(+10% per stack)
-      Brief: Increases maximum chip stack height and slightly reduces ability cooldown
+      Description: Increases Y:[maximum chip stack height] by Y:1 G:(+1 per stack) and increases Y:[ability refresh speed] by Y:10% G:(+10% per stack)
+      Brief: Increases maximum chip stack height and slightly increases ability refresh speed
       Lore:
         '''
         Allows a chaotic bubble to increase the stakes.
@@ -269,7 +269,7 @@
       Description:
         '''
         Increases Y:[total chip stacks] by Y:2 G:(+2 per stack) and grants a Y:5% G:(+5% per stack) Y:chance for chips to be enhanced 
-        Increases Y:[maximum chip stack height] by Y:2 G:(+2 per stack) and reduces Y:[ability cooldown] Y:multiplicatively by Y:60% G:(+60% per stack)
+        Increases Y:[maximum chip stack height] by Y:2 G:(+2 per stack) and increases Y:[ability refresh speed] Y:multiplicatively by Y:60% G:(+60% per stack)
         '''
       Brief: Greatly increases the potency of your chips
       Lore: The chaotic one shall risk everything for the sake of power, claiming that there's "nowhere to go but up, baby".

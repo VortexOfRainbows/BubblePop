@@ -155,8 +155,8 @@ public class ThoughtBubble : Body
             --BrainBlastNum;
         }
         ThunderAuraNum = 0;
-        if (Player.UniversalImmuneFrames < 7)
-            Player.UniversalImmuneFrames = 7;
+        if (Player.UniversalImmuneFrames < 25)
+            Player.UniversalImmuneFrames = 25;
     }
     public void UpdateTailPos(int i, ref Vector3 previousPos)
     {

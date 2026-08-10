@@ -82,6 +82,7 @@ public partial class Player : Entity
     public float LightMultiplierBonusDamage = 0.0f;
     public int GladiatorDuration = 0;
     public int TarShots = 0;
+    public float PostPassiveAttackSpeedModifier = 1.0f;
     public float MoveSpeedMod 
     {   
         get
@@ -192,7 +193,8 @@ public partial class Player : Entity
         ChargeShotDamage = ShotgunPower = DashSparkle = FasterBulletSpeed = Starbarbs = SoapySoap = BubbleBlast = Starshot = BinaryStars = EternalBubbles = BonusPhoenixLives = BubbleTrail = OldCoalescence = Magnet = LightSpear = 0;
         AttackSpeedModifier = AbilityRecoverySpeed = AbilityRecoverySpeedMult = TrueMoveModifier = ImmunityFrameMultiplier = ShieldImmunityFrameMultiplier = 1.0f;
         LuckyStar = TrailOfThoughts = LightChainReact = BrainBlast = RecursiveSubspaceLightning = Refraction = 0;
-        PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = PassiveAttackSpeedModifier = 0;
+        PrimaryAttackSpeedModifier = SecondaryAttackSpeedModifier = PassiveAttackSpeedModifier =  0;
+        PostPassiveAttackSpeedModifier = 1;
         BlueChipChance = HomingRange = 0.0f;
         ChipHeight = 5;
         ChipStacks = 2;
@@ -275,6 +277,7 @@ public partial class Player : Entity
         PrimaryAttackSpeedModifier += AttackSpeedModifier;
         SecondaryAttackSpeedModifier += AttackSpeedModifier;
         PassiveAttackSpeedModifier += AttackSpeedModifier;
+        PassiveAttackSpeedModifier *= PostPassiveAttackSpeedModifier;
         UpdateFixed();
     }
     private float BinaryStarTimer = 0.0f;
@@ -283,10 +286,10 @@ public partial class Player : Entity
     {
         if(BinaryStars > 0)
         {
-            BinaryStarTimer -= Time.fixedDeltaTime;
+            BinaryStarTimer -= Time.fixedDeltaTime * PassiveAttackSpeedModifier;
             while(BinaryStarTimer <= 0)
             {
-                BinaryStarTimer += 1.5f / PassiveAttackSpeedModifier; //1.0, 1.25, 1.5, 1.75, 2.0
+                BinaryStarTimer += 1.5f;
                 Vector2 circular = Utils.RandCircle(1).normalized;
                 float speedMax = 18;
                 int c = BinaryStars + 1;
@@ -305,10 +308,10 @@ public partial class Player : Entity
         }
         if(BubbleTrail > 0)
         {
-            BubbleTrailTimer -= Time.fixedDeltaTime;
+            BubbleTrailTimer -= Time.fixedDeltaTime * PassiveAttackSpeedModifier;
             while (BubbleTrailTimer <= 0)
             {
-                BubbleTrailTimer += 2f / (PassiveAttackSpeedModifier * (BubbleTrail + 2f)); //.5, 2/5, 2/6, 2/7, 1/4
+                BubbleTrailTimer += 2f / (BubbleTrail + 2f); //.5, 2/5, 2/6, 2/7, 1/4
                 Vector2 circular = (Utils.RandCircle(1.3f) - Animator.lastVelo * 0.4f).normalized;
                 Projectile.NewProjectile<SmallBubble>(transform.position, circular * 2, 1, this, 0, 1);
             }
@@ -324,7 +327,7 @@ public partial class Player : Entity
         if (DashSparkle > 0)
         {
             Vector2 norm = velo.normalized;
-            int stars = 1 + DashSparkle;
+            int stars = 2 + DashSparkle;
             for (; stars > 0; --stars)
             {
                 Vector2 target = (Vector2)transform.position + norm * 14 + Utils.RandCircle(6);

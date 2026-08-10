@@ -58,11 +58,19 @@ Done:
 	1. Coin UI now uses the coin asset again
 	2. Changed the size and rotation of several of the UI elements
 	3. Ability UI colors differ per character (colors now flash a little when full)
-		1. Needs: Placeholder art (use powers?), Bubblemancer i-frames
+		1. Needs: Placeholder art (use powers?)
 2. Royal Reserves sprite (David)
 3. Some potential sprites and audio files imported
 4. WIP ability recharge UI
 5. Fix bug where Thought Bubble: Calculated was only unlocked if you DID use your weapon.
+6. Passive attack speed multiplier now take effect immediately instead of after a passive attack has cycled
+7. Bubblemancer dash now comes with 34 frames of invincibility
+	1. Sparkle Sparkle now releases 2(+1) -> 3(+1) stars on Bubblemancer
+	2. Cooldown 0.5 -> 3.0
+	3. During the dash, passive attacks (bubble trail, etc.) now act at 20x the speed, decreasing until the end of the dash (avg 10x speed)
+	4. Dash velocity 25 -> 45
+8. All references to "reduce ability cooldown" have been changed to "increase ability refresh speed", as this is more accurate
+9. Thought Bubble immunity frames on teleport 7 -> 25
 
 8/2/26 to 8/4/26
 1. Pathfinding for Ent, Snow Golem, and Crow, Peaclock (TESTED!)
