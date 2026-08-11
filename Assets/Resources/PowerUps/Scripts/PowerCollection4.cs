@@ -190,6 +190,6 @@ public class DefenseContract : PowerUp
     public override void Init() => Weighting = SuperRare;
     public override void HeldEffect(Player p)
     {
-
+        p.HelicopterStacks += Stack;
     }
 }

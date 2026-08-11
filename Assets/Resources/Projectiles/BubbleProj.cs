@@ -135,6 +135,16 @@ public class SmallBubble : Projectile
         }
     }
 }
+public class TranscendentBubble : SmallBubble
+{
+    public override void Init()
+    {
+        base.Init();
+        SpriteRenderer.sortingOrder = LayerHelper.TreeSortingOrder + 2;
+    }
+    public override bool OnInsideTile() => false;
+    public override bool OnTileCollide(Collider2D collision) => false;
+}
 public class BigBubble : Projectile
 {
     public override void Init()

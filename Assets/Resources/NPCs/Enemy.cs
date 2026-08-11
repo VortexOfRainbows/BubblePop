@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 public static class EnemyID
 {
@@ -261,7 +262,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
         norm = newNorm;
         return e;
     }
-    public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, List<Enemy> ignore, bool requireNonImmune = true, bool requireNonHost = false)
+    public static Enemy FindClosest(Vector3 position, float searchDistance, out Vector2 norm, List<Enemy> ignore, bool requireNonImmune = true, bool requireNonHost = false, bool needsLOS = false)
     {
         searchDistance *= searchDistance;
         norm = Vector2.zero;
@@ -270,10 +271,18 @@ public class Enemy : Entity, IImpactedByProjIFrames
         {
             Vector2 toDest = e.transform.position - position;
             float dist = toDest.sqrMagnitude;
+            bool hasLOS = !needsLOS;
+            if (!hasLOS)
+            {
+                float distance = toDest.magnitude;
+                float startingDist = distance;
+                Utils.RaycastWithTileSupport(toDest, norm, ref distance, 0.5f, out bool hitSomething); //This migth be a bit excessive for a line of sight check. If this is a performance issue, come back to this and optimize it (maybe make it so it doesn't find the exact collision position, just terminate upon any collision detected)
+                hasLOS = !hitSomething || (distance >= (startingDist - 0.1f)); //If nothing was hit or the distance to the hit was about the same as the distance to the player, that means we have line of sight (most likely)
+            }
             //Debug.Log(e.tag);
             if (dist <= searchDistance && 
                 (!requireNonImmune || e.UniversalImmuneFrames <= 0) && 
-                (!requireNonHost || (!e.InfectionTarget && e is not Infector && e.ViableInfectionTarget())))
+                (!requireNonHost || (!e.InfectionTarget && e is not Infector && e.ViableInfectionTarget())) && hasLOS)
             {
                 bool blackListed = ignore != null && ignore.Contains(e);
                 if (!blackListed)

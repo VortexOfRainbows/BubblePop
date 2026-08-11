@@ -179,6 +179,8 @@ public partial class Player : Entity
     public int BonusBlackDiamond, OilSpill, TarConcoct, Gasoline, TotalInvestments, SmokeStack, GoldenGun, CompoundInterest, Pumpjack, OilBarrelSize, BonusAerialBarrels, FlintAndSteel = 0;
     public bool HasFlowerCrownRecursiveHeal = false, HasJesusJuice = false, IgnoreMovespeed = false;
     public bool HasFutures, HasCommodities, HasOptions, HasSecurities, HasWindfall;
+    public int HelicopterStacks = 0;
+    public Projectile HelicopterSummon;
     private void PowerInit()
     {
         GlobalPowers = new List<int>();
@@ -245,7 +247,7 @@ public partial class Player : Entity
         TarShots = BonusBlackDiamond = OilSpill = TarConcoct = Gasoline = TotalInvestments = BonusAerialBarrels = FlintAndSteel = 0;
         CorrodeDamage = TarBonusDuration = CombustBonusDamage = BonusTarSlow = 0;
         HasFutures = HasCommodities = HasOptions = HasSecurities = HasWindfall = false;
-        GoldenGun = SmokeStack = CompoundInterest = Pumpjack = OilBarrelSize = 0;
+        GoldenGun = SmokeStack = CompoundInterest = Pumpjack = OilBarrelSize = HelicopterStacks = 0;
     }
     private void UpdatePowerUps()
     {
@@ -257,6 +259,8 @@ public partial class Player : Entity
                 power.HeldEffect(this);
                 //Debug.Log($"Doing held effect for {power.Stack}");
         }
+        if(HelicopterSummon == null && HelicopterStacks > 0)
+            HelicopterSummon = Projectile.NewProjectile<Helicopter>(transform.position, Vector2.zero, 0, this).GetComponent<Helicopter>();
         AbilityRecoverySpeed = AbilityRecoverySpeed * AbilityRecoverySpeedMult;
         if(GoldenGun > 0)
         {
