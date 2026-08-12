@@ -61,7 +61,9 @@ public class SmallBubble : Projectile
         if (++timer2 > 3)
             Friendly = true;
         Vector2 velo = RB.velocity;
-        if (timer > deathTime - 100 + RandomLifeShorten)
+        if (this is TranscendentBubble)
+            velo *= 0.99f;
+        else if (timer > deathTime - 100 + RandomLifeShorten)
             velo *= 0.95f;
         else if (timer > deathTime - 130 + RandomLifeShorten)
             velo *= 0.9725f;

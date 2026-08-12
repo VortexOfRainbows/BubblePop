@@ -106,6 +106,9 @@ public class Projectile : MonoBehaviour
             }
         }
         GameObject Proj = Instantiate(Main.PrefabAssets.DefaultProjectile, pos, Quaternion.identity, Main.GenericSuperParent);
+#if UNITY_EDITOR
+        Proj.name = typeof(T).Name;
+#endif
         Projectile proj = Proj.AddComponent<T>();
         proj.cmp = Proj.GetComponent<ProjComponents>();
         if (owner != null)

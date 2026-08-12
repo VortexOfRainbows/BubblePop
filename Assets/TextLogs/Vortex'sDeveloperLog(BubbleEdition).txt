@@ -14,7 +14,7 @@ Do Later:
 5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
 6. Lighting: Time of day settings (such as the ability to pause time or make it real-world accurate)
 7. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
-8. Before next patch:
+8. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
 9. Convert player power handler to use structs for faster resetting 
 10. Tachyon Accelerator Power (not urgent, as programming this would likely take longer than expected)
@@ -31,10 +31,7 @@ Need to do:
 	1. Make powers show which pools they belong to (mostly this should just mean character)
 	2. Make blurbs appear in the equipment page
 7. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
-8. King Oil (Power Ideas)
-	1. Tie: This is a powerful minion that all characters might want, but especially helps King Oil apply tar to nearby enemies
-		1. (purple) Defense Contract: grants a military helicopter companion that shoots bubbles at nearby enemies
-9. Breakable crates that spawn and can be destroyed for stuff (coins, shields, keys, etc.)
+8. Breakable crates that spawn and can be destroyed for stuff (coins, shields, keys, etc.)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -52,13 +49,16 @@ Sounds Needed:
 
 Done: 	
 
-8/10/26 to 8/11/26
+8/10/26 to 8/12/26
 1. Import some snow assets
 2. Very WIP breakable crate (just put some files together)
 3. Import helicopter asset
-4. WIP Helicopter minion from "Defense Contract" power
-	1. Needs: Better movement behaviors (so it positions itself in a way the gunfire makes sense, moves faster, bobs up and down, etc.)
-	2. Needs: Balancing, stacking behavior, attack speed behavior, go away after crucible (test)?
+4. Mostly complete Helicopter minion from "Defense Contract" power
+	1. Now has: Better movement behaviors (so it positions itself in a way the gunfire makes sense, moves faster, bobs up and down, etc.)
+	2. Now has: Balancing, stacking behavior, attack speed behavior (40% effectiveness from haste), goes away after crucible (tested)
+5. With the completion of Defense Contract, Oil King is now basically complete!
+6. Double Donut 2 node is now more open
+7. (UNITYEDITOR ONLY) Projectiles now use type names in heirarchy
 
 8/5/26 to 8/9/26
 1. Adjustments to top-left UI elements to include the ability recharge UI
