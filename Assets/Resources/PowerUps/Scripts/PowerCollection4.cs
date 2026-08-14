@@ -90,10 +90,6 @@ public class DiversifiedPortfolio : PowerUp
     {
         return dissolve ? 10 : 25;
     }
-    public override Sprite GetTexture()
-    {
-        return Resources.Load<Sprite>("PowerUps/Choice");
-    }
 }
 public class CompoundInterest : PowerUp
 {
