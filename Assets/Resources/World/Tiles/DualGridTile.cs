@@ -138,9 +138,20 @@ public class DualGridTile : ScriptableObject
                 }
                 else
                 {
-                    map.SetTile(newPos, DisplayTileVariants[id]);
+                    Tile type = DisplayTileVariants[id];
+                    if(SingleTileBonusVariants.Count > 0 && id == 6)
+                    {
+                        int existingVariants = 1 + BonusTileTextures.Length;
+                        int newVariants = SingleTileBonusVariants.Count;
+                        int rand = Utils.RandInt(existingVariants + newVariants);
+                        if(rand >= existingVariants)
+                        {
+                            rand -= existingVariants;
+                            type = SingleTileBonusVariants[rand];
+                        }
+                    }
+                    map.SetTile(newPos, type);
                 }
-
             }
         }
         GeneratingBorder = false;
@@ -149,6 +160,7 @@ public class DualGridTile : ScriptableObject
     public Texture2D TileTexture;
     public Texture2D[] BonusTileTextures;
     public Texture2D[] BorderOnlyTileTextures;
+    public Sprite[] BonusCenterTileTextures;
     private int BorderVariantStartIndex = 0;
     public float LayerOffset { get; set; } = 0;
     [SerializeField]
@@ -169,6 +181,7 @@ public class DualGridTile : ScriptableObject
     public Tile FloorTileType => RealTileMapVariant;
     public Tile BorderTileType => BorderTileMapVariant;
     public List<Tile> DisplayTileVariants { get; private set; }
+    public List<Tile> SingleTileBonusVariants { get; private set; }
     public void Init()
     {
         SetDisplayVariants();
@@ -183,6 +196,7 @@ public class DualGridTile : ScriptableObject
             if (len < 3)
                 throw new Exception($"Could not find tile texture at \"{path + TileTexture.name}\". Is it possible that the texture is not the same name as the directory?");
             DisplayTileVariants = new(16);
+            SingleTileBonusVariants = new();
             for (int i = 0; i < len; ++i)
             {
                 Tile tile = ScriptableObject.CreateInstance<Tile>();
@@ -207,6 +221,17 @@ public class DualGridTile : ScriptableObject
                         tile.sprite = sprites[i];
                         DisplayTileVariants.Add(tile);
                     }
+                }
+            }
+            if(BonusCenterTileTextures != null)
+            {
+                for (int i = 0; i < BonusCenterTileTextures.Length; ++i)
+                {
+                    Tile tile = ScriptableObject.CreateInstance<Tile>();
+                    tile.colliderType = Tile.ColliderType.Grid;
+                    tile.color = ColorModifier;
+                    tile.sprite = BonusCenterTileTextures[i];
+                    SingleTileBonusVariants.Add(tile);
                 }
             }
             if(BorderOnlyTileTextures != null)
