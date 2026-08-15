@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -497,6 +496,7 @@ public partial class Player : Entity
         BestPowerCountIncludingStacks = 0;
         TotalBlackMarketPowersPickedUp = 0;
         TotalNonBlackMarketPowersPickedUp = 0;
+        TimesHitThisLifeThisWave = 0;
     }
     public float abilityTimer = 0;
     private void MovementUpdate()
@@ -869,7 +869,9 @@ public partial class Player : Entity
                 skipDamageStep = true;
         }
         if (!skipDamageStep)
+        {
             ConsecutiveDodges = 0;
+        }
         else
         {
             PopupText.NewPopupText(transform.position, Vector2.up * 8 + Utils.RandCircle(4), Color.gray, "DODGE", true, 0.8f, 100);
@@ -899,7 +901,12 @@ public partial class Player : Entity
         UniversalImmuneFrames = defaultImmuneFrames * immuneMult;
         if (Life <= 0)
             Pop();
-        else
+        else if(!skipDamageStep)
+        {
+            TimesHitThisLifeThisWave += damage;
+            if (TimesHitThisLifeThisWave >= 9 && this.Body is KingOil)
+                UnlockCondition.Get<OilKingTooBigToFail>().SetComplete();
+        }
             Body.ModifyHurtAnimation();
     }
     public void OnHurtEffects()
@@ -937,6 +944,7 @@ public partial class Player : Entity
     }
     public void Pop()
     {
+        TimesHitThisLifeThisWave = 0;
         //Time.timeScale = 0.5f + 0.5f * Mathf.Sqrt(Mathf.Max(0, 1 - DeathKillTimer / 200f));
         if (InstanceID == 0)
         {
@@ -1129,6 +1137,7 @@ public partial class Player : Entity
     }
     public void OnWaveStart(int newWaveNumber)
     {
+        TimesHitThisLifeThisWave = 0;
         if (newWaveNumber % 2 == 0)
         {
             if (HasBubbleShield && Shield < TotalMaxShield)

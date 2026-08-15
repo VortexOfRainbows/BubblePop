@@ -12,6 +12,7 @@ public partial class Player : Entity
     public int BestPowerCountIncludingStacks = 0;
     public int TotalNonBlackMarketPowersPickedUp { get; set; } = 0;
     public int TotalBlackMarketPowersPickedUp { get; set; } = 0;
+    public int TimesHitThisLifeThisWave { get; set; } = 0;
     /// <summary>
     /// Returns the PowerUpID of the power at the given index
     /// </summary>

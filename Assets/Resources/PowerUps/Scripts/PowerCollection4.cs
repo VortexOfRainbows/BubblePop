@@ -188,4 +188,5 @@ public class DefenseContract : PowerUp
     {
         p.HelicopterStacks += Stack;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<OilKingTooBigToFail>();
 }
