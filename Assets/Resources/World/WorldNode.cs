@@ -203,8 +203,14 @@ public class WorldNode : MonoBehaviour
             {
                 Transform child = FeatureParent.GetChild(i);
                 Transform f = Instantiate(child, world.NatureParent.transform, true);
-                if(f.gameObject.TryGetComponent<Chest>(out Chest c))
+                if(f.gameObject.TryGetComponent(out Chest c))
                     c.SkipSpawnAnimation = true;
+                if(f.gameObject.TryGetComponent(out FairyRing r))
+                {
+                    r.Radius *= Utils.RandFloat(0.9f, 1.1f);
+                    r.Count += Utils.RandInt(-1, 2);
+                    r.Spawn(World.Instance.FloorDecorParent);
+                }
             }
         }
         if(PylonParent != null)
