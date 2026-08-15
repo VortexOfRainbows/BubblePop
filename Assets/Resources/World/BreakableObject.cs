@@ -44,14 +44,25 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
         if(Type == BreakableObjectType.Crate)
         {
             c = ColorHelper.WoodColor;
+            AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 1, 0.9f);
+            float dropRand = Utils.RandFloat();
+            if (dropRand < 0.02f)
+                CoinManager.SpawnShield(transform.position, .5f);
+            else if (dropRand < 0.04f)
+                CoinManager.SpawnHeart(transform.position, .5f);
+            else if (dropRand < 0.12f)
+                CoinManager.SpawnKey(transform.position, .5f);
+            else if (dropRand < 0.25f)
+                CoinManager.SpawnGem(transform.position, .5f, Utils.RandInt(1, 2 + WaveDirector.WaveNum / 3));
+            else if (dropRand < 0.75f)
+                CoinManager.SpawnCoin(transform.position, Utils.RandInt(1, 6 + WaveDirector.WaveNum), .5f, true);
         }
         for (int i = 0; i < 30; ++i)
         {
-            Vector2 randPos = Collider.bounds.min + new Vector3(Collider.bounds.extents.x * Utils.RandFloat(0.1f, 0.9f), Collider.bounds.extents.y * Utils.RandFloat(0.1f, 0.9f));
+            Vector2 randPos = Collider.bounds.min + new Vector3(Collider.bounds.extents.x * Utils.RandFloat(2f), Collider.bounds.extents.y * Utils.RandFloat(2f));
             ParticleManager.NewParticle(randPos, 0.7f * Utils.RandFloat(0.8f, 1.0f), Utils.RandCircle(6) + Vector2.up * Utils.RandFloat(5, 10), 5, Utils.RandFloat(1, 1.2f), 1,
                 Color.Lerp(c, Color.black, Utils.RandFloat(0.2f)));
         }
-        AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 1, 0.9f);
         Destroy(gameObject);
     }
     public void FixedUpdate()

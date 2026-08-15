@@ -8,7 +8,8 @@ public class DualGridTilemap : MonoBehaviour
     public static GameObject Mushroom;
     public static GameObject BubbleMushroom;  
     public static GameObject VisualMapPrefab;
-    public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
+    public static GameObject CratePrefab;
+    //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     public Transform FloorMapParent;
     public Transform WallMapParent;
     public Transform BorderMapParent;
@@ -34,15 +35,16 @@ public class DualGridTilemap : MonoBehaviour
         BubbleMushroom = BubbleMushroom != null ? BubbleMushroom : Resources.Load<GameObject>("World/Decor/Nature/BubbleMushroom");
         Mushroom = Mushroom != null ? Mushroom : Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
         TallGrass = TallGrass != null ? TallGrass : Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
+        CratePrefab = CratePrefab != null ? CratePrefab : Resources.Load<GameObject>("World/Breakable/BreakableCrate");
 
         DisplayMap = new();
         BorderDisplayMap = new();
         WallDisplayMap = new();
         PrepareDisplayMap(FloorMapParent, DisplayMap);
-        AddDecor(Color.white);
+        AddDecor(false);
         //-49 is for occlusion for now
         PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
-        AddDecor(new Color(0.5f, 0.5f, 0.5f), true);
+        AddDecor(true);
         PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
         RefreshDisplayTilemap(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
         //GetComponent<TilemapRenderer>().enabled = false;
@@ -144,8 +146,10 @@ public class DualGridTilemap : MonoBehaviour
             }
         }
     }
-    public void AddDecor(Color c, bool border = false)
+    public void AddDecor(bool border)
     {
+        Color borderColor = new(0.5f, 0.5f, 0.5f);
+        Color c = border ? borderColor : Color.white;
         Transform Parent = border ? World.Instance.BorderDecorParent : World.Instance.FloorDecorParent;
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
         int order = border ? LayerHelper.SolidTileSortingOrder : LayerHelper.FloorObjAndFloraSortingLayer;
@@ -167,12 +171,13 @@ public class DualGridTilemap : MonoBehaviour
                 TileBase t = Map.GetTile(i, j);
                 bool isGrassTile = t == TileID.Grass.TileType(border);
                 bool isDirtTile = t == TileID.Dirt.TileType(border);
+                bool isDarkGrass = t == TileID.DarkGrass.TileType(border);
                 var pos = new Vector3(i + 1, j + 1, 0);
                 if(i % 3 == 0 && j % 3 == 0)
                 {
-                    AddTrees(i + Utils.RandInt(2), j + Utils.RandInt(2));
+                    AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2));
                 }
-                if (isGrassTile && Utils.RandFloat() < 0.16f * mult)
+                if ((isGrassTile && Utils.RandFloat() < 0.16f * mult) || (isDarkGrass && Utils.RandFloat() < 0.04f))
                 {
                     int type = Utils.RandInt(3);
                     var g = Instantiate(TallGrass, Parent).GetComponent<SpriteRenderer>();
@@ -192,19 +197,19 @@ public class DualGridTilemap : MonoBehaviour
                         pos.y += Utils.RandFloat(0.05f, 0.25f);
                     }
                     g.transform.localPosition = pos;
-                    g.color = c;
+                    g.color = isDarkGrass ? borderColor : c;
                     g.sortingOrder = order;
                     g.flipX = Utils.rand.NextBool();
                     continue;
                 }
-                if (mushroom && (isGrassTile || isDirtTile))
+                if ((mushroom && (isGrassTile || isDirtTile)) || isDarkGrass)
                 {
                     float chance = isDirtTile ? 0.1f : 0.05f;
                     if (Utils.RandFloat() < chance)
                     {
                         var g = Instantiate(Mushroom, Parent).GetComponent<SpriteRenderer>();
                         g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
-                        g.color = c;
+                        g.color = borderColor;
                         g.sortingOrder = order;
                         continue;
                     }
@@ -232,7 +237,7 @@ public class DualGridTilemap : MonoBehaviour
             }
         }
     }
-    public void AddTrees(int i, int j)
+    public void AddSparseDecor(int i, int j)
     {
         TileBase t = Map.GetTile(i, j);
         int order = 20;
@@ -258,6 +263,31 @@ public class DualGridTilemap : MonoBehaviour
             g.color = c;
             g.sortingOrder = order;
             g.flipX = Utils.rand.NextBool();
+        }
+        else if(t == TileID.Plank.FloorTileType || (t == TileID.Cobblestone.FloorTileType && Utils.RandBool(2)))
+        {
+            int solidTiles = 1;
+            for (int x = -1; x <= 1; ++x)
+            {
+                for (int y = -1; y <= 1; ++y)
+                {
+                    if (World.SolidTile(new Vector3Int(i + x, j + y)))
+                        solidTiles++;
+                }
+            }
+            float chanceOfCrate = solidTiles / 9f;
+            if (solidTiles <= 1)
+                return;
+            else if(solidTiles <= 4)
+                chanceOfCrate *= chanceOfCrate * 0.6f;
+            else if(solidTiles < 6)
+                chanceOfCrate *= chanceOfCrate * 1.1f;
+            if (Utils.RandFloat() < chanceOfCrate)
+            {
+                var g = Instantiate(CratePrefab, World.Instance.NatureParent.transform, true).GetComponent<SpriteRenderer>();
+                g.transform.localPosition = new Vector2(i * 2 + 1, j * 2 + 1.1f) + Utils.RandCircle(.2f);
+                g.transform.localScale = new Vector3(g.transform.localScale.x * Utils.RandFloat(0.9f, 1.0f), g.transform.localScale.y * Utils.RandFloat(0.9f, 1.0f));
+            }
         }
     }
 }

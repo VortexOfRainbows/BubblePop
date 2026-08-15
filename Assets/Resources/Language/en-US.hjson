@@ -839,10 +839,10 @@
       Description: Release Y:1 G:(+1 per stack) additional Y:Skateboards on Y:dismount
       Brief: Release additional Skateboards on dismount
       Lore:
-      '''
-      Fizzy: The extra boards seem to split from others included in the attack with perfect replication.
-      TB: Uh I guess we'll go with that.
-      '''
+        '''
+        Fizzy: The extra boards seem to split from others included in the attack with perfect replication.
+        TB: Uh I guess we'll go with that.
+        '''
     }
     Kickflip:
     {
@@ -853,10 +853,7 @@
         Increases Y:Skateboard Y:damage by Y:1 G:(+1 per stack)
         '''
       Brief: Faster movement while mounting or dismounting Skateboard
-      Lore:
-      '''
-      Essentially a bottled form of the confidence you gain when landing a sick trick.
-      '''
+      Lore: Essentially a bottled form of the confidence you gain when landing a sick trick.
     }
     RetaliatoryBlast:
     {
@@ -868,10 +865,10 @@
         '''
       Brief: Drop a high-damage bath bomb when hurt
       Lore:
-      '''
-      A bubble heart and a bath bomb.
-      Unknown: You know, I thought this would make the bombs restore bubble hearts instead. Bit of a 'measure twice cut once' situation.
-      '''
+        '''
+        A bubble heart and a bath bomb.
+        Unknown: You know, I thought this would make the bombs restore bubble hearts instead. Bit of a 'measure twice cut once' situation.
+        '''
     }
     BombasticBrew:
     {
@@ -883,10 +880,10 @@
         '''
       Brief: Secondary attack drops a bath bomb
       Lore:
-      '''
-      A soda bottle and a bath bomb.
-      Unknown: This one turned out pretty much like I hoped.
-      '''
+        '''
+        A soda bottle and a bath bomb.
+        Unknown: This one turned out pretty much like I hoped.
+        '''
     }
     CollateralDamage:
     {
@@ -898,10 +895,10 @@
         '''
       Brief: Skull enemies drop a bath bomb when killed
       Lore:
-      '''
-      A bath bomb inside a skull.
-      Unknown: Hunting down that artifact was no small task. To be honest I still have no idea where they really come from, I just happened to get the right seed by chance.
-      '''
+        '''
+        A bath bomb inside a skull.
+        Unknown: Hunting down that artifact was no small task. To be honest I still have no idea where they really come from, I just happened to get the right seed by chance.
+        '''
     }
     ClusterBombs:
     {
@@ -913,10 +910,10 @@
         '''
       Brief: Bath bombs drop smaller bath bombs
       Lore:
-      '''
-      A bath bomb and two smaller bath bombs.
-      Unknown: Yeah, I didn't really have a plan when making this one. Turned out great though!
-      '''
+        '''
+        A bath bomb and two smaller bath bombs.
+        Unknown: Yeah, I didn't really have a plan when making this one. Turned out great though!
+        '''
     }
     SharpBombs:
     {
@@ -928,10 +925,10 @@
         '''
       Brief: Bath bombs release extra shrapnel
       Lore:
-      '''
-      A spiky bath bomb.
-      Unknown: Ok this one wasn't my fault-not even I'm crazy enough to meticulously craft one of these things. We'll call it a 'happy accident'.
-      '''
+        '''
+        A spiky bath bomb.
+        Unknown: Ok this one wasn't my fault-not even I'm crazy enough to meticulously craft one of these things. We'll call it a 'happy accident'.
+        '''
     }
     PrizeBombs:
     {
@@ -939,10 +936,10 @@
       Description: Enemies drop Y:10 G:(+10 per stack) additional Y:coins when killed by Y:[bath bombs] or Y:shrapnel
       Brief: Enemies drop coins when killed by bath bombs
       Lore:
-      '''
-      A bomb with some coin stacks.
-      Unknown: Call me greedy, but I'm sure my good friend wouldn't mind a few missing coins!
-      '''
+        '''
+        A bomb with some coin stacks.
+        Unknown: Call me greedy, but I'm sure my good friend wouldn't mind a few missing coins!
+        '''
     }
     Restock:
     {
@@ -954,10 +951,10 @@
         '''
       Brief: All shops gain additional stock and bonus stock on restock
       Lore:
-      '''
-      A crate somehow imbued with the power of recycling.
-      Gachapon: Absolute lifesaver!
-      '''
+        '''
+        A crate somehow imbued with the power of recycling.
+        Gachapon: Absolute lifesaver!
+        '''
     }
     CrystalSerum:
     {
@@ -965,10 +962,10 @@
       Description: Enemies have a Y:20% chance to drop Y:1 G:(+1 per stack) Y:gems
       Brief: Enemies have a chance to drop gems
       Lore:
-      '''
-      A syringe filled with a liquid crystal solution.
-      TB: The implications of this power are...frightening, to say the least. Thankfully, it seems to have a rather unique composition, and likely only works on creatures that use the same kind of interdimensional portals our enemies use.
-      '''
+        '''
+        A syringe filled with a liquid crystal solution.
+        TB: The implications of this power are...frightening, to say the least. Thankfully, it seems to have a rather unique composition, and likely only works on creatures that use the same kind of interdimensional portals our enemies use.
+        '''
     }
     LightningInABottle:
     {
@@ -976,10 +973,10 @@
       Description: After starting a Y:[wave,] your next Y:3 G:(+3 per stack) attacks will Y:[instantly kill enemies]
       Brief: First few attacks in a wave do infinite damage
       Lore:
-      '''
-      Purest storm essence, powerfied at the exact moment before it would have broken out of its bottle.
-      TB: Funnily enough, we never really contained it.
-      '''
+        '''
+        Purest storm essence, powerfied at the exact moment before it would have broken out of its bottle.
+        TB: Funnily enough, we never really contained it.
+        '''
       BlackMarketDescription: After starting a Y:[wave,] your next Y:5 G:(+5 per stack) attacks will Y:[instantly kill enemies]
     }
     SnowLeopardTale:
@@ -988,10 +985,10 @@
       Description: Apply a Y:[stacking chill] to enemies on hit, reducing their Y:[movement and attack speed] by Y:10% for Y:3 G:(+3 per stack) Y:seconds
       Brief: Freeze enemies on hit
       Lore:
-      '''
-      An artifact flung here from a faraway universe, granting powerful freezing abilities.
-      Unknown: There's no way he could break the game before wave 6
-      '''
+        '''
+        An artifact flung here from a faraway universe, granting powerful freezing abilities.
+        Unknown: There's no way he could break the game before wave 6
+        '''
     }
     Gladiator:
     {

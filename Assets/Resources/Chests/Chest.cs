@@ -330,7 +330,7 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
             {
                 for(int i = 0; i < 30; ++i)
                 {
-                    Vector2 randPos = Collider.bounds.min + new Vector3(Collider.bounds.extents.x * Utils.RandFloat(1), Collider.bounds.extents.y * Utils.RandFloat(1));
+                    Vector2 randPos = Collider.bounds.min + new Vector3(Collider.bounds.extents.x * Utils.RandFloat(2), Collider.bounds.extents.y * Utils.RandFloat(2));
                     ParticleManager.NewParticle(randPos, 0.7f * Utils.RandFloat(0.9f, 1.1f), Utils.RandCircle(8) + Vector2.up * Utils.RandFloat(6, 12), 5, Utils.RandFloat(1, 1.2f), 1, 
                         Color.Lerp(Color.white, Color.black, Utils.RandFloat(0.8f, 1)));
                 }

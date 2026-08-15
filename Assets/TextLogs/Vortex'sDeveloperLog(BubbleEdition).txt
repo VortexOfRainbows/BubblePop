@@ -31,8 +31,7 @@ Need to do:
 	1. Make powers show which pools they belong to (mostly this should just mean character)
 	2. Make blurbs appear in the equipment page
 7. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
-8. Breakable crates that spawn and can be destroyed for stuff (coins, shields, keys, etc.)
-9. Snow Regions:
+8. Snow Regions:
 	1. Snow ambient objects need to spawn
 	2. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
 	3. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
@@ -59,11 +58,15 @@ Done:
 3. New Shop Node: Big Room Castle Shop
 4. New Boss Node: Boss Village
 5. Fairy Rings that generate mushrooms
-6. Corrode Sprite by David
+6. Corrode, Gasoline Sprite by David
 7. King Oil Achievment to unlock Defense Contract in black market pool
 8. Import snow tile variants from Fanny 
 	1. WIP Snow implementation
-9. More WIP breakable crate
+9 Breakable crates now spawn in areas with wood or stone, usually in corners
+	1. These crates can drop coins, gems, keys, hearts, and shields, but it is increasingly rare for higher-level drops
+10. Mushrooms and Foliage can now spawn on dark, walkable grass
+11. Particles from Crates Breaking should be more accurate
+
 
 8/10/26 to 8/14/26
 1. Import some snow assets
