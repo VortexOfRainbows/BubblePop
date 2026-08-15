@@ -46,4 +46,6 @@ public static class ColorHelper
     public static readonly string GrayHex = "#999999";
     public static readonly string LesserGrayHex = "#DDDDDD";
     public static readonly string AscColorHex = "#ADCFFF";
+
+    public static readonly Color WoodColor = New255(0x9B, 0x7D, 0x63);
 }

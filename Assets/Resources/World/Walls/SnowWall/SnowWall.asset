@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: SnowWall
   m_EditorClassIdentifier: 
   TileTexture: {fileID: 2800000, guid: 8cc2253d31f41144a8ce4ac9eeb5073f, type: 3}
-  BonusTileTextures: []
+  BonusTileTextures:
+  - {fileID: 2800000, guid: ec35b4a93edc39f4889a6e505ed77f9d, type: 3}
+  - {fileID: 2800000, guid: 1843a7061a2d2e34dbcb79534a5234ea, type: 3}
   BorderOnlyTileTextures: []
+  BonusCenterTileTextures: []
   RealTileMapVariant: {fileID: 11400000, guid: b57605abc77cca04b9bccc61b8e1b3d1, type: 2}
   BorderTileMapVariant: {fileID: 11400000, guid: b523f1e8b2799044299036290e0a2712, type: 2}
   ColorModifier: {r: 1, g: 1, b: 1, a: 1}
