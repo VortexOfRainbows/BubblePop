@@ -111,7 +111,11 @@ public class PowerUpUIElement : MonoBehaviour
         if(ForceHideCount)
             Count.gameObject.SetActive(false);
         else if(!CompendiumElement)
-            Count.text = MyPower.Stack.ToString();
+        {   
+            Count.text = MyPower.TrueStack.ToString();
+            if(MyPower.TrueStack != MyPower.Stack)
+                Count.text = $"({MyPower.Stack})".WithSizeAndColor((int)Mathf.Max(8, Count.fontSize * 0.7f - 3), ColorHelper.LesserGrayHex) + " ".WithSize(12) + Count.text;
+        }
         else
             Count.gameObject.SetActive(!AppearLocked && (Compendium.Instance == null || Compendium.Instance.PowerPage.ShowCounts) && !PreventHovering);
         bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea) && (!CrucibleElement || PowerUpCheatUI.MouseInCompendiumArea);

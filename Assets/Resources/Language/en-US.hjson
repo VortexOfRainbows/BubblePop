@@ -1175,6 +1175,24 @@
       Brief: Recruit the Oilicopter to fight alongside you
       Lore: Power.DefenseContract.Lore
     }
+    Soup:
+    {
+      Title: Soup
+      Description: 
+      '''
+      Increases the strength of all 1:[1-star powers] by Y:1 G:(+1 per stack) Y:stack 
+      R:[Spills when hurt]
+      '''
+      Brief: Don't spill it!
+      Lore: Power.Soup.Lore
+    }
+    SpilledSoup:
+    {
+      Title: Spilled Soup
+      Description: Does nothing
+      Brief: Dang it!
+      Lore: Power.SpilledSoup.Lore
+    }
   }
   Equip:
   {

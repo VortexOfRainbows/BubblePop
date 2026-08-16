@@ -242,6 +242,7 @@ public class Compendium : MonoBehaviour
     {
         if (reset && SelectedType >= 0)
         {
+            bool blackMarket = false;
             int rare = 0;
             string finalText = string.Empty;
             object loreObject = null;
@@ -254,7 +255,7 @@ public class Compendium : MonoBehaviour
                 locked = DisplayCPUE.IsLocked();
                 finalText = locked ? concat.Bastardize('?') : concat;
                 if (p.IsBlackMarket())
-                    rare = 5;
+                    blackMarket = true;
             }
             else if (PageNumber == 1)
             {
@@ -279,7 +280,7 @@ public class Compendium : MonoBehaviour
             }
             else if(loreObject != null)//Enable notes section for other descriptions
             {
-                finalText += shortLineBreak + $"<size=26>{"Notes".WithRarityColor(rare, false)}</size>";
+                finalText += shortLineBreak + $"<size=26>{"Notes".WithRarityColor(rare, blackMarket)}</size>";
                 string loreText = GetLoreSegment(loreObject);
                 LoreSection.text = loreText;
             }

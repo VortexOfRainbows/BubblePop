@@ -116,6 +116,7 @@ public class Futures : PowerUp
         p.TotalInvestments += Stack;
         p.HasFutures = true;
     }
+    public override bool EffectedBySoup() => false;
 }
 public class Commodities : PowerUp
 {
@@ -189,4 +190,26 @@ public class DefenseContract : PowerUp
         p.HelicopterStacks += Stack;
     }
     public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<OilKingTooBigToFail>();
+}
+public class Soup : PowerUp
+{
+    public override void Init() => Weighting = Uncommon;
+    public override void HeldEffect(Player p)
+    {
+        p.Bonus1StarStacksFromSoup = Stack; //Purposely does not use +=, as this is NOT reset every frame, but only if you have 0 soup left
+    }
+    public override bool IsBlackMarket() => true;
+}
+public class SpilledSoup : PowerUp
+{
+    public override void Init() => Weighting = Uncommon;
+    public override void HeldEffect(Player p)
+    {
+        //DOES NOTHING
+    }
+    public override bool IsBlackMarket() => true;
+    public override int CrucibleGems(bool dissolve = false)
+    {
+        return dissolve ? 1 : base.CrucibleGems(dissolve);
+    }
 }

@@ -33,7 +33,7 @@ public partial class Player : Entity
         if (index != -1)
         {
             PowerUp p = PowerUp.Get(GetPower(index));
-            p.Stack -= num;
+            p.SetTrueStack(p.TrueStack - num);
             if(p.MyID == PowerUp.Get<QuantumCake>().MyID)
                 PowerUp.Get<EatenCake>().PickUp(this, num);
             if(p.Stack <= 0)
@@ -181,6 +181,7 @@ public partial class Player : Entity
     public bool HasFlowerCrownRecursiveHeal = false, HasJesusJuice = false, IgnoreMovespeed = false;
     public bool HasFutures, HasCommodities, HasOptions, HasSecurities, HasWindfall;
     public int HelicopterStacks = 0;
+    public int Bonus1StarStacksFromSoup { get; set; } = 0;
     public Projectile HelicopterSummon;
     private void PowerInit()
     {
@@ -256,9 +257,10 @@ public partial class Player : Entity
         for(int i = 0; i < Powers.Count; i++)
         {
             PowerUp power = PowerUp.Get(Powers[i]);
-            if(power.Stack > 0)
+            if (power.Stack > 0)
                 power.HeldEffect(this);
-                //Debug.Log($"Doing held effect for {power.Stack}");
+            else if (power is Soup)
+                Bonus1StarStacksFromSoup = 0;
         }
         if(HelicopterSummon == null && HelicopterStacks > 0)
             HelicopterSummon = Projectile.NewProjectile<Helicopter>(transform.position, Vector2.zero, 0, this).GetComponent<Helicopter>();

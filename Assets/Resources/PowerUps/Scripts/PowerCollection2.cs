@@ -531,10 +531,8 @@ public class Contract : PowerUp
         return true;
     }
     public override int Cost => 150;
-    public override int CrucibleGems(bool dissolve = false)
-    {
-        return dissolve ? 10 : 15;
-    }
+    public override int CrucibleGems(bool dissolve = false) => dissolve ? 10 : 15;
+    public override bool EffectedBySoup() => false;
 }
 public class RainbowFlower : PowerUp
 {
@@ -558,10 +556,8 @@ public class RainbowFlower : PowerUp
         }
         return 15;
     }
-    public override int ShardReplicationCost(int stackSize = 1)
-    {
-        return stackSize * 3;
-    }
+    public override int ShardReplicationCost(int stackSize = 1) => stackSize * 3;
+    public override bool EffectedBySoup() => false;
 }
 public class QuantumCake : PowerUp
 {

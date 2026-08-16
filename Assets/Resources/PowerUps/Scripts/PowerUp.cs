@@ -286,7 +286,16 @@ public abstract class PowerUp
         ChoicePowerMenu.TurnOff();
         Time.timeScale = 1;
     }
-    public int Stack;
+    public int Stack { get => TrueStack + ImpactStackModifier(); }
+    public int ImpactStackModifier()
+    {
+        if(EffectedBySoup() && TrueStack > 0)
+            return Player.Instance.Bonus1StarStacksFromSoup; //Replace this with the owner once powers can be owned instead of global (super multiplayer future)
+        return 0;
+    }
+    public virtual bool EffectedBySoup() => Rarity == 1;
+    public int TrueStack { get; private set; }
+    public void SetTrueStack(int mod) => TrueStack = mod;
     public int Rarity { get; private set; }
     public float Weighting = 1;
     //Returns the MyID of this power
@@ -314,7 +323,7 @@ public abstract class PowerUp
     }
     private void Reset()
     {
-        Stack = 0;
+        TrueStack = 0;
         Weighting = 1;
         Init();
     }
@@ -350,7 +359,7 @@ public abstract class PowerUp
     private int AddToPlayer(Player player, int count = 1)
     {
         player.PickUpPower(MyID);
-        Stack = Stack + count;
+        TrueStack = TrueStack + count;
         if (IsBlackMarket())
             player.TotalBlackMarketPowersPickedUp += count;
         else

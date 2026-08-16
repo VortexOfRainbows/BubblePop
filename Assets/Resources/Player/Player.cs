@@ -899,17 +899,25 @@ public partial class Player : Entity
                 SetLife(Life - lifeDamage);
         }
         UniversalImmuneFrames = defaultImmuneFrames * immuneMult;
+        if (!skipDamageStep)
+            OnTakeDamageEffects(damage);
         if (Life <= 0)
             Pop();
-        else if(!skipDamageStep)
-        {
-            TimesHitThisLifeThisWave += damage;
-            if (TimesHitThisLifeThisWave >= 9 && this.Body is KingOil)
-                UnlockCondition.Get<OilKingTooBigToFail>().SetComplete();
-        }
-            Body.ModifyHurtAnimation();
+        Body.ModifyHurtAnimation();
     }
-    public void OnHurtEffects()
+    public void OnTakeDamageEffects(int damage) //Does not trigger on dodge
+    {
+        TimesHitThisLifeThisWave += damage;
+        if (TimesHitThisLifeThisWave >= 9 && this.Body is KingOil && Life > 0) //NOT DEAD
+            UnlockCondition.Get<OilKingTooBigToFail>().SetComplete();
+        if (Bonus1StarStacksFromSoup > 0) //This means you have soup!
+        {
+            PowerUp soup = PowerUp.Get<Soup>();
+            PowerUp.Get<SpilledSoup>().PickUp(this, soup.TrueStack);
+            RemovePower(soup.Type, 1);
+        }
+    }
+    public void OnHurtEffects() //Triggers even when dodge
     {
         if (RetaliatoryBomb > 0)
         {

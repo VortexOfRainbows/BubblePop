@@ -20,6 +20,7 @@ public class Choice : PowerUp
         return stackSize * 2;
     }
     public override bool BriefDescIsSameAsLong => true;
+    public override bool EffectedBySoup() => false;
 }
 public class ChargeShot : PowerUp
 {
