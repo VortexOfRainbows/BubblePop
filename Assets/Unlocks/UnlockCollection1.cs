@@ -329,6 +329,16 @@ public class OilKingTooBigToFail : UnlockCondition
     public override int Rarity => 4;
     public override UnlockCondition PreReqUnlock => Get<KingOilUnlock>();
 }
+public class ThoughtBubbleFasterThanLight : UnlockCondition
+{
+    public override void SetAchievementCategories(ref int zone, ref int category)
+    {
+        zone = Lab;
+        category = Challenge;
+    }
+    public override int Rarity => 5;
+    public override UnlockCondition PreReqUnlock => Get<ThoughtBubbleUnlock>();
+}
 //Achievement idea for (2-star) Oil King: Rock Feller: as Oil King, kill all segments of a Rock Golem with a single drone strike
 //Achievement idea for (4-star) Oil King: Environmentalist: win without afflicting tar on any enemy
 //Achievement idea for (5-star) Oil King: Golden Slaughterer: win on Ascension 3 without taking damage, picking up red items, or taking non-investments from choices

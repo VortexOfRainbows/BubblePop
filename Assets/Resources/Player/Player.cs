@@ -1220,8 +1220,9 @@ public partial class Player : Entity
             {
                 if(!HasAttacked)
                     UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
-                if (AscensionLevel >= 3)
-                    UnlockCondition.Get<KingOilUnlock>().SetComplete();
+                UnlockCondition.Get<KingOilUnlock>().SetComplete();
+                if (WaveDirector.ElapsedTime <= 1500 && AscensionLevel >= 3)
+                    UnlockCondition.Get<ThoughtBubbleFasterThanLight>().SetComplete();
             }
             else if (body is Gachapon)
             {

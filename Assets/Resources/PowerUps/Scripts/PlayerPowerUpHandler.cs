@@ -36,9 +36,7 @@ public partial class Player : Entity
             p.SetTrueStack(p.TrueStack - num);
             if(p.MyID == PowerUp.Get<QuantumCake>().MyID)
                 PowerUp.Get<EatenCake>().PickUp(this, num);
-            else if (p is TachyonAccelerator)
-                RequestColorReload();
-            if (p.Stack <= 0)
+            if(p.Stack <= 0)
                 Powers.RemoveAt(index);
             PowerCountIncludingStacks -= num;
         }
@@ -182,7 +180,7 @@ public partial class Player : Entity
     public int BonusBlackDiamond, OilSpill, TarConcoct, Gasoline, TotalInvestments, SmokeStack, GoldenGun, CompoundInterest, Pumpjack, OilBarrelSize, BonusAerialBarrels, FlintAndSteel = 0;
     public bool HasFlowerCrownRecursiveHeal = false, HasJesusJuice = false, IgnoreMovespeed = false;
     public bool HasFutures, HasCommodities, HasOptions, HasSecurities, HasWindfall;
-    public int HelicopterStacks, TachyonStacks = 0;
+    public int HelicopterStacks, TachyonStacks, PrevTachyonStacks = 0;
     public int Bonus1StarStacksFromSoup { get; set; } = 0;
     public Projectile HelicopterSummon;
     private void PowerInit()
@@ -255,8 +253,9 @@ public partial class Player : Entity
     }
     private void UpdatePowerUps()
     {
+        PrevTachyonStacks = TachyonStacks;
         ClearPowerBonuses();
-        for(int i = 0; i < Powers.Count; i++)
+        for (int i = 0; i < Powers.Count; i++)
         {
             PowerUp power = PowerUp.Get(Powers[i]);
             if (power.Stack > 0)
@@ -264,6 +263,8 @@ public partial class Player : Entity
             else if (power is Soup)
                 Bonus1StarStacksFromSoup = 0;
         }
+        if (PrevTachyonStacks != TachyonStacks)
+            RequestColorReload();
         if(HelicopterSummon == null && HelicopterStacks > 0)
             HelicopterSummon = Projectile.NewProjectile<Helicopter>(transform.position, Vector2.zero, 0, this).GetComponent<Helicopter>();
         AbilityRecoverySpeed = AbilityRecoverySpeed * AbilityRecoverySpeedMult;

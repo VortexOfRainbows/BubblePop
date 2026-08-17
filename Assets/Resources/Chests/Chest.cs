@@ -26,7 +26,7 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
     }
     public void ReceiveProjectileImpact(Projectile p)
     {
-        if (RB.mass > 1.1f && !p.SpecializedImmuneFrames.Contains(this) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
+        if (ChestType == 3 && RB.mass > 1.1f && !p.SpecializedImmuneFrames.Contains(this) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
         {
             if (p.Penetrate != -1 && --p.Penetrate == 0)
                 p.Kill();

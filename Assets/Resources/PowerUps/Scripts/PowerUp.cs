@@ -350,8 +350,8 @@ public abstract class PowerUp
         {
             
         }
-        if(this is TachyonAccelerator)
-            player.RequestColorReload();
+        //if(this is TachyonAccelerator)
+        //    player.RequestColorReload();
     }
     public void AddToDisplayQueue()
     {

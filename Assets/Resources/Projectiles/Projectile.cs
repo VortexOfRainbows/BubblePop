@@ -153,7 +153,7 @@ public class Projectile : MonoBehaviour
         OnKill();
         Destroy(gameObject);
     }
-    public static readonly string WorldTag = "Tub";
+    public static readonly string WorldTag = "Tub"; //dont change this until you know why?
     public void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.CompareTag(WorldTag))
@@ -188,17 +188,18 @@ public class Projectile : MonoBehaviour
         int BonusFrames = 1;
         if(PlayerOwner != null && PlayerOwner.TachyonStacks > 0 && TachyonCompatible() && !AlreadyDidTachyon)
         {
-            BonusFrames = 10 + 30 * PlayerOwner.TachyonStacks;
+            BonusFrames = 40 * PlayerOwner.TachyonStacks;
             SkipHits = new(); //use size of 30 for now
             Filter = new()
             {
                 useTriggers = true,
                 useLayerMask = true,
-                layerMask = C2D.includeLayers
+                layerMask = C2D.includeLayers,
             };
             AlreadyDidTachyon = true;
             TachyonPoints = new();
         }
+        int framesWithoutMovement = 0;
         for (ExtraUpdateNumber = 0; ExtraUpdateNumber < BonusFrames; ++ExtraUpdateNumber)
         {
             if (ExtraUpdateNumber > 0)
@@ -225,7 +226,11 @@ public class Projectile : MonoBehaviour
                     }
                 }
                 if (travelledDistance < 0.005f)
-                    break;
+                {
+                    ++framesWithoutMovement;
+                    if(framesWithoutMovement > 2)
+                        break;
+                }
             }
             UpdateSpecialImmuneFrames();
             previousPosition = transform.position;
@@ -251,7 +256,7 @@ public class Projectile : MonoBehaviour
     {
         if (positions == null)
             return;
-        SpecialLine.NewLine(positions, ColorHelper.HotPink, TachyonDistance, TachyonSize());
+        SpecialLine.NewLine(positions, ColorHelper.HotPink, TachyonDistance, TachyonSize(), SpriteRenderer.sortingOrder);
         positions.Clear();
         positions = null;
         //Vector2 previous = positions[0];

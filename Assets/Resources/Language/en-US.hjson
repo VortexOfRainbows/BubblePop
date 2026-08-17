@@ -1192,13 +1192,13 @@
     {
       Title: Spilled Soup
       Description: Does nothing
-      Brief: Dang it!
+      Brief: Look what you've done...
       Lore: Power.SpilledSoup.Lore
     }
     TachyonAccelerator:
     {
       Title: Tachyon Accelerator
-      Description: Friendly projectiles Y:[instantly travel] Y:0.4 G:(+0.3 per stack) Y:seconds into the Y:future, dealing Y:[30% more damage] to enemies in between
+      Description: Friendly projectiles Y:[instantly travel] Y:0.4 G:(+0.4 per stack) Y:seconds into the Y:future, dealing Y:[50% more damage] to enemies in between
       Brief: Faster than light
       Lore: Power.TachyonAccelerator.Lore
     }
@@ -1683,11 +1683,7 @@
     KingOilUnlock:
     {
       Title: Thought Bubble: Former Employer
-      Description:
-        '''
-        As Y:[Thought Bubble,] win on 
-        Y:Ascension Y:3
-        '''
+      Description: "Win as Y:[Thought Bubble] "
     }
     FizzyTouchGrass:
     {
@@ -1713,6 +1709,11 @@
     {
       Title: King Oil: Quagmire
       Description: As Y:[King Oil,] afflict an enemy with Y:[tar, chill, and poison,] then detonate them for Y:[over 1000 total damage]
+    }
+    ThoughtBubbleFasterThanLight:
+    {
+      Title: Thought Bubble: Faster than Light
+      Description: As Y:[Thought Bubble,] win in Y:[25 minutes] or less on Y:Ascension Y:3 
     }
   }
   Enemy:

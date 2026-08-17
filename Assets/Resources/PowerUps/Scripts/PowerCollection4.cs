@@ -236,4 +236,5 @@ public class TachyonAccelerator : PowerUp
         p.TachyonStacks += Stack;
     }
     public override bool IsBlackMarket() => true;
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<ThoughtBubbleFasterThanLight>();
 }

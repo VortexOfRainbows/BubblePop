@@ -61,6 +61,10 @@ Done:
 	1. More in line with Sam's sprite! Now in game!
 6. Oil King: Quagmire Achievement and blackmarket version of diversified portfolio (+better placeholder sprite)
 7. Soup sprite by David
+8. Thought Bubble Faster than Light achievement for unlocking Tachyon Accelerator
+9. Oil King unlock no longer requires ASC 3
+10. Fix bug where Crow was not pathfinding if player was beyond certain range and not in LOS
+11. Pylons are now considered WORLDOBJ for purpose of collision instead of WORLD. They will no longer block things like sentinel lasers (and oil king diamond bug fix)
 
 8/14/26 to 8/15/26
 1. Reworked "Small Room" node to be more interesting and more common
