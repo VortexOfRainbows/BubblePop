@@ -36,7 +36,9 @@ public partial class Player : Entity
             p.SetTrueStack(p.TrueStack - num);
             if(p.MyID == PowerUp.Get<QuantumCake>().MyID)
                 PowerUp.Get<EatenCake>().PickUp(this, num);
-            if(p.Stack <= 0)
+            else if (p is TachyonAccelerator)
+                RequestColorReload();
+            if (p.Stack <= 0)
                 Powers.RemoveAt(index);
             PowerCountIncludingStacks -= num;
         }

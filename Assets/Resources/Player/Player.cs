@@ -328,6 +328,8 @@ public partial class Player : Entity
     public Color SecondColor { get; private set; }
     private Color PrimaryColor()
     {
+        if (TachyonStacks > 0)
+            return (ColorHelper.HotPink * 1.5f).WithAlpha(0.8f);
         if(Weapon is Cola)
         {
             if (Weapon is FocusFizzSoda)
@@ -364,6 +366,11 @@ public partial class Player : Entity
             return ColorHelper.KingOilColor;
         else //BUBBLEMANCER
             return ColorHelper.BubblemancerColor;
+    }
+    public void RequestColorReload()
+    {
+        FirstColor = PrimaryColor();
+        SecondColor = SecondaryColor();
     }
     public TextMeshPro PlayerNumber;
     public static readonly List<Player> AllPlayers = new();
@@ -625,8 +632,7 @@ public partial class Player : Entity
             if(InstanceID == 0)
                 PlayerStatUI.SetHeartsToPlayerLife();
             ModifyAscensionLevel(0); //Might be better to move this to the place where body is set or changed, but this works for now.
-            FirstColor = PrimaryColor();
-            SecondColor = SecondaryColor();
+            RequestColorReload();
         }
         UpdatePowerUps();
         UpdateBuffs();
@@ -913,7 +919,7 @@ public partial class Player : Entity
         if (Bonus1StarStacksFromSoup > 0) //This means you have soup!
         {
             PowerUp soup = PowerUp.Get<Soup>();
-            PowerUp.Get<SpilledSoup>().PickUp(this, soup.TrueStack);
+            PowerUp.Get<SpilledSoup>().PickUp(this, 1);
             RemovePower(soup.Type, 1);
         }
     }

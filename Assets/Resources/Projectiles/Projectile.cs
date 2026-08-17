@@ -149,11 +149,7 @@ public class Projectile : MonoBehaviour
         else
             return;
         if (TachyonPoints != null)
-        {
-            DoTachyonVisual(TachyonPoints);
-            TachyonPoints.Clear();
-            TachyonPoints = null;
-        }
+            DoTachyonVisual(ref TachyonPoints);
         OnKill();
         Destroy(gameObject);
     }
@@ -183,7 +179,8 @@ public class Projectile : MonoBehaviour
     public bool AlreadyDidTachyon { get; private set; } = false;
     public List<RaycastHit2D> SkipHits;
     public ContactFilter2D Filter;
-    private List<Vector2> TachyonPoints;
+    private List<Vector3> TachyonPoints;
+    private float TachyonDistance = 0;
     public int ExtraUpdateNumber { get; private set; } = 0;
     public void FixedUpdate()
     {
@@ -209,6 +206,7 @@ public class Projectile : MonoBehaviour
                 transform.position += (Vector3)(RB.velocity * Time.fixedDeltaTime);
                 //Then we need to simulate collision on these bonus steps
                 float frameDistance = RB.velocity.magnitude * Time.fixedDeltaTime;
+                TachyonDistance += frameDistance;
                 int hits = Physics2D.CircleCast(transform.position, C2D.radius * 1.1f, RB.velocity, Filter, SkipHits, frameDistance); //Projectile hitbox is bigger while warping, to give impression of bigger hitbox/accuracy
                 for(int j = 0; j < hits; ++j)
                 {
@@ -238,32 +236,33 @@ public class Projectile : MonoBehaviour
         }
         ExtraUpdateNumber = 0;
         if(TachyonPoints != null)
-        {
-            DoTachyonVisual(TachyonPoints);
-            TachyonPoints.Clear();
-            TachyonPoints = null;
-        }
+            DoTachyonVisual(ref TachyonPoints);
     }
-    public virtual void DoTachyonVisual(List<Vector2> positions)
+    public virtual void DoTachyonVisual(ref List<Vector3> positions)
     {
-        Vector2 previous = positions[0];
-        int max = positions.Count;
-        int fadeDistance = Mathf.Min(20, positions.Count / 3);
-        for(int i = 1; i < positions.Count; ++i)
-        {
-            float percent =
-                i <= fadeDistance ? i / (float)fadeDistance :
-                i > max - fadeDistance ? (max - i) / (float)fadeDistance :
-                1;
-            percent = 1 - percent;
-            percent *= percent;
-            percent = 1 - percent;
-            Color TachyonColor = ColorHelper.HotPink; //#e75fcb;
-            Vector2 current = positions[i];
-            Vector2 toCurrent = current - previous;
-            ParticleManager.NewParticle(previous, new Vector2(toCurrent.magnitude, 2f * C2D.bounds.extents.x * percent), Vector2.zero, 0, 0.2f + 0.8f * percent, ParticleManager.ID.Line, TachyonColor * percent, -toCurrent.ToRotation() * Mathf.Rad2Deg);
-            previous = current;
-        }
+        if (positions == null)
+            return;
+        SpecialLine.NewLine(positions, ColorHelper.HotPink, TachyonDistance, C2D.bounds.size.x * 0.9f + 0.1f);
+        positions.Clear();
+        positions = null;
+        //Vector2 previous = positions[0];
+        //int max = positions.Count;
+        //int fadeDistance = Mathf.Min(20, positions.Count / 3);
+        //for(int i = 1; i < positions.Count; ++i)
+        //{
+        //    float percent =
+        //        i <= fadeDistance ? i / (float)fadeDistance :
+        //        i > max - fadeDistance ? (max - i) / (float)fadeDistance :
+        //        1;
+        //    percent = 1 - percent;
+        //    percent *= percent;
+        //    percent = 1 - percent;
+        //    Color TachyonColor = ColorHelper.HotPink; //#e75fcb;
+        //    Vector2 current = positions[i];
+        //    Vector2 toCurrent = current - previous;
+        //    ParticleManager.NewParticle(previous, new Vector2(toCurrent.magnitude, 2f * C2D.bounds.extents.x * percent), Vector2.zero, 0, 0.2f + 0.8f * percent, ParticleManager.ID.Line, TachyonColor * percent, -toCurrent.ToRotation() * Mathf.Rad2Deg);
+        //    previous = current;
+        //}
     }
     public void HitTarget(Entity target)
     {
