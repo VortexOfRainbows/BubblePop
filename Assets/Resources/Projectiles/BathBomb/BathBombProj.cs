@@ -3,6 +3,14 @@ using UnityEngine.UI;
 
 public class BathBomb : Projectile
 {
+    public override bool TachyonCompatible()
+    {
+        return true;
+    }
+    public override float TachyonSize()
+    {
+        return Data.Length > 3 ? Data[3] : 1.0f;
+    }
     public Vector2 Destination
     {
         get => new(Data[0], Data[1]);
@@ -143,6 +151,14 @@ public class BathBomb : Projectile
 }
 public class BathBombShrapnel : Projectile
 {
+    public override float TachyonSize()
+    {
+        return base.TachyonSize() * 0.4f;
+    }
+    public override bool TachyonCompatible()
+    {
+        return true;
+    }
     public override void Init()
     {
         SpriteRenderer.sprite = Main.TextureAssets.BathBombShards[Utils.RandInt(Main.TextureAssets.BathBombShards.Length)];
