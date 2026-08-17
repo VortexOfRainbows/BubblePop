@@ -260,8 +260,6 @@ public partial class Player : Entity
             PowerUp power = PowerUp.Get(Powers[i]);
             if (power.Stack > 0)
                 power.HeldEffect(this);
-            else if (power is Soup)
-                Bonus1StarStacksFromSoup = 0;
         }
         if (PrevTachyonStacks != TachyonStacks)
             RequestColorReload();

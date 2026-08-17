@@ -43,6 +43,7 @@ Balance Changes:
 	4. Calculator homing strength for stars buffed by around 16%
 	5. Overall, the algorithm is far stronger, so stacking factors for ACCELERATION and LERP SPEED have been nerfed slightly (not in power description)
 	6. Most Projectiles now require LOS with enemies to HOME. This might cause more overhead lag, so let me know if it is a problem for you!
+12. (BUFF) Haste is now 2-star -> 1-star
 
 Misc Changes:
 1. New raycast logic that should make LOS more accurate for stuff like Sentinel Lasers

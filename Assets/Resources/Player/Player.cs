@@ -921,6 +921,7 @@ public partial class Player : Entity
             PowerUp soup = PowerUp.Get<Soup>();
             PowerUp.Get<SpilledSoup>().PickUp(this, 1);
             RemovePower(soup.Type, 1);
+            --Bonus1StarStacksFromSoup;
         }
     }
     public void OnHurtEffects() //Triggers even when dodge
