@@ -20,8 +20,10 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
             ReceiveProjectileImpact(p);
     }
     public void ReceiveProjectileImpact(Projectile p)
-    { 
-        if(!p.SpecializedImmuneFrames.Contains(this) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
+    {
+        if (AlreadyBroken)
+            return;
+        if (!p.SpecializedImmuneFrames.Contains(this) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
         {
             if (p.Penetrate != -1 && --p.Penetrate == 0)
                 p.Kill();
@@ -42,9 +44,11 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
             }
         }
     }
+    public bool AlreadyBroken { get; set; } = false;
     public CapsuleCollider2D Collider;
     public void Break()
     {
+        AlreadyBroken = true;
         Color c = Color.white;
         if(Type == BreakableObjectType.Crate)
         {
