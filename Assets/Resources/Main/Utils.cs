@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Enemy;
+using static UnityEngine.GraphicsBuffer;
 public static class Utils
 {
     public static Unity.Mathematics.Random rand = InitRandSeed();
@@ -491,5 +492,13 @@ public static class Utils
         Vector2 toEnd = end - start;
         distance = toEnd.magnitude;
         return TileOnlyRaycast(start, toEnd, ref distance, collisionRange);
+    }
+    public static float DeltaRadians(float current, float target)
+    {
+        float diff = (target - current + Mathf.PI) % (Mathf.PI * 2f);
+        if (diff < 0) 
+            diff += Mathf.PI * 2f;
+        float shortestDistance = diff - Mathf.PI;
+        return shortestDistance;
     }
 }

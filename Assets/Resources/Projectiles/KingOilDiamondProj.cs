@@ -144,4 +144,5 @@ public class KingOilDiamondProj : Projectile
         SwitchedPos = true;
         return false;
     }
+    public override bool HomingNeedsLOS => false;
 }

@@ -17,7 +17,6 @@ Do Later:
 8. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
 9. Convert player power handler to use structs for faster resetting 
-10. Redo Calculator to use angles for homing instead of weird lerp weighting (to make more effective with high speed and in general)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -65,6 +64,18 @@ Done:
 9. Oil King unlock no longer requires ASC 3
 10. Fix bug where Crow was not pathfinding if player was beyond certain range and not in LOS
 11. Pylons are now considered WORLDOBJ for purpose of collision instead of WORLD. They will no longer block things like sentinel lasers (and oil king diamond bug fix)
+12. Calculator Adjustments (FOR THE STANDARD ALGORITHM THAT EFFECTS MOST PROJECTILES, SPECIAL BEHAVIORS UNCHANGED UNLESS SPECIFIED):
+	1. Now the algorithm is purely angle based, rather than velocity based, meaning it should function more predictably and consistently
+		1. The biggest impact is that trajectories close to being opposite previously failed to home (allowing projectiles to travel straight through without locking on)
+		2. This is NO LONGER the case, now projectiles can more easily turn with calculator
+	2. Lerp speed is now based on angle delta, where lower deltas increase rates, meaning near misses should home far more easily
+		1. Interpolation actually favors bigger deltas, so previously homing was stronger at large deltas, causing projectiles to snap quickly to a nearby course, but stop snapping just before getting to the right trajectory, causing calculator too look like it was always just barely missing
+		2. Now the bias should be balanced out by the inverse angle delta multiplier
+	3. Thunder Bubbles, GachaSlots non-token projectiles, now use the standard algorithm instead of a unique algorithm
+		1. Thunder Bubbles, however, gets 90% less acceleration
+	4. Calculator homing strength for stars buffed by around 16%
+	5. Overall, the algorithm is far stronger, so stacking factors for ACCELERATION and LERP SPEED have been nerfed slightly (not in power description)
+	6. Most Projectiles now require LOS with enemies to HOME. This might cause more overhead lag, so let me know if it is a problem for you!
 
 8/14/26 to 8/15/26
 1. Reworked "Small Room" node to be more interesting and more common

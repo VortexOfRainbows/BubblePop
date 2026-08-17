@@ -148,6 +148,7 @@ public class BathBomb : Projectile
             }
         }
     }
+    public override bool HomingNeedsLOS => false;
 }
 public class BathBombShrapnel : Projectile
 {

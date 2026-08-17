@@ -276,13 +276,13 @@ public class Enemy : Entity, IImpactedByProjIFrames
             {
                 float distance = toDest.magnitude;
                 float startingDist = distance;
-                Utils.RaycastWithTileSupport(toDest, norm, ref distance, 0.5f, out bool hitSomething); //This migth be a bit excessive for a line of sight check. If this is a performance issue, come back to this and optimize it (maybe make it so it doesn't find the exact collision position, just terminate upon any collision detected)
+                Utils.RaycastWithTileSupport(position, toDest.normalized, ref distance, 0.5f, out bool hitSomething); //This migth be a bit excessive for a line of sight check. If this is a performance issue, come back to this and optimize it (maybe make it so it doesn't find the exact collision position, just terminate upon any collision detected)
                 hasLOS = !hitSomething || (distance >= (startingDist - 0.1f)); //If nothing was hit or the distance to the hit was about the same as the distance to the player, that means we have line of sight (most likely)
             }
             //Debug.Log(e.tag);
             if (dist <= searchDistance && 
                 (!requireNonImmune || e.UniversalImmuneFrames <= 0) && 
-                (!requireNonHost || (!e.InfectionTarget && e is not Infector && e.ViableInfectionTarget())) && hasLOS)
+                (!requireNonHost || (!e.InfectionTarget && e is not Infector && e.ViableInfectionTarget())) && hasLOS && !e.AlreadyDead)
             {
                 bool blackListed = ignore != null && ignore.Contains(e);
                 if (!blackListed)

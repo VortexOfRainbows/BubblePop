@@ -168,4 +168,5 @@ public class OilBomb : Projectile
     {
 
     }
+    public override bool HomingNeedsLOS => false;
 }

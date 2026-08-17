@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
@@ -386,15 +387,25 @@ public class Projectile : MonoBehaviour
         if(homingCounter++ % 4 == 0)
         {
             float range = PlayerOwner.HomingRange;
-            Enemy target = Enemy.FindClosest(HomingStartPosition(), range, out Vector2 norm2, true);
-            if (target != null && DoHomingBehavior(target, norm2, range))
+            Enemy target = Enemy.FindClosest(HomingStartPosition(), range, out Vector2 ToEnemy, null, true, needsLOS: HomingNeedsLOS);
+            if (target != null && DoHomingBehavior(target, ToEnemy, range))
             {
-                float currentSpeed = RB.velocity.magnitude + PlayerOwner.HomingRangeSqrt * 0.225f;
-                float modAmt = 0.0625f + PlayerOwner.HomingRangeSqrt * 0.03f;
-                RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm2 * currentSpeed, modAmt).normalized * currentSpeed;
+                float speedBonus = this is not ThunderBubble ? PlayerOwner.HomingRangeSqrt * 0.1f : PlayerOwner.HomingRangeSqrt * 0.01f;
+                float currentSpeed = RB.velocity.magnitude + speedBonus;
+                float modAmt = 0.06f + PlayerOwner.HomingRangeSqrt * 0.02f;
+                float toEnemyAngle = ToEnemy.ToRotation();
+                float currentAngle = RB.velocity.ToRotation();
+                float delta = Mathf.Abs(Utils.DeltaRadians(currentAngle, toEnemyAngle)); //Smaller deltas should be treated with a greater homing modifier, weakest homing at pi difference
+                if (delta == 0)
+                    return;
+                float deltaMultiplier = Mathf.PI / delta;
+                Vector2 velocity = new(currentSpeed, 0);
+                float angleModifier = Utils.LerpAngleRadians(currentAngle, toEnemyAngle, modAmt * deltaMultiplier);
+                RB.velocity = velocity.RotatedBy(angleModifier);
             }
         }
     }
+    public virtual bool HomingNeedsLOS => true;
     public virtual bool DoHomingBehavior(Enemy target, Vector2 norm, float range)
     {
         return true;

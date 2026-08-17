@@ -434,7 +434,7 @@ public class ThunderBubble : Projectile
                 }
             }
         }
-        if(ExtraUpdateNumber % 3 == 0)
+        if(ExtraUpdateNumber % 4 == 0)
         {
             if ((int)++timer2 % 6 != 0)
             {
@@ -461,13 +461,6 @@ public class ThunderBubble : Projectile
         if (PlayerOwner.Weapon is not Book book)
             return false;
         return !book.InClosingAnimation;
-    }
-    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
-    {
-        float currentSpeed = RB.velocity.magnitude + PlayerOwner.HomingRangeSqrt * 0.01f;
-        float modAmt = 0.04f + PlayerOwner.HomingRangeSqrt * 0.04f;
-        RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm * currentSpeed, modAmt).normalized * currentSpeed;
-        return false;
     }
     public override void OnKill()
     {

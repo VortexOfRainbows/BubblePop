@@ -126,13 +126,6 @@ public class GachaProj : Projectile
         }
         AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
     }
-    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
-    {
-        float currentSpeed = RB.velocity.magnitude * 0.99f + PlayerOwner.HomingRangeSqrt * 0.125f;
-        float modAmt = 0.1f + PlayerOwner.HomingRangeSqrt * 0.05f;
-        RB.velocity = Vector2.Lerp((1 - modAmt) * RB.velocity, norm * currentSpeed, modAmt).normalized * currentSpeed;
-        return false;
-    }
 }
 public class GachaTokenProj : Projectile
 {

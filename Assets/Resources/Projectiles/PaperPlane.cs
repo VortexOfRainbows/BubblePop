@@ -197,8 +197,8 @@ public class LatentCharge : Projectile
             ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(0.5f) * transform.localScale.x, Utils.RandFloat(0.5f, 0.6f), circular * Utils.RandFloat(4, 6), 4f, Utils.RandFloat(0.5f, 0.6f), 2, SpriteRendererGlow.color);
         }
     }
-    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
-    {
-        return false;
-    }
+    //public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
+    //{
+    //    return false;
+    //}
 }

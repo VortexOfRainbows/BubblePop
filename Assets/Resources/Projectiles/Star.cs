@@ -84,7 +84,7 @@ public class StarProj : Projectile
         else
             homingCounter += 2;
         Vector2 targetPos = new Vector2(Data1, Data2);
-        float modAmt = 0.025f + Mathf.Sqrt(scale) * 0.0075f;
+        float modAmt = 0.03f + Mathf.Sqrt(scale) * 0.01f;
         if (PlayerOwner.OrbitalStars)
             modAmt *= 0.045f;
         targetPos = Vector2.Lerp(targetPos, target.transform.position, modAmt);

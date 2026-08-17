@@ -155,6 +155,7 @@ public class ColaProj : Projectile
     }
     public override bool OnInsideTile() => false;
     public override bool OnTileCollide(Collider2D collision) => false;
+    public override bool HomingNeedsLOS => false;
 }
 public class ColaExplode : SupernovaExplode
 {
