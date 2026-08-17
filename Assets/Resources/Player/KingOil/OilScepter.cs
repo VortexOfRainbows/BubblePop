@@ -1,8 +1,5 @@
-using Steamworks;
 using System.Collections.Generic;
-using UnityEditor.Build;
 using UnityEngine;
-
 public class OilScepter : Weapon
 {
     public int AllowedDiamonds => (Player != null ? 1 + Player.BonusBlackDiamond : 1);

@@ -1,9 +1,5 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class Projectile : MonoBehaviour
 {
