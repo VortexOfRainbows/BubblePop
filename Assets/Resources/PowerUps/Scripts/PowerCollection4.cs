@@ -76,20 +76,34 @@ public class GoldenGun : PowerUp
 }
 public class DiversifiedPortfolio : PowerUp
 {
+    public override void ModifyDescription(ref PowerDescription description)
+    {
+        description.WithBlackMarketVariant(true, true);
+    }
     public override void Init() => Weighting = Rare;
     public override void HeldEffect(Player p)
     {
-        if (Stack > 0 && !PowerUp.PickingPowerUps)
+        if(p.Hat is OilHat)
         {
-            p.InvestmentChoices++;
+            if (Stack > 0 && !PowerUp.PickingPowerUps)
+            {
+                p.InvestmentChoices++;
+                p.RemovePower(Type);
+                PowerUp.TurnOnPowerUpSelectors();
+            }
+        }
+        else //BLACK MARKET VERSION
+        {
+            for(int i = 0; i < 3; ++i)
+                PowerUp.Get(PowerUp.PickRandomPower(PowerUp.AvailableInvestmentPowers, 0, -1, false, -1)).PickUp(p, 1);
             p.RemovePower(Type);
-            PowerUp.TurnOnPowerUpSelectors();
         }
     }
     public override int CrucibleGems(bool dissolve = false)
     {
         return dissolve ? 10 : 25;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<OilKingQuagmire>();
 }
 public class CompoundInterest : PowerUp
 {

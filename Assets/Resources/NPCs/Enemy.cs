@@ -720,8 +720,21 @@ public class Enemy : Entity, IImpactedByProjIFrames
     public void DetonateAllDebuffs()
     {
         float detonationDamage = 0;
+        bool sawOil = false;
+        bool sawIce = false;
+        bool sawPoison = false;
         foreach(Buff b in buffs)
+        {
             detonationDamage += b.Detonate(this);
+            if (b is Tarred)
+                sawOil = true;
+            else if (b is Chill)
+                sawIce = true;
+            else if (b is Poison)
+                sawPoison = true;
+        }
+        if(detonationDamage >= 1000 && Player.Instance.Body is KingOil && sawIce && sawPoison && sawOil)
+            UnlockCondition.Get<OilKingQuagmire>().SetComplete();
         BuffDetonatedCounter = 1f;
     }
     public void ReceiveProjectileImpact(Projectile p)

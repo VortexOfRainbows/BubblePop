@@ -1089,6 +1089,8 @@
       Description: Y:Invest in a Y:power from a given selection
       Brief: Choose between investment plans
       Lore: Power.DiversifiedPortfolio.Lore
+      BlackMarketBrief: Gain 3 random investments
+      BlackMarketDescription: Immediately gain Y:3 random Y:[investment powers] G:(consumed on use)
     }
     CompoundInterest:
     {
@@ -1196,10 +1198,7 @@
     TachyonAccelerator:
     {
       Title: Tachyon Accelerator
-      Description: 
-      '''
-      Friendly projectiles Y:[instantly travel] Y:0.4 G:(+0.2 per stack) Y:seconds into the Y:future, dealing Y:[30% more damage] to enemies in between
-      '''
+      Description: Friendly projectiles Y:[instantly travel] Y:0.4 G:(+0.2 per stack) Y:seconds into the Y:future, dealing Y:[30% more damage] to enemies in between
       Brief: Faster than light
       Lore: Power.TachyonAccelerator.Lore
     }
@@ -1709,6 +1708,11 @@
     {
       Title: King Oil: Too Big to Fail
       Description: As Y:[King Oil,] take damage Y:[9 times] in a single wave without dying
+    }
+    OilKingQuagmire:
+    {
+      Title: King Oil: Quagmire
+      Description: As Y:[King Oil,] afflict an enemy with Y:[tar, chill, and poison,] then detonate them for Y:[over 1000 total damage]
     }
   }
   Enemy:
