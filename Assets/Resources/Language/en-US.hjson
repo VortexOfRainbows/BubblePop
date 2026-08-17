@@ -1170,7 +1170,7 @@
     }
     DefenseContract:
     {
-      Title: Defense Contract
+      Title: Handheld Transceiver
       Description: Deploy the Y:Oilicopter, which automatically fires a Y:burst of Y:7 G:(+1 per stack) Y:bubbles at enemies within Y:[20 units] every Y:1.2 G:(-20% per stack) Y:seconds
       Brief: Recruit the Oilicopter to fight alongside you
       Lore: Power.DefenseContract.Lore
@@ -1196,7 +1196,10 @@
     TachyonAccelerator:
     {
       Title: Tachyon Accelerator
-      Description: Friendly projectiles Y:[instantly travel] Y:1 G:(+0.5 per stack) Y:seconds into the Y:future 
+      Description: 
+      '''
+      Friendly projectiles Y:[instantly travel] Y:0.4 G:(+0.2 per stack) Y:seconds into the Y:future, dealing Y:[30% more damage] to enemies in between
+      '''
       Brief: Faster than light
       Lore: Power.TachyonAccelerator.Lore
     }

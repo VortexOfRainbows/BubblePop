@@ -216,7 +216,7 @@ public class SpilledSoup : PowerUp
 }
 public class TachyonAccelerator : PowerUp
 {
-    public override void Init() => Weighting = SuperRare;
+    public override void Init() => Weighting = Legendary;
     public override void HeldEffect(Player p)
     {
         p.TachyonStacks += Stack;

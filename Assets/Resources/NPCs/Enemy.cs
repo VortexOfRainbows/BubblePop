@@ -466,6 +466,8 @@ public class Enemy : Entity, IImpactedByProjIFrames
             }
             float damage = proj.Damage + projOwner.GlassShards;
             damage *= projOwner.DamageMultiplier;
+            if (proj.ExtraUpdateNumber > 0) //tachyon accelerator
+                damage *= 1.3f;
             bool rollForInitiative = false;
             float critChance = projOwner.CriticalStrikeChance;
             int crit = (int)critChance;

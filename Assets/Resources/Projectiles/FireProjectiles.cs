@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PhoenixFire : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public override void Init()
     {
         transform.localScale = Vector3.one * 0.5f;

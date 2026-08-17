@@ -434,17 +434,20 @@ public class ThunderBubble : Projectile
                 }
             }
         }
-        if ((int)++timer2 % 6 != 0)
+        if(ExtraUpdateNumber % 3 == 0)
         {
-            float perc = (1 - book.ClosingPercent) * 0.1f;
-            ParticleManager.NewParticle((Vector2)transform.position + 2f * Time.fixedDeltaTime * velo, transform.localScale.x * 2.3f, velo * 0.5f, 2f, Recalled ? perc : Utils.RandFloat(0.1f, 0.15f), 2,
-                SpriteRendererGlow.color.WithAlphaMultiplied(.6f));
-        }
-        else if (timer <= deathTime)
-        {
-            Vector2 norm = velo.normalized;
-            Vector2 targetPos = Recalled ? PlayerOwner.Weapon.transform.position : (Vector2)transform.position - 2.5f * transform.localScale.x * norm;
-            ParticleManager.SummonLightningPylon2(transform.position, targetPos, ColorVar, 0.15f);
+            if ((int)++timer2 % 6 != 0)
+            {
+                float perc = (1 - book.ClosingPercent) * 0.1f;
+                ParticleManager.NewParticle((Vector2)transform.position + 2f * Time.fixedDeltaTime * velo, transform.localScale.x * 2.3f, velo * 0.5f, 2f, Recalled ? perc : Utils.RandFloat(0.1f, 0.15f), 2,
+                    SpriteRendererGlow.color.WithAlphaMultiplied(.6f));
+            }
+            else if (timer <= deathTime)
+            {
+                Vector2 norm = velo.normalized;
+                Vector2 targetPos = Recalled ? PlayerOwner.Weapon.transform.position : (Vector2)transform.position - 2.5f * transform.localScale.x * norm;
+                ParticleManager.SummonLightningPylon2(transform.position, targetPos, ColorVar, 0.15f);
+            }
         }
         RB.velocity = velo;
         if(timer % 50 == 0)

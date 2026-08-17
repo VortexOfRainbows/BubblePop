@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ColaProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Vector2 Destination => new(Data[0], Data[1]);
     public Vector2 playerStartPos = Vector2.zero;
     public float SpeedLockContribution = 0.8f;
@@ -58,7 +59,7 @@ public class ColaProj : Projectile
         Vector2 pos = Vector2.Lerp(startPos, Destination, percent);
         float arcY = Mathf.Sin(percent * Mathf.PI) * dist * (isHeavy ? 0.3f : 0.4f);
         pos.y += arcY;
-        RB.MovePosition(pos);
+        transform.position = pos - RB.velocity * Time.fixedDeltaTime;
     }
     public void Update()
     {

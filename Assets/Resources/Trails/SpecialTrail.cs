@@ -19,6 +19,7 @@ public class SpecialTrail : MonoBehaviour
         t.FakeParent = parent;
         t.transform.position = parent.transform.position;
         t.ManuallyUpdated = manuallyUpdated;
+        t.Trail.minVertexDistance = manuallyUpdated ? int.MaxValue : t.Trail.minVertexDistance;
         t.Trail.sortingOrder = orderInLayer;
         return t;
     }
@@ -26,7 +27,7 @@ public class SpecialTrail : MonoBehaviour
     public TrailRenderer Trail;
     public float timer;
     public float originalAlpha;
-    public bool ManuallyUpdated = false;
+    public bool ManuallyUpdated { get; private set; } = false;
     public bool ManualPosition { get; set; } = false;
     public float decayMultiplier = 1.0f;
     public List<Vector3> positions = new();
@@ -43,6 +44,8 @@ public class SpecialTrail : MonoBehaviour
         {
             transform.position = new Vector3(FakeParent.position.x, FakeParent.position.y, FakeParent.position.z + 0.01f);
         }
+        if (ManuallyUpdated && !Trail.autodestruct)
+            Trail.AddPosition(transform.position);
     }
     private void FixedUpdate()
     {

@@ -182,7 +182,7 @@ public class Projectile : MonoBehaviour
         int actingFrames = 1;
         if(PlayerOwner != null && PlayerOwner.TachyonStacks > 0 && TachyonCompatible() && !AlreadyDidTachyon)
         {
-            actingFrames = 50 + 50 * PlayerOwner.TachyonStacks;
+            actingFrames = 20 + 20 * PlayerOwner.TachyonStacks;
             SkipHits = new RaycastHit2D[30]; //use size of 30 for now
             Filter = new()
             {
@@ -199,7 +199,7 @@ public class Projectile : MonoBehaviour
                 transform.position += (Vector3)(RB.velocity * Time.fixedDeltaTime);
                 //Then we need to simulate collision on these bonus steps
                 float frameDistance = RB.velocity.magnitude * Time.fixedDeltaTime;
-                int hits = Physics2D.CircleCast(transform.position, C2D.radius, RB.velocity, Filter, SkipHits, frameDistance);
+                int hits = Physics2D.CircleCast(transform.position, C2D.radius * 1.1f, RB.velocity, Filter, SkipHits, frameDistance); //Projectile hitbox is bigger while warping, to give impression of bigger hitbox/accuracy
                 for(int j = 0; j < hits; ++j)
                 {
                     RaycastHit2D hit = SkipHits[j];
@@ -224,6 +224,7 @@ public class Projectile : MonoBehaviour
             if (Dead)
                 return;
         }
+        ExtraUpdateNumber = 0;
     }
     public void HitTarget(Entity target)
     {

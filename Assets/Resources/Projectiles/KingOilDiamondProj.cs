@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
 public class KingOilDiamondProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Color c = Color.red;
     public SpecialTrail trail;
     public float Direction = 1;
@@ -22,7 +20,7 @@ public class KingOilDiamondProj : Projectile
         SpriteRendererGlow.transform.localScale *= 0.5f;
         C2D.radius *= 0.75f;
         startPos = transform.position;
-        trail = SpecialTrail.NewTrail(transform, c.WithAlpha(0.5f), 1.0f, 0.2f, 0.25f);
+        trail = SpecialTrail.NewTrail(transform, c.WithAlpha(0.5f), 1.0f, 0.2f, 0.25f, true);
         Direction = Utils.SignNoZero(Data1 - startPos.x);
         immunityFrames = 20;
         SpriteRenderer.flipX = Direction == 1;
@@ -110,6 +108,7 @@ public class KingOilDiamondProj : Projectile
 
         if(PlayerOwner.Gasoline > 0)
             HazardSystem.TryDetonatingOil(transform.position, PlayerOwner, PlayerOwner.Gasoline);
+        trail.AIUpdate();
     }
     public override void OnHitTarget(Entity target)
     {

@@ -1,6 +1,7 @@
 using UnityEngine;
 public class StarProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public SpecialTrail MyTrail;
     public override void Init()
     {
@@ -9,11 +10,12 @@ public class StarProj : Projectile
         if(Damage <= 0)
             Damage = 2;
         Friendly = true;
-        MyTrail = SpecialTrail.NewTrail(transform, Color.Lerp(Color.blue * 0.85f, PlayerOwner.FirstColor, 0.75f).WithAlpha(0.4f), 1, 0.25f, 0.3f);
+        MyTrail = SpecialTrail.NewTrail(transform, Color.Lerp(Color.blue * 0.85f, PlayerOwner.FirstColor, 0.75f).WithAlpha(0.4f), 1, 0.25f, 0.3f, true);
     }
     public override void AI()
     {
         SparkleAI();
+        MyTrail.AIUpdate();
     }
     public override void OnKill()
     {

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GachaProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Color c = Player.ProjectileColor;
     public override void Init()
     {
@@ -135,6 +136,7 @@ public class GachaProj : Projectile
 }
 public class GachaTokenProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Color c = ColorHelper.TokenColor;
     public SpecialTrail trail;
     public override void Init()
@@ -151,7 +153,7 @@ public class GachaTokenProj : Projectile
         SpriteRendererGlow.transform.localScale *= 1.25f; //2.5
         C2D.radius *= 1.5f;
         startPos = transform.position;
-        trail = SpecialTrail.NewTrail(transform, c * 0.9f, 1.8f, 0.18f, 0.3f);
+        trail = SpecialTrail.NewTrail(transform, c * 0.9f, 1.8f, 0.18f, 0.3f, true);
     }
     public bool SwitchedPos = false;
     public float deathPercent = 1f;
@@ -204,6 +206,7 @@ public class GachaTokenProj : Projectile
                 Kill();
             }
         }
+        trail.AIUpdate();
     }
     public override void OnHitTarget(Entity target)
     {
