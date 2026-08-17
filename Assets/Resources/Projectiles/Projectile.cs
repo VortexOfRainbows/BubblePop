@@ -181,13 +181,14 @@ public class Projectile : MonoBehaviour
     public ContactFilter2D Filter;
     private List<Vector3> TachyonPoints;
     private float TachyonDistance = 0;
+    private Vector2 previousPosition;
     public int ExtraUpdateNumber { get; private set; } = 0;
     public void FixedUpdate()
     {
         int BonusFrames = 1;
         if(PlayerOwner != null && PlayerOwner.TachyonStacks > 0 && TachyonCompatible() && !AlreadyDidTachyon)
         {
-            BonusFrames = 20 + 20 * PlayerOwner.TachyonStacks;
+            BonusFrames = 10 + 30 * PlayerOwner.TachyonStacks;
             SkipHits = new(); //use size of 30 for now
             Filter = new()
             {
@@ -206,7 +207,8 @@ public class Projectile : MonoBehaviour
                 transform.position += (Vector3)(RB.velocity * Time.fixedDeltaTime);
                 //Then we need to simulate collision on these bonus steps
                 float frameDistance = RB.velocity.magnitude * Time.fixedDeltaTime;
-                TachyonDistance += frameDistance;
+                float travelledDistance = ((Vector2)transform.position - previousPosition).magnitude;
+                TachyonDistance += travelledDistance; //some projectiles do not use velocity to update position
                 int hits = Physics2D.CircleCast(transform.position, C2D.radius * 1.1f, RB.velocity, Filter, SkipHits, frameDistance); //Projectile hitbox is bigger while warping, to give impression of bigger hitbox/accuracy
                 for(int j = 0; j < hits; ++j)
                 {
@@ -222,8 +224,11 @@ public class Projectile : MonoBehaviour
                             break;
                     }
                 }
+                if (travelledDistance < 0.005f)
+                    break;
             }
             UpdateSpecialImmuneFrames();
+            previousPosition = transform.position;
             AI();
             bool? homing = CanBeAffectedByHoming();
             if (((!homing.HasValue && Friendly) || (homing.HasValue && CanBeAffectedByHoming().Value)) && PlayerOwner.HomingRange > 0)
@@ -238,11 +243,15 @@ public class Projectile : MonoBehaviour
         if(TachyonPoints != null)
             DoTachyonVisual(ref TachyonPoints);
     }
+    public virtual float TachyonSize()
+    {
+        return C2D.bounds.size.x * 0.9f + 0.1f;
+    }
     public virtual void DoTachyonVisual(ref List<Vector3> positions)
     {
         if (positions == null)
             return;
-        SpecialLine.NewLine(positions, ColorHelper.HotPink, TachyonDistance, C2D.bounds.size.x * 0.9f + 0.1f);
+        SpecialLine.NewLine(positions, ColorHelper.HotPink, TachyonDistance, TachyonSize());
         positions.Clear();
         positions = null;
         //Vector2 previous = positions[0];

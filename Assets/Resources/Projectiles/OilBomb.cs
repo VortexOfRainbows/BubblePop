@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class OilBomb : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Vector2 SkyPos;
     public bool OnSolidTile = false;
     public float BarrelScaleMult { get; set; } = 1;
@@ -13,6 +10,10 @@ public class OilBomb : Projectile
     public int BarrelsSpawned { get; set; } = 0;
     public float AudioVolumeMult { get; set; } = 1;
     public bool IsFireBomb => Data.Length > 2 && Data[2] <= -1;
+    public override float TachyonSize()
+    {
+        return 1.5f;
+    }
     public override void Init()
     {
         SpriteRendererGlow.enabled = false;
@@ -26,6 +27,7 @@ public class OilBomb : Projectile
             SpriteRenderer.sprite = Main.TextureAssets.KingOilBomb;
             SpriteRenderer.color = Color.white.WithAlpha(0);
         }
+        C2D.radius = 0.9f;
         SpriteRenderer.sortingOrder = LayerHelper.TreeSortingOrder + 1;
         Friendly = Hostile = false;
         transform.localScale = new Vector3(0, 0, 1);

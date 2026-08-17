@@ -241,6 +241,7 @@ public class ColaExplode : SupernovaExplode
 }
 public class SkateboardProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Transform Wheel1, Wheel2;
     public float Angle => Data1;
     public override void Init()

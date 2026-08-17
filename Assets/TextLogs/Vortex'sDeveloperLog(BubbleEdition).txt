@@ -17,7 +17,7 @@ Do Later:
 8. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
 9. Convert player power handler to use structs for faster resetting 
-10. Tachyon Accelerator Power (not urgent, as programming this would likely take longer than expected)
+10. Redo Calculator to use angles for homing instead of weird lerp weighting (to make more effective with high speed and in general)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -52,12 +52,10 @@ Sounds Needed:
 
 Done: 	
 
-8/16/26
+8/16/26 to 8/17/25
 1. Fix bug where black market powers weren't showing stars (not relevant for patch notes)
 2. Added soup and spilled soup with placeholder arts
-3. WIP Tachyon Accelerator
-	1. Needs: VFX, Potentially modify behavior of calculator?
-	2. VERY WIP VFX
+3. Add the Tachyon Accelerator
 4. Trails should now render more accurately for fast-moving objects such as a high attack-speed slot machine
 5. Rename Defense Contract -> Handheld Transceiver
 	1. More in line with Sam's sprite! Now in game!
