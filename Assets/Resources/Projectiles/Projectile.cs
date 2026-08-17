@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Projectile : MonoBehaviour
 {
@@ -147,6 +148,12 @@ public class Projectile : MonoBehaviour
             Dead = true;
         else
             return;
+        if (TachyonPoints != null)
+        {
+            DoTachyonVisual(TachyonPoints);
+            TachyonPoints.Clear();
+            TachyonPoints = null;
+        }
         OnKill();
         Destroy(gameObject);
     }
@@ -174,16 +181,17 @@ public class Projectile : MonoBehaviour
         FixedUpdate();
     }
     public bool AlreadyDidTachyon { get; private set; } = false;
-    public RaycastHit2D[] SkipHits;
+    public List<RaycastHit2D> SkipHits;
     public ContactFilter2D Filter;
+    private List<Vector2> TachyonPoints;
     public int ExtraUpdateNumber { get; private set; } = 0;
     public void FixedUpdate()
     {
-        int actingFrames = 1;
+        int BonusFrames = 1;
         if(PlayerOwner != null && PlayerOwner.TachyonStacks > 0 && TachyonCompatible() && !AlreadyDidTachyon)
         {
-            actingFrames = 20 + 20 * PlayerOwner.TachyonStacks;
-            SkipHits = new RaycastHit2D[30]; //use size of 30 for now
+            BonusFrames = 20 + 20 * PlayerOwner.TachyonStacks;
+            SkipHits = new(); //use size of 30 for now
             Filter = new()
             {
                 useTriggers = true,
@@ -191,11 +199,13 @@ public class Projectile : MonoBehaviour
                 layerMask = C2D.includeLayers
             };
             AlreadyDidTachyon = true;
+            TachyonPoints = new();
         }
-        for (ExtraUpdateNumber = 0; ExtraUpdateNumber < actingFrames; ++ExtraUpdateNumber)
+        for (ExtraUpdateNumber = 0; ExtraUpdateNumber < BonusFrames; ++ExtraUpdateNumber)
         {
             if (ExtraUpdateNumber > 0)
             {
+                TachyonPoints.Add(transform.position);
                 transform.position += (Vector3)(RB.velocity * Time.fixedDeltaTime);
                 //Then we need to simulate collision on these bonus steps
                 float frameDistance = RB.velocity.magnitude * Time.fixedDeltaTime;
@@ -210,6 +220,8 @@ public class Projectile : MonoBehaviour
                     {
                         if (OnTileCollide(collision))
                             Kill();
+                        if (Dead)
+                            break;
                     }
                 }
             }
@@ -222,9 +234,36 @@ public class Projectile : MonoBehaviour
                 if (OnInsideTile())
                     Kill();
             if (Dead)
-                return;
+                break;
         }
         ExtraUpdateNumber = 0;
+        if(TachyonPoints != null)
+        {
+            DoTachyonVisual(TachyonPoints);
+            TachyonPoints.Clear();
+            TachyonPoints = null;
+        }
+    }
+    public virtual void DoTachyonVisual(List<Vector2> positions)
+    {
+        Vector2 previous = positions[0];
+        int max = positions.Count;
+        int fadeDistance = Mathf.Min(20, positions.Count / 3);
+        for(int i = 1; i < positions.Count; ++i)
+        {
+            float percent =
+                i <= fadeDistance ? i / (float)fadeDistance :
+                i > max - fadeDistance ? (max - i) / (float)fadeDistance :
+                1;
+            percent = 1 - percent;
+            percent *= percent;
+            percent = 1 - percent;
+            Color TachyonColor = ColorHelper.HotPink; //#e75fcb;
+            Vector2 current = positions[i];
+            Vector2 toCurrent = current - previous;
+            ParticleManager.NewParticle(previous, new Vector2(toCurrent.magnitude, 2f * C2D.bounds.extents.x * percent), Vector2.zero, 0, 0.2f + 0.8f * percent, ParticleManager.ID.Line, TachyonColor * percent, -toCurrent.ToRotation() * Mathf.Rad2Deg);
+            previous = current;
+        }
     }
     public void HitTarget(Entity target)
     {

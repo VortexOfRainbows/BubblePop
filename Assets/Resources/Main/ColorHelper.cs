@@ -48,4 +48,5 @@ public static class ColorHelper
     public static readonly string AscColorHex = "#ADCFFF";
 
     public static readonly Color WoodColor = New255(0x9B, 0x7D, 0x63);
+    public static readonly Color HotPink = New255(0xe7, 0x5f, 0xcb);
 }
