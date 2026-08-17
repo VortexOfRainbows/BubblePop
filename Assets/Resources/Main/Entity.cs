@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public partial class Entity : MonoBehaviour
@@ -16,14 +14,8 @@ public partial class Entity : MonoBehaviour
     public static readonly string PlayerTag = "Player";
     public static readonly string ProjTag = "Proj";
     public static readonly string EnemyTag = "Enemy";
-    public void OnTriggerStay2D(Collider2D collision)
-    {
-        TriggerCollision(collision);
-    }
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        TriggerCollision(collision);
-    }
+    public void OnTriggerStay2D(Collider2D collision) => TriggerCollision(collision);
+    public void OnTriggerEnter2D(Collider2D collision) => TriggerCollision(collision);
     public void TriggerCollision(Collider2D collision)
     {
         if (collision.CompareTag(ProjTag) && collision.GetComponentInParent<Projectile>() is Projectile proj)

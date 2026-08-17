@@ -16,7 +16,12 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
     public void OnTriggerEnter2D(Collider2D collision) => OnTriggerStay2D(collision);
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p) && !p.SpecializedImmuneFrames.Contains(this) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
+        if (collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p))
+            ReceiveProjectileImpact(p);
+    }
+    public void ReceiveProjectileImpact(Projectile p)
+    { 
+        if(!p.SpecializedImmuneFrames.Contains(this) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
         {
             if (p.Penetrate != -1 && --p.Penetrate == 0)
                 p.Kill();
@@ -29,7 +34,7 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
             }
             else
             {
-                if(Type == BreakableObjectType.Crate)
+                if (Type == BreakableObjectType.Crate)
                 {
                     AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 0.6f, 1.6f);
                     SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.red, 0.5f);

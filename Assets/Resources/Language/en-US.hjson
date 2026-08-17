@@ -1178,11 +1178,11 @@
     Soup:
     {
       Title: Soup
-      Description: 
-      '''
-      Increases the strength of all 1:[1-star powers] by Y:1 G:(+1 per stack) Y:stack 
-      R:[Spills when hurt]
-      '''
+      Description:
+        '''
+        Increases the strength of all 1:[1-star powers] by Y:1 G:(+1 per stack) Y:stack 
+        R:[Spills when hurt]
+        '''
       Brief: Don't spill it!
       Lore: Power.Soup.Lore
     }
@@ -1192,6 +1192,13 @@
       Description: Does nothing
       Brief: Dang it!
       Lore: Power.SpilledSoup.Lore
+    }
+    TachyonAccelerator:
+    {
+      Title: Tachyon Accelerator
+      Description: Friendly projectiles Y:[instantly travel] Y:1 G:(+0.5 per stack) Y:seconds into the Y:future 
+      Brief: Faster than light
+      Lore: Power.TachyonAccelerator.Lore
     }
   }
   Equip:

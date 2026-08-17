@@ -15,25 +15,30 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
         //    return;
         if (ChestType != 3)
         {
-            if(RB.mass > 1.1f && collision.CompareTag("Player"))
+            if (RB.mass > 1.1f && collision.CompareTag("Player"))
                 TryOpening();
         }
         else
         {
-            if (RB.mass > 1.1f && collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p) && !p.SpecializedImmuneFrames.Contains(this) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
+            if (collision.CompareTag("Proj") && collision.gameObject.TryGetComponent(out Projectile p))
+                ReceiveProjectileImpact(p);
+        }
+    }
+    public void ReceiveProjectileImpact(Projectile p)
+    {
+        if (RB.mass > 1.1f && !p.SpecializedImmuneFrames.Contains(this) && ((p.Damage > 0 && p.Friendly) || p.Hostile))
+        {
+            if (p.Penetrate != -1 && --p.Penetrate == 0)
+                p.Kill();
+            else
+                p.SpecializedImmuneFrames.Add(new Projectile.ImmunityData(this, p.immunityFrames));
+            HitsRequiredToKill -= (int)Mathf.Max(1, p.Damage);
+            if (HitsRequiredToKill <= 0 || p is MeleeHitbox)
+                TryOpening();
+            else
             {
-                if (p.Penetrate != -1 && --p.Penetrate == 0)
-                    p.Kill();
-                else
-                    p.SpecializedImmuneFrames.Add(new Projectile.ImmunityData(this, p.immunityFrames));
-                HitsRequiredToKill -= (int)Mathf.Max(1, p.Damage);
-                if (HitsRequiredToKill <= 0 || p is MeleeHitbox)
-                    TryOpening();
-                else
-                {
-                    AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 0.6f, 1.6f);
-                    SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.red, 0.5f);
-                }
+                AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 0.6f, 1.6f);
+                SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.red, 0.5f);
             }
         }
     }

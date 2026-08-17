@@ -722,4 +722,8 @@ public class Enemy : Entity, IImpactedByProjIFrames
             detonationDamage += b.Detonate(this);
         BuffDetonatedCounter = 1f;
     }
+    public void ReceiveProjectileImpact(Projectile p)
+    {
+        HurtByProjectile(p);
+    }
 }

@@ -136,6 +136,7 @@ public class SmallBubble : Projectile
                 HazardSystem.AddHazard(transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f) * i, Utils.RandFloat(-0.3f, 0.3f) * i - 0.6f), HazardSystem.HazardType.Oil, 200, transform.localScale.x * 1.5f, 0, false);
         }
     }
+    public override bool TachyonCompatible() => true;
 }
 public class TranscendentBubble : SmallBubble
 {
@@ -149,6 +150,7 @@ public class TranscendentBubble : SmallBubble
 }
 public class BigBubble : Projectile
 {
+    public override bool TachyonCompatible() => Friendly;
     public override void Init()
     {
         SpriteRenderer.sprite = Main.TextureAssets.BubbleSprite;
@@ -179,14 +181,8 @@ public class BigBubble : Projectile
     }
     public override void AI()
     {
-        BigBubbleAI();
-    }
-    public void BigBubbleAI()
-    {
         if (PlayerOwner.Weapon is not BubblemancerWand wand)
-        {
             return;
-        }
         int attackRight = (int)wand.AttackRight;
         Vector2 toMouse = PlayerOwner.Control.MousePosition - PlayerOwner.Position;
         if (attackRight >= 50 && timer <= 0)
@@ -286,7 +282,7 @@ public class BigBubble : Projectile
         if (timer > 10)
         {
             Vector2 closest = collision.ClosestPoint(transform.position);
-            Vector2 diff = closest - RB.position;
+            Vector2 diff = closest - (Vector2)transform.position;
             if (diff.magnitude > 1)
                 return false;
             if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
@@ -311,6 +307,7 @@ public class BigBubble : Projectile
 }
 public class ThunderBubble : Projectile
 {
+    public override bool TachyonCompatible() => true;
     private Color ColorVar;
     public bool Recalled = false;
     public float ScaleFactor => 2.0f * PlayerOwner.ZapRadiusMult;
@@ -440,13 +437,13 @@ public class ThunderBubble : Projectile
         if ((int)++timer2 % 6 != 0)
         {
             float perc = (1 - book.ClosingPercent) * 0.1f;
-            ParticleManager.NewParticle(RB.position + velo * Time.fixedDeltaTime * 2f, transform.localScale.x * 2.3f, velo * 0.5f, 2f, Recalled ? perc : Utils.RandFloat(0.1f, 0.15f), 2,
+            ParticleManager.NewParticle((Vector2)transform.position + 2f * Time.fixedDeltaTime * velo, transform.localScale.x * 2.3f, velo * 0.5f, 2f, Recalled ? perc : Utils.RandFloat(0.1f, 0.15f), 2,
                 SpriteRendererGlow.color.WithAlphaMultiplied(.6f));
         }
         else if (timer <= deathTime)
         {
             Vector2 norm = velo.normalized;
-            Vector2 targetPos = Recalled ? PlayerOwner.Weapon.transform.position : RB.position - norm * transform.localScale.x * 2.5f;
+            Vector2 targetPos = Recalled ? PlayerOwner.Weapon.transform.position : (Vector2)transform.position - 2.5f * transform.localScale.x * norm;
             ParticleManager.SummonLightningPylon2(transform.position, targetPos, ColorVar, 0.15f);
         }
         RB.velocity = velo;
@@ -482,13 +479,13 @@ public class ThunderBubble : Projectile
             for (int i = 0; i < c; i++)
             {
                 Vector2 circular = new Vector2(Utils.RandFloat(0.25f, 0.5f), 0).RotatedBy(Mathf.PI * 2 * i / c);
-                ParticleManager.NewParticle(RB.position + circular, transform.localScale.x * Utils.RandFloat(), circular * 4f, 0.2f, Utils.RandFloat(0.3f, 0.4f), 2,
+                ParticleManager.NewParticle((Vector2)transform.position + circular, transform.localScale.x * Utils.RandFloat(), circular * 4f, 0.2f, Utils.RandFloat(0.3f, 0.4f), 2,
                 SpriteRendererGlow.color.WithAlphaMultiplied(.4f));
             }
             //Vector2 cir = Utils.RandCircleEdge(2);
             for (int i = 0; i < 3; ++i)
             {
-                ParticleManager.NewParticle(RB.position, transform.localScale.x * 2.3f, Vector2.zero, 0.4f, 0.4f, 2,
+                ParticleManager.NewParticle((Vector2)transform.position, transform.localScale.x * 2.3f, Vector2.zero, 0.4f, 0.4f, 2,
                     SpriteRendererGlow.color.WithAlphaMultiplied(.6f));
             }
             ParticleManager.SummonLightningPylon2(transform.position, PlayerOwner.Weapon.transform.position, ColorVar * 0.66f, 0.33f, 0.66f);
@@ -510,7 +507,7 @@ public class ThunderBubble : Projectile
         if (Recalled)
             return false;
         Vector2 closest = collision.ClosestPoint(transform.position);
-        Vector2 diff = closest - RB.position;
+        Vector2 diff = closest - (Vector2)transform.position;
         if (diff.magnitude > 1)
             return false;
         if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y))

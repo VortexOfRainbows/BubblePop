@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -149,9 +150,10 @@ public class Projectile : MonoBehaviour
         OnKill();
         Destroy(gameObject);
     }
+    public static readonly string WorldTag = "Tub";
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.CompareTag("Tub"))
+        if(collision.CompareTag(WorldTag))
             if(OnTileCollide(collision))
                 Kill();
     }
@@ -171,16 +173,57 @@ public class Projectile : MonoBehaviour
     {
         FixedUpdate();
     }
+    public bool AlreadyDidTachyon { get; private set; } = false;
+    public RaycastHit2D[] SkipHits;
+    public ContactFilter2D Filter;
+    public int ExtraUpdateNumber { get; private set; } = 0;
     public void FixedUpdate()
     {
-        UpdateSpecialImmuneFrames();
-        AI();
-        bool? homing = CanBeAffectedByHoming();
-        if (((!homing.HasValue && Friendly) || (homing.HasValue && CanBeAffectedByHoming().Value)) && PlayerOwner.HomingRange > 0)
-            HomingBehavior();
-        if(!World.WithinBorders(transform.position))
-            if(OnInsideTile())
-                Kill();
+        int actingFrames = 1;
+        if(PlayerOwner != null && PlayerOwner.TachyonStacks > 0 && TachyonCompatible() && !AlreadyDidTachyon)
+        {
+            actingFrames = 50 + 50 * PlayerOwner.TachyonStacks;
+            SkipHits = new RaycastHit2D[30]; //use size of 30 for now
+            Filter = new()
+            {
+                useTriggers = true,
+                useLayerMask = true,
+                layerMask = C2D.includeLayers
+            };
+            AlreadyDidTachyon = true;
+        }
+        for (ExtraUpdateNumber = 0; ExtraUpdateNumber < actingFrames; ++ExtraUpdateNumber)
+        {
+            if (ExtraUpdateNumber > 0)
+            {
+                transform.position += (Vector3)(RB.velocity * Time.fixedDeltaTime);
+                //Then we need to simulate collision on these bonus steps
+                float frameDistance = RB.velocity.magnitude * Time.fixedDeltaTime;
+                int hits = Physics2D.CircleCast(transform.position, C2D.radius, RB.velocity, Filter, SkipHits, frameDistance);
+                for(int j = 0; j < hits; ++j)
+                {
+                    RaycastHit2D hit = SkipHits[j];
+                    Collider2D collision = hit.collider;
+                    if(collision.TryGetComponent(out IImpactedByProjIFrames e))
+                        e.ReceiveProjectileImpact(this);
+                    else if(collision.CompareTag(WorldTag))
+                    {
+                        if (OnTileCollide(collision))
+                            Kill();
+                    }
+                }
+            }
+            UpdateSpecialImmuneFrames();
+            AI();
+            bool? homing = CanBeAffectedByHoming();
+            if (((!homing.HasValue && Friendly) || (homing.HasValue && CanBeAffectedByHoming().Value)) && PlayerOwner.HomingRange > 0)
+                HomingBehavior();
+            if (!World.WithinBorders(transform.position))
+                if (OnInsideTile())
+                    Kill();
+            if (Dead)
+                return;
+        }
     }
     public void HitTarget(Entity target)
     {
@@ -303,6 +346,7 @@ public class Projectile : MonoBehaviour
     {
         return true;
     }
+    public virtual bool TachyonCompatible() => false;
 }
 public abstract class BoxProjectile : Projectile
 {
@@ -310,5 +354,5 @@ public abstract class BoxProjectile : Projectile
 }
 public interface IImpactedByProjIFrames
 {
-
+    public void ReceiveProjectileImpact(Projectile p);
 }

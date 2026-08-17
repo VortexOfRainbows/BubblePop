@@ -202,7 +202,7 @@ public class Soup : PowerUp
 }
 public class SpilledSoup : PowerUp
 {
-    public override void Init() => Weighting = Uncommon;
+    public override void Init() => Weighting = -1;
     public override void HeldEffect(Player p)
     {
         //DOES NOTHING
@@ -212,4 +212,14 @@ public class SpilledSoup : PowerUp
     {
         return dissolve ? 1 : base.CrucibleGems(dissolve);
     }
+    public override int CalculateRarity() => 2;
+}
+public class TachyonAccelerator : PowerUp
+{
+    public override void Init() => Weighting = SuperRare;
+    public override void HeldEffect(Player p)
+    {
+        p.TachyonStacks += Stack;
+    }
+    public override bool IsBlackMarket() => true;
 }
