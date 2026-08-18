@@ -63,7 +63,7 @@ public class PowerUpCheatUI : MonoBehaviour
     }
     public PowerUpButton ChoiceTemplate;
     public GridLayoutGroup GridParent;
-    public SliderInputField QuantitySlider;
+    public CheatMenuQuantityInputField QuantitySlider;
     public Button QuantityUp, QuantityDown, HideButton;
     public TextMeshProUGUI Title;
     public TextMeshProUGUI Description, HideButtonTextUI, ShardCountTxt;

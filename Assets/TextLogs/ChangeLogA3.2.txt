@@ -99,3 +99,18 @@ Enemy Rebalances:
 	4. (NERF) Rock Golem and Leonard 9 -> 10
 	4. (NERF) Super Sentinel 12 -> 14
 	5. (NERF) Infector 8 -> 13
+
+Dev Build 3.21 to 3.22 (tentative version number)
+
+Changes:
+1. Edit the StardewSpiral node to make it more open around the pylon
+2. Edit the CATARoom node to be more open
+3. (EXPERIMENTAL) Removed the bubble shadow shape in the top left of UI elements, to see what it might look like...
+
+Fixes:
+1. Cat ears coin pickup delay 1.5 seconds -> 0.05 seconds
+2. LOS check for Calculator and Pathfinding now uses native Unity methods (and should be far less laggy)
+	1. Fix bug where LOS check was being run for bestiary enemies
+3. Investment powers now appear in the correct place when making a tier list
+4. Fix bug where soups was not properly being removed when hit and sometimes generating extra soups
+5. Fix bug where crates could be broken multiple times
