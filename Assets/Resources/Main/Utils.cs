@@ -493,6 +493,13 @@ public static class Utils
         distance = toEnd.magnitude;
         return TileOnlyRaycast(start, toEnd, ref distance, collisionRange);
     }
+    public static bool HasClearLOS(Vector2 start, Vector2 end)
+    {
+        RaycastHit2D hit = Physics2D.Linecast(start, end, WorldLayerMask);
+        if(hit.collider != null)
+            return false;
+        return true;
+    }
     public static float DeltaRadians(float current, float target)
     {
         float diff = (target - current + Mathf.PI) % (Mathf.PI * 2f);

@@ -338,7 +338,7 @@ public abstract class PowerUp
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;
         if (player.CoinsOnPowerPickup > 0 && amt > 0)
-            CoinManager.SpawnCoin(player.transform.position, player.CoinsOnPowerPickup * amt, 1.5f, true);
+            CoinManager.SpawnCoin(player.transform.position, player.CoinsOnPowerPickup * amt, 0.05f, true);
         if (player.Body is Gachapon)
         {
             if (this is Burger && Stack >= 3)

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 public static class EnemyID
 {
@@ -85,10 +84,8 @@ public class Enemy : Entity, IImpactedByProjIFrames
     public Player Target { get; private set; } = null;
     public void TargetAcquisitionUpdate()
     {
-        Target = Player.FindClosest(transform.position, out Vector2 norm, out float distance);
-        float startingDist = distance;
-        Utils.RaycastWithTileSupport(transform.position, norm, ref distance, 0.5f, out bool hitSomething); //This migth be a bit excessive for a line of sight check. If this is a performance issue, come back to this and optimize it (maybe make it so it doesn't find the exact collision position, just terminate upon any collision detected)
-        HasLineOfSightWithTarget = !hitSomething || (distance >= (startingDist - 0.1f)); //If nothing was hit or the distance to the hit was about the same as the distance to the player, that means we have line of sight (most likely)
+        Target = Player.FindClosest(transform.position, out Vector2 _, out float _);
+        HasLineOfSightWithTarget = Utils.HasClearLOS(Target.Position, transform.position);
     }
     public Vector2 GetPathfindingToPlayerNorm()
     {
@@ -276,8 +273,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             {
                 float distance = toDest.magnitude;
                 float startingDist = distance;
-                Utils.RaycastWithTileSupport(position, toDest.normalized, ref distance, 0.5f, out bool hitSomething); //This migth be a bit excessive for a line of sight check. If this is a performance issue, come back to this and optimize it (maybe make it so it doesn't find the exact collision position, just terminate upon any collision detected)
-                hasLOS = !hitSomething || (distance >= (startingDist - 0.1f)); //If nothing was hit or the distance to the hit was about the same as the distance to the player, that means we have line of sight (most likely)
+                hasLOS = Utils.HasClearLOS(position, e.transform.position);
             }
             //Debug.Log(e.tag);
             if (dist <= searchDistance && 
