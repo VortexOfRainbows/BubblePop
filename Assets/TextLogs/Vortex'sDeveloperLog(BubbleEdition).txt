@@ -17,20 +17,21 @@ Do Later:
 8. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
 9. Convert player power handler to use structs for faster resetting 
+10. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
 	1. Progress display for achievements
-2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
-3. Make a distinct "Generic Power" pool, which contains: 
+2. Make a distinct "Generic Power" pool, which contains: 
 	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
-4. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-5. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
-6. Compendium TODO:
+3. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
+4. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
+5. Compendium TODO:
 	1. Make powers show which pools they belong to (mostly this should just mean character)
 	2. Make blurbs appear in the equipment page
-7. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
-8. Snow Regions:
+	3. EXPORT TIERLIST BUTTON NEEDED
+6. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
+7. Snow Regions:
 	1. Snow ambient objects need to spawn
 	2. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
 	3. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
@@ -45,7 +46,6 @@ Multiplayer Task List:
 
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
-2. Investment powers appear peculiarly in the tier list
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -56,7 +56,10 @@ Done:
 8/17/26
 1. Cat ears coin pickup delay 1.5 seconds -> 0.05 seconds
 2. LOS check for Calculator and Pathfinding now uses native Unity methods (and should be far less laggy)
+	1. Fix bug where LOS check was being run for bestiary enemies
 3. Edit the StardewSpiral node to make it more open around the pylon
+4. (EXPERIMENTAL) Removed the bubble shadow shape in the top left of UI elements, to see what it might look like...
+5. Investment powers now appear in the correct place when making a tier list
 
 -- A3.21 UPDATE ON STEAM (NO PATCHNOTES) --
 

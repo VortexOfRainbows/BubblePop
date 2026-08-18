@@ -347,24 +347,24 @@ public abstract class TierListCompendiumPage : CompendiumPage
         if (BlackMarketMode && e1 is CompendiumPowerUpElement && e2 is CompendiumPowerUpElement)
         {
             if (e1.IsLocked())
-                rare1 += SortMultiplier * 10;
-            if (e1.GrayOut)
                 rare1 += SortMultiplier * 20;
+            if (e1.GrayOut)
+                rare1 += SortMultiplier * 40;
             if (e2.IsLocked())
-                rare2 += SortMultiplier * 10;
-            if (e2.GrayOut)
                 rare2 += SortMultiplier * 20;
+            if (e2.GrayOut)
+                rare2 += SortMultiplier * 40;
         }
         else
         {
             if (e1.IsLocked())
-                rare1 += SortMultiplier * 20;
+                rare1 += SortMultiplier * 40;
             else if (e1.GrayOut)
-                rare1 += SortMultiplier * 10;
+                rare1 += SortMultiplier * 20;
             if (e2.IsLocked())
-                rare2 += SortMultiplier * 20;
+                rare2 += SortMultiplier * 40;
             else if (e2.GrayOut)
-                rare2 += SortMultiplier * 10;
+                rare2 += SortMultiplier * 20;
         }
         int num = rare1 - rare2;
         return num == 0 ? CompareID(e1, e2) : num;

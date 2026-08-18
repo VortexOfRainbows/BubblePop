@@ -84,6 +84,8 @@ public class Enemy : Entity, IImpactedByProjIFrames
     public Player Target { get; private set; } = null;
     public void TargetAcquisitionUpdate()
     {
+        if (IsDummy)
+            return;
         Target = Player.FindClosest(transform.position, out Vector2 _, out float _);
         HasLineOfSightWithTarget = Utils.HasClearLOS(Target.Position, transform.position);
     }
