@@ -4,6 +4,7 @@ public class SettingsMenu : MonoBehaviour
 {
     public static SettingsMenu Instance { get; private set; }
     public CanvasGroup MyGroup;
+    public GameObject Visual;
     public Transform AudioLayout;
     public Transform GameplayLayout;
     public static void SwapToAudio()
@@ -18,15 +19,39 @@ public class SettingsMenu : MonoBehaviour
     }
     public static void ToggleVisibility(bool? state = null)
     {
-        if(state.HasValue)
-            Instance.gameObject.SetActive(state.Value);
+        if (state.HasValue)
+            Instance.WantsVisible = state.Value;
         else
-            Instance.gameObject.SetActive(!Instance.gameObject.activeSelf);
+            Instance.WantsVisible = !Instance.WantsVisible;
+        if (!IsVisible)
+            Instance.MyGroup.alpha = 0;
     }
     public static bool IsVisible => Instance.gameObject.activeSelf;
+    public bool WantsVisible = false;
+    public static void StaticUpdate()
+    {
+        Instance.SUpdate();
+    }
+    public void SUpdate()
+    {
+        if(WantsVisible)
+        {
+            Utils.LerpSnap(Visual.transform, new Vector2(0, 10), Utils.DeltaTimeLerpFactor(0.1f), 1);
+            MyGroup.alpha += 10 * Time.unscaledDeltaTime;
+        }
+        else
+        {
+            Utils.LerpSnap(Visual.transform, new Vector2(0, -10), Utils.DeltaTimeLerpFactor(0.1f), 1);
+            Instance.MyGroup.alpha -= 10 * Time.unscaledDeltaTime;
+        }
+        MyGroup.alpha = Mathf.Clamp01(Instance.MyGroup.alpha);
+        gameObject.SetActive(Instance.MyGroup.alpha > 0);
+    }
     public void Init()
     {
         Instance = this;
+        WantsVisible = false;
+        MyGroup.alpha = 0;
         EstablishConnection();
         SwapToAudio();
     }

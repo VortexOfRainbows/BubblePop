@@ -207,6 +207,7 @@ public partial class Main : MonoBehaviour
     {
         SpriteBatch.OnUpdate();
         LightBatch.OnUpdate();
+        SettingsMenu.StaticUpdate();
 
         FramesPerSeconds = 1.0f / Time.unscaledDeltaTime;
         //Debug.Log(FramesPerSeconds);

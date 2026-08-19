@@ -72,6 +72,8 @@ public class Compendium : MonoBehaviour
     public void ToggleActive(bool on)
     {
         Active = on;
+        if(Active)
+            SettingsMenu.ToggleVisibility(false);
     }
     public void Start()
     {

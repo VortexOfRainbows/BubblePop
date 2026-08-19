@@ -232,11 +232,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba42eb1f4a6b6a44492e93cbff41fde0, type: 3}
---- !u!1 &1624198296 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5943913465386428470, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
-  m_PrefabInstance: {fileID: 8137496645639104254}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1934783204
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,7 +503,7 @@ PrefabInstance:
     - target: {fileID: 6444429335169337091, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: MyUIManager.SettingsMenu
       value: 
-      objectReference: {fileID: 1624198296}
+      objectReference: {fileID: 0}
     - target: {fileID: 6571955641980583806, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_IsActive
       value: 0

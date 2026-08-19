@@ -36,8 +36,10 @@ public class PersistentGameObjectLoader : MonoBehaviour
     private void LoadSettings()
     {
         SettingsCanvas = Instantiate(SettingsPrefab, transform);
+        Canvas c = SettingsCanvas.GetComponent<Canvas>();
+        c.renderMode = RenderMode.ScreenSpaceCamera;
+        c.worldCamera = CameraManager.UICamera;
         SettingsCanvas.GetComponent<SettingsMenu>().Init();
-        SettingsCanvas.SetActive(false);
     }
     public void Update()
     {

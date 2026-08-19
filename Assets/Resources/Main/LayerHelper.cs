@@ -71,5 +71,5 @@ public static class LayerHelper
     //          UI LAYERS
     //-----------------------------------
     public const int CompendiumCanvas = 20;
-    public const int SettingsCanvas = 19;
+    public const int SettingsCanvas = 15;
 }
