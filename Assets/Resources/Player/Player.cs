@@ -916,12 +916,11 @@ public partial class Player : Entity
         TimesHitThisLifeThisWave += damage;
         if (TimesHitThisLifeThisWave >= 9 && this.Body is KingOil && Life > 0) //NOT DEAD
             UnlockCondition.Get<OilKingTooBigToFail>().SetComplete();
-        if (Bonus1StarStacksFromSoup > 0) //This means you have soup!
+        if (SoupStacks > 0) //This means you have soup!
         {
             PowerUp soup = PowerUp.Get<Soup>();
             PowerUp.Get<SpilledSoup>().PickUp(this, 1);
             RemovePower(soup.Type, 1);
-            --Bonus1StarStacksFromSoup;
         }
     }
     public void OnHurtEffects() //Triggers even when dodge

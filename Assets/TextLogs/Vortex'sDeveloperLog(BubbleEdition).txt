@@ -35,6 +35,7 @@ Need to do:
 	1. Snow ambient objects need to spawn
 	2. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
 	3. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
+8. MINIMAP
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -62,6 +63,7 @@ Done:
 		4. Now contains divider text!
 		5. STILL NEEDS: standardize menu size, add ability to close menu through button (for baby chuds), potentially an animation for coming in and out like the compendium? Potentially make the background semi-transparent? If this works, maybe for compendium too?
 2. Overhaul some UI classes to decouple stuff
+3. Fix bug where soup would still work even when removed through a crucible
 
 -- A3.22 UPDATE ON STEAM --
 

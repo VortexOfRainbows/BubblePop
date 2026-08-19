@@ -210,7 +210,7 @@ public class Soup : PowerUp
     public override void Init() => Weighting = Uncommon;
     public override void HeldEffect(Player p)
     {
-        p.Bonus1StarStacksFromSoup = Stack; //Purposely does not use +=, as this is NOT reset every frame, but only if you have 0 soup left
+        p.SoupStacks += Stack;
     }
     public override bool IsBlackMarket() => true;
 }

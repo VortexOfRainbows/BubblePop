@@ -33,6 +33,8 @@ public class StandardButton : Button
         CloseTutorial = 10,
         OpenCompendium = 11,
         ChangeAscensionLevel = 12,
+        AudioSettings = 50,
+        GameplaySettings = 51,
     }
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonActions;
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> InitDict()
@@ -51,6 +53,9 @@ public class StandardButton : Button
         ButtonToActionDict[ButtonDestinationType.CloseTutorial] = Main.CanvasManager.CloseMultiplayerMenu;
         ButtonToActionDict[ButtonDestinationType.OpenCompendium] = Compendium.StaticToggleActive;
         ButtonToActionDict[ButtonDestinationType.ChangeAscensionLevel] = IncrementAscensionLevel;
+
+        ButtonToActionDict[ButtonDestinationType.AudioSettings] = SettingsMenu.SwapToAudio;
+        ButtonToActionDict[ButtonDestinationType.GameplaySettings] = SettingsMenu.SwapToGameplay;
         return ButtonToActionDict;
     }
     public static void IncrementAscensionLevel() 
@@ -65,12 +70,15 @@ public class StandardButton : Button
     public static void RegisterButtonBehavior(StandardButton button)
     {
         ButtonActions ??= InitDict();
+        if(button.SoundOnClick)
+            button.onClick.AddListener(() => AudioManager.PlaySound(SoundID.BubblePop, CameraManager.MainCamera.transform.position, 1, 1.1f, 1));
         button.onClick.AddListener(ButtonActions[button.DestinationType]);
     }
     public ButtonAnimationType AnimationType = ButtonAnimationType.None;
     public ButtonColorType ColorType = ButtonColorType.WhiteToYellow;
     public ButtonDestinationType DestinationType = ButtonDestinationType.None;
     public bool SoundOnHover = true;
+    public bool SoundOnClick = false;
     public new void Awake()
     {
         base.Awake();
