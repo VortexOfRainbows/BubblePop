@@ -3,8 +3,10 @@ using UnityEngine;
 public class PersistentGameObjectLoader : MonoBehaviour
 {
     public static GameObject CompendiumPrefab => Resources.Load<GameObject>("UI/Compendium/CompendiumCanvas");
+    public static GameObject SettingsPrefab => Resources.Load<GameObject>("UI/Settings/Settings");
     public static PersistentGameObjectLoader Instance { get; private set; }
     private GameObject CompendiumCanvas;
+    private GameObject SettingsCanvas;
     private void Start()
     {
         if(Instance == null)
@@ -21,6 +23,7 @@ public class PersistentGameObjectLoader : MonoBehaviour
     public void LoadPersistentObjects()
     {
         LoadCompendium();
+        LoadSettings();
     }
     private void LoadCompendium()
     {
@@ -29,6 +32,12 @@ public class PersistentGameObjectLoader : MonoBehaviour
         Compendium.ScreenResolution = new Vector2(c.MyCanvasRectTransform.rect.width, c.MyCanvasRectTransform.rect.height); //1920, 1080 in most cases
         Compendium.HalfResolution = Compendium.ScreenResolution / 2f;
         c.MoveCompendiumUpdate(1.0f);
+    }
+    private void LoadSettings()
+    {
+        SettingsCanvas = Instantiate(SettingsPrefab, transform);
+        SettingsCanvas.GetComponent<SettingsMenu>().Init();
+        SettingsCanvas.SetActive(false);
     }
     public void Update()
     {

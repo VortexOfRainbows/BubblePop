@@ -25406,7 +25406,7 @@ MonoBehaviour:
     MainCanvas: {fileID: 2534426465646320681}
     ScalingHelperCanvas: {fileID: 718334495687591594}
     PauseMenu: {fileID: 2841498186864804204}
-    SettingsMenu: {fileID: 5135139980668629945}
+    SettingsMenu: {fileID: 0}
     DebugMenu: {fileID: 6075037036165169769}
     MultiplayerMenu: {fileID: 1155593327117542689}
     DeadHighscoreText: {fileID: 1745695600835559801}
@@ -56387,7 +56387,8 @@ PrefabInstance:
       value: 25.000004
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6802764983358464714, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
@@ -56458,11 +56459,6 @@ GameObject:
 --- !u!224 &4605496076654970719 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2792770979017610796, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
-  m_PrefabInstance: {fileID: 1813798564584018291}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5135139980668629945 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6802764983358464714, guid: 9a587d789b917144ab6e46af4e20c262, type: 3}
   m_PrefabInstance: {fileID: 1813798564584018291}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5442564416590628244 stripped

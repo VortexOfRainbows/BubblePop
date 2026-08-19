@@ -16,7 +16,15 @@ public class SettingsMenu : MonoBehaviour
         Instance.AudioLayout.gameObject.SetActive(false);
         Instance.GameplayLayout.gameObject.SetActive(true);
     }
-    public void Start()
+    public static void ToggleVisibility(bool? state = null)
+    {
+        if(state.HasValue)
+            Instance.gameObject.SetActive(state.Value);
+        else
+            Instance.gameObject.SetActive(!Instance.gameObject.activeSelf);
+    }
+    public static bool IsVisible => Instance.gameObject.activeSelf;
+    public void Init()
     {
         Instance = this;
         EstablishConnection();

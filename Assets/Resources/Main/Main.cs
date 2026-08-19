@@ -145,8 +145,8 @@ public partial class Main : MonoBehaviour
                             else
                                 Compendium.Instance.ToggleActive();
                         }
-                        else if (UIManager.SettingsMenu.activeSelf)
-                            CanvasManager.ToggleSettings();
+                        else if (SettingsMenu.IsVisible)
+                            SettingsMenu.ToggleVisibility();
                         else if (UIManager.DebugMenu.activeSelf)
                             CanvasManager.ToggleDebugMenu();
                         else
@@ -169,8 +169,8 @@ public partial class Main : MonoBehaviour
                     else
                         Compendium.Instance.ToggleActive();
                 }
-                else if (UIManager.SettingsMenu.activeSelf)
-                    CanvasManager.ToggleSettings();
+                else if (SettingsMenu.IsVisible)
+                    SettingsMenu.ToggleVisibility();
                 else if (UIManager.DebugMenu.activeSelf)
                     CanvasManager.ToggleDebugMenu();
             }

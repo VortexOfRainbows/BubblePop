@@ -305,6 +305,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -150
       objectReference: {fileID: 0}
+    - target: {fileID: 418443167835743454, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -154.70001
+      objectReference: {fileID: 0}
     - target: {fileID: 823073481762150899, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_audioClip
       value: 
@@ -679,6 +683,10 @@ PrefabInstance:
     - target: {fileID: 762838189439438064, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1220528890060341073, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -154.70001
       objectReference: {fileID: 0}
     - target: {fileID: 1358780812154342646, guid: 1cfd67f0cda23fd48b984f26ae9a4a27, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
