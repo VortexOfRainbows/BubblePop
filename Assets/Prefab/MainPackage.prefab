@@ -25406,7 +25406,6 @@ MonoBehaviour:
     MainCanvas: {fileID: 2534426465646320681}
     ScalingHelperCanvas: {fileID: 718334495687591594}
     PauseMenu: {fileID: 2841498186864804204}
-    SettingsMenu: {fileID: 0}
     DebugMenu: {fileID: 6075037036165169769}
     MultiplayerMenu: {fileID: 1155593327117542689}
     DeadHighscoreText: {fileID: 1745695600835559801}
@@ -26021,7 +26020,7 @@ MonoBehaviour:
   m_CameraType: 0
   m_Cameras:
   - {fileID: 3657281034133755898}
-  m_RendererIndex: 0
+  m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
