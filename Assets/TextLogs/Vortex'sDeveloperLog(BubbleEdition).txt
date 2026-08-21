@@ -15,9 +15,8 @@ Do Later:
 6. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
 7. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
-	2. ROCK GOLEM CHANGES TO FIX LAG
-	3. SNOBBLE NERF
-	4. OILICOPTER should always tar enemies (no matter the build)
+	2. Maybe add a way for shops to bulk sell items at higher prices
+	3. Make bubblebirb and dragon slots detonate debuffs
 8. Convert player power handler to use structs for faster resetting 
 9. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 
@@ -69,8 +68,23 @@ Done:
 		1. It can be placed in the same place the compendium button already is (and move the compendium), but only appears when needed
 2. Overhaul some UI classes to decouple stuff
 3. Fix bug where soup would still work even when removed through a crucible
-4. Conglomerate and Combust sprites (BY DAVID YIPPEE)
+4. Conglomerate, Combust, Smokestack sprites (BY DAVID YIPPEE)
 5. Add the ability to change Sunlight in the settings menu (Available options are: Standard, Everday, Evernight, Real-time)
+6. Oilicopter now always applies oil and always appears in King Oil's color (description adjusted to include "oil bubbles")
+7. Snobble Nerfs:
+	1. Dash speed multiplier 2.85 -> 2.75
+	2. Snobble has the ability to increase it's move progression counter at double speed when near the player
+		1. This window opened 25 frames into its default movement counter, or 75 frames after a dash began, and would allow the next dash to come out in about 38 frames
+		2. The window has been moved into 30 frames after its movement counter
+		3. Snobble now incurs a random 0-6 frames of lag after a dash or slide
+8. Rock Golem adjustments (Total HP 192 -> 150)
+	1. Life 24 -> 25 
+	2. Segments 8 -> 6
+	3. Max coin drops 3 -> 4 (overall drops should be slightly reduced, as enemies are weighted towards their lower drop values)
+	4. Hopefully should reduce lag a bit
+9. Crow coins dropped max 5 -> 4
+10. Ent coins dropped max 10 -> 8
+11. Smokestack attack speed per stack stack scaling 5% (+2%) -> 4% (+1%)
 
 -- A3.22 UPDATE ON STEAM --
 

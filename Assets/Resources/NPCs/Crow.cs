@@ -16,7 +16,7 @@ public class Crow : Enemy
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 10;
-        data.BaseMaxCoin = 5;
+        data.BaseMaxCoin = 4;
         data.BaseMinCoin = 2;
         data.Cost = 2;
         data.WaveNumber = 3;

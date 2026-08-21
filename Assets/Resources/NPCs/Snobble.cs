@@ -55,7 +55,7 @@ public class Snobble : Enemy
             BotJaw.LerpLocalPosition(new Vector2(0, 0), 0.1f);
             BackJaw.LerpLocalScale(new Vector2(1.0f, 1f), 0.1f);
             PlayerNearby = dist < 9;
-            if (PlayerNearby && MovementTimer > 25)
+            if (PlayerNearby && MovementTimer > 30)
                 MovementTimer++;
         }
         else if (MovementTimer < 150)
@@ -82,14 +82,14 @@ public class Snobble : Enemy
                 TopJaw.LerpLocalPosition(new Vector2(0, 0.2f * rate), 0.1f);
                 BotJaw.LerpLocalPosition(new Vector2(0, -0.3f * rate), 0.1f);
                 BackJaw.LerpLocalScale(new Vector2(1.0f + 0.1f * rate, 1f + rate * 1.75f), 0.1f);
-                trueMoveSpeed *= 2.85f;
+                trueMoveSpeed *= 2.75f;
             }
             if((Utils.RandBool(2) || PlayerNearby) && MovementTimer > 110)
                 ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.1f) + Utils.RandCircle(.5f), Utils.RandFloat(0.3f, 0.5f), Vector2.up * Utils.RandFloat(3, 6) - RB.velocity * Utils.RandFloat(0.4f, 0.6f), 0.5f, Utils.RandFloat(0.5f, 1.0f), ParticleManager.ID.SnowBG, Color.white);
         }
         else
         {
-            MovementTimer = 0;
+            MovementTimer = -Utils.RandInt(7);
         }
         Vector2 moveDir = GetPathfindingToPlayerNorm();
         RB.velocity += moveDir * trueMoveSpeed;

@@ -1072,7 +1072,7 @@
     Smokestack:
     {
       Title: Smokestack
-      Description: Increases Y:[attack speed] by Y:5% G:(+2% per stack) of your Y:[total number] of Y:[investment powers]
+      Description: Increases Y:[attack speed] by Y:4% G:(+1% per stack) of your Y:[total number] of Y:[investment powers]
       Brief: Investments increase attack speed
       Lore: Power.Smokestack.Lore
     }
@@ -1173,7 +1173,7 @@
     DefenseContract:
     {
       Title: Handheld Transceiver
-      Description: Deploy the Y:Oilicopter, which automatically fires a Y:burst of Y:7 G:(+1 per stack) Y:bubbles at enemies within Y:[20 units] every Y:1.2 G:(-20% per stack) Y:seconds
+      Description: Deploy the Y:Oilicopter, which automatically fires a Y:burst of Y:7 G:(+1 per stack) Y:[oil bubbles] at enemies within Y:[20 units] every Y:1.2 G:(-20% per stack) Y:seconds
       Brief: Recruit the Oilicopter to fight alongside you
       Lore: Power.DefenseContract.Lore
     }

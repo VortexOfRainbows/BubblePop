@@ -11,8 +11,8 @@ public class RockGolem : RockSpider
     public override float HealthBarSizeModifier => .7f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
-        data.BaseMaxLife = 24;
-        data.BaseMaxCoin = 3;
+        data.BaseMaxLife = 25;
+        data.BaseMaxCoin = 4;
         data.BaseMinCoin = 1;
         data.BaseMaxGem = 1;
         data.Cost = 10f;
@@ -69,7 +69,7 @@ public class RockGolem : RockSpider
             if (!hasSpawned)
             {
                 RockGolem prevP = this;
-                for(int i = 1; i < 8; ++i)
+                for(int i = 1; i < 6; ++i)
                 {
                     RockGolem r = Instantiate(EnemyID.RockGolem, transform.position, Quaternion.identity).GetComponent<RockGolem>();
                     r.Parent = prevP.gameObject;

@@ -61,7 +61,7 @@ public class SmallBubble : Projectile
         if (++timer2 > 3)
             Friendly = true;
         Vector2 velo = RB.velocity;
-        if (this is TranscendentBubble)
+        if (this is TranscendentOilBubble)
             velo *= 0.99f;
         else if (timer > deathTime - 100 + RandomLifeShorten)
             velo *= 0.95f;
@@ -130,7 +130,7 @@ public class SmallBubble : Projectile
             }
             AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.5f, 1.1f);
         }
-        if (PlayerOwner.TarShots > 0 && timer >= 0)
+        if ((PlayerOwner.TarShots > 0 || this is TranscendentOilBubble) && timer >= 0)
         {
             for(int i = 0; i < 3; ++i)
                 HazardSystem.AddHazard(transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f) * i, Utils.RandFloat(-0.3f, 0.3f) * i - 0.6f), HazardSystem.HazardType.Oil, 200, transform.localScale.x * 1.5f, 0, false);
@@ -138,12 +138,15 @@ public class SmallBubble : Projectile
     }
     public override bool TachyonCompatible() => true;
 }
-public class TranscendentBubble : SmallBubble
+public class TranscendentOilBubble : SmallBubble
 {
     public override void Init()
     {
         base.Init();
         SpriteRenderer.sortingOrder = LayerHelper.TreeSortingOrder + 2;
+        Color c = ColorHelper.KingOilColor;
+        c.a = 0.68f;
+        SpriteRenderer.color = c;
     }
     public override bool OnInsideTile() => false;
     public override bool OnTileCollide(Collider2D collision) => false;

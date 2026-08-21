@@ -97,7 +97,7 @@ public class Helicopter : Projectile
                 Vector2 offset = i == 0 ? leftOffset : rightOffset;
                 Vector2 shotPosition = (Vector2)transform.position + offset.RotatedBy(transform.localEulerAngles.z * Mathf.Deg2Rad);
                 Vector2 bodyToTarget = (Vector2)target.transform.position + (10 * Time.fixedDeltaTime * target.RB.velocity) - shotPosition;
-                Projectile.NewProjectile<TranscendentBubble>(shotPosition, bodyToTarget.normalized * 24f, 1, PlayerOwner, 0, 1);
+                Projectile.NewProjectile<TranscendentOilBubble>(shotPosition, bodyToTarget.normalized * 24f, 1, PlayerOwner, 0, 1);
                 if (Timer3 < BurstCount())
                     timer2 -= 12;
                 else
