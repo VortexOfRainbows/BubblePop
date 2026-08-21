@@ -7,15 +7,24 @@ public class SettingsMenu : MonoBehaviour
     public GameObject Visual;
     public Transform AudioLayout;
     public Transform GameplayLayout;
+    public Transform GraphicsLayout;
     public static void SwapToAudio()
     {
         Instance.AudioLayout.gameObject.SetActive(true);
         Instance.GameplayLayout.gameObject.SetActive(false);
+        Instance.GraphicsLayout.gameObject.SetActive(false);
     }
     public static void SwapToGameplay()
     {
-        Instance.AudioLayout.gameObject.SetActive(false);
         Instance.GameplayLayout.gameObject.SetActive(true);
+        Instance.AudioLayout.gameObject.SetActive(false);
+        Instance.GraphicsLayout.gameObject.SetActive(false);
+    }
+    public static void SwapToGraphics()
+    {
+        Instance.GraphicsLayout.gameObject.SetActive(true);
+        Instance.AudioLayout.gameObject.SetActive(false);
+        Instance.GameplayLayout.gameObject.SetActive(false);
     }
     public static void ToggleVisibility(bool? state = null)
     {
@@ -65,5 +74,7 @@ public class SettingsMenu : MonoBehaviour
         SingleSetting.RequestNewSetting(GameplayLayout).Assign("Pause During Card Select", () => PlayerData.PauseDuringCardSelect, val => PlayerData.PauseDuringCardSelect = val);
         SingleSetting.RequestNewSetting(GameplayLayout).Assign("Power Descriptions Brief By Default", () => PlayerData.BriefDescriptionsByDefault, val => PlayerData.BriefDescriptionsByDefault = val);
         SingleSetting.RequestNewSetting(GameplayLayout).Assign("Special Visual Opacity", () => PlayerData.SpecialVisualOpacity, val => PlayerData.SpecialVisualOpacity = val, 0.2f, 1);
+        SingleSetting.RequestDivider(GraphicsLayout, "Graphics");
+        SingleSetting.RequestNewSetting(GraphicsLayout).Assign(() => PlayerData.LightingSetting, val => PlayerData.LightingSetting = val, "Sunlight: Standard", "Sunlight: Everday", "Sunlight: Evernight", "Sunlight: Real-time");
     }
 }

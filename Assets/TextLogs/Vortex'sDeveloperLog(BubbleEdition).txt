@@ -12,15 +12,14 @@ Do Later:
 3. Grass shader to make grass more interesting and potentially slightly vary in the wind
 4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
-6. Lighting: Time of day settings (such as the ability to pause time or make it real-world accurate)
-7. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
-8. Next patch:
+6. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
+7. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
 	2. ROCK GOLEM CHANGES TO FIX LAG
 	3. SNOBBLE NERF
 	4. OILICOPTER should always tar enemies (no matter the build)
-9. Convert player power handler to use structs for faster resetting 
-10. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
+8. Convert player power handler to use structs for faster resetting 
+9. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -58,7 +57,7 @@ Sounds Needed:
 
 Done: 	
 
-8/18/26 to 8/20/26
+8/18/26 to 8/21/26
 1. WIP UI Overhauls
 	1. Settings Page: 
 		1. Now generates the settings toggles and sliders through code procedure, which should make it easier to expand in the future
@@ -66,9 +65,12 @@ Done:
 		3. Now plays pop sounds when toggle/slider is changed!
 		4. Now contains divider text! Now blurs the BG when opened!
 		5. Now is standardized like the compendium now, so the menu doesn't look different in main menu vs game scene
-		6. STILL NEEDS: add ability to close menu through button (for baby chuds)!
+	2. NEXT: Add a UI button for going back in menus, functioning the same as the ESC button does (normalize this behavior somewhere)
+		1. It can be placed in the same place the compendium button already is (and move the compendium), but only appears when needed
 2. Overhaul some UI classes to decouple stuff
 3. Fix bug where soup would still work even when removed through a crucible
+4. Conglomerate and Combust sprites (BY DAVID YIPPEE)
+5. Add the ability to change Sunlight in the settings menu (Available options are: Standard, Everday, Evernight, Real-time)
 
 -- A3.22 UPDATE ON STEAM --
 

@@ -15,9 +15,10 @@ public static class PlayerData
     }
     public static readonly float CurrentPlayerVersion = 3.22f;
     public static int PlayerDeaths;
-    public static float SFXVolume = 1;
-    public static float MusicVolume = 1;
-    public static float SpecialVisualOpacity = 1;
+    public static float SFXVolume { get; set; } = 1;
+    public static float MusicVolume { get; set; } = 1;
+    public static float SpecialVisualOpacity { get; set; } = 1;
+    public static int LightingSetting { get; set; } = 0;
     public static bool PauseDuringPowerSelect = true;
     public static bool PauseDuringCardSelect = true;
     public static bool BriefDescriptionsByDefault = true;
@@ -32,6 +33,7 @@ public static class PlayerData
         SaveFloat("SFX", SFXVolume);
         SaveFloat("Music", MusicVolume);
         SaveFloat("SpecialOpacity", SpecialVisualOpacity);
+        SaveInt("LightingSetting", LightingSetting);
     }
     public static void ResetAll()
     {
@@ -60,6 +62,7 @@ public static class PlayerData
         SFXVolume = GetFloat("SFX", 1);
         MusicVolume = GetFloat("Music", 1);
         SpecialVisualOpacity = GetFloat("SpecialOpacity", 1);
+        LightingSetting = GetInt("LightingSetting", 0);
         Player.GoldSpentTotal = GetInt("PlayerGoldSpent", 0);
         UnlockCondition.LoadAllData();
         PowerUp.LoadAllData();

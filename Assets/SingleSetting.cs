@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,9 @@ public class SingleSetting : MonoBehaviour
     public TextMeshProUGUI Label;
     public Toggle Toggle;
     public Slider Slider;
+    public StandardButton DiscreteButton;
     public TMP_InputField SliderInputField;
+    public TextMeshProUGUI DiscreteValueDisplayField;
     public static SingleSetting RequestNewSetting(Transform parent)
     {
         return Instantiate(Resources.Load<GameObject>("UI/Settings/SingleSetting"), parent).GetComponent<SingleSetting>();
@@ -35,11 +38,11 @@ public class SingleSetting : MonoBehaviour
     {
         Toggle = 0,
         Slider = 1,
-        //Discrete = 2, //WILL IMPLEMENT LATER FOR TIME OF DAY SETTINGS
+        Discrete = 2,
     }
     public SettingBinder<bool> ToggleBinder;
     public SettingBinder<float> SliderBinder;
-    //public SettingBinder<int> DiscreteBinder;
+    public SettingBinder<int> DiscreteBinder;
     public SettingType MyType { get; private set; }
     public int DiscreteValueNonInclusiveUpperBound { get; private set; }
     //public void Assign(Func<int> get, Action<int> set, int totalValues = 3)
@@ -115,6 +118,47 @@ public class SingleSetting : MonoBehaviour
         {
             Debug.Log("Failed to parse text input into num");
         }
+    }
+    #endregion
+    #region Discrete
+    public string[] DiscreteOptionsNameDisplay;
+    public void Assign(Func<int> get, Action<int> set, params string[] ModeNames)
+    {
+        MyType = SettingType.Discrete;
+        BGImage.sprite = Resources.Load<Sprite>("UI/Boxes/ReverseUISquare"); //move to other class laterAssets/Resources/UI/Boxes/ReverseUISquare.PNG
+        DiscreteBinder = new(get, set);
+        DiscreteButton.gameObject.SetActive(true);
+        DiscreteButton.onClick.AddListener(OnButtonCycle);
+        ResetDiscreteModeNames(ModeNames);
+        //Make sure loading happens after the upper bound is initialized
+        LoadDiscreteSetting();
+    }
+    public void ResetDiscreteModeNames(string[] ModeNames)
+    {
+        DiscreteOptionsNameDisplay = ModeNames;
+        DiscreteValueNonInclusiveUpperBound = ModeNames.Length;
+    }
+    public void LoadDiscreteSetting()
+    {
+        DiscreteBinder.Setting %= DiscreteValueNonInclusiveUpperBound;
+        if(DiscreteValueNonInclusiveUpperBound == 4) //THIS IS FOR TIME OF DAY SETTINGS
+        {
+            var colors = DiscreteButton.colors;
+            colors.normalColor = ColorHelper.GetTimeOfDayUIColor(DiscreteBinder.Setting);
+            colors.highlightedColor = ColorHelper.GetTimeOfDayUIColor((DiscreteBinder.Setting + 1) % 4);
+            colors.pressedColor = colors.highlightedColor * new Color(0.858f, 0.765f, 0.811f);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = colors.normalColor * 0.6f;
+            DiscreteButton.colors = colors;
+        }
+        DiscreteValueDisplayField.text = (DiscreteBinder.Setting + 1).ToString();
+        Label.text = DiscreteOptionsNameDisplay[DiscreteBinder.Setting];
+    }
+    public void OnButtonCycle()
+    {
+        DiscreteBinder.Setting = DiscreteBinder.Setting + 1;
+        LoadDiscreteSetting();
+        PlayerData.SaveSettingSliders();
     }
     #endregion
 }

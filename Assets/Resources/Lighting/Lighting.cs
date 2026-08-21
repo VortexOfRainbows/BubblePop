@@ -1,11 +1,10 @@
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Threading;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 public static class Lighting
 {
     public static Tile LightTile;
@@ -101,9 +100,32 @@ public static class Lighting
             PauseDayNightCycle = !PauseDayNightCycle;
         if (PauseDayNightCycle)
             factor = 0;
-        DayProgress += Time.deltaTime * factor;
-        if (DayProgress > TimeInADay)
-            DayProgress -= TimeInADay;
+        if(PlayerData.LightingSetting == 0) //standard
+        {
+            DayProgress += Time.deltaTime * factor;
+            if (DayProgress > TimeInADay)
+                DayProgress -= TimeInADay;
+        }
+        else if(PlayerData.LightingSetting == 1 || PlayerData.LightingSetting == 2 || PlayerData.LightingSetting == 3) //permaday or night
+        {
+            float target;
+            if (PlayerData.LightingSetting == 1)
+                target = TimeInADay * 0.425f;
+            else if (PlayerData.LightingSetting == 2)
+                target = TimeInADay * 0.925f;
+            else
+            {
+                float realHour = (float)(DateTime.Now.TimeOfDay.TotalHours);
+                //SUN ACTUALLY RISES ON HOUR 6 and SETS ON HOUR 18, though bubblegame hours, sun rises on HOUR 0
+                realHour -= 6;
+                if(realHour < 0)
+                    realHour += 24;
+                target = realHour / 24f * TimeInADay;
+            }
+            DayProgress = Mathf.Lerp(DayProgress, target, Utils.DeltaTimeLerpFactor(0.02f));
+            if (Mathf.Abs(DayProgress - target) < 1)
+                DayProgress = target;
+        }
         float dayPercent = DayProgress / TimeInADay;
         SunVector = new Vector2(1, 0).RotatedBy(dayPercent * Utils.TwoPI);
         DaySin = SunVector.y > 0 ? SunVector.y : 0;
@@ -173,35 +195,40 @@ public static class Lighting
     }
     public static void GetSunlightColor()
     {
+        GlobalLight.color = SunColor(DayProgress / TimeInADay * 2);//.WithAlpha(1.0f);
+    }
+    public static Color SunColor(float lerper)
+    {
+
         Color nightColor = new(.15f, .1f, 0.3f);
         Color dayBreak = new(.35f, .15f, .35f);
         Color sunRise = new(.5f, .35f, .15f);
         Color dayColor = new(1, 1, 1);
         List<ColorWithRange> ColorRange = new();
         Color final = Color.clear;
-        if (IsDay)
+        if (lerper <= 1)
         {
             ColorRange.Add(new(dayBreak, -0.1f, 0.05f));
             ColorRange.Add(new(sunRise, 0.05f, 0.10f));
             ColorRange.Add(new(dayColor, 0.1f, 0.9f));
             ColorRange.Add(new(sunRise, 0.9f, 0.95f));
             ColorRange.Add(new(dayBreak, 0.95f, 1.1f));
-            float percent = DayProgress / TimeInADay * 2;
-            foreach(ColorWithRange c in ColorRange)
+            float percent = lerper;
+            foreach (ColorWithRange c in ColorRange)
                 final += c.Get(percent);
         }
-        else if(IsNight)
+        else
         {
             ColorRange.Add(new(dayBreak, -0.1f, 0.05f));
             //ColorRange.Add(new(nightWake, 0.05f, 0.10f));
             ColorRange.Add(new(nightColor, 0.05f, 0.95f));
             //ColorRange.Add(new(nightWake, 0.9f, 0.95f));
             ColorRange.Add(new(dayBreak, 0.95f, 1.1f));
-            float percent = DayProgress / TimeInADay * 2 - 1;
+            float percent = lerper - 1;
             foreach (ColorWithRange c in ColorRange)
                 final += c.Get(percent);
         }
-        GlobalLight.color = final;//.WithAlpha(1.0f);
+        return final;
     }
     public static float PortionOfRange(float percent, float startingThresh, float endThresh)
     {

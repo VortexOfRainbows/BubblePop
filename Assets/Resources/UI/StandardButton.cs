@@ -17,6 +17,7 @@ public class StandardButton : Button
         WhiteToYellow = 0,
         CyanToYellow = 1,
         DarkYellowToYellow = 2,
+        CornflowerToYellow = 3,
     }
     public enum ButtonDestinationType
     {
@@ -35,6 +36,7 @@ public class StandardButton : Button
         ChangeAscensionLevel = 12,
         AudioSettings = 50,
         GameplaySettings = 51,
+        GraphicsSettings = 52,
     }
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonActions;
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> InitDict()
@@ -56,6 +58,7 @@ public class StandardButton : Button
 
         ButtonToActionDict[ButtonDestinationType.AudioSettings] = SettingsMenu.SwapToAudio;
         ButtonToActionDict[ButtonDestinationType.GameplaySettings] = SettingsMenu.SwapToGameplay;
+        ButtonToActionDict[ButtonDestinationType.GraphicsSettings] = SettingsMenu.SwapToGraphics;
         return ButtonToActionDict;
     }
     public static void IncrementAscensionLevel() 
@@ -115,6 +118,14 @@ public class StandardButton : Button
         else if (ColorType == ButtonColorType.DarkYellowToYellow)
         {
             colors.normalColor = ColorHelper.New255(0xBF, 0xB8, 0x34);
+            colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
+            colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = colors.normalColor * 0.6f;
+        }
+        else if(ColorType == ButtonColorType.CornflowerToYellow)
+        {
+            colors.normalColor = ColorHelper.Cornflower;
             colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
             colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
             colors.selectedColor = colors.highlightedColor;
