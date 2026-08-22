@@ -92,6 +92,10 @@ Done:
 	3. The goal is to make your choices more meaningful, while also keeping power stacking as a core identity of the game
 	4. Currently treated as restocking ONCE for the purpose of price scaling and restock machine counts...
 	5. DOES NOT EFFECT BLACK MARKET POWERS
+16. New subnode: Crate Node
+17. Subnodes now shift to attempt a spawn 12 times if the spot is blocked (up from 10)
+18. Chance of shops appearing in alternating subnodes 75% -> 50%
+	1. The alternation has been shifted slightly, so they should no longer appear as often before nodes that already have shops
 
 -- A3.22 UPDATE ON STEAM --
 

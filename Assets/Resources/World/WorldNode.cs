@@ -326,9 +326,9 @@ public class WorldNode : MonoBehaviour
                 subNodeConPos = pointBetween;
                 while(attempts == 0 || !World.AreaIsClear(World.RealTileMap.Map.WorldToCell(subNodePos), 5))
                 {
-                    subNodePos = pointBetween + rNorm * Utils.Rand1OrMinus1() * (pathVariance * Utils.RandFloat(1.0f - 0.25f * attempts, 1.5f + 0.1f * attempts) + 10) + Utils.RandCircle(attempts);
+                    subNodePos = pointBetween + rNorm * (Utils.Rand1OrMinus1() * (pathVariance * Utils.RandFloat(1.0f - 0.25f * attempts, 1.5f + 0.1f * attempts) + 10)) + Utils.RandCircle(attempts);
                     attempts++;
-                    if (attempts > 10)
+                    if (attempts > 12)
                         break;
                 }
             }
@@ -346,7 +346,7 @@ public class WorldNode : MonoBehaviour
                 forge = GenerationNumber == 5 ? true : null;
             WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes,
                 0,
-                GenerationNumber % 2 == 0 ? Utils.RollWithLuck(0.75f) ? false : null : (GenerationNumber == 7 || Utils.RandFloat(1) < 0.66f),
+                GenerationNumber % 2 == 1 ? Utils.RollWithLuck(0.5f) ? false : null : (GenerationNumber == 7 || Utils.RandFloat(1) < 0.66f),
                 null, null, forge,
                 GenerationNumber == 7 ? 0.15f : 5.0f);
             sub.Generate(subNodePos, World, GenerationNumber, null);
