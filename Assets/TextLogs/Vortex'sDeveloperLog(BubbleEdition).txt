@@ -15,6 +15,8 @@ Do Later:
 6. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
 7. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
+	2. (UI OVERHAULS) NEXT: Add a UI button for going back in menus, functioning the same as the ESC button does (normalize this behavior somewhere)
+		1. It can be placed in the same place the compendium button already is (and move the compendium), but only appears when needed
 8. Convert player power handler to use structs for faster resetting 
 9. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 
@@ -54,6 +56,12 @@ Sounds Needed:
 
 Done: 	
 
+8/22/26
+1. BoxesShopWithForge, Junkyard, and Junkyard2 nodes are now more open
+2. BoxesShop1, BoxesShop2, MeadowCrucible3 now have a connector between two previously dead ends
+3. New Shopforge node: Workshop
+4. When multiple copies of a power would be dropped from a pylon, it simply drops them in bulk now (should reduce lag for stacking Perp, Pumpjack, Resonance Ruby, etc.)
+
 8/18/26 to 8/22/26
 1. WIP UI Overhauls
 	1. Settings Page: 
@@ -62,8 +70,6 @@ Done:
 		3. Now plays pop sounds when toggle/slider is changed!
 		4. Now contains divider text! Now blurs the BG when opened!
 		5. Now is standardized like the compendium now, so the menu doesn't look different in main menu vs game scene
-	2. NEXT: Add a UI button for going back in menus, functioning the same as the ESC button does (normalize this behavior somewhere)
-		1. It can be placed in the same place the compendium button already is (and move the compendium), but only appears when needed
 2. Overhaul some UI classes to decouple stuff
 3. Fix bug where soup would still work even when removed through a crucible
 4. Conglomerate, Combust, Smokestack sprites (BY DAVID YIPPEE)
@@ -87,13 +93,13 @@ Done:
 13. Crucible speed is now capped at 10x speed
 14. Forge Hammer and Crucible speed bonuses are now global.
 15. Shops may sometimes sell powers in bulk, at a higher price
-	1. This chance is greater for lower-tier powers
+	1. This chance is greater for lower-star powers
 	2. This is somewhat meant to augment the current state of the shop, where you simply buy cheap items just to cycle the shop.
 	3. The goal is to make your choices more meaningful, while also keeping power stacking as a core identity of the game
 	4. Currently treated as restocking ONCE for the purpose of price scaling and restock machine counts...
 	5. DOES NOT EFFECT BLACK MARKET POWERS
 16. New subnode: Crate Node
-17. Subnodes now shift to attempt a spawn 12 times if the spot is blocked (up from 10)
+17. Subnodes now shift to attempt a spawn 12 times if the spot is blocked (up from 10), so they should be more common
 18. Chance of shops appearing in alternating subnodes 75% -> 50%
 	1. The alternation has been shifted slightly, so they should no longer appear as often before nodes that already have shops
 19. Fix bug where the selected ascension would reset to Bubblemancer's Max ascension when restarting as other characters

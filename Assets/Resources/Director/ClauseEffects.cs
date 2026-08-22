@@ -252,8 +252,7 @@ public class PowerReward : Reward
     }
     public override void GrantReward()
     {
-        for(int i = 0; i < Amt; ++i)
-            PowerUp.Spawn(PowerType, RewardPosition());
+        PowerUp.Spawn(PowerType, RewardPosition(), Amt);
     }
     public override string Description()
     {
