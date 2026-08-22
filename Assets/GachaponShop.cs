@@ -127,8 +127,11 @@ public class GachaponShop : GemUtility
         float bmChance = BlackMarketShop ? 1 : .005f * Player.Instance.BlackmarketMult;
         Vector3 pillowPosition = Pedastal[i].transform.position + new Vector3(0, 1.2f);
         Vector3 spawnPosition = RestockMachine != null ? RestockMachine.transform.position + new Vector3(0, 0.05f) : pillowPosition;
-        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, bmChance), spawnPosition).GetComponent<PowerUpObject>();
-        obj.Cost = Mathf.Max(0, (int)(obj.MyPower.Cost * mult));
+        int quantity = 1;
+        if (Utils.RandBool(2))
+            quantity = 3;
+        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, bmChance), spawnPosition, quantity).GetComponent<PowerUpObject>();
+        obj.Cost = Mathf.Max(0, (int)(obj.MyPower.Cost * mult * quantity));
         obj.FinalPosition = pillowPosition;
         obj.VelocityStyle = 1;
         obj.velocity = new Vector2(0, 8);

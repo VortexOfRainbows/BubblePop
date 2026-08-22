@@ -139,18 +139,20 @@ public abstract class PowerUp
     #region Powerup Datastructure Related Stuff
     private static int typeCounter = 0;
     private static int maximumTypes = 0;
-    public static GameObject Spawn<T>(Vector2 pos) where T : PowerUp => Spawn(typeof(T).Name, pos);
-    public static GameObject Spawn(string powerTypeName, Vector2 pos)
+    public static GameObject Spawn<T>(Vector2 pos, int count = 1) where T : PowerUp => Spawn(typeof(T).Name, pos, count);
+    public static GameObject Spawn(string powerTypeName, Vector2 pos, int count = 1)
     {
         if (Reverses == null)
             InitDict();
-        return Spawn(Reverses[powerTypeName], pos);
+        return Spawn(Reverses[powerTypeName], pos, count);
     }
-    public static GameObject Spawn(int powerUpID, Vector2 pos)
+    public static GameObject Spawn(int powerUpID, Vector2 pos, int count = 1)
     {
         PowerUpObject obj = GameObject.Instantiate(Main.PrefabAssets.PowerUpObj, pos, Quaternion.identity, Main.GenericSuperParent);
         obj.Type = powerUpID;
         obj.FinalPosition = pos;
+        if(count > 1)
+            obj.Quantity = count;
         //WaveDirector.TotalPowersSpawned += 1;
         return obj.gameObject;
     }
