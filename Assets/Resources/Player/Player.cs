@@ -631,7 +631,8 @@ public partial class Player : Entity
             }
             if(InstanceID == 0)
                 PlayerStatUI.SetHeartsToPlayerLife();
-            ModifyAscensionLevel(0); //Might be better to move this to the place where body is set or changed, but this works for now.
+            if(CharacterSelect.Instance != null && CharacterSelect.Instance.HasLoaded)
+                ModifyAscensionLevel(0); //Might be better to move this to the place where body is set or changed, but this works for now.
             RequestColorReload();
         }
         UpdatePowerUps();
