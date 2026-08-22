@@ -16,7 +16,6 @@ Do Later:
 7. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
 	2. Maybe add a way for shops to bulk sell items at higher prices
-	3. Make bubblebirb and dragon slots detonate debuffs
 8. Convert player power handler to use structs for faster resetting 
 9. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 
@@ -85,6 +84,9 @@ Done:
 9. Crow coins dropped max 5 -> 4
 10. Ent coins dropped max 10 -> 8
 11. Smokestack attack speed per stack stack scaling 5% (+2%) -> 4% (+1%)
+12. Fire from Bubblebirb and Dragon Slots now detonate debuffs (Description modified for dragon slots)
+13. Crucible speed is now capped at 10x speed
+14. Forge Hammer and Crucible speed bonuses are now global. When any Hammer or Crucible is used, speed for all future uses increases for the run.
 
 -- A3.22 UPDATE ON STEAM --
 

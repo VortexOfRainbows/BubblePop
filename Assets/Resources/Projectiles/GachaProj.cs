@@ -96,6 +96,8 @@ public class GachaProj : Projectile
     public override void OnHitTarget(Entity target)
     {
         Damage *= 0.8f; // 0.8f + 0.05f * Data1;
+        if(Data1 == 4 && target is Enemy e)
+            e.DetonateAllDebuffs();
         if (Data1 == 0 || Data1 == 4)
             return;
         float count = 1;

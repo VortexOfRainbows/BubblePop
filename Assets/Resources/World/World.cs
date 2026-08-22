@@ -200,6 +200,11 @@ public class World : MonoBehaviour
             Main.ResetContainers();
             ResetTransformParents();
         }
+        else //Do not reset on loops
+        {
+            ForgeHammer.ResetGlobalSpeed();
+            Crucible.ResetGlobalSpeed();
+        }
         ResetAllTilemaps();
         Player.ObjectsConsideredForUIInteraction.Clear();
         GachaponShop.AllShops.Clear();

@@ -47,10 +47,10 @@ public class PhoenixFire : Projectile
         if (PlayerOwner.Body is Gachapon && target is EnemyBossDuck)
         {
             if (target.Life <= 0)
-            {
                 UnlockCondition.Get<GachaponBubblebirb>().SetComplete();
-            }
         }
+        if (target is Enemy e)
+            e.DetonateAllDebuffs();
     }
 }
 public class OilFire : Projectile

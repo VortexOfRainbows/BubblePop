@@ -130,13 +130,17 @@ public class Crucible : InteractableWorldObject
                 Text.transform.LerpLocalScale(Vector2.zero, 0.1f);
         }
     }
-    public float SpeedMultiplier { get; set; } = 1.0f;
+    public static float ResetGlobalSpeed() => GlobalSpeedMultiplier = 1;
+    public static float GlobalSpeedMultiplier { get; set; } = ResetGlobalSpeed();
     public float BonusFrames { get; set; } = 0.0f;
     public void FixedUpdate()
     {
         PreFixedUpdate();
-        BonusFrames += SpeedMultiplier;
-        while(BonusFrames >= 1)
+        if (PowerQueue.Count > 0)
+            BonusFrames += GlobalSpeedMultiplier;
+        else
+            BonusFrames += 1;
+        while (BonusFrames >= 1)
         {
             Animate();
             BonusFrames -= 1;
@@ -145,7 +149,7 @@ public class Crucible : InteractableWorldObject
     public void Animate()
     {
         if (Active)
-            Counter += Time.fixedDeltaTime * 2 * SpeedMultiplier;
+            Counter += Time.fixedDeltaTime * 2 * GlobalSpeedMultiplier;
         else
             Counter = 0;
         Counter2++;
@@ -191,7 +195,7 @@ public class Crucible : InteractableWorldObject
             AudioCounter += per5;
             if (AudioCounter >= 5 && per6 < 0.4f)
             {
-                AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, SpeedMultiplier + 0.4f);
+                AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, GlobalSpeedMultiplier + 0.4f);
                 AudioCounter -= 15;
                 for (int i = 0; i < 15; i++)
                 {
@@ -217,7 +221,7 @@ public class Crucible : InteractableWorldObject
         float scaleMult = Mathf.Clamp(per2 - per5 * 0.5f, 0, 1);
         if (!HeldPower.gameObject.activeSelf && scaleMult > 0 && per1 < 1 && Active)
         {
-            AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1, 0.6f + 0.5f * SpeedMultiplier);
+            AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1, 0.6f + 0.5f * GlobalSpeedMultiplier);
             HeldPower.gameObject.SetActive(true);
         }
         HeldPower.transform.localScale = new Vector3(scaleMult, scaleMult, 1);
@@ -246,9 +250,11 @@ public class Crucible : InteractableWorldObject
     public void FinishConsuming()
     {
         int powerType = NextConsumedPower;
-        SpeedMultiplier = PowerQueue.Count > 0 ? SpeedMultiplier + 0.05f : 1.0f;
+        GlobalSpeedMultiplier = GlobalSpeedMultiplier + 0.05f;
+        if (GlobalSpeedMultiplier > 10)
+            GlobalSpeedMultiplier = 10;
         HasSpawnedChestLoot = true;
-        AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 0.8f + 0.2f * SpeedMultiplier);
+        AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 0.8f + 0.2f * GlobalSpeedMultiplier);
         int value = powerType >= 0 ? PowerUp.Get(powerType).CrucibleGems(true) : 3;
         int coinValue = powerType >= 0 ? PowerUp.Get(powerType).Cost : 15;
         coinValue = (coinValue + Utils.RandInt(2)) / 2;
