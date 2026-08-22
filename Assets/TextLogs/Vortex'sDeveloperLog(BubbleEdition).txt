@@ -15,7 +15,6 @@ Do Later:
 6. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
 7. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
-	2. Maybe add a way for shops to bulk sell items at higher prices
 8. Convert player power handler to use structs for faster resetting 
 9. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 
@@ -87,6 +86,12 @@ Done:
 12. Fire from Bubblebirb and Dragon Slots now detonate debuffs (Description modified for dragon slots)
 13. Crucible speed is now capped at 10x speed
 14. Forge Hammer and Crucible speed bonuses are now global.
+15. Shops may sometimes sell powers in bulk, at a higher price
+	1. This chance is greater for lower-tier powers
+	2. This is somewhat meant to augment the current state of the shop, where you simply buy cheap items just to cycle the shop.
+	3. The goal is to make your choices more meaningful, while also keeping power stacking as a core identity of the game
+	4. Currently treated as restocking ONCE for the purpose of price scaling and restock machine counts...
+	5. DOES NOT EFFECT BLACK MARKET POWERS
 
 -- A3.22 UPDATE ON STEAM --
 

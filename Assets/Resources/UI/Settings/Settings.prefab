@@ -753,6 +753,10 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 58.15
       objectReference: {fileID: 0}
+    - target: {fileID: 8408322788086474633, guid: 1e2ed3e2f9c6be24f9503d8cb52593bf, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

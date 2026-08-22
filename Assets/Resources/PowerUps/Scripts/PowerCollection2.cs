@@ -310,7 +310,7 @@ public class Coupons : PowerUp
                 if (shop.Stock != null)
                     foreach (PowerUpObject p in shop.Stock)
                         for (int i = 0; i < count; ++i)
-                            p.Cost = (int)(p.Cost - p.MyPower.Cost * 0.12f);
+                            p.Cost = (int)(p.Cost - p.BaseCostAdjustedForQuantity() * 0.12f);
             }
         }
     }

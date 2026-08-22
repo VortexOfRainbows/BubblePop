@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -164,5 +165,15 @@ public class PowerUpObject : MonoBehaviour
         }
         AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.2f, 0.9f );
         Destroy(gameObject);
+    }
+    public int BaseCostAdjustedForQuantity()
+    {
+        int cost = MyPower.Cost;
+        if (Quantity > 1)
+        {
+            int bonusCost = MyPower.Rarity * 5 * (Quantity / 2);
+            cost += bonusCost;
+        }
+        return cost * Quantity;
     }
 }
