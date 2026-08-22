@@ -308,6 +308,7 @@ public class RockGolem : RockSpider
     {
         DeathParticles(40, 0.6f, new Color(60 / 255f, 70 / 255f, 92 / 255f));
         AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.1f, 0.5f);
+        Player.RocksKilledThisRun += 1;
     }
     public override Vector3 CrownPositionOffset()
     {

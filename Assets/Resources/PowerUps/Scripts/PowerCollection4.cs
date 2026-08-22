@@ -120,6 +120,7 @@ public class Pumpjack : PowerUp
     {
         p.Pumpjack += Stack;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<OilKingRockFeller>();
 }
 public class Futures : PowerUp
 {

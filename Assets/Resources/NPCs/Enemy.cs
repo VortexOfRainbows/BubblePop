@@ -661,6 +661,11 @@ public class Enemy : Entity, IImpactedByProjIFrames
         StaticData.SaveData();
         Enemies.Remove(this);
         OnKill();
+        if (Player.RocksKilledThisRun >= 500 && Player.Instance.Body is KingOil)
+        {
+            Player.RocksKilledThisRun = int.MinValue;
+            UnlockCondition.Get<OilKingRockFeller>().SetComplete();
+        }
         float rand = 1;
         for (int i = 0; i < CoinRandomizationAggressiveness; ++i)
             rand *= Utils.RandFloat();

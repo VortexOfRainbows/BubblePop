@@ -456,6 +456,7 @@ public partial class Player : Entity
     public static int TimesHitThisRun = 0;
     public static int GoldSpentTotal = 0;
     public static List<Type> DifferentTypesOfSkullEnemiesZappedThisRun { get; set; } = new();
+    public static int RocksKilledThisRun { get; set; } = 0;
     /// <summary>
     /// Shorthand for abilityTimer <= 0;
     /// </summary>
@@ -614,6 +615,7 @@ public partial class Player : Entity
             HasAttacked = false;
             TimesHitThisRun = 0;
             DifferentTypesOfSkullEnemiesZappedThisRun.Clear();
+            RocksKilledThisRun = 0;
         }
         WaveDirector.FixedUpdate();
         if (!HasRunStartingGear)
