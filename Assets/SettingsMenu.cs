@@ -43,18 +43,17 @@ public class SettingsMenu : MonoBehaviour
     {
         Instance.SUpdate();
     }
-    private float BackButtonX = 0;
     public void SUpdate()
     {
         float lerpFactor = Utils.DeltaTimeLerpFactor(0.1f);
         if (WantsVisible)
         {
-            Utils.LerpSnap(Visual.transform, new Vector2(0, 10), lerpFactor, 1);
+            Utils.LerpSnap(Visual.transform, new Vector2(0, 0), lerpFactor, 1);
             MyGroup.alpha += 10 * Time.unscaledDeltaTime;
         }
         else
         {
-            Utils.LerpSnap(Visual.transform, new Vector2(0, -10), lerpFactor, 1);
+            Utils.LerpSnap(Visual.transform, new Vector2(0, -20), lerpFactor, 1);
             Instance.MyGroup.alpha -= 10 * Time.unscaledDeltaTime;
         }
         MyGroup.alpha = Mathf.Clamp01(Instance.MyGroup.alpha);
@@ -64,7 +63,7 @@ public class SettingsMenu : MonoBehaviour
         ////Probably change this later when compendium is more standardized?
         //if (BackButton.transform.localPosition.y > -50) //Only if the button is off screen do we want it to shift x positions
         //    BackButtonX = Compendium.Instance.Active ? 20 : 0;
-        Vector2 pos = backButtonShouldAppear ? new Vector2(BackButtonX, -200) : new Vector2(BackButtonX, 0);
+        Vector2 pos = backButtonShouldAppear ? new Vector2(0, -200) : new Vector2(0, 0);
         Utils.LerpSnap(BackButton.transform, pos, lerpFactor);
     }
     public void Init()
