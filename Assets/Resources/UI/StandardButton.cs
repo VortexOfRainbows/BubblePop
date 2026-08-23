@@ -18,6 +18,7 @@ public class StandardButton : Button
         CyanToYellow = 1,
         DarkYellowToYellow = 2,
         CornflowerToYellow = 3,
+        RedToYellow = 4,
     }
     public enum ButtonDestinationType
     {
@@ -37,6 +38,7 @@ public class StandardButton : Button
         AudioSettings = 50,
         GameplaySettings = 51,
         GraphicsSettings = 52,
+        UIUndoButton = 100,
     }
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonActions;
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> InitDict()
@@ -59,6 +61,7 @@ public class StandardButton : Button
         ButtonToActionDict[ButtonDestinationType.AudioSettings] = SettingsMenu.SwapToAudio;
         ButtonToActionDict[ButtonDestinationType.GameplaySettings] = SettingsMenu.SwapToGameplay;
         ButtonToActionDict[ButtonDestinationType.GraphicsSettings] = SettingsMenu.SwapToGraphics;
+        ButtonToActionDict[ButtonDestinationType.UIUndoButton] = Main.GoBackInUIHierarchy;
         return ButtonToActionDict;
     }
     public static void IncrementAscensionLevel() 
@@ -126,6 +129,14 @@ public class StandardButton : Button
         else if(ColorType == ButtonColorType.CornflowerToYellow)
         {
             colors.normalColor = ColorHelper.Cornflower;
+            colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
+            colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = colors.normalColor * 0.6f;
+        }
+        else if(ColorType == ButtonColorType.RedToYellow)
+        {
+            colors.normalColor = ColorHelper.RarityColors[5];
             colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
             colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
             colors.selectedColor = colors.highlightedColor;

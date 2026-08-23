@@ -128,53 +128,7 @@ public partial class Main : MonoBehaviour
         Instance = this;
         DebugSettings.Update(this);
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            bool isMainMenu = SceneMainMenu;
-            if(!isMainMenu)
-            {
-                if (UIManager.MultiplayerMenu == null || !UIManager.MultiplayerMenu.activeSelf)
-                {
-                    if (WarpUI.IsCurrentlyOpen)
-                        WarpUI.Close();
-                    else if(GamePaused)
-                    {
-                        if (Compendium.Instance != null && Compendium.Instance.Active)
-                        {
-                            if (Compendium.CurrentlySelectedPage.TierListActive)
-                                Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
-                            else
-                                Compendium.Instance.ToggleActive();
-                        }
-                        else if (SettingsMenu.IsVisible)
-                            SettingsMenu.ToggleVisibility();
-                        else if (UIManager.DebugMenu.activeSelf)
-                            CanvasManager.ToggleDebugMenu();
-                        else
-                            CanvasManager.Resume();
-                    }
-                    else
-                        CanvasManager.Pause();
-                }
-                else if (UIManager.MultiplayerMenu != null)
-                {
-                    CanvasManager.CloseMultiplayerMenu();
-                }
-            }
-            else
-            {
-                if (Compendium.Instance != null && Compendium.Instance.Active)
-                {
-                    if (Compendium.CurrentlySelectedPage.TierListActive)
-                        Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
-                    else
-                        Compendium.Instance.ToggleActive();
-                }
-                else if (SettingsMenu.IsVisible)
-                    SettingsMenu.ToggleVisibility();
-                else if (UIManager.DebugMenu.activeSelf)
-                    CanvasManager.ToggleDebugMenu();
-            }
-        }
+            GoBackInUIHierarchy();
         //if(Main.DebugCheats && Input.GetKey(KeyCode.B))
         //    PowerUp.Spawn(PowerUp.RandomFromPool(0, 1, -1), Utils.MouseWorld);
         if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.U) && Main.DebugCheats)
@@ -221,6 +175,59 @@ public partial class Main : MonoBehaviour
         else
         {
             TimeElapsedDuringLowFPS = FramesElapsedDuringLowFPS = 0;
+        }
+    }
+    public static bool BackButtonShouldAppear()
+    {
+        //Compendium will use its own back button for now
+        return SettingsMenu.IsVisible; // (Compendium.Instance != null && Compendium.Instance.Active)) && !Compendium.CurrentlySelectedPage.TierListActive;
+    }
+    public static void GoBackInUIHierarchy()
+    {
+        bool isMainMenu = SceneMainMenu;
+        if (!isMainMenu)
+        {
+            if (UIManager.MultiplayerMenu == null || !UIManager.MultiplayerMenu.activeSelf)
+            {
+                if (WarpUI.IsCurrentlyOpen)
+                    WarpUI.Close();
+                else if (GamePaused)
+                {
+                    if (Compendium.Instance != null && Compendium.Instance.Active)
+                    {
+                        if (Compendium.CurrentlySelectedPage.TierListActive)
+                            Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
+                        else
+                            Compendium.Instance.ToggleActive();
+                    }
+                    else if (SettingsMenu.IsVisible)
+                        SettingsMenu.ToggleVisibility();
+                    else if (UIManager.DebugMenu.activeSelf)
+                        CanvasManager.ToggleDebugMenu();
+                    else
+                        CanvasManager.Resume();
+                }
+                else
+                    CanvasManager.Pause();
+            }
+            else if (UIManager.MultiplayerMenu != null)
+            {
+                CanvasManager.CloseMultiplayerMenu();
+            }
+        }
+        else
+        {
+            if (Compendium.Instance != null && Compendium.Instance.Active)
+            {
+                if (Compendium.CurrentlySelectedPage.TierListActive)
+                    Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
+                else
+                    Compendium.Instance.ToggleActive();
+            }
+            else if (SettingsMenu.IsVisible)
+                SettingsMenu.ToggleVisibility();
+            else if (UIManager.DebugMenu.activeSelf)
+                CanvasManager.ToggleDebugMenu();
         }
     }
     public static Main Instance;

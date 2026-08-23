@@ -15,8 +15,6 @@ Do Later:
 6. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
 7. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
-	2. (UI OVERHAULS) NEXT: Add a UI button for going back in menus, functioning the same as the ESC button does (normalize this behavior somewhere)
-		1. It can be placed in the same place the compendium button already is (and move the compendium), but only appears when needed
 8. Convert player power handler to use structs for faster resetting 
 9. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 
@@ -56,12 +54,16 @@ Sounds Needed:
 
 Done: 	
 
-8/22/26
+8/22/26 to 8/23/26
 1. BoxesShopWithForge, Junkyard, and Junkyard2 nodes are now more open
 2. BoxesShop1, BoxesShop2, MeadowCrucible3 now have a connector between two previously dead ends
 3. New Shopforge node: Workshop
 4. When multiple copies of a power would be dropped from a pylon, it simply drops them in bulk now (should reduce lag for stacking Perp, Pumpjack, Resonance Ruby, etc.)
 5. Oil King: Rock Feller Achievement
+6. Move Compendium button to the button tower. Button tower in pause menu more closely resembles the main menu button tower.
+7. WIP UI OVERHAULS 
+	1. Add a UI button for going back in menus (settings and compendium), functioning the same as the ESC button does
+	2. Corresponding adjustments to the compendium to fit the new button
 
 8/18/26 to 8/22/26
 1. WIP UI Overhauls

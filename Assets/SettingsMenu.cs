@@ -3,6 +3,8 @@ using UnityEngine;
 public class SettingsMenu : MonoBehaviour
 {
     public static SettingsMenu Instance { get; private set; }
+    public static StandardButton UndoButton => Instance.BackButton;
+    public StandardButton BackButton;
     public CanvasGroup MyGroup;
     public GameObject Visual;
     public Transform AudioLayout;
@@ -35,26 +37,35 @@ public class SettingsMenu : MonoBehaviour
         if (!IsVisible)
             Instance.MyGroup.alpha = 0;
     }
-    public static bool IsVisible => Instance.gameObject.activeSelf;
+    public static bool IsVisible => Instance.Visual.activeSelf;
     public bool WantsVisible = false;
     public static void StaticUpdate()
     {
         Instance.SUpdate();
     }
+    private float BackButtonX = 0;
     public void SUpdate()
     {
-        if(WantsVisible)
+        float lerpFactor = Utils.DeltaTimeLerpFactor(0.1f);
+        if (WantsVisible)
         {
-            Utils.LerpSnap(Visual.transform, new Vector2(0, 10), Utils.DeltaTimeLerpFactor(0.1f), 1);
+            Utils.LerpSnap(Visual.transform, new Vector2(0, 10), lerpFactor, 1);
             MyGroup.alpha += 10 * Time.unscaledDeltaTime;
         }
         else
         {
-            Utils.LerpSnap(Visual.transform, new Vector2(0, -10), Utils.DeltaTimeLerpFactor(0.1f), 1);
+            Utils.LerpSnap(Visual.transform, new Vector2(0, -10), lerpFactor, 1);
             Instance.MyGroup.alpha -= 10 * Time.unscaledDeltaTime;
         }
         MyGroup.alpha = Mathf.Clamp01(Instance.MyGroup.alpha);
-        gameObject.SetActive(Instance.MyGroup.alpha > 0);
+        Visual.SetActive(Instance.MyGroup.alpha > 0);
+
+        bool backButtonShouldAppear = Main.BackButtonShouldAppear();
+        ////Probably change this later when compendium is more standardized?
+        //if (BackButton.transform.localPosition.y > -50) //Only if the button is off screen do we want it to shift x positions
+        //    BackButtonX = Compendium.Instance.Active ? 20 : 0;
+        Vector2 pos = backButtonShouldAppear ? new Vector2(BackButtonX, -200) : new Vector2(BackButtonX, 0);
+        Utils.LerpSnap(BackButton.transform, pos, lerpFactor);
     }
     public void Init()
     {
