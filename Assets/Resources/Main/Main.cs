@@ -175,6 +175,17 @@ public partial class Main : MonoBehaviour
                 Compendium.Instance.gameObject.SetActive(true);
             }
         }
+        if(DebugCheats && Input.GetKey(KeyCode.LeftShift))
+        {
+            if(Input.GetKeyDown(KeyCode.C))
+            {
+                CameraManager.SwitchToMainCamera();
+            }
+            else if (Input.GetKeyDown(KeyCode.V))
+            {
+                CameraManager.SwitchToScreenshotCamera();
+            }
+        }
     }
     public void LateUpdate()
     {
