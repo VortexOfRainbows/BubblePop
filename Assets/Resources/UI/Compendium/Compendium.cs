@@ -7,6 +7,11 @@ using UnityEngine.UI;
 
 public class Compendium : MonoBehaviour
 {
+    public static RenderTexture ExportTexture => Resources.Load<RenderTexture>("UI/Compendium/ExportTexture");
+    public void ResizeExportTexture()
+    {
+
+    }
     public static Compendium Instance { get => m_Instance != null ? m_Instance : m_Instance = FindFirstObjectByType<Compendium>(); set => m_Instance = value; }
     private static Compendium m_Instance;
     public static Vector2 ScreenResolution { get; set; }
@@ -178,6 +183,10 @@ public class Compendium : MonoBehaviour
     {
         for (int j = 0; j < Stars.Length; ++j)
             Stars[j].SetActive(rare == j);
+    }
+    public static void ExportTierList()
+    {
+        //not implemented yet
     }
     #endregion
 

@@ -35,6 +35,12 @@ public class StandardButton : Button
         CloseTutorial = 10,
         OpenCompendium = 11,
         ChangeAscensionLevel = 12,
+
+        CompendiumAuto = 30,
+        CompendiumUndo = 31,
+        CompendiumClear = 32,
+        CompendiumExport = 33,
+
         AudioSettings = 50,
         GameplaySettings = 51,
         GraphicsSettings = 52,
@@ -57,6 +63,11 @@ public class StandardButton : Button
         ButtonToActionDict[ButtonDestinationType.CloseTutorial] = Main.CanvasManager.CloseMultiplayerMenu;
         ButtonToActionDict[ButtonDestinationType.OpenCompendium] = Compendium.StaticToggleActive;
         ButtonToActionDict[ButtonDestinationType.ChangeAscensionLevel] = IncrementAscensionLevel;
+
+        ButtonToActionDict[ButtonDestinationType.CompendiumAuto] = () => Compendium.Instance.ToggleAuto();
+        ButtonToActionDict[ButtonDestinationType.CompendiumUndo] = () => Compendium.Instance.CancelTierListChanges();
+        ButtonToActionDict[ButtonDestinationType.CompendiumClear] = () => Compendium.Instance.ClearTierList();
+        ButtonToActionDict[ButtonDestinationType.CompendiumExport] = Compendium.ExportTierList;
 
         ButtonToActionDict[ButtonDestinationType.AudioSettings] = SettingsMenu.SwapToAudio;
         ButtonToActionDict[ButtonDestinationType.GameplaySettings] = SettingsMenu.SwapToGameplay;
@@ -142,6 +153,8 @@ public class StandardButton : Button
             colors.selectedColor = colors.highlightedColor;
             colors.disabledColor = colors.normalColor * 0.6f;
         }
+        if(DestinationType == ButtonDestinationType.CompendiumExport) //Currently unimplemented
+            interactable = false;
         base.colors = colors;
 
         RegisterButtonBehavior(this);

@@ -30,6 +30,7 @@ Need to do:
 	2. Make blurbs appear in the equipment page
 	3. EXPORT TIERLIST BUTTON NEEDED
 	4. New visual (part of UI reworks) and alpha!
+	5. FIX BUG WHERE TIER LIST STARTS BUGGING OUT AT LARGE ROW HEIGHTS
 6. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
 7. Snow Regions:
 	1. Snow ambient objects need to spawn
@@ -54,7 +55,7 @@ Sounds Needed:
 
 Done: 	
 
-8/22/26 to 8/23/26
+8/22/26 to 8/24/26
 1. BoxesShopWithForge, Junkyard, and Junkyard2 nodes are now more open
 2. BoxesShop1, BoxesShop2, MeadowCrucible3 now have a connector between two previously dead ends
 3. New Shopforge node: Workshop
@@ -66,6 +67,7 @@ Done:
 	2. Corresponding adjustments to the compendium to fit the new button
 	3. WIP Compendium UI overhauls!
 		1. Experimental blur for the bg (works in both main menu and game world), fixed the ratio!
+		2. Replace "Cancel Changes: with Export button (very WIP)
 8. Compendium now disables itself when offscreen, which should reduce lag slightly
 
 8/18/26 to 8/22/26

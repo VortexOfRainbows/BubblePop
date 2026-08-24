@@ -380,6 +380,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -150
       objectReference: {fileID: 0}
+    - target: {fileID: 3657281034133755898, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_AllowMSAA
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3657281034133755898, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3657281034133755898, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3914301646772711725, guid: 5aa70733119c04e47a090e10049808a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
