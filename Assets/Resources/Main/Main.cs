@@ -157,17 +157,23 @@ public partial class Main : MonoBehaviour
             }
             CharacterSelect.Instance.OnUpdate();
         }
-        if(Compendium.Instance != null && !Compendium.Instance.Active)
+        if(Compendium.Instance != null)
         {
-            //if the compendium is not active
-
-            //check if the compendium is offscreen
-
-            //if the compendium is offscreen, disable the gameobject
-
-            //if the compendium becomes active again, enable it again
-
-            //probably do not need to call compendium updates while it is inactive, but if we need to, last step is no longer required
+            if (!Compendium.Instance.Active) //if the compendium is not active
+            {
+                //check if the compendium is offscreen
+                if (Compendium.Instance.IsOffscreen)
+                {
+                    //if the compendium is offscreen, disable the gameobject
+                    Compendium.Instance.gameObject.SetActive(false);
+                }
+                //probably do not need to call compendium updates while it is inactive, but if we need to, LAST STEP is no longer required
+            }
+            else //LAST STEP
+            {
+                //if the compendium becomes active again, enable it again
+                Compendium.Instance.gameObject.SetActive(true);
+            }
         }
     }
     public void LateUpdate()

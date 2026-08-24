@@ -20,7 +20,7 @@ public class TitleScreen : MonoBehaviour
         float scaleY = Screen.height / ReferenceResolution.y;
         float canvasScaleFactor = Mathf.Max(scaleX, scaleY);
 
-        float cameraHeightInUnits = CameraManager.UICamera.orthographicSize * 3.75f; //I have no idea why this constant seems to fix the ratio.
+        float cameraHeightInUnits = CameraManager.UICamera.orthographicSize * 3.75f * CameraManager.MainCamera.orthographicSize / CameraManager.UICamera.orthographicSize; //I have no idea why this constant seems to fix the ratio.
 
         float spriteNativeWidth = BGSpriteForCompendiumBlur.sprite.rect.width / BGSpriteForCompendiumBlur.sprite.pixelsPerUnit;
         float spriteNativeHeight = BGSpriteForCompendiumBlur.sprite.rect.height / BGSpriteForCompendiumBlur.sprite.pixelsPerUnit;

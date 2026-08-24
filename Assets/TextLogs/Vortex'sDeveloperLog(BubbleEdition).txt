@@ -15,7 +15,6 @@ Do Later:
 6. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
 7. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
-	2. Make Compendium become inactive when off screen to reduce overhead lag from shader stuff
 8. Convert player power handler to use structs for faster resetting 
 9. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
 
@@ -66,7 +65,8 @@ Done:
 	1. Add a UI button for going back in menus (settings and compendium), functioning the same as the ESC button does
 	2. Corresponding adjustments to the compendium to fit the new button
 	3. WIP Compendium UI overhauls!
-		1. Experimental blur for the bg (works in both main menu and game world)
+		1. Experimental blur for the bg (works in both main menu and game world), fixed the ratio!
+8. Compendium now disables itself when offscreen, which should reduce lag slightly
 
 8/18/26 to 8/22/26
 1. WIP UI Overhauls

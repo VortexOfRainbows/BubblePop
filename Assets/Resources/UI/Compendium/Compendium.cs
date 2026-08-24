@@ -126,9 +126,11 @@ public class Compendium : MonoBehaviour
             page.SecondaryUpdate(lerpFactor);
         }
     }
+    public Vector2 StartPosition => new Vector3(-ScreenResolution.x - 5, 0);
+    public bool IsOffscreen => MathF.Abs(StartPosition.x - transform.localPosition.x) <= 0.1f;
     public void MoveCompendiumUpdate(float lerpFactor)
     {
-        Vector2 startingPosition = new Vector3(-ScreenResolution.x, 0);
+        Vector2 startingPosition = StartPosition;
         UpdatePage(EquipPage, lerpFactor);
         UpdatePage(EnemyPage, lerpFactor);
         UpdatePage(AchievementPage, lerpFactor);
