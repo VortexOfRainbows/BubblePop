@@ -531,7 +531,6 @@ public abstract class TierListCompendiumPage : CompendiumPage
             HoverCPUE.gameObject.transform.localPosition = pos;
 
             TierList.OnUpdate(hasSelectedPower);
-            //Debug.Log(SelectedType);
         }
     }
 }

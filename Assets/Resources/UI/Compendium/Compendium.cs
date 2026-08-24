@@ -100,12 +100,12 @@ public class Compendium : MonoBehaviour
         m_Instance = this;
         ScreenResolution = new Vector2(MyCanvasRectTransform.rect.width, MyCanvasRectTransform.rect.height); //1920, 1080 in most cases
         HalfResolution = ScreenResolution / 2f;
+        MoveCompendiumUpdate(Utils.DeltaTimeLerpFactor(.1f)); //KEEP THIS ABOVE THE PAGE UPDATES, OTHERWISE TIER LIST WILL BUG OUT, AS TIER LIST UPDATES ARE CALLED FROM HERE AND MUST BE RUN FIRST
         foreach (BasicTierListCompendiumPage page in Pages.Cast<BasicTierListCompendiumPage>())
         {
             if (page != null)
                 page.OnUpdate();
         }
-        MoveCompendiumUpdate(Utils.DeltaTimeLerpFactor(.1f));
         if (PrevActive != Active && !PrevActive) //On reopen behavior (update stuff that is needed here)
         {
             UpdateDescription(true, ActiveElement.TypeID);

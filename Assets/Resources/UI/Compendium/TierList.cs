@@ -59,20 +59,26 @@ public class TierList : MonoBehaviour
         for (int i = 0; i < Categories.Length; ++i)
         {
             TierCategory cat = Categories[i];
-            if(Utils.IsMouseHoveringOverThis(true, cat.RectTransform, 0, MyCanvas))
+            if (SelectedCat == null && Utils.IsMouseHoveringOverThis(true, cat.RectTransform, 0, MyCanvas))
             {
                 SelectedCat = cat;
                 cat.TierRect.color = Color.Lerp(cat.TierRect.color, selectColor, 0.25f);
             }
             else
-            {
                 cat.TierRect.color = Color.Lerp(cat.TierRect.color, unselectColor, 0.25f);
-            }
             cat.CalculateSizeNeededToHousePowerups(this);
             if(rebuild)
                 LayoutRebuilder.MarkLayoutForRebuild(cat.RectTransform);
         }
-        if(rebuild)
+        if (SelectedCat != null)
+        {
+            Debug.Log(SelectedCat.gameObject.name);
+        }
+        else
+        {
+            Debug.Log("NONE HOVERED");
+        }
+        if (rebuild)
         {
             Canvas.ForceUpdateCanvases();
             Owner.UpdateContentSize();
@@ -139,7 +145,7 @@ public class TierList : MonoBehaviour
             List<float> RoundedMousePos = UniqueYValues(childs, currentPosY);
             mousePos.y = ConvertToClosestYValue(mousePos.y, RoundedMousePos);
             float offset = Camera.main.transform.position.x;
-            float scalerX = 1.6f;// offset / 1.9f; //Divide offset by almost two to get roughly half the size needed
+            float scalerX = 1.6f; // offset / 1.9f; //Divide offset by almost two to get roughly half the size needed
             float scalerY = 1.75f; //Scaller is different for Y based on resolution
             int closest = int.MaxValue;
             float best = float.MaxValue;
@@ -197,8 +203,6 @@ public class TierList : MonoBehaviour
     {
         if (SelectedCat == null)
             return;
-        int insertPos = ReadingFromSave ? 10000 : -1;
-        CompendiumElement cpue = Elems.Find(g => g.TypeID == i);
         if (TierListType == 0 && PowerUp.Get(i).PickedUpCountAllRuns <= 0)
             return;
         if (TierListType == 1 && !Main.GlobalEquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
@@ -207,6 +211,8 @@ public class TierList : MonoBehaviour
             return;
         if (TierListType == 3)
             return;
+        int insertPos = ReadingFromSave ? 10000 : -1;
+        CompendiumElement cpue = Elems.Find(g => g.TypeID == i);
         if (!OnTierList[i])
         {
             if (cpue == null)
@@ -235,7 +241,7 @@ public class TierList : MonoBehaviour
                 ModifyOnTierList(i, true);
             }
         }
-        OnUpdate(true);
+        //OnUpdate(true);
     }
     public void RemovePower(int i, bool OnlyIfGray = true)
     {
