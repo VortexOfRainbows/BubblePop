@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
@@ -155,6 +156,18 @@ public partial class Main : MonoBehaviour
                 CharacterSelect.Instance.SwapPlayerEquipment(Player.Instance, Main.GlobalEquipData.Weapons[Utils.RandInt(Main.GlobalEquipData.Weapons.Count)].GetComponent<Equipment>());
             }
             CharacterSelect.Instance.OnUpdate();
+        }
+        if(Compendium.Instance != null && !Compendium.Instance.Active)
+        {
+            //if the compendium is not active
+
+            //check if the compendium is offscreen
+
+            //if the compendium is offscreen, disable the gameobject
+
+            //if the compendium becomes active again, enable it again
+
+            //probably do not need to call compendium updates while it is inactive, but if we need to, last step is no longer required
         }
     }
     public void LateUpdate()
