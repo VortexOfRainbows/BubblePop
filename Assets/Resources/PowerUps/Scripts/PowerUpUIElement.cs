@@ -207,7 +207,7 @@ public class PowerUpUIElement : MonoBehaviour
     }
     public void Update()
     {
-        if(!InventoryElement && !MenuElement)
+        if(!InventoryElement && !MenuElement && !CompendiumElement)
             OnUpdate();
     }
     public void OnUpdate()

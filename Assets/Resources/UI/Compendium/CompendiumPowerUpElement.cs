@@ -49,7 +49,7 @@ public class CompendiumPowerUpElement : CompendiumElement
             Selected = TypeID == Compendium.Instance.PowerPage.SelectedType;
             if (Style != 2)
             {
-                Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
+                Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : ColorHelper.Cornflower.WithAlpha(0.431372549f);
                 BG.color = Color.Lerp(BG.color, target, 0.125f);
             }
         }

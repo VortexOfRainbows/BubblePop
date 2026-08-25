@@ -118,7 +118,7 @@ public class EquipmentUIElement : MonoBehaviour
         UpdateUnlockRelated();
         UpdateOrientation();
         float size = CompendiumElement ? 96 + HoverRadius - hoverArea.rect.height : 0;
-        if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || !DisplayOnly))
+        if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || (!DisplayOnly && (AchievementElement ? Compendium.Instance.AchievementPage : Compendium.Instance.EquipPage).MouseInCompendiumArea)))
         {
             string name; 
             string desc; 

@@ -119,7 +119,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         Sort();
         if (Owner.Elements[0] is CompendiumPowerUpElement c)
         {
-            c.MyElem.MyPower.ForceBlackMarket = BlackMarketMode;
+            c.MyElem.MyPower.ForceBlackMarket = BlackMarketMode && c.MyElem.MyPower.CountsAsBlackMarketForCompendium();
             c.MyElem.TurnedOn();
             c.MyElem.MyPower.ForceBlackMarket = false;
         }

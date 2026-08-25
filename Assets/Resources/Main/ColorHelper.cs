@@ -51,6 +51,7 @@ public static class ColorHelper
 
     public static readonly Color WoodColor = New255(0x9B, 0x7D, 0x63);
     public static readonly Color HotPink = New255(0xe7, 0x5f, 0xcb);
+    public static readonly Color Cyan = ColorHelper.New255(0x6E, 0xCB, 0xDC);
     public static Color GetTimeOfDayUIColor(int i)
     {
         if (i == 0)

@@ -13,6 +13,7 @@ public class SingleSetting : MonoBehaviour
     public StandardButton DiscreteButton;
     public TMP_InputField SliderInputField;
     public TextMeshProUGUI DiscreteValueDisplayField;
+    public Image BoolModeImage;
     public static SingleSetting RequestNewSetting(Transform parent)
     {
         return Instantiate(Resources.Load<GameObject>("UI/Settings/SingleSetting"), parent).GetComponent<SingleSetting>();
@@ -56,10 +57,13 @@ public class SingleSetting : MonoBehaviour
     public void Assign(string Label, Func<bool> get, Action<bool> set)
     {
         this.Label.text = Label;
+        BGImage.sprite = Main.TextureAssets.SecondaryUISquare;
         MyType = SettingType.Toggle;
         ToggleBinder = new(get, set);
         LoadToggleSetting();
         Toggle.gameObject.SetActive(true);
+        BoolModeImage.gameObject.SetActive(true);
+        BoolModeImage.color = ColorHelper.Cyan.WithAlpha(0.5f);
     }
     public void OnToggle(bool value)
     {
@@ -76,7 +80,7 @@ public class SingleSetting : MonoBehaviour
     public void Assign(string Label, Func<float> get, Action<float> set, float min = 0, float max = 1)
     {
         this.Label.text = Label;
-        BGImage.sprite = Resources.Load<Sprite>("UI/Boxes/ReverseUISquare"); //move to other class laterAssets/Resources/UI/Boxes/ReverseUISquare.PNG
+        BGImage.sprite = Main.TextureAssets.SecondaryUISquare;
         MyType = SettingType.Slider;
         SliderBinder = new(get, set);
         Slider.minValue = min;
@@ -125,7 +129,7 @@ public class SingleSetting : MonoBehaviour
     public void Assign(Func<int> get, Action<int> set, params string[] ModeNames)
     {
         MyType = SettingType.Discrete;
-        BGImage.sprite = Resources.Load<Sprite>("UI/Boxes/ReverseUISquare"); //move to other class laterAssets/Resources/UI/Boxes/ReverseUISquare.PNG
+        BGImage.sprite = Main.TextureAssets.SecondaryUISquare; //move to other class laterAssets/Resources/UI/Boxes/ReverseUISquare.PNG
         DiscreteBinder = new(get, set);
         DiscreteButton.gameObject.SetActive(true);
         DiscreteButton.onClick.AddListener(OnButtonCycle);

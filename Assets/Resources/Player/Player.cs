@@ -1108,13 +1108,10 @@ public partial class Player : Entity
                     RemovePower(PowerUp.Get<Options>().MyID, 1);
                     for (int i = 0; i < numKeys; i++)
                         CoinManager.SpawnKey(Position, 1f);
-                    if (CompoundInterest > 0)
+                    for (int i = 0; i < CompoundInterest; ++i)
                     {
-                        for(int i = 0; i < CompoundInterest; ++i)
-                        {
-                            int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID }, 0, -1, false, -1);
-                            PowerUp.Get(p).PickUp(this, 1);
-                        }
+                        int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID }, 0, -1, false, -1);
+                        PowerUp.Get(p).PickUp(this, 1);
                     }
                 }
             }
@@ -1125,13 +1122,10 @@ public partial class Player : Entity
                     RemovePower(PowerUp.Get<Securities>().MyID, 1);
                     for (int i = 0; i < numShields; i++)
                         CoinManager.SpawnShield(Position, 1f);
-                    if (CompoundInterest > 0)
+                    for (int i = 0; i < CompoundInterest; ++i)
                     {
-                        for (int i = 0; i < CompoundInterest; ++i)
-                        {
-                            int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID, PowerUp.Get<Options>().MyID }, 0, -1, false, -1);
-                            PowerUp.Get(p).PickUp(this, 1);
-                        }
+                        int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID, PowerUp.Get<Options>().MyID }, 0, -1, false, -1);
+                        PowerUp.Get(p).PickUp(this, 1);
                     }
                 }
             }
@@ -1146,13 +1140,10 @@ public partial class Player : Entity
                         CoinManager.SpawnKey(Position, 1f);
                     for (int i = 0; i < numShields; i++)
                         CoinManager.SpawnShield(Position, 1f);
-                    if (CompoundInterest > 0)
+                    for (int i = 0; i < CompoundInterest; ++i)
                     {
-                        for (int i = 0; i < CompoundInterest; ++i)
-                        {
-                            int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID, PowerUp.Get<Options>().MyID, PowerUp.Get<Securities>().MyID }, 0, -1, false, -1);
-                            PowerUp.Get(p).PickUp(this, 1);
-                        }
+                        int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID, PowerUp.Get<Options>().MyID, PowerUp.Get<Securities>().MyID }, 0, -1, false, -1);
+                        PowerUp.Get(p).PickUp(this, 1);
                     }
                 }
             }

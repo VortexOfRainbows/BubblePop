@@ -482,7 +482,7 @@ public abstract class PowerUp
     //}
     public virtual Material GetBorder(bool thin = false)
     {
-        if ((thin && IsInvestmentPower()))// || (!thin && this is DiversifiedPortfolio))
+        if (thin && IsInvestmentPower())// || (!thin && this is DiversifiedPortfolio))
             return OilOutlineThin; // thin ? OilOutlineThin : OilOutline;
         if (IsBlackMarket())
             return thin ? RedOutlineThin : RedOutline;
@@ -513,9 +513,7 @@ public abstract class PowerUp
     }
     public bool CountsAsBlackMarketForCompendium()
     {
-        return IsBlackMarket() || (HasBlackMarketAlternate
-                            && PickedUpCountAllRuns > 0
-                            && BlackMarketVariantUnlockCondition.IsComplete);
+        return IsBlackMarket() || (HasBlackMarketAlternate && PickedUpCountAllRuns > 0 && BlackMarketVariantUnlockCondition.IsComplete);
     }
     public bool HasBlackMarketAlternate => BlackMarketVariantUnlockCondition != null;
     public virtual UnlockCondition BlackMarketVariantUnlockCondition => null;

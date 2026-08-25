@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Windows;
@@ -35,11 +34,10 @@ public class Compendium : MonoBehaviour
             Pages[i].gameObject.SetActive(isSelectedPage);
             PageButtons[i].targetGraphic.color = (isSelectedPage ? Color.yellow : Color.white).WithAlpha(0.8f);
         }
-        if (ActiveElement.TypeID >= 0)
-        {
-            UpdateDisplay(ActiveElement.TypeID);
-            UpdateDescription(true, ActiveElement.TypeID);
-        }
+        if (ActiveElement.TypeID < 0)
+            ActiveElement.TypeID = 0;
+        UpdateDisplay(ActiveElement.TypeID);
+        UpdateDescription(true, ActiveElement.TypeID);
         CurrentlySelectedPage.UpdateAllButtons(SortText, TierListText, UnlockButton, CountButton, ReverseButton);
         AutoButton.targetGraphic.color = CurrentlySelectedPage.AutoNextTierList ? Color.yellow : Color.white;
     }
@@ -158,7 +156,7 @@ public class Compendium : MonoBehaviour
         Elements[PageNumber].Init(SelectedType, MyCanvas);
         if (Elements[PageNumber] is CompendiumPowerUpElement c)
         {
-            c.MyElem.MyPower.ForceBlackMarket = CurrentlySelectedPage.BlackMarketMode;
+            c.MyElem.MyPower.ForceBlackMarket = CurrentlySelectedPage.BlackMarketMode && c.MyElem.MyPower.CountsAsBlackMarketForCompendium();
             c.Init(SelectedType, MyCanvas);
             if (CurrentlySelectedPage.BlackMarketMode)
                 c.MyElem.TurnedOn();

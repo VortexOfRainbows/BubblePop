@@ -286,7 +286,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -110, y: -5}
-  m_SizeDelta: {x: 90, y: 80}
+  m_SizeDelta: {x: 90, y: 83}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &2441380367336140827
 CanvasRenderer:
@@ -347,11 +347,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.6509804, g: 0.8, b: 1, a: 1}
     m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
     m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
     m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
-    m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    m_DisabledColor: {r: 0.39058825, g: 0.48000002, b: 0.6, a: 0.6}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -383,10 +383,10 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   AnimationType: 0
-  ColorType: 0
+  ColorType: 3
   DestinationType: 0
   SoundOnHover: 1
-  SoundOnClick: 0
+  SoundOnClick: 1
 --- !u!1 &1001033448085075320
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,8 +562,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5, y: 2.5}
-  m_SizeDelta: {x: -10, y: -5}
+  m_AnchoredPosition: {x: 5, y: 3.5}
+  m_SizeDelta: {x: -10, y: -7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1070231719813105410
 GameObject:
@@ -864,7 +864,7 @@ MonoBehaviour:
   ColorType: 0
   DestinationType: 32
   SoundOnHover: 1
-  SoundOnClick: 0
+  SoundOnClick: 1
 --- !u!1 &1301613091993405640
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,7 +923,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4, g: 0.4509804, b: 0.5019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1066,7 +1066,7 @@ MonoBehaviour:
   ColorType: 0
   DestinationType: 31
   SoundOnHover: 1
-  SoundOnClick: 0
+  SoundOnClick: 1
 --- !u!1 &1545487342774190922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,7 +1811,7 @@ MonoBehaviour:
   ColorType: 0
   DestinationType: 33
   SoundOnHover: 1
-  SoundOnClick: 0
+  SoundOnClick: 1
 --- !u!1 &2396590207243177386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,7 +1961,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -10, y: -5}
-  m_SizeDelta: {x: 90, y: 80}
+  m_SizeDelta: {x: 90, y: 83}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &739746122520447220
 CanvasRenderer:
@@ -2022,11 +2022,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.6509804, g: 0.8, b: 1, a: 1}
     m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
     m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
     m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
-    m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    m_DisabledColor: {r: 0.39058825, g: 0.48000002, b: 0.6, a: 0.6}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2058,10 +2058,10 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   AnimationType: 0
-  ColorType: 0
+  ColorType: 3
   DestinationType: 0
   SoundOnHover: 1
-  SoundOnClick: 0
+  SoundOnClick: 1
 --- !u!1 &3093213175521008665
 GameObject:
   m_ObjectHideFlags: 0
@@ -2183,7 +2183,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 410, y: -5}
-  m_SizeDelta: {x: -720, y: 80}
+  m_SizeDelta: {x: -720, y: 83}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1596552701663732807
 CanvasRenderer:
@@ -2244,11 +2244,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.6509804, g: 0.8, b: 1, a: 1}
     m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
     m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
     m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
-    m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    m_DisabledColor: {r: 0.39058825, g: 0.48000002, b: 0.6, a: 0.6}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2280,10 +2280,10 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   AnimationType: 0
-  ColorType: 0
+  ColorType: 3
   DestinationType: 0
   SoundOnHover: 1
-  SoundOnClick: 0
+  SoundOnClick: 1
 --- !u!1 &3585027930380789212
 GameObject:
   m_ObjectHideFlags: 0
@@ -2788,7 +2788,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
+  m_fontSize: 63
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2922,7 +2922,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
+  m_fontSize: 63
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3056,7 +3056,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
+  m_fontSize: 63
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4638,7 +4638,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -210, y: -5}
-  m_SizeDelta: {x: 90, y: 80}
+  m_SizeDelta: {x: 90, y: 83}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &6216353468208108774
 CanvasRenderer:
@@ -4699,11 +4699,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.6509804, g: 0.8, b: 1, a: 1}
     m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
     m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
     m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
-    m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    m_DisabledColor: {r: 0.39058825, g: 0.48000002, b: 0.6, a: 0.6}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -4735,10 +4735,10 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   AnimationType: 0
-  ColorType: 0
+  ColorType: 3
   DestinationType: 0
   SoundOnHover: 1
-  SoundOnClick: 0
+  SoundOnClick: 1
 --- !u!1 &7271762668702586481
 GameObject:
   m_ObjectHideFlags: 0
@@ -5561,7 +5561,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 10, y: -5}
-  m_SizeDelta: {x: 390, y: 80}
+  m_SizeDelta: {x: 390, y: 83}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &877605556970024639
 CanvasRenderer:
@@ -5622,11 +5622,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.6509804, g: 0.8, b: 1, a: 1}
     m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
     m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
     m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
-    m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    m_DisabledColor: {r: 0.39058825, g: 0.48000002, b: 0.6, a: 0.6}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -5658,10 +5658,10 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   AnimationType: 0
-  ColorType: 0
+  ColorType: 3
   DestinationType: 0
   SoundOnHover: 1
-  SoundOnClick: 0
+  SoundOnClick: 1
 --- !u!1 &8234318251333831742
 GameObject:
   m_ObjectHideFlags: 0
@@ -5944,7 +5944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4, g: 0.45, b: 0.5, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5960,7 +5960,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.2
+  m_PixelsPerUnitMultiplier: 1.5
 --- !u!1 &8894258778397469106
 GameObject:
   m_ObjectHideFlags: 0
@@ -6360,7 +6360,7 @@ MonoBehaviour:
   ColorType: 0
   DestinationType: 30
   SoundOnHover: 1
-  SoundOnClick: 0
+  SoundOnClick: 1
 --- !u!1 &9040446465704021585
 GameObject:
   m_ObjectHideFlags: 0

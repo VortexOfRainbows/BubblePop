@@ -37,9 +37,8 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         TypeID = i;
         if (MyUnlock.IsComplete && !Selected && Style != 3 && Style != 5)
         {
-            Color c = new(.1f, .7f, .1f);
-            DescriptionImage.color = c.WithAlpha(0.431372549f);
-            BG.color = c;
+            Color c = new(.1f, .7f, .1f, 0.431372549f);
+            DescriptionImage.color = BG.color = c;
         }
         if (Style == 3)
             MyElem.DisplayOnly = true;

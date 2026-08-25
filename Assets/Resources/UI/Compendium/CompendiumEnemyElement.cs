@@ -1,9 +1,5 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
-
 public class CompendiumEnemyElement : CompendiumElement
 {
     public static GameObject Prefab => Resources.Load<GameObject>("UI/Compendium/CompendiumEnemyElement");
@@ -67,7 +63,7 @@ public class CompendiumEnemyElement : CompendiumElement
         }
         if (Style <= 1)
         {
-            Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : new Color(0, 0, 0, 0.431372549f);
+            Color target = Selected ? new Color(1, 1, .4f, 0.431372549f) : ColorHelper.Cornflower.WithAlpha(0.431372549f);
             BG.color = Color.Lerp(BG.color, target, 0.125f);
         }
         Selected = TypeID == Compendium.Instance.EnemyPage.SelectedType;

@@ -123,7 +123,7 @@ public class EnemyUIElement : MonoBehaviour
         Vector2 targetScale = Vector2.one;
         hovering = clicked = false;
         float size = CompendiumElement ? 96 + HoverRadius - hoverArea.rect.width : 0;
-        if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || HasHoverVisual))
+        if (Utils.IsMouseHoveringOverThis(true, hoverArea, size, canvas, CompendiumElement) && (!CompendiumElement || (HasHoverVisual && Compendium.Instance.EnemyPage.MouseInCompendiumArea)))
         {
             //Debug.Log(MyEnemy.StaticData.Rarity);
             string name = (Unlocked ? MyEnemy.Name() : "???").WithRarityColor(StaticData.Rarity - 1, false);

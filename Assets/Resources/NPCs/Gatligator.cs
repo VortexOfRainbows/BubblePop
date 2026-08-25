@@ -32,7 +32,7 @@ public class Gatligator : Enemy
     {
         offset.x -= 0.125f;
         offset.y += 0.55f;
-        scale *= 0.6125f;
+        scale *= 0.65f;
     }
     public override void OnSpawn()
     {

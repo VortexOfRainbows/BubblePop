@@ -27,9 +27,9 @@ Need to do:
 4. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 5. Compendium TODO:
 	1. Make powers show which pools they belong to (mostly this should just mean character)
+		1. Allow sorting by character!
 	2. Make blurbs appear in the equipment page
-	3. EXPORT TIERLIST BUTTON NEEDED
-	4. New visual (part of UI reworks)!
+	3. New visual (part of UI reworks)!
 6. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
 7. Snow Regions:
 	1. Snow ambient objects need to spawn
@@ -64,10 +64,13 @@ Done:
 7. WIP UI OVERHAULS 
 	1. Add a UI button for going back in menus (settings and compendium), functioning the same as the ESC button does
 	2. Corresponding adjustments to the compendium to fit the new button
-	3. WIP Compendium UI overhauls!
+	3. Compendium UI overhauls!
 		1. Experimental blur for the bg (works in both main menu and game world), fixed the ratio!
 		2. Replaced "Cancel Changes: with Export button (WIP)
 		3. Adjustments to Tier list colors and size of tier display elements
+		4. All compendium pages use a new cornflower blue UI box for UI elements
+		5. Biome background removed from Enemy page (this might be temporary)
+		6. More buttons in the compendium make sounds when interacted with
 8. Compendium now disables itself when offscreen, which should reduce lag slightly
 9. FIX bug where tier lists would bug out at high category heights.	
 	1. The fix for this is a general code order change, which should hopefully fix some other tier list bugs and definitely not cause any other bugs
@@ -77,6 +80,10 @@ Done:
 12. (NERF/FIX) Fix bug where Compound Interest would only roll for a lower tier power once, and then give you that amount squared
 	1. Now it gives the correct amount: Stack^2 -> Stack
 	2. Now it can roll different powers instead of just 1 at a time
+13. Gatligator is now slightly bigger in UI
+14. Fix bug where all any powers counted as black market in compendium black market mode, even grayed out ones
+15. Fix bug where you could hover over equipment/achievement elements that were off screen in the compendium
+16. Some changes to the new settings menu UI colors
 
 8/18/26 to 8/22/26
 1. WIP UI Overhauls
