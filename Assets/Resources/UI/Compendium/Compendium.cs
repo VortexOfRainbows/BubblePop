@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Windows;
-
 public class Compendium : MonoBehaviour
 {
     public static Compendium Instance { get => m_Instance != null ? m_Instance : m_Instance = FindFirstObjectByType<Compendium>(); set => m_Instance = value; }
@@ -56,7 +55,7 @@ public class Compendium : MonoBehaviour
     public bool PrevActive { get; private set; } = false;
     public Button OpenCompendiumButton;
     public Transform TopBar;
-    public Transform SideBar;
+    public RectTransform SideBar;
     public RectTransform SortBar;
     public RectTransform BackButtonArea;
     public static void StaticToggleActive()
@@ -130,6 +129,7 @@ public class Compendium : MonoBehaviour
         UpdatePage(EnemyPage, lerpFactor);
         UpdatePage(AchievementPage, lerpFactor);
         UpdatePage(PowerPage, lerpFactor); //Init this one last!
+        SideBar.sizeDelta = new(SideBar.sizeDelta.x, ScreenResolution.y - 200);
         Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, lerpFactor, 0.1f);
     }
     #region Display and description on the right side of the compendium

@@ -26,8 +26,7 @@ Need to do:
 3. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 4. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 5. Compendium TODO:
-	1. Make powers show which pools they belong to (mostly this should just mean character)
-		1. Allow sorting by character!
+	1. Allow sorting by character/group!
 	2. Make blurbs appear in the equipment page
 6. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
 7. Snow Regions:
@@ -83,6 +82,9 @@ Done:
 14. Fix bug where all any powers counted as black market in compendium black market mode, even grayed out ones
 15. Fix bug where you could hover over equipment/achievement elements that were off screen in the compendium
 16. Some changes to the new settings menu UI colors
+17. Fix compendium sizes on 16:10 resolutions showing tier list buttons when tier list was not open.
+	1. Should work on other resolutions	
+	2. Now the description box is bigger to compensate
 
 8/18/26 to 8/22/26
 1. WIP UI Overhauls
