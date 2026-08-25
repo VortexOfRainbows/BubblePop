@@ -6,6 +6,8 @@ public partial class Main : MonoBehaviour
 {
     public static class TextureAssets
     {
+        public static Sprite MainUISquare;
+
         public static Material InfectorShader;
         public static Material AdditiveShader;
         public static Material AlphaShader;
@@ -94,6 +96,8 @@ public partial class Main : MonoBehaviour
             CrosshairInner = Resources.Load<Sprite>("UI/Telegraph/CrosshairCenter");
             CrosshairFill = Resources.Load<Sprite>("UI/Telegraph/CrosshairFill");
             CrosshairEmblem = Resources.Load<Sprite>("UI/Telegraph/OilKingEmblem");
+
+            MainUISquare = Resources.Load<Sprite>("UI/Boxes/TempUISquare");
         }
     }
     public static class PrefabAssets

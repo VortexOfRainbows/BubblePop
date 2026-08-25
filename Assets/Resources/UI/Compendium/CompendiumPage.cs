@@ -491,7 +491,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         foreach(Button b in Owner.PageButtons)
             b.interactable = !TierListActive;
         Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, Compendium.HalfResolution.y) : new Vector2(0, Compendium.HalfResolution.y + 200);
-        Vector2 newSideBarPosition = !TierListActive ? new Vector2(Compendium.HalfResolution.x, Compendium.HalfResolution.y - 200) : new Vector2(Compendium.HalfResolution.x, Compendium.HalfResolution.y);
+        //Vector2 newSideBarPosition = !TierListActive ? new Vector2(Compendium.HalfResolution.x, Compendium.HalfResolution.y - 200) : new Vector2(Compendium.HalfResolution.x, Compendium.HalfResolution.y);
         Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-Compendium.HalfResolution.x + 37f, Compendium.HalfResolution.y - 25) : new Vector2(-Compendium.HalfResolution.x + 25.5f, Compendium.HalfResolution.y + 175);
         Vector2 targetViewport = !TierListActive ? new Vector2(-Compendium.HalfResolution.x + 200, Compendium.HalfResolution.y - 150) : new Vector2(-Compendium.HalfResolution.x + 200, Compendium.HalfResolution.y + 50);
         if(TierList != null)
@@ -500,7 +500,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             Utils.LerpSnap(TierListParent.transform, targetTierList, lerpFactor);
         }
         Utils.LerpSnap(Owner.TopBar, newTopBarPositon, lerpFactor);
-        Utils.LerpSnap(Owner.SideBar, newSideBarPosition, lerpFactor);
+        //Utils.LerpSnap(Owner.SideBar, newSideBarPosition, lerpFactor);
         Vector2 buttonbounds = Owner.OpenCompendiumButton.GetComponent<RectTransform>().rect.size;
         buttonbounds.y *= -1;
         Utils.LerpSnap(Owner.OpenCompendiumButton.gameObject.transform, newOpenButtonPosition + buttonbounds / 2, lerpFactor);

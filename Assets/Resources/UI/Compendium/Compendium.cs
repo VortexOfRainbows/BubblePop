@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Windows;
@@ -48,6 +49,7 @@ public class Compendium : MonoBehaviour
     public RectTransform MyCanvasRectTransform => MyCanvas.GetComponent<RectTransform>();
     public CompendiumPage[] Pages;
     public Button[] PageButtons;
+    public TextMeshProUGUI[] BookmarkTexts;
     public BasicTierListCompendiumPage PowerPage { get; private set; }
     public BasicTierListCompendiumPage EquipPage { get; private set; }
     public BasicTierListCompendiumPage EnemyPage { get; private set; }
@@ -102,8 +104,9 @@ public class Compendium : MonoBehaviour
             if (page != null)
                 page.OnUpdate();
         }
-        if (PrevActive != Active && !PrevActive) //On reopen behavior (update stuff that is needed here)
+        if (Active && !PrevActive) //On reopen behavior (update stuff that is needed here)
         {
+            CalculateButtonTitles();
             UpdateDescription(true, ActiveElement.TypeID);
             CurrentlySelectedPage.Sort();
         }
@@ -118,14 +121,7 @@ public class Compendium : MonoBehaviour
         if (page == null)
             return;
         if ((Active || (page == CurrentlySelectedPage && page.HasInit)) && page.isActiveAndEnabled)
-        {
-            if (!page.HasInit)
-            {
-                page.Init(CountButton, SortText);
-                page.HasInit = true;
-            }
             page.SecondaryUpdate(lerpFactor);
-        }
     }
     public Vector2 StartPosition => new Vector3(-ScreenResolution.x - 5, 0);
     public bool IsOffscreen => MathF.Abs(StartPosition.x - transform.localPosition.x) <= 0.1f;
@@ -513,6 +509,29 @@ public class Compendium : MonoBehaviour
         return true;
     }
     #endregion
+    public void CalculateButtonTitles() //MAKE SURE TO ALSO RUN THIS EVERY RE-OPEN, IN CASE THINGS ARE UNLOCKED!
+    {
+        BookmarkTexts[0].text = "Powers";
+        BookmarkTexts[1].text = "Characters";
+        BookmarkTexts[2].text = "Enemies";
+        BookmarkTexts[3].text = "Achievements";
+        for(int i = 0; i < BookmarkTexts.Length; ++i)
+        {
+            TierListCompendiumPage page = Pages[i] as TierListCompendiumPage;
+            if (!page.HasInit)
+            {
+                page.Init(CountButton, SortText);
+                page.HasInit = true;
+            }
+            var children = page.GetCPUEChildren(out int count);
+            int unlocked = 0;
+            bool reverseRelation = i == 3;
+            for (int j = 0; j < count; ++j)
+                if (children[j].IsLocked() == reverseRelation)
+                    unlocked++;
+            BookmarkTexts[i].text += $"\n{unlocked}/{count}".WithColor(ColorHelper.LesserGrayHex);
+        }
+    }
     public static void ExportTierList()
     {
         if (Compendium.CurrentlySelectedPage.HoldingAPower)

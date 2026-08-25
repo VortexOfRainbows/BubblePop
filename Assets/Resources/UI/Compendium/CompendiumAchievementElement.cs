@@ -37,8 +37,8 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         TypeID = i;
         if (MyUnlock.IsComplete && !Selected && Style != 3 && Style != 5)
         {
-            Color c = new(.1f, .7f, .1f, 0.431372549f);
-            DescriptionImage.color = c;
+            Color c = new(.1f, .7f, .1f);
+            DescriptionImage.color = c.WithAlpha(0.431372549f);
             BG.color = c;
         }
         if (Style == 3)
@@ -104,6 +104,10 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
                 AlternativeDisplayElement.MyPower.ForceBlackMarket = false;
             }
         }
+        if(IsLocked() && Style != 3)
+            BG.sprite = Main.TextureAssets.MainUISquare;
+        else
+            BG.sprite = DescriptionImage.sprite;
     }
     public void UpdateText()
     {

@@ -54,7 +54,7 @@ Sounds Needed:
 
 Done: 	
 
-8/22/26 to 8/24/26
+8/22/26 to 8/25/26
 1. BoxesShopWithForge, Junkyard, and Junkyard2 nodes are now more open
 2. BoxesShop1, BoxesShop2, MeadowCrucible3 now have a connector between two previously dead ends
 3. New Shopforge node: Workshop
@@ -73,6 +73,10 @@ Done:
 	1. The fix for this is a general code order change, which should hopefully fix some other tier list bugs and definitely not cause any other bugs
 10. Added Export button to the compendium
 	1. Essentially screenshots just the tier list section and then opens it with the standard program of your OS
+11. All compendium sections are loaded when the compendium is opened now, and displays compendium completion progress
+12. (NERF/FIX) Fix bug where Compound Interest would only roll for a lower tier power once, and then give you that amount squared
+	1. Now it gives the correct amount: Stack^2 -> Stack
+	2. Now it can roll different powers instead of just 1 at a time
 
 8/18/26 to 8/22/26
 1. WIP UI Overhauls
