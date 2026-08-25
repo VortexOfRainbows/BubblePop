@@ -515,6 +515,9 @@ public class Compendium : MonoBehaviour
     #endregion
     public static void ExportTierList()
     {
+        ScrollRect scroll = CurrentlySelectedPage.ContentScrollRect;
+        float prev = scroll.verticalNormalizedPosition;
+        scroll.verticalNormalizedPosition = 1f;
         CameraManager.SwitchToScreenshotCamera();
         CameraManager.UICamera.Render();
         CameraManager.CompendiumScreenshotCamera.Render();
@@ -547,10 +550,13 @@ public class Compendium : MonoBehaviour
             // 8. Write the bytes to a file on your disk
             string directoryPath = Application.persistentDataPath + "/TierLists";
             Directory.CreateDirectory(directoryPath);
-            string path = directoryPath + $"/List{DateTime.Now.ToShortDateString().Replace('/', '_')}.png";
+            string dateTime = DateTime.Now.ToLongTimeString().Replace(':', '-');
+            string path = directoryPath + $"/List_V{PlayerData.CurrentPlayerVersion}_{dateTime[..(dateTime.Length - 2)]}.png";
             File.WriteAllBytes(path, bytes);
 
             Debug.Log($"RenderTexture successfully exported to: {path}");
         }
+
+        scroll.verticalNormalizedPosition = prev;
     }
 }

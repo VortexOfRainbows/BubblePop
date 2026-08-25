@@ -661,7 +661,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a61300fae7322c4b81bb46b45983141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CaptureCamera: {fileID: 0}
   MyCanvas: {fileID: 1573706575503376629}
   Pages:
   - {fileID: 8726456005911589071}
@@ -1686,7 +1685,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 5126221460666083517}
   m_OnClick:
     m_PersistentCalls:
