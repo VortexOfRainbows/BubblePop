@@ -233,8 +233,8 @@ public abstract class TierListCompendiumPage : CompendiumPage
         float tierListSizeOverflow;
         if (TierList != null)
         {
-            tierListSizeOverflow = TierList.TotalDistanceCovered - 200;
-            tierListOffset = TierListActive ? TierList.TotalDistanceCovered - 200 : 0;
+            tierListSizeOverflow = TierList.VerticalSize - 200;
+            tierListOffset = TierListActive ? TierList.VerticalSize - 200 : 0;
         }
         else
             tierListSizeOverflow = 600;
@@ -496,7 +496,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         Vector2 targetViewport = !TierListActive ? new Vector2(-Compendium.HalfResolution.x + 200, Compendium.HalfResolution.y - 150) : new Vector2(-Compendium.HalfResolution.x + 200, Compendium.HalfResolution.y + 50);
         if(TierList != null)
         {
-            Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.TotalDistanceCovered - 800) : new Vector2(0, -800f);
+            Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.VerticalSize - 800) : new Vector2(0, -800f);
             Utils.LerpSnap(TierListParent.transform, targetTierList, lerpFactor);
         }
         Utils.LerpSnap(Owner.TopBar, newTopBarPositon, lerpFactor);

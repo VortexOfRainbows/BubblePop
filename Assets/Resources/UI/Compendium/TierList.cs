@@ -9,7 +9,7 @@ public class TierList : MonoBehaviour
     public static bool ReadingFromSave = false;
     public int QueueRemoval { get; set; } = -1;
     public TierListCompendiumPage Owner;
-    public float TotalDistanceCovered = 800f;
+    public float VerticalSize { get; set; } = 800f;
     public readonly Dictionary<int, bool> OnTierList = new();
     public readonly List<CompendiumElement> Elems = new();
     public static readonly string TierNames = "SABCDF";
@@ -34,7 +34,7 @@ public class TierList : MonoBehaviour
     {
         //OnTierList.Clear();
         Elems.Clear();
-        TotalDistanceCovered = 800f;
+        VerticalSize = 800f;
         InitializeCategories();
     }
     public Color CalculateTierColor(int i)
@@ -55,7 +55,7 @@ public class TierList : MonoBehaviour
         Color unselectColor = new(0.24706f, 0.24706f, 0.24706f);
         Color selectColor = new(.6f, .6f, .25f); 
         SelectedCat = null;
-        TotalDistanceCovered = 0;
+        VerticalSize = 0;
         for (int i = 0; i < Categories.Length; ++i)
         {
             TierCategory cat = Categories[i];
@@ -70,14 +70,10 @@ public class TierList : MonoBehaviour
             if(rebuild)
                 LayoutRebuilder.MarkLayoutForRebuild(cat.RectTransform);
         }
-        if (SelectedCat != null)
-        {
-            Debug.Log(SelectedCat.gameObject.name);
-        }
-        else
-        {
-            Debug.Log("NONE HOVERED");
-        }
+        //if (SelectedCat != null)
+        //    Debug.Log(SelectedCat.gameObject.name);
+        //else
+        //    Debug.Log("NONE HOVERED");
         if (rebuild)
         {
             Canvas.ForceUpdateCanvases();

@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class Compendium : MonoBehaviour
 {
@@ -178,10 +179,6 @@ public class Compendium : MonoBehaviour
     {
         for (int j = 0; j < Stars.Length; ++j)
             Stars[j].SetActive(rare == j);
-    }
-    public static void ExportTierList()
-    {
-        //not implemented yet
     }
     #endregion
 
@@ -516,4 +513,44 @@ public class Compendium : MonoBehaviour
         return true;
     }
     #endregion
+    public static void ExportTierList()
+    {
+        CameraManager.SwitchToScreenshotCamera();
+        CameraManager.UICamera.Render();
+        CameraManager.CompendiumScreenshotCamera.Render();
+        CameraManager.SwitchToMainCamera();
+
+        RenderTexture completeScreenshot = CameraManager.ExportTexture;
+        if (completeScreenshot != null)
+        {
+            RenderTexture previousActive = RenderTexture.active;
+            RenderTexture.active = completeScreenshot;
+
+            int paddingFromTheTopOfCompendium = 200; //size: 100, scaleFactor: 2
+            int paddingFromTheSideOfCompendium = 800; //size: 400, scaleFactor: 2
+            // 3. Create a temporary Texture2D with matching dimensions
+            Texture2D tex = new(completeScreenshot.width - paddingFromTheSideOfCompendium, completeScreenshot.height - paddingFromTheTopOfCompendium, TextureFormat.RGBA32, false);
+
+            // 4. Read the active RenderTexture pixels into the Texture2D
+            tex.ReadPixels(new Rect(0, 0, tex.width, tex.height), 0, 0);
+            tex.Apply();
+
+            // 5. Restore the previous active render texture
+            RenderTexture.active = previousActive;
+
+            // 6. Encode the texture pixels into a PNG byte array
+            byte[] bytes = tex.EncodeToPNG();
+
+            // 7. Clean up the temporary texture memory immediately
+            UnityEngine.Object.DestroyImmediate(tex);
+
+            // 8. Write the bytes to a file on your disk
+            string directoryPath = Application.persistentDataPath + "/TierLists";
+            Directory.CreateDirectory(directoryPath);
+            string path = directoryPath + $"/List{DateTime.Now.ToShortDateString().Replace('/', '_')}.png";
+            File.WriteAllBytes(path, bytes);
+
+            Debug.Log($"RenderTexture successfully exported to: {path}");
+        }
+    }
 }

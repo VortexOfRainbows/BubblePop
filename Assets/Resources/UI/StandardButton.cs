@@ -154,7 +154,7 @@ public class StandardButton : Button
             colors.disabledColor = colors.normalColor * 0.6f;
         }
         if(DestinationType == ButtonDestinationType.CompendiumExport) //Currently unimplemented
-            interactable = false;
+            interactable = true;
         base.colors = colors;
 
         RegisterButtonBehavior(this);

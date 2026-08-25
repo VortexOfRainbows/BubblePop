@@ -48,7 +48,11 @@ public static class CameraManager
     private static UniversalAdditionalCameraData CompendiumScreenshotCameraData;
     public static void ResizeExportTexture()
     {
-
+        ExportTexture.Release();
+        ExportTexture.width = 3840;
+        TierListCompendiumPage page = Compendium.Instance.Pages[Compendium.Instance.PageNumber] as TierListCompendiumPage;
+        ExportTexture.height = Mathf.RoundToInt(page.TierList.VerticalSize + 100) * 2;
+        ExportTexture.Create();
     }
     public static void ReloadCameraData()
     {
@@ -57,6 +61,7 @@ public static class CameraManager
     }
     public static void SwitchToScreenshotCamera()
     {
+        ResizeExportTexture();
         ReloadCameraData();
 
         if (MainCameraData.cameraStack.Contains(UICamera))
@@ -64,8 +69,9 @@ public static class CameraManager
 
         if (!CompendiumScreenshotCameraData.cameraStack.Contains(UICamera))
             CompendiumScreenshotCameraData.cameraStack.Add(UICamera);
-        
+
         FixOverlayProperties(CompendiumScreenshotCamera);
+        MainCamera.enabled = false;
     }
     public static void SwitchToMainCamera()
     {
@@ -76,8 +82,9 @@ public static class CameraManager
         
         if (!MainCameraData.cameraStack.Contains(UICamera))
             MainCameraData.cameraStack.Add(UICamera);
-        
+
         FixOverlayProperties(MainCamera);
+        MainCamera.enabled = true;
     }
     private static void FixOverlayProperties(Camera currentBaseCamera)
     {

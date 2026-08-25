@@ -36165,7 +36165,6 @@ GameObject:
   m_Component:
   - component: {fileID: 219865415655230673}
   - component: {fileID: 3123337568484802873}
-  - component: {fileID: 53722533510297630}
   - component: {fileID: 7455397741450318816}
   m_Layer: 0
   m_Name: CompendiumCaptureCamera
@@ -36196,7 +36195,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6023787065653550479}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 2
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
@@ -36240,14 +36239,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &53722533510297630
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6023787065653550479}
-  m_Enabled: 1
 --- !u!114 &7455397741450318816
 MonoBehaviour:
   m_ObjectHideFlags: 0
