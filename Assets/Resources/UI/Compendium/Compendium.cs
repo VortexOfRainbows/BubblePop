@@ -540,10 +540,15 @@ public class Compendium : MonoBehaviour
          ScrollRect scroll = CurrentlySelectedPage.ContentScrollRect;
         float prev = scroll.verticalNormalizedPosition;
         scroll.verticalNormalizedPosition = 1f;
-        CameraManager.SwitchToScreenshotCamera();
-        CameraManager.UICamera.Render();
-        CameraManager.CompendiumScreenshotCamera.Render();
-        CameraManager.SwitchToMainCamera();
+        
+        //The repeated calls of certain methods here are to bypass some unity orderings that would prevent doing all of this in one frame!
+        CameraManager.SwitchToScreenshotCamera(); //Switch camera to screenshot camera
+        Canvas.ForceUpdateCanvases(); //Update the grid layouts with the new screenshot size
+        CurrentlySelectedPage.TierList.OnUpdate(true); //Calculate tier list parameters with new screenshot size
+        CameraManager.SwitchToScreenshotCamera(); //Resize the export texture needed by the screenshot camera
+        CameraManager.UICamera.Render(); //Render the UI camera stuff (compendium)
+        CameraManager.CompendiumScreenshotCamera.Render(); //Finalize 
+        CameraManager.SwitchToMainCamera(); //Switch back to the main camera to resume normal gameplay
 
         RenderTexture completeScreenshot = CameraManager.ExportTexture;
         if (completeScreenshot != null)
@@ -573,10 +578,10 @@ public class Compendium : MonoBehaviour
 
             // 8. Write the bytes to a file on your disk
             string directoryPath = Application.persistentDataPath + "/TierLists";
-            Directory.CreateDirectory(directoryPath);
+            System.IO.Directory.CreateDirectory(directoryPath);
             string dateTime = DateTime.Now.ToLongTimeString().Replace(':', '-');
             string path = directoryPath + $"/List_V{PlayerData.CurrentPlayerVersion}_{dateTime[..(dateTime.Length - 3)]}.png";
-            File.WriteAllBytes(path, bytes);
+            System.IO.File.WriteAllBytes(path, bytes);
 
             Debug.Log($"RenderTexture successfully exported to: {path}");
 
