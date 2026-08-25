@@ -45,15 +45,22 @@ public partial class Main : MonoBehaviour
         }
         public static void Resume()
         {
-            UIManager.PauseMenu.SetActive(false);
-            PersistentGameObjectLoader.Instance.Update();
-            if (SettingsMenu.IsVisible)
-                SettingsMenu.ToggleVisibility();
-            else if(UIManager.DebugMenu.activeSelf)
-                ToggleDebugMenu();
+            if(Player.Instance != null && Player.Instance.IsDead)
+            {
+                Restart();
+            }
             else
-                StaticPlaySound();
-            UnpauseGame();
+            {
+                UIManager.PauseMenu.SetActive(false);
+                PersistentGameObjectLoader.Instance.Update();
+                if (SettingsMenu.IsVisible)
+                    SettingsMenu.ToggleVisibility();
+                else if (UIManager.DebugMenu.activeSelf)
+                    ToggleDebugMenu();
+                else
+                    StaticPlaySound();
+                UnpauseGame();
+            }
         }
         public static void MainMenu()
         {
@@ -65,7 +72,6 @@ public partial class Main : MonoBehaviour
         public static void GameOver()
         {
             UIManager.PauseMenuTopText.text = "Game Over";
-
             UIManager.PauseMenu.SetActive(true);
             PauseGame();
         }

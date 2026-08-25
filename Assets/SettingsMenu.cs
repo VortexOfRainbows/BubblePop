@@ -85,6 +85,7 @@ public class SettingsMenu : MonoBehaviour
         SingleSetting.RequestNewSetting(GameplayLayout).Assign("Power Descriptions Brief By Default", () => PlayerData.BriefDescriptionsByDefault, val => PlayerData.BriefDescriptionsByDefault = val);
         SingleSetting.RequestNewSetting(GameplayLayout).Assign("Special Visual Opacity", () => PlayerData.SpecialVisualOpacity, val => PlayerData.SpecialVisualOpacity = val, 0.2f, 1);
         SingleSetting.RequestDivider(GraphicsLayout, "Graphics");
-        SingleSetting.RequestNewSetting(GraphicsLayout).Assign(() => PlayerData.LightingSetting, val => PlayerData.LightingSetting = val, "Sunlight: Standard", "Sunlight: Everday", "Sunlight: Evernight", "Sunlight: Real-time");
+        SingleSetting.RequestNewSetting(GraphicsLayout).Assign(() => PlayerData.LightingSetting, val => PlayerData.LightingSetting = val, "Sunlight: Standard", "Sunlight: Everday", "Sunlight: Evernight", "Sunlight: Real-time").WithSpecialColors().LoadDiscreteSetting();
+        SingleSetting.RequestNewSetting(GraphicsLayout).Assign(() => PlayerData.ShadowBlurValue, val => PlayerData.ShadowBlurValue = val, "Shadow Blur: None", "Shadow Blur: Fast", "Shadow Blur: Soft", "Shadow Blur: Softest");
     }
 }

@@ -17,6 +17,12 @@ Do Later:
 	1. Potentially increase enemy health scaling past wave 10?
 8. Convert player power handler to use structs for faster resetting 
 9. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
+10. Next UI Reworks:
+	1. Home screen and pause menu button appearances
+	2. Enemy wave cards
+	3. (potentially) Pause menu/Gameover menu opening swiftness
+	4. UCI playtest disclaimer
+	5. Character Select Menu
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -28,12 +34,11 @@ Need to do:
 5. Compendium TODO:
 	1. Allow sorting by character/group!
 	2. Make blurbs appear in the equipment page
-6. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
-7. Snow Regions:
+6. Snow Regions:
 	1. Snow ambient objects need to spawn
 	2. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
 	3. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
-8. MINIMAP
+7. MINIMAP
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -85,6 +90,10 @@ Done:
 17. Fix compendium sizes on 16:10 resolutions showing tier list buttons when tier list was not open.
 	1. Should work on other resolutions	
 	2. Now the description box is bigger to compensate
+18. When switching back to Standard lighting mode while in game, in now resets to the previous standard time
+19. Added a setting in graphics for changing shadow blur, which may reduce lag (GPU) on lower settings
+20. Simplify code for restarting the game after dying
+21. Pause Menu/Game Over screen now use the same button colors as the main menu
 
 8/18/26 to 8/22/26
 1. WIP UI Overhauls

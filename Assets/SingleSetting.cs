@@ -126,7 +126,7 @@ public class SingleSetting : MonoBehaviour
     #endregion
     #region Discrete
     public string[] DiscreteOptionsNameDisplay;
-    public void Assign(Func<int> get, Action<int> set, params string[] ModeNames)
+    public SingleSetting Assign(Func<int> get, Action<int> set, params string[] ModeNames)
     {
         MyType = SettingType.Discrete;
         BGImage.sprite = Main.TextureAssets.SecondaryUISquare; //move to other class laterAssets/Resources/UI/Boxes/ReverseUISquare.PNG
@@ -136,26 +136,33 @@ public class SingleSetting : MonoBehaviour
         ResetDiscreteModeNames(ModeNames);
         //Make sure loading happens after the upper bound is initialized
         LoadDiscreteSetting();
+        return this;
     }
     public void ResetDiscreteModeNames(string[] ModeNames)
     {
         DiscreteOptionsNameDisplay = ModeNames;
         DiscreteValueNonInclusiveUpperBound = ModeNames.Length;
     }
+    public bool HasSpecialColors { get; private set; } = false;
+    public SingleSetting WithSpecialColors()
+    {
+        HasSpecialColors = true;
+        return this;
+    }
     public void LoadDiscreteSetting()
     {
         DiscreteBinder.Setting %= DiscreteValueNonInclusiveUpperBound;
-        if(DiscreteValueNonInclusiveUpperBound == 4) //THIS IS FOR TIME OF DAY SETTINGS
+        if(DiscreteValueNonInclusiveUpperBound == 4 && HasSpecialColors) //THIS IS FOR TIME OF DAY SETTINGS
         {
             var colors = DiscreteButton.colors;
             colors.normalColor = ColorHelper.GetTimeOfDayUIColor(DiscreteBinder.Setting);
-            colors.highlightedColor = ColorHelper.GetTimeOfDayUIColor((DiscreteBinder.Setting + 1) % 4);
+            colors.highlightedColor = ColorHelper.UI.SelectColor;
             colors.pressedColor = colors.highlightedColor * new Color(0.858f, 0.765f, 0.811f);
             colors.selectedColor = colors.highlightedColor;
             colors.disabledColor = colors.normalColor * 0.6f;
             DiscreteButton.colors = colors;
         }
-        DiscreteValueDisplayField.text = (DiscreteBinder.Setting + 1).ToString();
+        DiscreteValueDisplayField.text = (DiscreteBinder.Setting + (HasSpecialColors ? 1 : 0)).ToString();
         Label.text = DiscreteOptionsNameDisplay[DiscreteBinder.Setting];
     }
     public void OnButtonCycle()

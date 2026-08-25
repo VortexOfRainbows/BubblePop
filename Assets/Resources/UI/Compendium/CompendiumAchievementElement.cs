@@ -103,7 +103,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
                 AlternativeDisplayElement.MyPower.ForceBlackMarket = false;
             }
         }
-        if(IsLocked() && Style != 3)
+        if(MyUnlock != null && IsLocked() && Style != 3)
             BG.sprite = Main.TextureAssets.MainUISquare;
         else
             BG.sprite = DescriptionImage.sprite;

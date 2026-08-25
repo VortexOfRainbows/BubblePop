@@ -123,7 +123,7 @@ public class StandardButton : Button
         }
         else if(ColorType == ButtonColorType.CyanToYellow)
         {
-            colors.normalColor = ColorHelper.New255(0x6E, 0xCB, 0xDC);
+            colors.normalColor = ColorHelper.Cyan;
             colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
             colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
             colors.selectedColor = colors.highlightedColor;
@@ -190,28 +190,13 @@ public class StandardButton : Button
             GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
         }
 
-        //ON GAME OVER (THIS IS PROBABLY UNNECESSARY AND SHOULD BE REWORKED)
+        //ON GAME OVER
         if (Player.Instance != null && Player.Instance.IsDead)
         {
-            if (DestinationType == ButtonDestinationType.Settings)
-            {
+            if (DestinationType == ButtonDestinationType.Settings || DestinationType == ButtonDestinationType.Restart || DestinationType == ButtonDestinationType.OpenCompendium)
                 gameObject.SetActive(false);
-            }
-            if (DestinationType == ButtonDestinationType.Resume)
-            {
-                gameObject.SetActive(false);
-                ArbitrarySceneResumeButton = this;
-            }
-            if (DestinationType == ButtonDestinationType.Restart)
-            {
-                if (ArbitrarySceneResumeButton != null)
-                {
-                    GetComponent<RectTransform>().sizeDelta = ArbitrarySceneResumeButton.GetComponent<RectTransform>().sizeDelta;
-                    GetComponent<RectTransform>().pivot = ArbitrarySceneResumeButton.GetComponent<RectTransform>().pivot;
-                    transform.localPosition = ArbitrarySceneResumeButton.transform.localPosition;
-                }
+            else if (DestinationType == ButtonDestinationType.Resume)
                 GetComponentInChildren<TextMeshProUGUI>().text = "Try Again";
-            }
         }
     }
 }

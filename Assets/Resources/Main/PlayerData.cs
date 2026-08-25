@@ -18,6 +18,7 @@ public static class PlayerData
     public static float SFXVolume { get; set; } = 1;
     public static float MusicVolume { get; set; } = 1;
     public static float SpecialVisualOpacity { get; set; } = 1;
+    public static int ShadowBlurValue { get; set; } = 3;
     public static int LightingSetting { get; set; } = 0;
     public static bool PauseDuringPowerSelect = true;
     public static bool PauseDuringCardSelect = true;
@@ -34,6 +35,7 @@ public static class PlayerData
         SaveFloat("Music", MusicVolume);
         SaveFloat("SpecialOpacity", SpecialVisualOpacity);
         SaveInt("LightingSetting", LightingSetting);
+        SaveInt("ShadowBlur", ShadowBlurValue);
     }
     public static void ResetAll()
     {
@@ -63,6 +65,7 @@ public static class PlayerData
         MusicVolume = GetFloat("Music", 1);
         SpecialVisualOpacity = GetFloat("SpecialOpacity", 1);
         LightingSetting = GetInt("LightingSetting", 0);
+        ShadowBlurValue = GetInt("ShadowBlur", 3);
         Player.GoldSpentTotal = GetInt("PlayerGoldSpent", 0);
         UnlockCondition.LoadAllData();
         PowerUp.LoadAllData();

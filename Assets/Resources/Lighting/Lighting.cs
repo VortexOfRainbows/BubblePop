@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 public static class Lighting
 {
     public static Tile LightTile;
@@ -69,7 +70,7 @@ public static class Lighting
                 }
             }
         }
-        DayProgress = TimeInADay * 0.1f;
+        DayProgress = StandardDayTimer = TimeInADay * 0.1f;
         PreviousProgNum = 0;
         BorderImage.material.SetFloat("_ProgressionThreshold", 0);
         Update();
@@ -82,6 +83,8 @@ public static class Lighting
         UpdateSun();
     }
     public static float DayProgress = 0;
+    public static float StandardDayTimer { get; set; } = 0;
+    public static bool WasOnNonStandardTimer { get; set; } = false;
     public static readonly float TimeInADay = 960; //12 minutes per day, for now (night progresses faster, so 8 + 4 = 6)
     public static Vector2 SunVector = new(1, 0);
     public static bool IsDay => DayProgress < TimeInADay / 2;
@@ -102,18 +105,29 @@ public static class Lighting
             factor = 0;
         if(PlayerData.LightingSetting == 0) //standard
         {
-            DayProgress += Time.deltaTime * factor;
-            if (DayProgress > TimeInADay)
-                DayProgress -= TimeInADay;
+            StandardDayTimer += Time.deltaTime * factor;
+            if (StandardDayTimer > TimeInADay)
+                StandardDayTimer -= TimeInADay;
+            if(!WasOnNonStandardTimer)
+                DayProgress = StandardDayTimer;
+            else
+            {
+                DayProgress = Mathf.Lerp(DayProgress, StandardDayTimer, Utils.DeltaTimeLerpFactor(0.02f));
+                if (Mathf.Abs(DayProgress - StandardDayTimer) < 1)
+                {
+                    DayProgress = StandardDayTimer;
+                    WasOnNonStandardTimer = false;
+                }
+            }
         }
-        else if(PlayerData.LightingSetting == 1 || PlayerData.LightingSetting == 2 || PlayerData.LightingSetting == 3) //permaday or night
+        else if(PlayerData.LightingSetting == 1 || PlayerData.LightingSetting == 2 || PlayerData.LightingSetting == 3) //permaday or night o rrealtime
         {
             float target;
-            if (PlayerData.LightingSetting == 1)
+            if (PlayerData.LightingSetting == 1) //everday
                 target = TimeInADay * 0.425f;
-            else if (PlayerData.LightingSetting == 2)
+            else if (PlayerData.LightingSetting == 2) //evernight
                 target = TimeInADay * 0.925f;
-            else
+            else //realtime
             {
                 float realHour = (float)(DateTime.Now.TimeOfDay.TotalHours);
                 //SUN ACTUALLY RISES ON HOUR 6 and SETS ON HOUR 18, though bubblegame hours, sun rises on HOUR 0
@@ -125,6 +139,7 @@ public static class Lighting
             DayProgress = Mathf.Lerp(DayProgress, target, Utils.DeltaTimeLerpFactor(0.02f));
             if (Mathf.Abs(DayProgress - target) < 1)
                 DayProgress = target;
+            WasOnNonStandardTimer = true;
         }
         float dayPercent = DayProgress / TimeInADay;
         SunVector = new Vector2(1, 0).RotatedBy(dayPercent * Utils.TwoPI);
@@ -285,6 +300,7 @@ public static class Lighting
         {
             float baseTexelSize = 1.125f / 1080f;
             ShadowImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+            ShadowImage.material.SetFloat("_Blur", PlayerData.ShadowBlurValue);
         }
         if (BorderImage != null)
         {
