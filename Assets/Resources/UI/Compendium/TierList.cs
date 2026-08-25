@@ -16,6 +16,7 @@ public class TierList : MonoBehaviour
     public TierCategory[] Categories;
     private TierCategory SelectedCat;
     public int TierListType = 0;
+    public Image BG;
     public CompendiumElement CurrentlyHoveredElement => Owner.HoverCPUE;
     public void SetSelectedCategory(int i)
     {
@@ -52,8 +53,9 @@ public class TierList : MonoBehaviour
     }
     public void OnUpdate(bool rebuild = false)
     {
-        Color unselectColor = new(0.24706f, 0.24706f, 0.24706f);
-        Color selectColor = new(.6f, .6f, .25f); 
+        Color unselectColor = ColorHelper.UITierList;
+        Color unselectColor2 = new(ColorHelper.UITierList.r - .1f, ColorHelper.UITierList.g - .05f, ColorHelper.UITierList.b + .025f);
+        Color selectColor = ColorHelper.Yellow;
         SelectedCat = null;
         VerticalSize = 0;
         for (int i = 0; i < Categories.Length; ++i)
@@ -65,7 +67,7 @@ public class TierList : MonoBehaviour
                 cat.TierRect.color = Color.Lerp(cat.TierRect.color, selectColor, 0.25f);
             }
             else
-                cat.TierRect.color = Color.Lerp(cat.TierRect.color, unselectColor, 0.25f);
+                cat.TierRect.color = Color.Lerp(cat.TierRect.color, i % 2 == 0 ? unselectColor : unselectColor2, 0.25f);
             cat.CalculateSizeNeededToHousePowerups(this);
             if(rebuild)
                 LayoutRebuilder.MarkLayoutForRebuild(cat.RectTransform);
@@ -91,6 +93,7 @@ public class TierList : MonoBehaviour
         bool preventHovering = Owner.HoldingAPower && !Owner.HoldingALockedPower;
         foreach (CompendiumElement cpue in Elems)
             cpue.SetHovering(!preventHovering);
+        BG.rectTransform.sizeDelta = new(BG.rectTransform.sizeDelta.x, VerticalSize);
     }
     public List<float> UniqueYValues(List<CompendiumElement> childs, float bonus)
     {

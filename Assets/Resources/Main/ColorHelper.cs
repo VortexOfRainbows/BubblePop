@@ -46,6 +46,7 @@ public static class ColorHelper
     public static readonly string LesserGrayHex = "#DDDDDD";
     public static readonly string AscColorHex = "#ADCFFF";
     public static readonly Color Cornflower = ColorHelper.New255(0xA6, 0xCC, 0xFF);
+    public static readonly Color UITierList = new(0.6f, 0.6f, .75f);
     public static readonly Color Yellow = new(1.0f, 0.9294f, 0.4588f);
 
     public static readonly Color WoodColor = New255(0x9B, 0x7D, 0x63);

@@ -51,7 +51,7 @@ public static class CameraManager
         ExportTexture.Release();
         ExportTexture.width = 3840;
         TierListCompendiumPage page = Compendium.Instance.Pages[Compendium.Instance.PageNumber] as TierListCompendiumPage;
-        ExportTexture.height = Mathf.RoundToInt(page.TierList.VerticalSize + 100) * 2;
+        ExportTexture.height = Mathf.Max(1080, Mathf.RoundToInt(page.TierList.VerticalSize + 100)) * 2;
         ExportTexture.Create();
     }
     public static void ReloadCameraData()

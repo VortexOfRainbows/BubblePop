@@ -67,10 +67,12 @@ Done:
 	3. WIP Compendium UI overhauls!
 		1. Experimental blur for the bg (works in both main menu and game world), fixed the ratio!
 		2. Replaced "Cancel Changes: with Export button (WIP)
-			1. Needs: Fix cutoff problem (IT HAS TO DO WITH THE CULLING MASK), better file naming, open file for users to see the file location or something
+		3. Adjustments to Tier list colors and size of tier display elements
 8. Compendium now disables itself when offscreen, which should reduce lag slightly
 9. FIX bug where tier lists would bug out at high category heights.	
 	1. The fix for this is a general code order change, which should hopefully fix some other tier list bugs and definitely not cause any other bugs
+10. Added Export button to the compendium
+	1. Essentially screenshots just the tier list section and then opens it with the standard program of your OS
 
 8/18/26 to 8/22/26
 1. WIP UI Overhauls

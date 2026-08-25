@@ -515,7 +515,12 @@ public class Compendium : MonoBehaviour
     #endregion
     public static void ExportTierList()
     {
-        ScrollRect scroll = CurrentlySelectedPage.ContentScrollRect;
+        if (Compendium.CurrentlySelectedPage.HoldingAPower)
+        {
+            Compendium.CurrentlySelectedPage.UpdateSelectedType(-3);
+            Compendium.CurrentlySelectedPage.HoverCPUE.gameObject.SetActive(false);
+        }
+         ScrollRect scroll = CurrentlySelectedPage.ContentScrollRect;
         float prev = scroll.verticalNormalizedPosition;
         scroll.verticalNormalizedPosition = 1f;
         CameraManager.SwitchToScreenshotCamera();
@@ -529,13 +534,15 @@ public class Compendium : MonoBehaviour
             RenderTexture previousActive = RenderTexture.active;
             RenderTexture.active = completeScreenshot;
 
-            int paddingFromTheTopOfCompendium = 200; //size: 100, scaleFactor: 2
-            int paddingFromTheSideOfCompendium = 800; //size: 400, scaleFactor: 2
+            int scaleFactor = 2;
+            int paddingFromTheTopOfCompendium = 100 * scaleFactor; //size: 100, scaleFactor: 2
+            int paddingFromTheSideOfCompendium = 400 * scaleFactor; //size: 400, scaleFactor: 2
+            int paddingFromBottomOfCompendium = Mathf.RoundToInt(Mathf.Max(0, 980 - CurrentlySelectedPage.TierList.VerticalSize)) * scaleFactor;
             // 3. Create a temporary Texture2D with matching dimensions
-            Texture2D tex = new(completeScreenshot.width - paddingFromTheSideOfCompendium, completeScreenshot.height - paddingFromTheTopOfCompendium, TextureFormat.RGBA32, false);
+            Texture2D tex = new(completeScreenshot.width - paddingFromTheSideOfCompendium, completeScreenshot.height - paddingFromTheTopOfCompendium - paddingFromBottomOfCompendium, TextureFormat.RGBA32, false);
 
             // 4. Read the active RenderTexture pixels into the Texture2D
-            tex.ReadPixels(new Rect(0, 0, tex.width, tex.height), 0, 0);
+            tex.ReadPixels(new Rect(0, paddingFromBottomOfCompendium, tex.width, tex.height), 0, 0);
             tex.Apply();
 
             // 5. Restore the previous active render texture
@@ -551,10 +558,13 @@ public class Compendium : MonoBehaviour
             string directoryPath = Application.persistentDataPath + "/TierLists";
             Directory.CreateDirectory(directoryPath);
             string dateTime = DateTime.Now.ToLongTimeString().Replace(':', '-');
-            string path = directoryPath + $"/List_V{PlayerData.CurrentPlayerVersion}_{dateTime[..(dateTime.Length - 2)]}.png";
+            string path = directoryPath + $"/List_V{PlayerData.CurrentPlayerVersion}_{dateTime[..(dateTime.Length - 3)]}.png";
             File.WriteAllBytes(path, bytes);
 
             Debug.Log($"RenderTexture successfully exported to: {path}");
+
+            // Opens the file using the OS standard PNG viewer
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
         }
 
         scroll.verticalNormalizedPosition = prev;
