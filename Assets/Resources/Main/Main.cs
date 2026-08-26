@@ -309,6 +309,7 @@ public partial class Main : MonoBehaviour
         private static void AddEquip(GameObject g)
         {
             Equipment e = g.GetComponent<Equipment>();
+            int id = AllEquipmentsList.Count;
             if (!e.IsSubEquip)
             {
                 if (e is Hat)
@@ -319,8 +320,12 @@ public partial class Main : MonoBehaviour
                     Weapons.Add(g);
                 else if (e is Body)
                     Characters.Add(g);
+
+                var powers = e.GetPowerPoolForDisplay(false);
+                foreach(var power in powers)
+                    PowerUp.TryGroupPower(power, id);
             }
-            e.SetUpData(AllEquipmentsList.Count);
+            e.SetUpData(id);
             AllEquipmentsList.Add(g);
             TypeToEquipPrefab.Add(e.GetType(), e);
             Debug.Log($"Equipment: <color=#FFFF00>{e.GetName()}</color> has been added into the pool at index {e.IndexInAllEquipPool}: [{AllEquipmentsList.Count}]");

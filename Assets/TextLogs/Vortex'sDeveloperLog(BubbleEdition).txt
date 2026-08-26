@@ -31,8 +31,7 @@ Need to do:
 3. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 4. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 5. Compendium TODO:
-	1. Allow sorting by character/group!
-	2. Make blurbs appear in the equipment page
+	1. Make blurbs (actual equipment effects) appear in the equipment page
 6. Snow Regions:
 	1. Snow ambient objects need to spawn
 	2. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
@@ -50,7 +49,6 @@ Multiplayer Task List:
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. LAG is probably being caused by over-spawning tar puddles...
-3. When unlocking power achievements, the icon remains a ? even after unlocked?
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -58,9 +56,17 @@ Sounds Needed:
 
 Done: 	
 
-8/25/26
+8/25/26 to 8/26/26
 1. King Oil ability always use oil colored bubbles
 2. Removed a few antiquated classes associated with the compendium
+3. Compendium: 
+	1. Character sort can now Sort by ID once again (Group Sort no longer replaces ID Sort)
+	2. Power sort now has Group option, which groups by power pools
+	3. When opening the compendium after something has been unlocked/changed, it should more consistently look correct
+		1. (hopefully) No more red ? icons when achievements are complete or blacked out powers after they have been unlocked
+		2. All compendium pages are marked for resort whenever the compendium is opened now, instead of only the previously selected page
+	4. (FIX) fixed bug when numbers are on for characters, enemies, or achievements, they appear over some compendium elements
+4. (FIX) Achievement completion popup now uses black bg again instead of cornflower blue
 
 -- A3.3 UPDATE ON STEAM --
 

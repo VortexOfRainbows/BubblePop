@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -187,12 +188,36 @@ public abstract class PowerUp
         typeCounter++;
         maximumTypes++;
     }
+    public static int TotalPowerUps => PowerUps.Count;
     public static Dictionary<int, PowerUp> PowerUps { get; private set; }
     public static Dictionary<string, int> Reverses;
+    private static Dictionary<int, int> PowerGroupRelation { get; set; }
+    public static void TryGroupPower(PowerUp power, int i)
+    {
+        if(PowerGroupRelation.TryGetValue(power.Type, out int value))
+        {
+            Debug.Log($"Tried adding {power.InternalName} to group [{i}], but was already in group [{value}]".WithColor("#FF0000"));
+            return;
+        }
+        Debug.Log($"Adding {power.InternalName} to group [{i}]");
+        PowerGroupRelation[power.Type] = i;
+    }
+    public static int TryGetPowerGroup(PowerUp power)
+    {
+        if (PowerGroupRelation.TryGetValue(power.Type, out int value))
+            return value;
+        else
+        {
+            int defaultValue = power.IsBlackMarket() ? 10000 : -5;
+            TryGroupPower(power, defaultValue);
+            return defaultValue;
+        }
+    }
     protected static void InitDict()
     {
         Reverses = new();
-        PowerUps = new Dictionary<int, PowerUp>();
+        PowerUps = new();
+        PowerGroupRelation = new();
         ReflectiveEnumerator.AssembleInstances<PowerUp>();
     }
     public int MyID = -1;

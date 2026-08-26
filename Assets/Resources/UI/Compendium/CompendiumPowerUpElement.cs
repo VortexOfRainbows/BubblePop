@@ -26,17 +26,15 @@ public class CompendiumPowerUpElement : CompendiumElement
         MyElem.myCanvas = canvas;
         MyElem.Count.text = GetCount().ToString();
         MyElem.GrayOut = GrayOut;
-        int forceInitUpdates = 1;
         if (Style == 2)
         {
             BG.enabled = false;
             MyElem.ForceHideCount = true;
             transform.localScale = Vector3.one * 0.8f;
             transform.GetComponent<RectTransform>().pivot = Vector2.one * 0.5f;
-            forceInitUpdates += 2;
         }
-        for(int a = 0; a < forceInitUpdates; ++a)
-            MyElem.OnUpdate();
+        MyElem.TurnedOn();
+        MyElem.WhileOn();
     }
     public void Update()
     {
@@ -105,5 +103,9 @@ public class CompendiumPowerUpElement : CompendiumElement
     public override int GetCount()
     {
         return PowerUp.Get(TypeID).PickedUpCountAllRuns;
+    }
+    public override int GetGroupForSorting(bool reverse = false)
+    {
+        return PowerUp.TryGetPowerGroup(MyElem.MyPower);
     }
 }

@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 
 public class CompendiumPage : MonoBehaviour
 {
+    public bool MarkForResort { get; set; }
     private const int ArbitrarySort = 0;
     private const int RaritySort = 1;
     private const int FavSort = 2;
+    private const int GroupSort = 3;
     public Compendium Owner => Compendium.Instance;
     public Canvas MyCanvas => Owner.MyCanvas;
     public bool AutoNextTierList { get; set; }
@@ -62,8 +65,15 @@ public class CompendiumPage : MonoBehaviour
     }
     public void ToggleSort(TextMeshProUGUI sortText)
     {
-        SortMode = (SortMode + 1) % 3;
-        UpdateSort(sortText);
+        int totalSorts = 3;
+        bool GroupSortAvailable = this == Compendium.Instance.EquipPage || this == Compendium.Instance.PowerPage;
+        if(GroupSortAvailable)
+            totalSorts++;
+        if (this == Compendium.Instance.AchievementPage)
+            totalSorts--;
+        SortMode = (SortMode + 1) % totalSorts;
+        UpdateSortText(sortText);
+        Sort();
     }
     public void ToggleTierList(TextMeshProUGUI tierListText)
     {
@@ -92,22 +102,21 @@ public class CompendiumPage : MonoBehaviour
         SetVisibility();
         Sort();
     }
-    public void UpdateSort(TextMeshProUGUI sortText)
+    public void UpdateSortText(TextMeshProUGUI sortText)
     {
-        if (SortMode == FavSort && HoverCPUE is CompendiumAchievementElement)
-            SortMode = ArbitrarySort;
         if (SortMode == ArbitrarySort) //Arbitrary / ID
-            sortText.text = Compendium.CurrentlySelectedPage == Compendium.Instance.EquipPage ? "Sort: Group" : "Sort: ID";
+            sortText.text = "Sort: ID";
         else if (SortMode == RaritySort) //By rarity
             sortText.text = "Sort: Rarity";
         else if (SortMode == FavSort) //By count
         {
-            if (Compendium.CurrentlySelectedPage == Compendium.Instance.EnemyPage)
+            if (this == Compendium.Instance.EnemyPage)
                 sortText.text = "Sort: Kill Count";
             else
                 sortText.text = "Sort: Favorite";
         }
-        Sort();
+        else if(SortMode == GroupSort)
+            sortText.text = "Sort: Group";
     }
     public void ToggleBlackMarketMode()
     {
@@ -140,10 +149,8 @@ public class CompendiumPage : MonoBehaviour
     }
     public void UpdateAllButtons(TextMeshProUGUI sortText, TextMeshProUGUI tierListText, Button unlockButton, Button countButton, Button reverseButton)
     {
-        if (SortMode == FavSort && HoverCPUE is CompendiumAchievementElement)
-            SortMode = ArbitrarySort;
         if (SortMode == ArbitrarySort) //Arbitrary / ID
-            sortText.text = Compendium.CurrentlySelectedPage == Compendium.Instance.EquipPage ? "Sort: Group" : "Sort: ID";
+            sortText.text = "Sort: ID";
         else if (SortMode == RaritySort) //By rarity
             sortText.text = "Sort: Rarity";
         else if (SortMode == FavSort) //By count
@@ -153,6 +160,8 @@ public class CompendiumPage : MonoBehaviour
             else
                 sortText.text = "Sort: Favorite";
         }
+        else if(SortMode == GroupSort)
+                sortText.text = "Sort: Group";
         tierListText.text = TierList != null ? "Make Tier List" : WideDisplayStyle ? "Display: Line" : "Display: Grid";
         unlockButton.targetGraphic.color = ShowOnlyUnlocked ? Color.yellow : Color.white;
         countButton.targetGraphic.color = ShowCounts ? Color.yellow : Color.white;
@@ -163,7 +172,7 @@ public class CompendiumPage : MonoBehaviour
         ShowOnlyUnlocked = ShowCounts = TierListActive = MouseInCompendiumArea = AutoNextTierList = false;
         if (HoverCPUE is CompendiumPowerUpElement)
         {
-            for (int i = 0; i < PowerUp.Reverses.Count; ++i)
+            for (int i = 0; i < PowerUp.TotalPowerUps; ++i)
             {
                 CompendiumPowerUpElement CPUE = Instantiate(CompendiumPowerUpElement.Prefab, PowerUpLayoutGroup.transform, false).GetComponent<CompendiumPowerUpElement>();
                 CPUE.Init(i, MyCanvas);
@@ -203,15 +212,20 @@ public class CompendiumPage : MonoBehaviour
         ShowCounts = true;
         ToggleCount(countButton); //OFF by default
 
-        if (HoverCPUE is CompendiumAchievementElement)
+        if (HoverCPUE is CompendiumAchievementElement) //Achievements
         {
-            SortMode = FavSort;
-            ToggleSort(sortText); //default sort is ID
+            SortMode = ArbitrarySort - 1; //default sort is ID, subtract 1 since update will increment
+            ToggleSort(sortText);
         }
-        else
+        else if (HoverCPUE is CompendiumEquipmentElement) //Characters
         {
-            SortMode = HoverCPUE is CompendiumEquipmentElement ? FavSort : ArbitrarySort;
-            ToggleSort(sortText); //default sort is rare
+            SortMode = GroupSort - 1; //default sort is GROUP
+            ToggleSort(sortText);
+        }
+        else //Power and Enemy page use rarity by default
+        {
+            SortMode = RaritySort - 1; //default sort is rare
+            ToggleSort(sortText);
         }
         SelectedType = 0;
         if (this == Compendium.Instance.AchievementPage)
@@ -395,21 +409,52 @@ public class CompendiumPage : MonoBehaviour
         int num = count2 - count1;
         return num == 0 ? CompareRare(e1, e2) : num;
     }
+    public int CompareGroup(CompendiumElement e1, CompendiumElement e2)
+    {
+        int id1 = e1.GetGroupForSorting(ReverseSort);
+        int id2 = e2.GetGroupForSorting(ReverseSort);
+        if (BlackMarketMode && e1 is CompendiumPowerUpElement && e2 is CompendiumPowerUpElement)
+        {
+            if (e1.IsLocked())
+                id1 += SortMultiplier * 10000;
+            if (e1.GrayOut)
+                id1 += SortMultiplier * 20000;
+            if (e2.IsLocked())
+                id2 += SortMultiplier * 10000;
+            if (e2.GrayOut)
+                id2 += SortMultiplier * 20000;
+        }
+        else
+        {
+            if (e1.IsLocked())
+                id1 += SortMultiplier * 20000;
+            else if (e1.GrayOut)
+                id1 += SortMultiplier * 10000;
+            if (e2.IsLocked())
+                id2 += SortMultiplier * 20000;
+            else if (e2.GrayOut)
+                id2 += SortMultiplier * 10000;
+        }
+        int num = id1 - id2;
+        return num == 0 ? CompareRare(e1, e2) : num; //Fallback to rarity if part of the same group
+    }
     public void Sort()
     {
-        List<CompendiumElement> childs = GetCPUEChildren(out int c);
+        List<CompendiumElement> children = GetCPUEChildren(out int c);
         PowerUpLayoutGroup.transform.DetachChildren();
         if (SortMode == ArbitrarySort)
-            childs.Sort(CompareID);
+            children.Sort(CompareID);
         else if (SortMode == RaritySort)
-            childs.Sort(CompareRare);
+            children.Sort(CompareRare);
         else if (SortMode == FavSort)
-            childs.Sort(CompareFav);
+            children.Sort(CompareFav);
+        else if(SortMode == GroupSort)
+            children.Sort(CompareGroup);
         if (!ReverseSort)
         {
             for (int i = 0; i < c; ++i)
             {
-                CompendiumElement CPUE = childs[i];
+                CompendiumElement CPUE = children[i];
                 CPUE.transform.SetParent(PowerUpLayoutGroup.transform);
                 CPUE.transform.localPosition = new Vector3(CPUE.transform.localPosition.x, CPUE.transform.localPosition.y, 0);
             }
@@ -418,7 +463,7 @@ public class CompendiumPage : MonoBehaviour
         {
             for (int i = c - 1; i >= 0; --i)
             {
-                CompendiumElement CPUE = childs[i];
+                CompendiumElement CPUE = children[i];
                 CPUE.transform.SetParent(PowerUpLayoutGroup.transform);
                 CPUE.transform.localPosition = new Vector3(CPUE.transform.localPosition.x, CPUE.transform.localPosition.y, 0);
             }
@@ -496,7 +541,7 @@ public class CompendiumPage : MonoBehaviour
             Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.VerticalSize - 800) : new Vector2(0, -800f);
             Utils.LerpSnap(TierListParent.transform, targetTierList, lerpFactor);
         }
-        Utils.LerpSnap(Owner.TopBar, newTopBarPositon, lerpFactor);
+        Utils.LerpSnap(Owner.TopBar.transform, newTopBarPositon, lerpFactor);
         //Utils.LerpSnap(Owner.SideBar, newSideBarPosition, lerpFactor);
         Vector2 buttonbounds = Owner.OpenCompendiumButton.GetComponent<RectTransform>().rect.size;
         buttonbounds.y *= -1;

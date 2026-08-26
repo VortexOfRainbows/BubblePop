@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UI;
 public class Compendium : MonoBehaviour
@@ -36,6 +37,11 @@ public class Compendium : MonoBehaviour
             ActiveElement.TypeID = 0;
         UpdateDisplay(ActiveElement.TypeID);
         UpdateDescription(true, ActiveElement.TypeID);
+        if(CurrentlySelectedPage.MarkForResort)
+        {
+            CurrentlySelectedPage.MarkForResort = false;
+            CurrentlySelectedPage.Sort();
+        }
         CurrentlySelectedPage.UpdateAllButtons(SortText, TierListText, UnlockButton, CountButton, ReverseButton);
         AutoButton.targetGraphic.color = CurrentlySelectedPage.AutoNextTierList ? Color.yellow : Color.white;
     }
@@ -53,7 +59,7 @@ public class Compendium : MonoBehaviour
     public bool Active { get; private set; }
     public bool PrevActive { get; private set; } = false;
     public Button OpenCompendiumButton;
-    public Transform TopBar;
+    public Canvas TopBar;
     public RectTransform SideBar;
     public RectTransform SortBar;
     public RectTransform BackButtonArea;
@@ -75,6 +81,7 @@ public class Compendium : MonoBehaviour
     public void Start()
     {
         MyCanvas.worldCamera = CameraManager.UICamera;
+        SideBar.GetComponent<Canvas>().sortingLayerID = TopBar.sortingLayerID = MyCanvas.sortingLayerID;
         PowerPage = Pages[0];
         EquipPage = Pages[1];
         EnemyPage = Pages[2];
@@ -103,8 +110,11 @@ public class Compendium : MonoBehaviour
         if (Active && !PrevActive) //On reopen behavior (update stuff that is needed here)
         {
             CalculateButtonTitles();
+            UpdateDisplay(ActiveElement.TypeID);
             UpdateDescription(true, ActiveElement.TypeID);
             CurrentlySelectedPage.Sort();
+            for (int i = 0; i < Pages.Length; i++)
+                Pages[i].MarkForResort = Pages[i] != CurrentlySelectedPage;
         }
         PrevActive = Active;
     }

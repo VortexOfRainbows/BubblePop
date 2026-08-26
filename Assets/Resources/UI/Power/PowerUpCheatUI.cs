@@ -176,7 +176,7 @@ public class PowerUpCheatUI : MonoBehaviour
         if(AwaitingPowerReset)
             yield return new WaitForSecondsRealtime(0.03f);
         AwaitingPowerReset = false;
-        for (int i = 0; i < PowerUp.Reverses.Count; ++i)
+        for (int i = 0; i < PowerUp.TotalPowerUps; ++i)
         {
             if(AwaitingPowerReset)
             {
