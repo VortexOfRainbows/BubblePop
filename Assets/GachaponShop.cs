@@ -125,7 +125,7 @@ public class GachaponShop : GemUtility
     public void AddStock(int i)
     {
         float mult = PriceMultiplier * (1.0f + 0.05f * TotalPowersPurchased - Player.Instance.ShopDiscount);
-        float bmChance = BlackMarketShop ? 1 : .005f * Player.Instance.BlackmarketMult;
+        float bmChance = BlackMarketShop ? 1 : .015f * Player.Instance.BlackmarketMult;
         Vector3 pillowPosition = Pedastal[i].transform.position + new Vector3(0, 1.2f);
         Vector3 spawnPosition = RestockMachine != null ? RestockMachine.transform.position + new Vector3(0, 0.05f) : pillowPosition;
         int p = PowerUp.RandomFromPool(0.05f, bmChance);

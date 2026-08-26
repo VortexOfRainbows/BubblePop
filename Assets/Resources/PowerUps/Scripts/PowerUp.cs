@@ -433,7 +433,7 @@ public abstract class PowerUp
         else if (rare == 2)
             cost = 25;
         if (IsBlackMarket())
-            cost *= 3;
+            cost *= 2;
         return cost;
     }
     public virtual int CalculateRarity()
@@ -473,7 +473,7 @@ public abstract class PowerUp
         else if (rare == 3 || rare == 4)
             shards = 2;
         if (IsBlackMarket())
-            shards *= 2;
+            shards += 1;
         return shards * stackSize;
     }
     //public virtual int GetRarity()

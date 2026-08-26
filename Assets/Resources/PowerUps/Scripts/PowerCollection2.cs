@@ -357,11 +357,11 @@ public class PerpetualBubbleMachine : PowerUp
     {
         return true;
     }
-    public override int ShardReplicationCost(int stackSize = 1)
-    {
-        int currentStack = Stack;
-        return (currentStack * stackSize) + (stackSize * stackSize + stackSize) / 2;
-    }
+    //public override int ShardReplicationCost(int stackSize = 1)
+    //{
+    //    //int currentStack = Stack;
+    //    //return (currentStack * stackSize) + (stackSize * stackSize + stackSize) / 2;
+    //}
 }
 public class ConsolationPrize : PowerUp
 {

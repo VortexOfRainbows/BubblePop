@@ -12,12 +12,11 @@ Do Later:
 3. Grass shader to make grass more interesting and potentially slightly vary in the wind
 4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
-6. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
-7. Next patch:
+6. Next patch:
 	1. Potentially increase enemy health scaling past wave 10?
-8. Convert player power handler to use structs for faster resetting 
-9. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
-10. Next UI Reworks:
+7. Convert player power handler to use structs for faster resetting 
+8. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
+9. Next UI Reworks:
 	1. Home screen and pause menu button appearances
 	2. Enemy wave cards
 	3. (potentially) Pause menu/Gameover menu opening swiftness
@@ -57,6 +56,8 @@ Sounds Needed:
 
 Done: 	
 
+-- A3.3 (NOT YET) UPDATE ON STEAM --
+
 8/22/26 to 8/25/26
 1. BoxesShopWithForge, Junkyard, and Junkyard2 nodes are now more open
 2. BoxesShop1, BoxesShop2, MeadowCrucible3 now have a connector between two previously dead ends
@@ -94,6 +95,11 @@ Done:
 19. Added a setting in graphics for changing shadow blur, which may reduce lag (GPU) on lower settings
 20. Simplify code for restarting the game after dying
 21. Pause Menu/Game Over screen now use the same button colors as the main menu
+22. Rainbow shard cost multiplier 2x -> +1
+	1. Now rarer black market powers are cheaper to replicate
+23. Perpetual Bubble Machine no longer has unique rainbow shard replication scaling
+24. Black market dealer cost multiplier 3x -> 2x
+25. Chance of a Black Market power appearing in a normal shop 0.5% -> 1.5%
 
 8/18/26 to 8/22/26
 1. WIP UI Overhauls
