@@ -2,11 +2,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-public abstract class CompendiumPage : MonoBehaviour
-{
 
-}
-public abstract class TierListCompendiumPage : CompendiumPage
+public class CompendiumPage : MonoBehaviour
 {
     private const int ArbitrarySort = 0;
     private const int RaritySort = 1;
@@ -57,7 +54,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             Owner.UpdateDescription(false, SelectedType);
         if (HoverCPUE.TypeID != SelectedType && SelectedType >= 0)
         {
-            if(TierList != null)
+            if (TierList != null)
                 TierList.RemovePower(HoverCPUE.TypeID);
             HoverCPUE.Init(SelectedType, MyCanvas);
             HoverCPUE.gameObject.SetActive(!HoverCPUE.IsLocked() && TierListActive); //change this to color scaling or other continuous function for disappearance and reappearance animation
@@ -105,7 +102,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             sortText.text = "Sort: Rarity";
         else if (SortMode == FavSort) //By count
         {
-            if(Compendium.CurrentlySelectedPage == Compendium.Instance.EnemyPage)
+            if (Compendium.CurrentlySelectedPage == Compendium.Instance.EnemyPage)
                 sortText.text = "Sort: Kill Count";
             else
                 sortText.text = "Sort: Favorite";
@@ -173,7 +170,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
                 TierList.OnTierList[i] = false;
             }
         }
-        else if(HoverCPUE is CompendiumEquipmentElement)
+        else if (HoverCPUE is CompendiumEquipmentElement)
         {
             if (HoverCPUE is CompendiumAchievementElement)
             {
@@ -206,7 +203,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         ShowCounts = true;
         ToggleCount(countButton); //OFF by default
 
-        if(HoverCPUE is CompendiumAchievementElement)
+        if (HoverCPUE is CompendiumAchievementElement)
         {
             SortMode = FavSort;
             ToggleSort(sortText); //default sort is ID
@@ -243,7 +240,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
         float dist = -lastElement.y;
         r.sizeDelta = new Vector2(r.sizeDelta.x, Mathf.Max(tierListOffset, dist));
         ContentRectangle.sizeDelta = Vector2.Lerp(ContentRectangle.sizeDelta, new Vector2(0, Mathf.Max(dist - cellDefaultDistance, 0)), 0.1f);
-        if(SpriteMaskRectangle != null)
+        if (SpriteMaskRectangle != null)
         {
             SpriteMaskRectangle.localScale = new Vector3(ViewPort.rect.width, ViewPort.rect.height, 1);
         }
@@ -281,7 +278,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
             if (!TierListActive)
             {
                 bool grayOut = false;
-                if(cpue is CompendiumPowerUpElement e)
+                if (cpue is CompendiumPowerUpElement e)
                 {
                     if (BlackMarketMode)
                     {
@@ -315,7 +312,7 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         int id1 = e1.GetIDForSorting(ReverseSort);
         int id2 = e2.GetIDForSorting(ReverseSort);
-        if(BlackMarketMode && e1 is CompendiumPowerUpElement && e2 is CompendiumPowerUpElement)
+        if (BlackMarketMode && e1 is CompendiumPowerUpElement && e2 is CompendiumPowerUpElement)
         {
             if (e1.IsLocked())
                 id1 += SortMultiplier * 10000;
@@ -406,9 +403,9 @@ public abstract class TierListCompendiumPage : CompendiumPage
             childs.Sort(CompareID);
         else if (SortMode == RaritySort)
             childs.Sort(CompareRare);
-        else if(SortMode == FavSort)
+        else if (SortMode == FavSort)
             childs.Sort(CompareFav);
-        if(!ReverseSort)
+        if (!ReverseSort)
         {
             for (int i = 0; i < c; ++i)
             {
@@ -488,13 +485,13 @@ public abstract class TierListCompendiumPage : CompendiumPage
     {
         UpdateContentSize();
         Owner.OpenCompendiumButton.interactable = !TierListActive;
-        foreach(Button b in Owner.PageButtons)
+        foreach (Button b in Owner.PageButtons)
             b.interactable = !TierListActive;
         Vector2 newTopBarPositon = !TierListActive ? new Vector2(0, Compendium.HalfResolution.y) : new Vector2(0, Compendium.HalfResolution.y + 200);
         //Vector2 newSideBarPosition = !TierListActive ? new Vector2(Compendium.HalfResolution.x, Compendium.HalfResolution.y - 200) : new Vector2(Compendium.HalfResolution.x, Compendium.HalfResolution.y);
         Vector2 newOpenButtonPosition = !TierListActive ? new Vector2(-Compendium.HalfResolution.x + 37f, Compendium.HalfResolution.y - 25) : new Vector2(-Compendium.HalfResolution.x + 25.5f, Compendium.HalfResolution.y + 175);
         Vector2 targetViewport = !TierListActive ? new Vector2(-Compendium.HalfResolution.x + 200, Compendium.HalfResolution.y - 150) : new Vector2(-Compendium.HalfResolution.x + 200, Compendium.HalfResolution.y + 50);
-        if(TierList != null)
+        if (TierList != null)
         {
             Vector2 targetTierList = !TierListActive ? new Vector2(0, TierList.VerticalSize - 800) : new Vector2(0, -800f);
             Utils.LerpSnap(TierListParent.transform, targetTierList, lerpFactor);

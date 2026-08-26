@@ -8,7 +8,7 @@ public class TierList : MonoBehaviour
 {
     public static bool ReadingFromSave = false;
     public int QueueRemoval { get; set; } = -1;
-    public TierListCompendiumPage Owner;
+    public CompendiumPage Owner;
     public float VerticalSize { get; set; } = 800f;
     public readonly Dictionary<int, bool> OnTierList = new();
     public readonly List<CompendiumElement> Elems = new();
@@ -134,7 +134,7 @@ public class TierList : MonoBehaviour
         {
             return;
         }
-        List<CompendiumElement> childs = TierListCompendiumPage.GetCPUEChildren(parentGrid, out c);
+        List<CompendiumElement> childs = CompendiumPage.GetCPUEChildren(parentGrid, out c);
         childs.Remove(newestCPU);
         --c;
         bool autoSelectPosition = position == -1;

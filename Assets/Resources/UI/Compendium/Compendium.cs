@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public class Compendium : MonoBehaviour
@@ -41,16 +40,16 @@ public class Compendium : MonoBehaviour
         AutoButton.targetGraphic.color = CurrentlySelectedPage.AutoNextTierList ? Color.yellow : Color.white;
     }
     private int m_PageNumber = -1;
-    public static BasicTierListCompendiumPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber] as BasicTierListCompendiumPage;
+    public static CompendiumPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber];
     public Canvas MyCanvas;
     public RectTransform MyCanvasRectTransform => MyCanvas.GetComponent<RectTransform>();
     public CompendiumPage[] Pages;
     public Button[] PageButtons;
     public TextMeshProUGUI[] BookmarkTexts;
-    public BasicTierListCompendiumPage PowerPage { get; private set; }
-    public BasicTierListCompendiumPage EquipPage { get; private set; }
-    public BasicTierListCompendiumPage EnemyPage { get; private set; }
-    public BasicTierListCompendiumPage AchievementPage { get; private set; }
+    public CompendiumPage PowerPage { get; private set; }
+    public CompendiumPage EquipPage { get; private set; }
+    public CompendiumPage EnemyPage { get; private set; }
+    public CompendiumPage AchievementPage { get; private set; }
     public bool Active { get; private set; }
     public bool PrevActive { get; private set; } = false;
     public Button OpenCompendiumButton;
@@ -76,10 +75,10 @@ public class Compendium : MonoBehaviour
     public void Start()
     {
         MyCanvas.worldCamera = CameraManager.UICamera;
-        PowerPage = Pages[0] as BasicTierListCompendiumPage;
-        EquipPage = Pages[1] as BasicTierListCompendiumPage;
-        EnemyPage = Pages[2] as BasicTierListCompendiumPage;
-        AchievementPage = Pages[3] as BasicTierListCompendiumPage;
+        PowerPage = Pages[0];
+        EquipPage = Pages[1];
+        EnemyPage = Pages[2];
+        AchievementPage = Pages[3];
         DisplayCPUE = Elements[0] as CompendiumPowerUpElement;
         DisplayCEE = Elements[1] as CompendiumEquipmentElement;
         DisplayCPEnemy = Elements[2] as CompendiumEnemyElement;
@@ -96,7 +95,7 @@ public class Compendium : MonoBehaviour
         ScreenResolution = new Vector2(MyCanvasRectTransform.rect.width, MyCanvasRectTransform.rect.height); //1920, 1080 in most cases
         HalfResolution = ScreenResolution / 2f;
         MoveCompendiumUpdate(Utils.DeltaTimeLerpFactor(.1f)); //KEEP THIS ABOVE THE PAGE UPDATES, OTHERWISE TIER LIST WILL BUG OUT, AS TIER LIST UPDATES ARE CALLED FROM HERE AND MUST BE RUN FIRST
-        foreach (BasicTierListCompendiumPage page in Pages.Cast<BasicTierListCompendiumPage>())
+        foreach (CompendiumPage page in Pages.Cast<CompendiumPage>())
         {
             if (page != null)
                 page.OnUpdate();
@@ -113,7 +112,7 @@ public class Compendium : MonoBehaviour
     {
         JustPlacedCounter--;
     }
-    public void UpdatePage(BasicTierListCompendiumPage page, float lerpFactor)
+    public void UpdatePage(CompendiumPage page, float lerpFactor)
     {
         if (page == null)
             return;
@@ -515,7 +514,7 @@ public class Compendium : MonoBehaviour
         BookmarkTexts[3].text = "Achievements";
         for(int i = 0; i < BookmarkTexts.Length; ++i)
         {
-            TierListCompendiumPage page = Pages[i] as TierListCompendiumPage;
+            CompendiumPage page = Pages[i] as CompendiumPage;
             if (!page.HasInit)
             {
                 page.Init(CountButton, SortText);

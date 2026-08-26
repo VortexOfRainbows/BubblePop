@@ -111,7 +111,7 @@ public class OilBomb : Projectile
         {
             Vector2 spawnOffset = new Vector2(1f, 0).RotatedBy(i * Utils.TwoPI / totalBubbles);
             float rand = Mathf.Max(Utils.RandFloat(1), Utils.RandFloat(1));
-            Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + ((1 - rand) * 0.5f * projectileReleaseSize * spawnOffset), projectileReleaseSize * rand * spawnOffset + Utils.RandCircle(projectileReleaseSize * 0.25f), 1, PlayerOwner);
+            Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + ((1 - rand) * 0.5f * projectileReleaseSize * spawnOffset), projectileReleaseSize * rand * spawnOffset + Utils.RandCircle(projectileReleaseSize * 0.25f), 1, PlayerOwner, 0, 1);
         }
         if(PlayerOwner.DashSparkle > 0)
         {
