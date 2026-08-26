@@ -48,7 +48,6 @@ Multiplayer Task List:
 
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
-2. LAG is probably being caused by over-spawning tar puddles...
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -67,6 +66,10 @@ Done:
 		2. All compendium pages are marked for resort whenever the compendium is opened now, instead of only the previously selected page
 	4. (FIX) fixed bug when numbers are on for characters, enemies, or achievements, they appear over some compendium elements
 4. (FIX) Achievement completion popup now uses black bg again instead of cornflower blue
+5. Max number of visual elements that can be attached to a Hazard (Tar puddles) infinite -> 5
+	1. This should hopefully reduce lag from oil related shenangins
+	2. The oldest visual will be replaced by the newest when at the limit and they are sufficiently different in application duration (otherwise, a new visual will simply not be placed)
+	3. (INTERNAL) Changed list class to linked list to support the above system at O(1) speed
 
 -- A3.3 UPDATE ON STEAM --
 
