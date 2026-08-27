@@ -31,12 +31,14 @@ Need to do:
 3. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 4. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
 5. Compendium TODO:
-	1. Make blurbs (actual equipment effects) appear in the equipment page
+	1. Make blurbs (actual equipment effects) appear in the equipment page (to actually make the power pool appear nicely would require quite a few reworks. For starters, the description and title would need to be separated, and sections should be made into their own dynamically generated text boxes instead of all sitting in the same text box
+	2. NEXT: will have to rework how compendium text is generated to make sections dynamically generated (this is probably a good idea as a standardization too!)
 6. Snow Regions:
 	1. Snow ambient objects need to spawn
 	2. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
 	3. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
 7. MINIMAP
+8. Characters can spawn in your run and give specific items?
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -54,6 +56,11 @@ Sounds Needed:
 2. Ice breaking
 
 Done: 	
+
+8/27/26
+1. WIP compendium equipment blurbs
+	1. Right now, basically no progress, except for learning!
+	2. NEXT: will have to rework how compendium text is generated to make sections dynamically generated (this is probably a good idea as a standardization too!)
 
 8/25/26 to 8/26/26
 1. King Oil ability always use oil colored bubbles

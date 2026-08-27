@@ -242,10 +242,12 @@ public class Compendium : MonoBehaviour
     public TextMeshProUGUI DisplayPortDescription;
     public RectTransform DescriptionContentRect;
     public TextMeshProUGUI LoreSection;
+    public EquipmentInfoScreen EquipmentSection;
     public RectTransform LoreSectionRect => LoreSection.transform.parent.GetComponent<RectTransform>();
     public static readonly string shortLineBreak = "<size=12>\n\n</size>";
     public void UpdateDescription(bool reset, int SelectedType)
     {
+        float minW = 361;
         if (reset && SelectedType >= 0)
         {
             bool blackMarket = false;
@@ -268,6 +270,7 @@ public class Compendium : MonoBehaviour
                 loreObject = DisplayCEE.MyElem.ActiveEquipment;
                 locked = DisplayCEE.IsLocked();
                 finalText = GenerateTierListDescription(loreObject as Equipment, ref rare);
+                //EquipmentSection.SetUIElement(DisplayCEE.MyElem.ActiveEquipment, 0);
             }
             else if (PageNumber == 2)
             {
@@ -292,14 +295,24 @@ public class Compendium : MonoBehaviour
             }
             DisplayPortDescription.text = finalText;
         }
+        float equipmentTarget = 0;
+        //if(PageNumber == 1)
+        //{
+        //    EquipmentSection.gameObject.SetActive(true);
+        //    equipmentTarget = EquipmentSection.GetComponent<RectTransform>().rect.height;
+        //}
+        //else
+        {
+            EquipmentSection.gameObject.SetActive(false);
+        }
         Vector2 target = DisplayPortDescription.GetRenderedValues();
         Vector2 loreTarget = LoreSection.GetRenderedValues();
-        float minW = 361;
         float minH = 100; // 460;
         float paddingBonusMain = 15; //5 + 10
-        float paddingBonusLore = 10;
-        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + loreTarget.y + paddingBonusLore + paddingBonusMain));
-        LoreSectionRect.sizeDelta = new Vector2(LoreSectionRect.sizeDelta.x, loreTarget.y + paddingBonusLore); //10 since the padding is 5, 5 (5 + 5 = 10)
+        float paddingBonusLore = 10; //10 since the padding is 5, 5 (5 + 5 = 10)
+        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + loreTarget.y + equipmentTarget + paddingBonusLore + paddingBonusMain));
+        LoreSectionRect.transform.localPosition = new Vector2(LoreSectionRect.transform.localPosition.x, -equipmentTarget);
+        LoreSectionRect.sizeDelta = new Vector2(LoreSectionRect.sizeDelta.x, loreTarget.y + paddingBonusLore);
     }
     public string GenerateTierListDescription(PowerUp p, ref int rare)
     {
