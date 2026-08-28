@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class DualGridTilemap : MonoBehaviour
@@ -99,7 +101,7 @@ public class DualGridTilemap : MonoBehaviour
         }
     }
     //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
-    private static bool TileIsNotSolidOrRendersBelow(Tilemap Map, int i, int j, float myLayerOffset)
+    public static bool TileIsNotSolidOrRendersBelow(Tilemap Map, int i, int j, float myLayerOffset)
     {
         if (!World.SolidTile(new Vector3Int(i, j)))
             return true;
@@ -107,46 +109,111 @@ public class DualGridTilemap : MonoBehaviour
         var otherTile = TileID.GetTileIDFromTile(Map.GetTile(coords));
         return otherTile.LayerOffset > myLayerOffset && !otherTile.HasWallVariant();
     }
-    private static bool TileIsNotBlendableWall(Tilemap Map, int i, int j, float myLayerOffset)
+    public static bool TileIsNotBlendableWall(Tilemap Map, int i, int j, float myLayerOffset)
     {
         return TileIsNotSolidOrRendersBelow(Map, i + 1, j - 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(Map, i, j + 1, myLayerOffset) ||
                TileIsNotSolidOrRendersBelow(Map, i + 1, j + 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(Map, i, j - 1, myLayerOffset) ||
                TileIsNotSolidOrRendersBelow(Map, i - 1, j + 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(Map, i + 1, j, myLayerOffset) ||
                TileIsNotSolidOrRendersBelow(Map, i - 1, j - 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(Map, i - 1, j, myLayerOffset);
     }
-    public static void RefreshDisplayTilemap(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
+    public static void ITriedToMakeAFasterRefreshFunctionAndItDidNotWork(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        DualGridTile[] tileBuffer = new DualGridTile[4];
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)
             {
                 Vector3Int coords = new(i, j);
-                var t = Map.GetTile(coords);
-                if (t != null)
+                for(int k = 0; k < 4; ++k)
                 {
-                    DualGridTile tile = TileID.GetTileIDFromTile(t);
-                    if(tile.CountsAsWall())
+                    Vector3Int trueC = coords - DualGridTile.NEIGHBOURS[k];
+                    var t = Map.GetTile(trueC);
+                    if (t != null)
                     {
-                        tile.UpdateDisplayTile(coords, WallMap[tile.TypeIndex]);
+                        tileBuffer[k] = TileID.GetTileIDFromTile(t);
+                        tileBuffer[k].MarkForUpdate = true;
+                        tileBuffer[k].MarkForWallUpdate = true;
                     }
-                    else if (World.SolidTile(coords))
+                    else
                     {
-                        tile.UpdateDisplayTile(coords, BorderMap[tile.TypeIndex], true);
-                        if (i > left && i < right - 1 && j > bottom && j < top - 1)
+                        tileBuffer[k] = null;
+                    }
+                }
+                for (int k = 0; k < 4; ++k)
+                {
+                    DualGridTile tile = tileBuffer[k];
+                    if(tile == null)
+                        continue;
+                    if (tile.CountsAsWall())
+                    {
+                        if(tile.MarkForUpdate)
+                        {
+                            tile.UpdateDisplayTileSingular(coords, WallMap[tile.TypeIndex]);
+                            tile.MarkForUpdate = false;
+                        }
+                    }
+                    if (tileBuffer[k].MarkForWallUpdate && World.SolidTile(coords - DualGridTile.NEIGHBOURS[k]))
+                    {
+                        tile.UpdateDisplayTileSingular(coords, BorderMap[tile.TypeIndex], true);
+                        if (i > left && i < right - 1 && j > bottom && j < top - 1) //if i am in bounds
                         {
                             if (tile.HasWallVariant() && TileIsNotBlendableWall(Map, i, j, tile.LayerOffset))
                             {
                                 DualGridTile wall = tile.MyWallVariant();
-                                wall.UpdateDisplayTile(coords, WallMap[wall.TypeIndex]);
+                                wall.UpdateDisplayTile(coords - DualGridTile.NEIGHBOURS[k], WallMap[wall.TypeIndex]);
                             }
                         }
+                        tileBuffer[k].MarkForWallUpdate = false;
                     }
-                    else
-                        tile.UpdateDisplayTile(coords, DisplayMap[tile.TypeIndex]);
+                    if(tile.MarkForUpdate)
+                    {
+                        tile.UpdateDisplayTileSingular(coords, DisplayMap[tile.TypeIndex]);
+                        tile.MarkForUpdate = false;
+                    }
                 }
             }
         }
+        stopwatch.Stop();
+        UnityEngine.Debug.Log($"Refreshing Tile Maps Execution Time: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)");
+    }
+    public static void RefreshDisplayTilemap(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
+    {
+        Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        for (int i = left; i < right; i++)
+        {
+            for (int j = bottom; j < top; j++)
+            {
+                Vector3Int coords = new(i, j);
+                DualGridTile tile = TileID.GetTileIDFromTile(Map.GetTile(coords));
+                if (tile == null)
+                    continue;
+                if (tile.CountsAsWall())
+                {
+                    tile.UpdateDisplayTile(coords, WallMap[tile.TypeIndex]);
+                }
+                else if (World.SolidTile(coords))
+                {
+                    tile.UpdateDisplayTile(coords, BorderMap[tile.TypeIndex], true);
+                    if (i > left && i < right - 1 && j > bottom && j < top - 1)
+                    {
+                        if (tile.HasWallVariant() && TileIsNotBlendableWall(Map, i, j, tile.LayerOffset))
+                        {
+                            DualGridTile wall = tile.MyWallVariant();
+                            wall.UpdateDisplayTile(coords, WallMap[wall.TypeIndex]);
+                        }
+                    }
+                }
+                else
+                    tile.UpdateDisplayTile(coords, DisplayMap[tile.TypeIndex]);
+            }
+        }
+        stopwatch.Stop();
+        UnityEngine.Debug.Log($"Refreshing Tile Maps Execution Time: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)");
     }
     public void AddDecor(bool border)
     {

@@ -113,51 +113,53 @@ public class DualGridTile : ScriptableObject
     }
     private static bool GeneratingBorder { get; set; } = false;
     public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.25f));
-    public void UpdateDisplayTile(Vector3Int pos, Tilemap map, bool isBorder = false)
+    public void UpdateDisplayTileSingular(Vector3Int pos, Tilemap map, bool isBorder = false)
     {
         GeneratingBorder = isBorder;
-        //TODO: Rather than checking all neighbors here, it might be better to do it in another way so it doesn't recheck same tiles often (This would be particularly good for worldgen speed up)
-        for (int i = 0; i < 4; i++)
+        Vector3Int newPos = pos;
+        //var prev = World.GetTileData(newPos);
+        //prev.testID += 1;
+        //World.SetTileData(newPos, prev);
+        bool needsShrinking = false;
+        int id = IsWall ? CalculateDisplayWall(newPos, World.SolidTile(pos.x, pos.y + 1), ref needsShrinking) : CalculateDisplayTile(newPos);
+        if (id != -1)
         {
-            Vector3Int newPos = pos + NEIGHBOURS[i];
-            //var prev = World.GetTileData(newPos);
-            //prev.testID += 1;
-            //World.SetTileData(newPos, prev);
-            bool needsShrinking = false;
-            int id = IsWall ? CalculateDisplayWall(newPos, World.SolidTile(pos.x, pos.y + 1) || i != 0, ref needsShrinking) : CalculateDisplayTile(newPos);
-            if (id != -1)
+            if (isBorder && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
             {
-                if(isBorder && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
+                id += BorderVariantStartIndex;
+                id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
+            }
+            else if (BonusTileTextures != null && BonusTileTextures.Length > 0)
+                id += Utils.RandInt(BonusTileTextures.Length + 1) * SpriteCount;
+            if (IsWall && needsShrinking)
+            {
+                id += 3;
+                map.SetTile(new TileChangeData(newPos, DisplayTileVariants[id], Color.white, FunkyWallFixMatrix), true);
+            }
+            else
+            {
+                Tile type = DisplayTileVariants[id];
+                if (SingleTileBonusVariants.Count > 0 && id == 6)
                 {
-                    id += BorderVariantStartIndex;
-                    id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
-                }
-                else if (BonusTileTextures != null && BonusTileTextures.Length > 0)
-                    id += Utils.RandInt(BonusTileTextures.Length + 1) * SpriteCount;
-                if (IsWall && needsShrinking)
-                {
-                    id += 3;
-                    map.SetTile(new TileChangeData(newPos, DisplayTileVariants[id], Color.white, FunkyWallFixMatrix), true);
-                }
-                else
-                {
-                    Tile type = DisplayTileVariants[id];
-                    if(SingleTileBonusVariants.Count > 0 && id == 6)
+                    int existingVariants = 1 + BonusTileTextures.Length;
+                    int newVariants = SingleTileBonusVariants.Count;
+                    int rand = Utils.RandInt(existingVariants + newVariants);
+                    if (rand >= existingVariants)
                     {
-                        int existingVariants = 1 + BonusTileTextures.Length;
-                        int newVariants = SingleTileBonusVariants.Count;
-                        int rand = Utils.RandInt(existingVariants + newVariants);
-                        if(rand >= existingVariants)
-                        {
-                            rand -= existingVariants;
-                            type = SingleTileBonusVariants[rand];
-                        }
+                        rand -= existingVariants;
+                        type = SingleTileBonusVariants[rand];
                     }
-                    map.SetTile(newPos, type);
                 }
+                map.SetTile(newPos, type);
             }
         }
         GeneratingBorder = false;
+    }
+    public void UpdateDisplayTile(Vector3Int pos, Tilemap map, bool isBorder = false)
+    {
+        //TODO: Rather than checking all neighbors here, it might be better to do it in another way so it doesn't recheck same tiles often (This would be particularly good for worldgen speed up)
+        for (int i = 0; i < 4; i++)
+            UpdateDisplayTileSingular(pos + NEIGHBOURS[i], map, isBorder);
     }
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
@@ -165,6 +167,8 @@ public class DualGridTile : ScriptableObject
     public Texture2D[] BorderOnlyTileTextures;
     public Sprite[] BonusCenterTileTextures;
     private int BorderVariantStartIndex = 0;
+    public bool MarkForUpdate { get; set; }
+    public bool MarkForWallUpdate { get; set; }
     public float LayerOffset { get; set; } = 0;
     [SerializeField]
     private Tile RealTileMapVariant;
