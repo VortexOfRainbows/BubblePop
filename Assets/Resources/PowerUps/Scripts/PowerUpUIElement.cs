@@ -105,6 +105,7 @@ public class PowerUpUIElement : MonoBehaviour
     /// Either Gems or Shards depending on context.
     /// </summary>
     public int Cost { get; set; } = -1;
+    public bool CompendiumHoverOverride { get; set; } = false;
     public void WhileOn()
     {
         Timer += 1;
@@ -118,10 +119,10 @@ public class PowerUpUIElement : MonoBehaviour
         }
         else
             Count.gameObject.SetActive(!AppearLocked && (Compendium.Instance == null || Compendium.Instance.PowerPage.ShowCounts) && !PreventHovering);
-        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea) && (!CrucibleElement || PowerUpCheatUI.MouseInCompendiumArea);
-        float size = CompendiumElement ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
+        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea || CompendiumHoverOverride) && (!CrucibleElement || PowerUpCheatUI.MouseInCompendiumArea);
+        float size = CompendiumElement && !CompendiumHoverOverride ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
         size *= ScaleMultiplier;
-        bool rectangular = CompendiumElement;
+        bool rectangular = CompendiumElement && !CompendiumHoverOverride;
         if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement, true) && (CompendiumElement || !Main.GamePaused || !(InventoryElement || MenuElement)))
         {
             if(myLayout != null)
@@ -134,10 +135,22 @@ public class PowerUpUIElement : MonoBehaviour
 
             if(CompendiumElement)
             {
-                if (Control.LeftMouseClick)
-                    Compendium.Instance.PowerPage.UpdateSelectedType(Index, this);
-                else if (Control.RightMouseClick)
-                    Compendium.Instance.PowerPage.TierList.QueueRemoval = Index;
+                if(CompendiumHoverOverride)
+                {
+                    if (Control.LeftMouseClick && !Compendium.CurrentlySelectedPage.TierListActive)
+                    {
+                        Compendium.Instance.SetPage(0);
+                        Compendium.Instance.PowerPage.UpdateSelectedType(Index, this);
+                    }
+                }
+                else
+                {
+
+                    if (Control.LeftMouseClick)
+                        Compendium.Instance.PowerPage.UpdateSelectedType(Index, this);
+                    else if (Control.RightMouseClick)
+                        Compendium.Instance.PowerPage.TierList.QueueRemoval = Index;
+                }
             }
         }
         else

@@ -30,14 +30,12 @@ Need to do:
 	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
 3. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
 4. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
-5. Compendium TODO:
-	1. Make blurbs (actual equipment effects) appear in the equipment page (to actually make the power pool appear nicely would require quite a few reworks. For starters, the description and title would need to be separated, and sections should be made into their own dynamically generated text boxes instead of all sitting in the same text box
-6. Snow Regions:
+5. Snow Regions:
 	1. Snow ambient objects need to spawn
 	2. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
 	3. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
-7. MINIMAP
-8. Characters can spawn in your run and give specific items?
+6. MINIMAP
+7. Characters can spawn in your run and give specific items?
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -62,6 +60,10 @@ Done:
 2. Standardize the way compendium descriptions are generated to use titles, headers, and segments, rather than just a single block of text with different size arguments.
 	1. Description segments all have a shaded background, like the lore segments used to have (they still have them)
 	2. Updated for all pages now!
+	3. Modified the size range for the Title (now title should more often fall on one line, except for the really long ones)
+3. Compendium Equipment Page now showcases the powers each equipment provides in special UI rather than a list of text
+	1. You can click on the powers to navigate to their page
+	2. The abilities provided by each equip is also displayed now, though as text (may be temporary)
 
 8/25/26 to 8/26/26
 1. King Oil ability always use oil colored bubbles

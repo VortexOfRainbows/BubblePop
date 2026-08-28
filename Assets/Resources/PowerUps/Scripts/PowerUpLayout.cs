@@ -36,6 +36,7 @@ public class PowerUpLayout : MonoBehaviour
             PowerUpElems[i].OnUpdate();
         }
     }
+    public int CountToSpreadForHigherRows = 4;
     public void UpdateSizing()
     {
         RectTransform r = layout.GetComponent<RectTransform>();
@@ -43,7 +44,7 @@ public class PowerUpLayout : MonoBehaviour
         int powerupSize = 130;
         if(RowCount > 1)
         {
-            rowCount = 1 + PowerUpElems.Count / 4;
+            rowCount = 1 + PowerUpElems.Count / CountToSpreadForHigherRows;
             r.sizeDelta = new Vector2(r.sizeDelta.x, 170 + (rowCount - 1) * powerupSize);
         }
         else if(isInGameLayout)
@@ -54,7 +55,7 @@ public class PowerUpLayout : MonoBehaviour
         int paddingY = (int)remainingPaddingAllowedForHeight / 2;
         if (RowCount == 2) //Equipment display screen
         {
-            if(PowerUpElems.Count == 1) //center the singular element
+            if(PowerUpElems.Count == 1 && CountToSpreadForHigherRows == 4) //center the singular element
             {
                 paddingX = (int)(r.rect.width - powerupSize) / 2;
             }
@@ -90,7 +91,7 @@ public class PowerUpLayout : MonoBehaviour
             //UpdateSizing();
         //}
     //}
-    public void GenerateSingle(List<PowerUp> AvailablePowers)
+    public void GenerateSingle(List<PowerUp> AvailablePowers, bool compendium = false)
     {
         foreach (PowerUpUIElement pUI in PowerUpElems)
             Destroy(pUI.gameObject);
@@ -100,6 +101,7 @@ public class PowerUpLayout : MonoBehaviour
             AvailablePowers[i].ForceNOTBlackMarket = true;
             var ui = AddNewPower(PowerUpUISlotPrefab, gameObject, AvailablePowers[i].MyID);
             ui.ForceNotBlackMarket = true;
+            ui.CompendiumElement = ui.CompendiumHoverOverride = compendium;
             AvailablePowers[i].ForceNOTBlackMarket = false;
         }
         UpdateSizing();

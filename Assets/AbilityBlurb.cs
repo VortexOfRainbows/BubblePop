@@ -52,18 +52,20 @@ public class Ability
         g.GetComponent<TextMeshProUGUI>().text = Blurb;
         var b = g.GetComponent<AbilityBlurb>();
         b.MyCanvas = canvas;
-        b.Type = Type;
-        if(Type == ID.Primary)
-            b.IconText.text = "LMB";
-        else if (Type == ID.Secondary)
-            b.IconText.text = "RMB";
-        else if (Type == ID.Ability)
-            b.IconText.text = "ABL";
-        else
-            b.IconText.text = "PSV";
+        b.Type = Type; 
+        b.IconText.text = TypeText();
         return g;
     }
-
+    public string TypeText()
+    {
+        if (Type == Ability.ID.Primary)
+            return "LMB";
+        else if (Type == Ability.ID.Secondary)
+            return "RMB";
+        else if (Type == Ability.ID.Ability)
+            return "ABL";
+        return "PSV";
+    }
 
 
     //This is for the new stuff

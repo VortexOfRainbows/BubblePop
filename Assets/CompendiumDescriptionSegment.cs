@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,14 @@ public class CompendiumDescriptionSegment : MonoBehaviour
 {
     public static CompendiumDescriptionSegment NewTitle(Transform parent, string text, float textSize = -1) => New(TitleObject, parent, text, textSize);
     public static CompendiumDescriptionSegment NewDescription(Transform parent, string text, float textSize = 28) => New(DefaultObject, parent, text, textSize);
+    public static CompendiumDescriptionSegment NewPowerSegment(Transform parent, Canvas canvas, List<PowerUp> powerPool)
+    {
+        var obj = Instantiate(PowerObject, parent);
+        obj.Layout.myCanvas = canvas;
+        obj.Layout.GenerateSingle(powerPool, true);
+        obj.TrueHeight = obj.GetHeight();
+        return obj;
+    }
     private static CompendiumDescriptionSegment New(CompendiumDescriptionSegment prefab, Transform parent, string text, float textSize)
     {
         var obj = Instantiate(prefab, parent);
@@ -20,14 +29,18 @@ public class CompendiumDescriptionSegment : MonoBehaviour
         return obj;
     }
     public float Padding = 5;
+    public static CompendiumDescriptionSegment PowerObject => Resources.Load<GameObject>("UI/Compendium/Description/PowerSegment").GetComponent<CompendiumDescriptionSegment>();
     public static CompendiumDescriptionSegment DefaultObject => Resources.Load<GameObject>("UI/Compendium/Description/CompendiumContentSegment").GetComponent<CompendiumDescriptionSegment>();
     public static CompendiumDescriptionSegment TitleObject => Resources.Load<GameObject>("UI/Compendium/Description/TitleSegment").GetComponent<CompendiumDescriptionSegment>();
     public RectTransform Casing;
     public Image BackgroundImage;
     public TextMeshProUGUI Description;
+    public PowerUpLayout Layout;
     public float TrueHeight { get; private set; }
     private float GetHeight()
     {
+        if(Layout != null)
+            return Layout.GetComponent<RectTransform>().sizeDelta.y * Layout.transform.localScale.y;
         Vector2 size = Description.GetRenderedValues();
         float trueHeight = size.y + Padding * 2;
         Casing.sizeDelta = new Vector2(Casing.sizeDelta.x, trueHeight);

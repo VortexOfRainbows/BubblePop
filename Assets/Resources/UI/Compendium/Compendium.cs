@@ -374,17 +374,16 @@ public class Compendium : MonoBehaviour
             //TBD: replace with special segment
             AddHeader("Power Pool".WithRarityColor(rare, false));
             var powers = e.GetPowerPoolForDisplay();
-            string powerStr = string.Empty;
-            string concat = string.Empty;
-            for (int i = 0; i < powers.Count; ++i)
+            Segments.Add(CompendiumDescriptionSegment.NewPowerSegment(DescriptionContentRect, MyCanvas, powers));
+            List<Ability> abilities = e.GetAbility();
+            if (abilities.Count > 0)
             {
-                PowerUp p = powers[i];
-                string name = (p.PickedUpCountAllRuns > 0 ? p.Description.Name : "???").WithColor(ColorHelper.RarityColorHex[p.Rarity - 1]);
-                powerStr += " " + name + (i == powers.Count - 1 ? "" : "\n");
+                AddHeader("Abilities".WithRarityColor(rare, false));
+                string concat = string.Empty;
+                foreach (var abl in abilities)
+                    concat += $"{$"({abl.TypeText()})".WithSizeAndColor(20, ColorHelper.GrayHex)} {abl.Blurb}\n";
+                AddDescription(concat, 24);
             }
-            concat += $"<size=26>{powerStr}</size>";
-            concat += shortLineBreak;
-            AddDescription(concat);
         }
         AddHeader("Description".WithRarityColor(rare, false));
         if (!u.PreReqComplete && !e.IsUnlocked)
@@ -402,7 +401,7 @@ public class Compendium : MonoBehaviour
             concat += $" {"Victories: ".WithColor(ColorHelper.YellowHex)}{e.VictoryCount}";
             AddDescription(concat);
         }
-        AddHeader("Associated Achievement: ".WithColor(ColorHelper.LesserGrayHex), false);
+        AddHeader("Associated Achievement".WithColor(ColorHelper.LesserGrayHex), false);
         AddDescription(u.GetName(), bastardizeIfLocked: false);
     }
     public void GenerateTierListDescription(EnemyID.StaticEnemyData e, ref int rare)
