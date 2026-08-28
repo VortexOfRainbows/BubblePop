@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 public class DualGridTilemap : MonoBehaviour
 {
+    public static GameObject SnowPile;
     public static GameObject TallGrass;
     public static GameObject Mushroom;
     public static GameObject BubbleMushroom;  
@@ -34,6 +35,7 @@ public class DualGridTilemap : MonoBehaviour
         VisualMapPrefab = VisualMapPrefab != null ? VisualMapPrefab : Resources.Load<GameObject>("World/Tiles/VisualMap");
         BubbleMushroom = BubbleMushroom != null ? BubbleMushroom : Resources.Load<GameObject>("World/Decor/Nature/BubbleMushroom");
         Mushroom = Mushroom != null ? Mushroom : Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
+        SnowPile = SnowPile != null ? SnowPile : Resources.Load<GameObject>("World/Decor/Snow/SnowClump");
         TallGrass = TallGrass != null ? TallGrass : Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
         CratePrefab = CratePrefab != null ? CratePrefab : Resources.Load<GameObject>("World/Breakable/BreakableCrate");
 
@@ -172,6 +174,7 @@ public class DualGridTilemap : MonoBehaviour
                 bool isGrassTile = t == TileID.Grass.TileType(border);
                 bool isDirtTile = t == TileID.Dirt.TileType(border);
                 bool isDarkGrass = t == TileID.DarkGrass.TileType(border);
+                bool isSnowTile = t == TileID.Snow.TileType(border);
                 var pos = new Vector3(i + 1, j + 1, 0);
                 if(i % 3 == 0 && j % 3 == 0)
                 {
@@ -200,6 +203,23 @@ public class DualGridTilemap : MonoBehaviour
                     g.color = isDarkGrass ? borderColor : c;
                     g.sortingOrder = order;
                     g.flipX = Utils.rand.NextBool();
+                    continue;
+                }
+                else if (isSnowTile && Utils.RandFloat() < 0.16f * mult)
+                { 
+                    bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
+                    if(!edgeTile)
+                    {
+                        var g = Instantiate(SnowPile, Parent).GetComponent<SpriteRenderer>();
+                        pos.y += Utils.RandFloat(-0.05f, 0.05f);
+                        pos.x += Utils.RandFloat(-0.05f, 0.05f);
+                        g.sprite = Main.TextureAssets.SnowPiles[Utils.RandInt(Main.TextureAssets.SnowPiles.Length)];
+                        g.transform.localPosition = pos;
+                        g.color = border ? TileID.Snow.BorderColor : c;
+                        g.sortingOrder = order;
+                        g.flipX = Utils.rand.NextBool();
+                        g.transform.localScale *= Utils.RandFloat(0.9f, 1.0f);
+                    }
                     continue;
                 }
                 if ((mushroom && (isGrassTile || isDirtTile)) || isDarkGrass)

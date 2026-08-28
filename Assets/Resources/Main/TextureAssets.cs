@@ -29,9 +29,10 @@ public partial class Main : MonoBehaviour
         public static Sprite[] SlotSymbol = new Sprite[4];
         public static Sprite GoldProj, CoinProj, GemProj, TokenProj, FireProj, FireOffsetProj;
         public static Sprite PowerUpPlaceholder;
-        public static Sprite[] Flowers; //= Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Flowers");
-        public static Sprite[] TallGrass; //= Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/TallGrass");
-        public static Sprite[] ShortGrass;// = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/ShortGrass");
+        public static Sprite[] Flowers;
+        public static Sprite[] TallGrass;
+        public static Sprite[] ShortGrass;
+        public static Sprite[] SnowPiles;
         public static Sprite Snowball;
         public static Sprite KingOilDiamond, KingOilBomb;
         public static Sprite CrosshairOuter, CrosshairInner, CrosshairFill, CrosshairEmblem;
@@ -87,6 +88,12 @@ public partial class Main : MonoBehaviour
                 Resources.Load<Sprite>("World/Decor/Nature/Sprites/TallGrass1"),
                 Resources.Load<Sprite>("World/Decor/Nature/Sprites/TallGrass2"),
                 Resources.Load<Sprite>("World/Decor/Nature/Sprites/TallGrass3"),
+            };
+            SnowPiles = new Sprite[] {
+                Resources.Load<Sprite>("World/Decor/Snow/SnowChunk1"),
+                Resources.Load<Sprite>("World/Decor/Snow/SnowChunk2"),
+                Resources.Load<Sprite>("World/Decor/Snow/SnowChunk3"),
+                Resources.Load<Sprite>("World/Decor/Snow/SnowChunk4")
             };
             Snowball = Resources.Load<Sprite>("Projectiles/Snowball");
             KingOilDiamond = Resources.Load<Sprite>("Player/KingOil/Diamond");

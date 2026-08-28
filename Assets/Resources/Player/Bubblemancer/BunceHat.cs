@@ -23,11 +23,11 @@ public class BunceHat : BubblemancerHat
     protected override void AnimationUpdate()
     {
         float bonus = 0.12f;
-        if (Player.Body is Bubblemancer)
+        if (Player.Body is Bubblemancer b)
         {
-            if (Player.abilityTimer > 0)
+            if (b.DashTimer > 0)
             {
-                float sin = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(Mathf.PI * Mathf.Max(0, Player.abilityTimer / Player.AbilityCD)))) * Player.abilityTimer / Player.AbilityCD;
+                float sin = Mathf.Sqrt(Mathf.Abs(Mathf.Sin(Mathf.PI * Mathf.Max(0, b.DashTimer / b.IFrames)))) * b.DashTimer / b.IFrames;
                 velocity = new Vector2(0, p.Direction * 0.65f * sin).RotatedBy(p.lastVelo.ToRotation());
             }
             else if (Player.AbilityReady)
