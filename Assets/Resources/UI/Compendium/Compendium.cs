@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class Compendium : MonoBehaviour
 {
     public static Compendium Instance { get => m_Instance != null ? m_Instance : m_Instance = FindFirstObjectByType<Compendium>(); set => m_Instance = value; }
@@ -239,82 +239,86 @@ public class Compendium : MonoBehaviour
     #endregion
 
     #region Description
-    public TextMeshProUGUI DisplayPortDescription;
+    public static bool DescriptionLocked { get; set; }
     public RectTransform DescriptionContentRect;
-    public TextMeshProUGUI LoreSection;
     public EquipmentInfoScreen EquipmentSection;
-    public RectTransform LoreSectionRect => LoreSection.transform.parent.GetComponent<RectTransform>();
     public static readonly string shortLineBreak = "<size=12>\n\n</size>";
+    public static readonly List<CompendiumDescriptionSegment> Segments = new();
+    public void AddTitle(string text)
+    {
+        Segments.Add(CompendiumDescriptionSegment.NewTitle(DescriptionContentRect, DescriptionLocked ? text.Bastardize('?') : text));
+    }
+    public void AddHeader(string text)
+    {
+        Segments.Add(CompendiumDescriptionSegment.NewTitle(DescriptionContentRect, DescriptionLocked ? text.Bastardize('?') : text, 26));
+    }
+    public void AddDescription(string text, float size = 28)
+    {
+        Segments.Add(CompendiumDescriptionSegment.NewDescription(DescriptionContentRect, DescriptionLocked ? text.Bastardize('?') : text, size));
+    }
+    public void ClearDescriptionSegments()
+    {
+        foreach (var segment in Segments)
+            GameObject.Destroy(segment.gameObject);
+        Segments.Clear(); 
+        DescriptionLocked = false;
+    }
     public void UpdateDescription(bool reset, int SelectedType)
     {
         float minW = 361;
         if (reset && SelectedType >= 0)
         {
+            ClearDescriptionSegments();
             bool blackMarket = false;
             int rare = 0;
             string finalText = string.Empty;
             object loreObject = null;
-            bool locked = false;
             if (PageNumber == 0)
             {
                 PowerUp p = PowerUp.Get(SelectedType);
                 loreObject = p;
-                string concat = GenerateTierListDescription(p, ref rare);
-                locked = DisplayCPUE.IsLocked();
-                finalText = locked ? concat.Bastardize('?') : concat;
+                DescriptionLocked = DisplayCPUE.IsLocked();
+                GenerateTierListDescription(p, ref rare);
+                //finalText = locked ? concat.Bastardize('?') : concat;
                 if (p.IsBlackMarket())
                     blackMarket = true;
             }
             else if (PageNumber == 1)
             {
                 loreObject = DisplayCEE.MyElem.ActiveEquipment;
-                locked = DisplayCEE.IsLocked();
+                DescriptionLocked = DisplayCEE.IsLocked();
                 finalText = GenerateTierListDescription(loreObject as Equipment, ref rare);
                 //EquipmentSection.SetUIElement(DisplayCEE.MyElem.ActiveEquipment, 0);
             }
             else if (PageNumber == 2)
             {
                 loreObject = DisplayCPEnemy.MyElem.StaticData;
-                locked = DisplayCPEnemy.IsLocked();
+                DescriptionLocked = DisplayCPEnemy.IsLocked();
                 finalText = GenerateTierListDescription(loreObject as EnemyID.StaticEnemyData, ref rare);
             }
             else if (PageNumber == 3)
                 finalText = GenerateTierListDescription(DisplayCPAchievement, ref rare);
             UpdateStars(rare);
 
-            if(PageNumber == 3 || locked) //Achievement page has no NOTES section for now, so it should disable it
+            AddDescription(finalText);
+            if(PageNumber != 3 && !DescriptionLocked && loreObject != null)//Enable notes section for other descriptions
             {
-                LoreSection.text = string.Empty;
-                //Disable notes section
-            }
-            else if(loreObject != null)//Enable notes section for other descriptions
-            {
-                finalText += shortLineBreak + $"<size=26>{"Notes".WithRarityColor(rare, blackMarket)}</size>";
                 string loreText = GetLoreSegment(loreObject);
-                LoreSection.text = loreText;
+                AddHeader("Notes".WithRarityColor(rare, blackMarket));
+                AddDescription(loreText, 25); //lore text previously had 25 font size, smaller than other sections (28)
             }
-            DisplayPortDescription.text = finalText;
         }
-        float equipmentTarget = 0;
-        //if(PageNumber == 1)
-        //{
-        //    EquipmentSection.gameObject.SetActive(true);
-        //    equipmentTarget = EquipmentSection.GetComponent<RectTransform>().rect.height;
-        //}
-        //else
+        float finalBonusPaddingBottom = 5;
+        float totalHeightNeeded = 0;
+        foreach(var segment in Segments)
         {
-            EquipmentSection.gameObject.SetActive(false);
+            float height = segment.TrueHeight;
+            segment.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -totalHeightNeeded);
+            totalHeightNeeded += height;
         }
-        Vector2 target = DisplayPortDescription.GetRenderedValues();
-        Vector2 loreTarget = LoreSection.GetRenderedValues();
-        float minH = 100; // 460;
-        float paddingBonusMain = 15; //5 + 10
-        float paddingBonusLore = 10; //10 since the padding is 5, 5 (5 + 5 = 10)
-        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + loreTarget.y + equipmentTarget + paddingBonusLore + paddingBonusMain));
-        LoreSectionRect.transform.localPosition = new Vector2(LoreSectionRect.transform.localPosition.x, -equipmentTarget);
-        LoreSectionRect.sizeDelta = new Vector2(LoreSectionRect.sizeDelta.x, loreTarget.y + paddingBonusLore);
+        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(100, totalHeightNeeded + finalBonusPaddingBottom));
     }
-    public string GenerateTierListDescription(PowerUp p, ref int rare)
+    public void GenerateTierListDescription(PowerUp p, ref int rare)
     {
         bool isBlackMarket = p.IsBlackMarket();
         rare = p.Rarity - 1;
@@ -326,10 +330,7 @@ public class Compendium : MonoBehaviour
             if (e.IsUnlocked)
                 UnlockedAlts[e] = AltDescriptions[t];
         }
-        float size = 42;
-        if (p is Electroluminescence)
-            size = 39.9f;
-        string concat = $"<size={size}>{p.UnlockedName}</size>" + shortLineBreak;
+        AddTitle(p.UnlockedName);
         //if (!p.BriefDescIsSameAsLong)
         //{
         //    concat += $"<size=26>{"Brief\n".WithRarityColor(rare, isBlackMarket)}</size>";
@@ -337,26 +338,23 @@ public class Compendium : MonoBehaviour
         //    concat += $"<size=26>{(hasAlt ? "Detailed (Default)\n" : "Detailed\n").WithRarityColor(rare, isBlackMarket)}</size>";
         //}
         bool hasAlt = UnlockedAlts.Count > 0 || (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.IsComplete);
-        concat += $"<size=26>{(hasAlt ? "Description (Default)\n" : "Description\n").WithRarityColor(rare, isBlackMarket)}</size>";
-        concat += p.TrueFullDescription;
+        AddHeader((hasAlt ? "Description (Default)\n" : "Description\n").WithRarityColor(rare, isBlackMarket));
+        AddDescription(p.TrueFullDescription);
         if (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.IsComplete)
         {
-            concat += shortLineBreak + $"<size=26>{$"Description (Black Market)\n".WithRarityColor(rare, true)}</size>";
-            concat += p.BlackMarketFullDescription;
+            AddHeader($"Description (Black Market)\n".WithRarityColor(rare, true));
+            AddDescription(p.BlackMarketFullDescription);
         }
         foreach (Equipment e in UnlockedAlts.Keys)
         {
-            concat += shortLineBreak + $"<size=26>{$"Description ({e.GetName(true)})\n".WithRarityColor(rare, isBlackMarket)}</size>";
-            concat += UnlockedAlts[e];
+            AddHeader($"Description ({e.GetName(true)})\n".WithRarityColor(rare, isBlackMarket));
+            AddDescription(UnlockedAlts[e]);
         }
         if (!DisplayCPUE.IsLocked())
         {
-            concat += shortLineBreak;
-            concat += $"<size=26>{"Stats\n".WithRarityColor(rare, isBlackMarket)}</size>";
-            concat += $" {"Times Obtained: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpCountAllRuns}\n";
-            concat += $" {"Greatest Stack: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpBestAllRuns}";
+            AddHeader("Stats\n".WithRarityColor(rare, isBlackMarket));
+            AddDescription($"{"Times Obtained: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpCountAllRuns}\n{"Greatest Stack: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpBestAllRuns}");
         }
-        return concat;
     }
     public string GenerateTierListDescription(Equipment e, ref int rare)
     {
