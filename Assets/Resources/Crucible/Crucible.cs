@@ -30,16 +30,18 @@ public class Crucible : InteractableWorldObject
     public Transform CauldronParent;
     public PowerUpObject HeldPower;
     public TextMeshPro Text;
+
+    public GameObject Foliage;
     public void Start()
     {
-        foreach(SpriteRenderer r in transform.GetComponentsInChildren<SpriteRenderer>())
-            if(!r.CompareTag("Power"))
-                r.sortingOrder = LayerHelper.CrucibleSortingOrder;
-        HeldPower.group.sortingOrder = LayerHelper.CrucibleSortingOrder;
         HeldPower.gameObject.SetActive(false);
         Text.transform.localScale = Vector2.zero;
         Text.text = "0";
         Player.ObjectsConsideredForUIInteraction.Add(gameObject);
+        if(World.RealTileMap.Map.GetTile(World.RealTileMap.Map.WorldToCell(transform.position)) == TileID.Grass.FloorTileType)
+        {
+            Foliage.SetActive(true);
+        }
     }
     public void ConnectArms()
     {
