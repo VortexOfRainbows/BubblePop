@@ -117,9 +117,12 @@ public class DualGridTile : ScriptableObject
     {
         GeneratingBorder = isBorder;
         //TODO: Rather than checking all neighbors here, it might be better to do it in another way so it doesn't recheck same tiles often (This would be particularly good for worldgen speed up)
-        for (int i = 0; i < NEIGHBOURS.Length; i++)
+        for (int i = 0; i < 4; i++)
         {
             Vector3Int newPos = pos + NEIGHBOURS[i];
+            //var prev = World.GetTileData(newPos);
+            //prev.testID += 1;
+            //World.SetTileData(newPos, prev);
             bool needsShrinking = false;
             int id = IsWall ? CalculateDisplayWall(newPos, World.SolidTile(pos.x, pos.y + 1) || i != 0, ref needsShrinking) : CalculateDisplayTile(newPos);
             if (id != -1)

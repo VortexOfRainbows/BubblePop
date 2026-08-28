@@ -1,11 +1,10 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
+
 public class World : MonoBehaviour
 {
     public static Tile DepthTile;
@@ -17,6 +16,7 @@ public class World : MonoBehaviour
         public float distance;
         public Vector2 direction;
         public int runID;
+        //public int testID;
         public TileData(byte progressionNum = byte.MaxValue, bool roadBlock = false)
         {
             ProgressionNumber = progressionNum;
@@ -24,6 +24,7 @@ public class World : MonoBehaviour
             distance = float.MaxValue;
             direction = Vector2.zero;
             runID = 0;
+            //testID = 0;
         }
     }
     private static Vector2Int tileDataOffset;

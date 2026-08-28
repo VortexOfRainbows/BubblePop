@@ -133,7 +133,7 @@ public class DualGridTilemap : MonoBehaviour
                     else if (World.SolidTile(coords))
                     {
                         tile.UpdateDisplayTile(coords, BorderMap[tile.TypeIndex], true);
-                        if(i > left && i < right - 1 && j > bottom && j < top - 1)
+                        if (i > left && i < right - 1 && j > bottom && j < top - 1)
                         {
                             if (tile.HasWallVariant() && TileIsNotBlendableWall(Map, i, j, tile.LayerOffset))
                             {

@@ -52,7 +52,7 @@ Done:
 8/28/26
 1. Crucible is now layered as a singular object for purpose of sprite sorting
 2. Crucibles that spawn on grass will spawn with some foliage again
-3. Snow ambient objects now spawn on snow varyingly
+3. Snow ambient objects now spawn on snow varyingly, snow tile size fixed
 4. Hats that have special movement mechanics with Bubblemancer's Dash now animate based on the dash timer rather than the ability cooldown timer
 	1. Bunce cap should no longer levitate in the air for prolonged periods
 	2. Other hats should no longer rotate in the dash direction for prolonged periods

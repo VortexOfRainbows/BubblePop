@@ -603,6 +603,9 @@ public partial class Player : Entity
     private float AttackUpdateTimer = 0;
     public override void OnFixedUpdate()
     {
+        //Debug.Log(World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).testID);
+
+
         Body.Player = Accessory.Player = Weapon.Player = Hat.Player = this; //There's probably a better way to do this
         if (!HasRunStartingGear && Main.WavesUnleashed)
         {
