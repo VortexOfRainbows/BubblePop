@@ -64,6 +64,10 @@ Done:
 3. Compendium Equipment Page now showcases the powers each equipment provides in special UI rather than a list of text
 	1. You can click on the powers to navigate to their page
 	2. The abilities provided by each equip is also displayed now, though as text (may be temporary)
+4. Modify Ability UI slightly and add UI icons for Gachapon and King Oil (from SAM!)
+5. Fixed bug where hovering over Gachapon Tokens in UI showed nothing
+6. Fix bug where projectiles with exactly 2 pierce value (such as gacha slots base projectile) would hit the same enemy twice
+7. In the pause menu, all buttons are slightly transparent now instead of just the compendium button
 
 8/25/26 to 8/26/26
 1. King Oil ability always use oil colored bubbles

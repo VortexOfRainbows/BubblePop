@@ -852,7 +852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 2
-  myCanvas: {fileID: 0}
+  myCanvas: {fileID: 7563945110523091720}
   Icon: {fileID: 8637667122824910871}
   Sparkle: {fileID: 1944759862260104270}
   SparkleTimer: 0
@@ -8857,6 +8857,10 @@ PrefabInstance:
       propertyPath: myCanvas
       value: 
       objectReference: {fileID: 7563945110523091720}
+    - target: {fileID: 4112653259990322010, guid: fec92b5a8eec0ee4ea2aa568d55ac18e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5100
+      objectReference: {fileID: 0}
     - target: {fileID: 4206565040620500646, guid: fec92b5a8eec0ee4ea2aa568d55ac18e, type: 3}
       propertyPath: MyCanvas
       value: 

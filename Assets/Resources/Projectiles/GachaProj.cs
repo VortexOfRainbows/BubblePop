@@ -14,6 +14,7 @@ public class GachaProj : Projectile
         Damage = 4 * (1 + 0.1f * PlayerOwner.ConsolationPrize);
         Penetrate = 2;
         Friendly = true;
+        immunityFrames = 100;
         if (Data1 == 1)
         {
             Damage = 10 + PlayerOwner.PhilosophersStone;

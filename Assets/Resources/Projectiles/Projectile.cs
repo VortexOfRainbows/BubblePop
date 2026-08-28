@@ -315,7 +315,7 @@ public class Projectile : MonoBehaviour
             //if(target is not IceGolem)
             target.AddBuff<Chill>(PlayerOwner.ChillDuration);
         }
-        bool piercingProjectile = Penetrate > 1 || Penetrate == -1;
+        bool piercingProjectile = Penetrate >= 1 || Penetrate == -1;
         if (piercingProjectile && target is Enemy enemy)
             SpecializedImmuneFrames.Add(new ImmunityData(enemy, immunityFrames));
     }

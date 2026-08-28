@@ -50,9 +50,9 @@ public class AbilityBubbleUI : MonoBehaviour
         {
             if (localPlayer.Body is Gachapon)
             {
-                borderColor = ColorHelper.RarityColors[4].Lerp(Color.yellow, 0.5f);
-                barColor = ColorHelper.ChipColor * 1.4f;
-                barBottomColor = ColorHelper.ChipColor * 0.9f;
+                borderColor = ColorHelper.ChipColor;
+                //barColor = ColorHelper.ChipColor * 1.4f;
+                //barBottomColor = ColorHelper.ChipColor * 0.9f;
             }
             else if (localPlayer.Body is Fizzy)
             {
