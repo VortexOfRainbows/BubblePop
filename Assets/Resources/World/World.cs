@@ -99,8 +99,8 @@ public partial class World : MonoBehaviour
     }
     public void ResetWorld(bool firstInit)
     {
-        UnityEngine.Random.InitState(1337);
-        Utils.rand.InitState(1337);
+        //UnityEngine.Random.InitState(1337);
+        //Utils.rand.InitState(1337);
         System.Diagnostics.Stopwatch watch = new();
         watch.Start();
 

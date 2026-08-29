@@ -119,11 +119,11 @@ public class DualGridTilemap : MonoBehaviour
         {
             for (int j = bottom; j < top; j++)
             {
-                Vector3Int coords = new(i, j);
                 for(int k = 0; k < 4; ++k)
                 {
-                    Vector3Int trueC = coords - DualGridTile.NEIGHBOURS[k];
-                    ref World.TileData unsafeData = ref World.UnsafeGetTileData(trueC.x, trueC.y);
+                    int i2 = i - DualGridTile.NEIGHBOURS[k].x;
+                    int j2 = j - DualGridTile.NEIGHBOURS[k].y;
+                    ref World.TileData unsafeData = ref World.UnsafeGetTileData(i2, j2);
                     DualGridTile tile = tileBuffer[k] = unsafeData.TileType;
                     if (tile == null)
                         continue;
@@ -133,7 +133,7 @@ public class DualGridTilemap : MonoBehaviour
                     {
                         tile.MarkForBorderUpdate = true;
                         if (!tile.MarkForSpecialBorderUpdate)
-                            if (tile.HasWallVariant() && TileIsNotBlendableWall(trueC.x, trueC.y, tile.LayerOffset))
+                            if (tile.HasWallVariant() && TileIsNotBlendableWall(i2, j2, tile.LayerOffset))
                                 tile.MarkForSpecialBorderUpdate = true;
                     }
                     else
@@ -146,23 +146,23 @@ public class DualGridTilemap : MonoBehaviour
                     {
                         if (tile.MarkForWallUpdate)
                         {
-                            tile.UpdateDisplayTileSingular(coords, tile.QueuedWallChangeData);
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedWallChangeData);
                             tile.MarkForUpdate = false;
                         }
                         if (tile.MarkForBorderUpdate)
                         {
-                            tile.UpdateDisplayTileSingular(coords, tile.QueuedBorderChangeData, true);
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedBorderChangeData, true);
                             if(tile.MarkForSpecialBorderUpdate)
                             {
                                 DualGridTile wall = tile.MyWallVariant();
-                                wall.UpdateDisplayTileSingular(coords, wall.QueuedWallChangeData);
+                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallChangeData);
                                 tile.MarkForSpecialBorderUpdate = false;
                             }
                             tile.MarkForBorderUpdate = false;
                         }
                         if (tile.MarkForUpdate)
                         {
-                            tile.UpdateDisplayTileSingular(coords, tile.QueuedTileChangeData);
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedTileChangeData);
                             tile.MarkForUpdate = false;
                         }
                     }

@@ -73,6 +73,8 @@ Done:
 		1. Total time ~980 ms now
 	8. (8th) Tile Neighbor Relations now use a byte int array instead of weird tuple dictionary
 		1. Total time ~940 ms now
+	9. (9th) Adjusted some functions to take two ints as input instead of vectorint structs
+		1. Total time ~930 ms now
 6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
 7. WIP Tiledata reworks
 	1. Move into its own partial class

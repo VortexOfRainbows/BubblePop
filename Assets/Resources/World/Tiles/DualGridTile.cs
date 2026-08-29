@@ -59,17 +59,17 @@ public class DualGridTile : ScriptableObject
             return newRelation;
         }
     }
-    public static Vector3Int[] NEIGHBOURS { get; private set; } = new Vector3Int[] {
-        new(0, 0, 0),
-        new(1, 0, 0),
-        new(0, 1, 0),
-        new(1, 1, 0)
+    public static Vector2Int[] NEIGHBOURS { get; private set; } = new Vector2Int[] {
+        new(0, 0),
+        new(1, 0),
+        new(0, 1),
+        new(1, 1)
     };
     #endregion
-    public bool AdjacentTileSameType(Vector3Int coords, out bool ghostReturn)
+    public bool AdjacentTileSameType(int i, int j, out bool ghostReturn)
     {
         ghostReturn = false;
-        ref World.TileData data = ref World.UnsafeGetTileData(coords);
+        ref World.TileData data = ref World.UnsafeGetTileData(i, j);
         if (!data.HasTile)
             return false;
         DualGridTile tile = data.TileType;
@@ -93,25 +93,25 @@ public class DualGridTile : ScriptableObject
             ghostReturn = true;
         return false;
     }
-    public int CalculateDisplayTile(Vector3Int coords)
+    public int CalculateDisplayTile(int i, int j)
     {
-        bool topRight = AdjacentTileSameType(coords -NEIGHBOURS[0], out bool ghostTopRight);
-        bool topLeft = AdjacentTileSameType(coords -NEIGHBOURS[1], out bool ghostTopLeft);
-        bool botRight = AdjacentTileSameType(coords -NEIGHBOURS[2], out bool ghostBotRight);
-        bool botLeft = AdjacentTileSameType(coords -NEIGHBOURS[3], out bool ghostBotLeft);
+        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight);
+        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft);
+        bool botRight = AdjacentTileSameType(i, j - 1, out bool ghostBotRight);
+        bool botLeft = AdjacentTileSameType(i - 1, j - 1, out bool ghostBotLeft);
         byte key = GetByteKey(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
-        int i = NeighbourRelations[key];
-        if(i == 4 || i == 13) //weird double corner tiles do not consider ghosts
-            i = NeighbourRelations[key];
-        return i;
+        int id = NeighbourRelations[key];
+        if(id == 4 || id == 13) //weird double corner tiles do not consider ghosts
+            id = NeighbourRelations[key];
+        return id;
     }
-    public int CalculateDisplayWall(Vector3Int coords, ref bool tileNeedsShrinking)
+    public int CalculateDisplayWall(int i, int j, ref bool tileNeedsShrinking)
     {
         tileNeedsShrinking = false;
-        bool topRight = AdjacentTileSameType(coords -NEIGHBOURS[0], out bool ghostTopRight);
-        bool topLeft = AdjacentTileSameType(coords -NEIGHBOURS[1], out bool ghostTopLeft);
-        bool botRight = AdjacentTileSameType(coords -NEIGHBOURS[2], out bool _);
-        bool botLeft = AdjacentTileSameType(coords -NEIGHBOURS[3], out bool _);
+        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight);
+        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft);
+        bool botRight = AdjacentTileSameType(i, j - 1, out bool ghostBotRight);
+        bool botLeft = AdjacentTileSameType(i - 1, j - 1, out bool ghostBotLeft);
         //These statements might not make sense if we use a .5 offset for our walls, as then another variant will be needed
         bool initiallyNoTop = !topRight && !topLeft && !ghostTopRight && !ghostTopLeft;
         if (botRight && !topRight)
@@ -121,12 +121,12 @@ public class DualGridTile : ScriptableObject
         if((!topRight && !topLeft) || (botRight && botLeft))
             topRight = topLeft = true; //throw new Exception("ERROR: Wall placed in area without top tiles");
         byte key = GetByteKey(topLeft, topRight, botLeft, botRight);
-        int i = WallNeighbourRelations[key];
-        if(i == 3 || i == 5)
+        int id = WallNeighbourRelations[key];
+        if(id == 3 || id == 5)
         {
             tileNeedsShrinking = initiallyNoTop;
         }
-        return i;
+        return id;
     }
     private static bool GeneratingBorder { get; set; } = false;
     public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.25f));
@@ -136,14 +136,14 @@ public class DualGridTile : ScriptableObject
     /// <summary>
     /// Should only be called during worldgen
     /// </summary>
-    public void UpdateDisplayTileSingular(Vector3Int pos, List<TileChangeData> list, bool isBorder = false)
+    public void UpdateDisplayTileSingular(int i, int j, List<TileChangeData> list, bool isBorder = false)
     {
         GeneratingBorder = isBorder;
         //var prev = World.GetTileData(newPos);
         //prev.testID += 1;
         //World.SetTileData(newPos, prev);
         bool needsShrinking = false;
-        int id = IsWall ? CalculateDisplayWall(pos, ref needsShrinking) : CalculateDisplayTile(pos);
+        int id = IsWall ? CalculateDisplayWall(i, j, ref needsShrinking) : CalculateDisplayTile(i, j);
         if (id != -1)
         {
             if (isBorder && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
@@ -157,7 +157,7 @@ public class DualGridTile : ScriptableObject
             {
                 id += 3;
                 Tile type = DisplayTileVariants[id];
-                list.Add(new TileChangeData(pos, type, type.color, FunkyWallFixMatrix));
+                list.Add(new TileChangeData(new Vector3Int(i, j), type, type.color, FunkyWallFixMatrix));
                 //VisualMap.SetTile(, true);
             }
             else
@@ -174,7 +174,7 @@ public class DualGridTile : ScriptableObject
                         type = SingleTileBonusVariants[rand];
                     }
                 }
-                list.Add(new TileChangeData(pos, type, type.color, Matrix4x4.identity));
+                list.Add(new TileChangeData(new Vector3Int(i, j), type, type.color, Matrix4x4.identity));
                 //VisualMap.SetTile(pos, type);
             }
         }
