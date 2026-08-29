@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -51,7 +49,6 @@ public class DualGridTilemap : MonoBehaviour
         AddDecor(true);
         PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
         NewFasterRefresh(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
-        //GetComponent<TilemapRenderer>().enabled = false;
     }
     public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, bool border = false, bool wall = false)
     {
@@ -119,8 +116,6 @@ public class DualGridTilemap : MonoBehaviour
     public static void NewFasterRefresh(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
-        Stopwatch stopwatch = new();
-        stopwatch.Start();
         DualGridTile[] tileBuffer = new DualGridTile[4];
         for (int i = left; i < right; i++)
         {
@@ -192,8 +187,6 @@ public class DualGridTilemap : MonoBehaviour
             tile.QueuedBorderChangeData.Clear();
             tile.QueuedTileChangeData.Clear();
         }
-        stopwatch.Stop();
-        UnityEngine.Debug.Log($"Time To Refresh Tile Maps: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)".WithColor("#FF6699"));
     }
     public void AddDecor(bool border)
     {

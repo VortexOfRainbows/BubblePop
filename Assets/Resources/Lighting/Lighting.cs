@@ -53,8 +53,6 @@ public static class Lighting
         {
             throw new System.Exception("ERROR: Could not find lighting tile maps");
         }
-        System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-        watch.Start();
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
@@ -87,8 +85,6 @@ public static class Lighting
         PreviousProgNum = 0;
         BorderImage.material.SetFloat("_ProgressionThreshold", 0);
         Update();
-        watch.Stop();
-        Debug.Log($"Time To Setup Light: {watch.ElapsedMilliseconds} ms ({watch.ElapsedTicks} ticks)".WithColor("#FFAA44"));
     }
     public static void Update() //Runs on normal delta time, not fixed
     {

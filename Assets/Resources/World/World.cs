@@ -101,10 +101,11 @@ public partial class World : MonoBehaviour
     {
         UnityEngine.Random.InitState(1337);
         Utils.rand.InitState(1337);
-        System.Diagnostics.Stopwatch stopwatch = new();
-        stopwatch.Start();
+        System.Diagnostics.Stopwatch watch = new();
+        watch.Start();
+
         Main.PylonProgressionNumber = 0;
-        if(!firstInit)
+        if (!firstInit)
         {
             foreach(Player p in Player.AllPlayers)
                 p.OnWorldReset();
@@ -124,23 +125,23 @@ public partial class World : MonoBehaviour
         Roadblocks.Clear();
         foreach (DualGridTile tile in TileID.TileTypes)
             tile.Init();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 1 Reset".WithColor("#FF6644"));
+
         PlaceNodeLocations();
         ApproximateWorldBounds();
-        System.Diagnostics.Stopwatch nodeWatch = new();
-        nodeWatch.Start();
         LoadNodesOntoWorld();
-        nodeWatch.Stop();
-        Debug.Log($"Time To Generate Nodes: {nodeWatch.ElapsedMilliseconds} ms ({nodeWatch.ElapsedTicks} ticks)".WithColor("#FF6644"));
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Loading Nodes Onto World".WithColor("#FF6644"));
 
-        System.Diagnostics.Stopwatch stopwatch2 = new();
-        stopwatch2.Start();
         CreateWorldOuterFill();
         FinalizeWorldTiles();
-        stopwatch2.Stop();
-        Debug.Log($"Time To Generate Outer Fill and Finalize World Tiles: {stopwatch2.ElapsedMilliseconds} ms ({stopwatch2.ElapsedTicks} ticks)".WithColor("#FF6699"));
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Outer Fill and Finalize World Tiles".WithColor("#FF6699"));
+
         RealTileMap.Init();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Realmap Generation/Refresh".WithColor("#FFBBEE"));
+
         if (NatureParent != null)
             NatureParent.Init();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Nature Propagation".WithColor("#44FF77"));
 
         if (firstInit)
         {
@@ -176,9 +177,11 @@ public partial class World : MonoBehaviour
         Pylons.Last().WavesRequired = 1;
         FinalPylon = PylonParent.GetChild(PylonParent.childCount - 1).GetComponent<WarpPylon>();
         NodeID.ResetNodePositions();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 2 Reset".WithColor("#AA55FF"));
+
         Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
-        stopwatch.Stop();
-        Debug.Log($"Time To Generate World: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)".WithColor("#FF4466"));
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Lighting".WithColor("#DDFF33"));
+        watch.Stop();
     }
     public void Start()
     {
@@ -270,7 +273,7 @@ public partial class World : MonoBehaviour
                     throw new Exception("BUBBLE: FAILED TO PLACE PROCEDURAL NODE");
                 att += 2;
             }
-            Debug.Log($"Placing Node [{i}] took {att - start} attempts".WithColor("#5500FF"));
+            //Debug.Log($"Placing Node [{i}] took {att - start} attempts".WithColor("#5500FF"));
             toPrev = prevPosition - arbitraryGameObject.transform.position;
             toPrev = toPrev.normalized;
             //prevNode = node;
@@ -337,7 +340,7 @@ public partial class World : MonoBehaviour
             right = Mathf.Max(r + transformPos.x, right);
             bottom = Mathf.Min(b + transformPos.y, bottom);
             top = Mathf.Max(t + transformPos.y, top);
-            Debug.Log($"Node[{i}]: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#66FF11"));
+            //Debug.Log($"Node[{i}]: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#66FF11"));
             ++i;
         }
         if (nodes.Count <= 0)
@@ -347,8 +350,8 @@ public partial class World : MonoBehaviour
         bottom -= Padding;
         top += Padding;
         Vector2Int size = new(right - left, top - bottom);
-        Debug.Log($"World Border: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#CC77FF"));
-        Debug.Log($"World size: X: {size.x}, Y: {size.y}".WithColor("#CC77FF"));
+        //Debug.Log($"World Border: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#CC77FF"));
+        //Debug.Log($"World size: X: {size.x}, Y: {size.y}".WithColor("#CC77FF"));
         ApproximateSize = new(left, bottom, right - left, top - bottom);
         if (size.x < 1000 && size.y < 1000 && size.x > 0 && size.y > 0)
         {
