@@ -229,7 +229,7 @@ public class DualGridTilemap : MonoBehaviour
                 var pos = new Vector3(i + 1, j + 1, 0);
                 if(i % 3 == 0 && j % 3 == 0)
                 {
-                    AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2), border);
+                    AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2));
                 }
                 if ((isGrassTile && Utils.RandFloat() < 0.16f * mult) || (isDarkGrass && Utils.RandFloat() < 0.04f))
                 {
@@ -308,11 +308,12 @@ public class DualGridTilemap : MonoBehaviour
             }
         }
     }
-    public void AddSparseDecor(int i, int j, bool border)
+    public void AddSparseDecor(int i, int j)
     {
         ref var data = ref World.UnsafeGetTileData(i, j);
         int order = 20;
         Color c = Color.white;
+        bool border = data.IsSolid;
         if (border && data.TileType == TileID.Grass && Utils.RandFloat() < 0.55f)
         {
             int nonSolidTiles = 0;
@@ -334,7 +335,7 @@ public class DualGridTilemap : MonoBehaviour
             g.sortingOrder = order;
             g.flipX = Utils.rand.NextBool();
         }
-        else if(!border && data.TileType == TileID.Plank || (data.TileType == TileID.Cobblestone && !Utils.RandBool(4)))
+        else if(!border && (data.TileType == TileID.Plank || (data.TileType == TileID.Cobblestone && !Utils.RandBool(4))))
         {
             int solidTiles = 1;
             for (int x = -1; x <= 1; ++x)
