@@ -61,6 +61,9 @@ Done:
 	1. Old Speeds for refresh 1179ms to 1513ms
 	2. New speeds for refresh 848ms to 872ms
 6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
+7. WIP Tiledata reworks
+	1. Move into its own partial class
+	2. Now tile stuff is private and accessed through world as a middleman first
 
 8/27/26
 1. WIP compendium equipment blurbs

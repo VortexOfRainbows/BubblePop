@@ -772,7 +772,7 @@ public partial class Player : Entity
             RoadblockBarrier.transform.GetChild(5).gameObject.SetActive(botRight);
             RoadblockBarrier.transform.GetChild(6).gameObject.SetActive(topRight);
             RoadblockBarrier.transform.GetChild(7).gameObject.SetActive(botLeft);
-            RoadblockBarrier.transform.position = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(Position));
+            RoadblockBarrier.transform.position = World.CenterOfTile(World.RealPosToTilePos(Position));
         }
         else
         {

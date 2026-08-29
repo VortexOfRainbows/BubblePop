@@ -343,7 +343,7 @@ public class DualGridTilemap : MonoBehaviour
             {
                 for(int y = -1; y <= 3; ++y)
                 {
-                    if (!World.SolidTile(new Vector3Int(i + x, j + y)) && World.RealTileMap.Map.GetTile(i, j) != TileID.DarkGrass.FloorTileType)
+                    if (!World.SolidTile(new Vector3Int(i + x, j + y)) && World.GetTile(i, j) != TileID.DarkGrass.FloorTileType)
                         nonSolidTiles++;
                 }
             }

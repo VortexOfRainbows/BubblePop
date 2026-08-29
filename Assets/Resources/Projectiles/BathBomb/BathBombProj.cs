@@ -118,7 +118,7 @@ public class BathBomb : Projectile
         float sin = Mathf.Sin(percent * Mathf.PI);
         Vector3 drawPos = Vector2.Lerp(playerStartPos, Destination, percent);
         drawPos.y -= 0.5f;
-        bool solidTile = World.SolidTile(World.RealTileMap.Map.WorldToCell(drawPos));
+        bool solidTile = World.SolidTile(drawPos);
         if (solidTile)
             drawPos.y += 0.25f;
         Vector2 scale = new(2.0f, 1.4f);

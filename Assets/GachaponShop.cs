@@ -25,7 +25,7 @@ public class GachaponShop : GemUtility
     public void Start()
     {
         AllShops.Add(this);
-        ProgressionNumber = World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).ProgressionNumber;
+        ProgressionNumber = World.GetTileData(World.RealPosToTilePos(transform.position)).ProgressionNumber;
         RestockRemaining += Player.Instance.BonusStocks;
         RestockMachine.SetRestockAmountToShopStock(this);
         RestockMachine.UpdateUI(this);

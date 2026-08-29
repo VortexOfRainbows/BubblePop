@@ -165,7 +165,7 @@ public partial class Entity : MonoBehaviour
             offset = Vector2.zero;
         Vector2 pos = transform.position;
         Vector2 finalPos = pos;
-        Vector2 tileCenter = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(pos + offset));
+        Vector2 tileCenter = World.CenterOfTile(World.RealPosToTilePos(pos + offset));
         Vector2 tileCenterToPlayerCenter = pos - tileCenter;
         Vector2 veloOffset = Vector2.zero;
         if (RB != null)

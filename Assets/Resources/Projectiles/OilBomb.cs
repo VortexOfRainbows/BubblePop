@@ -33,7 +33,7 @@ public class OilBomb : Projectile
         transform.localScale = new Vector3(0, 0, 1);
         startPos = transform.position;
         startPos.y -= 0.5f;
-        OnSolidTile = World.SolidTile(World.RealTileMap.Map.WorldToCell(startPos));
+        OnSolidTile = World.SolidTile(World.RealPosToTilePos(startPos));
         if (OnSolidTile)
             startPos.y += 0.25f;
         SkyPos = startPos + new Vector2(0, 26);

@@ -136,7 +136,7 @@ public class ForgeHammer : GemUtility
             Player.ObjectsConsideredForUIInteraction.Add(c.gameObject);
             c.MyHammer = this;
         }
-        ProgressionNumber = World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).ProgressionNumber;
+        ProgressionNumber = World.GetTileData(World.RealPosToTilePos(transform.position)).ProgressionNumber;
     }
     public List<GameObject> Gems;
     public int gemRemovalCount = 0;

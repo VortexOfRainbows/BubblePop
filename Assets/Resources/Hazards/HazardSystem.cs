@@ -163,7 +163,7 @@ public static class HazardSystem
     }
     public static Vector2Int ToHazardPosition(Vector2 worldPosition)
     {
-        return (Vector2Int)World.WorldPosition(worldPosition);
+        return (Vector2Int)World.RealPosToTilePos(worldPosition);
     }
     public static Hazard AddHazard(Vector2 worldPosition, HazardType type, int duration, float size, int infoNum = 0, bool overrideOld = true) => AddHazard(ToHazardPosition(worldPosition), worldPosition, type, duration, size, infoNum, overrideOld);
     public static Hazard AddHazard(Vector2Int position, Vector2 worldPosition, HazardType type, int duration, float size, int infoNum = 0, bool overrideOld = true)
@@ -222,7 +222,7 @@ public static class HazardSystem
                 ParticleManager.NewParticle(pos2, hazard.Visual.transform.localScale.x + 0.2f, Utils.RandCircle(0.5f), 0.5f, Utils.RandFloat(0.5f, 1.2f), ParticleManager.ID.Fire, Color.white.WithAlpha(0.4f));
             }
             newH.PlayerOwner = data.player;
-            Vector2 truePosition = World.RealTileMap.Map.CellToWorld((Vector3Int)pos) + new Vector3(1f, 1f);
+            Vector2 truePosition = new(pos.x * 2 + 1f, pos.y * 2 + 1f);
             Vector2 visualPosition = existing.WorldPosition;
             Projectile.NewProjectile<OilFire>(Vector2.Lerp(truePosition, visualPosition, Utils.RandFloat(1)), Utils.RandCircle(0.5f), 1, data.player, scaleMult);
         }

@@ -52,7 +52,7 @@ public class DualGridTile : ScriptableObject
     public bool AdjacentTileSameType(Vector3Int coords, out bool ghostReturn)
     {
         ghostReturn = false;
-        var adjacentTileType = World.RealTileMap.Map.GetTile(coords);
+        var adjacentTileType = World.GetTile(coords);
         if (adjacentTileType == null)
             return false;
         if (adjacentTileType == TileType(GeneratingBorder))
@@ -113,7 +113,7 @@ public class DualGridTile : ScriptableObject
     }
     private static bool GeneratingBorder { get; set; } = false;
     public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.25f));
-    public void UpdateDisplayTileSingular(Vector3Int pos, Tilemap map, bool isBorder = false)
+    public void UpdateDisplayTileSingular(Vector3Int pos, Tilemap VisualMap, bool isBorder = false)
     {
         GeneratingBorder = isBorder;
         Vector3Int newPos = pos;
@@ -134,7 +134,7 @@ public class DualGridTile : ScriptableObject
             if (IsWall && needsShrinking)
             {
                 id += 3;
-                map.SetTile(new TileChangeData(newPos, DisplayTileVariants[id], Color.white, FunkyWallFixMatrix), true);
+                VisualMap.SetTile(new TileChangeData(newPos, DisplayTileVariants[id], Color.white, FunkyWallFixMatrix), true);
             }
             else
             {
@@ -150,16 +150,16 @@ public class DualGridTile : ScriptableObject
                         type = SingleTileBonusVariants[rand];
                     }
                 }
-                map.SetTile(newPos, type);
+                VisualMap.SetTile(newPos, type);
             }
         }
         GeneratingBorder = false;
     }
-    public void UpdateDisplayTile(Vector3Int pos, Tilemap map, bool isBorder = false)
+    public void UpdateDisplayTile(Vector3Int pos, Tilemap VisualMap, bool isBorder = false)
     {
         //TODO: Rather than checking all neighbors here, it might be better to do it in another way so it doesn't recheck same tiles often (This would be particularly good for worldgen speed up)
         for (int i = 0; i < 4; i++)
-            UpdateDisplayTileSingular(pos + NEIGHBOURS[i], map, isBorder);
+            UpdateDisplayTileSingular(pos + NEIGHBOURS[i], VisualMap, isBorder);
     }
     #region Scriptable Object Stuff
     public Texture2D TileTexture;

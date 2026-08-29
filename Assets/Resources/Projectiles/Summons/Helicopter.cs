@@ -138,9 +138,9 @@ public class Helicopter : Projectile
     {
         Vector3 drawPos = transform.position + ShadowOffset;
         drawPos.y -= 0.5f;
-        bool solidTile = World.SolidTile(World.RealTileMap.Map.WorldToCell(drawPos)) ||
-            World.SolidTile(World.RealTileMap.Map.WorldToCell(drawPos + new Vector3(-0.25f, 0))) || 
-            World.SolidTile(World.RealTileMap.Map.WorldToCell(drawPos + new Vector3(0.25f, 0)));
+        bool solidTile = World.SolidTile(drawPos) ||
+            World.SolidTile(drawPos + new Vector3(-0.25f, 0)) || 
+            World.SolidTile(drawPos + new Vector3(0.25f, 0));
         if (solidTile)
             drawPos.y += 0.25f;
         SpriteBatch.Draw(Main.TextureAssets.Shadow, drawPos, new Vector2(3.0f, 1.4f), 0, new Color(0, 0, 0, 0.3f), solidTile ? LayerHelper.SolidTileSortingOrder + 1 : -40, Main.TextureAssets.AlphaShader);

@@ -4,54 +4,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
-public class World : MonoBehaviour
+public partial class World : MonoBehaviour
 {
+    public static Vector3Int RealPosToTilePos(Vector3 worldPosition)
+    {
+        return RealTileMap.Map.WorldToCell(worldPosition);
+    }
     public static Tile DepthTile;
     public static int FloorSortingLayer { get; private set; }
-    public struct TileData
-    {
-        public DualGridTile TileType;
-        public byte ProgressionNumber;
-        public bool IsRoadblock;
-        public float distance;
-        public Vector2 direction;
-        public int runID;
-        //public int testID;
-        public TileData(byte progressionNum = byte.MaxValue, bool roadBlock = false)
-        {
-            ProgressionNumber = progressionNum;
-            IsRoadblock = roadBlock;
-            distance = float.MaxValue;
-            direction = Vector2.zero;
-            runID = 0;
-            TileType = null;
-        }
-    }
-    private static Vector2Int tileDataOffset;
-    private static TileData[,] tileData;
-    private static TileData NoTileData = new(byte.MaxValue);
-    public static readonly int Padding = 20;
-    public static ref TileData GetTileData(Vector3Int pos)
-    {
-        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
-        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))
-            return ref NoTileData;
-        return ref tileData[pointPos.x, pointPos.y];
-    }
-    public static ref TileData UnsafeGetTileData(Vector3Int pos) => ref UnsafeGetTileData((Vector2Int)pos);
-    public static ref TileData UnsafeGetTileData(Vector2Int pos)
-    {
-        Vector2Int pointPos = pos - tileDataOffset;
-        return ref tileData[pointPos.x, pointPos.y];
-    }
-    public static Vector2 GetTileDirection(Vector2Int pos) => UnsafeGetTileData(pos).direction;
-    public static Vector2 GetDirection(Vector3 pos)
-    {
-        float x = pos.x / TilePathfinding.TileSize.x;
-        float y = pos.y / TilePathfinding.TileSize.y;
-        return GetTileDirection(new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y)));
-    }
     public static void CreateRoadblockTileVisuals(Vector3Int pos, ref TileData data)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
@@ -101,8 +63,8 @@ public class World : MonoBehaviour
     }
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
-    public static DualGridTilemap RealTileMap => Instance.Tilemap;
-    public DualGridTilemap Tilemap;
+    private static DualGridTilemap RealTileMap => Instance.Tilemap;
+    [SerializeField] private DualGridTilemap Tilemap;
     [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap, InverseRoadblockMap, OcclusionMap;
     public Tilemap LightingTilemapFront;
     public Tilemap LightingTilemapBack;
@@ -120,33 +82,22 @@ public class World : MonoBehaviour
     public List<Transform> nodes;
     public static bool ValidEnemySpawnTile(Vector3 pos)
     {
-        Vector3Int posi = RealTileMap.Map.WorldToCell(pos);
+        Vector3Int posi = RealPosToTilePos(pos);
         var data = GetTileData(posi);
         bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
         bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.FloorTileType && !GetTileData(posi).IsRoadblock;
         return WithinBorders(pos) && validSpawnTile && currentlyOnThisProgressionTier;
     }
-    public static Vector3Int WorldPosition(Vector3 position)
-    {
-        return RealTileMap.Map.WorldToCell(position);
-    }
     public static bool WithinBorders(Vector3 position)
     {
-        return RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) == Tile.ColliderType.None;
+        return RealTileMap.Map.GetColliderType(RealPosToTilePos(position)) == Tile.ColliderType.None;
     }
-    public static bool SolidTile(Vector3 position)
-    {
-        return RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) != Tile.ColliderType.None;
-    }
+    public static bool SolidTile(Vector3 worldPosition) => SolidTile(RealPosToTilePos(worldPosition));
     public static bool SolidTile(Vector3Int pos)
     {
         return RealTileMap.Map.GetColliderType(pos) != Tile.ColliderType.None;
     }
     public static bool SolidTile(int x, int y) => SolidTile(new Vector3Int(x, y));
-    public static bool HasTile(Vector3Int pos)
-    {
-        return RealTileMap.Map.HasTile(pos);
-    }
     public static bool AreaIsClear(Vector3Int area, int squareRadius = 0)
     {
         for(int i = -squareRadius; i <= squareRadius; ++i)
@@ -162,7 +113,7 @@ public class World : MonoBehaviour
     }
     public static bool IsRoadblocked(Vector3 position)
     {
-        var data = GetTileData(RealTileMap.Map.WorldToCell(position));
+        var data = GetTileData(RealPosToTilePos(position));
         bool currentlyOnThisProgressionTier = data.ProgressionNumber > Main.PylonProgressionNumber;
         bool roadblock = currentlyOnThisProgressionTier || (data.IsRoadblock && Main.PylonActive);
         return roadblock;

@@ -185,11 +185,11 @@ public class WorldNode : MonoBehaviour
                 {
                     bool iAmSolid = ((Tile)tile).colliderType != Tile.ColliderType.None;
                     bool solid = World.SolidTile(v);
-                    bool canPlaceTile = !world.Tilemap.Map.HasTile(v) || (solid == iAmSolid);
+                    bool canPlaceTile = !World.HasTile(v) || (solid == iAmSolid);
                     bool placeSolidAsUnsolid = !solid && iAmSolid && !canPlaceTile;
                     if(canPlaceTile || placeSolidAsUnsolid)
                     {
-                        world.Tilemap.Map.SetTile(v, placeSolidAsUnsolid ? tile.GetTileID().FloorTileType : tile);
+                        World.SetTile(v, placeSolidAsUnsolid ? tile.GetTileID().FloorTileType : tile);
                         ref World.TileData data = ref World.GetTileData(v);
                         if (canPlaceTile && data.ProgressionNumber == 0)
                         {
@@ -329,7 +329,7 @@ public class WorldNode : MonoBehaviour
             if(i == 2 && withSubNode)
             {
                 subNodeConPos = pointBetween;
-                while(attempts == 0 || !World.AreaIsClear(World.RealTileMap.Map.WorldToCell(subNodePos), 5))
+                while(attempts == 0 || !World.AreaIsClear(World.RealPosToTilePos(subNodePos), 5))
                 {
                     subNodePos = pointBetween + rNorm * (Utils.Rand1OrMinus1() * (pathVariance * Utils.RandFloat(1.0f - 0.25f * attempts, 1.5f + 0.1f * attempts) + 10)) + Utils.RandCircle(attempts);
                     attempts++;
@@ -411,15 +411,15 @@ public class WorldNode : MonoBehaviour
                     continue;
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
                 bool canGenerate = World.GetTileData(v).IsRoadblock;
-                TileBase existingTile = World.Tilemap.Map.GetTile(v);
+                TileBase existingTile = World.GetTile(v);
                 if (existingTile == null || (World.SolidTile(v) && OverrideTiles))
                 {
                     if (existingTile == null)
-                        World.Tilemap.Map.SetTile(v, tile);
+                        World.SetTile(v, tile);
                     else
                     {
                         var tile2 = (existingTile.GetTileID() == TileID.Dirt || existingTile.GetTileID() == TileID.Grass) ? tile : existingTile.GetTileID().FloorTileType;
-                        World.Tilemap.Map.SetTile(v, tile2);
+                        World.SetTile(v, tile2);
                     }
                     ref World.TileData data = ref World.GetTileData(v);
                     data.IsRoadblock = true;
