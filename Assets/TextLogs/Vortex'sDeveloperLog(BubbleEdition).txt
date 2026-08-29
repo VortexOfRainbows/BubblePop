@@ -57,9 +57,9 @@ Done:
 	1. Bunce cap should no longer levitate in the air for prolonged periods
 	2. Other hats should no longer rotate in the dash direction for prolonged periods
 	3. Should feel more snappy overall
-5. Tried to do tile generation optimizations, but it did not work
-	1. Will try again when I do differing tile heights, as that might require some system reworks that will necessitate changes
-	2. I maybe got it slightly more optimized for smaller maps (~10-15% or so), but could not fine a reasonable bonus for the bigger layouts
+5. Tile refresh optimizations (seed 1337):
+	1. Old Speeds for refresh 1179ms to 1513ms
+	2. New speeds for refresh 848ms to 872ms
 
 8/27/26
 1. WIP compendium equipment blurbs

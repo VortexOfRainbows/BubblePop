@@ -167,6 +167,7 @@ public class DualGridTile : ScriptableObject
     public Texture2D[] BorderOnlyTileTextures;
     public Sprite[] BonusCenterTileTextures;
     private int BorderVariantStartIndex = 0;
+    public bool MarkedForAnyUpdate { get; set; }
     public bool MarkForUpdate { get; set; }
     public bool MarkForBorderUpdate { get; set; }
     public bool MarkForSpecialBorderUpdate { get; set; }

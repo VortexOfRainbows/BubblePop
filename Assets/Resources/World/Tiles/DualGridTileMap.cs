@@ -50,7 +50,7 @@ public class DualGridTilemap : MonoBehaviour
         PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
         AddDecor(true);
         PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
-        ITriedToMakeAFasterRefreshFunctionAndItDidNotWork(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
+        NewFasterRefresh(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
         //GetComponent<TilemapRenderer>().enabled = false;
     }
     public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, bool border = false, bool wall = false)
@@ -116,7 +116,7 @@ public class DualGridTilemap : MonoBehaviour
                TileIsNotSolidOrRendersBelow(Map, i - 1, j + 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(Map, i + 1, j, myLayerOffset) ||
                TileIsNotSolidOrRendersBelow(Map, i - 1, j - 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(Map, i - 1, j, myLayerOffset);
     }
-    public static void ITriedToMakeAFasterRefreshFunctionAndItDidNotWork(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
+    public static void NewFasterRefresh(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
         Stopwatch stopwatch = new();
@@ -135,19 +135,20 @@ public class DualGridTilemap : MonoBehaviour
                     {
                         DualGridTile tile = tileBuffer[k] = TileID.GetTileIDFromTile(t);
                         if(tile.CountsAsWall())
+                        {
                             tile.MarkForWallUpdate = true;
+                        }
                         else if (World.SolidTile(trueC))
                         {
                             tile.MarkForBorderUpdate = true;
-                            if (!tile.MarkForSpecialBorderUpdate && i > left && i < right && j > bottom && j < top) //if i am in bounds
-                                //even though checking TileIsNotBlendableWall is supposed to be an optimization, it actually seems to run slower than just placing a ton of tiles.
-                                //this is clearly wrong, so the logic for this function should be overhauled! First need to figure out what the actual goal is and how to fix it.
-                                if (tile.HasWallVariant())// && TileIsNotBlendableWall(Map, trueC.x, trueC.y, tile.LayerOffset))
+                            if (!tile.MarkForSpecialBorderUpdate && i > left && i < right && j > bottom && j < top)
+                                if (tile.HasWallVariant() && TileIsNotBlendableWall(Map, trueC.x, trueC.y, tile.LayerOffset))
                                     tile.MarkForSpecialBorderUpdate = true;
                         }
                         else
+                        {
                             tile.MarkForUpdate = true;
-                        
+                        }
                     }
                     else
                         tileBuffer[k] = null;
@@ -185,7 +186,7 @@ public class DualGridTilemap : MonoBehaviour
         stopwatch.Stop();
         UnityEngine.Debug.Log($"Refreshing Tile Maps Execution Time: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)");
     }
-    public static void RefreshDisplayTilemap(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
+    public static void OldSlowerRefresh(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
         Stopwatch stopwatch = new();

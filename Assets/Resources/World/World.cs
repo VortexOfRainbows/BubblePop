@@ -193,6 +193,8 @@ public class World : MonoBehaviour
     }
     public void ResetWorld(bool firstInit)
     {
+        UnityEngine.Random.InitState(1337);
+        Utils.rand.InitState(1337);
         Main.PylonProgressionNumber = 0;
         if(!firstInit)
         {
