@@ -141,7 +141,7 @@ public partial class World : MonoBehaviour
 
         if (NatureParent != null)
             NatureParent.Init();
-        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Nature Propagation".WithColor("#44FF77"));
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Nature Re-Ordering".WithColor("#44FF77"));
 
         if (firstInit)
         {

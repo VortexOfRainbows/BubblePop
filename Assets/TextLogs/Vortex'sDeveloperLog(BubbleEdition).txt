@@ -18,7 +18,7 @@ Do Later:
 	2. Enemy wave cards
 	3. (potentially) Pause menu/Gameover menu opening swiftness
 	4. UCI playtest disclaimer
-	5. Character Select Menu
+	5. Character Select Menu and Equip Display (make sure this starts offscreen, as right now it starts onscreen and simply moves offscreen during world gen, which means fast generation times leave it visible as a bug)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -69,12 +69,16 @@ Done:
 		1. Around 500 ms saved, ~1200 ms now
 	6. (6th) Refresh 420 -> 290 ms
 		1. Around 130 ms saved, ~1050 ms now
+	7. (7th) Decor spawns now use new tiledata system and only check once
+		2. Total time ~975 ms now
 6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
 7. WIP Tiledata reworks
 	1. Move into its own partial class
 	2. Now tile stuff is private and accessed through world as a middleman first
 	3. SolidTile now fetches from TileData, which should be quicker than GetColliderType
 		1. This should result in generally better performance across the board in the margins
+8. Fix bug where Tree spawns and Crate spawns were run double the intended amount.
+	1. Crate spawn attempt chance 50% -> 75%
 
 8/27/26
 1. WIP compendium equipment blurbs

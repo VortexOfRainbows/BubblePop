@@ -43,12 +43,10 @@ public class DualGridTilemap : MonoBehaviour
         BorderDisplayMap = new();
         WallDisplayMap = new();
         PrepareDisplayMap(FloorMapParent, DisplayMap);
-        AddDecor(false);
-        //-49 is for occlusion for now
         PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
-        AddDecor(true);
         PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
-        NewFasterRefresh(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
+        AddDecor();
+        NewFasterRefresh(DisplayMap, BorderDisplayMap, WallDisplayMap);
     }
     public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, bool border = false, bool wall = false)
     {
@@ -113,7 +111,7 @@ public class DualGridTilemap : MonoBehaviour
                TileIsNotSolidOrRendersBelow(i - 1, j + 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(i + 1, j, myLayerOffset) ||
                TileIsNotSolidOrRendersBelow(i - 1, j - 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(i - 1, j, myLayerOffset);
     }
-    public static void NewFasterRefresh(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
+    public static void NewFasterRefresh(Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
         DualGridTile[] tileBuffer = new DualGridTile[4];
@@ -188,38 +186,55 @@ public class DualGridTilemap : MonoBehaviour
             tile.QueuedTileChangeData.Clear();
         }
     }
-    public void AddDecor(bool border)
+    public void AddDecor()
     {
-        Color borderColor = new(0.5f, 0.5f, 0.5f);
-        Color c = border ? borderColor : Color.white;
-        Transform Parent = border ? World.Instance.BorderDecorParent : World.Instance.FloorDecorParent;
         World.GetCorners(out int left, out int right, out int bottom, out int top, 15);
-        int order = border ? LayerHelper.SolidTileSortingOrder : LayerHelper.FloorObjAndFloraSortingLayer;
-        bool mushroom = false;
-        float mult = 1.0f;
-        if (border)
-        {
-            mushroom = true;
-            mult = 0.5f;
-        }
+        Color borderColor = new(0.5f, 0.5f, 0.5f);
+        Color[] StandardColors = new Color[] { Color.white, borderColor };
+        Transform[] Parents = new Transform[] { World.Instance.FloorDecorParent, World.Instance.BorderDecorParent };
+        int[] StandardOrders = new int[] { LayerHelper.FloorObjAndFloraSortingLayer, LayerHelper.SolidTileSortingOrder };
+        bool mushroom;
+        float mult;
+        Color c;
+        Transform parent;
+        int order;
+        bool border;
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)
             {
-                TileBase t = Map.GetTile(i, j);
-                bool isGrassTile = t == TileID.Grass.TileType(border);
-                bool isDirtTile = t == TileID.Dirt.TileType(border);
-                bool isDarkGrass = t == TileID.DarkGrass.TileType(border);
-                bool isSnowTile = t == TileID.Snow.TileType(border);
+                ref var UnsafeData = ref World.UnsafeGetTileData(i, j);
+                border = UnsafeData.IsSolid;
+                if (border)
+                {
+                    c = StandardColors[1];
+                    parent = Parents[1];
+                    order = StandardOrders[1];
+                    mushroom = true;
+                    mult = 0.5f;
+                }
+                else
+                {
+                    c = StandardColors[0];
+                    parent = Parents[0];
+                    order = StandardOrders[0];
+                    mushroom = false;
+                    mult = 1.0f;
+                }
+                DualGridTile t = UnsafeData.TileType;
+                bool isGrassTile = t == TileID.Grass;
+                bool isDirtTile = t == TileID.Dirt;
+                bool isDarkGrass = t == TileID.DarkGrass;
+                bool isSnowTile = t == TileID.Snow;
                 var pos = new Vector3(i + 1, j + 1, 0);
                 if(i % 3 == 0 && j % 3 == 0)
                 {
-                    AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2));
+                    AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2), border);
                 }
                 if ((isGrassTile && Utils.RandFloat() < 0.16f * mult) || (isDarkGrass && Utils.RandFloat() < 0.04f))
                 {
                     int type = Utils.RandInt(3);
-                    var g = Instantiate(TallGrass, Parent).GetComponent<SpriteRenderer>();
+                    var g = Instantiate(TallGrass, parent).GetComponent<SpriteRenderer>();
                     if (type == 0)
                     {
                         g.sprite = Main.TextureAssets.TallGrass[Utils.RandInt(Main.TextureAssets.TallGrass.Length)];
@@ -246,7 +261,7 @@ public class DualGridTilemap : MonoBehaviour
                     bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
                     if(!edgeTile)
                     {
-                        var g = Instantiate(SnowPile, Parent).GetComponent<SpriteRenderer>();
+                        var g = Instantiate(SnowPile, parent).GetComponent<SpriteRenderer>();
                         pos.y += Utils.RandFloat(-0.05f, 0.05f);
                         pos.x += Utils.RandFloat(-0.05f, 0.05f);
                         g.sprite = Main.TextureAssets.SnowPiles[Utils.RandInt(Main.TextureAssets.SnowPiles.Length)];
@@ -263,7 +278,7 @@ public class DualGridTilemap : MonoBehaviour
                     float chance = isDirtTile ? 0.1f : 0.05f;
                     if (Utils.RandFloat() < chance)
                     {
-                        var g = Instantiate(Mushroom, Parent).GetComponent<SpriteRenderer>();
+                        var g = Instantiate(Mushroom, parent).GetComponent<SpriteRenderer>();
                         g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
                         g.color = borderColor;
                         g.sortingOrder = order;
@@ -280,7 +295,7 @@ public class DualGridTilemap : MonoBehaviour
                     if (Utils.RandFloat() < chance)
                     {
                         Color c2 = border ? new Color(0.825f, 0.825f, 0.825f) : c;
-                        var g = Instantiate(BubbleMushroom, Parent).GetComponent<SpriteRenderer>();
+                        var g = Instantiate(BubbleMushroom, parent).GetComponent<SpriteRenderer>();
                         var childR = g.transform.GetChild(0).GetComponent<SpriteRenderer>();
                         g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
                         g.transform.localScale *= edgeTile ? Utils.RandFloat(0.9f, 1.0f) : Utils.RandFloat(0.7f, 0.9f);
@@ -293,20 +308,19 @@ public class DualGridTilemap : MonoBehaviour
             }
         }
     }
-    public void AddSparseDecor(int i, int j)
+    public void AddSparseDecor(int i, int j, bool border)
     {
-        TileBase t = Map.GetTile(i, j);
+        ref var data = ref World.UnsafeGetTileData(i, j);
         int order = 20;
         Color c = Color.white;
-        bool isGrassTile = t == TileID.Grass.BorderTileType;
-        if (isGrassTile && Utils.RandFloat() < 0.55f)
+        if (border && data.TileType == TileID.Grass && Utils.RandFloat() < 0.55f)
         {
             int nonSolidTiles = 0;
             for(int x = -1; x <= 1; ++x)
             {
                 for(int y = -1; y <= 3; ++y)
                 {
-                    if (!World.SolidTile(new Vector3Int(i + x, j + y)) && World.GetTile(i, j) != TileID.DarkGrass.FloorTileType)
+                    if (!World.SolidTile(new Vector3Int(i + x, j + y)))
                         nonSolidTiles++;
                 }
             }
@@ -320,7 +334,7 @@ public class DualGridTilemap : MonoBehaviour
             g.sortingOrder = order;
             g.flipX = Utils.rand.NextBool();
         }
-        else if(t == TileID.Plank.FloorTileType || (t == TileID.Cobblestone.FloorTileType && Utils.RandBool(2)))
+        else if(!border && data.TileType == TileID.Plank || (data.TileType == TileID.Cobblestone && !Utils.RandBool(4)))
         {
             int solidTiles = 1;
             for (int x = -1; x <= 1; ++x)
