@@ -8,42 +8,58 @@ using Unity.VisualScripting;
 public class DualGridTile : ScriptableObject
 {
     #region Static Stuff
-    public static Dictionary<Tuple<bool, bool, bool, bool>, int> NeighbourRelations = SetNeighborRelations(false); //top left, top right, bot left, bot right
-    public static Dictionary<Tuple<bool, bool, bool, bool>, int> WallNeighbourRelations = SetNeighborRelations(true);
-    public static Dictionary<Tuple<bool, bool, bool, bool>, int> SetNeighborRelations(bool wall)
+    public static byte GetByteKey(bool b1, bool b2, bool b3, bool b4)
+    {
+        byte key = 0;
+        if (b1) key |= 1 << 3; // Bit 3
+        if (b2) key |= 1 << 2; // Bit 2
+        if (b3) key |= 1 << 1; // Bit 1
+        if (b4) key |= 1 << 0; // Bit 0
+        return key;
+    }
+    public static int[] NeighbourRelations = SetNeighborRelations(false); //top left, top right, bot left, bot right
+    public static int[] WallNeighbourRelations = SetNeighborRelations(true);
+    public static int[] SetNeighborRelations(bool wall)
     {
         if(wall)
-            return new() {
-            {new (true, true, false, true), 0},
-            {new (true, true, true, true), 1},
-            {new (true, true, true, false), 2},
-            {new (false, true, false, true), 3}, //Side
-            {new (true, false, true, false), 5}, //Side
-            {new (false, true, false, false), 6},
-            {new (true, true, false, false), 7},
-            {new (true, false, false, false), 8},
-            {new (false, false, false, false), -1}, //Empty
-            };
-        return new() {
-            {new (true, true, true, true), 6}, //Inner tile
-            {new (false, false, false, true), 12}, // OUTER_BOTTOM_RIGHT
-            {new (false, false, true, false), 0}, // OUTER_BOTTOM_LEFT
-            {new (false, true, false, false), 8}, // OUTER_TOP_RIGHT
-            {new (true, false, false, false), 14}, // OUTER_TOP_LEFT
-            {new (false, true, false, true), 1}, // EDGE_RIGHT
-            {new (true, false, true, false), 11}, // EDGE_LEFT
-            {new (false, false, true, true), 3}, // EDGE_BOTTOM
-            {new (true, true, false, false), 9}, // EDGE_TOP
-            {new (false, true, true, true), 5}, // INNER_BOTTOM_RIGHT
-            {new (true, false, true, true), 2}, // INNER_BOTTOM_LEFT
-            {new (true, true, false, true), 10}, // INNER_TOP_RIGHT
-            {new (true, true, true, false), 7}, // INNER_TOP_LEFT
-            {new (false, true, true, false), 13}, // DUAL_UP_RIGHT
-            {new (true, false, false, true), 4}, // DUAL_DOWN_RIGHT
-            {new (false, false, false, false), -1}, //Empty
-        };
+        {
+            var newRelation = new int[16];
+            Array.Fill(newRelation, -1);
+            newRelation[GetByteKey(true, true, false, true)] = 0;
+            newRelation[GetByteKey(true, true, true, true)] = 1;
+            newRelation[GetByteKey(true, true, true, false)] = 2;
+            newRelation[GetByteKey(false, true, false, true)] = 3;  // Side
+            newRelation[GetByteKey(true, false, true, false)] = 5;  // Side
+            newRelation[GetByteKey(false, true, false, false)] = 6;
+            newRelation[GetByteKey(true, true, false, false)] = 7;
+            newRelation[GetByteKey(true, false, false, false)] = 8;
+            newRelation[GetByteKey(false, false, false, false)] = -1; // Empty
+            return newRelation;
+        }
+        else
+        {
+            var newRelation = new int[16];
+            Array.Fill(newRelation, -1);
+            newRelation[GetByteKey(true, true, true, true)] = 6;   // Inner tile
+            newRelation[GetByteKey(false, false, false, true)] = 12; // OUTER_BOTTOM_RIGHT
+            newRelation[GetByteKey(false, false, true, false)] = 0;  // OUTER_BOTTOM_LEFT
+            newRelation[GetByteKey(false, true, false, false)] = 8;  // OUTER_TOP_RIGHT
+            newRelation[GetByteKey(true, false, false, false)] = 14; // OUTER_TOP_LEFT
+            newRelation[GetByteKey(false, true, false, true)] = 1;   // EDGE_RIGHT
+            newRelation[GetByteKey(true, false, true, false)] = 11;  // EDGE_LEFT
+            newRelation[GetByteKey(false, false, true, true)] = 3;   // EDGE_BOTTOM
+            newRelation[GetByteKey(true, true, false, false)] = 9;   // EDGE_TOP
+            newRelation[GetByteKey(false, true, true, true)] = 5;    // INNER_BOTTOM_RIGHT
+            newRelation[GetByteKey(true, false, true, true)] = 2;    // INNER_BOTTOM_LEFT
+            newRelation[GetByteKey(true, true, false, true)] = 10;   // INNER_TOP_RIGHT
+            newRelation[GetByteKey(true, true, true, false)] = 7;    // INNER_TOP_LEFT
+            newRelation[GetByteKey(false, true, true, false)] = 13;  // DUAL_UP_RIGHT
+            newRelation[GetByteKey(true, false, false, true)] = 4;   // DUAL_DOWN_RIGHT
+            newRelation[GetByteKey(false, false, false, false)] = -1; // Empty
+            return newRelation;
+        }
     }
-    public static Vector3Int[] NEIGHBOURS = new Vector3Int[] {
+    public static Vector3Int[] NEIGHBOURS { get; private set; } = new Vector3Int[] {
         new(0, 0, 0),
         new(1, 0, 0),
         new(0, 1, 0),
@@ -83,10 +99,10 @@ public class DualGridTile : ScriptableObject
         bool topLeft = AdjacentTileSameType(coords -NEIGHBOURS[1], out bool ghostTopLeft);
         bool botRight = AdjacentTileSameType(coords -NEIGHBOURS[2], out bool ghostBotRight);
         bool botLeft = AdjacentTileSameType(coords -NEIGHBOURS[3], out bool ghostBotLeft);
-        Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
-        int i = NeighbourRelations[neighbourTuple];
+        byte key = GetByteKey(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
+        int i = NeighbourRelations[key];
         if(i == 4 || i == 13) //weird double corner tiles do not consider ghosts
-            i = NeighbourRelations[new(topLeft, topRight, botLeft, botRight)];
+            i = NeighbourRelations[key];
         return i;
     }
     public int CalculateDisplayWall(Vector3Int coords, ref bool tileNeedsShrinking)
@@ -104,8 +120,8 @@ public class DualGridTile : ScriptableObject
             topLeft = true;
         if((!topRight && !topLeft) || (botRight && botLeft))
             topRight = topLeft = true; //throw new Exception("ERROR: Wall placed in area without top tiles");
-        Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft, topRight, botLeft, botRight);
-        int i = WallNeighbourRelations[neighbourTuple];
+        byte key = GetByteKey(topLeft, topRight, botLeft, botRight);
+        int i = WallNeighbourRelations[key];
         if(i == 3 || i == 5)
         {
             tileNeedsShrinking = initiallyNoTop;

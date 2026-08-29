@@ -70,7 +70,9 @@ Done:
 	6. (6th) Refresh 420 -> 290 ms
 		1. Around 130 ms saved, ~1050 ms now
 	7. (7th) Decor spawns now use new tiledata system and only check once
-		2. Total time ~975 ms now
+		1. Total time ~980 ms now
+	8. (8th) Tile Neighbor Relations now use a byte int array instead of weird tuple dictionary
+		1. Total time ~940 ms now
 6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
 7. WIP Tiledata reworks
 	1. Move into its own partial class
