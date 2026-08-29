@@ -168,6 +168,8 @@ public class DualGridTile : ScriptableObject
     public Sprite[] BonusCenterTileTextures;
     private int BorderVariantStartIndex = 0;
     public bool MarkForUpdate { get; set; }
+    public bool MarkForBorderUpdate { get; set; }
+    public bool MarkForSpecialBorderUpdate { get; set; }
     public bool MarkForWallUpdate { get; set; }
     public float LayerOffset { get; set; } = 0;
     [SerializeField]

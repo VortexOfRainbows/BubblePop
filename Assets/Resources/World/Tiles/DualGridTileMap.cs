@@ -50,7 +50,7 @@ public class DualGridTilemap : MonoBehaviour
         PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
         AddDecor(true);
         PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
-        RefreshDisplayTilemap(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
+        ITriedToMakeAFasterRefreshFunctionAndItDidNotWork(Map, DisplayMap, BorderDisplayMap, WallDisplayMap);
         //GetComponent<TilemapRenderer>().enabled = false;
     }
     public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, bool border = false, bool wall = false)
@@ -119,7 +119,7 @@ public class DualGridTilemap : MonoBehaviour
     public static void ITriedToMakeAFasterRefreshFunctionAndItDidNotWork(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
-        Stopwatch stopwatch = new Stopwatch();
+        Stopwatch stopwatch = new();
         stopwatch.Start();
         DualGridTile[] tileBuffer = new DualGridTile[4];
         for (int i = left; i < right; i++)
@@ -133,45 +133,51 @@ public class DualGridTilemap : MonoBehaviour
                     var t = Map.GetTile(trueC);
                     if (t != null)
                     {
-                        tileBuffer[k] = TileID.GetTileIDFromTile(t);
-                        tileBuffer[k].MarkForUpdate = true;
-                        tileBuffer[k].MarkForWallUpdate = true;
+                        DualGridTile tile = tileBuffer[k] = TileID.GetTileIDFromTile(t);
+                        if(tile.CountsAsWall())
+                            tile.MarkForWallUpdate = true;
+                        else if (World.SolidTile(trueC))
+                        {
+                            tile.MarkForBorderUpdate = true;
+                            if (!tile.MarkForSpecialBorderUpdate && i > left && i < right && j > bottom && j < top) //if i am in bounds
+                                //even though checking TileIsNotBlendableWall is supposed to be an optimization, it actually seems to run slower than just placing a ton of tiles.
+                                //this is clearly wrong, so the logic for this function should be overhauled! First need to figure out what the actual goal is and how to fix it.
+                                if (tile.HasWallVariant())// && TileIsNotBlendableWall(Map, trueC.x, trueC.y, tile.LayerOffset))
+                                    tile.MarkForSpecialBorderUpdate = true;
+                        }
+                        else
+                            tile.MarkForUpdate = true;
+                        
                     }
                     else
-                    {
                         tileBuffer[k] = null;
-                    }
                 }
                 for (int k = 0; k < 4; ++k)
                 {
                     DualGridTile tile = tileBuffer[k];
-                    if(tile == null)
-                        continue;
-                    if (tile.CountsAsWall())
+                    if(tile != null)
                     {
-                        if(tile.MarkForUpdate)
+                        if (tile.MarkForWallUpdate)
                         {
                             tile.UpdateDisplayTileSingular(coords, WallMap[tile.TypeIndex]);
                             tile.MarkForUpdate = false;
                         }
-                    }
-                    if (tileBuffer[k].MarkForWallUpdate && World.SolidTile(coords - DualGridTile.NEIGHBOURS[k]))
-                    {
-                        tile.UpdateDisplayTileSingular(coords, BorderMap[tile.TypeIndex], true);
-                        if (i > left && i < right - 1 && j > bottom && j < top - 1) //if i am in bounds
+                        if (tile.MarkForBorderUpdate)
                         {
-                            if (tile.HasWallVariant() && TileIsNotBlendableWall(Map, i, j, tile.LayerOffset))
+                            tile.UpdateDisplayTileSingular(coords, BorderMap[tile.TypeIndex], true);
+                            if(tile.MarkForSpecialBorderUpdate)
                             {
                                 DualGridTile wall = tile.MyWallVariant();
-                                wall.UpdateDisplayTile(coords - DualGridTile.NEIGHBOURS[k], WallMap[wall.TypeIndex]);
+                                wall.UpdateDisplayTileSingular(coords, WallMap[wall.TypeIndex]);
+                                tile.MarkForSpecialBorderUpdate = false;
                             }
+                            tile.MarkForBorderUpdate = false;
                         }
-                        tileBuffer[k].MarkForWallUpdate = false;
-                    }
-                    if(tile.MarkForUpdate)
-                    {
-                        tile.UpdateDisplayTileSingular(coords, DisplayMap[tile.TypeIndex]);
-                        tile.MarkForUpdate = false;
+                        if (tile.MarkForUpdate)
+                        {
+                            tile.UpdateDisplayTileSingular(coords, DisplayMap[tile.TypeIndex]);
+                            tile.MarkForUpdate = false;
+                        }
                     }
                 }
             }
@@ -182,7 +188,7 @@ public class DualGridTilemap : MonoBehaviour
     public static void RefreshDisplayTilemap(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         Map.GetCorners(out int left, out int right, out int bottom, out int top);
-        Stopwatch stopwatch = new Stopwatch();
+        Stopwatch stopwatch = new();
         stopwatch.Start();
         for (int i = left; i < right; i++)
         {
