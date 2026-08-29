@@ -23,22 +23,22 @@ public static class NodeID
                 if(n.IsSecretRoomNode)
                 {
                     SecretNodes.Add(n);
-                    Debug.Log($"Loaded SecretNode: {obj.name.WithColor("#FF00FF")}");
+                    //Debug.Log($"Loaded SecretNode: {obj.name.WithColor("#FF00FF")}");
                 }
                 else if(n.IsSubNode)
                 {
                     SubNodes.Add(n);
-                    Debug.Log($"Loaded SubNode: {obj.name.WithColor("#FFFF00")}");
+                    //Debug.Log($"Loaded SubNode: {obj.name.WithColor("#FFFF00")}");
                 }
                 else if(n.IsEndNode)
                 {
                     EndNodes.Add(n);
-                    Debug.Log($"Loaded EndNode: {obj.name.WithColor("#00FFFF")}");
+                    //Debug.Log($"Loaded EndNode: {obj.name.WithColor("#00FFFF")}");
                 }
                 else
                 {
                     Nodes.Add(n);
-                    Debug.Log($"Loaded WorldNode: {obj.name.WithColor("#FF77AA")}");
+                    //Debug.Log($"Loaded WorldNode: {obj.name.WithColor("#FF77AA")}");
                 }
             }
             else
@@ -194,7 +194,7 @@ public class WorldNode : MonoBehaviour
                         if (canPlaceTile && data.ProgressionNumber == 0)
                         {
                             data.ProgressionNumber = GenerationNumber;
-                            data.IsRoadblock = true;
+                            data.IsRoadblock = IsSubNode;
                             World.CreateRoadblockTileVisuals(v, ref data);
                         }
                     }

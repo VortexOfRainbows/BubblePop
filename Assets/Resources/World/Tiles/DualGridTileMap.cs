@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
@@ -185,6 +186,7 @@ public class DualGridTilemap : MonoBehaviour
         stopwatch.Stop();
         UnityEngine.Debug.Log($"Refreshing Tile Maps Execution Time: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)");
     }
+    [Obsolete]
     public static void OldSlowerRefresh(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
         World.GetCorners(out int left, out int right, out int bottom, out int top);
@@ -226,12 +228,8 @@ public class DualGridTilemap : MonoBehaviour
         Color borderColor = new(0.5f, 0.5f, 0.5f);
         Color c = border ? borderColor : Color.white;
         Transform Parent = border ? World.Instance.BorderDecorParent : World.Instance.FloorDecorParent;
-        World.GetCorners(out int left, out int right, out int bottom, out int top);
+        World.GetCorners(out int left, out int right, out int bottom, out int top, 15);
         int order = border ? LayerHelper.SolidTileSortingOrder : LayerHelper.FloorObjAndFloraSortingLayer;
-        left += 10;
-        right -= 10;
-        bottom += 10;
-        top -= 10;
         bool mushroom = false;
         float mult = 1.0f;
         if (border)

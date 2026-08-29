@@ -60,7 +60,8 @@ Done:
 5. Tile refresh optimizations (seed 1337): ~30% speed increase
 	1. Old Speeds for refresh 1179ms to 1513ms
 	2. New speeds for refresh 848ms to 872ms
-	3. (NEW SPEEDS AFTER SECOND REWORK) 700ms to 720ms, 2200ms for the full world!
+	3. (NEW SPEEDS AFTER SECOND REWORK) 700ms to 720ms, <2200ms for the full world. Previous: >2950 ms for full world.	
+		1. Around 750 ms saved
 6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
 7. WIP Tiledata reworks
 	1. Move into its own partial class
