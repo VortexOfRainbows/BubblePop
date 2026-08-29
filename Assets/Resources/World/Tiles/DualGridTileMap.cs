@@ -106,7 +106,7 @@ public class DualGridTilemap : MonoBehaviour
         if (!World.SolidTile(new Vector3Int(i, j)))
             return true;
         Vector3Int coords = new(i, j);
-        var otherTile = TileID.GetTileIDFromTile(Map.GetTile(coords));
+        var otherTile = World.UnsafeGetTileData(i, j).TileType;
         return otherTile.LayerOffset > myLayerOffset && !otherTile.HasWallVariant();
     }
     public static bool TileIsNotBlendableWall(Tilemap Map, int i, int j, float myLayerOffset)
@@ -130,28 +130,24 @@ public class DualGridTilemap : MonoBehaviour
                 for(int k = 0; k < 4; ++k)
                 {
                     Vector3Int trueC = coords - DualGridTile.NEIGHBOURS[k];
-                    var t = Map.GetTile(trueC);
-                    if (t != null)
+                    DualGridTile tile = tileBuffer[k] = World.UnsafeGetTileData(trueC.x, trueC.y).TileType;
+                    if (tile == null)
+                        continue;
+                    if (tile.CountsAsWall())
                     {
-                        DualGridTile tile = tileBuffer[k] = TileID.GetTileIDFromTile(t);
-                        if(tile.CountsAsWall())
-                        {
-                            tile.MarkForWallUpdate = true;
-                        }
-                        else if (World.SolidTile(trueC))
-                        {
-                            tile.MarkForBorderUpdate = true;
-                            if (!tile.MarkForSpecialBorderUpdate)
-                                if (tile.HasWallVariant() && TileIsNotBlendableWall(Map, trueC.x, trueC.y, tile.LayerOffset))
-                                    tile.MarkForSpecialBorderUpdate = true;
-                        }
-                        else
-                        {
-                            tile.MarkForUpdate = true;
-                        }
+                        tile.MarkForWallUpdate = true;
+                    }
+                    else if (World.SolidTile(trueC))
+                    {
+                        tile.MarkForBorderUpdate = true;
+                        if (!tile.MarkForSpecialBorderUpdate)
+                            if (tile.HasWallVariant() && TileIsNotBlendableWall(Map, trueC.x, trueC.y, tile.LayerOffset))
+                                tile.MarkForSpecialBorderUpdate = true;
                     }
                     else
-                        tileBuffer[k] = null;
+                    {
+                        tile.MarkForUpdate = true;
+                    }
                 }
                 for (int k = 0; k < 4; ++k)
                 {
@@ -184,7 +180,7 @@ public class DualGridTilemap : MonoBehaviour
             }
         }
         stopwatch.Stop();
-        UnityEngine.Debug.Log($"Refreshing Tile Maps Execution Time: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)");
+        UnityEngine.Debug.Log($"Time To Refresh Tile Maps: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)".WithColor("#FF6699"));
     }
     [Obsolete]
     public static void OldSlowerRefresh(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)

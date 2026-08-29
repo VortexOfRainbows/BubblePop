@@ -49,7 +49,7 @@ Sounds Needed:
 
 Done: 	
 
-8/28/26
+8/28/26 to 8/29/26
 1. Crucible is now layered as a singular object for purpose of sprite sorting
 2. Crucibles that spawn on grass will spawn with some foliage again
 3. Snow ambient objects now spawn on snow varyingly, snow tile size fixed
@@ -58,10 +58,12 @@ Done:
 	2. Other hats should no longer rotate in the dash direction for prolonged periods
 	3. Should feel more snappy overall
 5. Tile refresh optimizations (seed 1337): ~30% speed increase
-	1. Old Speeds for refresh 1179ms to 1513ms
-	2. New speeds for refresh 848ms to 872ms
-	3. (NEW SPEEDS AFTER SECOND REWORK) 700ms to 720ms, <2200ms for the full world. Previous: >2950 ms for full world.	
+	1. Old Speeds for refresh 1179ms to 1513ms, ~2950 ms for full world.	
+	2. (1st rework) New speeds for refresh 848ms to 872ms
+	3. (2nd rework) 700ms to 720ms, ~2200ms
 		1. Around 750 ms saved
+	4. (3rd rework) Refresh is now ~475 ms, ~1900 ms
+		1. Around 300 ms saved
 6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
 7. WIP Tiledata reworks
 	1. Move into its own partial class

@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public partial class World : MonoBehaviour
 {
@@ -162,7 +161,11 @@ public partial class World : MonoBehaviour
             tile.Init();
         PlaceNodeLocations();
         ApproximateWorldBounds();
+        System.Diagnostics.Stopwatch nodeWatch = new();
+        nodeWatch.Start();
         LoadNodesOntoWorld();
+        nodeWatch.Stop();
+        Debug.Log($"Time To Generate Nodes: {nodeWatch.ElapsedMilliseconds} ms ({nodeWatch.ElapsedTicks} ticks)".WithColor("#FF6644"));
 
         CreateWorldOuterFill();
         RealTileMap.Init();
@@ -444,7 +447,7 @@ public partial class World : MonoBehaviour
                             --ReachedEndPoint;
                             break;
                         }
-                        genOwner = World.GetTileData(locationToCheck).ProgressionNumber;
+                        genOwner = World.UnsafeGetTileData(locationToCheck).ProgressionNumber;
                         hasReachedEndHere = true;
                         ReachedEndPoint++;
                         solids += 20;
@@ -491,6 +494,8 @@ public partial class World : MonoBehaviour
     }
     public void CreateWorldOuterFill()
     {
+        System.Diagnostics.Stopwatch stopwatch = new();
+        stopwatch.Start();
         var Map = RealTileMap.Map;
 
         FastNoiseLite Noise = new();
@@ -553,6 +558,8 @@ public partial class World : MonoBehaviour
                 }
             }
         }
+        stopwatch.Stop();
+        Debug.Log($"Time To Generate Outer Fill: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)".WithColor("#FF6699"));
     }
     /// <summary>
     /// This keeps track of elapsed time for the purpose of visual effects. Do not use for stuff that requires more precise logic
