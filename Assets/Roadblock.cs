@@ -48,7 +48,7 @@ public class Roadblock : MonoBehaviour
         var v = World.RealPosToTilePos(pos + new Vector2(i, -j));
         if (World.SolidTile(v))
             return;
-        var tileData1 = World.GetTileData(v);
+        ref var tileData1 = ref World.GetTileData(v);
         bool correctProgressionNum1 = tileData1.ProgressionNumber >= ProgressionLevel || (Main.PylonActive && tileData1.ProgressionNumber < ProgressionLevel);
         if (tileData1.IsRoadblock && correctProgressionNum1) // && (Mathf.Abs(i) > 2 || Mathf.Abs(j) > 2))
         {
@@ -60,7 +60,7 @@ public class Roadblock : MonoBehaviour
             {
                 Vector2 dir = dirs[Utils.RandInt(4)];
                 Vector2 toPos = dir; // (Vector2)transform.position - v2;
-                var tileData2 = World.GetTileData(v + new Vector3Int((int)toPos.x, (int)toPos.y));
+                ref var tileData2 = ref World.GetTileData(v + new Vector3Int((int)toPos.x, (int)toPos.y));
                 bool correctProgressionNum2 = tileData2.ProgressionNumber >= ProgressionLevel || (Main.PylonActive && tileData2.ProgressionNumber < ProgressionLevel);
                 if (tileData2.IsRoadblock && correctProgressionNum2 && distM > 0.2f)
                 {

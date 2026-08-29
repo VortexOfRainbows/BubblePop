@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.PlayerSettings;
 
 public partial class World : MonoBehaviour
 {
@@ -7,6 +8,19 @@ public partial class World : MonoBehaviour
     {
         World.RealTileMap.Map.SetTile(pos, tile);
     }
+    public static void SetTile(Vector3Int pos, DualGridTile tile, bool solid)
+    {
+        //if (!Instance.ApproximateSize.Contains(pos))
+        //    throw new System.Exception($"GENERROR: Tried placing tile: {pos}, worldbounds: {Instance.ApproximateSize}");
+        World.RealTileMap.Map.SetTile(pos, solid ? tile.BorderTileType : tile.FloorTileType);
+        ref TileData data = ref GetTileData(pos);
+        data.IsSolid = solid;
+        data.TileType = tile;
+    }
+    //public static void SetTilePlusProperties(Vector3Int pos, TileBase tile)
+    //{
+    //    World.RealTileMap.Map.SetTile(pos, tile);
+    //}
     public static TileBase GetTile(int i, int j) => GetTile(new Vector3Int(i, j));
     public static TileBase GetTile(Vector3Int pos)
     {
@@ -29,7 +43,7 @@ public partial class World : MonoBehaviour
         public float distance;
         public Vector2 direction;
         public int runID;
-        //public int testID;
+        public bool IsSolid;
         public TileData(byte progressionNum = byte.MaxValue, bool roadBlock = false)
         {
             ProgressionNumber = progressionNum;
@@ -38,6 +52,7 @@ public partial class World : MonoBehaviour
             direction = Vector2.zero;
             runID = 0;
             TileType = null;
+            IsSolid = false;
         }
     }
     private static Vector2Int tileDataOffset;
@@ -56,6 +71,15 @@ public partial class World : MonoBehaviour
     {
         Vector2Int pointPos = pos - tileDataOffset;
         return ref tileData[pointPos.x, pointPos.y];
+    }
+    public static ref TileData UnsafeGetTileData(int i, int j) => ref tileData[i - tileDataOffset.x, j - tileDataOffset.y];
+    public static ref TileData GetTileData(int i, int j)
+    {
+        i -= tileDataOffset.x;
+        j -= tileDataOffset.y;
+        if (i < 0 || j < 0 || i >= tileData.GetLength(0) || j >= tileData.GetLength(1))
+            return ref NoTileData;
+        return ref tileData[i, j];
     }
     public static Vector2 GetTileDirection(Vector2Int pos) => UnsafeGetTileData(pos).direction;
     public static Vector2 GetDirection(Vector3 pos)

@@ -184,12 +184,12 @@ public class WorldNode : MonoBehaviour
                 if (tile != null)
                 {
                     bool iAmSolid = ((Tile)tile).colliderType != Tile.ColliderType.None;
-                    bool solid = World.SolidTile(v);
-                    bool canPlaceTile = !World.HasTile(v) || (solid == iAmSolid);
-                    bool placeSolidAsUnsolid = !solid && iAmSolid && !canPlaceTile;
+                    bool existingTileSolid = World.SolidTile(v);
+                    bool canPlaceTile = !World.HasTile(v) || (existingTileSolid == iAmSolid); //If the world does not have a tile here currently, or the existing tile is the same solidness as me
+                    bool placeSolidAsUnsolid = !existingTileSolid && iAmSolid && !canPlaceTile; //If the existing tile is a floor tile, but I am solid, and i am not already placing a tile
                     if(canPlaceTile || placeSolidAsUnsolid)
                     {
-                        World.SetTile(v, placeSolidAsUnsolid ? tile.GetTileID().FloorTileType : tile);
+                        World.SetTile(v, tile.GetTileID(), iAmSolid && !placeSolidAsUnsolid);
                         ref World.TileData data = ref World.GetTileData(v);
                         if (canPlaceTile && data.ProgressionNumber == 0)
                         {
@@ -398,7 +398,7 @@ public class WorldNode : MonoBehaviour
     public bool DiamondBrush(Vector2 center, float radias)
     {
         bool isValidForRoadblock = false;
-        var tile = radias < 1 ? TileID.DarkGrass.FloorTileType : TileID.Grass.FloorTileType;
+        var tile = radias < 1 ? TileID.DarkGrass : TileID.Grass;
         float percent = 0;
         float iter = Mathf.Min(1, 0.5f * radias);
         float rSquared = radias * radias;
@@ -415,11 +415,12 @@ public class WorldNode : MonoBehaviour
                 if (existingTile == null || (World.SolidTile(v) && OverrideTiles))
                 {
                     if (existingTile == null)
-                        World.SetTile(v, tile);
+                        World.SetTile(v, tile, false);
                     else
                     {
-                        var tile2 = (existingTile.GetTileID() == TileID.Dirt || existingTile.GetTileID() == TileID.Grass) ? tile : existingTile.GetTileID().FloorTileType;
-                        World.SetTile(v, tile2);
+                        DualGridTile tileID = existingTile.GetTileID();
+                        var tile2 = (tileID == TileID.Dirt || tileID == TileID.Grass) ? tile : tileID;
+                        World.SetTile(v, tile2, false);
                     }
                     ref World.TileData data = ref World.GetTileData(v);
                     data.IsRoadblock = true;

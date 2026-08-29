@@ -64,6 +64,9 @@ Done:
 7. WIP Tiledata reworks
 	1. Move into its own partial class
 	2. Now tile stuff is private and accessed through world as a middleman first
+	3. NEXT: make world sizes consistent with tiledata class so they always line up!
+		1. basically, use the world approximate for creating the world, rather than map.getbounds in necessary areas
+		2. Make sure the world generates solid boundaries correctly
 
 8/27/26
 1. WIP compendium equipment blurbs
