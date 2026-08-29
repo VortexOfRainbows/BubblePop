@@ -405,7 +405,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             if (ForceRunOnce)
                 break;
         }
-        if (!World.WithinBorders(transform.position))
+        if (!World.NonSolidTileSafe(transform.position))
         {
             CircleCollider2D circle = GetComponent<CircleCollider2D>();
             BoxCollider2D box = GetComponent<BoxCollider2D>();

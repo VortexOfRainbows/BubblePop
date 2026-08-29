@@ -235,7 +235,7 @@ public class Projectile : MonoBehaviour
             bool? homing = CanBeAffectedByHoming();
             if (((!homing.HasValue && Friendly) || (homing.HasValue && CanBeAffectedByHoming().Value)) && PlayerOwner.HomingRange > 0)
                 HomingBehavior();
-            if (!World.WithinBorders(transform.position))
+            if (!World.NonSolidTileSafe(transform.position))
                 if (OnInsideTile())
                     Kill();
             if (Dead)

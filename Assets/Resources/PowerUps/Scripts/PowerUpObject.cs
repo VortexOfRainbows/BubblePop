@@ -124,7 +124,7 @@ public class PowerUpObject : MonoBehaviour
         {
             QuantityObj.gameObject.SetActive(false);
         }
-        if (!World.WithinBorders(transform.position) && VeloEndTimer >= 1)
+        if (!World.NonSolidTileSafe(transform.position) && VeloEndTimer >= 1)
         {
             if(Entity.PushIntoClosestPossibleTile(transform, null, 5, false))
                 FinalPosition = transform.position;

@@ -9,11 +9,11 @@ public partial class World : MonoBehaviour
         var data = SafeGetTileData(posi);
         bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
         bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.FloorTileType && !SafeGetTileData(posi).IsRoadblock;
-        return WithinBorders(pos) && validSpawnTile && currentlyOnThisProgressionTier;
+        return !data.IsSolid && validSpawnTile && currentlyOnThisProgressionTier;
     }
-    public static bool WithinBorders(Vector3 position)
+    public static bool NonSolidTileSafe(Vector3 position)
     {
-        return RealTileMap.Map.GetColliderType(RealPosToTilePos(position)) == Tile.ColliderType.None;
+        return !SafeGetTileData(RealPosToTilePos(position)).IsSolid;
     }
     public static bool SolidTile(Vector3 worldPosition) => SolidTile(RealPosToTilePos(worldPosition));
     public static bool SolidTile(Vector3Int pos) => SolidTile(pos.x, pos.y);
@@ -22,14 +22,14 @@ public partial class World : MonoBehaviour
     {
         for (int i = -squareRadius; i <= squareRadius; ++i)
             for (int j = -squareRadius; j <= squareRadius; ++j)
-                if (RealTileMap.Map.HasTile(area + new Vector3Int(i, j)))
+                if (HasTile(area.x + i, area.y + j))
                     return false;
         return true;
     }
     public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds)
     {
         bool roadblock = IncludeProgressionBounds && IsRoadblocked(position);
-        return WithinBorders(position) && !roadblock;
+        return NonSolidTileSafe(position) && !roadblock;
     }
     public static bool IsRoadblocked(Vector3 position)
     {
