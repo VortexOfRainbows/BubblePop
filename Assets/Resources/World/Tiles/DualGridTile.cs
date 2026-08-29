@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
+using Unity.VisualScripting;
 
 [CreateAssetMenu(fileName = "DualGridTile", menuName = "ScriptableObjects/DualGridTile", order = 1)]
 public class DualGridTile : ScriptableObject
@@ -88,7 +89,7 @@ public class DualGridTile : ScriptableObject
             i = NeighbourRelations[new(topLeft, topRight, botLeft, botRight)];
         return i;
     }
-    public int CalculateDisplayWall(Vector3Int coords, bool HasValidTopSpace, ref bool tileNeedsShrinking)
+    public int CalculateDisplayWall(Vector3Int coords, ref bool tileNeedsShrinking)
     {
         tileNeedsShrinking = false;
         bool topRight = AdjacentTileSameType(coords -NEIGHBOURS[0], out bool ghostTopRight);
@@ -113,15 +114,20 @@ public class DualGridTile : ScriptableObject
     }
     private static bool GeneratingBorder { get; set; } = false;
     public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.25f));
-    public void UpdateDisplayTileSingular(Vector3Int pos, Tilemap VisualMap, bool isBorder = false)
+    public List<TileChangeData> QueuedTileChangeData { get; set; } = new();
+    public List<TileChangeData> QueuedBorderChangeData { get; set; } = new();
+    public List<TileChangeData> QueuedWallChangeData { get; set; } = new();
+    /// <summary>
+    /// Should only be called during worldgen
+    /// </summary>
+    public void UpdateDisplayTileSingular(Vector3Int pos, List<TileChangeData> list, bool isBorder = false)
     {
         GeneratingBorder = isBorder;
-        Vector3Int newPos = pos;
         //var prev = World.GetTileData(newPos);
         //prev.testID += 1;
         //World.SetTileData(newPos, prev);
         bool needsShrinking = false;
-        int id = IsWall ? CalculateDisplayWall(newPos, World.SolidTile(pos.x, pos.y + 1), ref needsShrinking) : CalculateDisplayTile(newPos);
+        int id = IsWall ? CalculateDisplayWall(pos, ref needsShrinking) : CalculateDisplayTile(pos);
         if (id != -1)
         {
             if (isBorder && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
@@ -134,7 +140,9 @@ public class DualGridTile : ScriptableObject
             if (IsWall && needsShrinking)
             {
                 id += 3;
-                VisualMap.SetTile(new TileChangeData(newPos, DisplayTileVariants[id], Color.white, FunkyWallFixMatrix), true);
+                Tile type = DisplayTileVariants[id];
+                list.Add(new TileChangeData(pos, type, type.color, FunkyWallFixMatrix));
+                //VisualMap.SetTile(, true);
             }
             else
             {
@@ -150,17 +158,25 @@ public class DualGridTile : ScriptableObject
                         type = SingleTileBonusVariants[rand];
                     }
                 }
-                VisualMap.SetTile(newPos, type);
+                list.Add(new TileChangeData(pos, type, type.color, Matrix4x4.identity));
+                //VisualMap.SetTile(pos, type);
             }
         }
         GeneratingBorder = false;
     }
-    public void UpdateDisplayTile(Vector3Int pos, Tilemap VisualMap, bool isBorder = false)
+    public void FinalizeTileDisplay(Tilemap VisualMap)
     {
-        //TODO: Rather than checking all neighbors here, it might be better to do it in another way so it doesn't recheck same tiles often (This would be particularly good for worldgen speed up)
-        for (int i = 0; i < 4; i++)
-            UpdateDisplayTileSingular(pos + NEIGHBOURS[i], VisualMap, isBorder);
+
     }
+    ///// <summary>
+    ///// Currently unsupported, but should be used when modifying tiles live
+    ///// </summary>
+    //public void LiveUpdateDisplayTile(Vector3Int pos, bool isBorder = false)
+    //{
+    //    //TODO: Rather than checking all neighbors here, it might be better to do it in another way so it doesn't recheck same tiles often (This would be particularly good for worldgen speed up)
+    //    for (int i = 0; i < 4; i++)
+    //        UpdateDisplayTileSingular(pos + NEIGHBOURS[i], isBorder);
+    //}
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
     public Texture2D[] BonusTileTextures;
@@ -195,6 +211,9 @@ public class DualGridTile : ScriptableObject
     public void Init()
     {
         SetDisplayVariants();
+        QueuedTileChangeData.Clear();
+        QueuedBorderChangeData.Clear();
+        QueuedWallChangeData.Clear();
     }
     public void SetDisplayVariants()
     {

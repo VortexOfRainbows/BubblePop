@@ -67,6 +67,8 @@ Done:
 	4. (4th) Lighting, 500 ms -> 300 ms, ~1700 ms
 	5. (5th) Refresh 475 -> 420, Nodes 120 -> 85, Outer Fill 600 -> 180
 		1. Around 500 ms saved, ~1200 ms now
+	6. (6th) Refresh 420 -> 290 ms
+		1. Around 130 ms saved, ~1050 ms now
 6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
 7. WIP Tiledata reworks
 	1. Move into its own partial class

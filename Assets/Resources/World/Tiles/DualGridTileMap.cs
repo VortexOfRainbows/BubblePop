@@ -153,28 +153,44 @@ public class DualGridTilemap : MonoBehaviour
                     {
                         if (tile.MarkForWallUpdate)
                         {
-                            tile.UpdateDisplayTileSingular(coords, WallMap[tile.TypeIndex]);
+                            tile.UpdateDisplayTileSingular(coords, tile.QueuedWallChangeData);
                             tile.MarkForUpdate = false;
                         }
                         if (tile.MarkForBorderUpdate)
                         {
-                            tile.UpdateDisplayTileSingular(coords, BorderMap[tile.TypeIndex], true);
+                            tile.UpdateDisplayTileSingular(coords, tile.QueuedBorderChangeData, true);
                             if(tile.MarkForSpecialBorderUpdate)
                             {
                                 DualGridTile wall = tile.MyWallVariant();
-                                wall.UpdateDisplayTileSingular(coords, WallMap[wall.TypeIndex]);
+                                wall.UpdateDisplayTileSingular(coords, wall.QueuedWallChangeData);
                                 tile.MarkForSpecialBorderUpdate = false;
                             }
                             tile.MarkForBorderUpdate = false;
                         }
                         if (tile.MarkForUpdate)
                         {
-                            tile.UpdateDisplayTileSingular(coords, DisplayMap[tile.TypeIndex]);
+                            tile.UpdateDisplayTileSingular(coords, tile.QueuedTileChangeData);
                             tile.MarkForUpdate = false;
                         }
                     }
                 }
             }
+        }
+
+        foreach (DualGridTile tile in TileID.TileTypes)
+        {
+            if(tile.CountsAsWall())
+            {
+                WallMap[tile.TypeIndex].SetTiles(tile.QueuedWallChangeData.ToArray(), true);
+            }
+            else
+            {
+                BorderMap[tile.TypeIndex].SetTiles(tile.QueuedBorderChangeData.ToArray(), true);
+                DisplayMap[tile.TypeIndex].SetTiles(tile.QueuedTileChangeData.ToArray(), true);
+            }
+            tile.QueuedWallChangeData.Clear();
+            tile.QueuedBorderChangeData.Clear();
+            tile.QueuedTileChangeData.Clear();
         }
         stopwatch.Stop();
         UnityEngine.Debug.Log($"Time To Refresh Tile Maps: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)".WithColor("#FF6699"));
