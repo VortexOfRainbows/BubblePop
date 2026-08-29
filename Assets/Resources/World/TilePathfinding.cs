@@ -143,29 +143,29 @@ public class TilePathfinding : MonoBehaviour
             if (tile.direction != Vector2.zero)
             {
                 Vector3 worldPos = cellToWorld(visitedPos);
-                Gizmos.DrawRay(worldPos, (Vector3)tile.direction * tileSize.x * 0.4f);
+                Gizmos.DrawRay(worldPos, (Vector3)tile.direction * TileSize.x * 0.4f);
             }
         }
     }
 
     #region HelperFunctions
 
-    public static Vector3 tileSize = new Vector3(2, 2, 0);
+    public static readonly Vector3 TileSize = new(2, 2, 0);
     private Vector3 cellToWorld(Vector3Int cellPos)
     {
-        float x = cellPos.x * tileSize.x;
-        float y = cellPos.y * tileSize.y;
+        float x = cellPos.x * TileSize.x;
+        float y = cellPos.y * TileSize.y;
 
-        x += tileSize.x * 0.5f;
-        y += tileSize.y * 0.5f;
+        x += TileSize.x * 0.5f;
+        y += TileSize.y * 0.5f;
 
         return new Vector3(x, y, 0);
     }
 
     private Vector3Int worldToCell(Vector3 worldPos)
     {
-        float x = (worldPos.x) / tileSize.x;
-        float y = (worldPos.y) / tileSize.y;
+        float x = (worldPos.x) / TileSize.x;
+        float y = (worldPos.y) / TileSize.y;
 
         return new Vector3Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0);
     }

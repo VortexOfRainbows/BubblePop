@@ -11,6 +11,7 @@ public class World : MonoBehaviour
     public static int FloorSortingLayer { get; private set; }
     public struct TileData
     {
+        public DualGridTile TileType;
         public byte ProgressionNumber;
         public bool IsRoadblock;
         public float distance;
@@ -24,43 +25,37 @@ public class World : MonoBehaviour
             distance = float.MaxValue;
             direction = Vector2.zero;
             runID = 0;
-            //testID = 0;
+            TileType = null;
         }
     }
     private static Vector2Int tileDataOffset;
     private static TileData[,] tileData;
-    private static readonly TileData NoTileData = new(byte.MaxValue);
+    private static TileData NoTileData = new(byte.MaxValue);
     public static readonly int Padding = 20;
-    public static TileData GetTileData(Vector3Int pos)
+    public static ref TileData GetTileData(Vector3Int pos)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
         if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))
-        {
-            //Debug.Log($"Tile QUERY out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
-            return NoTileData;
-        }
-        return tileData[pointPos.x, pointPos.y];
-    }
-    public static ref TileData UnsafeGetTileData(Vector3Int pos)
-    {
-        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
+            return ref NoTileData;
         return ref tileData[pointPos.x, pointPos.y];
     }
-    public static Vector2 GetTileDirection(Vector3Int pos)
+    public static ref TileData UnsafeGetTileData(Vector3Int pos) => ref UnsafeGetTileData((Vector2Int)pos);
+    public static ref TileData UnsafeGetTileData(Vector2Int pos)
     {
-        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
-        return tileData[pointPos.x, pointPos.y].direction;
+        Vector2Int pointPos = pos - tileDataOffset;
+        return ref tileData[pointPos.x, pointPos.y];
     }
+    public static Vector2 GetTileDirection(Vector2Int pos) => UnsafeGetTileData(pos).direction;
     public static Vector2 GetDirection(Vector3 pos)
     {
-        float x = (pos.x) / TilePathfinding.tileSize.x;
-        float y = (pos.y) / TilePathfinding.tileSize.y;
-
-        return GetTileDirection(new Vector3Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
+        float x = pos.x / TilePathfinding.TileSize.x;
+        float y = pos.y / TilePathfinding.TileSize.y;
+        return GetTileDirection(new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y)));
     }
-    public static void SetTileData(Vector3Int pos, TileData newData)
+    public static void CreateRoadblockTileVisuals(Vector3Int pos, ref TileData data)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
+        //Might be best to remove this check in the future if able (get the tiledata to perfectly surround all world tiles, maybe?
         if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))
         {
             Debug.Log($"Tile SET out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
@@ -72,13 +67,12 @@ public class World : MonoBehaviour
         #endif
         if (Instance.DepthTilemap != null && drawMaps1)
         {
-            byte progNumber = newData.ProgressionNumber;
+            byte progNumber = data.ProgressionNumber;
             Color c = Color.Lerp(Color.Lerp(Color.red, Color.blue, progNumber / 20f % 1), Color.green, (progNumber / 5f) % 1).WithAlpha(0.5f);
             Instance.DepthTilemap.SetTile(new (pos, DepthTile, c, Matrix4x4.identity), true);
         }
-        if (newData.IsRoadblock)
-            Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor(newData.ProgressionNumber), Matrix4x4.identity), true);
-        tileData[pointPos.x, pointPos.y] = newData;
+        if (data.IsRoadblock)
+            Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor(data.ProgressionNumber), Matrix4x4.identity), true);
     }
     private static readonly Dictionary<byte, Color> RoadblockColorStorage = CreateRoadblockColors();
     private static Dictionary<byte, Color> CreateRoadblockColors()
@@ -557,9 +551,7 @@ public class World : MonoBehaviour
                         {
                             float f = Noise.GetNoise(i, j);
                             if (f < 0.2f && f > -0.2f)
-                            {
                                 Map.SetTile(pos, TileID.Dirt.BorderTileType);
-                            }
                             else
                                 Map.SetTile(pos, TileID.Grass.BorderTileType);
                         }
@@ -575,7 +567,7 @@ public class World : MonoBehaviour
                     else
                     {
                         var data = GetTileData(pos);
-                        if (passNum == 1 && data.IsRoadblock)
+                        if (passNum == 1 && data.IsRoadblock && !SolidTile(pos))
                         {
                             Vector3Int tleft = new(pos.x - 1, pos.y);
                             Vector3Int tright = new(pos.x + 1, pos.y);
@@ -584,16 +576,12 @@ public class World : MonoBehaviour
                             Color c = RoadblockColor(data.ProgressionNumber);
                             if (SolidTile(tleft))
                                 Instance.RoadblockTilemap.SetTile(new(tleft, DepthTile, c, Matrix4x4.identity), true);
-                                //SetTileData(tleft, new(data.ProgressionNumber, true));
                             if (SolidTile(tright))
                                 Instance.RoadblockTilemap.SetTile(new(tright, DepthTile, c, Matrix4x4.identity), true);
-                                //SetTileData(tright, new(data.ProgressionNumber, true));
                             if (SolidTile(ttop))
                                 Instance.RoadblockTilemap.SetTile(new(ttop, DepthTile, c, Matrix4x4.identity), true);
-                                //SetTileData(ttop, new(data.ProgressionNumber, true));
                             if (SolidTile(tbot))
                                 Instance.RoadblockTilemap.SetTile(new(tbot, DepthTile, c, Matrix4x4.identity), true);
-                                //SetTileData(tbot, new(data.ProgressionNumber, true));
                         }
                         //else if(passNum == 2 && !data.IsRoadblock)
                         //{

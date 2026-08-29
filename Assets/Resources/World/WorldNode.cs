@@ -190,8 +190,13 @@ public class WorldNode : MonoBehaviour
                     if(canPlaceTile || placeSolidAsUnsolid)
                     {
                         world.Tilemap.Map.SetTile(v, placeSolidAsUnsolid ? tile.GetTileID().FloorTileType : tile);
-                        if(canPlaceTile && World.GetTileData(v).ProgressionNumber == 0)
-                            World.SetTileData(v, new World.TileData(GenerationNumber, IsSubNode));
+                        ref World.TileData data = ref World.GetTileData(v);
+                        if (canPlaceTile && data.ProgressionNumber == 0)
+                        {
+                            data.ProgressionNumber = GenerationNumber;
+                            data.IsRoadblock = true;
+                            World.CreateRoadblockTileVisuals(v, ref data);
+                        }
                     }
                 }
             }
@@ -416,7 +421,10 @@ public class WorldNode : MonoBehaviour
                         var tile2 = (existingTile.GetTileID() == TileID.Dirt || existingTile.GetTileID() == TileID.Grass) ? tile : existingTile.GetTileID().FloorTileType;
                         World.Tilemap.Map.SetTile(v, tile2);
                     }
-                    World.SetTileData(v, new World.TileData(GenerationNumber, true));
+                    ref World.TileData data = ref World.GetTileData(v);
+                    data.IsRoadblock = true;
+                    data.ProgressionNumber = GenerationNumber;
+                    World.CreateRoadblockTileVisuals(v, ref data);
                     canGenerate = true;
                 }
                 if (i == 0 && j == 0 && canGenerate)
