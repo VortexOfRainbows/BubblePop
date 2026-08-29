@@ -57,13 +57,14 @@ Done:
 	1. Bunce cap should no longer levitate in the air for prolonged periods
 	2. Other hats should no longer rotate in the dash direction for prolonged periods
 	3. Should feel more snappy overall
-5. Tile refresh optimizations (seed 1337): ~30% speed increase
+5. Tile refresh and generation optimizations (seed 1337)
 	1. Old Speeds for refresh 1179ms to 1513ms, ~2950 ms for full world.	
-	2. (1st rework) New speeds for refresh 848ms to 872ms
-	3. (2nd rework) 700ms to 720ms, ~2200ms
+	2. (1st) New speeds for refresh 848ms to 872ms
+	3. (2nd) Refresh, 700ms to 720ms, ~2200ms
 		1. Around 750 ms saved
-	4. (3rd rework) Refresh is now ~475 ms, ~1900 ms
+	4. (3rd) Refresh, now ~475 ms, ~1900 ms
 		1. Around 300 ms saved
+	4. (4th) Lighting, 500 ms -> 300 ms, ~1700 ms
 6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
 7. WIP Tiledata reworks
 	1. Move into its own partial class

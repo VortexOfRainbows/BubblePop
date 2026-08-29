@@ -529,10 +529,10 @@ public partial class World : MonoBehaviour
                             }
                         }
                     }
-                    else
+                    else if (passNum == 1)
                     {
-                        var data = GetTileData(pos);
-                        if (passNum == 1 && data.IsRoadblock && !SolidTile(pos))
+                        var data = UnsafeGetTileData(pos);
+                        if(data.IsRoadblock && !data.IsSolid)
                         {
                             Vector3Int tleft = new(pos.x - 1, pos.y);
                             Vector3Int tright = new(pos.x + 1, pos.y);

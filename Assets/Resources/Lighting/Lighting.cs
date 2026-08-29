@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
@@ -9,7 +10,7 @@ using static UnityEngine.GraphicsBuffer;
 public static class Lighting
 {
     public static Tile LightTile;
-    public static Tile OcclusionTile;
+    //public static Tile OcclusionTile;
     public static RenderTexture LightRT;
     public static RenderTexture BorderRT;
     public static RenderTexture BorderMaskRT;
@@ -30,7 +31,7 @@ public static class Lighting
     public static void LoadTextures()
     {
         LightTile = Resources.Load<Tile>("Lighting/LightTile");
-        OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
+        //OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
         BorderRT = Resources.Load<RenderTexture>("Lighting/TileBorderRenderTexture");
         BorderMaskRT = Resources.Load<RenderTexture>("Lighting/BorderMaskRenderTexture");
@@ -52,11 +53,18 @@ public static class Lighting
         {
             throw new System.Exception("ERROR: Could not find lighting tile maps");
         }
-
+        System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
         World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
+        int width = right - left;
+        int height = top - bottom;
+        int totalCells = width * height;
+        Vector3Int[] positionsArray = new Vector3Int[totalCells];
+        TileBase[] lightingTilesArray = new TileBase[totalCells];
+        int writeIndex = 0;
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)
@@ -64,16 +72,23 @@ public static class Lighting
                 Vector3Int pos = new(i, j);
                 if (World.SolidTile(pos)) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
                 {
-                    LightingFront.SetTile(pos, LightTile);
-                    LightingBack.SetTile(pos, LightTile);
-                    OcclusionMap.SetTile(pos, OcclusionTile);
+                    positionsArray[writeIndex] = pos;
+                    lightingTilesArray[writeIndex] = LightTile;
+                    ++writeIndex;
                 }
             }
         }
+        Array.Resize(ref positionsArray, writeIndex);
+        Array.Resize(ref lightingTilesArray, writeIndex);
+        LightingFront.SetTiles(positionsArray, lightingTilesArray);
+        LightingBack.SetTiles(positionsArray, lightingTilesArray);
+        OcclusionMap.SetTiles(positionsArray, lightingTilesArray);
         DayProgress = StandardDayTimer = TimeInADay * 0.1f;
         PreviousProgNum = 0;
         BorderImage.material.SetFloat("_ProgressionThreshold", 0);
         Update();
+        watch.Stop();
+        Debug.Log($"Time To Setup Light: {watch.ElapsedMilliseconds} ms ({watch.ElapsedTicks} ticks)".WithColor("#FFAA44"));
     }
     public static void Update() //Runs on normal delta time, not fixed
     {
