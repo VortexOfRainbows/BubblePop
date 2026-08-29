@@ -56,7 +56,7 @@ public static class Lighting
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
-        Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)

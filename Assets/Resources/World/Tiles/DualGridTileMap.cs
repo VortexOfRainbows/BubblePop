@@ -117,7 +117,7 @@ public class DualGridTilemap : MonoBehaviour
     }
     public static void NewFasterRefresh(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
-        Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
         Stopwatch stopwatch = new();
         stopwatch.Start();
         DualGridTile[] tileBuffer = new DualGridTile[4];
@@ -140,7 +140,7 @@ public class DualGridTilemap : MonoBehaviour
                         else if (World.SolidTile(trueC))
                         {
                             tile.MarkForBorderUpdate = true;
-                            if (!tile.MarkForSpecialBorderUpdate && i > left && i < right && j > bottom && j < top)
+                            if (!tile.MarkForSpecialBorderUpdate)
                                 if (tile.HasWallVariant() && TileIsNotBlendableWall(Map, trueC.x, trueC.y, tile.LayerOffset))
                                     tile.MarkForSpecialBorderUpdate = true;
                         }
@@ -187,7 +187,7 @@ public class DualGridTilemap : MonoBehaviour
     }
     public static void OldSlowerRefresh(Tilemap Map, Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
     {
-        Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        World.GetCorners(out int left, out int right, out int bottom, out int top);
         Stopwatch stopwatch = new();
         stopwatch.Start();
         for (int i = left; i < right; i++)
@@ -226,7 +226,7 @@ public class DualGridTilemap : MonoBehaviour
         Color borderColor = new(0.5f, 0.5f, 0.5f);
         Color c = border ? borderColor : Color.white;
         Transform Parent = border ? World.Instance.BorderDecorParent : World.Instance.FloorDecorParent;
-        Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        World.GetCorners(out int left, out int right, out int bottom, out int top);
         int order = border ? LayerHelper.SolidTileSortingOrder : LayerHelper.FloorObjAndFloraSortingLayer;
         left += 10;
         right -= 10;

@@ -93,11 +93,8 @@ public partial class World : MonoBehaviour
         return RealTileMap.Map.GetColliderType(RealPosToTilePos(position)) == Tile.ColliderType.None;
     }
     public static bool SolidTile(Vector3 worldPosition) => SolidTile(RealPosToTilePos(worldPosition));
-    public static bool SolidTile(Vector3Int pos)
-    {
-        return RealTileMap.Map.GetColliderType(pos) != Tile.ColliderType.None;
-    }
-    public static bool SolidTile(int x, int y) => SolidTile(new Vector3Int(x, y));
+    public static bool SolidTile(Vector3Int pos) => SolidTile(pos.x, pos.y);
+    public static bool SolidTile(int x, int y) => UnsafeGetTileData(x, y).IsSolid;
     public static bool AreaIsClear(Vector3Int area, int squareRadius = 0)
     {
         for(int i = -squareRadius; i <= squareRadius; ++i)
@@ -140,6 +137,8 @@ public partial class World : MonoBehaviour
     {
         UnityEngine.Random.InitState(1337);
         Utils.rand.InitState(1337);
+        System.Diagnostics.Stopwatch stopwatch = new();
+        stopwatch.Start();
         Main.PylonProgressionNumber = 0;
         if(!firstInit)
         {
@@ -205,6 +204,8 @@ public partial class World : MonoBehaviour
         FinalPylon = PylonParent.GetChild(PylonParent.childCount - 1).GetComponent<WarpPylon>();
         NodeID.ResetNodePositions();
         Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
+        stopwatch.Stop();
+        Debug.Log($"Time To Generate World: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedTicks} ticks)".WithColor("#FF4466"));
     }
     public void Start()
     {
@@ -336,6 +337,17 @@ public partial class World : MonoBehaviour
         return node;
     }
     public Queue<WorldNode> NextToGenerate { get; private set; } = new();
+    private static int Left { get; set; }
+    private static int Right { get; set; }
+    private static int Top { get; set; }
+    private static int Bottom { get; set; }
+    public static void GetCorners(out int left, out int right, out int bottom, out int top, int inwardPadding = 5)
+    {
+        left = Left + inwardPadding;
+        right = Right - inwardPadding;
+        bottom = Bottom + inwardPadding;
+        top = Top - inwardPadding;
+    }
     public void ApproximateWorldBounds()
     {
         int left = int.MaxValue;
@@ -369,6 +381,10 @@ public partial class World : MonoBehaviour
         {
             tileDataOffset = new Vector2Int(left, bottom);
             tileData = new TileData[size.x, size.y];
+            Left = left;
+            Right = right;
+            Top = top;
+            Bottom = bottom;
         }
         else
         {
@@ -484,11 +500,7 @@ public partial class World : MonoBehaviour
         Noise.SetSeed(1337);
         Noise.SetFrequency(0.04f);
 
-        Map.GetCorners(out int left, out int right, out int bottom, out int top);
-        left -= Padding;
-        right += Padding;
-        bottom -= Padding;
-        top += Padding;
+        World.GetCorners(out int left, out int right, out int bottom, out int top);
         for(int passNum = 0; passNum < 2; ++passNum)
         {
             for (int i = left; i < right; i++)
@@ -501,10 +513,7 @@ public partial class World : MonoBehaviour
                         if (!Map.HasTile(pos))
                         {
                             float f = Noise.GetNoise(i, j);
-                            if (f < 0.2f && f > -0.2f)
-                                Map.SetTile(pos, TileID.Dirt.BorderTileType);
-                            else
-                                Map.SetTile(pos, TileID.Grass.BorderTileType);
+                            World.SetTile(pos, f < 0.2f && f > -0.2f ? TileID.Dirt : TileID.Grass, true);
                         }
                         if (SolidTile(pos))
                         {

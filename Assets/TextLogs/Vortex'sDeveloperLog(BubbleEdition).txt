@@ -60,13 +60,12 @@ Done:
 5. Tile refresh optimizations (seed 1337): ~30% speed increase
 	1. Old Speeds for refresh 1179ms to 1513ms
 	2. New speeds for refresh 848ms to 872ms
+	3. (NEW SPEEDS AFTER SECOND REWORK) 700ms to 720ms, 2200ms for the full world!
 6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
 7. WIP Tiledata reworks
 	1. Move into its own partial class
 	2. Now tile stuff is private and accessed through world as a middleman first
-	3. NEXT: make world sizes consistent with tiledata class so they always line up!
-		1. basically, use the world approximate for creating the world, rather than map.getbounds in necessary areas
-		2. Make sure the world generates solid boundaries correctly
+	3. SolidTile now fetches from TileData, which should be quicker than GetColliderType
 
 8/27/26
 1. WIP compendium equipment blurbs
