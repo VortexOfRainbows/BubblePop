@@ -1,36 +1,60 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEditor.PlayerSettings;
 
 public partial class World : MonoBehaviour
 {
-    public static void SetTile(Vector3Int pos, TileBase tile)
+    public static bool ValidEnemySpawnTile(Vector3 pos)
     {
-        World.RealTileMap.Map.SetTile(pos, tile);
+        Vector3Int posi = RealPosToTilePos(pos);
+        var data = SafeGetTileData(posi);
+        bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
+        bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.FloorTileType && !SafeGetTileData(posi).IsRoadblock;
+        return WithinBorders(pos) && validSpawnTile && currentlyOnThisProgressionTier;
+    }
+    public static bool WithinBorders(Vector3 position)
+    {
+        return RealTileMap.Map.GetColliderType(RealPosToTilePos(position)) == Tile.ColliderType.None;
+    }
+    public static bool SolidTile(Vector3 worldPosition) => SolidTile(RealPosToTilePos(worldPosition));
+    public static bool SolidTile(Vector3Int pos) => SolidTile(pos.x, pos.y);
+    public static bool SolidTile(int x, int y) => UnsafeGetTileData(x, y).IsSolid;
+    public static bool AreaIsClear(Vector3Int area, int squareRadius = 0)
+    {
+        for (int i = -squareRadius; i <= squareRadius; ++i)
+            for (int j = -squareRadius; j <= squareRadius; ++j)
+                if (RealTileMap.Map.HasTile(area + new Vector3Int(i, j)))
+                    return false;
+        return true;
+    }
+    public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds)
+    {
+        bool roadblock = IncludeProgressionBounds && IsRoadblocked(position);
+        return WithinBorders(position) && !roadblock;
+    }
+    public static bool IsRoadblocked(Vector3 position)
+    {
+        var data = SafeGetTileData(RealPosToTilePos(position));
+        bool currentlyOnThisProgressionTier = data.ProgressionNumber > Main.PylonProgressionNumber;
+        bool roadblock = currentlyOnThisProgressionTier || (data.IsRoadblock && Main.PylonActive);
+        return roadblock;
     }
     public static void SetTile(Vector3Int pos, DualGridTile tile, bool solid)
     {
         //if (!Instance.ApproximateSize.Contains(pos))
         //    throw new System.Exception($"GENERROR: Tried placing tile: {pos}, worldbounds: {Instance.ApproximateSize}");
-        World.RealTileMap.Map.SetTile(pos, solid ? tile.BorderTileType : tile.FloorTileType);
-        ref TileData data = ref GetTileData(pos);
+        ref TileData data = ref SafeGetTileData(pos);
         data.IsSolid = solid;
         data.TileType = tile;
+        data.HasTile = true;
     }
     //public static void SetTilePlusProperties(Vector3Int pos, TileBase tile)
     //{
     //    World.RealTileMap.Map.SetTile(pos, tile);
     //}
-    public static TileBase GetTile(int i, int j) => GetTile(new Vector3Int(i, j));
-    public static TileBase GetTile(Vector3Int pos)
-    {
-        return World.RealTileMap.Map.GetTile(pos);
-    }
-    public static bool HasTile(int i, int j) => HasTile(new Vector3Int(i, j));
-    public static bool HasTile(Vector3Int pos)
-    {
-        return RealTileMap.Map.HasTile(pos);
-    }
+    public static DualGridTile GetTile(int i, int j) => UnsafeGetTileData(i, j).TileType;
+    public static DualGridTile GetTile(Vector3Int pos) => GetTile(pos.x, pos.y);
+    public static bool HasTile(int i, int j) => UnsafeGetTileData(i, j).HasTile;
+    public static bool HasTile(Vector3Int pos) => HasTile(pos.x, pos.y);
     public static Vector3 CenterOfTile(Vector3Int tilePos)
     {
         return RealTileMap.Map.GetCellCenterWorld(tilePos);
@@ -44,6 +68,7 @@ public partial class World : MonoBehaviour
         public Vector2 direction;
         public int runID;
         public bool IsSolid;
+        public bool HasTile;
         public TileData(byte progressionNum = byte.MaxValue, bool roadBlock = false)
         {
             ProgressionNumber = progressionNum;
@@ -53,13 +78,14 @@ public partial class World : MonoBehaviour
             runID = 0;
             TileType = null;
             IsSolid = false;
+            HasTile = false;
         }
     }
     private static Vector2Int tileDataOffset;
     private static TileData[,] tileData;
     private static TileData NoTileData = new(byte.MaxValue);
     public static readonly int Padding = 20;
-    public static ref TileData GetTileData(Vector3Int pos)
+    public static ref TileData SafeGetTileData(Vector3Int pos)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
         if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))

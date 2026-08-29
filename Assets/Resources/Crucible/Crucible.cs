@@ -38,7 +38,7 @@ public class Crucible : InteractableWorldObject
         Text.transform.localScale = Vector2.zero;
         Text.text = "0";
         Player.ObjectsConsideredForUIInteraction.Add(gameObject);
-        if(World.GetTile(World.RealPosToTilePos(transform.position)) == TileID.Grass.FloorTileType)
+        if(World.GetTile(World.RealPosToTilePos(transform.position)) == TileID.Grass)
         {
             Foliage.SetActive(true);
         }

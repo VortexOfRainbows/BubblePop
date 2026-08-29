@@ -190,7 +190,7 @@ public class WorldNode : MonoBehaviour
                     if(canPlaceTile || placeSolidAsUnsolid)
                     {
                         World.SetTile(v, tile.GetTileID(), iAmSolid && !placeSolidAsUnsolid);
-                        ref World.TileData data = ref World.GetTileData(v);
+                        ref World.TileData data = ref World.SafeGetTileData(v);
                         if (canPlaceTile && data.ProgressionNumber == 0)
                         {
                             data.ProgressionNumber = GenerationNumber;
@@ -410,19 +410,18 @@ public class WorldNode : MonoBehaviour
                 if (dist > rSquared)
                     continue;
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
-                bool canGenerate = World.GetTileData(v).IsRoadblock;
-                TileBase existingTile = World.GetTile(v);
+                bool canGenerate = World.SafeGetTileData(v).IsRoadblock;
+                DualGridTile existingTile = World.GetTile(v);
                 if (existingTile == null || (World.SolidTile(v) && OverrideTiles))
                 {
                     if (existingTile == null)
                         World.SetTile(v, tile, false);
                     else
                     {
-                        DualGridTile tileID = existingTile.GetTileID();
-                        var tile2 = (tileID == TileID.Dirt || tileID == TileID.Grass) ? tile : tileID;
+                        var tile2 = (existingTile == TileID.Dirt || existingTile == TileID.Grass) ? tile : existingTile;
                         World.SetTile(v, tile2, false);
                     }
-                    ref World.TileData data = ref World.GetTileData(v);
+                    ref World.TileData data = ref World.SafeGetTileData(v);
                     data.IsRoadblock = true;
                     data.ProgressionNumber = GenerationNumber;
                     World.CreateRoadblockTileVisuals(v, ref data);

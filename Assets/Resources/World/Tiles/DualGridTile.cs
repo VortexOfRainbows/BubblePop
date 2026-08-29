@@ -52,15 +52,15 @@ public class DualGridTile : ScriptableObject
     public bool AdjacentTileSameType(Vector3Int coords, out bool ghostReturn)
     {
         ghostReturn = false;
-        var adjacentTileType = World.GetTile(coords);
-        if (adjacentTileType == null)
+        ref World.TileData data = ref World.UnsafeGetTileData(coords);
+        if (!data.HasTile)
             return false;
-        if (adjacentTileType == TileType(GeneratingBorder))
+        DualGridTile tile = data.TileType;
+        if (data.TileType == this && data.IsSolid == GeneratingBorder)
             return true;
-        DualGridTile tile = TileID.GetTileIDFromTile(adjacentTileType);
         if (IsWall)
         {
-            if(World.SolidTile(coords))
+            if(data.IsSolid)
             {
                 if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex])
                     return true;
@@ -69,10 +69,10 @@ public class DualGridTile : ScriptableObject
         }
         else if (GeneratingBorder)
         {
-            if (tile.LayerOffset < LayerOffset && World.SolidTile(coords) && !tile.IsWall)
+            if (tile.LayerOffset < LayerOffset && data.IsSolid && !tile.IsWall)
                 ghostReturn = true;
         }
-        else if (tile.LayerOffset < LayerOffset || World.SolidTile(coords))
+        else if (tile.LayerOffset < LayerOffset || data.IsSolid)
             ghostReturn = true;
         return false;
     }
