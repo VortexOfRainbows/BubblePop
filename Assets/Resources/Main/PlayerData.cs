@@ -13,7 +13,7 @@ public static class PlayerData
         public static int MeadowsStars { get; set; } = 0;
         public static int TotalMeadowsStars { get; set; } = 0;
     }
-    public static readonly float CurrentPlayerVersion = 3.3f;
+    public static readonly float CurrentPlayerVersion = 3.4f;
     public static int PlayerDeaths;
     public static float SFXVolume { get; set; } = 1;
     public static float MusicVolume { get; set; } = 1;

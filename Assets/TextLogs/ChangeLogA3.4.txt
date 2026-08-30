@@ -1,0 +1,54 @@
+Dev Build 3.4 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+New:
+1. UI icons for Gachapon and King Oil
+2. Powerup icons for the Investment Powers
+3. Hazards and world generation should be less laggy
+
+
+World Generation:
+1. Made tons of world generation optimizations by basically overhauling the entire tile data system.
+	1. I won't bore you with details, but the generation should be up to 3x faster
+
+
+Misc Changes:
+1. King Oil ability now always use oil colored bubbles
+2. Max number of visual elements that can be attached to a Hazard (Tar puddles) infinite -> 5
+	1. This should hopefully reduce lag from oil related shenangins
+	2. The oldest visual will be replaced by the newest when at the limit and they are sufficiently different in application duration (otherwise, a new visual will simply not be placed)
+3. Modify Ability UI slightly
+4. Crucible is now layered as a singular object for purpose of sprite sorting
+5. Crucibles that spawn on grass will spawn with some foliage again
+6. Hats that have special movement mechanics with Bubblemancer's Dash now animate based on the dash timer rather than the ability cooldown timer
+	1. Bunce cap should no longer levitate in the air for prolonged periods
+	2. Other hats should no longer rotate in the dash direction for prolonged periods
+	3. Should feel more snappy overall
+
+
+Fixes:
+1. Achievement completion popup now uses black bg again instead of cornflower blue
+2. Fixed bug where hovering over Gachapon Tokens in UI showed nothing
+3. Fix bug where projectiles with exactly 2 pierce value (such as gacha slots base projectile) would hit the same enemy twice
+4. In the pause menu, all buttons are slightly transparent now instead of just the compendium button
+5. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
+6. Fix bug where Tree spawns and Crate spawns were run double the intended amount.
+	1. Crate spawn attempt chance increased to compensate 50% -> 75%
+
+
+Compendium Changes:
+1.  Compendium: 
+	1. Character sort can now Sort by ID once again (Group Sort no longer replaces ID Sort)
+	2. Power sort now has Group option, which groups by power pools
+	3. (FIX) When opening the compendium after something has been unlocked/changed, it should more consistently look correct
+		1. (hopefully) No more red ? icons when achievements are complete or blacked out powers after they have been unlocked
+		2. All compendium pages are marked for resort whenever the compendium is opened now, instead of only the previously selected page
+	4. (FIX) fixed bug when numbers are on for characters, enemies, or achievements, they appear over some compendium elements
+2. Standardize the way compendium descriptions are generated to use titles, headers, and segments, rather than just a single block of text with different size arguments.
+	1. Description segments all have a shaded background, like the lore segments
+	2. Modified the size range for the Title (now title should more often fall on one line, except for the really long ones)
+3. Compendium Equipment Page now showcases the powers each equipment provides in special UI rather than a list of text
+	1. You can click on the powers to navigate to their page
+	2. The abilities provided by each equip is also displayed now, though as text (may be temporary)
+4. Astrajelly now shows powerpool in compendium

@@ -350,6 +350,12 @@ public class Compendium : MonoBehaviour
             AddHeader($"Description ({e.GetName(true)})".WithRarityColor(rare, isBlackMarket));
             AddDescription(UnlockedAlts[e]);
         }
+        if(p is AstralJelly)
+        {
+            AddHeader("Power Pool".WithRarityColor(rare, isBlackMarket));
+            Segments.Add(CompendiumDescriptionSegment.NewPowerSegment(DescriptionContentRect, 
+                MyCanvas, new List<PowerUp>() { PowerUp.Get<Dash>(), PowerUp.Get<BinaryStars>(), PowerUp.Get<Starbarbs>(), PowerUp.Get<LuckyStar>(), PowerUp.Get<Supernova>() }));
+        }
         if (!DisplayCPUE.IsLocked())
         {
             AddHeader("Stats".WithRarityColor(rare, isBlackMarket));
