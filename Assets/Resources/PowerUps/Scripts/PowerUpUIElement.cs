@@ -43,6 +43,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool ForceUnhideElement { get; set; } = false;
     public bool ForceNotBlackMarket { get; set; } = false;
     public bool CrucibleElement { get; set; } = false;
+    public bool IncludeRainbowShards { get; set; } = false;
     public bool UsePlaceHolder = false;
     public TextMeshProUGUI CostText;
     public GameObject CostObj;
@@ -159,7 +160,7 @@ public class PowerUpUIElement : MonoBehaviour
         {
             if(CrucibleElement)
             {
-                if (PowerUpCheatUI.CurrentType == 1)
+                if (IncludeRainbowShards)
                 {
                     CostObj.SetActive(!Main.DebugSettings.PowerUpCheat);
                     if(PowerUpCheatUI.UpdatedProcessQuantity > 0)

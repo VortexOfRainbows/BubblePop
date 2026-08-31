@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class Crucible : InteractableWorldObject
 {
+    public static Crucible PlayerClosestCrucible { get; set; }
     public override void EnableUI(bool fixedTime = false)
     {
-        if(PowerUpCheatUI.CurrentType == 1)
-            PowerUpCheatUI.PrevHadCrucible = false;
-        if (PowerUpCheatUI.CurrentCrucible == null)
-            PowerUpCheatUI.CurrentCrucible = this;
+        if (PlayerClosestCrucible == null)
+            PlayerClosestCrucible = this;
         base.EnableUI(fixedTime);
     }
     public override void DisableUI(bool fixedTime = false)
     {
-        if (PowerUpCheatUI.CurrentCrucible == this)
-            PowerUpCheatUI.CurrentCrucible = null;
+        if (PlayerClosestCrucible == this)
+            PlayerClosestCrucible = null;
         base.DisableUI(fixedTime);
     }
     public Transform Connector1, Joint1, Connector2, Joint2;

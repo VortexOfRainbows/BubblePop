@@ -5,60 +5,34 @@ using UnityEngine.UI;
 
 public class PowerUpCheatUI : MonoBehaviour
 {
+    public enum PowerMenuType
+    {
+        None = -1,
+        Crucible = 0,
+        Shard = 1, //Same as CHEAT
+    }
+    //Serialized
+    public PowerMenuType MyType = PowerMenuType.None;
     public static bool Hide { get; set; } = true;
-    public static PowerUpCheatUI Instance { get; set; }
+    public static PowerUpCheatUI CrucibleInstance { get; set; }
     public static int ProcessQuantity { get; set; } = 1;
     public static int UpdatedProcessQuantity { get; set; } = 0;
-    public static int CurrentType = -1;
     public static bool MouseInCompendiumArea { get; private set; }
-    public static Crucible CurrentCrucible { get; set; }
-    public static bool HasCrucible => CurrentCrucible != null;
+    public static bool HasCrucible => Crucible.PlayerClosestCrucible != null;
     public static bool HasShards => (CoinManager.CurrentShards >= 1) || (Main.DebugCheats && Main.DebugSettings.PowerUpCheat);
-    public static bool CanOpenMenu => HasCrucible || HasShards;
-    public static bool PrevHadCrucible { get; set; } = false;
-    public static bool PrevHadShards { get; set; } = false;
-    public static bool PrevHadCheats { get; set; } = false;
+    public bool CanOpenMenu()
+    {
+        if (MyType == PowerMenuType.Crucible)
+            return HasCrucible;
+        else if(MyType == PowerMenuType.Shard)
+            return HasShards;
+        return false;
+    }
     public static bool CurrentlyInitializingPowers { get; set; } = false;
     public static void StaticUpdate()
     {
-        if (CanOpenMenu)
-        {
-            int type = CurrentType; //if you have a current type, don't switch even if the other type is satsified
-            if(type >= 0) //Only switch off the current type if you don't satisfy the condition
-            {
-                if (!HasCrucible && type == 0) //originally had crucible, left range, switch
-                    type = -1;
-                else if (!HasShards && type == 1) //originally had shards, no more, switch
-                {
-                    Instance.ToggleHide(true, false);
-                    type = -1;
-                }
-                if (HasCrucible && !PrevHadCrucible) //Had shards, but just contacted crucible, switch
-                    type = 0;
-                //else if (HasShards && !PrevHadShards) //Had crucible, but just contacted shards, switch
-                //    type = 1;
-            }
-            if(type < 0)
-            {
-                if (HasCrucible)
-                    type = 0;
-                else if (HasShards)
-                    type = 1;
-            }
-            if (CurrentType != type && !Main.DebugSettings.PowerUpCheat)
-                Instance.Init(type); //(type == 1 && PrevHadCrucible && !HasCrucible) || (type == 0 && PrevHadShards && !HasShards)
-        }
-        else if (!Hide)
-                Instance.Disable();
-        if(!Instance.gameObject.activeSelf)
-            Instance.Update();
-        PrevHadCrucible = HasCrucible;
-        PrevHadShards = HasShards;
-        if(PrevHadCheats != Main.DebugSettings.PowerUpCheat)
-        {
-            Instance.Init(1);
-            PrevHadCheats = Main.DebugSettings.PowerUpCheat;
-        }
+        if(CrucibleInstance != null)
+            CrucibleInstance.InstanceUpdate();
         if (UpdatedProcessQuantity > 0)
             --UpdatedProcessQuantity;
     }
@@ -75,19 +49,36 @@ public class PowerUpCheatUI : MonoBehaviour
     public GameObject ShardDisplay;
     public void Start()
     {
-        Instance = this;
         gameObject.SetActive(true);
         NOPOWERS.SetActive(false);
-        CrucibleDisplay.SetActive(false);
-        ShardDisplay.SetActive(false);
         QuantityUp.onClick.AddListener(UpQuantity);
         QuantityDown.onClick.AddListener(DownQuantity);
         HideButton.onClick.AddListener(ToggleHide);
         Hide = true;
-        transform.LerpLocalPosition(new Vector2(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, 140), 1);
+        transform.localPosition = new Vector3(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, 140, 0);
+        InitializeType();
+    }
+    public void InitializeType()
+    {
+        switch (MyType)
+        {
+            case PowerMenuType.Crucible:
+                Title.text = "Crucible";
+                Description.text = "Convert Powers to Gems";
+                CrucibleDisplay.SetActive(true);
+                ShardDisplay.SetActive(false);
+                CrucibleInstance = this;
+                break;
+            case PowerMenuType.Shard:
+                Title.text = "Rainbow Shards";
+                Description.text = "Use Shards to Clone Any Power";
+                CrucibleDisplay.SetActive(false);
+                ShardDisplay.SetActive(true);
+                break;
+        }
     }
     private void ToggleHide() => ToggleHide(true, true);
-    public void ToggleHide(bool pauseBehavior, bool initPowers = true)
+    public void ToggleHide(bool pauseBehavior, bool launchIfNotHidden = true)
     {
         Hide = !Hide;
         if (pauseBehavior && PlayerData.PauseDuringPowerSelect)
@@ -97,8 +88,8 @@ public class PowerUpCheatUI : MonoBehaviour
             else if(Hide && Main.GamePaused)
                 Main.UnpauseGame();
         }
-        if (!Hide && initPowers)
-            InitializePowers(CurrentType);
+        if (!Hide && launchIfNotHidden)
+            LaunchMenu();
     }
     public void UpQuantity()
     {
@@ -118,13 +109,6 @@ public class PowerUpCheatUI : MonoBehaviour
             amt *= 20;
         QuantitySlider.TryParseInput((ProcessQuantity - amt).ToString(), true);
     }
-    public void InitializePowers(int type)
-    {
-        CurrentType = type;
-        ResetPowers();
-        NOPOWERS.SetActive(false);
-        UpdateType();
-    }
     public bool AwaitingPowerReset = false;
     public void ResetPowers()
     {
@@ -132,47 +116,27 @@ public class PowerUpCheatUI : MonoBehaviour
         foreach (PowerUpButton t in GridParent.GetComponentsInChildren<PowerUpButton>(false))
             Destroy(t.gameObject);
     }
-    public int PrevType { get; set; } = -1;
-    public void Init(int type = 0)
+    public void LaunchMenu()
     {
-        InitializePowers(type);
+        LoadPowers();
         transform.localScale = 0.9f * Vector3.one;
-        if (!Hide)
-            ToggleHide(true, false);
     }
     public void Disable()
     {
         ResetPowers();
-        CurrentType = -1;
         if (!Hide)
             ToggleHide(false, false);
         if (PlayerData.PauseDuringPowerSelect)
             Main.UnpauseGame();
     }
-    public void UpdateType()
+    public void LoadPowers()
     {
-        if (CurrentType == 1)
-        {
-            Title.text = "Rainbow Shards";
-            Description.text = "Use Shards to Clone Any Power";
-            CrucibleDisplay.SetActive(false);
-            ShardDisplay.SetActive(true);
-            ResetPowers();
-            //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
-            //This could maybe be done without a couroutine too, but would be more arduous
+        NOPOWERS.SetActive(false);
+        ResetPowers();
+        if (MyType == PowerMenuType.Shard)
             StartCoroutine(Main.DebugSettings.PowerUpCheat ? InitCheatButtons() :  InitCrucibleButtons());
-        }
-        else
-        {
-            Title.text = "Crucible";
-            Description.text = "Convert Powers to Gems";
-            CrucibleDisplay.SetActive(true);
-            ShardDisplay.SetActive(false);
-            ResetPowers();
-            //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
-            //This could maybe be done without a couroutine too, but would be more arduous
+        else if(MyType == PowerMenuType.Crucible)
             StartCoroutine(InitCrucibleButtons());
-        }
     }
     public IEnumerator InitCheatButtons()
     {
@@ -192,9 +156,7 @@ public class PowerUpCheatUI : MonoBehaviour
             PowerUpButton p = Instantiate(ChoiceTemplate, GridParent.transform);
             p.SetType(i);
             p.gameObject.SetActive(true);
-            p.CheatButton = true;
-            p.NonChoiceButton = true;
-            p.PowerUI.CrucibleElement = true;
+            p.CheatButton = p.NonChoiceButton = p.PowerUI.CrucibleElement = p.PowerUI.IncludeRainbowShards = true;
             p.PowerUI.Cost = p.PowerUI.MyPower.ShardReplicationCost();
             p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
             if (i % 3 == 2)
@@ -224,8 +186,10 @@ public class PowerUpCheatUI : MonoBehaviour
             p.gameObject.SetActive(true);
             p.PowerUI.Count.gameObject.SetActive(power.Stack > 1);
             p.PowerUI.Count.text = power.Stack.ToString();
-            p.Crucible = CurrentType == 0 ? CurrentCrucible : null;
-
+            if (MyType == PowerMenuType.Crucible)
+                p.Crucible = Crucible.PlayerClosestCrucible;
+            else
+                p.PowerUI.IncludeRainbowShards = true;
             p.CheatButton = false;
             p.NonChoiceButton = true;
             p.PowerUI.CrucibleElement = true;
@@ -237,10 +201,14 @@ public class PowerUpCheatUI : MonoBehaviour
         CurrentlyInitializingPowers = false;
         yield break;
     }
-    public void Update()
+    public void InstanceUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.C) && HideButton.interactable && Instance.gameObject.activeSelf && CanOpenMenu)
+        if (!Hide && !CanOpenMenu())
+            Disable();
+        if (Input.GetKeyDown(KeyCode.C) && HideButton.interactable && gameObject.activeSelf && CanOpenMenu())
+        {
             ToggleHide(true, true);
+        }
         if (!ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf)
         {
             if (!Hide)
@@ -249,9 +217,8 @@ public class PowerUpCheatUI : MonoBehaviour
         }
         else
             HideButton.interactable = true;
-        Instance = this;
         UpdateContentSize();
-        MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas, false, Hide || !Instance.gameObject.activeSelf);
+        MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas, false, Hide || !gameObject.activeSelf);
         float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
         transform.LerpLocalScale(Vector2.one, Utils.DeltaTimeLerpFactor(0.1f));
         ShardCountTxt.text = Main.DebugSettings.PowerUpCheat ? "Inf" : CoinManager.CurrentShards.ToString();
@@ -259,19 +226,25 @@ public class PowerUpCheatUI : MonoBehaviour
         if (Hide)
         {
             transform.LerpLocalPosition(new Vector2(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, 140), lerpT);
-            if (CurrentType != 0 && CanOpenMenu)
+            if (MyType != PowerMenuType.Crucible && CanOpenMenu())
                 buttonPosition = -205;
             HideButton.transform.LerpLocalPosition(new Vector2(ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf ? 710 : 600, buttonPosition), lerpT);
-            HideButtonTextUI.text = CurrentType == 0 ? "Hide Crucible" : Main.DebugSettings.PowerUpCheat ? "Show Cheats" : "Show Shards";
             MyRect.sizeDelta = new Vector2(MyRect.sizeDelta.x, Mathf.Lerp(MyRect.sizeDelta.y, 0, Utils.DeltaTimeLerpFactor(0.07f)));
         }
         else
         {
             transform.LerpLocalPosition(new Vector2(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, -Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.height / 2), lerpT);
             HideButton.transform.LerpLocalPosition(new Vector2(600, buttonPosition), lerpT);
-            HideButtonTextUI.text = CurrentType == 0 ? "Hide Crucible" : Main.DebugSettings.PowerUpCheat ? "Hide Cheats" : "Hide Shards";
             MyRect.sizeDelta = new Vector2(MyRect.sizeDelta.x, Mathf.Lerp(MyRect.sizeDelta.y, TargetSize, Utils.DeltaTimeLerpFactor(0.07f)));
         }
+        SetHideButtonText();
+    }
+    public void SetHideButtonText()
+    {
+        if(Hide)
+            HideButtonTextUI.text = MyType == PowerMenuType.Crucible ? "Show Crucible" : Main.DebugSettings.PowerUpCheat ? "Show Cheats" : "Show Shards";
+        else
+            HideButtonTextUI.text = MyType == PowerMenuType.Crucible ? "Hide Crucible" : Main.DebugSettings.PowerUpCheat ? "Hide Cheats" : "Hide Shards";
     }
     public float TargetSize = 0;
     public void UpdateContentSize()
@@ -282,6 +255,11 @@ public class PowerUpCheatUI : MonoBehaviour
         RectTransform r = GridParent.GetComponent<RectTransform>();
         float dist = -lastElement.y + GridParent.padding.bottom * 3;
         TargetSize = Mathf.Min(600, dist);
-        r.sizeDelta = new Vector2(r.sizeDelta.x, dist - MyRect.rect.height);
+        r.sizeDelta = new Vector2(r.sizeDelta.x, (Hide ? 0 : dist - MyRect.rect.height));
+    }
+    public void Update() //This is for reload testing, remove when ready to ship
+    {
+        if (MyType == PowerMenuType.Crucible)
+            CrucibleInstance = this;
     }
 }

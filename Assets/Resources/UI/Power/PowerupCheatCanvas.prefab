@@ -2003,6 +2003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059ba57050dcaef479e310244b73047c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MyType: 0
   ChoiceTemplate: {fileID: 5443223904476106795}
   GridParent: {fileID: 2140223440757842341}
   QuantitySlider: {fileID: 6016744899845816002}

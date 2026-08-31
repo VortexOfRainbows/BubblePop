@@ -44,7 +44,7 @@ public class PowerUpButton : MonoBehaviour
             for(int i = 0; i < removeAmt; ++i)
                 Crucible.PowerQueue.Enqueue(PowerUI.MyPower.Type);
             if(/*PowerUpCheatUI.AutoHide &&*/!PowerUpCheatUI.Hide)
-                PowerUpCheatUI.Instance.ToggleHide(true, true);
+                PowerUpCheatUI.CrucibleInstance.ToggleHide(true, true);
             Crucible.Text.text = Crucible.PowerQueue.Count.ToString();
             return;
         }

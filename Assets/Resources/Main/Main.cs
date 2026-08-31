@@ -418,7 +418,7 @@ public partial class Main : MonoBehaviour
             if (DebugCheats && Input.GetKeyDown(KeyCode.Backspace))
                 DebugCheats = false;
             instance.DirectorCanvas.SetActive(DirectorView);
-            if(PowerUpCheatUI.Instance != null)
+            if(PowerUpCheatUI.CrucibleInstance != null)
                 PowerUpCheatUI.StaticUpdate();
         }
         public static bool DirectorView = false;
