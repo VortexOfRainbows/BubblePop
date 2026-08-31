@@ -19,8 +19,12 @@ Do Later:
 	3. (potentially) Pause menu/Gameover menu opening swiftness
 	4. UCI playtest disclaimer
 	5. Character Select Menu and Equip Display (make sure this starts offscreen, as right now it starts onscreen and simply moves offscreen during world gen, which means fast generation times leave it visible as a bug)
-	6. Crucible/Shard menu (and make both accessible simultaneously)
+	6. Crucible/Shard menu (make shard related buttons show your shard count)
 	7. Change mouse pointer
+	8. Power Up choice Menu and Cheat Menus to fade in and out with alpha using canvas group
+		1. Make choice button show choice icon
+		2. Make the menus appear from the middle (and make choice do the same)
+		3. Make the "show" buttons slide up to disappear (might be best to standardize the top buttons so they don't flail around as much)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -56,6 +60,12 @@ Done:
 2. Some reorganization and prep for crucible ui rework
 3. WIP Crucible UI overhauls (functionality first)
 	1. Right now, things are mostly broken.
+4. Crucible and Shards should no longer show double powers in the menu when opened at the same time the popup is unlocked.
+	1. This is because the list of powers in no longer loaded when first unlocked, which should also reduce random lag spikes from going near crucibles or picking up your first shard.
+5. Crucible is now opened with "E", as that is now the standard interaction key
+6. Shards are still opened with "C"
+7. Crucible and Shard menus can now exist simultaneously
+	1. No longer need to move away from a crucible to access shards
 
 -- A3.4 UPDATE ON STEAM --
 

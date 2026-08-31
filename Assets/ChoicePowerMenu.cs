@@ -63,13 +63,11 @@ public class ChoicePowerMenu : MonoBehaviour
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.H) && HideButton.interactable)
-        {
             ToggleHide();
-        }
-        if(!PowerUpCheatUI.Hide && PowerUpCheatUI.CrucibleInstance.gameObject.activeSelf)
+        if(!PowerUpCheatUI.ShardInstance.Hide || !PowerUpCheatUI.CrucibleInstance.Hide)
         {
-            if (!Hide)
-                ToggleHide();
+            if(!Hide)
+                PowerUpCheatUI.CloseAllMenus();
             HideButton.interactable = false;
         }
         else
@@ -78,7 +76,7 @@ public class ChoicePowerMenu : MonoBehaviour
         if (Hide)
         {
             transform.LerpLocalPosition(new Vector2(MyCanvas.GetComponent<RectTransform>().rect.width / 2, + 250), lerpT);
-            bool CrucibleMenuShowButtonIsShowing = PowerUpCheatUI.Hide && PowerUpCheatUI.CrucibleInstance.gameObject.activeSelf && PowerUpCheatUI.CrucibleInstance.CanOpenMenu();
+            bool CrucibleMenuShowButtonIsShowing = PowerUpCheatUI.ShardInstance.Hide && PowerUpCheatUI.ShardInstance.gameObject.activeSelf && PowerUpCheatUI.ShardInstance.CanOpenMenu();
             HideButton.transform.LerpLocalPosition(new Vector2(CrucibleMenuShowButtonIsShowing ? -110 : 0, -260), lerpT);
             RerollButton.transform.LerpLocalPosition(new Vector2(0, -140), lerpT);
             HideButtonUI.text = "Show Choices";
