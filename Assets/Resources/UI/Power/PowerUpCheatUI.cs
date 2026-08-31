@@ -18,6 +18,7 @@ public class PowerUpCheatUI : MonoBehaviour
     public static bool PrevHadCrucible { get; set; } = false;
     public static bool PrevHadShards { get; set; } = false;
     public static bool PrevHadCheats { get; set; } = false;
+    public static bool CurrentlyInitializingPowers { get; set; } = false;
     public static void StaticUpdate()
     {
         if (CanOpenMenu)
@@ -156,6 +157,7 @@ public class PowerUpCheatUI : MonoBehaviour
             Description.text = "Use Shards to Clone Any Power";
             CrucibleDisplay.SetActive(false);
             ShardDisplay.SetActive(true);
+            ResetPowers();
             //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
             //This could maybe be done without a couroutine too, but would be more arduous
             StartCoroutine(Main.DebugSettings.PowerUpCheat ? InitCheatButtons() :  InitCrucibleButtons());
@@ -166,6 +168,7 @@ public class PowerUpCheatUI : MonoBehaviour
             Description.text = "Convert Powers to Gems";
             CrucibleDisplay.SetActive(true);
             ShardDisplay.SetActive(false);
+            ResetPowers();
             //Using a couroutine here to make it less immediately laggy by spreading out the initalization of the stuff over frames.
             //This could maybe be done without a couroutine too, but would be more arduous
             StartCoroutine(InitCrucibleButtons());
@@ -173,9 +176,12 @@ public class PowerUpCheatUI : MonoBehaviour
     }
     public IEnumerator InitCheatButtons()
     {
-        if(AwaitingPowerReset)
+        if(AwaitingPowerReset || CurrentlyInitializingPowers)
             yield return new WaitForSecondsRealtime(0.03f);
-        AwaitingPowerReset = false;
+        if(!AwaitingPowerReset || CurrentlyInitializingPowers)
+            yield break;
+        AwaitingPowerReset = false; 
+        CurrentlyInitializingPowers = true;
         for (int i = 0; i < PowerUp.TotalPowerUps; ++i)
         {
             if(AwaitingPowerReset)
@@ -194,13 +200,17 @@ public class PowerUpCheatUI : MonoBehaviour
             if (i % 3 == 2)
                 yield return new WaitForSecondsRealtime(0.02f);
         }
-        yield return null;
+        CurrentlyInitializingPowers = false;
+        yield break;
     }
     public IEnumerator InitCrucibleButtons()
     {
-        if (AwaitingPowerReset)
+        if (AwaitingPowerReset || CurrentlyInitializingPowers)
             yield return new WaitForSecondsRealtime(0.03f);
+        if (!AwaitingPowerReset || CurrentlyInitializingPowers)
+            yield break;
         AwaitingPowerReset = false;
+        CurrentlyInitializingPowers = true;
         for (int i = 0; i < Player.GlobalPowers.Count; i++)
         {
             if (AwaitingPowerReset)
@@ -224,7 +234,8 @@ public class PowerUpCheatUI : MonoBehaviour
             if (i % 3 == 2)
                 yield return new WaitForSecondsRealtime(0.02f);
         }
-        yield return null;
+        CurrentlyInitializingPowers = false;
+        yield break;
     }
     public void Update()
     {

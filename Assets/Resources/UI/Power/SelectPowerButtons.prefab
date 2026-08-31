@@ -590,8 +590,8 @@ MonoBehaviour:
   - {fileID: 5799140540639936530}
   - {fileID: 8668829844104253247}
   MyCanvas: {fileID: 0}
-  RerollButton: {fileID: 1560583214806885081}
-  HideButton: {fileID: 8526403849767805741}
+  RerollButton: {fileID: 4820129335836644689}
+  HideButton: {fileID: 8547517688759144574}
   GemParent: {fileID: 1734394803764243870}
   GemCostUI: {fileID: 7893305915022112462}
   RemainingUI: {fileID: 8425630612332165492}
@@ -742,7 +742,7 @@ GameObject:
   - component: {fileID: 5218763112237662407}
   - component: {fileID: 4765348688325821457}
   - component: {fileID: 8710379853254892336}
-  - component: {fileID: 1560583214806885081}
+  - component: {fileID: 4820129335836644689}
   m_Layer: 0
   m_Name: REROLL
   m_TagString: Untagged
@@ -811,7 +811,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1560583214806885081
+--- !u!114 &4820129335836644689
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -820,7 +820,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8104692012771238461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 93d1e3dc614ec27468459577a3b4a416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -833,9 +833,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
+    m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
+    m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
     m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -855,6 +855,11 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+  AnimationType: 0
+  ColorType: 0
+  DestinationType: 0
+  SoundOnHover: 1
+  SoundOnClick: 0
 --- !u!1 &9101085274598106946
 GameObject:
   m_ObjectHideFlags: 0
@@ -1699,14 +1704,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4345584707539540044, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
   m_PrefabInstance: {fileID: 7306143606705849689}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8526403849767805741 stripped
+--- !u!114 &8547517688759144574 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1384713703946937972, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1439534411349153063, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
   m_PrefabInstance: {fileID: 7306143606705849689}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 93d1e3dc614ec27468459577a3b4a416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

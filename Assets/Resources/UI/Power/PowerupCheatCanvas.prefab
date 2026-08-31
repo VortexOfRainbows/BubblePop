@@ -390,7 +390,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 3
-  Slider: {fileID: 0}
   InputField: {fileID: 3111260313091864561}
 --- !u!1 &259835697887369464
 GameObject:
@@ -2007,9 +2006,9 @@ MonoBehaviour:
   ChoiceTemplate: {fileID: 5443223904476106795}
   GridParent: {fileID: 2140223440757842341}
   QuantitySlider: {fileID: 6016744899845816002}
-  QuantityUp: {fileID: 4545313956370365639}
-  QuantityDown: {fileID: 3814980936311461574}
-  HideButton: {fileID: 3835615623794552363}
+  QuantityUp: {fileID: 1218022606008640304}
+  QuantityDown: {fileID: 6296098945223648369}
+  HideButton: {fileID: 3888828844924460408}
   Title: {fileID: 7051307012574374239}
   Description: {fileID: 4215719241464848965}
   HideButtonTextUI: {fileID: 5483959889432867138}
@@ -2965,7 +2964,7 @@ GameObject:
   - component: {fileID: 1050670579764800717}
   - component: {fileID: 598975426001918259}
   - component: {fileID: 6047537439858841142}
-  - component: {fileID: 3814980936311461574}
+  - component: {fileID: 6296098945223648369}
   m_Layer: 5
   m_Name: Down
   m_TagString: Untagged
@@ -3031,7 +3030,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3814980936311461574
+--- !u!114 &6296098945223648369
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3040,11 +3039,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7572657628160562128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 93d1e3dc614ec27468459577a3b4a416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -3053,10 +3052,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
+    m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
+    m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
+    m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3075,6 +3074,11 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+  AnimationType: 0
+  ColorType: 0
+  DestinationType: 0
+  SoundOnHover: 1
+  SoundOnClick: 0
 --- !u!1 &7647118373148265816
 GameObject:
   m_ObjectHideFlags: 0
@@ -3086,7 +3090,7 @@ GameObject:
   - component: {fileID: 6805502057020263160}
   - component: {fileID: 4036676783585936688}
   - component: {fileID: 8072738024095437125}
-  - component: {fileID: 4545313956370365639}
+  - component: {fileID: 1218022606008640304}
   m_Layer: 5
   m_Name: Up
   m_TagString: Untagged
@@ -3152,7 +3156,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4545313956370365639
+--- !u!114 &1218022606008640304
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3161,11 +3165,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7647118373148265816}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 93d1e3dc614ec27468459577a3b4a416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -3174,10 +3178,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
+    m_PressedColor: {r: 0.8509804, g: 0.7647059, b: 0.23529412, a: 1}
+    m_SelectedColor: {r: 0.99215686, g: 1, b: 0.2901961, a: 1}
+    m_DisabledColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3196,6 +3200,11 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+  AnimationType: 0
+  ColorType: 0
+  DestinationType: 0
+  SoundOnHover: 1
+  SoundOnClick: 0
 --- !u!1 &8004497467785416949
 GameObject:
   m_ObjectHideFlags: 0
@@ -3940,15 +3949,15 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4345584707539540044, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
   m_PrefabInstance: {fileID: 2742030063198865503}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3835615623794552363 stripped
+--- !u!114 &3888828844924460408 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1384713703946937972, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1439534411349153063, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
   m_PrefabInstance: {fileID: 2742030063198865503}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 93d1e3dc614ec27468459577a3b4a416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &5483959889432867138 stripped
