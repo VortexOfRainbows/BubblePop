@@ -128,6 +128,6 @@ public class Fizzy : Body
     }
     public override Sprite AbilityIcon()
     {
-        return PowerUp.Get<Kickflip>().sprite;
+        return Resources.Load<Sprite>("UI/Ability/ColaUnused");
     }
 }
