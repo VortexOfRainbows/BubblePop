@@ -36,6 +36,9 @@ public class StandardButton : Button
         OpenCompendium = 11,
         ChangeAscensionLevel = 12,
 
+        CrucibleQuantityUp = 20,
+        CrucibleQuantityDown = 21,
+
         CompendiumAuto = 30,
         CompendiumUndo = 31,
         CompendiumClear = 32,
@@ -63,6 +66,9 @@ public class StandardButton : Button
         ButtonToActionDict[ButtonDestinationType.CloseTutorial] = Main.CanvasManager.CloseMultiplayerMenu;
         ButtonToActionDict[ButtonDestinationType.OpenCompendium] = Compendium.StaticToggleActive;
         ButtonToActionDict[ButtonDestinationType.ChangeAscensionLevel] = IncrementAscensionLevel;
+
+        ButtonToActionDict[ButtonDestinationType.CrucibleQuantityUp] = PowerUpCheatUI.UpQuantity;
+        ButtonToActionDict[ButtonDestinationType.CrucibleQuantityDown] = PowerUpCheatUI.DownQuantity;
 
         ButtonToActionDict[ButtonDestinationType.CompendiumAuto] = () => Compendium.Instance.ToggleAuto();
         ButtonToActionDict[ButtonDestinationType.CompendiumUndo] = () => Compendium.Instance.CancelTierListChanges();

@@ -2007,8 +2007,6 @@ MonoBehaviour:
   ChoiceTemplate: {fileID: 5443223904476106795}
   GridParent: {fileID: 2140223440757842341}
   QuantitySlider: {fileID: 6016744899845816002}
-  QuantityUp: {fileID: 1218022606008640304}
-  QuantityDown: {fileID: 6296098945223648369}
   HideButton: {fileID: 3888828844924460408}
   Title: {fileID: 7051307012574374239}
   Description: {fileID: 4215719241464848965}
@@ -2020,6 +2018,7 @@ MonoBehaviour:
   NOPOWERS: {fileID: 6312966415820534437}
   CrucibleDisplay: {fileID: 868787002120257535}
   ShardDisplay: {fileID: 6255898731968135842}
+  Keybind: 0
   AwaitingPowerReset: 0
   TargetSize: 0
 --- !u!222 &8880646321839641911
@@ -3077,7 +3076,7 @@ MonoBehaviour:
       m_Calls: []
   AnimationType: 0
   ColorType: 0
-  DestinationType: 0
+  DestinationType: 21
   SoundOnHover: 1
   SoundOnClick: 0
 --- !u!1 &7647118373148265816
@@ -3203,7 +3202,7 @@ MonoBehaviour:
       m_Calls: []
   AnimationType: 0
   ColorType: 0
-  DestinationType: 0
+  DestinationType: 20
   SoundOnHover: 1
   SoundOnClick: 0
 --- !u!1 &8004497467785416949

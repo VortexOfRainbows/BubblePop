@@ -48,7 +48,7 @@ public class PowerUpCheatUI : MonoBehaviour
     public PowerUpButton ChoiceTemplate;
     public GridLayoutGroup GridParent;
     public CheatMenuQuantityInputField QuantitySlider;
-    public Button QuantityUp, QuantityDown, HideButton;
+    public Button HideButton;
     public TextMeshProUGUI Title;
     public TextMeshProUGUI Description, HideButtonTextUI, ShardCountTxt;
     public RectTransform MyRect, SelectionArea;
@@ -61,12 +61,11 @@ public class PowerUpCheatUI : MonoBehaviour
     {
         gameObject.SetActive(true);
         NOPOWERS.SetActive(false);
-        QuantityUp.onClick.AddListener(UpQuantity);
-        QuantityDown.onClick.AddListener(DownQuantity);
         HideButton.onClick.AddListener(ToggleHide);
         Hide = true;
         transform.localPosition = new Vector3(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, 140, 0);
         InitializeType();
+        QuantitySlider.Update();
     }
     public void InitializeType()
     {
@@ -106,23 +105,27 @@ public class PowerUpCheatUI : MonoBehaviour
             LaunchMenu();
         }
     }
-    public void UpQuantity()
+    public static void UpQuantity()
     {
         int amt = 1;
         if (Input.GetKey(KeyCode.LeftShift))
             amt *= 5;
         if (Input.GetKey(KeyCode.LeftControl))
             amt *= 20;
-        QuantitySlider.TryParseInput((ProcessQuantity + amt).ToString(), true);
+        string makeThisNotUseStringsLater = (ProcessQuantity + amt).ToString();
+        CrucibleInstance.QuantitySlider.TryParseInput(makeThisNotUseStringsLater, true);
+        ShardInstance.QuantitySlider.TryParseInput(makeThisNotUseStringsLater, true);
     }
-    public void DownQuantity()
+    public static void DownQuantity()
     {
         int amt = 1;
         if (Input.GetKey(KeyCode.LeftShift))
             amt *= 5;
         if (Input.GetKey(KeyCode.LeftControl))
             amt *= 20;
-        QuantitySlider.TryParseInput((ProcessQuantity - amt).ToString(), true);
+        string makeThisNotUseStringsLater = (ProcessQuantity - amt).ToString();
+        CrucibleInstance.QuantitySlider.TryParseInput(makeThisNotUseStringsLater, true);
+        ShardInstance.QuantitySlider.TryParseInput(makeThisNotUseStringsLater, true);
     }
     public bool AwaitingPowerReset = false;
     public void ResetPowers()
