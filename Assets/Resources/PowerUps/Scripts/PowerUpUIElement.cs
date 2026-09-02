@@ -107,6 +107,14 @@ public class PowerUpUIElement : MonoBehaviour
     /// </summary>
     public int Cost { get; set; } = -1;
     public bool CompendiumHoverOverride { get; set; } = false;
+    private bool CanHoverOverCrucible()
+    {
+        if (!CrucibleElement)
+            return true;
+        if(IncludeRainbowShards)
+            return PowerUpCheatUI.ShardInstance.MouseInCompendiumArea;
+        return PowerUpCheatUI.CrucibleInstance.MouseInCompendiumArea;
+    }
     public void WhileOn()
     {
         Timer += 1;
@@ -120,13 +128,14 @@ public class PowerUpUIElement : MonoBehaviour
         }
         else
             Count.gameObject.SetActive(!AppearLocked && (Compendium.Instance == null || Compendium.Instance.PowerPage.ShowCounts) && !PreventHovering);
-        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea || CompendiumHoverOverride) && (!CrucibleElement || PowerUpCheatUI.MouseInCompendiumArea);
+        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea || CompendiumHoverOverride) && 
+            (CanHoverOverCrucible());
         float size = CompendiumElement && !CompendiumHoverOverride ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
         size *= ScaleMultiplier;
         bool rectangular = CompendiumElement && !CompendiumHoverOverride;
         if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement, true) && (CompendiumElement || !Main.GamePaused || !(InventoryElement || MenuElement)))
         {
-            if(myLayout != null)
+            if (myLayout != null)
                 myLayout.isHovering = true;
             string name = AppearLocked ? PowerUp.LockedName.WithRarityColor(MyPower.Rarity - 1, MyPower.IsBlackMarket()) : MyPower.UnlockedName;
             string desc = AppearLocked ? PowerUp.LockedDescription : CompendiumElement ? "" : MyPower.GetFullDescription();
@@ -167,10 +176,6 @@ public class PowerUpUIElement : MonoBehaviour
                         UpdateShardCost();
                     bool canAfford = Cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
                     CostText.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
-                }
-                else
-                {
-                    CostObj.SetActive(false);
                 }
             }
             else if(ChoicePowerMenu.IsBlackMarket)

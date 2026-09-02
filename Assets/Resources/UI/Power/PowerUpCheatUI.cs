@@ -19,7 +19,7 @@ public class PowerUpCheatUI : MonoBehaviour
     public static PowerUpCheatUI ShardInstance { get; set; }
     public static int ProcessQuantity { get; set; } = 1;
     public static int UpdatedProcessQuantity { get; set; } = 0;
-    public static bool MouseInCompendiumArea { get; private set; }
+    public bool MouseInCompendiumArea { get; private set; }
     public static bool HasCrucible => Crucible.PlayerClosestCrucible != null;
     public static bool HasShards => (CoinManager.CurrentShards >= 1) || (Main.DebugCheats && Main.DebugSettings.PowerUpCheat);
     public bool CanOpenMenu()
@@ -46,7 +46,7 @@ public class PowerUpCheatUI : MonoBehaviour
         if (!CrucibleInstance.Hide)
             CrucibleInstance.ToggleHide();
     }
-    public PowerUpButton ChoiceTemplate;
+    public PowerUpButton ChoiceTemplate, CrucibleTemplate;
     public GridLayoutGroup GridParent;
     public CheatMenuQuantityInputField QuantitySlider;
     public Button HideButton;
@@ -67,6 +67,7 @@ public class PowerUpCheatUI : MonoBehaviour
         InitializeType();
         QuantitySlider.Update();
         SetHideButtonText();
+        ChoiceTemplate.PowerUI.myCanvas = CrucibleTemplate.PowerUI.myCanvas = MyCanvas;
     }
     public void InitializeType()
     {
@@ -106,6 +107,10 @@ public class PowerUpCheatUI : MonoBehaviour
             if(!ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf)
                 ChoicePowerMenu.Instance.ToggleHide();
         }
+        else
+        {
+            ResetPowers();
+        }
     }
     public static void UpQuantity()
     {
@@ -144,6 +149,7 @@ public class PowerUpCheatUI : MonoBehaviour
         else if (MyType == PowerMenuType.Shard && !CrucibleInstance.Hide)
             CrucibleInstance.ToggleHide(false);
         LoadPowers();
+        QuantitySlider.LoadSetting();
         transform.localScale = 0.9f * Vector3.one;
     }
     public void Disable()
@@ -187,24 +193,36 @@ public class PowerUpCheatUI : MonoBehaviour
     {
         if (AwaitingPowerReset)
             yield return new WaitForSecondsRealtime(0.02f);
+        int RainbowFlowerId = PowerUp.Get<RainbowFlower>().MyID;
         AwaitingPowerReset = false;
         for (int i = 0; i < Player.GlobalPowers.Count; i++)
         {
             PowerUp power = PowerUp.Get(Player.GlobalPowers[i]);
-            PowerUpButton p = Instantiate(ChoiceTemplate, GridParent.transform);
+            int powerCost = 0;
+            bool useShards = MyType == PowerMenuType.Shard || (powerCost = power.CrucibleGems(true)) < 0;
+            PowerUpButton p = Instantiate(useShards ? ChoiceTemplate : CrucibleTemplate, GridParent.transform);
             p.SetType(power.Type);
             p.gameObject.SetActive(true);
             p.PowerUI.Count.gameObject.SetActive(power.Stack > 1);
             p.PowerUI.Count.text = power.Stack.ToString();
             if (MyType == PowerMenuType.Crucible)
+            {
                 p.Crucible = Crucible.PlayerClosestCrucible;
+                p.PowerUI.Cost = powerCost * (useShards ? -1 : 1);
+                if (power.MyID == RainbowFlowerId)
+                    p.PowerUI.CostText.text = "?";
+                else
+                    p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
+            }
             else
+            {
                 p.PowerUI.IncludeRainbowShards = true;
+                p.PowerUI.Cost = power.ShardReplicationCost(ProcessQuantity);
+                p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
+            }
             p.CheatButton = false;
             p.NonChoiceButton = true;
             p.PowerUI.CrucibleElement = true;
-            p.PowerUI.Cost = power.ShardReplicationCost(ProcessQuantity);
-            p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
             if (i % 3 == 2)
                 yield return new WaitForSecondsRealtime(0.01f);
             if (AwaitingPowerReset)
@@ -231,7 +249,7 @@ public class PowerUpCheatUI : MonoBehaviour
         //else
         //    HideButton.interactable = true;
         UpdateContentSize();
-        MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas, false, Hide || !gameObject.activeSelf);
+        MouseInCompendiumArea = !Hide && Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas, false, !gameObject.activeSelf);
         float lerpT = Utils.DeltaTimeLerpFactor(0.1f);
         transform.LerpLocalScale(Vector2.one, lerpT);
         ShardCountTxt.text = Main.DebugSettings.PowerUpCheat ? "Inf" : CoinManager.CurrentShards.ToString();
@@ -260,11 +278,14 @@ public class PowerUpCheatUI : MonoBehaviour
     public void UpdateContentSize()
     {
         int c = GridParent.transform.childCount;
-        NOPOWERS.SetActive(c <= 1 && MyGroup.alpha > 0.5f);
+        bool noPowers = c <= 2;
+        NOPOWERS.SetActive(noPowers && MyGroup.alpha > 0.5f);
         Vector3 lastElement = GridParent.transform.GetChild(c - 1).localPosition;
         RectTransform r = GridParent.GetComponent<RectTransform>();
-        float dist = -lastElement.y + GridParent.padding.bottom * 3;
-        TargetSize = Mathf.Min(600, dist);
+        float dist = -lastElement.y + GridParent.padding.bottom * 1 + GridParent.cellSize.y * 0.5f;
+        float fit3inhere = GridParent.cellSize.y * 3 + GridParent.spacing.y * 2 + GridParent.padding.top + GridParent.padding.bottom;
+        float fit1inhere = GridParent.cellSize.y + GridParent.padding.top + GridParent.padding.bottom;
+        TargetSize = noPowers ? fit1inhere : Mathf.Min(fit3inhere, dist);
         r.sizeDelta = new Vector2(r.sizeDelta.x, (Hide ? 0 : dist - MyRect.rect.height));
     }
     public void Update() //This is for reload testing, remove when ready to ship

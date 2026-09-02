@@ -19,7 +19,7 @@ Do Later:
 	3. (potentially) Pause menu/Gameover menu opening swiftness
 	4. UCI playtest disclaimer
 	5. Character Select Menu and Equip Display (make sure this starts offscreen, as right now it starts onscreen and simply moves offscreen during world gen, which means fast generation times leave it visible as a bug)
-	6. Crucible/Shard menu (try to change the size of the menu so the buttons at the top fit more easily)
+	6. Crucible/Shard menu (change the style of the top buttons too)
 	7. Change mouse pointer
 	8. Make choice button show choice icon, shard button have shard icon
 
@@ -60,6 +60,11 @@ Done:
 3. Fizzy Ability Icon (sam)
 4. Slightly modified position of key count ui
 5. Your current shard count now appears under key count after obtaining your first shard
+6. WIP Crucible/Shards UI rework
+	1. Now shows gems/shards you will receive from smelting a power
+	2. (WIP) Now uses the cornflower blue style similar to compendium and settings menu
+	3. TODO: make power buttons in the crucible also use compendium blue style
+7. Fix a lot of bugs that came up from being able to have both menus exist at once (shard/crucible)
 
 8/30/26 to 8/31/26
 1. Ability icons for Bubblemancer and Though Bubble, plus Fizzy placeholder (Sam!)

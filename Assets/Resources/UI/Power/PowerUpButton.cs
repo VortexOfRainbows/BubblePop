@@ -60,6 +60,7 @@ public class PowerUpButton : MonoBehaviour
             if (!Main.DebugSettings.PowerUpCheat)
             {
                 CoinManager.ModifyShards(-PowerUI.Cost);
+                //These are included for powers with scaling cost requirements (currently none, but previously Perp)
                 PowerUI.Cost = PowerUI.MyPower.ShardReplicationCost(PowerUpCheatUI.ProcessQuantity);
                 PowerUI.CostText.text = PowerUI.Cost.ToString();
             }
