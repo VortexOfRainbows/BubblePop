@@ -534,6 +534,7 @@ GameObject:
   - component: {fileID: 4808155362112854613}
   - component: {fileID: 6453398370548209934}
   - component: {fileID: 4169712747247860266}
+  - component: {fileID: 8536746568284522082}
   m_Layer: 5
   m_Name: SelectPowerButtons
   m_TagString: Untagged
@@ -597,6 +598,19 @@ MonoBehaviour:
   RemainingUI: {fileID: 8425630612332165492}
   HideButtonUI: {fileID: 1113505390629911620}
   Layout: {fileID: 8806486988567393353}
+  MyGroup: {fileID: 8536746568284522082}
+--- !u!225 &8536746568284522082
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5761554827099899338}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6474452836623274010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,6 +1613,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4808155362112854613}
     m_Modifications:
+    - target: {fileID: 1439534411349153063, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
+      propertyPath: DestinationType
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 4345584707539540044, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

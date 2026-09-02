@@ -128,6 +128,6 @@ public class Fizzy : Body
     }
     public override Sprite AbilityIcon()
     {
-        return Resources.Load<Sprite>("UI/Ability/ColaUnused");
+        return Resources.Load<Sprite>("UI/Ability/SkateboardIconFlipped");
     }
 }

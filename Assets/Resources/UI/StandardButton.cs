@@ -38,6 +38,9 @@ public class StandardButton : Button
 
         CrucibleQuantityUp = 20,
         CrucibleQuantityDown = 21,
+        OpenCloseShardMenu = 22, 
+        OpenCloseCrucibleMenu = 23,
+        OpenCloseChoiceMenu = 24,
 
         CompendiumAuto = 30,
         CompendiumUndo = 31,
@@ -67,8 +70,12 @@ public class StandardButton : Button
         ButtonToActionDict[ButtonDestinationType.OpenCompendium] = Compendium.StaticToggleActive;
         ButtonToActionDict[ButtonDestinationType.ChangeAscensionLevel] = IncrementAscensionLevel;
 
+
         ButtonToActionDict[ButtonDestinationType.CrucibleQuantityUp] = PowerUpCheatUI.UpQuantity;
         ButtonToActionDict[ButtonDestinationType.CrucibleQuantityDown] = PowerUpCheatUI.DownQuantity;
+        ButtonToActionDict[ButtonDestinationType.OpenCloseShardMenu] = () => PowerUpCheatUI.ShardInstance.ToggleHide();
+        ButtonToActionDict[ButtonDestinationType.OpenCloseCrucibleMenu] = () => PowerUpCheatUI.CrucibleInstance.ToggleHide();
+        ButtonToActionDict[ButtonDestinationType.OpenCloseChoiceMenu] = () => ChoicePowerMenu.Instance.ToggleHide();
 
         ButtonToActionDict[ButtonDestinationType.CompendiumAuto] = () => Compendium.Instance.ToggleAuto();
         ButtonToActionDict[ButtonDestinationType.CompendiumUndo] = () => Compendium.Instance.CancelTierListChanges();

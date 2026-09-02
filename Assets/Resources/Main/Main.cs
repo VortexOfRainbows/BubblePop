@@ -406,7 +406,10 @@ public partial class Main : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.F) && DebugCheats)
                 DirectorView = !DirectorView;
             if (Input.GetKeyDown(KeyCode.P) && DebugCheats)
+            {
                 PowerUpCheat = !PowerUpCheat;
+                PowerUpCheatUI.ShardInstance.SetHideButtonText();
+            }
             if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
             {
                 foreach (UnlockCondition condition in UnlockCondition.Unlocks.Values)

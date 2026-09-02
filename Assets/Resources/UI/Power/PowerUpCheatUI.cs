@@ -11,6 +11,7 @@ public class PowerUpCheatUI : MonoBehaviour
         Crucible = 0,
         Shard = 1, //Same as CHEAT
     }
+    public CanvasGroup MyGroup;
     //Serialized
     public PowerMenuType MyType = PowerMenuType.None;
     public bool Hide { get; set; } = true;
@@ -56,16 +57,16 @@ public class PowerUpCheatUI : MonoBehaviour
     public GameObject NOPOWERS;
     public GameObject CrucibleDisplay;
     public GameObject ShardDisplay;
-    public KeyCode Keybind;
+    public KeyCode Keybind { get; set; }
     public void Start()
     {
         gameObject.SetActive(true);
         NOPOWERS.SetActive(false);
-        HideButton.onClick.AddListener(ToggleHide);
         Hide = true;
         transform.localPosition = new Vector3(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, 140, 0);
         InitializeType();
         QuantitySlider.Update();
+        SetHideButtonText();
     }
     public void InitializeType()
     {
@@ -89,8 +90,7 @@ public class PowerUpCheatUI : MonoBehaviour
                 break;
         }
     }
-    private void ToggleHide() => ToggleHide(true);
-    public void ToggleHide(bool pauseBehavior)
+    public void ToggleHide(bool pauseBehavior = true)
     {
         Hide = !Hide;
         if (pauseBehavior && PlayerData.PauseDuringPowerSelect)
@@ -103,6 +103,8 @@ public class PowerUpCheatUI : MonoBehaviour
         if (!Hide)
         {
             LaunchMenu();
+            if(!ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf)
+                ChoicePowerMenu.Instance.ToggleHide();
         }
     }
     public static void UpQuantity()
@@ -164,7 +166,7 @@ public class PowerUpCheatUI : MonoBehaviour
     public IEnumerator InitCheatButtons()
     {
         if(AwaitingPowerReset)
-            yield return new WaitForSecondsRealtime(0.03f);
+            yield return new WaitForSecondsRealtime(0.02f);
         AwaitingPowerReset = false;
         for (int i = 0; i < PowerUp.TotalPowerUps; ++i)
         {
@@ -175,7 +177,7 @@ public class PowerUpCheatUI : MonoBehaviour
             p.PowerUI.Cost = p.PowerUI.MyPower.ShardReplicationCost();
             p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
             if (i % 3 == 2)
-                yield return new WaitForSecondsRealtime(0.02f);
+                yield return new WaitForSecondsRealtime(0.01f);
             if(AwaitingPowerReset)
                 break;
         }
@@ -184,7 +186,7 @@ public class PowerUpCheatUI : MonoBehaviour
     public IEnumerator InitCrucibleButtons()
     {
         if (AwaitingPowerReset)
-            yield return new WaitForSecondsRealtime(0.03f);
+            yield return new WaitForSecondsRealtime(0.02f);
         AwaitingPowerReset = false;
         for (int i = 0; i < Player.GlobalPowers.Count; i++)
         {
@@ -204,7 +206,7 @@ public class PowerUpCheatUI : MonoBehaviour
             p.PowerUI.Cost = power.ShardReplicationCost(ProcessQuantity);
             p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
             if (i % 3 == 2)
-                yield return new WaitForSecondsRealtime(0.02f);
+                yield return new WaitForSecondsRealtime(0.01f);
             if (AwaitingPowerReset)
                 break;
         }
@@ -220,48 +222,45 @@ public class PowerUpCheatUI : MonoBehaviour
         {
             ToggleHide(true);
         }
-        if (!ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf)
-        {
-            if (!Hide)
-                ToggleHide(true);
-            HideButton.interactable = false;
-        }
-        else
-            HideButton.interactable = true;
+        //if (!ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf)
+        //{
+        //    if (!Hide)
+        //        ToggleHide(true);
+        //    HideButton.interactable = false;
+        //}
+        //else
+        //    HideButton.interactable = true;
         UpdateContentSize();
         MouseInCompendiumArea = Utils.IsMouseHoveringOverThis(true, SelectionArea, 0, MyCanvas, false, Hide || !gameObject.activeSelf);
-        float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
-        transform.LerpLocalScale(Vector2.one, Utils.DeltaTimeLerpFactor(0.1f));
+        float lerpT = Utils.DeltaTimeLerpFactor(0.1f);
+        transform.LerpLocalScale(Vector2.one, lerpT);
         ShardCountTxt.text = Main.DebugSettings.PowerUpCheat ? "Inf" : CoinManager.CurrentShards.ToString();
-        float buttonPosition = -65;
+        Vector2 defaultPos = new(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, -Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.height / 2);
         if (Hide)
         {
-            transform.LerpLocalPosition(new Vector2(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, 140), lerpT);
-            if (MyType != PowerMenuType.Crucible && CanOpenMenu())
-                buttonPosition = -205;
-            HideButton.transform.LerpLocalPosition(new Vector2(ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf ? 710 : 600, buttonPosition), lerpT);
-            MyRect.sizeDelta = new Vector2(MyRect.sizeDelta.x, Mathf.Lerp(MyRect.sizeDelta.y, 0, Utils.DeltaTimeLerpFactor(0.07f)));
+            defaultPos.y -= 20;
+            transform.LerpLocalPosition(defaultPos, lerpT);
+            MyRect.sizeDelta = new Vector2(MyRect.sizeDelta.x, Mathf.Lerp(MyRect.sizeDelta.y, 0, Utils.DeltaTimeLerpFactor(0.15f)));
+            MyGroup.alpha -= 10 * Time.unscaledDeltaTime;
         }
         else
         {
-            transform.LerpLocalPosition(new Vector2(Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.width / 2, -Main.ActivePrimaryCanvas.GetComponent<RectTransform>().rect.height / 2), lerpT);
-            HideButton.transform.LerpLocalPosition(new Vector2(600, buttonPosition), lerpT);
-            MyRect.sizeDelta = new Vector2(MyRect.sizeDelta.x, Mathf.Lerp(MyRect.sizeDelta.y, TargetSize, Utils.DeltaTimeLerpFactor(0.07f)));
+            transform.LerpLocalPosition(defaultPos, lerpT);
+            MyRect.sizeDelta = new Vector2(MyRect.sizeDelta.x, Mathf.Lerp(MyRect.sizeDelta.y, TargetSize, Utils.DeltaTimeLerpFactor(0.15f)));
+            MyGroup.alpha += 10 * Time.unscaledDeltaTime;
         }
-        SetHideButtonText();
+        MyGroup.blocksRaycasts = !Hide;
+        MyGroup.alpha = Mathf.Clamp01(MyGroup.alpha);
     }
     public void SetHideButtonText()
     {
-        if(Hide)
-            HideButtonTextUI.text = MyType == PowerMenuType.Crucible ? "Show Crucible" : Main.DebugSettings.PowerUpCheat ? "Show Cheats" : "Show Shards";
-        else
-            HideButtonTextUI.text = MyType == PowerMenuType.Crucible ? "Hide Crucible" : Main.DebugSettings.PowerUpCheat ? "Hide Cheats" : "Hide Shards";
+        HideButtonTextUI.text = MyType == PowerMenuType.Crucible ? "Hide Crucible" : Main.DebugSettings.PowerUpCheat ? "Hide Cheats" : "Hide Shards";
     }
     public float TargetSize = 0;
     public void UpdateContentSize()
     {
         int c = GridParent.transform.childCount;
-        NOPOWERS.SetActive(c <= 1);
+        NOPOWERS.SetActive(c <= 1 && MyGroup.alpha > 0.5f);
         Vector3 lastElement = GridParent.transform.GetChild(c - 1).localPosition;
         RectTransform r = GridParent.GetComponent<RectTransform>();
         float dist = -lastElement.y + GridParent.padding.bottom * 3;

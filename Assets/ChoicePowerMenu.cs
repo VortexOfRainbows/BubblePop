@@ -13,6 +13,7 @@ public class ChoicePowerMenu : MonoBehaviour
     public GameObject GemParent;
     public TextMeshProUGUI GemCostUI, RemainingUI, HideButtonUI;
     public HorizontalLayoutGroup Layout;
+    public CanvasGroup MyGroup;
     public int Cost => (IsBlackMarket ? 7 : 0) + CostScaling;
     public int CostScaling { get; set; } = 3;
     public static int GetBaseRerolls()
@@ -31,7 +32,6 @@ public class ChoicePowerMenu : MonoBehaviour
                 pb.Init();
             }
             RerollButton.onClick.AddListener(Reroll);
-            HideButton.onClick.AddListener(ToggleHide);
             gameObject.SetActive(false);
             Instance = this;
         }
@@ -59,36 +59,34 @@ public class ChoicePowerMenu : MonoBehaviour
             Main.PauseGame();
         else
             Main.UnpauseGame();
+        if (!Hide)
+            PowerUpCheatUI.CloseAllMenus();
     }
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.H) && HideButton.interactable)
             ToggleHide();
-        if(!PowerUpCheatUI.ShardInstance.Hide || !PowerUpCheatUI.CrucibleInstance.Hide)
-        {
-            if(!Hide)
-                PowerUpCheatUI.CloseAllMenus();
-            HideButton.interactable = false;
-        }
-        else
-            HideButton.interactable = true;
-        float lerpT = Utils.DeltaTimeLerpFactor(0.125f);
+        //if(!PowerUpCheatUI.ShardInstance.Hide || !PowerUpCheatUI.CrucibleInstance.Hide)
+        //{
+        //    HideButton.interactable = false;
+        //}
+        //else
+        //    HideButton.interactable = true;
+        float lerpT = Utils.DeltaTimeLerpFactor(0.1f);
+        Vector2 defaultPosition = new(MyCanvas.GetComponent<RectTransform>().rect.width / 2, 60 - MyCanvas.GetComponent<RectTransform>().rect.height / 2);
         if (Hide)
         {
-            transform.LerpLocalPosition(new Vector2(MyCanvas.GetComponent<RectTransform>().rect.width / 2, + 250), lerpT);
-            bool CrucibleMenuShowButtonIsShowing = PowerUpCheatUI.ShardInstance.Hide && PowerUpCheatUI.ShardInstance.gameObject.activeSelf && PowerUpCheatUI.ShardInstance.CanOpenMenu();
-            HideButton.transform.LerpLocalPosition(new Vector2(CrucibleMenuShowButtonIsShowing ? -110 : 0, -260), lerpT);
-            RerollButton.transform.LerpLocalPosition(new Vector2(0, -140), lerpT);
-            HideButtonUI.text = "Show Choices";
-            return;
+            defaultPosition.y -= 20;
+            transform.LerpLocalPosition(defaultPosition, lerpT);
+            MyGroup.alpha -= 10 * Time.unscaledDeltaTime;
         }
         else
         {
-            transform.LerpLocalPosition(new Vector2(MyCanvas.GetComponent<RectTransform>().rect.width / 2, 60 - MyCanvas.GetComponent<RectTransform>().rect.height / 2), lerpT);
-            HideButton.transform.LerpLocalPosition(new Vector2(110, -140), lerpT);
-            RerollButton.transform.LerpLocalPosition(new Vector2(-110, -140), lerpT);
-            HideButtonUI.text = "Hide Choices";
+            transform.LerpLocalPosition(defaultPosition, lerpT);
+            MyGroup.alpha += 10 * Time.unscaledDeltaTime;
         }
+        MyGroup.blocksRaycasts = !Hide;
+        MyGroup.alpha = Mathf.Clamp01(MyGroup.alpha);
         if (CoinManager.CurrentGems >= Cost) //Can afford
         {
             RerollButton.interactable = RemainingRerolls > 0;
@@ -110,20 +108,14 @@ public class ChoicePowerMenu : MonoBehaviour
             RemainingUI.color = ColorHelper.UI.RedColor;
         }
 
-        if (RerollButton.interactable)
-        {
-            if (Input.GetKeyDown(KeyCode.R) && !Hide)
-                Reroll();
-        }
-        else
-        {
-
-        }
+        if (RerollButton.interactable && Input.GetKeyDown(KeyCode.R) && !Hide)
+            Reroll();
     }
     public static void TurnOn(bool ExtraChoices, bool BlackMarket)
     {
         IsBlackMarket = BlackMarket;
-        Hide = false;
+        Hide = true;
+        Instance.ToggleHide();
         Instance.RerollsInARow = 0;
         Instance.RemainingRerolls = GetBaseRerolls();
         Instance.transform.localPosition = new Vector2(Instance.MyCanvas.GetComponent<RectTransform>().rect.width / 2, - Instance.MyCanvas.GetComponent<RectTransform>().rect.height / 2);
