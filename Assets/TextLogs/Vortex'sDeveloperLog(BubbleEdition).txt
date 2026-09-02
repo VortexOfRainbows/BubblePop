@@ -19,9 +19,9 @@ Do Later:
 	3. (potentially) Pause menu/Gameover menu opening swiftness
 	4. UCI playtest disclaimer
 	5. Character Select Menu and Equip Display (make sure this starts offscreen, as right now it starts onscreen and simply moves offscreen during world gen, which means fast generation times leave it visible as a bug)
-	6. Crucible/Shard menu (make shard related buttons show your shard count)
+	6. Crucible/Shard menu (try to change the size of the menu so the buttons at the top fit more easily)
 	7. Change mouse pointer
-	8. Make choice button show choice icon
+	8. Make choice button show choice icon, shard button have shard icon
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -58,6 +58,8 @@ Done:
 2. Crucible, Shard, and Choice menus now fade in/out from the center rather than falling from the top of the screen
 	1. You can now switch between Choice/Crucibe/Shardmenus while they are open (rather than crucible menus being locked when in choice menu)
 3. Fizzy Ability Icon (sam)
+4. Slightly modified position of key count ui
+5. Your current shard count now appears under key count after obtaining your first shard
 
 8/30/26 to 8/31/26
 1. Ability icons for Bubblemancer and Though Bubble, plus Fizzy placeholder (Sam!)

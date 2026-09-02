@@ -26,7 +26,7 @@ public class TopButtons : MonoBehaviour
         ChoiceButton.transform.LerpLocalPosition(new Vector2(shiftPositions ? -125 : 0, showChoice ? -55 : 55), lerpT);
 
         // (maybe) make buttons have icons to show what they do (like a shard icon for the shard button, and a choice icon for the choice button)
-        ShardButtonText.text = !Main.DebugCheats ? "Show Shards" : "Open Cheat Menu";
+        ShardButtonText.text = !Main.DebugSettings.PowerUpCheat ? "Show Shards" : "Open Cheat Menu";
         ChoiceButtonText.text = "Show Choices";
     }
 }

@@ -10,14 +10,13 @@ public class PlayerStatUI : MonoBehaviour
     private static PlayerStatUI Instance { get => s_Instance == null ? s_Instance = FindFirstObjectByType<PlayerStatUI>() : s_Instance; set => s_Instance = value; }
     private static PlayerStatUI s_Instance;
     public Transform LifeTranform;
+    public Transform CurrencyParent;
     public TMPro.TextMeshProUGUI moneyText;
-    public GameObject Money;
     public TMPro.TextMeshProUGUI keyText;
-    public GameObject Key;
     public TMPro.TextMeshProUGUI tokenText;
     public GameObject Tokens;
     public TMPro.TextMeshProUGUI GemText;
-    public GameObject Gems;
+    public TMPro.TextMeshProUGUI ShardText;
     public static void RemoveUnusedContainers(List<PlayerHeartUI> containerList, int cutoff)
     {
         for (int i = containerList.Count - 1; i >= 0; --i)
@@ -65,29 +64,17 @@ public class PlayerStatUI : MonoBehaviour
     public void Start()
     {
         Instance = this;
-        Money.SetActive(false);
-        Key.SetActive(false);
-        Gems.SetActive(false);
+        CurrencyParent.gameObject.SetActive(false);
     }
     public void Update()
     {
         if(Main.WavesUnleashed)
         {
-            Money.SetActive(true);
-            int money = CoinManager.CurrentCoins;
-            moneyText.text = $"${money}";
-            moneyText.enabled = true;
-
-            Key.SetActive(true);
-            int keys = CoinManager.CurrentKeys;
-            keyText.text = $"{keys}";
-            keyText.enabled = true;
-
-            Gems.SetActive(true);
-            int gems = CoinManager.CurrentGems;
-            GemText.text = $"{gems}";
-            GemText.enabled = true;
-
+            CurrencyParent.gameObject.SetActive(true);
+            moneyText.text = $"${CoinManager.CurrentCoins}";
+            keyText.text = $"{CoinManager.CurrentKeys}";
+            GemText.text = $"{CoinManager.CurrentGems}";
+            ShardText.text = $"{CoinManager.CurrentShards}";
             bool usingGachaSlots = Player.Instance.Weapon != null && Player.Instance.Weapon is SlotMachineWeapon;
             Tokens.SetActive(usingGachaSlots);
             if(usingGachaSlots)
