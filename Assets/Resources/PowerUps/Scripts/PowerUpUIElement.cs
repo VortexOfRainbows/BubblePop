@@ -107,6 +107,7 @@ public class PowerUpUIElement : MonoBehaviour
     /// </summary>
     public int Cost { get; set; } = -1;
     public bool CompendiumHoverOverride { get; set; } = false;
+    public int CruciblePreviousStack { get; set; } = 0;
     private bool CanHoverOverCrucible()
     {
         if (!CrucibleElement)
@@ -176,6 +177,14 @@ public class PowerUpUIElement : MonoBehaviour
                         UpdateShardCost();
                     bool canAfford = Cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
                     CostText.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
+                }
+                else if(MyPower is not RainbowFlower)
+                {
+                    if (PowerUpCheatUI.UpdatedProcessQuantity > 0 || CruciblePreviousStack != MyPower.TrueStack)
+                    {
+                        CostText.text = (Cost * Mathf.Min(MyPower.TrueStack, PowerUpCheatUI.ProcessQuantity)).ToString();
+                        CruciblePreviousStack = MyPower.TrueStack;
+                    }
                 }
             }
             else if(ChoicePowerMenu.IsBlackMarket)

@@ -154,7 +154,6 @@ public class PowerUpCheatUI : MonoBehaviour
     }
     public void Disable()
     {
-        ResetPowers();
         if (!Hide)
             ToggleHide(false);
         if (PlayerData.PauseDuringPowerSelect)
@@ -260,6 +259,8 @@ public class PowerUpCheatUI : MonoBehaviour
             transform.LerpLocalPosition(defaultPos, lerpT);
             MyRect.sizeDelta = new Vector2(MyRect.sizeDelta.x, Mathf.Lerp(MyRect.sizeDelta.y, 0, Utils.DeltaTimeLerpFactor(0.15f)));
             MyGroup.alpha -= 10 * Time.unscaledDeltaTime;
+            if(GridParent.transform.childCount > 2 & MyGroup.alpha < 0.1f)
+                ResetPowers();
         }
         else
         {
@@ -279,7 +280,7 @@ public class PowerUpCheatUI : MonoBehaviour
     {
         int c = GridParent.transform.childCount;
         bool noPowers = c <= 2;
-        NOPOWERS.SetActive(noPowers && MyGroup.alpha > 0.5f);
+        NOPOWERS.SetActive(!Hide && noPowers && MyGroup.alpha > 0.5f);
         Vector3 lastElement = GridParent.transform.GetChild(c - 1).localPosition;
         RectTransform r = GridParent.GetComponent<RectTransform>();
         float dist = -lastElement.y + GridParent.padding.bottom * 1 + GridParent.cellSize.y * 0.5f;
