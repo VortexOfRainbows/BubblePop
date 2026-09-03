@@ -22,8 +22,8 @@ public class TopButtons : MonoBehaviour
 
         // move buttons onto screen if the player should be able to access them
         // TODO: change these Y values after the UI rework to make more sense with the new layout
-        ShardButton.transform.LerpLocalPosition(new Vector2(shiftPositions ? 125 : 0, showShard ? -65 : 75), lerpT);
-        ChoiceButton.transform.LerpLocalPosition(new Vector2(shiftPositions ? -125 : 0, showChoice ? -65 : 75), lerpT);
+        ShardButton.transform.LerpLocalPosition(new Vector2(shiftPositions ? 135 : 0, showShard ? -65 : 75), lerpT);
+        ChoiceButton.transform.LerpLocalPosition(new Vector2(shiftPositions ? -135 : 0, showChoice ? -65 : 75), lerpT);
 
         // (maybe) make buttons have icons to show what they do (like a shard icon for the shard button, and a choice icon for the choice button)
         ShardButtonText.text = !Main.DebugSettings.PowerUpCheat ? "Show Shards" : "Open Cheat Menu";
