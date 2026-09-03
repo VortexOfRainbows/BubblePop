@@ -4,9 +4,11 @@ public class PersistentGameObjectLoader : MonoBehaviour
 {
     public static GameObject CompendiumPrefab => Resources.Load<GameObject>("UI/Compendium/CompendiumCanvas");
     public static GameObject SettingsPrefab => Resources.Load<GameObject>("UI/Settings/Settings");
+    //public static GameObject CursorFollowerPrefab => Resources.Load<GameObject>("UI/Cursor/CursorCanvas");
     public static PersistentGameObjectLoader Instance { get; private set; }
     private GameObject CompendiumCanvas;
     private GameObject SettingsCanvas;
+    private GameObject CursorFollowerCanvas;
     private void Start()
     {
         if(Instance == null)
@@ -24,6 +26,7 @@ public class PersistentGameObjectLoader : MonoBehaviour
     {
         LoadCompendium();
         LoadSettings();
+        //LoadCursorThing();
     }
     private void LoadCompendium()
     {
@@ -41,6 +44,10 @@ public class PersistentGameObjectLoader : MonoBehaviour
         //c.worldCamera = CameraManager.UICamera;
         SettingsCanvas.GetComponent<SettingsMenu>().Init();
     }
+    //private void LoadCursorThing()
+    //{
+    //    CursorFollowerCanvas = Instantiate(CursorFollowerPrefab, transform);
+    //}
     public void Update()
     {
         bool isMainMenu = Main.SceneMainMenu;

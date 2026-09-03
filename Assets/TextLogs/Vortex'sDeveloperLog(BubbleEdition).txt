@@ -20,8 +20,7 @@ Do Later:
 	4. UCI playtest disclaimer
 	5. Character Select Menu and Equip Display (make sure this starts offscreen, as right now it starts onscreen and simply moves offscreen during world gen, which means fast generation times leave it visible as a bug)
 	6. Crucible/Shard menu (change the style of the top buttons too)
-	7. Change mouse pointer
-	8. Make choice button show choice icon, shard button have shard icon
+	7. Make choice button show choice icon, shard button have shard icon
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -53,7 +52,7 @@ Sounds Needed:
 
 Done: 	
 
-9/1/26 to 9/2/26
+9/1/26 to 9/3/26
 1. Crucible and Shard menus now populate 2x faster, though might be more somewhat more laggy on weaker systems
 2. Crucible, Shard, and Choice menus now fade in/out from the center rather than falling from the top of the screen
 	1. You can now switch between Choice/Crucibe/Shardmenus while they are open (rather than crucible menus being locked when in choice menu)
@@ -65,6 +64,9 @@ Done:
 	2. (WIP) Now uses the cornflower blue style similar to compendium and settings menu
 	3. TODO: make power buttons in the crucible also use compendium blue style
 7. Fix a lot of bugs that came up from being able to have both menus exist at once (shard/crucible)
+8. New mouse cursor sprite (by me!)
+9. Mouse cursor now switches to a different sprite when mouse is down
+10. WIP switching top/show/hide buttons to use cornflower UI
 
 8/30/26 to 8/31/26
 1. Ability icons for Bubblemancer and Though Bubble, plus Fizzy placeholder (Sam!)

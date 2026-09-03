@@ -6,6 +6,7 @@ public partial class Main : MonoBehaviour
 {
     public static class TextureAssets
     {
+        public static Texture2D Cursor1, Cursor2;
         public static Sprite MainUISquare, SecondaryUISquare;
 
         public static Material InfectorShader;
@@ -38,10 +39,12 @@ public partial class Main : MonoBehaviour
         public static Sprite CrosshairOuter, CrosshairInner, CrosshairFill, CrosshairEmblem;
         public static void Load()
         {
+            Cursor1 = Resources.Load<Texture2D>("UI/Cursor/Cursor");
+            Cursor2 = Resources.Load<Texture2D>("UI/Cursor/Cursor2");
             BubbleSmall = Resources.Load<Sprite>("Projectiles/SmallBubble");
             BubbleSprite = Resources.Load<Sprite>("Projectiles/Bubble2");
             BathBombSprite = Resources.Load<Sprite>("Projectiles/BathBomb/BathBomb");
-            BathBombShards = new Sprite[] { Resources.Load<Sprite>("Projectiles/BathBomb/BBS1"), Resources.Load<Sprite>("Projectiles/BathBomb/BBS2"), 
+            BathBombShards = new Sprite[] { Resources.Load<Sprite>("Projectiles/BathBomb/BBS1"), Resources.Load<Sprite>("Projectiles/BathBomb/BBS2"),
                 Resources.Load<Sprite>("Projectiles/BathBomb/BBS3"), Resources.Load<Sprite>("Projectiles/BathBomb/BBS4"), Resources.Load<Sprite>("Projectiles/BathBomb/BBS5") };
             Feather = Resources.Load<Sprite>("Projectiles/Feather");
             Laser = Resources.Load<Sprite>("Projectiles/Laser");

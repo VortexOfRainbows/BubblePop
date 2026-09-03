@@ -186,6 +186,16 @@ public partial class Main : MonoBehaviour
                 CameraManager.SwitchToScreenshotCamera();
             }
         }
+        if(Input.GetMouseButtonDown(0))
+        {
+            Debug.Log($"Set cursor to cursor2: {TextureAssets.Cursor2.name}");
+            Cursor.SetCursor(TextureAssets.Cursor2, new Vector2(12, 0), CursorMode.Auto);
+        }
+        else if(Input.GetMouseButtonUp(0))
+        {
+            Debug.Log($"Set cursor to cursor1: {TextureAssets.Cursor1.name}");
+            Cursor.SetCursor(TextureAssets.Cursor1, new Vector2(12, 0), CursorMode.Auto);
+        }
     }
     public void LateUpdate()
     {
