@@ -19,7 +19,7 @@ Do Later:
 	3. (potentially) Pause menu/Gameover menu opening swiftness
 	4. UCI playtest disclaimer
 	5. Character Select Menu and Equip Display (make sure this starts offscreen, as right now it starts onscreen and simply moves offscreen during world gen, which means fast generation times leave it visible as a bug)
-	6. TODO: make select power buttons use compendium blue style, 
+	6. Interactable object UI should be color changed
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -30,6 +30,7 @@ Need to do:
 4. Snow Regions:
 	1. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
 	2. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
+	3. Projectiles need visibility changes, especially for SNOW
 5. MINIMAP
 6. Characters can spawn in your run and give specific items?
 
@@ -54,6 +55,7 @@ Done:
 9/3/26 to 9/4/26
 1. Crucible power buttons now use compendium blue style
 2. Adjusted opacity of reroll/hide/show buttons
+3. Select power buttons now use blue UI style
 
 9/1/26 to 9/3/26
 1. Crucible and Shard menus now populate 2x faster, though might be more somewhat more laggy on weaker systems
