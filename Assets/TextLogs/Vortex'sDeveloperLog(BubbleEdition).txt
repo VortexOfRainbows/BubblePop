@@ -12,26 +12,24 @@ Do Later:
 4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
 6. Convert player power handler to use structs for faster resetting 
-7. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
+7. (LATER) Pause screen should have a button to show current powerups
 8. Next UI Reworks:
 	1. Home screen and pause menu button appearances
-	2. Enemy wave cards
-	3. (potentially) Pause menu/Gameover menu opening swiftness
-	4. UCI playtest disclaimer
-	5. Character Select Menu and Equip Display (make sure this starts offscreen, as right now it starts onscreen and simply moves offscreen during world gen, which means fast generation times leave it visible as a bug)
+	2. Enemy wave cards, next wave button, and ascension button, unleash wave button
+	3. UCI playtest disclaimer (most likely remove it for now? or change the wording to be more of a tutorial?)
+	4. Character Select Menu and Equip Display (make sure this starts offscreen, as right now it starts onscreen and simply moves offscreen during world gen, which means fast generation times leave it visible as a bug)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
 	1. Progress display for achievements
 2. Make a distinct "Generic Power" pool, which contains: 
-	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
-3. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-4. Snow Regions:
+	1. Recycle/Scrapper: breakable objects drop more loot, and crucibles sometimes yield crates
+3. Snow Regions:
 	1. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
 	2. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
 	3. Projectiles need visibility changes, especially for SNOW
-5. MINIMAP
-6. Characters can spawn in your run and give specific items?
+4. MINIMAP
+5. Characters can spawn in your run and give specific items?
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -63,6 +61,10 @@ Done:
 6. Forge, Restock now uses E for the keybind (same as Crucible, wave start (E), different from reroll (R) and shard menu (C) and hide choices (H))
 	1. (ASK PLAYTESTERS) if the keybinds should be re-distributed
 7. Fix bug that arose where hidden choice menu still showed hover text for powers
+8. Add barrels that can spawn, they are like crates, but with slightly different loot tables
+	1. They can spawn on non wood and stone regions!
+9. Crates (and barrels) generation rates adjusted (should be slightly more common)
+10. Fix extremely niche bug where fairy ring loot would take 100 seconds after world gen to be obtainable
 
 9/1/26 to 9/3/26
 1. Crucible and Shard menus now populate 2x faster, though might be more somewhat more laggy on weaker systems

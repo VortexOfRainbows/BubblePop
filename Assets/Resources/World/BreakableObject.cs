@@ -6,6 +6,7 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
     public enum BreakableObjectType
     {
         Crate = 0,
+        Barrel = 1,
     }
     public BreakableObjectType Type;
     public SpriteRenderer SpriteRenderer;
@@ -36,7 +37,7 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
             }
             else
             {
-                if (Type == BreakableObjectType.Crate)
+                if (Type == BreakableObjectType.Crate || Type == BreakableObjectType.Barrel)
                 {
                     AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 0.6f, 1.6f);
                     SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.red, 0.5f);
@@ -53,7 +54,7 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
         if(Type == BreakableObjectType.Crate)
         {
             c = ColorHelper.WoodColor;
-            AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 1, 0.9f);
+            AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 1, Utils.RandFloat(0.875f, 0.925f));
             float dropRand = Utils.RandFloat();
             if (dropRand < 0.02f)
                 CoinManager.SpawnShield(transform.position, .5f);
@@ -65,6 +66,18 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
                 CoinManager.SpawnGem(transform.position, .5f, Utils.RandInt(1, 2 + WaveDirector.WaveNum / 3));
             else if (dropRand < 0.75f)
                 CoinManager.SpawnCoin(transform.position, Utils.RandInt(1, 6 + WaveDirector.WaveNum), .5f, true);
+        }
+        else if(Type == BreakableObjectType.Barrel)
+        {
+            c = ColorHelper.WoodColor;
+            AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 1, Utils.RandFloat(0.9f, 0.975f));
+            float dropRand = Utils.RandFloat();
+            if (dropRand < 0.025f)
+                CoinManager.SpawnHeart(transform.position, .5f);
+            else if (dropRand < 0.1f)
+                CoinManager.SpawnGem(transform.position, .5f, Utils.RandInt(1, 2 + WaveDirector.WaveNum / 3));
+            else
+                CoinManager.SpawnCoin(transform.position, Utils.RandInt(1, 4 + WaveDirector.WaveNum), .5f, true);
         }
         for (int i = 0; i < 30; ++i)
         {
@@ -79,6 +92,11 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
         if(Type == BreakableObjectType.Crate)
         {
             RB.velocity *= 0.94f;
+            SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.white, 0.07f);
+        }
+        else if(Type == BreakableObjectType.Barrel)
+        {
+            RB.velocity *= 0.95f;
             SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.white, 0.07f);
         }
     }
