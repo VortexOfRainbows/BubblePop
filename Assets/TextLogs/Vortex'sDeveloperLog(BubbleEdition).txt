@@ -19,7 +19,6 @@ Do Later:
 	3. (potentially) Pause menu/Gameover menu opening swiftness
 	4. UCI playtest disclaimer
 	5. Character Select Menu and Equip Display (make sure this starts offscreen, as right now it starts onscreen and simply moves offscreen during world gen, which means fast generation times leave it visible as a bug)
-	6. Interactable object UI should be color changed
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -55,7 +54,15 @@ Done:
 9/3/26 to 9/4/26
 1. Crucible power buttons now use compendium blue style
 2. Adjusted opacity of reroll/hide/show buttons
+	1. Also of other buttons, like power select, process quantity
 3. Select power buttons now use blue UI style
+4. Color of popup UI for interactable objects (the hovering keybind) now uses the same cornflower blue style as other UI
+	1. Color of the UI for Restock Machines and Forges now is red when unaffordable
+	2. (FIX) Popup ui for Restock Machine no longer moves in a small sin motion
+5. Gems now attract to the player at the end of a wave, similar to coins, but slightly weaker
+6. Forge, Restock now uses E for the keybind (same as Crucible, wave start (E), different from reroll (R) and shard menu (C) and hide choices (H))
+	1. (ASK PLAYTESTERS) if the keybinds should be re-distributed
+7. Fix bug that arose where hidden choice menu still showed hover text for powers
 
 9/1/26 to 9/3/26
 1. Crucible and Shard menus now populate 2x faster, though might be more somewhat more laggy on weaker systems

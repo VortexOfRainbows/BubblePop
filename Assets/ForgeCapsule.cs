@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class ForgeCapsule : InteractableWorldObject
 {
     public bool HasSelectedPower { get; set; } = false;
+    public Image Key;
     public TextMeshProUGUI RestockCost;
     public PowerUpObject HeldPower;
     public SpriteRenderer Fluid;
@@ -22,9 +23,10 @@ public class ForgeCapsule : InteractableWorldObject
             EnableUI();
             bool canAfford = CoinManager.CurrentGems >= GemCost;
             Image i = PopupUI.GetChild(0).GetComponent<Image>();
-            i.color = Color.Lerp(i.color, canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.DefaultColor, Utils.DeltaTimeLerpFactor(0.1f)).WithAlpha(0.5f);
+            i.color = (canAfford ? ColorHelper.Cornflower : ColorHelper.UI.RedColor).WithAlpha(i.color.a);
+            Key.color = i.color.WithAlpha(Key.color.a);
             RestockCost.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
-            if (Input.GetKeyDown(KeyCode.R) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
+            if (Input.GetKeyDown(KeyCode.E) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
             {
                 MyHammer.Begin(this, GemCost);
                 PopupUI.GetChild(0).gameObject.SetActive(false);

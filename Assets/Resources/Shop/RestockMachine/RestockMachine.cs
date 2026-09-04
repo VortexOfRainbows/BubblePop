@@ -1,9 +1,12 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class RestockMachine : InteractableWorldObject
 {
+    public Image Key;
     public SpriteRenderer[] Numbers;
     public SpriteRenderer DisplayNumber;
     public TextMeshProUGUI RestockCost;
@@ -34,9 +37,10 @@ public class RestockMachine : InteractableWorldObject
             {
                 bool canAfford = CoinManager.CurrentGems >= owner.RestockCost;
                 Image i = PopupUI.GetChild(0).GetComponent<Image>();
-                i.color = Color.Lerp(i.color, canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.DefaultColor, Utils.DeltaTimeLerpFactor(0.1f)).WithAlpha(0.5f);
+                i.color = (canAfford ? ColorHelper.Cornflower : ColorHelper.UI.RedColor).WithAlpha(i.color.a);
+                Key.color = i.color.WithAlpha(Key.color.a);
                 RestockCost.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
-                if (Input.GetKeyDown(KeyCode.R) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
+                if (Input.GetKeyDown(KeyCode.E) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
                 {
                     owner.TryAddingRemainingRestocks(owner.RestockCost);
                     PopupUI.GetChild(0).gameObject.SetActive(false);
@@ -60,7 +64,7 @@ public class RestockMachine : InteractableWorldObject
         float sin3 = Mathf.Sin(NumberSwapTimer * Mathf.PI) * 0.04f;
         float stretch = sin * 0.025f;
         GumballMachine.transform.localScale = new Vector3(1 + stretch + sin3, 1 - stretch + sin3, 1);
-        transform.localScale = new Vector3(1 - stretch * 0.3f, 1 + stretch * 0.3f, 1);
+        transform.GetChild(0).localScale = new Vector3(1 - stretch * 0.3f, 1 + stretch * 0.3f, 1);
         float tilt = 2.25f * sin2;
         GumballMachine.transform.SetLocalEulerZ(tilt);
     }

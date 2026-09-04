@@ -645,8 +645,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2, y: 2}
-  m_SizeDelta: {x: -4, y: -4}
+  m_AnchoredPosition: {x: -1, y: 1}
+  m_SizeDelta: {x: -2, y: -2}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4976025547745693668
 CanvasRenderer:
@@ -703,7 +703,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1636,6 +1636,10 @@ PrefabInstance:
     - target: {fileID: 1439534411349153063, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
       propertyPath: m_Colors.m_DisabledColor.r
       value: 0.39058825
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316817435634499872, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
+      propertyPath: m_fontSize
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4345584707539540044, guid: e8ad6af72d8179b498ec439250cb9079, type: 3}
       propertyPath: m_Pivot.x

@@ -79,11 +79,15 @@ public class ChoicePowerMenu : MonoBehaviour
             defaultPosition.y -= 20;
             transform.LerpLocalPosition(defaultPosition, lerpT);
             MyGroup.alpha -= 10 * Time.unscaledDeltaTime;
+            foreach (PowerUpButton pb in Buttons)
+                pb.PowerUI.PreventHovering = true;
         }
         else
         {
             transform.LerpLocalPosition(defaultPosition, lerpT);
             MyGroup.alpha += 10 * Time.unscaledDeltaTime;
+            foreach (PowerUpButton pb in Buttons)
+                pb.PowerUI.PreventHovering = false;
         }
         MyGroup.blocksRaycasts = !Hide;
         MyGroup.alpha = Mathf.Clamp01(MyGroup.alpha);
@@ -101,7 +105,7 @@ public class ChoicePowerMenu : MonoBehaviour
         }
         GemCostUI.text = Cost <= 0 ? "Free" : Cost.ToString();
         RemainingUI.text = $"Remaining: {RemainingRerolls}";
-        if(RemainingRerolls > 0)
+        if (RemainingRerolls > 0)
             RemainingUI.color = ColorHelper.UI.DefaultColor;
         else
         {

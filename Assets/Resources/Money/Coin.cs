@@ -95,8 +95,13 @@ public class Coin : MonoBehaviour
             attractDist *= 3;
         else
             attractDist *= 1.25f;
-        if (IsCoin && !p.AwaitingWaveEnd)
-            attractDist *= 5;
+        if (!p.AwaitingWaveEnd)
+        {
+            if(IsCoin)
+                attractDist *= 5;
+            else if (IsGem)
+                attractDist *= 3;
+        }
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
         bool beingAttracted = false;

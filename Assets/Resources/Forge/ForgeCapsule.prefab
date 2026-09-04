@@ -337,6 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PopupUI: {fileID: 8298584189824193331}
+  Key: {fileID: 184887208945735092}
   RestockCost: {fileID: 5873675985813088805}
   HeldPower: {fileID: 1461031459924179411}
   Fluid: {fileID: 7145705023482365487}
@@ -666,6 +667,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8501325158484985620}
     m_Modifications:
+    - target: {fileID: 3506470720966996099, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
+      propertyPath: m_text
+      value: E
+      objectReference: {fileID: 0}
     - target: {fileID: 4248744442913340401, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -719,6 +724,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
+--- !u!114 &184887208945735092 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 713196197396085169, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
+  m_PrefabInstance: {fileID: 825585650610383877}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5873675985813088805 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6554546111643321888, guid: f4951f5cdcfd9b7439747bb568d50c88, type: 3}
