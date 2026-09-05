@@ -995,10 +995,7 @@
         When a Y:[shield is broken,] increase Y:[damage, attack speed,] and Y:[movement speed] by Y:50% for Y:10 G:(+2 per stack) Y:seconds
         '''
       Brief: Gain a shield and increase all stats temporarily when it breaks
-      Lore:
-      '''
-      The helm provides protection, and the code of the knight contained on the scroll makes the wielder more valiant in the face of danger.
-      '''
+      Lore: The helm provides protection, and the code of the knight contained on the scroll makes the wielder more valiant in the face of danger.
     }
     AstralJelly:
     {
@@ -1014,12 +1011,11 @@
         When shields are broken, gain a star-synergy power
         '''
       Lore:
-      '''
-      A miraculous substance that few creatures are able to consume due to its intense heat. Those that can are granted the protection of the stars.
-      TB: It's not pure stardust, but something close to it.
-      Bubblemancer: I love jelly beans
-      '''
-
+        '''
+        A miraculous substance that few creatures are able to consume due to its intense heat. Those that can are granted the protection of the stars.
+        TB: It's not pure stardust, but something close to it.
+        Bubblemancer: I love jelly beans
+        '''
     }
     Corrode:
     {
@@ -1027,11 +1023,11 @@
       Description: Y:Tarred enemies take Y:0.2 G:(+0.2 per stack) Y:[damage per second]
       Brief: Tarred enemies take damage over time
       Lore:
-      '''
-      A special tar solution that eats away at organic and inorganic substances alike with the same steady malice.
-      TB: I believe it is the fact that the metal was contained in the state of corroding that makes it so potent.
-      K: Good to know.
-      '''
+        '''
+        A special tar solution that eats away at organic and inorganic substances alike with the same steady malice.
+        TB: I believe it is the fact that the metal was contained in the state of corroding that makes it so potent.
+        K: Good to know.
+        '''
     }
     Contaminate:
     {
@@ -1039,11 +1035,11 @@
       Description: Y:Tar lasts Y:1 G:(+1 per stack) Y:seconds longer
       Brief: Tar lasts longer
       Lore:
-      '''
-      A sad sight and environmental tragedy. Or at least it would be, if the ducks weren't invading Argonia.
-      Bubblemancer: I still feel a little bad seeing them like this
-      K: Oh really? Not to worry, I'll make the apologies.
-      '''
+        '''
+        A sad sight and environmental tragedy. Or at least it would be, if the ducks weren't invading Argonia.
+        Bubblemancer: I still feel a little bad seeing them like this
+        K: Oh really? Not to worry, I'll make the apologies.
+        '''
     }
     Combust:
     {
@@ -1051,21 +1047,18 @@
       Description: Debuffs deal Y:1 G:(+1 per stack) additional damage when Y:detonated
       Brief: Debuffs deal additional damage when detonated
       Lore:
-      '''
-      An flaming oil bubble contained with impeccable timing.
-      Gachapon: Aren't you ever afraid of setting yourself on fire since you always carry that gem around?
-      K: In this world, you can only truly rely on yourself. And I trust myself to not self-combust. Small conflagarations don't 
-      '''
+        '''
+        An flaming oil bubble contained with impeccable timing.
+        Gachapon: Aren't you ever afraid of setting yourself on fire since you always carry that gem around?
+        K: In this world, you can only truly rely on yourself. And I trust myself to not self-combust. Small conflagarations don't 
+        '''
     }
     Concoct:
     {
       Title: Conglomerate
       Description: Allows Y:Tar to be stacked Y:1 G:(+1 per stack) additional times
       Brief: Tar can be stacked to increase potency
-      Lore:
-      '''
-
-      '''
+      Lore: ""
     }
     OilSpill:
     {

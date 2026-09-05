@@ -783,12 +783,12 @@ public partial class Player : Entity
     public bool RunOnce { get; set; } = true;
     public new void Update()
     {
-        if (RunOnce && InstanceID == 0 && Main.UIManager.MultiplayerMenu != null)
+        if (RunOnce && InstanceID == 0 && Main.UIManager.MultiplayerMenu != null && Player.AllPlayers.Count > 1)
         {
             Main.UIManager.OpenMultiplayerMenu(false);
             RunOnce = false;
         }
-        if (!Control.CheckIfControlsAreCorrect())
+        if (!Control.CheckIfControlsAreCorrect() && Player.AllPlayers.Count > 1)
         {
             Control = new NewControls(InstanceID + 1);
             if (Main.UIManager.MPControls1 != null && Main.UIManager.MPControls2 != null)

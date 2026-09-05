@@ -102,7 +102,7 @@ public class DualGridTile : ScriptableObject
         byte key = GetByteKey(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
         int id = NeighbourRelations[key];
         if(id == 4 || id == 13) //weird double corner tiles do not consider ghosts
-            id = NeighbourRelations[key];
+            id = NeighbourRelations[GetByteKey(topLeft, topRight, botLeft, botRight)];
         return id;
     }
     public int CalculateDisplayWall(int i, int j, ref bool tileNeedsShrinking)
