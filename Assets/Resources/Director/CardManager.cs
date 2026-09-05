@@ -59,6 +59,7 @@ public class CardManager : MonoBehaviour
             ConfirmCard();
         VisualUpdate();
     }
+    public int PrevChosenCardIndex { get; private set; } = -1;
     public void VisualUpdate()
     {
         for(int i = 0; i < Cards.Length; ++i)
@@ -71,7 +72,12 @@ public class CardManager : MonoBehaviour
         }
         bool cardSelected = ChosenCardIndex != -1;
         bool confirmButtonHovered = !Main.UIManager.PauseMenu.activeSelf && Utils.IsMouseHoveringOverThis(true, ConfirmButton.rectTransform, 0, MyCanvas) && cardSelected;
-        Color c = confirmButtonHovered ? Color.yellow : Color.white;
+        Color c = confirmButtonHovered ? Color.yellow : cardSelected ? Cards[ChosenCardIndex].DifficultyColor : ColorHelper.Cornflower;
+        if(PrevChosenCardIndex != ChosenCardIndex)
+        {
+            ConfirmButton.color = c;
+            PrevChosenCardIndex = ChosenCardIndex;
+        }
         ConfirmButton.color = Color.Lerp(ConfirmButton.color, c, Utils.DeltaTimeLerpFactor(0.2f));
         ConfirmButtonText.color = Color.white;
         ConfirmButton.gameObject.SetActive(cardSelected);

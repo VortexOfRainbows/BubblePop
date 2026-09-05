@@ -72,4 +72,8 @@ public static class ColorHelper
             return c;
         }
     }
+    public static readonly Color Bronze = New255(0xCD, 0x7F, 0x32);
+    public static readonly Color Silver = New255(212, 223, 230);
+    public static readonly Color DimGold = (New255(239, 191, 4) * 0.8f).WithAlpha(1);
+    public static readonly Color IridiumPurple = New255(0xA2, 0x4D, 0xFF);
 }

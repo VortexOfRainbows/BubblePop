@@ -1,3 +1,4 @@
+using Steamworks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,8 @@ public class ModifierCard : MonoBehaviour
     public Vector3 RestPosition;
     public GameObject BackSide;
     public CardData cardData = null;
-    public Image BG;
+    public Image BG, Box1, Box2;
+    public Image BG2, Key;
     public TextMeshProUGUI TitleText;
     public CardScrollArea Modifiers;
     public CardScrollArea Rewards;
@@ -19,9 +21,27 @@ public class ModifierCard : MonoBehaviour
     public Transform RotateFaker;
     public Canvas SkullAnchorCanvas;
     public Canvas TextCanvas;
+    public Color DifficultyColor { get; set; }
     public void Start()
     {
         cardData ??= new(this);
+        int num = (int)(DifficultyMultiplier + Player.Instance.PersonalWaveCardBonus);
+        if (num == 1)
+        {
+            DifficultyColor = BG.color = Box1.color = Box2.color = BG2.color = Key.color = ColorHelper.Bronze;
+        }
+        else if(num == 2)
+        {
+            DifficultyColor = BG.color = Box1.color = Box2.color = BG2.color = Key.color = ColorHelper.Silver;
+        }
+        else if(num == 3)
+        {
+            DifficultyColor = BG.color = Box1.color = Box2.color = BG2.color = Key.color = ColorHelper.DimGold;
+        }
+        else if (num == 4)
+        {
+            DifficultyColor = BG.color = Box1.color = Box2.color = BG2.color = Key.color = ColorHelper.IridiumPurple;
+        }
     }
     public void UpdateText()
     {
@@ -96,8 +116,8 @@ public class ModifierCard : MonoBehaviour
         if (selected)
             hovering = selected;
         float growSpeed = Utils.DeltaTimeLerpFactor(0.06f * FlipTimer + (HasBeenFlipped ? 0.08f : 0f));
-        transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
-        BG.color = Color.Lerp(BG.color, selected ? Color.yellow : (hovering ? Color.Lerp(Color.yellow, Color.white, 0.8f) : Color.white), Utils.DeltaTimeLerpFactor(0.2f));
+        transform.LerpLocalScale(selected ? Vector2.one * 1.04f : Vector2.one, growSpeed);
+        BG.color = Box1.color = Box2.color = Key.color = Color.Lerp(BG.color, selected ? ColorHelper.UI.SelectColor : (hovering ? Color.Lerp(Color.yellow, DifficultyColor, 0.8f) : DifficultyColor), Utils.DeltaTimeLerpFactor(0.2f));
         CardVisual.EnemyScaler.transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
         SecondaryCardVisual.EnemyScaler.transform.LerpLocalScale(selected ? new Vector2(-1.05f, 1.05f) : new Vector2(-1.0f, 1.0f), growSpeed);
     }

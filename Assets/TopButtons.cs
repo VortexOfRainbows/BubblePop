@@ -10,8 +10,8 @@ public class TopButtons : MonoBehaviour
     void Update()
     {
         // move buttons off screen if menu is open (menu must be hidden for buttons to appear)
-        bool showShard = PowerUpCheatUI.ShardInstance.Hide && PowerUpCheatUI.ShardInstance.CanOpenMenu();
-        bool showChoice = ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf;
+        bool showShard = PowerUpCheatUI.ShardInstance.Hide && PowerUpCheatUI.ShardInstance.CanOpenMenu() && !CardManager.Instance.Visual.activeSelf;
+        bool showChoice = ChoicePowerMenu.Hide && ChoicePowerMenu.Instance.gameObject.activeSelf && !CardManager.Instance.Visual.activeSelf;
 
         // move positions of buttons relative to each other if both menus are accessible (and interactable)
         ShardButton.interactable = showShard;

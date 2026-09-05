@@ -17,7 +17,7 @@ Do Later:
 9. Next UI Changes:
 	1. Home screen and pause menu button appearances
 	2. Enemy wave cards, next wave button, and ascension button, unleash wave button
-	3. UCI playtest disclaimer (most likely remove it for now? or change the wording to be more of a tutorial?)
+		1. NEXT: enemy wave cards should animate from a fade in the center to improve UI symmetry and (maybe) proportions should be changed..?
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -56,6 +56,10 @@ Done:
 	3. Bigger collision hitbox for button detection
 2. Playtesting UI no longer appears in singleplayer (maybe temporary)
 3. Fix bug re-introduced in the tile optimization patch where tiles would inappropriately connect to corner tiles of higher priority tiles
+4. Top bar buttons no longer appear when enemy menu appears
+5. Enemy cards slightly reworked
+	1. Now features different colors for each difficulty and slightly improved animation logic
+6. Import night soundtrack (not yet playing in game)
 
 9/3/26 to 9/4/26
 1. Crucible power buttons now use compendium blue style
