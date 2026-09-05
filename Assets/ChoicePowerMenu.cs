@@ -132,6 +132,8 @@ public class ChoicePowerMenu : MonoBehaviour
             var p = PowerButtons[i];
             if (!p.Active)
             {
+                p.PowerUI.HasIdleAnimation = true;
+                p.PowerUI.IdleAnimationOffset = i / (float)max;
                 p.TurnOn();
             }
         }

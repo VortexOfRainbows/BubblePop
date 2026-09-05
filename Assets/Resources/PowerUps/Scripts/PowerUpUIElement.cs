@@ -237,6 +237,8 @@ public class PowerUpUIElement : MonoBehaviour
     {
         if(!InventoryElement && !MenuElement && !CompendiumElement)
             OnUpdate();
+        if(HasIdleAnimation)
+            IdleAnimationUpdate();
     }
     public void OnUpdate()
     {
@@ -256,5 +258,13 @@ public class PowerUpUIElement : MonoBehaviour
             TurnedOff();
         if (ForceNotBlackMarket)
             MyPower.ForceNOTBlackMarket = false;
+    }
+    public bool HasIdleAnimation = false;
+    public float IdleAnimationOffset = 0;
+    public void IdleAnimationUpdate()
+    {
+        float percent = World.GlobalTimeElapsedCounter * 0.5f + IdleAnimationOffset * 2f;
+        float sin = Mathf.Sin(percent * MathF.PI);
+        visual.transform.localPosition = new Vector3(0, sin * 2 * visual.transform.localScale.y, 0);
     }
 }

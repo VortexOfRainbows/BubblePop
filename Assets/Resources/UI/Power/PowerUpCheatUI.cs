@@ -178,7 +178,8 @@ public class PowerUpCheatUI : MonoBehaviour
             PowerUpButton p = Instantiate(ChoiceTemplate, GridParent.transform);
             p.SetType(i);
             p.gameObject.SetActive(true);
-            p.CheatButton = p.NonChoiceButton = p.PowerUI.CrucibleElement = p.PowerUI.IncludeRainbowShards = true;
+            p.CheatButton = p.NonChoiceButton = p.PowerUI.CrucibleElement = p.PowerUI.IncludeRainbowShards = p.PowerUI.HasIdleAnimation = true;
+            p.PowerUI.IdleAnimationOffset = i / 6f;
             p.PowerUI.Cost = p.PowerUI.MyPower.ShardReplicationCost();
             p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
             if (i % 3 == 2)
@@ -220,8 +221,8 @@ public class PowerUpCheatUI : MonoBehaviour
                 p.PowerUI.CostText.text = p.PowerUI.Cost.ToString();
             }
             p.CheatButton = false;
-            p.NonChoiceButton = true;
-            p.PowerUI.CrucibleElement = true;
+            p.NonChoiceButton = p.PowerUI.CrucibleElement = p.PowerUI.HasIdleAnimation = true;
+            p.PowerUI.IdleAnimationOffset = i / 6f;
             if (i % 3 == 2)
                 yield return new WaitForSecondsRealtime(0.01f);
             if (AwaitingPowerReset)
