@@ -8,6 +8,11 @@ using UnityEngine.UI;
 
 public partial class Main : MonoBehaviour
 {
+    public static void UpdateGlobalAnimator()
+    {
+        GlobalAnimationTimer += Time.unscaledDeltaTime;
+    }
+    public static float GlobalAnimationTimer { get; private set; } = 0;
     public static bool SceneMainMenu => SceneManager.GetActiveScene().buildIndex == 0;
     public static float FramesPerSeconds { get; private set; }
     public static float TimeElapsedDuringLowFPS { get; private set; } = 0;

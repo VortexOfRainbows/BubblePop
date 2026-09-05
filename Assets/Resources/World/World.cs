@@ -566,6 +566,7 @@ public partial class World : MonoBehaviour
 #endif
         Lighting.Update();
         GlobalTimeElapsedCounter += Time.deltaTime;
+        Main.UpdateGlobalAnimator();
     }
     public void LateUpdate()
     {

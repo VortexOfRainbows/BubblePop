@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static Enemy;
-using static UnityEngine.GraphicsBuffer;
+
 public static class Utils
 {
     public static Unity.Mathematics.Random rand = InitRandSeed();
     public static readonly float TwoPI = Mathf.PI * 2;
+    public static readonly float HalfPI = Mathf.PI / 2;
+    public static readonly float QuarterPI = Mathf.PI / 4;
+    public static readonly float PI = Mathf.PI;
+    public static readonly float Sqrt2 = Mathf.Sqrt(2);
     private static Unity.Mathematics.Random InitRandSeed()
     {
         Unity.Mathematics.Random r = new();

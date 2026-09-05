@@ -4619,6 +4619,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
+      propertyPath: SpecialHoverRect
+      value: 
+      objectReference: {fileID: 3675878313651588875}
+    - target: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
       propertyPath: CompendiumElement
       value: 0
       objectReference: {fileID: 0}
@@ -4774,6 +4778,10 @@ PrefabInstance:
       propertyPath: InventoryElement
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
+      propertyPath: SpecialHoverRect
+      value: 
+      objectReference: {fileID: 8168674731906338686}
     - target: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
       propertyPath: CompendiumElement
       value: 0

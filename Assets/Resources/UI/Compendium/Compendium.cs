@@ -379,7 +379,8 @@ public class Compendium : MonoBehaviour
             //TBD: replace with special segment
             AddHeader("Power Pool".WithRarityColor(rare, false));
             var powers = e.GetPowerPoolForDisplay();
-            Segments.Add(CompendiumDescriptionSegment.NewPowerSegment(DescriptionContentRect, MyCanvas, powers));
+            if(powers.Count > 0)
+                Segments.Add(CompendiumDescriptionSegment.NewPowerSegment(DescriptionContentRect, MyCanvas, powers));
             List<Ability> abilities = e.GetAbility();
             if (abilities.Count > 0)
             {

@@ -912,6 +912,10 @@ PrefabInstance:
       propertyPath: InventoryElement
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7878193293828176557, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
+      propertyPath: SpecialHoverRect
+      value: 
+      objectReference: {fileID: 4010505480646398249}
     - target: {fileID: 2181434558095086127, guid: 740d1d0762aac474f89cc1843dfa04c9, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

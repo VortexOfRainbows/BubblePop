@@ -47,6 +47,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool UsePlaceHolder = false;
     public TextMeshProUGUI CostText;
     public GameObject CostObj;
+    public RectTransform SpecialHoverRect = null;
     public bool PickerElement
     {
         get => !InventoryElement;
@@ -116,6 +117,7 @@ public class PowerUpUIElement : MonoBehaviour
             return PowerUpCheatUI.ShardInstance.MouseInCompendiumArea;
         return PowerUpCheatUI.CrucibleInstance.MouseInCompendiumArea;
     }
+    public bool IAmBeingHovered { get; set; } = false;
     public void WhileOn()
     {
         Timer += 1;
@@ -131,10 +133,18 @@ public class PowerUpUIElement : MonoBehaviour
             Count.gameObject.SetActive(!AppearLocked && (Compendium.Instance == null || Compendium.Instance.PowerPage.ShowCounts) && !PreventHovering);
         bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea || CompendiumHoverOverride) && 
             (CanHoverOverCrucible());
-        float size = CompendiumElement && !CompendiumHoverOverride ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
-        size *= ScaleMultiplier;
+        RectTransform hoverRect = outer.rectTransform;
         bool rectangular = CompendiumElement && !CompendiumHoverOverride;
-        if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement, true) && (CompendiumElement || !Main.GamePaused || !(InventoryElement || MenuElement)))
+        float size = rectangular ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
+        if (SpecialHoverRect != null)
+        {
+            hoverRect = SpecialHoverRect;
+            rectangular = true;
+            size = 0;
+        }
+        size *= ScaleMultiplier;
+        IAmBeingHovered = false;
+        if (canHover && Utils.IsMouseHoveringOverThis(rectangular, hoverRect, size, myCanvas, CompendiumElement, true) && (CompendiumElement || !Main.GamePaused || !(InventoryElement || MenuElement)))
         {
             if (myLayout != null)
                 myLayout.isHovering = true;
@@ -143,8 +153,8 @@ public class PowerUpUIElement : MonoBehaviour
             PopUpTextUI.Enable(name, desc);
             float scaleUP = 1.125f;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * scaleUP, 0.16f);
-
-            if(CompendiumElement)
+            IAmBeingHovered = true;
+            if (CompendiumElement)
             {
                 if(CompendiumHoverOverride)
                 {
@@ -259,12 +269,45 @@ public class PowerUpUIElement : MonoBehaviour
         if (ForceNotBlackMarket)
             MyPower.ForceNOTBlackMarket = false;
     }
-    public bool HasIdleAnimation = false;
-    public float IdleAnimationOffset = 0;
+    public bool HasIdleAnimation { get; set; } = false;
+    public float IdleAnimationOffset { get; set; }
+    public Vector3? CountOriginalPosition { get; set; } = null;
+    public Vector3? MouseFollower { get; set; } = Vector2.zero;
     public void IdleAnimationUpdate()
     {
-        float percent = World.GlobalTimeElapsedCounter * 0.5f + IdleAnimationOffset * 2f;
+        float scale = visual.transform.localScale.y;
+        float percent = Main.GlobalAnimationTimer * 0.6f + IdleAnimationOffset * 2f;
         float sin = Mathf.Sin(percent * MathF.PI);
-        visual.transform.localPosition = new Vector3(0, sin * 2 * visual.transform.localScale.y, 0);
+        Vector2 sinV = new Vector3(0, sin * 4 * scale);
+
+        float lerpFactor2 = Utils.DeltaTimeLerpFactor(0.075f);
+        if (IAmBeingHovered)
+        {
+            float maxSize = HoverRadius * ScaleMultiplier;
+            if (SpecialHoverRect != null)
+                maxSize = SpecialHoverRect.rect.width / 2f;
+            if (MouseFollower == null)
+                MouseFollower = Input.mousePosition;
+            else
+                MouseFollower = MouseFollower.Value.Lerp(Input.mousePosition, lerpFactor2);
+
+            maxSize *= myCanvas.scaleFactor * Utils.Sqrt2;
+            Vector3 pos = Utils.PositionAdjustedByCanvas(transform.position, myCanvas);
+            //pos += radius * scale * new Vector3(1 - 2 * transform.pivot.x, 1 - 2 * transform.pivot.y);
+            Vector2 ToMouse = MouseFollower.Value - pos;
+            percent = 1 - Mathf.Clamp01(ToMouse.magnitude / maxSize);
+            sinV *= 1 - percent;
+            sinV -= scale * 12 * percent * ToMouse.normalized;
+        }
+        else
+            MouseFollower = null;
+
+            visual.transform.LerpLocalPosition(sinV, lerpFactor2);
+        if (Count.isActiveAndEnabled)
+        {
+            if(!CountOriginalPosition.HasValue)
+                CountOriginalPosition = Count.transform.localPosition;
+            Count.transform.localPosition = CountOriginalPosition.Value - visual.transform.localPosition;
+        }
     }
 }
