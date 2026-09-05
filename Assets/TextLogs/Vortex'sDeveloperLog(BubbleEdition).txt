@@ -12,12 +12,12 @@ Do Later:
 4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
 6. Convert player power handler to use structs for faster resetting 
-7. (LATER) Pause screen should have a button to show current powerups
-8. Next UI Reworks:
+7. (Eventually) Pause screen should have a button to show current powerups
+8. (Eventually) Character select screen should receive a more full overhaul
+9. Next UI Changes:
 	1. Home screen and pause menu button appearances
 	2. Enemy wave cards, next wave button, and ascension button, unleash wave button
 	3. UCI playtest disclaimer (most likely remove it for now? or change the wording to be more of a tutorial?)
-	4. Character Select Menu
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -66,7 +66,7 @@ Done:
 9. Crates (and barrels) generation rates adjusted (should be slightly more common)
 10. Fix extremely niche bug where fairy ring loot would take 100 seconds after world gen to be obtainable
 11. (FIX) Equip menu now starts off screen so it is not visible sometimes on fast load times
-12. Equip menu now uses blue colors
+12. Equip menu and character select menu now uses blue colors
 
 9/1/26 to 9/3/26
 1. Crucible and Shard menus now populate 2x faster, though might be more somewhat more laggy on weaker systems
