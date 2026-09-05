@@ -64,7 +64,7 @@ public class PlayerAnimator : MonoBehaviour
     }
     public float MoveDashRotation()
     {
-        float bonusR = Body is Bubblemancer && RealPlayer ? 1f * Mathf.Max(0, MyPlayer.abilityTimer / MyPlayer.AbilityCD) : 0;
+        float bonusR = Body is Bubblemancer b && RealPlayer ? 1f * Mathf.Max(0, b.DashTimer / b.IFrames) : 0;
         float r = new Vector2(Mathf.Abs(lastVelo.x), lastVelo.y * Direction).ToRotation() * Mathf.Rad2Deg * (0.3f + bonusR);
         return r;
     }

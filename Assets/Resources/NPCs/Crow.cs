@@ -16,7 +16,7 @@ public class Crow : Enemy
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 10;
-        data.BaseMaxCoin = 5;
+        data.BaseMaxCoin = 4;
         data.BaseMinCoin = 2;
         data.Cost = 2;
         data.WaveNumber = 3;
@@ -42,7 +42,7 @@ public class Crow : Enemy
         float dist = Vector2.Distance(Target.Position, transform.position);
         if(dist < 11 && HasLineOfSightWithTarget)
             toTarget = -toTarget;
-        if((dist < 11 || dist > 20 || JumpTimer != 0) && IdleTimer == 100)
+        if(((dist < 11 || dist > 20 || JumpTimer != 0) && IdleTimer == 100) || !HasLineOfSightWithTarget)
         {
             JumpTimer++;
             if (JumpTimer >= 40)
@@ -72,14 +72,14 @@ public class Crow : Enemy
                 UpdateDirection(RB.velocity.x);
             IdleTimer = 100;
         }
-        else if(--initialShootDelay <= 0 && HasLineOfSightWithTarget)
+        else if(--initialShootDelay <= 0 && (HasLineOfSightWithTarget || IdleTimer != 100))
         {
             JumpTimer = 0;
             JumpAnimation.JumpPercent = 0;
             RB.velocity *= InertiaMult;
             if (dist > 12.5f)
             {
-                RB.velocity += toTarget.normalized * MoveSpeed * 0.5f;
+                RB.velocity += 0.5f * MoveSpeed * toTarget.normalized;
             }
             if(dist >= 11)
             {

@@ -94,6 +94,16 @@ public static partial class LocalizationBuilder
                 start = withSizeModifiers ? $"<size={NormalTextSize}><color={ColorHelper.YellowHex}>" : $"<color={ColorHelper.YellowHex}>";
             else if (first2 == "R:")
                 start = withSizeModifiers ? $"<size={NormalTextSize}><color={ColorHelper.RarityColorHex[5]}>" : $"<color={ColorHelper.RarityColorHex[5]}>";
+            else if (first2 == "1:")
+                start = withSizeModifiers ? $"<size={NormalTextSize}><color={ColorHelper.RarityColorHex[0]}>" : $"<color={ColorHelper.RarityColorHex[0]}>";
+            else if (first2 == "2:")
+                start = withSizeModifiers ? $"<size={NormalTextSize}><color={ColorHelper.RarityColorHex[1]}>" : $"<color={ColorHelper.RarityColorHex[1]}>";
+            else if (first2 == "3:")
+                start = withSizeModifiers ? $"<size={NormalTextSize}><color={ColorHelper.RarityColorHex[2]}>" : $"<color={ColorHelper.RarityColorHex[2]}>";
+            else if (first2 == "4:")
+                start = withSizeModifiers ? $"<size={NormalTextSize}><color={ColorHelper.RarityColorHex[3]}>" : $"<color={ColorHelper.RarityColorHex[3]}>";
+            else if (first2 == "5:")
+                start = withSizeModifiers ? $"<size={NormalTextSize}><color={ColorHelper.RarityColorHex[4]}>" : $"<color={ColorHelper.RarityColorHex[4]}>";
             if (isEnding && waitingForEnding && !isOpening) //If this string ends with a ']' and we have previously seen a '['
             {
                 waitingForEnding = false;

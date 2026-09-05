@@ -15,12 +15,6 @@ public class SettingsToggle : MonoBehaviour
                 return ref Main.DebugSettings.PowerUpCheat;
             if (Type == -1)
                 return ref Main.DebugSettings.DirectorView;
-            if(Type == 0)
-                return ref PlayerData.PauseDuringPowerSelect;
-            if (Type == 1)
-                return ref PlayerData.BriefDescriptionsByDefault;
-            if (Type == 2)
-                return ref PlayerData.PauseDuringCardSelect;
             throw new System.Exception("Settings Toggle Has Invalid Type");
         }
     }
@@ -42,7 +36,7 @@ public class SettingsToggle : MonoBehaviour
     public void UpdateSetting(bool value)
     {
         TargetSetting = value;
-        if (Type == 0 || Type == 1 || Type == 2)
-            PlayerData.SaveSettingsToggles();
+        //if (Type == 0 || Type == 1 || Type == 2)
+        //    PlayerData.SaveSettingsToggles();
     }
 }

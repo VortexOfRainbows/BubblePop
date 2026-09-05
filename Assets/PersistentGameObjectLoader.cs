@@ -1,11 +1,14 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PersistentGameObjectLoader : MonoBehaviour
 {
     public static GameObject CompendiumPrefab => Resources.Load<GameObject>("UI/Compendium/CompendiumCanvas");
+    public static GameObject SettingsPrefab => Resources.Load<GameObject>("UI/Settings/Settings");
+    //public static GameObject CursorFollowerPrefab => Resources.Load<GameObject>("UI/Cursor/CursorCanvas");
     public static PersistentGameObjectLoader Instance { get; private set; }
     private GameObject CompendiumCanvas;
+    private GameObject SettingsCanvas;
+    private GameObject CursorFollowerCanvas;
     private void Start()
     {
         if(Instance == null)
@@ -22,6 +25,8 @@ public class PersistentGameObjectLoader : MonoBehaviour
     public void LoadPersistentObjects()
     {
         LoadCompendium();
+        LoadSettings();
+        //LoadCursorThing();
     }
     private void LoadCompendium()
     {
@@ -31,6 +36,18 @@ public class PersistentGameObjectLoader : MonoBehaviour
         Compendium.HalfResolution = Compendium.ScreenResolution / 2f;
         c.MoveCompendiumUpdate(1.0f);
     }
+    private void LoadSettings()
+    {
+        SettingsCanvas = Instantiate(SettingsPrefab, transform);
+        Canvas c = SettingsCanvas.GetComponent<Canvas>();
+        c.renderMode = RenderMode.ScreenSpaceOverlay;
+        //c.worldCamera = CameraManager.UICamera;
+        SettingsCanvas.GetComponent<SettingsMenu>().Init();
+    }
+    //private void LoadCursorThing()
+    //{
+    //    CursorFollowerCanvas = Instantiate(CursorFollowerPrefab, transform);
+    //}
     public void Update()
     {
         bool isMainMenu = Main.SceneMainMenu;

@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class OilBomb : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Vector2 SkyPos;
     public bool OnSolidTile = false;
     public float BarrelScaleMult { get; set; } = 1;
@@ -13,6 +10,10 @@ public class OilBomb : Projectile
     public int BarrelsSpawned { get; set; } = 0;
     public float AudioVolumeMult { get; set; } = 1;
     public bool IsFireBomb => Data.Length > 2 && Data[2] <= -1;
+    public override float TachyonSize()
+    {
+        return 1.5f;
+    }
     public override void Init()
     {
         SpriteRendererGlow.enabled = false;
@@ -26,12 +27,13 @@ public class OilBomb : Projectile
             SpriteRenderer.sprite = Main.TextureAssets.KingOilBomb;
             SpriteRenderer.color = Color.white.WithAlpha(0);
         }
+        C2D.radius = 0.9f;
         SpriteRenderer.sortingOrder = LayerHelper.TreeSortingOrder + 1;
         Friendly = Hostile = false;
         transform.localScale = new Vector3(0, 0, 1);
         startPos = transform.position;
         startPos.y -= 0.5f;
-        OnSolidTile = World.SolidTile(World.RealTileMap.Map.WorldToCell(startPos));
+        OnSolidTile = World.SolidTile(World.RealPosToTilePos(startPos));
         if (OnSolidTile)
             startPos.y += 0.25f;
         SkyPos = startPos + new Vector2(0, 26);
@@ -109,7 +111,7 @@ public class OilBomb : Projectile
         {
             Vector2 spawnOffset = new Vector2(1f, 0).RotatedBy(i * Utils.TwoPI / totalBubbles);
             float rand = Mathf.Max(Utils.RandFloat(1), Utils.RandFloat(1));
-            Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + ((1 - rand) * 0.5f * projectileReleaseSize * spawnOffset), projectileReleaseSize * rand * spawnOffset + Utils.RandCircle(projectileReleaseSize * 0.25f), 1, PlayerOwner);
+            Projectile.NewProjectile<SmallBubble>((Vector2)transform.position + ((1 - rand) * 0.5f * projectileReleaseSize * spawnOffset), projectileReleaseSize * rand * spawnOffset + Utils.RandCircle(projectileReleaseSize * 0.25f), 1, PlayerOwner, 0, 1);
         }
         if(PlayerOwner.DashSparkle > 0)
         {
@@ -166,4 +168,5 @@ public class OilBomb : Projectile
     {
 
     }
+    public override bool HomingNeedsLOS => false;
 }

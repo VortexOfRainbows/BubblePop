@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ColaProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Vector2 Destination => new(Data[0], Data[1]);
     public Vector2 playerStartPos = Vector2.zero;
     public float SpeedLockContribution = 0.8f;
@@ -58,7 +59,7 @@ public class ColaProj : Projectile
         Vector2 pos = Vector2.Lerp(startPos, Destination, percent);
         float arcY = Mathf.Sin(percent * Mathf.PI) * dist * (isHeavy ? 0.3f : 0.4f);
         pos.y += arcY;
-        RB.MovePosition(pos);
+        transform.position = pos - RB.velocity * Time.fixedDeltaTime;
     }
     public void Update()
     {
@@ -70,7 +71,7 @@ public class ColaProj : Projectile
         float sin = Mathf.Sin(percent * Mathf.PI);
         Vector3 drawPos = Vector2.Lerp(playerStartPos, Destination, percent);
         drawPos.y -= 0.5f;
-        bool solidTile = World.SolidTile(World.RealTileMap.Map.WorldToCell(drawPos));
+        bool solidTile = World.SolidTile(drawPos);
         if (solidTile)
             drawPos.y += 0.25f;
         SpriteBatch.Draw(Main.TextureAssets.Shadow, drawPos, new Vector2(2.0f, 1.3f), 0,
@@ -154,6 +155,7 @@ public class ColaProj : Projectile
     }
     public override bool OnInsideTile() => false;
     public override bool OnTileCollide(Collider2D collision) => false;
+    public override bool HomingNeedsLOS => false;
 }
 public class ColaExplode : SupernovaExplode
 {
@@ -240,6 +242,7 @@ public class ColaExplode : SupernovaExplode
 }
 public class SkateboardProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Transform Wheel1, Wheel2;
     public float Angle => Data1;
     public override void Init()

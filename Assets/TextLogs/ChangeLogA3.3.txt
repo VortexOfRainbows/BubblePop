@@ -1,0 +1,91 @@
+Dev Build 3.3 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+New:
+1. Overhauled user interface for Setting, Compendium, and small changes to Pause Menu and Home
+2. Conglomerate, Combust, Smokestack sprites
+3. Now you can change shadows and day cycle through settings
+	1. Lower shadow blur may aid in GPU performance
+4. Shops may sometimes sell powers in bulk, at a higher price
+	1. This chance is greater for lower-star powers
+	2. This is somewhat meant to augment the current state of the shop, where you simply buy cheap items just to cycle the shop.
+	3. The goal is to make your choices more meaningful, while also keeping power stacking as a core identity of the game
+	4. Currently treated as restocking ONCE for the purpose of price scaling and restock machine counts...
+	5. DOES NOT EFFECT BLACK MARKET POWERS
+	6. Overall, the shop will sell slightly more powers but at a higher average price per power
+5. New Node: Workshop
+6. New Subnode: Crate Node
+7. One new achievement
+8. Black market powers are cheaper and more common
+
+
+Balance Changes:
+1. (BUFF) Oilicopter now always applies oil and always appears in King Oil's color
+2. (NERF) Smokestack attack speed per stack stack scaling 5% (+2%) -> 4% (+1%)
+3. (BUFF) Fire from Bubblebirb and Dragon Slots now detonate debuffs (Description modified for dragon slots)
+4. (NERF) Chance of shops appearing in alternating subnodes 75% -> 50%
+	1. The alternation has been shifted slightly, so they should no longer appear as often before nodes that already have shops
+5. (NERF/FIX) Fix bug where Compound Interest would only roll for a lower tier power once, and then give you that amount squared
+	1. Now it gives the correct amount: Stack^2 -> Stack
+	2. Now it can roll different powers instead of just 1 at a time (similar to Astra Jelly)
+6. (BUFF) Perpetual Bubble Machine no longer has unique rainbow shard replication scaling
+
+
+Misc Changes:
+1. Crucible speed is now capped at 10x speed
+2. Crucible and Forge hammer speed increases are now global and last the whole run
+--Global crucible and forge speeds should make forging feel less painful
+3. Subnodes now shift to attempt a spawn 12 times if the spot is blocked (up from 10), so they should be more common
+--I want subnodes to be more important, so I'm trying to increase their spawn rates
+4. BoxesShopWithForge, Junkyard, and Junkyard2 nodes are now more open
+5. BoxesShop1, BoxesShop2, MeadowCrucible3 now have a connector between two previously dead ends
+--A lot of older nodes will continue to receive changes to make them more compatible with pathfinding enemies
+6. When multiple copies of a power would be dropped from a pylon, it simply drops them in bulk now (should reduce lag for stacking Perp, Pumpjack, Resonance Ruby, etc.)
+
+
+Fixes:
+1. Fix bug where soup would still work even when removed through a crucible
+2. Fix bug where the selected ascension would reset to Bubblemancer's Max ascension when restarting as other characters
+3. Fix bug where tier lists would bug out at high category heights.	
+	1. The fix for this is a general code order change, which should hopefully fix some other tier list bugs and definitely not cause any other bugs
+4. Fix bug where all any powers counted as black market in compendium black market mode, even grayed out ones
+5. Fix bug where you could hover over and select equipment/achievement elements that were off screen in the compendium
+
+
+Compendium Changes:
+1. Replaced "Cancel Changes: with Export button
+2. Adjustments to Tier list colors and size of tier display elements
+3. Biome background removed from Enemy page (this might be temporary)
+4. Compendium now disables itself when offscreen, which should overhead lag slightly
+5. All compendium sections are loaded when the compendium is opened now, and displays compendium completion progress
+6. Fix compendium sizes on 16:10 resolutions showing tier list buttons when tier list was not open.
+	1. Should work on other resolutions	
+	2. Now the description box is bigger to compensate
+
+
+Black Market adjustments:
+--Now that black market items are greater in quantity and generally more balanced in power level, I want to test out making them more common
+1. Rainbow shard cost multiplier 2x -> +1
+	1. Now rarer black market powers are cheaper to replicate
+2. Black market dealer cost multiplier 3x -> 2x
+3. Chance of a Black Market power appearing in a normal shop 0.5% -> 1.5%
+
+
+Enemies:
+--These Snobble nerfs happen at the margins, which should keep it a threat, but Snobble should be easier to avoid with good movement 
+1. (NERF) Snobble:
+	1. Dash speed multiplier 2.85 -> 2.75
+	2. Snobble has the ability to increase it's move progression counter at double speed when near the player
+		1. This window opened 25 frames into its default movement counter, or 75 frames after a dash began, and would allow the next dash to come out in about 38 frames
+		2. The window has been moved into 30 frames after its movement counter
+		3. Snobble now incurs a random 0-6 frames of lag after a dash or slide
+--These changes are mostly to lower lag, but should also make the enemy generally a bit weaker
+2. (NERF) Rock Golem adjustments (Total HP 192 -> 150)
+	1. Life 24 -> 25 
+	2. Segments 8 -> 6
+	3. Max coin drops 3 -> 4 (overall drops should be slightly reduced, as enemies are weighted towards their lower drop values)
+	4. Hopefully should reduce lag a bit
+3. Crow coins dropped max 5 -> 4
+4. Ent coins dropped max 10 -> 8
+5. Gatligator is now slightly bigger in UI

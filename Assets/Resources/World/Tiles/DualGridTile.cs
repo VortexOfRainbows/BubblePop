@@ -2,65 +2,82 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
+using Unity.VisualScripting;
 
 [CreateAssetMenu(fileName = "DualGridTile", menuName = "ScriptableObjects/DualGridTile", order = 1)]
 public class DualGridTile : ScriptableObject
 {
     #region Static Stuff
-    public static Dictionary<Tuple<bool, bool, bool, bool>, int> NeighbourRelations = SetNeighborRelations(false); //top left, top right, bot left, bot right
-    public static Dictionary<Tuple<bool, bool, bool, bool>, int> WallNeighbourRelations = SetNeighborRelations(true);
-    public static Dictionary<Tuple<bool, bool, bool, bool>, int> SetNeighborRelations(bool wall)
+    public static byte GetByteKey(bool b1, bool b2, bool b3, bool b4)
+    {
+        byte key = 0;
+        if (b1) key |= 1 << 3; // Bit 3
+        if (b2) key |= 1 << 2; // Bit 2
+        if (b3) key |= 1 << 1; // Bit 1
+        if (b4) key |= 1 << 0; // Bit 0
+        return key;
+    }
+    public static int[] NeighbourRelations = SetNeighborRelations(false); //top left, top right, bot left, bot right
+    public static int[] WallNeighbourRelations = SetNeighborRelations(true);
+    public static int[] SetNeighborRelations(bool wall)
     {
         if(wall)
-            return new() {
-            {new (true, true, false, true), 0},
-            {new (true, true, true, true), 1},
-            {new (true, true, true, false), 2},
-            {new (false, true, false, true), 3}, //Side
-            {new (true, false, true, false), 5}, //Side
-            {new (false, true, false, false), 6},
-            {new (true, true, false, false), 7},
-            {new (true, false, false, false), 8},
-            {new (false, false, false, false), -1}, //Empty
-            };
-        return new() {
-            {new (true, true, true, true), 6}, //Inner tile
-            {new (false, false, false, true), 12}, // OUTER_BOTTOM_RIGHT
-            {new (false, false, true, false), 0}, // OUTER_BOTTOM_LEFT
-            {new (false, true, false, false), 8}, // OUTER_TOP_RIGHT
-            {new (true, false, false, false), 14}, // OUTER_TOP_LEFT
-            {new (false, true, false, true), 1}, // EDGE_RIGHT
-            {new (true, false, true, false), 11}, // EDGE_LEFT
-            {new (false, false, true, true), 3}, // EDGE_BOTTOM
-            {new (true, true, false, false), 9}, // EDGE_TOP
-            {new (false, true, true, true), 5}, // INNER_BOTTOM_RIGHT
-            {new (true, false, true, true), 2}, // INNER_BOTTOM_LEFT
-            {new (true, true, false, true), 10}, // INNER_TOP_RIGHT
-            {new (true, true, true, false), 7}, // INNER_TOP_LEFT
-            {new (false, true, true, false), 13}, // DUAL_UP_RIGHT
-            {new (true, false, false, true), 4}, // DUAL_DOWN_RIGHT
-            {new (false, false, false, false), -1}, //Empty
-        };
+        {
+            var newRelation = new int[16];
+            Array.Fill(newRelation, -1);
+            newRelation[GetByteKey(true, true, false, true)] = 0;
+            newRelation[GetByteKey(true, true, true, true)] = 1;
+            newRelation[GetByteKey(true, true, true, false)] = 2;
+            newRelation[GetByteKey(false, true, false, true)] = 3;  // Side
+            newRelation[GetByteKey(true, false, true, false)] = 5;  // Side
+            newRelation[GetByteKey(false, true, false, false)] = 6;
+            newRelation[GetByteKey(true, true, false, false)] = 7;
+            newRelation[GetByteKey(true, false, false, false)] = 8;
+            newRelation[GetByteKey(false, false, false, false)] = -1; // Empty
+            return newRelation;
+        }
+        else
+        {
+            var newRelation = new int[16];
+            Array.Fill(newRelation, -1);
+            newRelation[GetByteKey(true, true, true, true)] = 6;   // Inner tile
+            newRelation[GetByteKey(false, false, false, true)] = 12; // OUTER_BOTTOM_RIGHT
+            newRelation[GetByteKey(false, false, true, false)] = 0;  // OUTER_BOTTOM_LEFT
+            newRelation[GetByteKey(false, true, false, false)] = 8;  // OUTER_TOP_RIGHT
+            newRelation[GetByteKey(true, false, false, false)] = 14; // OUTER_TOP_LEFT
+            newRelation[GetByteKey(false, true, false, true)] = 1;   // EDGE_RIGHT
+            newRelation[GetByteKey(true, false, true, false)] = 11;  // EDGE_LEFT
+            newRelation[GetByteKey(false, false, true, true)] = 3;   // EDGE_BOTTOM
+            newRelation[GetByteKey(true, true, false, false)] = 9;   // EDGE_TOP
+            newRelation[GetByteKey(false, true, true, true)] = 5;    // INNER_BOTTOM_RIGHT
+            newRelation[GetByteKey(true, false, true, true)] = 2;    // INNER_BOTTOM_LEFT
+            newRelation[GetByteKey(true, true, false, true)] = 10;   // INNER_TOP_RIGHT
+            newRelation[GetByteKey(true, true, true, false)] = 7;    // INNER_TOP_LEFT
+            newRelation[GetByteKey(false, true, true, false)] = 13;  // DUAL_UP_RIGHT
+            newRelation[GetByteKey(true, false, false, true)] = 4;   // DUAL_DOWN_RIGHT
+            newRelation[GetByteKey(false, false, false, false)] = -1; // Empty
+            return newRelation;
+        }
     }
-    public static Vector3Int[] NEIGHBOURS = new Vector3Int[] {
-        new(0, 0, 0),
-        new(1, 0, 0),
-        new(0, 1, 0),
-        new(1, 1, 0)
+    public static Vector2Int[] NEIGHBOURS { get; private set; } = new Vector2Int[] {
+        new(0, 0),
+        new(1, 0),
+        new(0, 1),
+        new(1, 1)
     };
     #endregion
-    public bool AdjacentTileSameType(Vector3Int coords, out bool ghostReturn)
+    public bool AdjacentTileSameType(int i, int j, out bool ghostReturn)
     {
         ghostReturn = false;
-        var adjacentTileType = World.RealTileMap.Map.GetTile(coords);
-        if (adjacentTileType == null)
+        ref World.TileData data = ref World.UnsafeGetTileData(i, j);
+        if (!data.HasTile)
             return false;
-        if (adjacentTileType == TileType(GeneratingBorder))
+        DualGridTile tile = data.TileType;
+        if (data.TileType == this && data.IsSolid == GeneratingBorder)
             return true;
-        DualGridTile tile = TileID.GetTileIDFromTile(adjacentTileType);
         if (IsWall)
         {
-            if(World.SolidTile(coords))
+            if(data.IsSolid)
             {
                 if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex])
                     return true;
@@ -69,32 +86,32 @@ public class DualGridTile : ScriptableObject
         }
         else if (GeneratingBorder)
         {
-            if (tile.LayerOffset < LayerOffset && World.SolidTile(coords) && !tile.IsWall)
+            if (tile.LayerOffset < LayerOffset && data.IsSolid && !tile.IsWall)
                 ghostReturn = true;
         }
-        else if (tile.LayerOffset < LayerOffset || World.SolidTile(coords))
+        else if (tile.LayerOffset < LayerOffset || data.IsSolid)
             ghostReturn = true;
         return false;
     }
-    public int CalculateDisplayTile(Vector3Int coords)
+    public int CalculateDisplayTile(int i, int j)
     {
-        bool topRight = AdjacentTileSameType(coords -NEIGHBOURS[0], out bool ghostTopRight);
-        bool topLeft = AdjacentTileSameType(coords -NEIGHBOURS[1], out bool ghostTopLeft);
-        bool botRight = AdjacentTileSameType(coords -NEIGHBOURS[2], out bool ghostBotRight);
-        bool botLeft = AdjacentTileSameType(coords -NEIGHBOURS[3], out bool ghostBotLeft);
-        Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
-        int i = NeighbourRelations[neighbourTuple];
-        if(i == 4 || i == 13) //weird double corner tiles do not consider ghosts
-            i = NeighbourRelations[new(topLeft, topRight, botLeft, botRight)];
-        return i;
+        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight);
+        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft);
+        bool botRight = AdjacentTileSameType(i, j - 1, out bool ghostBotRight);
+        bool botLeft = AdjacentTileSameType(i - 1, j - 1, out bool ghostBotLeft);
+        byte key = GetByteKey(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
+        int id = NeighbourRelations[key];
+        if(id == 4 || id == 13) //weird double corner tiles do not consider ghosts
+            id = NeighbourRelations[key];
+        return id;
     }
-    public int CalculateDisplayWall(Vector3Int coords, bool HasValidTopSpace, ref bool tileNeedsShrinking)
+    public int CalculateDisplayWall(int i, int j, ref bool tileNeedsShrinking)
     {
         tileNeedsShrinking = false;
-        bool topRight = AdjacentTileSameType(coords -NEIGHBOURS[0], out bool ghostTopRight);
-        bool topLeft = AdjacentTileSameType(coords -NEIGHBOURS[1], out bool ghostTopLeft);
-        bool botRight = AdjacentTileSameType(coords -NEIGHBOURS[2], out bool _);
-        bool botLeft = AdjacentTileSameType(coords -NEIGHBOURS[3], out bool _);
+        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight);
+        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft);
+        bool botRight = AdjacentTileSameType(i, j - 1, out bool ghostBotRight);
+        bool botLeft = AdjacentTileSameType(i - 1, j - 1, out bool ghostBotLeft);
         //These statements might not make sense if we use a .5 offset for our walls, as then another variant will be needed
         bool initiallyNoTop = !topRight && !topLeft && !ghostTopRight && !ghostTopLeft;
         if (botRight && !topRight)
@@ -103,65 +120,90 @@ public class DualGridTile : ScriptableObject
             topLeft = true;
         if((!topRight && !topLeft) || (botRight && botLeft))
             topRight = topLeft = true; //throw new Exception("ERROR: Wall placed in area without top tiles");
-        Tuple<bool, bool, bool, bool> neighbourTuple = new(topLeft, topRight, botLeft, botRight);
-        int i = WallNeighbourRelations[neighbourTuple];
-        if(i == 3 || i == 5)
+        byte key = GetByteKey(topLeft, topRight, botLeft, botRight);
+        int id = WallNeighbourRelations[key];
+        if(id == 3 || id == 5)
         {
             tileNeedsShrinking = initiallyNoTop;
         }
-        return i;
+        return id;
     }
     private static bool GeneratingBorder { get; set; } = false;
     public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.25f));
-    public void UpdateDisplayTile(Vector3Int pos, Tilemap map, bool isBorder = false)
+    public List<TileChangeData> QueuedTileChangeData { get; set; } = new();
+    public List<TileChangeData> QueuedBorderChangeData { get; set; } = new();
+    public List<TileChangeData> QueuedWallChangeData { get; set; } = new();
+    /// <summary>
+    /// Should only be called during worldgen
+    /// </summary>
+    public void UpdateDisplayTileSingular(int i, int j, List<TileChangeData> list, bool isBorder = false)
     {
         GeneratingBorder = isBorder;
-        //TODO: Rather than checking all neighbors here, it might be better to do it in another way so it doesn't recheck same tiles often (This would be particularly good for worldgen speed up)
-        for (int i = 0; i < NEIGHBOURS.Length; i++)
+        //var prev = World.GetTileData(newPos);
+        //prev.testID += 1;
+        //World.SetTileData(newPos, prev);
+        bool needsShrinking = false;
+        int id = IsWall ? CalculateDisplayWall(i, j, ref needsShrinking) : CalculateDisplayTile(i, j);
+        if (id != -1)
         {
-            Vector3Int newPos = pos + NEIGHBOURS[i];
-            bool needsShrinking = false;
-            int id = IsWall ? CalculateDisplayWall(newPos, World.SolidTile(pos.x, pos.y + 1) || i != 0, ref needsShrinking) : CalculateDisplayTile(newPos);
-            if (id != -1)
+            if (isBorder && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
             {
-                if(isBorder && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
+                id += BorderVariantStartIndex;
+                id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
+            }
+            else if (BonusTileTextures != null && BonusTileTextures.Length > 0)
+                id += Utils.RandInt(BonusTileTextures.Length + 1) * SpriteCount;
+            if (IsWall && needsShrinking)
+            {
+                id += 3;
+                Tile type = DisplayTileVariants[id];
+                list.Add(new TileChangeData(new Vector3Int(i, j), type, type.color, FunkyWallFixMatrix));
+                //VisualMap.SetTile(, true);
+            }
+            else
+            {
+                Tile type = DisplayTileVariants[id];
+                if (SingleTileBonusVariants.Count > 0 && id == 6)
                 {
-                    id += BorderVariantStartIndex;
-                    id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
-                }
-                else if (BonusTileTextures != null && BonusTileTextures.Length > 0)
-                    id += Utils.RandInt(BonusTileTextures.Length + 1) * SpriteCount;
-                if (IsWall && needsShrinking)
-                {
-                    id += 3;
-                    map.SetTile(new TileChangeData(newPos, DisplayTileVariants[id], Color.white, FunkyWallFixMatrix), true);
-                }
-                else
-                {
-                    Tile type = DisplayTileVariants[id];
-                    if(SingleTileBonusVariants.Count > 0 && id == 6)
+                    int existingVariants = 1 + BonusTileTextures.Length;
+                    int newVariants = SingleTileBonusVariants.Count;
+                    int rand = Utils.RandInt(existingVariants + newVariants);
+                    if (rand >= existingVariants)
                     {
-                        int existingVariants = 1 + BonusTileTextures.Length;
-                        int newVariants = SingleTileBonusVariants.Count;
-                        int rand = Utils.RandInt(existingVariants + newVariants);
-                        if(rand >= existingVariants)
-                        {
-                            rand -= existingVariants;
-                            type = SingleTileBonusVariants[rand];
-                        }
+                        rand -= existingVariants;
+                        type = SingleTileBonusVariants[rand];
                     }
-                    map.SetTile(newPos, type);
                 }
+                list.Add(new TileChangeData(new Vector3Int(i, j), type, type.color, Matrix4x4.identity));
+                //VisualMap.SetTile(pos, type);
             }
         }
         GeneratingBorder = false;
     }
+    public void FinalizeTileDisplay(Tilemap VisualMap)
+    {
+
+    }
+    ///// <summary>
+    ///// Currently unsupported, but should be used when modifying tiles live
+    ///// </summary>
+    //public void LiveUpdateDisplayTile(Vector3Int pos, bool isBorder = false)
+    //{
+    //    //TODO: Rather than checking all neighbors here, it might be better to do it in another way so it doesn't recheck same tiles often (This would be particularly good for worldgen speed up)
+    //    for (int i = 0; i < 4; i++)
+    //        UpdateDisplayTileSingular(pos + NEIGHBOURS[i], isBorder);
+    //}
     #region Scriptable Object Stuff
     public Texture2D TileTexture;
     public Texture2D[] BonusTileTextures;
     public Texture2D[] BorderOnlyTileTextures;
     public Sprite[] BonusCenterTileTextures;
     private int BorderVariantStartIndex = 0;
+    public bool MarkedForAnyUpdate { get; set; }
+    public bool MarkForUpdate { get; set; }
+    public bool MarkForBorderUpdate { get; set; }
+    public bool MarkForSpecialBorderUpdate { get; set; }
+    public bool MarkForWallUpdate { get; set; }
     public float LayerOffset { get; set; } = 0;
     [SerializeField]
     private Tile RealTileMapVariant;
@@ -185,6 +227,9 @@ public class DualGridTile : ScriptableObject
     public void Init()
     {
         SetDisplayVariants();
+        QueuedTileChangeData.Clear();
+        QueuedBorderChangeData.Clear();
+        QueuedWallChangeData.Clear();
     }
     public void SetDisplayVariants()
     {

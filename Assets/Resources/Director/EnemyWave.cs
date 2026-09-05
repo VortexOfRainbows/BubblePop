@@ -205,12 +205,12 @@ public class EnemyPattern
     }
     public bool ValidLocation(Vector2 location)
     {
-        bool hasWorldMap = World.RealTileMap != null && World.RealTileMap.Map != null;
-        if(hasWorldMap)
-            for(int i = -1; i <= 1; ++i)
-                for(int j = -1; j <= 1; ++j)
-                    if (!World.ValidEnemySpawnTile(location + new Vector2(i, j) * 2))
-                        return false;
+        //bool hasWorldMap = World.RealTileMap != null && World.RealTileMap.Map != null;
+        //if(hasWorldMap)
+        for (int i = -1; i <= 1; ++i)
+            for (int j = -1; j <= 1; ++j)
+                if (!World.ValidEnemySpawnTile(location + new Vector2(i, j) * 2))
+                    return false;
         return true;
     }
 }

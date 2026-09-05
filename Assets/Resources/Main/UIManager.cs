@@ -19,7 +19,7 @@ public partial class Main : MonoBehaviour
         public GameObject MPMenu1, MPMenu2, SPMenu;
         public TextMeshProUGUI PauseMenuTopText, MPControls1, MPControls2, SPControls;
         public Canvas MainCanvas, ScalingHelperCanvas;
-        public GameObject PauseMenu, SettingsMenu, DebugMenu, MultiplayerMenu;
+        public GameObject PauseMenu, DebugMenu, MultiplayerMenu;
         public TextMeshProUGUI DeadHighscoreText;
         public void OpenMultiplayerMenu(bool pause)
         {
@@ -45,15 +45,22 @@ public partial class Main : MonoBehaviour
         }
         public static void Resume()
         {
-            UIManager.PauseMenu.SetActive(false);
-            PersistentGameObjectLoader.Instance.Update();
-            if (UIManager.SettingsMenu.activeSelf)
-                ToggleSettings();
-            else if(UIManager.DebugMenu.activeSelf)
-                ToggleDebugMenu();
+            if(Player.Instance != null && Player.Instance.IsDead)
+            {
+                Restart();
+            }
             else
-                StaticPlaySound();
-            UnpauseGame();
+            {
+                UIManager.PauseMenu.SetActive(false);
+                PersistentGameObjectLoader.Instance.Update();
+                if (SettingsMenu.IsVisible)
+                    SettingsMenu.ToggleVisibility();
+                else if (UIManager.DebugMenu.activeSelf)
+                    ToggleDebugMenu();
+                else
+                    StaticPlaySound();
+                UnpauseGame();
+            }
         }
         public static void MainMenu()
         {
@@ -65,7 +72,6 @@ public partial class Main : MonoBehaviour
         public static void GameOver()
         {
             UIManager.PauseMenuTopText.text = "Game Over";
-
             UIManager.PauseMenu.SetActive(true);
             PauseGame();
         }
@@ -90,9 +96,9 @@ public partial class Main : MonoBehaviour
         }
         public static void ToggleSettings()
         {
-            if (!UIManager.SettingsMenu.activeSelf)
+            if (!SettingsMenu.IsVisible)
                 UIManager.DebugMenu.SetActive(false);
-            UIManager.SettingsMenu.SetActive(!UIManager.SettingsMenu.activeSelf);
+            SettingsMenu.ToggleVisibility();
             StaticPlaySound();
         }
         public void PlaySound()
@@ -116,7 +122,7 @@ public partial class Main : MonoBehaviour
         public static void ToggleDebugMenu()
         {
             if (!UIManager.DebugMenu.activeSelf)
-                UIManager.SettingsMenu.SetActive(false);
+                SettingsMenu.ToggleVisibility(false);
             UIManager.DebugMenu.SetActive(!UIManager.DebugMenu.activeSelf);
             StaticPlaySound();
         }

@@ -1,18 +1,42 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 //#if UNITY_EDITOR
 //[ExecuteAlways]
 //#endif
 public class TitleScreen : MonoBehaviour
 {
+    public Vector2 ReferenceResolution => ScalingCanvas.GetComponent<CanvasScaler>().referenceResolution;
     public Canvas ScalingCanvas;
     public RectTransform TargetRect;
     public RectTransform Bubblemancer, BubbleAnchor, ThoughtBubble, TBAnchor, Fizzy, FizzyAnchor, Golem, Infector;
     public RectTransform Title;
     public RectTransform Portal;
     public float AnimateCounter = 0;
+    public SpriteRenderer BGSpriteForCompendiumBlur;
+    public void ScaleSprite()
+    {
+        float scaleX = Screen.width / ReferenceResolution.x;
+        float scaleY = Screen.height / ReferenceResolution.y;
+        float canvasScaleFactor = Mathf.Max(scaleX, scaleY);
+
+        float cameraHeightInUnits = CameraManager.UICamera.orthographicSize * 3.75f * CameraManager.MainCamera.orthographicSize / CameraManager.UICamera.orthographicSize; //I have no idea why this constant seems to fix the ratio.
+
+        float spriteNativeWidth = BGSpriteForCompendiumBlur.sprite.rect.width / BGSpriteForCompendiumBlur.sprite.pixelsPerUnit;
+        float spriteNativeHeight = BGSpriteForCompendiumBlur.sprite.rect.height / BGSpriteForCompendiumBlur.sprite.pixelsPerUnit;
+
+        float pixelToUnitRatio = Screen.height / cameraHeightInUnits;
+
+        float finalScaleX = (BGSpriteForCompendiumBlur.sprite.rect.width * canvasScaleFactor) / (spriteNativeWidth * pixelToUnitRatio);
+        float finalScaleY = (BGSpriteForCompendiumBlur.sprite.rect.height * canvasScaleFactor) / (spriteNativeHeight * pixelToUnitRatio);
+        
+        float uniformScale = Mathf.Max(finalScaleX, finalScaleY);
+
+        BGSpriteForCompendiumBlur.transform.localScale = new Vector3(uniformScale, uniformScale, 1f);
+    }
     public void Update()
     {
+        ScaleSprite();
         float horizontalRelativeSize = Screen.width / ScalingCanvas.scaleFactor;
         //3840 is the size of the banner itself, where -1600 is the correct number
         //3840 - x = -1600

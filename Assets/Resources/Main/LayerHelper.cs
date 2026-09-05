@@ -65,4 +65,11 @@ public static class LayerHelper
     public const int ParticleLightning = -6;
     public const int ArbitraryCompendiumUISpriteMask = 30;
     public const int ParticleSnow = 4; //Also particle fire
+
+
+    //-----------------------------------
+    //          UI LAYERS
+    //-----------------------------------
+    public const int CompendiumCanvas = 20;
+    public const int SettingsCanvas = 15;
 }

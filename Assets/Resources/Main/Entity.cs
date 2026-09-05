@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public partial class Entity : MonoBehaviour
@@ -16,14 +14,8 @@ public partial class Entity : MonoBehaviour
     public static readonly string PlayerTag = "Player";
     public static readonly string ProjTag = "Proj";
     public static readonly string EnemyTag = "Enemy";
-    public void OnTriggerStay2D(Collider2D collision)
-    {
-        TriggerCollision(collision);
-    }
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        TriggerCollision(collision);
-    }
+    public void OnTriggerStay2D(Collider2D collision) => TriggerCollision(collision);
+    public void OnTriggerEnter2D(Collider2D collision) => TriggerCollision(collision);
     public void TriggerCollision(Collider2D collision)
     {
         if (collision.CompareTag(ProjTag) && collision.GetComponentInParent<Projectile>() is Projectile proj)
@@ -173,7 +165,7 @@ public partial class Entity : MonoBehaviour
             offset = Vector2.zero;
         Vector2 pos = transform.position;
         Vector2 finalPos = pos;
-        Vector2 tileCenter = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(pos + offset));
+        Vector2 tileCenter = World.CenterOfTile(World.RealPosToTilePos(pos + offset));
         Vector2 tileCenterToPlayerCenter = pos - tileCenter;
         Vector2 veloOffset = Vector2.zero;
         if (RB != null)

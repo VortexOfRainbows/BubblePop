@@ -12,17 +12,18 @@ public class ForgeHammer : GemUtility
     public GameObject GemTemplate;
     public byte ProgressionNumber { get; set; } = 0;
     public Transform BackPipe1, BackPipe2;
-    public float SpeedMultiplier { get; set; } = 0.95f;
+    public static float ResetGlobalSpeed() => GlobalSpeedModifier = 0.95f;
+    public static float GlobalSpeedModifier { get; set; } = ResetGlobalSpeed();
     public float AnimateCounter = 0.0f;
-    public override float SpeedMult => SpeedMultiplier;
-    public float AudioSpeedMultiplier => 0.8f + 0.2f * SpeedMultiplier;
+    public override float SpeedMult => GlobalSpeedModifier;
+    public float AudioSpeedMultiplier => 0.8f + 0.2f * GlobalSpeedModifier;
     public void Begin(ForgeCapsule requestingCapsule, int gems)
     {
         if (RCapsuel != null)
             return;
-        SpeedMultiplier += 0.05f;
-        if (SpeedMultiplier > 10)
-            SpeedMultiplier = 10;
+        GlobalSpeedModifier += 0.05f;
+        if (GlobalSpeedModifier > 10)
+            GlobalSpeedModifier = 10;
         CoinManager.ModifyGems(-gems);
         float baseTime = 1.0f;
         int gemAnimation = gems;
@@ -46,7 +47,7 @@ public class ForgeHammer : GemUtility
     {
         if (!HasDelayed)
             DelayedStart();
-        AnimateCounter += AnimationTimer > 0 ? SpeedMultiplier : 1.0f;
+        AnimateCounter += AnimationTimer > 0 ? GlobalSpeedModifier : 1.0f;
         while(AnimateCounter >= 1)
         {
             UpdateMe();
@@ -135,7 +136,7 @@ public class ForgeHammer : GemUtility
             Player.ObjectsConsideredForUIInteraction.Add(c.gameObject);
             c.MyHammer = this;
         }
-        ProgressionNumber = World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).ProgressionNumber;
+        ProgressionNumber = World.SafeGetTileData(World.RealPosToTilePos(transform.position)).ProgressionNumber;
     }
     public List<GameObject> Gems;
     public int gemRemovalCount = 0;

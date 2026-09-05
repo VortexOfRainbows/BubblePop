@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GachaProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Color c = Player.ProjectileColor;
     public override void Init()
     {
@@ -13,6 +14,7 @@ public class GachaProj : Projectile
         Damage = 4 * (1 + 0.1f * PlayerOwner.ConsolationPrize);
         Penetrate = 2;
         Friendly = true;
+        immunityFrames = 100;
         if (Data1 == 1)
         {
             Damage = 10 + PlayerOwner.PhilosophersStone;
@@ -95,6 +97,8 @@ public class GachaProj : Projectile
     public override void OnHitTarget(Entity target)
     {
         Damage *= 0.8f; // 0.8f + 0.05f * Data1;
+        if(Data1 == 4 && target is Enemy e)
+            e.DetonateAllDebuffs();
         if (Data1 == 0 || Data1 == 4)
             return;
         float count = 1;
@@ -125,16 +129,10 @@ public class GachaProj : Projectile
         }
         AudioManager.PlaySound(SoundID.BubblePop, transform.position, 0.7f, 1.1f);
     }
-    public override bool DoHomingBehavior(Enemy target, Vector2 norm, float scale)
-    {
-        float currentSpeed = RB.velocity.magnitude * 0.99f + PlayerOwner.HomingRangeSqrt * 0.125f;
-        float modAmt = 0.1f + PlayerOwner.HomingRangeSqrt * 0.05f;
-        RB.velocity = Vector2.Lerp((1 - modAmt) * RB.velocity, norm * currentSpeed, modAmt).normalized * currentSpeed;
-        return false;
-    }
 }
 public class GachaTokenProj : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public Color c = ColorHelper.TokenColor;
     public SpecialTrail trail;
     public override void Init()
@@ -151,7 +149,7 @@ public class GachaTokenProj : Projectile
         SpriteRendererGlow.transform.localScale *= 1.25f; //2.5
         C2D.radius *= 1.5f;
         startPos = transform.position;
-        trail = SpecialTrail.NewTrail(transform, c * 0.9f, 1.8f, 0.18f, 0.3f);
+        trail = SpecialTrail.NewTrail(transform, c * 0.9f, 1.8f, 0.18f, 0.3f, true);
     }
     public bool SwitchedPos = false;
     public float deathPercent = 1f;
@@ -204,6 +202,7 @@ public class GachaTokenProj : Projectile
                 Kill();
             }
         }
+        trail.AIUpdate();
     }
     public override void OnHitTarget(Entity target)
     {

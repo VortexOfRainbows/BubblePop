@@ -75,6 +75,6 @@ public class Bubblemancer : Body
     }
     public override Sprite AbilityIcon()
     {
-        return Resources.Load<Sprite>("UI/Ability/Dash");
+        return Resources.Load<Sprite>("UI/Ability/DashIconFlipped");
     }
 }

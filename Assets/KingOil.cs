@@ -44,6 +44,6 @@ public class KingOil : Body
     }
     public override Sprite AbilityIcon()
     {
-        return PowerUp.Get<OilSpill>().sprite;
+        return Resources.Load<Sprite>("UI/Ability/MissileIcon");
     }
 }

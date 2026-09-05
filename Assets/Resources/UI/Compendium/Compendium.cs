@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using TMPro;
-using Unity.Collections;
 using UnityEngine;
-using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class Compendium : MonoBehaviour
@@ -36,30 +33,36 @@ public class Compendium : MonoBehaviour
             Pages[i].gameObject.SetActive(isSelectedPage);
             PageButtons[i].targetGraphic.color = (isSelectedPage ? Color.yellow : Color.white).WithAlpha(0.8f);
         }
-        if (ActiveElement.TypeID >= 0)
+        if (ActiveElement.TypeID < 0)
+            ActiveElement.TypeID = 0;
+        UpdateDisplay(ActiveElement.TypeID);
+        UpdateDescription(true, ActiveElement.TypeID);
+        if(CurrentlySelectedPage.MarkForResort)
         {
-            UpdateDisplay(ActiveElement.TypeID);
-            UpdateDescription(true, ActiveElement.TypeID);
+            CurrentlySelectedPage.MarkForResort = false;
+            CurrentlySelectedPage.Sort();
         }
         CurrentlySelectedPage.UpdateAllButtons(SortText, TierListText, UnlockButton, CountButton, ReverseButton);
         AutoButton.targetGraphic.color = CurrentlySelectedPage.AutoNextTierList ? Color.yellow : Color.white;
     }
     private int m_PageNumber = -1;
-    public static BasicTierListCompendiumPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber] as BasicTierListCompendiumPage;
+    public static CompendiumPage CurrentlySelectedPage => Instance.Pages[Instance.PageNumber];
     public Canvas MyCanvas;
     public RectTransform MyCanvasRectTransform => MyCanvas.GetComponent<RectTransform>();
     public CompendiumPage[] Pages;
     public Button[] PageButtons;
-    public BasicTierListCompendiumPage PowerPage { get; private set; }
-    public BasicTierListCompendiumPage EquipPage { get; private set; }
-    public BasicTierListCompendiumPage EnemyPage { get; private set; }
-    public BasicTierListCompendiumPage AchievementPage { get; private set; }
+    public TextMeshProUGUI[] BookmarkTexts;
+    public CompendiumPage PowerPage { get; private set; }
+    public CompendiumPage EquipPage { get; private set; }
+    public CompendiumPage EnemyPage { get; private set; }
+    public CompendiumPage AchievementPage { get; private set; }
     public bool Active { get; private set; }
     public bool PrevActive { get; private set; } = false;
     public Button OpenCompendiumButton;
-    public Transform TopBar;
-    public Transform SideBar;
+    public Canvas TopBar;
+    public RectTransform SideBar;
     public RectTransform SortBar;
+    public RectTransform BackButtonArea;
     public static void StaticToggleActive()
     {
         Instance.ToggleActive();
@@ -72,14 +75,17 @@ public class Compendium : MonoBehaviour
     public void ToggleActive(bool on)
     {
         Active = on;
+        if(Active)
+            SettingsMenu.ToggleVisibility(false);
     }
     public void Start()
     {
         MyCanvas.worldCamera = CameraManager.UICamera;
-        PowerPage = Pages[0] as BasicTierListCompendiumPage;
-        EquipPage = Pages[1] as BasicTierListCompendiumPage;
-        EnemyPage = Pages[2] as BasicTierListCompendiumPage;
-        AchievementPage = Pages[3] as BasicTierListCompendiumPage;
+        SideBar.GetComponent<Canvas>().sortingLayerID = TopBar.sortingLayerID = MyCanvas.sortingLayerID;
+        PowerPage = Pages[0];
+        EquipPage = Pages[1];
+        EnemyPage = Pages[2];
+        AchievementPage = Pages[3];
         DisplayCPUE = Elements[0] as CompendiumPowerUpElement;
         DisplayCEE = Elements[1] as CompendiumEquipmentElement;
         DisplayCPEnemy = Elements[2] as CompendiumEnemyElement;
@@ -95,16 +101,20 @@ public class Compendium : MonoBehaviour
         m_Instance = this;
         ScreenResolution = new Vector2(MyCanvasRectTransform.rect.width, MyCanvasRectTransform.rect.height); //1920, 1080 in most cases
         HalfResolution = ScreenResolution / 2f;
-        foreach (BasicTierListCompendiumPage page in Pages.Cast<BasicTierListCompendiumPage>())
+        MoveCompendiumUpdate(Utils.DeltaTimeLerpFactor(.1f)); //KEEP THIS ABOVE THE PAGE UPDATES, OTHERWISE TIER LIST WILL BUG OUT, AS TIER LIST UPDATES ARE CALLED FROM HERE AND MUST BE RUN FIRST
+        foreach (CompendiumPage page in Pages.Cast<CompendiumPage>())
         {
             if (page != null)
                 page.OnUpdate();
         }
-        MoveCompendiumUpdate(Utils.DeltaTimeLerpFactor(.1f));
-        if (PrevActive != Active && !PrevActive) //On reopen behavior (update stuff that is needed here)
+        if (Active && !PrevActive) //On reopen behavior (update stuff that is needed here)
         {
+            CalculateButtonTitles();
+            UpdateDisplay(ActiveElement.TypeID);
             UpdateDescription(true, ActiveElement.TypeID);
             CurrentlySelectedPage.Sort();
+            for (int i = 0; i < Pages.Length; i++)
+                Pages[i].MarkForResort = Pages[i] != CurrentlySelectedPage;
         }
         PrevActive = Active;
     }
@@ -112,27 +122,23 @@ public class Compendium : MonoBehaviour
     {
         JustPlacedCounter--;
     }
-    public void UpdatePage(BasicTierListCompendiumPage page, float lerpFactor)
+    public void UpdatePage(CompendiumPage page, float lerpFactor)
     {
         if (page == null)
             return;
         if ((Active || (page == CurrentlySelectedPage && page.HasInit)) && page.isActiveAndEnabled)
-        {
-            if (!page.HasInit)
-            {
-                page.Init(CountButton, SortText);
-                page.HasInit = true;
-            }
             page.SecondaryUpdate(lerpFactor);
-        }
     }
+    public Vector2 StartPosition => new Vector3(-ScreenResolution.x - 5, 0);
+    public bool IsOffscreen => MathF.Abs(StartPosition.x - transform.localPosition.x) <= 0.1f;
     public void MoveCompendiumUpdate(float lerpFactor)
     {
-        Vector2 startingPosition = new Vector3(-ScreenResolution.x, 0);
+        Vector2 startingPosition = StartPosition;
         UpdatePage(EquipPage, lerpFactor);
         UpdatePage(EnemyPage, lerpFactor);
         UpdatePage(AchievementPage, lerpFactor);
         UpdatePage(PowerPage, lerpFactor); //Init this one last!
+        SideBar.sizeDelta = new(SideBar.sizeDelta.x, ScreenResolution.y - 200);
         Utils.LerpSnap(transform, Active ? Vector3.zero : startingPosition, lerpFactor, 0.1f);
     }
     #region Display and description on the right side of the compendium
@@ -159,7 +165,7 @@ public class Compendium : MonoBehaviour
         Elements[PageNumber].Init(SelectedType, MyCanvas);
         if (Elements[PageNumber] is CompendiumPowerUpElement c)
         {
-            c.MyElem.MyPower.ForceBlackMarket = CurrentlySelectedPage.BlackMarketMode;
+            c.MyElem.MyPower.ForceBlackMarket = CurrentlySelectedPage.BlackMarketMode && c.MyElem.MyPower.CountsAsBlackMarketForCompendium();
             c.Init(SelectedType, MyCanvas);
             if (CurrentlySelectedPage.BlackMarketMode)
                 c.MyElem.TurnedOn();
@@ -233,68 +239,86 @@ public class Compendium : MonoBehaviour
     #endregion
 
     #region Description
-    public TextMeshProUGUI DisplayPortDescription;
+    public static bool DescriptionLocked { get; set; }
     public RectTransform DescriptionContentRect;
-    public TextMeshProUGUI LoreSection;
-    public RectTransform LoreSectionRect => LoreSection.transform.parent.GetComponent<RectTransform>();
+    public EquipmentInfoScreen EquipmentSection;
     public static readonly string shortLineBreak = "<size=12>\n\n</size>";
+    public static readonly List<CompendiumDescriptionSegment> Segments = new();
+    public void AddTitle(string text, bool bastardizeIfLocked = true)
+    {
+        Segments.Add(CompendiumDescriptionSegment.NewTitle(DescriptionContentRect, DescriptionLocked && bastardizeIfLocked ? text.Bastardize('?') : text));
+    }
+    public void AddHeader(string text, bool bastardizeIfLocked = true)
+    {
+        Segments.Add(CompendiumDescriptionSegment.NewTitle(DescriptionContentRect, DescriptionLocked && bastardizeIfLocked ? text.Bastardize('?') : text, 26));
+    }
+    public void AddDescription(string text, float size = 28, bool bastardizeIfLocked = true)
+    {
+        Segments.Add(CompendiumDescriptionSegment.NewDescription(DescriptionContentRect, DescriptionLocked && bastardizeIfLocked ? text.Bastardize('?') : text, size));
+    }
+    public void ClearDescriptionSegments()
+    {
+        foreach (var segment in Segments)
+            GameObject.Destroy(segment.gameObject);
+        Segments.Clear(); 
+        DescriptionLocked = false;
+    }
     public void UpdateDescription(bool reset, int SelectedType)
     {
+        float minW = 361;
         if (reset && SelectedType >= 0)
         {
+            ClearDescriptionSegments();
+            bool blackMarket = false;
             int rare = 0;
             string finalText = string.Empty;
             object loreObject = null;
-            bool locked = false;
             if (PageNumber == 0)
             {
                 PowerUp p = PowerUp.Get(SelectedType);
                 loreObject = p;
-                string concat = GenerateTierListDescription(p, ref rare);
-                locked = DisplayCPUE.IsLocked();
-                finalText = locked ? concat.Bastardize('?') : concat;
+                DescriptionLocked = DisplayCPUE.IsLocked();
+                GenerateTierListDescription(p, ref rare);
+                //finalText = locked ? concat.Bastardize('?') : concat;
                 if (p.IsBlackMarket())
-                    rare = 5;
+                    blackMarket = true;
             }
             else if (PageNumber == 1)
             {
                 loreObject = DisplayCEE.MyElem.ActiveEquipment;
-                locked = DisplayCEE.IsLocked();
-                finalText = GenerateTierListDescription(loreObject as Equipment, ref rare);
+                DescriptionLocked = DisplayCEE.IsLocked();
+                GenerateTierListDescription(loreObject as Equipment, ref rare);
+                //EquipmentSection.SetUIElement(DisplayCEE.MyElem.ActiveEquipment, 0);
             }
             else if (PageNumber == 2)
             {
                 loreObject = DisplayCPEnemy.MyElem.StaticData;
-                locked = DisplayCPEnemy.IsLocked();
-                finalText = GenerateTierListDescription(loreObject as EnemyID.StaticEnemyData, ref rare);
+                DescriptionLocked = DisplayCPEnemy.IsLocked();
+                GenerateTierListDescription(loreObject as EnemyID.StaticEnemyData, ref rare);
             }
             else if (PageNumber == 3)
-                finalText = GenerateTierListDescription(DisplayCPAchievement, ref rare);
+                GenerateTierListDescription(DisplayCPAchievement, ref rare);
             UpdateStars(rare);
 
-            if(PageNumber == 3 || locked) //Achievement page has no NOTES section for now, so it should disable it
+            AddDescription(finalText);
+            if(PageNumber != 3 && !DescriptionLocked && loreObject != null)//Enable notes section for other descriptions
             {
-                LoreSection.text = string.Empty;
-                //Disable notes section
-            }
-            else if(loreObject != null)//Enable notes section for other descriptions
-            {
-                finalText += shortLineBreak + $"<size=26>{"Notes".WithRarityColor(rare, false)}</size>";
                 string loreText = GetLoreSegment(loreObject);
-                LoreSection.text = loreText;
+                AddHeader("Notes".WithRarityColor(rare, blackMarket));
+                AddDescription(loreText, 25); //lore text previously had 25 font size, smaller than other sections (28)
             }
-            DisplayPortDescription.text = finalText;
         }
-        Vector2 target = DisplayPortDescription.GetRenderedValues();
-        Vector2 loreTarget = LoreSection.GetRenderedValues();
-        float minW = 361;
-        float minH = 100; // 460;
-        float paddingBonusMain = 15; //5 + 10
-        float paddingBonusLore = 10;
-        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(minH, target.y + loreTarget.y + paddingBonusLore + paddingBonusMain));
-        LoreSectionRect.sizeDelta = new Vector2(LoreSectionRect.sizeDelta.x, loreTarget.y + paddingBonusLore); //10 since the padding is 5, 5 (5 + 5 = 10)
+        float finalBonusPaddingBottom = 5;
+        float totalHeightNeeded = 0;
+        foreach(var segment in Segments)
+        {
+            float height = segment.TrueHeight;
+            segment.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -totalHeightNeeded);
+            totalHeightNeeded += height;
+        }
+        DescriptionContentRect.sizeDelta = new Vector2(minW, Mathf.Max(100, totalHeightNeeded + finalBonusPaddingBottom));
     }
-    public string GenerateTierListDescription(PowerUp p, ref int rare)
+    public void GenerateTierListDescription(PowerUp p, ref int rare)
     {
         bool isBlackMarket = p.IsBlackMarket();
         rare = p.Rarity - 1;
@@ -306,10 +330,7 @@ public class Compendium : MonoBehaviour
             if (e.IsUnlocked)
                 UnlockedAlts[e] = AltDescriptions[t];
         }
-        float size = 42;
-        if (p is Electroluminescence)
-            size = 39.9f;
-        string concat = $"<size={size}>{p.UnlockedName}</size>" + shortLineBreak;
+        AddTitle(p.UnlockedName);
         //if (!p.BriefDescIsSameAsLong)
         //{
         //    concat += $"<size=26>{"Brief\n".WithRarityColor(rare, isBlackMarket)}</size>";
@@ -317,86 +338,88 @@ public class Compendium : MonoBehaviour
         //    concat += $"<size=26>{(hasAlt ? "Detailed (Default)\n" : "Detailed\n").WithRarityColor(rare, isBlackMarket)}</size>";
         //}
         bool hasAlt = UnlockedAlts.Count > 0 || (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.IsComplete);
-        concat += $"<size=26>{(hasAlt ? "Description (Default)\n" : "Description\n").WithRarityColor(rare, isBlackMarket)}</size>";
-        concat += p.TrueFullDescription;
+        AddHeader((hasAlt ? "Description (Default)" : "Description").WithRarityColor(rare, isBlackMarket));
+        AddDescription(p.TrueFullDescription);
         if (p.Description.HasBlackMarketVariants && p.BlackMarketVariantUnlockCondition.IsComplete)
         {
-            concat += shortLineBreak + $"<size=26>{$"Description (Black Market)\n".WithRarityColor(rare, true)}</size>";
-            concat += p.BlackMarketFullDescription;
+            AddHeader($"Description (Black Market)".WithRarityColor(rare, true));
+            AddDescription(p.BlackMarketFullDescription);
         }
         foreach (Equipment e in UnlockedAlts.Keys)
         {
-            concat += shortLineBreak + $"<size=26>{$"Description ({e.GetName(true)})\n".WithRarityColor(rare, isBlackMarket)}</size>";
-            concat += UnlockedAlts[e];
+            AddHeader($"Description ({e.GetName(true)})".WithRarityColor(rare, isBlackMarket));
+            AddDescription(UnlockedAlts[e]);
+        }
+        if(p is AstralJelly)
+        {
+            AddHeader("Power Pool".WithRarityColor(rare, isBlackMarket));
+            Segments.Add(CompendiumDescriptionSegment.NewPowerSegment(DescriptionContentRect, 
+                MyCanvas, new List<PowerUp>() { PowerUp.Get<Dash>(), PowerUp.Get<BinaryStars>(), PowerUp.Get<Starbarbs>(), PowerUp.Get<LuckyStar>(), PowerUp.Get<Supernova>() }));
         }
         if (!DisplayCPUE.IsLocked())
         {
-            concat += shortLineBreak;
-            concat += $"<size=26>{"Stats\n".WithRarityColor(rare, isBlackMarket)}</size>";
-            concat += $" {"Times Obtained: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpCountAllRuns}\n";
-            concat += $" {"Greatest Stack: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpBestAllRuns}";
+            AddHeader("Stats".WithRarityColor(rare, isBlackMarket));
+            AddDescription($" {"Times Obtained: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpCountAllRuns}\n {"Greatest Stack: ".WithColor(ColorHelper.YellowHex)}{p.PickedUpBestAllRuns}");
         }
-        return concat;
     }
-    public string GenerateTierListDescription(Equipment e, ref int rare)
+    public void GenerateTierListDescription(Equipment e, ref int rare)
     {
         UnlockCondition u = e.GetUnlockCondition();
         rare = e.GetRarity() - 1;
-        string concat;
         if (!u.PreReqComplete && !e.IsUnlocked)
         {
             rare = -1;
-            concat = $"<size=42>{e.GetName(true).WithColor(ColorHelper.LesserGrayHex)}</size>" + shortLineBreak;
+            AddTitle(e.GetName(true).WithColor(ColorHelper.LesserGrayHex));
         }
         else
-            concat = $"<size=42>{e.GetName()}</size>" + shortLineBreak;
+            AddTitle(e.GetName());
         if (!DisplayCEE.IsLocked())
         {
             //power pool contributions
-            concat += $"<size=26>{"Power Pool\n".WithRarityColor(rare, false)}</size>";
+            //TBD: replace with special segment
+            AddHeader("Power Pool".WithRarityColor(rare, false));
             var powers = e.GetPowerPoolForDisplay();
-            string powerStr = string.Empty;
-            for (int i = 0; i < powers.Count; ++i)
+            Segments.Add(CompendiumDescriptionSegment.NewPowerSegment(DescriptionContentRect, MyCanvas, powers));
+            List<Ability> abilities = e.GetAbility();
+            if (abilities.Count > 0)
             {
-                PowerUp p = powers[i];
-                string name = (p.PickedUpCountAllRuns > 0 ? p.Description.Name : "???").WithColor(ColorHelper.RarityColorHex[p.Rarity - 1]);
-                powerStr += " " + name + (i == powers.Count - 1 ? "" : "\n");
+                AddHeader("Abilities".WithRarityColor(rare, false));
+                string concat = string.Empty;
+                foreach (var abl in abilities)
+                    concat += $"{$"({abl.TypeText()})".WithSizeAndColor(20, ColorHelper.GrayHex)} {abl.Blurb}\n";
+                AddDescription(concat, 24);
             }
-            concat += $"<size=26>{powerStr}</size>";
-            concat += shortLineBreak;
         }
-        concat += $"<size=26>{"Description\n".WithRarityColor(rare, false)}</size>";
+        AddHeader("Description".WithRarityColor(rare, false));
         if (!u.PreReqComplete && !e.IsUnlocked)
-            concat += e.GetDescription().WithSizeAndColor(26, ColorHelper.GrayHex) + shortLineBreak;
+            AddDescription(e.GetDescription().WithColor(ColorHelper.GrayHex), 26);
         else
-            concat += e.GetDescription().WithSize(26) + shortLineBreak;
+            AddDescription(e.GetDescription(), 26);
         if (!DisplayCEE.IsLocked())
         {
             //times used
-            concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
+            AddHeader("Stats".WithRarityColor(rare, false));
+            string concat = string.Empty;
             if (e.HighestDifficultyUnlocked > 0)
                 concat += $" {"Ascension: ".WithColor(ColorHelper.AscColorHex)}{e.HighestDifficultyUnlocked}\n";
             concat += $" {"Times Used: ".WithColor(ColorHelper.LesserGrayHex)}{e.TotalTimesUsed}\n";
-            concat += $" {"Victories: ".WithColor(ColorHelper.YellowHex)}{e.VictoryCount}" + shortLineBreak;
+            concat += $" {"Victories: ".WithColor(ColorHelper.YellowHex)}{e.VictoryCount}";
+            AddDescription(concat);
         }
-        else
-        {
-            concat = concat.Bastardize('?');
-        }
-        concat += "Associated Achievement: \n".WithSizeAndColor(26, ColorHelper.LesserGrayHex);
-        concat += u.GetName();
-        return concat;
+        AddHeader("Associated Achievement".WithColor(ColorHelper.LesserGrayHex), false);
+        AddDescription(u.GetName(), bastardizeIfLocked: false);
     }
-    public string GenerateTierListDescription(EnemyID.StaticEnemyData e, ref int rare)
+    public void GenerateTierListDescription(EnemyID.StaticEnemyData e, ref int rare)
     {
         bool locked = DisplayCPEnemy.IsLocked();
         rare = e.Rarity - 1;
-        string concat = $"<size=42>{DisplayCPEnemy.MyElem.MyEnemyPrefab.Name().WithRarityColor(rare, false)}</size>" + shortLineBreak;
+        AddTitle(DisplayCPEnemy.MyElem.MyEnemyPrefab.Name().WithRarityColor(rare, false));
 
-        concat += $"<size=26>{$"Description\n".WithRarityColor(rare, false)}</size>";
-        concat += e.EnemyDescription.Full.WithSize(26) + shortLineBreak;
+        AddHeader("Description".WithRarityColor(rare, false));
+        AddDescription(e.EnemyDescription.Full, 26);
 
-        concat += $"<size=26>{"Stats\n".WithRarityColor(rare, false)}</size>";
+        AddHeader("Stats".WithRarityColor(rare, false));
+        string concat = string.Empty;
         concat += $" {"Base Health: ".WithColor(ColorHelper.RarityColorHex[5])}{e.BaseMaxLife}\n";
         string coinRange = e.BaseMinCoin != e.BaseMaxCoin ? $"{e.BaseMinCoin}-{e.BaseMaxCoin}" : $"{e.BaseMinCoin}";
         concat += $" {"Coin Range: ".WithColor(ColorHelper.YellowHex)}{coinRange}\n";
@@ -409,57 +432,61 @@ public class Compendium : MonoBehaviour
             concat += $"\n {"Kills: ".WithColor(ColorHelper.RarityColorHex[3])}{e.TimesKilled}\n";
             concat += $" {"Skull Kills: ".WithColor(ColorHelper.RarityColorHex[3])}{e.TimesKilledSkull}";
         }
-        concat = locked ? concat.Bastardize('?') : concat;
-        return concat;
+        AddDescription(concat);
     }
-    public string GenerateTierListDescription(CompendiumAchievementElement DisplayCPAchievement, ref int rare)
+    public void GenerateTierListDescription(CompendiumAchievementElement DisplayCPAchievement, ref int rare)
     {
         rare = DisplayCPAchievement.GetRare() - 1;
         bool isSecret = DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Secret;
-        string concat = $"<size=42>{DisplayCPAchievement.MyUnlock.GetName()}</size>" + shortLineBreak;
+        AddTitle(DisplayCPAchievement.MyUnlock.GetName());
         if (isSecret && !DisplayCPAchievement.MyUnlock.IsComplete)
-            concat += Localization.Get("Common.UnlockSecret") + shortLineBreak;
+            AddDescription(Localization.Get("Common.UnlockSecret"));
         else
-            concat += DisplayCPAchievement.MyUnlock.GetDescription() + shortLineBreak;
+            AddDescription(DisplayCPAchievement.MyUnlock.GetDescription());
         if (DisplayCPAchievement.MyUnlock.PreReqComplete)
         {
             if (DisplayCPAchievement.MyUnlock.AssociatedUnlocks.Count > 0)
             {
-                concat += "Associated Unlocks: \n".WithSizeAndColor(30, ColorHelper.LesserGrayHex);
+                AddHeader("Associated Unlocks: ".WithSizeAndColor(30, ColorHelper.LesserGrayHex));
+                string concat = string.Empty;
                 foreach (Equipment e in DisplayCPAchievement.MyUnlock.AssociatedUnlocks)
                 {
                     string name = e.IsUnlocked ? e.GetName() : e.GetName().Bastardize('?');
                     concat += " " + name + '\n';
                 }
                 concat += shortLineBreak;
+                AddDescription(concat);
             }
             if (DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks.Count > 0)
             {
-                concat += "Black Market Unlocks: \n".WithSizeAndColor(30, ColorHelper.LesserGrayHex);
+                AddHeader("Associated Unlocks: ".WithSizeAndColor(30, ColorHelper.LesserGrayHex));
+                string concat = string.Empty;
                 foreach (PowerUp p in DisplayCPAchievement.MyUnlock.AssociatedBlackMarketUnlocks)
                 {
                     string name = DisplayCPAchievement.MyUnlock.IsComplete ? p.Description.Name.WithRarityColor(p.Rarity - 1, false) : "???".WithColor(ColorHelper.RarityColorHex[rare]);
                     concat += " " + name + '\n';
                 }
                 concat += shortLineBreak;
+                AddDescription(concat);
             }
-            concat += "Achievement Category: \n".WithSizeAndColor(30, ColorHelper.LesserGrayHex);
+            AddHeader("Achievement Category: ".WithSizeAndColor(30, ColorHelper.LesserGrayHex));
+            string concat2 = string.Empty;
             if (DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.Meadows)
-                concat += " Meadows\n".WithColor(ColorHelper.RarityColorHex[1]);
+                concat2 += " Meadows\n".WithColor(ColorHelper.RarityColorHex[1]);
             else if (DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.City)
-                concat += " City\n".WithColor(ColorHelper.RarityColorHex[2]);
+                concat2 += " City\n".WithColor(ColorHelper.RarityColorHex[2]);
             else if (DisplayCPAchievement.MyUnlock.AchievementZone == UnlockCondition.Lab)
-                concat += " Lab\n".WithColor(ColorHelper.RarityColorHex[3]);
+                concat2 += " Lab\n".WithColor(ColorHelper.RarityColorHex[3]);
             if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Completionist)
-                concat += " Completionist\n".WithColor(ColorHelper.RarityColorHex[4]);
+                concat2 += " Completionist\n".WithColor(ColorHelper.RarityColorHex[4]);
             else if (DisplayCPAchievement.MyUnlock.AchievementCategory == UnlockCondition.Challenge)
-                concat += " Challenge\n".WithColor(ColorHelper.RarityColorHex[5]);
+                concat2 += " Challenge\n".WithColor(ColorHelper.RarityColorHex[5]);
             else if (isSecret)
-                concat += " Secret\n".WithColor(ColorHelper.RarityColorHex[0]);
+                concat2 += " Secret\n".WithColor(ColorHelper.RarityColorHex[0]);
+            AddDescription(concat2);
         }
         else
             rare = -1;
-        return concat;
     }
     public string GetLoreSegment(object loreObject)
     {
@@ -509,4 +536,88 @@ public class Compendium : MonoBehaviour
         return true;
     }
     #endregion
+    public void CalculateButtonTitles() //MAKE SURE TO ALSO RUN THIS EVERY RE-OPEN, IN CASE THINGS ARE UNLOCKED!
+    {
+        BookmarkTexts[0].text = "Powers";
+        BookmarkTexts[1].text = "Characters";
+        BookmarkTexts[2].text = "Enemies";
+        BookmarkTexts[3].text = "Achievements";
+        for(int i = 0; i < BookmarkTexts.Length; ++i)
+        {
+            CompendiumPage page = Pages[i] as CompendiumPage;
+            if (!page.HasInit)
+            {
+                page.Init(CountButton, SortText);
+                page.HasInit = true;
+            }
+            var children = page.GetCPUEChildren(out int count);
+            int unlocked = 0;
+            bool reverseRelation = i == 3;
+            for (int j = 0; j < count; ++j)
+                if (children[j].IsLocked() == reverseRelation)
+                    unlocked++;
+            BookmarkTexts[i].text += $"\n{unlocked}/{count}".WithColor(ColorHelper.LesserGrayHex);
+        }
+    }
+    public static void ExportTierList()
+    {
+        if (Compendium.CurrentlySelectedPage.HoldingAPower)
+        {
+            Compendium.CurrentlySelectedPage.UpdateSelectedType(-3);
+            Compendium.CurrentlySelectedPage.HoverCPUE.gameObject.SetActive(false);
+        }
+         ScrollRect scroll = CurrentlySelectedPage.ContentScrollRect;
+        float prev = scroll.verticalNormalizedPosition;
+        scroll.verticalNormalizedPosition = 1f;
+        
+        //The repeated calls of certain methods here are to bypass some unity orderings that would prevent doing all of this in one frame!
+        CameraManager.SwitchToScreenshotCamera(); //Switch camera to screenshot camera
+        Canvas.ForceUpdateCanvases(); //Update the grid layouts with the new screenshot size
+        CurrentlySelectedPage.TierList.OnUpdate(true); //Calculate tier list parameters with new screenshot size
+        CameraManager.SwitchToScreenshotCamera(); //Resize the export texture needed by the screenshot camera
+        CameraManager.UICamera.Render(); //Render the UI camera stuff (compendium)
+        CameraManager.CompendiumScreenshotCamera.Render(); //Finalize 
+        CameraManager.SwitchToMainCamera(); //Switch back to the main camera to resume normal gameplay
+
+        RenderTexture completeScreenshot = CameraManager.ExportTexture;
+        if (completeScreenshot != null)
+        {
+            RenderTexture previousActive = RenderTexture.active;
+            RenderTexture.active = completeScreenshot;
+
+            int scaleFactor = 2;
+            int paddingFromTheTopOfCompendium = 100 * scaleFactor; //size: 100, scaleFactor: 2
+            int paddingFromTheSideOfCompendium = 400 * scaleFactor; //size: 400, scaleFactor: 2
+            int paddingFromBottomOfCompendium = Mathf.RoundToInt(Mathf.Max(0, 980 - CurrentlySelectedPage.TierList.VerticalSize)) * scaleFactor;
+            // 3. Create a temporary Texture2D with matching dimensions
+            Texture2D tex = new(completeScreenshot.width - paddingFromTheSideOfCompendium, completeScreenshot.height - paddingFromTheTopOfCompendium - paddingFromBottomOfCompendium, TextureFormat.RGBA32, false);
+
+            // 4. Read the active RenderTexture pixels into the Texture2D
+            tex.ReadPixels(new Rect(0, paddingFromBottomOfCompendium, tex.width, tex.height), 0, 0);
+            tex.Apply();
+
+            // 5. Restore the previous active render texture
+            RenderTexture.active = previousActive;
+
+            // 6. Encode the texture pixels into a PNG byte array
+            byte[] bytes = tex.EncodeToPNG();
+
+            // 7. Clean up the temporary texture memory immediately
+            UnityEngine.Object.DestroyImmediate(tex);
+
+            // 8. Write the bytes to a file on your disk
+            string directoryPath = Application.persistentDataPath + "/TierLists";
+            System.IO.Directory.CreateDirectory(directoryPath);
+            string dateTime = DateTime.Now.ToLongTimeString().Replace(':', '-');
+            string path = directoryPath + $"/List_V{PlayerData.CurrentPlayerVersion}_{dateTime[..(dateTime.Length - 3)]}.png";
+            System.IO.File.WriteAllBytes(path, bytes);
+
+            Debug.Log($"RenderTexture successfully exported to: {path}");
+
+            // Opens the file using the OS standard PNG viewer
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
+        }
+
+        scroll.verticalNormalizedPosition = prev;
+    }
 }

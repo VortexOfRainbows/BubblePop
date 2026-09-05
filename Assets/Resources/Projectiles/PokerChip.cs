@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PokerChip : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public float HomingRate = 10.0f;
     public int HomingNum = 0;
     public override void Init()

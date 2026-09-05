@@ -64,6 +64,7 @@ public class SupernovaProj : Projectile
     }
     public override bool OnInsideTile() => false;
     public override bool OnTileCollide(Collider2D collision) => false;
+    public override bool HomingNeedsLOS => false;
 }
 public class SupernovaExplode : Projectile
 {

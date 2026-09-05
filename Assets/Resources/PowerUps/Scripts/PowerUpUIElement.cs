@@ -43,6 +43,7 @@ public class PowerUpUIElement : MonoBehaviour
     public bool ForceUnhideElement { get; set; } = false;
     public bool ForceNotBlackMarket { get; set; } = false;
     public bool CrucibleElement { get; set; } = false;
+    public bool IncludeRainbowShards { get; set; } = false;
     public bool UsePlaceHolder = false;
     public TextMeshProUGUI CostText;
     public GameObject CostObj;
@@ -105,22 +106,37 @@ public class PowerUpUIElement : MonoBehaviour
     /// Either Gems or Shards depending on context.
     /// </summary>
     public int Cost { get; set; } = -1;
+    public bool CompendiumHoverOverride { get; set; } = false;
+    public int CruciblePreviousStack { get; set; } = 0;
+    private bool CanHoverOverCrucible()
+    {
+        if (!CrucibleElement)
+            return true;
+        if(IncludeRainbowShards)
+            return PowerUpCheatUI.ShardInstance.MouseInCompendiumArea;
+        return PowerUpCheatUI.CrucibleInstance.MouseInCompendiumArea;
+    }
     public void WhileOn()
     {
         Timer += 1;
         if(ForceHideCount)
             Count.gameObject.SetActive(false);
         else if(!CompendiumElement)
-            Count.text = MyPower.Stack.ToString();
+        {   
+            Count.text = MyPower.TrueStack.ToString();
+            if(MyPower.TrueStack != MyPower.Stack)
+                Count.text = $"({MyPower.Stack})".WithSizeAndColor((int)Mathf.Max(8, Count.fontSize * 0.7f - 3), ColorHelper.LesserGrayHex) + " ".WithSize(12) + Count.text;
+        }
         else
             Count.gameObject.SetActive(!AppearLocked && (Compendium.Instance == null || Compendium.Instance.PowerPage.ShowCounts) && !PreventHovering);
-        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea) && (!CrucibleElement || PowerUpCheatUI.MouseInCompendiumArea);
-        float size = CompendiumElement ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
+        bool canHover = !PreventHovering && (myLayout == null || !myLayout.isHovering) && (!CompendiumElement || Compendium.Instance.PowerPage.MouseInCompendiumArea || CompendiumHoverOverride) && 
+            (CanHoverOverCrucible());
+        float size = CompendiumElement && !CompendiumHoverOverride ? 96 + HoverRadius - outer.rectTransform.rect.width : HoverRadius * transform.localScale.x;
         size *= ScaleMultiplier;
-        bool rectangular = CompendiumElement;
+        bool rectangular = CompendiumElement && !CompendiumHoverOverride;
         if (canHover && Utils.IsMouseHoveringOverThis(rectangular, outer.rectTransform, size, myCanvas, CompendiumElement, true) && (CompendiumElement || !Main.GamePaused || !(InventoryElement || MenuElement)))
         {
-            if(myLayout != null)
+            if (myLayout != null)
                 myLayout.isHovering = true;
             string name = AppearLocked ? PowerUp.LockedName.WithRarityColor(MyPower.Rarity - 1, MyPower.IsBlackMarket()) : MyPower.UnlockedName;
             string desc = AppearLocked ? PowerUp.LockedDescription : CompendiumElement ? "" : MyPower.GetFullDescription();
@@ -130,10 +146,22 @@ public class PowerUpUIElement : MonoBehaviour
 
             if(CompendiumElement)
             {
-                if (Control.LeftMouseClick)
-                    Compendium.Instance.PowerPage.UpdateSelectedType(Index, this);
-                else if (Control.RightMouseClick)
-                    Compendium.Instance.PowerPage.TierList.QueueRemoval = Index;
+                if(CompendiumHoverOverride)
+                {
+                    if (Control.LeftMouseClick && !Compendium.CurrentlySelectedPage.TierListActive)
+                    {
+                        Compendium.Instance.SetPage(0);
+                        Compendium.Instance.PowerPage.UpdateSelectedType(Index, this);
+                    }
+                }
+                else
+                {
+
+                    if (Control.LeftMouseClick)
+                        Compendium.Instance.PowerPage.UpdateSelectedType(Index, this);
+                    else if (Control.RightMouseClick)
+                        Compendium.Instance.PowerPage.TierList.QueueRemoval = Index;
+                }
             }
         }
         else
@@ -142,7 +170,7 @@ public class PowerUpUIElement : MonoBehaviour
         {
             if(CrucibleElement)
             {
-                if (PowerUpCheatUI.CurrentType == 1)
+                if (IncludeRainbowShards)
                 {
                     CostObj.SetActive(!Main.DebugSettings.PowerUpCheat);
                     if(PowerUpCheatUI.UpdatedProcessQuantity > 0)
@@ -150,9 +178,13 @@ public class PowerUpUIElement : MonoBehaviour
                     bool canAfford = Cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
                     CostText.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
                 }
-                else
+                else if(MyPower is not RainbowFlower)
                 {
-                    CostObj.SetActive(false);
+                    if (PowerUpCheatUI.UpdatedProcessQuantity > 0 || CruciblePreviousStack != MyPower.TrueStack)
+                    {
+                        CostText.text = (Cost * Mathf.Min(MyPower.TrueStack, PowerUpCheatUI.ProcessQuantity)).ToString();
+                        CruciblePreviousStack = MyPower.TrueStack;
+                    }
                 }
             }
             else if(ChoicePowerMenu.IsBlackMarket)
@@ -203,8 +235,10 @@ public class PowerUpUIElement : MonoBehaviour
     }
     public void Update()
     {
-        if(!InventoryElement && !MenuElement)
+        if(!InventoryElement && !MenuElement && !CompendiumElement)
             OnUpdate();
+        if(HasIdleAnimation)
+            IdleAnimationUpdate();
     }
     public void OnUpdate()
     {
@@ -224,5 +258,13 @@ public class PowerUpUIElement : MonoBehaviour
             TurnedOff();
         if (ForceNotBlackMarket)
             MyPower.ForceNOTBlackMarket = false;
+    }
+    public bool HasIdleAnimation = false;
+    public float IdleAnimationOffset = 0;
+    public void IdleAnimationUpdate()
+    {
+        float percent = World.GlobalTimeElapsedCounter * 0.5f + IdleAnimationOffset * 2f;
+        float sin = Mathf.Sin(percent * MathF.PI);
+        visual.transform.localPosition = new Vector3(0, sin * 2 * visual.transform.localScale.y, 0);
     }
 }

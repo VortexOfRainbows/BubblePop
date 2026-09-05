@@ -17,7 +17,7 @@ public class TierCategory : MonoBehaviour
         int c = Grid.transform.childCount;
         if (c <= 0)
         {
-            list.TotalDistanceCovered += DefaultDist;
+            list.VerticalSize += DefaultDist;
             RectTransform.sizeDelta = new Vector2(RectTransform.sizeDelta.x, DefaultDist);
             return;
         }
@@ -25,6 +25,6 @@ public class TierCategory : MonoBehaviour
         float paddingBonus = lastElement.GetComponent<RectTransform>().rect.height / 2f;
         float dist = -lastElement.localPosition.y + paddingBonus + (DefaultDist - Grid.cellSize.y) / 2f;
         RectTransform.sizeDelta = new Vector2(RectTransform.sizeDelta.x, Mathf.Max(DefaultDist, dist));
-        list.TotalDistanceCovered += RectTransform.sizeDelta.y;
+        list.VerticalSize += RectTransform.sizeDelta.y;
     }
 }

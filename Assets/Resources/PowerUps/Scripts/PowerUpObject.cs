@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -13,6 +14,8 @@ public class PowerUpObject : MonoBehaviour
     public int Cost;
     public GameObject CostObj;
     public TextMeshPro CostText;
+    public SpriteRenderer QuantityObj;
+    public TextMeshPro QuantityText;
     public PowerUp MyPower => PowerUp.Get(Type);
     public Sprite Sprite => MyPower.sprite;
     private int timer;
@@ -24,21 +27,22 @@ public class PowerUpObject : MonoBehaviour
     public int VelocityStyle { get; set; } = 0;
     public bool FakePower = false;
     public float LightingMultiplier { get; set; } = 1.0f;
+    public int Quantity { get; set ;} = 1;
     public void Start()
     {
         inner.sprite = Sprite;
         Sprite adornmentSprite = MyPower.GetAdornment();
+        inner.material = MyPower.GetBorder();
+        outer.material = MyPower.GetBorder(true);
+        QuantityObj.material = inner.material;
         if (adornmentSprite != null)
         {
             adornment.gameObject.SetActive(true);
             adornment.sprite = adornmentSprite;
-            inner.material = MyPower.GetBorder();
-            outer.material = adornment.material = MyPower.GetBorder(true);
+            adornment.material = outer.material;
         }
         else
         {
-            inner.material = MyPower.GetBorder();
-            outer.material = MyPower.GetBorder(true);
             adornment.gameObject.SetActive(false);
         }
         //MyPower.AliveUpdate(inner.gameObject, outer.gameObject, false);
@@ -110,7 +114,17 @@ public class PowerUpObject : MonoBehaviour
         {
             CostObj.SetActive(false);
         }
-        if (!World.WithinBorders(transform.position) && VeloEndTimer >= 1)
+        if(Quantity > 1)
+        {
+            QuantityObj.transform.LerpLocalPosition(new Vector2(-1, 1 + 0.075f * Mathf.Sin(Mathf.Deg2Rad * timer * 1.5f)), 0.1f);
+            QuantityObj.gameObject.SetActive(true);
+            QuantityText.text = $"x{Quantity}";
+        }
+        else
+        {
+            QuantityObj.gameObject.SetActive(false);
+        }
+        if (!World.NonSolidTileSafe(transform.position) && VeloEndTimer >= 1)
         {
             if(Entity.PushIntoClosestPossibleTile(transform, null, 5, false))
                 FinalPosition = transform.position;
@@ -137,7 +151,7 @@ public class PowerUpObject : MonoBehaviour
             }
         }
         PickedUp = true;
-        MyPower.PickUp(player);
+        MyPower.PickUp(player, Quantity);
         Kill();
     }
     private void Kill()
@@ -151,5 +165,15 @@ public class PowerUpObject : MonoBehaviour
         }
         AudioManager.PlaySound(SoundID.PickupPower, transform.position, 1.2f, 0.9f );
         Destroy(gameObject);
+    }
+    public int BaseCostAdjustedForQuantity()
+    {
+        int cost = MyPower.Cost;
+        if (Quantity > 1)
+        {
+            int bonusCost = MyPower.Rarity * 5 * (Quantity / 2);
+            cost += bonusCost;
+        }
+        return cost * Quantity;
     }
 }

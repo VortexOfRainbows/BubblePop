@@ -1,6 +1,5 @@
-using System.Collections.ObjectModel;
+using System;
 using UnityEngine;
-
 public static class ColorHelper
 {
     public static class UI
@@ -46,4 +45,31 @@ public static class ColorHelper
     public static readonly string GrayHex = "#999999";
     public static readonly string LesserGrayHex = "#DDDDDD";
     public static readonly string AscColorHex = "#ADCFFF";
+    public static readonly Color Cornflower = ColorHelper.New255(0xA6, 0xCC, 0xFF);
+    public static readonly Color DarkCornflower = ColorHelper.New255(0x33, 0x4C, 0x66);
+    public static readonly Color UITierList = new(0.6f, 0.6f, .75f);
+    public static readonly Color Yellow = new(1.0f, 0.9294f, 0.4588f);
+
+    public static readonly Color WoodColor = New255(0x9B, 0x7D, 0x63);
+    public static readonly Color HotPink = New255(0xe7, 0x5f, 0xcb);
+    public static readonly Color Cyan = ColorHelper.New255(0x6E, 0xCB, 0xDC);
+    public static Color GetTimeOfDayUIColor(int i)
+    {
+        if (i == 0)
+            return Cornflower;
+        else if (i == 1)
+            return Yellow;
+        else if(i == 2)
+            return KingOilColor;
+        else
+        {
+            float realHour = (float)(DateTime.Now.TimeOfDay.TotalHours);
+            realHour -= 6;
+            if (realHour < 0)
+                realHour += 24;
+            float time = realHour / 24f;
+            Color c = Lighting.SunColor(time * 2);
+            return c;
+        }
+    }
 }

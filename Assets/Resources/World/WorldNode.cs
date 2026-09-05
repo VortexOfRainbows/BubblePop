@@ -23,22 +23,22 @@ public static class NodeID
                 if(n.IsSecretRoomNode)
                 {
                     SecretNodes.Add(n);
-                    Debug.Log($"Loaded SecretNode: {obj.name.WithColor("#FF00FF")}");
+                    //Debug.Log($"Loaded SecretNode: {obj.name.WithColor("#FF00FF")}");
                 }
                 else if(n.IsSubNode)
                 {
                     SubNodes.Add(n);
-                    Debug.Log($"Loaded SubNode: {obj.name.WithColor("#FFFF00")}");
+                    //Debug.Log($"Loaded SubNode: {obj.name.WithColor("#FFFF00")}");
                 }
                 else if(n.IsEndNode)
                 {
                     EndNodes.Add(n);
-                    Debug.Log($"Loaded EndNode: {obj.name.WithColor("#00FFFF")}");
+                    //Debug.Log($"Loaded EndNode: {obj.name.WithColor("#00FFFF")}");
                 }
                 else
                 {
                     Nodes.Add(n);
-                    Debug.Log($"Loaded WorldNode: {obj.name.WithColor("#FF77AA")}");
+                    //Debug.Log($"Loaded WorldNode: {obj.name.WithColor("#FF77AA")}");
                 }
             }
             else
@@ -184,14 +184,19 @@ public class WorldNode : MonoBehaviour
                 if (tile != null)
                 {
                     bool iAmSolid = ((Tile)tile).colliderType != Tile.ColliderType.None;
-                    bool solid = World.SolidTile(v);
-                    bool canPlaceTile = !world.Tilemap.Map.HasTile(v) || (solid == iAmSolid);
-                    bool placeSolidAsUnsolid = !solid && iAmSolid && !canPlaceTile;
+                    bool existingTileSolid = World.SolidTile(v);
+                    bool canPlaceTile = !World.HasTile(v) || (existingTileSolid == iAmSolid); //If the world does not have a tile here currently, or the existing tile is the same solidness as me
+                    bool placeSolidAsUnsolid = !existingTileSolid && iAmSolid && !canPlaceTile; //If the existing tile is a floor tile, but I am solid, and i am not already placing a tile
                     if(canPlaceTile || placeSolidAsUnsolid)
                     {
-                        world.Tilemap.Map.SetTile(v, placeSolidAsUnsolid ? tile.GetTileID().FloorTileType : tile);
-                        if(canPlaceTile && World.GetTileData(v).ProgressionNumber == 0)
-                            World.SetTileData(v, new World.TileData(GenerationNumber, IsSubNode));
+                        World.SetTile(v, tile.GetTileID(), iAmSolid && !placeSolidAsUnsolid);
+                        ref World.TileData data = ref World.SafeGetTileData(v);
+                        if (canPlaceTile && data.ProgressionNumber == 0)
+                        {
+                            data.ProgressionNumber = GenerationNumber;
+                            data.IsRoadblock = IsSubNode;
+                            World.CreateRoadblockTileVisuals(v, ref data);
+                        }
                     }
                 }
             }
@@ -324,11 +329,11 @@ public class WorldNode : MonoBehaviour
             if(i == 2 && withSubNode)
             {
                 subNodeConPos = pointBetween;
-                while(attempts == 0 || !World.AreaIsClear(World.RealTileMap.Map.WorldToCell(subNodePos), 5))
+                while(attempts == 0 || !World.AreaIsClear(World.RealPosToTilePos(subNodePos), 5))
                 {
-                    subNodePos = pointBetween + rNorm * Utils.Rand1OrMinus1() * (pathVariance * Utils.RandFloat(1.0f - 0.25f * attempts, 1.5f + 0.1f * attempts) + 10) + Utils.RandCircle(attempts);
+                    subNodePos = pointBetween + rNorm * (Utils.Rand1OrMinus1() * (pathVariance * Utils.RandFloat(1.0f - 0.25f * attempts, 1.5f + 0.1f * attempts) + 10)) + Utils.RandCircle(attempts);
                     attempts++;
-                    if (attempts > 10)
+                    if (attempts > 12)
                         break;
                 }
             }
@@ -346,7 +351,7 @@ public class WorldNode : MonoBehaviour
                 forge = GenerationNumber == 5 ? true : null;
             WorldNode sub = NodeID.GetRandomNodeWithParameters(NodeID.SubNodes,
                 0,
-                GenerationNumber % 2 == 0 ? Utils.RollWithLuck(0.75f) ? false : null : (GenerationNumber == 7 || Utils.RandFloat(1) < 0.66f),
+                GenerationNumber % 2 == 1 ? Utils.RollWithLuck(0.5f) ? false : null : (GenerationNumber == 7 || Utils.RandFloat(1) < 0.66f),
                 null, null, forge,
                 GenerationNumber == 7 ? 0.15f : 5.0f);
             sub.Generate(subNodePos, World, GenerationNumber, null);
@@ -393,7 +398,7 @@ public class WorldNode : MonoBehaviour
     public bool DiamondBrush(Vector2 center, float radias)
     {
         bool isValidForRoadblock = false;
-        var tile = radias < 1 ? TileID.DarkGrass.FloorTileType : TileID.Grass.FloorTileType;
+        var tile = radias < 1 ? TileID.DarkGrass : TileID.Grass;
         float percent = 0;
         float iter = Mathf.Min(1, 0.5f * radias);
         float rSquared = radias * radias;
@@ -405,18 +410,21 @@ public class WorldNode : MonoBehaviour
                 if (dist > rSquared)
                     continue;
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
-                bool canGenerate = World.GetTileData(v).IsRoadblock;
-                TileBase existingTile = World.Tilemap.Map.GetTile(v);
+                bool canGenerate = World.SafeGetTileData(v).IsRoadblock;
+                DualGridTile existingTile = World.GetTile(v);
                 if (existingTile == null || (World.SolidTile(v) && OverrideTiles))
                 {
                     if (existingTile == null)
-                        World.Tilemap.Map.SetTile(v, tile);
+                        World.SetTile(v, tile, false);
                     else
                     {
-                        var tile2 = (existingTile.GetTileID() == TileID.Dirt || existingTile.GetTileID() == TileID.Grass) ? tile : existingTile.GetTileID().FloorTileType;
-                        World.Tilemap.Map.SetTile(v, tile2);
+                        var tile2 = (existingTile == TileID.Dirt || existingTile == TileID.Grass) ? tile : existingTile;
+                        World.SetTile(v, tile2, false);
                     }
-                    World.SetTileData(v, new World.TileData(GenerationNumber, true));
+                    ref World.TileData data = ref World.SafeGetTileData(v);
+                    data.IsRoadblock = true;
+                    data.ProgressionNumber = GenerationNumber;
+                    World.CreateRoadblockTileVisuals(v, ref data);
                     canGenerate = true;
                 }
                 if (i == 0 && j == 0 && canGenerate)

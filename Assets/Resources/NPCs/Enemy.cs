@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 public static class EnemyID
 {
@@ -85,10 +84,10 @@ public class Enemy : Entity, IImpactedByProjIFrames
     public Player Target { get; private set; } = null;
     public void TargetAcquisitionUpdate()
     {
-        Target = Player.FindClosest(transform.position, out Vector2 norm, out float distance);
-        float startingDist = distance;
-        Utils.RaycastWithTileSupport(transform.position, norm, ref distance, 0.5f, out bool hitSomething); //This migth be a bit excessive for a line of sight check. If this is a performance issue, come back to this and optimize it (maybe make it so it doesn't find the exact collision position, just terminate upon any collision detected)
-        HasLineOfSightWithTarget = !hitSomething || (distance >= (startingDist - 0.1f)); //If nothing was hit or the distance to the hit was about the same as the distance to the player, that means we have line of sight (most likely)
+        if (IsDummy)
+            return;
+        Target = Player.FindClosest(transform.position, out Vector2 _, out float _);
+        HasLineOfSightWithTarget = Utils.HasClearLOS(Target.Position, transform.position);
     }
     public Vector2 GetPathfindingToPlayerNorm()
     {
@@ -276,13 +275,12 @@ public class Enemy : Entity, IImpactedByProjIFrames
             {
                 float distance = toDest.magnitude;
                 float startingDist = distance;
-                Utils.RaycastWithTileSupport(toDest, norm, ref distance, 0.5f, out bool hitSomething); //This migth be a bit excessive for a line of sight check. If this is a performance issue, come back to this and optimize it (maybe make it so it doesn't find the exact collision position, just terminate upon any collision detected)
-                hasLOS = !hitSomething || (distance >= (startingDist - 0.1f)); //If nothing was hit or the distance to the hit was about the same as the distance to the player, that means we have line of sight (most likely)
+                hasLOS = Utils.HasClearLOS(position, e.transform.position);
             }
             //Debug.Log(e.tag);
             if (dist <= searchDistance && 
                 (!requireNonImmune || e.UniversalImmuneFrames <= 0) && 
-                (!requireNonHost || (!e.InfectionTarget && e is not Infector && e.ViableInfectionTarget())) && hasLOS)
+                (!requireNonHost || (!e.InfectionTarget && e is not Infector && e.ViableInfectionTarget())) && hasLOS && !e.AlreadyDead)
             {
                 bool blackListed = ignore != null && ignore.Contains(e);
                 if (!blackListed)
@@ -407,7 +405,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             if (ForceRunOnce)
                 break;
         }
-        if (!World.WithinBorders(transform.position))
+        if (!World.NonSolidTileSafe(transform.position))
         {
             CircleCollider2D circle = GetComponent<CircleCollider2D>();
             BoxCollider2D box = GetComponent<BoxCollider2D>();
@@ -466,6 +464,8 @@ public class Enemy : Entity, IImpactedByProjIFrames
             }
             float damage = proj.Damage + projOwner.GlassShards;
             damage *= projOwner.DamageMultiplier;
+            if (proj.ExtraUpdateNumber > 0) //tachyon accelerator
+                damage *= 1.5f;
             bool rollForInitiative = false;
             float critChance = projOwner.CriticalStrikeChance;
             int crit = (int)critChance;
@@ -661,6 +661,11 @@ public class Enemy : Entity, IImpactedByProjIFrames
         StaticData.SaveData();
         Enemies.Remove(this);
         OnKill();
+        if (Player.RocksKilledThisRun >= 500 && Player.Instance.Body is KingOil)
+        {
+            Player.RocksKilledThisRun = int.MinValue;
+            UnlockCondition.Get<OilKingRockFeller>().SetComplete();
+        }
         float rand = 1;
         for (int i = 0; i < CoinRandomizationAggressiveness; ++i)
             rand *= Utils.RandFloat();
@@ -718,8 +723,25 @@ public class Enemy : Entity, IImpactedByProjIFrames
     public void DetonateAllDebuffs()
     {
         float detonationDamage = 0;
+        bool sawOil = false;
+        bool sawIce = false;
+        bool sawPoison = false;
         foreach(Buff b in buffs)
+        {
             detonationDamage += b.Detonate(this);
+            if (b is Tarred)
+                sawOil = true;
+            else if (b is Chill)
+                sawIce = true;
+            else if (b is Poison)
+                sawPoison = true;
+        }
+        if(detonationDamage >= 1000 && Player.Instance.Body is KingOil && sawIce && sawPoison && sawOil)
+            UnlockCondition.Get<OilKingQuagmire>().SetComplete();
         BuffDetonatedCounter = 1f;
+    }
+    public void ReceiveProjectileImpact(Projectile p)
+    {
+        HurtByProjectile(p);
     }
 }

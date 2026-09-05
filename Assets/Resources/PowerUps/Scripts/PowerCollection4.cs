@@ -76,20 +76,34 @@ public class GoldenGun : PowerUp
 }
 public class DiversifiedPortfolio : PowerUp
 {
+    public override void ModifyDescription(ref PowerDescription description)
+    {
+        description.WithBlackMarketVariant(true, true);
+    }
     public override void Init() => Weighting = Rare;
     public override void HeldEffect(Player p)
     {
-        if (Stack > 0 && !PowerUp.PickingPowerUps)
+        if(p.Hat is OilHat)
         {
-            p.InvestmentChoices++;
+            if (Stack > 0 && !PowerUp.PickingPowerUps)
+            {
+                p.InvestmentChoices++;
+                p.RemovePower(Type);
+                PowerUp.TurnOnPowerUpSelectors();
+            }
+        }
+        else //BLACK MARKET VERSION
+        {
+            for(int i = 0; i < 3; ++i)
+                PowerUp.Get(PowerUp.PickRandomPower(PowerUp.AvailableInvestmentPowers, 0, -1, false, -1)).PickUp(p, 1);
             p.RemovePower(Type);
-            PowerUp.TurnOnPowerUpSelectors();
         }
     }
     public override int CrucibleGems(bool dissolve = false)
     {
         return dissolve ? 10 : 25;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<OilKingQuagmire>();
 }
 public class CompoundInterest : PowerUp
 {
@@ -106,6 +120,7 @@ public class Pumpjack : PowerUp
     {
         p.Pumpjack += Stack;
     }
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<OilKingRockFeller>();
 }
 public class Futures : PowerUp
 {
@@ -116,6 +131,7 @@ public class Futures : PowerUp
         p.TotalInvestments += Stack;
         p.HasFutures = true;
     }
+    public override bool EffectedBySoup() => false;
 }
 public class Commodities : PowerUp
 {
@@ -189,4 +205,37 @@ public class DefenseContract : PowerUp
         p.HelicopterStacks += Stack;
     }
     public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<OilKingTooBigToFail>();
+}
+public class Soup : PowerUp
+{
+    public override void Init() => Weighting = Uncommon;
+    public override void HeldEffect(Player p)
+    {
+        p.SoupStacks += Stack;
+    }
+    public override bool IsBlackMarket() => true;
+}
+public class SpilledSoup : PowerUp
+{
+    public override void Init() => Weighting = -1;
+    public override void HeldEffect(Player p)
+    {
+        //DOES NOTHING
+    }
+    public override bool IsBlackMarket() => true;
+    public override int CrucibleGems(bool dissolve = false)
+    {
+        return dissolve ? 1 : base.CrucibleGems(dissolve);
+    }
+    public override int CalculateRarity() => 2;
+}
+public class TachyonAccelerator : PowerUp
+{
+    public override void Init() => Weighting = Legendary;
+    public override void HeldEffect(Player p)
+    {
+        p.TachyonStacks += Stack;
+    }
+    public override bool IsBlackMarket() => true;
+    public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<ThoughtBubbleFasterThanLight>();
 }

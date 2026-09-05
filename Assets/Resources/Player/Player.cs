@@ -328,6 +328,8 @@ public partial class Player : Entity
     public Color SecondColor { get; private set; }
     private Color PrimaryColor()
     {
+        if (TachyonStacks > 0)
+            return (ColorHelper.HotPink * 1.5f).WithAlpha(0.8f);
         if(Weapon is Cola)
         {
             if (Weapon is FocusFizzSoda)
@@ -364,6 +366,11 @@ public partial class Player : Entity
             return ColorHelper.KingOilColor;
         else //BUBBLEMANCER
             return ColorHelper.BubblemancerColor;
+    }
+    public void RequestColorReload()
+    {
+        FirstColor = PrimaryColor();
+        SecondColor = SecondaryColor();
     }
     public TextMeshPro PlayerNumber;
     public static readonly List<Player> AllPlayers = new();
@@ -449,6 +456,7 @@ public partial class Player : Entity
     public static int TimesHitThisRun = 0;
     public static int GoldSpentTotal = 0;
     public static List<Type> DifferentTypesOfSkullEnemiesZappedThisRun { get; set; } = new();
+    public static int RocksKilledThisRun { get; set; } = 0;
     /// <summary>
     /// Shorthand for abilityTimer <= 0;
     /// </summary>
@@ -595,6 +603,9 @@ public partial class Player : Entity
     private float AttackUpdateTimer = 0;
     public override void OnFixedUpdate()
     {
+        //Debug.Log(World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).testID);
+
+
         Body.Player = Accessory.Player = Weapon.Player = Hat.Player = this; //There's probably a better way to do this
         if (!HasRunStartingGear && Main.WavesUnleashed)
         {
@@ -607,6 +618,7 @@ public partial class Player : Entity
             HasAttacked = false;
             TimesHitThisRun = 0;
             DifferentTypesOfSkullEnemiesZappedThisRun.Clear();
+            RocksKilledThisRun = 0;
         }
         WaveDirector.FixedUpdate();
         if (!HasRunStartingGear)
@@ -624,9 +636,9 @@ public partial class Player : Entity
             }
             if(InstanceID == 0)
                 PlayerStatUI.SetHeartsToPlayerLife();
-            ModifyAscensionLevel(0); //Might be better to move this to the place where body is set or changed, but this works for now.
-            FirstColor = PrimaryColor();
-            SecondColor = SecondaryColor();
+            if(CharacterSelect.Instance != null && CharacterSelect.Instance.HasLoaded)
+                ModifyAscensionLevel(0); //Might be better to move this to the place where body is set or changed, but this works for now.
+            RequestColorReload();
         }
         UpdatePowerUps();
         UpdateBuffs();
@@ -760,7 +772,7 @@ public partial class Player : Entity
             RoadblockBarrier.transform.GetChild(5).gameObject.SetActive(botRight);
             RoadblockBarrier.transform.GetChild(6).gameObject.SetActive(topRight);
             RoadblockBarrier.transform.GetChild(7).gameObject.SetActive(botLeft);
-            RoadblockBarrier.transform.position = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(Position));
+            RoadblockBarrier.transform.position = World.CenterOfTile(World.RealPosToTilePos(Position));
         }
         else
         {
@@ -899,17 +911,25 @@ public partial class Player : Entity
                 SetLife(Life - lifeDamage);
         }
         UniversalImmuneFrames = defaultImmuneFrames * immuneMult;
+        if (!skipDamageStep)
+            OnTakeDamageEffects(damage);
         if (Life <= 0)
             Pop();
-        else if(!skipDamageStep)
-        {
-            TimesHitThisLifeThisWave += damage;
-            if (TimesHitThisLifeThisWave >= 9 && this.Body is KingOil)
-                UnlockCondition.Get<OilKingTooBigToFail>().SetComplete();
-        }
-            Body.ModifyHurtAnimation();
+        Body.ModifyHurtAnimation();
     }
-    public void OnHurtEffects()
+    public void OnTakeDamageEffects(int damage) //Does not trigger on dodge
+    {
+        TimesHitThisLifeThisWave += damage;
+        if (TimesHitThisLifeThisWave >= 9 && this.Body is KingOil && Life > 0) //NOT DEAD
+            UnlockCondition.Get<OilKingTooBigToFail>().SetComplete();
+        if (SoupStacks > 0) //This means you have soup!
+        {
+            PowerUp soup = PowerUp.Get<Soup>();
+            PowerUp.Get<SpilledSoup>().PickUp(this, 1);
+            RemovePower(soup.Type, 1);
+        }
+    }
+    public void OnHurtEffects() //Triggers even when dodge
     {
         if (RetaliatoryBomb > 0)
         {
@@ -1091,11 +1111,10 @@ public partial class Player : Entity
                     RemovePower(PowerUp.Get<Options>().MyID, 1);
                     for (int i = 0; i < numKeys; i++)
                         CoinManager.SpawnKey(Position, 1f);
-                    if (CompoundInterest > 0)
+                    for (int i = 0; i < CompoundInterest; ++i)
                     {
                         int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID }, 0, -1, false, -1);
-                        for(int i = 0; i < CompoundInterest; ++i)
-                            PowerUp.Get(p).PickUp(this, CompoundInterest);
+                        PowerUp.Get(p).PickUp(this, 1);
                     }
                 }
             }
@@ -1106,11 +1125,10 @@ public partial class Player : Entity
                     RemovePower(PowerUp.Get<Securities>().MyID, 1);
                     for (int i = 0; i < numShields; i++)
                         CoinManager.SpawnShield(Position, 1f);
-                    if (CompoundInterest > 0)
+                    for (int i = 0; i < CompoundInterest; ++i)
                     {
                         int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID, PowerUp.Get<Options>().MyID }, 0, -1, false, -1);
-                        for (int i = 0; i < CompoundInterest; ++i)
-                            PowerUp.Get(p).PickUp(this, CompoundInterest);
+                        PowerUp.Get(p).PickUp(this, 1);
                     }
                 }
             }
@@ -1125,11 +1143,10 @@ public partial class Player : Entity
                         CoinManager.SpawnKey(Position, 1f);
                     for (int i = 0; i < numShields; i++)
                         CoinManager.SpawnShield(Position, 1f);
-                    if (CompoundInterest > 0)
+                    for (int i = 0; i < CompoundInterest; ++i)
                     {
                         int p = PowerUp.PickRandomPower(new List<int>() { PowerUp.Get<Futures>().MyID, PowerUp.Get<Commodities>().MyID, PowerUp.Get<Options>().MyID, PowerUp.Get<Securities>().MyID }, 0, -1, false, -1);
-                        for (int i = 0; i < CompoundInterest; ++i)
-                            PowerUp.Get(p).PickUp(this, CompoundInterest);
+                        PowerUp.Get(p).PickUp(this, 1);
                     }
                 }
             }
@@ -1206,8 +1223,9 @@ public partial class Player : Entity
             {
                 if(!HasAttacked)
                     UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
-                if (AscensionLevel >= 3)
-                    UnlockCondition.Get<KingOilUnlock>().SetComplete();
+                UnlockCondition.Get<KingOilUnlock>().SetComplete();
+                if (WaveDirector.ElapsedTime <= 1500 && AscensionLevel >= 3)
+                    UnlockCondition.Get<ThoughtBubbleFasterThanLight>().SetComplete();
             }
             else if (body is Gachapon)
             {

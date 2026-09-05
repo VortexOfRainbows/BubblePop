@@ -310,7 +310,7 @@ public class Coupons : PowerUp
                 if (shop.Stock != null)
                     foreach (PowerUpObject p in shop.Stock)
                         for (int i = 0; i < count; ++i)
-                            p.Cost = (int)(p.Cost - p.MyPower.Cost * 0.12f);
+                            p.Cost = (int)(p.Cost - p.BaseCostAdjustedForQuantity() * 0.12f);
             }
         }
     }
@@ -357,11 +357,11 @@ public class PerpetualBubbleMachine : PowerUp
     {
         return true;
     }
-    public override int ShardReplicationCost(int stackSize = 1)
-    {
-        int currentStack = Stack;
-        return (currentStack * stackSize) + (stackSize * stackSize + stackSize) / 2;
-    }
+    //public override int ShardReplicationCost(int stackSize = 1)
+    //{
+    //    //int currentStack = Stack;
+    //    //return (currentStack * stackSize) + (stackSize * stackSize + stackSize) / 2;
+    //}
 }
 public class ConsolationPrize : PowerUp
 {
@@ -531,10 +531,8 @@ public class Contract : PowerUp
         return true;
     }
     public override int Cost => 150;
-    public override int CrucibleGems(bool dissolve = false)
-    {
-        return dissolve ? 10 : 15;
-    }
+    public override int CrucibleGems(bool dissolve = false) => dissolve ? 10 : 15;
+    public override bool EffectedBySoup() => false;
 }
 public class RainbowFlower : PowerUp
 {
@@ -558,10 +556,8 @@ public class RainbowFlower : PowerUp
         }
         return 15;
     }
-    public override int ShardReplicationCost(int stackSize = 1)
-    {
-        return stackSize * 3;
-    }
+    public override int ShardReplicationCost(int stackSize = 1) => stackSize * 3;
+    public override bool EffectedBySoup() => false;
 }
 public class QuantumCake : PowerUp
 {

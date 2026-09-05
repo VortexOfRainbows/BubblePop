@@ -95,8 +95,13 @@ public class Coin : MonoBehaviour
             attractDist *= 3;
         else
             attractDist *= 1.25f;
-        if (IsCoin && !p.AwaitingWaveEnd)
-            attractDist *= 5;
+        if (!p.AwaitingWaveEnd)
+        {
+            if(IsCoin)
+                attractDist *= 5;
+            else if (IsGem)
+                attractDist *= 3;
+        }
         Vector2 toPlayer = p.transform.position - transform.position;
         float length = toPlayer.magnitude;
         bool beingAttracted = false;
@@ -222,8 +227,6 @@ public class Coin : MonoBehaviour
     {
         if(IsShard)
         {
-            if (PowerUpCheatUI.CurrentType == 0)
-                PowerUpCheatUI.PrevHadShards = false;
             CoinManager.ModifyShards(Value);
             AudioManager.PlaySound(SoundID.ChestSpawn, transform.position, 1.5f, 0.45f);
             PopupText.NewPopupText(transform.position + (Vector3)Utils.RandCircle(0.5f) + Vector3.forward, Utils.RandCircle(2) + Vector2.up * 4, PopupColor, $"+{Value}", true, 1f);

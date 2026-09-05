@@ -7,33 +7,42 @@ public class EquipmentInfoScreen : MonoBehaviour
     public EquipmentUIElement MyElem;
     public PowerUpLayout Layout;
     public TextMeshProUGUI Title;
-    public List<RectTransform> Rects = new();
-    public void SetUIElement(Equipment e)
+    public List<RectTransform> Rects { get; private set; } = new();
+    public void SetUIElement(Equipment e, float verticalPadding = 15)
     {
-        if (MyElem.ActiveEquipment != null && MyElem.ActiveEquipment.IndexInAllEquipPool == e.IndexInAllEquipPool)
+        if (MyElem != null && MyElem.ActiveEquipment != null && MyElem.ActiveEquipment.IndexInAllEquipPool == e.IndexInAllEquipPool)
             return;
+        int totalInherentEements = 1 + (MyElem != null ? 1 : 0) + (Title != null ? 1 : 0);
         for(int i = 0; i < Rects.Count; ++i)
-            if (i >= 3)
+            if (i >= totalInherentEements)
                 Destroy(Rects[i].gameObject);
         Rects.Clear();
-        if (MyElem.ActiveEquipment != null)
-            Destroy(MyElem.ActiveEquipment.gameObject);
-        MyElem.UpdateEquipment(e);
-        foreach (SpriteRenderer s in MyElem.ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
-            s.maskInteraction = SpriteMaskInteraction.None;
-        List<PowerUp> powers = MyElem.ActiveEquipment.GetPowerPoolForDisplay();
+        if (MyElem != null)
+        {
+            if (MyElem.ActiveEquipment != null)
+                Destroy(MyElem.ActiveEquipment.gameObject);
+            MyElem.UpdateEquipment(e);
+            foreach (SpriteRenderer s in MyElem.ActiveEquipment.GetComponentsInChildren<SpriteRenderer>())
+                s.maskInteraction = SpriteMaskInteraction.None;
+        }
+        List<PowerUp> powers = e.GetPowerPoolForDisplay();
         Layout.GenerateSingle(powers);
-        Title.text = e.GetName();
-        Rects.Add(Title.rectTransform);
-        Rects.Add(MyElem.GetComponent<RectTransform>());
+        if(Title != null)
+        {
+            Title.text = e.GetName();
+            Rects.Add(Title.rectTransform);
+        }
+        if(MyElem != null)
+        {
+            Rects.Add(MyElem.GetComponent<RectTransform>());
+        }
         Rects.Add(Layout.GetComponent<RectTransform>());
         foreach(Ability a in e.GetAbility())
             Rects.Add(a.CreateAbilityBlurb(transform, Layout.myCanvas).GetComponent<RectTransform>());
-        TightenRectangleSpacing();
+        TightenRectangleSpacing(verticalPadding);
     }
-    public void TightenRectangleSpacing()
+    public void TightenRectangleSpacing(float verticalPadding)
     {
-        float verticalPadding = 15;
         RectTransform r = transform.GetComponent<RectTransform>();
         float top = r.rect.yMax;
         float bot = top - verticalPadding;
@@ -48,7 +57,7 @@ public class EquipmentInfoScreen : MonoBehaviour
     }
     public void OnUpdate(Canvas canvas)
     {
-        if(MyElem.ActiveEquipment != null)
+        if(MyElem != null && MyElem.ActiveEquipment != null)
             MyElem.UpdateActive(canvas, out bool hovering, out bool clicked, MyElem.GetComponent<RectTransform>());
     }
 }

@@ -17,6 +17,8 @@ public class StandardButton : Button
         WhiteToYellow = 0,
         CyanToYellow = 1,
         DarkYellowToYellow = 2,
+        CornflowerToYellow = 3,
+        RedToYellow = 4,
     }
     public enum ButtonDestinationType
     {
@@ -33,6 +35,22 @@ public class StandardButton : Button
         CloseTutorial = 10,
         OpenCompendium = 11,
         ChangeAscensionLevel = 12,
+
+        CrucibleQuantityUp = 20,
+        CrucibleQuantityDown = 21,
+        OpenCloseShardMenu = 22, 
+        OpenCloseCrucibleMenu = 23,
+        OpenCloseChoiceMenu = 24,
+
+        CompendiumAuto = 30,
+        CompendiumUndo = 31,
+        CompendiumClear = 32,
+        CompendiumExport = 33,
+
+        AudioSettings = 50,
+        GameplaySettings = 51,
+        GraphicsSettings = 52,
+        UIUndoButton = 100,
     }
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonActions;
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> InitDict()
@@ -51,6 +69,23 @@ public class StandardButton : Button
         ButtonToActionDict[ButtonDestinationType.CloseTutorial] = Main.CanvasManager.CloseMultiplayerMenu;
         ButtonToActionDict[ButtonDestinationType.OpenCompendium] = Compendium.StaticToggleActive;
         ButtonToActionDict[ButtonDestinationType.ChangeAscensionLevel] = IncrementAscensionLevel;
+
+
+        ButtonToActionDict[ButtonDestinationType.CrucibleQuantityUp] = PowerUpCheatUI.UpQuantity;
+        ButtonToActionDict[ButtonDestinationType.CrucibleQuantityDown] = PowerUpCheatUI.DownQuantity;
+        ButtonToActionDict[ButtonDestinationType.OpenCloseShardMenu] = () => PowerUpCheatUI.ShardInstance.ToggleHide();
+        ButtonToActionDict[ButtonDestinationType.OpenCloseCrucibleMenu] = () => PowerUpCheatUI.CrucibleInstance.ToggleHide();
+        ButtonToActionDict[ButtonDestinationType.OpenCloseChoiceMenu] = () => ChoicePowerMenu.Instance.ToggleHide();
+
+        ButtonToActionDict[ButtonDestinationType.CompendiumAuto] = () => Compendium.Instance.ToggleAuto();
+        ButtonToActionDict[ButtonDestinationType.CompendiumUndo] = () => Compendium.Instance.CancelTierListChanges();
+        ButtonToActionDict[ButtonDestinationType.CompendiumClear] = () => Compendium.Instance.ClearTierList();
+        ButtonToActionDict[ButtonDestinationType.CompendiumExport] = Compendium.ExportTierList;
+
+        ButtonToActionDict[ButtonDestinationType.AudioSettings] = SettingsMenu.SwapToAudio;
+        ButtonToActionDict[ButtonDestinationType.GameplaySettings] = SettingsMenu.SwapToGameplay;
+        ButtonToActionDict[ButtonDestinationType.GraphicsSettings] = SettingsMenu.SwapToGraphics;
+        ButtonToActionDict[ButtonDestinationType.UIUndoButton] = Main.GoBackInUIHierarchy;
         return ButtonToActionDict;
     }
     public static void IncrementAscensionLevel() 
@@ -65,12 +100,15 @@ public class StandardButton : Button
     public static void RegisterButtonBehavior(StandardButton button)
     {
         ButtonActions ??= InitDict();
+        if(button.SoundOnClick)
+            button.onClick.AddListener(() => AudioManager.PlaySound(SoundID.BubblePop, CameraManager.MainCamera.transform.position, 1, 1.1f, 1));
         button.onClick.AddListener(ButtonActions[button.DestinationType]);
     }
     public ButtonAnimationType AnimationType = ButtonAnimationType.None;
     public ButtonColorType ColorType = ButtonColorType.WhiteToYellow;
     public ButtonDestinationType DestinationType = ButtonDestinationType.None;
     public bool SoundOnHover = true;
+    public bool SoundOnClick = false;
     public new void Awake()
     {
         base.Awake();
@@ -98,7 +136,7 @@ public class StandardButton : Button
         }
         else if(ColorType == ButtonColorType.CyanToYellow)
         {
-            colors.normalColor = ColorHelper.New255(0x6E, 0xCB, 0xDC);
+            colors.normalColor = ColorHelper.Cyan;
             colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
             colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
             colors.selectedColor = colors.highlightedColor;
@@ -112,6 +150,24 @@ public class StandardButton : Button
             colors.selectedColor = colors.highlightedColor;
             colors.disabledColor = colors.normalColor * 0.6f;
         }
+        else if(ColorType == ButtonColorType.CornflowerToYellow)
+        {
+            colors.normalColor = ColorHelper.Cornflower;
+            colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
+            colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = colors.normalColor * 0.6f;
+        }
+        else if(ColorType == ButtonColorType.RedToYellow)
+        {
+            colors.normalColor = ColorHelper.RarityColors[5];
+            colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
+            colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = colors.normalColor * 0.6f;
+        }
+        if(DestinationType == ButtonDestinationType.CompendiumExport) //Currently unimplemented
+            interactable = true;
         base.colors = colors;
 
         RegisterButtonBehavior(this);
@@ -147,28 +203,13 @@ public class StandardButton : Button
             GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
         }
 
-        //ON GAME OVER (THIS IS PROBABLY UNNECESSARY AND SHOULD BE REWORKED)
+        //ON GAME OVER
         if (Player.Instance != null && Player.Instance.IsDead)
         {
-            if (DestinationType == ButtonDestinationType.Settings)
-            {
+            if (DestinationType == ButtonDestinationType.Settings || DestinationType == ButtonDestinationType.Restart || DestinationType == ButtonDestinationType.OpenCompendium)
                 gameObject.SetActive(false);
-            }
-            if (DestinationType == ButtonDestinationType.Resume)
-            {
-                gameObject.SetActive(false);
-                ArbitrarySceneResumeButton = this;
-            }
-            if (DestinationType == ButtonDestinationType.Restart)
-            {
-                if (ArbitrarySceneResumeButton != null)
-                {
-                    GetComponent<RectTransform>().sizeDelta = ArbitrarySceneResumeButton.GetComponent<RectTransform>().sizeDelta;
-                    GetComponent<RectTransform>().pivot = ArbitrarySceneResumeButton.GetComponent<RectTransform>().pivot;
-                    transform.localPosition = ArbitrarySceneResumeButton.transform.localPosition;
-                }
+            else if (DestinationType == ButtonDestinationType.Resume)
                 GetComponentInChildren<TextMeshProUGUI>().text = "Try Again";
-            }
         }
     }
 }

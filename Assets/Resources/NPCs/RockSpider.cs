@@ -129,5 +129,6 @@ public class RockSpider : Enemy
     {
         DeathParticles(20, 0.5f, new Color(60 / 255f, 70 / 255f, 92 / 255f));
         AudioManager.PlaySound(SoundID.DuckDeath, transform.position, 0.2f, 0.7f);
+        Player.RocksKilledThisRun += 1;
     }
 }

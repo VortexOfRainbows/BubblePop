@@ -4,7 +4,6 @@ Do Later:
 1. Layer Fixes
 	1. Fix layering on complex entities:
 		1. Rock Golem: Needs a sorting order on the golems. Parent golem determines other golems order. The legs render out of step
-		2. Crucible: Start by getting the sorting orders defined
 	2. True y-layering still does not exist. A true fix may be difficult. Best to case-by-case address issues..?
 2. Wave bar on the top shows current wave card modifier information
 	1. Make a 3rd display on the wave card select that shows what all wave cards have in common (modifier or reward wise)
@@ -12,30 +11,25 @@ Do Later:
 3. Grass shader to make grass more interesting and potentially slightly vary in the wind
 4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
 5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
-6. Lighting: Time of day settings (such as the ability to pause time or make it real-world accurate)
-7. Some text might be too unclear, especially at lower text sizes. The background may need higher contrast? Or maybe text size increase?
-8. Next patch:
-	1. Potentially increase enemy health scaling past wave 10?
-9. Convert player power handler to use structs for faster resetting 
-10. Tachyon Accelerator Power (not urgent, as programming this would likely take longer than expected)
+6. Convert player power handler to use structs for faster resetting 
+7. (Eventually) Pause screen should have a button to show current powerups
+8. (Eventually) Character select screen should receive a more full overhaul
+9. Next UI Changes:
+	1. Home screen and pause menu button appearances
+	2. Enemy wave cards, next wave button, and ascension button, unleash wave button
+	3. UCI playtest disclaimer (most likely remove it for now? or change the wording to be more of a tutorial?)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
 	1. Progress display for achievements
-2. More descriptive pause (pause screen should show powerups and change powerups default display to right side vertical)
-3. Make a distinct "Generic Power" pool, which contains: 
-	1. Gacha Capsule (dissolving in crucible gives random rewards: either keys, gems, or coins, and a heart)
-4. Rework character equipment origins to allow more specific adjustments per character (such as giving thought bubble body slots lower than other character body slots)
-5. Some UI classes to normalize UI colors, Button behaviors (and sfx), etc... settings menu
-6. Compendium TODO:
-	1. Make powers show which pools they belong to (mostly this should just mean character)
-	2. Make blurbs appear in the equipment page
-7. Update settings UI (custom classes and stuff) and include settings for modifying soft shadows
-8. Breakable crates that spawn and can be destroyed for stuff (coins, shields, keys, etc.)
-9. Snow Regions:
-	1. Snow ambient objects need to spawn
-	2. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
-	3. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
+2. Make a distinct "Generic Power" pool, which contains: 
+	1. Recycle/Scrapper: breakable objects drop more loot, and crucibles sometimes yield crates
+3. Snow Regions:
+	1. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
+	2. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
+	3. Projectiles need visibility changes, especially for SNOW
+4. MINIMAP
+5. Characters can spawn in your run and give specific items?
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -43,9 +37,11 @@ Less Important (mostly non-issues or complete already), but in consideration:
 
 Multiplayer Task List:
 1. Controller support for oil king ability
+2. Ability icon for multiplayer does not really work
 
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
+2. Soup sometimes causes power numbers to spazz out
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -53,16 +49,274 @@ Sounds Needed:
 
 Done: 	
 
-8/14/26
+9/3/26 to 9/4/26
+1. Crucible power buttons now use compendium blue style
+2. Adjusted opacity of reroll/hide/show buttons
+	1. Also of other buttons, like power select, process quantity
+3. Select power buttons now use blue UI style
+4. Color of popup UI for interactable objects (the hovering keybind) now uses the same cornflower blue style as other UI
+	1. Color of the UI for Restock Machines and Forges now is red when unaffordable
+	2. (FIX) Popup ui for Restock Machine no longer moves in a small sin motion
+5. Gems now attract to the player at the end of a wave, similar to coins, but slightly weaker
+6. Forge, Restock now uses E for the keybind (same as Crucible, wave start (E), different from reroll (R) and shard menu (C) and hide choices (H))
+	1. (ASK PLAYTESTERS) if the keybinds should be re-distributed
+7. Fix bug that arose where hidden choice menu still showed hover text for powers
+8. Add barrels that can spawn, they are like crates, but with slightly different loot tables
+	1. They can spawn on non wood and stone regions!
+9. Crates (and barrels) generation rates adjusted (should be slightly more common)
+10. Fix extremely niche bug where fairy ring loot would take 100 seconds after world gen to be obtainable
+11. (FIX) Equip menu now starts off screen so it is not visible sometimes on fast load times
+12. Equip menu and character select menu now uses blue colors
+
+9/1/26 to 9/3/26
+1. Crucible and Shard menus now populate 2x faster, though might be more somewhat more laggy on weaker systems
+2. Crucible, Shard, and Choice menus now fade in/out from the center rather than falling from the top of the screen
+	1. You can now switch between Choice/Crucibe/Shardmenus while they are open (rather than crucible menus being locked when in choice menu)
+3. Fizzy Ability Icon (sam)
+4. Slightly modified position of key count ui
+5. Your current shard count now appears under key count after obtaining your first shard
+6. WIP Crucible/Shards UI rework
+	1. Now shows gems/shards you will receive from smelting a power (+ works with different processing quantities)
+	2. (WIP) Now uses the cornflower blue style similar to compendium and settings menu
+7. Fix a lot of bugs that came up from being able to have both menus exist at once (shard/crucible)
+8. New mouse cursor sprite (by me!)
+9. Mouse cursor now switches to a different sprite when mouse is down
+10. WIP switching top/show/hide buttons to use cornflower UI
+11. The show shards and show choices buttons now have icons (shard/choice respectively)
+12. Made a few more buttons in the power select UI blue (hide and reroll)
+
+8/30/26 to 8/31/26
+1. Ability icons for Bubblemancer and Though Bubble, plus Fizzy placeholder (Sam!)
+2. Some reorganization and prep for crucible ui rework
+3. WIP Crucible UI overhauls (functionality first)
+	1. Right now, things are mostly broken.
+4. Crucible and Shards should no longer show double powers in the menu when opened at the same time the popup is unlocked.
+	1. This is because the list of powers in no longer loaded when first unlocked, which should also reduce random lag spikes from going near crucibles or picking up your first shard.
+5. Crucible is now opened with "E", as that is now the standard interaction key
+6. Shards are still opened with "C"
+7. Crucible and Shard menus can now exist simultaneously
+	1. No longer need to move away from a crucible to access shards
+8. Processing buttons for crucible are now standardized and should be sharded between crucible and shard menu
+
+-- A3.4 UPDATE ON STEAM --
+
+8/29/26
+1. Sprites for the 5 investment powers (by David!)
+2. Astrajelly now shows powerpool in compendium
+
+8/28/26 to 8/29/26
+1. Crucible is now layered as a singular object for purpose of sprite sorting
+2. Crucibles that spawn on grass will spawn with some foliage again
+3. Snow ambient objects now spawn on snow varyingly, snow tile size fixed
+4. Hats that have special movement mechanics with Bubblemancer's Dash now animate based on the dash timer rather than the ability cooldown timer
+	1. Bunce cap should no longer levitate in the air for prolonged periods
+	2. Other hats should no longer rotate in the dash direction for prolonged periods
+	3. Should feel more snappy overall
+5. Tile refresh and generation optimizations (seed 1337 for timing consistency)
+	0. Old Speeds for refresh 1179ms to 1513ms, ~2950 ms for full world.	
+	1. (1st) New speeds for refresh 848ms to 872ms
+	2. (2nd) Refresh, 700ms to 720ms, ~2200ms
+		1. Around 750 ms saved
+	3. (3rd) Refresh, now ~475 ms, ~1900 ms
+		1. Around 300 ms saved
+	4. (4th) Lighting, 500 ms -> 300 ms, ~1700 ms
+	5. (5th) Refresh 475 -> 420, Nodes 120 -> 85, Outer Fill 600 -> 180
+		1. Around 500 ms saved, ~1200 ms now
+	6. (6th) Refresh 420 -> 290 ms
+		1. Around 130 ms saved, ~1050 ms now
+	7. (7th) Decor spawns now use new tiledata system and only check once
+		1. Total time ~980 ms now
+	8. (8th) Tile Neighbor Relations now use a byte int array instead of weird tuple dictionary
+		1. Total time ~940 ms now
+	9. (9th) Adjusted some functions to take two ints as input instead of vectorint structs
+		1. Total time ~930 ms now
+6. Fix bug where Roadblock (red border) visuals were not fully encapsulating roadblock areas
+7. WIP Tiledata reworks
+	1. Move into its own partial class
+	2. Now tile stuff is private and accessed through world as a middleman first
+	3. SolidTile now fetches from TileData, which should be quicker than GetColliderType
+		1. This should result in generally better performance across the board in the margins
+8. Fix bug where Tree spawns and Crate spawns were run double the intended amount.
+	1. Crate spawn attempt chance 50% -> 75%
+
+8/27/26
+1. WIP compendium equipment blurbs
+	1. Right now, basically no progress, except for learning!
+2. Standardize the way compendium descriptions are generated to use titles, headers, and segments, rather than just a single block of text with different size arguments.
+	1. Description segments all have a shaded background, like the lore segments used to have (they still have them)
+	2. Updated for all pages now!
+	3. Modified the size range for the Title (now title should more often fall on one line, except for the really long ones)
+3. Compendium Equipment Page now showcases the powers each equipment provides in special UI rather than a list of text
+	1. You can click on the powers to navigate to their page
+	2. The abilities provided by each equip is also displayed now, though as text (may be temporary)
+4. Modify Ability UI slightly and add UI icons for Gachapon and King Oil (from SAM!)
+5. Fixed bug where hovering over Gachapon Tokens in UI showed nothing
+6. Fix bug where projectiles with exactly 2 pierce value (such as gacha slots base projectile) would hit the same enemy twice
+7. In the pause menu, all buttons are slightly transparent now instead of just the compendium button
+
+8/25/26 to 8/26/26
+1. King Oil ability always use oil colored bubbles
+2. Removed a few antiquated classes associated with the compendium
+3. Compendium: 
+	1. Character sort can now Sort by ID once again (Group Sort no longer replaces ID Sort)
+	2. Power sort now has Group option, which groups by power pools
+	3. When opening the compendium after something has been unlocked/changed, it should more consistently look correct
+		1. (hopefully) No more red ? icons when achievements are complete or blacked out powers after they have been unlocked
+		2. All compendium pages are marked for resort whenever the compendium is opened now, instead of only the previously selected page
+	4. (FIX) fixed bug when numbers are on for characters, enemies, or achievements, they appear over some compendium elements
+4. (FIX) Achievement completion popup now uses black bg again instead of cornflower blue
+5. Max number of visual elements that can be attached to a Hazard (Tar puddles) infinite -> 5
+	1. This should hopefully reduce lag from oil related shenangins
+	2. The oldest visual will be replaced by the newest when at the limit and they are sufficiently different in application duration (otherwise, a new visual will simply not be placed)
+	3. (INTERNAL) Changed list class to linked list to support the above system at O(1) speed
+
+-- A3.3 UPDATE ON STEAM --
+
+8/22/26 to 8/25/26
+1. BoxesShopWithForge, Junkyard, and Junkyard2 nodes are now more open
+2. BoxesShop1, BoxesShop2, MeadowCrucible3 now have a connector between two previously dead ends
+3. New Shopforge node: Workshop
+4. When multiple copies of a power would be dropped from a pylon, it simply drops them in bulk now (should reduce lag for stacking Perp, Pumpjack, Resonance Ruby, etc.)
+5. Oil King: Rock Feller Achievement
+6. Move Compendium button to the button tower. Button tower in pause menu more closely resembles the main menu button tower.
+7. WIP UI OVERHAULS 
+	1. Add a UI button for going back in menus (settings and compendium), functioning the same as the ESC button does
+	2. Corresponding adjustments to the compendium to fit the new button
+	3. Compendium UI overhauls!
+		1. Experimental blur for the bg (works in both main menu and game world), fixed the ratio!
+		2. Replaced "Cancel Changes: with Export button (WIP)
+		3. Adjustments to Tier list colors and size of tier display elements
+		4. All compendium pages use a new cornflower blue UI box for UI elements
+		5. Biome background removed from Enemy page (this might be temporary)
+		6. More buttons in the compendium make sounds when interacted with
+8. Compendium now disables itself when offscreen, which should reduce lag slightly
+9. FIX bug where tier lists would bug out at high category heights.	
+	1. The fix for this is a general code order change, which should hopefully fix some other tier list bugs and definitely not cause any other bugs
+10. Added Export button to the compendium
+	1. Essentially screenshots just the tier list section and then opens it with the standard program of your OS
+11. All compendium sections are loaded when the compendium is opened now, and displays compendium completion progress
+12. (NERF/FIX) Fix bug where Compound Interest would only roll for a lower tier power once, and then give you that amount squared
+	1. Now it gives the correct amount: Stack^2 -> Stack
+	2. Now it can roll different powers instead of just 1 at a time
+13. Gatligator is now slightly bigger in UI
+14. Fix bug where all any powers counted as black market in compendium black market mode, even grayed out ones
+15. Fix bug where you could hover over equipment/achievement elements that were off screen in the compendium
+16. Some changes to the new settings menu UI colors
+17. Fix compendium sizes on 16:10 resolutions showing tier list buttons when tier list was not open.
+	1. Should work on other resolutions	
+	2. Now the description box is bigger to compensate
+18. When switching back to Standard lighting mode while in game, in now resets to the previous standard time
+19. Added a setting in graphics for changing shadow blur, which may reduce lag (GPU) on lower settings
+20. Simplify code for restarting the game after dying
+21. Pause Menu/Game Over screen now use the same button colors as the main menu
+22. Rainbow shard cost multiplier 2x -> +1
+	1. Now rarer black market powers are cheaper to replicate
+23. Perpetual Bubble Machine no longer has unique rainbow shard replication scaling
+24. Black market dealer cost multiplier 3x -> 2x
+25. Chance of a Black Market power appearing in a normal shop 0.5% -> 1.5%
+
+8/18/26 to 8/22/26
+1. WIP UI Overhauls
+	1. Settings Page: 
+		1. Now generates the settings toggles and sliders through code procedure, which should make it easier to expand in the future
+		2. Now has a new aesthetic! Animates when coming in and out!
+		3. Now plays pop sounds when toggle/slider is changed!
+		4. Now contains divider text! Now blurs the BG when opened!
+		5. Now is standardized like the compendium now, so the menu doesn't look different in main menu vs game scene
+2. Overhaul some UI classes to decouple stuff
+3. Fix bug where soup would still work even when removed through a crucible
+4. Conglomerate, Combust, Smokestack sprites (BY DAVID YIPPEE)
+5. Add the ability to change Sunlight in the settings menu (Available options are: Standard, Everday, Evernight, Real-time)
+6. Oilicopter now always applies oil and always appears in King Oil's color (description adjusted to include "oil bubbles")
+7. Snobble Nerfs:
+	1. Dash speed multiplier 2.85 -> 2.75
+	2. Snobble has the ability to increase it's move progression counter at double speed when near the player
+		1. This window opened 25 frames into its default movement counter, or 75 frames after a dash began, and would allow the next dash to come out in about 38 frames
+		2. The window has been moved into 30 frames after its movement counter
+		3. Snobble now incurs a random 0-6 frames of lag after a dash or slide
+8. Rock Golem adjustments (Total HP 192 -> 150)
+	1. Life 24 -> 25 
+	2. Segments 8 -> 6
+	3. Max coin drops 3 -> 4 (overall drops should be slightly reduced, as enemies are weighted towards their lower drop values)
+	4. Hopefully should reduce lag a bit
+9. Crow coins dropped max 5 -> 4
+10. Ent coins dropped max 10 -> 8
+11. Smokestack attack speed per stack stack scaling 5% (+2%) -> 4% (+1%)
+12. Fire from Bubblebirb and Dragon Slots now detonate debuffs (Description modified for dragon slots)
+13. Crucible speed is now capped at 10x speed
+14. Forge Hammer and Crucible speed bonuses are now global.
+15. Shops may sometimes sell powers in bulk, at a higher price
+	1. This chance is greater for lower-star powers
+	2. This is somewhat meant to augment the current state of the shop, where you simply buy cheap items just to cycle the shop.
+	3. The goal is to make your choices more meaningful, while also keeping power stacking as a core identity of the game
+	4. Currently treated as restocking ONCE for the purpose of price scaling and restock machine counts...
+	5. DOES NOT EFFECT BLACK MARKET POWERS
+16. New subnode: Crate Node
+17. Subnodes now shift to attempt a spawn 12 times if the spot is blocked (up from 10), so they should be more common
+18. Chance of shops appearing in alternating subnodes 75% -> 50%
+	1. The alternation has been shifted slightly, so they should no longer appear as often before nodes that already have shops
+19. Fix bug where the selected ascension would reset to Bubblemancer's Max ascension when restarting as other characters
+
+-- A3.22 UPDATE ON STEAM --
+
+8/17/26 to 8/18/26
+1. Cat ears coin pickup delay 1.5 seconds -> 0.05 seconds
+2. LOS check for Calculator and Pathfinding now uses native Unity methods (and should be far less laggy)
+	1. Fix bug where LOS check was being run for bestiary enemies
+3. Edit the StardewSpiral node to make it more open around the pylon
+4. (EXPERIMENTAL) Removed the bubble shadow shape in the top left of UI elements, to see what it might look like...
+5. Investment powers now appear in the correct place when making a tier list
+6. Edit the CATARoom node to be more open
+
+-- A3.21 UPDATE ON STEAM (NO PATCHNOTES) --
+
+8/17/26
+1. Fix bug where soups was not properly being removed when hit and sometimes generating extra soups
+2. Fix bug where crates could be broken multiple times
+
+-- A3.2 UPDATE ON STEAM --
+
+8/16/26 to 8/17/25
+1. Fix bug where black market powers weren't showing stars (not relevant for patch notes)
+2. Added soup and spilled soup with placeholder arts
+3. Add the Tachyon Accelerator
+4. Trails should now render more accurately for fast-moving objects such as a high attack-speed slot machine
+5. Rename Defense Contract -> Handheld Transceiver
+	1. More in line with Sam's sprite! Now in game!
+6. Oil King: Quagmire Achievement and blackmarket version of diversified portfolio (+better placeholder sprite)
+7. Soup sprite by David
+8. Thought Bubble Faster than Light achievement for unlocking Tachyon Accelerator
+9. Oil King unlock no longer requires ASC 3
+10. Fix bug where Crow was not pathfinding if player was beyond certain range and not in LOS
+11. Pylons are now considered WORLDOBJ for purpose of collision instead of WORLD. They will no longer block things like sentinel lasers (and oil king diamond bug fix)
+12. Calculator Adjustments (FOR THE STANDARD ALGORITHM THAT EFFECTS MOST PROJECTILES, SPECIAL BEHAVIORS UNCHANGED UNLESS SPECIFIED):
+	1. Now the algorithm is purely angle based, rather than velocity based, meaning it should function more predictably and consistently
+		1. The biggest impact is that trajectories close to being opposite previously failed to home (allowing projectiles to travel straight through without locking on)
+		2. This is NO LONGER the case, now projectiles can more easily turn with calculator
+	2. Lerp speed is now based on angle delta, where lower deltas increase rates, meaning near misses should home far more easily
+		1. Interpolation actually favors bigger deltas, so previously homing was stronger at large deltas, causing projectiles to snap quickly to a nearby course, but stop snapping just before getting to the right trajectory, causing calculator too look like it was always just barely missing
+		2. Now the bias should be balanced out by the inverse angle delta multiplier
+	3. Thunder Bubbles, GachaSlots non-token projectiles, now use the standard algorithm instead of a unique algorithm
+		1. Thunder Bubbles, however, gets 90% less acceleration
+	4. Calculator homing strength for stars buffed by around 16%
+	5. Overall, the algorithm is far stronger, so stacking factors for ACCELERATION and LERP SPEED have been nerfed slightly (not in power description)
+	6. Most Projectiles now require LOS with enemies to HOME. This might cause more overhead lag, so let me know if it is a problem for you!
+
+8/14/26 to 8/15/26
 1. Reworked "Small Room" node to be more interesting and more common
 2. Made some of the less interesting nodes less common
 3. New Shop Node: Big Room Castle Shop
 4. New Boss Node: Boss Village
 5. Fairy Rings that generate mushrooms
-6. Corrode Sprite by David
+	1. One of the new boss nodes have these, and they can generate in a subnode
+6. Corrode, Gasoline Sprite by David
 7. King Oil Achievment to unlock Defense Contract in black market pool
 8. Import snow tile variants from Fanny 
 	1. WIP Snow implementation
+9. Breakable crates now spawn in areas with wood or stone, usually in corners
+	1. These crates can drop coins, gems, keys, hearts, and shields, but it is increasingly rare for higher-level drops
+10. Mushrooms and Foliage can now spawn on dark, walkable grass
+11. Particles from Crates Breaking should be more accurate
 
 8/10/26 to 8/14/26
 1. Import some snow assets
@@ -230,7 +484,6 @@ Done:
 15. Astrajelly stacks now roll multiple powers instead of giving a huge amount of one power
 16. Add a Hazard system (for oil splats)
 	1. Might need to adjusted in the future for other functionality, but should work for now
-
 
 7/14/26
 1. WIP King Oil

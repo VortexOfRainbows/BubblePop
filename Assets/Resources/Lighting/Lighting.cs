@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ using static UnityEngine.GraphicsBuffer;
 public static class Lighting
 {
     public static Tile LightTile;
-    public static Tile OcclusionTile;
+    //public static Tile OcclusionTile;
     public static RenderTexture LightRT;
     public static RenderTexture BorderRT;
     public static RenderTexture BorderMaskRT;
@@ -30,7 +31,7 @@ public static class Lighting
     public static void LoadTextures()
     {
         LightTile = Resources.Load<Tile>("Lighting/LightTile");
-        OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
+        //OcclusionTile = Resources.Load<Tile>("Lighting/OcclusionLightTile");
         LightRT = Resources.Load<RenderTexture>("Lighting/LightingRenderTexture");
         BorderRT = Resources.Load<RenderTexture>("Lighting/TileBorderRenderTexture");
         BorderMaskRT = Resources.Load<RenderTexture>("Lighting/BorderMaskRenderTexture");
@@ -52,11 +53,16 @@ public static class Lighting
         {
             throw new System.Exception("ERROR: Could not find lighting tile maps");
         }
-
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
-        Map.GetCorners(out int left, out int right, out int bottom, out int top);
+        World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
+        int width = right - left;
+        int height = top - bottom;
+        int totalCells = width * height;
+        Vector3Int[] positionsArray = new Vector3Int[totalCells];
+        TileBase[] lightingTilesArray = new TileBase[totalCells];
+        int writeIndex = 0;
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)
@@ -64,13 +70,18 @@ public static class Lighting
                 Vector3Int pos = new(i, j);
                 if (World.SolidTile(pos)) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
                 {
-                    LightingFront.SetTile(pos, LightTile);
-                    LightingBack.SetTile(pos, LightTile);
-                    OcclusionMap.SetTile(pos, OcclusionTile);
+                    positionsArray[writeIndex] = pos;
+                    lightingTilesArray[writeIndex] = LightTile;
+                    ++writeIndex;
                 }
             }
         }
-        DayProgress = TimeInADay * 0.1f;
+        Array.Resize(ref positionsArray, writeIndex);
+        Array.Resize(ref lightingTilesArray, writeIndex);
+        LightingFront.SetTiles(positionsArray, lightingTilesArray);
+        LightingBack.SetTiles(positionsArray, lightingTilesArray);
+        OcclusionMap.SetTiles(positionsArray, lightingTilesArray);
+        DayProgress = StandardDayTimer = TimeInADay * 0.1f;
         PreviousProgNum = 0;
         BorderImage.material.SetFloat("_ProgressionThreshold", 0);
         Update();
@@ -83,6 +94,8 @@ public static class Lighting
         UpdateSun();
     }
     public static float DayProgress = 0;
+    public static float StandardDayTimer { get; set; } = 0;
+    public static bool WasOnNonStandardTimer { get; set; } = false;
     public static readonly float TimeInADay = 960; //12 minutes per day, for now (night progresses faster, so 8 + 4 = 6)
     public static Vector2 SunVector = new(1, 0);
     public static bool IsDay => DayProgress < TimeInADay / 2;
@@ -101,9 +114,44 @@ public static class Lighting
             PauseDayNightCycle = !PauseDayNightCycle;
         if (PauseDayNightCycle)
             factor = 0;
-        DayProgress += Time.deltaTime * factor;
-        if (DayProgress > TimeInADay)
-            DayProgress -= TimeInADay;
+        if(PlayerData.LightingSetting == 0) //standard
+        {
+            StandardDayTimer += Time.deltaTime * factor;
+            if (StandardDayTimer > TimeInADay)
+                StandardDayTimer -= TimeInADay;
+            if(!WasOnNonStandardTimer)
+                DayProgress = StandardDayTimer;
+            else
+            {
+                DayProgress = Mathf.Lerp(DayProgress, StandardDayTimer, Utils.DeltaTimeLerpFactor(0.02f));
+                if (Mathf.Abs(DayProgress - StandardDayTimer) < 1)
+                {
+                    DayProgress = StandardDayTimer;
+                    WasOnNonStandardTimer = false;
+                }
+            }
+        }
+        else if(PlayerData.LightingSetting == 1 || PlayerData.LightingSetting == 2 || PlayerData.LightingSetting == 3) //permaday or night o rrealtime
+        {
+            float target;
+            if (PlayerData.LightingSetting == 1) //everday
+                target = TimeInADay * 0.425f;
+            else if (PlayerData.LightingSetting == 2) //evernight
+                target = TimeInADay * 0.925f;
+            else //realtime
+            {
+                float realHour = (float)(DateTime.Now.TimeOfDay.TotalHours);
+                //SUN ACTUALLY RISES ON HOUR 6 and SETS ON HOUR 18, though bubblegame hours, sun rises on HOUR 0
+                realHour -= 6;
+                if(realHour < 0)
+                    realHour += 24;
+                target = realHour / 24f * TimeInADay;
+            }
+            DayProgress = Mathf.Lerp(DayProgress, target, Utils.DeltaTimeLerpFactor(0.02f));
+            if (Mathf.Abs(DayProgress - target) < 1)
+                DayProgress = target;
+            WasOnNonStandardTimer = true;
+        }
         float dayPercent = DayProgress / TimeInADay;
         SunVector = new Vector2(1, 0).RotatedBy(dayPercent * Utils.TwoPI);
         DaySin = SunVector.y > 0 ? SunVector.y : 0;
@@ -173,35 +221,40 @@ public static class Lighting
     }
     public static void GetSunlightColor()
     {
+        GlobalLight.color = SunColor(DayProgress / TimeInADay * 2);//.WithAlpha(1.0f);
+    }
+    public static Color SunColor(float lerper)
+    {
+
         Color nightColor = new(.15f, .1f, 0.3f);
         Color dayBreak = new(.35f, .15f, .35f);
         Color sunRise = new(.5f, .35f, .15f);
         Color dayColor = new(1, 1, 1);
         List<ColorWithRange> ColorRange = new();
         Color final = Color.clear;
-        if (IsDay)
+        if (lerper <= 1)
         {
             ColorRange.Add(new(dayBreak, -0.1f, 0.05f));
             ColorRange.Add(new(sunRise, 0.05f, 0.10f));
             ColorRange.Add(new(dayColor, 0.1f, 0.9f));
             ColorRange.Add(new(sunRise, 0.9f, 0.95f));
             ColorRange.Add(new(dayBreak, 0.95f, 1.1f));
-            float percent = DayProgress / TimeInADay * 2;
-            foreach(ColorWithRange c in ColorRange)
+            float percent = lerper;
+            foreach (ColorWithRange c in ColorRange)
                 final += c.Get(percent);
         }
-        else if(IsNight)
+        else
         {
             ColorRange.Add(new(dayBreak, -0.1f, 0.05f));
             //ColorRange.Add(new(nightWake, 0.05f, 0.10f));
             ColorRange.Add(new(nightColor, 0.05f, 0.95f));
             //ColorRange.Add(new(nightWake, 0.9f, 0.95f));
             ColorRange.Add(new(dayBreak, 0.95f, 1.1f));
-            float percent = DayProgress / TimeInADay * 2 - 1;
+            float percent = lerper - 1;
             foreach (ColorWithRange c in ColorRange)
                 final += c.Get(percent);
         }
-        GlobalLight.color = final;//.WithAlpha(1.0f);
+        return final;
     }
     public static float PortionOfRange(float percent, float startingThresh, float endThresh)
     {
@@ -258,6 +311,7 @@ public static class Lighting
         {
             float baseTexelSize = 1.125f / 1080f;
             ShadowImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+            ShadowImage.material.SetFloat("_Blur", PlayerData.ShadowBlurValue);
         }
         if (BorderImage != null)
         {

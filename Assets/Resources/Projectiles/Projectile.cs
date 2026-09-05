@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -146,12 +145,15 @@ public class Projectile : MonoBehaviour
             Dead = true;
         else
             return;
+        if (TachyonPoints != null)
+            DoTachyonVisual(ref TachyonPoints);
         OnKill();
         Destroy(gameObject);
     }
+    public static readonly string WorldTag = "Tub"; //dont change this until you know why?
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.CompareTag("Tub"))
+        if(collision.CompareTag(WorldTag))
             if(OnTileCollide(collision))
                 Kill();
     }
@@ -171,16 +173,107 @@ public class Projectile : MonoBehaviour
     {
         FixedUpdate();
     }
+    public bool AlreadyDidTachyon { get; private set; } = false;
+    public List<RaycastHit2D> SkipHits;
+    public ContactFilter2D Filter;
+    private List<Vector3> TachyonPoints;
+    private float TachyonDistance = 0;
+    private Vector2 previousPosition;
+    public int ExtraUpdateNumber { get; private set; } = 0;
     public void FixedUpdate()
     {
-        UpdateSpecialImmuneFrames();
-        AI();
-        bool? homing = CanBeAffectedByHoming();
-        if (((!homing.HasValue && Friendly) || (homing.HasValue && CanBeAffectedByHoming().Value)) && PlayerOwner.HomingRange > 0)
-            HomingBehavior();
-        if(!World.WithinBorders(transform.position))
-            if(OnInsideTile())
-                Kill();
+        int BonusFrames = 1;
+        if(PlayerOwner != null && PlayerOwner.TachyonStacks > 0 && TachyonCompatible() && !AlreadyDidTachyon)
+        {
+            BonusFrames = 40 * PlayerOwner.TachyonStacks;
+            SkipHits = new(); //use size of 30 for now
+            Filter = new()
+            {
+                useTriggers = true,
+                useLayerMask = true,
+                layerMask = C2D.includeLayers,
+            };
+            AlreadyDidTachyon = true;
+            TachyonPoints = new();
+        }
+        int framesWithoutMovement = 0;
+        for (ExtraUpdateNumber = 0; ExtraUpdateNumber < BonusFrames; ++ExtraUpdateNumber)
+        {
+            if (ExtraUpdateNumber > 0)
+            {
+                TachyonPoints.Add(transform.position);
+                transform.position += (Vector3)(RB.velocity * Time.fixedDeltaTime);
+                //Then we need to simulate collision on these bonus steps
+                float frameDistance = RB.velocity.magnitude * Time.fixedDeltaTime;
+                float travelledDistance = ((Vector2)transform.position - previousPosition).magnitude;
+                TachyonDistance += travelledDistance; //some projectiles do not use velocity to update position
+                int hits = Physics2D.CircleCast(transform.position, C2D.radius * 1.1f, RB.velocity, Filter, SkipHits, frameDistance); //Projectile hitbox is bigger while warping, to give impression of bigger hitbox/accuracy
+                for(int j = 0; j < hits; ++j)
+                {
+                    RaycastHit2D hit = SkipHits[j];
+                    Collider2D collision = hit.collider;
+                    if(collision.TryGetComponent(out IImpactedByProjIFrames e))
+                        e.ReceiveProjectileImpact(this);
+                    else if(collision.CompareTag(WorldTag))
+                    {
+                        if (OnTileCollide(collision))
+                            Kill();
+                        if (Dead)
+                            break;
+                    }
+                }
+                if (travelledDistance < 0.005f)
+                {
+                    ++framesWithoutMovement;
+                    if(framesWithoutMovement > 2)
+                        break;
+                }
+            }
+            UpdateSpecialImmuneFrames();
+            previousPosition = transform.position;
+            AI();
+            bool? homing = CanBeAffectedByHoming();
+            if (((!homing.HasValue && Friendly) || (homing.HasValue && CanBeAffectedByHoming().Value)) && PlayerOwner.HomingRange > 0)
+                HomingBehavior();
+            if (!World.NonSolidTileSafe(transform.position))
+                if (OnInsideTile())
+                    Kill();
+            if (Dead)
+                break;
+        }
+        ExtraUpdateNumber = 0;
+        if(TachyonPoints != null)
+            DoTachyonVisual(ref TachyonPoints);
+    }
+    public virtual float TachyonSize()
+    {
+        return C2D.bounds.size.x * 0.9f + 0.1f;
+    }
+    public virtual void DoTachyonVisual(ref List<Vector3> positions)
+    {
+        if (positions == null)
+            return;
+        SpecialLine.NewLine(positions, ColorHelper.HotPink, TachyonDistance, TachyonSize(), SpriteRenderer.sortingOrder);
+        positions.Clear();
+        positions = null;
+        //Vector2 previous = positions[0];
+        //int max = positions.Count;
+        //int fadeDistance = Mathf.Min(20, positions.Count / 3);
+        //for(int i = 1; i < positions.Count; ++i)
+        //{
+        //    float percent =
+        //        i <= fadeDistance ? i / (float)fadeDistance :
+        //        i > max - fadeDistance ? (max - i) / (float)fadeDistance :
+        //        1;
+        //    percent = 1 - percent;
+        //    percent *= percent;
+        //    percent = 1 - percent;
+        //    Color TachyonColor = ColorHelper.HotPink; //#e75fcb;
+        //    Vector2 current = positions[i];
+        //    Vector2 toCurrent = current - previous;
+        //    ParticleManager.NewParticle(previous, new Vector2(toCurrent.magnitude, 2f * C2D.bounds.extents.x * percent), Vector2.zero, 0, 0.2f + 0.8f * percent, ParticleManager.ID.Line, TachyonColor * percent, -toCurrent.ToRotation() * Mathf.Rad2Deg);
+        //    previous = current;
+        //}
     }
     public void HitTarget(Entity target)
     {
@@ -222,7 +315,7 @@ public class Projectile : MonoBehaviour
             //if(target is not IceGolem)
             target.AddBuff<Chill>(PlayerOwner.ChillDuration);
         }
-        bool piercingProjectile = Penetrate > 1 || Penetrate == -1;
+        bool piercingProjectile = Penetrate >= 1 || Penetrate == -1;
         if (piercingProjectile && target is Enemy enemy)
             SpecializedImmuneFrames.Add(new ImmunityData(enemy, immunityFrames));
     }
@@ -290,19 +383,30 @@ public class Projectile : MonoBehaviour
         if(homingCounter++ % 4 == 0)
         {
             float range = PlayerOwner.HomingRange;
-            Enemy target = Enemy.FindClosest(HomingStartPosition(), range, out Vector2 norm2, true);
-            if (target != null && DoHomingBehavior(target, norm2, range))
+            Enemy target = Enemy.FindClosest(HomingStartPosition(), range, out Vector2 ToEnemy, null, true, needsLOS: HomingNeedsLOS);
+            if (target != null && DoHomingBehavior(target, ToEnemy, range))
             {
-                float currentSpeed = RB.velocity.magnitude + PlayerOwner.HomingRangeSqrt * 0.225f;
-                float modAmt = 0.0625f + PlayerOwner.HomingRangeSqrt * 0.03f;
-                RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm2 * currentSpeed, modAmt).normalized * currentSpeed;
+                float speedBonus = this is not ThunderBubble ? PlayerOwner.HomingRangeSqrt * 0.1f : PlayerOwner.HomingRangeSqrt * 0.01f;
+                float currentSpeed = RB.velocity.magnitude + speedBonus;
+                float modAmt = 0.06f + PlayerOwner.HomingRangeSqrt * 0.02f;
+                float toEnemyAngle = ToEnemy.ToRotation();
+                float currentAngle = RB.velocity.ToRotation();
+                float delta = Mathf.Abs(Utils.DeltaRadians(currentAngle, toEnemyAngle)); //Smaller deltas should be treated with a greater homing modifier, weakest homing at pi difference
+                if (delta == 0)
+                    return;
+                float deltaMultiplier = Mathf.PI / delta;
+                Vector2 velocity = new(currentSpeed, 0);
+                float angleModifier = Utils.LerpAngleRadians(currentAngle, toEnemyAngle, modAmt * deltaMultiplier);
+                RB.velocity = velocity.RotatedBy(angleModifier);
             }
         }
     }
+    public virtual bool HomingNeedsLOS => true;
     public virtual bool DoHomingBehavior(Enemy target, Vector2 norm, float range)
     {
         return true;
     }
+    public virtual bool TachyonCompatible() => false;
 }
 public abstract class BoxProjectile : Projectile
 {
@@ -310,5 +414,5 @@ public abstract class BoxProjectile : Projectile
 }
 public interface IImpactedByProjIFrames
 {
-
+    public void ReceiveProjectileImpact(Projectile p);
 }

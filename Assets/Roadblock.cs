@@ -34,7 +34,7 @@ public class Roadblock : MonoBehaviour
             //World.RealTileMap.Map.
         }*/
 
-        transform.position = World.RealTileMap.Map.GetCellCenterWorld(World.RealTileMap.Map.WorldToCell(transform.position));
+        transform.position = World.CenterOfTile(World.RealPosToTilePos(transform.position));
         if (portal == null)
             Destroy(gameObject);
     }
@@ -45,14 +45,14 @@ public class Roadblock : MonoBehaviour
         int j = ((counter / 13) % 13) - 6;
         i *= 2;
         j *= 2;
-        var v = World.RealTileMap.Map.WorldToCell(pos + new Vector2(i, -j));
+        var v = World.RealPosToTilePos(pos + new Vector2(i, -j));
         if (World.SolidTile(v))
             return;
-        var tileData1 = World.GetTileData(v);
+        ref var tileData1 = ref World.SafeGetTileData(v);
         bool correctProgressionNum1 = tileData1.ProgressionNumber >= ProgressionLevel || (Main.PylonActive && tileData1.ProgressionNumber < ProgressionLevel);
         if (tileData1.IsRoadblock && correctProgressionNum1) // && (Mathf.Abs(i) > 2 || Mathf.Abs(j) > 2))
         {
-            Vector2 v2 = World.RealTileMap.Map.GetCellCenterWorld(v);
+            Vector2 v2 = World.CenterOfTile(v);
             float dist = (pos - v2).magnitude;
             float distM = (1 - dist / 12f);
             float alphaMult = distM * mult * mult;
@@ -60,7 +60,7 @@ public class Roadblock : MonoBehaviour
             {
                 Vector2 dir = dirs[Utils.RandInt(4)];
                 Vector2 toPos = dir; // (Vector2)transform.position - v2;
-                var tileData2 = World.GetTileData(v + new Vector3Int((int)toPos.x, (int)toPos.y));
+                ref var tileData2 = ref World.SafeGetTileData(v + new Vector3Int((int)toPos.x, (int)toPos.y));
                 bool correctProgressionNum2 = tileData2.ProgressionNumber >= ProgressionLevel || (Main.PylonActive && tileData2.ProgressionNumber < ProgressionLevel);
                 if (tileData2.IsRoadblock && correctProgressionNum2 && distM > 0.2f)
                 {

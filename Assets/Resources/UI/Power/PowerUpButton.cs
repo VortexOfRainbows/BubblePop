@@ -43,8 +43,8 @@ public class PowerUpButton : MonoBehaviour
             Player.Instance.RemovePower(PowerUI.MyPower.Type, removeAmt);
             for(int i = 0; i < removeAmt; ++i)
                 Crucible.PowerQueue.Enqueue(PowerUI.MyPower.Type);
-            if(/*PowerUpCheatUI.AutoHide &&*/!PowerUpCheatUI.Hide)
-                PowerUpCheatUI.Instance.ToggleHide(true, true);
+            if(!PowerUpCheatUI.CrucibleInstance.Hide)
+                PowerUpCheatUI.CrucibleInstance.ToggleHide(true);
             Crucible.Text.text = Crucible.PowerQueue.Count.ToString();
             return;
         }
@@ -60,6 +60,7 @@ public class PowerUpButton : MonoBehaviour
             if (!Main.DebugSettings.PowerUpCheat)
             {
                 CoinManager.ModifyShards(-PowerUI.Cost);
+                //These are included for powers with scaling cost requirements (currently none, but previously Perp)
                 PowerUI.Cost = PowerUI.MyPower.ShardReplicationCost(PowerUpCheatUI.ProcessQuantity);
                 PowerUI.CostText.text = PowerUI.Cost.ToString();
             }

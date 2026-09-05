@@ -116,8 +116,8 @@ public class CardManager : MonoBehaviour
         WaveDirector.WaitingForCardDraw = false;
         Instance.Visual.SetActive(true);
 
-        ChoicePowerMenu.Hide = true;
-        PowerUpCheatUI.Hide = true;
+        //Hide all topbar menus
+        ChoicePowerMenu.Hide = PowerUpCheatUI.CrucibleInstance.Hide = PowerUpCheatUI.ShardInstance.Hide = true;
 
         GenerateNewCards();
     }

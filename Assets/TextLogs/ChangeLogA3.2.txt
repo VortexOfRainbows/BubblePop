@@ -1,0 +1,116 @@
+Dev Build 3.2 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+New:
+1. Ability Display UI
+2. New Character and new associated powers
+3. New home/steam banner
+4. 2* new Black Market powers
+5. All enemies now implement PATHFINDING
+6. 3 new equips for Fizzy
+7. 7 new achievements
+8. The pause screen now shows elapsed time since start of the run rather than your current wave
+9. 5+ new nodes, and node reworks
+10. A new category of powers
+11. Added a Shield Pickup
+12. 2 new enemies
+13. Add a new breakable world element (crates)
+
+Balance Changes:
+1. (NERF) Bottle Blast bonus bubbles: 4 (+4) -> 2 (+2)
+2. Quite a few nodes should be more open than before
+3. (REWORK) Astrajelly stacks now roll multiple powers instead of giving a huge amount of one power
+4. (NERF) Scaling damage on Poison is now based on enemy current Life rather than Max Life, which is roughly a 50% nerf to the scaling damage
+5. (NERF) Perpetual bubble machine only triggers on even-numbered waves
+6. (NERF) Choice base reroll count 2 -> 1
+7. (REWORK) Bubblemancer dash now comes with 34 frames of invincibility
+	1. Sparkle Sparkle now releases 2(+1) -> 3(+1) stars on Bubblemancer
+	2. Cooldown 0.5 -> 3.0
+	3. During the dash, passive attacks (bubble trail, etc.) now act at 20x the speed, decreasing until the end of the dash (avg 10x speed)
+	4. Dash velocity 25 -> 45
+8. (BUFF) Thought Bubble immunity frames on teleport 7 -> 25
+10. (BUFF) Roll for Dexterity buff duration 5s -> 7s
+11. (REWORK) Calculator Adjustments (FOR THE STANDARD ALGORITHM THAT EFFECTS MOST PROJECTILES, SPECIAL BEHAVIORS UNCHANGED UNLESS SPECIFIED):
+	1. Now the algorithm is purely angle based, rather than velocity based, meaning it should function more predictably and consistently
+		1. The biggest impact is that trajectories close to being opposite previously failed to home (allowing projectiles to travel straight through without locking on)
+		2. This is NO LONGER the case, now projectiles can more easily turn with calculator
+	2. Lerp speed is now based on angle delta, where lower deltas increase rates, meaning near misses should home far more easily
+		1. Interpolation actually favors bigger deltas, so previously homing was stronger at large deltas, causing projectiles to snap quickly to a nearby course, but stop snapping just before getting to the right trajectory, causing calculator too look like it was always just barely missing
+		2. Now the bias should be balanced out by the inverse angle delta multiplier
+	3. Thunder Bubbles, GachaSlots non-token projectiles, now use the standard algorithm instead of a unique algorithm
+		1. Thunder Bubbles, however, gets 90% less acceleration
+	4. Calculator homing strength for stars buffed by around 16%
+	5. Overall, the algorithm is far stronger, so stacking factors for ACCELERATION and LERP SPEED have been nerfed slightly (not in power description)
+	6. Most Projectiles now require LOS with enemies to HOME. This might cause more overhead lag, so let me know if it is a problem for you!
+12. (BUFF) Haste is now 2-star -> 1-star
+
+Misc Changes:
+1. New raycast logic that should make LOS more accurate for stuff like Sentinel Lasers
+2. All character bodies now turn around instantly when direction is changed (Previously only TB and Gachapon did this)
+	1. This is part of a standardization to make animating simpler (as such, animations should also feel slightly more consistent for player body movement)
+3. Rework the debuff systems internally to support more functionality
+	1. No longer shows stack number at 1 stack
+4. New liquid/goo/hazard system
+5. Fix an oversite in attack speed scaling for weapons that caused weapons to stall attacks and play a large amount of idle frames at enhanced speed after a full cycle had been finished
+	1. Effectively, this should make extremely high attack speeds more accurate to replicating weapon attack behavior
+	2. This was totally unnecessary, but basically should allow weapons to attack even faster than the frame limit (why did I do this)
+6. Some system optimizations for immunity frames
+7. Cat Ears rotates less when moving
+8. Choice power sprite is now slightly bigger (~5%)
+9. Passive attack speed multiplier now take effect immediately instead of after a passive attack has cycled
+10. All references to "reduce ability cooldown" have been changed to "increase ability refresh speed", as this is more accurate
+11. Trails should now render more accurately for fast-moving objects such as a high attack-speed slot machine
+
+Fixes:
+1. Coin, Gem, and Key tutorial popups should appear again when hovering over them
+2. Fix oversight where particles colors were Whiter than intended
+3. Fizzy character highlight now properly appear on the top of the bubble instead of the bottom
+4. LIGHTING FIX: Shifting lighting downward, making shadows more accurate and realistic
+5. Correct some localizations
+6. Pickup "collect delay" now prevents picking up anything except hearts (previously only prevented magnetism until the delay completed)
+7. Fixed the spacing in the compendium being different for equips that were locked
+8. Fix bug where Crows were incorrectly sized unless they were preparing to jump (now they should be 10% bigger)
+9. Tag team waves should be able to trigger wave-enemy related achievements
+10. Fix bug where Thought Bubble: Calculated was only unlocked if you DID use your weapon.
+11. Particles from Crates Breaking should be more accurate
+12. Pylons are now considered WORLDOBJ for purpose of collision instead of WORLD. They will no longer block things like sentinel lasers
+
+Compendium Changes:
+1. Now has support for "Lore"/Notes sections (don't take these too seriously as they are still very WIP)
+2. Brief descriptions no longer appear for powers
+3. Rock spider now face the correct direction in the compendium (fixed rock spider issue that popped up the first time)
+	1. Also fix some asymmetries with Rock Spider legs being more prevalent in one direction than the other (barely noticeable)
+
+Enemy Rebalances:
+1. (NERF) Ent max life 27 -> 24
+2. (NERF) (Ice golem is called snow golem now) Snow Golem max life 24 -> 20
+3. (NERF) Sentinel max life 15 -> 12
+4. (NERF) Super Sentinel max life 25 -> 20
+5. (NERF) Gatligator max life 25 -> 22
+6. (NERF) Tag team waves now have 75% of the typical skull wave count or one less wave (whichever is lower), unless the skull wave count would go below 2 or the count was only 1 originally
+7. (NERF) Snow golem is now considered 4-star, meaning it will come in lower counts, cost also adjusted to make rarer outside of skull waves
+	1. Cost 5 -> 6
+	2. Min coins 3 -> 4
+8. Wave number adjustments (these are experimental and may be reverted later)
+	1. (NERF) Gatligator 6 -> 8
+	2. (NERF) Snow Golem 7 -> 9
+	3. (NERF) Sentinel 4 -> 9
+	4. (NERF) Rock Golem and Leonard 9 -> 10
+	4. (NERF) Super Sentinel 12 -> 14
+	5. (NERF) Infector 8 -> 13
+
+Dev Build 3.21 to 3.22 (tentative version number)
+
+Changes:
+1. Edit the StardewSpiral node to make it more open around the pylon
+2. Edit the CATARoom node to be more open
+3. (EXPERIMENTAL) Removed the bubble shadow shape in the top left of UI elements, to see what it might look like...
+
+Fixes:
+1. Cat ears coin pickup delay 1.5 seconds -> 0.05 seconds
+2. LOS check for Calculator and Pathfinding now uses native Unity methods (and should be far less laggy)
+	1. Fix bug where LOS check was being run for bestiary enemies
+3. Investment powers now appear in the correct place when making a tier list
+4. Fix bug where soups was not properly being removed when hit and sometimes generating extra soups
+5. Fix bug where crates could be broken multiple times

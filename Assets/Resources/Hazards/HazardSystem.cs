@@ -1,8 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static HazardSystem;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public static class HazardSystem
 {
@@ -20,7 +18,7 @@ public static class HazardSystem
         public Vector2 WorldPosition { get; set; }
         public int Duration { get; set; } = 0;
         public HazardType Type { get; private set; }
-        public List<FloorHazard> PairedObjects { get; private set; }
+        public LinkedList<FloorHazard> PairedObjects { get; private set; }
         public bool Dead { get; set; } = false;
         public float SizeMultiplier { get; set; }
         public int SpecialInformationNumber { get; set; }
@@ -38,32 +36,54 @@ public static class HazardSystem
         }
         public void AttachGameObject(Vector2 worldPos)
         {
-            if(Type == HazardType.Oil)
+            if (PairedObjects.Count > 5)
+            {
+                var objectToReplace = PairedObjects.First();
+                float timeLeft = objectToReplace.InitDuration - objectToReplace.Counter;
+                if(Duration - timeLeft > 20) //If the new hazard would refresh at least 20 (.2s) ticks on the visual, then replace it
+                {
+                    GameObject.Destroy(objectToReplace.gameObject);
+                    PairedObjects.RemoveFirst();
+                }
+                else
+                    return;
+            }
+            FloorHazard newObj = null;
+            if (Type == HazardType.Oil)
             {
                 //worldPos.y -= 0.7f;
-                var newObj = GameObject.Instantiate(OilObject, worldPos, Quaternion.identity, Main.GenericSuperParent).GetComponent<FloorHazard>();
+                newObj = GameObject.Instantiate(OilObject, worldPos, Quaternion.identity, Main.GenericSuperParent).GetComponent<FloorHazard>();
                 newObj.Init(Type, Duration, SizeMultiplier);
-                PairedObjects.Add(newObj);
             }
             else if (Type == HazardType.FireOil)
             {
                 //worldPos.y -= 0.7f;
-                var newObj = GameObject.Instantiate(OilObject, worldPos, Quaternion.identity, Main.GenericSuperParent).GetComponent<FloorHazard>();
+                newObj = GameObject.Instantiate(OilObject, worldPos, Quaternion.identity, Main.GenericSuperParent).GetComponent<FloorHazard>();
                 newObj.Init(Type, Duration, SizeMultiplier);
-                PairedObjects.Add(newObj);
             }
+            if (newObj == null)
+                return;
+            PairedObjects.AddLast(newObj);
         }
         public void Update()
         {
-            for(int i = PairedObjects.Count - 1; i >= 0; --i)
+            LinkedListNode<FloorHazard> currentNode = PairedObjects.First;
+
+            while (currentNode != null)
             {
-                var pairedObject = PairedObjects[i];
+                // Save the NEXT node before deleting the current one
+                LinkedListNode<FloorHazard> nextNode = currentNode.Next;
+                
+                var pairedObject = currentNode.Value;
                 bool alive = pairedObject.TickUpdate();
-                if(!alive)
+                if (!alive)
                 {
                     GameObject.Destroy(pairedObject.gameObject);
-                    PairedObjects.RemoveAt(i);
+                    PairedObjects.Remove(currentNode);
                 }
+
+                // Move to the next node
+                currentNode = nextNode;
             }
             ++TimePassed;
             if (TimePassed > Duration)
@@ -143,7 +163,7 @@ public static class HazardSystem
     }
     public static Vector2Int ToHazardPosition(Vector2 worldPosition)
     {
-        return (Vector2Int)World.WorldPosition(worldPosition);
+        return (Vector2Int)World.RealPosToTilePos(worldPosition);
     }
     public static Hazard AddHazard(Vector2 worldPosition, HazardType type, int duration, float size, int infoNum = 0, bool overrideOld = true) => AddHazard(ToHazardPosition(worldPosition), worldPosition, type, duration, size, infoNum, overrideOld);
     public static Hazard AddHazard(Vector2Int position, Vector2 worldPosition, HazardType type, int duration, float size, int infoNum = 0, bool overrideOld = true)
@@ -195,14 +215,14 @@ public static class HazardSystem
         {
             float scaleMult = Mathf.Sqrt(Mathf.Max(0.1f, (1 - existing.TimePassed / (float)existing.Duration)));
             Hazard newH = AddHazard(pos, existing.WorldPosition, HazardType.FireOil, 150, existing.SizeMultiplier, data.recursionLevel, true);
-            for (int i = 0; i < existing.PairedObjects.Count - 1; ++i)
+            foreach(FloorHazard hazard in existing.PairedObjects)
             {
-                Vector2 pos2 = existing.PairedObjects[i].transform.position;
+                Vector2 pos2 = hazard.transform.position;
                 newH.AttachGameObject(pos2);
-                ParticleManager.NewParticle(pos2, existing.PairedObjects[i].Visual.transform.localScale.x + 0.2f, Utils.RandCircle(0.5f), 0.5f, Utils.RandFloat(0.5f, 1.2f), ParticleManager.ID.Fire, Color.white.WithAlpha(0.4f));
+                ParticleManager.NewParticle(pos2, hazard.Visual.transform.localScale.x + 0.2f, Utils.RandCircle(0.5f), 0.5f, Utils.RandFloat(0.5f, 1.2f), ParticleManager.ID.Fire, Color.white.WithAlpha(0.4f));
             }
             newH.PlayerOwner = data.player;
-            Vector2 truePosition = World.RealTileMap.Map.CellToWorld((Vector3Int)pos) + new Vector3(1f, 1f);
+            Vector2 truePosition = new(pos.x * 2 + 1f, pos.y * 2 + 1f);
             Vector2 visualPosition = existing.WorldPosition;
             Projectile.NewProjectile<OilFire>(Vector2.Lerp(truePosition, visualPosition, Utils.RandFloat(1)), Utils.RandCircle(0.5f), 1, data.player, scaleMult);
         }

@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-
 public class Body : Equipment
 {
     public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)

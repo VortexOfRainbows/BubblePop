@@ -8,14 +8,15 @@ public class TierList : MonoBehaviour
 {
     public static bool ReadingFromSave = false;
     public int QueueRemoval { get; set; } = -1;
-    public TierListCompendiumPage Owner;
-    public float TotalDistanceCovered = 800f;
+    public CompendiumPage Owner;
+    public float VerticalSize { get; set; } = 800f;
     public readonly Dictionary<int, bool> OnTierList = new();
     public readonly List<CompendiumElement> Elems = new();
     public static readonly string TierNames = "SABCDF";
     public TierCategory[] Categories;
     private TierCategory SelectedCat;
     public int TierListType = 0;
+    public Image BG;
     public CompendiumElement CurrentlyHoveredElement => Owner.HoverCPUE;
     public void SetSelectedCategory(int i)
     {
@@ -34,7 +35,7 @@ public class TierList : MonoBehaviour
     {
         //OnTierList.Clear();
         Elems.Clear();
-        TotalDistanceCovered = 800f;
+        VerticalSize = 800f;
         InitializeCategories();
     }
     public Color CalculateTierColor(int i)
@@ -52,27 +53,30 @@ public class TierList : MonoBehaviour
     }
     public void OnUpdate(bool rebuild = false)
     {
-        Color unselectColor = new(0.24706f, 0.24706f, 0.24706f);
-        Color selectColor = new(.6f, .6f, .25f); 
+        Color unselectColor = ColorHelper.UITierList;
+        Color unselectColor2 = new(ColorHelper.UITierList.r - .1f, ColorHelper.UITierList.g - .05f, ColorHelper.UITierList.b + .025f);
+        Color selectColor = ColorHelper.Yellow;
         SelectedCat = null;
-        TotalDistanceCovered = 0;
+        VerticalSize = 0;
         for (int i = 0; i < Categories.Length; ++i)
         {
             TierCategory cat = Categories[i];
-            if(Utils.IsMouseHoveringOverThis(true, cat.RectTransform, 0, MyCanvas))
+            if (SelectedCat == null && Utils.IsMouseHoveringOverThis(true, cat.RectTransform, 0, MyCanvas))
             {
                 SelectedCat = cat;
                 cat.TierRect.color = Color.Lerp(cat.TierRect.color, selectColor, 0.25f);
             }
             else
-            {
-                cat.TierRect.color = Color.Lerp(cat.TierRect.color, unselectColor, 0.25f);
-            }
+                cat.TierRect.color = Color.Lerp(cat.TierRect.color, i % 2 == 0 ? unselectColor : unselectColor2, 0.25f);
             cat.CalculateSizeNeededToHousePowerups(this);
             if(rebuild)
                 LayoutRebuilder.MarkLayoutForRebuild(cat.RectTransform);
         }
-        if(rebuild)
+        //if (SelectedCat != null)
+        //    Debug.Log(SelectedCat.gameObject.name);
+        //else
+        //    Debug.Log("NONE HOVERED");
+        if (rebuild)
         {
             Canvas.ForceUpdateCanvases();
             Owner.UpdateContentSize();
@@ -89,6 +93,7 @@ public class TierList : MonoBehaviour
         bool preventHovering = Owner.HoldingAPower && !Owner.HoldingALockedPower;
         foreach (CompendiumElement cpue in Elems)
             cpue.SetHovering(!preventHovering);
+        BG.rectTransform.sizeDelta = new(BG.rectTransform.sizeDelta.x, VerticalSize);
     }
     public List<float> UniqueYValues(List<CompendiumElement> childs, float bonus)
     {
@@ -129,7 +134,7 @@ public class TierList : MonoBehaviour
         {
             return;
         }
-        List<CompendiumElement> childs = TierListCompendiumPage.GetCPUEChildren(parentGrid, out c);
+        List<CompendiumElement> childs = CompendiumPage.GetCPUEChildren(parentGrid, out c);
         childs.Remove(newestCPU);
         --c;
         bool autoSelectPosition = position == -1;
@@ -139,7 +144,7 @@ public class TierList : MonoBehaviour
             List<float> RoundedMousePos = UniqueYValues(childs, currentPosY);
             mousePos.y = ConvertToClosestYValue(mousePos.y, RoundedMousePos);
             float offset = Camera.main.transform.position.x;
-            float scalerX = 1.6f;// offset / 1.9f; //Divide offset by almost two to get roughly half the size needed
+            float scalerX = 1.6f; // offset / 1.9f; //Divide offset by almost two to get roughly half the size needed
             float scalerY = 1.75f; //Scaller is different for Y based on resolution
             int closest = int.MaxValue;
             float best = float.MaxValue;
@@ -197,8 +202,6 @@ public class TierList : MonoBehaviour
     {
         if (SelectedCat == null)
             return;
-        int insertPos = ReadingFromSave ? 10000 : -1;
-        CompendiumElement cpue = Elems.Find(g => g.TypeID == i);
         if (TierListType == 0 && PowerUp.Get(i).PickedUpCountAllRuns <= 0)
             return;
         if (TierListType == 1 && !Main.GlobalEquipData.AllEquipmentsList[i].GetComponent<Equipment>().IsUnlocked)
@@ -207,6 +210,8 @@ public class TierList : MonoBehaviour
             return;
         if (TierListType == 3)
             return;
+        int insertPos = ReadingFromSave ? 10000 : -1;
+        CompendiumElement cpue = Elems.Find(g => g.TypeID == i);
         if (!OnTierList[i])
         {
             if (cpue == null)
@@ -235,7 +240,7 @@ public class TierList : MonoBehaviour
                 ModifyOnTierList(i, true);
             }
         }
-        OnUpdate(true);
+        //OnUpdate(true);
     }
     public void RemovePower(int i, bool OnlyIfGray = true)
     {

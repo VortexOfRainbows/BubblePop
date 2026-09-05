@@ -304,6 +304,6 @@ public class ThoughtBubble : Body
     }
     public override Sprite AbilityIcon()
     {
-        return PowerUp.Get<TrailOfThoughts>().sprite;
+        return Resources.Load<Sprite>("UI/Ability/TeleportIcon");
     }
 }

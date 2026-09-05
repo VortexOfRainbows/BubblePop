@@ -22,11 +22,11 @@ public class FairyRing : MonoBehaviour
             int type = Utils.RandInt(4);
             Coin output = null;
             if (type == 0 || type == 1)
-                output = CoinManager.SpawnKey(transform.position, 100);
+                output = CoinManager.SpawnKey(transform.position, 1);
             else if (type == 2)
-                output = CoinManager.SpawnHeart(transform.position, 100);
+                output = CoinManager.SpawnHeart(transform.position, 1);
             else if (type == 3)
-                output = CoinManager.SpawnShield(transform.position, 100);
+                output = CoinManager.SpawnShield(transform.position, 1);
             if (output != null)
                 output.rb.velocity *= 0;
         }

@@ -641,7 +641,6 @@ MonoBehaviour:
   enabledDuration: 0
   PowerUpVisual: {fileID: 0}
   AchievementElement: {fileID: 7193508672093018455}
-  MainGameCanvas: {fileID: 0}
   Visual: {fileID: 1698483528486257311}
   Name: {fileID: 8805318368367437868}
   Description: {fileID: 3586809203737096695}
@@ -750,6 +749,18 @@ PrefabInstance:
       propertyPath: PreventHovering
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4461810031427125078, guid: 948ad5b344f6110438d3651945e1487a, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4461810031427125078, guid: 948ad5b344f6110438d3651945e1487a, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4461810031427125078, guid: 948ad5b344f6110438d3651945e1487a, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4655946408908801373, guid: 948ad5b344f6110438d3651945e1487a, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -757,6 +768,18 @@ PrefabInstance:
     - target: {fileID: 5543200746990072233, guid: 948ad5b344f6110438d3651945e1487a, type: 3}
       propertyPath: m_Name
       value: CompendiumAchievementElement
+      objectReference: {fileID: 0}
+    - target: {fileID: 5992586037662769289, guid: 948ad5b344f6110438d3651945e1487a, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5992586037662769289, guid: 948ad5b344f6110438d3651945e1487a, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5992586037662769289, guid: 948ad5b344f6110438d3651945e1487a, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6096790290084782414, guid: 948ad5b344f6110438d3651945e1487a, type: 3}
       propertyPath: m_fontSize

@@ -61,7 +61,7 @@ public class Equipment : MonoBehaviour
             PowerUp.AddPowerUpToAvailability(PowerPool[i]);
         }
         //This imports all black market powers, but it would be better to do this elsewhere most likely
-        for (int i = 0; i < PowerUp.Reverses.Count; ++i)
+        for (int i = 0; i < PowerUp.TotalPowerUps; ++i)
         {
             PowerUp p = PowerUp.Get(i);
             if (p.IsBlackMarket() && p.Weighting > 0 && (!p.HasBlackMarketAlternate || p.BlackMarketVariantUnlockCondition.IsComplete))
@@ -121,15 +121,18 @@ public class Equipment : MonoBehaviour
     {
 
     }
-    public List<PowerUp> GetPowerPoolForDisplay()
+    public List<PowerUp> GetPowerPoolForDisplay(bool sorted = true)
     {
         List<PowerUp> powerPool = new();
         ModifyPowerPool(powerPool);
         ModifyPowerPoolForDiplayOnly(powerPool);
-        if(this is OilHat)
-            powerPool.Sort((PowerUp first, PowerUp second) => (first.IsInvestmentPower() ? first.Rarity + 5 : first.Rarity) - (second.IsInvestmentPower() ? second.Rarity + 5 : second.Rarity));
-        else
-            powerPool.Sort((PowerUp first, PowerUp second) => first.Rarity - second.Rarity);
+        if(sorted)
+        {
+            if (this is OilHat)
+                powerPool.Sort((PowerUp first, PowerUp second) => (first.IsInvestmentPower() ? first.Rarity + 5 : first.Rarity) - (second.IsInvestmentPower() ? second.Rarity + 5 : second.Rarity));
+            else
+                powerPool.Sort((PowerUp first, PowerUp second) => first.Rarity - second.Rarity);
+        }
         return powerPool;
     }
     protected virtual void ModifyPowerPool(List<PowerUp> powerPool)

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,18 +140,20 @@ public abstract class PowerUp
     #region Powerup Datastructure Related Stuff
     private static int typeCounter = 0;
     private static int maximumTypes = 0;
-    public static GameObject Spawn<T>(Vector2 pos) where T : PowerUp => Spawn(typeof(T).Name, pos);
-    public static GameObject Spawn(string powerTypeName, Vector2 pos)
+    public static GameObject Spawn<T>(Vector2 pos, int count = 1) where T : PowerUp => Spawn(typeof(T).Name, pos, count);
+    public static GameObject Spawn(string powerTypeName, Vector2 pos, int count = 1)
     {
         if (Reverses == null)
             InitDict();
-        return Spawn(Reverses[powerTypeName], pos);
+        return Spawn(Reverses[powerTypeName], pos, count);
     }
-    public static GameObject Spawn(int powerUpID, Vector2 pos)
+    public static GameObject Spawn(int powerUpID, Vector2 pos, int count = 1)
     {
         PowerUpObject obj = GameObject.Instantiate(Main.PrefabAssets.PowerUpObj, pos, Quaternion.identity, Main.GenericSuperParent);
         obj.Type = powerUpID;
         obj.FinalPosition = pos;
+        if(count > 1)
+            obj.Quantity = count;
         //WaveDirector.TotalPowersSpawned += 1;
         return obj.gameObject;
     }
@@ -185,12 +188,36 @@ public abstract class PowerUp
         typeCounter++;
         maximumTypes++;
     }
+    public static int TotalPowerUps => PowerUps.Count;
     public static Dictionary<int, PowerUp> PowerUps { get; private set; }
     public static Dictionary<string, int> Reverses;
+    private static Dictionary<int, int> PowerGroupRelation { get; set; }
+    public static void TryGroupPower(PowerUp power, int i)
+    {
+        if(PowerGroupRelation.TryGetValue(power.Type, out int value))
+        {
+            Debug.Log($"Tried adding {power.InternalName} to group [{i}], but was already in group [{value}]".WithColor("#FF0000"));
+            return;
+        }
+        Debug.Log($"Adding {power.InternalName} to group [{i}]");
+        PowerGroupRelation[power.Type] = i;
+    }
+    public static int TryGetPowerGroup(PowerUp power)
+    {
+        if (PowerGroupRelation.TryGetValue(power.Type, out int value))
+            return value;
+        else
+        {
+            int defaultValue = power.IsBlackMarket() ? 10000 : -5;
+            TryGroupPower(power, defaultValue);
+            return defaultValue;
+        }
+    }
     protected static void InitDict()
     {
         Reverses = new();
-        PowerUps = new Dictionary<int, PowerUp>();
+        PowerUps = new();
+        PowerGroupRelation = new();
         ReflectiveEnumerator.AssembleInstances<PowerUp>();
     }
     public int MyID = -1;
@@ -286,7 +313,16 @@ public abstract class PowerUp
         ChoicePowerMenu.TurnOff();
         Time.timeScale = 1;
     }
-    public int Stack;
+    public int Stack { get => TrueStack + ImpactStackModifier(); }
+    public int ImpactStackModifier()
+    {
+        if(EffectedBySoup() && TrueStack > 0)
+            return Player.Instance.Bonus1StarStacksFromSoup; //Replace this with the owner once powers can be owned instead of global (super multiplayer future)
+        return 0;
+    }
+    public virtual bool EffectedBySoup() => Rarity == 1;
+    public int TrueStack { get; private set; }
+    public void SetTrueStack(int mod) => TrueStack = mod;
     public int Rarity { get; private set; }
     public float Weighting = 1;
     //Returns the MyID of this power
@@ -314,7 +350,7 @@ public abstract class PowerUp
     }
     private void Reset()
     {
-        Stack = 0;
+        TrueStack = 0;
         Weighting = 1;
         Init();
     }
@@ -329,7 +365,7 @@ public abstract class PowerUp
         if (Stack > HighestAmountPickedUpInASingleRun)
             HighestAmountPickedUpInASingleRun = Stack;
         if (player.CoinsOnPowerPickup > 0 && amt > 0)
-            CoinManager.SpawnCoin(player.transform.position, player.CoinsOnPowerPickup * amt, 1.5f, true);
+            CoinManager.SpawnCoin(player.transform.position, player.CoinsOnPowerPickup * amt, 0.05f, true);
         if (player.Body is Gachapon)
         {
             if (this is Burger && Stack >= 3)
@@ -341,6 +377,8 @@ public abstract class PowerUp
         {
             
         }
+        //if(this is TachyonAccelerator)
+        //    player.RequestColorReload();
     }
     public void AddToDisplayQueue()
     {
@@ -350,7 +388,7 @@ public abstract class PowerUp
     private int AddToPlayer(Player player, int count = 1)
     {
         player.PickUpPower(MyID);
-        Stack = Stack + count;
+        TrueStack = TrueStack + count;
         if (IsBlackMarket())
             player.TotalBlackMarketPowersPickedUp += count;
         else
@@ -420,7 +458,7 @@ public abstract class PowerUp
         else if (rare == 2)
             cost = 25;
         if (IsBlackMarket())
-            cost *= 3;
+            cost *= 2;
         return cost;
     }
     public virtual int CalculateRarity()
@@ -460,7 +498,7 @@ public abstract class PowerUp
         else if (rare == 3 || rare == 4)
             shards = 2;
         if (IsBlackMarket())
-            shards *= 2;
+            shards += 1;
         return shards * stackSize;
     }
     //public virtual int GetRarity()
@@ -469,7 +507,7 @@ public abstract class PowerUp
     //}
     public virtual Material GetBorder(bool thin = false)
     {
-        if ((thin && IsInvestmentPower()))// || (!thin && this is DiversifiedPortfolio))
+        if (thin && IsInvestmentPower())// || (!thin && this is DiversifiedPortfolio))
             return OilOutlineThin; // thin ? OilOutlineThin : OilOutline;
         if (IsBlackMarket())
             return thin ? RedOutlineThin : RedOutline;
@@ -500,9 +538,7 @@ public abstract class PowerUp
     }
     public bool CountsAsBlackMarketForCompendium()
     {
-        return IsBlackMarket() || (HasBlackMarketAlternate
-                            && PickedUpCountAllRuns > 0
-                            && BlackMarketVariantUnlockCondition.IsComplete);
+        return IsBlackMarket() || (HasBlackMarketAlternate && PickedUpCountAllRuns > 0 && BlackMarketVariantUnlockCondition.IsComplete);
     }
     public bool HasBlackMarketAlternate => BlackMarketVariantUnlockCondition != null;
     public virtual UnlockCondition BlackMarketVariantUnlockCondition => null;

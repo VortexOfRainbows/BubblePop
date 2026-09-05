@@ -22,8 +22,8 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
             base.Init(Main.GlobalEquipData.Bubblemancer.GetComponent<Equipment>().IndexInAllEquipPool, canvas);
             InitPowerUpVersion(MyUnlock.AssociatedBlackMarketUnlocks.Count > 0 ? MyUnlock.AssociatedBlackMarketUnlocks.FirstOrDefault() : PowerUp.Get<Choice>());
             AlternativeDisplayElement.MyPower.ForceBlackMarket = true;
-            AlternativeDisplayElement.OnUpdate();
-            AlternativeDisplayElement.OnUpdate();
+            AlternativeDisplayElement.TurnedOn();
+            AlternativeDisplayElement.WhileOn();
             AlternativeDisplayElement.MyPower.ForceBlackMarket = false;
             AlternativeDisplayElement.ForceHideCount = true;
         }
@@ -35,11 +35,10 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
         MyElem.Visual.SetActive(!IsPowerUnlock);
         MyElem.ParentAchieve = this;
         TypeID = i;
-        if (MyUnlock.IsComplete && !Selected && Style != 3 && Style != 5)
+        if (MyUnlock.IsComplete && !Selected && Style != 3 && Style != 5) //5 = achievement popup UI
         {
             Color c = new(.1f, .7f, .1f, 0.431372549f);
-            DescriptionImage.color = c;
-            BG.color = c;
+            DescriptionImage.color = BG.color = c;
         }
         if (Style == 3)
             MyElem.DisplayOnly = true;
@@ -65,7 +64,7 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
     {
         return TypeID + 1;
     }
-    public override int GetIDForSorting(bool reverse = false)
+    public override int GetGroupForSorting(bool reverse = false)
     {
         int id = TypeID;
         int dir = reverse ? -1 : 1;
@@ -104,6 +103,10 @@ public class CompendiumAchievementElement : CompendiumEquipmentElement
                 AlternativeDisplayElement.MyPower.ForceBlackMarket = false;
             }
         }
+        if(MyUnlock != null && IsLocked() && Style != 3 && Style != 5)
+            BG.sprite = Main.TextureAssets.MainUISquare;
+        else
+            BG.sprite = DescriptionImage.sprite;
     }
     public void UpdateText()
     {

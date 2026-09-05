@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PhoenixFire : Projectile
 {
+    public override bool TachyonCompatible() => true;
     public override void Init()
     {
         transform.localScale = Vector3.one * 0.5f;
@@ -49,10 +47,10 @@ public class PhoenixFire : Projectile
         if (PlayerOwner.Body is Gachapon && target is EnemyBossDuck)
         {
             if (target.Life <= 0)
-            {
                 UnlockCondition.Get<GachaponBubblebirb>().SetComplete();
-            }
         }
+        if (target is Enemy e)
+            e.DetonateAllDebuffs();
     }
 }
 public class OilFire : Projectile

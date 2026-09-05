@@ -10,7 +10,8 @@ public class MoneyIcon : MonoBehaviour
         Keys = 1,
         Tokens = 2,
         Gems = 3,
-        Ability = 4
+        Ability = 4,
+        Shard = 5,
     }
     public MoneyType Type = MoneyType.Money;
     public static float ScaleFactor = 1.1f;
@@ -19,10 +20,21 @@ public class MoneyIcon : MonoBehaviour
     public GameObject Sparkle;
     public float SparkleTimer = 0;
     public Vector3 InitialScale = Vector3.zero;
+    public Transform VisualParent;
+    public void Start()
+    {
+        InitialScale = Icon.gameObject.transform.localScale;
+        if (Type == MoneyType.Shard)
+            VisualParent.gameObject.SetActive(false);
+    }
     private void FixedUpdate()
     {
-        if (InitialScale == Vector3.zero)
-            InitialScale = Icon.gameObject.transform.localScale;
+        if(Type == MoneyType.Shard && !VisualParent.gameObject.activeSelf)
+        {
+            if(CoinManager.CurrentShards > 0)
+                VisualParent.gameObject.SetActive(true);
+            return;
+        }
         if (Utils.IsMouseHoveringOverThis(true, Icon.rectTransform, 0, myCanvas))
         {
             Icon.gameObject.transform.localScale = Vector3.Lerp(Icon.gameObject.transform.localScale, InitialScale * ScaleFactor, 0.1f);
@@ -35,7 +47,9 @@ public class MoneyIcon : MonoBehaviour
             else if(Type == MoneyType.Gems)
                 PopUpTextUI.Enable("Gems", "Can be used to reroll Choices and power the Forge");
             else if(Type == MoneyType.Ability)
-                PopUpTextUI.Enable("Ability", Player.Instance.Body.GetAbility().First((Ability x) => x.Type == Ability.ID.Ability).Blurb); //REPLACE WITH ABILITY DESCRIPTION TAKEN FROM THE CHARACTER
+                PopUpTextUI.Enable("Ability", Player.Instance.Body.GetAbility().First((Ability x) => x.Type == Ability.ID.Ability).Blurb);
+            else if (Type == MoneyType.Shard)
+                PopUpTextUI.Enable("Shards", "Can be used to duplicate powers you own"); 
             if (Type != MoneyType.Ability)
                 UpdateSparkle(Sparkle, true);
         }

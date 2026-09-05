@@ -3,6 +3,14 @@ using UnityEngine.UI;
 
 public class BathBomb : Projectile
 {
+    public override bool TachyonCompatible()
+    {
+        return true;
+    }
+    public override float TachyonSize()
+    {
+        return Data.Length > 3 ? Data[3] : 1.0f;
+    }
     public Vector2 Destination
     {
         get => new(Data[0], Data[1]);
@@ -110,7 +118,7 @@ public class BathBomb : Projectile
         float sin = Mathf.Sin(percent * Mathf.PI);
         Vector3 drawPos = Vector2.Lerp(playerStartPos, Destination, percent);
         drawPos.y -= 0.5f;
-        bool solidTile = World.SolidTile(World.RealTileMap.Map.WorldToCell(drawPos));
+        bool solidTile = World.SolidTile(drawPos);
         if (solidTile)
             drawPos.y += 0.25f;
         Vector2 scale = new(2.0f, 1.4f);
@@ -140,9 +148,18 @@ public class BathBomb : Projectile
             }
         }
     }
+    public override bool HomingNeedsLOS => false;
 }
 public class BathBombShrapnel : Projectile
 {
+    public override float TachyonSize()
+    {
+        return base.TachyonSize() * 0.4f;
+    }
+    public override bool TachyonCompatible()
+    {
+        return true;
+    }
     public override void Init()
     {
         SpriteRenderer.sprite = Main.TextureAssets.BathBombShards[Utils.RandInt(Main.TextureAssets.BathBombShards.Length)];

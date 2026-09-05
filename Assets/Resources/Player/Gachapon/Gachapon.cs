@@ -280,6 +280,6 @@ public class Gachapon : Body
     }
     public override Sprite AbilityIcon()
     {
-        return PowerUp.Get<Raise>().sprite;
+        return Resources.Load<Sprite>("UI/Ability/CasinoIconFlipped");
     }
 }

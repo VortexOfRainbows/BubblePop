@@ -13,11 +13,13 @@ public static class PlayerData
         public static int MeadowsStars { get; set; } = 0;
         public static int TotalMeadowsStars { get; set; } = 0;
     }
-    public static readonly float CurrentPlayerVersion = 3.1f;
+    public static readonly float CurrentPlayerVersion = 3.4f;
     public static int PlayerDeaths;
-    public static float SFXVolume = 1;
-    public static float MusicVolume = 1;
-    public static float SpecialVisualOpacity = 1;
+    public static float SFXVolume { get; set; } = 1;
+    public static float MusicVolume { get; set; } = 1;
+    public static float SpecialVisualOpacity { get; set; } = 1;
+    public static int ShadowBlurValue { get; set; } = 3;
+    public static int LightingSetting { get; set; } = 0;
     public static bool PauseDuringPowerSelect = true;
     public static bool PauseDuringCardSelect = true;
     public static bool BriefDescriptionsByDefault = true;
@@ -32,6 +34,8 @@ public static class PlayerData
         SaveFloat("SFX", SFXVolume);
         SaveFloat("Music", MusicVolume);
         SaveFloat("SpecialOpacity", SpecialVisualOpacity);
+        SaveInt("LightingSetting", LightingSetting);
+        SaveInt("ShadowBlur", ShadowBlurValue);
     }
     public static void ResetAll()
     {
@@ -60,6 +64,8 @@ public static class PlayerData
         SFXVolume = GetFloat("SFX", 1);
         MusicVolume = GetFloat("Music", 1);
         SpecialVisualOpacity = GetFloat("SpecialOpacity", 1);
+        LightingSetting = GetInt("LightingSetting", 0);
+        ShadowBlurValue = GetInt("ShadowBlur", 3);
         Player.GoldSpentTotal = GetInt("PlayerGoldSpent", 0);
         UnlockCondition.LoadAllData();
         PowerUp.LoadAllData();
@@ -92,7 +98,7 @@ public static class PlayerData
             CSV += tier;
             CSV += ":";
             TierCategory cat = list.Categories[i];
-            List<CompendiumElement> l = TierListCompendiumPage.GetCPUEChildren(cat.Grid.transform, out int c);
+            List<CompendiumElement> l = CompendiumPage.GetCPUEChildren(cat.Grid.transform, out int c);
             for(int j = 0; j < l.Count; ++j)
             {
                 CompendiumElement cpue = l[j];

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ public class GachaponShop : GemUtility
     public void Start()
     {
         AllShops.Add(this);
-        ProgressionNumber = World.GetTileData(World.RealTileMap.Map.WorldToCell(transform.position)).ProgressionNumber;
+        ProgressionNumber = World.SafeGetTileData(World.RealPosToTilePos(transform.position)).ProgressionNumber;
         RestockRemaining += Player.Instance.BonusStocks;
         RestockMachine.SetRestockAmountToShopStock(this);
         RestockMachine.UpdateUI(this);
@@ -124,11 +125,13 @@ public class GachaponShop : GemUtility
     public void AddStock(int i)
     {
         float mult = PriceMultiplier * (1.0f + 0.05f * TotalPowersPurchased - Player.Instance.ShopDiscount);
-        float bmChance = BlackMarketShop ? 1 : .005f * Player.Instance.BlackmarketMult;
+        float bmChance = BlackMarketShop ? 1 : .015f * Player.Instance.BlackmarketMult;
         Vector3 pillowPosition = Pedastal[i].transform.position + new Vector3(0, 1.2f);
         Vector3 spawnPosition = RestockMachine != null ? RestockMachine.transform.position + new Vector3(0, 0.05f) : pillowPosition;
-        PowerUpObject obj = PowerUp.Spawn(PowerUp.RandomFromPool(0.05f, bmChance), spawnPosition).GetComponent<PowerUpObject>();
-        obj.Cost = Mathf.Max(0, (int)(obj.MyPower.Cost * mult));
+        int p = PowerUp.RandomFromPool(0.05f, bmChance);
+        int quantity = GetQuantityToSell(PowerUp.Get(p));
+        PowerUpObject obj = PowerUp.Spawn(p, spawnPosition, quantity).GetComponent<PowerUpObject>();
+        obj.Cost = Mathf.Max(0, (int)(obj.BaseCostAdjustedForQuantity() * mult));
         obj.FinalPosition = pillowPosition;
         obj.VelocityStyle = 1;
         obj.velocity = new Vector2(0, 8);
@@ -145,5 +148,21 @@ public class GachaponShop : GemUtility
             }
         }
         Stock[i] = obj;
+    }
+    public int GetQuantityToSell(PowerUp p)
+    {
+        int maximumIWantToSell = WaveDirector.WaveNum / 4 + 3 - p.Rarity;
+        if (p is Choice)
+            maximumIWantToSell -= 2;
+        if (maximumIWantToSell > 1 && !p.IsBlackMarket())
+        {
+            float chanceToSellBonus = 1 - p.Rarity / 5f; //1 = 0.8, 2 = 0.6, 3 = 0.4, 4 = 0.2, 5 = 0.0
+            chanceToSellBonus += Mathf.Clamp( (WaveDirector.WaveNum - 4) * 0.005f, 0, 0.16f);
+            if(chanceToSellBonus > Utils.RandFloat())
+            {
+                return Mathf.Max(Utils.RandInt(1, maximumIWantToSell + 1), Utils.RandInt(1, maximumIWantToSell + 1));
+            }
+        }
+        return 1;
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
@@ -128,53 +129,7 @@ public partial class Main : MonoBehaviour
         Instance = this;
         DebugSettings.Update(this);
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            bool isMainMenu = SceneMainMenu;
-            if(!isMainMenu)
-            {
-                if (UIManager.MultiplayerMenu == null || !UIManager.MultiplayerMenu.activeSelf)
-                {
-                    if (WarpUI.IsCurrentlyOpen)
-                        WarpUI.Close();
-                    else if(GamePaused)
-                    {
-                        if (Compendium.Instance != null && Compendium.Instance.Active)
-                        {
-                            if (Compendium.CurrentlySelectedPage.TierListActive)
-                                Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
-                            else
-                                Compendium.Instance.ToggleActive();
-                        }
-                        else if (UIManager.SettingsMenu.activeSelf)
-                            CanvasManager.ToggleSettings();
-                        else if (UIManager.DebugMenu.activeSelf)
-                            CanvasManager.ToggleDebugMenu();
-                        else
-                            CanvasManager.Resume();
-                    }
-                    else
-                        CanvasManager.Pause();
-                }
-                else if (UIManager.MultiplayerMenu != null)
-                {
-                    CanvasManager.CloseMultiplayerMenu();
-                }
-            }
-            else
-            {
-                if (Compendium.Instance != null && Compendium.Instance.Active)
-                {
-                    if (Compendium.CurrentlySelectedPage.TierListActive)
-                        Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
-                    else
-                        Compendium.Instance.ToggleActive();
-                }
-                else if (UIManager.SettingsMenu.activeSelf)
-                    CanvasManager.ToggleSettings();
-                else if (UIManager.DebugMenu.activeSelf)
-                    CanvasManager.ToggleDebugMenu();
-            }
-        }
+            GoBackInUIHierarchy();
         //if(Main.DebugCheats && Input.GetKey(KeyCode.B))
         //    PowerUp.Spawn(PowerUp.RandomFromPool(0, 1, -1), Utils.MouseWorld);
         if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.U) && Main.DebugCheats)
@@ -202,11 +157,51 @@ public partial class Main : MonoBehaviour
             }
             CharacterSelect.Instance.OnUpdate();
         }
+        if(Compendium.Instance != null)
+        {
+            if (!Compendium.Instance.Active) //if the compendium is not active
+            {
+                //check if the compendium is offscreen
+                if (Compendium.Instance.IsOffscreen)
+                {
+                    //if the compendium is offscreen, disable the gameobject
+                    Compendium.Instance.gameObject.SetActive(false);
+                }
+                //probably do not need to call compendium updates while it is inactive, but if we need to, LAST STEP is no longer required
+            }
+            else //LAST STEP
+            {
+                //if the compendium becomes active again, enable it again
+                Compendium.Instance.gameObject.SetActive(true);
+            }
+        }
+        if(DebugCheats && Input.GetKey(KeyCode.LeftShift))
+        {
+            if(Input.GetKeyDown(KeyCode.C))
+            {
+                CameraManager.SwitchToMainCamera();
+            }
+            else if (Input.GetKeyDown(KeyCode.V))
+            {
+                CameraManager.SwitchToScreenshotCamera();
+            }
+        }
+        if(Input.GetMouseButtonDown(0))
+        {
+            Debug.Log($"Set cursor to cursor2: {TextureAssets.Cursor2.name}");
+            Cursor.SetCursor(TextureAssets.Cursor2, new Vector2(12, 0), CursorMode.Auto);
+        }
+        else if(Input.GetMouseButtonUp(0))
+        {
+            Debug.Log($"Set cursor to cursor1: {TextureAssets.Cursor1.name}");
+            Cursor.SetCursor(TextureAssets.Cursor1, new Vector2(12, 0), CursorMode.Auto);
+        }
     }
     public void LateUpdate()
     {
         SpriteBatch.OnUpdate();
         LightBatch.OnUpdate();
+        SettingsMenu.StaticUpdate();
 
         FramesPerSeconds = 1.0f / Time.unscaledDeltaTime;
         //Debug.Log(FramesPerSeconds);
@@ -220,6 +215,59 @@ public partial class Main : MonoBehaviour
         else
         {
             TimeElapsedDuringLowFPS = FramesElapsedDuringLowFPS = 0;
+        }
+    }
+    public static bool BackButtonShouldAppear()
+    {
+        //Compendium will use its own back button for now
+        return SettingsMenu.IsVisible; // (Compendium.Instance != null && Compendium.Instance.Active)) && !Compendium.CurrentlySelectedPage.TierListActive;
+    }
+    public static void GoBackInUIHierarchy()
+    {
+        bool isMainMenu = SceneMainMenu;
+        if (!isMainMenu)
+        {
+            if (UIManager.MultiplayerMenu == null || !UIManager.MultiplayerMenu.activeSelf)
+            {
+                if (WarpUI.IsCurrentlyOpen)
+                    WarpUI.Close();
+                else if (GamePaused)
+                {
+                    if (Compendium.Instance != null && Compendium.Instance.Active)
+                    {
+                        if (Compendium.CurrentlySelectedPage.TierListActive)
+                            Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
+                        else
+                            Compendium.Instance.ToggleActive();
+                    }
+                    else if (SettingsMenu.IsVisible)
+                        SettingsMenu.ToggleVisibility();
+                    else if (UIManager.DebugMenu.activeSelf)
+                        CanvasManager.ToggleDebugMenu();
+                    else
+                        CanvasManager.Resume();
+                }
+                else
+                    CanvasManager.Pause();
+            }
+            else if (UIManager.MultiplayerMenu != null)
+            {
+                CanvasManager.CloseMultiplayerMenu();
+            }
+        }
+        else
+        {
+            if (Compendium.Instance != null && Compendium.Instance.Active)
+            {
+                if (Compendium.CurrentlySelectedPage.TierListActive)
+                    Compendium.CurrentlySelectedPage.ToggleTierList(Compendium.Instance.TierListText);
+                else
+                    Compendium.Instance.ToggleActive();
+            }
+            else if (SettingsMenu.IsVisible)
+                SettingsMenu.ToggleVisibility();
+            else if (UIManager.DebugMenu.activeSelf)
+                CanvasManager.ToggleDebugMenu();
         }
     }
     public static Main Instance;
@@ -271,6 +319,7 @@ public partial class Main : MonoBehaviour
         private static void AddEquip(GameObject g)
         {
             Equipment e = g.GetComponent<Equipment>();
+            int id = AllEquipmentsList.Count;
             if (!e.IsSubEquip)
             {
                 if (e is Hat)
@@ -281,8 +330,12 @@ public partial class Main : MonoBehaviour
                     Weapons.Add(g);
                 else if (e is Body)
                     Characters.Add(g);
+
+                var powers = e.GetPowerPoolForDisplay(false);
+                foreach(var power in powers)
+                    PowerUp.TryGroupPower(power, id);
             }
-            e.SetUpData(AllEquipmentsList.Count);
+            e.SetUpData(id);
             AllEquipmentsList.Add(g);
             TypeToEquipPrefab.Add(e.GetType(), e);
             Debug.Log($"Equipment: <color=#FFFF00>{e.GetName()}</color> has been added into the pool at index {e.IndexInAllEquipPool}: [{AllEquipmentsList.Count}]");
@@ -363,7 +416,10 @@ public partial class Main : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.F) && DebugCheats)
                 DirectorView = !DirectorView;
             if (Input.GetKeyDown(KeyCode.P) && DebugCheats)
+            {
                 PowerUpCheat = !PowerUpCheat;
+                PowerUpCheatUI.ShardInstance.SetHideButtonText();
+            }
             if (Input.GetKeyDown(KeyCode.U) && DebugCheats)
             {
                 foreach (UnlockCondition condition in UnlockCondition.Unlocks.Values)
@@ -375,8 +431,7 @@ public partial class Main : MonoBehaviour
             if (DebugCheats && Input.GetKeyDown(KeyCode.Backspace))
                 DebugCheats = false;
             instance.DirectorCanvas.SetActive(DirectorView);
-            if(PowerUpCheatUI.Instance != null)
-                PowerUpCheatUI.StaticUpdate();
+            PowerUpCheatUI.StaticUpdate();
         }
         public static bool DirectorView = false;
         public static bool PowerUpCheat = false;

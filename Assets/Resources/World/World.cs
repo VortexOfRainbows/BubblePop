@@ -1,65 +1,22 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
-public class World : MonoBehaviour
+
+public partial class World : MonoBehaviour
 {
+    public static Vector3Int RealPosToTilePos(Vector3 worldPosition)
+    {
+        return RealTileMap.Map.WorldToCell(worldPosition);
+    }
     public static Tile DepthTile;
     public static int FloorSortingLayer { get; private set; }
-    public struct TileData
-    {
-        public byte ProgressionNumber;
-        public bool IsRoadblock;
-        public float distance;
-        public Vector2 direction;
-        public int runID;
-        public TileData(byte progressionNum = byte.MaxValue, bool roadBlock = false)
-        {
-            ProgressionNumber = progressionNum;
-            IsRoadblock = roadBlock;
-            distance = float.MaxValue;
-            direction = Vector2.zero;
-            runID = 0;
-        }
-    }
-    private static Vector2Int tileDataOffset;
-    private static TileData[,] tileData;
-    private static readonly TileData NoTileData = new(byte.MaxValue);
-    public static readonly int Padding = 20;
-    public static TileData GetTileData(Vector3Int pos)
+    public static void CreateRoadblockTileVisuals(Vector3Int pos, ref TileData data)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
-        if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))
-        {
-            //Debug.Log($"Tile QUERY out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
-            return NoTileData;
-        }
-        return tileData[pointPos.x, pointPos.y];
-    }
-    public static ref TileData UnsafeGetTileData(Vector3Int pos)
-    {
-        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
-        return ref tileData[pointPos.x, pointPos.y];
-    }
-    public static Vector2 GetTileDirection(Vector3Int pos)
-    {
-        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
-        return tileData[pointPos.x, pointPos.y].direction;
-    }
-    public static Vector2 GetDirection(Vector3 pos)
-    {
-        float x = (pos.x) / TilePathfinding.tileSize.x;
-        float y = (pos.y) / TilePathfinding.tileSize.y;
-
-        return GetTileDirection(new Vector3Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0));
-    }
-    public static void SetTileData(Vector3Int pos, TileData newData)
-    {
-        Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;
+        //Might be best to remove this check in the future if able (get the tiledata to perfectly surround all world tiles, maybe?
         if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))
         {
             Debug.Log($"Tile SET out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
@@ -71,13 +28,12 @@ public class World : MonoBehaviour
         #endif
         if (Instance.DepthTilemap != null && drawMaps1)
         {
-            byte progNumber = newData.ProgressionNumber;
+            byte progNumber = data.ProgressionNumber;
             Color c = Color.Lerp(Color.Lerp(Color.red, Color.blue, progNumber / 20f % 1), Color.green, (progNumber / 5f) % 1).WithAlpha(0.5f);
             Instance.DepthTilemap.SetTile(new (pos, DepthTile, c, Matrix4x4.identity), true);
         }
-        if (newData.IsRoadblock)
-            Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor(newData.ProgressionNumber), Matrix4x4.identity), true);
-        tileData[pointPos.x, pointPos.y] = newData;
+        if (data.IsRoadblock)
+            Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, RoadblockColor(data.ProgressionNumber), Matrix4x4.identity), true);
     }
     private static readonly Dictionary<byte, Color> RoadblockColorStorage = CreateRoadblockColors();
     private static Dictionary<byte, Color> CreateRoadblockColors()
@@ -106,8 +62,8 @@ public class World : MonoBehaviour
     }
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
-    public static DualGridTilemap RealTileMap => Instance.Tilemap;
-    public DualGridTilemap Tilemap;
+    private static DualGridTilemap RealTileMap => Instance.Tilemap;
+    [SerializeField] private DualGridTilemap Tilemap;
     [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap, InverseRoadblockMap, OcclusionMap;
     public Tilemap LightingTilemapFront;
     public Tilemap LightingTilemapBack;
@@ -123,55 +79,6 @@ public class World : MonoBehaviour
     public static byte FinalProgNumber { get; set; }
     public Rect ApproximateSize { get; set; }
     public List<Transform> nodes;
-    public static bool ValidEnemySpawnTile(Vector3 pos)
-    {
-        Vector3Int posi = RealTileMap.Map.WorldToCell(pos);
-        var data = GetTileData(posi);
-        bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
-        bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.FloorTileType && !GetTileData(posi).IsRoadblock;
-        return WithinBorders(pos) && validSpawnTile && currentlyOnThisProgressionTier;
-    }
-    public static Vector3Int WorldPosition(Vector3 position)
-    {
-        return RealTileMap.Map.WorldToCell(position);
-    }
-    public static bool WithinBorders(Vector3 position)
-    {
-        return RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) == Tile.ColliderType.None;
-    }
-    public static bool SolidTile(Vector3 position)
-    {
-        return RealTileMap.Map.GetColliderType(RealTileMap.Map.WorldToCell(position)) != Tile.ColliderType.None;
-    }
-    public static bool SolidTile(Vector3Int pos)
-    {
-        return RealTileMap.Map.GetColliderType(pos) != Tile.ColliderType.None;
-    }
-    public static bool SolidTile(int x, int y) => SolidTile(new Vector3Int(x, y));
-    public static bool HasTile(Vector3Int pos)
-    {
-        return RealTileMap.Map.HasTile(pos);
-    }
-    public static bool AreaIsClear(Vector3Int area, int squareRadius = 0)
-    {
-        for(int i = -squareRadius; i <= squareRadius; ++i)
-            for(int j = -squareRadius; j <= squareRadius; ++j)
-                if (RealTileMap.Map.HasTile(area + new Vector3Int(i, j)))
-                    return false;
-        return true;
-    }
-    public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds)
-    {
-        bool roadblock = IncludeProgressionBounds && IsRoadblocked(position);
-        return WithinBorders(position) && !roadblock;
-    }
-    public static bool IsRoadblocked(Vector3 position)
-    {
-        var data = GetTileData(RealTileMap.Map.WorldToCell(position));
-        bool currentlyOnThisProgressionTier = data.ProgressionNumber > Main.PylonProgressionNumber;
-        bool roadblock = currentlyOnThisProgressionTier || (data.IsRoadblock && Main.PylonActive);
-        return roadblock;
-    }
     public static readonly List<WavePylon> Pylons = new();
     public static WarpPylon FinalPylon { get; private set; }
     public static readonly List<Roadblock> Roadblocks = new();
@@ -192,13 +99,23 @@ public class World : MonoBehaviour
     }
     public void ResetWorld(bool firstInit)
     {
+        //UnityEngine.Random.InitState(1337);
+        //Utils.rand.InitState(1337);
+        System.Diagnostics.Stopwatch watch = new();
+        watch.Start();
+
         Main.PylonProgressionNumber = 0;
-        if(!firstInit)
+        if (!firstInit)
         {
             foreach(Player p in Player.AllPlayers)
                 p.OnWorldReset();
             Main.ResetContainers();
             ResetTransformParents();
+        }
+        else //Do not reset on loops
+        {
+            ForgeHammer.ResetGlobalSpeed();
+            Crucible.ResetGlobalSpeed();
         }
         ResetAllTilemaps();
         Player.ObjectsConsideredForUIInteraction.Clear();
@@ -208,14 +125,23 @@ public class World : MonoBehaviour
         Roadblocks.Clear();
         foreach (DualGridTile tile in TileID.TileTypes)
             tile.Init();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 1 Reset".WithColor("#FF6644"));
+
         PlaceNodeLocations();
         ApproximateWorldBounds();
         LoadNodesOntoWorld();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Loading Nodes Onto World".WithColor("#FF6644"));
 
         CreateWorldOuterFill();
+        FinalizeWorldTiles();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Outer Fill and Finalize World Tiles".WithColor("#FF6699"));
+
         RealTileMap.Init();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Realmap Generation/Refresh".WithColor("#FFBBEE"));
+
         if (NatureParent != null)
             NatureParent.Init();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Nature Re-Ordering".WithColor("#44FF77"));
 
         if (firstInit)
         {
@@ -251,7 +177,11 @@ public class World : MonoBehaviour
         Pylons.Last().WavesRequired = 1;
         FinalPylon = PylonParent.GetChild(PylonParent.childCount - 1).GetComponent<WarpPylon>();
         NodeID.ResetNodePositions();
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 2 Reset".WithColor("#AA55FF"));
+
         Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
+        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Lighting".WithColor("#DDFF33"));
+        watch.Stop();
     }
     public void Start()
     {
@@ -343,7 +273,7 @@ public class World : MonoBehaviour
                     throw new Exception("BUBBLE: FAILED TO PLACE PROCEDURAL NODE");
                 att += 2;
             }
-            Debug.Log($"Placing Node [{i}] took {att - start} attempts".WithColor("#5500FF"));
+            //Debug.Log($"Placing Node [{i}] took {att - start} attempts".WithColor("#5500FF"));
             toPrev = prevPosition - arbitraryGameObject.transform.position;
             toPrev = toPrev.normalized;
             //prevNode = node;
@@ -383,6 +313,17 @@ public class World : MonoBehaviour
         return node;
     }
     public Queue<WorldNode> NextToGenerate { get; private set; } = new();
+    private static int Left { get; set; }
+    private static int Right { get; set; }
+    private static int Top { get; set; }
+    private static int Bottom { get; set; }
+    public static void GetCorners(out int left, out int right, out int bottom, out int top, int inwardPadding = 5)
+    {
+        left = Left + inwardPadding;
+        right = Right - inwardPadding;
+        bottom = Bottom + inwardPadding;
+        top = Top - inwardPadding;
+    }
     public void ApproximateWorldBounds()
     {
         int left = int.MaxValue;
@@ -399,7 +340,7 @@ public class World : MonoBehaviour
             right = Mathf.Max(r + transformPos.x, right);
             bottom = Mathf.Min(b + transformPos.y, bottom);
             top = Mathf.Max(t + transformPos.y, top);
-            Debug.Log($"Node[{i}]: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#66FF11"));
+            //Debug.Log($"Node[{i}]: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#66FF11"));
             ++i;
         }
         if (nodes.Count <= 0)
@@ -409,13 +350,17 @@ public class World : MonoBehaviour
         bottom -= Padding;
         top += Padding;
         Vector2Int size = new(right - left, top - bottom);
-        Debug.Log($"World Border: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#CC77FF"));
-        Debug.Log($"World size: X: {size.x}, Y: {size.y}".WithColor("#CC77FF"));
+        //Debug.Log($"World Border: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#CC77FF"));
+        //Debug.Log($"World size: X: {size.x}, Y: {size.y}".WithColor("#CC77FF"));
         ApproximateSize = new(left, bottom, right - left, top - bottom);
         if (size.x < 1000 && size.y < 1000 && size.x > 0 && size.y > 0)
         {
             tileDataOffset = new Vector2Int(left, bottom);
             tileData = new TileData[size.x, size.y];
+            Left = left;
+            Right = right;
+            Top = top;
+            Bottom = bottom;
         }
         else
         {
@@ -464,7 +409,8 @@ public class World : MonoBehaviour
                 for(int k = 1; k < 80; k += 4)
                 {
                     Vector3Int locationToCheck = randomLocation + dir2 * k;
-                    if(!HasTile(locationToCheck) || World.SolidTile(locationToCheck))
+                    ref TileData safe = ref SafeGetTileData(locationToCheck);
+                    if (!safe.HasTile || safe.IsSolid)
                     {
                         solids++;
                     }
@@ -475,7 +421,7 @@ public class World : MonoBehaviour
                             --ReachedEndPoint;
                             break;
                         }
-                        genOwner = World.GetTileData(locationToCheck).ProgressionNumber;
+                        genOwner = safe.ProgressionNumber;
                         hasReachedEndHere = true;
                         ReachedEndPoint++;
                         solids += 20;
@@ -522,8 +468,6 @@ public class World : MonoBehaviour
     }
     public void CreateWorldOuterFill()
     {
-        var Map = RealTileMap.Map;
-
         FastNoiseLite Noise = new();
         Noise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
         Noise.SetFractalType(FastNoiseLite.FractalType.PingPong);
@@ -531,11 +475,7 @@ public class World : MonoBehaviour
         Noise.SetSeed(1337);
         Noise.SetFrequency(0.04f);
 
-        Map.GetCorners(out int left, out int right, out int bottom, out int top);
-        left -= Padding;
-        right += Padding;
-        bottom -= Padding;
-        top += Padding;
+        World.GetCorners(out int left, out int right, out int bottom, out int top);
         for(int passNum = 0; passNum < 2; ++passNum)
         {
             for (int i = left; i < right; i++)
@@ -545,29 +485,24 @@ public class World : MonoBehaviour
                     Vector3Int pos = new(i, j);
                     if (passNum == 0)
                     {
-                        if (!Map.HasTile(pos))
+                        if (!HasTile(pos))
                         {
                             float f = Noise.GetNoise(i, j);
-                            if (f < 0.2f && f > -0.2f)
-                            {
-                                Map.SetTile(pos, TileID.Dirt.BorderTileType);
-                            }
-                            else
-                                Map.SetTile(pos, TileID.Grass.BorderTileType);
+                            World.SetTile(pos, f < 0.2f && f > -0.2f ? TileID.Dirt : TileID.Grass, true);
                         }
-                        if (SolidTile(pos))
-                        {
-                            if (Instance.LightingTilemapFront != null && Instance.LightingTilemapBack != null) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
-                            {
-                                Instance.LightingTilemapFront.SetTile(pos, DepthTile);
-                                Instance.LightingTilemapBack.SetTile(pos, DepthTile);
-                            }
-                        }
+                        //if (SolidTile(pos))
+                        //{
+                        //    if (Instance.LightingTilemapFront != null && Instance.LightingTilemapBack != null) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
+                        //    {
+                        //        Instance.LightingTilemapFront.SetTile(pos, DepthTile);
+                        //        Instance.LightingTilemapBack.SetTile(pos, DepthTile);
+                        //    }
+                        //}
                     }
-                    else
+                    else if (passNum == 1)
                     {
-                        var data = GetTileData(pos);
-                        if (passNum == 1 && data.IsRoadblock)
+                        var data = UnsafeGetTileData(pos);
+                        if(data.IsRoadblock && !data.IsSolid)
                         {
                             Vector3Int tleft = new(pos.x - 1, pos.y);
                             Vector3Int tright = new(pos.x + 1, pos.y);
@@ -576,16 +511,12 @@ public class World : MonoBehaviour
                             Color c = RoadblockColor(data.ProgressionNumber);
                             if (SolidTile(tleft))
                                 Instance.RoadblockTilemap.SetTile(new(tleft, DepthTile, c, Matrix4x4.identity), true);
-                                //SetTileData(tleft, new(data.ProgressionNumber, true));
                             if (SolidTile(tright))
                                 Instance.RoadblockTilemap.SetTile(new(tright, DepthTile, c, Matrix4x4.identity), true);
-                                //SetTileData(tright, new(data.ProgressionNumber, true));
                             if (SolidTile(ttop))
                                 Instance.RoadblockTilemap.SetTile(new(ttop, DepthTile, c, Matrix4x4.identity), true);
-                                //SetTileData(ttop, new(data.ProgressionNumber, true));
                             if (SolidTile(tbot))
                                 Instance.RoadblockTilemap.SetTile(new(tbot, DepthTile, c, Matrix4x4.identity), true);
-                                //SetTileData(tbot, new(data.ProgressionNumber, true));
                         }
                         //else if(passNum == 2 && !data.IsRoadblock)
                         //{
@@ -597,6 +528,30 @@ public class World : MonoBehaviour
                 }
             }
         }
+    }
+    public void FinalizeWorldTiles()
+    {
+        World.GetCorners(out int left, out int right, out int bottom, out int top);
+        int width = right - left;
+        int height = top - bottom;
+        int totalCells = width * height;
+        Vector3Int[] positionsArray = new Vector3Int[totalCells];
+        TileBase[] trueTilesArray = new TileBase[totalCells];
+        int writeIndex = 0;
+        for (int i = left; i < right; i++)
+        {
+            for (int j = bottom; j < top; j++)
+            {
+                ref TileData data = ref World.UnsafeGetTileData(i, j);
+                if (data.TileType != null)
+                {
+                    positionsArray[writeIndex] = new Vector3Int(i, j);
+                    trueTilesArray[writeIndex] = data.TileType.TileType(data.IsSolid);
+                }
+                ++writeIndex;
+            }
+        }
+        RealTileMap.Map.SetTiles(positionsArray, trueTilesArray);
     }
     /// <summary>
     /// This keeps track of elapsed time for the purpose of visual effects. Do not use for stuff that requires more precise logic
@@ -620,12 +575,4 @@ public class World : MonoBehaviour
     {
         HazardSystem.FixedUpdate();
     }
-    //public void OnDisable()
-    //{
-    //    Lighting.OnDisable();
-    //}
-    //public void OnEnable()
-    //{
-    //    Lighting.OnEnable();
-    //}
 }
