@@ -16,6 +16,7 @@ public partial class Main : MonoBehaviour
         {
             return UIManager.PauseMenu.activeSelf;
         }
+        public static SceneLoader loadingScript;
         public GameObject MPMenu1, MPMenu2, SPMenu;
         public TextMeshProUGUI PauseMenuTopText, MPControls1, MPControls2, SPControls;
         public Canvas MainCanvas, ScalingHelperCanvas;
@@ -90,7 +91,7 @@ public partial class Main : MonoBehaviour
         public static void Play(int scene)
         {
             CoinManager.AfterDeathReset();
-            SceneManager.LoadScene(scene);
+            loadingScript.loadScene(scene);
             UnpauseGame();
             StaticPlaySound();
         }
