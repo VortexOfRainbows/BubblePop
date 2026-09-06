@@ -273,15 +273,18 @@ public class PowerUpUIElement : MonoBehaviour
     public float IdleAnimationOffset { get; set; }
     public Vector3? CountOriginalPosition { get; set; } = null;
     public Vector3? MouseFollower { get; set; } = Vector2.zero;
+    public float SinWaveDefaultSize { get; set; } = 4;
+    public float PushSize { get; set; } = 12;
+    public float AnimationSinSpeed { get; set; } = 0.6f;
     public void IdleAnimationUpdate()
     {
         float scale = visual.transform.localScale.y;
-        float percent = Main.GlobalAnimationTimer * 0.6f + IdleAnimationOffset * 2f;
+        float percent = Main.GlobalAnimationTimer * AnimationSinSpeed + IdleAnimationOffset * 2f;
         float sin = Mathf.Sin(percent * MathF.PI);
-        Vector2 sinV = new Vector3(0, sin * 4 * scale);
+        Vector2 sinV = new Vector3(0, sin * SinWaveDefaultSize * scale);
 
         float lerpFactor2 = Utils.DeltaTimeLerpFactor(0.075f);
-        if (IAmBeingHovered)
+        if (IAmBeingHovered && PushSize > 0)
         {
             float maxSize = HoverRadius * ScaleMultiplier;
             if (SpecialHoverRect != null)
@@ -297,7 +300,7 @@ public class PowerUpUIElement : MonoBehaviour
             Vector2 ToMouse = MouseFollower.Value - pos;
             percent = 1 - Mathf.Clamp01(ToMouse.magnitude / maxSize);
             sinV *= 1 - percent;
-            sinV -= scale * 12 * percent * ToMouse.normalized;
+            sinV -= scale * PushSize * percent * ToMouse.normalized;
         }
         else
             MouseFollower = null;

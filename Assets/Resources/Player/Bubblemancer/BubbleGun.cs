@@ -20,11 +20,12 @@ public class BubbleGun : BubblemancerWand
     }
     public override void ModifyDescription(ref EquipDescription description)
     {
-        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary);
+        description.RequestAbilitySlots(Ability.ID.Primary, Ability.ID.Secondary, Ability.ID.Passive);
     }
     public override void EquipUpdate()
     {
         Player.PrimaryAttackSpeedModifier += 0.2f;
+        Player.BonusBubblePierce += 1;
     }
     protected override void AnimationUpdate()
     {

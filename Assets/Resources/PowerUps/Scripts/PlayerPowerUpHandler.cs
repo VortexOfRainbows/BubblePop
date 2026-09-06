@@ -270,9 +270,14 @@ public partial class Player : Entity
         AbilityRecoverySpeed = AbilityRecoverySpeed * AbilityRecoverySpeedMult;
         if(GoldenGun > 0)
         {
-            float attackDamageBuff = 0.1f;
-            float bonus = TotalInvestments * attackDamageBuff;
-            DamageMultiplier += Mathf.Min(0.2f + 0.1f * GoldenGun, bonus);
+            float attackDamageBuff = 0.02f + 0.02f * GoldenGun;
+            int count = 0;
+            if (HasFutures) count++;
+            if (HasCommodities) count++;
+            if (HasOptions) count++;
+            if (HasSecurities) count++;
+            if (HasWindfall) count++;
+            DamageMultiplier += attackDamageBuff * count;
         }
         if(SmokeStack > 0)
         {

@@ -99,7 +99,7 @@ public class PowerUpLayout : MonoBehaviour
         for (int i = 0; i < AvailablePowers.Count; ++i)
         {
             AvailablePowers[i].ForceNOTBlackMarket = true;
-            var ui = AddNewPower(PowerUpUISlotPrefab, gameObject, AvailablePowers[i].MyID);
+            var ui = AddNewPower(PowerUpUISlotPrefab, AvailablePowers[i].MyID);
             ui.ForceNotBlackMarket = true;
             ui.CompendiumElement = ui.CompendiumHoverOverride = compendium;
             AvailablePowers[i].ForceNOTBlackMarket = false;
@@ -112,7 +112,7 @@ public class PowerUpLayout : MonoBehaviour
             return;
         while (PowerUpElems.Count < Player.Instance.PowerCount)
         {
-            AddNewPower(PowerUpUISlotPrefab, gameObject, PowerUpElems.Count, true);
+            AddNewPower(PowerUpUISlotPrefab, PowerUpElems.Count, true);
         }
         while (PowerUpElems.Count > Player.Instance.PowerCount)
         {
@@ -122,7 +122,7 @@ public class PowerUpLayout : MonoBehaviour
         }
         UpdateSizing();
     }
-    public PowerUpUIElement AddNewPower(GameObject prefab, GameObject parent, int index, bool inventory = false)
+    public PowerUpUIElement AddNewPower(GameObject prefab, int index, bool inventory = false)
     {
         PowerUpUIElement powerUI = Instantiate(prefab.GetComponent<PowerUpUIElement>(), transform);
         //powerUI.transform.localPosition = UIElems[3].transform.localPosition + new Vector3(150 * AvailablePowersUI.Count, -190);
@@ -131,6 +131,14 @@ public class PowerUpLayout : MonoBehaviour
         powerUI.Count.gameObject.SetActive(inventory);
         powerUI.myCanvas = myCanvas;
         powerUI.MenuElement = !inventory;
+        if(inventory)
+        {
+            powerUI.HasIdleAnimation = true;
+            powerUI.SinWaveDefaultSize = 2.5f;
+            powerUI.PushSize = 2;
+            powerUI.AnimationSinSpeed = Utils.RandFloat(0.4f, 0.52f);
+            powerUI.IdleAnimationOffset = Utils.RandFloat(1);
+        }
         powerUI.myLayout = this;
         powerUI.TurnedOn();
         powerUI.ScaleMultiplier = transform.localScale.x;

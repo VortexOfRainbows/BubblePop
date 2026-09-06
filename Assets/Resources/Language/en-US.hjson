@@ -1088,14 +1088,14 @@
     Smokestack:
     {
       Title: Smokestack
-      Description: Increases Y:[attack speed] by Y:4% G:(+1% per stack) of your Y:[total number] of Y:[investment powers]
+      Description: Increases Y:[attack speed] by Y:4% G:(+2% per stack) of your Y:[total number] of Y:[investment powers]
       Brief: Investments increase attack speed
       Lore: Power.Smokestack.Lore
     }
     GoldenGun:
     {
       Title: Golden Gun
-      Description: Increases Y:[attack damage] by Y:10% of your Y:[total number] of Y:[investment powers,] up to maximum of Y:30% G:(+10% per stack)
+      Description: Increases Y:[attack damage] by Y:4% G:(+2% per stack) for each Y:[different investment power] you have
       Brief: Investments increase attack damage
       Lore: Power.GoldenGun.Lore
     }
@@ -1330,6 +1330,7 @@
       Lore: Equip.BubbleGun.Lore
       Abl1: Fire a Y:[stream of bubbles]
       Abl2: Y:Charge a big bubble that can Y:pierce multiple enemies
+      Abl3: Small bubbles can pierce once
     }
     BunceHat:
     {

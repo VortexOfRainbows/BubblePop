@@ -16,8 +16,7 @@ Do Later:
 8. (Eventually) Character select screen should receive a more full overhaul
 9. Next UI Changes:
 	1. Home screen and pause menu button appearances
-	2. Enemy wave cards, next wave button, and ascension button, unleash wave button
-		1. NEXT: enemy wave cards should animate from a fade in the center to improve UI symmetry and (maybe) proportions should be changed..?
+	2. Next wave button, and ascension button, unleash wave button
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -49,7 +48,7 @@ Sounds Needed:
 
 Done: 	
 
-9/4/26 to 9/5/26
+9/4/26 to 9/6/26
 1. Adjustments to power bubbles in UI such as experimental animations
 	1. Shifting effect animation based on cursor
 	2. Animation to works while paused
@@ -60,6 +59,14 @@ Done:
 5. Enemy cards slightly reworked
 	1. Now features different colors for each difficulty and slightly improved animation logic
 6. Import night soundtrack (not yet playing in game)
+7. Enemy wave cards now animate from a fade in the center, rather than coming in from the top right
+	1. They also fade-out differently now and overall animation improved
+	2. They now appear above your hearts (z-order)
+8. (BUFF) Bubble Gun now gives +1 pierce to small bubbles
+9. (REWORK) Golden Gun now increases damage based on each unique investment, rather than total investments
+10. (BUFF) Smokestack stacking factor +1% -> +2%
+11. Powers in the bottom bar UI also now animate, although it is more subtle
+12. Golden Gun sprite by DAVID
 
 9/3/26 to 9/4/26
 1. Crucible power buttons now use compendium blue style

@@ -14,7 +14,6 @@ public class WaveMeter : MonoBehaviour
     public TextMeshProUGUI HighscoreWaveText;
     public RectTransform Meter;
     public TextMeshProUGUI WaveNumber;
-    public Transform DeckPosition;
     public Transform Mask, QuestAnchor;
     public GameObject BlueSkull;
     public TextMeshProUGUI BlueSkullNum;

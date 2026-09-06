@@ -1,13 +1,14 @@
-using Steamworks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ModifierCard : MonoBehaviour
 {
-    public static readonly Vector3 backScale = new(0.5f, 0.3f, 1.0f);
-    public Vector3 RestPosition;
-    public GameObject BackSide;
+    public CanvasGroup MyGroup;
+    public static readonly Vector3 backScale = new(0.55f, 0.33f, 1.0f);
+    public Vector2 RestPosition { get; set; }
+    public Vector2 InitialSpawnPosition { get; set; } = Vector3.zero;
+    public GameObject BackSide, FrontSide;
     public CardData cardData = null;
     public Image BG, Box1, Box2;
     public Image BG2, Key;
@@ -27,21 +28,13 @@ public class ModifierCard : MonoBehaviour
         cardData ??= new(this);
         int num = (int)(DifficultyMultiplier + Player.Instance.PersonalWaveCardBonus);
         if (num == 1)
-        {
             DifficultyColor = BG.color = Box1.color = Box2.color = BG2.color = Key.color = ColorHelper.Bronze;
-        }
         else if(num == 2)
-        {
             DifficultyColor = BG.color = Box1.color = Box2.color = BG2.color = Key.color = ColorHelper.Silver;
-        }
         else if(num == 3)
-        {
             DifficultyColor = BG.color = Box1.color = Box2.color = BG2.color = Key.color = ColorHelper.DimGold;
-        }
         else if (num == 4)
-        {
             DifficultyColor = BG.color = Box1.color = Box2.color = BG2.color = Key.color = ColorHelper.IridiumPurple;
-        }
     }
     public void UpdateText()
     {
@@ -101,6 +94,9 @@ public class ModifierCard : MonoBehaviour
     }
     public void GenerateCardData()
     {
+        transform.localPosition = Vector3.zero;
+        transform.localScale = Vector3.one;
+        transform.localEulerAngles = Vector3.zero;
         cardData ??= new(this);
         cardData.Generate();
         UpdateText();
@@ -122,21 +118,24 @@ public class ModifierCard : MonoBehaviour
         SecondaryCardVisual.EnemyScaler.transform.LerpLocalScale(selected ? new Vector2(-1.05f, 1.05f) : new Vector2(-1.0f, 1.0f), growSpeed);
     }
     public bool HasBeenFlipped { get; set; } = false;
-    private float FlipTimer = 0;
-    private float SpawnTimer = 0;
+    public float FlipTimer { get; private set; } = 0;
+    public float SpawnTimer { get; private set; } = 0;
     public void ResetAnimation()
     {
+        FrontSide.SetActive(false);
         CardVisual.MaskActive(false);
         SecondaryCardVisual.MaskActive(false);
         SkullAnchorCanvas.gameObject.SetActive(false);
         TextCanvas.gameObject.SetActive(false);
         SkullAnchorCanvas.sortingLayerID = TextCanvas.sortingLayerID = SortingLayer.NameToID("UICamera");
         HasBeenFlipped = false;
-        FlipTimer = SpawnTimer = 0;
-        transform.position = WaveMeter.Instance.DeckPosition.position + new Vector3(200 * WaveMeter.Instance.DeckPosition.lossyScale.x, 0);
-        transform.localPosition = transform.localPosition;
+        FlipTimer = 0;
+        SpawnTimer = (DifficultyMultiplier - 1) * - 0.06f;
+        transform.localPosition = new Vector3(0, -350);
         transform.localScale = backScale;
-        transform.localEulerAngles = Vector3.zero;
+        transform.localEulerAngles = new Vector3(0, 0, -20 * (DifficultyMultiplier - 2));
+        InitialSpawnPosition = new Vector2(100 * (DifficultyMultiplier - 2), (DifficultyMultiplier == 2 ? -260 : -290));
+        RestPosition = new Vector2(450 * (DifficultyMultiplier - 2), 0);
         BackSide.SetActive(true);
         CardVisual.UpdateColor(!WaveDirector.EnemyPool.Contains(CardVisual.MyEnemyPrefab.gameObject), false);
         if (cardData.EnemyClause.Enemy.EnemiesToAdd.Count > 1)
@@ -151,26 +150,37 @@ public class ModifierCard : MonoBehaviour
         {
             SecondaryCardVisual.gameObject.SetActive(false);
         }
+        MyGroup.alpha = 0;
     }
+    public bool Spawning = false;
     public void SpawnAnimation()
     {
-        if(SpawnTimer < 0.35f)
-        {
-            Utils.LerpSnapNotLocal(transform, WaveMeter.Instance.DeckPosition.position, Utils.DeltaTimeLerpFactor(0.1f), 1f);
-        }
-        else
-        {
-            Utils.LerpSnap(transform, RestPosition, Utils.DeltaTimeLerpFactor(0.1f), 1f);
-        }
+        if (!Spawning)
+            Spawning = true;
+        MyGroup.alpha = SpawnTimer * 5;
+        MyGroup.alpha = Mathf.Clamp01(MyGroup.alpha);
+
         SpawnTimer += Time.unscaledDeltaTime;
-        if (!HasBeenFlipped && SpawnTimer > 0.45f)
+        if(SpawnTimer > 0.4f)
         {
-            FlipTimer += Time.unscaledDeltaTime * 4.5f;
-            if (FlipTimer > 2)
+            float lerpFactor = Utils.DeltaTimeLerpFactor(0.1f);
+            transform.LerpLocalEulerZ(0, lerpFactor);
+            Utils.LerpSnap(transform, RestPosition, lerpFactor, 1f);
+            if (!HasBeenFlipped)
             {
-                HasBeenFlipped = true;
-                FlipTimer = 2;
+                FlipTimer += Time.unscaledDeltaTime * 4.75f;
+                if (FlipTimer > 2)
+                {
+                    HasBeenFlipped = true;
+                    FlipTimer = 2;
+                }
             }
+        }
+        else if (SpawnTimer > 0)
+        {
+            float percent = Mathf.Clamp01(SpawnTimer * 2.75f);
+            Vector2 offset = new Vector2(0, 60 * Mathf.Sin( percent * Mathf.PI)).RotatedBy(transform.localEulerAngles.z * Mathf.Deg2Rad);
+            Utils.LerpSnap(transform, InitialSpawnPosition + offset, Utils.DeltaTimeLerpFactor(0.1f), 1f);
         }
         UpdateFlippage();
         UpdateSkulls();
@@ -182,7 +192,8 @@ public class ModifierCard : MonoBehaviour
         SkullAnchorCanvas.gameObject.SetActive(FlipTimer >= 1);
         TextCanvas.gameObject.SetActive(FlipTimer >= 1);
         BackSide.SetActive(FlipTimer < 1);
-        float angle = 0;
+        FrontSide.SetActive(FlipTimer >= 1);
+        float angle;
         if (FlipTimer < 1)
             angle = FlipTimer * 90;
         else
@@ -192,19 +203,29 @@ public class ModifierCard : MonoBehaviour
     }
     public void DespawnAnimation()
     {
-        float growSpeed = 0.1f * (2 - FlipTimer);
-        transform.LerpLocalScale(backScale, Utils.DeltaTimeLerpFactor(growSpeed));
-        if (FlipTimer < 0.5f)
-            Utils.LerpSnapNotLocal(transform, new Vector2(WaveMeter.Instance.DeckPosition.position.x + 200 * WaveMeter.Instance.DeckPosition.lossyScale.x, transform.position.y), Utils.DeltaTimeLerpFactor(0.1f), 1f);
-        if (HasBeenFlipped)
+        if (Spawning)
         {
-            FlipTimer -= Time.unscaledDeltaTime * 4.5f;
-            if (FlipTimer < 0)
+            SpawnTimer = (DifficultyMultiplier - 1) * -0.06f;
+            Spawning = false;
+        }
+        SpawnTimer += Time.unscaledDeltaTime;
+        float percent = 1 - FlipTimer / 2;
+        float growSpeed = 0.025f + 0.2f * percent;
+        transform.LerpLocalScale(backScale, Utils.DeltaTimeLerpFactor(growSpeed));
+        transform.localPosition = RestPosition + new Vector2(0, 100 * (Mathf.Sin(percent * percent * Mathf.PI) - percent));
+        MyGroup.alpha = 1 - percent;
+        if (SpawnTimer > 0.0f)
+        {
+            if (HasBeenFlipped)
             {
-                HasBeenFlipped = false;
-                FlipTimer = 0;
+                FlipTimer -= Time.unscaledDeltaTime * 4.75f;
+                if (FlipTimer < 0)
+                {
+                    HasBeenFlipped = false;
+                    FlipTimer = 0;
+                }
+                UpdateFlippage();
             }
-            UpdateFlippage();
         }
         UpdateSkulls();
     }
