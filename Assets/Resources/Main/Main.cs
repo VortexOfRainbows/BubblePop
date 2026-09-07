@@ -103,6 +103,7 @@ public partial class Main : MonoBehaviour
         if(!GameFinishedLoading)
         {
             Debug.Log("<color=#00FF00>Game Awoke!</color>");
+            Utils.Init();
             UICameraLayerID = SortingLayer.NameToID("UICamera");
             TextureAssets.Load();
             PrefabAssets.Load();

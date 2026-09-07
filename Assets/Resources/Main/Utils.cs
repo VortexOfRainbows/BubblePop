@@ -5,17 +5,21 @@ using UnityEngine.Tilemaps;
 
 public static class Utils
 {
-    public static Unity.Mathematics.Random rand = InitRandSeed();
+    public static void Init()
+    {
+        RandomizeSeed();
+        WorldLayerMask = LayerMask.GetMask("World");
+    }
+    public static Unity.Mathematics.Random rand = new();
     public static readonly float TwoPI = Mathf.PI * 2;
     public static readonly float HalfPI = Mathf.PI / 2;
     public static readonly float QuarterPI = Mathf.PI / 4;
     public static readonly float PI = Mathf.PI;
     public static readonly float Sqrt2 = Mathf.Sqrt(2);
-    private static Unity.Mathematics.Random InitRandSeed()
+    public static Unity.Mathematics.Random RandomizeSeed()
     {
-        Unity.Mathematics.Random r = new();
-        r.InitState((uint)UnityEngine.Random.Range(0, int.MaxValue));
-        return r;
+        rand.InitState((uint)UnityEngine.Random.Range(0, int.MaxValue));
+        return rand;
     }
     public static bool RollWithLuck(float odds)
     {
@@ -417,7 +421,7 @@ public static class Utils
     {
         return RandInt(0, denominator) == 0;
     }
-    public static readonly int WorldLayerMask = LayerMask.GetMask("World");
+    public static int WorldLayerMask { get; private set; }
     /// <summary>
     /// Performs a raycast using unity and tile systems.
     /// </summary>

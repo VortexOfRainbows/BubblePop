@@ -156,7 +156,7 @@ public class SingleSetting : MonoBehaviour
         {
             var colors = DiscreteButton.colors;
             colors.normalColor = ColorHelper.GetTimeOfDayUIColor(DiscreteBinder.Setting);
-            colors.highlightedColor = ColorHelper.UI.SelectColor;
+            colors.highlightedColor = ColorHelper.UI.Yellow;
             colors.pressedColor = colors.highlightedColor * new Color(0.858f, 0.765f, 0.811f);
             colors.selectedColor = colors.highlightedColor;
             colors.disabledColor = colors.normalColor * 0.6f;

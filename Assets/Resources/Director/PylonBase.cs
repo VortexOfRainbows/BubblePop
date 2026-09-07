@@ -10,14 +10,17 @@ public class PylonBase : InteractableWorldObject
     {
         Vector3 position = Crystal.transform.position;
 
-        Vector2 clamped = Utils.ClampToScreenEdge(position, 40 * Main.ActivePrimaryCanvas.scaleFactor);
+        float clampDistance = 190;
+        Vector2 clamped = Utils.ClampToScreenEdge(position, clampDistance * Main.ActivePrimaryCanvas.scaleFactor);
+        Vector2 realPosition = Utils.ClampToScreenEdge(position, 10 * Main.ActivePrimaryCanvas.scaleFactor); //So the pointer fades away when the player gets close
         position.x = clamped.x;
         position.y = clamped.y;
 
 
-        Vector2 toPointer = position - Crystal.transform.position;
+        Vector2 toPointer = realPosition - (Vector2)Crystal.transform.position;
         float distanceFromPointer = toPointer.magnitude;
-        float scaleFactor = Mathf.Clamp(distanceFromPointer - 1, 0, 1);
+        Vector2 toPointer2 = position - Crystal.transform.position;
+        float scaleFactor = Mathf.Clamp(toPointer2.magnitude - 1f, 0, 1);
 
         if (distanceFromPointer > 1)
             PointerAlpha += Time.unscaledDeltaTime * 1.5f;
@@ -25,6 +28,6 @@ public class PylonBase : InteractableWorldObject
             PointerAlpha -= Time.unscaledDeltaTime;
         PointerAlpha = Mathf.Clamp(PointerAlpha, -3f, scaleFactor);
 
-        SpriteBatch.Draw(Crystal.sprite, position, Vector2.one * 0.4f, 0, Color.white.WithAlpha(Mathf.Max(PointerAlpha * 0.7f, 0)), 21, Main.TextureAssets.SpriteGlowmask);
+        SpriteBatch.Draw(Crystal.sprite, position, Vector2.one * 0.45f, 0, Color.white.WithAlpha(Mathf.Max(PointerAlpha * 0.75f, 0)), 21, Main.TextureAssets.SpriteGlowmask);
     }
 }

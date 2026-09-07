@@ -10,13 +10,10 @@ Do Later:
 	2. Maybe also make it so universal rewards and modifiers are shown in a separate box (stuff that is the same no matter what for the wave)
 3. Grass shader to make grass more interesting and potentially slightly vary in the wind
 4. Update to Unity 6 to remove the silly splash screen (SAVE THIS FOR SUMMER, SERIOUSLY!!! WILL NEED TO MAKE MORE SHADERS AND LEARN A LOT MORE ON HOW TO FIX THE PORTING ISSUES: MOSTLY MATERIALS AND SHADERS)
-5. Worldgen loading screen (this will tell the player that the game is generating the world. It will also help us debug which parts of worldgen are lagging if we add checkpoints)
+5. Worldgen loading screen (this will tell the player that the game is generating the world).
 6. Convert player power handler to use structs for faster resetting 
 7. (Eventually) Pause screen should have a button to show current powerups
 8. (Eventually) Character select screen should receive a more full overhaul
-9. Next UI Changes:
-	1. Home screen and pause menu button appearances
-	2. Warp UI
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -42,6 +39,7 @@ Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Soup sometimes causes power numbers to spazz out
 3. Achievement popups are effected by lighting
+4. Clicking "Finalize" with the mouse leads to always opening the compendium due to its placement in the main menu
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -60,6 +58,8 @@ Done:
 6. Fix issue where off-screen pointers padding did not scale based on resolution, meaning they were too close to the edge on higher resolution
 7. When loading into a world/loop, a quest for starting the pylon will begin
 8. Quests are slightly bigger on the UI and tighter packed
+9. Warp screen (loop screen) is now slightly bigger and in the new style
+10. Off screen indicators for pylons now stay farther from the screen edges and are slightly more visible
 
 9/4/26 to 9/6/26
 1. Adjustments to power bubbles in UI such as experimental animations

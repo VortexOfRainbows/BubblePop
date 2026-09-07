@@ -186,7 +186,7 @@ public class PowerUpUIElement : MonoBehaviour
                     if(PowerUpCheatUI.UpdatedProcessQuantity > 0)
                         UpdateShardCost();
                     bool canAfford = Cost <= CoinManager.CurrentShards || Main.DebugSettings.PowerUpCheat;
-                    CostText.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
+                    CostText.color = canAfford ? ColorHelper.UI.White : ColorHelper.UI.RedColor;
                 }
                 else if(MyPower is not RainbowFlower)
                 {
@@ -203,7 +203,7 @@ public class PowerUpUIElement : MonoBehaviour
                 int cost = Cost;
                 bool canAfford = cost <= CoinManager.CurrentGems;
                 CostText.text = cost.ToString();
-                CostText.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
+                CostText.color = canAfford ? ColorHelper.UI.White : ColorHelper.UI.RedColor;
             }
             else
                 CostObj.SetActive(false);

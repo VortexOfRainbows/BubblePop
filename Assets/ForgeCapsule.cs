@@ -25,7 +25,7 @@ public class ForgeCapsule : InteractableWorldObject
             Image i = PopupUI.GetChild(0).GetComponent<Image>();
             i.color = (canAfford ? ColorHelper.Cornflower : ColorHelper.UI.RedColor).WithAlpha(i.color.a);
             Key.color = i.color.WithAlpha(Key.color.a);
-            RestockCost.color = canAfford ? ColorHelper.UI.DefaultColor : ColorHelper.UI.RedColor;
+            RestockCost.color = canAfford ? ColorHelper.UI.White : ColorHelper.UI.RedColor;
             if (Input.GetKeyDown(KeyCode.E) && canAfford && (ChoicePowerMenu.Hide || !ChoicePowerMenu.Instance.gameObject.activeSelf))
             {
                 MyHammer.Begin(this, GemCost);

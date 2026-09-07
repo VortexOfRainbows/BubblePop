@@ -129,7 +129,7 @@ public class StandardButton : Button
         colors.fadeDuration = 0.1f;
         if (ColorType == ButtonColorType.WhiteToYellow)
         {
-            colors.normalColor = ColorHelper.UI.DefaultColor;
+            colors.normalColor = ColorHelper.UI.White;
             colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
             colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
             colors.selectedColor = colors.highlightedColor;

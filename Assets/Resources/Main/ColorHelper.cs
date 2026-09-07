@@ -4,8 +4,8 @@ public static class ColorHelper
 {
     public static class UI
     {
-        public static readonly Color SelectColor = Color.yellow;
-        public static readonly Color DefaultColor = Color.white;
+        public static readonly Color Yellow = Color.yellow;
+        public static readonly Color White = Color.white;
         public static readonly Color RedColor = New255(255, 50, 50);
         public static readonly Color DarkGreyColor = New255(0x99, 0x99, 0x99);
         public static readonly Color GreyColor = new(1, 1, 1, 0.4f);

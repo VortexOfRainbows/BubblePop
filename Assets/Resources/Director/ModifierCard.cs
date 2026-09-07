@@ -113,7 +113,7 @@ public class ModifierCard : MonoBehaviour
             hovering = selected;
         float growSpeed = Utils.DeltaTimeLerpFactor(0.06f * FlipTimer + (HasBeenFlipped ? 0.08f : 0f));
         transform.LerpLocalScale(selected ? Vector2.one * 1.04f : Vector2.one, growSpeed);
-        BG.color = Box1.color = Box2.color = Key.color = Color.Lerp(BG.color, selected ? ColorHelper.UI.SelectColor : (hovering ? Color.Lerp(Color.yellow, DifficultyColor, 0.8f) : DifficultyColor), Utils.DeltaTimeLerpFactor(0.2f));
+        BG.color = Box1.color = Box2.color = Key.color = Color.Lerp(BG.color, selected ? ColorHelper.UI.Yellow : (hovering ? Color.Lerp(Color.yellow, DifficultyColor, 0.8f) : DifficultyColor), Utils.DeltaTimeLerpFactor(0.2f));
         CardVisual.EnemyScaler.transform.LerpLocalScale(selected ? Vector2.one * 1.05f : Vector2.one, growSpeed);
         SecondaryCardVisual.EnemyScaler.transform.LerpLocalScale(selected ? new Vector2(-1.05f, 1.05f) : new Vector2(-1.0f, 1.0f), growSpeed);
     }

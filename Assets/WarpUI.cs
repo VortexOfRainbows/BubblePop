@@ -8,6 +8,8 @@ public class WarpUI : MonoBehaviour
     public Canvas MyCanvas;
     public Image ContinueButton;
     public Image FinalizeButton;
+    public static readonly Color DefaultColor = ColorHelper.Cornflower.WithAlpha(0.9f);
+    public static readonly Color GreyColor = (ColorHelper.Cornflower * 0.5f).WithAlpha(0.9f);
     public bool ChooseContinueButton { get; private set; } = true;
     public float HasBeenOpenForMoreThan1Second = 0f;
     public void Start()
@@ -42,19 +44,19 @@ public class WarpUI : MonoBehaviour
         {
             SelectedButton.transform.GetChild(0).gameObject.SetActive(false);
             SelectedButton.transform.LerpLocalScale(Vector2.one * 0.95f, 1);
-            SelectedButton.color = ColorHelper.UI.GreyColor;
+            SelectedButton.color = GreyColor;
             OtherButton.transform.GetChild(0).gameObject.SetActive(false);
             OtherButton.transform.LerpLocalScale(Vector2.one * 0.95f, 1);
-            OtherButton.color = ColorHelper.UI.GreyColor;
+            OtherButton.color = GreyColor;
             return;
         }
         SelectedButton.transform.GetChild(0).gameObject.SetActive(true);
         SelectedButton.transform.LerpLocalScale(Vector2.one, lerpFactor);
-        SelectedButton.color = SelectedButton.color.Lerp(ColorHelper.UI.SelectColor, lerpFactor);
+        SelectedButton.color = SelectedButton.color.Lerp(ColorHelper.UI.Yellow, lerpFactor);
 
         OtherButton.transform.GetChild(0).gameObject.SetActive(false);
         OtherButton.transform.LerpLocalScale(Vector2.one * 0.95f, lerpFactor);
-        OtherButton.color = OtherButton.color.Lerp(ColorHelper.UI.GreyColor, lerpFactor);
+        OtherButton.color = OtherButton.color.Lerp(DefaultColor, lerpFactor);
         
         if(Utils.IsMouseHoveringOverThis(true, OtherButton.rectTransform, 0, MyCanvas))
         {

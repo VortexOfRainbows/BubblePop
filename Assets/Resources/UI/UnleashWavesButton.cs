@@ -28,7 +28,7 @@ public class UnleashWavesButton : MonoBehaviour
         if (canStartWave) // (StartButton.interactable)
         {
             StartButtonImage.color = new Color(1, 1, 1, 0.8f);
-            InteractVisual.color = ColorHelper.UI.DefaultColor;
+            InteractVisual.color = ColorHelper.UI.White;
             Text.color = Color.white;
             if (Control.Interact)
                 SimulatePress();
