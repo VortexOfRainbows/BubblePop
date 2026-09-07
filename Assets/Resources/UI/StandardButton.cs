@@ -19,6 +19,7 @@ public class StandardButton : Button
         DarkYellowToYellow = 2,
         CornflowerToYellow = 3,
         RedToYellow = 4,
+        DarkCornflowerToYellow = 5,
     }
     public enum ButtonDestinationType
     {
@@ -166,7 +167,15 @@ public class StandardButton : Button
             colors.selectedColor = colors.highlightedColor;
             colors.disabledColor = colors.normalColor * 0.6f;
         }
-        if(DestinationType == ButtonDestinationType.CompendiumExport) //Currently unimplemented
+        else if(ColorType == ButtonColorType.DarkCornflowerToYellow)
+        {
+            colors.normalColor = ColorHelper.DarkCornflower;
+            colors.highlightedColor = ColorHelper.New255(0xFD, 0xFF, 0x4A);
+            colors.pressedColor = ColorHelper.New255(0xD9, 0xC3, 0x3C);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = colors.normalColor * 0.6f;
+        }
+        if (DestinationType == ButtonDestinationType.CompendiumExport) //Currently unimplemented
             interactable = true;
         base.colors = colors;
 

@@ -122,6 +122,7 @@ public class CharacterSelect : MonoBehaviour
             HasLoaded = true;
             LoadData();
             UpdateSelectedEquipmentBox(LastSelectedBody);
+            InfoScreen.SetUIElement(Player.Instance.Body);
         }
         if (!Main.WavesUnleashed)
         {

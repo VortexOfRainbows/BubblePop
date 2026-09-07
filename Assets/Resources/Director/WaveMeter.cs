@@ -35,15 +35,17 @@ public class WaveMeter : MonoBehaviour
     {
         Quest q = Quest.SpawnBlurb(QuestAnchor, data);
         int i = Quests.Count;
-        q.transform.localPosition = new Vector3(q.transform.localPosition.x, -80 * i - 135, q.transform.localPosition.z);
+        q.transform.localPosition = new Vector3(q.transform.localPosition.x, -80 * i - 170, q.transform.localPosition.z);
         Quests.Add(q);
     }
     public void AnimationUpdate()
     {
+        //float defaultQuestHeight = -35;//35 is half the height of the wave meter base rect transform
         float targetPosition = -50 + Mathf.Sin(AnimationTimer * Mathf.Deg2Rad * 40) * 5;
-        float defaultPosition = 150;
-        Utils.LerpSnap(transform, new Vector2(transform.localPosition.x, Main.WavesUnleashed ? targetPosition : defaultPosition), Utils.DeltaTimeLerpFactor(0.02f), 0.1f);
-        Utils.LerpSnap(NonMeterStats.transform, new Vector2(NonMeterStats.transform.localPosition.x, Main.WavesUnleashed ? defaultPosition : targetPosition), Utils.DeltaTimeLerpFactor(0.02f), 0.1f);
+        float defaultPosition = 125;
+        float lerpFactor = Utils.DeltaTimeLerpFactor(0.02f);
+        Utils.LerpSnap(transform, new Vector2(transform.localPosition.x, Main.WavesUnleashed ? targetPosition : defaultPosition), lerpFactor, 0.1f);
+        Utils.LerpSnap(NonMeterStats.transform, new Vector2(NonMeterStats.transform.localPosition.x, Main.WavesUnleashed ? defaultPosition : targetPosition), lerpFactor, 0.1f);
         if ((Main.WavesUnleashed && WaveDirector.WaveActive) || Main.DebugSettings.SkipWaves)
         {
             if (StartTimer > 0.5f)
@@ -57,6 +59,7 @@ public class WaveMeter : MonoBehaviour
             }
             else
                 StartTimer += Time.deltaTime;
+            //QuestAnchor.LerpLocalPosition(new Vector2(QuestAnchor.transform.localPosition.x, defaultQuestHeight), lerpFactor); 
         }
         else
         {
@@ -68,11 +71,12 @@ public class WaveMeter : MonoBehaviour
                 HighscoreWaveText.text = $"Highscore: {WaveDirector.HighScoreWaveNum}";
             }
             StartTimer = 0;
+            //QuestAnchor.LerpLocalPosition(new Vector2(QuestAnchor.transform.localPosition.x, defaultQuestHeight - 25), lerpFactor); //35 is half the height of the wave meter base rect transform
         }
-        if (Main.DebugCheats && Input.GetKeyDown(KeyCode.Q))
-        {
-            AddQuest(new Quest.QuestData("Arbitrary Test Quest", "Incomplete", Quest.QuestType.Dummy, new Quest.QuestData("Arbitrary Sequel Quest", "Incomplete", Quest.QuestType.Dummy)));
-        }
+        //if (Main.DebugCheats && Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    AddQuest(new Quest.QuestData("Arbitrary Test Quest", "Incomplete", Quest.QuestType.Dummy, new Quest.QuestData("Arbitrary Sequel Quest", "Incomplete", Quest.QuestType.Dummy)));
+        //}
         if(Player.AscensionLevel != 0)
         {
             BlueSkullNum.text = Player.AscensionLevel.ToString();
@@ -187,7 +191,7 @@ public class WaveMeter : MonoBehaviour
                 Destroy(q.gameObject);
             }
             else
-                q.transform.localPosition = new Vector3(q.transform.localPosition.x, Mathf.Lerp(q.transform.localPosition.y, - 80 * i - 135, l), q.transform.localPosition.z);
+                q.transform.localPosition = new Vector3(q.transform.localPosition.x, Mathf.Lerp(q.transform.localPosition.y, - 80 * i - 170, l), q.transform.localPosition.z);
         }
         foreach(Quest.QuestData data in sequels)
         {

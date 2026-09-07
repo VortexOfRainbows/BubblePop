@@ -23,8 +23,9 @@ public class UnleashWavesButton : MonoBehaviour
     }
     public void Update()
     {
-        StartButton.interactable = CanAfford && CanUse;
-        if (StartButton.interactable)
+        bool canStartWave = CanAfford && CanUse;
+        //StartButton.interactable = CanAfford && CanUse;
+        if (canStartWave) // (StartButton.interactable)
         {
             StartButtonImage.color = new Color(1, 1, 1, 0.8f);
             InteractVisual.color = ColorHelper.UI.DefaultColor;
@@ -32,23 +33,23 @@ public class UnleashWavesButton : MonoBehaviour
             if (Control.Interact)
                 SimulatePress();
         }
-        else
-        {
-            InteractVisual.color = Color.Lerp(new Color(1, 1, 1, 0.4f), new Color(0.9f, 0.0f, 0.0f, 0.25f), 0.5f);
-            StartButtonImage.color = Color.Lerp(new Color(1, 1, 1, 0.8f), new Color(0.9f, 0.0f, 0.0f, 0.8f), 0.5f);
-            Text.color = CanAfford ? Color.white : Color.red;
-        }
-        if (Utils.IsMouseHoveringOverThis(true, StartButton.GetComponent<RectTransform>(), 0, MyCanvas))
-        {
-            if (!StartButton.interactable)
-            {
-                if(Player.AllPlayers.Count > 1)
-                    PopUpTextUI.Enable("All players must be near a pylon to begin!".WithColor(ColorHelper.RarityColorHex[5]), " ");
-                else
-                    PopUpTextUI.Enable("Must be near a pylon to begin!".WithColor(ColorHelper.RarityColorHex[5]), "");
-            }
-            Player.Instance.Control.BlockAttack = true;
-        }
+        //else
+        //{
+        //    InteractVisual.color = Color.Lerp(new Color(1, 1, 1, 0.4f), new Color(0.9f, 0.0f, 0.0f, 0.25f), 0.5f);
+        //    StartButtonImage.color = Color.Lerp(new Color(1, 1, 1, 0.8f), new Color(0.9f, 0.0f, 0.0f, 0.8f), 0.5f);
+        //    Text.color = CanAfford ? Color.white : Color.red;
+        //}
+        //if (Utils.IsMouseHoveringOverThis(true, StartButton.GetComponent<RectTransform>(), 0, MyCanvas))
+        //{
+        //    if (!StartButton.interactable)
+        //    {
+        //        if(Player.AllPlayers.Count > 1)
+        //            PopUpTextUI.Enable("All players must be near a pylon to begin!".WithColor(ColorHelper.RarityColorHex[5]), " ");
+        //        else
+        //            PopUpTextUI.Enable("Must be near a pylon to begin!".WithColor(ColorHelper.RarityColorHex[5]), "");
+        //    }
+        //    Player.Instance.Control.BlockAttack = true;
+        //}
         UpdateAscensionDisplay();
         PylonUpdate();
         //StartButtonCoinVisual.SetActive(CoinManager.TotalEquipCost > 0);

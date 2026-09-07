@@ -97,8 +97,12 @@ public partial class World : MonoBehaviour
         GachaponShop.TotalPowersPurchased = 0;
         GachaponShop.GlobalRestockCost = GachaponShop.SetDefaultGemRestockCost();
     }
+    public bool FinishedLoadingWorld { get; set; }
+    public bool RunOnceFirstQuest { get; set; }
     public void ResetWorld(bool firstInit)
     {
+        FinishedLoadingWorld = false;
+
         //UnityEngine.Random.InitState(1337);
         //Utils.rand.InitState(1337);
         System.Diagnostics.Stopwatch watch = new();
@@ -182,6 +186,9 @@ public partial class World : MonoBehaviour
         Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
         Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Lighting".WithColor("#DDFF33"));
         watch.Stop();
+
+        FinishedLoadingWorld = true;
+        RunOnceFirstQuest = true;
     }
     public void Start()
     {
@@ -567,6 +574,12 @@ public partial class World : MonoBehaviour
         Lighting.Update();
         GlobalTimeElapsedCounter += Time.deltaTime;
         Main.UpdateGlobalAnimator();
+
+        if(RunOnceFirstQuest)
+        {
+            RunOnceFirstQuest = false;
+            WaveMeter.Instance.AddQuest(new Quest.QuestData("Activate the first Pylon,", "Distance: 0", Quest.QuestType.ActivatePylon));
+        }
     }
     public void LateUpdate()
     {

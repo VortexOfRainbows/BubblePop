@@ -19,14 +19,14 @@ public class Quest : MonoBehaviour
         public QuestData Sequel { get; private set; }
         public QuestData(string text, string progressText, QuestType Type, QuestData sequelQuest = null)
         {
-            Text = text;
-            ProgressText = progressText;
+            Text = text + "\n";
+            ProgressText = progressText.WithColor(ColorHelper.RarityColorHex[4]);
             this.Type = Type; 
             Sequel = sequelQuest;
         }
         public string Text { get; private set; }
         public string ProgressText { get; set; }
-        public string CompleteText => Text + "\n" + ProgressText;
+        public string GetCompleteText() => Text + ProgressText;
         internal bool CheckForCompletion()
         {
             bool setComplete = false;
@@ -44,7 +44,7 @@ public class Quest : MonoBehaviour
                         else
                         {
                             string quant = Main.CurrentPylon.WavesRequired.ToString();
-                            ProgressText = $"Waves: {Main.CurrentPylon.WavesPassed}/{quant}";
+                            ProgressText = $"Waves: {Main.CurrentPylon.WavesPassed}/{quant}".WithColor(ColorHelper.RarityColorHex[4]);
                         }
                     }
                     break;
@@ -58,7 +58,7 @@ public class Quest : MonoBehaviour
                         if (dist <= 0 || Main.CurrentPylon.CompleteAnimCounter > 0)
                         {
                             setComplete = Main.CurrentPylon.Purified;
-                            ProgressText = "In Progress";
+                            ProgressText = "In Progress".WithColor(Color.green.ToHexString());
                         }
                         else
                             ProgressText = $"Distance: {(int)(dist + 0.9999f):#}";
@@ -72,9 +72,9 @@ public class Quest : MonoBehaviour
                         Player.FindFarthest(Main.NextPylon.transform.position, out _, out float dist);
                         dist -= Main.PylonActivationDist * 1.0f;
                         if(dist <= 0)
-                            ProgressText = "Ready";
+                            ProgressText = "Ready".WithColor(Color.green.ToHexString());
                         else
-                            ProgressText = $"Distance: {(int)(dist + 0.9999f):#}";
+                            ProgressText = $"Distance: {(int)(dist + 0.9999f):#}".WithColor(ColorHelper.RarityColorHex[4]);
                     }
                     break;
                 case QuestType.Escape:
@@ -86,10 +86,10 @@ public class Quest : MonoBehaviour
                         dist -= Main.PylonActivationDist * 0.9f;
                         if (dist <= 0)
                         {
-                            ProgressText = "Arrived";
+                            ProgressText = "Arrived".WithColor(Color.green.ToHexString());
                         }
                         else
-                            ProgressText = $"Distance: {(int)(dist + 0.9999f):#}";
+                            ProgressText = $"Distance: {(int)(dist + 0.9999f):#}".WithColor(ColorHelper.RarityColorHex[4]);
                     }
                     break;
             }
@@ -115,7 +115,7 @@ public class Quest : MonoBehaviour
     public QuestData Data { get; set; }
     public void UpdateText()
     {
-        Text.text = Data.CompleteText;
+        Text.text = Data.GetCompleteText();
     }
     public TextMeshProUGUI Text;
     public RectTransform RectTransform { get; set; }

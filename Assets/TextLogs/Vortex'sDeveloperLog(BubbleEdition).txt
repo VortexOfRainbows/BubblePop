@@ -16,7 +16,7 @@ Do Later:
 8. (Eventually) Character select screen should receive a more full overhaul
 9. Next UI Changes:
 	1. Home screen and pause menu button appearances
-	2. Next wave button, and ascension button, unleash wave button
+	2. Warp UI
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -41,12 +41,25 @@ Multiplayer Task List:
 Bug Watchlist:
 1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Soup sometimes causes power numbers to spazz out
+3. Achievement popups are effected by lighting
 
 Sounds Needed:
 1. Debuff detonation (fire)
 2. Ice breaking
 
 Done: 	
+
+9/7/26
+1. Remove the Unleash Waves Button (maybe temporary)
+	1. This is probably an unnecessary feature now that the game guides you towards pylons with "quests"
+	2. The "Next Wave" button (the one near the pylon) has also been removed
+2. Quests now have a header above them that says "Goal:"
+3. Quests now have yellow progress text when incomplete
+4. Recolored and moved the Ascension button position now that the unleash waves button is gone
+5. Equipment info screen now defaults to body equip if somehow opened without hovering over an equipment
+6. Fix issue where off-screen pointers padding did not scale based on resolution, meaning they were too close to the edge on higher resolution
+7. When loading into a world/loop, a quest for starting the pylon will begin
+8. Quests are slightly bigger on the UI and tighter packed
 
 9/4/26 to 9/6/26
 1. Adjustments to power bubbles in UI such as experimental animations

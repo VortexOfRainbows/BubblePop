@@ -10,7 +10,7 @@ public class PylonBase : InteractableWorldObject
     {
         Vector3 position = Crystal.transform.position;
 
-        Vector2 clamped = Utils.ClampToScreenEdge(position, 40);
+        Vector2 clamped = Utils.ClampToScreenEdge(position, 40 * Main.ActivePrimaryCanvas.scaleFactor);
         position.x = clamped.x;
         position.y = clamped.y;
 
