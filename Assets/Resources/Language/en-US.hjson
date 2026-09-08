@@ -1113,10 +1113,9 @@
       Title: Compound Interest
       Description:
         '''
-        When <color=#C2FFAA>2-star or higher</color> Y:[investment powers] are consumed, gain Y:1 G:(+1 per stack) random Y:[lower-rarity investment powers] 
-        Gain Y:25 G:(+25 per stack) additional Y:coins from Y:investments that yield Y:coins
+        Up to Y:1 G:(+1 per stack) Y:[additional stack] of each Y:[investment power] rolls to be Y:[cashed-in] at the Y:[end of a wave]
         '''
-      Brief: Gain lower-rarity investments when high-rarity investments are consumed
+      Brief: Additional stacks of each investment roll to be cashed-in at the end of a wave
       Lore: Power.CompoundInterest.Lore
     }
     Pumpjack:

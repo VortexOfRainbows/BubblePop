@@ -110,7 +110,7 @@ public class CompoundInterest : PowerUp
     public override void Init() => Weighting = Legendary;
     public override void HeldEffect(Player p)
     {
-        p.CompoundInterest += Stack;
+        p.AdditionalInvestmentsProcessed += Stack;
     }
 }
 public class Pumpjack : PowerUp
