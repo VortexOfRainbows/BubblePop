@@ -49,6 +49,7 @@ public class AudioManager : MonoBehaviour
     public static AudioClip LeonardTheme = null;
     public static AudioClip BattleTheme = null;
     public static AudioClip MountainTheme = null;
+    public static AudioClip NightTheme = null;
     private static float MusicTransition = 0f;
     private static int MusicPriority = 0;
     private void Update()
@@ -58,6 +59,7 @@ public class AudioManager : MonoBehaviour
         LeonardTheme = LeonardTheme != null ? LeonardTheme : Resources.Load<AudioClip>("Audio/Music/Leonard");
         BattleTheme = BattleTheme != null ? BattleTheme : Resources.Load<AudioClip>("Audio/Music/ForestFight");
         MountainTheme = MountainTheme != null ? MountainTheme : Resources.Load<AudioClip>("Audio/Music/Mountain");
+        NightTheme = NightTheme != null ? NightTheme : Resources.Load<AudioClip>("Audio/Music/Night");
 
         if (MusicSource.clip != CurrentTheme)
         {
@@ -101,7 +103,12 @@ public class AudioManager : MonoBehaviour
         //    //print("Playing: " + MusicSource.clip.name);
         //    MusicSource.Play();
         //}
-        CurrentTheme = SceneManager.GetActiveScene().buildIndex == 0 ? MenuTheme : MeadowTheme;
+        ResetToSceneMusic();
+    }
+    public static void ResetToSceneMusic()
+    {
+        CurrentTheme = SceneManager.GetActiveScene().buildIndex == 0 ? MenuTheme :
+            Lighting.IsNight ? NightTheme : MeadowTheme;
         MusicPriority = 0;
     }
     public static void SetMusic(AudioClip Music, int Priority = 1)
