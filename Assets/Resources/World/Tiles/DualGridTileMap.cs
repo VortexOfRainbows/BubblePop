@@ -9,7 +9,7 @@ public class DualGridTilemap : MonoBehaviour
     public static GameObject Mushroom;
     public static GameObject BubbleMushroom;  
     public static GameObject VisualMapPrefab;
-    public static GameObject CratePrefab, BarrelPrefab;
+    public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
     //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     public Transform FloorMapParent;
     public Transform WallMapParent;
@@ -39,6 +39,7 @@ public class DualGridTilemap : MonoBehaviour
         TallGrass = TallGrass != null ? TallGrass : Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
         CratePrefab = CratePrefab != null ? CratePrefab : Resources.Load<GameObject>("World/Breakable/BreakableCrate");
         BarrelPrefab = BarrelPrefab != null ? BarrelPrefab : Resources.Load<GameObject>("World/Breakable/BreakableBarrel");
+        UrnPrefab = UrnPrefab != null ? UrnPrefab : Resources.Load<GameObject>("World/Breakable/BreakableUrn");
 
         DisplayMap = new();
         BorderDisplayMap = new();
@@ -339,10 +340,21 @@ public class DualGridTilemap : MonoBehaviour
         else if(!border)
         {
             bool isBarrel = Utils.RandBool(5);
-            bool isWoodFloor = data.TileType == TileID.Plank || (data.TileType == TileID.Cobblestone && Utils.RandBool(3));
+            bool isUrn = false;
+            bool isStoneFloor = data.TileType == TileID.Cobblestone;
+            bool isWoodFloor = data.TileType == TileID.Plank;
             int solidTiles = 1;
             int minimumSolidTiles = 1;
-            if (!isWoodFloor)
+            if(isStoneFloor)
+            {
+                isUrn = !Utils.RandBool(3) && !isBarrel;
+                if (isUrn)
+                {
+                    solidTiles += Utils.RandInt(1, 3);
+                    minimumSolidTiles += Utils.RandInt(3);
+                }
+            }
+            else if (!isWoodFloor)
             {
                 if (Utils.RandBool(5))
                     return;
@@ -352,7 +364,7 @@ public class DualGridTilemap : MonoBehaviour
                     solidTiles -= 1;
                 if (data.IsRoadblock) //more likely to spawn in cooridors between rooms
                 {
-                    minimumSolidTiles = 2;
+                    minimumSolidTiles++;
                     solidTiles += Utils.RandInt(1, 3);
                 }
             }
@@ -373,12 +385,31 @@ public class DualGridTilemap : MonoBehaviour
                 chanceOfCrate *= chanceOfCrate * 1.125f;
             if (Utils.RandFloat() < chanceOfCrate)
             {
-                var g = Instantiate(isBarrel ? BarrelPrefab : CratePrefab, World.Instance.NatureParent.transform, true).GetComponent<SpriteRenderer>();
-                g.transform.localPosition = new Vector2(i * 2 + 1, j * 2 + (isBarrel ? 0.5f : 1.1f)) + Utils.RandCircle(.2f);
-                if(!isBarrel)
-                    g.transform.localScale = new Vector3(g.transform.localScale.x * Utils.RandFloat(0.9f, 1.0f), g.transform.localScale.y * Utils.RandFloat(0.9f, 1.0f), 1);
+                GameObject prefab;
+                Vector2 pos = new(i * 2 + 1, j * 2 + (isBarrel ? 0.5f : 1.1f));
+                Vector2 scaleModifier = new(1, 1);
+                if (isBarrel) 
+                {
+                    prefab = BarrelPrefab;
+                    pos.y += 0.5f;
+                    scaleModifier *= Utils.RandFloat(0.9f, 1.0f);
+                }
+                else if (isUrn)
+                {
+                    prefab = UrnPrefab;
+                    pos.y += 0.5f;
+                    scaleModifier *= Utils.RandFloat(0.8f, 1.0f);
+                }
                 else
-                    g.transform.localScale = new Vector3(g.transform.localScale.x, g.transform.localScale.y, 1) * Utils.RandFloat(0.9f, 1.0f);
+                {
+                    prefab = CratePrefab;
+                    pos.y += 1.1f;
+                    scaleModifier.x *= Utils.RandFloat(0.9f, 1.0f);
+                    scaleModifier.y *= Utils.RandFloat(0.9f, 1.0f);
+                }
+                var g = Instantiate(prefab, World.Instance.NatureParent.transform, true).GetComponent<SpriteRenderer>();
+                g.transform.localPosition = new Vector2(i * 2 + 1, j * 2 + (isBarrel ? 0.5f : 1.1f)) + Utils.RandCircle(.2f);
+                g.transform.localScale = new Vector3(g.transform.localScale.x * scaleModifier.x, g.transform.localScale.y * scaleModifier.y, 1);
             }
         }
     }
