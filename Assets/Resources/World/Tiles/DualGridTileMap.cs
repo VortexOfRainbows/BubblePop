@@ -7,7 +7,7 @@ public class DualGridTilemap : MonoBehaviour
     public static GameObject SnowPile;
     public static GameObject TallGrass;
     public static GameObject Mushroom;
-    public static GameObject BubbleMushroom;  
+    public static GameObject BubbleMushroom, BubblePlantObj;  
     public static GameObject VisualMapPrefab;
     public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
     //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
@@ -40,7 +40,7 @@ public class DualGridTilemap : MonoBehaviour
         CratePrefab = CratePrefab != null ? CratePrefab : Resources.Load<GameObject>("World/Breakable/BreakableCrate");
         BarrelPrefab = BarrelPrefab != null ? BarrelPrefab : Resources.Load<GameObject>("World/Breakable/BreakableBarrel");
         UrnPrefab = UrnPrefab != null ? UrnPrefab : Resources.Load<GameObject>("World/Breakable/BreakableUrn");
-
+        BubblePlantObj = BubblePlantObj != null ? BubblePlantObj : Resources.Load<GameObject>("World/Decor/Nature/BubblePlant");
         DisplayMap = new();
         BorderDisplayMap = new();
         WallDisplayMap = new();
@@ -228,7 +228,9 @@ public class DualGridTilemap : MonoBehaviour
                 bool isDirtTile = t == TileID.Dirt;
                 bool isDarkGrass = t == TileID.DarkGrass;
                 bool isSnowTile = t == TileID.Snow;
-                var pos = new Vector3(i + 1, j + 1, 0);
+                Vector2 pos = new Vector3(i + 1, j + 1, 0);
+                //if (border)
+                //    pos.y += 0.25f;
                 if(i % 3 == 0 && j % 3 == 0)
                 {
                     AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2));
@@ -281,7 +283,7 @@ public class DualGridTilemap : MonoBehaviour
                     if (Utils.RandFloat() < chance)
                     {
                         var g = Instantiate(Mushroom, parent).GetComponent<SpriteRenderer>();
-                        g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
+                        g.transform.localPosition = pos + Utils.RandCircle(0.2f);
                         g.color = borderColor;
                         g.sortingOrder = order;
                         continue;
@@ -299,7 +301,7 @@ public class DualGridTilemap : MonoBehaviour
                         Color c2 = border ? new Color(0.825f, 0.825f, 0.825f) : c;
                         var g = Instantiate(BubbleMushroom, parent).GetComponent<SpriteRenderer>();
                         var childR = g.transform.GetChild(0).GetComponent<SpriteRenderer>();
-                        g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
+                        g.transform.localPosition = pos + Utils.RandCircle(0.2f);
                         g.transform.localScale *= edgeTile ? Utils.RandFloat(0.9f, 1.0f) : Utils.RandFloat(0.7f, 0.9f);
                         g.color = c2;
                         childR.color = c2.WithAlpha(0.8f);
@@ -307,6 +309,25 @@ public class DualGridTilemap : MonoBehaviour
                         continue;
                     }
                 }    
+                if(((isGrassTile && border) || isDarkGrass) && i % 2 == 0 && j % 2 == 0 && Utils.RandFloat() < 0.08f)
+                {
+                    bool tileHasOppositeABitAway = (!border && (World.SolidTile(i, j + 2) || World.SolidTile(i, j - 2) || World.SolidTile(i + 2, j) || World.SolidTile(i - 2, j))) ||
+                        (border && (!World.SolidTile(i, j + 2) || !World.SolidTile(i, j - 2) || !World.SolidTile(i - 2, j ) || !World.SolidTile(i + 2, j)));
+                    if (tileHasOppositeABitAway)
+                    {
+                        var g = Instantiate(BubblePlantObj, parent).GetComponent<SpriteRenderer>();
+                        g.transform.localPosition = pos + Utils.RandCircle(0.2f);
+                        float scaler = 1;
+                        if (Utils.rand.NextBool())
+                            scaler *= 0.75f;
+                        g.transform.localScale *= scaler;
+                        if(border)
+                            g.color = new Color(0.825f, 0.825f, 0.825f, 0.8f);
+                        g.sortingOrder = order;
+                        g.flipX = Utils.rand.NextBool();
+                        continue;
+                    }
+                }
             }
         }
     }
