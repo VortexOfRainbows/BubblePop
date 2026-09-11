@@ -17,7 +17,6 @@ Do Later:
 9. Overhaul systems for disabling offscreen elements that use too much resources
 	1. Right now this only applies to bubbleshroom and bubbleplant
 	2. Right now this overcompensates and disables them a little early (when the sprites are no longer visible, but the lights still are)
-	3. A rework to decorative objects to improve readability of the worldgen code could also be nice
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -50,6 +49,9 @@ Sounds Needed:
 2. Ice breaking
 
 Done: 	
+
+9/11/26
+1. Internal updates to decor code to make it more readable
 
 9/10/26
 1. Lit objects (like Bubbleshroom and the new Bubbleplant now turn off when off screen)

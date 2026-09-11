@@ -62,8 +62,8 @@ public partial class World : MonoBehaviour
     }
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
-    private static DualGridTilemap RealTileMap => Instance.Tilemap;
-    [SerializeField] private DualGridTilemap Tilemap;
+    private static WorldTilemap RealTileMap => Instance.Tilemap;
+    [SerializeField] private WorldTilemap Tilemap;
     [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap, InverseRoadblockMap, OcclusionMap;
     public Tilemap LightingTilemapFront;
     public Tilemap LightingTilemapBack;

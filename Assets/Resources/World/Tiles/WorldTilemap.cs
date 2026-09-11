@@ -1,16 +1,19 @@
+using Newtonsoft.Json.Bson;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class DualGridTilemap : MonoBehaviour
+public class WorldTilemap : MonoBehaviour
 {
+    //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
+    //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
     public static GameObject SnowPile;
     public static GameObject TallGrass;
     public static GameObject Mushroom;
     public static GameObject BubbleMushroom, BubblePlantObj;  
     public static GameObject VisualMapPrefab;
     public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
-    //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     public Transform FloorMapParent;
     public Transform WallMapParent;
     public Transform BorderMapParent;
@@ -97,7 +100,6 @@ public class DualGridTilemap : MonoBehaviour
             }
         }
     }
-    //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
     public static bool TileIsNotSolidOrRendersBelow(int i, int j, float myLayerOffset)
     {
         ref var UnsafeData = ref World.UnsafeGetTileData(i, j);
@@ -238,25 +240,14 @@ public class DualGridTilemap : MonoBehaviour
                 if ((isGrassTile && Utils.RandFloat() < 0.16f * mult) || (isDarkGrass && Utils.RandFloat() < 0.04f))
                 {
                     int type = Utils.RandInt(3);
-                    var g = Instantiate(TallGrass, parent).GetComponent<SpriteRenderer>();
+                    pos.y += type == 0 ? Utils.RandFloat(0.1f, 0.3f) : type == 1 ? Utils.RandFloat(0.1f) : type == 2 ? Utils.RandFloat(0.05f, 0.25f) : 0;
+                    var g = SpawnSmallDecor(TallGrass, parent, pos, Utils.RandFloat(0.9f, 1.0f), order, isDarkGrass ? borderColor : c);
                     if (type == 0)
-                    {
                         g.sprite = Main.TextureAssets.TallGrass[Utils.RandInt(Main.TextureAssets.TallGrass.Length)];
-                        pos.y += Utils.RandFloat(0.1f, 0.3f);
-                    }
                     if (type == 1)
-                    {
                         g.sprite = Main.TextureAssets.Flowers[Utils.RandInt(Main.TextureAssets.Flowers.Length)];
-                        pos.y += Utils.RandFloat(0.1f);
-                    }
                     if (type == 2)
-                    {
                         g.sprite = Main.TextureAssets.ShortGrass[Utils.RandInt(Main.TextureAssets.ShortGrass.Length)];
-                        pos.y += Utils.RandFloat(0.05f, 0.25f);
-                    }
-                    g.transform.localPosition = pos;
-                    g.color = isDarkGrass ? borderColor : c;
-                    g.sortingOrder = order;
                     g.flipX = Utils.rand.NextBool();
                     continue;
                 }
@@ -265,15 +256,10 @@ public class DualGridTilemap : MonoBehaviour
                     bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
                     if(!edgeTile)
                     {
-                        var g = Instantiate(SnowPile, parent).GetComponent<SpriteRenderer>();
-                        pos.y += Utils.RandFloat(-0.05f, 0.05f);
-                        pos.x += Utils.RandFloat(-0.05f, 0.05f);
+                        pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
+                        var g = SpawnSmallDecor(SnowPile, parent, pos, Utils.RandFloat(0.9f, 1.0f), order, border ? TileID.Snow.BorderColor : c);
                         g.sprite = Main.TextureAssets.SnowPiles[Utils.RandInt(Main.TextureAssets.SnowPiles.Length)];
-                        g.transform.localPosition = pos;
-                        g.color = border ? TileID.Snow.BorderColor : c;
-                        g.sortingOrder = order;
                         g.flipX = Utils.rand.NextBool();
-                        g.transform.localScale *= Utils.RandFloat(0.9f, 1.0f);
                     }
                     continue;
                 }
@@ -282,10 +268,7 @@ public class DualGridTilemap : MonoBehaviour
                     float chance = isDirtTile ? 0.1f : 0.05f;
                     if (Utils.RandFloat() < chance)
                     {
-                        var g = Instantiate(Mushroom, parent).GetComponent<SpriteRenderer>();
-                        g.transform.localPosition = pos + Utils.RandCircle(0.2f);
-                        g.color = borderColor;
-                        g.sortingOrder = order;
+                        SpawnSmallDecor(Mushroom, parent, pos + Utils.RandCircle(0.2f), 1f, order, borderColor);
                         continue;
                     }
                 }
@@ -299,13 +282,9 @@ public class DualGridTilemap : MonoBehaviour
                     if (Utils.RandFloat() < chance)
                     {
                         Color c2 = border ? new Color(0.825f, 0.825f, 0.825f) : c;
-                        var g = Instantiate(BubbleMushroom, parent).GetComponent<SpriteRenderer>();
-                        var childR = g.transform.GetChild(0).GetComponent<SpriteRenderer>();
-                        g.transform.localPosition = pos + Utils.RandCircle(0.2f);
-                        g.transform.localScale *= edgeTile ? Utils.RandFloat(0.9f, 1.0f) : Utils.RandFloat(0.7f, 0.9f);
-                        g.color = c2;
+                        var childR = SpawnSmallDecor(BubbleMushroom, parent, pos + Utils.RandCircle(0.2f), edgeTile ? Utils.RandFloat(0.9f, 1.0f) : Utils.RandFloat(0.7f, 0.9f), order, c2).transform.GetChild(0).GetComponent<SpriteRenderer>();
                         childR.color = c2.WithAlpha(0.8f);
-                        g.sortingOrder = childR.sortingOrder = order;
+                        childR.sortingOrder = order;
                         continue;
                     }
                 }    
@@ -315,21 +294,23 @@ public class DualGridTilemap : MonoBehaviour
                         (border && (!World.SolidTile(i, j + 2) || !World.SolidTile(i, j - 2) || !World.SolidTile(i - 2, j ) || !World.SolidTile(i + 2, j)));
                     if (tileHasOppositeABitAway)
                     {
-                        var g = Instantiate(BubblePlantObj, parent).GetComponent<SpriteRenderer>();
-                        g.transform.localPosition = pos + Utils.RandCircle(0.2f);
-                        float scaler = 1;
-                        if (Utils.rand.NextBool())
-                            scaler *= 0.75f;
-                        g.transform.localScale *= scaler;
-                        if(border)
-                            g.color = new Color(0.825f, 0.825f, 0.825f, 0.8f);
-                        g.sortingOrder = order;
+                        var g = SpawnSmallDecor(BubblePlantObj, parent, pos + Utils.RandCircle(0.2f), Utils.rand.NextBool() ? 0.75f : 1.0f, order, border ? new Color(0.825f, 0.825f, 0.825f, 0.8f) : null);
                         g.flipX = Utils.rand.NextBool();
                         continue;
                     }
                 }
             }
         }
+    }
+    public SpriteRenderer SpawnSmallDecor(GameObject prefab, Transform parent, Vector2 localPosition, float scaler, int sortingOrder, Color? color = null)
+    {
+        SpriteRenderer r = Instantiate(prefab, parent).GetComponent<SpriteRenderer>();
+        r.transform.localPosition = localPosition;
+        r.transform.localScale *= scaler;
+        r.sortingOrder = sortingOrder;
+        if (color.HasValue)
+            r.color = color.Value;
+        return r;
     }
     public void AddSparseDecor(int i, int j)
     {
