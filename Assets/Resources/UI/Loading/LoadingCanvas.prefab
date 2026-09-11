@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &11199294832168540
 RectTransform:
   m_ObjectHideFlags: 0
@@ -223,7 +223,6 @@ GameObject:
   - component: {fileID: 3956452869325142430}
   - component: {fileID: 9141916416515919877}
   - component: {fileID: 830584527746659101}
-  - component: {fileID: 4500938648988338793}
   m_Layer: 5
   m_Name: LoadingCanvas
   m_TagString: Untagged
@@ -314,18 +313,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4500938648988338793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6302067587862280303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 379c74ac818cd1541b21988a4122464e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9086615696458163621
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,11 +379,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 7e91874861ee4b043b3c5b8eeee6dd5a, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

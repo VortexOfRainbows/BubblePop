@@ -82,6 +82,7 @@ public partial class World : MonoBehaviour
     public static readonly List<WavePylon> Pylons = new();
     public static WarpPylon FinalPylon { get; private set; }
     public static readonly List<Roadblock> Roadblocks = new();
+    [SerializeField] WorldGenLoader Loader;
     public void FirstInitialization()
     {
         OriginalNodeCount = nodes.Count;
@@ -235,6 +236,7 @@ public partial class World : MonoBehaviour
     public void PlaceNodeLocations()
     {
         int nodeCount = NodesToGenerate + nodes.Count + 1; //+1 for the end node
+        Loader.WorldLoader(nodeCount - 1);
         WorldNode prevNode = null;
         for (int i = 0; i < nodes.Count; ++i) //Assign all nodes 
         {
@@ -380,6 +382,7 @@ public partial class World : MonoBehaviour
             if (!node.IsSubNode)
                 genNum++;
             prevNode = node;
+            Loader.NextStep();
         }
         PlaceBonusNodes();
         GenerateBonusNodes();
