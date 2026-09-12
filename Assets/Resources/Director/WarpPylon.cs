@@ -14,8 +14,8 @@ public class WarpPylon : PylonBase
     public void FixedUpdate()
     {
         PlayersNearby = true;
-        foreach(Player p in Player.AllPlayers)
-            if(p.Distance(gameObject) > Main.PylonActivationDist)
+        foreach (Player p in Player.AllPlayers)
+            if (p.Distance(gameObject) > Main.PylonActivationDist)
                 PlayersNearby = false;
         if (PlayersNearby)
         {
@@ -42,7 +42,7 @@ public class WarpPylon : PylonBase
         bool nextPylon = Main.WavesUnleashed && World.Pylons.Count <= Main.PylonProgressionNumber;
         if (nextPylon)
             CreatePointers();
-        if (!WarpUI.IsCurrentlyOpen && PlayersNearby)
+        if (!WarpUI.IsCurrentlyOpen && PlayersNearby && Player.Instance.ThisIsPlayerClosestInteractable(gameObject))
         {
             EnableUI();
             if (Control.Interact)

@@ -110,9 +110,10 @@ public class WaveMeter : MonoBehaviour
         Utils.LerpSnap(NextWaveButton, new Vector2(BarLeftPosition().x, BarLeftPosition().y + (AwaitingNextCard ? -130 : 150)), Utils.DeltaTimeLerpFactor(0.05f), 0.1f);
         Color targetColor = !Main.PlayerNearPylon ? new Color(0.9f, 0.5f, 0.5f, 1f) : Color.white;
         WavePylon UIPylon = Main.CurrentPylon == null ? Main.NextPylon : Main.CurrentPylon;
-        if ((!Main.PlayerNearPylon || !AwaitingNextCard) && UIPylon != null)
+        bool nearPylon = Main.PlayerNearPylon && Player.Instance.ThisIsPlayerClosestInteractable(Main.CurrentPylon.gameObject);
+        if ((!nearPylon || !AwaitingNextCard) && UIPylon != null)
             UIPylon.DisableUI();
-        if (Main.PlayerNearPylon)
+        if (nearPylon)
         {
             if(!Main.WavesUnleashed && UIPylon != null)
                 UIPylon.EnableUI();

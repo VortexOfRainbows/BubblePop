@@ -6,6 +6,10 @@ public class PylonBase : InteractableWorldObject
     public SpriteRenderer Glow;
     public SpriteRenderer Base;
     public float PointerAlpha = -3.0f;
+    public void Start()
+    {
+        Player.ObjectsConsideredForUIInteraction.Add(gameObject);
+    }
     public void CreatePointers()
     {
         Vector3 position = Crystal.transform.position;

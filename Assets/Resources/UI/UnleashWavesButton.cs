@@ -14,7 +14,6 @@ public class UnleashWavesButton : MonoBehaviour
     public Image InteractVisual;
     public Canvas MyCanvas;
     public int LoadedAscLevel { get; private set; } = -1;
-    public bool CanAfford => true; // (CoinManager.TotalEquipCost <= CoinManager.Savings || CoinManager.TotalEquipCost <= 0);
     public bool CanUse => (PylonVisual == null || Main.PlayerNearPylon);
     public void SimulatePress()
     {
@@ -23,7 +22,7 @@ public class UnleashWavesButton : MonoBehaviour
     }
     public void Update()
     {
-        bool canStartWave = CanAfford && CanUse;
+        bool canStartWave = CanUse && Player.Instance.ThisIsPlayerClosestInteractable(Main.CurrentPylon.gameObject);
         //StartButton.interactable = CanAfford && CanUse;
         if (canStartWave) // (StartButton.interactable)
         {
