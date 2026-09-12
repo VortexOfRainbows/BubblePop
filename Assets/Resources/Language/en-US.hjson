@@ -1111,10 +1111,7 @@
     CompoundInterest:
     {
       Title: Compound Interest
-      Description:
-        '''
-        Up to Y:1 G:(+1 per stack) Y:[additional stack] of each Y:[investment power] rolls to be Y:[cashed-in] at the Y:[end of a wave]
-        '''
+      Description: Up to Y:1 G:(+1 per stack) Y:[additional stack] of each Y:[investment power] rolls to be Y:[cashed-in] at the Y:[end of a wave]
       Brief: Additional stacks of each investment roll to be cashed-in at the end of a wave
       Lore: Power.CompoundInterest.Lore
     }
