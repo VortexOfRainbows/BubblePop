@@ -282,7 +282,7 @@ public partial class Player : Entity
         }
         if(SmokeStack > 0)
         {
-            float attackSpeedBuff = 0.03f + 0.01f * SmokeStack;
+            float attackSpeedBuff = 0.02f + 0.02f * SmokeStack;
             AttackSpeedModifier += TotalInvestments * attackSpeedBuff;
         }
     }
