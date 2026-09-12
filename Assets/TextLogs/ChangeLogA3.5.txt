@@ -1,0 +1,69 @@
+Dev Build 3.5 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+New:
+1. Overhaul to the majority of the game's UI elements
+	1. Now they are mostly blue, like the compendium	
+	2. A lot of animations were changed to fade-in from the middle rather than sliding in from screen edge and extra functionality added
+2. Ability Icons for Bubblemancer, Thought Bubble, Fizzy
+3. Add barrels and urns that can spawn, they are like crates, but with slightly different loot tables
+4. New Night-time sound track
+5. Replace placeholder sprites for Golden Gun, Compound Interest, Diversified Portfolio
+6. Hearts and Shields sprites updated and have higher resolution 
+
+UI Changes:
+1. Crucible and Shard menus overhauled
+	1. New style
+	2. No longer shared, meaning the shard menu can be accessed while near a crucible
+	3. Quantity button is now on the right instead of the left
+	4. Crucibles are now opened with 'E' instead of 'C'
+	5. Now populate 2x faster, though might be more somewhat more laggy on weaker systems
+	6. You can now switch between Choice/Crucibe/Shardmenus while they are open (rather than crucible menus being locked when in choice menu)
+	7. Crucible now shows gems/shards you will receive from smelting a power
+
+2. Slightly modified position of key count ui
+3. Your current shard count now appears under key count after obtaining your first shard
+4. New mouse cursor sprite
+5. Show Shards and Show choices buttons now have icons
+6. Color of the UI for Restock Machines and Forges now is red when unaffordable
+7. Equip menu and character select menu now uses blue colors
+8. Adjustments to power bubbles in UI such as experimental animations
+	1. Shifting effect animation based on cursor
+	2. Animation to works while paused
+	3. Bigger collision hitbox for button detection
+9. Playtesting UI no longer appears in singleplayer (maybe temporary)
+10. Enemy cards slightly reworked
+	1. Now features different colors for each difficulty and slightly improved animation logic
+11. Removed the Unleash Waves Button (maybe temporary)
+	1. This is probably an unnecessary feature now that the game guides you towards pylons with "quests"
+	2. The "Next Wave" button (the one near the pylon) has also been removed
+12. Quests now have a header above them that says "Goal:"
+13. Quests now have yellow progress text when incomplete
+14. Recolored and moved the Ascension button position now that the unleash waves button is gone
+15. Quests are slightly bigger on the UI and tighter packed
+16. Warp screen (loop screen) is now slightly bigger and in the new style
+17. Off screen indicators for pylons now stay farther from the screen edges and are slightly more visible
+
+Gameplay Changes:
+1. Gems now attract to the player at the end of a wave, similar to coins, but slightly weaker
+2. Forge, Restock, Crucibles now uses E for the keybind
+3. Crates (and barrels/urns) generation rates adjusted (should be slightly more common)
+4. (BUFF) Bubble Gun now gives +1 pierce to small bubbles
+5. (REWORK) Golden Gun now increases damage based on each unique investment, rather than total investments
+6. (BUFF) Smokestack stacking factor +1% -> +2%
+7. (REWORK) Compound Interest effect changed completely
+
+Fixes:
+1. Popup ui for Restock Machine no longer moves in a small sin motion
+2. Fix extremely niche bug where fairy ring loot would take 100 seconds after world gen to be obtainable
+3. Equip menu now starts off screen so it is not visible sometimes on fast load times
+4. Equipment info screen now defaults to body equip if somehow opened without hovering over an equipment
+5. Fix issue where off-screen pointers padding did not scale based on resolution, meaning they were too close to the edge on higher resolution
+6. Crucible and Shards should no longer show double powers in the menu when opened at the same time the popup is unlocked.
+	1. This is because the list of powers in no longer loaded when first unlocked, which should also reduce random lag spikes from going near crucibles or picking up your first shard.
+
+Misc:
+1. Lit objects (like Bubbleshroom and the new Bubbleplant now turn off when off screen)
+	1. This should reduce overhead lag by a generous amount	
+	2. Right now this is a little overcompensating, causing lights to turn off when they aren't even fully offscreen
