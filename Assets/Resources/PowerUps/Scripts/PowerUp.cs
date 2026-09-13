@@ -93,7 +93,7 @@ public abstract class PowerUp
         AddPowerUpToAvailability<Magnet>(); //white, gives money
         AddPowerUpToAvailability<Coupons>(); //green, reduces prices
         AddPowerUpToAvailability<Restock>(); //blue, reduces prices (gems)
-        //GACHA CAPSULE: //purple, gives money, gems, keys, hearts, or shields (make a shield pickup)
+        AddPowerUpToAvailability<Recycle>(); //blue, reduces prices (gems)
         AddPowerUpToAvailability<CrystalSerum>(); //yellow, gives gems
 
         //Powers that give powers

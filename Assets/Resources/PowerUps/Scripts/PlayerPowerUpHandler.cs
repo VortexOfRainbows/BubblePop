@@ -182,8 +182,9 @@ public partial class Player : Entity
     public bool HasFlowerCrownRecursiveHeal = false, HasJesusJuice = false, IgnoreMovespeed = false;
     public bool HasFutures, HasCommodities, HasOptions, HasSecurities, HasWindfall;
     public int HelicopterStacks, TachyonStacks, PrevTachyonStacks = 0;
-    public int SoupStacks;
+    public int SoupStacks, RecycleStacks = 0;
     public int Bonus1StarStacksFromSoup { get; set; } = 0;
+    public float BonusRecycleLoot = 0;
     public Projectile HelicopterSummon;
     private void PowerInit()
     {
@@ -252,6 +253,8 @@ public partial class Player : Entity
         CorrodeDamage = TarBonusDuration = CombustBonusDamage = BonusTarSlow = 0;
         HasFutures = HasCommodities = HasOptions = HasSecurities = HasWindfall = false;
         GoldenGun = SmokeStack = TrickleDown = Pumpjack = OilBarrelSize = HelicopterStacks = TachyonStacks = SoupStacks = AdditionalInvestmentsProcessed = 0;
+        BonusRecycleLoot = 0;
+        RecycleStacks = 0;
     }
     private void UpdatePowerUps()
     {

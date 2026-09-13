@@ -60,9 +60,11 @@ public class EnemyDuck : Enemy
             Vector2 movementDir = Life >= MaxLife ? toTarget.normalized : GetPathfindingToPlayerNorm();
             bobbingTimer += Mathf.Sqrt(toTarget.magnitude);
             if(Mathf.Abs(movementDir.x) > 0.1f)
+            {
                 sRender.flipX = movementDir.x > 0;
-            if (this is EnemyFlamingo)
-                sRender.flipX = !sRender.flipX;
+                if (this is EnemyFlamingo)
+                    sRender.flipX = !sRender.flipX;
+            }
             float speedScaling = aiState == 2 ? 0.2f : 0.1f;
             float BaseSpeed = aiState == 2 ? 4.4f : 1.0f;
             float speed = Mathf.Min(BaseSpeed + speedScaling * toTarget.magnitude, 16);

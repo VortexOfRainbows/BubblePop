@@ -281,7 +281,7 @@ public class PowerUpCheatUI : MonoBehaviour
     {
         int c = GridParent.transform.childCount;
         bool noPowers = c <= 2;
-        NOPOWERS.SetActive(!Hide && noPowers && MyGroup.alpha > 0.5f);
+        NOPOWERS.SetActive(!Hide && noPowers && MyGroup.alpha > 0.9f);
         Vector3 lastElement = GridParent.transform.GetChild(c - 1).localPosition;
         RectTransform r = GridParent.GetComponent<RectTransform>();
         float dist = -lastElement.y + GridParent.padding.bottom * 1 + GridParent.cellSize.y * 0.5f;

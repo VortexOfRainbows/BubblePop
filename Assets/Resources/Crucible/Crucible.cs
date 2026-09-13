@@ -29,7 +29,7 @@ public class Crucible : InteractableWorldObject
     public Transform CauldronParent;
     public PowerUpObject HeldPower;
     public TextMeshPro Text;
-
+    public Collider2D[] MainColliders;
     public GameObject Foliage;
     public void Start()
     {
@@ -257,11 +257,13 @@ public class Crucible : InteractableWorldObject
         HasSpawnedChestLoot = true;
         AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 1, 0.8f + 0.2f * GlobalSpeedMultiplier);
         int value = powerType >= 0 ? PowerUp.Get(powerType).CrucibleGems(true) : 3;
+        //int crateValue = powerType >= 0 ? PowerUp.Get(powerType).Rarity : 1;
         int coinValue = powerType >= 0 ? PowerUp.Get(powerType).Cost : 15;
-        coinValue = (coinValue + Utils.RandInt(2)) / 2;
+        coinValue = (coinValue + Utils.RandInt(4)) / 4;
         int quant = Mathf.Abs(Mathf.Min(value, 5));
         float valuePerGem = value / (float)quant;
         Vector2 pos = transform.position + new Vector3(0, -1.4f);
+        bool dropCrates = Player.Instance.RecycleStacks > 0 || powerType == PowerUp.Get<Recycle>().MyID;
         for (int i = 0; i < quant; ++i)
         {
             float percent = (i + 0.5f) / quant;
@@ -288,10 +290,8 @@ public class Crucible : InteractableWorldObject
                     c.rb.velocity += new Vector2(0, -6.5f);
                     c.transform.localScale = Vector3.one * 0.1f;
                 }
-                else
-                {
-                    CoinManager.SpawnCoinCrucible(pos, () => new Vector2(0, -5.5f) + Utils.RandCircle(2), coinValue, 0.25f);
-                }
+                if(dropCrates)
+                    BreakableObject.SpawnCrucibleVersion(MainColliders, pos, () => new Vector2(0, -9.5f) + Utils.RandCircle(3.5f), coinValue);
             }
         }
         float r = Utils.rand.NextFloat(Mathf.PI * 2);

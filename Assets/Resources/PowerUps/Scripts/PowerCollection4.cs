@@ -239,3 +239,12 @@ public class TachyonAccelerator : PowerUp
     public override bool IsBlackMarket() => true;
     public override UnlockCondition BlackMarketVariantUnlockCondition => UnlockCondition.Get<ThoughtBubbleFasterThanLight>();
 }
+public class Recycle : PowerUp
+{
+    public override void Init() => Weighting = SuperRare;
+    public override void HeldEffect(Player p)
+    {
+        p.RecycleStacks += Stack;
+        p.BonusRecycleLoot += Stack * 0.5f;
+    }
+}

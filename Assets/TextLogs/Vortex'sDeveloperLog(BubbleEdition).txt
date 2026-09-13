@@ -21,14 +21,12 @@ Do Later:
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
 	1. Progress display for achievements
-2. Make a distinct "Generic Power" pool, which contains: 
-	1. Recycle/Scrapper: breakable objects drop more loot, and crucibles sometimes yield crates
-3. Snow Regions:
+2. Snow Regions:
 	1. Snow needs to be WAY less noisy. Majority of snow tiles should have minimal noise
 	2. Snow might need to be tinted darkish BLUE (color theory and softer on eyes?)
 	3. Projectiles need visibility changes, especially for SNOW
-4. MINIMAP
-5. Characters can spawn in your run and give specific items?
+3. MINIMAP
+4. Characters can spawn in your run and give specific items?
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -50,7 +48,15 @@ Sounds Needed:
 
 Done: 	
 
--- A3.51 UPDATE ON STEAM --
+9/13/26
+1. Fix the bug where Flamingos spaz out randomly at low movement velocity
+2. Fix bug where player sometimes appeared layered below fairy ring objects (like mushrooms)
+3. Add new Power: Recycle
+	1. Makes breakable objects drop more loot
+	2. Makes powers drop crates of cash when dissolved in crucible
+4. Powers no longer drop cash by default when dissolved in a crucible
+
+-- A3.51 UPDATE ON STEAM (LATEST IGF VERSION TOO) --
 
 9/11/26 to 9/12/26
 1. Smokestack now ACTUALLY stacks 4% (+2%), previously the description was inaccurate

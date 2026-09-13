@@ -14,7 +14,8 @@ public class FairyRing : MonoBehaviour
             float angle = i * Utils.TwoPI / Count;
             Vector3 pos = new Vector2(0, Radius).RotatedBy(angle + offset);
             pos.y -= 0.5f;
-            Instantiate(FairyObjs[Utils.RandInt(FairyObjs.Length)], transform.position + new Vector3(0, -0.4f) + pos + (Vector3)Utils.RandCircle(0.1f), Quaternion.identity, decorParent); //-0.5 offset is for mushrooms, might want to standardize later
+            SpriteRenderer r = Instantiate(FairyObjs[Utils.RandInt(FairyObjs.Length)], transform.position + new Vector3(0, -0.4f) + pos + (Vector3)Utils.RandCircle(0.1f), Quaternion.identity, decorParent).GetComponent<SpriteRenderer>(); //-0.5 offset is for mushrooms, might want to standardize later
+            r.sortingOrder = LayerHelper.FloorObjAndFloraSortingLayer;
         }
 
         if(RandomYield)

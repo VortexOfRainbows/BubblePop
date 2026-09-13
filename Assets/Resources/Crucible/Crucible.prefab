@@ -3306,6 +3306,10 @@ MonoBehaviour:
   CauldronParent: {fileID: 1615427702254190425}
   HeldPower: {fileID: 5591796122383414702}
   Text: {fileID: 5785861589529890831}
+  MainColliders:
+  - {fileID: 7559640252861196895}
+  - {fileID: 208644699798198318}
+  - {fileID: 7739928372553943975}
   Foliage: {fileID: 1733778014226280565}
   Counter: 0
   Counter2: 0

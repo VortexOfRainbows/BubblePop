@@ -1214,6 +1214,17 @@
       Brief: Faster than light
       Lore: Power.TachyonAccelerator.Lore
     }
+    Recycle:
+    {
+      Title: Recycle
+      Description:
+      '''
+      Y:[Breakable objects] drop Y:50% G:(+50% per stack) more loot 
+      Y:[All powers] drop a Y:[breakable object] when Y:dissolved in a Y:Crucible
+      '''
+      Brief: Breakable objects drop more loot, and all powers create a breakable object when dissolved
+      Lore: Power.Recycle.Lore
+    }
   }
   Equip:
   {
