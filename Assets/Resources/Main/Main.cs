@@ -222,6 +222,8 @@ public partial class Main : MonoBehaviour
         {
             TimeElapsedDuringLowFPS = FramesElapsedDuringLowFPS = 0;
         }
+
+        //Debug.Log(Utils.MouseUI);
     }
     public static bool BackButtonShouldAppear()
     {
