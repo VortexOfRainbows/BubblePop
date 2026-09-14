@@ -131,10 +131,19 @@ public static class Utils
         pos += Main.ActivePrimaryCanvas.transform.position;
         return pos;
     }
-    public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null, bool ignoreScale = false, bool allowAttackWhileHovering = false)
+    public static bool IsMouseHoveringOverThis(bool rectangular, RectTransform transform, float radius, Canvas canvas = null, bool ignoreScale = false, bool allowAttackWhileHovering = false, bool cancelOffscreen = true)
     {
         if (Main.ActivePrimaryCanvas == null)
             return false;
+        if(cancelOffscreen)
+        {
+            Vector2 mousePos = Input.mousePosition;
+            // Verify if coordinates are less than 0 or greater than screen resolution
+            bool isInside = mousePos.x >= 0 && mousePos.x <= Screen.width &&
+                            mousePos.y >= 0 && mousePos.y <= Screen.height;
+            if (!isInside)
+                return false;
+        }
         Vector3 pos = transform.position;
         float scale = Main.ActivePrimaryCanvas.scaleFactor;
         if (canvas != null)

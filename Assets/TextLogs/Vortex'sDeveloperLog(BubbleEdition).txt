@@ -17,6 +17,7 @@ Do Later:
 9. Overhaul systems for disabling offscreen elements that use too much resources
 	1. Right now this only applies to bubbleshroom and bubbleplant
 	2. Right now this overcompensates and disables them a little early (when the sprites are no longer visible, but the lights still are)
+10. Remove "Immediately" wave rewards (ask playtesters?)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -27,6 +28,8 @@ Need to do:
 	3. Projectiles need visibility changes, especially for SNOW
 3. MINIMAP
 4. Characters can spawn in your run and give specific items?
+	1. Character dialogue systems!
+5. Add the BOXER enemy (flying cube with boxing gloves)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. (PARTIALLY COMPLETE) Make it so you can't start an attack from a click hovering over User Interface elements that need to be clicked to interact
@@ -37,16 +40,22 @@ Multiplayer Task List:
 2. Ability icon for multiplayer does not really work
 
 Bug Watchlist:
-1. With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
+1. (This should've been fixed with the wave card rework, but keep an eye out for this) With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Soup sometimes causes power numbers to spazz out
 3. Achievement popups are effected by lighting
-4. Clicking "Finalize" with the mouse leads to always opening the compendium due to its placement in the main menu
 
 Sounds Needed:
 1. Debuff detonation (fire)
 2. Ice breaking
 
 Done: 	
+
+9/14/26
+1. (FIX) Warp UI now uses standardized button setup, meaning it requires a click AND release
+	1. This should fix the bug where clicking finalize would instantly click the button in a similar spot on the homescreen
+2. (FIX) Non-standard UI hovering detectors now also check for the mouse being on screen
+	1. This should generally fix issues where you could hover over powers and see descriptions for off-screen powers
+	2. This was mainly targeted at the equipment menu powers being visible on the right
 
 9/13/26
 1. Fix the bug where Flamingos spaz out randomly at low movement velocity
