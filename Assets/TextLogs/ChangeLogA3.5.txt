@@ -77,3 +77,18 @@ Fixes:
 	1. Only the closest will be activated
 3. Removed the multiplayer button as this mode is unsupported as of now
 4. Fix bug where tier list placements would be offset based on your world position while in a run
+
+
+Dev Build 3.52 (tentative version number)
+
+1. Add new generic/universal Power
+2. Powers no longer drop cash when dissolved in a crucible
+
+Fixes:
+1. Warp UI now uses standardized button setup, meaning it requires a click AND release
+	1. This should fix the bug where clicking finalize would instantly click the button in a similar spot on the homescreen
+2. Non-standard UI hovering detectors now also check for the mouse being on screen
+	1. This should generally fix issues where you could hover over powers and see descriptions for off-screen powers
+	2. This was mainly targeted at the equipment menu powers being visible on the right
+3. Fix the bug where Flamingos spaz out randomly at low movement velocity
+4. Fix bug where player sometimes appeared layered below fairy ring objects (like mushrooms)
