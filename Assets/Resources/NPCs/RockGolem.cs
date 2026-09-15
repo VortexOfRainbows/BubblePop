@@ -52,7 +52,7 @@ public class RockGolem : RockSpider
     }
     public override void OnImplantChampion(Infector Infector)
     {
-        if(Child != null)
+        if(Child != null) // && Infector != null)
         {
             var spider = Child.GetComponent<RockGolem>();
             spider.ImplantChampion(Infector);
@@ -81,6 +81,11 @@ public class RockGolem : RockSpider
                     r.UpdateRendererColor(Color.red.WithAlpha(0), 1);
                     if (IsSkull)
                         r.SetSkullEnemy();
+                    if(IsInfected)
+                    {
+                        r.InfectionTarget = true;
+                        r.ImplantChampion(null);
+                    }
                 }
             }
             Head.gameObject.SetActive(true);

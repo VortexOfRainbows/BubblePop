@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Infector : Enemy
 {
+    public override bool CanBeRandomlyInfected() => false;
     public SpriteRenderer DropShadow;
     public GameObject Head;
     public Enemy Host;

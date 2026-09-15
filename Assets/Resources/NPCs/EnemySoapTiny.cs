@@ -1,6 +1,7 @@
 using UnityEngine;
 public class EnemySoapTiny : EnemySoap
 {
+    public override bool CanBeRandomlyInfected() => false;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 3;

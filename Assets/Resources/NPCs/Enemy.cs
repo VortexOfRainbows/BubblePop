@@ -99,6 +99,14 @@ public class Enemy : Entity, IImpactedByProjIFrames
         return MyDescription.Name.WithRarityColor(GetRarity() - 1, this is Infector);
     }
     #region Champion
+    public virtual bool CanBeRandomlyInfected()
+    {
+        return true;
+    }
+    public virtual float InfectionSpeedMultiplier()
+    {
+        return 1.0f;
+    }
     public float ActionCounter { get; set; } = 0;
     public float ChampionSpeedBonus { get; protected set; } = 0;
     public float FreezeMultiplier { get; set; } = 1;
@@ -125,8 +133,17 @@ public class Enemy : Entity, IImpactedByProjIFrames
             }
         }
         ImplantTimer = 1;
-        ChampionType = 0;
-        ChampionSpeedBonus = 1;
+        if(Infector != null)
+        {
+            ChampionType = 0;
+            ChampionSpeedBonus = 1;
+        }
+        else //Natural from pandemic ascenscion
+        {
+            ChampionType = 0;
+            ChampionSpeedBonus = 0.5f;
+        }
+        ChampionSpeedBonus *= InfectionSpeedMultiplier();
         //Basically heal after being implanted
         float originalMax = (int)(MaxLife / 2);
         MaxLife += originalMax;
@@ -233,7 +250,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
         MinCoins = StaticData.BaseMinCoin;
         MaxCoins = StaticData.BaseMaxCoin;
     }
-    public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false, bool isDummy = false)
+    public static Enemy Spawn(GameObject EnemyPrefab, Vector2 position, bool skull = false, bool isDummy = false, bool? spawnInfected = null)
     {
         Enemy e = Instantiate(EnemyPrefab, position, Quaternion.identity, Main.GenericSuperParent).GetComponent<Enemy>();
         e.IsDummy = isDummy;
@@ -243,10 +260,10 @@ public class Enemy : Entity, IImpactedByProjIFrames
             e.Init();
             e.HasCalledInit = true;
         }
-        if (Player.AscensionModifiers.Pandemic && !e.IsDummy)
+        if (Player.AscensionModifiers.Pandemic && ((!spawnInfected.HasValue && e.CanBeRandomlyInfected()) || spawnInfected.Value) && !e.IsDummy)
         {
-            float championChance = Math.Min(0.24f, 0.04f + 0.01f * WaveDirector.WaveNum);
-            if (Utils.RollWithLuck(championChance))
+            float championChance = Math.Min(0.25f, 0.05f + 0.01f * WaveDirector.WaveNum);
+            if (Utils.RollWithLuck(championChance) || (spawnInfected.HasValue && spawnInfected.Value))
             {
                 e.InfectionTarget = true;
                 e.ImplantChampion(null);

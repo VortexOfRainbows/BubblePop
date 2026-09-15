@@ -59,7 +59,7 @@ public class EnemyDuck : Enemy
             Vector2 toTarget = targetedLocation - (Vector2)transform.position;
             Vector2 movementDir = Life >= MaxLife ? toTarget.normalized : GetPathfindingToPlayerNorm();
             bobbingTimer += Mathf.Sqrt(toTarget.magnitude);
-            if(Mathf.Abs(movementDir.x) > 0.1f)
+            if(Mathf.Abs(movementDir.x) > 0.2f)
             {
                 sRender.flipX = movementDir.x > 0;
                 if (this is EnemyFlamingo)

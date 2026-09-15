@@ -17,7 +17,6 @@ Do Later:
 9. Overhaul systems for disabling offscreen elements that use too much resources
 	1. Right now this only applies to bubbleshroom and bubbleplant
 	2. Right now this overcompensates and disables them a little early (when the sprites are no longer visible, but the lights still are)
-10. Remove "Immediately" wave rewards (ask playtesters?)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -49,6 +48,22 @@ Sounds Needed:
 2. Ice breaking
 
 Done: 	
+
+-- (NEXT) A3.53 --
+
+9/15/26
+1. Infected soaps will ALWAYS spawn infected soap fragments
+	1. Soap fragments can no longer spawn infected from a non-infected soap
+2. Infectors can no longer be infected by Pandemic
+3. When a rock golem is infected by Pandemic, all segments will be infected
+4. Infections from Pandemic:
+	1. Act speed bonus +100% -> +50%
+	2. Health stays the same
+	3. Infections caused by Infectors unchanged
+5. Snobble infection act speed bonus multiplier 1.0 -> 0.5
+	1. This compounds with the nerfs above
+6. Pandemic infection chance 4% + wave% (max 24%) ->  5% + wave% (max 25%)
+7. Fix missing tile bug on certain crucible node
 
 -- A3.52 UPDATE ON STEAM --
 

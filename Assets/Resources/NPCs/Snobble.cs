@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Snobble : Enemy
 {
+    public override float InfectionSpeedMultiplier() => 0.5f;
     public Transform Snow;
     public Transform Face;
     public Transform TopJaw;
