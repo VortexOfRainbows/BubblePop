@@ -439,7 +439,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
                 {
                     float scaleDowner = duration > 200 ? 1.0f : (duration - 100) / 100f;
                     //second child is typically the shadow
-                    Vector2 shadowPos = transform.GetChild(1).position ;
+                    Vector2 shadowPos = transform.GetChild(1).position;
                     HazardSystem.AddHazard(shadowPos, HazardSystem.HazardType.Oil, duration, Mathf.Sqrt(Mathf.Abs(transform.localScale.x)) * 0.7f * scaleDowner, 0, false);
                 }
             }
