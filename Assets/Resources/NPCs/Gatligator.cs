@@ -13,8 +13,8 @@ public class Gatligator : Enemy
     public GameObject Gun;
     public Transform[] Barrels = new Transform[6];
     private Vector2 targetedLocation;
-    private readonly float moveSpeed = 0.18f;
-    private readonly float inertiaMult = 0.9875f;
+    public override float MoveSpeed => 0.18f;
+    public override float Inertia => 0.9875f;
     public float direction = 1;
     private float ShootTimer = 0;
     private float ShootSpeed = 0.5f;
@@ -70,10 +70,10 @@ public class Gatligator : Enemy
         {
             targetedLocation = Target.Position + Utils.RandCircle(18);
         }
-        RB.velocity += toTarget.normalized * moveSpeed;
-        RB.velocity *= inertiaMult;
+        RB.velocity += toTarget.normalized * MoveSpeed;
+        RB.velocity *= Inertia;
         if(RB.velocity.magnitude > 18)
-            RB.velocity *= inertiaMult;
+            RB.velocity *= Inertia;
         if (Mathf.Abs(RB.velocity.x) > 0.1f)
             UpdateDirection(RB.velocity.x);
         float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;

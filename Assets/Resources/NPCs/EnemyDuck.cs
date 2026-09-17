@@ -10,6 +10,7 @@ public class EnemyDuck : Enemy
     public int movingTimer;
     public const int baseMovingTimer = 300;
     protected float bobbingTimer = 0;
+    public override float Inertia => 0.88f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxCoin = 3;
@@ -18,7 +19,7 @@ public class EnemyDuck : Enemy
     }
     public void MoveUpdate()
     {
-        float inertia = 0.12f;
+        float inertia = 1 - Inertia;
         float bobSpeed = 80f;
         if (this is EnemyFlamingo)
             bobSpeed = 100f;

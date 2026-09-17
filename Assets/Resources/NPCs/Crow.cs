@@ -8,8 +8,8 @@ public class Crow : Enemy
         additiveColorPower = 0.4f;
     }
     public JumpMotion JumpAnimation;
-    public virtual float MoveSpeed => 0.15f;
-    public virtual float InertiaMult => 0.9f;
+    public override float MoveSpeed => 0.15f;
+    public override float Inertia => 0.9f;
     protected float JumpTimer = 0;
     protected float IdleTimer = 100;
     protected float initialShootDelay = 100;
@@ -59,7 +59,7 @@ public class Crow : Enemy
                 if (JumpTimer >= 0)
                 {
                     JumpAnimation.JumpPercent = JumpTimer / 40f;
-                    RB.velocity *= InertiaMult;
+                    RB.velocity *= Inertia;
                     if(dist > 20)
                         RB.velocity += toTarget * (MoveSpeed * JumpAnimation.JumpPercent);
                 }
@@ -76,7 +76,7 @@ public class Crow : Enemy
         {
             JumpTimer = 0;
             JumpAnimation.JumpPercent = 0;
-            RB.velocity *= InertiaMult;
+            RB.velocity *= Inertia;
             if (dist > 12.5f)
             {
                 RB.velocity += 0.5f * MoveSpeed * toTarget.normalized;
@@ -107,7 +107,7 @@ public class Crow : Enemy
         }
         else
         {
-            RB.velocity *= InertiaMult;
+            RB.velocity *= Inertia;
         }
     }
     public override void OnKill()

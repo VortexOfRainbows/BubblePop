@@ -6,8 +6,8 @@ public class Ent : Enemy
         inlineThreshold = 0.06f; //This is intentionally very precise
         additiveColorPower = 0.4f;
     }
-    public virtual float MoveSpeed => 0.65f;
-    public virtual float InertiaMultiplier => 0.9125f;
+    public override float MoveSpeed => 0.65f;
+    public override float Inertia => 0.9125f;
     public float OriginalScaler = 1;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
@@ -36,7 +36,7 @@ public class Ent : Enemy
         float dir = Utils.SignNoZero(Visual.transform.localScale.x);
         Vector2 toTarget = GetPathfindingToPlayerNorm();
         RB.velocity += toTarget * MoveSpeed;
-        RB.velocity *= InertiaMultiplier;
+        RB.velocity *= Inertia;
         if (Mathf.Abs(RB.velocity.x) > 0.1f)
             UpdateDirection(RB.velocity.x);
         float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * dir * -1f;

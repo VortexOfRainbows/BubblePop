@@ -13,7 +13,7 @@ public class IceGolem : Ent
         scale *= 1.3f;
     }
     public override float MoveSpeed => 0.125f;
-    public override float InertiaMultiplier => 0.965f;
+    public override float Inertia => 0.965f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 20;
@@ -38,7 +38,7 @@ public class IceGolem : Ent
         if (AICounter > 100)
         {
             Vector2 toTarget = Target.Position - (Vector2)transform.position;
-            RB.velocity *= InertiaMultiplier;
+            RB.velocity *= Inertia;
             UpdateDirection(Utils.SignNoZero(toTarget.x));
             if (AICounter > 250)
             {

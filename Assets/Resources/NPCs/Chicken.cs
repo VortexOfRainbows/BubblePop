@@ -6,8 +6,8 @@ public class Chicken : Enemy
     {
         inlineThreshold = 0.1f;
     }
-    public float moveSpeed = 0.12f;
-    public float inertiaMult = 0.96f;
+    public override float MoveSpeed => 0.141f;
+    public override float Inertia => 0.985f;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 8;
@@ -27,8 +27,8 @@ public class Chicken : Enemy
     public void MoveUpdate()
     {
         Vector2 moveDir = GetPathfindingToPlayerNorm();
-        RB.velocity += moveDir * moveSpeed;
-        RB.velocity *= inertiaMult;
+        RB.velocity += moveDir * MoveSpeed;
+        RB.velocity *= Inertia;
         if (Mathf.Abs(RB.velocity.x) > 0.1f)
             UpdateDirection(RB.velocity.x);
         float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;

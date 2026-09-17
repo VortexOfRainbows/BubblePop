@@ -83,7 +83,7 @@ public class Peaclock : Crow
                 if (JumpTimer >= 0)
                 {
                     JumpAnimation.JumpPercent = JumpTimer / 40f;
-                    RB.velocity *= InertiaMult;
+                    RB.velocity *= Inertia;
                     if (dist > 20)
                         RB.velocity += JumpAnimation.JumpPercent * MoveSpeed * toTarget;
                     tailRotateSpeed *= 0.1f;
@@ -102,7 +102,7 @@ public class Peaclock : Crow
         {
             JumpTimer = 0;
             JumpAnimation.JumpPercent = 0;
-            RB.velocity *= InertiaMult;
+            RB.velocity *= Inertia;
             IdleTimer++;
             if(Mathf.Sign(toTarget.x) != Mathf.Sign(Visual.transform.localScale.x))
             {

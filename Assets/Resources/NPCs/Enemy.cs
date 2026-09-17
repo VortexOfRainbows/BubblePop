@@ -77,9 +77,12 @@ public static class EnemyID
     public static readonly GameObject IceGolem = LoadNPC("IceGolem/IceGolem");
     public static readonly GameObject Peaclock = LoadNPC("Peaclock/Peaclock");
     public static readonly GameObject Snobble = LoadNPC("Snobble/Snobble");
+    public static readonly GameObject Boxer = LoadNPC("Boxer/Boxer", false);
 }
 public class Enemy : Entity, IImpactedByProjIFrames
 {
+    public virtual float MoveSpeed => 0.15f;
+    public virtual float Inertia => 0.95f;
     public bool HasLineOfSightWithTarget { get; private set; } = false;
     public Player Target { get; private set; } = null;
     public void TargetAcquisitionUpdate()
@@ -260,7 +263,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             e.Init();
             e.HasCalledInit = true;
         }
-        if (Player.AscensionModifiers.Pandemic && ((!spawnInfected.HasValue && e.CanBeRandomlyInfected()) || spawnInfected.Value) && !e.IsDummy)
+        if (Player.AscensionModifiers.Pandemic && ((!spawnInfected.HasValue && e.CanBeRandomlyInfected()) || (spawnInfected.HasValue && spawnInfected.Value)) && !e.IsDummy)
         {
             float championChance = Math.Min(0.25f, 0.05f + 0.01f * WaveDirector.WaveNum);
             if (Utils.RollWithLuck(championChance) || (spawnInfected.HasValue && spawnInfected.Value))

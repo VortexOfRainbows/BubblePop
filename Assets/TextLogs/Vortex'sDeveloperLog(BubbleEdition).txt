@@ -51,6 +51,12 @@ Done:
 
 -- (NEXT) A3.53 --
 
+9/16/26 to 9/17/26
+1. Speed and Inertia is now somewhat standardized in the code between enemies (now part of base class)
+2. WIP Boxer animations and primitive behaviors
+	1. WIP hovering offset
+	2. Animation for propeller
+
 9/15/26 to 9/16/26
 1. Infected soaps will ALWAYS spawn infected soap fragments
 	1. Soap fragments can no longer spawn infected from a non-infected soap

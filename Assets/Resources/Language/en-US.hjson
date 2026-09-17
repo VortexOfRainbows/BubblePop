@@ -1218,10 +1218,10 @@
     {
       Title: Recycle
       Description:
-      '''
-      Y:[Breakable objects] drop Y:50% G:(+50% per stack) more loot 
-      Y:[All powers] drop a Y:[breakable object] when Y:dissolved in a Y:Crucible
-      '''
+        '''
+        Y:[Breakable objects] drop Y:50% G:(+50% per stack) more loot 
+        Y:[All powers] drop a Y:[breakable object] when Y:dissolved in a Y:Crucible
+        '''
       Brief: Breakable objects drop more loot, and all powers create a breakable object when dissolved
       Lore: Power.Recycle.Lore
     }
@@ -1848,6 +1848,12 @@
       Title: Snobble
       Description: Such a cute snowball creature couldn't possibly pose a threat
       Lore: Enemy.Snobble.Lore
+    }
+    Boxer:
+    {
+      Title: Enemy.Boxer.Title
+      Description: Enemy.Boxer.Description
+      Lore: Enemy.Boxer.Lore
     }
   }
 }
