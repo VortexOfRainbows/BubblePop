@@ -1499,6 +1499,11 @@ MonoBehaviour:
   Blade2: {fileID: 1739959073389150401}
   Blade3: {fileID: 1811407128424627532}
   Blade4: {fileID: 1908052388175334975}
+  FistL: {fileID: 7991283268343712668}
+  FistR: {fileID: 8008438541089582385}
+  FistLVelo: {x: 0, y: 0}
+  FistRVelo: {x: 0, y: 0}
+  UseLeftFist: 1
 --- !u!1001 &6903396843678291895
 PrefabInstance:
   m_ObjectHideFlags: 0

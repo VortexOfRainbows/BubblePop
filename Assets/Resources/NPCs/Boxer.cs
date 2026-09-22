@@ -23,19 +23,67 @@ public class Boxer : Enemy
     public override float Inertia => 0.95f;
     public float Timer = 0;
     public SpriteRenderer Blade1, Blade2, Blade3, Blade4;
+    public SpriteRenderer FistL, FistR;
+    public Vector2 FistLVelo, FistRVelo;
     public float Dir { get; set; } = 1;
+    public float AI1 { get; set; }
+    public bool UseLeftFist = true;
     public override void AI()
     {
+        SpriteRenderer currentFist = UseLeftFist ? FistL : FistR; 
+        SpriteRenderer otherFist = UseLeftFist ? FistR : FistL; 
+        ref Vector2 currentVelo = ref FistRVelo; // Default fallback
+        ref Vector2 otherVelo = ref FistLVelo;
+        if (UseLeftFist)
+        {
+            currentVelo = ref FistLVelo;
+            otherVelo = ref FistRVelo;
+        }
         Timer += Time.fixedDeltaTime;
         float distToPlayer = Target.Distance(transform.gameObject);
         Vector2 toTarget = GetPathfindingToPlayerNorm();
         if (Mathf.Abs(RB.velocity.x) > 0.2f)
             Dir = Utils.SignNoZero(toTarget.x);
-        if(distToPlayer > 8)
+        if(distToPlayer > 8 && AI1 <= 0)
         {
             RB.velocity += toTarget * MoveSpeed;
         }
+        else //Attack range
+        {
+            Vector2 fistToPlayer = Target.transform.position - currentFist.transform.position;
+            Vector2 norm = fistToPlayer.normalized;
+            AI1++;
+            if (AI1 > 100)
+            {
+                if(AI1 < 105)
+                {
+                    //throw the punch
+                    currentVelo += norm * 8;
+                }
+                else
+                {
+                    //switch the punching fist to the other one
+                    AI1 = -20;
+                    UseLeftFist = !UseLeftFist;
+                }
+            }
+            else if(AI1 >= 0)//wind up the punch
+            {
+                float percent = AI1 / 100f;
+                float windup = Mathf.Sin(percent * Mathf.PI * 1.5f);
+                currentVelo += -windup * norm;
+            }
+        }
+        if(true) //Return punches to the default position after switching fists
+        {
+            FistL.transform.LerpLocalPosition(new Vector2(-0.5095f, -0.1346f), 0.1f);
+            FistR.transform.LerpLocalPosition(new Vector2(0.947f, -0.834f), 0.1f);
+        }
+        FistLVelo *= Inertia;
+        FistRVelo *= Inertia;
         RB.velocity *= Inertia;
+        FistL.transform.localPosition += (Vector3)(FistLVelo * Time.fixedDeltaTime);
+        FistR.transform.localPosition += (Vector3)(FistRVelo * Time.fixedDeltaTime);
         Visual.transform.localPosition = new Vector3(0, 1 + 0.1f * Mathf.Sin(Timer * Mathf.PI), 0);
         Visual.transform.localScale = new Vector3(-Dir * Mathf.Abs(Visual.transform.localScale.x), Visual.transform.localScale.y, 1);
         Visual.transform.LerpLocalEulerZ(Mathf.Clamp(RB.velocity.x * -3, -25, 25), 0.1f);
@@ -43,6 +91,7 @@ public class Boxer : Enemy
         BladeUpdate(Blade2, 1);
         BladeUpdate(Blade3, 2);
         BladeUpdate(Blade4, 3);
+
     }
     public void BladeUpdate(SpriteRenderer blade, float offset)
     {
