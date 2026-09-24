@@ -51,9 +51,10 @@ Done:
 
 -- (NEXT) A3.53 --
 
-9/22/26
+9/22/26 and 9/24/26
 1. WIP Punching animation for Boxer
-	1. NEXT: Refinement, hitboxes (fist should have hitboxes, body should not, though maybe both have hurtbox), sounds, adjustments
+	1. NEXT: Refinement, hitboxes (fist should have hitboxes, body should not, though maybe both have hurtbox), sounds, adjustments, infector stuff
+2. Worked on some animation refinement for boxer
 
 9/16/26 to 9/17/26
 1. Speed and Inertia is now somewhat standardized in the code between enemies (now part of base class)

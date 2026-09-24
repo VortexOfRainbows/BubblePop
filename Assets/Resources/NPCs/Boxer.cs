@@ -19,6 +19,7 @@ public class Boxer : Enemy
         data.WaveNumber = 4;
         data.Rarity = 2;
     }
+    public Transform Chassis;
     public override float MoveSpeed => 0.3f;
     public override float Inertia => 0.95f;
     public float Timer = 0;
@@ -27,9 +28,17 @@ public class Boxer : Enemy
     public Vector2 FistLVelo, FistRVelo;
     public float Dir { get; set; } = 1;
     public float AI1 { get; set; }
+    public float AI2 { get; set; }
     public bool UseLeftFist = true;
+    public override void OnSpawn()
+    {
+
+    }
     public override void AI()
     {
+        float punchRate = 50f;
+        float punchRecovery = 20;
+        float punchReturn = 60;
         SpriteRenderer currentFist = UseLeftFist ? FistL : FistR; 
         SpriteRenderer otherFist = UseLeftFist ? FistR : FistL; 
         ref Vector2 currentVelo = ref FistRVelo; // Default fallback
@@ -44,48 +53,99 @@ public class Boxer : Enemy
         Vector2 toTarget = GetPathfindingToPlayerNorm();
         if (Mathf.Abs(RB.velocity.x) > 0.2f)
             Dir = Utils.SignNoZero(toTarget.x);
-        if(distToPlayer > 8 && AI1 <= 0)
+        else if(AI1 != 0)
+            Dir = Utils.SignNoZero(Target.transform.position.x - transform.position.x);
+        otherFist.flipY = currentFist.flipY = Dir == 1;
+        if (distToPlayer > 8 && AI1 != 0)
         {
             RB.velocity += toTarget * MoveSpeed;
+            if(UseLeftFist || AI2 <= 0)
+            {
+                Vector2 fistToPlayerL = Target.transform.position - FistL.transform.position;
+                fistToPlayerL.y *= 0.25f;
+                FistL.transform.LerpLocalEulerZ((-fistToPlayerL).ToRotation() * Mathf.Rad2Deg, 0.05f);
+                FistL.transform.LerpLocalPosition(new Vector2(0.45f * Dir, -0.135f), 0.05f);
+            }
+            if(!UseLeftFist || AI2 <= 0)
+            {
+                Vector2 fistToPlayerR = Target.transform.position - FistR.transform.position;
+                fistToPlayerR.y *= 0.25f;
+                FistR.transform.LerpLocalEulerZ((-fistToPlayerR).ToRotation() * Mathf.Rad2Deg, 0.05f);
+                FistR.transform.LerpLocalPosition(new Vector2(-0.9f * Dir, -0.835f), 0.05f);
+            }
         }
         else //Attack range
         {
+            RB.velocity += 0.01f * MoveSpeed * toTarget;
             Vector2 fistToPlayer = Target.transform.position - currentFist.transform.position;
             Vector2 norm = fistToPlayer.normalized;
             AI1++;
-            if (AI1 > 100)
+            if (AI1 > punchRate)
             {
-                if(AI1 < 105)
+                if (AI1 < punchRate + 3)
                 {
                     //throw the punch
-                    currentVelo += norm * 8;
+                    float punchSpeed = 10f;
+                    currentVelo += norm * punchSpeed;
                 }
                 else
                 {
                     //switch the punching fist to the other one
-                    AI1 = -20;
+                    AI1 = -punchRecovery;
+                    AI2 = punchReturn;
                     UseLeftFist = !UseLeftFist;
                 }
             }
-            else if(AI1 >= 0)//wind up the punch
+            else if (AI1 >= 0)//wind up the punch
             {
-                float percent = AI1 / 100f;
-                float windup = Mathf.Sin(percent * Mathf.PI * 1.5f);
-                currentVelo += -windup * norm;
+                float percent = AI1 / punchRate;
+                float windup = Mathf.Sin(percent * Mathf.PI * 1.45f);
+                currentVelo += 1.5f * percent * -windup * norm;
             }
+            currentFist.transform.LerpLocalEulerZ((-fistToPlayer).ToRotation() * Mathf.Rad2Deg, 0.1f);
         }
-        if(true) //Return punches to the default position after switching fists
+        Vector2 otherToPlayer = Target.transform.position - otherFist.transform.position;
+        Vector2 returnPos = otherFist == FistL ? new Vector2(0.45f * Dir, -0.135f) : new Vector2(-0.9f * Dir, -0.835f);
+        if(AI2 > 0)
         {
-            FistL.transform.LerpLocalPosition(new Vector2(-0.5095f, -0.1346f), 0.1f);
-            FistR.transform.LerpLocalPosition(new Vector2(0.947f, -0.834f), 0.1f);
+            if(AI2 > punchReturn / 2)
+            {
+                //hitbox on;
+            }
+            float fromCenter = otherFist.transform.localPosition.magnitude;
+            --AI2;
+            float returnPercent = 1 - AI2 / punchReturn;
+            Vector2 toReturn = returnPos - (Vector2)otherFist.transform.localPosition;
+            if(fromCenter < 8)
+            {
+                float percent2 = 1 - fromCenter / 8f;
+                otherVelo += otherToPlayer * percent2 * 0.5f;
+                otherFist.transform.LerpLocalEulerZ((-otherVelo).ToRotation() * Mathf.Rad2Deg, 0.1f);
+            }
+            otherVelo += 0.1f * returnPercent * toReturn;
+            otherFist.transform.LerpLocalPosition(returnPos, returnPercent * 0.04f);
         }
-        FistLVelo *= Inertia;
-        FistRVelo *= Inertia;
+        else
+            otherFist.transform.LerpLocalPosition(returnPos, 0.05f);
+        if (true) //Return punches to the default position after switching fists
+        {
+            if (currentFist == FistL)
+                FistL.transform.LerpLocalPosition(new Vector2(0.45f * Dir, -0.135f), .1f);
+            if (currentFist == FistR)
+                FistR.transform.LerpLocalPosition(new Vector2(-0.9f * Dir, -0.835f), .1f);
+            FistLVelo *= Inertia;
+            FistRVelo *= Inertia;
+        }
+        if (otherVelo.sqrMagnitude < 1)
+        {
+            Vector2 fistToPlayer = otherToPlayer;
+            otherFist.transform.LerpLocalEulerZ((-fistToPlayer).ToRotation() * Mathf.Rad2Deg, 0.1f);
+        }
         RB.velocity *= Inertia;
         FistL.transform.localPosition += (Vector3)(FistLVelo * Time.fixedDeltaTime);
         FistR.transform.localPosition += (Vector3)(FistRVelo * Time.fixedDeltaTime);
         Visual.transform.localPosition = new Vector3(0, 1 + 0.1f * Mathf.Sin(Timer * Mathf.PI), 0);
-        Visual.transform.localScale = new Vector3(-Dir * Mathf.Abs(Visual.transform.localScale.x), Visual.transform.localScale.y, 1);
+        Chassis.transform.localScale = new Vector3(-Dir * Mathf.Abs(Chassis.transform.localScale.x), Chassis.transform.localScale.y, 1);
         Visual.transform.LerpLocalEulerZ(Mathf.Clamp(RB.velocity.x * -3, -25, 25), 0.1f);
         BladeUpdate(Blade1, 0);
         BladeUpdate(Blade2, 1);
