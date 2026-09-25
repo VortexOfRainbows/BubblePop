@@ -233,11 +233,14 @@ public class Enemy : Entity, IImpactedByProjIFrames
         if (data.CardBG == null)
             data.CardBG = Resources.Load<Sprite>("UI/Background");
     }
+    public BoxCollider2D MyCollider;
     public sealed override void Init()
     {
         TargetAcquisitionUpdate();
         SetUpStats();
         OnSpawn();
+        if(MyCollider == null)
+            MyCollider = GetComponent<BoxCollider2D>();
     }
     public virtual void OnSpawn()
     {
@@ -316,7 +319,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
     }
     public void DeathParticles(int count = 10, float size = 0, Color c = default)
     {
-        BoxCollider2D c2D = GetComponent<BoxCollider2D>();
+        BoxCollider2D c2D = MyCollider;
         for (int i = 0; i < count; i++)
         {
             Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
@@ -428,7 +431,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
         if (!World.NonSolidTileSafe(transform.position))
         {
             CircleCollider2D circle = GetComponent<CircleCollider2D>();
-            BoxCollider2D box = GetComponent<BoxCollider2D>();
+            BoxCollider2D box = MyCollider;
             bool collidersOn = (circle != null && circle.enabled) || (box != null && box.enabled);
             if(collidersOn)
                 Entity.PushIntoClosestPossibleTile(transform, RB, 10, false);
@@ -591,7 +594,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
     }
     private void DoPopupText(DamageData FinalDamageData)
     {
-        BoxCollider2D c2D = GetComponent<BoxCollider2D>();
+        BoxCollider2D c2D = MyCollider;
         Vector2 randPos = c2D.bounds.min + new Vector3(c2D.bounds.extents.x * Utils.RandFloat(1), c2D.bounds.extents.y * Utils.RandFloat(1));
         if (FinalDamageData.PopupTextColor == default)
             FinalDamageData.PopupTextColor = new Color(1f, 0.5f, 0.4f);

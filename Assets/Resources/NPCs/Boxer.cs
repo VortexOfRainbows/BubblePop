@@ -4,11 +4,13 @@ public class Boxer : Enemy
 {
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
-        base.ModifyInfectionShaderProperties(ref outlineColor, ref inlineColor, ref inlineThreshold, ref outlineSize, ref additiveColorPower);
+        outlineSize = 0.015f;
+        inlineThreshold = 0.02f;
+        additiveColorPower = 0.3f;
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
-        base.ModifyUIOffsets(ref offset, ref scale);
+
     }
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
@@ -34,11 +36,20 @@ public class Boxer : Enemy
         public Vector2 Velo;
         public Collider2D Collider;
         public Vector2 RestPosition;
-        public Vector2 GetRestPos(float dir) => new Vector2(RestPosition.x * dir, RestPosition.y);
+        public Vector2 GetRestPos(float dir) => new(RestPosition.x * dir, RestPosition.y);
+        public void LerpToRestPosition(float dir, float lerpT)
+        {
+            transform.LerpLocalPosition(GetRestPos(dir), lerpT);
+        }
+        public void Update(float inertia)
+        {
+            transform.localPosition += (Vector3)(Velo * Time.fixedDeltaTime);
+            Velo *= inertia;
+        }
     }
     public BoxerFist Left, Right;
     public Transform Chassis;
-    public override float MoveSpeed => 0.3f;
+    public override float MoveSpeed => 0.4f;
     public override float Inertia => 0.95f;
     public float Timer = 0;
     public SpriteRenderer Blade1, Blade2, Blade3, Blade4;
@@ -76,14 +87,14 @@ public class Boxer : Enemy
                 Vector2 fistToPlayerL = Target.transform.position - FistL.transform.position;
                 fistToPlayerL.y *= 0.25f;
                 FistL.transform.LerpLocalEulerZ((-fistToPlayerL).ToRotation() * Mathf.Rad2Deg, 0.04f);
-                FistL.transform.LerpLocalPosition(Left.GetRestPos(Dir), 0.04f);
+                Left.LerpToRestPosition(Dir, 0.04f);
             }
             if(!UseLeftFist || AI2 <= 0)
             {
                 Vector2 fistToPlayerR = Target.transform.position - FistR.transform.position;
                 fistToPlayerR.y *= 0.25f;
                 FistR.transform.LerpLocalEulerZ((-fistToPlayerR).ToRotation() * Mathf.Rad2Deg, 0.04f);
-                FistR.transform.LerpLocalPosition(new Vector2(-0.9f * Dir, -0.835f), 0.04f);
+                Right.LerpToRestPosition(Dir, 0.04f);
             }
         }
         else //Attack range
@@ -112,7 +123,7 @@ public class Boxer : Enemy
             {
                 float percent = AI1 / punchRate;
                 float windup = Mathf.Sin(percent * Mathf.PI * 1.45f);
-                currentFist.Velo += 1.5f * percent * -windup * norm;
+                currentFist.Velo += 1.75f * percent * -windup * norm;
             }
             currentFist.transform.LerpLocalEulerZ((-fistToPlayer).ToRotation() * Mathf.Rad2Deg, 0.1f);
         }
@@ -132,27 +143,23 @@ public class Boxer : Enemy
                 otherFist.transform.LerpLocalEulerZ((-otherFist.Velo).ToRotation() * Mathf.Rad2Deg, 0.1f);
             }
             otherFist.Velo += 0.1f * returnPercent * toReturn;
-            otherFist.transform.LerpLocalPosition(returnPos, returnPercent * 0.05f);
+            otherFist.LerpToRestPosition(Dir, returnPercent * 0.05f);
         }
         else
-            otherFist.transform.LerpLocalPosition(returnPos, 0.05f);
-        if (true) //Return punches to the default position after switching fists
-        {
-            if (currentFist == Left)
-                FistL.transform.LerpLocalPosition(Left.GetRestPos(Dir), .1f);
-            if (currentFist == Right)
-                FistR.transform.LerpLocalPosition(Right.GetRestPos(Dir), .1f);
-            Left.Velo *= Inertia;
-            Right.Velo *= Inertia;
-        }
+            otherFist.LerpToRestPosition(Dir, 0.05f);
+        //Return punches to the default position after switching fists
+        if (currentFist == Left)
+            Left.LerpToRestPosition(Dir, .1f);
+        if (currentFist == Right)
+            Right.LerpToRestPosition(Dir, .1f);
         if (otherFist.Velo.sqrMagnitude < 1)
         {
             Vector2 fistToPlayer = otherToPlayer;
             otherFist.transform.LerpLocalEulerZ((-fistToPlayer).ToRotation() * Mathf.Rad2Deg, 0.1f);
         }
         RB.velocity *= Inertia;
-        FistL.transform.localPosition += (Vector3)(Left.Velo * Time.fixedDeltaTime);
-        FistR.transform.localPosition += (Vector3)(Right.Velo * Time.fixedDeltaTime);
+        Left.Update(Inertia);
+        Right.Update(Inertia);
         Visual.transform.localPosition = new Vector3(0, 1 + 0.1f * Mathf.Sin(Timer * Mathf.PI), 0);
         Chassis.transform.localScale = new Vector3(-Dir * Mathf.Abs(Chassis.transform.localScale.x), Chassis.transform.localScale.y, 1);
         Visual.transform.LerpLocalEulerZ(Mathf.Clamp(RB.velocity.x * -3, -25, 25), 0.1f);

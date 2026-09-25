@@ -45,7 +45,7 @@ public class Infector : Enemy
         }
         else
         {
-            size = 1.05f * Host.transform.localScale.x * Host.GetComponent<BoxCollider2D>().size - GetComponent<BoxCollider2D>().size;
+            size = 1.05f * Host.transform.localScale.x * Host.MyCollider.size - MyCollider.size;
             if (size.x < 0)
                 size.x = 0;
             if (size.y < 0)
