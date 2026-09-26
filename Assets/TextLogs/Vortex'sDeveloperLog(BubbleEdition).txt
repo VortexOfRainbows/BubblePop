@@ -51,11 +51,17 @@ Done:
 
 -- (NEXT) A3.53 --
 
-9/22/26 and 9/24/26
-1. WIP Punching animation for Boxer
-	1. NEXT: Refinement, sounds, adjustments, layer and collider changes to make it appear above player and tile layers (collider should be shadow level for tile collision)
+9/22/26 and 9/24/26 and 9/26/26
+1. WIP Boxer
+	1. NEXT: layer and collider changes to make it appear above player and tile layers (collider should be shadow level for tile collision) + make this work for infector shards
 2. Worked on some animation refinement for boxer
 3. Boxer infector colors should be correct
+4. Boxer now has some sounds for punching and some fire effects
+5. Closest enemy detection now uses the hitbox center rather than the logical center (which was often somewhat arbitrarily vertically offset)	
+	1. This is mostly unimportant for everything except homing onto the Boxer
+6. Boxer compendium related stuff is now finished
+7. Boxer has a chance to spawn golden, which makes it act somewhat infected but drop more money!
+8. David's sprite for Reactor Core!
 
 9/16/26 to 9/17/26
 1. Speed and Inertia is now somewhat standardized in the code between enemies (now part of base class)

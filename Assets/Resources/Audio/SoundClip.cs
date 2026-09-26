@@ -70,29 +70,23 @@ public static class SoundID
         "Starbarb");
     public static SoundClip ElectricCast = new("ThoughtBubble/",
         "ElectricAttack1", "ElectricAttack2");
-    public static SoundClip Infect = new("NPCs/",
-        "Infect");
-    public static SoundClip ChestSpawn = new("Chest/",
-        "Spawn");
-    public static SoundClip ChestDrop = new("Chest/",
-        "Drop");
-    public static SoundClip WoodBreak = new("World/",
-        "WoodBreaking");
+    public static SoundClip Infect = new("NPCs/", "Infect");
+    public static SoundClip ChestSpawn = new("Chest/", "Spawn");
+    public static SoundClip ChestDrop = new("Chest/", "Drop");
+    public static SoundClip WoodBreak = new("World/", "WoodBreaking");
 
-    public static SoundClip GolemShoot = new("NPCs/",
-        "StoneGolemQuickShot");
-    public static SoundClip GolemMultiShoot = new("NPCs/",
-        "StoneGolemMultiShot");
-    public static SoundClip GolemCharge = new("NPCs/",
-        "StoneGolemCharging");
-    public static SoundClip GhostDeath = new("NPCs/",
-        "Forlikeaghost");
+    public static SoundClip GolemShoot = new("NPCs/", "StoneGolemQuickShot");
+    public static SoundClip GolemMultiShoot = new("NPCs/", "StoneGolemMultiShot");
+    public static SoundClip GolemCharge = new("NPCs/", "StoneGolemCharging");
+    public static SoundClip GhostDeath = new("NPCs/", "Forlikeaghost");
+    public static SoundClip Detonation = new("Player/", "DebuffExplode");
+    public static SoundClip FireTrail = new("Player/", "FireTrail");
 }
 public class SoundClip
 {
     private const string audioPath = "Audio/";
     private readonly string myPath;
-    private List<AudioClip> variations = new();
+    private readonly List<AudioClip> variations = new();
     private AudioClip Fetch(string audioFileName)
     {
         return Resources.Load<AudioClip>($"{myPath}{audioFileName}");

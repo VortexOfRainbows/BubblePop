@@ -77,7 +77,7 @@ public static class EnemyID
     public static readonly GameObject IceGolem = LoadNPC("IceGolem/IceGolem");
     public static readonly GameObject Peaclock = LoadNPC("Peaclock/Peaclock");
     public static readonly GameObject Snobble = LoadNPC("Snobble/Snobble");
-    public static readonly GameObject Boxer = LoadNPC("Boxer/Boxer", false);
+    public static readonly GameObject Boxer = LoadNPC("Boxer/Boxer");
 }
 public class Enemy : Entity, IImpactedByProjIFrames
 {
@@ -112,6 +112,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
     }
     public float ActionCounter { get; set; } = 0;
     public float ChampionSpeedBonus { get; protected set; } = 0;
+    public float OtherSpeedBonus { get; protected set; } = 0;
     public float FreezeMultiplier { get; set; } = 1;
     private float FreezeFollower { get; set; } = 0;
     public bool FullyFrozen { get; private set; } = false;
@@ -291,14 +292,15 @@ public class Enemy : Entity, IImpactedByProjIFrames
         Enemy best = null;
         foreach (Enemy e in Enemies)
         {
-            Vector2 toDest = e.transform.position - position;
+            Vector3 enemyPos = e.MyCollider.bounds.center;
+            Vector2 toDest = enemyPos - position;
             float dist = toDest.sqrMagnitude;
             bool hasLOS = !needsLOS;
             if (!hasLOS)
             {
                 float distance = toDest.magnitude;
                 float startingDist = distance;
-                hasLOS = Utils.HasClearLOS(position, e.transform.position);
+                hasLOS = Utils.HasClearLOS(position, enemyPos);
             }
             //Debug.Log(e.tag);
             if (dist <= searchDistance && 
@@ -399,7 +401,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             }
             FullyFrozen = FreezeMultiplier <= 0.05f;
         }
-        ActSpeed = Mathf.Max((1 + ChampionSpeedBonus) * FreezeMultiplier, 0);
+        ActSpeed = Mathf.Max((1 + ChampionSpeedBonus + OtherSpeedBonus) * FreezeMultiplier, 0);
         FreezeMultiplier = 1; //Reset after applying
 
         bool ForceRunOnce = ActSpeed == 1;
