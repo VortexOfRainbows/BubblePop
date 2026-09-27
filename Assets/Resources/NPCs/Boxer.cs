@@ -11,7 +11,7 @@ public class Boxer : Enemy
     }
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
-        offset.x += 0.1f;
+        offset.x -= 0.1f;
         offset.y -= 0.1f;
     }
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
@@ -83,10 +83,14 @@ public class Boxer : Enemy
         Timer += Time.fixedDeltaTime;
         float distToPlayer = Target.Distance(Visual.transform.gameObject);
         Vector2 toTarget = GetPathfindingToPlayerNorm();
-        if (Mathf.Abs(RB.velocity.x) > 0.2f || !HasLineOfSightWithTarget)
+        if (Mathf.Abs(RB.velocity.x) > 0.2f)
             Dir = Utils.SignNoZero(toTarget.x);
-        else if(AI1 > 0)
-            Dir = Utils.SignNoZero(Target.transform.position.x - transform.position.x);
+        else if(AI1 > 0 || !HasLineOfSightWithTarget)
+        {
+            float dif =Mathf.Abs( Target.transform.position.x - transform.position.x);
+            if(dif > 0.1f)
+                Dir = Utils.SignNoZero(Target.transform.position.x - transform.position.x);
+        }
         otherFist.Fist.flipY = currentFist.Fist.flipY = Dir == 1;
         if (distToPlayer > 8 && AI1 <= 0)
         {
@@ -108,7 +112,10 @@ public class Boxer : Enemy
         }
         else //Attack range
         {
-            RB.velocity += 0.02f * MoveSpeed * toTarget;
+            if(distToPlayer < 2)
+                RB.velocity -= toTarget * MoveSpeed * 0.25f;
+            else
+                RB.velocity += 0.02f * MoveSpeed * toTarget;
             Vector2 fistToPlayer = Target.transform.position - currentFist.transform.position;
             Vector2 norm = fistToPlayer.normalized;
             AI1++;
@@ -132,6 +139,7 @@ public class Boxer : Enemy
                     UseLeftFist = !UseLeftFist;
                     currentFist = UseLeftFist ? Left : Right;
                     otherFist = UseLeftFist ? Right : Left;
+                    otherFist.Collider.enabled = true;
                 }
             }
             else if (AI1 >= 0)//wind up the punch
@@ -215,6 +223,7 @@ public class Boxer : Enemy
     }
     public override void UIAI()
     {
+        Visual.transform.localScale = new Vector3(-Chassis.transform.localScale.x, Chassis.transform.localScale.y, 1);
         Timer = .3f;
         BladeUpdate(Blade1, 0);
         BladeUpdate(Blade2, 1);

@@ -182,7 +182,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 3
   m_SortAtRoot: 0
 --- !u!1 &477981585030710047
 GameObject:
@@ -436,9 +436,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.75, y: 0}
+  m_Offset: {x: -0.65, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.225
 --- !u!1 &2045866258908327071
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,7 +550,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 345847655988925695}
@@ -634,7 +634,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 345847655988925695}
@@ -1228,9 +1228,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.75, y: 0}
+  m_Offset: {x: -0.65, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.225
 --- !u!1 &7854033595171654649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1545,9 +1545,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.09}
+  m_Offset: {x: 0, y: -0.05}
   serializedVersion: 2
-  m_Radius: 0.75
+  m_Radius: 0.65
 --- !u!114 &5019940208306786305
 MonoBehaviour:
   m_ObjectHideFlags: 0

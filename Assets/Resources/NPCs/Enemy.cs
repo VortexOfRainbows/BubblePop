@@ -631,6 +631,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
         ResolveDamageBuffer(true);
         if (IsSkull)
         {
+            //Vector2 lootDropLocation = MyCollider == null ? transform.position : MyCollider.bounds.center;
             StaticData.TimesKilledSkull++;
             WaveDirector.SkullEnemiesActive -= 1;
             if(Player.Instance.HasResearchNotes)

@@ -40,6 +40,7 @@ public static class LayerHelper
     public const int ChestAirborneSortingOrder = 2;
     public const int PowerAirborneSortingOrder = 2;
     public const int WeaponSortingOrder = 3;
+    public const int EnemyAirbornSortingOrder = 3; //Boxer, Infectors in Boxer
 
     public const int TreeSortingOrder = 20;
 

@@ -50,12 +50,14 @@ public class Infector : Enemy
                 size.x = 0;
             if (size.y < 0)
                 size.y = 0;
-            Crown.transform.localPosition = 
-                Crown.transform.localPosition.Lerp(new Vector3(0, 0.3f + size.y * 1.1f) + Host.CrownPositionOffset(), 0.05f);
+            Crown.transform.LerpLocalPosition(new Vector3(0, 0.3f + size.y * 1.1f) + Host.CrownPositionOffset(), 0.05f);
         }
         AnimationTimer += FinishedImplanting ? 1.5f : 1;
         int c = Shards.Length;
         float rad = Mathf.PI / c * 2f;
+        int sortOrder = -1;
+        if (Host != null && Host is Boxer)
+            sortOrder = 4;
         for (int i = 0; i < c; ++i)
         {
             float rot = rad * i + AnimationTimer * Mathf.PI / 240f;
@@ -70,12 +72,13 @@ public class Infector : Enemy
             float scale = 1 - circular.z * 0.2f;
             Shards[i].transform.localPosition = Shards[i].transform.localPosition.Lerp(circular, lerp);
             if(Shards[i].transform.localPosition.z < 0)
-                Shards[i].sortingOrder = 0;
+                Shards[i].sortingOrder = sortOrder + 1;
             else
-                Shards[i].sortingOrder = -2;
+                Shards[i].sortingOrder = sortOrder - 1;
             Shards[i].transform.localEulerAngles = Mathf.LerpAngle(Shards[i].transform.localEulerAngles.z, normX * -30, lerp) * Vector3.forward;
             Shards[i].transform.LerpLocalScale(0.9f * scale * Vector2.one, lerp);
             Glows[i].color = Glows[i].color.WithAlpha(Mathf.Lerp(Glows[i].color.a, 1f, 0.08f));
+            Glows[i].sortingOrder = sortOrder - 2;
             //velocities[i] *= 1 - lerp;
         }
     }

@@ -14,7 +14,7 @@ public class BossHealthBar : MonoBehaviour
         e.Highlight.color = e.Highlight.color.WithAlpha(0);
         e.Skull.color = e.Skull.color.WithAlpha(0);
         e.PointerSkull.color = e.PointerSkull.color.WithAlpha(0);
-        e.IntendedSize = Mathf.Min(3.5f, (host.GetComponent<BoxCollider2D>().size.x * host.transform.localScale.x * 0.5f + 0.55f) * host.HealthBarSizeModifier);
+        e.IntendedSize = Mathf.Min(3.5f, (host.MyCollider.size.x * host.transform.localScale.x * 0.5f + 0.55f) * host.HealthBarSizeModifier);
         return e;
     }
     public void Update()
