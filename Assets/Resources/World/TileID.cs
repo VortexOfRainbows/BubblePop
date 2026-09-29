@@ -25,7 +25,7 @@ public static class TileID
     public static readonly DualGridTile DirtWall = LoadWall("DirtWall/DirtWall", Dirt);
     public static readonly DualGridTile SnowWall = LoadWall("SnowWall/SnowWall", Snow);
 
-    public static readonly DualGridTile Water = LoadLiquid("Water/WaterTile");
+    public static readonly DualGridTile Water = LoadLiquid("Water/WaterTile", 7);
     public static bool[,] WallTileRelations { get; private set; } = LoadWallTileRelations();
     private static bool[] HasWallTile { get; set; }
     private static DualGridTile[] MyWallTile { get; set; }
@@ -46,6 +46,7 @@ public static class TileID
         var tile = Resources.Load<DualGridTile>($"World/Tiles/{path}");
         tile.TypeIndex = LoadIndexCount++;
         tile.LayerOffset = tileOrder;
+        tile.IsLiquid = true;
         BottomTileOrder = Math.Max(BottomTileOrder, tileOrder);
 
         TileTypes.Add(tile);

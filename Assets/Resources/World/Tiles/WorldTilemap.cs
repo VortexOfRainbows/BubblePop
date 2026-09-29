@@ -1,11 +1,21 @@
-using Newtonsoft.Json.Bson;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class WorldTilemap : MonoBehaviour
 {
+    public static void LoadWorldObjectPrefabs()
+    {
+        VisualMapPrefab = VisualMapPrefab != null ? VisualMapPrefab : Resources.Load<GameObject>("World/Tiles/VisualMap");
+        BubbleMushroom = BubbleMushroom != null ? BubbleMushroom : Resources.Load<GameObject>("World/Decor/Nature/BubbleMushroom");
+        Mushroom = Mushroom != null ? Mushroom : Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
+        SnowPile = SnowPile != null ? SnowPile : Resources.Load<GameObject>("World/Decor/Snow/SnowClump");
+        TallGrass = TallGrass != null ? TallGrass : Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
+        CratePrefab = CratePrefab != null ? CratePrefab : Resources.Load<GameObject>("World/Breakable/BreakableCrate");
+        BarrelPrefab = BarrelPrefab != null ? BarrelPrefab : Resources.Load<GameObject>("World/Breakable/BreakableBarrel");
+        UrnPrefab = UrnPrefab != null ? UrnPrefab : Resources.Load<GameObject>("World/Breakable/BreakableUrn");
+        BubblePlantObj = BubblePlantObj != null ? BubblePlantObj : Resources.Load<GameObject>("World/Decor/Nature/BubblePlant");
+    }
     //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
     public static GameObject SnowPile;
@@ -17,7 +27,9 @@ public class WorldTilemap : MonoBehaviour
     public Transform FloorMapParent;
     public Transform WallMapParent;
     public Transform BorderMapParent;
+    public Transform BottomMapParent;
     private Dictionary<int, Tilemap> DisplayMap;
+    private Dictionary<int, Tilemap> MaybeTemp_BottomWallDisplayMap;
     private Dictionary<int, Tilemap> BorderDisplayMap;
     private Dictionary<int, Tilemap> WallDisplayMap;
     public Tilemap Map;
@@ -33,32 +45,28 @@ public class WorldTilemap : MonoBehaviour
     public void Init()
     {
         ClearDict(DisplayMap);
+        ClearDict(MaybeTemp_BottomWallDisplayMap);
         ClearDict(BorderDisplayMap);
-        ClearDict(WallDisplayMap);
-        VisualMapPrefab = VisualMapPrefab != null ? VisualMapPrefab : Resources.Load<GameObject>("World/Tiles/VisualMap");
-        BubbleMushroom = BubbleMushroom != null ? BubbleMushroom : Resources.Load<GameObject>("World/Decor/Nature/BubbleMushroom");
-        Mushroom = Mushroom != null ? Mushroom : Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
-        SnowPile = SnowPile != null ? SnowPile : Resources.Load<GameObject>("World/Decor/Snow/SnowClump");
-        TallGrass = TallGrass != null ? TallGrass : Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
-        CratePrefab = CratePrefab != null ? CratePrefab : Resources.Load<GameObject>("World/Breakable/BreakableCrate");
-        BarrelPrefab = BarrelPrefab != null ? BarrelPrefab : Resources.Load<GameObject>("World/Breakable/BreakableBarrel");
-        UrnPrefab = UrnPrefab != null ? UrnPrefab : Resources.Load<GameObject>("World/Breakable/BreakableUrn");
-        BubblePlantObj = BubblePlantObj != null ? BubblePlantObj : Resources.Load<GameObject>("World/Decor/Nature/BubblePlant");
+        ClearDict(WallDisplayMap); 
+        LoadWorldObjectPrefabs();
         DisplayMap = new();
         BorderDisplayMap = new();
         WallDisplayMap = new();
-        PrepareDisplayMap(FloorMapParent, DisplayMap);
-        PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
-        PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
+        MaybeTemp_BottomWallDisplayMap = new();
+        PrepareDisplayMap(FloorMapParent, DisplayMap, false, false, 0);
+        PrepareDisplayMap(BottomMapParent, MaybeTemp_BottomWallDisplayMap, false, true, 0);
+        PrepareDisplayMap(BorderMapParent, BorderDisplayMap, true, false, 1);
+        PrepareDisplayMap(WallMapParent, WallDisplayMap, true, true, 1);
         AddDecor();
-        NewFasterRefresh(DisplayMap, BorderDisplayMap, WallDisplayMap);
+        NewFasterRefresh(DisplayMap, BorderDisplayMap, WallDisplayMap, MaybeTemp_BottomWallDisplayMap);
     }
-    public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, bool border = false, bool wall = false)
+    public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, bool border = false, bool wall = false, float level = 0)
     {
+        float levelSizeMultiplier = 0;
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
             DualGridTile tile = TileID.TileTypes[k];
-            Color c = border ? tile.BorderColor : Color.white;
+            Color c = border || wall ? tile.BorderColor : Color.white;
             DisplayMap.Add(k, null);
             if (tile.CountsAsWall() == wall)
             {
@@ -67,18 +75,23 @@ public class WorldTilemap : MonoBehaviour
                 TilemapRenderer r = DisplayMap[k].GetComponent<TilemapRenderer>();
                 float layerOffset = tile.LayerOffset;
                 float wallGridTransform = 0;
-                if(tile.CountsAsWall())
+                if (tile.CountsAsWall())
                 {
-                    wallGridTransform = -0.425f;
+                    wallGridTransform = - 0.425f;
                     c = tile.BorderColor;
                 }
                 else if(border && tile.HasWallVariant())
                 {
-                    wallGridTransform = 0.25f;
+                    wallGridTransform = + 0.25f;
                 }
                 else if(!border)
                 {
                     r.sortingLayerID = World.FloorSortingLayer;
+                    if (tile.IsLiquid)
+                    {
+                        wallGridTransform = -0.75f;
+                        c.a *= 0.5f;
+                    }
                 }
                 DisplayMap[k].transform.localPosition = new Vector3(0, wallGridTransform, layerOffset);
 
@@ -115,7 +128,7 @@ public class WorldTilemap : MonoBehaviour
                TileIsNotSolidOrRendersBelow(i - 1, j + 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(i + 1, j, myLayerOffset) ||
                TileIsNotSolidOrRendersBelow(i - 1, j - 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(i - 1, j, myLayerOffset);
     }
-    public static void NewFasterRefresh(Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap)
+    public static void NewFasterRefresh(Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap, Dictionary<int, Tilemap> TestMap)
     {
         World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
         DualGridTile[] tileBuffer = new DualGridTile[4];
@@ -141,7 +154,13 @@ public class WorldTilemap : MonoBehaviour
                                 tile.MarkForSpecialBorderUpdate = true;
                     }
                     else
+                    {
                         tile.MarkForUpdate = true;
+                        //temp
+                        if(!tile.MarkForSpecialUpdate)
+                            if (tile.HasWallVariant() && TileIsNotBlendableWall(i2, j2, tile.LayerOffset))
+                                tile.MarkForSpecialUpdate = true;
+                    }
                 }
                 for (int k = 0; k < 4; ++k)
                 {
@@ -167,7 +186,14 @@ public class WorldTilemap : MonoBehaviour
                         if (tile.MarkForUpdate)
                         {
                             tile.UpdateDisplayTileSingular(i, j, tile.QueuedTileChangeData);
-                            tile.MarkForUpdate = false;
+                            //if (tile.MarkForSpecialUpdate)
+                            //{
+                            //    DualGridTile wall = tile.MyWallVariant();
+                            //    if(wall != null)
+                            //        wall.UpdateDisplayTileSingular(i, j, wall.QueuedSpecialChangeData);
+                            //    tile.MarkForSpecialUpdate = false;
+                            //}
+                            //tile.MarkForUpdate = false;
                         }
                     }
                 }
@@ -179,6 +205,7 @@ public class WorldTilemap : MonoBehaviour
             if(tile.CountsAsWall())
             {
                 WallMap[tile.TypeIndex].SetTiles(tile.QueuedWallChangeData.ToArray(), true);
+                //TestMap[tile.TypeIndex].SetTiles(tile.QueuedSpecialChangeData.ToArray(), true);
             }
             else
             {
@@ -188,6 +215,7 @@ public class WorldTilemap : MonoBehaviour
             tile.QueuedWallChangeData.Clear();
             tile.QueuedBorderChangeData.Clear();
             tile.QueuedTileChangeData.Clear();
+            tile.QueuedSpecialChangeData.Clear();
         }
     }
     public void AddDecor()

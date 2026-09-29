@@ -75,7 +75,11 @@ public class DualGridTile : ScriptableObject
         DualGridTile tile = data.TileType;
         if (data.TileType == this && data.IsSolid == GeneratingBorder)
             return true;
-        if (IsWall)
+        if(IsLiquid)
+        {
+            //liquid stuff might be needed here later?
+        }
+        else if (IsWall)
         {
             if(data.IsSolid)
             {
@@ -133,6 +137,7 @@ public class DualGridTile : ScriptableObject
     public List<TileChangeData> QueuedTileChangeData { get; set; } = new();
     public List<TileChangeData> QueuedBorderChangeData { get; set; } = new();
     public List<TileChangeData> QueuedWallChangeData { get; set; } = new();
+    public List<TileChangeData> QueuedSpecialChangeData { get; set; } = new();
     /// <summary>
     /// Should only be called during worldgen
     /// </summary>
@@ -201,6 +206,7 @@ public class DualGridTile : ScriptableObject
     private int BorderVariantStartIndex = 0;
     public bool MarkedForAnyUpdate { get; set; }
     public bool MarkForUpdate { get; set; }
+    public bool MarkForSpecialUpdate { get; set; }
     public bool MarkForBorderUpdate { get; set; }
     public bool MarkForSpecialBorderUpdate { get; set; }
     public bool MarkForWallUpdate { get; set; }
@@ -216,6 +222,7 @@ public class DualGridTile : ScriptableObject
     [SerializeField]
     private bool IsWall = false;
     #endregion
+    public bool IsLiquid { get; set; } = false;
     public bool CountsAsWall() => IsWall;
     public int SpriteCount => IsWall ? 9 : 15;
     public int TypeIndex { get; set; }
@@ -227,6 +234,7 @@ public class DualGridTile : ScriptableObject
     public void Init()
     {
         SetDisplayVariants();
+        QueuedSpecialChangeData.Clear();
         QueuedTileChangeData.Clear();
         QueuedBorderChangeData.Clear();
         QueuedWallChangeData.Clear();

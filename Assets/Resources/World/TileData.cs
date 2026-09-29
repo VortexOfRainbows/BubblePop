@@ -46,6 +46,7 @@ public partial class World : MonoBehaviour
         data.IsSolid = solid;
         data.TileType = tile;
         data.HasTile = true;
+        data.IsLiquid = tile.IsLiquid;
     }
     //public static void SetTilePlusProperties(Vector3Int pos, TileBase tile)
     //{
@@ -69,6 +70,7 @@ public partial class World : MonoBehaviour
         public int runID;
         public bool IsSolid;
         public bool HasTile;
+        public bool IsLiquid;
         public TileData(byte progressionNum = byte.MaxValue, bool roadBlock = false)
         {
             ProgressionNumber = progressionNum;
@@ -79,6 +81,7 @@ public partial class World : MonoBehaviour
             TileType = null;
             IsSolid = false;
             HasTile = false;
+            IsLiquid = false;
         }
     }
     private static Vector2Int tileDataOffset;
