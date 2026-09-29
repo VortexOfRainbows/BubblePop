@@ -13,8 +13,8 @@ public class Snobble : Enemy
     {
         inlineThreshold = 0.1f;
     }
-    public virtual float MoveSpeed => 0.35f;
-    public virtual float Inertia => 0.9625f;
+    public override float MoveSpeed => 0.35f;
+    public override float Inertia => 0.9625f;
     protected float MovementTimer;
     public bool PlayerNearby { get; set; } = false;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
