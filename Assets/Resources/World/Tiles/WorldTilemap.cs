@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 
 public class WorldTilemap : MonoBehaviour
@@ -24,14 +25,37 @@ public class WorldTilemap : MonoBehaviour
     public static GameObject BubbleMushroom, BubblePlantObj;  
     public static GameObject VisualMapPrefab;
     public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
-    public Transform FloorMapParent;
-    public Transform WallMapParent;
-    public Transform BorderMapParent;
-    public Transform BottomMapParent;
-    private Dictionary<int, Tilemap> DisplayMap;
-    private Dictionary<int, Tilemap> MaybeTemp_BottomWallDisplayMap;
-    private Dictionary<int, Tilemap> BorderDisplayMap;
-    private Dictionary<int, Tilemap> WallDisplayMap;
+    public Transform VisualMapSuperParent;
+    public class TileLevel //Contains both a floor componenet and a wall component, for the purpose of simulating 3D terrain
+    {
+        public TileLevel(int level)
+        {
+            Level = level;
+            Floor = new();
+            Wall = new();
+        }
+        public void Reset()
+        {
+            foreach (var kvp in Floor)
+                if (kvp.Value != null)
+                    Destroy(kvp.Value.gameObject);
+            foreach (var kvp in Wall)
+                if (kvp.Value != null)
+                    Destroy(kvp.Value.gameObject);
+            Floor = new();
+            Wall = new();
+        }
+        public Dictionary<int, Tilemap> GetMap(int i)
+        {
+            return i == 0 ? Floor : Wall;
+        }
+        public Dictionary<int, Tilemap> Floor;
+        public Dictionary<int, Tilemap> Wall;
+        public int Level;
+        public bool CountsAsBorder => Level != 0; //This just means that the level is "impassible" 
+    }
+    public TileLevel BorderMap = new(1);
+    public TileLevel GroundMap = new(0);
     public Tilemap Map;
     public void ClearDict(Dictionary<int, Tilemap> dict)
     {
@@ -44,47 +68,65 @@ public class WorldTilemap : MonoBehaviour
     }
     public void Init()
     {
-        ClearDict(DisplayMap);
-        ClearDict(MaybeTemp_BottomWallDisplayMap);
-        ClearDict(BorderDisplayMap);
-        ClearDict(WallDisplayMap); 
         LoadWorldObjectPrefabs();
-        DisplayMap = new();
-        BorderDisplayMap = new();
-        WallDisplayMap = new();
-        MaybeTemp_BottomWallDisplayMap = new();
-        PrepareDisplayMap(FloorMapParent, DisplayMap, false, false, 0);
-        PrepareDisplayMap(BottomMapParent, MaybeTemp_BottomWallDisplayMap, false, true, 0);
-        PrepareDisplayMap(BorderMapParent, BorderDisplayMap, true, false, 1);
-        PrepareDisplayMap(WallMapParent, WallDisplayMap, true, true, 1);
+        BorderMap.Reset();
+        GroundMap.Reset();
+        PrepareTileLevel(VisualMapSuperParent, BorderMap);
+        PrepareTileLevel(VisualMapSuperParent, GroundMap);
         AddDecor();
-        NewFasterRefresh(DisplayMap, BorderDisplayMap, WallDisplayMap, MaybeTemp_BottomWallDisplayMap);
+        NewFasterRefresh(GroundMap.Floor, BorderMap.Floor, BorderMap.Wall, GroundMap.Wall);
     }
-    public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, bool border = false, bool wall = false, float level = 0)
+    public static void PrepareTileLevel(Transform SuperParent, TileLevel Level)
     {
-        float levelSizeMultiplier = 0;
+        for(int i = 0; i < 2; ++i)
+        {
+            var map = Level.GetMap(i); //0 == floor, 1 == wall
+            bool wall = i == 1;
+            bool border = Level.CountsAsBorder;
+
+            Transform Visual = new GameObject($"Level{Level.Level}{(i == 0 ? "Floor" : "Wall")}Parent").transform; //Create a parent object for the visuals to fall under
+            Visual.transform.SetParent(SuperParent);
+            Visual.transform.localScale = Vector3.one;
+            Visual.transform.localPosition = Vector3.zero;
+            SortingGroup group = Visual.gameObject.AddComponent<SortingGroup>();
+            if(Level.Level == 1) //Border
+            {
+                group.sortingLayerName = wall ? "Floor" : "Default";
+                group.sortingOrder = wall ? 3 : 1;
+            }
+            if (Level.Level == 0) //Floor
+            {
+                group.sortingLayerName = "Floor";
+                group.sortingOrder = wall ? -1 : 0;
+            }
+            group.sortingOrder = wall ? LayerHelper.WallTileSortingOrder : LayerHelper.FloorTileSortingOrder;
+            PrepareDisplayMaps(Visual, map, border, wall);
+        }
+    }
+    public static void PrepareDisplayMaps(Transform Visual, Dictionary<int, Tilemap> map, bool border, bool wall)
+    {
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
             DualGridTile tile = TileID.TileTypes[k];
             Color c = border || wall ? tile.BorderColor : Color.white;
-            DisplayMap.Add(k, null);
+            map.Add(k, null);
             if (tile.CountsAsWall() == wall)
             {
                 Tilemap t = Instantiate(VisualMapPrefab, Visual).GetComponent<Tilemap>();
-                DisplayMap[k] = t;
-                TilemapRenderer r = DisplayMap[k].GetComponent<TilemapRenderer>();
+                map[k] = t;
+                TilemapRenderer r = map[k].GetComponent<TilemapRenderer>();
                 float layerOffset = tile.LayerOffset;
                 float wallGridTransform = 0;
                 if (tile.CountsAsWall())
                 {
-                    wallGridTransform = - 0.425f;
+                    wallGridTransform = -0.425f;
                     c = tile.BorderColor;
                 }
-                else if(border && tile.HasWallVariant())
+                else if (border && tile.HasWallVariant())
                 {
-                    wallGridTransform = + 0.25f;
+                    wallGridTransform = +0.25f;
                 }
-                else if(!border)
+                else if (!border)
                 {
                     r.sortingLayerID = World.FloorSortingLayer;
                     if (tile.IsLiquid)
@@ -93,7 +135,7 @@ public class WorldTilemap : MonoBehaviour
                         c.a *= 0.5f;
                     }
                 }
-                DisplayMap[k].transform.localPosition = new Vector3(0, wallGridTransform, layerOffset);
+                map[k].transform.localPosition = new Vector3(0, wallGridTransform, layerOffset);
 
                 //TEMPORARILY DISABLING GRASS SHADER FOR LIGHT TEST
 
