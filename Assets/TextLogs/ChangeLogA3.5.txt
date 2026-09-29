@@ -92,3 +92,26 @@ Fixes:
 	2. This was mainly targeted at the equipment menu powers being visible on the right
 3. Fix the bug where Flamingos spaz out randomly at low movement velocity
 4. Fix bug where player sometimes appeared layered below fairy ring objects (like mushrooms)
+
+
+Dev Build 3.53 (tentative version number)
+
+1. New enemy: Rocket Box
+
+Misc:
+1. Replace Oil King: Quagmire achievement with Oil King: Realized Pains
+
+Infected Enemies:
+1. (FIX) Soap fragment infection status will now match parent soap infection status
+2. (FIX) Infectors can no longer be infected by Pandemic
+3. (FIX) When a rock golem is infected by Pandemic, all segments will be infected
+4. (NERF) Infections from Pandemic:
+	1. Act speed bonus +100% -> +50%
+	2. Health stays the same
+	3. Infections caused by Infectors unchanged
+5. (NERF) Snobble infection act speed bonus multiplier 1.0 -> 0.5
+	1. This compounds with the nerfs above
+6. (BUFF) Pandemic infection chance 4% + wave% (max 24%) ->  5% + wave% (max 25%)
+
+Fixes:
+1. Fix missing tile bug on certain crucible node
