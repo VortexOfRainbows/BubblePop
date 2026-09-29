@@ -189,7 +189,7 @@ public class WorldNode : MonoBehaviour
                     bool placeSolidAsUnsolid = !existingTileSolid && iAmSolid && !canPlaceTile; //If the existing tile is a floor tile, but I am solid, and i am not already placing a tile
                     if(canPlaceTile || placeSolidAsUnsolid)
                     {
-                        World.SetTile(v, tile.GetTileID(), iAmSolid && !placeSolidAsUnsolid);
+                        World.SetTile(v, tile.GetTileID(), iAmSolid && !placeSolidAsUnsolid ? 1 : 0);
                         ref World.TileData data = ref World.SafeGetTileData(v);
                         if (canPlaceTile && data.ProgressionNumber == 0)
                         {
@@ -415,11 +415,11 @@ public class WorldNode : MonoBehaviour
                 if (existingTile == null || (World.SolidTile(v) && OverrideTiles))
                 {
                     if (existingTile == null)
-                        World.SetTile(v, tile, false);
+                        World.SetTile(v, tile, 0);
                     else
                     {
                         var tile2 = (existingTile == TileID.Dirt || existingTile == TileID.Grass) ? tile : existingTile;
-                        World.SetTile(v, tile2, false);
+                        World.SetTile(v, tile2, 0);
                     }
                     ref World.TileData data = ref World.SafeGetTileData(v);
                     data.IsRoadblock = true;

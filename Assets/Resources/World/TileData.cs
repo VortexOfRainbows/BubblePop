@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public partial class World : MonoBehaviour
 {
@@ -38,12 +37,12 @@ public partial class World : MonoBehaviour
         bool roadblock = currentlyOnThisProgressionTier || (data.IsRoadblock && Main.PylonActive);
         return roadblock;
     }
-    public static void SetTile(Vector3Int pos, DualGridTile tile, bool solid)
+    public static void SetTile(Vector3Int pos, DualGridTile tile, int level)
     {
         //if (!Instance.ApproximateSize.Contains(pos))
         //    throw new System.Exception($"GENERROR: Tried placing tile: {pos}, worldbounds: {Instance.ApproximateSize}");
         ref TileData data = ref SafeGetTileData(pos);
-        data.IsSolid = solid;
+        data.TileHeightLevel = level;
         data.TileType = tile;
         data.HasTile = true;
         data.IsLiquid = tile.IsLiquid;
@@ -68,9 +67,10 @@ public partial class World : MonoBehaviour
         public float distance;
         public Vector2 direction;
         public int runID;
-        public bool IsSolid;
+        public readonly bool IsSolid => TileHeightLevel != 0;
         public bool HasTile;
         public bool IsLiquid;
+        public int TileHeightLevel;
         public TileData(byte progressionNum = byte.MaxValue, bool roadBlock = false)
         {
             ProgressionNumber = progressionNum;
@@ -79,9 +79,9 @@ public partial class World : MonoBehaviour
             direction = Vector2.zero;
             runID = 0;
             TileType = null;
-            IsSolid = false;
             HasTile = false;
             IsLiquid = false;
+            TileHeightLevel = 0;
         }
     }
     private static Vector2Int tileDataOffset;

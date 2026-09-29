@@ -91,15 +91,17 @@ public class WorldTilemap : MonoBehaviour
             SortingGroup group = Visual.gameObject.AddComponent<SortingGroup>();
             if(Level.Level == 1) //Border
             {
-                group.sortingLayerName = wall ? "Floor" : "Default";
+                if(wall)
+                    group.sortingLayerID = World.FloorSortingLayer;
                 group.sortingOrder = wall ? 3 : 1;
             }
-            if (Level.Level == 0) //Floor
+            else if (Level.Level == 0) //Floor
             {
-                group.sortingLayerName = "Floor";
+                group.sortingLayerID = World.FloorSortingLayer;
                 group.sortingOrder = wall ? -1 : 0;
             }
-            group.sortingOrder = wall ? LayerHelper.WallTileSortingOrder : LayerHelper.FloorTileSortingOrder;
+            else //unused as of now 
+                group.sortingOrder = wall ? LayerHelper.WallTileSortingOrder : LayerHelper.FloorTileSortingOrder;
             PrepareDisplayMaps(Visual, map, border, wall);
         }
     }
@@ -146,11 +148,14 @@ public class WorldTilemap : MonoBehaviour
                 //}
 
                 r.sortingOrder = -(int)layerOffset;
-                if (wall)
-                    t.gameObject.layer = 16; //Wall layer
-                else if (border)
-                    t.gameObject.layer = 14; //Border Layer
-                t.gameObject.name = $"{(wall ? "WALL" : border ? "Solid" : "Floor")}[{k}]: {tile.name}";
+                if (border) //dont set special layers for ground level yet, as that causes erroneous shadows
+                {
+                    if (wall)
+                        t.gameObject.layer = 16; //Wall layer
+                    else
+                        t.gameObject.layer = 14; //Border Layer
+                }
+                t.gameObject.name = $"{(wall ? "W" : "F")}[{k}]: {tile.name}";
                 t.color = c;
             }
         }
@@ -163,12 +168,29 @@ public class WorldTilemap : MonoBehaviour
         var otherTile = UnsafeData.TileType;
         return otherTile.LayerOffset > myLayerOffset && !otherTile.HasWallVariant();
     }
-    public static bool TileIsNotBlendableWall(int i, int j, float myLayerOffset)
+    public static bool TileIsNotBlendableSolidWall(int i, int j, float myLayerOffset)
     {
         return TileIsNotSolidOrRendersBelow(i + 1, j - 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(i, j + 1, myLayerOffset) ||
                TileIsNotSolidOrRendersBelow(i + 1, j + 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(i, j - 1, myLayerOffset) ||
                TileIsNotSolidOrRendersBelow(i - 1, j + 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(i + 1, j, myLayerOffset) ||
                TileIsNotSolidOrRendersBelow(i - 1, j - 1, myLayerOffset) || TileIsNotSolidOrRendersBelow(i - 1, j, myLayerOffset);
+    }
+    public static bool TileIsLiquidOrRendersBelow(int i, int j, float myLayerOffset)
+    {
+        ref var UnsafeData = ref World.UnsafeGetTileData(i, j);
+        if (UnsafeData.IsLiquid)
+            return true;
+        return false;
+        //Not sure if this part will be needed for this or if it is only necessary for liquids:
+        //var otherTile = UnsafeData.TileType;
+        //return otherTile.LayerOffset > myLayerOffset && !otherTile.HasWallVariant();
+    }
+    public static bool TileIsNotBlendableGroundWall(int i, int j, float myLayerOffset)
+    {
+        return TileIsLiquidOrRendersBelow(i + 1, j - 1, myLayerOffset) || TileIsLiquidOrRendersBelow(i, j + 1, myLayerOffset) ||
+               TileIsLiquidOrRendersBelow(i + 1, j + 1, myLayerOffset) || TileIsLiquidOrRendersBelow(i, j - 1, myLayerOffset) ||
+               TileIsLiquidOrRendersBelow(i - 1, j + 1, myLayerOffset) || TileIsLiquidOrRendersBelow(i + 1, j, myLayerOffset) ||
+               TileIsLiquidOrRendersBelow(i - 1, j - 1, myLayerOffset) || TileIsLiquidOrRendersBelow(i - 1, j, myLayerOffset);
     }
     public static void NewFasterRefresh(Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap, Dictionary<int, Tilemap> TestMap)
     {
@@ -192,15 +214,14 @@ public class WorldTilemap : MonoBehaviour
                     {
                         tile.MarkForBorderUpdate = true;
                         if (!tile.MarkForSpecialBorderUpdate)
-                            if (tile.HasWallVariant() && TileIsNotBlendableWall(i2, j2, tile.LayerOffset))
+                            if (tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
                                 tile.MarkForSpecialBorderUpdate = true;
                     }
                     else
                     {
                         tile.MarkForUpdate = true;
-                        //temp
                         if(!tile.MarkForSpecialUpdate)
-                            if (tile.HasWallVariant() && TileIsNotBlendableWall(i2, j2, tile.LayerOffset))
+                            if (tile.HasWallVariant() && TileIsNotBlendableGroundWall(i2, j2, tile.LayerOffset))
                                 tile.MarkForSpecialUpdate = true;
                     }
                 }
@@ -228,14 +249,14 @@ public class WorldTilemap : MonoBehaviour
                         if (tile.MarkForUpdate)
                         {
                             tile.UpdateDisplayTileSingular(i, j, tile.QueuedTileChangeData);
-                            //if (tile.MarkForSpecialUpdate)
-                            //{
-                            //    DualGridTile wall = tile.MyWallVariant();
-                            //    if(wall != null)
-                            //        wall.UpdateDisplayTileSingular(i, j, wall.QueuedSpecialChangeData);
-                            //    tile.MarkForSpecialUpdate = false;
-                            //}
-                            //tile.MarkForUpdate = false;
+                            if (tile.MarkForSpecialUpdate)
+                            {
+                                DualGridTile wall = tile.MyWallVariant();
+                                if (wall != null)
+                                    wall.UpdateDisplayTileSingular(i, j, wall.QueuedSpecialChangeData);
+                                tile.MarkForSpecialUpdate = false;
+                            }
+                            tile.MarkForUpdate = false;
                         }
                     }
                 }
@@ -247,7 +268,7 @@ public class WorldTilemap : MonoBehaviour
             if(tile.CountsAsWall())
             {
                 WallMap[tile.TypeIndex].SetTiles(tile.QueuedWallChangeData.ToArray(), true);
-                //TestMap[tile.TypeIndex].SetTiles(tile.QueuedSpecialChangeData.ToArray(), true);
+                TestMap[tile.TypeIndex].SetTiles(tile.QueuedSpecialChangeData.ToArray(), true);
             }
             else
             {

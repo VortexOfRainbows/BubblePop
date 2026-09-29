@@ -495,7 +495,7 @@ public partial class World : MonoBehaviour
                         if (!HasTile(pos))
                         {
                             float f = Noise.GetNoise(i, j);
-                            World.SetTile(pos, f < 0.2f && f > -0.2f ? TileID.Dirt : TileID.Grass, true);
+                            World.SetTile(pos, f < 0.2f && f > -0.2f ? TileID.Dirt : TileID.Grass, 1);
                         }
                         //if (SolidTile(pos))
                         //{

@@ -94,7 +94,9 @@ public class DualGridTile : ScriptableObject
                 ghostReturn = true;
         }
         else if (tile.LayerOffset < LayerOffset || data.IsSolid)
+        {
             ghostReturn = true;
+        }
         return false;
     }
     public int CalculateDisplayTile(int i, int j)
