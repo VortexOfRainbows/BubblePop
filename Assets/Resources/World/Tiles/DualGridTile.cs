@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
-using Unity.VisualScripting;
 
 [CreateAssetMenu(fileName = "DualGridTile", menuName = "ScriptableObjects/DualGridTile", order = 1)]
 public class DualGridTile : ScriptableObject
@@ -66,58 +65,53 @@ public class DualGridTile : ScriptableObject
         new(1, 1)
     };
     #endregion
-    public bool AdjacentTileSameType(int i, int j, out bool ghostReturn)
+    public bool AdjacentTileSameType(int i, int j, out bool ghostReturn, int level)
     {
         ghostReturn = false;
         ref World.TileData data = ref World.UnsafeGetTileData(i, j);
         if (!data.HasTile)
             return false;
         DualGridTile tile = data.TileType;
-        if (data.TileType == this && data.IsSolid == GeneratingBorder)
+        if (data.TileType == this && data.TileHeightLevel == level) //same type on same level
             return true;
-        if(IsLiquid)
+        if(IsLiquid) //liquids should have special relations and not consider other special relations
         {
             //liquid stuff might be needed here later?
         }
         else if (IsWall)
         {
-            if(data.IsSolid)
+            if(data.TileHeightLevel == level)
             {
                 if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex])
                     return true;
                 return tile.HasWallVariant() && tile.MyWallVariant().LayerOffset < LayerOffset;
             }
         }
-        else if (GeneratingBorder)
-        {
-            if (tile.LayerOffset < LayerOffset && data.IsSolid && !tile.IsWall)
-                ghostReturn = true;
-        }
-        else if (tile.LayerOffset < LayerOffset || data.IsSolid)
+        else if (((tile.LayerOffset < LayerOffset && data.TileHeightLevel == level) || data.TileHeightLevel > level) && !tile.IsWall) //Ground level tiles can extend tiles above them for seamless blending
         {
             ghostReturn = true;
         }
         return false;
     }
-    public int CalculateDisplayTile(int i, int j)
+    public int CalculateDisplayTile(int i, int j, int level)
     {
-        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight);
-        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft);
-        bool botRight = AdjacentTileSameType(i, j - 1, out bool ghostBotRight);
-        bool botLeft = AdjacentTileSameType(i - 1, j - 1, out bool ghostBotLeft);
+        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight, level);
+        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft, level);
+        bool botRight = AdjacentTileSameType(i, j - 1, out bool ghostBotRight, level);
+        bool botLeft = AdjacentTileSameType(i - 1, j - 1, out bool ghostBotLeft, level);
         byte key = GetByteKey(topLeft || ghostTopLeft, topRight || ghostTopRight, botLeft || ghostBotLeft, botRight || ghostBotRight);
         int id = NeighbourRelations[key];
         if(id == 4 || id == 13) //weird double corner tiles do not consider ghosts
             id = NeighbourRelations[GetByteKey(topLeft, topRight, botLeft, botRight)];
         return id;
     }
-    public int CalculateDisplayWall(int i, int j, ref bool tileNeedsShrinking)
+    public int CalculateDisplayWall(int i, int j, ref bool tileNeedsShrinking, int level)
     {
         tileNeedsShrinking = false;
-        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight);
-        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft);
-        bool botRight = AdjacentTileSameType(i, j - 1, out bool ghostBotRight);
-        bool botLeft = AdjacentTileSameType(i - 1, j - 1, out bool ghostBotLeft);
+        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight, level);
+        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft, level);
+        bool botRight = AdjacentTileSameType(i, j - 1, out _, level);
+        bool botLeft = AdjacentTileSameType(i - 1, j - 1, out _, level);
         //These statements might not make sense if we use a .5 offset for our walls, as then another variant will be needed
         bool initiallyNoTop = !topRight && !topLeft && !ghostTopRight && !ghostTopLeft;
         if (botRight && !topRight)
@@ -134,8 +128,7 @@ public class DualGridTile : ScriptableObject
         }
         return id;
     }
-    private static bool GeneratingBorder { get; set; } = false;
-    public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.25f));
+    public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2.25f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.2725f));
     public List<TileChangeData> QueuedTileChangeData { get; set; } = new();
     public List<TileChangeData> QueuedBorderChangeData { get; set; } = new();
     public List<TileChangeData> QueuedWallChangeData { get; set; } = new();
@@ -143,17 +136,16 @@ public class DualGridTile : ScriptableObject
     /// <summary>
     /// Should only be called during worldgen
     /// </summary>
-    public void UpdateDisplayTileSingular(int i, int j, List<TileChangeData> list, bool isBorder = false)
+    public void UpdateDisplayTileSingular(int i, int j, List<TileChangeData> list, int level)
     {
-        GeneratingBorder = isBorder;
         //var prev = World.GetTileData(newPos);
         //prev.testID += 1;
         //World.SetTileData(newPos, prev);
         bool needsShrinking = false;
-        int id = IsWall ? CalculateDisplayWall(i, j, ref needsShrinking) : CalculateDisplayTile(i, j);
+        int id = IsWall ? CalculateDisplayWall(i, j, ref needsShrinking, level) : CalculateDisplayTile(i, j, level);
         if (id != -1)
         {
-            if (isBorder && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
+            if (level != 0 && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
             {
                 id += BorderVariantStartIndex;
                 id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
@@ -185,7 +177,6 @@ public class DualGridTile : ScriptableObject
                 //VisualMap.SetTile(pos, type);
             }
         }
-        GeneratingBorder = false;
     }
     public void FinalizeTileDisplay(Tilemap VisualMap)
     {

@@ -87,7 +87,7 @@ public class WorldTilemap : MonoBehaviour
             Transform Visual = new GameObject($"Level{Level.Level}{(i == 0 ? "Floor" : "Wall")}Parent").transform; //Create a parent object for the visuals to fall under
             Visual.transform.SetParent(SuperParent);
             Visual.transform.localScale = Vector3.one;
-            Visual.transform.localPosition = Vector3.zero;
+            Visual.transform.localPosition = new Vector3(0, Level.Level * 0.25f, 0); //Walls get higher by .25 units each time
             SortingGroup group = Visual.gameObject.AddComponent<SortingGroup>();
             if(Level.Level == 1) //Border
             {
@@ -110,7 +110,7 @@ public class WorldTilemap : MonoBehaviour
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
             DualGridTile tile = TileID.TileTypes[k];
-            Color c = border || wall ? tile.BorderColor : Color.white;
+            Color c = border ? tile.BorderColor : wall ? tile.BorderColor.Lerp(Color.white, 0.125f) : Color.white;
             map.Add(k, null);
             if (tile.CountsAsWall() == wall)
             {
@@ -121,20 +121,15 @@ public class WorldTilemap : MonoBehaviour
                 float wallGridTransform = 0;
                 if (tile.CountsAsWall())
                 {
-                    wallGridTransform = -0.425f;
-                    c = tile.BorderColor;
-                }
-                else if (border && tile.HasWallVariant())
-                {
-                    wallGridTransform = +0.25f;
+                    wallGridTransform = -0.75f; //Walls are .75 tiles beneath the ground, (higher elevations contribute .25 per elevation, meaning walls are .5 tall)
                 }
                 else if (!border)
                 {
                     r.sortingLayerID = World.FloorSortingLayer;
-                    if (tile.IsLiquid)
+                    if (tile.IsLiquid) //maybe temp
                     {
                         wallGridTransform = -0.75f;
-                        c.a *= 0.5f;
+                        //c.a *= 0.5f;
                     }
                 }
                 map[k].transform.localPosition = new Vector3(0, wallGridTransform, layerOffset);
@@ -232,28 +227,27 @@ public class WorldTilemap : MonoBehaviour
                     {
                         if (tile.MarkForWallUpdate)
                         {
-                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedWallChangeData);
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedWallChangeData, 0);
                             tile.MarkForUpdate = false;
                         }
                         if (tile.MarkForBorderUpdate)
                         {
-                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedBorderChangeData, true);
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedBorderChangeData, 1);
                             if(tile.MarkForSpecialBorderUpdate)
                             {
                                 DualGridTile wall = tile.MyWallVariant();
-                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallChangeData);
+                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallChangeData, 1);
                                 tile.MarkForSpecialBorderUpdate = false;
                             }
                             tile.MarkForBorderUpdate = false;
                         }
                         if (tile.MarkForUpdate)
                         {
-                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedTileChangeData);
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedTileChangeData, 0);
                             if (tile.MarkForSpecialUpdate)
                             {
                                 DualGridTile wall = tile.MyWallVariant();
-                                if (wall != null)
-                                    wall.UpdateDisplayTileSingular(i, j, wall.QueuedSpecialChangeData);
+                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedSpecialChangeData, 0);
                                 tile.MarkForSpecialUpdate = false;
                             }
                             tile.MarkForUpdate = false;

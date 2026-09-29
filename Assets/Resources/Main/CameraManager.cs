@@ -39,7 +39,7 @@ public static class CameraManager
     {
         float tileScaleFactor = 2.0f;
         Vector2 scaledPosition = -sunlightVector * tileScaleFactor;
-        SolidTileCamera.transform.localPosition = scaledPosition + new Vector2(0, 0.7f) * tileScaleFactor; //0.2f is the offset for tile tops, -0.5f is the offset for tile bottoms
+        SolidTileCamera.transform.localPosition = scaledPosition + new Vector2(0, 0.75f) * tileScaleFactor; //0.25f is the offset for tile tops, -0.5f is the offset for tile bottoms
         OcclusionTileCamera.transform.localPosition = scaledPosition; // - new Vector2(Utils.SignNoZero(sunlightVector.x), Utils.SignNoZero(sunlightVector.y));
     }
 
