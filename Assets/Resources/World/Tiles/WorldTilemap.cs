@@ -28,11 +28,13 @@ public class WorldTilemap : MonoBehaviour
     public Transform VisualMapSuperParent;
     public class TileLevel //Contains both a floor componenet and a wall component, for the purpose of simulating 3D terrain
     {
-        public TileLevel(int level)
+        public readonly int ID;
+        public TileLevel(int level, int iD)
         {
             Level = level;
             Floor = new();
             Wall = new();
+            ID = iD;
         }
         public void Reset()
         {
@@ -54,8 +56,9 @@ public class WorldTilemap : MonoBehaviour
         public int Level;
         public bool CountsAsBorder => Level != 0; //This just means that the level is "impassible" 
     }
-    public TileLevel BorderMap = new(1);
-    public TileLevel GroundMap = new(0);
+    public TileLevel BorderMap = new(1, 0);
+    public TileLevel GroundMap = new(0, 1);
+    public TileLevel BottomMap = new(-1, 2);
     public Tilemap Map;
     public void ClearDict(Dictionary<int, Tilemap> dict)
     {
@@ -74,7 +77,7 @@ public class WorldTilemap : MonoBehaviour
         PrepareTileLevel(VisualMapSuperParent, BorderMap);
         PrepareTileLevel(VisualMapSuperParent, GroundMap);
         AddDecor();
-        NewFasterRefresh(GroundMap.Floor, BorderMap.Floor, BorderMap.Wall, GroundMap.Wall);
+        NewFasterRefresh(BorderMap, GroundMap, BottomMap);
     }
     public static void PrepareTileLevel(Transform SuperParent, TileLevel Level)
     {
@@ -187,15 +190,18 @@ public class WorldTilemap : MonoBehaviour
                TileIsLiquidOrRendersBelow(i - 1, j + 1, myLayerOffset) || TileIsLiquidOrRendersBelow(i + 1, j, myLayerOffset) ||
                TileIsLiquidOrRendersBelow(i - 1, j - 1, myLayerOffset) || TileIsLiquidOrRendersBelow(i - 1, j, myLayerOffset);
     }
-    public static void NewFasterRefresh(Dictionary<int, Tilemap> DisplayMap, Dictionary<int, Tilemap> BorderMap, Dictionary<int, Tilemap> WallMap, Dictionary<int, Tilemap> TestMap)
+    public static void NewFasterRefresh(TileLevel Top, TileLevel Ground, TileLevel Bottom)
     {
         World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
         DualGridTile[] tileBuffer = new DualGridTile[4];
+        Debug.Log("Top: " + Top.ID);
+        Debug.Log("Ground: " + Ground.ID);
+        int tilesNeededForGround = 0;
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)
             {
-                for(int k = 0; k < 4; ++k)
+                for (int k = 0; k < 4; ++k)
                 {
                     int i2 = i - DualGridTile.NEIGHBOURS[k].x;
                     int j2 = j - DualGridTile.NEIGHBOURS[k].y;
@@ -204,20 +210,21 @@ public class WorldTilemap : MonoBehaviour
                     if (tile == null)
                         continue;
                     if (tile.CountsAsWall())
-                        tile.MarkForWallUpdate = true;
+                        tile.MarkForDirectWallUpdate[Top.ID] = true;
                     else if (unsafeData.IsSolid)
                     {
-                        tile.MarkForBorderUpdate = true;
-                        if (!tile.MarkForSpecialBorderUpdate)
+                        tile.MarkForGroundUpdate[Top.ID] = true;
+                        if (!tile.MarkForSpecialWallUpdate[Top.ID])
                             if (tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
-                                tile.MarkForSpecialBorderUpdate = true;
+                                tile.MarkForSpecialWallUpdate[Top.ID] = true;
                     }
                     else
                     {
-                        tile.MarkForUpdate = true;
-                        if(!tile.MarkForSpecialUpdate)
+                        tilesNeededForGround++;
+                        tile.MarkForGroundUpdate[Ground.ID] = true;
+                        if(!tile.MarkForSpecialWallUpdate[Ground.ID])
                             if (tile.HasWallVariant() && TileIsNotBlendableGroundWall(i2, j2, tile.LayerOffset))
-                                tile.MarkForSpecialUpdate = true;
+                                tile.MarkForSpecialWallUpdate[Ground.ID] = true;
                     }
                 }
                 for (int k = 0; k < 4; ++k)
@@ -225,54 +232,55 @@ public class WorldTilemap : MonoBehaviour
                     DualGridTile tile = tileBuffer[k];
                     if(tile != null)
                     {
-                        if (tile.MarkForWallUpdate)
+                        if (tile.MarkForDirectWallUpdate[Top.ID])
                         {
-                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedWallChangeData, 0);
-                            tile.MarkForUpdate = false;
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedWallUpdates[Top.ID], Top.Level);
+                            tile.MarkForDirectWallUpdate[Top.ID] = tile.MarkForGroundUpdate[Ground.ID] = false;
                         }
-                        if (tile.MarkForBorderUpdate)
+                        if (tile.MarkForGroundUpdate[Top.ID])
                         {
-                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedBorderChangeData, 1);
-                            if(tile.MarkForSpecialBorderUpdate)
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedFloorUpdates[Top.ID], Top.Level);
+                            if(tile.MarkForSpecialWallUpdate[Top.ID])
                             {
                                 DualGridTile wall = tile.MyWallVariant();
-                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallChangeData, 1);
-                                tile.MarkForSpecialBorderUpdate = false;
+                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallUpdates[Top.ID], Top.Level);
+                                tile.MarkForSpecialWallUpdate[Top.ID] = false;
                             }
-                            tile.MarkForBorderUpdate = false;
+                            tile.MarkForGroundUpdate[Top.ID] = false;
                         }
-                        if (tile.MarkForUpdate)
+                        if (tile.MarkForGroundUpdate[Ground.ID])
                         {
-                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedTileChangeData, 0);
-                            if (tile.MarkForSpecialUpdate)
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedFloorUpdates[Ground.ID], Ground.Level);
+                            if (tile.MarkForSpecialWallUpdate[Ground.ID])
                             {
                                 DualGridTile wall = tile.MyWallVariant();
-                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedSpecialChangeData, 0);
-                                tile.MarkForSpecialUpdate = false;
+                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallUpdates[Ground.ID], Ground.Level);
+                                tile.MarkForSpecialWallUpdate[Ground.ID] = false;
                             }
-                            tile.MarkForUpdate = false;
+                            tile.MarkForGroundUpdate[Ground.ID] = false;
                         }
                     }
                 }
             }
         }
-
+        Debug.Log("NEEDED: " + tilesNeededForGround);
         foreach (DualGridTile tile in TileID.TileTypes)
         {
             if(tile.CountsAsWall())
             {
-                WallMap[tile.TypeIndex].SetTiles(tile.QueuedWallChangeData.ToArray(), true);
-                TestMap[tile.TypeIndex].SetTiles(tile.QueuedSpecialChangeData.ToArray(), true);
+                Top.Wall[tile.TypeIndex].SetTiles(tile.QueuedWallUpdates[Top.ID].ToArray(), true);
+                Ground.Wall[tile.TypeIndex].SetTiles(tile.QueuedWallUpdates[Ground.ID].ToArray(), true);
             }
             else
             {
-                BorderMap[tile.TypeIndex].SetTiles(tile.QueuedBorderChangeData.ToArray(), true);
-                DisplayMap[tile.TypeIndex].SetTiles(tile.QueuedTileChangeData.ToArray(), true);
+                Debug.Log("TILE ACTIVE: " + tile.QueuedFloorUpdates[Ground.ID].Count);
+                Top.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Top.ID].ToArray(), true);
+                Ground.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Ground.ID].ToArray(), true);
             }
-            tile.QueuedWallChangeData.Clear();
-            tile.QueuedBorderChangeData.Clear();
-            tile.QueuedTileChangeData.Clear();
-            tile.QueuedSpecialChangeData.Clear();
+            foreach (var list in tile.QueuedFloorUpdates)
+                list.Clear();
+            foreach (var list in tile.QueuedWallUpdates)
+                list.Clear();
         }
     }
     public void AddDecor()

@@ -129,10 +129,6 @@ public class DualGridTile : ScriptableObject
         return id;
     }
     public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2.25f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.2725f));
-    public List<TileChangeData> QueuedTileChangeData { get; set; } = new();
-    public List<TileChangeData> QueuedBorderChangeData { get; set; } = new();
-    public List<TileChangeData> QueuedWallChangeData { get; set; } = new();
-    public List<TileChangeData> QueuedSpecialChangeData { get; set; } = new();
     /// <summary>
     /// Should only be called during worldgen
     /// </summary>
@@ -197,12 +193,12 @@ public class DualGridTile : ScriptableObject
     public Texture2D[] BorderOnlyTileTextures;
     public Sprite[] BonusCenterTileTextures;
     private int BorderVariantStartIndex = 0;
-    public bool MarkedForAnyUpdate { get; set; }
-    public bool MarkForUpdate { get; set; }
-    public bool MarkForSpecialUpdate { get; set; }
-    public bool MarkForBorderUpdate { get; set; }
-    public bool MarkForSpecialBorderUpdate { get; set; }
-    public bool MarkForWallUpdate { get; set; }
+    //3 is the number of tilemap levels as of now
+    public bool[] MarkForGroundUpdate { get; private set; } = new bool[3]; //Normal tile update
+    public bool[] MarkForDirectWallUpdate { get; private set; } = new bool[3];//Placed walls (these dont exist in game currently)
+    public bool[] MarkForSpecialWallUpdate { get; private set; } = new bool[3]; //Walls that spawn between height deltas (these are the main walls spawned)
+    public List<TileChangeData>[] QueuedFloorUpdates { get; private set; } = new List<TileChangeData>[3] { new(), new(), new() };
+    public List<TileChangeData>[] QueuedWallUpdates { get; private set; } = new List<TileChangeData>[3] { new(), new(), new() };
     public float LayerOffset { get; set; } = 0;
     [SerializeField]
     private Tile RealTileMapVariant;
@@ -227,10 +223,10 @@ public class DualGridTile : ScriptableObject
     public void Init()
     {
         SetDisplayVariants();
-        QueuedSpecialChangeData.Clear();
-        QueuedTileChangeData.Clear();
-        QueuedBorderChangeData.Clear();
-        QueuedWallChangeData.Clear();
+        foreach(var list in QueuedFloorUpdates)
+            list.Clear();
+        foreach (var list in QueuedWallUpdates)
+            list.Clear();
     }
     public void SetDisplayVariants()
     {
