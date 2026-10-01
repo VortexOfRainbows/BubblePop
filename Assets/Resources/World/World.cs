@@ -85,6 +85,8 @@ public partial class World : MonoBehaviour
     [SerializeField] WorldGenLoader Loader;
     public void FirstInitialization()
     {
+        // TODO: Possiby wrap loading screen in here
+
         OriginalNodeCount = nodes.Count;
         //TestColorProgRelations();
         m_Instance = this;
@@ -100,6 +102,10 @@ public partial class World : MonoBehaviour
     }
     public void ResetWorld(bool firstInit)
     {
+        // TODO: Likely wrap loading screen here
+        Loader.WorldLoader(7);
+        //Loader.NextStep();
+
         //UnityEngine.Random.InitState(1337);
         //Utils.rand.InitState(1337);
         System.Diagnostics.Stopwatch watch = new();
@@ -126,22 +132,27 @@ public partial class World : MonoBehaviour
         Roadblocks.Clear();
         foreach (DualGridTile tile in TileID.TileTypes)
             tile.Init();
+        Loader.NextStep();
         Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 1 Reset".WithColor("#FF6644"));
 
         PlaceNodeLocations();
         ApproximateWorldBounds();
         LoadNodesOntoWorld();
+        Loader.NextStep();
         Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Loading Nodes Onto World".WithColor("#FF6644"));
 
         CreateWorldOuterFill();
         FinalizeWorldTiles();
+        Loader.NextStep();
         Debug.Log($"({watch.ElapsedMilliseconds} ms) Outer Fill and Finalize World Tiles".WithColor("#FF6699"));
 
         RealTileMap.Init();
+        Loader.NextStep();
         Debug.Log($"({watch.ElapsedMilliseconds} ms) Realmap Generation/Refresh".WithColor("#FFBBEE"));
 
         if (NatureParent != null)
             NatureParent.Init();
+        Loader.NextStep();
         Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Nature Re-Ordering".WithColor("#44FF77"));
 
         if (firstInit)
@@ -178,9 +189,11 @@ public partial class World : MonoBehaviour
         Pylons.Last().WavesRequired = 1;
         FinalPylon = PylonParent.GetChild(PylonParent.childCount - 1).GetComponent<WarpPylon>();
         NodeID.ResetNodePositions();
+        Loader.NextStep();
         Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 2 Reset".WithColor("#AA55FF"));
 
         Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
+        Loader.NextStep();
         Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Lighting".WithColor("#DDFF33"));
         watch.Stop();
     }
@@ -236,7 +249,6 @@ public partial class World : MonoBehaviour
     public void PlaceNodeLocations()
     {
         int nodeCount = NodesToGenerate + nodes.Count + 1; //+1 for the end node
-        Loader.WorldLoader(nodeCount - 1);
         WorldNode prevNode = null;
         for (int i = 0; i < nodes.Count; ++i) //Assign all nodes 
         {
@@ -382,7 +394,6 @@ public partial class World : MonoBehaviour
             if (!node.IsSubNode)
                 genNum++;
             prevNode = node;
-            Loader.NextStep();
         }
         PlaceBonusNodes();
         GenerateBonusNodes();

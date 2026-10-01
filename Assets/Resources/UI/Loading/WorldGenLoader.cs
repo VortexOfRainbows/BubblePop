@@ -7,6 +7,7 @@ public class WorldGenLoader : MonoBehaviour
     [SerializeField] GameObject LoadingScreen;
     [SerializeField] Image BarImage;
     [SerializeField] TextMeshProUGUI TextComponent;
+    [SerializeField] float StartValue = 0.3f;
 
     private int totalSteps = 0;
     private int currentStep = 0;
@@ -22,10 +23,10 @@ public class WorldGenLoader : MonoBehaviour
         currentStep++;
         float progressValue = Mathf.Clamp01((float)currentStep / totalSteps);
 
-        BarImage.fillAmount = progressValue;
+        BarImage.fillAmount = progressValue * (1 - StartValue) + StartValue;
         TextComponent.text = (progressValue * 100).ToString("F2") + "%";
 
-        if (progressValue >= 1f)
+        if (currentStep >= totalSteps)
         {
             LoadingScreen.SetActive(false);
         }
