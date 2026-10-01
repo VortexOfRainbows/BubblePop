@@ -9,6 +9,7 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] GameObject LoadingScreen;
     [SerializeField] Image BarImage;
     [SerializeField] TextMeshProUGUI TextComponent;
+    [SerializeField] float EndValue = 0.3f;
 
     private void Start()
     {
@@ -27,7 +28,7 @@ public class SceneLoader : MonoBehaviour
 
         while (!operation.isDone)
         {
-            float progressValue = Mathf.Clamp01(operation.progress / 0.9f);
+            float progressValue = Mathf.Clamp01(operation.progress / 0.9f) * EndValue;
             BarImage.fillAmount = progressValue;
             TextComponent.text = (progressValue * 100).ToString("F2") + "%";
             yield return null;
