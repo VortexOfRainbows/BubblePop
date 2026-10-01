@@ -57,7 +57,9 @@ Done:
 	1. Lighting adjusted accordingly
 	2. In general, this should mean walls appear taller than before
 4. New logic for tile heights and creating walls beneath floor tiles where appropriate (when needed for containing liquids or drops)
-5. Next: collision logic for pits, and generate the floor beneath them for visual clarity/consistency (or maybe use liquid system where it simply offsets a tile? (this is probably a bad idea needs more consideration))
+5. Added some logic and systems for generating even more layers of tiles (this time there is now a layer beneath the ground for liquids to sit atop
+6. Next: collision logic for pits
+7. Next: contininuity for border walls that intersect liquids/pits (so they extend down into the liquid)
 
 -- A3.53 UPDATE ON STEAM --
 

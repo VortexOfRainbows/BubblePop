@@ -74,8 +74,10 @@ public class WorldTilemap : MonoBehaviour
         LoadWorldObjectPrefabs();
         BorderMap.Reset();
         GroundMap.Reset();
+        BottomMap.Reset();
         PrepareTileLevel(VisualMapSuperParent, BorderMap);
         PrepareTileLevel(VisualMapSuperParent, GroundMap);
+        PrepareTileLevel(VisualMapSuperParent, BottomMap);
         AddDecor();
         NewFasterRefresh(BorderMap, GroundMap, BottomMap);
     }
@@ -92,7 +94,7 @@ public class WorldTilemap : MonoBehaviour
             Visual.transform.localScale = Vector3.one;
             Visual.transform.localPosition = new Vector3(0, Level.Level * 0.25f, 0); //Walls get higher by .25 units each time
             SortingGroup group = Visual.gameObject.AddComponent<SortingGroup>();
-            if(Level.Level == 1) //Border
+            if (Level.Level == 1) //Border
             {
                 if(wall)
                     group.sortingLayerID = World.FloorSortingLayer;
@@ -103,17 +105,34 @@ public class WorldTilemap : MonoBehaviour
                 group.sortingLayerID = World.FloorSortingLayer;
                 group.sortingOrder = wall ? -1 : 0;
             }
+            else if (Level.Level == -1) //Bottom
+            {
+                group.sortingLayerID = World.FloorSortingLayer;
+                group.sortingOrder = wall ? -3 : -2;
+            }
             else //unused as of now 
                 group.sortingOrder = wall ? LayerHelper.WallTileSortingOrder : LayerHelper.FloorTileSortingOrder;
-            PrepareDisplayMaps(Visual, map, border, wall);
+            PrepareDisplayMaps(Visual, Level, map, border, wall);
         }
     }
-    public static void PrepareDisplayMaps(Transform Visual, Dictionary<int, Tilemap> map, bool border, bool wall)
+    public static void PrepareDisplayMaps(Transform Visual, TileLevel Level, Dictionary<int, Tilemap> map, bool border, bool wall)
     {
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
             DualGridTile tile = TileID.TileTypes[k];
-            Color c = border ? tile.BorderColor : wall ? tile.BorderColor.Lerp(Color.white, 0.125f) : Color.white;
+            Color c;
+            if(Level.Level == 1)
+            {
+                c = tile.BorderColor;
+            }
+            else if(Level.Level == 0)
+            {
+                c = wall ? tile.BorderColor.Lerp(Color.white, 0.2f) : Color.white;
+            }
+            else
+            {
+                c = tile.BorderColor.Lerp(Color.white, 0.5f);
+            }
             map.Add(k, null);
             if (tile.CountsAsWall() == wall)
             {
@@ -131,8 +150,8 @@ public class WorldTilemap : MonoBehaviour
                     r.sortingLayerID = World.FloorSortingLayer;
                     if (tile.IsLiquid) //maybe temp
                     {
-                        wallGridTransform = -0.75f;
-                        //c.a *= 0.5f;
+                        wallGridTransform = -0.5f;
+                        c.a *= 0.25f;
                     }
                 }
                 map[k].transform.localPosition = new Vector3(0, wallGridTransform, layerOffset);
@@ -146,7 +165,7 @@ public class WorldTilemap : MonoBehaviour
                 //}
 
                 r.sortingOrder = -(int)layerOffset;
-                if (border) //dont set special layers for ground level yet, as that causes erroneous shadows
+                if (Level.Level == 1) //dont set special layers for non-border level yet, as that causes erroneous shadows
                 {
                     if (wall)
                         t.gameObject.layer = 16; //Wall layer
@@ -194,8 +213,8 @@ public class WorldTilemap : MonoBehaviour
     {
         World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
         DualGridTile[] tileBuffer = new DualGridTile[4];
-        Debug.Log("Top: " + Top.ID);
-        Debug.Log("Ground: " + Ground.ID);
+        //Debug.Log("Top: " + Top.ID);
+        //Debug.Log("Ground: " + Ground.ID);
         int tilesNeededForGround = 0;
         for (int i = left; i < right; i++)
         {
@@ -214,17 +233,17 @@ public class WorldTilemap : MonoBehaviour
                     else if (unsafeData.IsSolid)
                     {
                         tile.MarkForGroundUpdate[Top.ID] = true;
-                        if (!tile.MarkForSpecialWallUpdate[Top.ID])
-                            if (tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
-                                tile.MarkForSpecialWallUpdate[Top.ID] = true;
+                        if (!tile.MarkForSpecialWallUpdate[Top.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
+                            tile.MarkForSpecialWallUpdate[Top.ID] = true;
                     }
                     else
                     {
                         tilesNeededForGround++;
                         tile.MarkForGroundUpdate[Ground.ID] = true;
-                        if(!tile.MarkForSpecialWallUpdate[Ground.ID])
-                            if (tile.HasWallVariant() && TileIsNotBlendableGroundWall(i2, j2, tile.LayerOffset))
-                                tile.MarkForSpecialWallUpdate[Ground.ID] = true;
+                        if(!tile.MarkForSpecialWallUpdate[Ground.ID] && tile.HasWallVariant() && TileIsNotBlendableGroundWall(i2, j2, tile.LayerOffset))
+                            tile.MarkForSpecialWallUpdate[Ground.ID] = true;
+                        if(tile.IsLiquid) //Place floors below liquid tiles; they can be seen through the liquid
+                            tile.MarkForGroundUpdate[Bottom.ID] = true;
                     }
                 }
                 for (int k = 0; k < 4; ++k)
@@ -259,23 +278,29 @@ public class WorldTilemap : MonoBehaviour
                             }
                             tile.MarkForGroundUpdate[Ground.ID] = false;
                         }
+                        if(tile.MarkForGroundUpdate[Bottom.ID])
+                        {
+                            DualGridTile bottomTile = TileID.Dirt; //For now, bottoms in pits will always be dirt, but this may change in the future
+                            bottomTile.UpdateDisplayTileSingular(i, j, bottomTile.QueuedFloorUpdates[Bottom.ID], Bottom.Level);
+                        }
                     }
                 }
             }
         }
-        Debug.Log("NEEDED: " + tilesNeededForGround);
         foreach (DualGridTile tile in TileID.TileTypes)
         {
             if(tile.CountsAsWall())
             {
                 Top.Wall[tile.TypeIndex].SetTiles(tile.QueuedWallUpdates[Top.ID].ToArray(), true);
                 Ground.Wall[tile.TypeIndex].SetTiles(tile.QueuedWallUpdates[Ground.ID].ToArray(), true);
+                //For now, bottoms will NEVER need walls
+                //Bottom.Wall[tile.TypeIndex].SetTiles(tile.QueuedWallUpdates[Bottom.ID].ToArray(), true);
             }
             else
             {
-                Debug.Log("TILE ACTIVE: " + tile.QueuedFloorUpdates[Ground.ID].Count);
                 Top.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Top.ID].ToArray(), true);
                 Ground.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Ground.ID].ToArray(), true);
+                Bottom.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Bottom.ID].ToArray(), true);
             }
             foreach (var list in tile.QueuedFloorUpdates)
                 list.Clear();
