@@ -486,7 +486,9 @@ public partial class World : MonoBehaviour
         Noise.SetFrequency(0.04f);
 
         World.GetCorners(out int left, out int right, out int bottom, out int top);
-        for(int passNum = 0; passNum < 2; ++passNum)
+        //Replacing these singular set tile statements with a list of replace tile statements did not actually speed up the process (unlike the other optimizations), though maybe that is because it was erroneously adding elements multiple times. Either way im not gonna change this for now.
+        // List<TileChangeData> roadblockChanges = new();
+        for (int passNum = 0; passNum < 2; ++passNum)
         {
             for (int i = left; i < right; i++)
             {
@@ -525,14 +527,14 @@ public partial class World : MonoBehaviour
                             Vector3Int ttop = new(pos.x, pos.y + 1);
                             Vector3Int tbot = new(pos.x, pos.y - 1);
                             Color c = RoadblockColor(data.ProgressionNumber);
-                            if (SolidTile(tleft))
-                                Instance.RoadblockTilemap.SetTile(new(tleft, DepthTile, c, Matrix4x4.identity), true);
+                            if (SolidTile(tleft)) 
+                                RoadblockTilemap.SetTile(new(tleft, DepthTile, c, Matrix4x4.identity), true);
                             if (SolidTile(tright))
-                                Instance.RoadblockTilemap.SetTile(new(tright, DepthTile, c, Matrix4x4.identity), true);
+                                RoadblockTilemap.SetTile(new(tright, DepthTile, c, Matrix4x4.identity), true);
                             if (SolidTile(ttop))
-                                Instance.RoadblockTilemap.SetTile(new(ttop, DepthTile, c, Matrix4x4.identity), true);
+                                RoadblockTilemap.SetTile(new(ttop, DepthTile, c, Matrix4x4.identity), true);
                             if (SolidTile(tbot))
-                                Instance.RoadblockTilemap.SetTile(new(tbot, DepthTile, c, Matrix4x4.identity), true);
+                                RoadblockTilemap.SetTile(new(tbot, DepthTile, c, Matrix4x4.identity), true);
                         }
                         //else if(passNum == 2 && !data.IsRoadblock)
                         //{
