@@ -50,16 +50,18 @@ Done:
 
 -- (NEXT) 3.6? Maybe 4.0? --
 
-9/28/26 to 10/1/26
+9/28/26 to 10/1/26 and 10/3/26
 1. WIP Water tiles
 2. Incremental progress towards differing tile heights
-3. Changed the heights of tiles (border level, wall level) from 0.25, -0.425 -> 0.25, -0.5
+3. Changed the heights of tiles (border level, wall level) from 0.3, -0.425 -> 0.3, -0.45
 	1. Lighting adjusted accordingly
 	2. In general, this should mean walls appear taller than before
 4. New logic for tile heights and creating walls beneath floor tiles where appropriate (when needed for containing liquids or drops)
 5. Added some logic and systems for generating even more layers of tiles (this time there is now a layer beneath the ground for liquids to sit atop
-6. Next: collision logic for pits
-7. Next: contininuity for border walls that intersect liquids/pits (so they extend down into the liquid)
+6. Added "continuity" for border walls that intersect liquids/pits, so they extend down into the liquid
+	1. Right now, due to how tiles work in game, the walls that extend down into the liquid are on a different layer, and the offsets are only .3 units apart, which may make things not appear that continuous. It's possible to maybe slightly remedy this with a few changes, such as decreasing the offset for border walls and increasing the offset for ground walls, but a real fix would probably require some extensive reworks (such as much bigger y-differences for different tile levels, or specialized matrices to extend walls that are effected). It is not possible to simply extend the border walls down, due to the way they must be layered on top of ground tiles.
+	2. Add additional tiling logic for preventing certain tile variants from spawning over water/pits, to prevent strange wall artifacts
+7. Next: collision logic for pits
 
 -- A3.53 UPDATE ON STEAM --
 

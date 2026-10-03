@@ -92,7 +92,7 @@ public class WorldTilemap : MonoBehaviour
             Transform Visual = new GameObject($"Level{Level.Level}{(i == 0 ? "Floor" : "Wall")}Parent").transform; //Create a parent object for the visuals to fall under
             Visual.transform.SetParent(SuperParent);
             Visual.transform.localScale = Vector3.one;
-            Visual.transform.localPosition = new Vector3(0, Level.Level * 0.25f, 0); //Walls get higher by .25 units each time
+            Visual.transform.localPosition = new Vector3(0, Level.Level * 0.3f, 0); //Walls get higher by .3 units each time
             SortingGroup group = Visual.gameObject.AddComponent<SortingGroup>();
             if (Level.Level == 1) //Border
             {
@@ -127,11 +127,11 @@ public class WorldTilemap : MonoBehaviour
             }
             else if(Level.Level == 0)
             {
-                c = wall ? tile.BorderColor.Lerp(Color.white, 0.2f) : Color.white;
+                c = wall ? tile.BorderColor.Lerp(Color.white, 0.15f) : Color.white;
             }
             else
             {
-                c = tile.BorderColor.Lerp(Color.white, 0.5f);
+                c = tile.BorderColor.Lerp(Color.white, 0.4f);
             }
             map.Add(k, null);
             if (tile.CountsAsWall() == wall)
@@ -143,7 +143,7 @@ public class WorldTilemap : MonoBehaviour
                 float wallGridTransform = 0;
                 if (tile.CountsAsWall())
                 {
-                    wallGridTransform = -0.75f; //Walls are .75 tiles beneath the ground, (higher elevations contribute .25 per elevation, meaning walls are .5 tall)
+                    wallGridTransform = -0.75f; //Walls are .75 tiles beneath the ground, (higher elevations contribute .3 per elevation, meaning walls are .45 tall)
                 }
                 else if (!border)
                 {
@@ -226,17 +226,21 @@ public class WorldTilemap : MonoBehaviour
                     int j2 = j - DualGridTile.NEIGHBOURS[k].y;
                     ref World.TileData unsafeData = ref World.UnsafeGetTileData(i2, j2);
                     DualGridTile tile = tileBuffer[k] = unsafeData.TileType;
+                    DualGridTile tileBelow = World.UnsafeGetTileData(i2, j2 - 1).TileType;
                     if (tile == null)
                         continue;
                     if (tile.CountsAsWall())
                         tile.MarkForDirectWallUpdate[Top.ID] = true;
-                    else if (unsafeData.IsSolid)
+                    if (unsafeData.IsSolid)
                     {
                         tile.MarkForGroundUpdate[Top.ID] = true;
-                        if (!tile.MarkForSpecialWallUpdate[Top.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
-                            tile.MarkForSpecialWallUpdate[Top.ID] = true;
+                        if (!tile.MarkForSpecialWallUpdate[Top.ID] && tile.HasWallVariant())
+                        {
+                            if (TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
+                                tile.MarkForSpecialWallUpdate[Top.ID] = true;
+                        }
                     }
-                    else
+                    if (!unsafeData.IsSolid || tileBelow.IsLiquid)
                     {
                         tilesNeededForGround++;
                         tile.MarkForGroundUpdate[Ground.ID] = true;
@@ -259,26 +263,26 @@ public class WorldTilemap : MonoBehaviour
                         if (tile.MarkForGroundUpdate[Top.ID])
                         {
                             tile.UpdateDisplayTileSingular(i, j, tile.QueuedFloorUpdates[Top.ID], Top.Level);
-                            if(tile.MarkForSpecialWallUpdate[Top.ID])
-                            {
-                                DualGridTile wall = tile.MyWallVariant();
-                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallUpdates[Top.ID], Top.Level);
-                                tile.MarkForSpecialWallUpdate[Top.ID] = false;
-                            }
                             tile.MarkForGroundUpdate[Top.ID] = false;
+                        }
+                        if (tile.MarkForSpecialWallUpdate[Top.ID])
+                        {
+                            DualGridTile wall = tile.MyWallVariant();
+                            wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallUpdates[Top.ID], Top.Level);
+                            tile.MarkForSpecialWallUpdate[Top.ID] = false;
                         }
                         if (tile.MarkForGroundUpdate[Ground.ID])
                         {
                             tile.UpdateDisplayTileSingular(i, j, tile.QueuedFloorUpdates[Ground.ID], Ground.Level);
-                            if (tile.MarkForSpecialWallUpdate[Ground.ID])
-                            {
-                                DualGridTile wall = tile.MyWallVariant();
-                                wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallUpdates[Ground.ID], Ground.Level);
-                                tile.MarkForSpecialWallUpdate[Ground.ID] = false;
-                            }
                             tile.MarkForGroundUpdate[Ground.ID] = false;
                         }
-                        if(tile.MarkForGroundUpdate[Bottom.ID])
+                        if (tile.MarkForSpecialWallUpdate[Ground.ID])
+                        {
+                            DualGridTile wall = tile.MyWallVariant();
+                            wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallUpdates[Ground.ID], Ground.Level);
+                            tile.MarkForSpecialWallUpdate[Ground.ID] = false;
+                        }
+                        if (tile.MarkForGroundUpdate[Bottom.ID])
                         {
                             DualGridTile bottomTile = TileID.Dirt; //For now, bottoms in pits will always be dirt, but this may change in the future
                             bottomTile.UpdateDisplayTileSingular(i, j, bottomTile.QueuedFloorUpdates[Bottom.ID], Bottom.Level);
@@ -433,6 +437,8 @@ public class WorldTilemap : MonoBehaviour
     public void AddSparseDecor(int i, int j)
     {
         ref var data = ref World.UnsafeGetTileData(i, j);
+        if (data.IsLiquid)
+            return;
         int order = 20;
         Color c = Color.white;
         bool border = data.IsSolid;

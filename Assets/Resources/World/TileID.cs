@@ -73,6 +73,10 @@ public static class TileID
         MyWallTile = new DualGridTile[LoadIndexCount];
         while(WallTileRelationQueue.TryDequeue(out Tuple<DualGridTile, DualGridTile> r))
             AddWallRelation(r.Item1, r.Item2);
+
+        HasWallTile[DarkGrass.TypeIndex] = true;
+        MyWallTile[DarkGrass.TypeIndex] = GrassWall;
+
         return WallTileRelations;
     }
     public static void AddWallRelation(DualGridTile tile, DualGridTile wallTile)

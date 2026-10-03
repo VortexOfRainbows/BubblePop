@@ -80,9 +80,9 @@ public class DualGridTile : ScriptableObject
         }
         else if (IsWall)
         {
-            if(data.TileHeightLevel == level)
+            if(data.TileHeightLevel >= level)
             {
-                if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex])
+                if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex] || tile.MyWallVariant() == this)
                     return true;
                 return tile.HasWallVariant() && tile.MyWallVariant().LayerOffset < LayerOffset;
             }
@@ -141,12 +141,26 @@ public class DualGridTile : ScriptableObject
         int id = IsWall ? CalculateDisplayWall(i, j, ref needsShrinking, level) : CalculateDisplayTile(i, j, level);
         if (id != -1)
         {
+            bool skipNormalIdRandomization = false;
             if (level != 0 && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
             {
-                id += BorderVariantStartIndex;
-                id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
+                if (IsWall)
+                {
+                    if(World.GetTile(i, j - 1).IsLiquid)
+                    {
+                        id += BorderVariantStartIndex;
+                        id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
+                        skipNormalIdRandomization = true;
+                    }
+                }
+                else
+                {
+                    id += BorderVariantStartIndex;
+                    id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
+                    skipNormalIdRandomization = true;
+                }
             }
-            else if (BonusTileTextures != null && BonusTileTextures.Length > 0)
+            if (!skipNormalIdRandomization && BonusTileTextures != null && BonusTileTextures.Length > 0)
                 id += Utils.RandInt(BonusTileTextures.Length + 1) * SpriteCount;
             if (IsWall && needsShrinking)
             {
