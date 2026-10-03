@@ -82,10 +82,11 @@ public class Boxer : Enemy
         BoxerFist otherFist = UseLeftFist ? Right : Left; 
         Timer += Time.fixedDeltaTime;
         float distToPlayer = Target.Distance(Visual.transform.gameObject);
+        HasLineOfSightWithTarget = HasShootingLineOfSight;
         Vector2 toTarget = GetPathfindingToPlayerNorm();
         if (Mathf.Abs(RB.velocity.x) > 0.2f)
             Dir = Utils.SignNoZero(toTarget.x);
-        else if(AI1 > 0 || !HasLineOfSightWithTarget)
+        else if(AI1 > 0 || !HasShootingLineOfSight)
         {
             float dif =Mathf.Abs( Target.transform.position.x - transform.position.x);
             if(dif > 0.1f)

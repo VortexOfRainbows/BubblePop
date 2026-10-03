@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 public static class EnemyID
 {
     public class StaticEnemyData
@@ -57,6 +58,22 @@ public static class EnemyID
         if (SpawnList)
             SpawnableEnemiesList.Add(e);
         d.OriginalPrefab = prefab;
+        //Might be a good idea to standardize collider initialization in the future, though right now its not quite doable since many enemies have different functioning colliders (like the Boxer or any of the old legacy enemies)
+        //if(e is not Boxer)
+        //{
+        //    foreach(Collider2D collider in e.GetComponents<Collider2D>())
+        //    {
+        //        if(collider.isTrigger)
+        //        {
+        //            collider.includeLayers = LayerMask.GetMask("Player", "Proj");
+        //        }
+        //        else
+        //        {
+        //            collider.includeLayers = LayerMask.GetMask("World", "Water", "WorldObj", "NPC");
+        //        }
+        //        collider.excludeLayers = collider.includeLayers; //opposite of includeLayers
+        //    }
+        //}
         return prefab;
     }
     public static readonly GameObject PortalPrefab = Resources.Load<GameObject>("NPCs/Portal");
@@ -77,20 +94,22 @@ public static class EnemyID
     public static readonly GameObject IceGolem = LoadNPC("IceGolem/IceGolem");
     public static readonly GameObject Peaclock = LoadNPC("Peaclock/Peaclock");
     public static readonly GameObject Snobble = LoadNPC("Snobble/Snobble");
-    public static readonly GameObject Boxer = LoadNPC("Boxer/Boxer");
+    public static readonly GameObject BoxerEnemy = LoadNPC("Boxer/Boxer");
 }
 public class Enemy : Entity, IImpactedByProjIFrames
 {
     public virtual float MoveSpeed => 0.15f;
     public virtual float Inertia => 0.95f;
-    public bool HasLineOfSightWithTarget { get; private set; } = false;
+    public bool HasLineOfSightWithTarget { get; protected set; } = false;
+    public bool HasShootingLineOfSight { get; protected set; } = false;
     public Player Target { get; private set; } = null;
     public void TargetAcquisitionUpdate()
     {
         if (IsDummy)
             return;
         Target = Player.FindClosest(transform.position, out Vector2 _, out float _);
-        HasLineOfSightWithTarget = Utils.HasClearLOS(Target.Position, transform.position);
+        HasLineOfSightWithTarget = Utils.HasClearLOSIncludeWaterAsBlocker(Target.Position, transform.position);
+        HasShootingLineOfSight = Utils.HasClearLOS(Target.Position, transform.position);
     }
     public Vector2 GetPathfindingToPlayerNorm()
     {
@@ -430,13 +449,13 @@ public class Enemy : Entity, IImpactedByProjIFrames
             if (ForceRunOnce)
                 break;
         }
-        if (!World.NonSolidTileSafe(transform.position))
+        if (!World.NonSolidTileSafe(transform.position) || (World.SafeGetTileData(World.RealPosToTilePos(transform.position)).IsLiquid && this is not Boxer))
         {
             CircleCollider2D circle = GetComponent<CircleCollider2D>();
             BoxCollider2D box = MyCollider;
             bool collidersOn = (circle != null && circle.enabled) || (box != null && box.enabled);
             if(collidersOn)
-                Entity.PushIntoClosestPossibleTile(transform, RB, 10, false);
+                Entity.PushIntoClosestPossibleTile(transform, RB, 10, false, pushWhenInWater: this is not Boxer);
         }
         if(TarStacks > 0)
         {

@@ -157,7 +157,7 @@ public partial class Entity : MonoBehaviour
         foreach (Animator a in ChildAnimators)
             a.UpdateAnimation();
     }
-    public static bool PushIntoClosestPossibleTile(Transform transform, Rigidbody2D RB, int snapDist = 20, bool includeProgressionBounds = false, Vector2 offset = default)
+    public static bool PushIntoClosestPossibleTile(Transform transform, Rigidbody2D RB, int snapDist = 20, bool includeProgressionBounds = false, Vector2 offset = default, bool pushWhenInWater = true)
     {
         Vector2[] dirs = { new(1, 0), new(-1, 0), new(0, 1), new(0, -1),
             new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
@@ -181,7 +181,7 @@ public partial class Entity : MonoBehaviour
             {
                 Vector2 direction = dirs[i] * j;
                 Vector2 newPos = pos + direction;
-                if (World.WithinBorders(newPos + offset, includeProgressionBounds))
+                if (World.WithinBorders(newPos + offset, includeProgressionBounds, pushWhenInWater))
                 {
                     Vector2 snap = new(Mathf.Abs(dirs[i].x), Mathf.Abs(dirs[i].y));
                     var tileToPlayer2 = tileCenterToPlayerCenter * snap;
@@ -192,7 +192,7 @@ public partial class Entity : MonoBehaviour
                     {
                         closestDist = dist;
                         finalPos = best;
-                        if(!World.WithinBorders(pos, false))
+                        if(!World.WithinBorders(pos, false, pushWhenInWater))
                             finalPos += dirs[i] * 0.5f;
                     }
                 }

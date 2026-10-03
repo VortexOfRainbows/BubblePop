@@ -9,6 +9,7 @@ public static class Utils
     {
         RandomizeSeed();
         WorldLayerMask = LayerMask.GetMask("World");
+        WorldAndWaterLayerMask = LayerMask.GetMask("World", "Water");
     }
     public static Unity.Mathematics.Random rand = new();
     public static readonly float TwoPI = Mathf.PI * 2;
@@ -431,6 +432,7 @@ public static class Utils
         return RandInt(0, denominator) == 0;
     }
     public static int WorldLayerMask { get; private set; }
+    public static int WorldAndWaterLayerMask { get; private set; }
     /// <summary>
     /// Performs a raycast using unity and tile systems.
     /// </summary>
@@ -513,6 +515,13 @@ public static class Utils
     {
         RaycastHit2D hit = Physics2D.Linecast(start, end, WorldLayerMask);
         if(hit.collider != null)
+            return false;
+        return true;
+    }
+    public static bool HasClearLOSIncludeWaterAsBlocker(Vector2 start, Vector2 end)
+    {
+        RaycastHit2D hit = Physics2D.Linecast(start, end, WorldAndWaterLayerMask);
+        if (hit.collider != null)
             return false;
         return true;
     }

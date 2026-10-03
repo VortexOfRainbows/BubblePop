@@ -38,11 +38,14 @@ public class Crow : Enemy
     }
     public override void AI()
     {
-        Vector2 toTarget = GetPathfindingToPlayerNorm();
         float dist = Vector2.Distance(Target.Position, transform.position);
+        bool old = HasLineOfSightWithTarget;
+        HasLineOfSightWithTarget = HasShootingLineOfSight && dist < 20;
+        Vector2 toTarget = GetPathfindingToPlayerNorm();
+        HasLineOfSightWithTarget = old;
         if(dist < 11 && HasLineOfSightWithTarget)
             toTarget = -toTarget;
-        if(((dist < 11 || dist > 20 || JumpTimer != 0) && IdleTimer == 100) || !HasLineOfSightWithTarget)
+        if(((dist < 11 || dist > 20 || JumpTimer != 0) && IdleTimer == 100) || !HasShootingLineOfSight)
         {
             JumpTimer++;
             if (JumpTimer >= 40)
@@ -72,7 +75,7 @@ public class Crow : Enemy
                 UpdateDirection(RB.velocity.x);
             IdleTimer = 100;
         }
-        else if(--initialShootDelay <= 0 && (HasLineOfSightWithTarget || IdleTimer != 100))
+        else if(--initialShootDelay <= 0 && (HasShootingLineOfSight || IdleTimer != 100))
         {
             JumpTimer = 0;
             JumpAnimation.JumpPercent = 0;

@@ -211,11 +211,11 @@ public class Coin : MonoBehaviour
             HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 200f) + 0.1f, HeartVisual.transform.localPosition.z);
         }
 
-        if (!beingAttracted && !World.WithinBorders(transform.position, false))
+        if (!beingAttracted && !World.WithinBorders(transform.position, false, true))
         {
             ++TimeStuckInTile;
             if (TimeStuckInTile > 500)
-                Entity.PushIntoClosestPossibleTile(transform, rb, 20, false);
+                Entity.PushIntoClosestPossibleTile(transform, rb, 20, false, pushWhenInWater: true);
         }
         else
             TimeStuckInTile = 0;

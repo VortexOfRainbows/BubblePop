@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Peaclock : Crow
 {
-    public static readonly float HopToPlayerDistance = 10;
-    public static readonly float AttackMaxDistance = 24;
+    public static readonly float HopToPlayerDistance = 16;
+    public static readonly float AttackMaxDistance = 28;
     public static readonly Vector2 TailAnchorDefaultPosition = new(-0.45f, 0.575f);
     public static readonly Vector2 TailAnchorCentralPosition = new(0f, 0.35f);
     public Transform TailCog;

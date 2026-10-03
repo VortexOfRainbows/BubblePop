@@ -75,10 +75,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 200
+    m_Bits: 216
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 39
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -124,9 +124,9 @@ MonoBehaviour:
   SpawnedIn: 0
   HasCalledInit: 0
   RB: {fileID: 3394753933866938757}
-  IndexInAllEnemyArray: -1
+  IndexInAllEnemyArray: 1
+  MyCollider: {fileID: 0}
   AlreadyDead: 0
-  FirstStrike: 1
   sRender: {fileID: 7870486419755120067}
   aiState: 0
   targetedLocation: {x: 0, y: 0}

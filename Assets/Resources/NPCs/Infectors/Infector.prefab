@@ -313,10 +313,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 200
+    m_Bits: 216
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 823
+    m_Bits: 807
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -361,7 +361,7 @@ CircleCollider2D:
     m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 383
+    m_Bits: 367
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -398,8 +398,8 @@ MonoBehaviour:
   HasCalledInit: 0
   RB: {fileID: 8914851087272067829}
   IndexInAllEnemyArray: 9
+  MyCollider: {fileID: 0}
   AlreadyDead: 0
-  FirstStrike: 1
   DropShadow: {fileID: 1880261701788409856}
   Head: {fileID: 1221448422571217975}
   Host: {fileID: 0}

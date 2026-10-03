@@ -181,8 +181,8 @@ MonoBehaviour:
   Animator: {fileID: 6147547588852434854}
   bonusBubbles: 0
   abilityTimer: 0
-  RoadblockCounter: 0
-  PowerCountIncludingStacks: 0
+  RoadblockBarrier: {fileID: 0}
+  HasWonThisCycle: 0
   BestPowerCountIncludingStacks: 0
   ChargeShotDamage: 0
   ShotgunPower: 0
@@ -222,6 +222,9 @@ MonoBehaviour:
   AbilityRecoverySpeedMult: 1
   TrueMoveModifier: 1
   LightMultiplierBonusDamage: 0
+  GladiatorDuration: 0
+  TarShots: 0
+  PostPassiveAttackSpeedModifier: 1
   BlueChipChance: 0
   HomingRange: 0
   HomingRangeSqrt: 0
@@ -231,12 +234,15 @@ MonoBehaviour:
   ImmunityFrameMultiplier: 1
   ShieldImmunityFrameMultiplier: 1
   BonusChoices: 0
+  FirstChoiceIsInvestment: 0
+  AllChoicesAreInvestment: 0
   ZapRadiusMult: 1
   ExplodeRadiusMult: 1
   DamageMultiplier: 1
   AllowedThunderBalls: 3
   HasResearchNotes: 0
   ResearchNoteBonuses: 0
+  InvestmentChoices: 0
   ResearchNoteKillCounter: 0
   PersonalWaveCardBonus: 1
   FlatSkullCoinBonus: 0
@@ -287,6 +293,45 @@ MonoBehaviour:
   BonusRestockChance: 0
   CoinsOnPowerPickup: 0
   SkateboardBonusDamage: 0
+  GemDropChance: 0
+  BonusGems: 0
+  InstakillsOnWaveStart: 0
+  ChillDuration: 0
+  CatalystJellies: 0
+  BonusCoinFromWaveRewards: 0
+  ChoiceOnHeal: 0
+  CorrodeDamage: 0
+  TarBonusDuration: 0
+  CombustBonusDamage: 0
+  BonusTarSlow: 0
+  BonusBlackDiamond: 0
+  OilSpill: 0
+  TarConcoct: 0
+  Gasoline: 0
+  TotalInvestments: 0
+  SmokeStack: 0
+  GoldenGun: 0
+  TrickleDown: 0
+  Pumpjack: 0
+  OilBarrelSize: 0
+  BonusAerialBarrels: 0
+  FlintAndSteel: 0
+  AdditionalInvestmentsProcessed: 0
+  HasFlowerCrownRecursiveHeal: 0
+  HasJesusJuice: 0
+  IgnoreMovespeed: 0
+  HasFutures: 0
+  HasCommodities: 0
+  HasOptions: 0
+  HasSecurities: 0
+  HasWindfall: 0
+  HelicopterStacks: 0
+  TachyonStacks: 0
+  PrevTachyonStacks: 0
+  SoupStacks: 0
+  RecycleStacks: 0
+  BonusRecycleLoot: 0
+  HelicopterSummon: {fileID: 0}
 --- !u!50 &3216590746651522342
 Rigidbody2D:
   serializedVersion: 4
@@ -329,7 +374,7 @@ CircleCollider2D:
     m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 3967
+    m_Bits: 262015
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -361,7 +406,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1911
+    m_Bits: 1895
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 128
@@ -396,10 +441,10 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1040
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 3071
+    m_Bits: 261103
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

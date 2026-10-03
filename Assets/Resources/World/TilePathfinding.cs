@@ -172,7 +172,8 @@ public class TilePathfinding : MonoBehaviour
 
     private bool isFloor(Vector3Int cellPos)
     {
-        return nodeTilemap.GetColliderType(cellPos) == Tile.ColliderType.None;
+        ref World.TileData tile = ref World.UnsafeGetTileData(cellPos);
+        return !tile.IsSolid && !tile.IsLiquid;
     }
     #endregion
 }

@@ -8,7 +8,7 @@ public partial class World : MonoBehaviour
         var data = SafeGetTileData(posi);
         bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
         bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.FloorTileType && !SafeGetTileData(posi).IsRoadblock;
-        return !data.IsSolid && validSpawnTile && currentlyOnThisProgressionTier;
+        return !data.IsSolid && validSpawnTile && currentlyOnThisProgressionTier && !data.IsLiquid;
     }
     public static bool NonSolidTileSafe(Vector3 position)
     {
@@ -25,10 +25,11 @@ public partial class World : MonoBehaviour
                     return false;
         return true;
     }
-    public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds)
+    public static bool WithinBorders(Vector3 position, bool IncludeProgressionBounds, bool IncludeWater)
     {
         bool roadblock = IncludeProgressionBounds && IsRoadblocked(position);
-        return NonSolidTileSafe(position) && !roadblock;
+        bool waterblock = IncludeWater && SafeGetTileData(RealPosToTilePos(position)).IsLiquid;
+        return NonSolidTileSafe(position) && !roadblock && !waterblock;
     }
     public static bool IsRoadblocked(Vector3 position)
     {

@@ -41,6 +41,7 @@ Bug Watchlist:
 1. (This should've been fixed with the wave card rework, but keep an eye out for this) With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Soup sometimes causes power numbers to spazz out
 3. Achievement popups are effected by lighting
+4. Boxer doesn't pursue the player when hovering over water right now, unless it has line of sight, due to pathfinding over water not being implemented!
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -61,7 +62,15 @@ Done:
 6. Added "continuity" for border walls that intersect liquids/pits, so they extend down into the liquid
 	1. Right now, due to how tiles work in game, the walls that extend down into the liquid are on a different layer, and the offsets are only .3 units apart, which may make things not appear that continuous. It's possible to maybe slightly remedy this with a few changes, such as decreasing the offset for border walls and increasing the offset for ground walls, but a real fix would probably require some extensive reworks (such as much bigger y-differences for different tile levels, or specialized matrices to extend walls that are effected). It is not possible to simply extend the border walls down, due to the way they must be layered on top of ground tiles.
 	2. Add additional tiling logic for preventing certain tile variants from spawning over water/pits, to prevent strange wall artifacts
-7. Next: collision logic for pits
+7. Add some initial collision logic for pits
+	1. Player now collides with pits, but at a smaller radius than walls (due to the way the hitboxes are placed)
+	2. All enemies (except boxer) now collide with water	
+	3. Some enemies have unique behaviors around water, such as crows being able to shoot across water without being forced to pathfind around
+	4. Enemies cannot spawn on water
+	5. Enemies and Chests in water will be moved out of water (except for boxer, for now)
+	6. Breakable objects collide with water
+	7. Coins and other pickups now collide with water (they also get pushed out if somehow stuck in water for 5 seconds, which is same as wall behavior)
+8. (BUFF) Peaclock attack start range 10 -> 16, max distance 24 -> 28
 
 -- A3.53 UPDATE ON STEAM --
 

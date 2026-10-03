@@ -12,6 +12,7 @@ public partial class World : MonoBehaviour
         return RealTileMap.Map.WorldToCell(worldPosition);
     }
     public static Tile DepthTile;
+    public static Tile WaterCollisionTile;
     public static int FloorSortingLayer { get; private set; }
     public static void CreateRoadblockTileVisuals(Vector3Int pos, ref TileData data)
     {
@@ -64,7 +65,7 @@ public partial class World : MonoBehaviour
     private static World m_Instance;
     private static WorldTilemap RealTileMap => Instance.Tilemap;
     [SerializeField] private WorldTilemap Tilemap;
-    [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap, InverseRoadblockMap, OcclusionMap;
+    [SerializeField] private Tilemap DepthTilemap, RoadblockTilemap, InverseRoadblockMap, OcclusionMap, WaterCollisionMap;
     public Tilemap LightingTilemapFront;
     public Tilemap LightingTilemapBack;
     public NatureOrderer NatureParent;
@@ -88,6 +89,7 @@ public partial class World : MonoBehaviour
         //TestColorProgRelations();
         m_Instance = this;
         DepthTile = Resources.Load<Tile>("World/Tiles/DepthTile");
+        WaterCollisionTile = Resources.Load<Tile>("World/Tiles/WaterCollisionTile");
         FloorSortingLayer = RealTileMap.GetComponent<TilemapRenderer>().sortingLayerID;
         NodeID.LoadAllNodes();
         Lighting.LoadTextures();
@@ -235,6 +237,7 @@ public partial class World : MonoBehaviour
         OcclusionMap.ClearAllTiles();
         LightingTilemapFront.ClearAllTiles();
         LightingTilemapBack.ClearAllTiles();
+        WaterCollisionMap.ClearAllTiles();
     }
     /// <summary>
     /// Generates the positions for nodes on the map before they are fully loaded. Uses approximations to find the best spot to place the nodes.
@@ -497,6 +500,12 @@ public partial class World : MonoBehaviour
                             float f = Noise.GetNoise(i, j);
                             World.SetTile(pos, f < 0.2f && f > -0.2f ? TileID.Dirt : TileID.Grass, 1);
                         }
+                        else
+                        {
+                            ref TileData data = ref UnsafeGetTileData(pos);
+                            if(data.IsLiquid)
+                                WaterCollisionMap.SetTile(pos, WaterCollisionTile);
+                        }
                         //if (SolidTile(pos))
                         //{
                         //    if (Instance.LightingTilemapFront != null && Instance.LightingTilemapBack != null) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
@@ -508,7 +517,7 @@ public partial class World : MonoBehaviour
                     }
                     else if (passNum == 1)
                     {
-                        var data = UnsafeGetTileData(pos);
+                        ref TileData data = ref UnsafeGetTileData(pos);
                         if(data.IsRoadblock && !data.IsSolid)
                         {
                             Vector3Int tleft = new(pos.x - 1, pos.y);

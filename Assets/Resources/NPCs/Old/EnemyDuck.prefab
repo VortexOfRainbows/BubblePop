@@ -138,6 +138,7 @@ MonoBehaviour:
   HasCalledInit: 0
   RB: {fileID: 1104329810366391754}
   IndexInAllEnemyArray: 0
+  MyCollider: {fileID: 0}
   AlreadyDead: 0
   sRender: {fileID: 3233961230181913397}
   aiState: 0
@@ -183,7 +184,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 216
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -228,23 +229,23 @@ CircleCollider2D:
   m_Material: {fileID: 6200000, guid: d62baf5a88e6d5a4cb903ffac62401e6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1664
+    m_Bits: 1680
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 1664
+    m_Bits: 1680
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 1664
+    m_Bits: 1680
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 1664
+    m_Bits: 1680
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 1664
+    m_Bits: 1680
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

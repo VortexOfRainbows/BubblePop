@@ -409,10 +409,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 200
+    m_Bits: 216
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 823
+    m_Bits: 807
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -457,7 +457,7 @@ CircleCollider2D:
     m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 383
+    m_Bits: 367
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -493,14 +493,15 @@ MonoBehaviour:
   SpawnedIn: 0
   HasCalledInit: 0
   RB: {fileID: 1105666861243281285}
-  IndexInAllEnemyArray: -1
+  IndexInAllEnemyArray: 14
+  MyCollider: {fileID: 0}
   AlreadyDead: 0
-  FirstStrike: 1
   OriginalScaler: 1
   AICounter: 0
   RightArmAnchor: {fileID: 7820193447529278183}
   LeftArmAnchor: {fileID: 3271097875778682310}
   Head: {fileID: 1839229913436459485}
+  currentSnowball: {fileID: 0}
 --- !u!1 &3256350801315482977
 GameObject:
   m_ObjectHideFlags: 0

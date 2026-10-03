@@ -645,7 +645,7 @@ public partial class Player : Entity
         HomingRangeSqrt = Mathf.Sqrt(HomingRange);
         bool dead = DeathKillTimer > 0;
         CreateRoadblockBarriers();
-        if (!World.WithinBorders(transform.position, true))
+        if (!World.WithinBorders(transform.position, true, true))
             Entity.PushIntoClosestPossibleTile(transform, base.RB, includeProgressionBounds: true);
         CheckForClosestObjects();
         if (dead)
