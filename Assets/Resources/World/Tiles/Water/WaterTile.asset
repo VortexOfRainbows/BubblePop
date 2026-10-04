@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: WaterTile
   m_EditorClassIdentifier: 
   TileTexture: {fileID: 2800000, guid: 2145a69bf4936e6439b82701317e704d, type: 3}
-  BonusTileTextures:
-  - {fileID: 2800000, guid: 8f2b7977ece28ee49bc04db52997b148, type: 3}
-  - {fileID: 2800000, guid: 71d04fb51d013c04c91a6e41ef9a1d43, type: 3}
+  BonusTileTextures: []
   BorderOnlyTileTextures: []
   BonusCenterTileTextures: []
   RealTileMapVariant: {fileID: 11400000, guid: c2fc9bcd759a9a644b4276671c8c407b, type: 2}
