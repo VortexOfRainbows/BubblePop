@@ -595,6 +595,10 @@ public partial class World : MonoBehaviour
     public void LateUpdate()
     {
         Lighting.LateUpdate();
+        foreach(var map in WorldTilemap.LiquidMaps)
+        {
+            map.transform.localPosition = new Vector3(map.transform.localPosition.x, -0.475f + Mathf.Sin(GlobalTimeElapsedCounter * 0.75f) * 0.025f, map.transform.localPosition.z);
+        }
     }
     public void FixedUpdate()
     {

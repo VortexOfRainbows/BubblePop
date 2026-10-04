@@ -15,6 +15,7 @@ public partial class Main : MonoBehaviour
         public static Material SpriteLit;
         public static Material SpriteGlowmask;
         public static Material SpriteUnlit => SpriteGlowmask;
+        public static Material WaterTileShader;
 
 
         public static Sprite BathBombSprite;
@@ -56,6 +57,7 @@ public partial class Main : MonoBehaviour
             AlphaShader = Resources.Load<Material>("Materials/Alpha");
             SpriteLit = Resources.Load<Material>("Materials/SpriteLit");
             SpriteGlowmask = Resources.Load<Material>("Materials/SpriteGlowmask");
+            WaterTileShader = Resources.Load<Material>("Materials/WaterShader");
 
             T3ChestUma = Resources.Load<Sprite>("Chests/T3ChestClosed2");
             T3ChestUmaOpen = Resources.Load<Sprite>("Chests/T3ChestOpen2");

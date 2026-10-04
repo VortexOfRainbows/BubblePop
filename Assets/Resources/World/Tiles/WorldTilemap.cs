@@ -75,6 +75,7 @@ public class WorldTilemap : MonoBehaviour
         BorderMap.Reset();
         GroundMap.Reset();
         BottomMap.Reset();
+        LiquidMaps.Clear();
         PrepareTileLevel(VisualMapSuperParent, BorderMap);
         PrepareTileLevel(VisualMapSuperParent, GroundMap);
         PrepareTileLevel(VisualMapSuperParent, BottomMap);
@@ -115,6 +116,7 @@ public class WorldTilemap : MonoBehaviour
             PrepareDisplayMaps(Visual, Level, map, border, wall);
         }
     }
+    public static List<Transform> LiquidMaps = new();
     public static void PrepareDisplayMaps(Transform Visual, TileLevel Level, Dictionary<int, Tilemap> map, bool border, bool wall)
     {
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
@@ -152,6 +154,8 @@ public class WorldTilemap : MonoBehaviour
                     {
                         wallGridTransform = -0.5f;
                         c.a *= 0.25f;
+                        r.material = Main.TextureAssets.WaterTileShader;
+                        LiquidMaps.Add(t.transform);
                     }
                 }
                 map[k].transform.localPosition = new Vector3(0, wallGridTransform, layerOffset);
