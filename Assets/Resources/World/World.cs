@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -19,7 +21,7 @@ public partial class World : MonoBehaviour
         //Might be best to remove this check in the future if able (get the tiledata to perfectly surround all world tiles, maybe?
         if (pointPos.x < 0 || pointPos.y < 0 || pointPos.x >= tileData.GetLength(0) || pointPos.y >= tileData.GetLength(1))
         {
-            Debug.Log($"Tile SET out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
+            UnityEngine.Debug.Log($"Tile SET out of BOUNDS: [{pointPos.x},{pointPos.y}]".WithColor("#FF0000"));
             return;
         }
         bool drawMaps1 = Instance.DepthTilemap.isActiveAndEnabled;
@@ -55,10 +57,10 @@ public partial class World : MonoBehaviour
     }
     private static void TestColorProgRelations()
     {
-        Debug.Log("START COLOR PROG TEST (REMOVE THESE TESTS LATER PLEASE)".WithColor("#FF11AA"));
+        UnityEngine.Debug.Log("START COLOR PROG TEST (REMOVE THESE TESTS LATER PLEASE)".WithColor("#FF11AA"));
         for(byte b = 0; b < 255; ++b)
             Assert.AreEqual(ConvertColorToProgNum(RoadblockColor(b)), b);
-        Debug.Log("PASSED COLOR PROG TEST".WithColor("#FF11AA"));
+        UnityEngine.Debug.Log("PASSED COLOR PROG TEST".WithColor("#FF11AA"));
     }
     public static World Instance => m_Instance == null ? (m_Instance = FindFirstObjectByType<World>()) : m_Instance;
     private static World m_Instance;
@@ -95,107 +97,135 @@ public partial class World : MonoBehaviour
         NodeID.LoadAllNodes();
         Lighting.LoadTextures();
 
-        ResetWorld(true);
+        StartCoroutine(ResetWorld(true));
 
         GachaponShop.TotalPowersPurchased = 0;
         GachaponShop.GlobalRestockCost = GachaponShop.SetDefaultGemRestockCost();
     }
-    public void ResetWorld(bool firstInit)
+    public IEnumerator ResetWorld(bool firstInit)
     {
-        // TODO: Likely wrap loading screen here
         Loader.WorldLoader(7);
-        //Loader.NextStep();
 
         //UnityEngine.Random.InitState(1337);
         //Utils.rand.InitState(1337);
         System.Diagnostics.Stopwatch watch = new();
         watch.Start();
 
-        Main.PylonProgressionNumber = 0;
-        if (!firstInit)
+        Stopwatch frameTimer = new Stopwatch();
+        float MaxFrameTimeMS = 15f;
+
+        for (int s = 0; s < Loader.totalSteps; ++s)
         {
-            foreach(Player p in Player.AllPlayers)
-                p.OnWorldReset();
-            Main.ResetContainers();
-            ResetTransformParents();
-        }
-        else //Do not reset on loops
-        {
-            ForgeHammer.ResetGlobalSpeed();
-            Crucible.ResetGlobalSpeed();
-        }
-        ResetAllTilemaps();
-        Player.ObjectsConsideredForUIInteraction.Clear();
-        GachaponShop.AllShops.Clear();
-        NextToGenerate.Clear();
-        Pylons.Clear();
-        Roadblocks.Clear();
-        foreach (DualGridTile tile in TileID.TileTypes)
-            tile.Init();
-        Loader.NextStep();
-        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 1 Reset".WithColor("#FF6644"));
+            frameTimer.Start();
 
-        PlaceNodeLocations();
-        ApproximateWorldBounds();
-        LoadNodesOntoWorld();
-        Loader.NextStep();
-        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Loading Nodes Onto World".WithColor("#FF6644"));
-
-        CreateWorldOuterFill();
-        FinalizeWorldTiles();
-        Loader.NextStep();
-        Debug.Log($"({watch.ElapsedMilliseconds} ms) Outer Fill and Finalize World Tiles".WithColor("#FF6699"));
-
-        RealTileMap.Init();
-        Loader.NextStep();
-        Debug.Log($"({watch.ElapsedMilliseconds} ms) Realmap Generation/Refresh".WithColor("#FFBBEE"));
-
-        if (NatureParent != null)
-            NatureParent.Init();
-        Loader.NextStep();
-        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Nature Re-Ordering".WithColor("#44FF77"));
-
-        if (firstInit)
-        {
-            Player.AllPlayers.Clear();
-            foreach (Transform spawnPos in PlayerSpawnPosition)
+            switch (Loader.currentStep++)
             {
-                var p = Instantiate(Main.PrefabAssets.PlayerPrefab, spawnPos.position, Quaternion.identity).GetComponent<Player>();
-                p.InstanceID = Player.AllPlayers.Count;
-                Player.AllPlayers.Add(p);
-                Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
-                spawnPos.gameObject.SetActive(false);
+                case 0:
+                    Main.PylonProgressionNumber = 0;
+                    if (!firstInit)
+                    {
+                        foreach (Player p in Player.AllPlayers)
+                            p.OnWorldReset();
+                        Main.ResetContainers();
+                        ResetTransformParents();
+                    }
+                    else //Do not reset on loops
+                    {
+                        ForgeHammer.ResetGlobalSpeed();
+                        Crucible.ResetGlobalSpeed();
+                    }
+                    ResetAllTilemaps();
+                    Player.ObjectsConsideredForUIInteraction.Clear();
+                    GachaponShop.AllShops.Clear();
+                    NextToGenerate.Clear();
+                    Pylons.Clear();
+                    Roadblocks.Clear();
+                    foreach (DualGridTile tile in TileID.TileTypes)
+                        tile.Init();
+                    UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 1 Reset".WithColor("#FF6644"));
+                    break;
+
+                case 1:
+                    PlaceNodeLocations();
+                    ApproximateWorldBounds();
+                    LoadNodesOntoWorld();
+                    UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Loading Nodes Onto World".WithColor("#FF6644"));
+                    break;
+
+                case 2:
+                    CreateWorldOuterFill();
+                    FinalizeWorldTiles();
+                    UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Outer Fill and Finalize World Tiles".WithColor("#FF6699"));
+                    break;
+
+                case 3:
+                    RealTileMap.Init();
+                    UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Realmap Generation/Refresh".WithColor("#FFBBEE"));
+                    break;
+
+                case 4:
+                    if (NatureParent != null)
+                        NatureParent.Init();
+                    UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Nature Re-Ordering".WithColor("#44FF77"));
+                    break;
+
+                case 5:
+                    if (firstInit)
+                    {
+                        Player.AllPlayers.Clear();
+                        foreach (Transform spawnPos in PlayerSpawnPosition)
+                        {
+                            var p = Instantiate(Main.PrefabAssets.PlayerPrefab, spawnPos.position, Quaternion.identity).GetComponent<Player>();
+                            p.InstanceID = Player.AllPlayers.Count;
+                            Player.AllPlayers.Add(p);
+                            Camera.main.transform.position = new Vector3(p.transform.position.x, p.transform.position.y, Camera.main.transform.position.z);
+                            spawnPos.gameObject.SetActive(false);
+                        }
+                    }
+                    else
+                    {
+                        foreach (Player p in Player.AllPlayers)
+                            p.transform.position = PlayerSpawnPosition[p.InstanceID].position;
+                    }
+
+                    Tilemap.GetComponent<TilemapRenderer>().enabled = false;
+                    int i = 0;
+                    foreach (WavePylon pylon in PylonParent.GetComponentsInChildren<WavePylon>())
+                    {
+                        pylon.name = $"Pylon:{i}";
+                        pylon.ProgressionNumber = (byte)i++;
+                        Pylons.Add(pylon);
+                    }
+                    foreach (Roadblock rb in RoadblockParent.GetComponentsInChildren<Roadblock>())
+                    {
+                        rb.name = $"{(rb.IsEndRoadblock ? "EndRoadblock" : "Roadblock")}:{rb.ProgressionLevel}";
+                        Roadblocks.Add(rb);
+                    }
+                    Pylons.Last().WavesRequired = 1;
+                    FinalPylon = PylonParent.GetChild(PylonParent.childCount - 1).GetComponent<WarpPylon>();
+                    NodeID.ResetNodePositions();
+                    UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 2 Reset".WithColor("#AA55FF"));
+                    break;
+
+                case 6:
+                    Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
+                    UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Lighting".WithColor("#DDFF33"));
+                    break;
+            }
+
+            if (frameTimer.ElapsedMilliseconds >= MaxFrameTimeMS)
+            {
+                UnityEngine.Debug.Log("Waited to long so forcing to update progress");
+                Loader.NextStep();
+
+                frameTimer.Reset();
+                yield return null;
             }
         }
-        else
-        {
-            foreach(Player p in Player.AllPlayers)
-                p.transform.position = PlayerSpawnPosition[p.InstanceID].position;
-        }
 
-        Tilemap.GetComponent<TilemapRenderer>().enabled = false;
-        int i = 0;
-        foreach (WavePylon pylon in PylonParent.GetComponentsInChildren<WavePylon>())
-        {
-            pylon.name = $"Pylon:{i}";
-            pylon.ProgressionNumber = (byte)i++;
-            Pylons.Add(pylon);
-        }
-        foreach (Roadblock rb in RoadblockParent.GetComponentsInChildren<Roadblock>())
-        {
-            rb.name = $"{(rb.IsEndRoadblock ? "EndRoadblock" : "Roadblock")}:{rb.ProgressionLevel}";
-            Roadblocks.Add(rb);
-        }
-        Pylons.Last().WavesRequired = 1;
-        FinalPylon = PylonParent.GetChild(PylonParent.childCount - 1).GetComponent<WarpPylon>();
-        NodeID.ResetNodePositions();
-        Loader.NextStep();
-        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 2 Reset".WithColor("#AA55FF"));
-
-        Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
-        Loader.NextStep();
-        Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Lighting".WithColor("#DDFF33"));
         watch.Stop();
+        Loader.NextStep(); // TODO: Might remove
+        yield return null;
     }
     public void Start()
     {
@@ -576,7 +606,7 @@ public partial class World : MonoBehaviour
         m_Instance = this;
 #if UNITY_EDITOR
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R) && Main.DebugCheats)
-            ResetWorld(false);
+            StartCoroutine(ResetWorld(false));
 #endif
         Lighting.Update();
         GlobalTimeElapsedCounter += Time.deltaTime;

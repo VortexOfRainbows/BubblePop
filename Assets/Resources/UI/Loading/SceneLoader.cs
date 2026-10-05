@@ -9,7 +9,7 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] GameObject LoadingScreen;
     [SerializeField] Image BarImage;
     [SerializeField] TextMeshProUGUI TextComponent;
-    [SerializeField] float EndValue = 0.3f;
+    [SerializeField] float EndValue = 1f;
 
     private void Start()
     {

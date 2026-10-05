@@ -715,6 +715,9 @@ MonoBehaviour:
   LoadingScreen: {fileID: 69811616}
   BarImage: {fileID: 1555986740}
   TextComponent: {fileID: 743825063}
+  StartValue: 0.05
+  totalSteps: 0
+  currentStep: 0
 --- !u!114 &1555986740 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8520530603818277448, guid: 95cfe4ca776e4ea45b88bfb7bbe183fa, type: 3}
