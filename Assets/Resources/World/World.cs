@@ -223,6 +223,9 @@ public partial class World : MonoBehaviour
             }
         }
 
+        yield return new WaitForSeconds(3f);
+        Loader.LoadFinished();
+
         watch.Stop();
         Loader.NextStep(); // TODO: Might remove
         yield return null;

@@ -12,6 +12,8 @@ public class WorldGenLoader : MonoBehaviour
     public int totalSteps = 0;
     public int currentStep = 0;
 
+    [SerializeField] float lerpSpeed = 5f;
+
     public void WorldLoader(int maxSteps)
     {
         totalSteps = maxSteps;
@@ -21,12 +23,18 @@ public class WorldGenLoader : MonoBehaviour
     public void NextStep()
     {
         float progressValue = Mathf.Clamp01((float)currentStep / totalSteps);
-        BarImage.fillAmount = progressValue * (1 - StartValue) + StartValue;
+        float displayValue = progressValue * (1 - StartValue) + StartValue;
+        BarImage.fillAmount = Mathf.Lerp(displayValue, progressValue, Time.deltaTime * lerpSpeed);
         TextComponent.text = (progressValue * 100).ToString("F2") + "%";
 
         if (currentStep >= totalSteps)
         {
-            LoadingScreen.SetActive(false);
+            LoadFinished();
         }
+    }
+
+    public void LoadFinished()
+    {
+        LoadingScreen.SetActive(false);
     }
 }
