@@ -52,9 +52,10 @@ Done:
 
 -- (NEXT) 3.6? Maybe 4.0? --
 
-9/28/26 to 10/4/26
+9/28/26 to 10/4/26 and 10/6/24
 1. Add water tiles + water shader!
 	1. Water shader bobs up and down very slightly
+	2. Now compressed a bit vertically and with some blue shadows below the caustics
 2. Incremental progress towards differing tile heights
 3. Changed the heights of tiles (border level, wall level) from 0.3, -0.425 -> 0.3, -0.45
 	1. Lighting adjusted accordingly
