@@ -153,7 +153,7 @@ public class WorldTilemap : MonoBehaviour
                     if (tile.IsLiquid) //maybe temp
                     {
                         wallGridTransform = -0.5f;
-                        c.a *= 0.25f;
+                        c.a *= 0.5f;
                         r.material = Main.TextureAssets.WaterTileShader;
                         LiquidMaps.Add(t.transform);
                     }

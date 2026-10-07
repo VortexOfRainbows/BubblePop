@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 public static class EnemyID
 {
     public class StaticEnemyData
@@ -98,6 +97,7 @@ public static class EnemyID
 }
 public class Enemy : Entity, IImpactedByProjIFrames
 {
+    public virtual bool Airborne => false;
     public virtual float MoveSpeed => 0.15f;
     public virtual float Inertia => 0.95f;
     public bool HasLineOfSightWithTarget { get; protected set; } = false;
@@ -455,7 +455,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             BoxCollider2D box = MyCollider;
             bool collidersOn = (circle != null && circle.enabled) || (box != null && box.enabled);
             if(collidersOn)
-                Entity.PushIntoClosestPossibleTile(transform, RB, 10, false, pushWhenInWater: this is not Boxer);
+                Entity.PushIntoClosestPossibleTile(transform, RB, 10, false, pushWhenInWater: !Airborne);
         }
         if(TarStacks > 0)
         {
@@ -471,10 +471,13 @@ public class Enemy : Entity, IImpactedByProjIFrames
                 }
             }
         }
-        if(HazardSystem.GetHazard(transform.position, out HazardSystem.Hazard hazard))
+        if(!Airborne)
         {
-            if (hazard.Type == HazardSystem.HazardType.Oil && hazard.Duration > 100 && BuffDetonatedCounter <= 0) //If you step into a trial with 1 seconds remaining, get a buff of the duration
-                AddBuff<Tarred>(hazard.Duration * 0.01f, TarStacks > 0 ? 0 : 1);
+            if (HazardSystem.GetHazard(transform.position, out HazardSystem.Hazard hazard))
+            {
+                if (hazard.Type == HazardSystem.HazardType.Oil && hazard.Duration > 100 && BuffDetonatedCounter <= 0) //If you step into a trial with 1 seconds remaining, get a buff of the duration
+                    AddBuff<Tarred>(hazard.Duration * 0.01f, TarStacks > 0 ? 0 : 1);
+            }
         }
     }
     public bool AlreadyDead = false;
