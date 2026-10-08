@@ -43,6 +43,7 @@ Bug Watchlist:
 2. Soup sometimes causes power numbers to spazz out
 3. Achievement popups are effected by lighting
 4. Boxer doesn't pursue the player when hovering over water right now, unless it has line of sight, due to pathfinding over water not being implemented!
+5. Worldgen could potentially softlock with water, though this should be impossible now or at least rare
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -51,6 +52,11 @@ Sounds Needed:
 Done: 	
 
 -- (NEXT) 3.6? Maybe 4.0? --
+
+10/7/26
+1. New "Phoenix" Node, which contains some water and a crucible
+2. New "Riverforge" Node, which contains water and forges
+3. New "Gardenshop" Node, which contains water and a shope
 
 9/28/26 to 10/4/26 and 10/6/26 to 10/7/26
 1. Add water tiles + water shader!
