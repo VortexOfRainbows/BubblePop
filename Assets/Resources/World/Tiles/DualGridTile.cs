@@ -142,11 +142,12 @@ public class DualGridTile : ScriptableObject
         if (id != -1)
         {
             bool skipNormalIdRandomization = false;
-            if (level != 0 && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
+            bool nearLiquid = World.GetTile(i, j - 1).IsLiquid || World.GetTile(i - 1, j).IsLiquid || World.GetTile(i + 1, j).IsLiquid;
+            if ((level != 0 || nearLiquid) && BorderOnlyTileTextures != null && BorderOnlyTileTextures.Length > 0)
             {
                 if (IsWall)
                 {
-                    if(World.GetTile(i, j - 1).IsLiquid)
+                    if(nearLiquid)
                     {
                         id += BorderVariantStartIndex;
                         id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;

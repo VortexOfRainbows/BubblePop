@@ -62,6 +62,12 @@ Done:
 7. Sprites for Flint and Steel (now named Firebarrel) and Pumpjack (DAVID)!
 8. Modified "BasicMeadowNode" to be bigger and contain some ponds
 9. Modified "WallTestRoom" to no longer have a 1-wide dead end, and now contains some ponds
+10. Modified "Trifecta" to be overall more interesting and contain some water, now also more open
+11. New "Columns" Node, which contains water, shop, and forge
+12. Floating stone fragments should appear over water far less often
+13. If path generates over liquid, it should place plank tiles to walk on
+	1. This is quite rare except for the one subnode
+14. New "BlackMarketIsland" subnode, which contains water, black market crates, and some breakables.
 
 9/28/26 to 10/4/26 and 10/6/26 to 10/7/26
 1. Add water tiles + water shader!

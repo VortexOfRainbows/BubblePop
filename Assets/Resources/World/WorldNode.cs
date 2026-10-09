@@ -412,13 +412,13 @@ public class WorldNode : MonoBehaviour
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
                 bool canGenerate = World.SafeGetTileData(v).IsRoadblock;
                 DualGridTile existingTile = World.GetTile(v);
-                if (existingTile == null || (World.SolidTile(v) && OverrideTiles))
+                if (existingTile == null || ((World.SolidTile(v) || existingTile.IsLiquid) && OverrideTiles))
                 {
                     if (existingTile == null)
                         World.SetTile(v, tile, 0);
                     else
                     {
-                        var tile2 = (existingTile == TileID.Dirt || existingTile == TileID.Grass) ? tile : existingTile;
+                        var tile2 = existingTile.IsLiquid ? TileID.Grass : (existingTile == TileID.Dirt || existingTile == TileID.Grass) ? tile : existingTile;
                         World.SetTile(v, tile2, 0);
                     }
                     ref World.TileData data = ref World.SafeGetTileData(v);
