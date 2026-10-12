@@ -154,19 +154,17 @@ public partial class World : MonoBehaviour
                     break;
 
                 case 2:
-                    hold = watch.ElapsedMilliseconds;
                     yield return CreateWorldOuterFillCoroutine();
-                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 2.1");
                     hold = watch.ElapsedMilliseconds;
                     FinalizeWorldTiles();
-                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 2.2");
+                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 2");
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Outer Fill and Finalize World Tiles".WithColor("#FF6699"));
                     break;
 
                 case 3:
                     hold = watch.ElapsedMilliseconds;
                     RealTileMap.Init();
-                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 3.1");
+                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 3");
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Realmap Generation/Refresh".WithColor("#FFBBEE"));
                     break;
 
@@ -217,7 +215,7 @@ public partial class World : MonoBehaviour
                 case 6:
                     hold = watch.ElapsedMilliseconds;
                     Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
-                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 6.1");
+                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 6");
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Lighting".WithColor("#DDFF33"));
                     break;
             }
@@ -536,7 +534,8 @@ public partial class World : MonoBehaviour
         Noise.SetFrequency(0.04f);
 
         World.GetCorners(out int left, out int right, out int bottom, out int top);
-        int index = 0;
+        Stopwatch FrameWatch = new();
+        FrameWatch.Start();
 
         for (int passNum = 0; passNum < 2; ++passNum)
         {
@@ -544,10 +543,11 @@ public partial class World : MonoBehaviour
             {
                 for (int j = bottom; j < top; j++)
                 {
-                    if (index++ == 1000)
+                    if (FrameWatch.ElapsedMilliseconds > 15)
                     {
-                        index = 0;
+                        FrameWatch.Reset();
                         yield return null;
+                        FrameWatch.Start();
                     }
                     Vector3Int pos = new(i, j);
                     if (passNum == 0)
@@ -598,6 +598,10 @@ public partial class World : MonoBehaviour
     }
     public void FinalizeWorldTiles()
     {
+        long hold;
+        System.Diagnostics.Stopwatch watch = new();
+        watch.Start();
+
         World.GetCorners(out int left, out int right, out int bottom, out int top);
         int width = right - left;
         int height = top - bottom;
@@ -618,7 +622,9 @@ public partial class World : MonoBehaviour
                 ++writeIndex;
             }
         }
-        RealTileMap.Map.SetTiles(positionsArray, trueTilesArray);
+        hold = watch.ElapsedMilliseconds;
+        RealTileMap.Map.SetTiles(positionsArray, trueTilesArray); // TODO: Break this into chunks with a for loop
+        UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 2.1");
     }
     /// <summary>
     /// This keeps track of elapsed time for the purpose of visual effects. Do not use for stuff that requires more precise logic

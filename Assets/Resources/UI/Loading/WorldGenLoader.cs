@@ -39,7 +39,9 @@ public class WorldGenLoader : MonoBehaviour
 
     private void Update()
     {
-        float displayValue = Mathf.MoveTowards(targetValue, progressValue, lerpSpeed * Time.deltaTime);
+        float displayValue = Mathf.MoveTowards(targetValue, progressValue, lerpSpeed);
+
+        if (displayValue < BarImage.fillAmount) return;
         BarImage.fillAmount = displayValue;
         TextComponent.text = (displayValue * 100).ToString("F2") + "%";
         Spinner.transform.Rotate(0, 0, -RotationSpeed * Time.deltaTime);

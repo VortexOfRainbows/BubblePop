@@ -29,6 +29,10 @@ public class DualGridTilemap : MonoBehaviour
     }
     public void Init()
     {
+        long hold;
+        System.Diagnostics.Stopwatch watch = new();
+        watch.Start();
+
         ClearDict(DisplayMap);
         ClearDict(BorderDisplayMap);
         ClearDict(WallDisplayMap);
@@ -46,8 +50,12 @@ public class DualGridTilemap : MonoBehaviour
         PrepareDisplayMap(FloorMapParent, DisplayMap);
         PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
         PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
+        hold = watch.ElapsedMilliseconds;
         AddDecor();
+        UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 3.1");
+        hold = watch.ElapsedMilliseconds;
         NewFasterRefresh(DisplayMap, BorderDisplayMap, WallDisplayMap);
+        UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 3.2");
     }
     public static void PrepareDisplayMap(Transform Visual, Dictionary<int, Tilemap> DisplayMap, bool border = false, bool wall = false)
     {
@@ -187,8 +195,18 @@ public class DualGridTilemap : MonoBehaviour
             tile.QueuedTileChangeData.Clear();
         }
     }
+    /*public void AddDecor()
+    {
+        StartCoroutine(AddDecorCoroutine());
+    }*/
+    //private IEnumerator AddDecorCoroutine()
     public void AddDecor()
     {
+        long hold;
+        System.Diagnostics.Stopwatch watch = new();
+        watch.Start();
+        hold = watch.ElapsedMilliseconds;
+
         World.GetCorners(out int left, out int right, out int bottom, out int top, 15);
         Color borderColor = new(0.5f, 0.5f, 0.5f);
         Color[] StandardColors = new Color[] { Color.white, borderColor };
@@ -200,8 +218,12 @@ public class DualGridTilemap : MonoBehaviour
         Transform parent;
         int order;
         bool border;
+
         for (int i = left; i < right; i++)
         {
+            UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold in loop");
+            hold = watch.ElapsedMilliseconds;
+
             for (int j = bottom; j < top; j++)
             {
                 ref var UnsafeData = ref World.UnsafeGetTileData(i, j);
@@ -228,7 +250,7 @@ public class DualGridTilemap : MonoBehaviour
                 bool isDarkGrass = t == TileID.DarkGrass;
                 bool isSnowTile = t == TileID.Snow;
                 var pos = new Vector3(i + 1, j + 1, 0);
-                if(i % 3 == 0 && j % 3 == 0)
+                if (i % 3 == 0 && j % 3 == 0)
                 {
                     AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2));
                 }
@@ -258,9 +280,9 @@ public class DualGridTilemap : MonoBehaviour
                     continue;
                 }
                 else if (isSnowTile && Utils.RandFloat() < 0.16f * mult)
-                { 
+                {
                     bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
-                    if(!edgeTile)
+                    if (!edgeTile)
                     {
                         var g = Instantiate(SnowPile, parent).GetComponent<SpriteRenderer>();
                         pos.y += Utils.RandFloat(-0.05f, 0.05f);
@@ -305,7 +327,7 @@ public class DualGridTilemap : MonoBehaviour
                         g.sortingOrder = childR.sortingOrder = order;
                         continue;
                     }
-                }    
+                }
             }
         }
     }
