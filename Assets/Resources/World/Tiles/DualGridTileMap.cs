@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections;
 
 public class DualGridTilemap : MonoBehaviour
 {
@@ -50,8 +52,34 @@ public class DualGridTilemap : MonoBehaviour
         PrepareDisplayMap(FloorMapParent, DisplayMap);
         PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
         PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
-        hold = watch.ElapsedMilliseconds;
         AddDecor();
+        NewFasterRefresh(DisplayMap, BorderDisplayMap, WallDisplayMap);
+    }
+    public IEnumerator InitCoroutine()
+    {
+        long hold;
+        System.Diagnostics.Stopwatch watch = new();
+        watch.Start();
+
+        ClearDict(DisplayMap);
+        ClearDict(BorderDisplayMap);
+        ClearDict(WallDisplayMap);
+        VisualMapPrefab = VisualMapPrefab != null ? VisualMapPrefab : Resources.Load<GameObject>("World/Tiles/VisualMap");
+        BubbleMushroom = BubbleMushroom != null ? BubbleMushroom : Resources.Load<GameObject>("World/Decor/Nature/BubbleMushroom");
+        Mushroom = Mushroom != null ? Mushroom : Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
+        SnowPile = SnowPile != null ? SnowPile : Resources.Load<GameObject>("World/Decor/Snow/SnowClump");
+        TallGrass = TallGrass != null ? TallGrass : Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
+        CratePrefab = CratePrefab != null ? CratePrefab : Resources.Load<GameObject>("World/Breakable/BreakableCrate");
+        BarrelPrefab = BarrelPrefab != null ? BarrelPrefab : Resources.Load<GameObject>("World/Breakable/BreakableBarrel");
+
+        DisplayMap = new();
+        BorderDisplayMap = new();
+        WallDisplayMap = new();
+        PrepareDisplayMap(FloorMapParent, DisplayMap);
+        PrepareDisplayMap(BorderMapParent, BorderDisplayMap, border: true);
+        PrepareDisplayMap(WallMapParent, WallDisplayMap, wall: true);
+        hold = watch.ElapsedMilliseconds;
+        yield return AddDecorCoroutine();
         UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 3.1");
         hold = watch.ElapsedMilliseconds;
         NewFasterRefresh(DisplayMap, BorderDisplayMap, WallDisplayMap);
@@ -195,12 +223,122 @@ public class DualGridTilemap : MonoBehaviour
             tile.QueuedTileChangeData.Clear();
         }
     }
-    /*public void AddDecor()
+    public void AddDecor()
     {
         StartCoroutine(AddDecorCoroutine());
-    }*/
-    //private IEnumerator AddDecorCoroutine()
-    public void AddDecor()
+    }
+    private bool mushroom;
+    private float mult;
+    private Color c;
+    private Transform parent;
+    private int order;
+    private bool border;
+    private void DecorBodyFunction(int i, int j, Color borderColor, Color[] StandardColors, Transform[] Parents, int[] StandardOrders)
+    {
+        ref var UnsafeData = ref World.UnsafeGetTileData(i, j);
+        border = UnsafeData.IsSolid;
+        if (border)
+        {
+            c = StandardColors[1];
+            parent = Parents[1];
+            order = StandardOrders[1];
+            mushroom = true;
+            mult = 0.5f;
+        }
+        else
+        {
+            c = StandardColors[0];
+            parent = Parents[0];
+            order = StandardOrders[0];
+            mushroom = false;
+            mult = 1.0f;
+        }
+        DualGridTile t = UnsafeData.TileType;
+        bool isGrassTile = t == TileID.Grass;
+        bool isDirtTile = t == TileID.Dirt;
+        bool isDarkGrass = t == TileID.DarkGrass;
+        bool isSnowTile = t == TileID.Snow;
+        var pos = new Vector3(i + 1, j + 1, 0);
+        if (i % 3 == 0 && j % 3 == 0)
+        {
+            AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2));
+        }
+        if ((isGrassTile && Utils.RandFloat() < 0.16f * mult) || (isDarkGrass && Utils.RandFloat() < 0.04f))
+        {
+            int type = Utils.RandInt(3);
+            var g = Instantiate(TallGrass, parent).GetComponent<SpriteRenderer>();
+            if (type == 0)
+            {
+                g.sprite = Main.TextureAssets.TallGrass[Utils.RandInt(Main.TextureAssets.TallGrass.Length)];
+                pos.y += Utils.RandFloat(0.1f, 0.3f);
+            }
+            if (type == 1)
+            {
+                g.sprite = Main.TextureAssets.Flowers[Utils.RandInt(Main.TextureAssets.Flowers.Length)];
+                pos.y += Utils.RandFloat(0.1f);
+            }
+            if (type == 2)
+            {
+                g.sprite = Main.TextureAssets.ShortGrass[Utils.RandInt(Main.TextureAssets.ShortGrass.Length)];
+                pos.y += Utils.RandFloat(0.05f, 0.25f);
+            }
+            g.transform.localPosition = pos;
+            g.color = isDarkGrass ? borderColor : c;
+            g.sortingOrder = order;
+            g.flipX = Utils.rand.NextBool();
+            return;
+        }
+        else if (isSnowTile && Utils.RandFloat() < 0.16f * mult)
+        {
+            bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
+            if (!edgeTile)
+            {
+                var g = Instantiate(SnowPile, parent).GetComponent<SpriteRenderer>();
+                pos.y += Utils.RandFloat(-0.05f, 0.05f);
+                pos.x += Utils.RandFloat(-0.05f, 0.05f);
+                g.sprite = Main.TextureAssets.SnowPiles[Utils.RandInt(Main.TextureAssets.SnowPiles.Length)];
+                g.transform.localPosition = pos;
+                g.color = border ? TileID.Snow.BorderColor : c;
+                g.sortingOrder = order;
+                g.flipX = Utils.rand.NextBool();
+                g.transform.localScale *= Utils.RandFloat(0.9f, 1.0f);
+            }
+            return;
+        }
+        if ((mushroom && (isGrassTile || isDirtTile)) || isDarkGrass)
+        {
+            float chance = isDirtTile ? 0.1f : 0.05f;
+            if (Utils.RandFloat() < chance)
+            {
+                var g = Instantiate(Mushroom, parent).GetComponent<SpriteRenderer>();
+                g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
+                g.color = borderColor;
+                g.sortingOrder = order;
+                return;
+            }
+        }
+        bool randomOccurence = Utils.RandFloat() < 0.05f && (isGrassTile || isDirtTile);
+        if ((isDirtTile && i % 3 == 0 && j % 3 == 0) || randomOccurence)
+        {
+            bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
+            float chance = edgeTile ? 0.5f : randomOccurence ? 0 : 0.1f;
+            if (edgeTile)
+                pos.y += border ? 0.25f : -0.45f;
+            if (Utils.RandFloat() < chance)
+            {
+                Color c2 = border ? new Color(0.825f, 0.825f, 0.825f) : c;
+                var g = Instantiate(BubbleMushroom, parent).GetComponent<SpriteRenderer>();
+                var childR = g.transform.GetChild(0).GetComponent<SpriteRenderer>();
+                g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
+                g.transform.localScale *= edgeTile ? Utils.RandFloat(0.9f, 1.0f) : Utils.RandFloat(0.7f, 0.9f);
+                g.color = c2;
+                childR.color = c2.WithAlpha(0.8f);
+                g.sortingOrder = childR.sortingOrder = order;
+                return;
+            }
+        }
+    }
+    private IEnumerator AddDecorCoroutine()
     {
         long hold;
         System.Diagnostics.Stopwatch watch = new();
@@ -212,122 +350,21 @@ public class DualGridTilemap : MonoBehaviour
         Color[] StandardColors = new Color[] { Color.white, borderColor };
         Transform[] Parents = new Transform[] { World.Instance.FloorDecorParent, World.Instance.BorderDecorParent };
         int[] StandardOrders = new int[] { LayerHelper.FloorObjAndFloraSortingLayer, LayerHelper.SolidTileSortingOrder };
-        bool mushroom;
-        float mult;
-        Color c;
-        Transform parent;
-        int order;
-        bool border;
+
+        Stopwatch FrameWatch = new();
+        FrameWatch.Start();
 
         for (int i = left; i < right; i++)
         {
-            UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold in loop");
-            hold = watch.ElapsedMilliseconds;
-
             for (int j = bottom; j < top; j++)
             {
-                ref var UnsafeData = ref World.UnsafeGetTileData(i, j);
-                border = UnsafeData.IsSolid;
-                if (border)
+                if (FrameWatch.ElapsedMilliseconds > 15)
                 {
-                    c = StandardColors[1];
-                    parent = Parents[1];
-                    order = StandardOrders[1];
-                    mushroom = true;
-                    mult = 0.5f;
+                    FrameWatch.Reset();
+                    yield return null;
+                    FrameWatch.Start();
                 }
-                else
-                {
-                    c = StandardColors[0];
-                    parent = Parents[0];
-                    order = StandardOrders[0];
-                    mushroom = false;
-                    mult = 1.0f;
-                }
-                DualGridTile t = UnsafeData.TileType;
-                bool isGrassTile = t == TileID.Grass;
-                bool isDirtTile = t == TileID.Dirt;
-                bool isDarkGrass = t == TileID.DarkGrass;
-                bool isSnowTile = t == TileID.Snow;
-                var pos = new Vector3(i + 1, j + 1, 0);
-                if (i % 3 == 0 && j % 3 == 0)
-                {
-                    AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2));
-                }
-                if ((isGrassTile && Utils.RandFloat() < 0.16f * mult) || (isDarkGrass && Utils.RandFloat() < 0.04f))
-                {
-                    int type = Utils.RandInt(3);
-                    var g = Instantiate(TallGrass, parent).GetComponent<SpriteRenderer>();
-                    if (type == 0)
-                    {
-                        g.sprite = Main.TextureAssets.TallGrass[Utils.RandInt(Main.TextureAssets.TallGrass.Length)];
-                        pos.y += Utils.RandFloat(0.1f, 0.3f);
-                    }
-                    if (type == 1)
-                    {
-                        g.sprite = Main.TextureAssets.Flowers[Utils.RandInt(Main.TextureAssets.Flowers.Length)];
-                        pos.y += Utils.RandFloat(0.1f);
-                    }
-                    if (type == 2)
-                    {
-                        g.sprite = Main.TextureAssets.ShortGrass[Utils.RandInt(Main.TextureAssets.ShortGrass.Length)];
-                        pos.y += Utils.RandFloat(0.05f, 0.25f);
-                    }
-                    g.transform.localPosition = pos;
-                    g.color = isDarkGrass ? borderColor : c;
-                    g.sortingOrder = order;
-                    g.flipX = Utils.rand.NextBool();
-                    continue;
-                }
-                else if (isSnowTile && Utils.RandFloat() < 0.16f * mult)
-                {
-                    bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
-                    if (!edgeTile)
-                    {
-                        var g = Instantiate(SnowPile, parent).GetComponent<SpriteRenderer>();
-                        pos.y += Utils.RandFloat(-0.05f, 0.05f);
-                        pos.x += Utils.RandFloat(-0.05f, 0.05f);
-                        g.sprite = Main.TextureAssets.SnowPiles[Utils.RandInt(Main.TextureAssets.SnowPiles.Length)];
-                        g.transform.localPosition = pos;
-                        g.color = border ? TileID.Snow.BorderColor : c;
-                        g.sortingOrder = order;
-                        g.flipX = Utils.rand.NextBool();
-                        g.transform.localScale *= Utils.RandFloat(0.9f, 1.0f);
-                    }
-                    continue;
-                }
-                if ((mushroom && (isGrassTile || isDirtTile)) || isDarkGrass)
-                {
-                    float chance = isDirtTile ? 0.1f : 0.05f;
-                    if (Utils.RandFloat() < chance)
-                    {
-                        var g = Instantiate(Mushroom, parent).GetComponent<SpriteRenderer>();
-                        g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
-                        g.color = borderColor;
-                        g.sortingOrder = order;
-                        continue;
-                    }
-                }
-                bool randomOccurence = Utils.RandFloat() < 0.05f && (isGrassTile || isDirtTile);
-                if ((isDirtTile && i % 3 == 0 && j % 3 == 0) || randomOccurence)
-                {
-                    bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
-                    float chance = edgeTile ? 0.5f : randomOccurence ? 0 : 0.1f;
-                    if (edgeTile)
-                        pos.y += border ? 0.25f : -0.45f;
-                    if (Utils.RandFloat() < chance)
-                    {
-                        Color c2 = border ? new Color(0.825f, 0.825f, 0.825f) : c;
-                        var g = Instantiate(BubbleMushroom, parent).GetComponent<SpriteRenderer>();
-                        var childR = g.transform.GetChild(0).GetComponent<SpriteRenderer>();
-                        g.transform.localPosition = pos + (Vector3)Utils.RandCircle(0.2f);
-                        g.transform.localScale *= edgeTile ? Utils.RandFloat(0.9f, 1.0f) : Utils.RandFloat(0.7f, 0.9f);
-                        g.color = c2;
-                        childR.color = c2.WithAlpha(0.8f);
-                        g.sortingOrder = childR.sortingOrder = order;
-                        continue;
-                    }
-                }
+                DecorBodyFunction(i, j, borderColor, StandardColors, Parents, StandardOrders);
             }
         }
     }

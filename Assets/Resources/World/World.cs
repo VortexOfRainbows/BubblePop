@@ -163,7 +163,7 @@ public partial class World : MonoBehaviour
 
                 case 3:
                     hold = watch.ElapsedMilliseconds;
-                    RealTileMap.Init();
+                    yield return RealTileMap.InitCoroutine();
                     UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 3");
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Realmap Generation/Refresh".WithColor("#FFBBEE"));
                     break;
