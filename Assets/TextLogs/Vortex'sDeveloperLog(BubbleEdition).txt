@@ -54,9 +54,14 @@ Done:
 
 -- (NEXT) 3.6? Maybe 4.0? --
 
-10/10/26 to 10/11/26
+10/10/26 to 10/12/26
 1. Sarah Mushroom Tile updates!
+	1. Should be good in game now!
 2. Import Lilypad Sprites (Sarah!)
+3. New "MushroomIsland" Node, which contains a ches, water, and mushroom tiles
+4. Highland Node is no longer marked as containing a crucible when it never had one, which should prevent some situations where it was bricking crucible spawns
+5. New "MushroomForest" Node, which contains a crucible, shop, and heart (replaces highland in the ShopCrucible category).
+6. GardenShop weight 1.0 -> 0.5
 
 10/7/26 to 10/9/26
 1. New "Phoenix" Node, which contains some water and a crucible
