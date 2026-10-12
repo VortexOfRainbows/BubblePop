@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using TreeEditor;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
@@ -147,15 +149,13 @@ public partial class World : MonoBehaviour
                     PlaceNodeLocations(); // TODO Might need to call differently
                     yield return null;
                     ApproximateWorldBounds(); // TODO
-                    hold = watch.ElapsedMilliseconds;
-                    LoadNodesOntoWorld(); // TODO
-                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 1.3");
+                    yield return LoadNodesOntoWorldCoroutine(); // TODO
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Loading Nodes Onto World".WithColor("#FF6644"));
                     break;
 
                 case 2:
                     hold = watch.ElapsedMilliseconds;
-                    CreateWorldOuterFill();
+                    yield return CreateWorldOuterFillCoroutine();
                     UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 2.1");
                     hold = watch.ElapsedMilliseconds;
                     FinalizeWorldTiles();
@@ -418,9 +418,14 @@ public partial class World : MonoBehaviour
     }
     public void LoadNodesOntoWorld()
     {
+        StartCoroutine(LoadNodesOntoWorldCoroutine()); // Likely need to yield for this coroutine when calling this function
+    }
+    private IEnumerator LoadNodesOntoWorldCoroutine()
+    {
         WorldNode prevNode = null;
         byte genNum = 0;
-        for(int i = 0; i < nodes.Count; ++i)
+
+        for (int i = 0; i < nodes.Count; ++i)
         {
             Transform t = nodes[i];
             bool disable = nodes[i].TryGetComponent(out WorldNode _);
@@ -429,7 +434,9 @@ public partial class World : MonoBehaviour
             if (!node.IsSubNode)
                 genNum++;
             prevNode = node;
+            yield return null;
         }
+
         PlaceBonusNodes();
         GenerateBonusNodes();
     }
@@ -517,6 +524,10 @@ public partial class World : MonoBehaviour
     }
     public void CreateWorldOuterFill()
     {
+        StartCoroutine(CreateWorldOuterFillCoroutine());
+    }
+    private IEnumerator CreateWorldOuterFillCoroutine()
+    {
         FastNoiseLite Noise = new();
         Noise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
         Noise.SetFractalType(FastNoiseLite.FractalType.PingPong);
@@ -525,12 +536,19 @@ public partial class World : MonoBehaviour
         Noise.SetFrequency(0.04f);
 
         World.GetCorners(out int left, out int right, out int bottom, out int top);
-        for(int passNum = 0; passNum < 2; ++passNum)
+        int index = 0;
+
+        for (int passNum = 0; passNum < 2; ++passNum)
         {
             for (int i = left; i < right; i++)
             {
                 for (int j = bottom; j < top; j++)
                 {
+                    if (index++ == 1000)
+                    {
+                        index = 0;
+                        yield return null;
+                    }
                     Vector3Int pos = new(i, j);
                     if (passNum == 0)
                     {
@@ -551,7 +569,7 @@ public partial class World : MonoBehaviour
                     else if (passNum == 1)
                     {
                         var data = UnsafeGetTileData(pos);
-                        if(data.IsRoadblock && !data.IsSolid)
+                        if (data.IsRoadblock && !data.IsSolid)
                         {
                             Vector3Int tleft = new(pos.x - 1, pos.y);
                             Vector3Int tright = new(pos.x + 1, pos.y);
