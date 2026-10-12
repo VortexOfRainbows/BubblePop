@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
@@ -111,6 +112,8 @@ public partial class World : MonoBehaviour
         System.Diagnostics.Stopwatch watch = new();
         watch.Start();
 
+        long hold = 0;
+
         for (int s = 0; s < Loader.totalSteps; ++s)
         {
             switch (Loader.currentStep++)
@@ -142,19 +145,28 @@ public partial class World : MonoBehaviour
 
                 case 1:
                     PlaceNodeLocations(); // TODO Might need to call differently
+                    yield return null;
                     ApproximateWorldBounds(); // TODO
+                    hold = watch.ElapsedMilliseconds;
                     LoadNodesOntoWorld(); // TODO
+                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 1.3");
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Loading Nodes Onto World".WithColor("#FF6644"));
                     break;
 
                 case 2:
+                    hold = watch.ElapsedMilliseconds;
                     CreateWorldOuterFill();
+                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 2.1");
+                    hold = watch.ElapsedMilliseconds;
                     FinalizeWorldTiles();
+                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 2.2");
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Outer Fill and Finalize World Tiles".WithColor("#FF6699"));
                     break;
 
                 case 3:
+                    hold = watch.ElapsedMilliseconds;
                     RealTileMap.Init();
+                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 3.1");
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Realmap Generation/Refresh".WithColor("#FFBBEE"));
                     break;
 
@@ -203,7 +215,9 @@ public partial class World : MonoBehaviour
                     break;
 
                 case 6:
+                    hold = watch.ElapsedMilliseconds;
                     Lighting.Setup(RealTileMap.Map, LightingTilemapFront, LightingTilemapBack, OcclusionMap);
+                    UnityEngine.Debug.Log($"({hold - watch.ElapsedMilliseconds} ms) hold 6.1");
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Lighting".WithColor("#DDFF33"));
                     break;
             }
