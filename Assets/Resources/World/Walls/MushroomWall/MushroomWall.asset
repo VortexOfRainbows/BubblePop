@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: MushroomWall
   m_EditorClassIdentifier: 
   TileTexture: {fileID: 2800000, guid: 3c5d8c9133c99744386beec5eb21298b, type: 3}
-  BonusTileTextures: []
+  BonusTileTextures:
+  - {fileID: 2800000, guid: 55a47f9dd7d763347b080b119de683b1, type: 3}
+  - {fileID: 2800000, guid: 940ec1d91cf94b7428a880dcddf25e2a, type: 3}
+  - {fileID: 2800000, guid: 41d412ac8c90d244ab5a4ae6bf4486bb, type: 3}
+  - {fileID: 2800000, guid: fdfbb26f8aacd084baf9168314eb0c14, type: 3}
   BorderOnlyTileTextures: []
   BonusCenterTileTextures: []
   RealTileMapVariant: {fileID: 11400000, guid: 2b8d1147b139619418b1da6602b42e6d, type: 2}
