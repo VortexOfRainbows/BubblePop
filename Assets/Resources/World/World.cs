@@ -111,13 +111,8 @@ public partial class World : MonoBehaviour
         System.Diagnostics.Stopwatch watch = new();
         watch.Start();
 
-        Stopwatch frameTimer = new Stopwatch();
-        float MaxFrameTimeMS = 15f;
-
         for (int s = 0; s < Loader.totalSteps; ++s)
         {
-            frameTimer.Start();
-
             switch (Loader.currentStep++)
             {
                 case 0:
@@ -142,10 +137,6 @@ public partial class World : MonoBehaviour
                     Roadblocks.Clear();
                     foreach (DualGridTile tile in TileID.TileTypes)
                         tile.Init();
-                        if (SceneBudget.ShouldYield())
-                        {
-                            yield return null;
-                        }
                     UnityEngine.Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 1 Reset".WithColor("#FF6644"));
                     break;
 
@@ -217,14 +208,7 @@ public partial class World : MonoBehaviour
                     break;
             }
             Loader.NextStep();
-            frameTimer.Stop();
-
-            if (frameTimer.ElapsedMilliseconds >= MaxFrameTimeMS)
-            {
-                UnityEngine.Debug.Log("Waited to long so forcing to update progress");
-                frameTimer.Reset();
-                yield return null;
-            }
+            yield return null;
         }
 
         yield return new WaitForSeconds(3f);
@@ -283,7 +267,7 @@ public partial class World : MonoBehaviour
     /// <summary>
     /// Generates the positions for nodes on the map before they are fully loaded. Uses approximations to find the best spot to place the nodes.
     /// </summary>
-    public IEnumerable PlaceNodeLocations()
+    public void PlaceNodeLocations()
     {
         int nodeCount = NodesToGenerate + nodes.Count + 1; //+1 for the end node
         WorldNode prevNode = null;
@@ -295,10 +279,6 @@ public partial class World : MonoBehaviour
             {
                 NextToGenerate.Enqueue(node);
                 prevNode = node;
-            }
-            if (SceneBudget.ShouldYield())
-            {
-                yield return null;
             }
         }
         FinalProgNumber = (NodesToGenerate < 1 ? (byte)0 : (byte)(NodesToGenerate - 1)); //Minus 1 as the final node is never cleared. the first node starts cleared
@@ -318,10 +298,6 @@ public partial class World : MonoBehaviour
             Rect current = node.TileMap.GetRect(arbitraryGameObject.transform.position.ToTilePosition(), true, 4);
             float att = (current.width + current.height + prev.width + prev.height) * 0.45f;
             float start = att;
-            if (SceneBudget.ShouldYield())
-            {
-                yield return null;
-            }
             while (IntersectionCount(current) > 0)
             {
                 float r = Utils.RandFloat(-att, att);
@@ -383,7 +359,7 @@ public partial class World : MonoBehaviour
         bottom = Bottom + inwardPadding;
         top = Top - inwardPadding;
     }
-    public IEnumerable ApproximateWorldBounds()
+    public void ApproximateWorldBounds()
     {
         int left = int.MaxValue;
         int right = int.MinValue;
@@ -401,10 +377,6 @@ public partial class World : MonoBehaviour
             top = Mathf.Max(t + transformPos.y, top);
             //Debug.Log($"Node[{i}]: L: {left}, R: {right}, B: {bottom}, T: {top}".WithColor("#66FF11"));
             ++i;
-            if (SceneBudget.ShouldYield())
-            {
-                yield return null;
-            }
         }
         if (nodes.Count <= 0)
             left = right = bottom = top = 0;
@@ -430,7 +402,7 @@ public partial class World : MonoBehaviour
             throw new System.Exception("BUBBLE: WORLD GENERATED TOO LARGE OR NEGATIVE SIZE. CANCELLING FOR SAFETY");
         }
     }
-    public IEnumerable LoadNodesOntoWorld()
+    public void LoadNodesOntoWorld()
     {
         WorldNode prevNode = null;
         byte genNum = 0;
@@ -443,10 +415,6 @@ public partial class World : MonoBehaviour
             if (!node.IsSubNode)
                 genNum++;
             prevNode = node;
-            if (SceneBudget.ShouldYield())
-            {
-                yield return null;
-            }
         }
         PlaceBonusNodes();
         GenerateBonusNodes();
@@ -533,7 +501,7 @@ public partial class World : MonoBehaviour
     {
 
     }
-    public IEnumerable CreateWorldOuterFill()
+    public void CreateWorldOuterFill()
     {
         FastNoiseLite Noise = new();
         Noise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
@@ -592,10 +560,6 @@ public partial class World : MonoBehaviour
                         //}
                         //Instance.RoadblockTilemap.SetTile(new(pos, DepthTile, Color.white, Matrix4x4.identity), true);
                     }
-                }
-                if (SceneBudget.ShouldYield())
-                {
-                    yield return null;
                 }
             }
         }
