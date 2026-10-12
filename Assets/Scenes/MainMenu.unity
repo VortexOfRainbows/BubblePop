@@ -250,6 +250,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LoadingScreen: {fileID: 1976068590}
   BarImage: {fileID: 890685842}
+  Spinner: {fileID: 918314181}
+  RotationSpeed: 250
   TextComponent: {fileID: 2092793393}
   EndValue: 0.05
 --- !u!1 &645259390
@@ -307,6 +309,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &918314181 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1876036076080578114, guid: 95cfe4ca776e4ea45b88bfb7bbe183fa, type: 3}
+  m_PrefabInstance: {fileID: 413163555}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1035924450
 PrefabInstance:
   m_ObjectHideFlags: 0

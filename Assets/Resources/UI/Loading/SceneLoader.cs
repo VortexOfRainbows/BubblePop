@@ -8,12 +8,19 @@ public class SceneLoader : MonoBehaviour
 {
     [SerializeField] GameObject LoadingScreen;
     [SerializeField] Image BarImage;
+    [SerializeField] GameObject Spinner;
+    [SerializeField] float RotationSpeed = 250f;
     [SerializeField] TextMeshProUGUI TextComponent;
     [SerializeField] float EndValue = 1f;
 
     private void Start()
     {
         Main.CanvasManager.loadingScript = this;
+    }
+
+    private void Update()
+    {
+        Spinner.transform.Rotate(0, 0, -RotationSpeed * Time.deltaTime);
     }
 
     public void loadScene(int sceneID)
