@@ -53,7 +53,7 @@ Done:
 
 -- (NEXT) 3.6? Maybe 4.0? --
 
-10/10/26 to 10/12/26
+10/10/26 to 10/13/26
 1. Sarah Mushroom Tile updates!
 	1. Should be good in game now!
 2. Import Lilypad Sprites (Sarah!)
@@ -67,6 +67,8 @@ Done:
 10. WIP generation of lilypads
 	1. In order to make this work, layering of water had to be adjusted slightly
 	2. Generates similarly to crates (Corner tiles preferred) but on water
+11. WIP reverse water shader for creating foam outlines
+	1. Right now only used for Lilypads, but should be adapted for use with enemies later
 
 10/7/26 to 10/9/26
 1. New "Phoenix" Node, which contains some water and a crucible
