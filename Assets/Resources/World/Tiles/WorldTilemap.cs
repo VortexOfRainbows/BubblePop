@@ -1,21 +1,29 @@
 using System.Collections.Generic;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
+using static UnityEditor.PlayerSettings;
 
 public class WorldTilemap : MonoBehaviour
 {
+    public static void TryLoading(ref GameObject obj, string path)
+    {
+        obj = obj != null ? obj : Resources.Load<GameObject>(path);
+    }
     public static void LoadWorldObjectPrefabs()
     {
-        VisualMapPrefab = VisualMapPrefab != null ? VisualMapPrefab : Resources.Load<GameObject>("World/Tiles/VisualMap");
-        BubbleMushroom = BubbleMushroom != null ? BubbleMushroom : Resources.Load<GameObject>("World/Decor/Nature/BubbleMushroom");
-        Mushroom = Mushroom != null ? Mushroom : Resources.Load<GameObject>("World/Decor/Nature/Mushroom");
-        SnowPile = SnowPile != null ? SnowPile : Resources.Load<GameObject>("World/Decor/Snow/SnowClump");
-        TallGrass = TallGrass != null ? TallGrass : Resources.Load<GameObject>("World/Decor/Nature/TallGrass");
-        CratePrefab = CratePrefab != null ? CratePrefab : Resources.Load<GameObject>("World/Breakable/BreakableCrate");
-        BarrelPrefab = BarrelPrefab != null ? BarrelPrefab : Resources.Load<GameObject>("World/Breakable/BreakableBarrel");
-        UrnPrefab = UrnPrefab != null ? UrnPrefab : Resources.Load<GameObject>("World/Breakable/BreakableUrn");
-        BubblePlantObj = BubblePlantObj != null ? BubblePlantObj : Resources.Load<GameObject>("World/Decor/Nature/BubblePlant");
+        TryLoading(ref VisualMapPrefab, "World/Tiles/VisualMap");
+        TryLoading(ref CratePrefab, "World/Breakable/BreakableCrate");
+        TryLoading(ref BubbleMushroom, "World/Decor/Nature/BubbleMushroom");
+        TryLoading(ref Mushroom, "World/Decor/Nature/Mushroom");
+        TryLoading(ref SnowPile, "World/Decor/Snow/SnowClump");
+        TryLoading(ref TallGrass, "World/Decor/Nature/TallGrass");
+        TryLoading(ref BarrelPrefab, "World/Breakable/BreakableBarrel");
+        TryLoading(ref UrnPrefab, "World/Breakable/BreakableUrn");
+        TryLoading(ref BubblePlantObj, "World/Decor/Nature/BubblePlant");
+        TryLoading(ref Lilypad, "World/Decor/Nature/Lilypad");
     }
     //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
@@ -25,6 +33,7 @@ public class WorldTilemap : MonoBehaviour
     public static GameObject BubbleMushroom, BubblePlantObj;  
     public static GameObject VisualMapPrefab;
     public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
+    public static GameObject Lilypad;
     public Transform VisualMapSuperParent;
     public class TileLevel //Contains both a floor componenet and a wall component, for the purpose of simulating 3D terrain
     {
@@ -104,12 +113,12 @@ public class WorldTilemap : MonoBehaviour
             else if (Level.Level == 0) //Floor
             {
                 group.sortingLayerID = World.FloorSortingLayer;
-                group.sortingOrder = wall ? -1 : 0;
+                group.sortingOrder = wall ? -3 : 0;
             }
             else if (Level.Level == -1) //Bottom
             {
                 group.sortingLayerID = World.FloorSortingLayer;
-                group.sortingOrder = wall ? -3 : -2;
+                group.sortingOrder = wall ? -7 : -5;
             }
             else //unused as of now 
                 group.sortingOrder = wall ? LayerHelper.WallTileSortingOrder : LayerHelper.FloorTileSortingOrder;
@@ -152,6 +161,10 @@ public class WorldTilemap : MonoBehaviour
                     r.sortingLayerID = World.FloorSortingLayer;
                     if (tile.IsLiquid) //maybe temp
                     {
+                        SortingGroup sg = r.AddComponent<SortingGroup>();
+                        sg.sortAtRoot = true;
+                        sg.sortingOrder = -2;
+                        sg.sortingLayerID = World.FloorSortingLayer;
                         wallGridTransform = -0.5f;
                         c.a *= 0.5f;
                         r.material = Main.TextureAssets.WaterTileShader;
@@ -238,15 +251,17 @@ public class WorldTilemap : MonoBehaviour
                     if (unsafeData.IsSolid)
                     {
                         tile.MarkForGroundUpdate[Top.ID] = true;
-                        if (!tile.MarkForSpecialWallUpdate[Top.ID] && tile.HasWallVariant())
-                        {
-                            if (TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
-                                tile.MarkForSpecialWallUpdate[Top.ID] = true;
-                        }
+                        if (!tile.MarkForSpecialWallUpdate[Top.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
+                            tile.MarkForSpecialWallUpdate[Top.ID] = true;
                     }
+                    //if (tile.IsLiquid)
+                    //{
+                    //    tile.MarkForGroundUpdate[Bottom.ID] = true;
+                    //}
                     if (!unsafeData.IsSolid || tileBelow.IsLiquid)
                     {
                         tilesNeededForGround++;
+                        //if (!tile.IsLiquid)
                         tile.MarkForGroundUpdate[Ground.ID] = true;
                         if(!tile.MarkForSpecialWallUpdate[Ground.ID] && tile.HasWallVariant() && TileIsNotBlendableGroundWall(i2, j2, tile.LayerOffset))
                             tile.MarkForSpecialWallUpdate[Ground.ID] = true;
@@ -440,13 +455,13 @@ public class WorldTilemap : MonoBehaviour
     }
     public void AddSparseDecor(int i, int j)
     {
+        Transform LiquidParent = World.Instance.LiquidDecorParent;
         ref var data = ref World.UnsafeGetTileData(i, j);
-        if (data.IsLiquid)
-            return;
+        bool liquid = data.IsLiquid;
         int order = 20;
         Color c = Color.white;
         bool border = data.IsSolid;
-        if (border && data.TileType == TileID.Grass && Utils.RandFloat() < 0.55f)
+        if (!liquid && border && data.TileType == TileID.Grass && Utils.RandFloat() < 0.55f)
         {
             int nonSolidTiles = 0;
             for(int x = -1; x <= 1; ++x)
@@ -475,7 +490,11 @@ public class WorldTilemap : MonoBehaviour
             bool isWoodFloor = data.TileType == TileID.Plank;
             int solidTiles = 1;
             int minimumSolidTiles = 1;
-            if(isStoneFloor)
+            if (liquid)
+            {
+                solidTiles += 3;
+            }
+            else if (isStoneFloor)
             {
                 isUrn = !Utils.RandBool(3) && !isBarrel;
                 if (isUrn)
@@ -498,13 +517,22 @@ public class WorldTilemap : MonoBehaviour
                     solidTiles += Utils.RandInt(1, 3);
                 }
             }
-            for (int x = -1; x <= 1; ++x)
+            if(!liquid)
             {
-                for (int y = -1; y <= 1; ++y)
-                {
-                    if (World.SolidTile(new Vector3Int(i + x, j + y)))
-                        solidTiles++;
-                }
+                for (int x = -1; x <= 1; ++x)
+                    for (int y = -1; y <= 1; ++y)
+                        if (World.SolidTile(i + x, j + y))
+                            solidTiles++;
+            }
+            else
+            {
+                for (int x = -1; x <= 1; ++x)
+                    for (int y = -1; y <= 1; ++y)
+                    {
+                        ref World.TileData data2 = ref World.UnsafeGetTileData(i + x, j + y);
+                        if (!data2.IsLiquid)
+                            solidTiles++;
+                    }
             }
             float chanceOfCrate = solidTiles / 9f;
             if (solidTiles <= minimumSolidTiles)
@@ -516,30 +544,45 @@ public class WorldTilemap : MonoBehaviour
             if (Utils.RandFloat() < chanceOfCrate)
             {
                 GameObject prefab;
-                Vector2 pos = new(i * 2 + 1, j * 2 + (isBarrel ? 0.5f : 1.1f));
+                Vector2 pos;
+                if (!liquid)
+                    pos = new(i * 2 + 1, j * 2 + (isBarrel ? 0.5f : 1.1f));
+                else
+                    pos = new Vector2(i + 1, j + 1);
                 Vector2 scaleModifier = new(1, 1);
-                if (isBarrel) 
+                if(liquid)
                 {
-                    prefab = BarrelPrefab;
-                    pos.y += 0.5f;
-                    scaleModifier *= Utils.RandFloat(0.9f, 1.0f);
-                }
-                else if (isUrn)
-                {
-                    prefab = UrnPrefab;
-                    pos.y += 0.5f;
-                    scaleModifier *= Utils.RandFloat(0.8f, 1.0f);
+                    pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
+                    var g = SpawnSmallDecor(Lilypad, LiquidParent, pos, Utils.RandBool(2) ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 1.0f), order, c);
+                    g.transform.SetLocalEulerZ(Utils.RandFloat(360));
+                    g.sortingLayerID = World.FloorSortingLayer;
+                    g.sortingOrder = LayerHelper.BelowGroundWaterDecor;
                 }
                 else
                 {
-                    prefab = CratePrefab;
-                    pos.y += 1.1f;
-                    scaleModifier.x *= Utils.RandFloat(0.9f, 1.0f);
-                    scaleModifier.y *= Utils.RandFloat(0.9f, 1.0f);
+                    if (isBarrel)
+                    {
+                        prefab = BarrelPrefab;
+                        pos.y += 0.5f;
+                        scaleModifier *= Utils.RandFloat(0.9f, 1.0f);
+                    }
+                    else if (isUrn)
+                    {
+                        prefab = UrnPrefab;
+                        pos.y += 0.5f;
+                        scaleModifier *= Utils.RandFloat(0.8f, 1.0f);
+                    }
+                    else
+                    {
+                        prefab = CratePrefab;
+                        pos.y += 1.1f;
+                        scaleModifier.x *= Utils.RandFloat(0.9f, 1.0f);
+                        scaleModifier.y *= Utils.RandFloat(0.9f, 1.0f);
+                    }
+                    var g = Instantiate(prefab, World.Instance.NatureParent.transform, true).GetComponent<SpriteRenderer>();
+                    g.transform.localPosition = new Vector2(i * 2 + 1, j * 2 + (isBarrel ? 0.5f : 1.1f)) + Utils.RandCircle(.2f);
+                    g.transform.localScale = new Vector3(g.transform.localScale.x * scaleModifier.x, g.transform.localScale.y * scaleModifier.y, 1);
                 }
-                var g = Instantiate(prefab, World.Instance.NatureParent.transform, true).GetComponent<SpriteRenderer>();
-                g.transform.localPosition = new Vector2(i * 2 + 1, j * 2 + (isBarrel ? 0.5f : 1.1f)) + Utils.RandCircle(.2f);
-                g.transform.localScale = new Vector3(g.transform.localScale.x * scaleModifier.x, g.transform.localScale.y * scaleModifier.y, 1);
             }
         }
     }

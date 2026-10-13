@@ -89,6 +89,12 @@ public partial class World : MonoBehaviour
     private static TileData[,] tileData;
     private static TileData NoTileData = new(byte.MaxValue);
     public static readonly int Padding = 20;
+    public static bool InWorldBounds(Vector3Int pos, int padding = 5) => InWorldBounds(pos.x, pos.y, padding);
+    public static bool InWorldBounds(int x, int y, int padding = 5)
+    {
+        Vector2Int pointPos = new Vector2Int(x, y) - tileDataOffset;
+        return pointPos.x >= padding && pointPos.y >= padding && pointPos.x < tileData.GetLength(0) - padding && pointPos.y < tileData.GetLength(1) - padding;
+    }
     public static ref TileData SafeGetTileData(Vector3Int pos)
     {
         Vector2Int pointPos = (Vector2Int)pos - tileDataOffset;

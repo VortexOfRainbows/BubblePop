@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
@@ -74,6 +75,7 @@ public partial class World : MonoBehaviour
     public Transform ProceduralGenParent;
     public Transform FloorDecorParent;
     public Transform BorderDecorParent;
+    public Transform LiquidDecorParent;
     public List<Transform> PlayerSpawnPosition = new();
     public int NodesToGenerate = 7;
     private int OriginalNodeCount { get; set; } = 0;
@@ -595,10 +597,15 @@ public partial class World : MonoBehaviour
     public void LateUpdate()
     {
         Lighting.LateUpdate();
-        foreach(var map in WorldTilemap.LiquidMaps)
-        {
-            map.transform.localPosition = new Vector3(map.transform.localPosition.x, -0.475f + Mathf.Sin(GlobalTimeElapsedCounter * 0.75f) * 0.025f, map.transform.localPosition.z);
-        }
+        if (!FinishedLoadingWorld)
+            return;
+        float vOffset = -0.475f + Mathf.Sin(GlobalTimeElapsedCounter * 0.75f) * 0.025f;
+        foreach (var map in WorldTilemap.LiquidMaps)
+            map.transform.localPosition = new Vector3(map.transform.localPosition.x, vOffset, map.transform.localPosition.z);
+
+        //Decor is offset by some amount that might be different (will test later)
+        vOffset -= 0.5f;
+        LiquidDecorParent.transform.localPosition = new Vector3(LiquidDecorParent.transform.localPosition.x, vOffset, LiquidDecorParent.transform.localPosition.z);
     }
     public void FixedUpdate()
     {

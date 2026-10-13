@@ -9,6 +9,8 @@ public static class LayerHelper
     //           FlOOR LAYER (effected by tile shadows)
     //-----------------------------------
 
+    public const int GroundWallTile = -3;
+    public const int BelowGroundWaterDecor = -1; //Lilypads
     public const int FloorTileSortingOrder = 0;
     public const int HazardSortingOrder = 1;
     public const int HazardTopSortingOrder = 2;

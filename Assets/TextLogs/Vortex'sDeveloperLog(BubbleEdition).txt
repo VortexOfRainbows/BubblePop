@@ -44,7 +44,6 @@ Bug Watchlist:
 2. Soup sometimes causes power numbers to spazz out
 3. Achievement popups are effected by lighting
 4. Boxer doesn't pursue the player when hovering over water right now, unless it has line of sight, due to pathfinding over water not being implemented!
-5. Worldgen could potentially softlock with water, though this should be impossible now or at least rare
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -65,6 +64,9 @@ Done:
 7. Black market island node now contains mushroom tiles
 8. New secret node "MushroomChestNode" which contains water, chests, and mushroom tiles
 9. Castle, SOTS, Gachapon Mansion node now contains some decorative water
+10. WIP generation of lilypads
+	1. In order to make this work, layering of water had to be adjusted slightly
+	2. Generates similarly to crates (Corner tiles preferred) but on water
 
 10/7/26 to 10/9/26
 1. New "Phoenix" Node, which contains some water and a crucible
