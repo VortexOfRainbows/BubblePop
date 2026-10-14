@@ -554,7 +554,7 @@ public class WorldTilemap : MonoBehaviour
                 {
                     pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
                     var g = SpawnSmallDecor(Lilypad, LiquidParent, pos, Utils.RandBool(2) ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 1.0f), order, c);
-                    g.transform.SetLocalEulerZ(Utils.RandFloat(360));
+                    //g.transform.SetLocalEulerZ(Utils.RandFloat(360));
                     g.sortingLayerID = World.FloorSortingLayer;
                     g.sortingOrder = LayerHelper.BelowGroundWaterDecor;
                 }
