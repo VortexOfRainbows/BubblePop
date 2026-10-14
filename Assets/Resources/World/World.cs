@@ -320,6 +320,7 @@ public partial class World : MonoBehaviour
             node = NodeID.GetRandomNodeWithParameters(NodeID.EndNodes, 0, null, null, null, null);
         else
             node = NodeID.GetRandomNodeWithParameters(NodeID.Nodes, 0, shop, crucible, largo, forge);
+        node.TimesAlreadyPickedForGeneration++;
         NodeID.PreviousNode = node;
         NextToGenerate.Enqueue(node);
         return node;

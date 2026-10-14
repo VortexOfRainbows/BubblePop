@@ -69,6 +69,7 @@ public static class NodeID
             if(PreviousNode != n) // Right now nodes can not spawn next to identical nodes, due to how the position of the prefab is shifted to paste them like a stamp, so no spawning the previous node again
             {
                 int score = 0;
+                float w = n.GetWeighting();
                 if (n.Zone == zoneID)
                     score += 2;
                 if (shop == null || shop.Value == n.HasShop)
@@ -79,12 +80,12 @@ public static class NodeID
                     score += 1;
                 if (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode)
                     score += 2;
-                if (n.Weighting >= maxWeight)
+                if (w >= maxWeight)
                     score -= 2;
                 if(score >= 8)
                     viableNodes.Add(n);
                 bestScore = Mathf.Max(bestScore, score);
-                bestWeight = Mathf.Max(n.Weighting, bestWeight);
+                bestWeight = Mathf.Max(w, bestWeight);
             }
         }
         if(viableNodes.Count <= 0) //If it can't find any exact matches, find the next best match
@@ -94,6 +95,7 @@ public static class NodeID
                 if (PreviousNode != n)
                 {
                     int score = 0;
+                    float w = n.GetWeighting();
                     if (n.Zone == zoneID)
                         score += 2;
                     if (shop == null || shop.Value == n.HasShop)
@@ -104,11 +106,11 @@ public static class NodeID
                         score += 1;
                     if (needsLarge == null || needsLarge.Value == n.CountsAsLargeNode)
                         score += 2;
-                    if (n.Weighting >= maxWeight)
+                    if (w >= maxWeight)
                         score -= 2;
                     if (score >= bestScore)
                         viableNodes.Add(n);
-                    bestWeight = Mathf.Max(n.Weighting, bestWeight);
+                    bestWeight = Mathf.Max(w, bestWeight);
                 }
             }
         }
@@ -118,7 +120,7 @@ public static class NodeID
         {
             int i = Utils.RandInt(viableNodes.Count);
             pickedNode = viableNodes[i];
-            if (pickedNode.Weighting / bestWeight >= Utils.RandFloat())
+            if (pickedNode.GetWeighting() / bestWeight >= Utils.RandFloat())
                 return pickedNode;
             else
                 viableNodes.RemoveAt(i);
@@ -138,6 +140,7 @@ public class WorldNode : MonoBehaviour
         SubNode,
         SecretRoom,
         End,
+        HubWorld,
     }
     public NodeType Type;
 #if UNITY_EDITOR
@@ -166,6 +169,7 @@ public class WorldNode : MonoBehaviour
     }
     public void Generate(Vector2 pos, World world, byte GenNumber, WorldNode PreviousNode = null, bool disable = false)
     {
+        ResetWeight();
         GenerationNumber = GenNumber;
         this.World = world;
         transform.position = pos; //TODO: Replace this with a system that doesn't use transform.position, as it creates some issues with repeat structures
@@ -239,13 +243,23 @@ public class WorldNode : MonoBehaviour
     public Transform FeatureParent;
     public Transform PylonParent;
     public int Zone = -1;
-    public float Weighting = 1.0f;
+    [SerializeField]
+    private float Weighting = 1.0f;
+    public float GetWeighting() //Reduce rate of nodes spawning if they have already spawned
+    {
+        return Weighting / (TimesAlreadyPickedForGeneration * 4 + 1);
+    }
     public readonly List<NodeConnector> Connectors = new();
     public static bool OverrideTiles = true;
     public bool HasShop = false;
     public bool HasCrucible = false;
     public bool HasForge = false;
     public bool CountsAsLargeNode = false;
+    public int TimesAlreadyPickedForGeneration { get; set; } = 0; //Reduce rate of nodes spawning if they have already spawned. Right now only normal nodes are effected by this
+    public void ResetWeight()
+    {
+        TimesAlreadyPickedForGeneration = 0;
+    }
     public void GetClosestConnectors(List<NodeConnector> starts, List<NodeConnector> ends, 
         out NodeConnector bestStart, out NodeConnector bestEnd, out float bestDist)
     {
