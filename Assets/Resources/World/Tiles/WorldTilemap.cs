@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
-using static UnityEditor.PlayerSettings;
 
 public class WorldTilemap : MonoBehaviour
 {
@@ -24,6 +22,7 @@ public class WorldTilemap : MonoBehaviour
         TryLoading(ref UrnPrefab, "World/Breakable/BreakableUrn");
         TryLoading(ref BubblePlantObj, "World/Decor/Nature/BubblePlant");
         TryLoading(ref Lilypad, "World/Decor/Nature/Lilypad");
+        TryLoading(ref LotusPad, "World/Decor/Nature/LilyWithLotus");
     }
     //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
@@ -33,7 +32,7 @@ public class WorldTilemap : MonoBehaviour
     public static GameObject BubbleMushroom, BubblePlantObj;  
     public static GameObject VisualMapPrefab;
     public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
-    public static GameObject Lilypad;
+    public static GameObject Lilypad, LotusPad;
     public Transform VisualMapSuperParent;
     public class TileLevel //Contains both a floor componenet and a wall component, for the purpose of simulating 3D terrain
     {
@@ -553,8 +552,10 @@ public class WorldTilemap : MonoBehaviour
                 if(liquid)
                 {
                     pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
-                    var g = SpawnSmallDecor(Lilypad, LiquidParent, pos, Utils.RandBool(2) ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 1.0f), order, c);
+                    var g = SpawnSmallDecor(Utils.RandBool(2) ? LotusPad : Lilypad, LiquidParent, pos, Utils.RandBool(2) ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 1.0f), order, c);
                     //g.transform.SetLocalEulerZ(Utils.RandFloat(360));
+                    if(Utils.RandBool(2))
+                        g.transform.localScale = new Vector3(g.transform.localScale.x * -1, g.transform.localScale.y, 1);
                     g.sortingLayerID = World.FloorSortingLayer;
                     g.sortingOrder = LayerHelper.BelowGroundWaterDecor;
                 }
