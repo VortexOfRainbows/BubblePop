@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -145,6 +146,56 @@ public class TilePathfinding : MonoBehaviour
                 }
             }
         }
+    }
+
+    public enum pathfindingType
+    {
+        ground = 0,
+        liquid = 1,
+        air = 2,
+    }
+
+    private static Vector2 bestPathToPlayer(Vector3 tilePos, int pathingType, int liquidModifier)
+    {
+        Vector2 bestDirection = Vector2.zero;
+
+        // Raycast to player over ground
+        //  Go if able
+
+        // Get tile to compare distances
+        ref World.TileData curTile = ref World.UnsafeGetTileData((int) tilePos.x, (int) tilePos.y);
+
+        switch (pathingType)
+        {
+            case 0: // Ground only Traversal
+                bestDirection = curTile.groundPathDirection;
+                break;
+            case 1: // Ground and Liquid Traversal
+                // Raycast over ground + liquid
+                //  Apply modifier for distance over liquid tiles
+
+                // Get pathfinding over liquid distance, apply modifier
+                //  Compare distance of raycast vs both pathfinds and choose lowest cost
+                if (curTile.liquidPathDistance - curTile.totalLiquidDistance + curTile.totalLiquidDistance * liquidModifier < curTile.groundPathDistance)
+                {
+                    bestDirection = curTile.liquidPathDirection;
+                }
+                break;
+            case 2: // Flying Traversal
+                // Raycast over anything other than walls
+                //  Go if able
+                // Get pathfinding over everything distance
+                //  Go on everything pathfind
+
+                // TODO: REMOVE
+                if (curTile.liquidPathDistance - curTile.totalLiquidDistance + curTile.totalLiquidDistance * liquidModifier < curTile.groundPathDistance) {
+                    bestDirection = curTile.liquidPathDirection;
+                }
+
+                break;
+        }
+
+        return bestDirection;
     }
 
     private void OnDrawGizmos()
