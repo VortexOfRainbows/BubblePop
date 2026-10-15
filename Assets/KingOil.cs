@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +7,8 @@ public class KingOil : Body
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<KingOilUnlock>();
     public override void Init()
     {
-        Player.abilityTimer = 0;
+        if(Player != null)
+            Player.abilityTimer = 0;
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {

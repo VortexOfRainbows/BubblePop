@@ -24,8 +24,8 @@ public class Kicks : Accessory
     {
         bounceCount = 0.7f;
         velocity *= 0.9f;
-        transform.localScale = new Vector3(Player.Body.FlipDir, 1, 1);
-        transform.localPosition = new Vector3(-0.15f * Player.Body.FlipDir, 0, 0);
+        transform.localScale = new Vector3(p.Body.FlipDir, 1, 1);
+        transform.localPosition = new Vector3(-0.15f * p.Body.FlipDir, 0, 0);
         LeftKickAnchor.transform.localPosition = new Vector3(-0.4325f, -1.05f, -0.01f);
         RightKickAnchor.transform.localPosition = new Vector3(0.4325f, -1.05f, 0.01f);
         float directionOffset = 0.025f;
@@ -33,9 +33,12 @@ public class Kicks : Accessory
         RightKick.ReAnchorOffset = new Vector2(-0.325f - directionOffset, -0.05f);
         LeftKickAnchor.SetLocalEulerZ(0);
         RightKickAnchor.SetLocalEulerZ(0);
-        LeftKick.Parent = RightKick.Parent = Player;
-        LeftKick.Animate();
-        RightKick.Animate();
+        if(Player != null)
+        {
+            LeftKick.Parent = RightKick.Parent = Player;
+            LeftKick.Animate();
+            RightKick.Animate();
+        }
     }
     private float bounceCount = 0.7f;
     public GameObject[] Shoes => new GameObject[] { LeftKick.gameObject, RightKick.gameObject };

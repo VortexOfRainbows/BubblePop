@@ -6,6 +6,10 @@ public class NPC : Entity
     {
         None,
         Gachapon,
+        ThoughtBubble,
+        OilKing,
+        Fizzy,
+        Bubblemancer,
     }
     public NPCType Type = NPCType.None;
     public PlayerAnimator p;
@@ -32,9 +36,29 @@ public class NPC : Entity
         switch(Type)
         {
             case NPCType.Gachapon:
-                AddEquip(Main.GlobalEquipData.GachaponHat);
                 AddEquip(Main.GlobalEquipData.Gachapon);
+                AddEquip(Main.GlobalEquipData.GachaponHat);
                 AddEquip(Main.GlobalEquipData.GachaponCape);
+                break;
+            case NPCType.ThoughtBubble:
+                AddEquip(Main.GlobalEquipData.ThoughtBubble);
+                AddEquip(Main.GlobalEquipData.ThoughtBubbleHat);
+                AddEquip(Main.GlobalEquipData.ThoughtBubbleCape);
+                break;
+            case NPCType.OilKing:
+                AddEquip(Main.GlobalEquipData.KingOil);
+                AddEquip(Main.GlobalEquipData.OilHat);
+                AddEquip(Main.GlobalEquipData.OilTie);
+                break;
+            case NPCType.Fizzy:
+                AddEquip(Main.GlobalEquipData.Fizzy);
+                AddEquip(Main.GlobalEquipData.Cap);
+                AddEquip(Main.GlobalEquipData.Kicks);
+                break;
+            case NPCType.Bubblemancer:
+                AddEquip(Main.GlobalEquipData.Bubblemancer);
+                AddEquip(Main.GlobalEquipData.BubblemancerHat);
+                AddEquip(Main.GlobalEquipData.BubblemancerCape);
                 break;
         }
         p.Body.p = p.Hat.p = p.Accessory.p = p;

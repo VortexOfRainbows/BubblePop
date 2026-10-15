@@ -8,7 +8,8 @@ public class Bubblemancer : Body
     public float DashTimer = 0;
     public override void Init()
     {
-        Player.abilityTimer = 0;
+        if(Player != null)
+            Player.abilityTimer = 0;
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
@@ -57,14 +58,14 @@ public class Bubblemancer : Body
         pos.y *= 0.7f;
         pos *= p.Squash;
 
-        if (Player.RB.velocity.magnitude < Player.MaxSpeed + 11.5f * Player.MoveSpeedMod)
+        if (Player == null || (p.rb.velocity.magnitude < Player.MaxSpeed + 11.5f * Player.MoveSpeedMod))
         {
             float r = Mathf.LerpAngle(FaceR.transform.eulerAngles.z, 0, 0.0425f);
             FaceR.transform.eulerAngles = new Vector3(0, 0, r);
         }
         else
         {
-            float r = Player.RB.velocity.ToRotation();
+            float r = p.rb.velocity.ToRotation();
             FaceR.transform.eulerAngles = new Vector3(0, 0, p.Direction < 0 ? (Mathf.PI + r) * Mathf.Rad2Deg : r * Mathf.Rad2Deg);
             pos *= 0.5f;
             pos += new Vector2(0.0f, -0.3f * p.Direction).RotatedBy(r);

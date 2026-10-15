@@ -16,7 +16,8 @@ public class Fizzy : Body
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<FizzyUnlock>();
     public override void Init()
     {
-        Player.abilityTimer = 0;
+        if(Player != null)
+            Player.abilityTimer = 0;
     }
     protected override void ModifyPowerPool(List<PowerUp> powerPool)
     {
