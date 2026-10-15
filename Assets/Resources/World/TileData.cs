@@ -65,8 +65,11 @@ public partial class World : MonoBehaviour
         public DualGridTile TileType;
         public byte ProgressionNumber;
         public bool IsRoadblock;
-        public float distance;
-        public Vector2 direction;
+        public float groundPathDistance;
+        public Vector2 groundPathDirection;
+        public float liquidPathDistance;
+        public Vector2 liquidPathDirection;
+        public float totalLiquidDistance;
         public int runID;
         public readonly bool IsSolid => TileHeightLevel != 0;
         public bool HasTile;
@@ -76,8 +79,11 @@ public partial class World : MonoBehaviour
         {
             ProgressionNumber = progressionNum;
             IsRoadblock = roadBlock;
-            distance = float.MaxValue;
-            direction = Vector2.zero;
+            groundPathDistance = float.MaxValue;
+            groundPathDirection = Vector2.zero;
+            liquidPathDistance = float.MaxValue;
+            liquidPathDirection = Vector2.zero;
+            totalLiquidDistance = float.MaxValue;
             runID = 0;
             TileType = null;
             HasTile = false;
@@ -117,11 +123,17 @@ public partial class World : MonoBehaviour
             return ref NoTileData;
         return ref tileData[i, j];
     }
-    public static Vector2 GetTileDirection(Vector2Int pos) => UnsafeGetTileData(pos).direction;
+    public static Vector2 GetTileGroundDirection(Vector2Int pos) => UnsafeGetTileData(pos).groundPathDirection;
     public static Vector2 GetDirection(Vector3 pos)
     {
         float x = pos.x / TilePathfinding.TileSize.x;
         float y = pos.y / TilePathfinding.TileSize.y;
-        return GetTileDirection(new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y)));
+        return GetTileGroundDirection(new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y)));
+    }
+    public static Vector2 GetTileLiquidDirection(Vector2Int pos) => UnsafeGetTileData(pos).liquidPathDirection;
+    public static Vector2 GetLiquidDirection(Vector3 pos) {
+        float x = pos.x / TilePathfinding.TileSize.x;
+        float y = pos.y / TilePathfinding.TileSize.y;
+        return GetTileLiquidDirection(new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y)));
     }
 }
