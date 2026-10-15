@@ -148,14 +148,14 @@ public class TilePathfinding : MonoBehaviour
         }
     }
 
-    public enum pathfindingType
+    public enum PathfindingType
     {
-        ground = 0,
-        liquid = 1,
-        air = 2,
+        Ground = 0,
+        Liquid = 1,
+        Air = 2,
     }
 
-    private static Vector2 bestPathToPlayer(Vector3 tilePos, int pathingType, int liquidModifier)
+    public static Vector2 BestPathToPlayer(Vector3 tilePos, PathfindingType pathingType, float liquidModifier)
     {
         Vector2 bestDirection = Vector2.zero;
 
@@ -165,7 +165,7 @@ public class TilePathfinding : MonoBehaviour
         // Get tile to compare distances
         ref World.TileData curTile = ref World.UnsafeGetTileData((int) tilePos.x, (int) tilePos.y);
 
-        switch (pathingType)
+        switch ((int)pathingType)
         {
             case 0: // Ground only Traversal
                 bestDirection = curTile.groundPathDirection;
