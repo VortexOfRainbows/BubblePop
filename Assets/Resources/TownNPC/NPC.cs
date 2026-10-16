@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class NPC : Entity
 {
@@ -11,8 +13,15 @@ public class NPC : Entity
         Fizzy,
         Bubblemancer,
     }
+    public enum DialogueType
+    {
+        None,
+        GachaponShop,
+    }
     public NPCType Type = NPCType.None;
+    public DialogueType Dialogue = DialogueType.None;
     public PlayerAnimator p;
+    public InteractableWorldObject IWO;
     public override void Init()
     {
         InitializeEquips();
@@ -73,5 +82,49 @@ public class NPC : Entity
         else
             p.lastVelo.x = 1;
         p.PostFixedUpdate();
+    }
+    public bool TryAddingToUIInteraction { get; private set; } = true;
+    public new void Update()
+    {
+        base.Update(); //This is important to call
+
+        //UI UPDATES HAPPEN HERE
+        if (IWO != null && Dialogue != DialogueType.None)
+        {
+            if(TryAddingToUIInteraction)
+            {
+                Player.ObjectsConsideredForUIInteraction.Add(gameObject);
+                TryAddingToUIInteraction = false;
+            }
+            UpdateUI();
+        }
+    }
+    public void UpdateUI()
+    {
+        Player p = Player.FindClosest(transform.position, out Vector2 norm, out float distance, 100);
+        if (distance < 7 && p != null && p.ThisIsPlayerClosestInteractable(gameObject) && !DialogueController.Instance.WantsOpen)
+        {
+            IWO.EnableUI();
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                IWO.PopupUI.GetChild(0).gameObject.SetActive(false);
+                StartDialogue();
+            }
+        }
+        else
+        {
+            IWO.DisableUI();
+        }
+    }
+    public void StartDialogue()
+    {
+        switch(Dialogue)
+        {
+            case DialogueType.GachaponShop: //AI Generated this very funny.
+                DialogueController.EnqueueDialogueChain(
+                    Localization.Get("Dialogue.GachaponShopIntro1"),
+                    Localization.Get("Dialogue.GachaponShopEnd1"));
+                break;
+        }
     }
 }
