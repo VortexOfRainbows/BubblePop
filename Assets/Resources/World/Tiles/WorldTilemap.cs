@@ -552,7 +552,7 @@ public class WorldTilemap : MonoBehaviour
                 if(liquid)
                 {
                     pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
-                    var g = SpawnSmallDecor(Utils.RandBool(2) ? LotusPad : Lilypad, LiquidParent, pos, Utils.RandBool(2) ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 1.0f), order, c);
+                    var g = SpawnSmallDecor(Utils.RandBool(4) ? LotusPad : Lilypad, LiquidParent, pos, Utils.RandBool(2) ? Utils.RandFloat(0.7f, 0.8f) : Utils.RandFloat(0.95f, 1.0f), order, c);
                     //g.transform.SetLocalEulerZ(Utils.RandFloat(360));
                     if(Utils.RandBool(2))
                         g.transform.localScale = new Vector3(g.transform.localScale.x * -1, g.transform.localScale.y, 1);
