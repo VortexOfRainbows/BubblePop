@@ -14,9 +14,6 @@ Do Later:
 6. Convert player power handler to use structs for faster resetting 
 7. (Eventually) Pause screen should have a button to show current powerups
 8. (Eventually) Character select screen should receive a more full overhaul
-9. Overhaul systems for disabling offscreen elements that use too much resources
-	1. Right now this only applies to bubbleshroom and bubbleplant
-	2. Right now this overcompensates and disables them a little early (when the sprites are no longer visible, but the lights still are)
 
 Need to do:
 1. Unlock system might need more reworks in the future (changes to visibility of unlocks)
@@ -67,9 +64,16 @@ Done:
 2. Thunderbolt sprite (David!)
 3. Lotus Lilypads + more adjustments
 	1. Rotation, Lip, and Lotus variations!
+	2. Slightly boosted spawn rates
+	3. 1/5 chance for special bubble lilypad, only when spawning in areas where water is also on the tile below
+		1. These oscillate, glow in the dark, and release particles
 4. New "HedgeMaze" node, which contains a shop, crucible, mushrooms, water
 5. New "End3" node, which is an end node on an island
 6. Some WIP dialogue system stuff like starting dialogue by interacting with NPCs
+7. Overhaul systems for disabling offscreen elements that use too much resources
+	1. Applies to bubbleshroom, bubbleplant, bubblelilypad
+	2. The animations and lights are now disables based on the light radius (basically it will not cull to early for bigger radius lights)
+	3. This may have slightly worse performance than before, but should still be better overall compared to pre-culling
 
 10/10/26 to 10/14/26
 1. Sarah Mushroom Tile updates!

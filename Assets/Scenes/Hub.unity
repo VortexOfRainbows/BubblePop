@@ -470,7 +470,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1866361830754972015, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: NodesToGenerate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1866361830754972015, guid: 6b325181c59e7b541af83cfc63572e78, type: 3}
       propertyPath: nodes.Array.data[0]

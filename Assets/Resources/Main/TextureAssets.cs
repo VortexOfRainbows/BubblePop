@@ -16,6 +16,7 @@ public partial class Main : MonoBehaviour
         public static Material SpriteGlowmask;
         public static Material SpriteUnlit => SpriteGlowmask;
         public static Material WaterTileShader;
+        public static Material ReverseWaterShader;
 
 
         public static Sprite BathBombSprite;
@@ -36,6 +37,7 @@ public partial class Main : MonoBehaviour
         public static Sprite[] ShortGrass;
         public static Sprite[] SnowPiles;
         public static Sprite[] Lilypads;
+        public static Sprite SpecialLilypad;
         public static Sprite[] Lotus;
         public static Sprite Snowball;
         public static Sprite KingOilDiamond, KingOilBomb;
@@ -59,7 +61,8 @@ public partial class Main : MonoBehaviour
             AlphaShader = Resources.Load<Material>("Materials/Alpha");
             SpriteLit = Resources.Load<Material>("Materials/SpriteLit");
             SpriteGlowmask = Resources.Load<Material>("Materials/SpriteGlowmask");
-            WaterTileShader = Resources.Load<Material>("Materials/WaterShader");
+            WaterTileShader = Resources.Load<Material>("Materials/Water/WaterShader");
+            ReverseWaterShader = Resources.Load<Material>("Materials/Water/ReverseWaterShader");
 
             T3ChestUma = Resources.Load<Sprite>("Chests/T3ChestClosed2");
             T3ChestUmaOpen = Resources.Load<Sprite>("Chests/T3ChestOpen2");
@@ -116,6 +119,7 @@ public partial class Main : MonoBehaviour
 
             Lilypads = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Lilypads");
             Lotus = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Lotus");
+            SpecialLilypad = Resources.Load<Sprite>("World/Decor/Nature/Sprites/BubbleLilypad");
         }
     }
     public static class PrefabAssets

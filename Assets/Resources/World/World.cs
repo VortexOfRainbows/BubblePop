@@ -182,7 +182,8 @@ public partial class World : MonoBehaviour
             rb.name = $"{(rb.IsEndRoadblock ? "EndRoadblock" : "Roadblock")}:{rb.ProgressionLevel}";
             Roadblocks.Add(rb);
         }
-        Pylons.Last().WavesRequired = 1;
+        if(Pylons.Count > 0)
+            Pylons.Last().WavesRequired = 1;
         FinalPylon = PylonParent.GetChild(PylonParent.childCount - 1).GetComponent<WarpPylon>();
         NodeID.ResetNodePositions();
         Debug.Log($"({watch.ElapsedMilliseconds} ms) Finished Step 2 Reset".WithColor("#AA55FF"));

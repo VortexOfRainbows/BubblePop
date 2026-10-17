@@ -23,6 +23,7 @@ public class WorldTilemap : MonoBehaviour
         TryLoading(ref BubblePlantObj, "World/Decor/Nature/BubblePlant");
         TryLoading(ref Lilypad, "World/Decor/Nature/Lilypad");
         TryLoading(ref LotusPad, "World/Decor/Nature/LilyWithLotus");
+        TryLoading(ref BubbleLilypad, "World/Decor/Nature/BubbleLilypad");
     }
     //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
@@ -32,7 +33,7 @@ public class WorldTilemap : MonoBehaviour
     public static GameObject BubbleMushroom, BubblePlantObj;  
     public static GameObject VisualMapPrefab;
     public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
-    public static GameObject Lilypad, LotusPad;
+    public static GameObject Lilypad, LotusPad, BubbleLilypad;
     public Transform VisualMapSuperParent;
     public class TileLevel //Contains both a floor componenet and a wall component, for the purpose of simulating 3D terrain
     {
@@ -551,11 +552,12 @@ public class WorldTilemap : MonoBehaviour
                 Vector2 scaleModifier = new(1, 1);
                 if(liquid)
                 {
-                    pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), 0.1f + Utils.RandFloat(-0.05f, 0.05f));
+                    pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
                     bool hasLotus = Utils.RandBool(3);
+                    bool bubble = !hasLotus && Utils.RandBool(5) && World.UnsafeGetTileData(i, j - 1).IsLiquid;
                     int rotationVariation = Utils.RandInt(Main.TextureAssets.Lilypads.Length);
                     bool smallerLilypad = rotationVariation >= 8; //Small lilypads have no lip, and will be smaller!
-                    var g = SpawnSmallDecor(hasLotus ? LotusPad : Lilypad, LiquidParent, pos, smallerLilypad ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 0.95f), order, c);
+                    var g = SpawnSmallDecor(hasLotus ? LotusPad : bubble ? BubbleLilypad : Lilypad, LiquidParent, pos, smallerLilypad ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 0.95f), order, c);
                     if (hasLotus)
                     {
                         //chance to change lotus color to a different colored lotus
@@ -566,8 +568,11 @@ public class WorldTilemap : MonoBehaviour
                         if (rotationVariation % 8 < 4)
                             lotus.localPosition = new Vector3(-lotus.localPosition.x, lotus.localPosition.y, lotus.localPosition.z);
                     }
-                    g.sprite = Main.TextureAssets.Lilypads[rotationVariation];
-                    g.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = g.sprite;
+                    if(!bubble)
+                    {
+                        g.sprite = Main.TextureAssets.Lilypads[rotationVariation];
+                        g.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = g.sprite;
+                    }
                     //g.transform.SetLocalEulerZ(Utils.RandFloat(360));
                     if (Utils.RandBool(2))
                         g.transform.localScale = new Vector3(g.transform.localScale.x * -1, g.transform.localScale.y, 1);

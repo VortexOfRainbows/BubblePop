@@ -94,13 +94,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3903325283074209523}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d20afb9997d73444fb71a6e773b6a28b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Mushroom: {fileID: 0}
   MyLight: {fileID: 1753821598237977710}
+  IsLilypad: 0
 --- !u!1001 &5618389767210489148
 PrefabInstance:
   m_ObjectHideFlags: 0
