@@ -10,7 +10,8 @@ public class TilePathfinding : MonoBehaviour
     [SerializeField] Tilemap nodeTilemap;
 
     [Header("Debugging")]
-    public bool draw = true;
+    public bool DrawWater = false;
+    public bool DrawLand = true;
 
     // Used for gizmos to draw
     private List<Vector3Int> visitedList = new List<Vector3Int>();
@@ -104,23 +105,24 @@ public class TilePathfinding : MonoBehaviour
                 Vector3Int neighborTilePos = new Vector3Int(neighborX, neighborY, 0);
 
                 // Skips if not a valid tile
-                if (!isFloor(neighborTilePos)) continue;
+                ref World.TileData neighborTile = ref World.UnsafeGetTileData(neighborTilePos);
+                if (neighborTile.IsSolid) continue;
 
                 // Sets distance of tile if it is straight or diagonal
                 float stepCost = (i < 4) ? 1.0f : 1.414214f;
                 float newGroundDistance = curTile.groundPathDistance + stepCost;
                 float newLiquidDistance = curTile.liquidPathDistance + stepCost;
 
-                ref World.TileData neighborTile = ref World.UnsafeGetTileData(neighborTilePos);
                 bool isUnvisited = neighborTile.runID != currentRunID;
 
                 bool passed = false;
 
-                // Kills check if too far
-                if (newGroundDistance < maxDistance)
+                // Kills if liquid and if too far
+                if (!neighborTile.IsLiquid && newGroundDistance < maxDistance)
                 {
                     // If a shorter path to neighbor is found
-                    if (isUnvisited || newGroundDistance < neighborTile.groundPathDistance) {
+                    if (isUnvisited || newGroundDistance < neighborTile.groundPathDistance)
+                    {
                         neighborTile.groundPathDistance = newGroundDistance;
                         // Set's neighbor's flow direction to current tile
                         neighborTile.groundPathDirection = -neighborDirection[i];
@@ -128,9 +130,13 @@ public class TilePathfinding : MonoBehaviour
                         passed = true;
                     }
                 }
-                if (newLiquidDistance < maxDistance) {
+
+                // Kills if too far
+                if (newLiquidDistance < maxDistance)
+                {
                     // If a shorter path to neighbor is found
-                    if (isUnvisited || newLiquidDistance < neighborTile.liquidPathDistance) {
+                    if (isUnvisited || newLiquidDistance < neighborTile.liquidPathDistance)
+                    {
                         neighborTile.liquidPathDistance = newLiquidDistance;
                         // Set's neighbor's flow direction to current tile
                         neighborTile.liquidPathDirection = -neighborDirection[i];
@@ -138,6 +144,7 @@ public class TilePathfinding : MonoBehaviour
                         passed = true;
                     }
                 }
+
 
                 if (passed && isUnvisited) {
                     neighborTile.runID = currentRunID;
@@ -157,18 +164,19 @@ public class TilePathfinding : MonoBehaviour
 
     public static Vector2 BestPathToPlayer(Vector3 tilePos, PathfindingType pathingType, float liquidModifier)
     {
-        Vector2 bestDirection = Vector2.zero;
-
         // Raycast to player over ground
         //  Go if able
 
         // Get tile to compare distances
         ref World.TileData curTile = ref World.UnsafeGetTileData((int) tilePos.x, (int) tilePos.y);
 
+        Vector2 bestDirection = curTile.groundPathDirection;
+
         switch ((int)pathingType)
         {
             case 0: // Ground only Traversal
-                bestDirection = curTile.groundPathDirection;
+                
+                Debug.Log("Current tile ground: " + curTile.groundPathDirection);
                 break;
             case 1: // Ground and Liquid Traversal
                 // Raycast over ground + liquid
@@ -179,6 +187,7 @@ public class TilePathfinding : MonoBehaviour
                 if (curTile.liquidPathDistance - curTile.totalLiquidDistance + curTile.totalLiquidDistance * liquidModifier < curTile.groundPathDistance)
                 {
                     bestDirection = curTile.liquidPathDirection;
+                    Debug.Log("Current tile liquid: " + curTile.liquidPathDirection);
                 }
                 break;
             case 2: // Flying Traversal
@@ -187,41 +196,41 @@ public class TilePathfinding : MonoBehaviour
                 // Get pathfinding over everything distance
                 //  Go on everything pathfind
 
-                // TODO: REMOVE
+                // TODO: Switch for air version
                 if (curTile.liquidPathDistance - curTile.totalLiquidDistance + curTile.totalLiquidDistance * liquidModifier < curTile.groundPathDistance) {
                     bestDirection = curTile.liquidPathDirection;
+                    Debug.Log("Current tile air(liquid): " + curTile.liquidPathDirection);
                 }
 
                 break;
         }
 
+        Debug.Log(bestDirection);
         return bestDirection;
     }
 
     private void OnDrawGizmos()
     {
-        if (!draw) return;
-
-        Gizmos.color = Color.yellow;
         foreach (Vector3Int visitedPos in visitedList)
         {
             ref World.TileData tile = ref World.UnsafeGetTileData(visitedPos);
 
-            if (tile.groundPathDirection != Vector2.zero)
+            if (DrawWater && tile.liquidPathDirection != Vector2.zero)
             {
-                Vector3 worldPos = cellToWorld(visitedPos);
-                Gizmos.DrawRay(worldPos, (Vector3)tile.groundPathDirection * TileSize.x * 0.4f);
-            }
-            if (tile.liquidPathDirection != Vector2.zero) {
                 Gizmos.color = Color.blue;
                 Vector3 worldPos = cellToWorld(visitedPos);
                 Gizmos.DrawRay(worldPos, (Vector3)tile.liquidPathDirection * TileSize.x * 0.4f);
+            }
+            if (DrawLand && tile.groundPathDirection != Vector2.zero)
+            {
+                Gizmos.color = Color.yellow;
+                Vector3 worldPos = cellToWorld(visitedPos);
+                Gizmos.DrawRay(worldPos, (Vector3)tile.groundPathDirection * TileSize.x * 0.4f);
             }
         }
     }
 
     #region HelperFunctions
-
     public static readonly Vector3 TileSize = new(2, 2, 0);
     private Vector3 cellToWorld(Vector3Int cellPos)
     {
@@ -240,16 +249,6 @@ public class TilePathfinding : MonoBehaviour
         float y = (worldPos.y) / TileSize.y;
 
         return new Vector3Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0);
-    }
-
-    private bool isFloor(Vector3Int cellPos)
-    {
-        ref World.TileData tile = ref World.UnsafeGetTileData(cellPos);
-        return !tile.IsSolid && !tile.IsLiquid;
-    }
-    private bool isFloorOrWater(Vector3Int cellPos) {
-        ref World.TileData tile = ref World.UnsafeGetTileData(cellPos);
-        return !tile.IsSolid;
     }
     #endregion
 }
