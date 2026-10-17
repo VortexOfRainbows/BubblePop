@@ -59,13 +59,14 @@ Done:
 
 -- (NEXT) 3.6? Maybe 4.0? --
 
-10/14/26 to 10/16/26
+10/14/26 to 10/17/26
 1. Add TOWNNPC system that generates player equipment for non-player-characters in run
 	1. For future use for dialogue scenarios and such.
 	2. Right now basically acts as standardization for Gachapon shops.
 	3. Adjustments/fixes to make it work for all characters
 2. Thunderbolt sprite (David!)
 3. Lotus Lilypads + more adjustments
+	1. Rotation, Lip, and Lotus variations!
 4. New "HedgeMaze" node, which contains a shop, crucible, mushrooms, water
 5. New "End3" node, which is an end node on an island
 6. Some WIP dialogue system stuff like starting dialogue by interacting with NPCs

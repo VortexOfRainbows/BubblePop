@@ -35,6 +35,8 @@ public partial class Main : MonoBehaviour
         public static Sprite[] TallGrass;
         public static Sprite[] ShortGrass;
         public static Sprite[] SnowPiles;
+        public static Sprite[] Lilypads;
+        public static Sprite[] Lotus;
         public static Sprite Snowball;
         public static Sprite KingOilDiamond, KingOilBomb;
         public static Sprite CrosshairOuter, CrosshairInner, CrosshairFill, CrosshairEmblem;
@@ -111,6 +113,9 @@ public partial class Main : MonoBehaviour
 
             MainUISquare = Resources.Load<Sprite>("UI/Boxes/TempUISquare");
             SecondaryUISquare = Resources.Load<Sprite>("UI/Boxes/ReverseUISquare");
+
+            Lilypads = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Lilypads");
+            Lotus = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Lotus");
         }
     }
     public static class PrefabAssets

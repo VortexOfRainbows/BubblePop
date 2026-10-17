@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 28779216250984161}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.375, y: 0.125, z: 0}
+  m_LocalPosition: {x: -0.375, y: 0.275, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -86,12 +86,12 @@ SpriteRenderer:
   m_SortingLayerID: 1854704031
   m_SortingLayer: -1
   m_SortingOrder: -2
-  m_Sprite: {fileID: 21300000, guid: b54505b616c74ad4fb187a43c0b7f9ac, type: 3}
+  m_Sprite: {fileID: -1567820507, guid: c85372b1fea9eac4dab49a3c3e75155a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.8, y: 4.05}
+  m_Size: {x: 1, y: 0.735}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -128,8 +128,8 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8795957849235535544}
   - {fileID: 3145125889718025964}
+  - {fileID: 8795957849235535544}
   - {fileID: 6974707331889996563}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -186,12 +186,12 @@ SpriteRenderer:
   m_SortingLayerID: 1854704031
   m_SortingLayer: -1
   m_SortingOrder: -2
-  m_Sprite: {fileID: 21300000, guid: 8ded16d556ebdf945b565d88dec56c47, type: 3}
+  m_Sprite: {fileID: -632692166, guid: ddf3693d465fa0547be473d4c236058a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.8, y: 4.05}
+  m_Size: {x: 1.05, y: 0.69}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -249,7 +249,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 635fd06643619c5428818b99dbf1f29f, type: 3}
+  - {fileID: 2100000, guid: 3d5424dd8150e084a825d4abea84e92f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -270,12 +270,12 @@ SpriteRenderer:
   m_SortingLayerID: 1854704031
   m_SortingLayer: -1
   m_SortingOrder: -5
-  m_Sprite: {fileID: 21300000, guid: 8ded16d556ebdf945b565d88dec56c47, type: 3}
+  m_Sprite: {fileID: -632692166, guid: ddf3693d465fa0547be473d4c236058a, type: 3}
   m_Color: {r: 0.82, g: 0.84, b: 0.972549, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.8, y: 4.05}
+  m_Size: {x: 1.05, y: 0.69}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

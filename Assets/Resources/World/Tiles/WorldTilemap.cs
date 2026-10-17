@@ -491,7 +491,7 @@ public class WorldTilemap : MonoBehaviour
             int minimumSolidTiles = 1;
             if (liquid)
             {
-                solidTiles += 3;
+                solidTiles += Utils.RandInt(3, 5);
             }
             else if (isStoneFloor)
             {
@@ -551,10 +551,25 @@ public class WorldTilemap : MonoBehaviour
                 Vector2 scaleModifier = new(1, 1);
                 if(liquid)
                 {
-                    pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
-                    var g = SpawnSmallDecor(Utils.RandBool(4) ? LotusPad : Lilypad, LiquidParent, pos, Utils.RandBool(2) ? Utils.RandFloat(0.7f, 0.8f) : Utils.RandFloat(0.95f, 1.0f), order, c);
+                    pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), 0.1f + Utils.RandFloat(-0.05f, 0.05f));
+                    bool hasLotus = Utils.RandBool(3);
+                    int rotationVariation = Utils.RandInt(Main.TextureAssets.Lilypads.Length);
+                    bool smallerLilypad = rotationVariation >= 8; //Small lilypads have no lip, and will be smaller!
+                    var g = SpawnSmallDecor(hasLotus ? LotusPad : Lilypad, LiquidParent, pos, smallerLilypad ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 0.95f), order, c);
+                    if (hasLotus)
+                    {
+                        //chance to change lotus color to a different colored lotus
+                        Transform lotus = g.transform.GetChild(1);
+                        lotus.GetComponent<SpriteRenderer>().sprite = Main.TextureAssets.Lotus[Utils.RandInt(Main.TextureAssets.Lotus.Length)];
+
+                        //also rearrange the lotus based on the rotation/variation of the lilypad, so it doesn't intersect with the lilypad in a weird way
+                        if (rotationVariation % 8 < 4)
+                            lotus.localPosition = new Vector3(-lotus.localPosition.x, lotus.localPosition.y, lotus.localPosition.z);
+                    }
+                    g.sprite = Main.TextureAssets.Lilypads[rotationVariation];
+                    g.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = g.sprite;
                     //g.transform.SetLocalEulerZ(Utils.RandFloat(360));
-                    if(Utils.RandBool(2))
+                    if (Utils.RandBool(2))
                         g.transform.localScale = new Vector3(g.transform.localScale.x * -1, g.transform.localScale.y, 1);
                     g.sortingLayerID = World.FloorSortingLayer;
                     g.sortingOrder = LayerHelper.BelowGroundWaterDecor;
