@@ -4464,7 +4464,9 @@ MonoBehaviour:
   DialogueVisual: {fileID: 6927224567462844076}
   DialogueText: {fileID: 3151058076992741182}
   MyGroup: {fileID: 7430986581061079001}
+  MyCanvas: {fileID: 0}
   WantsOpen: 1
+  AnimationCounter: 0
 --- !u!225 &7430986581061079001
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9748,7 +9750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4112653259990322010, guid: fec92b5a8eec0ee4ea2aa568d55ac18e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 83700
       objectReference: {fileID: 0}
     - target: {fileID: 4206565040620500646, guid: fec92b5a8eec0ee4ea2aa568d55ac18e, type: 3}
       propertyPath: MyCanvas
@@ -9860,6 +9862,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7525097930051372434}
     m_Modifications:
+    - target: {fileID: 579299909895195007, guid: fec92b5a8eec0ee4ea2aa568d55ac18e, type: 3}
+      propertyPath: m_text
+      value: C
+      objectReference: {fileID: 0}
     - target: {fileID: 3455161700543822476, guid: fec92b5a8eec0ee4ea2aa568d55ac18e, type: 3}
       propertyPath: myCanvas
       value: 
@@ -9890,7 +9896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4112653259990322010, guid: fec92b5a8eec0ee4ea2aa568d55ac18e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 83700
       objectReference: {fileID: 0}
     - target: {fileID: 4206565040620500646, guid: fec92b5a8eec0ee4ea2aa568d55ac18e, type: 3}
       propertyPath: MyType

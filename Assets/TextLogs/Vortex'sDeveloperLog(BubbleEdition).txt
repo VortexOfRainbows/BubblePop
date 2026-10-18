@@ -74,6 +74,7 @@ Done:
 	1. Applies to bubbleshroom, bubbleplant, bubblelilypad
 	2. The animations and lights are now disables based on the light radius (basically it will not cull to early for bigger radius lights)
 	3. This may have slightly worse performance than before, but should still be better overall compared to pre-culling
+8. (FIX) Hide crucible button now displays the correct keybind
 
 10/10/26 to 10/14/26
 1. Sarah Mushroom Tile updates!
