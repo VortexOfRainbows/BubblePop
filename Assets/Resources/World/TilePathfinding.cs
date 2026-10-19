@@ -133,7 +133,7 @@ public class TilePathfinding : MonoBehaviour
                     if (neighborTile.IsLiquid)
                     {
                         neighborTile.LiquidTiles = curTile.LiquidTiles + stepCost;
-                        neighborTile.GroundDistance = float.MaxValue; // TODO: Might be able to remove once fixing ground pathing calculation
+                        neighborTile.GroundDistance = float.MaxValue; // TODO: See if there is an alternative, as this breaks the evaluation system for liquid speed modifiers
                     }
                     passed = true;
                 }
@@ -176,7 +176,7 @@ public class TilePathfinding : MonoBehaviour
 
                 // Get pathfinding over liquid distance, apply modifier
                 //  Compare distance of raycast vs both pathfinds and choose lowest cost
-                if (curTile.LiquidDistance - curTile.LiquidTiles + curTile.LiquidTiles * liquidModifier < curTile.GroundDistance)
+                if ((curTile.IsLiquid) || (curTile.LiquidDistance - curTile.LiquidTiles + curTile.LiquidTiles * liquidModifier < curTile.GroundDistance))
                 {
                     bestDirection = curTile.LiquidDirection;
                 }
@@ -189,11 +189,10 @@ public class TilePathfinding : MonoBehaviour
                 //  Go on everything pathfind
 
                 // TODO: Switch for air version
-                if ((bestDirection == Vector2.zero) || (curTile.LiquidDistance - curTile.LiquidTiles + curTile.LiquidTiles * liquidModifier < curTile.GroundDistance))
+                if ((curTile.IsLiquid) || (curTile.LiquidDistance - curTile.LiquidTiles + curTile.LiquidTiles * liquidModifier < curTile.GroundDistance))
                 {
                     bestDirection = curTile.LiquidDirection;
                 }
-                
                 break;
         }
 
