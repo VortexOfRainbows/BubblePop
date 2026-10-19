@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class TilePathfinding : MonoBehaviour
 {
@@ -9,7 +11,8 @@ public class TilePathfinding : MonoBehaviour
     [SerializeField] Tilemap nodeTilemap;
 
     [Header("Debugging")]
-    public bool draw = true;
+    public bool DrawGroundPath = true;
+    public bool DrawLiquidPath = false;
 
     // Used for gizmos to draw
     private List<Vector3Int> visitedList = new List<Vector3Int>();
@@ -18,7 +21,7 @@ public class TilePathfinding : MonoBehaviour
     private Queue<Vector3Int> openSet = new Queue<Vector3Int>();
 
     // Allows for a quick check if node has been visited
-    private int currentRunID = 0;
+    private int CurrentRunID = 0;
 
     // Stores player positions to detect when they move
     private Vector3Int[] plrPositions = new Vector3Int[0];
@@ -50,7 +53,7 @@ public class TilePathfinding : MonoBehaviour
         // Check if any player has moved to a different tile
         for (int i = 0; i < Player.AllPlayers.Count; ++i)
         {
-            Vector3Int plrTilePos = worldToCell(Player.AllPlayers[i].Position);
+            Vector3Int plrTilePos = World.RealPosToTilePos(Player.AllPlayers[i].Position);
 
             if (plrTilePos != plrPositions[i])
             {
@@ -61,26 +64,28 @@ public class TilePathfinding : MonoBehaviour
         }
     }
 
-    // Function to generate flood fill on tile map
     private void pathfind()
     {
         // Sets data sets for use
         openSet.Clear();
         visitedList.Clear();
-        ++currentRunID;
+        ++CurrentRunID;
 
         // Loops through each player for start tiles
         foreach (Player plr in Player.AllPlayers)
         {
-            Vector3Int plrTilePos = worldToCell(plr.Position);
+            Vector3Int plrTilePos = World.RealPosToTilePos(plr.Position);
             ref World.TileData plrTile = ref World.UnsafeGetTileData(plrTilePos);
 
             // Check if node is visited, only matters if multiple players are on the same tile
-            if (plrTile.runID != currentRunID)
+            if (plrTile.RunID != CurrentRunID)
             {
-                plrTile.runID = currentRunID;
-                plrTile.distance = 0f;
-                plrTile.direction = Vector2.zero;
+                plrTile.RunID = CurrentRunID;
+                plrTile.GroundDistance = 0f;
+                plrTile.GroundDirection = Vector2.zero;
+                plrTile.LiquidDistance = 0f;
+                plrTile.LiquidDirection = Vector2.zero;
+                plrTile.LiquidTiles = 0f;
 
                 openSet.Enqueue(plrTilePos);
             }
@@ -95,85 +100,122 @@ public class TilePathfinding : MonoBehaviour
             // Check all 8 neighbors of the current tile
             for (int i = 0; i < 8; ++i)
             {
-                // Finds position of neighbor
+                // Finds position of neighbor and gets tile
                 int neighborX = curTilePos.x + offsetX[i];
                 int neighborY = curTilePos.y + offsetY[i];
                 Vector3Int neighborTilePos = new Vector3Int(neighborX, neighborY, 0);
+                ref World.TileData neighborTile = ref World.UnsafeGetTileData(neighborTilePos);
 
                 // Skips if not a valid tile
-                if (!isFloor(neighborTilePos)) continue;
+                if (neighborTile.IsSolid) continue;
 
                 // Sets distance of tile if it is straight or diagonal
                 float stepCost = (i < 4) ? 1.0f : 1.414214f;
-                float newDistance = curTile.distance + stepCost;
+                float newGroundDistance = curTile.GroundDistance + stepCost;
+                float newLiquidDistance = curTile.LiquidDistance + stepCost;
 
-                // Kills check if too far
-                if (newDistance > maxDistance) continue;
+                bool isUnvisited = neighborTile.RunID != CurrentRunID;
+                bool passed = false;
 
-                ref World.TileData neighborTile = ref World.UnsafeGetTileData(neighborTilePos);
-                bool isUnvisited = neighborTile.runID != currentRunID;
-
-                // If a shorter path to neighbor is found
-                if (isUnvisited || newDistance < neighborTile.distance)
+                // Check if isn't liquid, distance is less than max, and if tile has not yet been visited or if new path is better
+                if ((!neighborTile.IsLiquid) && ((newGroundDistance < maxDistance && (isUnvisited || newGroundDistance < neighborTile.GroundDistance)) || (isUnvisited)))
                 {
-                    neighborTile.distance = newDistance;
-                    // Set's neighbor's flow direction to current tile
-                    neighborTile.direction = -neighborDirection[i];
-
-                    if (isUnvisited)
+                    neighborTile.GroundDistance = newGroundDistance;
+                    neighborTile.GroundDirection = -neighborDirection[i];
+                    passed = true;
+                }
+                // Check if distance is less than max, and if tile has not yet been visited or if new path is better
+                if ((newLiquidDistance < maxDistance && (isUnvisited || newLiquidDistance < neighborTile.LiquidDistance)) || isUnvisited)
+                {
+                    neighborTile.LiquidDistance = newLiquidDistance;
+                    neighborTile.LiquidDirection = -neighborDirection[i];
+                    // Add to liquid tiles if tile is liquid
+                    if (neighborTile.IsLiquid)
                     {
-                        neighborTile.runID = currentRunID;
-                        visitedList.Add(neighborTilePos);
-                        openSet.Enqueue(neighborTilePos);
+                        neighborTile.LiquidTiles = curTile.LiquidTiles + stepCost;
+                        neighborTile.GroundDistance = float.MaxValue; // TODO: See if there is an alternative, as this breaks the evaluation system for liquid speed modifiers
                     }
+                    passed = true;
+                }
+
+                if (passed)
+                {
+                    neighborTile.RunID = CurrentRunID;
+                    visitedList.Add(neighborTilePos);
+                    openSet.Enqueue(neighborTilePos);
                 }
             }
         }
     }
 
+    public enum PathfindingType
+    {
+        Ground = 0,
+        Liquid = 1,
+        Air = 2,
+    }
+
+    public static Vector2 BestPathToPlayer(Vector3 entityPos, PathfindingType pathingType, float liquidModifier)
+    {
+        // Raycast to player over ground
+        //  Go if able
+
+        // Get tile to compare distances
+        Vector3Int tilePos = World.RealPosToTilePos(entityPos);
+        ref World.TileData curTile = ref World.UnsafeGetTileData(tilePos.x, tilePos.y);
+        Vector2 bestDirection = curTile.GroundDirection;
+
+        switch ((int)pathingType)
+        {
+            case 0: // Ground only Traversal
+                break;
+
+            case 1: // Ground and Liquid Traversal
+                // Raycast over ground + liquid
+                //  Apply modifier for distance over liquid tiles
+
+                // Get pathfinding over liquid distance, apply modifier
+                //  Compare distance of raycast vs both pathfinds and choose lowest cost
+                if ((curTile.IsLiquid) || (curTile.LiquidDistance - curTile.LiquidTiles + curTile.LiquidTiles * liquidModifier < curTile.GroundDistance))
+                {
+                    bestDirection = curTile.LiquidDirection;
+                }
+                break;
+
+            case 2: // Flying Traversal
+                // Raycast over anything other than walls
+                //  Go if able
+                // Get pathfinding over everything distance
+                //  Go on everything pathfind
+
+                // TODO: Switch for air version
+                if ((curTile.IsLiquid) || (curTile.LiquidDistance - curTile.LiquidTiles + curTile.LiquidTiles * liquidModifier < curTile.GroundDistance))
+                {
+                    bestDirection = curTile.LiquidDirection;
+                }
+                break;
+        }
+
+        return bestDirection;
+    }
+
     private void OnDrawGizmos()
     {
-        if (!draw) return;
-
-        Gizmos.color = Color.yellow;
         foreach (Vector3Int visitedPos in visitedList)
         {
             ref World.TileData tile = ref World.UnsafeGetTileData(visitedPos);
+            Vector3 worldPos = World.CenterOfTile(visitedPos);
 
-            if (tile.direction != Vector2.zero)
+            if (DrawGroundPath && tile.GroundDirection != Vector2.zero)
             {
-                Vector3 worldPos = cellToWorld(visitedPos);
-                Gizmos.DrawRay(worldPos, (Vector3)tile.direction * TileSize.x * 0.4f);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawRay(worldPos, (Vector3)tile.GroundDirection * World.TileSize.x * 0.4f);
+            }
+            if (DrawLiquidPath && tile.LiquidDirection != Vector2.zero)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawRay(worldPos, (Vector3)tile.LiquidDirection * World.TileSize.x * 0.4f);
             }
         }
     }
-
-    #region HelperFunctions
-
-    public static readonly Vector3 TileSize = new(2, 2, 0);
-    private Vector3 cellToWorld(Vector3Int cellPos)
-    {
-        float x = cellPos.x * TileSize.x;
-        float y = cellPos.y * TileSize.y;
-
-        x += TileSize.x * 0.5f;
-        y += TileSize.y * 0.5f;
-
-        return new Vector3(x, y, 0);
-    }
-
-    private Vector3Int worldToCell(Vector3 worldPos)
-    {
-        float x = (worldPos.x) / TileSize.x;
-        float y = (worldPos.y) / TileSize.y;
-
-        return new Vector3Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y), 0);
-    }
-
-    private bool isFloor(Vector3Int cellPos)
-    {
-        ref World.TileData tile = ref World.UnsafeGetTileData(cellPos);
-        return !tile.IsSolid && !tile.IsLiquid;
-    }
-    #endregion
 }

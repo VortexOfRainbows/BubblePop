@@ -98,6 +98,8 @@ public static class EnemyID
 public class Enemy : Entity, IImpactedByProjIFrames
 {
     public virtual bool Airborne => false;
+    public virtual TilePathfinding.PathfindingType PathfindingType => 0;
+    public virtual float LiquidSpeedModifier => 1;
     public virtual float MoveSpeed => 0.15f;
     public virtual float Inertia => 0.95f;
     public bool HasLineOfSightWithTarget { get; protected set; } = false;
@@ -113,7 +115,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
     }
     public Vector2 GetPathfindingToPlayerNorm()
     {
-        return HasLineOfSightWithTarget ? (Target.Position - (Vector2)transform.position).normalized : World.GetDirection(transform.position);
+        return HasLineOfSightWithTarget ? (Target.Position - (Vector2)transform.position).normalized : TilePathfinding.BestPathToPlayer(transform.position, PathfindingType, LiquidSpeedModifier);
     }
     public EnemyDescription MyDescription => StaticData.EnemyDescription;
     public string Name()
