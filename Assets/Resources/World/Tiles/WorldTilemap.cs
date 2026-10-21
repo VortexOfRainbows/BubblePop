@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
+using static UnityEditor.PlayerSettings;
 
 public class WorldTilemap : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class WorldTilemap : MonoBehaviour
         TryLoading(ref Lilypad, "World/Decor/Nature/Lilypad");
         TryLoading(ref LotusPad, "World/Decor/Nature/LilyWithLotus");
         TryLoading(ref BubbleLilypad, "World/Decor/Nature/BubbleLilypad");
+        TryLoading(ref Cattail, "World/Decor/Nature/Cattail");
     }
     //public static OverlayMaterials OverlayMats => Resources.Load<OverlayMaterials>("Materials/OverlayShader/OverlayMaterials");
     //private static readonly Vector3Int[] Adjacencies = new Vector3Int[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
@@ -33,7 +35,7 @@ public class WorldTilemap : MonoBehaviour
     public static GameObject BubbleMushroom, BubblePlantObj;  
     public static GameObject VisualMapPrefab;
     public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
-    public static GameObject Lilypad, LotusPad, BubbleLilypad;
+    public static GameObject Lilypad, LotusPad, BubbleLilypad, Cattail;
     public Transform VisualMapSuperParent;
     public class TileLevel //Contains both a floor componenet and a wall component, for the purpose of simulating 3D terrain
     {
@@ -378,6 +380,13 @@ public class WorldTilemap : MonoBehaviour
                 {
                     AddSparseDecor(i + Utils.RandInt(2), j + Utils.RandInt(2));
                 }
+                else  if (UnsafeData.IsLiquid && Utils.RandFloat() < 0.1f)
+                {
+                    bool liquidAbove = World.GetTileData(i, j + 1).IsLiquid;
+                    bool liquidBelow = World.GetTileData(i, j - 1).IsLiquid;
+                    if(!liquidAbove || !liquidBelow)
+                        GenerateCattail(World.Instance.FloorDecorParent, pos, i, j, order, c, liquidAbove);
+                }
                 if ((isGrassTile && Utils.RandFloat() < 0.16f * mult) || (isDarkGrass && Utils.RandFloat() < 0.04f))
                 {
                     int type = Utils.RandInt(3);
@@ -393,9 +402,9 @@ public class WorldTilemap : MonoBehaviour
                     continue;
                 }
                 else if (isSnowTile && Utils.RandFloat() < 0.16f * mult)
-                { 
+                {
                     bool edgeTile = (!border && World.SolidTile(i, j + 1)) || (border && (!World.SolidTile(i, j + 1) || !World.SolidTile(i, j - 1)));
-                    if(!edgeTile)
+                    if (!edgeTile)
                     {
                         pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
                         var g = SpawnSmallDecor(SnowPile, parent, pos, Utils.RandFloat(0.9f, 1.0f), order, border ? TileID.Snow.BorderColor : c);
@@ -552,32 +561,7 @@ public class WorldTilemap : MonoBehaviour
                 Vector2 scaleModifier = new(1, 1);
                 if(liquid)
                 {
-                    pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
-                    bool hasLotus = Utils.RandBool(3);
-                    bool bubble = !hasLotus && Utils.RandBool(5) && World.UnsafeGetTileData(i, j - 1).IsLiquid;
-                    int rotationVariation = Utils.RandInt(Main.TextureAssets.Lilypads.Length);
-                    bool smallerLilypad = rotationVariation >= 8; //Small lilypads have no lip, and will be smaller!
-                    var g = SpawnSmallDecor(hasLotus ? LotusPad : bubble ? BubbleLilypad : Lilypad, LiquidParent, pos, smallerLilypad ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 0.95f), order, c);
-                    if (hasLotus)
-                    {
-                        //chance to change lotus color to a different colored lotus
-                        Transform lotus = g.transform.GetChild(1);
-                        lotus.GetComponent<SpriteRenderer>().sprite = Main.TextureAssets.Lotus[Utils.RandInt(Main.TextureAssets.Lotus.Length)];
-
-                        //also rearrange the lotus based on the rotation/variation of the lilypad, so it doesn't intersect with the lilypad in a weird way
-                        if (rotationVariation % 8 < 4)
-                            lotus.localPosition = new Vector3(-lotus.localPosition.x, lotus.localPosition.y, lotus.localPosition.z);
-                    }
-                    if(!bubble)
-                    {
-                        g.sprite = Main.TextureAssets.Lilypads[rotationVariation];
-                        g.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = g.sprite;
-                    }
-                    //g.transform.SetLocalEulerZ(Utils.RandFloat(360));
-                    if (Utils.RandBool(2))
-                        g.transform.localScale = new Vector3(g.transform.localScale.x * -1, g.transform.localScale.y, 1);
-                    g.sortingLayerID = World.FloorSortingLayer;
-                    g.sortingOrder = LayerHelper.BelowGroundWaterDecor;
+                    GenerateLilypad(LiquidParent, pos, i, j, order, c);
                 }
                 else
                 {
@@ -605,6 +589,54 @@ public class WorldTilemap : MonoBehaviour
                     g.transform.localScale = new Vector3(g.transform.localScale.x * scaleModifier.x, g.transform.localScale.y * scaleModifier.y, 1);
                 }
             }
+        }
+    }
+    public void GenerateLilypad(Transform Parent, Vector2 pos, int i, int j, int order, Color c)
+    {
+        pos += new Vector2(Utils.RandFloat(-0.05f, 0.05f), Utils.RandFloat(-0.05f, 0.05f));
+        bool hasLotus = Utils.RandBool(3);
+        bool bubble = !hasLotus && Utils.RandBool(5) && World.UnsafeGetTileData(i, j - 1).IsLiquid;
+        int rotationVariation = Utils.RandInt(Main.TextureAssets.Lilypads.Length);
+        bool smallerLilypad = rotationVariation >= 8; //Small lilypads have no lip, and will be smaller!
+        var g = SpawnSmallDecor(hasLotus ? LotusPad : bubble ? BubbleLilypad : Lilypad, Parent, pos, smallerLilypad ? Utils.RandFloat(0.675f, 0.75f) : Utils.RandFloat(0.9f, 0.95f), order, c);
+        if (hasLotus)
+        {
+            //chance to change lotus color to a different colored lotus
+            Transform lotus = g.transform.GetChild(1);
+            lotus.GetComponent<SpriteRenderer>().sprite = Main.TextureAssets.Lotus[Utils.RandInt(Main.TextureAssets.Lotus.Length)];
+
+            //also rearrange the lotus based on the rotation/variation of the lilypad, so it doesn't intersect with the lilypad in a weird way
+            if (rotationVariation % 8 < 4)
+                lotus.localPosition = new Vector3(-lotus.localPosition.x, lotus.localPosition.y, lotus.localPosition.z);
+        }
+        if (!bubble)
+        {
+            g.sprite = Main.TextureAssets.Lilypads[rotationVariation];
+            g.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = g.sprite;
+        }
+        if (Utils.RandBool(2))
+            g.transform.localScale = new Vector3(g.transform.localScale.x * -1, g.transform.localScale.y, 1);
+        g.sortingLayerID = World.FloorSortingLayer;
+        g.sortingOrder = LayerHelper.BelowGroundWaterDecor;
+    }
+    public void GenerateCattail(Transform Parent, Vector2 pos, int i, int j, int order, Color c, bool LiquidTileAbove = false)
+    {
+        pos += new Vector2(Utils.RandFloat(-0.1f, 0.1f), (LiquidTileAbove ? - 0.75f : - 0.25f) + Utils.RandFloat(-0.025f, 0.025f));
+        int rotationVariation = Utils.RandInt(4);
+        // bool bubbleVersion = rotationVariation >= 4;
+        var g = SpawnSmallDecor(Cattail, Parent, pos, Utils.RandFloat(0.9f, 0.95f), order, c);
+        g.sprite = Main.TextureAssets.Cattails[rotationVariation];
+        if (Utils.RandBool(2))
+            g.transform.localScale = new Vector3(g.transform.localScale.x * -1, g.transform.localScale.y, 1);
+
+        if(!LiquidTileAbove)
+        {
+            g.sortingOrder = LayerHelper.SolidTileSortingOrder;
+        }
+        else
+        {
+            g.sortingLayerID = World.FloorSortingLayer;
+            g.sortingOrder = LayerHelper.BelowGroundWaterDecor;
         }
     }
 }

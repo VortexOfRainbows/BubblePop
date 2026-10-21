@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -108,7 +108,175 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Cattails_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 614
+        width: 246
+        height: 514
+      alignment: 9
+      pivot: {x: 0.45, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28e3dbb8730bac64eb2d0a31935f6467
+      internalID: 1496177970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cattails_1
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 614
+        width: 329
+        height: 505
+      alignment: 9
+      pivot: {x: 0.495, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49c31a6245167d248be521b8faba3703
+      internalID: -1833422425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cattails_2
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 614
+        width: 214
+        height: 460
+      alignment: 9
+      pivot: {x: 0.5, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b6e19e06fe6035408fd6cb88de2c6b1
+      internalID: 498057220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cattails_3
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 614
+        width: 380
+        height: 514
+      alignment: 9
+      pivot: {x: 0.525, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 790097ffe5d4d6e4da4f9b6e1f31e2de
+      internalID: 1929042653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cattails_4
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 11
+        width: 246
+        height: 514
+      alignment: 9
+      pivot: {x: 0.45, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a267ed6fc9d5f443b81cf25182694c0
+      internalID: -1401389900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cattails_5
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 11
+        width: 329
+        height: 505
+      alignment: 9
+      pivot: {x: 0.495, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18fff430b7460b34197be07dee3f0f29
+      internalID: -1725128243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cattails_6
+      rect:
+        serializedVersion: 2
+        x: 659
+        y: 11
+        width: 214
+        height: 460
+      alignment: 9
+      pivot: {x: 0.5, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 152582a08cded794e9a3ad8888835379
+      internalID: 1577932043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cattails_7
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 11
+        width: 380
+        height: 514
+      alignment: 9
+      pivot: {x: 0.525, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c5d865dbb1b9164ab660e9e75a569c6
+      internalID: -636803893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +287,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Cattails_0: 1496177970
+      Cattails_1: -1833422425
+      Cattails_2: 498057220
+      Cattails_3: 1929042653
+      Cattails_4: -1401389900
+      Cattails_5: -1725128243
+      Cattails_6: 1577932043
+      Cattails_7: -636803893
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

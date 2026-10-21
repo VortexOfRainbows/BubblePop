@@ -23,6 +23,7 @@ public static class LayerHelper
     public const int ShadowSortingOrder = -50; //Behind everything (shadows)
     public const int FloorObjAndFloraSortingLayer = -5; //Power Pillows
     public const int BarrierVisualLayer = -4; //Red shadermask visual
+    public const int ThoughtBubbleTail = -4;
     public const int CrucibleSortingOrder = -3;
     public const int ChestSortingOrder = -3;
     public const int ForgeChamberSortingOrder = -3;

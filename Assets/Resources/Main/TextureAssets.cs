@@ -37,6 +37,7 @@ public partial class Main : MonoBehaviour
         public static Sprite[] ShortGrass;
         public static Sprite[] SnowPiles;
         public static Sprite[] Lilypads;
+        public static Sprite[] Cattails;
         public static Sprite SpecialLilypad;
         public static Sprite[] Lotus;
         public static Sprite Snowball;
@@ -117,6 +118,7 @@ public partial class Main : MonoBehaviour
             MainUISquare = Resources.Load<Sprite>("UI/Boxes/TempUISquare");
             SecondaryUISquare = Resources.Load<Sprite>("UI/Boxes/ReverseUISquare");
 
+            Cattails = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Cattails");
             Lilypads = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Lilypads");
             Lotus = Resources.LoadAll<Sprite>("World/Decor/Nature/Sprites/Lotus");
             SpecialLilypad = Resources.Load<Sprite>("World/Decor/Nature/Sprites/BubbleLilypad");

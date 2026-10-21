@@ -56,9 +56,12 @@ Done:
 
 -- (NEXT) 3.6? Maybe 4.0? --
 
-10/20/26
+10/20/26 to 10/21/26
 1. Implement new bed asset by Sarah!
 2. Import sprites for dialogue by sam!
+3. Cattail spawning
+	1. (WIP) Right now the layering, size, and border size are kinda suspsect. It also does not use the bubble variants
+4. (FIX) Thought bubbles trail now appears behind 4 layers offset (this should make it generally appear behind the player now)
 
 10/14/26 to 10/17/26
 1. Add TOWNNPC system that generates player equipment for non-player-characters in run
