@@ -124,6 +124,7 @@ public class NPC : Entity
             case DialogueType.GachaponShop: //AI Generated this very funny.
                 DialogueController.EnqueueDialogueChain(
                     new(Localization.Get("Dialogue.GachaponShopIntro1"), PlayerCharacter, 0, NPCType.Gachapon, 0, false),
+                    new(Localization.Get("Dialogue.GachaponShop1"), LeftExpression: 1, speakerIsPlayer: true),
                     new(Localization.Get("Dialogue.GachaponShopEnd1"), LeftExpression: 3)
                     );
                 break;

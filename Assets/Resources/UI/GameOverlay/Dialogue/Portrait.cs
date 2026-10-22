@@ -50,6 +50,11 @@ public class Portrait : MonoBehaviour
         MyNPCType = Mathf.Clamp(MyNPCType, 0, expressions.Length - 1);
         CharacterPortrait.sprite = expressions[MyNPCType];
         CharacterPortrait.SetNativeSize();
+
+        if (MyNPC == NPCType.Bubblemancer)
+            CharacterPortrait.transform.localPosition = new Vector3(-20, 0, 0);
+        else
+            CharacterPortrait.transform.localPosition = Vector3.zero;
     }
     public void Update()
     {
@@ -57,9 +62,15 @@ public class Portrait : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= dir;
         if(ActiveSpeaker)
-            scale = Vector3.Lerp(scale, Vector3.one * 1.1f, Utils.DeltaTimeLerpFactor(0.2f));
+        {
+            scale = Vector3.Lerp(scale, Vector3.one * 1.1f, Utils.DeltaTimeLerpFactor(0.1f));
+            transform.LerpLocalPosition(new Vector2(transform.localPosition.x, 20), Utils.DeltaTimeLerpFactor(0.1f));
+        }
         else
+        {
             scale = Vector3.Lerp(scale, Vector3.one * 0.85f, Utils.DeltaTimeLerpFactor(0.1f));
+            transform.LerpLocalPosition(new Vector2(transform.localPosition.x, 0), Utils.DeltaTimeLerpFactor(0.1f));
+        }
         scale.x *= dir;
         transform.localScale = scale;
     }

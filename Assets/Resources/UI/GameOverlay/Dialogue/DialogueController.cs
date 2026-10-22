@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -102,14 +103,22 @@ public class DialogueController : MonoBehaviour
             LeftPortrait.SetExpression(dEvent.LeftType, dEvent.LeftExpression);
             RightPortrait.SetExpression(dEvent.RightType, dEvent.RightExpression);
             DialogueText.text = dEvent.text.WithColor(ColorHelper.GetNPCHexColor(dEvent.SpeakerIsPlayer ? LeftPortrait.MyNPC : RightPortrait.MyNPC));
+            int max = DialogueText.textInfo.characterCount;
+            float value = AnimationCounter * 40f;
+            DialogueText.maxVisibleCharacters = (int)Mathf.Clamp(value, 0, max);
 
             LeftPortrait.ActiveSpeaker = dEvent.SpeakerIsPlayer;
             RightPortrait.ActiveSpeaker = !dEvent.SpeakerIsPlayer;
 
-            if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) && AnimationCounter >= 1)
+            if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && AnimationCounter >= 0.04f)
             {
-                AnimationCounter = 0;
-                DialogueQueue.Dequeue();
+                if(value >= max - 2)
+                {
+                    AnimationCounter = 0;
+                    DialogueQueue.Dequeue();
+                }
+                else
+                    AnimationCounter = max;
             }
         }
         else
