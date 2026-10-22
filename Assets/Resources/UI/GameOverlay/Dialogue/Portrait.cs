@@ -38,6 +38,7 @@ public class Portrait : MonoBehaviour
     public Image CharacterPortrait;
     public NPCType MyNPC { get; private set; }
     public int MyNPCType { get; private set; } = 0;
+    public bool ActiveSpeaker { get; set; } = false;
     public void SetExpression(NPCType npc = NPCType.None, int Num = -1)
     {
         if(npc != MyNPC && npc != NPCType.None)
@@ -46,12 +47,20 @@ public class Portrait : MonoBehaviour
             MyNPCType = Num;
 
         Sprite[] expressions = NPCExpression[MyNPC];
-        MyNPCType = Mathf.Clamp(MyNPCType, 0, expressions.Length);
+        MyNPCType = Mathf.Clamp(MyNPCType, 0, expressions.Length - 1);
         CharacterPortrait.sprite = expressions[MyNPCType];
         CharacterPortrait.SetNativeSize();
     }
     public void Update()
     {
-        
+        float dir = Utils.SignNoZero(transform.localScale.x);
+        Vector3 scale = transform.localScale;
+        scale.x *= dir;
+        if(ActiveSpeaker)
+            scale = Vector3.Lerp(scale, Vector3.one * 1.1f, Utils.DeltaTimeLerpFactor(0.2f));
+        else
+            scale = Vector3.Lerp(scale, Vector3.one * 0.85f, Utils.DeltaTimeLerpFactor(0.1f));
+        scale.x *= dir;
+        transform.localScale = scale;
     }
 }

@@ -149,27 +149,27 @@ public static partial class LocalizationBuilder
         if (character.StartsWith("B")) //B for Bubblemancer
         {
             charID = 0;
-            return "#DBF7FA"; //Bluish Color
+            return ColorHelper.GetNPCHexColor(NPC.NPCType.Bubblemancer); //Bluish Color
         }
         else if (character.StartsWith("T")) //T for Thought Bubble
         {
             charID = 1;
-            return "#E3B3D8"; //Pinkish Color
+            return ColorHelper.GetNPCHexColor(NPC.NPCType.ThoughtBubble); //Pinkish Color
         }
         else if (character.StartsWith("G")) //G for Gachapon
         {
             charID = 2;
-            return "#F3ECB7"; //Yellowish Color
+            return ColorHelper.GetNPCHexColor(NPC.NPCType.Gachapon); //Yellowish Color
         }
         else if (character.StartsWith("F")) //F for Fizzy
         {
             charID = 3;
-            return "#B4946B"; //Brown-ish
+            return ColorHelper.GetNPCHexColor(NPC.NPCType.Fizzy); //Brown-ish
         }
         else if (character.StartsWith("K")) //K for King Oil
         {
             charID = 4;
-            return "#8A84AA"; //Purple-ish Color
+            return ColorHelper.GetNPCHexColor(NPC.NPCType.OilKing); //Purple-ish Color
         }
         else if (character.StartsWith("U")) //U for Unknown
         {

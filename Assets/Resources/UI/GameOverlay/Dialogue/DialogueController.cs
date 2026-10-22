@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static NPC;
 
 public class DialogueController : MonoBehaviour
@@ -87,6 +88,8 @@ public class DialogueController : MonoBehaviour
         if(MyGroup.alpha <= 0)
         {
             DialogueVisual.gameObject.SetActive(false);
+            LeftPortrait.transform.localScale = new Vector3(0.925f, 0.925f, 1);
+            RightPortrait.transform.localScale = new Vector3(-0.925f, 0.925f, 1);
         }
     }
     public void UpdateVisibleDialogue()
@@ -95,10 +98,13 @@ public class DialogueController : MonoBehaviour
         if (DialogueQueue.Count > 0)
         {
             DialogueEvent dEvent = DialogueQueue.Peek();
-            DialogueText.text = dEvent.text;
 
             LeftPortrait.SetExpression(dEvent.LeftType, dEvent.LeftExpression);
             RightPortrait.SetExpression(dEvent.RightType, dEvent.RightExpression);
+            DialogueText.text = dEvent.text.WithColor(ColorHelper.GetNPCHexColor(dEvent.SpeakerIsPlayer ? LeftPortrait.MyNPC : RightPortrait.MyNPC));
+
+            LeftPortrait.ActiveSpeaker = dEvent.SpeakerIsPlayer;
+            RightPortrait.ActiveSpeaker = !dEvent.SpeakerIsPlayer;
 
             if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) && AnimationCounter >= 1)
             {
@@ -108,11 +114,7 @@ public class DialogueController : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space))
-            {
-                WantsOpen = false;
-            }
-            DialogueText.text = "MISSING DIALOGUE";
+            WantsOpen = false;
         }
     }
 }

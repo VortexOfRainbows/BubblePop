@@ -76,4 +76,22 @@ public static class ColorHelper
     public static readonly Color Silver = New255(212, 223, 230);
     public static readonly Color DimGold = (New255(239, 191, 4) * 0.8f).WithAlpha(1);
     public static readonly Color IridiumPurple = New255(0xA2, 0x4D, 0xFF);
+
+    public static string GetNPCHexColor(NPC.NPCType type)
+    {
+        switch (type)
+        {
+            case NPC.NPCType.Bubblemancer:
+                return "#DBF7FA";
+            case NPC.NPCType.ThoughtBubble:
+                return "#E3B3D8";
+            case NPC.NPCType.Gachapon:
+                return "#F3ECB7";
+            case NPC.NPCType.Fizzy:
+                return "#B4946B";
+            case NPC.NPCType.OilKing:
+                return "#8A84AA";
+        }
+        return "FFFFFF";
+    }
 }
