@@ -45,6 +45,7 @@ public partial class Main : MonoBehaviour
         public static Sprite CrosshairOuter, CrosshairInner, CrosshairFill, CrosshairEmblem;
         public static void Load()
         {
+            Portrait.LoadPortraitSprites();
             Cursor1 = Resources.Load<Texture2D>("UI/Cursor/Cursor");
             Cursor2 = Resources.Load<Texture2D>("UI/Cursor/Cursor2");
             BubbleSmall = Resources.Load<Sprite>("Projectiles/SmallBubble");

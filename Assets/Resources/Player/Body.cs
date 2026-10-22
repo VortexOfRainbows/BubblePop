@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Body : Equipment
 {
+    public virtual NPC.NPCType DialogueType => NPC.NPCType.Bubblemancer;
     public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
     {
         MaxLife += 3;

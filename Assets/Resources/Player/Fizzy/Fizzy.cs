@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class Fizzy : Body
 {
+    public override NPC.NPCType DialogueType => NPC.NPCType.Fizzy;
     public static readonly string[] CoolWords = new string[] { "BASED", "AWESOME", "TUBULAR", "COOL", "RADICAL", "EPIC", "RAD", "SWAG", "GNARLY", "KICKFLIP" };
     public static readonly string[] CoolWords2 = new string[] { "WACK", "SLICK", "YOLO", "DISMOUNT", "RADICAL", "SUPER", "RAD", "RELEASE", "KICKFLIP" };
     public GameObject Skateboard;

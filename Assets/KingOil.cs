@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class KingOil : Body
 {
+    public override NPC.NPCType DialogueType => NPC.NPCType.OilKing;
     public override float AbilityCD => 10;
     protected override UnlockCondition UnlockCondition => UnlockCondition.Get<KingOilUnlock>();
     public override void Init()

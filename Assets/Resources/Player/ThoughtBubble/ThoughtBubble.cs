@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ThoughtBubble : Body
 {
+    public override NPC.NPCType DialogueType => NPC.NPCType.ThoughtBubble;
     public override void ModifyLifeStats(ref int MaxLife, ref int Life, ref int Shield)
     {
         MaxLife += 3;

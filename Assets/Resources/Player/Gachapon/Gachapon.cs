@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Gachapon : Body
 {
+    public override NPC.NPCType DialogueType => NPC.NPCType.Gachapon;
     public static Sprite BlueChip => bChip == null ? bChip = Resources.Load<Sprite>("Projectiles/BlueChip") : bChip;
     private static Sprite bChip = null;
     public List<ChipStack> stacks;

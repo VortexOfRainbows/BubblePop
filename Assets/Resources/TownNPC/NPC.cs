@@ -118,12 +118,13 @@ public class NPC : Entity
     }
     public void StartDialogue()
     {
+        NPCType PlayerCharacter = Player.Instance.Body.DialogueType;
         switch(Dialogue)
         {
             case DialogueType.GachaponShop: //AI Generated this very funny.
                 DialogueController.EnqueueDialogueChain(
-                    Localization.Get("Dialogue.GachaponShopIntro1"),
-                    Localization.Get("Dialogue.GachaponShopEnd1"));
+                    new(Localization.Get("Dialogue.GachaponShopIntro1"), PlayerCharacter, 0, NPCType.Gachapon, 0, false),
+                    new(Localization.Get("Dialogue.GachaponShopEnd1")));
                 break;
         }
     }
