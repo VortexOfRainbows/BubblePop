@@ -1225,6 +1225,17 @@
       Brief: Breakable objects drop more loot, and all powers create a breakable object when dissolved
       Lore: Power.Recycle.Lore
     }
+    SilverSolution:
+    {
+      Title: Silver Solution
+      Description:
+        '''
+        Y:[Skull enemies] take Y:20% G:(+10% per stack) Y:[more damage] 
+        Y:[Infected enemies] take Y:20% G:(+10% per stack) Y:[more damage]
+        '''
+      Brief: Deal more damage to Skull and Infected enemies
+      Lore: Power.SilverSolution.Lore
+    }
   }
   Equip:
   {

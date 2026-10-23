@@ -512,7 +512,12 @@ public class Enemy : Entity, IImpactedByProjIFrames
                 return;
             }
             float damage = proj.Damage + projOwner.GlassShards;
-            damage *= projOwner.DamageMultiplier;
+            float mult = projOwner.DamageMultiplier;
+            if (IsSkull)
+                mult += projOwner.BonusDamageToSkulls;
+            if (IsInfected)
+                mult += projOwner.BonusDamageToElites;
+            damage *= mult;
             if (proj.ExtraUpdateNumber > 0) //tachyon accelerator
                 damage *= 1.5f;
             bool rollForInitiative = false;

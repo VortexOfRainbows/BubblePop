@@ -248,3 +248,13 @@ public class Recycle : PowerUp
         p.BonusRecycleLoot += Stack * 0.5f;
     }
 }
+public class SilverSolution : PowerUp
+{
+    public override void Init() => Weighting = Uncommon;
+    public override bool IsBlackMarket() => true;
+    public override void HeldEffect(Player p)
+    {
+        p.BonusDamageToSkulls += 0.1f + Stack * 0.1f;
+        p.BonusDamageToElites += 0.1f + Stack * 0.1f;
+    }
+}

@@ -184,6 +184,8 @@ public partial class Player : Entity
     public int HelicopterStacks, TachyonStacks, PrevTachyonStacks = 0;
     public int SoupStacks, RecycleStacks = 0;
     public int Bonus1StarStacksFromSoup { get; set; } = 0;
+    public float BonusDamageToElites = 0.0f;
+    public float BonusDamageToSkulls = 0.0f;
     public float BonusRecycleLoot = 0;
     public Projectile HelicopterSummon;
     private void PowerInit()
@@ -255,6 +257,7 @@ public partial class Player : Entity
         GoldenGun = SmokeStack = TrickleDown = Pumpjack = OilBarrelSize = HelicopterStacks = TachyonStacks = SoupStacks = AdditionalInvestmentsProcessed = 0;
         BonusRecycleLoot = 0;
         RecycleStacks = 0;
+        BonusDamageToElites = BonusDamageToSkulls = 0;
     }
     private void UpdatePowerUps()
     {

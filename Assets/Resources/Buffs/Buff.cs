@@ -91,12 +91,20 @@ public abstract class Buff
     }
     public float Detonate(Entity e)
     {
+        Player p = Player.Instance;
         Active = false;
         float damage = OnDetonate(e);
-        damage += Player.Instance.CombustBonusDamage + Player.Instance.GlassShards;
-        damage *= Player.Instance.DamageMultiplier;
+        damage += p.CombustBonusDamage + p.GlassShards;
+        float mult = p.DamageMultiplier;
         if (e is Enemy enemy)
+        {
+            if (enemy.IsSkull)
+                mult += p.BonusDamageToSkulls;
+            if (enemy.IsInfected)
+                mult += p.BonusDamageToElites;
+            damage *= mult;
             enemy.Injure(damage, -2, PopupTextColor(), 1);
+        }
         return damage;
     }
     /// <summary>
