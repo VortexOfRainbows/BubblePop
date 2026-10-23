@@ -165,7 +165,7 @@ public class OilScepter : Weapon
             if (ActiveDiamondProjectile < AllowedDiamonds)
                 AttackRight--;
         }
-        WalkMovementAnimation += Mathf.Sqrt(Player.RB.velocity.magnitude);
+        WalkMovementAnimation += Mathf.Sqrt(Player.RB.linearVelocity.magnitude);
 
         //Final Stuff
         float leftClickPercent = bonusPointDirOffset / 90f;

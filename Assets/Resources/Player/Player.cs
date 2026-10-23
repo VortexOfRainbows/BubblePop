@@ -509,7 +509,7 @@ public partial class Player : Entity
     public float abilityTimer = 0;
     private void MovementUpdate()
     {
-        Vector2 velocity = RB.velocity;
+        Vector2 velocity = RB.linearVelocity;
         float cSpeed = speed * MoveSpeedMod;
         float cDeaccel = MovementDeacceleration;
         float cMaxSpeed = MaxSpeed;
@@ -595,7 +595,7 @@ public partial class Player : Entity
             if (currentSpeed > cMaxSpeed || Utils.RandFloat() < 0.15f)
                 ParticleManager.NewParticle((Vector2)fiz.Skateboard.transform.position + new Vector2(0, .3f) + Utils.RandCircle(0.25f) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, SecondaryColor());
         }
-        RB.velocity = velocity;
+        RB.linearVelocity = velocity;
         Control.LastAbility = Control.Ability;
         Body.AliveUpdate();
         Animator.PostFixedUpdate();
@@ -973,7 +973,7 @@ public partial class Player : Entity
             else
                 CameraManager.LerpCameraOrthographicSize(17, 0.03f);
         }
-        RB.velocity *= 0.9f;
+        RB.linearVelocity *= 0.9f;
         Body.DeadUpdate();
         Hat.DeadUpdate();
         Weapon.DeadUpdate();

@@ -54,7 +54,7 @@ public class EnemyDuck : Enemy
         }
         if (aiState == 2)
             inertia *= 0.2f;
-        RB.velocity *= 1 - inertia;
+        RB.linearVelocity *= 1 - inertia;
         if (aiState == 1 || aiState == 2)
         {
             Vector2 toTarget = targetedLocation - (Vector2)transform.position;
@@ -69,7 +69,7 @@ public class EnemyDuck : Enemy
             float speedScaling = aiState == 2 ? 0.2f : 0.1f;
             float BaseSpeed = aiState == 2 ? 4.4f : 1.0f;
             float speed = Mathf.Min(BaseSpeed + speedScaling * toTarget.magnitude, 16);
-            RB.velocity += inertia * speed * movementDir;// * Time.fixedDeltaTime;
+            RB.linearVelocity += inertia * speed * movementDir;// * Time.fixedDeltaTime;
             if(aiState != 2)
             {
                 if (movingTimer <= 0)

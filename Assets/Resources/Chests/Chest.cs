@@ -46,7 +46,7 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
     {
         if(OpenAnimation <= 0 && (NoKeyRequired || CoinManager.CurrentKeys >= 1))
         {
-            RB.velocity *= 0.0f;
+            RB.linearVelocity *= 0.0f;
             if(!NoKeyRequired)
                 CoinManager.ModifyKeys(-1);
             Open();
@@ -266,7 +266,7 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
         }
         if(ChestType == 3)
             SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.white, 0.07f);
-        RB.velocity *= 0.94f;
+        RB.linearVelocity *= 0.94f;
     }
     public bool SkipSpawnAnimation = false;
     public bool HasOpened { get; private set; } = false;

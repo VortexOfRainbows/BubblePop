@@ -72,12 +72,12 @@ public class SlotMachineWeapon : Weapon
         float verticalOffset = this is DragonSlots ? -1f : 0.25f;
         Vector2 toMouse = mouseAdjustedFromPlayer - (Vector2)ShootCenter.position;
         Vector2 norm = toMouse.normalized;
-        float bodyDir = Mathf.Sign(p.rb.velocity.x);
+        float bodyDir = Mathf.Sign(p.rb.linearVelocity.x);
 
         Vector2 attemptedPosition = previousAttemptedPosition;
         if (!IsSecondaryAttacking() || AttackRight > WindUpTime + 20 || AttackRight < RightClickEndLag)
         {
-            attemptedPosition = playerToMouse.normalized * 1.05f + p.rb.velocity.normalized * 0.1f;
+            attemptedPosition = playerToMouse.normalized * 1.05f + p.rb.linearVelocity.normalized * 0.1f;
         }
         previousAttemptedPosition = attemptedPosition;
         Vector2 originalPosition = attemptedPosition;
@@ -286,9 +286,9 @@ public class SlotMachineWeapon : Weapon
                 attemptedPosition = Vector2.Lerp(attemptedPosition, originalPosition, lerp);
             if (Hitbox != null)
             {
-                Hitbox.RB.velocity = attemptedPosition.normalized * 10;
+                Hitbox.RB.linearVelocity = attemptedPosition.normalized * 10;
                 if(Hitbox.Friendly && Utils.RandFloat(1) < 0.5f)
-                    ParticleManager.NewParticle(Hitbox.transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f), Utils.RandFloat(-0.3f, 0.3f)), Utils.RandFloat(2f, 2.25f), Hitbox.RB.velocity * Utils.RandFloat(0.25f, 0.5f), 2, Utils.RandFloat(0.7f, 0.8f), 3, ColorHelper.RarityColors[4] * 0.85f);
+                    ParticleManager.NewParticle(Hitbox.transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f), Utils.RandFloat(-0.3f, 0.3f)), Utils.RandFloat(2f, 2.25f), Hitbox.RB.linearVelocity * Utils.RandFloat(0.25f, 0.5f), 2, Utils.RandFloat(0.7f, 0.8f), 3, ColorHelper.RarityColors[4] * 0.85f);
                 Hitbox.transform.position = GeoCenter.position;
                 Hitbox.transform.localScale = transform.localScale;
                 Hitbox.transform.SetLocalEulerZ(attemptedPosition.ToRotation() * Mathf.Rad2Deg);

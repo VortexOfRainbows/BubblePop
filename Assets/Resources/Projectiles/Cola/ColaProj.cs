@@ -33,17 +33,17 @@ public class ColaProj : Projectile
     {
         bool isHeavy = Data[5] < 0 && Data[5] > -200;
         float speedMult = PlayerOwner.SecondaryAttackSpeedModifier * 0.5f + (isHeavy ? 0.7f : 0.5f);
-        float speed = RB.velocity.magnitude;
+        float speed = RB.linearVelocity.magnitude;
         if (speed < 1)
             speed = 1;
         float rtSpeed = Mathf.Sqrt(speed) * speedMult;
-        RB.rotation -= rtSpeed * Mathf.Sign(RB.velocity.x);
+        RB.rotation -= rtSpeed * Mathf.Sign(RB.linearVelocity.x);
         float targetScale = 1.1f;
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
 
         if ((int)timer % 4 == 0)
         {
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f + Utils.RandCircle(transform.lossyScale.x * 0.4f), .225f, norm * -.75f, 0.6f, Utils.RandFloat(0.225f, 0.35f), 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
         }
 
@@ -59,7 +59,7 @@ public class ColaProj : Projectile
         Vector2 pos = Vector2.Lerp(startPos, Destination, percent);
         float arcY = Mathf.Sin(percent * Mathf.PI) * dist * (isHeavy ? 0.3f : 0.4f);
         pos.y += arcY;
-        transform.position = pos - RB.velocity * Time.fixedDeltaTime;
+        transform.position = pos - RB.linearVelocity * Time.fixedDeltaTime;
     }
     public void Update()
     {
@@ -104,7 +104,7 @@ public class ColaProj : Projectile
         if(!isJuice)
         {
             float spread = Mathf.Deg2Rad * deg;
-            Vector2 dir = RB.velocity.normalized * exitSpeed;
+            Vector2 dir = RB.linearVelocity.normalized * exitSpeed;
             for (int i = 0; i < projCount; ++i)
             {
                 float speedMult = randSpeed ? Utils.RandFloat(0.25f, 1.5f) : 1.0f;
@@ -117,7 +117,7 @@ public class ColaProj : Projectile
         {
             exitSpeed *= 0.25f;
             float spread = Mathf.Deg2Rad * 180;
-            Vector2 dir = RB.velocity.normalized;
+            Vector2 dir = RB.linearVelocity.normalized;
             for (int i = 0; i < projCount; ++i)
             {
                 Vector2 direction = dir.RotatedBy(spread * i + (i % 4 > 1 ? MathF.PI / 2f : 0));
@@ -138,7 +138,7 @@ public class ColaProj : Projectile
             Vector2 toPlayer = PlayerOwner.Position - (Vector2)transform.position;
             toBouncePosition += toPlayer.normalized;
             Vector2 bouncePosition = toBouncePosition + (Vector2)transform.position;
-            Projectile.NewProjectile<ColaProj>(Destination, toBouncePosition.normalized * (RB.velocity.magnitude * 1.25f), Damage,
+            Projectile.NewProjectile<ColaProj>(Destination, toBouncePosition.normalized * (RB.linearVelocity.magnitude * 1.25f), Damage,
                 PlayerOwner, bouncePosition.x, bouncePosition.y, Data[2], Data[3] - 1, Data[4] + 1, Data[5]);
         }
         Projectile.NewProjectile<ColaExplode>(Destination, Vector2.zero, Damage, PlayerOwner, exitSpeed / 8f * 1.2f);
@@ -263,7 +263,7 @@ public class SkateboardProj : Projectile
     public float starTimer = 0.2f;
     public override void AI()
     {
-        float speed = RB.velocity.magnitude * 0.9f * -Utils.SignNoZero(RB.velocity.x);
+        float speed = RB.linearVelocity.magnitude * 0.9f * -Utils.SignNoZero(RB.linearVelocity.x);
         Wheel1.transform.SetLocalEulerZ(Wheel1.transform.localEulerAngles.z + speed);
         Wheel2.transform.SetLocalEulerZ(Wheel2.transform.localEulerAngles.z + speed);
         int trail = PlayerOwner.DashSparkle;
@@ -273,24 +273,24 @@ public class SkateboardProj : Projectile
             while (starTimer <= 0)
             {
                 starTimer += 4f / (trail + 3f); //4/4, 4/5, 4/6, 4/7, etc
-                Vector2 circular = (Utils.RandCircle(1.3f) - RB.velocity).normalized;
+                Vector2 circular = (Utils.RandCircle(1.3f) - RB.linearVelocity).normalized;
                 Vector2 randPos = (Vector2)transform.position + Utils.RandCircleEdge(3);
                 Projectile.NewProjectile<StarProj>((Vector2)transform.position + circular * 2 + new Vector2(0, 0.3f), circular * 8, 2, PlayerOwner, randPos.x, randPos.y, Utils.RandFloat(-1, 1));
             }
         }
-        Vector2 norm = RB.velocity.normalized;
+        Vector2 norm = RB.linearVelocity.normalized;
         RB.rotation = norm.x * 5 + norm.y * 5;
         if ((int)timer % 2 == 0)
         {
             ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, .3f) + Utils.RandCircle(0.25f) - norm * .5f, .5f, norm * -Utils.RandFloat(15f), 1.0f, 0.6f, 0, SpriteRenderer.color);
         }
         timer++;
-        if(RB.velocity.magnitude < 40)
+        if(RB.linearVelocity.magnitude < 40)
         {
-            RB.velocity += norm * 0.1f;
-            if (RB.velocity.magnitude > 40)
-                RB.velocity = norm * 40;
-            RB.velocity = RB.velocity.RotatedBy(Angle * Mathf.Deg2Rad);
+            RB.linearVelocity += norm * 0.1f;
+            if (RB.linearVelocity.magnitude > 40)
+                RB.linearVelocity = norm * 40;
+            RB.linearVelocity = RB.linearVelocity.RotatedBy(Angle * Mathf.Deg2Rad);
         }
         if(timer > 1000)
             Kill();
@@ -311,6 +311,6 @@ public class SkateboardProj : Projectile
     }
     public override void OnHitTarget(Entity target)
     {
-        PopupText.NewPopupText(target.transform.position, new Vector2(0, 7) + Utils.RandCircle(4) + target.RB.velocity * 0.3f, Utils.PastelRainbow(Utils.RandFloat(Mathf.PI * -0.75f, Mathf.PI * 0.25f), 0.55f, default), Fizzy.CoolWords[Utils.RandInt(Fizzy.CoolWords.Length)], false, 0.8f, 50);
+        PopupText.NewPopupText(target.transform.position, new Vector2(0, 7) + Utils.RandCircle(4) + target.RB.linearVelocity * 0.3f, Utils.PastelRainbow(Utils.RandFloat(Mathf.PI * -0.75f, Mathf.PI * 0.25f), 0.55f, default), Fizzy.CoolWords[Utils.RandInt(Fizzy.CoolWords.Length)], false, 0.8f, 50);
     }
 }

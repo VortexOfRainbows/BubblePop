@@ -76,9 +76,9 @@ public class OilBomb : Projectile
         transform.position = Vector2.Lerp(SkyPos, startPos, percent);
         transform.LerpLocalScale((2f - percent * 1f) * Data[0] * Vector2.one, 0.1f);
         SpriteRenderer.color = SpriteRenderer.color.WithAlpha(percent);
-        startPos += RB.velocity * Time.fixedDeltaTime;
-        transform.SetLocalEulerZ(RB.velocity.x * 2);
-        RB.velocity *= 0.98f;
+        startPos += RB.linearVelocity * Time.fixedDeltaTime;
+        transform.SetLocalEulerZ(RB.linearVelocity.x * 2);
+        RB.linearVelocity *= 0.98f;
     }
     public void DeathParticles()
     {
@@ -157,9 +157,9 @@ public class OilBomb : Projectile
     public override Vector3 HomingStartPosition() => startPos;
     public override bool DoHomingBehavior(Enemy target, Vector2 norm, float range)
     {
-        float currentSpeed = RB.velocity.magnitude + PlayerOwner.HomingRangeSqrt * 2.5f + 5;
+        float currentSpeed = RB.linearVelocity.magnitude + PlayerOwner.HomingRangeSqrt * 2.5f + 5;
         float modAmt = 0.05f + PlayerOwner.HomingRangeSqrt * 0.025f;
-        RB.velocity = Vector2.Lerp(RB.velocity * (1 - modAmt), norm * currentSpeed, modAmt);
+        RB.linearVelocity = Vector2.Lerp(RB.linearVelocity * (1 - modAmt), norm * currentSpeed, modAmt);
         return false;
     }
     public override bool OnInsideTile() => false;

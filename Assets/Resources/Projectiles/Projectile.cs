@@ -96,8 +96,8 @@ public class Projectile : MonoBehaviour
                         Color c = Color.Lerp(Player.ProjectileColor, (owner as Player).SecondColor, otherBubbles.Data2).WithAlpha(0.68f);
                         otherBubbles.SpriteRenderer.color = c.WithAlpha(otherBubbles.SpriteRenderer.color.a);
                     }
-                    float startingSpeed = otherBubbles.RB.velocity.magnitude;
-                    otherBubbles.RB.velocity = Vector2.Lerp(otherBubbles.RB.velocity * 1.5f, velo, 3f / (otherBubbles.Data1 + 3f)).normalized * startingSpeed;
+                    float startingSpeed = otherBubbles.RB.linearVelocity.magnitude;
+                    otherBubbles.RB.linearVelocity = Vector2.Lerp(otherBubbles.RB.linearVelocity * 1.5f, velo, 3f / (otherBubbles.Data1 + 3f)).normalized * startingSpeed;
                     if(otherBubbles.Data1 >= p.Coalescence)
                         RecentlySpawnedSmallBubbles.RemoveAt(i);
                     return null;
@@ -127,7 +127,7 @@ public class Projectile : MonoBehaviour
             proj.cmp.rectCollider.contactCaptureLayers = proj.cmp.c2D.contactCaptureLayers;
             proj.cmp.rectCollider.callbackLayers = proj.cmp.c2D.callbackLayers;
         }
-        proj.RB.velocity = velo;
+        proj.RB.linearVelocity = velo;
         if(!hasMerged)
         {
             proj.Data = new float[] { 0, data.Length > 1 ? data[1] : 0 };
@@ -202,12 +202,12 @@ public class Projectile : MonoBehaviour
             if (ExtraUpdateNumber > 0)
             {
                 TachyonPoints.Add(transform.position);
-                transform.position += (Vector3)(RB.velocity * Time.fixedDeltaTime);
+                transform.position += (Vector3)(RB.linearVelocity * Time.fixedDeltaTime);
                 //Then we need to simulate collision on these bonus steps
-                float frameDistance = RB.velocity.magnitude * Time.fixedDeltaTime;
+                float frameDistance = RB.linearVelocity.magnitude * Time.fixedDeltaTime;
                 float travelledDistance = ((Vector2)transform.position - previousPosition).magnitude;
                 TachyonDistance += travelledDistance; //some projectiles do not use velocity to update position
-                int hits = Physics2D.CircleCast(transform.position, C2D.radius * 1.1f, RB.velocity, Filter, SkipHits, frameDistance); //Projectile hitbox is bigger while warping, to give impression of bigger hitbox/accuracy
+                int hits = Physics2D.CircleCast(transform.position, C2D.radius * 1.1f, RB.linearVelocity, Filter, SkipHits, frameDistance); //Projectile hitbox is bigger while warping, to give impression of bigger hitbox/accuracy
                 for(int j = 0; j < hits; ++j)
                 {
                     RaycastHit2D hit = SkipHits[j];
@@ -334,7 +334,7 @@ public class Projectile : MonoBehaviour
             if (PlayerOwner.Starbarbs > 0)
             {
                 AudioManager.PlaySound(SoundID.Starbarbs, transform.position, 1, 1);
-                Vector2 norm = RB.velocity.normalized;
+                Vector2 norm = RB.linearVelocity.normalized;
                 if(this is SupernovaExplode || this is SupernovaProj)
                     norm = Utils.RandCircle(1).normalized;
                 float randRot = norm.ToRotation();
@@ -387,17 +387,17 @@ public class Projectile : MonoBehaviour
             if (target != null && DoHomingBehavior(target, ToEnemy, range))
             {
                 float speedBonus = this is not ThunderBubble ? PlayerOwner.HomingRangeSqrt * 0.1f : PlayerOwner.HomingRangeSqrt * 0.01f;
-                float currentSpeed = RB.velocity.magnitude + speedBonus;
+                float currentSpeed = RB.linearVelocity.magnitude + speedBonus;
                 float modAmt = 0.06f + PlayerOwner.HomingRangeSqrt * 0.02f;
                 float toEnemyAngle = ToEnemy.ToRotation();
-                float currentAngle = RB.velocity.ToRotation();
+                float currentAngle = RB.linearVelocity.ToRotation();
                 float delta = Mathf.Abs(Utils.DeltaRadians(currentAngle, toEnemyAngle)); //Smaller deltas should be treated with a greater homing modifier, weakest homing at pi difference
                 if (delta == 0)
                     return;
                 float deltaMultiplier = Mathf.PI / delta;
                 Vector2 velocity = new(currentSpeed, 0);
                 float angleModifier = Utils.LerpAngleRadians(currentAngle, toEnemyAngle, modAmt * deltaMultiplier);
-                RB.velocity = velocity.RotatedBy(angleModifier);
+                RB.linearVelocity = velocity.RotatedBy(angleModifier);
             }
         }
     }

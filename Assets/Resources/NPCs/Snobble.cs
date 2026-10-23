@@ -86,19 +86,19 @@ public class Snobble : Enemy
                 trueMoveSpeed *= 2.75f;
             }
             if((Utils.RandBool(2) || PlayerNearby) && MovementTimer > 110)
-                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.1f) + Utils.RandCircle(.5f), Utils.RandFloat(0.3f, 0.5f), Vector2.up * Utils.RandFloat(3, 6) - RB.velocity * Utils.RandFloat(0.4f, 0.6f), 0.5f, Utils.RandFloat(0.5f, 1.0f), ParticleManager.ID.SnowBG, Color.white);
+                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -0.1f) + Utils.RandCircle(.5f), Utils.RandFloat(0.3f, 0.5f), Vector2.up * Utils.RandFloat(3, 6) - RB.linearVelocity * Utils.RandFloat(0.4f, 0.6f), 0.5f, Utils.RandFloat(0.5f, 1.0f), ParticleManager.ID.SnowBG, Color.white);
         }
         else
         {
             MovementTimer = -Utils.RandInt(7);
         }
         Vector2 moveDir = GetPathfindingToPlayerNorm();
-        RB.velocity += moveDir * trueMoveSpeed;
-        RB.velocity *= Inertia;
-        if (Mathf.Abs(RB.velocity.x) > 0.1f)
-            UpdateDirection(RB.velocity.x);
-        float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -0.75f;
-        tilt += Mathf.Sqrt(Mathf.Abs(RB.velocity.y)) * -1.5f * Visual.transform.localScale.x;
+        RB.linearVelocity += moveDir * trueMoveSpeed;
+        RB.linearVelocity *= Inertia;
+        if (Mathf.Abs(RB.linearVelocity.x) > 0.1f)
+            UpdateDirection(RB.linearVelocity.x);
+        float tilt = Mathf.Sqrt(Mathf.Abs(RB.linearVelocity.x)) * Visual.transform.localScale.x * -0.75f;
+        tilt += Mathf.Sqrt(Mathf.Abs(RB.linearVelocity.y)) * -1.5f * Visual.transform.localScale.x;
         Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
     }
     public override void OnKill()

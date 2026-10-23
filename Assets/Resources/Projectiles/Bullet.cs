@@ -28,10 +28,10 @@ public class Bullet : Projectile
         if(Data.Length > 5)
         {
             float curveFactor = Data[5];
-            RB.velocity = RB.velocity.RotatedBy(curveFactor * Time.fixedDeltaTime);
+            RB.linearVelocity = RB.linearVelocity.RotatedBy(curveFactor * Time.fixedDeltaTime);
             Data[5] *= 0.99f;
         }
-        RB.velocity *= 1.001f;
+        RB.linearVelocity *= 1.001f;
         float deathTime = 330;
         float FadeOutTime = 15;
         if (timer > deathTime + FadeOutTime)
@@ -40,13 +40,13 @@ public class Bullet : Projectile
         }
         if (Utils.RandFloat() < 0.5f)
         {
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             if(this is SnowBullet && Utils.RandFloat() < 0.95f)
             {
                 if (Utils.RandFloat() < 0.5f)
-                    ParticleManager.NewParticle((Vector2)transform.position, 0.45f, RB.velocity * Utils.RandFloat(-0.1f, 0.5f) + Utils.RandCircle(), 1f, 0.5f, ParticleManager.ID.Snow, Color.white.WithAlpha(0.5f));
+                    ParticleManager.NewParticle((Vector2)transform.position, 0.45f, RB.linearVelocity * Utils.RandFloat(-0.1f, 0.5f) + Utils.RandCircle(), 1f, 0.5f, ParticleManager.ID.Snow, Color.white.WithAlpha(0.5f));
                 else
-                    ParticleManager.NewParticle((Vector2)transform.position + 0.3f * transform.localScale.x * Utils.RandCircle(), 0.35f, RB.velocity * -0.5f + Utils.RandCircle() * 3, 1f, 0.4f, ParticleManager.ID.Snow, Color.white.WithAlpha(0.5f));
+                    ParticleManager.NewParticle((Vector2)transform.position + 0.3f * transform.localScale.x * Utils.RandCircle(), 0.35f, RB.linearVelocity * -0.5f + Utils.RandCircle() * 3, 1f, 0.4f, ParticleManager.ID.Snow, Color.white.WithAlpha(0.5f));
             }
             else
                 ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, 1.2f * SizeMult, norm * -.75f, 0.5f, Utils.RandFloat(0.45f, 0.6f), 3, SpriteRendererGlow.color);
@@ -117,9 +117,9 @@ public class Snowball : Projectile
         {
             if (timer < 0)
             {
-                RB.velocity += Utils.RandCircleEdge() * (percent + 3);
+                RB.linearVelocity += Utils.RandCircleEdge() * (percent + 3);
                 percent = 1.1f;
-                Destination = startPos + RB.velocity;
+                Destination = startPos + RB.linearVelocity;
                 TravelTime *= 2.5f;
                 timer = 0;
                 HeightMult = .6f;
@@ -138,7 +138,7 @@ public class Snowball : Projectile
                 Vector2 norm = Destination - startPos;
                 float distToPlayer = norm.magnitude;
                 norm = norm.normalized;
-                RB.velocity = norm * 2;
+                RB.linearVelocity = norm * 2;
                 if (distToPlayer > 15)
                     distToPlayer = 15;
                 Destination = startPos + norm * distToPlayer;
@@ -147,11 +147,11 @@ public class Snowball : Projectile
             else
             {
                 if (Utils.RandFloat() < 0.5f)
-                    ParticleManager.NewParticle((Vector2)transform.position, 0.6f, RB.velocity * Utils.RandFloat(-0.1f, 0.5f) + Utils.RandCircle(), 1f, 0.5f, ParticleManager.ID.Snow, Color.white.WithAlpha(0.5f));
+                    ParticleManager.NewParticle((Vector2)transform.position, 0.6f, RB.linearVelocity * Utils.RandFloat(-0.1f, 0.5f) + Utils.RandCircle(), 1f, 0.5f, ParticleManager.ID.Snow, Color.white.WithAlpha(0.5f));
                 else
-                    ParticleManager.NewParticle((Vector2)transform.position + 0.4f * transform.localScale.x * Utils.RandCircle(), 0.3f, RB.velocity * -0.5f + Utils.RandCircle() * 3, 1f, 0.3f, ParticleManager.ID.Snow, Color.white.WithAlpha(0.5f));
+                    ParticleManager.NewParticle((Vector2)transform.position + 0.4f * transform.localScale.x * Utils.RandCircle(), 0.3f, RB.linearVelocity * -0.5f + Utils.RandCircle() * 3, 1f, 0.3f, ParticleManager.ID.Snow, Color.white.WithAlpha(0.5f));
 
-                transform.SetLocalEulerZ(transform.localEulerAngles.z + 0.5f * RB.velocity.x);
+                transform.SetLocalEulerZ(transform.localEulerAngles.z + 0.5f * RB.linearVelocity.x);
                 if (timer > TravelTime)
                     Kill();
 
@@ -224,7 +224,7 @@ public class SnowBullet : Bullet
     public override void AI()
     {
         base.AI();
-        RB.rotation += 1 * RB.velocity.magnitude * Utils.SignNoZero(RB.velocity.x);
+        RB.rotation += 1 * RB.linearVelocity.magnitude * Utils.SignNoZero(RB.linearVelocity.x);
     }
     public override void OnKill()
     {

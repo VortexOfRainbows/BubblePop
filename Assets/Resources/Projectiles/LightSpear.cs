@@ -61,16 +61,16 @@ public class LightSpear : Projectile
         float scaleX = toDest.magnitude;
         for(int j = 0; j < 12; ++j)
         {
-            ParticleManager.NewParticle(transform.position, Utils.RandFloat(0.2f, 0.4f), RB.velocity * Utils.RandFloat(0.8f, 4.5f), 3.6f, Utils.RandFloat(0.45f, 0.6f), 2, c);
+            ParticleManager.NewParticle(transform.position, Utils.RandFloat(0.2f, 0.4f), RB.linearVelocity * Utils.RandFloat(0.8f, 4.5f), 3.6f, Utils.RandFloat(0.45f, 0.6f), 2, c);
         }
         for(float i = 0; i < scaleX; i += 0.33f)
         {
             Vector2 inBetween = Vector2.Lerp(transform.position, destination, i / scaleX);
-            ParticleManager.NewParticle(inBetween, Utils.RandFloat(0.1f, 0.3f), RB.velocity * Utils.RandFloat(0.1f, 0.7f), 2, Utils.RandFloat(0.3f, 0.45f), 2, c);
+            ParticleManager.NewParticle(inBetween, Utils.RandFloat(0.1f, 0.3f), RB.linearVelocity * Utils.RandFloat(0.1f, 0.7f), 2, Utils.RandFloat(0.3f, 0.45f), 2, c);
         }
         for (int j = 0; j < 20; ++j)
         {
-            ParticleManager.NewParticle(destination, Utils.RandFloat(0.2f, 0.4f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 8f, Utils.RandFloat(0.45f, 0.6f), 2, c);
+            ParticleManager.NewParticle(destination, Utils.RandFloat(0.2f, 0.4f), RB.linearVelocity * Utils.RandFloat(0.4f, 1.6f), 8f, Utils.RandFloat(0.45f, 0.6f), 2, c);
         }
     }
     public override void AI()
@@ -157,9 +157,9 @@ public class LightSpearCaster : Projectile
     public bool HasShot = false;
     public override void AI()
     {
-        RB.velocity *= 0.945f;
+        RB.linearVelocity *= 0.945f;
         float speed = Bulb.DefaultShotSpeed / 5f;
-        if (RB.velocity.sqrMagnitude < 1)
+        if (RB.linearVelocity.sqrMagnitude < 1)
         {
             float speedMod = Bulb.SpeedModifier(PlayerOwner);
             timer += Time.fixedDeltaTime * speedMod;
@@ -169,7 +169,7 @@ public class LightSpearCaster : Projectile
                 {
                     Vector2 shootFromPos = SpriteRendererGlow.transform.position;
                     if (Bulb.LaunchSpear(shootFromPos, out Vector2 norm, new List<Enemy> { ignore }, PlayerOwner, (int)Data1 - 1, bonusRange: 5 + 1f * PlayerOwner.LightChainReact, 1, Damage))
-                        RB.velocity -= norm * 6;
+                        RB.linearVelocity -= norm * 6;
                     HasShot = true;
                 }
                 float percent = (timer - speed) / speed * 5;
@@ -191,7 +191,7 @@ public class LightSpearCaster : Projectile
         Color c = PlayerOwner.Hat is Crown ? new(1, 0, 0, 1f) : new(1, 1, .9f, 0.5f);
         for (int j = 0; j < 15; ++j)
         {
-            ParticleManager.NewParticle(SpriteRendererGlow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, c);
+            ParticleManager.NewParticle(SpriteRendererGlow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.linearVelocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, c);
         }
     }
 }
@@ -286,7 +286,7 @@ public class ThunderLightSpearCaster : Projectile
         Color c = PlayerOwner.Hat is Crown ? new(1, 0, 0, 1f) : new(1, 1, .9f, 0.5f);
         for (int j = 0; j < 15; ++j)
         {
-            ParticleManager.NewParticle(SpriteRendererGlow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.velocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, c);
+            ParticleManager.NewParticle(SpriteRendererGlow.transform.position, Utils.RandFloat(0.2f, 0.3f), RB.linearVelocity * Utils.RandFloat(0.4f, 1.6f), 4f, Utils.RandFloat(0.3f, 0.4f), 2, c);
         }
     }
 }

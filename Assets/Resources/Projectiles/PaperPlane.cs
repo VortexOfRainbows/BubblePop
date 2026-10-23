@@ -20,13 +20,13 @@ public class PaperPlane : Projectile
     public bool Recalled = false;
     public override void AI()
     {
-        Vector2 velo = RB.velocity;
-        float speed = RB.velocity.magnitude;
+        Vector2 velo = RB.linearVelocity;
+        float speed = RB.linearVelocity.magnitude;
         float percent = Mathf.Max(0, 1 - timer / 40f);
         if(percent > 0)
-            transform.position -= percent * Time.fixedDeltaTime * (Vector3)RB.velocity;
+            transform.position -= percent * Time.fixedDeltaTime * (Vector3)RB.linearVelocity;
         float rtSpeed = Mathf.Sqrt(speed);
-        RB.rotation = Utils.WrapAngle(RB.velocity.ToRotation()) * Mathf.Rad2Deg;
+        RB.rotation = Utils.WrapAngle(RB.linearVelocity.ToRotation()) * Mathf.Rad2Deg;
         cmp.spriteRenderer.flipY = RB.rotation > 90 || RB.rotation < -90;
         float targetScale = 0.75f;
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.04f + 0.01f * rtSpeed);
@@ -39,10 +39,10 @@ public class PaperPlane : Projectile
             }
             if(RB.position.Distance(Utils.MouseWorld) < 4)
             {
-                RB.velocity *= 0.96f;
+                RB.linearVelocity *= 0.96f;
             }
             else
-                RB.velocity *= 0.9825f;
+                RB.linearVelocity *= 0.9825f;
         }
         else
         {
@@ -58,7 +58,7 @@ public class PaperPlane : Projectile
                 Kill();
                 return;
             }
-            RB.velocity = velo * 1.002f;
+            RB.linearVelocity = velo * 1.002f;
         }
 
         float deathTime = 240;
@@ -79,7 +79,7 @@ public class PaperPlane : Projectile
         }
         if ((int)++timer2 % 2 == 0)
         {
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.5f, .225f, norm * -.25f, 0.75f, Utils.RandFloat(0.2f, 0.3f), 1, SpriteRenderer.color.WithAlphaMultiplied(0.8f));
         }
         if (timer > deathTime)
@@ -94,9 +94,9 @@ public class PaperPlane : Projectile
     public void HomeTowardsCursor()
     {
         Vector2 toCursor = Utils.MouseWorld - (Vector2)transform.position;
-        float speed = RB.velocity.magnitude;
+        float speed = RB.linearVelocity.magnitude;
         float lerpAmt = 0.036f + 0.01f * PlayerOwner.HomingRangeSqrt;
-        RB.velocity = Vector2.Lerp(RB.velocity, toCursor.normalized * speed, lerpAmt).normalized * speed;
+        RB.linearVelocity = Vector2.Lerp(RB.linearVelocity, toCursor.normalized * speed, lerpAmt).normalized * speed;
     }
     public override void OnKill()
     {
@@ -133,8 +133,8 @@ public class LatentCharge : Projectile
         SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, ColorVar.WithAlphaMultiplied(0.5f), 0.1f);
         SpriteRendererGlow.color = Color.Lerp(SpriteRendererGlow.color, ColorVar * 1f, 0.1f);
         transform.localScale = transform.localScale.Lerp(Vector3.one * 0.85f, 0.2f);
-        RB.velocity *= 0.5f;
-        RB.rotation = Utils.WrapAngle(RB.velocity.ToRotation()) * Mathf.Rad2Deg;
+        RB.linearVelocity *= 0.5f;
+        RB.rotation = Utils.WrapAngle(RB.linearVelocity.ToRotation()) * Mathf.Rad2Deg;
         bool isSpecial = Data.Length > 2 && Data[2] == -1;
         Book book = null;
         float percent = 0;

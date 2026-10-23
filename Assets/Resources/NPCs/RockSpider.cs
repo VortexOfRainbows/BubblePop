@@ -113,17 +113,17 @@ public class RockSpider : Enemy
             toPlayer = targetedLocation - (Vector2)transform.position;
             if (Timer == 51)
             {
-                RB.velocity *= 0.4f;
-                RB.velocity += toPlayer.normalized * 5f;
+                RB.linearVelocity *= 0.4f;
+                RB.linearVelocity += toPlayer.normalized * 5f;
             }
             //norm = RB.velocity.normalized;
-            RB.velocity += toPlayer.normalized * Mathf.Min(0.225f, toPlayer.magnitude);
-            if (Mathf.Abs(RB.velocity.x) > 0.1f)
-                UpdateDirection(RB.velocity.x);
-            RB.velocity *= 0.9875f;
+            RB.linearVelocity += toPlayer.normalized * Mathf.Min(0.225f, toPlayer.magnitude);
+            if (Mathf.Abs(RB.linearVelocity.x) > 0.1f)
+                UpdateDirection(RB.linearVelocity.x);
+            RB.linearVelocity *= 0.9875f;
         }
         if (Timer > 120)
-            RB.velocity *= 0.8f;
+            RB.linearVelocity *= 0.8f;
     }
     public override void OnKill()
     {

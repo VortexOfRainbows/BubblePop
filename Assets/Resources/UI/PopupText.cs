@@ -22,7 +22,7 @@ public class PopupText : MonoBehaviour
         tmp.text = text;
         tmp.color = clr;
         tmp.fontStyle = bold ? (FontStyles)FontStyle.Bold : 0;
-        obj.GetComponent<Rigidbody2D>().velocity = velo;
+        obj.GetComponent<Rigidbody2D>().linearVelocity = velo;
         PopupText p = obj.GetComponent<PopupText>();
         p.targetScale = obj.transform.localScale * size;
         p.timeLeft = p.MaxTimeLeft = time;
@@ -41,6 +41,6 @@ public class PopupText : MonoBehaviour
         if(percent < 0.5f)
             tmp.color = new Color(tmp.color.r, tmp.color.g, tmp.color.b, 2 * percent);
         --timeLeft;
-        rb.velocity *= 0.98f;
+        rb.linearVelocity *= 0.98f;
     }
 }

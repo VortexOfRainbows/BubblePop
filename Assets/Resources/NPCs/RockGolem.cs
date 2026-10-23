@@ -155,8 +155,8 @@ public class RockGolem : RockSpider
                 }
             }
             Vector2 norm = HasLineOfSightWithTarget ? toPlayer.normalized : GetPathfindingToPlayerNorm();
-            RB.velocity += norm * speed;
-            RB.velocity *= 0.95f;
+            RB.linearVelocity += norm * speed;
+            RB.linearVelocity *= 0.95f;
 
             norm *= 0.5f + 0.5f * percent;
             Head.transform.SetLocalEulerZ(norm.x * 20 * norm.y);
@@ -199,17 +199,17 @@ public class RockGolem : RockSpider
                 Vector2 old = transform.position;
                 transform.position = parent + parentToMe.normalized * snapDist;
                 Vector2 oldToNew = (Vector2)transform.position - old;
-                RB.velocity = Vector2.Lerp(RB.velocity, oldToNew * magnitude / Time.fixedDeltaTime, 0.05f);
+                RB.linearVelocity = Vector2.Lerp(RB.linearVelocity, oldToNew * magnitude / Time.fixedDeltaTime, 0.05f);
             }
-            SpawnedInAlpha += RB.velocity.magnitude * Time.fixedDeltaTime * 0.5f;
-            RB.position -= RB.velocity * Time.fixedDeltaTime;
+            SpawnedInAlpha += RB.linearVelocity.magnitude * Time.fixedDeltaTime * 0.5f;
+            RB.position -= RB.linearVelocity * Time.fixedDeltaTime;
         }
-        float magnitude2 = RB.velocity.magnitude;
+        float magnitude2 = RB.linearVelocity.magnitude;
         if(magnitude2 > 0)
             TiltCounter += Mathf.Sqrt(magnitude2) * Time.fixedDeltaTime * 0.4f;
         Body.LerpLocalEulerZ(Mathf.Sin(TiltCounter * Mathf.PI) * 6, 0.5f);
         hasSpawned = true;
-        UpdateDirection(Utils.SignNoZero(RB.velocity.x));
+        UpdateDirection(Utils.SignNoZero(RB.linearVelocity.x));
         UpdateLegRotations();
         SpawnedInAlpha = Mathf.Clamp01(SpawnedInAlpha);
     }
@@ -272,7 +272,7 @@ public class RockGolem : RockSpider
     public void UpdateLegRotations()
     {
         float[] radians = new float[] {Mathf.PI, Mathf.PI * 3 / 2, Mathf.PI / 2, 0};
-        movementOffset = Mathf.LerpAngle(movementOffset, (RB.velocity.ToRotation() + Mathf.PI / 2) * Mathf.Rad2Deg, 0.05f);
+        movementOffset = Mathf.LerpAngle(movementOffset, (RB.linearVelocity.ToRotation() + Mathf.PI / 2) * Mathf.Rad2Deg, 0.05f);
         Color c = IsDummy ? Color.white : Color.Lerp(Color.red, Color.white, SpawnedInAlpha);
         for (int i = 0; i < LegPoints.Length; ++i)
         {

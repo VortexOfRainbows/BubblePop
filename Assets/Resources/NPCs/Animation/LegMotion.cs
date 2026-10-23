@@ -41,10 +41,10 @@ public class LegMotion : Animator
             if(f.OnSkateboard)
                 ParentVelocity *= p.MovementDeacceleration;
             else
-                ParentVelocity = Parent.RB.velocity * (1 - f.SkateboardPercent);
+                ParentVelocity = Parent.RB.linearVelocity * (1 - f.SkateboardPercent);
         }
         else
-            ParentVelocity = Parent.RB.velocity;
+            ParentVelocity = Parent.RB.linearVelocity;
         float rRate = 1 - ResetRate;
         float walkMotion = WalkSize;
         float walkDirection = 1f;

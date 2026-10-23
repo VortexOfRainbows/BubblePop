@@ -17,7 +17,7 @@ public class SmallBubble : Projectile
         Penetrate = 1;
         Friendly = false;
         SpriteRendererGlow.gameObject.SetActive(false);
-        RB.velocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
+        RB.linearVelocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
 
         if (PlayerOwner.EternalBubbles > 0)
         {
@@ -60,7 +60,7 @@ public class SmallBubble : Projectile
         deathTime -= RandomLifeShorten;
         if (++timer2 > 3)
             Friendly = true;
-        Vector2 velo = RB.velocity;
+        Vector2 velo = RB.linearVelocity;
         if (this is TranscendentOilBubble)
             velo *= 0.99f;
         else if (timer > deathTime - 100 + RandomLifeShorten)
@@ -69,10 +69,10 @@ public class SmallBubble : Projectile
             velo *= 0.9725f;
         else if (timer > deathTime - 160 + RandomLifeShorten)
             velo *= 0.99f;
-        RB.velocity = velo;
-        float speed = RB.velocity.magnitude;
+        RB.linearVelocity = velo;
+        float speed = RB.linearVelocity.magnitude;
         float rtSpeed = Mathf.Sqrt(speed);
-        RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x);
+        RB.rotation += rtSpeed * Mathf.Sign(RB.linearVelocity.x);
         float targetScale = 0.66f;
         if(Data.Length > 0)
         {
@@ -91,7 +91,7 @@ public class SmallBubble : Projectile
         }
         if ((int)timer % 4 == 0)
         {
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f + Utils.RandCircle(transform.lossyScale.x * 0.4f), .225f, norm * -.75f, 0.6f, Utils.RandFloat(0.225f, 0.35f), 0, SpriteRenderer.color.WithAlpha(0.8f));
         }
         if (timer > deathTime)
@@ -200,13 +200,13 @@ public class BigBubble : Projectile
             timer = -attackRight;
             Vector2 circular = new Vector2(targetSize, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
             if (Utils.RandFloat(1) < 0.2f)
-                ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + PlayerOwner.RB.velocity * 0.9f, 0.2f, 0.3f, 0, Player.ProjectileColor);
+                ParticleManager.NewParticle((Vector2)transform.position + circular, .2f, -circular.normalized * 6 + PlayerOwner.RB.linearVelocity * 0.9f, 0.2f, 0.3f, 0, Player.ProjectileColor);
             if (attackRight >= Data1)
             {
                 for (int i = 0; i < 30; i++)
                 {
                     circular = new Vector2(targetSize * 0.5f + 1f, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-                    ParticleManager.NewParticle((Vector2)transform.position + circular, .3f, -circular.normalized * Utils.RandFloat(5, 10) + PlayerOwner.RB.velocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, Player.ProjectileColor);
+                    ParticleManager.NewParticle((Vector2)transform.position + circular, .3f, -circular.normalized * Utils.RandFloat(5, 10) + PlayerOwner.RB.linearVelocity * 0.9f, 0.2f, Utils.RandFloat(0.2f, 0.4f), 0, Player.ProjectileColor);
                 }
                 Data1 += 100;
             }
@@ -214,8 +214,8 @@ public class BigBubble : Projectile
             Vector2 awayFromWand = PlayerOwner.Weapon is BubbleGun ? new Vector2(1.8f + targetSize * 0.5f, 0.2f * Mathf.Sign(PlayerOwner.Animator.PointDirOffset)).RotatedBy(r) : new Vector2(1.4f, (0.51f + targetSize * 0.49f) * Mathf.Sign(PlayerOwner.Animator.PointDirOffset)).RotatedBy(r);
 
             transform.position = Vector2.Lerp(transform.position, (Vector2)PlayerOwner.Weapon.transform.position + awayFromWand, 0.15f);
-            RB.velocity *= 0.8f;
-            RB.velocity += PlayerOwner.RB.velocity * 0.1f;
+            RB.linearVelocity *= 0.8f;
+            RB.linearVelocity += PlayerOwner.RB.linearVelocity * 0.1f;
             Damage = (1 + target) * (2 + PlayerOwner.ChargeShotDamage);
             Data2 = target;
             //rb.rotation = toMouse.ToRotation() * Mathf.Rad2Deg;
@@ -227,21 +227,21 @@ public class BigBubble : Projectile
                 toMouse = toMouse.normalized * 6;
             Vector2 mouse = PlayerOwner.Position + toMouse;
             toMouse = mouse - (Vector2)transform.position;
-            RB.velocity = toMouse * 0.1f + toMouse.normalized * (10f + Mathf.Min(24, 24f * (timer + 50) / -200f));
+            RB.linearVelocity = toMouse * 0.1f + toMouse.normalized * (10f + Mathf.Min(24, 24f * (timer + 50) / -200f));
             timer = 1;
 
             for (int i = 0; i < 30; i++)
-                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .5f), RB.velocity * Utils.RandFloat(2f), 0.5f, Utils.RandFloat(.4f, 1f), 0, Player.ProjectileColor);
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .5f), RB.linearVelocity * Utils.RandFloat(2f), 0.5f, Utils.RandFloat(.4f, 1f), 0, Player.ProjectileColor);
 
-            RB.rotation = RB.velocity.ToRotation() * Mathf.Rad2Deg;
+            RB.rotation = RB.linearVelocity.ToRotation() * Mathf.Rad2Deg;
         }
         else if (timer > 0)
         {
-            RB.rotation += Mathf.Sqrt(RB.velocity.magnitude) * Mathf.Sign(RB.velocity.x);
+            RB.rotation += Mathf.Sqrt(RB.linearVelocity.magnitude) * Mathf.Sign(RB.linearVelocity.x);
             if (Utils.RandFloat(1) < 0.15f)
-                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x * 0.5f), Utils.RandFloat(.3f, .4f), RB.velocity * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.3f, .6f), 0, Player.ProjectileColor);
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x * 0.5f), Utils.RandFloat(.3f, .4f), RB.linearVelocity * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.3f, .6f), 0, Player.ProjectileColor);
             Friendly = true;
-            RB.velocity *= 1 - 0.0035f - timer / 4000f;
+            RB.linearVelocity *= 1 - 0.0035f - timer / 4000f;
             timer++;
             if (PlayerOwner.SoapySoap > 0 && timer <= 120)
             {
@@ -251,7 +251,7 @@ public class BigBubble : Projectile
                     interval = 1;
                 if (timer % interval == 0)
                 {
-                    Vector2 norm = RB.velocity.normalized;
+                    Vector2 norm = RB.linearVelocity.normalized;
                     float veloMult = Utils.RandFloat(0.25f, 3f + PlayerOwner.FasterBulletSpeed * 1.25f);
                     NewProjectile<SmallBubble>((Vector2)transform.position + Utils.RandCircle(transform.lossyScale.x * 0.5f), Utils.RandCircle(2) - norm * veloMult, 1, PlayerOwner);
                 }
@@ -269,7 +269,7 @@ public class BigBubble : Projectile
     {
         AudioManager.PlaySound(SoundID.BubblePop, gameObject.transform.position, 0.8f, 1.5f);
         gameObject.transform.localScale *= 0.8f;
-        RB.velocity *= 0.85f;
+        RB.linearVelocity *= 0.85f;
         Damage *= 0.9f;
         if (Damage < 0)
             Kill();
@@ -277,7 +277,7 @@ public class BigBubble : Projectile
         {
             int c = 5 + (int)Damage * 3;
             for (int i = 0; i < c; i++)
-                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .4f), RB.velocity.normalized * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.4f, .8f), 0, default);
+                ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(transform.localScale.x), Utils.RandFloat(.3f, .4f), RB.linearVelocity.normalized * Utils.RandFloat(1f), 0.4f, Utils.RandFloat(.4f, .8f), 0, default);
         }
     }
     public override bool OnTileCollide(Collider2D collision)
@@ -290,15 +290,15 @@ public class BigBubble : Projectile
                 return false;
             if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
             {
-                bool goingInThatDirection = Mathf.Sign(RB.velocity.x) == Mathf.Sign(diff.x);
+                bool goingInThatDirection = Mathf.Sign(RB.linearVelocity.x) == Mathf.Sign(diff.x);
                 if (goingInThatDirection)
-                    RB.velocity = new Vector2(RB.velocity.x * -1.1f, RB.velocity.y);
+                    RB.linearVelocity = new Vector2(RB.linearVelocity.x * -1.1f, RB.linearVelocity.y);
             }
             else
             {
-                bool goingInThatDirection = Mathf.Sign(RB.velocity.y) == Mathf.Sign(diff.y);
+                bool goingInThatDirection = Mathf.Sign(RB.linearVelocity.y) == Mathf.Sign(diff.y);
                 if (goingInThatDirection)
-                    RB.velocity = new Vector2(RB.velocity.x, RB.velocity.y * -1.1f);
+                    RB.linearVelocity = new Vector2(RB.linearVelocity.x, RB.linearVelocity.y * -1.1f);
             }
         }
         return false;
@@ -344,7 +344,7 @@ public class ThunderBubble : Projectile
         float total = PlayerOwner.Electroluminescence;
         for(int i = 0; i < total; ++i)
         {
-            ThunderLightSpearCaster TLSC = NewProjectile<ThunderLightSpearCaster>(transform.position, Vector2.zero, 2.0f + PlayerOwner.LightSpear * 0.5f, PlayerOwner, i, total, ScaleFactor * 1.1f, Utils.SignNoZero(RB.velocity.x)).GetComponent<ThunderLightSpearCaster>();
+            ThunderLightSpearCaster TLSC = NewProjectile<ThunderLightSpearCaster>(transform.position, Vector2.zero, 2.0f + PlayerOwner.LightSpear * 0.5f, PlayerOwner, i, total, ScaleFactor * 1.1f, Utils.SignNoZero(RB.linearVelocity.x)).GetComponent<ThunderLightSpearCaster>();
             TLSC.FakeParent = transform;
         }
     }
@@ -356,7 +356,7 @@ public class ThunderBubble : Projectile
     }
     public override void AI()
     {
-        Vector2 velo = RB.velocity;
+        Vector2 velo = RB.linearVelocity;
         float speed = velo.magnitude;
         float percent = Mathf.Max(0, 2 - timer / 50f);
         if(!Recalled && percent > 0)
@@ -415,7 +415,7 @@ public class ThunderBubble : Projectile
             else
             {
                 float rtSpeed = Mathf.Sqrt(speed);
-                RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x);
+                RB.rotation += rtSpeed * Mathf.Sign(RB.linearVelocity.x);
                 transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
             }
             timer++;
@@ -452,7 +452,7 @@ public class ThunderBubble : Projectile
                 ParticleManager.SummonLightningPylon2(transform.position, targetPos, ColorVar, 0.15f);
             }
         }
-        RB.velocity = velo;
+        RB.linearVelocity = velo;
         if(timer % 50 == 0)
         {
             if (Damage < 1)
@@ -511,15 +511,15 @@ public class ThunderBubble : Projectile
             return false;
         if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
         {
-            bool goingInThatDirection = Mathf.Sign(RB.velocity.x) == Mathf.Sign(diff.x);
+            bool goingInThatDirection = Mathf.Sign(RB.linearVelocity.x) == Mathf.Sign(diff.x);
             if(goingInThatDirection)
-                RB.velocity = new Vector2(RB.velocity.x * -1.0f, RB.velocity.y);
+                RB.linearVelocity = new Vector2(RB.linearVelocity.x * -1.0f, RB.linearVelocity.y);
         }
         else
         {
-            bool goingInThatDirection = Mathf.Sign(RB.velocity.y) == Mathf.Sign(diff.y);
+            bool goingInThatDirection = Mathf.Sign(RB.linearVelocity.y) == Mathf.Sign(diff.y);
             if(goingInThatDirection)
-                RB.velocity = new Vector2(RB.velocity.x, RB.velocity.y * -1.0f);
+                RB.linearVelocity = new Vector2(RB.linearVelocity.x, RB.linearVelocity.y * -1.0f);
         }
         return false;
     }

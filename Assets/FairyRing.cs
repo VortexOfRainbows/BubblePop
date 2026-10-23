@@ -29,7 +29,7 @@ public class FairyRing : MonoBehaviour
             else if (type == 3)
                 output = CoinManager.SpawnShield(transform.position, 1);
             if (output != null)
-                output.rb.velocity *= 0;
+                output.rb.linearVelocity *= 0;
         }
 
         Destroy(gameObject);

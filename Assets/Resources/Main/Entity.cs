@@ -170,8 +170,8 @@ public partial class Entity : MonoBehaviour
         Vector2 veloOffset = Vector2.zero;
         if (RB != null)
         {
-            RB.velocity *= 0.95f;
-            veloOffset = -RB.velocity * Time.fixedDeltaTime;
+            RB.linearVelocity *= 0.95f;
+            veloOffset = -RB.linearVelocity * Time.fixedDeltaTime;
         }
         float closestDist = float.MaxValue;
         bool wasPushed = false;

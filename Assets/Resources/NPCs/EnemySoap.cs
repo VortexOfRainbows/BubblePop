@@ -41,16 +41,16 @@ public class EnemySoap : Enemy
                     AudioManager.PlaySound(SoundID.SoapSlide, transform.position, 1f, 1.2f);
                 else
                     AudioManager.PlaySound(SoundID.SoapSlide, transform.position, 1f, 1f);
-                RB.velocity *= 0.5f;
-                RB.velocity += toPlayer.normalized * 6f;
+                RB.linearVelocity *= 0.5f;
+                RB.linearVelocity += toPlayer.normalized * 6f;
             }
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             if(Random.Range(0, 2) == 0)
                 ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(1) - norm * 1.5f, .3f, norm * Utils.RandFloat(5f, 15f), 1.5f, 0.6f, 1, new Color(1, 0.85f, 0.99f));
             else if (Random.Range(0, 3) != 0)
                 ParticleManager.NewParticle((Vector2)transform.position + Utils.RandCircle(1) - norm * 1.5f, Utils.RandFloat(0.45f, 0.75f), norm * Utils.RandFloat(5f, 15f), 1.5f, Utils.RandFloat(0.5f, 0.7f), 0, new Color(1, 0.85f, 0.99f));
-            RB.velocity += toPlayer.normalized * 0.5f;
-            float rotation = RB.velocity.ToRotation() * Mathf.Rad2Deg;
+            RB.linearVelocity += toPlayer.normalized * 0.5f;
+            float rotation = RB.linearVelocity.ToRotation() * Mathf.Rad2Deg;
             if (rotation > 90)
                 rotation -= 180;
             else if (rotation < -90)
@@ -58,7 +58,7 @@ public class EnemySoap : Enemy
             Visual.transform.localEulerAngles = new Vector3(0, 0, rotation);
         }
         if(timer > 90)
-            RB.velocity *= 0.91f;
+            RB.linearVelocity *= 0.91f;
     }
     public override void OnKill()
     {

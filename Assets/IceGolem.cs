@@ -38,7 +38,7 @@ public class IceGolem : Ent
         if (AICounter > 100)
         {
             Vector2 toTarget = Target.Position - (Vector2)transform.position;
-            RB.velocity *= Inertia;
+            RB.linearVelocity *= Inertia;
             UpdateDirection(Utils.SignNoZero(toTarget.x));
             if (AICounter > 250)
             {

@@ -68,7 +68,7 @@ public static class CoinManager
     {
         GameObject obj = GameObject.Instantiate(coinType, pos, Quaternion.identity, Main.GenericSuperParent);
         Rigidbody2D r = obj.GetComponent<Rigidbody2D>();
-        r.velocity = Utils.RandCircle(8);
+        r.linearVelocity = Utils.RandCircle(8);
         obj.GetComponent<Coin>().BeforeCollectableTimer = collectDelay;
         return r;
     }
@@ -80,19 +80,19 @@ public static class CoinManager
         for (; bronze > 0; --bronze)
         {
             var r = Spawn(Bronze, pos, collectDelay);
-            r.velocity = velocity.Invoke();
+            r.linearVelocity = velocity.Invoke();
             r.transform.localScale = Vector3.one * 0.1f;
         }
         for (; silver > 0; --silver)
         {
             var r = Spawn(Silver, pos, collectDelay);
-            r.velocity = velocity.Invoke();
+            r.linearVelocity = velocity.Invoke();
             r.transform.localScale = Vector3.one * 0.1f;
         }
         for (; gold > 0; --gold)
         {
             var r = Spawn(Gold, pos, collectDelay);
-            r.velocity = velocity.Invoke();
+            r.linearVelocity = velocity.Invoke();
             r.transform.localScale = Vector3.one * 0.1f;
         }
     }
@@ -100,7 +100,7 @@ public static class CoinManager
     public static Coin SpawnHeart(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Heart, pos, Quaternion.identity, Main.GenericSuperParent);
-        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
+        obj.GetComponent<Rigidbody2D>().linearVelocity = Utils.RandCircle(4);
         Coin c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;
         return c;
@@ -109,7 +109,7 @@ public static class CoinManager
     public static Coin SpawnShield(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Shield, pos, Quaternion.identity, Main.GenericSuperParent);
-        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
+        obj.GetComponent<Rigidbody2D>().linearVelocity = Utils.RandCircle(4);
         Coin c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;
         return c;
@@ -118,7 +118,7 @@ public static class CoinManager
     public static Coin SpawnKey(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Key, pos, Quaternion.identity, Main.GenericSuperParent);
-        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
+        obj.GetComponent<Rigidbody2D>().linearVelocity = Utils.RandCircle(4);
         var c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;
         return c;
@@ -129,7 +129,7 @@ public static class CoinManager
         GameObject Prefab = value < 0 ? Shard : Gem;
         value = Mathf.Abs(value);
         GameObject obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity, Main.GenericSuperParent);
-        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
+        obj.GetComponent<Rigidbody2D>().linearVelocity = Utils.RandCircle(4);
         var c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;
         if(value > 1)
@@ -144,7 +144,7 @@ public static class CoinManager
     public static void SpawnToken(Vector2 pos, float collectDelay)
     {
         GameObject obj = GameObject.Instantiate(Token, pos, Quaternion.identity, Main.GenericSuperParent);
-        obj.GetComponent<Rigidbody2D>().velocity = Utils.RandCircle(4);
+        obj.GetComponent<Rigidbody2D>().linearVelocity = Utils.RandCircle(4);
         var c = obj.GetComponent<Coin>();
         c.BeforeCollectableTimer = collectDelay;
     }

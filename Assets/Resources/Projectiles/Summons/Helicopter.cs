@@ -96,7 +96,7 @@ public class Helicopter : Projectile
                 int i = Timer3 % 2;
                 Vector2 offset = i == 0 ? leftOffset : rightOffset;
                 Vector2 shotPosition = (Vector2)transform.position + offset.RotatedBy(transform.localEulerAngles.z * Mathf.Deg2Rad);
-                Vector2 bodyToTarget = (Vector2)target.transform.position + (10 * Time.fixedDeltaTime * target.RB.velocity) - shotPosition;
+                Vector2 bodyToTarget = (Vector2)target.transform.position + (10 * Time.fixedDeltaTime * target.RB.linearVelocity) - shotPosition;
                 Projectile.NewProjectile<TranscendentOilBubble>(shotPosition, bodyToTarget.normalized * 24f, 1, PlayerOwner, 0, 1);
                 if (Timer3 < BurstCount())
                     timer2 -= 12;
@@ -110,10 +110,10 @@ public class Helicopter : Projectile
         }
         float travelDistance = Mathf.Min(magnitude, speed + 0.01f * Mathf.Pow(magnitude, 1.25f)) * 100; //framespeed is 100
         toTarget = travelDistance * toTarget.normalized;
-        if (RB.velocity.magnitude > travelDistance)
-            RB.velocity *= 0.5f;
-        RB.velocity = Vector2.Lerp(RB.velocity, toTarget * 0.5f, lerpSpeed);
-        transform.LerpLocalEulerZ(Mathf.Clamp(RB.velocity.x * -2, -15, 15), lerpSpeed * 0.5f);
+        if (RB.linearVelocity.magnitude > travelDistance)
+            RB.linearVelocity *= 0.5f;
+        RB.linearVelocity = Vector2.Lerp(RB.linearVelocity, toTarget * 0.5f, lerpSpeed);
+        transform.LerpLocalEulerZ(Mathf.Clamp(RB.linearVelocity.x * -2, -15, 15), lerpSpeed * 0.5f);
         Timer4 += Time.fixedDeltaTime * 1.25f;
     }
     public void FrameUpdate()

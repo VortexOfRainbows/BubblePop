@@ -25,18 +25,18 @@ public class FlamingoFeather : Projectile
     public void FeatherAI()
     {
         transform.LerpLocalScale(new Vector3(0.65f, 0.45f, 1), 0.05f);
-        RB.rotation = RB.velocity.ToRotation() * Mathf.Rad2Deg + 90;
+        RB.rotation = RB.linearVelocity.ToRotation() * Mathf.Rad2Deg + 90;
 
         if(timer % 10 == 0 && timer < 100)
             target = Player.FindClosest(transform.position, out Vector2 _, out float _, 50);
         timer++;
         if (timer < 300)
         {
-            float magnitude = RB.velocity.magnitude + 0.03f;
+            float magnitude = RB.linearVelocity.magnitude + 0.03f;
             if(target != null)
             {
-                RB.velocity += (target.Position - (Vector2)transform.position).normalized * 0.12f;
-                RB.velocity = RB.velocity.normalized * magnitude;
+                RB.linearVelocity += (target.Position - (Vector2)transform.position).normalized * 0.12f;
+                RB.linearVelocity = RB.linearVelocity.normalized * magnitude;
             }
         }
         if (timer > 410)

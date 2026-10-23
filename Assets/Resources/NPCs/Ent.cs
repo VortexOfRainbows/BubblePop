@@ -35,12 +35,12 @@ public class Ent : Enemy
     {
         float dir = Utils.SignNoZero(Visual.transform.localScale.x);
         Vector2 toTarget = GetPathfindingToPlayerNorm();
-        RB.velocity += toTarget * MoveSpeed;
-        RB.velocity *= Inertia;
-        if (Mathf.Abs(RB.velocity.x) > 0.1f)
-            UpdateDirection(RB.velocity.x);
-        float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * dir * -1f;
-        tilt += RB.velocity.y * 2.0f * dir * (this is IceGolem ? 0.5f : 1.0f);
+        RB.linearVelocity += toTarget * MoveSpeed;
+        RB.linearVelocity *= Inertia;
+        if (Mathf.Abs(RB.linearVelocity.x) > 0.1f)
+            UpdateDirection(RB.linearVelocity.x);
+        float tilt = Mathf.Sqrt(Mathf.Abs(RB.linearVelocity.x)) * dir * -1f;
+        tilt += RB.linearVelocity.y * 2.0f * dir * (this is IceGolem ? 0.5f : 1.0f);
         Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
     }
     public override void AI()

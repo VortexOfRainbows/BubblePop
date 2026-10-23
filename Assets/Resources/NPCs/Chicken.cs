@@ -27,12 +27,12 @@ public class Chicken : Enemy
     public void MoveUpdate()
     {
         Vector2 moveDir = GetPathfindingToPlayerNorm();
-        RB.velocity += moveDir * MoveSpeed;
-        RB.velocity *= Inertia;
-        if (Mathf.Abs(RB.velocity.x) > 0.1f)
-            UpdateDirection(RB.velocity.x);
-        float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
-        tilt += RB.velocity.y * 2.0f * Visual.transform.localScale.x;
+        RB.linearVelocity += moveDir * MoveSpeed;
+        RB.linearVelocity *= Inertia;
+        if (Mathf.Abs(RB.linearVelocity.x) > 0.1f)
+            UpdateDirection(RB.linearVelocity.x);
+        float tilt = Mathf.Sqrt(Mathf.Abs(RB.linearVelocity.x)) * Visual.transform.localScale.x * -1.5f;
+        tilt += RB.linearVelocity.y * 2.0f * Visual.transform.localScale.x;
         Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
     }
     public override void AI()

@@ -19,8 +19,8 @@ public class Gatorade : Projectile
     public override void AI()
     {
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 1.5f, 0.06f);
-        transform.localEulerAngles = Vector3.forward * (RB.velocity.ToRotation() * Mathf.Rad2Deg - 90);
-        RB.velocity *= 1.001f;
+        transform.localEulerAngles = Vector3.forward * (RB.linearVelocity.ToRotation() * Mathf.Rad2Deg - 90);
+        RB.linearVelocity *= 1.001f;
         float deathTime = 250;
         float FadeOutTime = 10;
         if (timer > deathTime + FadeOutTime)
@@ -29,7 +29,7 @@ public class Gatorade : Projectile
         }
         if (Utils.RandFloat() < 0.4f)
         {
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, 1.2f, norm * -.75f, 0.8f, Utils.RandFloat(0.45f, 0.6f), 3, SpriteRendererGlow.color);
         }
         if (timer > deathTime)

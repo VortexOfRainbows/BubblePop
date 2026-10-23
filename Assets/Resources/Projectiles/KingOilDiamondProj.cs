@@ -14,7 +14,7 @@ public class KingOilDiamondProj : Projectile
         timer2 = 0;
         Penetrate = -1;
         Friendly = true;
-        RB.velocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
+        RB.linearVelocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = Color.clear;
         SpriteRendererGlow.transform.localScale *= 0.5f;
@@ -83,14 +83,14 @@ public class KingOilDiamondProj : Projectile
 
         Vector2 toTarget = target - (Vector2)transform.position;
         float speed = Mathf.Min(55f, toTarget.magnitude * 100);
-        RB.velocity = toTarget.normalized * speed;
+        RB.linearVelocity = toTarget.normalized * speed;
 
         if ((toTarget.magnitude < 0.25f && SwitchedPos && halfTimer >= 2) || (PlayerOwner.Weapon is not OilScepter o || o.ActiveDiamondProjectile <= 0))
             Kill();
 
         transform.localScale = Vector2.Lerp(Vector2.one, new Vector2(2f, 3f), scaler);
         SpriteRendererGlow.color = c * scaler;
-        transform.SetLocalEulerZ(RB.velocity.x * -0.2f);
+        transform.SetLocalEulerZ(RB.linearVelocity.x * -0.2f);
 
         if (halfTimer > 0.25f && halfTimer < 1.7f)
         {
@@ -115,7 +115,7 @@ public class KingOilDiamondProj : Projectile
         AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 0.3f, 0.475f, 0);
         AudioManager.PlaySound(SoundID.SoapDie, transform.position, 1.125f, 1.7f, 0);
         for (int i = 0; i < 15; ++i)
-            ParticleManager.NewParticle(target.transform.position + new Vector3(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)), 3, RB.velocity * Utils.RandFloat(0.3f) + Utils.RandCircle(5), 5, Utils.RandFloat(0.7f, 0.8f), 3,
+            ParticleManager.NewParticle(target.transform.position + new Vector3(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)), 3, RB.linearVelocity * Utils.RandFloat(0.3f) + Utils.RandCircle(5), 5, Utils.RandFloat(0.7f, 0.8f), 3,
                 Color.Lerp(Color.red, ColorHelper.RarityColors[5], Utils.RandFloat()) * 0.95f);
         if(target is Enemy e)
             e.DetonateAllDebuffs();

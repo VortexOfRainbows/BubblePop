@@ -51,8 +51,8 @@ public class Crow : Enemy
             if (JumpTimer >= 40)
             {
                 JumpTimer = -70;
-                RB.velocity *= 0.5f;
-                RB.velocity += toTarget * (MoveSpeed * 45);
+                RB.linearVelocity *= 0.5f;
+                RB.linearVelocity += toTarget * (MoveSpeed * 45);
                 //float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
                 //tilt += RB.velocity.y * 2.0f * Visual.transform.localScale.x;
                 //Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
@@ -62,27 +62,27 @@ public class Crow : Enemy
                 if (JumpTimer >= 0)
                 {
                     JumpAnimation.JumpPercent = JumpTimer / 40f;
-                    RB.velocity *= Inertia;
+                    RB.linearVelocity *= Inertia;
                     if(dist > 20)
-                        RB.velocity += toTarget * (MoveSpeed * JumpAnimation.JumpPercent);
+                        RB.linearVelocity += toTarget * (MoveSpeed * JumpAnimation.JumpPercent);
                 }
                 else
                 {
                     JumpAnimation.JumpPercent = JumpTimer / 70f;
                 }
             }
-            if (Mathf.Abs(RB.velocity.x) > 0.1f)
-                UpdateDirection(RB.velocity.x);
+            if (Mathf.Abs(RB.linearVelocity.x) > 0.1f)
+                UpdateDirection(RB.linearVelocity.x);
             IdleTimer = 100;
         }
         else if(--initialShootDelay <= 0 && (HasShootingLineOfSight || IdleTimer != 100))
         {
             JumpTimer = 0;
             JumpAnimation.JumpPercent = 0;
-            RB.velocity *= Inertia;
+            RB.linearVelocity *= Inertia;
             if (dist > 12.5f)
             {
-                RB.velocity += 0.5f * MoveSpeed * toTarget.normalized;
+                RB.linearVelocity += 0.5f * MoveSpeed * toTarget.normalized;
             }
             if(dist >= 11)
             {
@@ -110,7 +110,7 @@ public class Crow : Enemy
         }
         else
         {
-            RB.velocity *= Inertia;
+            RB.linearVelocity *= Inertia;
         }
     }
     public override void OnKill()

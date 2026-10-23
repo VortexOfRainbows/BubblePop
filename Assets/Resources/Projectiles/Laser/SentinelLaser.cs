@@ -8,18 +8,18 @@ public class SentinelLaser : BoxProjectile
         SpriteRendererGlow.enabled = false;
         Friendly = false;
         Hostile = true;
-        transform.SetLocalEulerZ(RB.velocity.ToRotation() * Mathf.Rad2Deg);
+        transform.SetLocalEulerZ(RB.linearVelocity.ToRotation() * Mathf.Rad2Deg);
     }
     public override void AI()
     {
         bool isInfector = Data.Length > 0 && Data1 == 1;
         bool isPurple = Data.Length > 0 && Data1 == 2;
-        transform.position -= (Vector3)(RB.velocity * Time.fixedDeltaTime);
+        transform.position -= (Vector3)(RB.linearVelocity * Time.fixedDeltaTime);
         if(timer <= 0)
         {
             Vector2 position = transform.position;
             timer = 0;
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             float distanceScan = 24f;
             Vector2 _ = Utils.RaycastWithTileSupport(position, norm, ref distanceScan, .1f, out bool _);
             float dist = distanceScan;
@@ -54,7 +54,7 @@ public class SentinelLaser : BoxProjectile
                     prev = spawnPos;
                 }
             }
-            RB.velocity *= 0;
+            RB.linearVelocity *= 0;
         }
         if (timer > 12)
             Hostile = false;

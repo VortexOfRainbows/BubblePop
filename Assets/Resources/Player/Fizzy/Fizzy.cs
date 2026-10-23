@@ -75,7 +75,7 @@ public class Fizzy : Body
                 while (starTimer <= 0)
                 {
                     starTimer += 4f / (trail + 3f); //4/4, 4/5, 4/6, 4/7, etc
-                    Vector2 circular = (Utils.RandCircle(1.3f) - Player.RB.velocity).normalized;
+                    Vector2 circular = (Utils.RandCircle(1.3f) - Player.RB.linearVelocity).normalized;
                     Vector2 randPos = (Vector2)transform.position + Utils.RandCircleEdge(3);
                     Projectile.NewProjectile<StarProj>((Vector2)Skateboard.transform.position + circular * 2 + new Vector2(0, 0.3f), circular * 8, 2, Player, randPos.x, randPos.y, Utils.RandFloat(-1, 1));
                 }
@@ -98,8 +98,8 @@ public class Fizzy : Body
                 AudioManager.PlaySound(SoundID.BathBombBurst, transform.position, 1.1f, 0.7f, 0);
                 int c = 1 + Player.BonusBoards;
                 for(int i = 0; i < c; ++i)
-                    Projectile.NewProjectile<SkateboardProj>(Skateboard.transform.position, Player.RB.velocity, 8 + Player.SkateboardBonusDamage, Player, Utils.RandFloat(-1, 1) * (0.5f + i * 0.1f));
-                PopupText.NewPopupText(transform.position, new Vector2(0, 10) + Utils.RandCircle(5) + Player.RB.velocity * 0.5f, Utils.PastelRainbow(Utils.RandFloat(Mathf.PI * -0.75f, Mathf.PI * 0.25f), 0.55f, default), CoolWords2[Utils.RandInt(CoolWords2.Length)], true, 1.1f, 80);
+                    Projectile.NewProjectile<SkateboardProj>(Skateboard.transform.position, Player.RB.linearVelocity, 8 + Player.SkateboardBonusDamage, Player, Utils.RandFloat(-1, 1) * (0.5f + i * 0.1f));
+                PopupText.NewPopupText(transform.position, new Vector2(0, 10) + Utils.RandCircle(5) + Player.RB.linearVelocity * 0.5f, Utils.PastelRainbow(Utils.RandFloat(Mathf.PI * -0.75f, Mathf.PI * 0.25f), 0.55f, default), CoolWords2[Utils.RandInt(CoolWords2.Length)], true, 1.1f, 80);
             }
             else
             {

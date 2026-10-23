@@ -29,8 +29,8 @@ public class SupernovaProj : Projectile
         SpriteRenderer.color = Color.Lerp(ColorVar, new Color(0.56f, 0.3f, 0.67f) * 2, percent * 0.8f + 0.2f * sqrtP);
         SpriteRendererGlow.color = SpriteRenderer.color;
         transform.localScale = transform.localScale.Lerp(Vector3.one * 0.85f, 0.2f);
-        RB.velocity *= 0.935f;
-        RB.rotation = Utils.WrapAngle(RB.velocity.ToRotation()) * Mathf.Rad2Deg;
+        RB.linearVelocity *= 0.935f;
+        RB.rotation = Utils.WrapAngle(RB.linearVelocity.ToRotation()) * Mathf.Rad2Deg;
 
         float sin = Mathf.Sin(Mathf.PI * percent);
         float sinusoid = 1.65f * (0.5f + 0.5f * sqrtP) * sin;

@@ -70,8 +70,8 @@ public class Cola : Weapon
     {
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.transform.position;
         float dir = Mathf.Sign(toMouse.x);
-        float bodyDir = Mathf.Sign(p.rb.velocity.x);
-        Vector2 attemptedPosition = new Vector2(1.1f, -0.25f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.velocity.normalized * 0.1f;
+        float bodyDir = Mathf.Sign(p.rb.linearVelocity.x);
+        Vector2 attemptedPosition = new Vector2(1.1f, -0.25f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.linearVelocity.normalized * 0.1f;
         attemptedPosition.x *= 1.25f;
         attemptedPosition *= 1.25f;
         Vector2 clampedMousePos = toMouse.magnitude < 3 ? (Vector2)p.transform.position + toMouse.normalized * 3 : Player.Control.MousePosition;

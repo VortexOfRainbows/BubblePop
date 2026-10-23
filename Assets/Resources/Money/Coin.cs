@@ -85,11 +85,11 @@ public class Coin : MonoBehaviour
         if(++getPlayerTimer % 10 == 0 || p == null)
             p = Player.FindClosest(transform.position, out _, out _);
         if (IsCoin || IsToken)
-            rb.rotation += rb.velocity.magnitude * 0.5f * -Mathf.Sign(rb.velocity.x);
+            rb.rotation += rb.linearVelocity.magnitude * 0.5f * -Mathf.Sign(rb.linearVelocity.x);
         else if(IsGem)
-            HeartVisual.transform.localEulerAngles = new Vector3(HeartVisual.transform.localEulerAngles.x, HeartVisual.transform.localEulerAngles.y, rb.velocity.x - 70);
+            HeartVisual.transform.localEulerAngles = new Vector3(HeartVisual.transform.localEulerAngles.x, HeartVisual.transform.localEulerAngles.y, rb.linearVelocity.x - 70);
         else if(IsShard)
-            HeartVisual.transform.localEulerAngles = new Vector3(HeartVisual.transform.localEulerAngles.x, HeartVisual.transform.localEulerAngles.y, rb.velocity.x);
+            HeartVisual.transform.localEulerAngles = new Vector3(HeartVisual.transform.localEulerAngles.x, HeartVisual.transform.localEulerAngles.y, rb.linearVelocity.x);
         float attractDist = IsHeart || IsKey || IsShield ? 3.5f : 4 + p.Magnet * 3f;
         if (IsToken)
             attractDist *= 3;
@@ -111,16 +111,16 @@ public class Coin : MonoBehaviour
             if (IsToken)
                 attractSpeed *= 3;
             float percent = length / attractDist;
-            rb.velocity = Vector2.Lerp(rb.velocity, toPlayer.normalized * attractSpeed, (1 - percent) * 0.2f);
-            float speed = rb.velocity.magnitude;
+            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, toPlayer.normalized * attractSpeed, (1 - percent) * 0.2f);
+            float speed = rb.linearVelocity.magnitude;
             float maxSpeed = attractDist + attractSpeed;
             if (speed > maxSpeed)
-                rb.velocity *= maxSpeed / speed; //Max out the velocity at the length to player, so it doesn't move to fast when it is close
+                rb.linearVelocity *= maxSpeed / speed; //Max out the velocity at the length to player, so it doesn't move to fast when it is close
             beingAttracted = true;
         }
         else
         {
-            rb.velocity *= IsKey ? 0.9725f : ((IsHeart || IsShield) && Value > 0) ? 0.935f : 0.985f;
+            rb.linearVelocity *= IsKey ? 0.9725f : ((IsHeart || IsShield) && Value > 0) ? 0.935f : 0.985f;
             AttractTimer = 0;
         }
         BeforeCollectableTimer -= Time.fixedDeltaTime;
@@ -158,7 +158,7 @@ public class Coin : MonoBehaviour
             }
             transform.LerpLocalScale(Vector3.one * 1.6f, 0.07f);
             HeartVisual.transform.localPosition = new Vector3(0, 0.1f * Mathf.Sin(++timer * Mathf.PI / 225f) - 0.1f, HeartVisual.transform.localPosition.z);
-            if(Value < 0 && rb.velocity.magnitude < 0.05f)
+            if(Value < 0 && rb.linearVelocity.magnitude < 0.05f)
             {
                 Value = -Value;
             }

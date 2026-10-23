@@ -67,7 +67,7 @@ public class Sentinel : Enemy
             }
             else
             {
-                RB.velocity += toTargetMovementDir * moveSpeed;
+                RB.linearVelocity += toTargetMovementDir * moveSpeed;
                 inertiaMult = 0.95f;
             }
         }
@@ -87,7 +87,7 @@ public class Sentinel : Enemy
                 AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.5f, 1.2f);
                 AudioManager.PlaySound(SoundID.Teleport, Head.position, 1, 0.67f, 0);
                 Vector2 norm = toTarget.normalized;
-                RB.velocity -= norm * 7f;
+                RB.linearVelocity -= norm * 7f;
                 int k = UsePurpleColors ? 1 : 0;
                 for (int j = -k; j <= k; ++j)
                 {
@@ -97,13 +97,13 @@ public class Sentinel : Enemy
                 AttackCounter = -50;
             }
             ++AttackCounter;
-            RB.velocity += 0.0225f * moveSpeed * toTargetMovementDir.RotatedBy(Mathf.PI * 0.4f);
+            RB.linearVelocity += 0.0225f * moveSpeed * toTargetMovementDir.RotatedBy(Mathf.PI * 0.4f);
         }
         foreach (SpriteRenderer glow in Glows)
             glow.color = glow.color.WithAlpha(Mathf.Lerp(glow.color.a, 0.1f + percentShot * 0.9f, 0.04f));
-        RB.velocity *= inertiaMult;
+        RB.linearVelocity *= inertiaMult;
         float mainDir = toTarget.x > 0 ? 1 : -1;
-        float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -3.0f;
+        float tilt = Mathf.Sqrt(Mathf.Abs(RB.linearVelocity.x)) * Visual.transform.localScale.x * -3.0f;
 
         Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.01f);
 
@@ -118,8 +118,8 @@ public class Sentinel : Enemy
             {
                 Vector2 old = Rings[i].transform.position;
                 Vector2 newPos = old;
-                newPos.x -= RB.velocity.x * Time.fixedDeltaTime;
-                newPos.y -= RB.velocity.y * Time.fixedDeltaTime * 0.2f;
+                newPos.x -= RB.linearVelocity.x * Time.fixedDeltaTime;
+                newPos.y -= RB.linearVelocity.y * Time.fixedDeltaTime * 0.2f;
                 Rings[i].transform.position = newPos;
             }
             Vector3 pos = DefaultPositions[i];
@@ -140,14 +140,14 @@ public class Sentinel : Enemy
                     Vector2 circular = new Vector2(0.5f, 0).RotatedBy(r);
                     circular.y *= 0.25f;
                     circular.y += 0.05f;
-                    ParticleManager.NewParticle(Rings[0].position + (Vector3)circular, Utils.RandFloat(1.25f, 1.5f), Vector2.up * 8 + circular * 10 + RB.velocity, 0.1f, 1f, ParticleManager.ID.Pixel, IsInfected ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(r), UsePurpleColors).WithAlpha(0.5f));
+                    ParticleManager.NewParticle(Rings[0].position + (Vector3)circular, Utils.RandFloat(1.25f, 1.5f), Vector2.up * 8 + circular * 10 + RB.linearVelocity, 0.1f, 1f, ParticleManager.ID.Pixel, IsInfected ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Mathf.Sin(r), UsePurpleColors).WithAlpha(0.5f));
                 }
             }
         }
-        if(RB.velocity.magnitude > 6 && DustCount % 3 == 0)
+        if(RB.linearVelocity.magnitude > 6 && DustCount % 3 == 0)
         {
-            ParticleManager.NewParticle(Rings[0].position - (Vector3)(RB.velocity.normalized * 0.65f + Utils.RandCircle(0.25f)), 
-                Utils.RandFloat(1.5f, 2.5f), -RB.velocity * 0.2f, 1f, Utils.RandFloat(0.8f, 1.2f), ParticleManager.ID.Pixel, 
+            ParticleManager.NewParticle(Rings[0].position - (Vector3)(RB.linearVelocity.normalized * 0.65f + Utils.RandCircle(0.25f)), 
+                Utils.RandFloat(1.5f, 2.5f), -RB.linearVelocity * 0.2f, 1f, Utils.RandFloat(0.8f, 1.2f), ParticleManager.ID.Pixel, 
                 IsInfected ? ColorHelper.CommandInfector : ColorHelper.SentinelColorsLerp(Utils.RandFloat(), UsePurpleColors).WithAlpha(0.5f));
         }
     }

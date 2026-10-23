@@ -54,10 +54,10 @@ public class OilHat : BubblemancerHat
                 if (ExhaustAnimation > 75)
                 {
                     Color exhaustColor = Color.Lerp(Color.gray, Color.black, Utils.RandFloat(0.2f));
-                    Vector2 velo = Player.RB.velocity;
+                    Vector2 velo = Player.RB.linearVelocity;
                     if (velo.y < 0)
                         velo.y *= 0.1f;
-                    ParticleManager.NewParticle((Vector2)ExhaustPipe.transform.position + Player.RB.velocity * Time.fixedDeltaTime, 1.0f, Vector2.up * 3 + velo, 0.5f, 3, ParticleManager.ID.Smoke, exhaustColor.WithAlpha(0.25f));
+                    ParticleManager.NewParticle((Vector2)ExhaustPipe.transform.position + Player.RB.linearVelocity * Time.fixedDeltaTime, 1.0f, Vector2.up * 3 + velo, 0.5f, 3, ParticleManager.ID.Smoke, exhaustColor.WithAlpha(0.25f));
                     ExhaustAnimation -= Utils.RandFloat(50, 75);
                 }
             }

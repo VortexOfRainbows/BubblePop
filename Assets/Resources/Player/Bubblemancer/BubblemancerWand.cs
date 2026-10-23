@@ -77,8 +77,8 @@ public class BubblemancerWand : Weapon
 
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.gameObject.transform.position;
         float dir = Mathf.Sign(toMouse.x);
-        float bodyDir = Mathf.Sign(p.rb.velocity.x);
-        Vector2 attemptedPosition = new Vector2(0.8f, 0.2f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.velocity.normalized * 0.1f;
+        float bodyDir = Mathf.Sign(p.rb.linearVelocity.x);
+        Vector2 attemptedPosition = new Vector2(0.8f, 0.2f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.linearVelocity.normalized * 0.1f;
         attemptedPosition.y -= 0.1f;
         //Debug.Log(attemptedPosition.ToRotation() * Mathf.Rad2Deg);
 

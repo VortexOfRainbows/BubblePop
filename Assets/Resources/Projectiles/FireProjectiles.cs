@@ -21,9 +21,9 @@ public class PhoenixFire : Projectile
         float FadeOutTime = 20;
         transform.localScale = Vector3.Lerp(transform.localScale, (1f - 0.8f * timer / deathTime) * 3 * Vector3.one, 0.1f);
 
-        Vector2 velo = RB.velocity;
+        Vector2 velo = RB.linearVelocity;
         velo *= 0.99f;
-        RB.velocity = velo;
+        RB.linearVelocity = velo;
 
         if (timer > deathTime + FadeOutTime)
         {
@@ -31,7 +31,7 @@ public class PhoenixFire : Projectile
         }
         if ((int)timer % 5 == 0)
         {
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .25f, norm * -.75f, 0.8f, Utils.RandFloat(0.25f, 0.4f), 0, SpriteRendererGlow.color);
         }
         if (timer > deathTime)
@@ -80,9 +80,9 @@ public class OilFire : Projectile
         float deathPercent = Mathf.Sqrt(Mathf.Max(0, 1 - timer / deathTime));
         transform.localScale = Vector3.Lerp(transform.localScale, deathPercent * 2 * Data1 * Vector3.one, 0.2f);
 
-        Vector2 velo = RB.velocity;
+        Vector2 velo = RB.linearVelocity;
         velo *= 0.99f;
-        RB.velocity = velo;
+        RB.linearVelocity = velo;
 
         if (timer > deathTime + FadeOutTime)
         {

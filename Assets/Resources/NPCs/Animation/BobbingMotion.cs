@@ -16,7 +16,7 @@ public class BobbingMotion : Animator
     public bool SqrtSpeed = true;
     public void Animate()
     {
-        float velocity = (SqrtSpeed ? Mathf.Sqrt(Parent.RB.velocity.magnitude) : Parent.RB.velocity.magnitude) * 2f * SpeedMult;
+        float velocity = (SqrtSpeed ? Mathf.Sqrt(Parent.RB.linearVelocity.magnitude) : Parent.RB.linearVelocity.magnitude) * 2f * SpeedMult;
         float walkSpeedMultiplier = Mathf.Clamp(Math.Abs(velocity), 0, 1f);
         Counter += velocity * Mathf.Deg2Rad * Mathf.Clamp(walkSpeedMultiplier * 9, 0, 1);
         Counter = Counter.WrapAngle();

@@ -100,8 +100,8 @@ public class Infector : Enemy
         Visual.transform.localPosition = Visual.transform.localPosition.Lerp(new Vector3(0, 0.25f + Mathf.Sin(bobbing) * 0.05f, 0), 0.1f);
         ShotRecoil = Mathf.Lerp(ShotRecoil, 1, 0.09f);
 
-        Crown.transform.LerpLocalEulerZ(RB.velocity.x, 0.25f);
-        Visual.transform.LerpLocalEulerZ(RB.velocity.x * 0.5f, 0.15f);
+        Crown.transform.LerpLocalEulerZ(RB.linearVelocity.x, 0.25f);
+        Visual.transform.LerpLocalEulerZ(RB.linearVelocity.x * 0.5f, 0.15f);
     }
     public bool FindHost()
     {
@@ -136,7 +136,7 @@ public class Infector : Enemy
         float dist = toPlayer.magnitude;
         UpdateShards();
         UpdateEye();
-        RB.velocity *= 0.925f;
+        RB.linearVelocity *= 0.925f;
         if (Host == null)
         {
             if(DizzyAnimation)
@@ -166,10 +166,10 @@ public class Infector : Enemy
             Vector2 toTarget = target - (Vector2)transform.position;
             if (toTarget.magnitude > 0.1f && ImplantAnimation <= 0)
             {
-                RB.velocity += toTarget.normalized * 5f;
-                Vector2 veloNorm = RB.velocity.normalized;
+                RB.linearVelocity += toTarget.normalized * 5f;
+                Vector2 veloNorm = RB.linearVelocity.normalized;
                 ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1) - veloNorm * 0.6f, 2.5f, Utils.RandCircle(1, 4) - veloNorm * 5, 0f, Utils.RandFloat(0.6f, 0.7f), ParticleManager.ID.Pixel, Color.red);
-                RB.velocity *= 0.9f;
+                RB.linearVelocity *= 0.9f;
                 if (!StartedMoving)
                 {
                     AudioManager.PlaySound(SoundID.ElectricCast, transform.position, 0.7f, 0.7875f, 0);
@@ -247,8 +247,8 @@ public class Infector : Enemy
                     toTarget = interTarget - (Vector2)transform.position;
                     if (toTarget.magnitude > 0.5f)
                     {
-                        RB.velocity += toTarget.normalized * 4f;
-                        Vector2 veloNorm = RB.velocity.normalized;
+                        RB.linearVelocity += toTarget.normalized * 4f;
+                        Vector2 veloNorm = RB.linearVelocity.normalized;
                         if (Counter <= 0)
                             ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1) - veloNorm * 0.6f, 2.5f, Utils.RandCircle(1, 4) - veloNorm * 5, 0f, Utils.RandFloat(0.6f, 0.7f), ParticleManager.ID.Pixel, Color.red);
                     }
@@ -288,7 +288,7 @@ public class Infector : Enemy
                     Projectile.NewProjectile<Bullet>((Vector2)Eye.transform.position + spread * 0.5f, spread * (FinishedImplanting ? 7.5f : 10 - Mathf.Abs(otherMult) * 2), 1, this, 1.3f);
                 }
                 ShotRecoil = -0.6f;
-                RB.velocity -= norm * 2.0f;
+                RB.linearVelocity -= norm * 2.0f;
                 Counter2++;
             }
             if (Counter2 > 2 && Counter > 105)

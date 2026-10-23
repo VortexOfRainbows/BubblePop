@@ -48,7 +48,7 @@ public class GachaProj : Projectile
             transform.localScale *= 0.5f;
             immunityFrames /= 2;
         }
-        RB.velocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
+        RB.linearVelocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = c * 0.875f;
         SpriteRendererGlow.transform.localScale *= 0.75f;
@@ -56,28 +56,28 @@ public class GachaProj : Projectile
     public override void AI()
     {
         float deathTime = 180;
-        float speed = RB.velocity.magnitude;
+        float speed = RB.linearVelocity.magnitude;
         float rtSpeed = Mathf.Sqrt(speed);
         float targetScale = 1f + Data1 * 0.125f;
         if (Data1 != 4)
         {
-            RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x) * 1.4f;
+            RB.rotation += rtSpeed * Mathf.Sign(RB.linearVelocity.x) * 1.4f;
             if ((int)timer % 3 == 0)
             {
-                Vector2 norm = RB.velocity.normalized;
+                Vector2 norm = RB.linearVelocity.normalized;
                 ParticleManager.NewParticle((Vector2)transform.position - norm * 0.1f + Utils.RandCircle(transform.lossyScale.x * 0.3f), .35f, norm * -.75f, 0.8f, Utils.RandFloat(0.225f, 0.35f), Data1 == 2 ? 1 : Data1 == 3 ? 2 : 0, c.WithAlphaMultiplied(0.5f));
             }
         }
         else
         {
-            SpriteRenderer.flipX = RB.velocity.x < 0;
+            SpriteRenderer.flipX = RB.linearVelocity.x < 0;
             if ((int)timer % 5 == 0)
             {
-                Vector2 norm = RB.velocity.normalized;
+                Vector2 norm = RB.linearVelocity.normalized;
                 ParticleManager.NewParticle((Vector2)transform.position - norm * 0.1f + Utils.RandCircle(transform.lossyScale.x * 0.3f), 2.0f, norm * 2.5f + Utils.RandCircle(3) + Vector2.up * 2.2f, 2.5f, Utils.RandFloat(0.5f, 0.7f), ParticleManager.ID.Pixel, c.WithAlphaMultiplied(0.5f));
             }
             targetScale = 0.9f;
-            RB.velocity *= 0.9925f;
+            RB.linearVelocity *= 0.9925f;
         }
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
         float FadeOutTime = 20;
@@ -143,7 +143,7 @@ public class GachaTokenProj : Projectile
         transform.localScale *= 0.7f;
         Penetrate = -1;
         Friendly = true;
-        RB.velocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
+        RB.linearVelocity *= 1 + 0.1f * PlayerOwner.FasterBulletSpeed;
         SpriteRendererGlow.sprite = Main.TextureAssets.Shadow;
         SpriteRendererGlow.color = c;
         SpriteRendererGlow.transform.localScale *= 1.25f; //2.5
@@ -155,15 +155,15 @@ public class GachaTokenProj : Projectile
     public float deathPercent = 1f;
     public override void AI()
     {
-        float speed = RB.velocity.magnitude + (timer < 500 ? 0.2f : 0.0f);
+        float speed = RB.linearVelocity.magnitude + (timer < 500 ? 0.2f : 0.0f);
         float rtSpeed = Mathf.Sqrt(speed);
-        RB.rotation += rtSpeed * Mathf.Sign(RB.velocity.x) * 1.5f;
+        RB.rotation += rtSpeed * Mathf.Sign(RB.linearVelocity.x) * 1.5f;
         float targetScale = 1f;
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * targetScale, 0.075f + 0.02f * rtSpeed);
         timer++;
         if (timer % 2 == 0)
         {
-            ParticleManager.NewParticle(transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f), Utils.RandFloat(-0.3f, 0.3f)), Utils.RandFloat(1.5f, 2.25f), -RB.velocity * Utils.RandFloat(0.0f, 0.2f), 2, Utils.RandFloat(0.5f, 0.6f), 3, ColorHelper.RarityColors[4] * 0.9f);
+            ParticleManager.NewParticle(transform.position + new Vector3(Utils.RandFloat(-0.3f, 0.3f), Utils.RandFloat(-0.3f, 0.3f)), Utils.RandFloat(1.5f, 2.25f), -RB.linearVelocity * Utils.RandFloat(0.0f, 0.2f), 2, Utils.RandFloat(0.5f, 0.6f), 3, ColorHelper.RarityColors[4] * 0.9f);
         }
         float deathArea = SwitchedPos ? 1f : 2f;
         Vector2 target = new(Data[0], Data[1]);
@@ -174,7 +174,7 @@ public class GachaTokenProj : Projectile
             Data[1] = target.y;
         }
         Vector2 toTarget = target - (Vector2)transform.position;
-        RB.velocity = Vector2.Lerp(RB.velocity * Mathf.Max(0.8f - timer / 2500f, (1.0f - timer / 550f)) * 0.75f, toTarget.normalized * speed, Mathf.Min(0.3f, 0.04f + timer / 550f)).normalized * speed;
+        RB.linearVelocity = Vector2.Lerp(RB.linearVelocity * Mathf.Max(0.8f - timer / 2500f, (1.0f - timer / 550f)) * 0.75f, toTarget.normalized * speed, Mathf.Min(0.3f, 0.04f + timer / 550f)).normalized * speed;
         if(SwitchedPos)
         {
             deathPercent = Mathf.Lerp(deathPercent, 1 - Mathf.Clamp(1 - (toTarget.magnitude - 1f) / 12f, 0, 1), 0.2f);
@@ -214,7 +214,7 @@ public class GachaTokenProj : Projectile
         AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 0.3f, 0.475f, 0);
         AudioManager.PlaySound(SoundID.SoapDie, transform.position, 1.125f, 1.7f, 0);
         for (int i = 0; i < 15; ++i)
-            ParticleManager.NewParticle(target.transform.position + new Vector3(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)), 3, RB.velocity * Utils.RandFloat(0.3f) + Utils.RandCircle(5), 5, Utils.RandFloat(0.7f, 0.8f), 3,
+            ParticleManager.NewParticle(target.transform.position + new Vector3(Utils.RandFloat(-1f, 1f), Utils.RandFloat(-1f, 1f)), 3, RB.linearVelocity * Utils.RandFloat(0.3f) + Utils.RandCircle(5), 5, Utils.RandFloat(0.7f, 0.8f), 3,
                 Color.Lerp(ColorHelper.RarityColors[0], ColorHelper.RarityColors[4], Utils.RandFloat()) * 0.95f);
     }
     public override void OnKill()
@@ -243,15 +243,15 @@ public class GachaTokenProj : Projectile
             return false;
         if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
         {
-            bool goingInThatDirection = Mathf.Sign(RB.velocity.x) == Mathf.Sign(diff.x);
+            bool goingInThatDirection = Mathf.Sign(RB.linearVelocity.x) == Mathf.Sign(diff.x);
             if (goingInThatDirection)
-                RB.velocity = new Vector2(RB.velocity.x * -1.1f, RB.velocity.y);
+                RB.linearVelocity = new Vector2(RB.linearVelocity.x * -1.1f, RB.linearVelocity.y);
         }
         else
         {
-            bool goingInThatDirection = Mathf.Sign(RB.velocity.y) == Mathf.Sign(diff.y);
+            bool goingInThatDirection = Mathf.Sign(RB.linearVelocity.y) == Mathf.Sign(diff.y);
             if (goingInThatDirection)
-                RB.velocity = new Vector2(RB.velocity.x, RB.velocity.y * -1.1f);
+                RB.linearVelocity = new Vector2(RB.linearVelocity.x, RB.linearVelocity.y * -1.1f);
         }
         SwitchedPos = true;
         return false;

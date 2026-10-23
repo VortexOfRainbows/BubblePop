@@ -24,7 +24,7 @@ public class StarProj : Projectile
         for (int i = 0; i < 8; i++)
         {
             Vector2 circular = new Vector2(2, 0).RotatedBy(Utils.RandFloat(Mathf.PI * 2));
-            ParticleManager.NewParticle((Vector2)transform.position, Utils.RandFloat(0.2f, 0.3f), circular * Utils.RandFloat(1, 2) + RB.velocity * 0.5f, 1f, 0.3f, 0, SpriteRenderer.color.WithAlpha(Utils.RandFloat(0.1f, 0.5f)));
+            ParticleManager.NewParticle((Vector2)transform.position, Utils.RandFloat(0.2f, 0.3f), circular * Utils.RandFloat(1, 2) + RB.linearVelocity * 0.5f, 1f, 0.3f, 0, SpriteRenderer.color.WithAlpha(Utils.RandFloat(0.1f, 0.5f)));
         }
         AudioManager.PlaySound(SoundID.StarbarbImpact.GetVariation(2), transform.position, 0.45f, 0.66f);
     }
@@ -38,29 +38,29 @@ public class StarProj : Projectile
             Vector2 rotatedTarget = ((Vector2)transform.position).RotatedBy(Mathf.Deg2Rad * 15 * Data[2], PlayerOwner.Position);
             Data1 = rotatedTarget.x;
             Data2 = rotatedTarget.y;
-            RB.position += PlayerOwner.RB.velocity * Time.fixedDeltaTime * 0.9f;
-            RB.velocity += PlayerOwner.RB.velocity * 0.1f * Time.fixedDeltaTime;
+            RB.position += PlayerOwner.RB.linearVelocity * Time.fixedDeltaTime * 0.9f;
+            RB.linearVelocity += PlayerOwner.RB.linearVelocity * 0.1f * Time.fixedDeltaTime;
         }
         Vector2 toTarget = (target - (Vector2)transform.position);
         float dist = toTarget.magnitude;
         toTarget = toTarget.normalized;
-        Vector2 newVelo = RB.velocity.magnitude * toTarget;
+        Vector2 newVelo = RB.linearVelocity.magnitude * toTarget;
         if (timer < 60)
-            RB.velocity *= 1.002f;
+            RB.linearVelocity *= 1.002f;
         if ((timer < 100 && dist > 1) || PlayerOwner.OrbitalStars)
         {
-            RB.velocity = Vector2.Lerp(RB.velocity, newVelo, PlayerOwner.OrbitalStars ? 0.0775f : 0.065f).normalized * RB.velocity.magnitude;
+            RB.linearVelocity = Vector2.Lerp(RB.linearVelocity, newVelo, PlayerOwner.OrbitalStars ? 0.0775f : 0.065f).normalized * RB.linearVelocity.magnitude;
         }
         else if (timer < 100)
             timer = 100;
-        RB.rotation += Mathf.Sqrt(RB.velocity.magnitude) * Mathf.Sign(RB.velocity.x);
+        RB.rotation += Mathf.Sqrt(RB.linearVelocity.magnitude) * Mathf.Sign(RB.linearVelocity.x);
         float timeOut = PlayerOwner.OrbitalStars ? 220 : 150;
         float fadeOut = 20f;
         if (timer > timeOut + fadeOut)
         {
             Kill();
         }
-        Vector2 norm = RB.velocity.normalized;
+        Vector2 norm = RB.linearVelocity.normalized;
         if(timer % 3 == 0 && timer > 10)
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .175f, norm * -.75f, 0.1f, Utils.RandFloat(0.45f, 0.55f), 2, SpriteRenderer.color * 0.5f);
         if (timer > timeOut)

@@ -270,24 +270,24 @@ public class Crucible : InteractableWorldObject
             int hardVal = (int)valuePerGem;
             hardVal += Utils.RandFloat() < valuePerGem - hardVal ? 1 : 0;
             var c = CoinManager.SpawnGem(pos, 0.5f, hardVal);
-            c.rb.velocity = new Vector2(c.rb.velocity.x * 0.1f, c.rb.velocity.y * 0.1f);
-            c.rb.velocity += new Vector2(0, -4.5f).RotatedBy(Mathf.Lerp(-55, 55, percent) * Mathf.Deg2Rad);
+            c.rb.linearVelocity = new Vector2(c.rb.linearVelocity.x * 0.1f, c.rb.linearVelocity.y * 0.1f);
+            c.rb.linearVelocity += new Vector2(0, -4.5f).RotatedBy(Mathf.Lerp(-55, 55, percent) * Mathf.Deg2Rad);
             c.transform.localScale = Vector3.one * 0.1f;
             if(i == 0 && value > 0)
             {
                 if(powerType == PowerUp.Get<QuantumCake>().MyID)
                 {
                     c = CoinManager.SpawnHeart(pos, 0.25f);
-                    c.rb.velocity = new Vector2(c.rb.velocity.x * 0.1f, c.rb.velocity.y * 0.1f);
-                    c.rb.velocity += new Vector2(0, -4.5f);
+                    c.rb.linearVelocity = new Vector2(c.rb.linearVelocity.x * 0.1f, c.rb.linearVelocity.y * 0.1f);
+                    c.rb.linearVelocity += new Vector2(0, -4.5f);
                     c.transform.localScale = Vector3.one * 0.1f;
                     c.Value = -1;
                 }
                 else if(powerType == PowerUp.Get<PiratesBooty>().MyID)
                 {
                     c = CoinManager.SpawnKey(pos, 0.25f);
-                    c.rb.velocity = new Vector2(c.rb.velocity.x * 0.1f, c.rb.velocity.y * 0.1f);
-                    c.rb.velocity += new Vector2(0, -6.5f);
+                    c.rb.linearVelocity = new Vector2(c.rb.linearVelocity.x * 0.1f, c.rb.linearVelocity.y * 0.1f);
+                    c.rb.linearVelocity += new Vector2(0, -6.5f);
                     c.transform.localScale = Vector3.one * 0.1f;
                 }
                 if(dropCrates)

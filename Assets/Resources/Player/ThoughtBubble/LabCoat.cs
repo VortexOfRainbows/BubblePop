@@ -50,8 +50,8 @@ public class LabCoat : BubblemancerCape
     }
     public void MoveArm(SpriteRenderer arm, float dir = 1, float bonus = 0)
     {
-        float veloX = 8 * Mathf.Sqrt(Mathf.Abs(p.rb.velocity.x));
-        float veloY = 4 * Mathf.Sqrt(Mathf.Abs(p.rb.velocity.y)) * Mathf.Sign(p.rb.velocity.y) * dir;
+        float veloX = 8 * Mathf.Sqrt(Mathf.Abs(p.rb.linearVelocity.x));
+        float veloY = 4 * Mathf.Sqrt(Mathf.Abs(p.rb.linearVelocity.y)) * Mathf.Sign(p.rb.linearVelocity.y) * dir;
         veloX -= veloY;
         bonus *= p.Direction;
         arm.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(arm.transform.eulerAngles.z - bonus, veloX * -p.Direction, 0.2f) + bonus);

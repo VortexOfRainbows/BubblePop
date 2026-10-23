@@ -41,13 +41,13 @@ public class BathBomb : Projectile
     public override void AI()
     {
         float speedMult = PlayerOwner.PassiveAttackSpeedModifier * 0.2f + 0.8f;
-        float speed = RB.velocity.magnitude;
+        float speed = RB.linearVelocity.magnitude;
         float rtSpeed = Mathf.Sqrt(speed) * speedMult;
-        RB.rotation -= rtSpeed * Mathf.Sign(RB.velocity.x);
+        RB.rotation -= rtSpeed * Mathf.Sign(RB.linearVelocity.x);
 
         if ((int)timer % 4 == 0)
         {
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f + Utils.RandCircle(transform.lossyScale.x * 0.4f), .225f, norm * -.75f, 0.6f, Utils.RandFloat(0.225f, 0.35f), 0, Player.ProjectileColor.WithAlphaMultiplied(0.8f));
         }
 
@@ -63,8 +63,8 @@ public class BathBomb : Projectile
             {
                 AudioManager.PlaySound(SoundID.StarbarbImpact, transform.position, 0.8f * (Data.Length > 3 ? Data[3] : 1.0f), 1.2f + 0.2f * timer2, 0);
                 playerStartPos = startPos = Destination;
-                Destination += RB.velocity * (Time.fixedDeltaTime * 50);
-                RB.velocity *= 0.5f;
+                Destination += RB.linearVelocity * (Time.fixedDeltaTime * 50);
+                RB.linearVelocity *= 0.5f;
                 timer = 0;
                 percent = 0;
                 BounceTimeNeeded *= 0.75f;
@@ -177,9 +177,9 @@ public class BathBombShrapnel : Projectile
     public override void AI()
     {
         if (startPos == Vector2.zero)
-            startPos = (Vector2)transform.position - RB.velocity.normalized;
-        RB.rotation += RB.velocity.magnitude * 0.2f * Mathf.Sign(RB.velocity.x) + 0.2f * RB.velocity.x;
-        RB.velocity *= 1.006f;
+            startPos = (Vector2)transform.position - RB.linearVelocity.normalized;
+        RB.rotation += RB.linearVelocity.magnitude * 0.2f * Mathf.Sign(RB.linearVelocity.x) + 0.2f * RB.linearVelocity.x;
+        RB.linearVelocity *= 1.006f;
         timer++;
         if (timer > 90)
         {

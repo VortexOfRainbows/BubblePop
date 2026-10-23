@@ -432,17 +432,17 @@ public class Enemy : Entity, IImpactedByProjIFrames
             ActionCounter = 1.001f;
         if(!ForceRunOnce)
         {
-            RB.position -= RB.velocity * Time.fixedDeltaTime;
+            RB.position -= RB.linearVelocity * Time.fixedDeltaTime;
         }
         while (ActionCounter >= 1)
         {
             if(!ForceRunOnce)
-                RB.position += RB.velocity * Time.fixedDeltaTime;
+                RB.position += RB.linearVelocity * Time.fixedDeltaTime;
             if (TarStacks > 0)
             {
                 float slowDown = 0.1f + 0.1f * TarStacks + Player.Instance.BonusTarSlow;
                 float postProcessSlowdown = slowDown / (slowDown + 0.8f);
-                RB.position -= postProcessSlowdown * Time.fixedDeltaTime * RB.velocity;
+                RB.position -= postProcessSlowdown * Time.fixedDeltaTime * RB.linearVelocity;
             }
             AI();
             Animate();

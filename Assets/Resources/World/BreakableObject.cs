@@ -13,7 +13,7 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
         GameObject prefab = rand <= 1 ? CratePrefab : rand == 2 ? BarrelPrefab : UrnPrefab;
         BreakableObject obj = Instantiate(prefab, pos, Quaternion.identity, Main.GenericSuperParent).GetComponent<BreakableObject>();
         obj.OverrideLootCoins = value;
-        obj.RB.velocity = velocity.Invoke();
+        obj.RB.linearVelocity = velocity.Invoke();
         obj.targetScale = Utils.RandFloat(0.7f, 0.8f);
         obj.transform.localScale = Vector2.zero;
         Physics2D.IgnoreCollision(obj.Collider, CrucibleColliders[0]);
@@ -184,9 +184,9 @@ public class BreakableObject : MonoBehaviour, IImpactedByProjIFrames
         if(targetScale > 0)
             transform.LerpLocalScale(new Vector2(targetScale, targetScale), 0.1f);
         if(Type == BreakableObjectType.Crate)
-            RB.velocity *= 0.94f;
+            RB.linearVelocity *= 0.94f;
         else if(Type == BreakableObjectType.Barrel || Type == BreakableObjectType.Urn)
-            RB.velocity *= 0.95f;
+            RB.linearVelocity *= 0.95f;
         SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, Color.white, 0.07f);
     }
 }

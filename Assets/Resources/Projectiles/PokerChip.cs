@@ -18,8 +18,8 @@ public class PokerChip : Projectile
     public override void AI()
     {
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 2, 0.1f);
-        RB.rotation = RB.velocity.ToRotation() * Mathf.Rad2Deg;
-        RB.velocity *= 1.007f;
+        RB.rotation = RB.linearVelocity.ToRotation() * Mathf.Rad2Deg;
+        RB.linearVelocity *= 1.007f;
         if(timer % 10 == HomingNum)
         {
             Enemy target =  Enemy.FindClosest(transform.position, 7, out Vector2 norm2, true);
@@ -27,9 +27,9 @@ public class PokerChip : Projectile
             //norm2 = (Utils.MouseWorld - (Vector2)transform.position).normalized;
             if (target != null)
             {
-                float previousSpeed = RB.velocity.magnitude;
-                RB.velocity += norm2 * HomingRate;
-                RB.velocity = RB.velocity.normalized * previousSpeed;
+                float previousSpeed = RB.linearVelocity.magnitude;
+                RB.linearVelocity += norm2 * HomingRate;
+                RB.linearVelocity = RB.linearVelocity.normalized * previousSpeed;
             }
         }
 
@@ -45,7 +45,7 @@ public class PokerChip : Projectile
         }
         if ((int)timer % 3 == 0)
         {
-            Vector2 norm = RB.velocity.normalized;
+            Vector2 norm = RB.linearVelocity.normalized;
             ParticleManager.NewParticle((Vector2)transform.position - norm * 0.2f, .3f, norm * -.75f, 0.8f, 0.3f, 2, SpriteRendererGlow.color);
         }
         if (timer > deathTime)

@@ -69,11 +69,11 @@ public class Peaclock : Crow
             if (JumpTimer >= 40) //Airborn
             {
                 JumpTimer = -70;
-                RB.velocity *= 0.5f;
-                RB.velocity += 45 * MoveSpeed * toTarget;
+                RB.linearVelocity *= 0.5f;
+                RB.linearVelocity += 45 * MoveSpeed * toTarget;
                 
-                float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
-                tilt += RB.velocity.y * 2.0f * Visual.transform.localScale.x;
+                float tilt = Mathf.Sqrt(Mathf.Abs(RB.linearVelocity.x)) * Visual.transform.localScale.x * -1.5f;
+                tilt += RB.linearVelocity.y * 2.0f * Visual.transform.localScale.x;
                 Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
 
                 AudioManager.PlaySound(SoundID.ChestDrop, transform.position, 0.5f, 1.4f);
@@ -83,9 +83,9 @@ public class Peaclock : Crow
                 if (JumpTimer >= 0)
                 {
                     JumpAnimation.JumpPercent = JumpTimer / 40f;
-                    RB.velocity *= Inertia;
+                    RB.linearVelocity *= Inertia;
                     if (dist > 20)
-                        RB.velocity += JumpAnimation.JumpPercent * MoveSpeed * toTarget;
+                        RB.linearVelocity += JumpAnimation.JumpPercent * MoveSpeed * toTarget;
                     tailRotateSpeed *= 0.1f;
                 }
                 else //Airborn
@@ -94,20 +94,20 @@ public class Peaclock : Crow
                     JumpAnimation.JumpPercent = JumpTimer / 70f;
                 }
             }
-            if (Mathf.Abs(RB.velocity.x) > 0.1f)
-                UpdateDirection(RB.velocity.x);
+            if (Mathf.Abs(RB.linearVelocity.x) > 0.1f)
+                UpdateDirection(RB.linearVelocity.x);
             CogOutCounter = -50;
         }
         else
         {
             JumpTimer = 0;
             JumpAnimation.JumpPercent = 0;
-            RB.velocity *= Inertia;
+            RB.linearVelocity *= Inertia;
             IdleTimer++;
             if(Mathf.Sign(toTarget.x) != Mathf.Sign(Visual.transform.localScale.x))
             {
-                RB.velocity += 0.1f * MoveSpeed * toTarget;
-                UpdateDirection(RB.velocity.x);
+                RB.linearVelocity += 0.1f * MoveSpeed * toTarget;
+                UpdateDirection(RB.linearVelocity.x);
             }
             float percent = IdleTimer / 200f;
             float sin = Mathf.Sin(percent * Mathf.PI * 4);

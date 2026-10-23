@@ -86,7 +86,7 @@ public class Boxer : Enemy
         float distToPlayer = Target.Distance(Visual.transform.gameObject);
         HasLineOfSightWithTarget = HasShootingLineOfSight;
         Vector2 toTarget = GetPathfindingToPlayerNorm();
-        if (Mathf.Abs(RB.velocity.x) > 0.2f)
+        if (Mathf.Abs(RB.linearVelocity.x) > 0.2f)
             Dir = Utils.SignNoZero(toTarget.x);
         else if(AI1 > 0 || !HasShootingLineOfSight)
         {
@@ -97,7 +97,7 @@ public class Boxer : Enemy
         otherFist.Fist.flipY = currentFist.Fist.flipY = Dir == 1;
         if (distToPlayer > 8 && AI1 <= 0)
         {
-            RB.velocity += toTarget * MoveSpeed;
+            RB.linearVelocity += toTarget * MoveSpeed;
             if(UseLeftFist || AI2 <= 0)
             {
                 Vector2 fistToPlayerL = Target.transform.position - FistL.transform.position;
@@ -116,9 +116,9 @@ public class Boxer : Enemy
         else //Attack range
         {
             if(distToPlayer < 2)
-                RB.velocity -= toTarget * MoveSpeed * 0.25f;
+                RB.linearVelocity -= toTarget * MoveSpeed * 0.25f;
             else
-                RB.velocity += 0.02f * MoveSpeed * toTarget;
+                RB.linearVelocity += 0.02f * MoveSpeed * toTarget;
             Vector2 fistToPlayer = Target.transform.position - currentFist.transform.position;
             Vector2 norm = fistToPlayer.normalized;
             AI1++;
@@ -203,12 +203,12 @@ public class Boxer : Enemy
             Vector2 fistToPlayer = otherToPlayer;
             otherFist.transform.LerpLocalEulerZ((-fistToPlayer).ToRotation() * Mathf.Rad2Deg, 0.1f);
         }
-        RB.velocity *= Inertia;
+        RB.linearVelocity *= Inertia;
         Left.Update(Inertia);
         Right.Update(Inertia);
         Visual.transform.localPosition = new Vector3(0, 1.6f + 0.1f * Mathf.Sin(Timer * Mathf.PI), 0);
         Chassis.transform.localScale = new Vector3(-Dir * Mathf.Abs(Chassis.transform.localScale.x), Chassis.transform.localScale.y, 1);
-        Visual.transform.LerpLocalEulerZ(Mathf.Clamp(RB.velocity.x * -3, -20, 20), 0.1f);
+        Visual.transform.LerpLocalEulerZ(Mathf.Clamp(RB.linearVelocity.x * -3, -20, 20), 0.1f);
         BladeUpdate(Blade1, 0);
         BladeUpdate(Blade2, 1);
         BladeUpdate(Blade3, 2);

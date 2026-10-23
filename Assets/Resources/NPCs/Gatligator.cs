@@ -70,14 +70,14 @@ public class Gatligator : Enemy
         {
             targetedLocation = Target.Position + Utils.RandCircle(18);
         }
-        RB.velocity += toTarget.normalized * MoveSpeed;
-        RB.velocity *= Inertia;
-        if(RB.velocity.magnitude > 18)
-            RB.velocity *= Inertia;
-        if (Mathf.Abs(RB.velocity.x) > 0.1f)
-            UpdateDirection(RB.velocity.x);
-        float tilt = Mathf.Sqrt(Mathf.Abs(RB.velocity.x)) * Visual.transform.localScale.x * -1.5f;
-        tilt += RB.velocity.y * 0.5f * Visual.transform.localScale.x;
+        RB.linearVelocity += toTarget.normalized * MoveSpeed;
+        RB.linearVelocity *= Inertia;
+        if(RB.linearVelocity.magnitude > 18)
+            RB.linearVelocity *= Inertia;
+        if (Mathf.Abs(RB.linearVelocity.x) > 0.1f)
+            UpdateDirection(RB.linearVelocity.x);
+        float tilt = Mathf.Sqrt(Mathf.Abs(RB.linearVelocity.x)) * Visual.transform.localScale.x * -1.5f;
+        tilt += RB.linearVelocity.y * 0.5f * Visual.transform.localScale.x;
         Visual.transform.localEulerAngles = Vector3.forward * Mathf.LerpAngle(Visual.transform.localEulerAngles.z, tilt, 0.05f);
         if(Utils.RandFloat(1) < 0.006f) //Small chance to switch move modes every frame
         {

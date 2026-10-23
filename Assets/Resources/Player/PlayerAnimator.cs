@@ -40,12 +40,12 @@ public class PlayerAnimator : MonoBehaviour
         Bobbing = BobbingUpdate();
         float switchingRange = 0.1f;
         if (MyPlayer != null && MyPlayer.RoadblockBarrier != null)
-            switchingRange = Mathf.Sign(rb.velocity.x) != Direction ? 2.5f : .4f; //Try fixing bug where bouncing back from the roadblock barrier sometimes switches player direction
-        if (Mathf.Abs(rb.velocity.x) > switchingRange)
-            lastVelo.x = rb.velocity.x;
+            switchingRange = Mathf.Sign(rb.linearVelocity.x) != Direction ? 2.5f : .4f; //Try fixing bug where bouncing back from the roadblock barrier sometimes switches player direction
+        if (Mathf.Abs(rb.linearVelocity.x) > switchingRange)
+            lastVelo.x = rb.linearVelocity.x;
         else if (lastVelo.x == 0)
             lastVelo.x = 0.01f;
-        lastVelo.y = rb.velocity.y;
+        lastVelo.y = rb.linearVelocity.y;
         if(DropShadow != null)
             if(Accessory is Kicks)
                 DropShadow.transform.localPosition = new Vector3(0, -1.2f, 0);
@@ -54,7 +54,7 @@ public class PlayerAnimator : MonoBehaviour
     }
     public float BobbingUpdate()
     {
-        float abs = Mathf.Sqrt(Mathf.Abs(rb.velocity.magnitude)) * 0.5f;
+        float abs = Mathf.Sqrt(Mathf.Abs(rb.linearVelocity.magnitude)) * 0.5f;
         walkTimer += abs + (RealPlayer ? 1 : 0.5f);
         walkTimer %= 100f;
         float rad = walkTimer / 50f * Mathf.PI;

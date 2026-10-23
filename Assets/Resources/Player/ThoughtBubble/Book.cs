@@ -82,8 +82,8 @@ public class Book : Weapon
     {
         Vector2 toMouse = Player.Control.MousePosition - (Vector2)p.gameObject.transform.position;
         float dir = Mathf.Sign(toMouse.x);
-        float bodyDir = Mathf.Sign(p.rb.velocity.x);
-        Vector2 attemptedPosition = new Vector2(1.1f, -0.15f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.velocity.normalized * 0.1f;
+        float bodyDir = Mathf.Sign(p.rb.linearVelocity.x);
+        Vector2 attemptedPosition = new Vector2(1.1f, -0.15f * dir).RotatedBy(toMouse.ToRotation()) + p.rb.linearVelocity.normalized * 0.1f;
         attemptedPosition.y *= 0.6f;
         attemptedPosition.y -= 0.15f;
         attemptedPosition.x += 0.75f * dir;
@@ -123,7 +123,7 @@ public class Book : Weapon
                             circular.y *= 0.5f;
                             circular = circular.RotatedBy(25 * dir * Mathf.Deg2Rad);
                             Vector2 pos = (Vector2)transform.position;
-                            ParticleManager.NewParticle(pos, 0.5f, circular + awayFromWand * 5 + Player.RB.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, c * 0.6f);
+                            ParticleManager.NewParticle(pos, 0.5f, circular + awayFromWand * 5 + Player.RB.linearVelocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, c * 0.6f);
                         }
                     }
                     else
@@ -167,7 +167,7 @@ public class Book : Weapon
                     circular.y *= Open ? 0.8f : 0.5f;
                     circular = circular.RotatedBy(25 * dir * Mathf.Deg2Rad);
                     Vector2 pos = (Vector2)transform.position + (Open ? circular * 0.3f + awayFromWand * 1.5f: Vector2.zero );
-                    ParticleManager.NewParticle(pos, 0.5f, dir2 * (circular + awayFromWand * 5) + Player.RB.velocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, Color.gray * 0.4f);
+                    ParticleManager.NewParticle(pos, 0.5f, dir2 * (circular + awayFromWand * 5) + Player.RB.linearVelocity, 0.05f, Utils.RandFloat(0.1f, 0.5f), 2, Color.gray * 0.4f);
                 }
                 Open = WantsOpen;
                 OpeningAnimationTimer = 0;
