@@ -1869,8 +1869,27 @@
   }
   Dialogue:
   {
+    #Gachapon Shop Stuff!
+
     GachaponShopIntro1: Welcome to my shop!
-    GachaponShop1: I'm here to help with the invaders!
-    GachaponShopEnd1: Don't think I'll give you a discount just 'cause you're saving the world!
+    GachaponShopResponse1: I'm here for powers.
+    GachaponShopEnd1: You've come to the right place!
+
+    GachaponShopResponse1B: It's urgent, I need powers to help with the invaders!
+    GachaponShopEnd1B: Don't think I'll give you a discount just 'cause you're saving the world.
+
+    GachaponShopIntro1G: What brings a good looker like yourself to my establishment?
+    GachaponShopResponse1G: For some quality wares, of course!
+
+    GachaponShopResponse1F: Wow you got some poppin' good stuff in here!
+    GachaponShopEnd1F: You've got a keen eye, kid!
+
+    GachaponShopIntro1T: Still need more powers?
+    GachaponShopResponse1T: Obviously.
+    GachaponShopEnd1T: (skip)
+
+    GachaponShopIntro1K: Never thought I'd see you purchase from me!
+    GachaponShopResponse1K: Consider it a sign of the times.
+    GachaponShopEnd1K: (skip)
   }
 }

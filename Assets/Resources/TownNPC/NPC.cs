@@ -1,9 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class NPC : Entity
 {
+    public static Dictionary<NPCType, string> DialogueVariantPair = new()
+    {
+        {NPCType.None, ""},
+        {NPCType.Bubblemancer, "B"},
+        {NPCType.ThoughtBubble, "T"},
+        {NPCType.Gachapon, "G"},
+        {NPCType.Fizzy, "F"},
+        {NPCType.OilKing, "K"},
+    };
+    public static string GetDialogueVariant(NPCType type) => DialogueVariantPair[type];
     public enum NPCType
     {
         None,
@@ -116,16 +125,19 @@ public class NPC : Entity
             IWO.DisableUI();
         }
     }
+    //It might be good to make a version of this with (string, NPCType, out string EXPRESSION) where expression could be determined in the hjson file!
+    public static string GetDialogueSegment(string segment, NPCType variant) => Localization.TryGetVariant($"Dialogue.{segment}", GetDialogueVariant(variant));
+    public static string GetDialogueSegment(string segment) => Localization.Get($"Dialogue.{segment}");
     public void StartDialogue()
     {
-        NPCType PlayerCharacter = Player.Instance.Body.DialogueType;
+        NPCType p = Player.Instance.Body.DialogueType;
         switch(Dialogue)
         {
-            case DialogueType.GachaponShop: //AI Generated this very funny.
+            case DialogueType.GachaponShop:
                 DialogueController.EnqueueDialogueChain(
-                    new(Localization.Get("Dialogue.GachaponShopIntro1"), PlayerCharacter, 0, NPCType.Gachapon, 0, false),
-                    new(Localization.Get("Dialogue.GachaponShop1"), LeftExpression: 1, speakerIsPlayer: true),
-                    new(Localization.Get("Dialogue.GachaponShopEnd1"), LeftExpression: 3)
+                    new(GetDialogueSegment("GachaponShopIntro1", p), p, 0, NPCType.Gachapon, 0, false),
+                    new(GetDialogueSegment("GachaponShopResponse1", p), LeftExpression: 1, speakerIsPlayer: true),
+                    new(GetDialogueSegment("GachaponShopEnd1", p))
                     );
                 break;
         }

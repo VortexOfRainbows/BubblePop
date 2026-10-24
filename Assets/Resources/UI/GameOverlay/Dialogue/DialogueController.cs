@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 using static NPC;
 
 public class DialogueController : MonoBehaviour
@@ -29,21 +27,24 @@ public class DialogueController : MonoBehaviour
     public static DialogueController Instance;
     public static void EnqueueDialogue(DialogueEvent dialogue)
     {
-        DialogueQueue.Enqueue(dialogue);
+        if(!dialogue.text.StartsWith("(skip)"))
+            DialogueQueue.Enqueue(dialogue);
         Instance.WantsOpen = true;
         Instance.AnimationCounter = 0;
     }
     public static void EnqueueDialogueChain(IEnumerable<DialogueEvent> dialogueChain)
     {
         foreach(DialogueEvent dialogue in dialogueChain)
-            DialogueQueue.Enqueue(dialogue);
+            if(!dialogue.text.StartsWith("(skip)"))
+                DialogueQueue.Enqueue(dialogue);
         Instance.WantsOpen = true;
         Instance.AnimationCounter = 0;
     }
     public static void EnqueueDialogueChain(params DialogueEvent[] dialogueChain)
     {
         foreach(DialogueEvent dialogue in dialogueChain)
-            DialogueQueue.Enqueue(dialogue);
+            if(!dialogue.text.StartsWith("(skip)"))
+                DialogueQueue.Enqueue(dialogue);
         Instance.WantsOpen = true;
         Instance.AnimationCounter = 0;
     }

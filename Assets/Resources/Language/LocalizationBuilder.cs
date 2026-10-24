@@ -40,6 +40,12 @@ public static class Localization
 #endif
         }
     }
+    public static string TryGetVariant(string key, string variant)
+    {
+        if(TryGet(key + variant, out string ret)) 
+            return ret;
+        return Get(key);
+    }
     public static bool TryGet(string key, out string value)
     {
         return CondensedTranslation.TryGetValue(key, out value);
