@@ -69,6 +69,8 @@ Done:
 10/24/26 to 10/25/26
 1. WIP amphibious enemy implementation
 	1. Ducks can now go into water with a swift animation
+2. WIP standardization of NPC water, world, NPC, and worldobj collision (does not change projectile collision unless stated)
+	1. Duck: Hitbox radius 0.9 -> 0.7, and position shifted closer to the shadow
 
 10/21/26 to 10/24/26
 1. Very wip implementation for dialogue portraits:

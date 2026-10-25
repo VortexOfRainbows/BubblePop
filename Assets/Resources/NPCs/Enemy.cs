@@ -270,7 +270,10 @@ public class Enemy : Entity, IImpactedByProjIFrames
             data.CardBG = Resources.Load<Sprite>("UI/Background");
     }
     public BoxCollider2D MyCollider;
-    public Transform MyShadow; //Replace this with a serialized special-made class later
+    public Transform MyShadow;
+    public SpriteRenderer MyShadowRenderer { get; protected set; }
+    public SpriteRenderer MyAmphibiousShadowRenderer { get; protected set; }
+    public Color MyShadowDefaultColor { get; protected set; }
     public sealed override void Init()
     {
         TargetAcquisitionUpdate();
@@ -278,10 +281,18 @@ public class Enemy : Entity, IImpactedByProjIFrames
         OnSpawn();
         if(MyCollider == null)
             MyCollider = GetComponent<BoxCollider2D>();
-        if(MyShadow == null && transform.childCount > 1)
-        {
-            //second child is typically the shadow, for now
+        ShadowSetup();
+    }
+    private void ShadowSetup()
+    {
+        if(MyShadow == null && transform.childCount > 1) //second child is typically the shadow, for now. Can be specified when serialized
             MyShadow = transform.GetChild(1);
+        if (MyShadow != null && MyShadow.childCount > 1) //Shadow sprite renderer should be the second nested element below the tile collider
+        {
+            MyShadowRenderer = MyShadow.GetChild(1).GetComponent<SpriteRenderer>();
+            MyShadowDefaultColor = MyShadowRenderer.color;
+            if(MyShadow.childCount > 2)
+                MyAmphibiousShadowRenderer = MyShadow.GetChild(2).GetComponent<SpriteRenderer>();
         }
     }
     public virtual void OnSpawn()

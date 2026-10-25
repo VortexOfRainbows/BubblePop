@@ -93,11 +93,12 @@ public class EnemyDuck : Enemy
     public float WaterTransitionAI = 0;
     public void WaterUpdate()
     {
-        Vector2 waterDetectPos = MyShadow.position;
+        Vector2 waterDetectPos = MyShadow.transform.position; //Since the water shadow is moved relative to the visual, while the default shadow is not moved, the default is more accurate for this purpose
         waterDetectPos += 5 * Time.fixedDeltaTime * RB.velocity;
-        float y = MyShadow.transform.localScale.y;
-        float x = MyShadow.transform.localScale.x;
-        if(World.GetTile(World.RealPosToTilePos(waterDetectPos)).IsLiquid)
+        float y = MyAmphibiousShadowRenderer.transform.localScale.y;
+        float x = MyAmphibiousShadowRenderer.transform.localScale.x;
+        //Check tiles in a thin vertical band of 0.5, for transitions to look better
+        if(World.GetTile(World.RealPosToTilePos(waterDetectPos + new Vector2(0, 0.5f))).IsLiquid && World.GetTile(World.RealPosToTilePos(waterDetectPos)).IsLiquid)
         {
             WaterTransitionAI += Time.fixedDeltaTime * 2;
             if (WaterTransitionAI > 1)
@@ -113,9 +114,15 @@ public class EnemyDuck : Enemy
                         Vector2 circular = new Vector2(Utils.RandFloat(0.4f, 0.5f), 0).RotatedBy(i * Utils.TwoPI / totalParticles + Utils.RandFloat(-0.4f, 0.4f) / totalParticles);
                         circular.y *= y;
                         circular.x *= x;
-                        circular.y -= 0.2f;
                         ParticleManager.NewParticle(waterDetectPos + circular, Utils.RandFloat(0.3f, 0.4f), Vector2.up * 2 + circular * 4, 1, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Bubble, ColorHelper.WaterOutline.WithAlpha(0.95f));
                     }
+                }
+                else if(Utils.RandBool(5))
+                {
+                    Vector2 circular = new Vector2(Utils.RandFloat(0.4f, 0.5f), 0).RotatedBy(Utils.RandFloat(Utils.TwoPI));
+                    circular.y *= y;
+                    circular.x *= x;
+                    ParticleManager.NewParticle(waterDetectPos + circular, Utils.RandFloat(0.3f, 0.4f), Vector2.up * 2 + circular * 4 - Time.fixedDeltaTime * Utils.RandFloat(8, 12) * RB.velocity, 1, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Bubble, ColorHelper.WaterOutline.WithAlpha(0.95f));
                 }
             }
             else
@@ -136,7 +143,14 @@ public class EnemyDuck : Enemy
             else
                 RB.velocity *= 0.915f;
         }
+        MyAmphibiousShadowRenderer.transform.localPosition = new Vector3(0, -0.5f);
         Visual.transform.localPosition = new Vector2(0,  Mathf.Lerp(0, -0.5f, WaterTransitionAI) + Mathf.Sin(Mathf.PI * WaterTransitionAI));
+        ToggleShadowWater();
+    }
+    public void ToggleShadowWater()
+    {
+        MyAmphibiousShadowRenderer.color = ColorHelper.WaterOutline.WithAlpha(WaterTransitionAI);
+        MyShadowRenderer.color = MyShadowDefaultColor.WithAlphaMultiplied(1 - WaterTransitionAI);
     }
     protected virtual Vector2 FindLocation() {
         return (Vector2)transform.position.Lerp(Target.Position, Utils.RandFloat(0.25f, 0.75f)) + Utils.RandCircleEdge(Utils.RandFloat(2.5f, 10f));
