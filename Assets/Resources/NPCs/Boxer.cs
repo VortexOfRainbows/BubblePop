@@ -1,10 +1,8 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Boxer : Enemy
 {
     public override bool Airborne => true;
-    public override TilePathfinding.PathfindingType PathfindingType => TilePathfinding.PathfindingType.Air;
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         outlineSize = 0.015f;

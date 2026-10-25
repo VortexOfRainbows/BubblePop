@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyDuck : Enemy
 {
+    public override bool Amphibious => true;
     public const int baseAimingTimer = 240;
     public SpriteRenderer sRender;
     public int aiState = 0;
@@ -61,11 +62,7 @@ public class EnemyDuck : Enemy
             Vector2 movementDir = Life >= MaxLife ? toTarget.normalized : GetPathfindingToPlayerNorm();
             bobbingTimer += Mathf.Sqrt(toTarget.magnitude);
             if(Mathf.Abs(movementDir.x) > 0.2f)
-            {
                 sRender.flipX = movementDir.x > 0;
-                if (this is EnemyFlamingo)
-                    sRender.flipX = !sRender.flipX;
-            }
             float speedScaling = aiState == 2 ? 0.2f : 0.1f;
             float BaseSpeed = aiState == 2 ? 4.4f : 1.0f;
             float speed = Mathf.Min(BaseSpeed + speedScaling * toTarget.magnitude, 16);
@@ -90,6 +87,28 @@ public class EnemyDuck : Enemy
         if (Utils.RandBool(aiState == 2 ? 100 : 500))
             AudioManager.PlaySound(SoundID.DuckNoise, transform.position, 0.13f, 1.2f);
         MoveUpdate();
+        WaterUpdate();
+    }
+    public float WaterTransitionAI = 0;
+    public void WaterUpdate()
+    {
+        if(World.GetTile(World.RealPosToTilePos(transform.position)).IsLiquid)
+        {
+            WaterTransitionAI += Time.fixedDeltaTime * 2;
+            if (WaterTransitionAI > 1)
+                WaterTransitionAI = 1;
+            else
+                RB.velocity *= 0.5f;
+        }
+        else
+        {
+            WaterTransitionAI -= Time.fixedDeltaTime * 2;
+            if (WaterTransitionAI < 0)
+                WaterTransitionAI = 0;
+            else
+                RB.velocity *= 0.5f;
+        }
+        Visual.transform.localPosition = new Vector2(0,  Mathf.Lerp(0, -0.5f, WaterTransitionAI) + Mathf.Sin(Mathf.PI * WaterTransitionAI));
     }
     protected virtual Vector2 FindLocation() {
         return (Vector2)transform.position.Lerp(Target.Position, Utils.RandFloat(0.25f, 0.75f)) + Utils.RandCircleEdge(Utils.RandFloat(2.5f, 10f));
@@ -101,7 +120,6 @@ public class EnemyDuck : Enemy
     }
     public override void UIAI()
     {
-        if (this is not EnemyFlamingo)
-            sRender.flipX = true;
+        sRender.flipX = true;
     }
 }

@@ -98,7 +98,15 @@ public static class EnemyID
 public class Enemy : Entity, IImpactedByProjIFrames
 {
     public virtual bool Airborne => false;
-    public virtual TilePathfinding.PathfindingType PathfindingType => 0;
+    public virtual bool Amphibious => false;
+    public virtual TilePathfinding.PathfindingType PathfindingType()
+    {
+        if (Airborne)
+            return TilePathfinding.PathfindingType.Air;
+        if (Amphibious)
+            return TilePathfinding.PathfindingType.Liquid;
+        return TilePathfinding.PathfindingType.Ground;
+    }
     public virtual float LiquidSpeedModifier => 1;
     public virtual float MoveSpeed => 0.15f;
     public virtual float Inertia => 0.95f;
@@ -115,7 +123,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
     }
     public Vector2 GetPathfindingToPlayerNorm()
     {
-        return HasLineOfSightWithTarget ? (Target.Position - (Vector2)transform.position).normalized : TilePathfinding.BestPathToPlayer(transform.position, PathfindingType, LiquidSpeedModifier);
+        return HasLineOfSightWithTarget ? (Target.Position - (Vector2)transform.position).normalized : TilePathfinding.BestPathToPlayer(transform.position, PathfindingType(), LiquidSpeedModifier);
     }
     public EnemyDescription MyDescription => StaticData.EnemyDescription;
     public string Name()
@@ -451,13 +459,13 @@ public class Enemy : Entity, IImpactedByProjIFrames
             if (ForceRunOnce)
                 break;
         }
-        if (!World.NonSolidTileSafe(transform.position) || (World.SafeGetTileData(World.RealPosToTilePos(transform.position)).IsLiquid && this is not Boxer))
+        if (!World.NonSolidTileSafe(transform.position) || (World.SafeGetTileData(World.RealPosToTilePos(transform.position)).IsLiquid && !Airborne && !Amphibious))
         {
             CircleCollider2D circle = GetComponent<CircleCollider2D>();
             BoxCollider2D box = MyCollider;
             bool collidersOn = (circle != null && circle.enabled) || (box != null && box.enabled);
             if(collidersOn)
-                Entity.PushIntoClosestPossibleTile(transform, RB, 10, false, pushWhenInWater: !Airborne);
+                PushIntoClosestPossibleTile(transform, RB, 10, false, pushWhenInWater: !Airborne);
         }
         if(TarStacks > 0)
         {
