@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Media;
 using UnityEngine;
 public static class EnemyID
 {
@@ -123,7 +124,12 @@ public class Enemy : Entity, IImpactedByProjIFrames
     }
     public Vector2 GetPathfindingToPlayerNorm()
     {
-        return HasLineOfSightWithTarget ? (Target.Position - (Vector2)transform.position).normalized : TilePathfinding.BestPathToPlayer(transform.position, PathfindingType(), LiquidSpeedModifier);
+        bool canSee;
+        if (Amphibious || Airborne)
+            canSee = HasShootingLineOfSight;
+        else
+            canSee = HasLineOfSightWithTarget;
+        return canSee ? (Target.Position - (Vector2)transform.position).normalized : TilePathfinding.BestPathToPlayer(transform.position, PathfindingType(), LiquidSpeedModifier);
     }
     public EnemyDescription MyDescription => StaticData.EnemyDescription;
     public string Name()
@@ -264,6 +270,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             data.CardBG = Resources.Load<Sprite>("UI/Background");
     }
     public BoxCollider2D MyCollider;
+    public Transform MyShadow; //Replace this with a serialized special-made class later
     public sealed override void Init()
     {
         TargetAcquisitionUpdate();
@@ -271,6 +278,11 @@ public class Enemy : Entity, IImpactedByProjIFrames
         OnSpawn();
         if(MyCollider == null)
             MyCollider = GetComponent<BoxCollider2D>();
+        if(MyShadow == null && transform.childCount > 1)
+        {
+            //second child is typically the shadow, for now
+            MyShadow = transform.GetChild(1);
+        }
     }
     public virtual void OnSpawn()
     {
@@ -475,9 +487,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
                 if (duration > 100) //If the buff has more than 1 seconds remaining, 
                 {
                     float scaleDowner = duration > 200 ? 1.0f : (duration - 100) / 100f;
-                    //second child is typically the shadow
-                    Vector2 shadowPos = transform.GetChild(1).position;
-                    HazardSystem.AddHazard(shadowPos, HazardSystem.HazardType.Oil, duration, Mathf.Sqrt(Mathf.Abs(transform.localScale.x)) * 0.7f * scaleDowner, 0, false);
+                    HazardSystem.AddHazard(MyShadow.position, HazardSystem.HazardType.Oil, duration, Mathf.Sqrt(Mathf.Abs(transform.localScale.x)) * 0.7f * scaleDowner, 0, false);
                 }
             }
         }

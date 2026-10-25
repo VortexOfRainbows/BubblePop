@@ -89,24 +89,52 @@ public class EnemyDuck : Enemy
         MoveUpdate();
         WaterUpdate();
     }
+    public bool InWater = false;
     public float WaterTransitionAI = 0;
     public void WaterUpdate()
     {
-        if(World.GetTile(World.RealPosToTilePos(transform.position)).IsLiquid)
+        Vector2 waterDetectPos = MyShadow.position;
+        waterDetectPos += 5 * Time.fixedDeltaTime * RB.velocity;
+        float y = MyShadow.transform.localScale.y;
+        float x = MyShadow.transform.localScale.x;
+        if(World.GetTile(World.RealPosToTilePos(waterDetectPos)).IsLiquid)
         {
             WaterTransitionAI += Time.fixedDeltaTime * 2;
             if (WaterTransitionAI > 1)
+            {
                 WaterTransitionAI = 1;
+                if(!InWater)
+                {
+                    InWater = true;
+                    AudioManager.PlaySound(SoundID.BathBombSplash, waterDetectPos, 0.5f, 2.0f, 0);
+                    float totalParticles = 12;
+                    for(int i = 0; i < totalParticles; i++)
+                    {
+                        Vector2 circular = new Vector2(Utils.RandFloat(0.4f, 0.5f), 0).RotatedBy(i * Utils.TwoPI / totalParticles + Utils.RandFloat(-0.4f, 0.4f) / totalParticles);
+                        circular.y *= y;
+                        circular.x *= x;
+                        circular.y -= 0.2f;
+                        ParticleManager.NewParticle(waterDetectPos + circular, Utils.RandFloat(0.3f, 0.4f), Vector2.up * 2 + circular * 4, 1, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Bubble, ColorHelper.WaterOutline.WithAlpha(0.95f));
+                    }
+                }
+            }
             else
-                RB.velocity *= 0.5f;
+                RB.velocity *= 0.915f;
         }
         else
         {
             WaterTransitionAI -= Time.fixedDeltaTime * 2;
             if (WaterTransitionAI < 0)
+            {
                 WaterTransitionAI = 0;
+                if (InWater)
+                {
+                    InWater = false;
+                    AudioManager.PlaySound(SoundID.ChestDrop, waterDetectPos, 0.5f, 2.0f, 0);
+                }
+            }
             else
-                RB.velocity *= 0.5f;
+                RB.velocity *= 0.915f;
         }
         Visual.transform.localPosition = new Vector2(0,  Mathf.Lerp(0, -0.5f, WaterTransitionAI) + Mathf.Sin(Mathf.PI * WaterTransitionAI));
     }

@@ -76,7 +76,8 @@ public static class ColorHelper
     public static readonly Color Silver = New255(212, 223, 230);
     public static readonly Color DimGold = (New255(239, 191, 4) * 0.8f).WithAlpha(1);
     public static readonly Color IridiumPurple = New255(0xA2, 0x4D, 0xFF);
-
+    public static readonly Color Water = New255(0x59, 0x80, 0xDF);
+    public static readonly Color WaterOutline = New255(0xD1, 0xD6, 0xF8);
     public static string GetNPCHexColor(NPC.NPCType type)
     {
         switch (type)
