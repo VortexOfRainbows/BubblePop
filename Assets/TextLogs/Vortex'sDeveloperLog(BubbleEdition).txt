@@ -38,7 +38,7 @@ Need to do:
 	4. Blending for tiles on the floor and how tiles are transitioned into tile data will also have to be handled
 8. Finish dialogue system implementations
 	1. Improve the UI more, add sounds, indicator that text has become passable (like genshin impacts diamond)
-	2. Next: implement more expressions, more dialogue variations, and make dialogue able to be single-time
+	2. Next: implement more expressions, and make expression variables passable through hjson
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Replace TB: Calculated achievement with something easier to account for (difficulty of unlock can stay hard)
@@ -61,6 +61,10 @@ Sounds Needed:
 Done: 	
 
 -- (NEXT) 4.0? --
+
+10/27/26
+1. More dialogue variants for gachapon shop, and for gachapon mansion
+2. Dialogue can now be marked to be single-time (cannot be re-interacted in the same run)
 
 10/24/26 to 10/27/26
 1. Amphibious enemy implementation

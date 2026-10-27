@@ -26,6 +26,7 @@ public class NPC : Entity
     {
         None,
         GachaponShop,
+        GachaponMansion,
     }
     public NPCType Type = NPCType.None;
     public DialogueType Dialogue = DialogueType.None;
@@ -108,10 +109,12 @@ public class NPC : Entity
             UpdateUI();
         }
     }
+    public bool AllowRepeatedDialogue = false;
+    public bool HasOpenedDialogueAlready { get; private set; }
     public void UpdateUI()
     {
         Player p = Player.FindClosest(transform.position, out Vector2 norm, out float distance, 100);
-        if (distance < 7 && p != null && p.ThisIsPlayerClosestInteractable(gameObject) && !DialogueController.Instance.WantsOpen)
+        if (distance < 7 && p != null && p.ThisIsPlayerClosestInteractable(gameObject) && !DialogueController.Instance.WantsOpen && (!HasOpenedDialogueAlready || AllowRepeatedDialogue))
         {
             IWO.EnableUI();
             if (Input.GetKeyDown(KeyCode.E))
@@ -130,14 +133,51 @@ public class NPC : Entity
     public static string GetDialogueSegment(string segment) => Localization.Get($"Dialogue.{segment}");
     public void StartDialogue()
     {
+        HasOpenedDialogueAlready = true;
         NPCType p = Player.Instance.Body.DialogueType;
         switch(Dialogue)
         {
             case DialogueType.GachaponShop:
+                int rand = Utils.RandInt(4);
+                if(rand == 0)
+                {
+                    DialogueController.EnqueueDialogueChain(
+                        new(GetDialogueSegment("GachaponShop1_1", p), p, 0, NPCType.Gachapon, 0, false),
+                        new(GetDialogueSegment("GachaponShop1_2", p), LeftExpression: 1, speakerIsPlayer: true),
+                        new(GetDialogueSegment("GachaponShop1_3", p))
+                        );
+                }
+                else if(rand == 1)
+                {
+                    DialogueController.EnqueueDialogueChain(
+                        new(GetDialogueSegment("GachaponShop2_1", p), p, 0, NPCType.Gachapon, 0, false),
+                        new(GetDialogueSegment("GachaponShop2_2", p)),
+                        new(GetDialogueSegment("GachaponShop2_3", p), LeftExpression: 3, speakerIsPlayer: true),
+                        new(GetDialogueSegment("GachaponShop2_4", p)),
+                        new(GetDialogueSegment("GachaponShop2_5", p))
+                        );
+                }
+                else if (rand == 2)
+                {
+                    DialogueController.EnqueueDialogueChain(
+                        new(GetDialogueSegment("GachaponShop3_1", p), p, 0, NPCType.Gachapon, 0, false),
+                        new(GetDialogueSegment("GachaponShop3_2", p), speakerIsPlayer: true)
+                        );
+                }
+                else if (rand == 3)
+                {
+                    DialogueController.EnqueueDialogueChain(
+                        new(GetDialogueSegment("GachaponShop4_1", p), p, 2, NPCType.Gachapon, 0, true),
+                        new(GetDialogueSegment("GachaponShop4_2", p), speakerIsPlayer: false),
+                        new(GetDialogueSegment("GachaponShop4_3", p), LeftExpression: 0, speakerIsPlayer: true)
+                        );
+                }
+                break;
+            case DialogueType.GachaponMansion:
                 DialogueController.EnqueueDialogueChain(
-                    new(GetDialogueSegment("GachaponShopIntro1", p), p, 0, NPCType.Gachapon, 0, false),
-                    new(GetDialogueSegment("GachaponShopResponse1", p), LeftExpression: 1, speakerIsPlayer: true),
-                    new(GetDialogueSegment("GachaponShopEnd1", p))
+                    new(GetDialogueSegment("GachaponMansion1_1", p), p, 0, NPCType.Gachapon, 0, false),
+                    new(GetDialogueSegment("GachaponMansion1_2", p), LeftExpression: 1, speakerIsPlayer: true),
+                    new(GetDialogueSegment("GachaponMansion1_3", p))
                     );
                 break;
         }
