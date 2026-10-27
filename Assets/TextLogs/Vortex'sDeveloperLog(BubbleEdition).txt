@@ -74,7 +74,7 @@ Done:
 	6. Boxer (Technically flying) just flies over the water (duh)
 2. WIP standardization of NPC water, world, NPC, and worldobj collision (does not change projectile/player collision unless stated). Shadows have also been adjusted slightly.
 	X. In general, this should make enemies able to squeeze through tiles and each other better. This type of stuff might be changed later if the impacts are undesirable.
-	Y. Internally, this hitbox shift is to move hitboxes generally closer to shadows so enemies collide where there "feet" are
+	Y. Internally, this hitbox shift is to move hitboxes generally closer to shadows so enemies collide where there "feet" are. This may also somewhat shift where oil puddles spawn beneath enemies.
 	1. Duck: Hitbox radius 0.9 -> 0.7, and position shifted closer to the shadow
 	2. Flamingo: Now has a circular collision hitbox of radius 0.75, instead of a rectangular tile collider.
 	3. Leonard: Now has a circular collision hitbox of radius 2.0 -> 0.875.
@@ -82,6 +82,9 @@ Done:
 	4. Soap: Circular collision hitbox radius 1.0 -> 0.75
 	5. Soap Fragment: radius 0.7 -> 0.65
 	6. Boxer world hitbox moved slightly downward
+	7. Chicken: radius 0.9 -> 0.6 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
+	8. Ent: radius 1.1 -> 0.8 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
+	Z. NEXT: Do all remaining enemies :(
 3. Slight changes to position/anchoring of the following enemies:
 	1. Flamingo, Leonard
 4. Enemy snapping when out of bounds is now controlled by the position of the collision box rather than the geometric center
