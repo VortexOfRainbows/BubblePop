@@ -27,17 +27,16 @@ Need to do:
 3. MINIMAP
 4. Characters can spawn in your run and give specific items?
 	1. Character dialogue systems!
-5. Standardize shadows and shadow hitboxes for enemies
-6. Bubblemancer Farm area for the game to start in and character select to take place in
+5. Bubblemancer Farm area for the game to start in and character select to take place in
 	1. Needs: Furniture to fill out bubblemancer's house, farm crops..? bubble themed, maybe?)
 	2. Needs: Sheep!
-7. Roof system for lighting
-8. Height system improvements to support extra tile heights
+6. Roof system for lighting
+7. Height system improvements to support extra tile heights
 	1. Might have to overhaul tile heights to all be 1-1 instead of the current 0.75 (means walls will be taller and probably easier to hide behind.
 	2. Will require an overhaul to the lighting system too, unless a simple but unsatisfying approach of making all walls over 1.0 tall happens: https://share.gemini.google/VE5yFYtFWcfl
 	3. Will require additional logic for handling transitions between taller tiles and shorter tiles, in all directions
 	4. Blending for tiles on the floor and how tiles are transitioned into tile data will also have to be handled
-9. Finish dialogue system implementations
+8. Finish dialogue system implementations
 	1. Improve the UI more, add sounds, indicator that text has become passable (like genshin impacts diamond)
 	2. Next: implement more expressions, more dialogue variations, and make dialogue able to be single-time
 
@@ -73,9 +72,9 @@ Done:
 		1. Move faster and more accurately in water, and faster when coming out of water
 	6. Boxer (Technically flying) just flies over the water (duh)
 	7. Sentinels can also fly over water
-2. WIP standardization of NPC water, world, NPC, and worldobj collision (does not change projectile/player collision unless stated). Shadows have also been adjusted slightly.
-	X. In general, this should make enemies able to squeeze through tiles and each other better. This type of stuff might be changed later if the impacts are undesirable.
-	Y. Internally, this hitbox shift is to move hitboxes generally closer to shadows so enemies collide where there "feet" are. This may also somewhat shift where oil puddles spawn beneath enemies.
+2A. Standardization of NPC Water/World/NPC/WorldObj collision (does not change projectile/player collision unless stated). Shadows have also been adjusted slightly.
+> In general, this should make enemies able to squeeze through tiles and each other better. This type of stuff might be changed later if the impacts are undesirable.
+> Internally, this hitbox shift is to move hitboxes generally closer to shadows so enemies collide where there "feet" are. This may also somewhat shift where oil puddles spawn beneath enemies. This could also have enemies bumping into walls when pathfinding, since they current logic path using geometric center, but this is probably not a big deal and can be fixed if issues arise.
 	1. Duck: Hitbox radius 0.9 -> 0.7, and position shifted closer to the shadow
 	2. Flamingo: Now has a circular collision hitbox of radius 0.75, instead of a rectangular tile collider.
 	3. Leonard: Now has a circular collision hitbox of radius 2.0 -> 0.875.
@@ -83,7 +82,7 @@ Done:
 	4. Soap: Circular collision hitbox radius 1.0 -> 0.75
 	5. Soap Fragment: radius 0.7 -> 0.65
 	6. Boxer world hitbox moved slightly downward
-All of the following NPCs used rectangular hitboxes for world collision. Now those are only for projectile/player:
+2B. All of the following NPCs used rectangular hitboxes for world collision. Now those are only for projectile/player, and they use a circular hitbox for tiles:
 	7. Chicken: radius 0.9 -> 0.6 (and shifted downward). 
 	8. Ent: radius 1.1 -> 0.8 (and shifted downward).
 	9. Crow:  radius 0.7 -> 0.65 (and shifted downward). 
@@ -94,13 +93,14 @@ All of the following NPCs used rectangular hitboxes for world collision. Now tho
 	14. Rock Spider: radius unchanged 0.7, but shifted downward.
 	15. Rock Golem: radius 1.5 -> 0.875.
 	16-17. Sentinels: radius .9 -> 0.5 (and shifted downward).
-	Z. NEXT: Do all remaining enemies
+	18. Snobble: radius 0.85 -> 0.75 (and shifted downward). Projectile/Player hitbox 1.45 by 1.35 -> 1.35 by 1.35
 3. Slight changes to position/anchoring of the following enemies:
 	1. Flamingo, Leonard
 4. Enemy snapping when out of bounds is now controlled by the position of the collision box rather than the geometric center
 	1. Logic should also be more consistent for things like chests
 5. Infectors now implement pathfinding when no host is nearby (previously, they did not pathfind around tiles). It's a bit jank, so I'll keep an eye on it
 	1. Infectors now are slightly slower with slightly more drag
+6. Breakable objects are now more consistently collideable among enemies (mostly enemies can get stuck on them, LOL)
 
 10/21/26 to 10/24/26
 1. Very wip implementation for dialogue portraits:
