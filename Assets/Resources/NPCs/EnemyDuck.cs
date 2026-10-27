@@ -63,8 +63,8 @@ public class EnemyDuck : Enemy
             bobbingTimer += Mathf.Sqrt(toTarget.magnitude);
             if(Mathf.Abs(movementDir.x) > 0.2f)
                 sRender.flipX = movementDir.x > 0;
-            float speedScaling = aiState == 2 ? 0.2f : 0.1f;
-            float BaseSpeed = aiState == 2 ? 4.4f : 1.0f;
+            float speedScaling = aiState == 2 ? (InWater ? 0.225f : 0.2f) : 0.1f;
+            float BaseSpeed = aiState == 2 ? (InWater ? 6.0f : 4.4f) : 1.0f;
             float speed = Mathf.Min(BaseSpeed + speedScaling * toTarget.magnitude, 16);
             RB.velocity += inertia * speed * movementDir;// * Time.fixedDeltaTime;
             if(aiState != 2)
@@ -87,70 +87,6 @@ public class EnemyDuck : Enemy
         if (Utils.RandBool(aiState == 2 ? 100 : 500))
             AudioManager.PlaySound(SoundID.DuckNoise, transform.position, 0.13f, 1.2f);
         MoveUpdate();
-        WaterUpdate();
-    }
-    public bool InWater = false;
-    public float WaterTransitionAI = 0;
-    public void WaterUpdate()
-    {
-        Vector2 waterDetectPos = MyShadow.transform.position; //Since the water shadow is moved relative to the visual, while the default shadow is not moved, the default is more accurate for this purpose
-        waterDetectPos += 5 * Time.fixedDeltaTime * RB.velocity;
-        float y = MyAmphibiousShadowRenderer.transform.localScale.y;
-        float x = MyAmphibiousShadowRenderer.transform.localScale.x;
-        //Check tiles in a thin vertical band of 0.5, for transitions to look better
-        if(World.GetTile(World.RealPosToTilePos(waterDetectPos + new Vector2(0, 0.5f))).IsLiquid && World.GetTile(World.RealPosToTilePos(waterDetectPos)).IsLiquid)
-        {
-            WaterTransitionAI += Time.fixedDeltaTime * 2;
-            if (WaterTransitionAI > 1)
-            {
-                WaterTransitionAI = 1;
-                if(!InWater)
-                {
-                    InWater = true;
-                    AudioManager.PlaySound(SoundID.BathBombSplash, waterDetectPos, 0.5f, 2.0f, 0);
-                    float totalParticles = 12;
-                    for(int i = 0; i < totalParticles; i++)
-                    {
-                        Vector2 circular = new Vector2(Utils.RandFloat(0.4f, 0.5f), 0).RotatedBy(i * Utils.TwoPI / totalParticles + Utils.RandFloat(-0.4f, 0.4f) / totalParticles);
-                        circular.y *= y;
-                        circular.x *= x;
-                        ParticleManager.NewParticle(waterDetectPos + circular, Utils.RandFloat(0.3f, 0.4f), Vector2.up * 2 + circular * 4, 1, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Bubble, ColorHelper.WaterOutline.WithAlpha(0.95f));
-                    }
-                }
-                else if(Utils.RandBool(5))
-                {
-                    Vector2 circular = new Vector2(Utils.RandFloat(0.4f, 0.5f), 0).RotatedBy(Utils.RandFloat(Utils.TwoPI));
-                    circular.y *= y;
-                    circular.x *= x;
-                    ParticleManager.NewParticle(waterDetectPos + circular, Utils.RandFloat(0.3f, 0.4f), Vector2.up * 2 + circular * 4 - Time.fixedDeltaTime * Utils.RandFloat(8, 12) * RB.velocity, 1, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Bubble, ColorHelper.WaterOutline.WithAlpha(0.95f));
-                }
-            }
-            else
-                RB.velocity *= 0.915f;
-        }
-        else
-        {
-            WaterTransitionAI -= Time.fixedDeltaTime * 2;
-            if (WaterTransitionAI < 0)
-            {
-                WaterTransitionAI = 0;
-                if (InWater)
-                {
-                    InWater = false;
-                    AudioManager.PlaySound(SoundID.ChestDrop, waterDetectPos, 0.5f, 2.0f, 0);
-                }
-            }
-            else
-                RB.velocity *= 0.915f;
-        }
-        MyAmphibiousShadowRenderer.transform.localPosition = new Vector3(0, -0.5f);
-        Visual.transform.localPosition = new Vector2(0,  Mathf.Lerp(0, -0.5f, WaterTransitionAI) + Mathf.Sin(Mathf.PI * WaterTransitionAI));
-        ToggleShadowWater();
-    }
-    public void ToggleShadowWater()
-    {
-        MyAmphibiousShadowRenderer.color = ColorHelper.WaterOutline.WithAlpha(WaterTransitionAI);
-        MyShadowRenderer.color = MyShadowDefaultColor.WithAlphaMultiplied(1 - WaterTransitionAI);
     }
     protected virtual Vector2 FindLocation() {
         return (Vector2)transform.position.Lerp(Target.Position, Utils.RandFloat(0.25f, 0.75f)) + Utils.RandCircleEdge(Utils.RandFloat(2.5f, 10f));

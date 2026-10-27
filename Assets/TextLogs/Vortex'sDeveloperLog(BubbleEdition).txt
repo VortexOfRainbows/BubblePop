@@ -66,9 +66,10 @@ Done:
 
 -- (NEXT) 4.0? --
 
-10/24/26 to 10/25/26
+10/24/26 to 10/27/26
 1. WIP amphibious enemy implementation
 	1. Ducks can now go into water with a swift animation
+	2. Amphibious behaviors are now in the enemy class as overrides
 2. WIP standardization of NPC water, world, NPC, and worldobj collision (does not change projectile collision unless stated)
 	1. Duck: Hitbox radius 0.9 -> 0.7, and position shifted closer to the shadow
 

@@ -476,6 +476,10 @@ public class Enemy : Entity, IImpactedByProjIFrames
                 RB.position -= postProcessSlowdown * Time.fixedDeltaTime * RB.velocity;
             }
             AI();
+            if(Amphibious)
+            {
+                WaterUpdate();
+            }
             Animate();
             ActionCounter -= 1;
             actCount++;
@@ -828,4 +832,74 @@ public class Enemy : Entity, IImpactedByProjIFrames
     {
         HurtByProjectile(p);
     }
+
+    #region Amphibious behaviors
+    public bool InWater { get; protected set; } = false;
+    public float WaterTransitionAI { get; protected set; } = 0;
+    public virtual float AmphibiousSlowdown => 0.915f;
+    public virtual float AmphibiousWaterToLandSlowdown => AmphibiousSlowdown;
+    public virtual float AmphibiousTransitionSpeedMult => 2;
+    public virtual float AmphibiousWaterToLandTransitionSpeedMult => AmphibiousTransitionSpeedMult;
+    protected void WaterUpdate()
+    {
+        Vector2 waterDetectPos = MyShadow.transform.position; //Since the water shadow is moved relative to the visual, while the default shadow is not moved, the default is more accurate for this purpose
+        waterDetectPos += 5 * Time.fixedDeltaTime * RB.velocity;
+        float y = MyAmphibiousShadowRenderer.transform.localScale.y;
+        float x = MyAmphibiousShadowRenderer.transform.localScale.x;
+        //Check tiles in a thin vertical band of 0.5, for transitions to look better
+        if (World.GetTile(World.RealPosToTilePos(waterDetectPos + new Vector2(0, 0.5f))).IsLiquid && World.GetTile(World.RealPosToTilePos(waterDetectPos)).IsLiquid)
+        {
+            WaterTransitionAI += Time.fixedDeltaTime * AmphibiousTransitionSpeedMult;
+            if (WaterTransitionAI > 1)
+            {
+                WaterTransitionAI = 1;
+                if (!InWater)
+                {
+                    InWater = true;
+                    AudioManager.PlaySound(SoundID.BathBombSplash, waterDetectPos, 0.5f, 2.0f, 0);
+                    float totalParticles = 12;
+                    for (int i = 0; i < totalParticles; i++)
+                    {
+                        Vector2 circular = new Vector2(Utils.RandFloat(0.4f, 0.5f), 0).RotatedBy(i * Utils.TwoPI / totalParticles + Utils.RandFloat(-0.4f, 0.4f) / totalParticles);
+                        circular.y *= y;
+                        circular.x *= x;
+                        ParticleManager.NewParticle(waterDetectPos + circular, Utils.RandFloat(0.3f, 0.4f), Vector2.up * 2 + circular * 4, 1, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Bubble, ColorHelper.WaterOutline.WithAlpha(0.95f));
+                    }
+                }
+                else if (Utils.RandBool(5))
+                {
+                    Vector2 circular = new Vector2(Utils.RandFloat(0.4f, 0.5f), 0).RotatedBy(Utils.RandFloat(Utils.TwoPI));
+                    circular.y *= y;
+                    circular.x *= x;
+                    ParticleManager.NewParticle(waterDetectPos + circular, Utils.RandFloat(0.3f, 0.4f), Vector2.up * 2 + circular * 4 - Time.fixedDeltaTime * Utils.RandFloat(8, 12) * RB.velocity, 1, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Bubble, ColorHelper.WaterOutline.WithAlpha(0.95f));
+                }
+            }
+            else
+                RB.velocity *= AmphibiousSlowdown;
+        }
+        else
+        {
+            WaterTransitionAI -= Time.fixedDeltaTime * AmphibiousWaterToLandTransitionSpeedMult;
+            if (WaterTransitionAI < 0)
+            {
+                WaterTransitionAI = 0;
+                if (InWater)
+                {
+                    InWater = false;
+                    AudioManager.PlaySound(SoundID.ChestDrop, waterDetectPos, 0.5f, 2.0f, 0);
+                }
+            }
+            else
+                RB.velocity *= AmphibiousWaterToLandSlowdown;
+        }
+        MyAmphibiousShadowRenderer.transform.localPosition = new Vector3(0, -0.5f);
+        Visual.transform.localPosition = new Vector2(0, Mathf.Lerp(0, -0.5f, WaterTransitionAI) + Mathf.Sin(Mathf.PI * WaterTransitionAI));
+        ToggleShadowWater();
+    }
+    protected void ToggleShadowWater()
+    {
+        MyAmphibiousShadowRenderer.color = ColorHelper.WaterOutline.WithAlpha(WaterTransitionAI);
+        MyShadowRenderer.color = MyShadowDefaultColor.WithAlphaMultiplied(1 - WaterTransitionAI);
+    }
+    #endregion
 }
