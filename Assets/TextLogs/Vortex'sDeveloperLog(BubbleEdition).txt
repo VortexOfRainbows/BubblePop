@@ -72,6 +72,7 @@ Done:
 	5. Soap and Soap Fragments can transition into water, and become torpedos in the water
 		1. Move faster and more accurately in water, and faster when coming out of water
 	6. Boxer (Technically flying) just flies over the water (duh)
+	7. Sentinels can also fly over water
 2. WIP standardization of NPC water, world, NPC, and worldobj collision (does not change projectile/player collision unless stated). Shadows have also been adjusted slightly.
 	X. In general, this should make enemies able to squeeze through tiles and each other better. This type of stuff might be changed later if the impacts are undesirable.
 	Y. Internally, this hitbox shift is to move hitboxes generally closer to shadows so enemies collide where there "feet" are. This may also somewhat shift where oil puddles spawn beneath enemies.
@@ -92,6 +93,7 @@ All of the following NPCs used rectangular hitboxes for world collision. Now tho
 	13. Peaclock: radius 1.5 -> 0.875 (and shifted downward).
 	14. Rock Spider: radius unchanged 0.7, but shifted downward.
 	15. Rock Golem: radius 1.5 -> 0.875.
+	16-17. Sentinels: radius .9 -> 0.5 (and shifted downward).
 	Z. NEXT: Do all remaining enemies
 3. Slight changes to position/anchoring of the following enemies:
 	1. Flamingo, Leonard

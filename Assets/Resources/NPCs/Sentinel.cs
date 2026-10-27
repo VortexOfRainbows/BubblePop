@@ -1,8 +1,8 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Sentinel : Enemy
 {
+    public override bool Airborne => true;
     public override void ModifyInfectionShaderProperties(ref Color outlineColor, ref Color inlineColor, ref float inlineThreshold, ref float outlineSize, ref float additiveColorPower)
     {
         inlineThreshold = 0.03f;
@@ -59,7 +59,7 @@ public class Sentinel : Enemy
         Vector2 toTarget = targetedLocation - (Vector2)Head.position;
         float magnitude = toTarget.magnitude;
         Vector2 toTargetMovementDir = GetPathfindingToPlayerNorm();
-        if ((magnitude > 16 || !HasLineOfSightWithTarget) && AttackCounter <= 0)
+        if ((magnitude > 16 || !HasShootingLineOfSight) && AttackCounter <= 0)
         {
             if(AttackCounter < 0)
             {
