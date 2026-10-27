@@ -70,8 +70,17 @@ Done:
 1. WIP amphibious enemy implementation
 	1. Ducks can now go into water with a swift animation
 	2. Amphibious behaviors are now in the enemy class as overrides
+	3. Flamingos jump smoothly into water when navigating
+	4. Leonard jump high and slowly into water when navigating
 2. WIP standardization of NPC water, world, NPC, and worldobj collision (does not change projectile collision unless stated)
 	1. Duck: Hitbox radius 0.9 -> 0.7, and position shifted closer to the shadow
+	2. Flamingo: Now has a circular collision hitbox of radius 0.75, instead of a rectangular tile collider.
+	3. Leonard: Now has a circular collision hitbox of radius 0.875, shadow changed to be slightly smaller.
+		1. This is MUCH smaller than before, which should make it possible for Leonard to squeeze through 1-tile gaps
+3. Slight changes to position/anchoring of the following enemies:
+	1. Flamingo, Leonard
+4. Enemy snapping when out of bounds is now controlled by the position of the collision box rather than the geometric center
+	1. Logic should also be more consistent for things like chests
 
 10/21/26 to 10/24/26
 1. Very wip implementation for dialogue portraits:

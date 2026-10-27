@@ -270,6 +270,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             data.CardBG = Resources.Load<Sprite>("UI/Background");
     }
     public BoxCollider2D MyCollider;
+    public CircleCollider2D MyWorldCollider;
     public Transform MyShadow;
     public SpriteRenderer MyShadowRenderer { get; protected set; }
     public SpriteRenderer MyAmphibiousShadowRenderer { get; protected set; }
@@ -289,6 +290,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             MyShadow = transform.GetChild(1);
         if (MyShadow != null && MyShadow.childCount > 1) //Shadow sprite renderer should be the second nested element below the tile collider
         {
+            MyWorldCollider = MyShadow.GetChild(0).GetComponent<CircleCollider2D>();
             MyShadowRenderer = MyShadow.GetChild(1).GetComponent<SpriteRenderer>();
             MyShadowDefaultColor = MyShadowRenderer.color;
             if(MyShadow.childCount > 2)
@@ -488,11 +490,14 @@ public class Enemy : Entity, IImpactedByProjIFrames
         }
         if (!World.NonSolidTileSafe(transform.position) || (World.SafeGetTileData(World.RealPosToTilePos(transform.position)).IsLiquid && !Airborne && !Amphibious))
         {
-            CircleCollider2D circle = GetComponent<CircleCollider2D>();
-            BoxCollider2D box = MyCollider;
-            bool collidersOn = (circle != null && circle.enabled) || (box != null && box.enabled);
+            bool collidersOn = MyWorldCollider != null && MyWorldCollider.enabled;
             if(collidersOn)
-                PushIntoClosestPossibleTile(transform, RB, 10, false, pushWhenInWater: !Airborne);
+            {
+                Vector2 offset = Vector2.zero;
+                if(MyShadow != null)
+                    offset = (Vector2)MyShadow.localPosition + MyWorldCollider.offset;
+                PushIntoClosestPossibleTile(transform, RB, 10, false, pushWhenInWater: !Airborne, offset: offset);
+            }
         }
         if(TarStacks > 0)
         {
@@ -840,6 +845,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
     public virtual float AmphibiousWaterToLandSlowdown => AmphibiousSlowdown;
     public virtual float AmphibiousTransitionSpeedMult => 2;
     public virtual float AmphibiousWaterToLandTransitionSpeedMult => AmphibiousTransitionSpeedMult;
+    public virtual float AmphibiousJumpHeight => 1.0f;
     protected void WaterUpdate()
     {
         Vector2 waterDetectPos = MyShadow.transform.position; //Since the water shadow is moved relative to the visual, while the default shadow is not moved, the default is more accurate for this purpose
@@ -866,7 +872,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
                         ParticleManager.NewParticle(waterDetectPos + circular, Utils.RandFloat(0.3f, 0.4f), Vector2.up * 2 + circular * 4, 1, Utils.RandFloat(0.3f, 0.4f), ParticleManager.ID.Bubble, ColorHelper.WaterOutline.WithAlpha(0.95f));
                     }
                 }
-                else if (Utils.RandBool(5))
+                else if (RB.velocity.sqrMagnitude > Utils.RandFloat(1.0f, 10.0f) && Utils.RandBool(5))
                 {
                     Vector2 circular = new Vector2(Utils.RandFloat(0.4f, 0.5f), 0).RotatedBy(Utils.RandFloat(Utils.TwoPI));
                     circular.y *= y;
@@ -893,7 +899,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
                 RB.velocity *= AmphibiousWaterToLandSlowdown;
         }
         MyAmphibiousShadowRenderer.transform.localPosition = new Vector3(0, -0.5f);
-        Visual.transform.localPosition = new Vector2(0, Mathf.Lerp(0, -0.5f, WaterTransitionAI) + Mathf.Sin(Mathf.PI * WaterTransitionAI));
+        Visual.transform.localPosition = new Vector2(0, Mathf.Lerp(0, -0.5f, WaterTransitionAI) + AmphibiousJumpHeight * Mathf.Sin(Mathf.PI * WaterTransitionAI));
         ToggleShadowWater();
     }
     protected void ToggleShadowWater()

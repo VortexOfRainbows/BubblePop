@@ -61,7 +61,7 @@ public class EnemyDuck : Enemy
             Vector2 toTarget = targetedLocation - (Vector2)transform.position;
             Vector2 movementDir = Life >= MaxLife ? toTarget.normalized : GetPathfindingToPlayerNorm();
             bobbingTimer += Mathf.Sqrt(toTarget.magnitude);
-            if(Mathf.Abs(movementDir.x) > 0.2f)
+            if(Mathf.Abs(movementDir.x) > 0.2f && RB.velocity.sqrMagnitude > 1.0f)
                 sRender.flipX = movementDir.x > 0;
             float speedScaling = aiState == 2 ? (InWater ? 0.225f : 0.2f) : 0.1f;
             float BaseSpeed = aiState == 2 ? (InWater ? 6.0f : 4.4f) : 1.0f;

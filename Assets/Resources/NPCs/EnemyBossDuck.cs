@@ -7,6 +7,8 @@ public class EnemyBossDuck : EnemyDuck
         //scale *= 2;
         //offset = Vector2.one * -1.25f;
     }
+    public override float AmphibiousTransitionSpeedMult => 1.4f;
+    public override float AmphibiousJumpHeight => 1.6f;
     public override float HealthBarOffset => -3f;
     private float projectileSpeed = 3f;
     private int projectileTimer = -50;

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemyFlamingo : EnemyDuck
 {
+    public override float AmphibiousTransitionSpeedMult => 1.6f;
+    public override float AmphibiousWaterToLandSlowdown => 0.95f;
     private static readonly float ProjVelocity = 3f;
     private int projectileTimer = 300;
     public override void InitStatics(ref EnemyID.StaticEnemyData data)

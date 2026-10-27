@@ -163,9 +163,9 @@ public partial class Entity : MonoBehaviour
             new(1, 1), new(-1, -1), new(-1, 1), new(1, -1) };
         if (offset == default)
             offset = Vector2.zero;
-        Vector2 pos = transform.position;
+        Vector2 pos = (Vector2)transform.position + offset;
         Vector2 finalPos = pos;
-        Vector2 tileCenter = World.CenterOfTile(World.RealPosToTilePos(pos + offset));
+        Vector2 tileCenter = World.CenterOfTile(World.RealPosToTilePos(pos));
         Vector2 tileCenterToPlayerCenter = pos - tileCenter;
         Vector2 veloOffset = Vector2.zero;
         if (RB != null)
@@ -181,7 +181,7 @@ public partial class Entity : MonoBehaviour
             {
                 Vector2 direction = dirs[i] * j;
                 Vector2 newPos = pos + direction;
-                if (World.WithinBorders(newPos + offset, includeProgressionBounds, pushWhenInWater))
+                if (World.WithinBorders(newPos, includeProgressionBounds, pushWhenInWater))
                 {
                     Vector2 snap = new(Mathf.Abs(dirs[i].x), Mathf.Abs(dirs[i].y));
                     var tileToPlayer2 = tileCenterToPlayerCenter * snap;
@@ -202,7 +202,7 @@ public partial class Entity : MonoBehaviour
         }
         if (finalPos != pos)
             wasPushed = true;
-        transform.position = finalPos;
+        transform.position = finalPos - offset;
         return wasPushed;
     }
 }
