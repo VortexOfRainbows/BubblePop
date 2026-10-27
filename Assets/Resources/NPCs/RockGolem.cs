@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 public class RockGolem : RockSpider
 {
     private Color ShotColor => IsInfected ? new Color(1, .1f, .1f, 1.0f) : new Color(.2f, .3f, 1f, 1.0f);
@@ -59,12 +60,16 @@ public class RockGolem : RockSpider
             spider.InfectionTarget = true;
         }
     }
+    public int OnMask = -1; 
+    public int OffMask = -1;  
     public override void AI()
     {
+        OnMask = OnMask == -1 ? LayerMask.GetMask("Water", "World", "NPC", "WorldObj") : OnMask;
+        OffMask = OffMask == -1 ? LayerMask.GetMask("Water", "World", "WorldObj") : OffMask;
         if (Parent == null)
         {
+            MyWorldCollider.forceSendLayers = MyWorldCollider.includeLayers = MyWorldCollider.forceReceiveLayers = OnMask;
             HealthBarAlpha = Mathf.Lerp(HealthBarAlpha, 1, 0.05f);
-            GetComponent<CircleCollider2D>().enabled = true;
             SpawnedInAlpha += 0.05f;
             if (!hasSpawned)
             {
@@ -187,7 +192,7 @@ public class RockGolem : RockSpider
             }
             else
                 Timer = 0;
-            GetComponent<CircleCollider2D>().enabled = false;
+            MyWorldCollider.forceSendLayers = MyWorldCollider.includeLayers = OffMask;
             Head.gameObject.SetActive(false);
             Vector2 pos = transform.position;
             Vector2 parent = Parent.transform.position;
