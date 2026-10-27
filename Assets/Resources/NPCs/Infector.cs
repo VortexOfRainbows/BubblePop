@@ -3,7 +3,7 @@ using UnityEngine;
 public class Infector : Enemy
 {
     public override bool CanBeRandomlyInfected() => false;
-    public SpriteRenderer DropShadow;
+    public SpriteRenderer DropShadow => MyShadowRenderer;
     public GameObject Head;
     public Enemy Host;
     private float ImplantAnimation = 0;
@@ -200,8 +200,7 @@ public class Infector : Enemy
                 transform.position = target;
                 StartedMoving = false;
             }
-            GetComponent<CircleCollider2D>().enabled = false;
-            GetComponent<BoxCollider2D>().enabled = false;
+            MyCollider.enabled = MyWorldCollider.enabled = false;
         }
         else
         {
@@ -261,8 +260,7 @@ public class Infector : Enemy
             }
             DropShadow.gameObject.SetActive(true);
             Head.SetActive(true);
-            GetComponent<CircleCollider2D>().enabled = true;
-            GetComponent<BoxCollider2D>().enabled = true;
+            MyCollider.enabled = MyWorldCollider.enabled = true;
         }
 
         //if (Host != null && FoundHost && !FinishedImplanting)

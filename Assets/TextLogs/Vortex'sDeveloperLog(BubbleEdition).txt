@@ -82,10 +82,13 @@ Done:
 	4. Soap: Circular collision hitbox radius 1.0 -> 0.75
 	5. Soap Fragment: radius 0.7 -> 0.65
 	6. Boxer world hitbox moved slightly downward
-	7. Chicken: radius 0.9 -> 0.6 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
-	8. Ent: radius 1.1 -> 0.8 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
-	9. Crow:  radius 0.7 -> 0.65 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
-	10. Gatligator: radius 1.1 -> 0.9 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
+All of the following NPCs used rectangular hitboxes for world collision. Now those are only for projectile/player:
+	7. Chicken: radius 0.9 -> 0.6 (and shifted downward). 
+	8. Ent: radius 1.1 -> 0.8 (and shifted downward).
+	9. Crow:  radius 0.7 -> 0.65 (and shifted downward). 
+	10. Gatligator: radius 1.1 -> 0.9 (and shifted downward).
+	11. Snow Golem: radius 1.2 -> 0.85 (and shifted downward).
+	12. Infector: radius 0.9 -> 0.85 (and shifted downward).
 	Z. NEXT: Do all remaining enemies :(
 3. Slight changes to position/anchoring of the following enemies:
 	1. Flamingo, Leonard
