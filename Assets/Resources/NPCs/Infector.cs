@@ -136,7 +136,7 @@ public class Infector : Enemy
         float dist = toPlayer.magnitude;
         UpdateShards();
         UpdateEye();
-        RB.velocity *= 0.925f;
+        RB.velocity *= 0.92f;
         if (Host == null)
         {
             if(DizzyAnimation)
@@ -158,6 +158,7 @@ public class Infector : Enemy
             Counter++;
             return;
         }
+        bool pathfinding = false;
         DizzyAnimation = false;
         if (Host != null)
         {
@@ -232,29 +233,41 @@ public class Infector : Enemy
                 }
                 else
                 {
-                    Vector2 toTarget = PrevPlayerPos - TargetPos;
-                    float targetMagnitude = toTarget.magnitude;
-                    float a = Utils.LerpAngleRadians((PrevPlayerPos - (Vector2)transform.position).ToRotation(), toTarget.ToRotation(), 0.09f);
-
-                    Vector2 interTarget = PrevPlayerPos + new Vector2(-targetMagnitude, 0).RotatedBy(a);
-                    Vector2 playerToInter = interTarget - playerPos;
-                    float diff = playerToInter.magnitude - 6;
-                    if (diff < 0 && Counter < 0)
+                    if(!HasShootingLineOfSight && Counter2 <= 0)
                     {
-                        interTarget -= playerToInter.normalized * diff;
-                    }
-                    toTarget = interTarget - (Vector2)transform.position;
-                    if (toTarget.magnitude > 0.5f)
-                    {
-                        RB.velocity += toTarget.normalized * 4f;
-                        Vector2 veloNorm = RB.velocity.normalized;
+                        pathfinding = true;
+                        Vector2 vnorm = GetPathfindingToPlayerNorm();
+                        RB.velocity += vnorm * 3.5f;
+                        TargetPos = playerPos - toPlayer.normalized * 12;
                         if (Counter <= 0)
-                            ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1) - veloNorm * 0.6f, 2.5f, Utils.RandCircle(1, 4) - veloNorm * 5, 0f, Utils.RandFloat(0.6f, 0.7f), ParticleManager.ID.Pixel, Color.red);
+                            ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1) - vnorm * 0.6f, 2.5f, Utils.RandCircle(1, 4) - vnorm * 5, 0f, Utils.RandFloat(0.6f, 0.7f), ParticleManager.ID.Pixel, Color.red);
                     }
                     else
                     {
-                        transform.position = transform.position.Lerp(interTarget, 0.1f);
-                        StartedMoving = false;
+                        Vector2 toTarget = PrevPlayerPos - TargetPos;
+                        float targetMagnitude = toTarget.magnitude;
+                        float a = Utils.LerpAngleRadians((PrevPlayerPos - (Vector2)transform.position).ToRotation(), toTarget.ToRotation(), 0.09f);
+
+                        Vector2 interTarget = PrevPlayerPos + new Vector2(-targetMagnitude, 0).RotatedBy(a);
+                        Vector2 playerToInter = interTarget - playerPos;
+                        float diff = playerToInter.magnitude - 6;
+                        if (diff < 0 && Counter < 0)
+                        {
+                            interTarget -= playerToInter.normalized * diff;
+                        }
+                        toTarget = interTarget - (Vector2)transform.position;
+                        if (toTarget.magnitude > 0.5f)
+                        {
+                            RB.velocity += toTarget.normalized * 4f;
+                            Vector2 veloNorm = RB.velocity.normalized;
+                            if (Counter <= 0)
+                                ParticleManager.NewParticle((Vector2)transform.position + new Vector2(0, -1) - veloNorm * 0.6f, 2.5f, Utils.RandCircle(1, 4) - veloNorm * 5, 0f, Utils.RandFloat(0.6f, 0.7f), ParticleManager.ID.Pixel, Color.red);
+                        }
+                        else
+                        {
+                            transform.position = transform.position.Lerp(interTarget, 0.1f);
+                            StartedMoving = false;
+                        }
                     }
                 }
             }
@@ -266,11 +279,11 @@ public class Infector : Enemy
         //if (Host != null && FoundHost && !FinishedImplanting)
         //  return;
 
-        if (Host != null || FoundHost)
+        if (Host != null || FoundHost || pathfinding)
             return;
 
 
-        if (dist < 30 || Counter2 > 0)
+        if ((dist < 30 && HasShootingLineOfSight) || Counter2 > 0)
         {
             Counter++;
             if(Counter > 75 && Counter2 <= 2)
@@ -309,7 +322,7 @@ public class Infector : Enemy
             {
                 Counter2 = 0;
                 Counter = 0;
-                if(!FinishedImplanting)
+                if (!FinishedImplanting)
                     TargetPos = Vector2.zero;
             }
         }

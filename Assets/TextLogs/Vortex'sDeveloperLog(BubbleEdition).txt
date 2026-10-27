@@ -94,6 +94,8 @@ All of the following NPCs used rectangular hitboxes for world collision. Now tho
 	1. Flamingo, Leonard
 4. Enemy snapping when out of bounds is now controlled by the position of the collision box rather than the geometric center
 	1. Logic should also be more consistent for things like chests
+5. Infectors now implement pathfinding when no host is nearby (previously, they did not pathfind around tiles). It's a bit jank, so I'll keep an eye on it
+	1. Infectors now are slightly slower with slightly more drag
 
 10/21/26 to 10/24/26
 1. Very wip implementation for dialogue portraits:
