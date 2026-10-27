@@ -84,6 +84,8 @@ Done:
 	6. Boxer world hitbox moved slightly downward
 	7. Chicken: radius 0.9 -> 0.6 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
 	8. Ent: radius 1.1 -> 0.8 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
+	9. Crow:  radius 0.7 -> 0.65 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
+	10. Gatligator: radius 1.1 -> 0.9 (and shifted downward). Now uses circular hitbox for world collision stuff (previously was only for NPCs, and used rectangular for world)
 	Z. NEXT: Do all remaining enemies :(
 3. Slight changes to position/anchoring of the following enemies:
 	1. Flamingo, Leonard

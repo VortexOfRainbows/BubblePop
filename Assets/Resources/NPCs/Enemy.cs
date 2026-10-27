@@ -294,7 +294,10 @@ public class Enemy : Entity, IImpactedByProjIFrames
             MyShadowRenderer = MyShadow.GetChild(1).GetComponent<SpriteRenderer>();
             MyShadowDefaultColor = MyShadowRenderer.color;
             if(MyShadow.childCount > 2)
+            {
                 MyAmphibiousShadowRenderer = MyShadow.GetChild(2).GetComponent<SpriteRenderer>();
+                MyAmphibiousShadowRenderer.color = MyAmphibiousShadowRenderer.color.WithAlpha(0);
+            }
         }
     }
     public virtual void OnSpawn()
