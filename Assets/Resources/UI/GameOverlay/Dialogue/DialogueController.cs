@@ -11,9 +11,9 @@ public class DialogueController : MonoBehaviour
         public string text;
         public NPCType LeftType = NPCType.None;
         public NPCType RightType = NPCType.None;
-        public int LeftExpression = -1;
-        public int RightExpression = -1;
-        public DialogueEvent(string text, NPCType LeftCharacter = NPCType.None, int LeftExpression = -1, NPCType RightCharacter = NPCType.None, int RightExpression = -1, bool speakerIsPlayer = false)
+        public string LeftExpression = default;
+        public string RightExpression = default;
+        public DialogueEvent(string text, bool speakerIsPlayer = false, NPCType LeftCharacter = NPCType.None, NPCType RightCharacter = NPCType.None, string LeftExpression = default, string RightExpression = default)
         {
             this.text = text;
             LeftType = LeftCharacter;
@@ -27,15 +27,16 @@ public class DialogueController : MonoBehaviour
     public static DialogueController Instance;
     public static void EnqueueDialogue(DialogueEvent dialogue)
     {
-        if(!dialogue.text.StartsWith("(skip)"))
-            DialogueQueue.Enqueue(dialogue);
+        if (dialogue == null)
+            return;
+        DialogueQueue.Enqueue(dialogue);
         Instance.WantsOpen = true;
         Instance.AnimationCounter = 0;
     }
     public static void EnqueueDialogueChain(IEnumerable<DialogueEvent> dialogueChain)
     {
         foreach(DialogueEvent dialogue in dialogueChain)
-            if(!dialogue.text.StartsWith("(skip)"))
+            if(dialogue != null)
                 DialogueQueue.Enqueue(dialogue);
         Instance.WantsOpen = true;
         Instance.AnimationCounter = 0;
@@ -43,7 +44,7 @@ public class DialogueController : MonoBehaviour
     public static void EnqueueDialogueChain(params DialogueEvent[] dialogueChain)
     {
         foreach(DialogueEvent dialogue in dialogueChain)
-            if(!dialogue.text.StartsWith("(skip)"))
+            if(dialogue != null)
                 DialogueQueue.Enqueue(dialogue);
         Instance.WantsOpen = true;
         Instance.AnimationCounter = 0;

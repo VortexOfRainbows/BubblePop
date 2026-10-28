@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class NPC : Entity
@@ -129,8 +130,31 @@ public class NPC : Entity
         }
     }
     //It might be good to make a version of this with (string, NPCType, out string EXPRESSION) where expression could be determined in the hjson file!
+    public static DialogueController.DialogueEvent GetDialogueSegmentWithArguments(string segment, NPCType variant, NPCType Right = NPCType.None, string LeftExpression = null, string RightExpression = null)
+    {
+        string rawSegment = GetDialogueSegment(segment, variant);
+        int argumentSectionEnd = rawSegment.LastIndexOf(')') + 1;
+        string[] parts = rawSegment[..argumentSectionEnd].Split(' ');
+        string expression = default;
+        bool playerTalking = false;
+        foreach (string part in parts)
+        {
+            if(part.StartsWith("("))
+            {
+                string arg = part[1..^1].ToLower(); //strip the parenthesis
+                if (arg.Equals("skip"))
+                    return null;
+                else if (arg.Equals("player"))
+                    playerTalking = true;
+                else
+                    expression = arg;
+            }
+        }
+        //Might need to add an additional override for Left if the player is ever not the one in the left slot. Though this is probably not gonna happen.
+        string dialogue = argumentSectionEnd >= rawSegment.Length ? string.Empty : rawSegment[(argumentSectionEnd != 0 ? argumentSectionEnd + 1 : 0)..];
+        return new(dialogue, playerTalking, variant, Right, playerTalking ? expression : LeftExpression, playerTalking ? RightExpression : expression);
+    }
     public static string GetDialogueSegment(string segment, NPCType variant) => Localization.TryGetVariant($"Dialogue.{segment}", GetDialogueVariant(variant));
-    public static string GetDialogueSegment(string segment) => Localization.Get($"Dialogue.{segment}");
     public void StartDialogue()
     {
         HasOpenedDialogueAlready = true;
@@ -142,42 +166,42 @@ public class NPC : Entity
                 if(rand == 0)
                 {
                     DialogueController.EnqueueDialogueChain(
-                        new(GetDialogueSegment("GachaponShop1_1", p), p, 0, NPCType.Gachapon, 0, false),
-                        new(GetDialogueSegment("GachaponShop1_2", p), LeftExpression: 1, speakerIsPlayer: true),
-                        new(GetDialogueSegment("GachaponShop1_3", p))
+                        GetDialogueSegmentWithArguments("GachaponShop1_1", p, NPCType.Gachapon, "default", "default"),
+                        GetDialogueSegmentWithArguments("GachaponShop1_2", p),
+                        GetDialogueSegmentWithArguments("GachaponShop1_3", p)
                         );
                 }
                 else if(rand == 1)
                 {
                     DialogueController.EnqueueDialogueChain(
-                        new(GetDialogueSegment("GachaponShop2_1", p), p, 0, NPCType.Gachapon, 0, false),
-                        new(GetDialogueSegment("GachaponShop2_2", p)),
-                        new(GetDialogueSegment("GachaponShop2_3", p), LeftExpression: 3, speakerIsPlayer: true),
-                        new(GetDialogueSegment("GachaponShop2_4", p)),
-                        new(GetDialogueSegment("GachaponShop2_5", p))
+                        GetDialogueSegmentWithArguments("GachaponShop2_1", p, NPCType.Gachapon, "default", "default"),
+                        GetDialogueSegmentWithArguments("GachaponShop2_2", p),
+                        GetDialogueSegmentWithArguments("GachaponShop2_3", p),
+                        GetDialogueSegmentWithArguments("GachaponShop2_4", p),
+                        GetDialogueSegmentWithArguments("GachaponShop2_5", p)
                         );
                 }
                 else if (rand == 2)
                 {
                     DialogueController.EnqueueDialogueChain(
-                        new(GetDialogueSegment("GachaponShop3_1", p), p, 0, NPCType.Gachapon, 0, false),
-                        new(GetDialogueSegment("GachaponShop3_2", p), speakerIsPlayer: true)
+                        GetDialogueSegmentWithArguments("GachaponShop3_1", p, NPCType.Gachapon, "default", "default"),
+                        GetDialogueSegmentWithArguments("GachaponShop3_2", p)
                         );
                 }
                 else if (rand == 3)
                 {
                     DialogueController.EnqueueDialogueChain(
-                        new(GetDialogueSegment("GachaponShop4_1", p), p, 2, NPCType.Gachapon, 0, true),
-                        new(GetDialogueSegment("GachaponShop4_2", p), speakerIsPlayer: false),
-                        new(GetDialogueSegment("GachaponShop4_3", p), LeftExpression: 0, speakerIsPlayer: true)
+                        GetDialogueSegmentWithArguments("GachaponShop4_1", p, NPCType.Gachapon, "default", "default"),
+                        GetDialogueSegmentWithArguments("GachaponShop4_2", p),
+                        GetDialogueSegmentWithArguments("GachaponShop4_3", p)
                         );
                 }
                 break;
             case DialogueType.GachaponMansion:
                 DialogueController.EnqueueDialogueChain(
-                    new(GetDialogueSegment("GachaponMansion1_1", p), p, 0, NPCType.Gachapon, 0, false),
-                    new(GetDialogueSegment("GachaponMansion1_2", p), LeftExpression: 1, speakerIsPlayer: true),
-                    new(GetDialogueSegment("GachaponMansion1_3", p))
+                    GetDialogueSegmentWithArguments("GachaponMansion1_1", p, NPCType.Gachapon, "default", "default"),
+                    GetDialogueSegmentWithArguments("GachaponMansion1_2", p),
+                    GetDialogueSegmentWithArguments("GachaponMansion1_3", p)
                     );
                 break;
         }

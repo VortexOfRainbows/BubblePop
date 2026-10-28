@@ -1,31 +1,50 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.UI;
 using static NPC;
+using static UnityEditorInternal.ReorderableList;
 
 public class Portrait : MonoBehaviour
 {
-    public static Sprite[] Bubblemancer { get; private set; }
-    public static Sprite[] ThoughtBubble { get; private set; }
-    public static Sprite[] Gachapon { get; private set; }
-    public static Sprite[] Fizzy { get; private set; }
-    public static Sprite[] KingOil { get; private set; }
-    public static Dictionary<NPC.NPCType, Sprite[]> NPCExpression { get; private set; }
     private static readonly string dir = "UI/GameOverlay/Dialogue/";
-    public static Sprite Load(string path)
+    public class CharacterExpressions
     {
-        return Resources.Load<Sprite>($"{dir}{path}");
+        public static Sprite Load(string path) => Resources.Load<Sprite>($"{dir}{path}");
+        public CharacterExpressions(string CharacterName, params string[] Expressions)
+        {
+            this.CharacterName = CharacterName;
+            foreach (var expression in Expressions)
+                ExpressionSprites[expression.ToLower()] = Load($"{CharacterName}{expression}");
+            if(!ExpressionSprites.TryGetValue("default", out _))
+                ExpressionSprites["default"] = Load($"{CharacterName}Default");
+        }
+        public string CharacterName { get; private set; }
+        public Dictionary<string, Sprite> ExpressionSprites = new();
+        public Sprite GetExpression(string Expression, string Fallback = "default")
+        {
+            Expression = Expression.ToLower();
+            if (ExpressionSprites.TryGetValue(Expression, out Sprite val))
+                return val;
+            else if (ExpressionSprites.TryGetValue(Fallback, out val))
+                return val;
+            throw new System.Exception("Fallback expression does not exist");
+        }
     }
+    public static CharacterExpressions Bubblemancer { get; private set; }
+    public static CharacterExpressions ThoughtBubble { get; private set; }
+    public static CharacterExpressions Gachapon { get; private set; }
+    public static CharacterExpressions Fizzy { get; private set; }
+    public static CharacterExpressions KingOil { get; private set; }
+    public static Dictionary<NPC.NPCType, CharacterExpressions> NPCExpression { get; private set; }
     public static void LoadPortraitSprites()
     {
-        Bubblemancer = new[] { Load("Bubblemancer0"), 
-            Load("Bubblemancer1"), Load("Bubblemancer2"), Load("Bubblemancer3"), Load("Bubblemancer4") };
-        ThoughtBubble = new[] { Load("TB0") };
-        Gachapon = new[] { Load("Gacha0") };
-        Fizzy = new[] { Load("Fizzy0") };
-        KingOil = new[] { Load("Oil0") };
-
+        Bubblemancer = new("Bubblemancer", "Dizzy", "Focused", "Smug", "Tired");
+        ThoughtBubble = new("TB");
+        Gachapon = new("Gacha");
+        Fizzy = new("Fizzy");
+        KingOil = new("Oil");
         NPCExpression = new()
         {
             { NPCType.Bubblemancer, Bubblemancer },
@@ -37,18 +56,17 @@ public class Portrait : MonoBehaviour
     }
     public Image CharacterPortrait;
     public NPCType MyNPC { get; private set; }
-    public int MyNPCType { get; private set; } = 0;
+    public string MyExpression { get; private set; } = "default";
     public bool ActiveSpeaker { get; set; } = false;
-    public void SetExpression(NPCType npc = NPCType.None, int Num = -1)
+    public void SetExpression(NPCType npc = NPCType.None, string Expression = default)
     {
         if(npc != MyNPC && npc != NPCType.None)
             MyNPC = npc;
-        if(MyNPCType != Num && Num != -1)
-            MyNPCType = Num;
+        if(Expression != default)
+            MyExpression = Expression;
 
-        Sprite[] expressions = NPCExpression[MyNPC];
-        MyNPCType = Mathf.Clamp(MyNPCType, 0, expressions.Length - 1);
-        CharacterPortrait.sprite = expressions[MyNPCType];
+        CharacterExpressions expressions = NPCExpression[MyNPC];
+        CharacterPortrait.sprite = expressions.GetExpression(MyExpression);
         CharacterPortrait.SetNativeSize();
 
         if (MyNPC == NPCType.Bubblemancer)
