@@ -37,7 +37,7 @@ Need to do:
 	3. Will require additional logic for handling transitions between taller tiles and shorter tiles, in all directions
 	4. Blending for tiles on the floor and how tiles are transitioned into tile data will also have to be handled
 8. Finish dialogue system implementations
-	1. Improve the UI more, add sounds, indicator that text has become passable (like genshin impacts diamond)
+	1. Next: Add sounds, indicator that text has become passable (like genshin impacts diamond)
 	2. Next: implement more expressions
 
 Less Important (mostly non-issues or complete already), but in consideration:
@@ -62,9 +62,10 @@ Done:
 
 -- (NEXT) 4.0? --
 
-10/27/26
+10/27/26 to 10/28/26
 1. More dialogue variants for gachapon shop, and for gachapon mansion
 2. Dialogue can now be marked to be single-time (cannot be re-interacted in the same run)
+3. Dialogue UI is now more colorful and consistent in style.
 
 10/24/26 to 10/27/26
 1. Amphibious enemy implementation

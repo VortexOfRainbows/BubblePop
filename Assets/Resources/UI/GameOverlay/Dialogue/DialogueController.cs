@@ -91,8 +91,8 @@ public class DialogueController : MonoBehaviour
         if(MyGroup.alpha <= 0)
         {
             DialogueVisual.gameObject.SetActive(false);
-            LeftPortrait.transform.localScale = new Vector3(0.925f, 0.925f, 1);
-            RightPortrait.transform.localScale = new Vector3(-0.925f, 0.925f, 1);
+            LeftPortrait.DisabledUpdate();
+            RightPortrait.DisabledUpdate();
         }
     }
     public void UpdateVisibleDialogue()

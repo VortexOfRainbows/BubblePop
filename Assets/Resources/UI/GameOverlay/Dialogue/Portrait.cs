@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static NPC;
-using static UnityEditorInternal.ReorderableList;
 
 public class Portrait : MonoBehaviour
 {
@@ -54,6 +52,7 @@ public class Portrait : MonoBehaviour
             { NPCType.ThoughtBubble, ThoughtBubble }
         };
     }
+    public Image BG;
     public Image CharacterPortrait;
     public NPCType MyNPC { get; private set; }
     public string MyExpression { get; private set; } = "default";
@@ -74,20 +73,32 @@ public class Portrait : MonoBehaviour
         else
             CharacterPortrait.transform.localPosition = Vector3.zero;
     }
+    public void DisabledUpdate()
+    {
+        float dir = Utils.SignNoZero(transform.localScale.x);
+        Vector3 scale = Vector3.one * 0.85f;
+        scale.x *= dir;
+        transform.localScale = scale;
+        BG.color = ColorHelper.DarkCornflower.WithAlpha(0.9f);
+        transform.localPosition = new Vector2(transform.localPosition.x, 0);
+    }
     public void Update()
     {
         float dir = Utils.SignNoZero(transform.localScale.x);
         Vector3 scale = transform.localScale;
         scale.x *= dir;
-        if(ActiveSpeaker)
+        float lerpT = Utils.DeltaTimeLerpFactor(0.1f);
+        if (ActiveSpeaker)
         {
-            scale = Vector3.Lerp(scale, Vector3.one * 1.1f, Utils.DeltaTimeLerpFactor(0.1f));
-            transform.LerpLocalPosition(new Vector2(transform.localPosition.x, 20), Utils.DeltaTimeLerpFactor(0.1f));
+            BG.color = BG.color.Lerp(ColorHelper.Cornflower.WithAlpha(0.9f), lerpT);
+            scale = Vector3.Lerp(scale, Vector3.one * 1.1f, lerpT);
+            transform.LerpLocalPosition(new Vector2(transform.localPosition.x, 20), lerpT);
         }
         else
         {
-            scale = Vector3.Lerp(scale, Vector3.one * 0.85f, Utils.DeltaTimeLerpFactor(0.1f));
-            transform.LerpLocalPosition(new Vector2(transform.localPosition.x, 0), Utils.DeltaTimeLerpFactor(0.1f));
+            BG.color = BG.color.Lerp(ColorHelper.DarkCornflower.WithAlpha(0.9f), lerpT);
+            scale = Vector3.Lerp(scale, Vector3.one * 0.85f, lerpT);
+            transform.LerpLocalPosition(new Vector2(transform.localPosition.x, 0), lerpT);
         }
         scale.x *= dir;
         transform.localScale = scale;
