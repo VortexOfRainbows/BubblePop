@@ -169,10 +169,20 @@ public class EnemyPattern
     public bool Skull { get; set; } = false;
     public void Release()
     {
-        Vector2 spawnPos = ShiftLocationIfOutOfBounds(SpawnPattern.GenerateLocation());
+        bool hasOnlyAmphibiousEnemies = true;
+        foreach(var enemy in EnemyPrefabs)
+        {
+            var e = enemy.GetComponent<Enemy>();
+            if (!e.Amphibious && !e.Airborne)
+            {
+                hasOnlyAmphibiousEnemies = false;
+                break;
+            }
+        }
+        Vector2 spawnPos = ShiftLocationIfOutOfBounds(SpawnPattern.GenerateLocation(), hasOnlyAmphibiousEnemies);
         Wormhole.Spawn(spawnPos, EnemyPrefabs, Skull, BetweenEnemyDelay / Time.fixedDeltaTime);
     }
-    public Vector2 ShiftLocationIfOutOfBounds(Vector2 location)
+    public Vector2 ShiftLocationIfOutOfBounds(Vector2 location, bool amphibious)
     {
         Player closest = Player.FindClosest(location, out Vector2 toPlayer, out float dist);
         float minDist = SpawnPattern.MinimumDistanceToPlayer;
@@ -180,7 +190,7 @@ public class EnemyPattern
         {
             location = closest.Position - toPlayer * minDist;
         }
-        for (int att = 0; !ValidLocation(location) && att <= 100; ++att)
+        for (int att = 0; !ValidLocation(location, amphibious) && att <= 100; ++att)
         {
             SpawnPattern.Target = closest;
             location = SpawnPattern.RegenerateLocation(att, att == 100);
@@ -191,7 +201,7 @@ public class EnemyPattern
             if (dist < minDist)
             {
                 Vector2 testLocation = closest.Position - (toPlayer * minDist).RotatedBy(Utils.RandFloat(-deg, deg));
-                if(ValidLocation(testLocation))
+                if(ValidLocation(testLocation, amphibious))
                 {
                     Debug.Log($"Shifted enemy spawn postion that was too close to Player[{closest.InstanceID}]".WithColor("#FF5511"));
                     location = testLocation;
@@ -203,13 +213,13 @@ public class EnemyPattern
         }
         return location;
     }
-    public bool ValidLocation(Vector2 location)
+    public bool ValidLocation(Vector2 location, bool amphibious)
     {
         //bool hasWorldMap = World.RealTileMap != null && World.RealTileMap.Map != null;
         //if(hasWorldMap)
         for (int i = -1; i <= 1; ++i)
             for (int j = -1; j <= 1; ++j)
-                if (!World.ValidEnemySpawnTile(location + new Vector2(i, j) * 2))
+                if (!World.ValidEnemySpawnTile(location + new Vector2(i, j) * 2, amphibious))
                     return false;
         return true;
     }

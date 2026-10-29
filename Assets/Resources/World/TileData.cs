@@ -2,13 +2,13 @@ using UnityEngine;
 
 public partial class World : MonoBehaviour
 {
-    public static bool ValidEnemySpawnTile(Vector3 pos)
+    public static bool ValidEnemySpawnTile(Vector3 pos, bool allowLiquid = false)
     {
         Vector3Int posi = RealPosToTilePos(pos);
         var data = SafeGetTileData(posi);
         bool currentlyOnThisProgressionTier = data.ProgressionNumber == Main.PylonProgressionNumber;
         bool validSpawnTile = RealTileMap.Map.GetTile(posi) != TileID.DarkGrass.FloorTileType && !SafeGetTileData(posi).IsRoadblock;
-        return !data.IsSolid && validSpawnTile && currentlyOnThisProgressionTier && !data.IsLiquid;
+        return !data.IsSolid && validSpawnTile && currentlyOnThisProgressionTier && (allowLiquid || !data.IsLiquid);
     }
     public static bool NonSolidTileSafe(Vector3 position)
     {
