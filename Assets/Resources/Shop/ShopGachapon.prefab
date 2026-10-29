@@ -680,6 +680,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GachaponTown
       objectReference: {fileID: 0}
+    - target: {fileID: 2532931707597747353, guid: 020ea256667aa584aba0b669a80c3648, type: 3}
+      propertyPath: Dialogue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6970485225633669214, guid: 020ea256667aa584aba0b669a80c3648, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
