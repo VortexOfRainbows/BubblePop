@@ -511,6 +511,11 @@ public partial class Player : Entity
     {
         Vector2 velocity = RB.velocity;
         float cSpeed = speed * MoveSpeedMod;
+        if (DialogueController.DialogueMenuOpen)
+        {
+            cSpeed = 0;
+            velocity *= 0.95f;
+        }
         float cDeaccel = MovementDeacceleration;
         float cMaxSpeed = MaxSpeed;
         if (Body is Fizzy f)

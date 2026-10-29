@@ -5,6 +5,7 @@ using static NPC;
 
 public class DialogueController : MonoBehaviour
 {
+    public static bool DialogueMenuOpen => Instance.WantsOpen;
     public class DialogueEvent
     {
         public bool SpeakerIsPlayer = false;
@@ -52,6 +53,7 @@ public class DialogueController : MonoBehaviour
     public Transform DialogueVisual;
     public TextMeshProUGUI DialogueText;
     public CanvasGroup MyGroup;
+    public CanvasGroup DoneSectionGroup;
     public Canvas MyCanvas;
     public bool WantsOpen = true;
     public float AnimationCounter = 0;
@@ -60,7 +62,7 @@ public class DialogueController : MonoBehaviour
     public void Start()
     {
         Instance = this;
-        MyGroup.alpha = 0f;
+        MyGroup.alpha = DoneSectionGroup.alpha = 0;
         WantsOpen = false;
         MyGroup.blocksRaycasts = false;
     }
@@ -95,6 +97,7 @@ public class DialogueController : MonoBehaviour
             RightPortrait.DisabledUpdate();
         }
     }
+    public float DoneTimer { get; private set; } = 0;
     public void UpdateVisibleDialogue()
     {
         AnimationCounter += Time.deltaTime;
@@ -114,18 +117,40 @@ public class DialogueController : MonoBehaviour
 
             if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && AnimationCounter >= 0.04f)
             {
-                if(value >= max - 2)
+                if(value >= max)
                 {
+                    DoneSectionGroup.alpha = 0;
+                    DoneTimer = 0;
                     AnimationCounter = 0;
                     DialogueQueue.Dequeue();
                 }
                 else
+                {
                     AnimationCounter = max;
+                }
+            }
+            else
+            {
+                float percent = value / (max + 1);
+                if (percent >= 1.2f)
+                {
+                    DoneTimer += Time.deltaTime;
+                    float sin = Mathf.Sin(DoneTimer * Mathf.PI * 2);
+                    DoneSectionGroup.alpha = Mathf.Clamp01(DoneTimer * 2.5f) * (1 + sin * 0.125f);
+                    DoneSectionGroup.transform.LerpLocalScale(new Vector2(1, 1) * (1.0f + 0.05f * sin), Utils.DeltaTimeLerpFactor(0.1f));
+                }
+                else
+                {
+                    DoneSectionGroup.alpha = DoneTimer = 0;
+                    DoneSectionGroup.transform.localScale = Vector3.one;
+                }
             }
         }
         else
         {
+            DoneSectionGroup.alpha = DoneTimer = 0;
             WantsOpen = false;
         }
+        DoneSectionGroup.alpha = Mathf.Clamp01(DoneSectionGroup.alpha);
     }
 }
