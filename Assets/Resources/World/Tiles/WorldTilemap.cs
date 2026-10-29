@@ -70,6 +70,7 @@ public class WorldTilemap : MonoBehaviour
     public TileLevel BorderMap = new(1, 0);
     public TileLevel GroundMap = new(0, 1);
     public TileLevel BottomMap = new(-1, 2);
+    public TileLevel TallBorderMap = new(2, 3);
     public Tilemap Map;
     public void ClearDict(Dictionary<int, Tilemap> dict)
     {
@@ -90,8 +91,9 @@ public class WorldTilemap : MonoBehaviour
         PrepareTileLevel(VisualMapSuperParent, BorderMap);
         PrepareTileLevel(VisualMapSuperParent, GroundMap);
         PrepareTileLevel(VisualMapSuperParent, BottomMap);
+        PrepareTileLevel(VisualMapSuperParent, TallBorderMap);
         AddDecor();
-        NewFasterRefresh(BorderMap, GroundMap, BottomMap);
+        NewFasterRefresh(TallBorderMap, BorderMap, GroundMap, BottomMap);
     }
     public static void PrepareTileLevel(Transform SuperParent, TileLevel Level)
     {
@@ -104,9 +106,13 @@ public class WorldTilemap : MonoBehaviour
             Transform Visual = new GameObject($"Level{Level.Level}{(i == 0 ? "Floor" : "Wall")}Parent").transform; //Create a parent object for the visuals to fall under
             Visual.transform.SetParent(SuperParent);
             Visual.transform.localScale = Vector3.one;
-            Visual.transform.localPosition = new Vector3(0, Level.Level * 0.3f, 0); //Walls get higher by .3 units each time
+            Visual.transform.localPosition = new Vector3(0, Mathf.Clamp(Level.Level, -1, 1) * 0.3f, 0); //Walls get higher by .3 units each time
             SortingGroup group = Visual.gameObject.AddComponent<SortingGroup>();
-            if (Level.Level == 1) //Border
+            if(Level.Level == 2)
+            {
+                group.sortingOrder = wall ? 5 : 7;
+            }
+            else if(Level.Level == 1) //Border
             {
                 if(wall)
                     group.sortingLayerID = World.FloorSortingLayer;
@@ -228,7 +234,7 @@ public class WorldTilemap : MonoBehaviour
                TileIsLiquidOrRendersBelow(i - 1, j + 1, myLayerOffset) || TileIsLiquidOrRendersBelow(i + 1, j, myLayerOffset) ||
                TileIsLiquidOrRendersBelow(i - 1, j - 1, myLayerOffset) || TileIsLiquidOrRendersBelow(i - 1, j, myLayerOffset);
     }
-    public static void NewFasterRefresh(TileLevel Top, TileLevel Ground, TileLevel Bottom)
+    public static void NewFasterRefresh(TileLevel TallTop, TileLevel Top, TileLevel Ground, TileLevel Bottom)
     {
         World.GetCorners(out int left, out int right, out int bottom, out int top, 7);
         DualGridTile[] tileBuffer = new DualGridTile[4];
@@ -248,8 +254,13 @@ public class WorldTilemap : MonoBehaviour
                     DualGridTile tileBelow = World.UnsafeGetTileData(i2, j2 - 1).TileType;
                     if (tile == null)
                         continue;
-                    if (tile.CountsAsWall())
-                        tile.MarkForDirectWallUpdate[Top.ID] = true;
+                    bool isTallWall = tile.CountsAsWall();
+                    if (isTallWall)
+                    {
+                        tile.MarkForDirectTallWallUpdate[TallTop.ID] = true;
+                        if (!tile.MarkForSpecialWallUpdate[Top.ID] && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
+                            tile.MarkForSpecialWallUpdate[Top.ID] = true;
+                    }
                     if (unsafeData.IsSolid)
                     {
                         tile.MarkForGroundUpdate[Top.ID] = true;
@@ -276,10 +287,10 @@ public class WorldTilemap : MonoBehaviour
                     DualGridTile tile = tileBuffer[k];
                     if(tile != null)
                     {
-                        if (tile.MarkForDirectWallUpdate[Top.ID])
+                        if (tile.MarkForDirectTallWallUpdate[TallTop.ID])
                         {
-                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedWallUpdates[Top.ID], Top.Level);
-                            tile.MarkForDirectWallUpdate[Top.ID] = tile.MarkForGroundUpdate[Ground.ID] = false;
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedWallUpdates[TallTop.ID], TallTop.Level);
+                            tile.MarkForDirectTallWallUpdate[TallTop.ID] = false;
                         }
                         if (tile.MarkForGroundUpdate[Top.ID])
                         {
@@ -288,7 +299,7 @@ public class WorldTilemap : MonoBehaviour
                         }
                         if (tile.MarkForSpecialWallUpdate[Top.ID])
                         {
-                            DualGridTile wall = tile.MyWallVariant();
+                            DualGridTile wall = tile.CountsAsWall() ? tile : tile.MyWallVariant();
                             wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallUpdates[Top.ID], Top.Level);
                             tile.MarkForSpecialWallUpdate[Top.ID] = false;
                         }
@@ -316,6 +327,7 @@ public class WorldTilemap : MonoBehaviour
         {
             if(tile.CountsAsWall())
             {
+                TallTop.Wall[tile.TypeIndex].SetTiles(tile.QueuedWallUpdates[TallTop.ID].ToArray(), true);
                 Top.Wall[tile.TypeIndex].SetTiles(tile.QueuedWallUpdates[Top.ID].ToArray(), true);
                 Ground.Wall[tile.TypeIndex].SetTiles(tile.QueuedWallUpdates[Ground.ID].ToArray(), true);
                 //For now, bottoms will NEVER need walls

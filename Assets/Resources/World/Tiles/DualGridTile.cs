@@ -208,12 +208,12 @@ public class DualGridTile : ScriptableObject
     public Texture2D[] BorderOnlyTileTextures;
     public Sprite[] BonusCenterTileTextures;
     private int BorderVariantStartIndex = 0;
-    //3 is the number of tilemap levels as of now
-    public bool[] MarkForGroundUpdate { get; private set; } = new bool[3]; //Normal tile update
-    public bool[] MarkForDirectWallUpdate { get; private set; } = new bool[3];//Placed walls (these dont exist in game currently)
-    public bool[] MarkForSpecialWallUpdate { get; private set; } = new bool[3]; //Walls that spawn between height deltas (these are the main walls spawned)
-    public List<TileChangeData>[] QueuedFloorUpdates { get; private set; } = new List<TileChangeData>[3] { new(), new(), new() };
-    public List<TileChangeData>[] QueuedWallUpdates { get; private set; } = new List<TileChangeData>[3] { new(), new(), new() };
+    //4 is the number of tilemap levels as of now
+    public bool[] MarkForGroundUpdate { get; private set; } //Normal tile update
+    public bool[] MarkForDirectTallWallUpdate { get; private set; } //Placed walls 
+    public bool[] MarkForSpecialWallUpdate { get; private set; } //Walls that spawn between height deltas (these are the main walls spawned)
+    public List<TileChangeData>[] QueuedFloorUpdates { get; private set; }
+    public List<TileChangeData>[] QueuedWallUpdates { get; private set; } 
     public float LayerOffset { get; set; } = 0;
     [SerializeField]
     private Tile RealTileMapVariant;
@@ -237,8 +237,13 @@ public class DualGridTile : ScriptableObject
     public List<Tile> SingleTileBonusVariants { get; private set; }
     public void Init()
     {
+        MarkForGroundUpdate = new bool[4];
+        MarkForDirectTallWallUpdate = new bool[4];
+        MarkForSpecialWallUpdate = new bool[4];
+        QueuedFloorUpdates = new List<TileChangeData>[4] { new(), new(), new(), new() };
+        QueuedWallUpdates = new List<TileChangeData>[4] { new(), new(), new(), new() };
         SetDisplayVariants();
-        foreach(var list in QueuedFloorUpdates)
+        foreach (var list in QueuedFloorUpdates)
             list.Clear();
         foreach (var list in QueuedWallUpdates)
             list.Clear();
