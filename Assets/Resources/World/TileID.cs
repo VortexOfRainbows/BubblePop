@@ -30,7 +30,8 @@ public static class TileID
     public static readonly DualGridTile Water = LoadLiquid("Water/WaterTile", 50);
     public static bool[,] WallTileRelations { get; private set; } = LoadWallTileRelations();
     private static bool[] HasWallTile { get; set; }
-    private static DualGridTile[] MyWallTile { get; set; }
+    private static DualGridTile[] TileToWallVariant { get; set; }
+    private static DualGridTile[] WallToTileVariant { get; set; }
     public static DualGridTile LoadTile(string path, float tileOrder = 0)
     {
         var tile = Resources.Load<DualGridTile>($"World/Tiles/{path}");
@@ -72,12 +73,13 @@ public static class TileID
     {
         WallTileRelations = new bool[LoadIndexCount, LoadIndexCount];
         HasWallTile = new bool[LoadIndexCount];
-        MyWallTile = new DualGridTile[LoadIndexCount];
-        while(WallTileRelationQueue.TryDequeue(out Tuple<DualGridTile, DualGridTile> r))
+        TileToWallVariant = new DualGridTile[LoadIndexCount];
+        WallToTileVariant = new DualGridTile[LoadIndexCount];
+        while (WallTileRelationQueue.TryDequeue(out Tuple<DualGridTile, DualGridTile> r))
             AddWallRelation(r.Item1, r.Item2);
 
         HasWallTile[DarkGrass.TypeIndex] = true;
-        MyWallTile[DarkGrass.TypeIndex] = GrassWall;
+        TileToWallVariant[DarkGrass.TypeIndex] = GrassWall;
 
         return WallTileRelations;
     }
@@ -86,7 +88,8 @@ public static class TileID
         WallTileRelations[tile.TypeIndex, wallTile.TypeIndex] = true;
         WallTileRelations[wallTile.TypeIndex, tile.TypeIndex] = true;
         HasWallTile[tile.TypeIndex] = true;
-        MyWallTile[tile.TypeIndex] = wallTile;
+        TileToWallVariant[tile.TypeIndex] = wallTile;
+        WallToTileVariant[wallTile.TypeIndex] = tile;
     }
     public static bool HasWallVariant(this DualGridTile tile)
     {
@@ -94,7 +97,11 @@ public static class TileID
     }
     public static DualGridTile MyWallVariant(this DualGridTile tile)
     {
-        return MyWallTile[tile.TypeIndex];
+        return TileToWallVariant[tile.TypeIndex];
+    }
+    public static DualGridTile MyTileVariant(this DualGridTile tile)
+    {
+        return WallToTileVariant[tile.TypeIndex];
     }
     public static DualGridTile GetTileIDFromTile(TileBase tile)
     {

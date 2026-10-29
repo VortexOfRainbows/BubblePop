@@ -68,11 +68,11 @@ public class DualGridTile : ScriptableObject
     public bool AdjacentTileSameType(int i, int j, out bool ghostReturn, int level)
     {
         ghostReturn = false;
-        ref World.TileData data = ref World.UnsafeGetTileData(i, j);
-        if (!data.HasTile)
+        ref World.TileData adjacentTile = ref World.UnsafeGetTileData(i, j);
+        if (!adjacentTile.HasTile)
             return false;
-        DualGridTile tile = data.TileType;
-        if (data.TileType == this && data.TileHeightLevel == level) //same type on same level
+        DualGridTile tile = adjacentTile.TileType;
+        if (adjacentTile.TileType == this && adjacentTile.TileHeightLevel == level) //same type on same level
             return true;
         if(IsLiquid) //liquids should have special relations and not consider other special relations
         {
@@ -80,14 +80,21 @@ public class DualGridTile : ScriptableObject
         }
         else if (IsWall)
         {
-            if(data.TileHeightLevel >= level)
+            //if(level == 2)
+            //{
+
+            //}
+            //else 
+            if(adjacentTile.TileHeightLevel >= level)
             {
+                if (tile.IsWall && tile == this)
+                    return true;
                 if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex] || tile.MyWallVariant() == this)
                     return true;
                 return tile.HasWallVariant() && tile.MyWallVariant().LayerOffset < LayerOffset;
             }
         }
-        else if (((tile.LayerOffset < LayerOffset && data.TileHeightLevel == level) || data.TileHeightLevel > level) && !tile.IsWall) //Ground level tiles can extend tiles above them for seamless blending
+        else if (((tile.LayerOffset < LayerOffset && adjacentTile.TileHeightLevel == level) || adjacentTile.TileHeightLevel > level) && !tile.IsWall) //Ground level tiles can extend tiles above them for seamless blending
         {
             ghostReturn = true;
         }

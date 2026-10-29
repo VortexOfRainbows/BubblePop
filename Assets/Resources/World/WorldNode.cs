@@ -193,7 +193,16 @@ public class WorldNode : MonoBehaviour
                     bool placeSolidAsUnsolid = !existingTileSolid && iAmSolid && !canPlaceTile; //If the existing tile is a floor tile, but I am solid, and i am not already placing a tile
                     if(canPlaceTile || placeSolidAsUnsolid)
                     {
-                        World.SetTile(v, tile.GetTileID(), iAmSolid && !placeSolidAsUnsolid ? 1 : 0);
+                        var dualTile = tile.GetTileID();
+                        bool iAmWall = dualTile.CountsAsWall();
+                        if(iAmWall)
+                        {
+                            var myTile = dualTile.MyTileVariant();
+                            var tileBelow = TileMap.GetTile(new Vector3Int(i, j - 1));
+                            if (tileBelow != null && tileBelow.GetTileID() == tile.GetTileID())
+                                dualTile = myTile;
+                        }
+                        World.SetTile(v, dualTile, iAmWall ? 2 : iAmSolid && !placeSolidAsUnsolid ? 1 : 0);
                         ref World.TileData data = ref World.SafeGetTileData(v);
                         if (canPlaceTile && data.ProgressionNumber == 0)
                         {

@@ -140,7 +140,7 @@ public class WorldTilemap : MonoBehaviour
         {
             DualGridTile tile = TileID.TileTypes[k];
             Color c;
-            if(Level.Level == 1)
+            if(Level.Level >= 1)
             {
                 c = tile.BorderColor;
             }
@@ -250,8 +250,9 @@ public class WorldTilemap : MonoBehaviour
                     int i2 = i - DualGridTile.NEIGHBOURS[k].x;
                     int j2 = j - DualGridTile.NEIGHBOURS[k].y;
                     ref World.TileData unsafeData = ref World.UnsafeGetTileData(i2, j2);
+                    ref World.TileData belowData = ref World.UnsafeGetTileData(i2, j2 - 1);
                     DualGridTile tile = tileBuffer[k] = unsafeData.TileType;
-                    DualGridTile tileBelow = World.UnsafeGetTileData(i2, j2 - 1).TileType;
+                    DualGridTile tileBelow = belowData.TileType;
                     if (tile == null)
                         continue;
                     bool isTallWall = tile.CountsAsWall();
@@ -263,9 +264,16 @@ public class WorldTilemap : MonoBehaviour
                     }
                     if (unsafeData.IsSolid)
                     {
-                        tile.MarkForGroundUpdate[Top.ID] = true;
-                        if (!tile.MarkForSpecialWallUpdate[Top.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
-                            tile.MarkForSpecialWallUpdate[Top.ID] = true;
+                        if (unsafeData.TileHeightLevel == 2)
+                        {
+                            tile.MarkForGroundUpdate[TallTop.ID] = true;
+                        }
+                        else
+                        {
+                            tile.MarkForGroundUpdate[Top.ID] = true;
+                            if (!tile.MarkForSpecialWallUpdate[Top.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
+                                tile.MarkForSpecialWallUpdate[Top.ID] = true;
+                        }
                     }
                     //if (tile.IsLiquid)
                     //{
@@ -291,6 +299,11 @@ public class WorldTilemap : MonoBehaviour
                         {
                             tile.UpdateDisplayTileSingular(i, j, tile.QueuedWallUpdates[TallTop.ID], TallTop.Level);
                             tile.MarkForDirectTallWallUpdate[TallTop.ID] = false;
+                        }
+                        if (tile.MarkForGroundUpdate[TallTop.ID])
+                        {
+                            tile.UpdateDisplayTileSingular(i, j, tile.QueuedFloorUpdates[TallTop.ID], TallTop.Level);
+                            tile.MarkForGroundUpdate[TallTop.ID] = false;
                         }
                         if (tile.MarkForGroundUpdate[Top.ID])
                         {
@@ -335,6 +348,8 @@ public class WorldTilemap : MonoBehaviour
             }
             else
             {
+                Debug.Log("GroundTopUpdates: " + tile.QueuedFloorUpdates[TallTop.ID].Count);
+                TallTop.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[TallTop.ID].ToArray(), true);
                 Top.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Top.ID].ToArray(), true);
                 Ground.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Ground.ID].ToArray(), true);
                 Bottom.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Bottom.ID].ToArray(), true);
