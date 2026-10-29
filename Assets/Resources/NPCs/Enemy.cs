@@ -108,7 +108,6 @@ public class Enemy : Entity, IImpactedByProjIFrames
             return TilePathfinding.PathfindingType.Liquid;
         return TilePathfinding.PathfindingType.Ground;
     }
-    public virtual float LiquidSpeedModifier => 1;
     public virtual float MoveSpeed => 0.15f;
     public virtual float Inertia => 0.95f;
     public bool HasLineOfSightWithTarget { get; protected set; } = false;
@@ -129,7 +128,7 @@ public class Enemy : Entity, IImpactedByProjIFrames
             canSee = HasShootingLineOfSight;
         else
             canSee = HasLineOfSightWithTarget;
-        return canSee ? (Target.Position - (Vector2)transform.position).normalized : TilePathfinding.BestPathToPlayer(transform.position, PathfindingType(), LiquidSpeedModifier);
+        return canSee ? (Target.Position - (Vector2)transform.position).normalized : TilePathfinding.BestPathToPlayer(transform.position, PathfindingType());
     }
     public EnemyDescription MyDescription => StaticData.EnemyDescription;
     public string Name()

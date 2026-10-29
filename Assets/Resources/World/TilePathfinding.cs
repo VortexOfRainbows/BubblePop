@@ -155,48 +155,29 @@ public class TilePathfinding : MonoBehaviour
         Air = 2,
     }
 
-    public static Vector2 BestPathToPlayer(Vector3 entityPos, PathfindingType pathingType, float liquidModifier)
+    public static Vector2 BestPathToPlayer(Vector3 entityPos, PathfindingType pathingType)
     {
-        // Raycast to player over ground
-        //  Go if able
-
-        // Get tile to compare distances
+        // Get tile to get directions
         Vector3Int tilePos = World.RealPosToTilePos(entityPos);
         ref World.TileData curTile = ref World.UnsafeGetTileData(tilePos.x, tilePos.y);
-        Vector2 bestDirection = curTile.GroundDirection;
 
         switch ((int)pathingType)
         {
             case 0: // Ground only Traversal
-                break;
+                // Raycast over ground otherwise, take pathfind
+                return curTile.GroundDirection;
 
             case 1: // Ground and Liquid Traversal
-                // Raycast over ground + liquid
-                //  Apply modifier for distance over liquid tiles
-
-                // Get pathfinding over liquid distance, apply modifier
-                //  Compare distance of raycast vs both pathfinds and choose lowest cost
-                if ((curTile.IsLiquid) || (curTile.LiquidDistance - curTile.LiquidTiles + curTile.LiquidTiles * liquidModifier < curTile.GroundDistance))
-                {
-                    bestDirection = curTile.LiquidDirection;
-                }
-                break;
+                // Raycast over ground + liquid otherwise, take pathfind
+                return curTile.LiquidDirection;
 
             case 2: // Flying Traversal
-                // Raycast over anything other than walls
-                //  Go if able
-                // Get pathfinding over everything distance
-                //  Go on everything pathfind
-
-                // TODO: Switch for air version
-                if ((curTile.IsLiquid) || (curTile.LiquidDistance - curTile.LiquidTiles + curTile.LiquidTiles * liquidModifier < curTile.GroundDistance))
-                {
-                    bestDirection = curTile.LiquidDirection;
-                }
-                break;
+                // Raycast over anything other than walls, otherwise take pathfind
+                return curTile.LiquidDirection;
+            default: // Does ground pathfind
+                // Raycast over ground otherwise, take pathfind
+                return curTile.GroundDirection;
         }
-
-        return bestDirection;
     }
 
     private void OnDrawGizmos()
