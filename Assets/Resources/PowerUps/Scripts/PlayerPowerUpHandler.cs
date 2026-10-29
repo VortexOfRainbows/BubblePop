@@ -294,7 +294,9 @@ public partial class Player : Entity
     }
     public void PostEquipUpdate()
     {
-        if(IgnoreMovespeed)
+        if (AttackSpeedModifier < 0.1f)
+            AttackSpeedModifier = 0.1f;
+        if (IgnoreMovespeed)
             AttackSpeedModifier += Mathf.Max(0.0f, TrueMoveModifier - 1);
         PrimaryAttackSpeedModifier += AttackSpeedModifier;
         SecondaryAttackSpeedModifier += AttackSpeedModifier;

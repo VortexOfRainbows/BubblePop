@@ -1059,13 +1059,13 @@
       Description: Allows Y:Tar to be stacked Y:1 G:(+1 per stack) additional times
       Brief: Tar can be stacked to increase potency
       Lore:
-      '''
-      Several oil bubbles literally drawn to form a pool, increasing the tendency of tar formed from oil to stick to itself.
-      Bubblemancer: So he can make shapes out of oil?
-      TB: Yes, it would appear that he can manipulate the form of anything with similar enough composition to himself. 
-      Bubblemancer: Ooh, you could do so many pretty things with that! Especially when it does that rainbow shimmer in water!
-      K: Beauty is useless. I've found very little practical use for this ability besides the creation of this power.
-      '''
+        '''
+        Several oil bubbles literally drawn to form a pool, increasing the tendency of tar formed from oil to stick to itself.
+        Bubblemancer: So he can make shapes out of oil?
+        TB: Yes, it would appear that he can manipulate the form of anything with similar enough composition to himself. 
+        Bubblemancer: Ooh, you could do so many pretty things with that! Especially when it does that rainbow shimmer in water!
+        K: Beauty is useless. I've found very little practical use for this ability besides the creation of this power.
+        '''
     }
     OilSpill:
     {
@@ -1073,10 +1073,10 @@
       Description: Enemies spill Y:tar in a Y:4 G:(+4 per stack) tile area when killed
       Brief: Enemies spill tar when killed
       Lore:
-      '''
-      Yet another sad sight.
-      K: Sad indeed that a fine barrel would be wasted in such a manner, though the power bubble that came from it was well worth the price.
-      '''
+        '''
+        Yet another sad sight.
+        K: Sad indeed that a fine barrel would be wasted in such a manner, though the power bubble that came from it was well worth the price.
+        '''
     }
     Gasoline:
     {
@@ -1084,12 +1084,12 @@
       Description: Y:[Tar puddles] can be Y:[ignited,] causing a Y:[chain reaction] that can travel Y:2 G:(+1 per stack) tiles
       Brief: Tar puddles can be set ablaze
       Lore:
-      '''
-      The application of an additional highly flammable liquid to puddles finally makes them ignitable with the King's scepter.
-      K: Preposterous! Why does it only work on puddles?!
-      TB: Perhaps because the container rests within a puddle. Besides, do you really need your enemies to be more flammable?
-      K: Always.
-      '''
+        '''
+        The application of an additional highly flammable liquid to puddles finally makes them ignitable with the King's scepter.
+        K: Preposterous! Why does it only work on puddles?!
+        TB: Perhaps because the container rests within a puddle. Besides, do you really need your enemies to be more flammable?
+        K: Always.
+        '''
     }
     BlackDiamond:
     {
@@ -1101,23 +1101,20 @@
         '''
       Brief: Secondary attack controls an additional Royal Ruby
       Lore:
-      '''
-      King Oil's backup Flame Ruby (vault included) contained in a power bubble.
-      K: I'll really miss it...
-      Fizzy: Maybe one of those crucible things could bring it back?
-      TB: No, the only objects capable of surviving extraction seen thus far are rainbow shards. Anyway, you could get virtually as many rubies as you want with this thing so why are you complaining!!
-      K: My precious ruby vault, gone forever...
-      '''
+        '''
+        King Oil's backup Flame Ruby (vault included) contained in a power bubble.
+        K: I'll really miss it...
+        Fizzy: Maybe one of those crucible things could bring it back?
+        TB: No, the only objects capable of surviving extraction seen thus far are rainbow shards. Anyway, you could get virtually as many rubies as you want with this thing so why are you complaining!!
+        K: My precious ruby vault, gone forever...
+        '''
     }
     Smokestack:
     {
       Title: Smokestack
       Description: Increases Y:[attack speed] by Y:4% G:(+2% per stack) of your Y:[total number] of Y:[investment powers]
       Brief: Investments increase attack speed
-      Lore:
-      '''
-      The greater the fuel, the greater the fire. The greater the fire, the more the world eats its smoke.
-      '''
+      Lore: The greater the fuel, the greater the fire. The greater the fire, the more the world eats its smoke.
     }
     GoldenGun:
     {
@@ -1262,6 +1259,17 @@
         '''
       Brief: Deal more damage to Skull and Infected enemies
       Lore: Power.SilverSolution.Lore
+    }
+    AntiBurger:
+    {
+      Title: Antiburger
+      Description:
+        '''
+        Increases Y:[movement speed] and Y:damage by Y:10% G:(+10% per stack) 
+        Reduces Y:[attack speed] by Y:10% G:(+10% per stack)
+        '''
+      Brief: Burger..?
+      Lore: Power.AntiBurger.Lore
     }
   }
   Equip:

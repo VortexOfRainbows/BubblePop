@@ -258,3 +258,14 @@ public class SilverSolution : PowerUp
         p.BonusDamageToElites += 0.1f + Stack * 0.1f;
     }
 }
+public class AntiBurger : PowerUp
+{
+    public override void Init() => Weighting = Rare;
+    public override bool IsBlackMarket() => true;
+    public override void HeldEffect(Player p)
+    {
+        p.AttackSpeedModifier -= Stack * 0.1f;
+        p.TrueMoveModifier += Stack * 0.1f;
+        p.DamageMultiplier += Stack * 0.1f;
+    }
+}
