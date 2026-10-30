@@ -61,18 +61,17 @@ Done:
 
 -- (NEXT) 4.0? --
 
-10/28/26 to 10/29/26 Welcome back to Lighting Jail young lion
+10/28/26 to 10/30/26 Welcome back to Lighting Jail young lion
 1. Super DUPER WIP height system changes for walls, in preparation for taller walls and shadows
 	A: It looks very ridiculous right now, but it is part of a plan!
 	B: Now wall tiles can be placed in editor to act as solid and wall tiles, basically to function as 2-height tiles.
 	C: This currently has a LOT of work to be done to finalize it. TODO:
-		1. Fix visual offsets
-		2. Fix layering
-		3. Shadow projectiles to render shadows over them at the appropriate height
-		4. Blending with surrounding tiles
-		5. Spawn the lower-level walls for purpose of having player/enemies appear correctly ordered
-		6. LOTS of lighting stuff :(
-		7. Probably more I am forgetting about
+		1. Fix layering (this might be done? Probably needs more work though for behaviors like weapons, shadows, and maybe 
+		2. Shadow projectiles to render shadows over them at the appropriate height
+		3. Blending with surrounding tiles
+		4. Spawn the lower-level walls for purpose of having player/enemies appear correctly ordered
+		5. LOTS of lighting stuff :(
+		6. Probably more I am forgetting about
 2. Burger Resprite (David)
 3. Add Antiburger Power (sprite by David)
 4. New nodes by Wes: Rafts, Mushroom Shrine

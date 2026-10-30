@@ -73,19 +73,24 @@ public class DualGridTile : ScriptableObject
             return false;
         DualGridTile tile = adjacentTile.TileType;
         if (adjacentTile.TileType == this && adjacentTile.TileHeightLevel == level) //same type on same level
-            return true;
-        if(IsLiquid) //liquids should have special relations and not consider other special relations
+        {
+            if(!IsWall || level <= 1)
+                return true;
+        }
+        if (IsLiquid) //liquids should have special relations and not consider other special relations
         {
             //liquid stuff might be needed here later?
         }
         else if (IsWall)
         {
-            //if(level == 2)
-            //{
-
-            //}
-            //else 
-            if(adjacentTile.TileHeightLevel >= level)
+            if(level == 2)
+            {
+                if(adjacentTile.TileHeightLevel < level)
+                    return false;
+                if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex] || tile.MyWallVariant() == this)
+                    return true;
+            }
+            else if(adjacentTile.TileHeightLevel >= level)
             {
                 if (tile.IsWall && tile == this)
                     return true;

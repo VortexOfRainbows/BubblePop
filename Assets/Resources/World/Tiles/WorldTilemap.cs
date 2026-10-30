@@ -258,15 +258,16 @@ public class WorldTilemap : MonoBehaviour
                     bool isTallWall = tile.CountsAsWall();
                     if (isTallWall)
                     {
-                        tile.MarkForDirectTallWallUpdate[TallTop.ID] = true;
-                        if (!tile.MarkForSpecialWallUpdate[Top.ID] && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
-                            tile.MarkForSpecialWallUpdate[Top.ID] = true;
+                        //tile.MarkForDirectTallWallUpdate[TallTop.ID] = true;
+                        tile.MarkForSpecialWallUpdate[Top.ID] = true;
                     }
                     if (unsafeData.IsSolid)
                     {
                         if (unsafeData.TileHeightLevel == 2)
                         {
                             tile.MarkForGroundUpdate[TallTop.ID] = true;
+                            if (!tile.MarkForSpecialWallUpdate[TallTop.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
+                                tile.MarkForSpecialWallUpdate[TallTop.ID] = true;
                         }
                         else
                         {
@@ -299,6 +300,12 @@ public class WorldTilemap : MonoBehaviour
                         {
                             tile.UpdateDisplayTileSingular(i, j, tile.QueuedWallUpdates[TallTop.ID], TallTop.Level);
                             tile.MarkForDirectTallWallUpdate[TallTop.ID] = false;
+                        }
+                        if (tile.MarkForSpecialWallUpdate[TallTop.ID])
+                        {
+                            DualGridTile wall = tile.MyWallVariant();
+                            wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallUpdates[TallTop.ID], TallTop.Level);
+                            tile.MarkForSpecialWallUpdate[TallTop.ID] = false;
                         }
                         if (tile.MarkForGroundUpdate[TallTop.ID])
                         {
