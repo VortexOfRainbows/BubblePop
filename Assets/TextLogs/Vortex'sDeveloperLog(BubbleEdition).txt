@@ -61,13 +61,14 @@ Done:
 
 -- (NEXT) 4.0? --
 
-10/28/26 to 10/30/26 Welcome back to Lighting Jail young lion
+10/28/26 to 10/31/26 Welcome back to Lighting Jail young lion
 1. Super DUPER WIP height system changes for walls, in preparation for taller walls and shadows
 	A: It looks very ridiculous right now, but it is part of a plan!
 	B: Now wall tiles can be placed in editor to act as solid and wall tiles, basically to function as 2-height tiles.
-	C: This currently has a LOT of work to be done to finalize it. TODO:
+	C: Managed to get the upper segment which is needed to be separate for purposes of layering working. More double checking will have to be done below before crossing this off the list.
+	D: This currently has a LOT of work to be done to finalize it. TODO:
 		1. Fix layering (this might be done? Probably needs more work though for behaviors like weapons, shadows, and maybe 
-		2. Shadow projectiles to render shadows over them at the appropriate height
+		2. Shadow projectiles to render shadows over them at the appropriate height (probably make shadows no longer effect any wall as it was mostly nonsensical doing that beforehand. All walls were always fully covered by shadows due to occlusion...)
 		3. Blending with surrounding tiles
 		4. Spawn the lower-level walls for purpose of having player/enemies appear correctly ordered
 		5. LOTS of lighting stuff :(

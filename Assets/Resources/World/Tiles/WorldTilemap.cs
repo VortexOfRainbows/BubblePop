@@ -266,7 +266,7 @@ public class WorldTilemap : MonoBehaviour
                         if (unsafeData.TileHeightLevel == 2)
                         {
                             tile.MarkForGroundUpdate[TallTop.ID] = true;
-                            if (!tile.MarkForSpecialWallUpdate[TallTop.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
+                            if ((k >= 2) && !tile.MarkForSpecialWallUpdate[TallTop.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
                                 tile.MarkForSpecialWallUpdate[TallTop.ID] = true;
                         }
                         else

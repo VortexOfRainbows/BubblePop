@@ -120,8 +120,8 @@ public class DualGridTile : ScriptableObject
     public int CalculateDisplayWall(int i, int j, ref bool tileNeedsShrinking, int level)
     {
         tileNeedsShrinking = false;
-        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight, level);
-        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft, level);
+        bool topRight = AdjacentTileSameType(i, j, out bool ghostTopRight, level) && level != 2;
+        bool topLeft = AdjacentTileSameType(i - 1, j, out bool ghostTopLeft, level) && level != 2;
         bool botRight = AdjacentTileSameType(i, j - 1, out _, level);
         bool botLeft = AdjacentTileSameType(i - 1, j - 1, out _, level);
         //These statements might not make sense if we use a .5 offset for our walls, as then another variant will be needed
