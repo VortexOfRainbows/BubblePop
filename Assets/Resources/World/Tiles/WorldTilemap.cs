@@ -110,26 +110,24 @@ public class WorldTilemap : MonoBehaviour
             SortingGroup group = Visual.gameObject.AddComponent<SortingGroup>();
             if(Level.Level == 2)
             {
-                group.sortingOrder = wall ? 5 : 7;
+                group.sortingOrder = wall ? LayerHelper.SuperTopWallLayer : LayerHelper.SuperTopFloorLayer;
             }
             else if(Level.Level == 1) //Border
             {
                 if(wall)
                     group.sortingLayerID = World.FloorSortingLayer;
-                group.sortingOrder = wall ? 3 : 1;
+                group.sortingOrder = wall ? LayerHelper.TopWallLayer : LayerHelper.TopFloorLayer;
             }
             else if (Level.Level == 0) //Floor
             {
                 group.sortingLayerID = World.FloorSortingLayer;
-                group.sortingOrder = wall ? -3 : 0;
+                group.sortingOrder = wall ? LayerHelper.DefaultWallLayer : LayerHelper.DefaultFloorLayer;
             }
             else if (Level.Level == -1) //Bottom
             {
                 group.sortingLayerID = World.FloorSortingLayer;
-                group.sortingOrder = wall ? -7 : -5;
+                group.sortingOrder = wall ? LayerHelper.BottomWallLayer : LayerHelper.BottomFloorLayer;
             }
-            else //unused as of now 
-                group.sortingOrder = wall ? LayerHelper.WallTileSortingOrder : LayerHelper.FloorTileSortingOrder;
             PrepareDisplayMaps(Visual, Level, map, border, wall);
         }
     }
@@ -143,6 +141,8 @@ public class WorldTilemap : MonoBehaviour
             if(Level.Level >= 1)
             {
                 c = tile.BorderColor;
+                if (wall) //post process darkening to account for removal of shadow impact on wall tiles in engine
+                    c = (tile.BorderColor.linear * 0.55f).gamma.WithAlpha(1);
             }
             else if(Level.Level == 0)
             {

@@ -1,3 +1,5 @@
+using UnityEngine.InputSystem.Utilities;
+
 /// <summary>
 /// THIS CLASS DOESN'T REALLY **DO** ANYTHING
 /// 
@@ -9,12 +11,28 @@ public static class LayerHelper
     //           FlOOR LAYER (effected by tile shadows)
     //-----------------------------------
 
-    public const int GroundWallTile = -3;
     public const int BelowGroundWaterDecor = -1; //Lilypads
-    public const int FloorTileSortingOrder = 0;
+
+    public const int BottomWallLayer = -7; //pretty much unused
+    public const int BottomFloorLayer = -5;
+    
+    public const int DefaultWallLayer = -3;
+    public const int DefaultFloorLayer = 0;
+
     public const int HazardSortingOrder = 1;
     public const int HazardTopSortingOrder = 2;
-    public const int WallTileSortingOrder = 3;
+
+    public const int TileShadowLayer = 3;
+    public const int TopWallLayer = 4;
+
+
+    //-----------------------------------
+    //           DEFAULT LAYER (not effected by tile shadows)
+    //-----------------------------------
+
+    public const int TopFloorLayer = 1;
+    public const int SuperTopWallLayer = 5;
+    public const int SuperTopFloorLayer = 7;
 
     //-----------------------------------
     //           DEFAULT LAYER (not effected by tile shadows)

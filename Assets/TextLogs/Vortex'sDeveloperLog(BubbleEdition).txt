@@ -61,7 +61,9 @@ Done:
 
 -- (NEXT) 4.0? --
 
-10/28/26 to 10/31/26 Welcome back to Lighting Jail young lion
+11/2/26
+
+10/28/26 to 11/2/26 Welcome back to Lighting Jail young lion
 1. Super DUPER WIP height system changes for walls, in preparation for taller walls and shadows
 	A: It looks very ridiculous right now, but it is part of a plan!
 	B: Now wall tiles can be placed in editor to act as solid and wall tiles, basically to function as 2-height tiles.
@@ -70,14 +72,16 @@ Done:
 		1. Fix layering (this might be done? Probably needs more work though for behaviors like weapons, shadows, and maybe 
 		2. Shadow projectiles to render shadows over them at the appropriate height (probably make shadows no longer effect any wall as it was mostly nonsensical doing that beforehand. All walls were always fully covered by shadows due to occlusion...)
 		3. Blending with surrounding tiles
-		4. Spawn the lower-level walls for purpose of having player/enemies appear correctly ordered
-		5. LOTS of lighting stuff :(
-		6. Probably more I am forgetting about
+		4. LOTS of lighting stuff :(
+		5. Probably more I am forgetting about
+		6. Make sure the water behavior makes sense with tall walls
 2. Burger Resprite (David)
 3. Add Antiburger Power (sprite by David)
 4. New nodes by Wes: Rafts, Mushroom Shrine
 	1. I also made some adjustments!
 5. Adjustments to a few older Shop nodes to add water and make them more interesting (also adjusted some weights for nodes)
+6. Fix small inconsistencies with where stone fragments would appear on stone walls and how wall corners would be placed
+7. Shift around the layers for shadows to no longer render over walls. Darkened top level walls to mimic how they used to look with shadows (though they should still be slightly brighter)
 
 10/27/26 to 10/28/26
 1. More dialogue variants for gachapon shop, and for gachapon mansion

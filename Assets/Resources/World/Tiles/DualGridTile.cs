@@ -140,7 +140,7 @@ public class DualGridTile : ScriptableObject
         }
         return id;
     }
-    public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2.25f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.2725f));
+    public static readonly Matrix4x4 FunkyWallFixMatrix = Matrix4x4.identity * Matrix4x4.Scale(new Vector3(1, -2.25f, 1)) * Matrix4x4.Translate(new Vector3(0, -0.2775f));
     /// <summary>
     /// Should only be called during worldgen
     /// </summary>
@@ -159,7 +159,7 @@ public class DualGridTile : ScriptableObject
             {
                 if (IsWall)
                 {
-                    if(nearLiquid)
+                    if(nearLiquid || needsShrinking)
                     {
                         id += BorderVariantStartIndex;
                         id += Utils.RandInt(BorderOnlyTileTextures.Length) * SpriteCount;
