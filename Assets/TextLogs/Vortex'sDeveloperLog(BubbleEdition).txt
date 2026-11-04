@@ -35,7 +35,6 @@ Need to do:
 	1. Might have to overhaul tile heights to all be 1-1 instead of the current 0.75 (means walls will be taller and probably easier to hide behind.
 	2. Will require an overhaul to the lighting system too, unless a simple but unsatisfying approach of making all walls over 1.0 tall happens: https://share.gemini.google/VE5yFYtFWcfl
 	3. Will require additional logic for handling transitions between taller tiles and shorter tiles, in all directions
-	4. Blending for tiles on the floor and how tiles are transitioned into tile data will also have to be handled
 8. Finish dialogue system implementations
 	1. Next: Add sounds, implement more expressions
 
@@ -61,8 +60,6 @@ Done:
 
 -- (NEXT) 4.0? --
 
-11/2/26
-
 10/28/26 to 11/3/26 Welcome back to Lighting Jail young lion
 1. Super DUPER WIP height system changes for walls, in preparation for taller walls and shadows
 	A: It looks very ridiculous right now, but it is part of a plan!
@@ -71,6 +68,9 @@ Done:
 	D: This currently has a LOT of work to be done to finalize it. TODO:
 		1. Shadow projectiles to render shadows over them at the appropriate height (probably make shadows no longer effect any wall as it was mostly nonsensical doing that beforehand. All walls were always fully covered by shadows due to occlusion...)
 		2. LOTS of lighting stuff :(
+			1. Very WIP. The plan is currently to use different colored lighting blocks to tell the shader how to handle stuff.
+				1. Red: Longer shadows
+				2. Green: Works for occlusion, but no extended shadows (to handle the top-floor tiles at the top of tall walls)
 		3. Probably more I am forgetting about
 		4. Make sure the water behavior makes sense with tall walls
 2. Burger Resprite (David)

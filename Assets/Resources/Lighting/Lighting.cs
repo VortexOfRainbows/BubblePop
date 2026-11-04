@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 public static class Lighting
 {
     public static Tile LightTile;
@@ -60,27 +57,31 @@ public static class Lighting
         int width = right - left;
         int height = top - bottom;
         int totalCells = width * height;
-        Vector3Int[] positionsArray = new Vector3Int[totalCells];
-        TileBase[] lightingTilesArray = new TileBase[totalCells];
+        TileChangeData[] dataArray = new TileChangeData[totalCells];
         int writeIndex = 0;
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)
             {
-                Vector3Int pos = new(i, j);
-                if (World.SolidTile(pos)) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
+                ref World.TileData data = ref World.UnsafeGetTileData(i, j);
+                if (data.IsSolid) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
                 {
-                    positionsArray[writeIndex] = pos;
-                    lightingTilesArray[writeIndex] = LightTile;
+                    Vector3Int pos = new(i, j);
+                    Color c = Color.white;
+                    if(data.TileHeightLevel == 2)
+                    {
+                        c = Color.red;
+                    }
+                    dataArray[writeIndex] = new TileChangeData(pos, LightTile, c, Matrix4x4.identity);
                     ++writeIndex;
                 }
             }
         }
-        Array.Resize(ref positionsArray, writeIndex);
-        Array.Resize(ref lightingTilesArray, writeIndex);
-        LightingFront.SetTiles(positionsArray, lightingTilesArray);
-        LightingBack.SetTiles(positionsArray, lightingTilesArray);
-        OcclusionMap.SetTiles(positionsArray, lightingTilesArray);
+        Array.Resize(ref dataArray, writeIndex);
+        Array.Resize(ref dataArray, writeIndex);
+        LightingFront.SetTiles(dataArray, true);
+        LightingBack.SetTiles(dataArray, true);
+        OcclusionMap.SetTiles(dataArray, true);
         DayProgress = StandardDayTimer = TimeInADay * 0.1f;
         PreviousProgNum = 0;
         BorderImage.material.SetFloat("_ProgressionThreshold", 0);
