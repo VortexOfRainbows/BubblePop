@@ -37,6 +37,7 @@ public class WorldTilemap : MonoBehaviour
     public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
     public static GameObject Lilypad, LotusPad, BubbleLilypad, Cattail;
     public Transform VisualMapSuperParent;
+    public Transform Layer2Parent;
     public class TileLevel //Contains both a floor componenet and a wall component, for the purpose of simulating 3D terrain
     {
         public readonly int ID;
@@ -91,7 +92,7 @@ public class WorldTilemap : MonoBehaviour
         PrepareTileLevel(VisualMapSuperParent, BorderMap);
         PrepareTileLevel(VisualMapSuperParent, GroundMap);
         PrepareTileLevel(VisualMapSuperParent, BottomMap);
-        PrepareTileLevel(VisualMapSuperParent, TallBorderMap);
+        PrepareTileLevel(Layer2Parent, TallBorderMap);
         AddDecor();
         NewFasterRefresh(TallBorderMap, BorderMap, GroundMap, BottomMap);
     }

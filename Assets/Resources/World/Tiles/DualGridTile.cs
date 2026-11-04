@@ -68,11 +68,11 @@ public class DualGridTile : ScriptableObject
     public bool AdjacentTileSameType(int i, int j, out bool ghostReturn, int level)
     {
         ghostReturn = false;
-        ref World.TileData adjacentTile = ref World.UnsafeGetTileData(i, j);
-        if (!adjacentTile.HasTile)
+        ref World.TileData adjData = ref World.UnsafeGetTileData(i, j);
+        if (!adjData.HasTile)
             return false;
-        DualGridTile tile = adjacentTile.TileType;
-        if (adjacentTile.TileType == this && adjacentTile.TileHeightLevel == level) //same type on same level
+        DualGridTile adjTile = adjData.TileType;
+        if (adjData.TileType == this && adjData.TileHeightLevel == level) //same type on same level
         {
             if(!IsWall || level <= 1)
                 return true;
@@ -85,21 +85,21 @@ public class DualGridTile : ScriptableObject
         {
             if(level == 2)
             {
-                if(adjacentTile.TileHeightLevel < level)
+                if(adjData.TileHeightLevel < level)
                     return false;
-                if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex] || tile.MyWallVariant() == this)
+                if (TileID.WallTileRelations[TypeIndex, adjTile.TypeIndex] || adjTile.MyWallVariant() == this)
                     return true;
             }
-            else if(adjacentTile.TileHeightLevel >= level)
+            else if(adjData.TileHeightLevel >= level)
             {
-                if (tile.IsWall && tile == this)
+                if (adjTile.IsWall && adjTile == this)
                     return true;
-                if (TileID.WallTileRelations[TypeIndex, tile.TypeIndex] || tile.MyWallVariant() == this)
+                if (TileID.WallTileRelations[TypeIndex, adjTile.TypeIndex] || adjTile.MyWallVariant() == this)
                     return true;
-                return tile.HasWallVariant() && tile.MyWallVariant().LayerOffset < LayerOffset;
+                return adjTile.HasWallVariant() && adjTile.MyWallVariant().LayerOffset < LayerOffset;
             }
         }
-        else if (((tile.LayerOffset < LayerOffset && adjacentTile.TileHeightLevel == level) || adjacentTile.TileHeightLevel > level) && !tile.IsWall) //Ground level tiles can extend tiles above them for seamless blending
+        else if (((adjTile.LayerOffset < LayerOffset && adjData.TileHeightLevel == level) || adjData.TileHeightLevel > level) && (!adjTile.IsWall || adjTile.MyTileVariant() == this)) //Ground level tiles can extend tiles above them for seamless blending
         {
             ghostReturn = true;
         }

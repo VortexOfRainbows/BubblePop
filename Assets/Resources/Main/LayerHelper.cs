@@ -31,8 +31,10 @@ public static class LayerHelper
     //-----------------------------------
 
     public const int TopFloorLayer = 1;
-    public const int SuperTopWallLayer = 5;
-    public const int SuperTopFloorLayer = 7;
+    public const int SuperTopWallLayer = 2;
+    public const int SuperTopFloorLayer = 3;
+
+    public const int SuperTopSortingGroup = 2;
 
     //-----------------------------------
     //           DEFAULT LAYER (not effected by tile shadows)
