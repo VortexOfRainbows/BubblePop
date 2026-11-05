@@ -69,9 +69,7 @@ public static class Lighting
                     Vector3Int pos = new(i, j);
                     Color c = Color.white;
                     if(data.TileHeightLevel == 2)
-                    {
-                        c = Color.red;
-                    }
+                        c = data.TileType.CountsAsWall() ? Color.red : Color.green;
                     dataArray[writeIndex] = new TileChangeData(pos, LightTile, c, Matrix4x4.identity);
                     ++writeIndex;
                 }
