@@ -135,19 +135,21 @@ public class WorldTilemap : MonoBehaviour
         }
     }
     public static List<Transform> LiquidMaps = new();
-    public static void PrepareDisplayMaps(Transform Visual, TileLevel Level, Dictionary<int, Tilemap> map, bool border, bool wall)
+    public static void PrepareDisplayMaps(Transform Visual, TileLevel TileLevel, Dictionary<int, Tilemap> map, bool border, bool wall)
     {
         for (int k = 0; k < TileID.TileTypes.Count; ++k)
         {
             DualGridTile tile = TileID.TileTypes[k];
             Color c;
-            if(Level.Level >= 1)
+            if(TileLevel.Level >= 1)
             {
                 c = tile.BorderColor;
                 if (wall) //post process darkening to account for removal of shadow impact on wall tiles in engine
                     c = (tile.BorderColor.linear * 0.55f).gamma.WithAlpha(1);
+                else if(TileLevel.Level == 2)
+                    c = tile.BorderColor.Lerp(Color.black, 0.1f);
             }
-            else if(Level.Level == 0)
+            else if(TileLevel.Level == 0)
             {
                 c = wall ? tile.BorderColor.Lerp(Color.white, 0.15f) : Color.white;
             }
@@ -193,12 +195,12 @@ public class WorldTilemap : MonoBehaviour
                 //}
 
                 r.sortingOrder = -(int)layerOffset;
-                if (Level.Level == 1 || Level.Level == 2) //dont set special layers for non-border level yet, as that causes erroneous shadows
+                if (TileLevel.Level == 1 || TileLevel.Level == 2) //dont set special layers for non-border level yet, as that causes erroneous shadows
                 {
                     if (wall)
                         t.gameObject.layer = 16; //Wall layer
                     else
-                        t.gameObject.layer = Level.Level == 2 ? 18 : 14; //TopSolidTiles, SolidTiles
+                        t.gameObject.layer = TileLevel.Level == 2 ? 18 : 14; //TopSolidTiles, SolidTiles
                 }
                 t.gameObject.name = $"{(wall ? "W" : "F")}[{k}]: {tile.name}";
                 t.color = c;
