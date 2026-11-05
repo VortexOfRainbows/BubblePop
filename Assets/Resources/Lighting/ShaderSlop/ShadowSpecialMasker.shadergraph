@@ -256,7 +256,7 @@
             "m_Id": "dae657bafad44789b3fc2e9ae326fcde"
         },
         {
-            "m_Id": "482ec8d81d074e6a9d5c1ab0a9d992a0"
+            "m_Id": "b1a22ce0330b48b69699df8671a317a1"
         }
     ],
     "m_Edges": [
@@ -279,7 +279,7 @@
                 "m_Node": {
                     "m_Id": "05770b00bb4947de82be0ba16dfe80e6"
                 },
-                "m_SlotId": 4
+                "m_SlotId": 6
             },
             "m_InputSlot": {
                 "m_Node": {
@@ -489,7 +489,7 @@
                 "m_Node": {
                     "m_Id": "208e4e38a6f849fe8a02f0b3e9f94f13"
                 },
-                "m_SlotId": 4
+                "m_SlotId": 6
             },
             "m_InputSlot": {
                 "m_Node": {
@@ -685,7 +685,7 @@
                 "m_Node": {
                     "m_Id": "4499a0391a9a4f99857e7e2772941373"
                 },
-                "m_SlotId": 4
+                "m_SlotId": 6
             },
             "m_InputSlot": {
                 "m_Node": {
@@ -909,7 +909,7 @@
                 "m_Node": {
                     "m_Id": "7d329744153348ed896ffa0bd92bde9a"
                 },
-                "m_SlotId": 4
+                "m_SlotId": 6
             },
             "m_InputSlot": {
                 "m_Node": {
@@ -1752,7 +1752,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1058.9998779296875,
@@ -2828,10 +2828,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -613.9998779296875,
-            "y": -274.0000915527344,
-            "width": 129.99996948242188,
-            "height": 118.00001525878906
+            "x": -618.0000610351563,
+            "y": -236.99998474121095,
+            "width": 126.00003051757813,
+            "height": 117.99996948242188
         }
     },
     "m_Slots": [
@@ -2908,7 +2908,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1059.0,
@@ -3515,10 +3515,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -329.0,
-            "y": 201.99993896484376,
-            "width": 139.9999542236328,
-            "height": 142.0
+            "x": -231.99989318847657,
+            "y": 6.999983787536621,
+            "width": 139.99998474121095,
+            "height": 142.0000457763672
         }
     },
     "m_Slots": [
@@ -3921,13 +3921,13 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1058.9998779296875,
-            "y": -869.9998779296875,
-            "width": 182.99981689453126,
-            "height": 250.99993896484376
+            "x": -931.0,
+            "y": -904.0000610351563,
+            "width": 182.99993896484376,
+            "height": 251.0
         }
     },
     "m_Slots": [
@@ -4329,7 +4329,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1058.9998779296875,
@@ -4420,26 +4420,6 @@
         "m_Guid": ""
     },
     "m_DefaultType": 0
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
-    "m_ObjectId": "482ec8d81d074e6a9d5c1ab0a9d992a0",
-    "m_Title": "This top section",
-    "m_Content": "might be entirely redundant and uneeded. I think it was previously used to grow the size of shadows to account for some artifacting, but now it just creates artifacts when the vector values above and below are not 0,0",
-    "m_TextSize": 0,
-    "m_Theme": 0,
-    "m_Position": {
-        "serializedVersion": "2",
-        "x": -2346.0,
-        "y": -373.0,
-        "width": 200.0,
-        "height": 160.0
-    },
-    "m_Group": {
-        "m_Id": ""
-    }
 }
 
 {
@@ -5892,7 +5872,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1059.0,
@@ -7657,6 +7637,26 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
+    "m_ObjectId": "b1a22ce0330b48b69699df8671a317a1",
+    "m_Title": "Blue MATTERS",
+    "m_Content": "Blue is important here as it is what tells the sharp shadows not to extend and the exclusion shadows to extend.",
+    "m_TextSize": 0,
+    "m_Theme": 0,
+    "m_Position": {
+        "serializedVersion": "2",
+        "x": -871.0,
+        "y": -241.0,
+        "width": 200.0,
+        "height": 100.0
+    },
+    "m_Group": {
+        "m_Id": ""
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.SignNode",
     "m_ObjectId": "b2431cdefd334fb9b15161da9f6b21b8",
     "m_Group": {
@@ -8087,13 +8087,13 @@
     },
     "m_Name": "Step",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -488.0,
+            "x": -398.00006103515627,
             "y": -274.0,
-            "width": 128.00006103515626,
-            "height": 94.0
+            "width": 145.0,
+            "height": 118.0
         }
     },
     "m_Slots": [

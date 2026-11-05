@@ -60,6 +60,9 @@ public static class Lighting
         int totalCells = width * height;
         TileChangeData[] dataArray = new TileChangeData[totalCells];
         int writeIndex = 0;
+        Color blue = new(0, 0, 1);
+        Color purple = new(1, 0, 1);
+        Color cyan = new(0, 1, 1);
         for (int i = left; i < right; i++)
         {
             for (int j = bottom; j < top; j++)
@@ -68,9 +71,9 @@ public static class Lighting
                 if (data.IsSolid) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
                 {
                     Vector3Int pos = new(i, j);
-                    Color c = Color.black;
+                    Color c = blue;
                     if(data.TileHeightLevel == 2)
-                        c = World.UnsafeGetTileData(i, j + 1).TileHeightLevel == 2 ? Color.red : Color.green;
+                        c = World.UnsafeGetTileData(i, j + 1).TileHeightLevel == 2 ? purple : cyan;
                     dataArray[writeIndex] = new TileChangeData(pos, LightTile, c, Matrix4x4.identity);
                     ++writeIndex;
                 }

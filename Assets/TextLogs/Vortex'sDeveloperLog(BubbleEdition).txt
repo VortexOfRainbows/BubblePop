@@ -70,11 +70,7 @@ Done:
 	D: This currently has a LOT of work to be done to finalize it. TODO:
 		1. Shadow projectiles to render shadows over them at the appropriate height (probably make shadows no longer effect any wall as it was mostly nonsensical doing that beforehand. All walls were always fully covered by shadows due to occlusion...)
 		2. LOTS of lighting stuff :(
-			1. Very WIP. The plan is currently to use different colored lighting blocks to tell the shader how to handle stuff.
-				1. Red: Longer shadows
-				2. Green: Works for occlusion, but no extended shadows (to handle the top-floor tiles at the top of tall walls)
-			2. Needs: fix issue where special mask is not rendering correctly for longer shadows
-			3. Needs: fix issue where special mask is not rendering correctly for normal shadows
+			1. Needs: fix issue where special mask is not rendering correctly for longer shadows
 		3. Probably more I am forgetting about
 		4. Make sure the water behavior makes sense with tall walls
 2. Burger Resprite (David)
@@ -86,6 +82,8 @@ Done:
 7. Shift around the layers for shadows to no longer render over walls. Darkened top level walls to mimic how they used to look with shadows (though they should still be slightly brighter)
 8. Top layer wall is now consistently layer 2, meaning weapons still appear above but most other important interactions should be preserved (more sorting groups could be used to extend and improve functionality later)
 9. Tile blending now considers tall walls the same as the top tile type.
+10. Some lighting info transferred via shaders: 
+	1. Blue: normal, Purple: long, Cyan: skip
 
 10/27/26 to 10/28/26
 1. More dialogue variants for gachapon shop, and for gachapon mansion
