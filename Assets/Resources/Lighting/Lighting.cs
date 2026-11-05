@@ -11,7 +11,7 @@ public static class Lighting
     public static RenderTexture LightRT;
     public static RenderTexture BorderRT;
     public static RenderTexture BorderMaskRT;
-    public static RenderTexture SolidTileRT;
+    public static RenderTexture SolidTileRT, TopSolidRT;
     public static RenderTexture OcclusionTileRT;
     public static RenderTexture OilRT;
     public static RenderTexture ShadowMaskInfo;
@@ -20,6 +20,7 @@ public static class Lighting
     public static Material BackLight;
     public static Material LightShaper;
     public static Material ShadowSpecialMaskMaterial;
+    public static Material AddBlit;
     public static RawImage ShadowImage => Main.Instance.TileLightRenderTarget;
     public static RawImage BorderImage => Main.Instance.BorderRenderTarget;
     public static RawImage LightShapeVisualizer => Main.Instance.LightShapeVisualizer;
@@ -38,6 +39,8 @@ public static class Lighting
         ShadowMaskInfo = Resources.Load<RenderTexture>("Lighting/ShadowBonusMaskingInfo");
         FinalLight = Resources.Load<RenderTexture>("Lighting/FinalLightingRenderTexture");
         OilRT = Resources.Load<RenderTexture>("Lighting/OilRenderTexture");
+        TopSolidRT = Resources.Load<RenderTexture>("Lighting/TopSolidRenderTexture");
+        AddBlit = Resources.Load<Material>("Lighting/ShaderSlop/BlitAdd");
         BorderImage.texture = BorderRT;
         LightShapeVisualizer.texture = ShadowMaskInfo;
         ShadowImage.texture = FinalLight;
@@ -47,9 +50,7 @@ public static class Lighting
     public static void Setup(Tilemap Map, Tilemap LightingFront, Tilemap LightingBack, Tilemap OcclusionMap)
     {
         if (Map == null || LightingFront == null || LightingBack == null)
-        {
-            throw new System.Exception("ERROR: Could not find lighting tile maps");
-        }
+            throw new Exception("ERROR: Could not find lighting tile maps");
         FrontLight = LightingFront.GetComponent<TilemapRenderer>().material;
         BackLight = LightingBack.GetComponent<TilemapRenderer>().material;
         //LightRTSprite = Sprite.Create(LightRT, new Rect(0, 0, LightRT.width, LightRT.height), new Vector2(0.5f, 0.5f));
@@ -67,9 +68,9 @@ public static class Lighting
                 if (data.IsSolid) //This is also used for occlusion so it is obtained when typically setting up the tile maps... Additionally, it could be used to check for solid tiles quicker, but im not certain if it is faster (NEEDS TESTING)
                 {
                     Vector3Int pos = new(i, j);
-                    Color c = Color.white;
+                    Color c = Color.black;
                     if(data.TileHeightLevel == 2)
-                        c = data.TileType.CountsAsWall() ? Color.red : Color.green;
+                        c = World.UnsafeGetTileData(i, j + 1).TileHeightLevel == 2 ? Color.red : Color.green;
                     dataArray[writeIndex] = new TileChangeData(pos, LightTile, c, Matrix4x4.identity);
                     ++writeIndex;
                 }
@@ -293,6 +294,7 @@ public static class Lighting
             SolidTileRT = Resources.Load<RenderTexture>("Lighting/SolidTileRenderTexture");
             OcclusionTileRT = Resources.Load<RenderTexture>("Lighting/OcclusionTileRenderTexture");
             OilRT = Resources.Load<RenderTexture>("Lighting/OilRenderTexture");
+            TopSolidRT = Resources.Load<RenderTexture>("Lighting/TopSolidRenderTexture");
             return;
         }
         if(LightRT.width != Screen.width || LightRT.height != Screen.height || BorderRT.width != Screen.width || BorderRT.height != Screen.height)
@@ -301,6 +303,7 @@ public static class Lighting
             ResizeRenderTexture(BorderRT, CameraManager.TileBorderCamera, BorderImage);
             ResizeRenderTexture(BorderMaskRT, CameraManager.BorderMaskCamera, null);
             ResizeRenderTexture(SolidTileRT, CameraManager.SolidTileCamera, null);
+            ResizeRenderTexture(TopSolidRT, CameraManager.TopSolidCamera, null);
             ResizeRenderTexture(OcclusionTileRT, CameraManager.OcclusionTileCamera, null);
             ResizeRenderTexture(OilRT, CameraManager.OilCamera, null);
             //BorderImage.material.SetTexture("_Mask", BorderMaskRT);
@@ -341,16 +344,23 @@ public static class Lighting
     public static void PrepareSpecialShadowMask()
     {
         ShadowImage.gameObject.SetActive(true);
+
+        //Might be good to later delay the renderers by some amount to preserve processing speed
         CameraManager.OcclusionTileCamera.Render();
         CameraManager.SolidTileCamera.Render();
+        CameraManager.TopSolidCamera.Render();
         CameraManager.LightingCamera.Render();
+
+        RenderTexture addedTexture = RenderTexture.GetTemporary(SolidTileRT.width,SolidTileRT.height, SolidTileRT.depth, SolidTileRT.format);
+        AddBlit.SetTexture("_Mask", TopSolidRT);
+        Graphics.Blit(SolidTileRT, addedTexture, AddBlit);
 
         LightShaper.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
         LightShaper.SetFloat("_SizeMult", .5f / CameraManager.OcclusionTileCamera.orthographicSize);
         LightShaper.SetTexture("_Mask", OcclusionTileRT);
         LightShaper.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
-
-        BlitWithClear(SolidTileRT, ShadowMaskInfo, LightShaper);
+        BlitWithClear(addedTexture, ShadowMaskInfo, LightShaper);
+        RenderTexture.ReleaseTemporary(addedTexture);
 
         float occlusionScale = 8.0f;
         float baseTexelSize = occlusionScale / 1080f;
@@ -366,10 +376,8 @@ public static class Lighting
     {
         var activeRT = RenderTexture.active;
         RenderTexture.active = destination;
-
         GL.Clear(true, true, Color.clear);
         Graphics.Blit(source, destination, m, -1);
-
         RenderTexture.active = activeRT;
     }
     //public static void OnEnable()

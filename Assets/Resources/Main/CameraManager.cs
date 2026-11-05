@@ -3,7 +3,7 @@ using UnityEngine.Rendering.Universal;
 
 public static class CameraManager
 {
-    private readonly static Camera[] Buffer = new Camera[] { Camera.main, null, null, null, null, null, null, null, null };
+    private readonly static Camera[] Buffer = new Camera[] { Camera.main, null, null, null, null, null, null, null, null, null };
     public static Camera MainCamera => Buffer[0] == null ? Buffer[0] = Camera.main : Buffer[0];
     public static Camera LightingCamera => Buffer[1] == null ? Buffer[1]  = MainCamera.transform.GetChild(0).GetComponent<Camera>() : Buffer[1];
     public static Camera TileBorderCamera => Buffer[2] == null ? Buffer[2] = MainCamera.transform.GetChild(1).GetComponent<Camera>() : Buffer[2];
@@ -13,6 +13,7 @@ public static class CameraManager
     public static Camera UICamera => Buffer[6] == null ? Buffer[6] = MainCamera.transform.parent.GetChild(1).GetComponent<Camera>() : Buffer[6];
     public static Camera OilCamera => Buffer[7] == null ? Buffer[7] = MainCamera.transform.GetChild(5).GetComponent<Camera>() : Buffer[7];
     public static Camera CompendiumScreenshotCamera => Buffer[8] == null ? Buffer[8] = MainCamera.transform.parent.GetChild(2).GetComponent<Camera>() : Buffer[8];
+    public static Camera TopSolidCamera => Buffer[9] == null ? Buffer[9] = MainCamera.transform.GetChild(6).GetComponent<Camera>() : Buffer[9];
     public static void SetCameraOrthographicSize(float value)
     {
         MainCamera.orthographicSize = value;
@@ -22,6 +23,7 @@ public static class CameraManager
         SolidTileCamera.orthographicSize = value + 2; //2 is the size of tiles we need on the edge of these cameras to help with rendering
         OcclusionTileCamera.orthographicSize = value + 2;
         OilCamera.orthographicSize = value;
+        TopSolidCamera.orthographicSize = SolidTileCamera.orthographicSize;
     }
     public static void LerpCameraOrthographicSize(float target, float t)
     {
@@ -39,8 +41,11 @@ public static class CameraManager
     {
         float tileScaleFactor = 2.0f;
         Vector2 scaledPosition = -sunlightVector * tileScaleFactor;
-        SolidTileCamera.transform.localPosition = scaledPosition + new Vector2(0, 0.75f) * tileScaleFactor; //0.25f is the offset for tile tops, -0.5f is the offset for tile bottoms
+        SolidTileCamera.transform.localPosition = scaledPosition + new Vector2(0, 0.75f * tileScaleFactor); //0.25f is the offset for tile tops, -0.5f is the offset for tile bottoms
         OcclusionTileCamera.transform.localPosition = scaledPosition; // - new Vector2(Utils.SignNoZero(sunlightVector.x), Utils.SignNoZero(sunlightVector.y));
+        
+        //Change this later!
+        TopSolidCamera.transform.localPosition = scaledPosition * 2 + new Vector2(0, 1.75f * tileScaleFactor);
     }
 
     public static RenderTexture ExportTexture => Resources.Load<RenderTexture>("UI/Compendium/ExportTexture");

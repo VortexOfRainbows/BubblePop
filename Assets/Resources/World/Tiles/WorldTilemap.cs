@@ -191,12 +191,12 @@ public class WorldTilemap : MonoBehaviour
                 //}
 
                 r.sortingOrder = -(int)layerOffset;
-                if (Level.Level == 1) //dont set special layers for non-border level yet, as that causes erroneous shadows
+                if (Level.Level == 1 || Level.Level == 2) //dont set special layers for non-border level yet, as that causes erroneous shadows
                 {
                     if (wall)
                         t.gameObject.layer = 16; //Wall layer
                     else
-                        t.gameObject.layer = 14; //Border Layer
+                        t.gameObject.layer = Level.Level == 2 ? 18 : 14; //TopSolidTiles, SolidTiles
                 }
                 t.gameObject.name = $"{(wall ? "W" : "F")}[{k}]: {tile.name}";
                 t.color = c;

@@ -37,6 +37,8 @@ Need to do:
 	3. Will require additional logic for handling transitions between taller tiles and shorter tiles, in all directions
 8. Finish dialogue system implementations
 	1. Next: Add sounds, implement more expressions
+9. Death screen to include score tallies related to stuff you obtained
+10. Shop powers to include descriptions (potentially)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Replace TB: Calculated achievement with something easier to account for (difficulty of unlock can stay hard)
@@ -50,7 +52,7 @@ Bug Watchlist:
 1. (This should've been fixed with the wave card rework, but keep an eye out for this) With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Soup sometimes causes power numbers to spazz out
 3. Achievement popups are effected by lighting
-4. Boxer doesn't pursue the player when hovering over water right now, unless it has line of sight, due to pathfinding over water not being implemented!
+4. Make sure lighting works on build version do to different blit-clear behaviors (blit doesn't naturally clear on build version)
 
 Sounds Needed:
 1. Debuff detonation (fire)
