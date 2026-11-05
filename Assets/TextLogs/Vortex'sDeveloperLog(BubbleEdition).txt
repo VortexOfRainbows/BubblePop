@@ -70,7 +70,6 @@ Done:
 	D: I escape lighting jail joyously (most of the new lighting stuff done is kind heavy handed, causing 2 additional render targets added to the stack. Might want to optimize render timings later)
 	E: This currently has a LOT of work to be done to finalize it. TODO:
 		1. Shadow projectiles to render shadows over them at the appropriate height (probably make shadows no longer effect any wall as it was mostly nonsensical doing that beforehand. All walls were always fully covered by shadows due to occlusion...)
-		2. Probably more I am forgetting about
 2. Burger Resprite (David)
 3. Add Antiburger Power (sprite by David)
 4. New nodes by Wes: Rafts, Mushroom Shrine
@@ -84,6 +83,8 @@ Done:
 	1. Blue: normal, Purple: long, Cyan: skip
 11. Safeguards for level designers placing tall walls as single walls
 12. Tall tiles now layer better alongside same-type tiles of different heights
+13. Tall tiles now place additional padding walls underneath to fix occasional visual artifacts with other tall wall tiles
+14. Level 1 floor tiles no longer blend to Level 2 floor tiles, as this may be better for blending
 
 10/27/26 to 10/28/26
 1. More dialogue variants for gachapon shop, and for gachapon mansion

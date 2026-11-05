@@ -270,7 +270,7 @@ public class WorldTilemap : MonoBehaviour
                         {
                             tile.MarkForGroundUpdate[TallTop.ID] = true;
                             if ((k >= 2) && !tile.MarkForSpecialWallUpdate[TallTop.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
-                                tile.MarkForSpecialWallUpdate[TallTop.ID] = true;
+                                tile.MarkForSpecialWallUpdate[TallTop.ID] = tile.MarkForSpecialWallUpdate[Top.ID] = true;
                         }
                         else
                         {

@@ -108,7 +108,7 @@ public class DualGridTile : ScriptableObject
             {
                 if(adjTile.IsWall && this.HasWallVariant() && this.MyWallVariant() == adjTile)
                     ghostReturn = false;
-                else if(adjData.TileHeightLevel == 2 && this == adjTile)
+                else if(adjData.TileHeightLevel == 2)// && this == adjTile)
                     ghostReturn = false;
             }
         }
