@@ -71,8 +71,6 @@ Done:
 	E: This currently has a LOT of work to be done to finalize it. TODO:
 		1. Shadow projectiles to render shadows over them at the appropriate height (probably make shadows no longer effect any wall as it was mostly nonsensical doing that beforehand. All walls were always fully covered by shadows due to occlusion...)
 		2. Probably more I am forgetting about
-		3. Make sure the water behavior makes sense with tall walls
-		4. Layering fixes for stuff like mushrooms
 2. Burger Resprite (David)
 3. Add Antiburger Power (sprite by David)
 4. New nodes by Wes: Rafts, Mushroom Shrine
@@ -80,7 +78,7 @@ Done:
 5. Adjustments to a few older Shop nodes to add water and make them more interesting (also adjusted some weights for nodes)
 6. Fix small inconsistencies with where stone fragments would appear on stone walls and how wall corners would be placed
 7. Shift around the layers for shadows to no longer render over walls. Darkened top level walls to mimic how they used to look with shadows (though they should still be slightly brighter)
-8. Top layer wall is now consistently layer 2, meaning weapons still appear above but most other important interactions should be preserved (more sorting groups could be used to extend and improve functionality later)
+8. Top layer wall is now consistently layer 1, meaning weapons still appear above and most other important interactions should be preserved (more sorting groups could be used to extend and improve functionality later)
 9. Tile blending now considers tall walls the same as the top tile type.
 10. Some lighting info transferred via shaders: 
 	1. Blue: normal, Purple: long, Cyan: skip

@@ -677,7 +677,7 @@ GameObject:
   - component: {fileID: 1306502274972473616}
   - component: {fileID: 3533309103257478173}
   m_Layer: 0
-  m_Name: 2ndLayerParent
+  m_Name: 1stLayerFloorAnd2ndLayerParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -708,7 +708,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_SortAtRoot: 0
 --- !u!1 &5433927477540987806
 GameObject:

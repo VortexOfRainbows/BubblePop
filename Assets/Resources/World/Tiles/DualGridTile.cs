@@ -79,7 +79,10 @@ public class DualGridTile : ScriptableObject
         }
         if (IsLiquid) //liquids should have special relations and not consider other special relations
         {
-            //liquid stuff might be needed here later?
+            if (adjData.TileHeightLevel == 2)
+            {
+                return World.UnsafeGetTileData(i, j + 1).IsLiquid;
+            }
         }
         else if (IsWall)
         {

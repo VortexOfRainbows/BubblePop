@@ -3,7 +3,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
-using static UnityEditor.PlayerSettings;
 
 public class WorldTilemap : MonoBehaviour
 {
@@ -37,6 +36,7 @@ public class WorldTilemap : MonoBehaviour
     public static GameObject CratePrefab, BarrelPrefab, UrnPrefab;
     public static GameObject Lilypad, LotusPad, BubbleLilypad, Cattail;
     public Transform VisualMapSuperParent;
+    public Transform Layer1Parent;
     public Transform Layer2Parent;
     public class TileLevel //Contains both a floor componenet and a wall component, for the purpose of simulating 3D terrain
     {
@@ -89,23 +89,25 @@ public class WorldTilemap : MonoBehaviour
         GroundMap.Reset();
         BottomMap.Reset();
         LiquidMaps.Clear();
-        PrepareTileLevel(VisualMapSuperParent, BorderMap);
+        PrepareTileLevel(Layer2Parent, BorderMap, VisualMapSuperParent);
         PrepareTileLevel(VisualMapSuperParent, GroundMap);
         PrepareTileLevel(VisualMapSuperParent, BottomMap);
         PrepareTileLevel(Layer2Parent, TallBorderMap);
         AddDecor();
         NewFasterRefresh(TallBorderMap, BorderMap, GroundMap, BottomMap);
     }
-    public static void PrepareTileLevel(Transform SuperParent, TileLevel Level)
+    public static void PrepareTileLevel(Transform SuperParent, TileLevel Level, Transform SecondaryParent = null)
     {
-        for(int i = 0; i < 2; ++i)
+        if(SecondaryParent == null)
+            SecondaryParent = SuperParent;
+        for (int i = 0; i < 2; ++i)
         {
             var map = Level.GetMap(i); //0 == floor, 1 == wall
             bool wall = i == 1;
             bool border = Level.CountsAsBorder;
 
             Transform Visual = new GameObject($"Level{Level.Level}{(i == 0 ? "Floor" : "Wall")}Parent").transform; //Create a parent object for the visuals to fall under
-            Visual.transform.SetParent(SuperParent);
+            Visual.transform.SetParent(i == 0 ? SuperParent : SecondaryParent);
             Visual.transform.localScale = Vector3.one;
             Visual.transform.localPosition = new Vector3(0, Mathf.Clamp(Level.Level, -1, 1) * 0.3f, 0); //Walls get higher by .3 units each time
             SortingGroup group = Visual.gameObject.AddComponent<SortingGroup>();
@@ -286,7 +288,7 @@ public class WorldTilemap : MonoBehaviour
                         tilesNeededForGround++;
                         //if (!tile.IsLiquid)
                         tile.MarkForGroundUpdate[Ground.ID] = true;
-                        if(!tile.MarkForSpecialWallUpdate[Ground.ID] && tile.HasWallVariant() && TileIsNotBlendableGroundWall(i2, j2, tile.LayerOffset))
+                        if(!tile.MarkForSpecialWallUpdate[Ground.ID] && (tile.HasWallVariant() || tile.CountsAsWall()) && TileIsNotBlendableGroundWall(i2, j2, tile.LayerOffset))
                             tile.MarkForSpecialWallUpdate[Ground.ID] = true;
                         if(tile.IsLiquid) //Place floors below liquid tiles; they can be seen through the liquid
                             tile.MarkForGroundUpdate[Bottom.ID] = true;
@@ -312,6 +314,15 @@ public class WorldTilemap : MonoBehaviour
                         {
                             tile.UpdateDisplayTileSingular(i, j, tile.QueuedFloorUpdates[TallTop.ID], TallTop.Level);
                             tile.MarkForGroundUpdate[TallTop.ID] = false;
+
+                            //ref World.TileData aboveData = ref World.UnsafeGetTileData(i, j + 1);
+                            //if (aboveData.IsLiquid)
+                            //{
+                            //    DualGridTile bottomTile = TileID.Dirt; //For now, bottoms in pits will always be dirt, but this may change in the future
+                            //    DualGridTile water = TileID.Water; //For now all liquids are water, but this may change in the future
+                            //    water.UpdateDisplayTileSingular(i, j, water.QueuedFloorUpdates[Ground.ID], Ground.Level);
+                            //    bottomTile.UpdateDisplayTileSingular(i, j, bottomTile.QueuedFloorUpdates[Bottom.ID], Bottom.Level);
+                            //}
                         }
                         if (tile.MarkForGroundUpdate[Top.ID])
                         {
@@ -331,7 +342,7 @@ public class WorldTilemap : MonoBehaviour
                         }
                         if (tile.MarkForSpecialWallUpdate[Ground.ID])
                         {
-                            DualGridTile wall = tile.MyWallVariant();
+                            DualGridTile wall = tile.CountsAsWall() ? tile : tile.MyWallVariant();
                             wall.UpdateDisplayTileSingular(i, j, wall.QueuedWallUpdates[Ground.ID], Ground.Level);
                             tile.MarkForSpecialWallUpdate[Ground.ID] = false;
                         }
@@ -356,7 +367,6 @@ public class WorldTilemap : MonoBehaviour
             }
             else
             {
-                Debug.Log("GroundTopUpdates: " + tile.QueuedFloorUpdates[TallTop.ID].Count);
                 TallTop.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[TallTop.ID].ToArray(), true);
                 Top.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Top.ID].ToArray(), true);
                 Ground.Floor[tile.TypeIndex].SetTiles(tile.QueuedFloorUpdates[Ground.ID].ToArray(), true);
@@ -417,7 +427,7 @@ public class WorldTilemap : MonoBehaviour
                 }
                 else  if (UnsafeData.IsLiquid && Utils.RandFloat() < 0.1f)
                 {
-                    bool liquidAbove = World.GetTileData(i, j + 1).IsLiquid;
+                    bool liquidAbove = World.GetTileData(i, j + 1).IsLiquid || World.GetTileData(i, j - 1).TileHeightLevel >= 2;
                     bool liquidBelow = World.GetTileData(i, j - 1).IsLiquid;
                     if(!liquidAbove || !liquidBelow)
                         GenerateCattail(World.Instance.FloorDecorParent, pos, i, j, order, c, liquidAbove);
