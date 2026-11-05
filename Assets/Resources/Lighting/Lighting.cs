@@ -12,7 +12,7 @@ public static class Lighting
     public static RenderTexture BorderRT;
     public static RenderTexture BorderMaskRT;
     public static RenderTexture SolidTileRT, TopSolidRT;
-    public static RenderTexture OcclusionTileRT;
+    public static RenderTexture OcclusionTileRT, TopOcclusionTileRT, CombinedOcclusionRT;
     public static RenderTexture OilRT;
     public static RenderTexture ShadowMaskInfo;
     public static RenderTexture FinalLight;
@@ -21,6 +21,7 @@ public static class Lighting
     public static Material LightShaper;
     public static Material ShadowSpecialMaskMaterial;
     public static Material AddBlit;
+    public static Material OcclusionBlit;
     public static RawImage ShadowImage => Main.Instance.TileLightRenderTarget;
     public static RawImage BorderImage => Main.Instance.BorderRenderTarget;
     public static RawImage LightShapeVisualizer => Main.Instance.LightShapeVisualizer;
@@ -41,6 +42,9 @@ public static class Lighting
         OilRT = Resources.Load<RenderTexture>("Lighting/OilRenderTexture");
         TopSolidRT = Resources.Load<RenderTexture>("Lighting/TopSolidRenderTexture");
         AddBlit = Resources.Load<Material>("Lighting/ShaderSlop/BlitAdd");
+        OcclusionBlit = Resources.Load<Material>("Lighting/ShaderSlop/BlitProcessOcclusion");
+        TopOcclusionTileRT = Resources.Load<RenderTexture>("Lighting/TopOcclusionRenderTexture");
+        CombinedOcclusionRT = Resources.Load<RenderTexture>("Lighting/CombinedOcclusionRenderTexture");
         BorderImage.texture = BorderRT;
         LightShapeVisualizer.texture = ShadowMaskInfo;
         ShadowImage.texture = FinalLight;
@@ -298,6 +302,8 @@ public static class Lighting
             OcclusionTileRT = Resources.Load<RenderTexture>("Lighting/OcclusionTileRenderTexture");
             OilRT = Resources.Load<RenderTexture>("Lighting/OilRenderTexture");
             TopSolidRT = Resources.Load<RenderTexture>("Lighting/TopSolidRenderTexture");
+            TopOcclusionTileRT = Resources.Load<RenderTexture>("Lighting/TopOcclusionRenderTexture");
+            CombinedOcclusionRT = Resources.Load<RenderTexture>("Lighting/CombinedOcclusionRenderTexture");
             return;
         }
         if(LightRT.width != Screen.width || LightRT.height != Screen.height || BorderRT.width != Screen.width || BorderRT.height != Screen.height)
@@ -306,8 +312,10 @@ public static class Lighting
             ResizeRenderTexture(BorderRT, CameraManager.TileBorderCamera, BorderImage);
             ResizeRenderTexture(BorderMaskRT, CameraManager.BorderMaskCamera, null);
             ResizeRenderTexture(SolidTileRT, CameraManager.SolidTileCamera, null);
-            ResizeRenderTexture(TopSolidRT, CameraManager.TopSolidCamera, null);
+            ResizeRenderTexture(TopSolidRT, CameraManager.SolidTileCamera, null);
             ResizeRenderTexture(OcclusionTileRT, CameraManager.OcclusionTileCamera, null);
+            ResizeRenderTexture(TopOcclusionTileRT, CameraManager.TopOcclusionCamera, null);
+            ResizeRenderTexture(CombinedOcclusionRT, null, null);
             ResizeRenderTexture(OilRT, CameraManager.OilCamera, null);
             //BorderImage.material.SetTexture("_Mask", BorderMaskRT);
             //LightShapeVisualizer.material.SetTexture("_Mask", OcclusionTileRT);
@@ -350,20 +358,23 @@ public static class Lighting
 
         //Might be good to later delay the renderers by some amount to preserve processing speed
         CameraManager.OcclusionTileCamera.Render();
+        CameraManager.TopOcclusionCamera.Render();
         CameraManager.SolidTileCamera.Render();
         CameraManager.TopSolidCamera.Render();
         CameraManager.LightingCamera.Render();
 
-        RenderTexture addedTexture = RenderTexture.GetTemporary(SolidTileRT.width,SolidTileRT.height, SolidTileRT.depth, SolidTileRT.format);
+        RenderTexture addedSolidTexture = RenderTexture.GetTemporary(SolidTileRT.width,SolidTileRT.height, SolidTileRT.depth, SolidTileRT.format);
         AddBlit.SetTexture("_Mask", TopSolidRT);
-        Graphics.Blit(SolidTileRT, addedTexture, AddBlit);
+        Graphics.Blit(SolidTileRT, addedSolidTexture, AddBlit);
+        OcclusionBlit.SetTexture("_TopTexture", TopOcclusionTileRT);
+        BlitWithClear(OcclusionTileRT, CombinedOcclusionRT, OcclusionBlit);
 
         LightShaper.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
         LightShaper.SetFloat("_SizeMult", .5f / CameraManager.OcclusionTileCamera.orthographicSize);
-        LightShaper.SetTexture("_Mask", OcclusionTileRT);
+        LightShaper.SetTexture("_Mask", CombinedOcclusionRT);
         LightShaper.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
-        BlitWithClear(addedTexture, ShadowMaskInfo, LightShaper);
-        RenderTexture.ReleaseTemporary(addedTexture);
+        BlitWithClear(addedSolidTexture, ShadowMaskInfo, LightShaper);
+        RenderTexture.ReleaseTemporary(addedSolidTexture);
 
         float occlusionScale = 8.0f;
         float baseTexelSize = occlusionScale / 1080f;

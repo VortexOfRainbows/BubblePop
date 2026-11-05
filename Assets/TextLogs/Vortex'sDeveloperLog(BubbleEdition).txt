@@ -62,17 +62,17 @@ Done:
 
 -- (NEXT) 4.0? --
 
-10/28/26 to 11/4/26 Welcome back to Lighting Jail young lion
+10/28/26 to 11/5/26 Welcome back to Lighting Jail young lion
 1. Super DUPER WIP height system changes for walls, in preparation for taller walls and shadows
 	A: It looks very ridiculous right now, but it is part of a plan!
 	B: Now wall tiles can be placed in editor to act as solid and wall tiles, basically to function as 2-height tiles.
 	C: Managed to get the upper segment which is needed to be separate for purposes of layering working. More double checking will have to be done below before crossing this off the list.
-	D: This currently has a LOT of work to be done to finalize it. TODO:
+	D: I escape lighting jail joyously (most of the new lighting stuff done is kind heavy handed, causing 2 additional render targets added to the stack. Might want to optimize render timings later)
+	E: This currently has a LOT of work to be done to finalize it. TODO:
 		1. Shadow projectiles to render shadows over them at the appropriate height (probably make shadows no longer effect any wall as it was mostly nonsensical doing that beforehand. All walls were always fully covered by shadows due to occlusion...)
-		2. LOTS of lighting stuff :(
-			1. Needs: fix issue where special mask is not rendering correctly for longer shadows
-		3. Probably more I am forgetting about
-		4. Make sure the water behavior makes sense with tall walls
+		2. Probably more I am forgetting about
+		3. Make sure the water behavior makes sense with tall walls
+		4. Layering fixes for stuff like mushrooms
 2. Burger Resprite (David)
 3. Add Antiburger Power (sprite by David)
 4. New nodes by Wes: Rafts, Mushroom Shrine
