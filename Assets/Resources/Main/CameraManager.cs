@@ -43,9 +43,7 @@ public static class CameraManager
         Vector2 scaledPosition = -sunlightVector * tileScaleFactor;
         SolidTileCamera.transform.localPosition = scaledPosition + new Vector2(0, 0.75f * tileScaleFactor); //0.25f is the offset for tile tops, -0.5f is the offset for tile bottoms
         OcclusionTileCamera.transform.localPosition = scaledPosition; // - new Vector2(Utils.SignNoZero(sunlightVector.x), Utils.SignNoZero(sunlightVector.y));
-        
-        //Change this later!
-        TopSolidCamera.transform.localPosition = scaledPosition * 2 + new Vector2(0, 1.75f * tileScaleFactor);
+        TopSolidCamera.transform.localPosition = scaledPosition * 2 + new Vector2(0, 1.75f * tileScaleFactor); //+1 for the extra tile height
     }
 
     public static RenderTexture ExportTexture => Resources.Load<RenderTexture>("UI/Compendium/ExportTexture");
