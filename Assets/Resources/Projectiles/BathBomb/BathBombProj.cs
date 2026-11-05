@@ -119,8 +119,7 @@ public class BathBomb : Projectile
         Vector3 drawPos = Vector2.Lerp(playerStartPos, Destination, percent);
         drawPos.y -= 0.5f;
         bool solidTile = World.SolidTile(drawPos);
-        if (solidTile)
-            drawPos.y += 0.25f;
+        drawPos.y += World.GetZOffset(drawPos);
         Vector2 scale = new(2.0f, 1.4f);
         scale *= Data.Length > 3 ? Data[3] : 1.0f;
         SpriteBatch.Draw(Main.TextureAssets.Shadow, drawPos, scale, 0,

@@ -92,7 +92,7 @@ public class WorldTilemap : MonoBehaviour
         PrepareTileLevel(Layer2Parent, BorderMap, VisualMapSuperParent);
         PrepareTileLevel(VisualMapSuperParent, GroundMap);
         PrepareTileLevel(VisualMapSuperParent, BottomMap);
-        PrepareTileLevel(Layer2Parent, TallBorderMap);
+        PrepareTileLevel(Layer2Parent, TallBorderMap, VisualMapSuperParent);
         AddDecor();
         NewFasterRefresh(TallBorderMap, BorderMap, GroundMap, BottomMap);
     }
@@ -113,6 +113,8 @@ public class WorldTilemap : MonoBehaviour
             SortingGroup group = Visual.gameObject.AddComponent<SortingGroup>();
             if(Level.Level == 2)
             {
+                if (wall)
+                    group.sortingLayerID = World.FloorSortingLayer;
                 group.sortingOrder = wall ? LayerHelper.SuperTopWallLayer : LayerHelper.SuperTopFloorLayer;
             }
             else if(Level.Level == 1) //Border

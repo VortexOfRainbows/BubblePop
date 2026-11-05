@@ -23,7 +23,10 @@ public static class LayerHelper
     public const int HazardTopSortingOrder = 2;
 
     public const int TileShadowLayer = 3;
+
+    //Not effected by shadows, but still a floor layer
     public const int TopWallLayer = 4;
+    public const int SuperTopWallLayer = 5;
 
 
     //-----------------------------------
@@ -34,7 +37,8 @@ public static class LayerHelper
 
     //These are technicall sup groups as they get sorted into the super top sorting group
     public const int SuperTopSortingGroup = 1;
-    public const int SuperTopWallLayer = 2;
+    //Super top layer might be moved back here later, but I find the small visual bug of having the a small cut-out wall segment in front of the player to be rather annoying
+    //public const int SuperTopWallLayer = 2;
     public const int SuperTopFloorLayer = 3;
 
     //-----------------------------------

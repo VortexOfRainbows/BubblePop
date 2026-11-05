@@ -191,8 +191,7 @@ public class Snowball : Projectile
         Vector3 drawPos = Vector2.Lerp(startPos, Destination, percent);
         drawPos.y -= 0.5f;
         bool solidTile = World.SolidTile(drawPos);
-        if (solidTile)
-            drawPos.y += 0.25f;
+        drawPos.y +=World.GetZOffset(drawPos);
         SpriteBatch.Draw(Main.TextureAssets.Shadow, drawPos, new Vector2(2.0f, 1.3f), 0,
             new Color(0, 0, 0, 0.5f * sin), solidTile ? LayerHelper.SolidTileSortingOrder + 1 : -40, Main.TextureAssets.AlphaShader);
     }

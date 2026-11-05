@@ -30,15 +30,11 @@ Need to do:
 5. Bubblemancer Farm area for the game to start in and character select to take place in
 	1. Needs: Furniture to fill out bubblemancer's house, farm crops..? bubble themed, maybe?)
 	2. Needs: Sheep!
-6. Roof system for lighting
-7. Height system improvements to support extra tile heights
-	1. Might have to overhaul tile heights to all be 1-1 instead of the current 0.75 (means walls will be taller and probably easier to hide behind.
-	2. Will require an overhaul to the lighting system too, unless a simple but unsatisfying approach of making all walls over 1.0 tall happens: https://share.gemini.google/VE5yFYtFWcfl
-	3. Will require additional logic for handling transitions between taller tiles and shorter tiles, in all directions
-8. Finish dialogue system implementations
+6. Roof system for lighting (this will be slightly less torturous than previously expected... hopefully)
+7. Finish dialogue system implementations
 	1. Next: Add sounds, implement more expressions
-9. Death screen to include score tallies related to stuff you obtained
-10. Shop powers to include descriptions (potentially)
+8. Death screen to include score tallies related to stuff you obtained
+9. Shop powers to include descriptions (potentially)
 
 Less Important (mostly non-issues or complete already), but in consideration:
 1. Replace TB: Calculated achievement with something easier to account for (difficulty of unlock can stay hard)
@@ -68,8 +64,7 @@ Done:
 	B: Now wall tiles can be placed in editor to act as solid and wall tiles, basically to function as 2-height tiles.
 	C: Managed to get the upper segment which is needed to be separate for purposes of layering working. More double checking will have to be done below before crossing this off the list.
 	D: I escape lighting jail joyously (most of the new lighting stuff done is kind heavy handed, causing 2 additional render targets added to the stack. Might want to optimize render timings later)
-	E: This currently has a LOT of work to be done to finalize it. TODO:
-		1. Shadow projectiles to render shadows over them at the appropriate height (probably make shadows no longer effect any wall as it was mostly nonsensical doing that beforehand. All walls were always fully covered by shadows due to occlusion...)
+	E: This currently has a LOT of work to be done to finalize it.
 2. Burger Resprite (David)
 3. Add Antiburger Power (sprite by David)
 4. New nodes by Wes: Rafts, Mushroom Shrine

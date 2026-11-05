@@ -34,8 +34,7 @@ public class OilBomb : Projectile
         startPos = transform.position;
         startPos.y -= 0.5f;
         OnSolidTile = World.SolidTile(World.RealPosToTilePos(startPos));
-        if (OnSolidTile)
-            startPos.y += 0.25f;
+        startPos.y += World.GetZOffset(startPos);
         SkyPos = startPos + new Vector2(0, 26);
         BarrelScaleMult = 1;
         if (!IsFireBomb)

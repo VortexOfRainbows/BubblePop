@@ -138,4 +138,16 @@ public partial class World : MonoBehaviour
         float y = pos.y / TileSize.y;
         return GetLiquidDirection(new Vector2Int(Mathf.FloorToInt(x), Mathf.FloorToInt(y)));
     }
+    public static float GetZOffset(Vector3 worldPos)
+    {
+        float offset = 0;
+        ref TileData data = ref SafeGetTileData(RealPosToTilePos(worldPos));
+        if (data.IsSolid)
+        {
+            offset += 0.25f;
+            if(data.TileHeightLevel == 2 && !data.TileType.CountsAsWall())
+                offset += 0.5f;
+        }
+        return offset;
+    }
 }
