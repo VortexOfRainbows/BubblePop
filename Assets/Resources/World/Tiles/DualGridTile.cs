@@ -80,9 +80,7 @@ public class DualGridTile : ScriptableObject
         if (IsLiquid) //liquids should have special relations and not consider other special relations
         {
             if (adjData.TileHeightLevel == 2)
-            {
                 return World.UnsafeGetTileData(i, j + 1).IsLiquid;
-            }
         }
         else if (IsWall)
         {
@@ -92,6 +90,7 @@ public class DualGridTile : ScriptableObject
                     return false;
                 if (TileID.WallTileRelations[TypeIndex, adjTile.TypeIndex] || adjTile.MyWallVariant() == this)
                     return true;
+                return (adjTile.HasWallVariant() && adjTile.MyWallVariant().LayerOffset < LayerOffset) ;
             }
             else if(adjData.TileHeightLevel >= level)
             {
@@ -99,12 +98,19 @@ public class DualGridTile : ScriptableObject
                     return true;
                 if (TileID.WallTileRelations[TypeIndex, adjTile.TypeIndex] || adjTile.MyWallVariant() == this)
                     return true;
-                return adjTile.HasWallVariant() && adjTile.MyWallVariant().LayerOffset < LayerOffset;
+                return (adjTile.HasWallVariant() && adjTile.MyWallVariant().LayerOffset < LayerOffset) || (adjTile.IsWall && adjTile.LayerOffset < LayerOffset);
             }
         }
         else if (((adjTile.LayerOffset < LayerOffset && adjData.TileHeightLevel == level) || adjData.TileHeightLevel > level) && (!adjTile.IsWall || adjTile.MyTileVariant() == this)) //Ground level tiles can extend tiles above them for seamless blending
         {
             ghostReturn = true;
+            if(level == 1)
+            {
+                if(adjTile.IsWall && this.HasWallVariant() && this.MyWallVariant() == adjTile)
+                    ghostReturn = false;
+                else if(adjData.TileHeightLevel == 2 && this == adjTile)
+                    ghostReturn = false;
+            }
         }
         return false;
     }

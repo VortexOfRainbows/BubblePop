@@ -195,12 +195,18 @@ public class WorldNode : MonoBehaviour
                     {
                         var dualTile = tile.GetTileID();
                         bool iAmWall = dualTile.CountsAsWall();
-                        if(iAmWall)
+                        if (iAmWall)
                         {
                             var myTile = dualTile.MyTileVariant();
+                            var tileAbove = TileMap.GetTile(new Vector3Int(i, j + 1));
                             var tileBelow = TileMap.GetTile(new Vector3Int(i, j - 1));
-                            if (tileBelow != null && tileBelow.GetTileID() == tile.GetTileID())
+                            if (tileBelow != null && (tileBelow.GetTileID().CountsAsWall() || tileBelow.GetTileID() == dualTile))
                                 dualTile = myTile;
+                            if(tileAbove != tile && tileBelow != tile) //if neither tiles are the same as me, it means I am an erroneously placed wall in editor (2x walls need 2x tiles placed)
+                            {
+                                iAmWall = false;
+                                dualTile = myTile;
+                            }
                         }
                         World.SetTile(v, dualTile, iAmWall ? 2 : iAmSolid && !placeSolidAsUnsolid ? 1 : 0);
                         ref World.TileData data = ref World.SafeGetTileData(v);

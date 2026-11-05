@@ -82,6 +82,8 @@ Done:
 9. Tile blending now considers tall walls the same as the top tile type.
 10. Some lighting info transferred via shaders: 
 	1. Blue: normal, Purple: long, Cyan: skip
+11. Safeguards for level designers placing tall walls as single walls
+12. Tall tiles now layer better alongside same-type tiles of different heights
 
 10/27/26 to 10/28/26
 1. More dialogue variants for gachapon shop, and for gachapon mansion
