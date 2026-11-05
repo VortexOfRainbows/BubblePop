@@ -236,7 +236,14 @@
         }
     ],
     "m_GroupDatas": [],
-    "m_StickyNoteDatas": [],
+    "m_StickyNoteDatas": [
+        {
+            "m_Id": "815774cfe7114d93a64991695fa3a58b"
+        },
+        {
+            "m_Id": "27611125c5044b758282d8767e828e38"
+        }
+    ],
     "m_Edges": [
         {
             "m_OutputSlot": {
@@ -1898,9 +1905,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -703.9998779296875,
-            "y": 870.0,
-            "width": 119.9998779296875,
+            "x": -1221.0001220703125,
+            "y": 1149.0,
+            "width": 120.0,
             "height": 34.0
         }
     },
@@ -2509,6 +2516,26 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
+    "m_ObjectId": "27611125c5044b758282d8767e828e38",
+    "m_Title": "OcclusionTexture",
+    "m_Content": "This is where the occlusion texture is inserted\n",
+    "m_TextSize": 0,
+    "m_Theme": 0,
+    "m_Position": {
+        "serializedVersion": "2",
+        "x": -386.0,
+        "y": 1423.0,
+        "width": 200.0,
+        "height": 123.0
+    },
+    "m_Group": {
+        "m_Id": ""
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "288edb1c56044b3e899e666150c96cf1",
     "m_Group": {
@@ -2519,9 +2546,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -721.9999389648438,
-            "y": 904.0,
-            "width": 137.99993896484376,
+            "x": -1239.0001220703125,
+            "y": 1183.0,
+            "width": 138.0,
             "height": 34.0
         }
     },
@@ -3261,9 +3288,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1405.9998779296875,
-            "y": 576.0,
-            "width": 125.9998779296875,
+            "x": -1426.0,
+            "y": 664.0,
+            "width": 126.0,
             "height": 117.99993896484375
         }
     },
@@ -3620,10 +3647,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2664.83740234375,
-            "y": -152.0874786376953,
-            "width": 0.0,
-            "height": 0.0
+            "x": -2698.0,
+            "y": -129.0,
+            "width": 128.0,
+            "height": 94.0
         }
     },
     "m_Slots": [
@@ -4426,10 +4453,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2295.999755859375,
-            "y": -297.00006103515627,
+            "x": -2296.0,
+            "y": -297.0,
             "width": 112.0,
-            "height": 34.000030517578128
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -4477,8 +4504,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -553.9998779296875,
-            "y": 902.0,
+            "x": -1071.0001220703125,
+            "y": 1286.0,
             "width": 208.0,
             "height": 302.0
         }
@@ -4970,9 +4997,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -301.99993896484377,
-            "y": 904.0,
-            "width": 207.99998474121095,
+            "x": -819.0001220703125,
+            "y": 1183.0,
+            "width": 208.0,
             "height": 327.0
         }
     },
@@ -5048,6 +5075,26 @@
     "m_ShaderOutputName": "Sampler",
     "m_StageCapability": 3,
     "m_BareResource": false
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
+    "m_ObjectId": "815774cfe7114d93a64991695fa3a58b",
+    "m_Title": "OcclusionTexture",
+    "m_Content": "This is where the occlusion texture is inserted\n",
+    "m_TextSize": 0,
+    "m_Theme": 0,
+    "m_Position": {
+        "serializedVersion": "2",
+        "x": -1887.0,
+        "y": -424.0,
+        "width": 200.0,
+        "height": 160.0
+    },
+    "m_Group": {
+        "m_Id": ""
+    }
 }
 
 {
@@ -6769,10 +6816,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -3962.0,
-            "y": -141.33331298828126,
-            "width": 98.0,
-            "height": 35.99999237060547
+            "x": -3991.0,
+            "y": -141.00003051757813,
+            "width": 97.0,
+            "height": 34.00000762939453
         }
     },
     "m_Slots": [
@@ -6829,9 +6876,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -695.9998779296875,
-            "y": 836.0,
-            "width": 111.9998779296875,
+            "x": -1213.0001220703125,
+            "y": 1115.0,
+            "width": 112.0,
             "height": 34.0
         }
     },
@@ -8228,10 +8275,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2109.0,
-            "y": -151.00003051757813,
+            "x": -2132.0,
+            "y": -171.0,
             "width": 130.0,
-            "height": 118.00003051757813
+            "height": 118.0
         }
     },
     "m_Slots": [
@@ -8292,10 +8339,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2473.000244140625,
-            "y": -141.0,
+            "x": -2466.0,
+            "y": -154.0,
             "width": 128.0,
-            "height": 101.00001525878906
+            "height": 101.0
         }
     },
     "m_Slots": [

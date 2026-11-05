@@ -73,9 +73,8 @@ Done:
 			1. Very WIP. The plan is currently to use different colored lighting blocks to tell the shader how to handle stuff.
 				1. Red: Longer shadows
 				2. Green: Works for occlusion, but no extended shadows (to handle the top-floor tiles at the top of tall walls)
-			2. Needs: occlusion to appear for tall tiles
-			3. Needs: fix issue where special mask is not rendering correctly for longer shadows
-			4. Needs: fix issue where special mask is not rendering correctly for normal shadows
+			2. Needs: fix issue where special mask is not rendering correctly for longer shadows
+			3. Needs: fix issue where special mask is not rendering correctly for normal shadows
 		3. Probably more I am forgetting about
 		4. Make sure the water behavior makes sense with tall walls
 2. Burger Resprite (David)
