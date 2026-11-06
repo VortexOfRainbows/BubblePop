@@ -29,8 +29,11 @@ public class Coin : MonoBehaviour
     public float BeforeCollectableTimer = 0;
     public GameObject HeartVisual;
     public TextMeshPro Text;
+    public bool ForceAllowPickupBeforeWaveStart = false;
     public bool CanCollect()
     {
+        if (ForceAllowPickupBeforeWaveStart)
+            return true;
         if (IsToken)
             return Player.Instance.MaxTokens > CoinManager.CurrentTokens;
         if (IsHeart)

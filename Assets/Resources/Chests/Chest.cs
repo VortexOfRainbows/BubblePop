@@ -147,6 +147,13 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
             Collider.size = new Vector2(Collider.size.x, 2.3f);
             HitsRequiredToKill = 10;
         }
+        else if(ChestType == 4) //Special bubblemancer chest
+        {
+            StarsAllocated = -1;
+            ClosedSprite = Main.TextureAssets.BubblemancerChest[0];
+            OpenSprite = Main.TextureAssets.BubblemancerChest[2];
+            SkipSpawnAnimation = true;
+        }
         OGShadowAlpha = SpriteRendererShadow.color.a;
 
         SpriteRenderer.sprite = ClosedSprite;
@@ -277,8 +284,11 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
     {
         if (OpenAnimation >= 1)
         {
-            RB.mass = Mathf.Lerp(RB.mass, 1f, 0.1f);
-            Collider.enabled = false;
+            if(ChestType != 4)
+            {
+                RB.mass = Mathf.Lerp(RB.mass, 1f, 0.1f);
+                Collider.enabled = false;
+            }
             Hat.enabled = false;
         }
         if (!HasOpened)
@@ -320,7 +330,12 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
                     if (OpenVertically)
                         SpriteRendererKey.transform.localPosition = new Vector3(0, 1 + 1.6f * (1 - cubed), 0);
                     else
-                        SpriteRendererKey.transform.localPosition = new Vector3(dir * 1.6f * (1 - cubed), 1, 0);
+                    {
+                        if(ChestType == 4)
+                            SpriteRendererKey.transform.localPosition = new Vector3(dir * (0.5f + 1.3f * (1 - cubed)), 0.65f, 0);
+                        else
+                            SpriteRendererKey.transform.localPosition = new Vector3(dir * 1.6f * (1 - cubed), 1, 0);
+                    }
                     SpriteRendererKey.color = SpriteRendererKey.color.WithAlpha(Mathf.Min(1, OpenAnimation * 4) - Mathf.Clamp(cubed - 0.5f, 0, 0.5f) * 2f);
                 }
 
@@ -342,7 +357,7 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
                 AudioManager.PlaySound(SoundID.WoodBreak, transform.position, 1, 0.9f);
                 Destroy(gameObject);
             }
-            else
+            else if(ChestType != 4)
             {
                 EndAnimation += Time.fixedDeltaTime;
                 float timeOut = 5;
@@ -369,6 +384,11 @@ public class Chest : MonoBehaviour, IImpactedByProjIFrames
     }
     public void GenerateLoot()
     {
+        if(ChestType == 4)
+        {
+            //Special bubblemancer chest
+            return;
+        }
         List<int> powers = new();
         int s = StarsAllocated;
         if (PirateChest && Utils.RollWithLuck(0.5f))

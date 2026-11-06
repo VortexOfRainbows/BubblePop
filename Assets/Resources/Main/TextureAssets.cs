@@ -40,6 +40,7 @@ public partial class Main : MonoBehaviour
         public static Sprite[] Cattails;
         public static Sprite SpecialLilypad;
         public static Sprite[] Lotus;
+        public static Sprite[] BubblemancerChest = new Sprite[3];
         public static Sprite Snowball;
         public static Sprite KingOilDiamond, KingOilBomb;
         public static Sprite CrosshairOuter, CrosshairInner, CrosshairFill, CrosshairEmblem;
@@ -74,6 +75,8 @@ public partial class Main : MonoBehaviour
             T2ChestOpen = Resources.Load<Sprite>("Chests/T2ChestOpen");
             T1Chest = Resources.Load<Sprite>("Chests/T1ChestClosed");
             T1ChestOpen = Resources.Load<Sprite>("Chests/T1ChestOpen");
+            BubblemancerChest = Resources.LoadAll<Sprite>("Chests/BubbleChest");
+
             SlotSymbol[0] = Resources.Load<Sprite>("Player/Gachapon/SlotMachine/Symbol1");
             SlotSymbol[1] = Resources.Load<Sprite>("Player/Gachapon/SlotMachine/Symbol2");
             SlotSymbol[2] = Resources.Load<Sprite>("Player/Gachapon/SlotMachine/Symbol3");
