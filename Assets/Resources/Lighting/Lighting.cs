@@ -21,7 +21,7 @@ public static class Lighting
     public static Material LightShaper;
     public static Material ShadowSpecialMaskMaterial;
     public static Material AddBlit;
-    public static Material OcclusionBlit;
+    //public static Material OcclusionBlit;
     public static RawImage ShadowImage => Main.Instance.TileLightRenderTarget;
     public static RawImage BorderImage => Main.Instance.BorderRenderTarget;
     public static RawImage LightShapeVisualizer => Main.Instance.LightShapeVisualizer;
@@ -42,7 +42,7 @@ public static class Lighting
         OilRT = Resources.Load<RenderTexture>("Lighting/OilRenderTexture");
         TopSolidRT = Resources.Load<RenderTexture>("Lighting/TopSolidRenderTexture");
         AddBlit = Resources.Load<Material>("Lighting/ShaderSlop/BlitAdd");
-        OcclusionBlit = Resources.Load<Material>("Lighting/ShaderSlop/BlitProcessOcclusion");
+        //OcclusionBlit = Resources.Load<Material>("Lighting/ShaderSlop/BlitProcessOcclusion");
         TopOcclusionTileRT = Resources.Load<RenderTexture>("Lighting/TopOcclusionRenderTexture");
         CombinedOcclusionRT = Resources.Load<RenderTexture>("Lighting/CombinedOcclusionRenderTexture");
         BorderImage.texture = BorderRT;

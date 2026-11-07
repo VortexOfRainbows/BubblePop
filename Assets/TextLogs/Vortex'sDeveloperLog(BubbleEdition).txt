@@ -63,7 +63,7 @@ Done:
 6. Fix lighting on build versions (blit with clear)
 7. Tile brush now corrects walls when erasing
 	1. Might adjust the functionality of this depending on if other tall wall bugs emerge
-8. Temporarily remove some lighting features to rework and fix them...
+8. Adjustments to lighting shaders to make layered shadow behavior to now longer occasionally create certain artifact.
 
 10/28/26 to 11/5/26 Welcome back to Lighting Jail young lion
 1. Super DUPER WIP height system changes for walls, in preparation for taller walls and shadows
