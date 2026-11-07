@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using static NPC;
 
 public class DialogueController : MonoBehaviour
@@ -98,19 +99,27 @@ public class DialogueController : MonoBehaviour
         }
     }
     public float DoneTimer { get; private set; } = 0;
+    public int PreviousCharCount { get; private set; } = 0;
+    public int CurrentCharCount { get; private set; } = 0;
     public void UpdateVisibleDialogue()
     {
         AnimationCounter += Time.deltaTime;
         if (DialogueQueue.Count > 0)
         {
             DialogueEvent dEvent = DialogueQueue.Peek();
+            NPCType currentSpeaker = dEvent.SpeakerIsPlayer ? LeftPortrait.MyNPC : RightPortrait.MyNPC;
 
             LeftPortrait.SetExpression(dEvent.LeftType, dEvent.LeftExpression);
             RightPortrait.SetExpression(dEvent.RightType, dEvent.RightExpression);
-            DialogueText.text = dEvent.text.WithColor(ColorHelper.GetNPCHexColor(dEvent.SpeakerIsPlayer ? LeftPortrait.MyNPC : RightPortrait.MyNPC));
+            DialogueText.text = dEvent.text.WithColor(ColorHelper.GetNPCHexColor(currentSpeaker));
             int max = DialogueText.textInfo.characterCount;
             float value = AnimationCounter * 40f;
-            DialogueText.maxVisibleCharacters = (int)Mathf.Clamp(value, 0, max);
+            if(PreviousCharCount != CurrentCharCount)
+            {
+                PlayDialogueSound(currentSpeaker);
+            }
+            DialogueText.maxVisibleCharacters = CurrentCharCount = (int)Mathf.Clamp(value, 0, max);
+            PreviousCharCount = CurrentCharCount;
 
             LeftPortrait.ActiveSpeaker = dEvent.SpeakerIsPlayer;
             RightPortrait.ActiveSpeaker = !dEvent.SpeakerIsPlayer;
@@ -122,6 +131,7 @@ public class DialogueController : MonoBehaviour
                     DoneSectionGroup.alpha = 0;
                     DoneTimer = 0;
                     AnimationCounter = 0;
+                    PreviousCharCount = CurrentCharCount = -1;
                     DialogueQueue.Dequeue();
                 }
                 else
@@ -148,9 +158,29 @@ public class DialogueController : MonoBehaviour
         }
         else
         {
+            PreviousCharCount = CurrentCharCount = -1;
             DoneSectionGroup.alpha = DoneTimer = 0;
             WantsOpen = false;
         }
         DoneSectionGroup.alpha = Mathf.Clamp01(DoneSectionGroup.alpha);
+    }
+    public static void PlayDialogueSound(NPCType npcType)
+    {
+        Vector2 soundPos = Player.Instance.Position;
+        switch (npcType)
+        {
+            case NPCType.None:
+                break;
+            case NPCType.Gachapon:
+                break;
+            case NPCType.ThoughtBubble:
+                break;
+            case NPCType.OilKing:
+                break;
+            case NPCType.Fizzy:
+                break;
+            case NPCType.Bubblemancer:
+                break;
+        }
     }
 }
