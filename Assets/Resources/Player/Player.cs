@@ -450,12 +450,13 @@ public partial class Player : Entity
     private readonly float speed = 2.5f;
     public readonly float MovementDeacceleration = 0.9f;
     public const float DashDefault = 45f;
-    public static bool HasAttacked = false;
+    //public static bool HasAttacked = false;
     public static bool PickedLowerDifficultyWaveCard = false;
     public static bool HasBeenHit => TimesHitThisRun > 0;
     public static int TimesHitThisRun = 0;
     public static int GoldSpentTotal = 0;
     public static List<Type> DifferentTypesOfSkullEnemiesZappedThisRun { get; set; } = new();
+    public static List<Type> DifferentTypesOfInfectedEnemiesKilledThisRun { get; set; } = new();
     public static int RocksKilledThisRun { get; set; } = 0;
     /// <summary>
     /// Shorthand for abilityTimer <= 0;
@@ -620,9 +621,10 @@ public partial class Player : Entity
                 e.TotalTimesUsed = e.TotalTimesUsed + 1;
             }
             HasRunStartingGear = true;
-            HasAttacked = false;
+            //HasAttacked = false;
             TimesHitThisRun = 0;
             DifferentTypesOfSkullEnemiesZappedThisRun.Clear();
+            DifferentTypesOfInfectedEnemiesKilledThisRun.Clear();
             RocksKilledThisRun = 0;
         }
         WaveDirector.FixedUpdate();
@@ -682,12 +684,12 @@ public partial class Player : Entity
             {
                 if (Control.PrimaryAttackHold)
                 {
-                    HasAttacked = true;
+                    //HasAttacked = true;
                     Weapon.StartAttack(false);
                 }
                 else if (Control.SecondaryAttackHold)
                 {
-                    HasAttacked = true;
+                    //HasAttacked = true;
                     Weapon.StartAttack(true);
                 }
             }
@@ -1245,8 +1247,6 @@ public partial class Player : Entity
         {
             if (body is ThoughtBubble)
             {
-                if(!HasAttacked)
-                    UnlockCondition.Get<ThoughtBubbleWave15NoAttack>().SetComplete();
                 UnlockCondition.Get<KingOilUnlock>().SetComplete();
                 if (WaveDirector.ElapsedTime <= 1500 && AscensionLevel >= 3)
                     UnlockCondition.Get<ThoughtBubbleFasterThanLight>().SetComplete();

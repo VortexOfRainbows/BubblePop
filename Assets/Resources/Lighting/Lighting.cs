@@ -365,7 +365,7 @@ public static class Lighting
 
         RenderTexture addedSolidTexture = RenderTexture.GetTemporary(SolidTileRT.width,SolidTileRT.height, SolidTileRT.depth, SolidTileRT.format);
         AddBlit.SetTexture("_Mask", TopSolidRT);
-        Graphics.Blit(SolidTileRT, addedSolidTexture, AddBlit);
+        BlitWithClear(SolidTileRT, addedSolidTexture, AddBlit);
         OcclusionBlit.SetTexture("_TopTexture", TopOcclusionTileRT);
         BlitWithClear(OcclusionTileRT, CombinedOcclusionRT, OcclusionBlit);
 

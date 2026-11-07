@@ -11,7 +11,7 @@ public class Crown : Bulb
     public GameObject[] Shards;
     public SpriteRenderer[] Glows;
     private Vector2[] velocities;
-    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleWave15NoAttack>();
+    protected override UnlockCondition UnlockCondition => UnlockCondition.Get<ThoughtBubbleDiseaseControl>();
     public override void ModifyUIOffsets(bool isBubble, ref Vector2 offset, ref float rotation, ref float scale)
     {
         scale *= 1.4f;

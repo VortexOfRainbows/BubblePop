@@ -1644,11 +1644,6 @@
       Title: Bubblemancer: From the Dead
       Description: Pick up 10 <color=#FCB934FF>Bubble Birb</color> across multiple runs
     }
-    ThoughtBubbleWave15NoAttack:
-    {
-      Title: Thought Bubble: Calculated
-      Description: As Y:[Thought Bubble,] win without using your weapon
-    }
     GachaponWave15AllSkullWaves:
     {
       Title: Gachapon: Triple Down
@@ -1789,6 +1784,11 @@
     {
       Title: King Oil: Rock Feller
       Description: As Y:[King Oil,] kill a Y:[combined total] of 500 1:[Rock Spiders] or 5:[Rock Golems] in a single run
+    }
+    ThoughtBubbleDiseaseControl:
+    {
+      Title: Thought Bubble: Disease Control
+      Description: As Y:[Thought Bubble,] kill 10 different R:[infected enemies] in a single run
     }
   }
   Enemy:

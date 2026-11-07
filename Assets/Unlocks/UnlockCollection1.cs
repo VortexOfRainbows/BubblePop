@@ -68,7 +68,7 @@ public class BubbleBirbUnlock10 : UnlockCondition
     protected override bool TryUnlockCondition => Power.PickedUpCountAllRuns >= 10;
     public override UnlockCondition PreReqUnlock => Get<BubblemancerUnlock>();
 }
-public class ThoughtBubbleWave15NoAttack : UnlockCondition
+public class ThoughtBubbleDiseaseControl : UnlockCondition
 {
     public override void SetAchievementCategories(ref int zone, ref int category)
     {

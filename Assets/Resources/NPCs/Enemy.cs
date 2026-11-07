@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Media;
 using UnityEngine;
 public static class EnemyID
 {
@@ -780,6 +779,15 @@ public class Enemy : Entity, IImpactedByProjIFrames
         {
             int count = replaceThisWithStaticDataLater.OilSpill;
             HazardSystem.SpreadCircle(transform.position, (int)(400 + 100 * replaceThisWithStaticDataLater.TarBonusDuration), count, HazardSystem.HazardType.Oil);
+        }
+
+        if(IsInfected && Player.Instance.Body is ThoughtBubble)
+        {
+            Type myType = this.GetType();
+            if (!Player.DifferentTypesOfInfectedEnemiesKilledThisRun.Contains(myType))
+                Player.DifferentTypesOfInfectedEnemiesKilledThisRun.Add(myType);
+            if (Player.DifferentTypesOfInfectedEnemiesKilledThisRun.Count >= 10)
+                UnlockCondition.Get<ThoughtBubbleDiseaseControl>().SetComplete();
         }
     }
     public virtual void AI()
