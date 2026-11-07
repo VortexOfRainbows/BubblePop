@@ -52,7 +52,7 @@ Done:
 
 -- (NEXT) 4.0? --
 
-11/5/26 to 11/6/26
+11/5/26 to 11/7/26
 1. Add Sarah's bubblemancer chest to the lobby area with complete (?) functionality
 2. Adjust hub node to relayout bubblemancer's house!
 3. Import some blip sounds for dialogue
@@ -61,6 +61,8 @@ Done:
 5. Replace Thought Bubble: Calculated with Thought Bubble: Disease Control
 	1. The old achievement was not only difficult, but also hard to maintain as more systems in the game began to rely on click inputs, which could mean accidentally breaking the achievement interactions more easily.
 6. Fix lighting on build versions (blit with clear)
+7. Tile brush now corrects walls when erasing
+	1. Might adjust the functionality of this depending on if other tall wall bugs emerge
 
 10/28/26 to 11/5/26 Welcome back to Lighting Jail young lion
 1. Super DUPER WIP height system changes for walls, in preparation for taller walls and shadows

@@ -188,10 +188,11 @@ public class WorldNode : MonoBehaviour
                 if (tile != null)
                 {
                     bool iAmSolid = ((Tile)tile).colliderType != Tile.ColliderType.None;
-                    bool existingTileSolid = World.SolidTile(v);
+                    ref World.TileData existingTile = ref World.UnsafeGetTileData(v.x, v.y);
+                    bool existingTileSolid = existingTile.IsSolid;
                     bool canPlaceTile = !World.HasTile(v) || (existingTileSolid == iAmSolid); //If the world does not have a tile here currently, or the existing tile is the same solidness as me
-                    bool placeSolidAsUnsolid = !existingTileSolid && iAmSolid && !canPlaceTile; //If the existing tile is a floor tile, but I am solid, and i am not already placing a tile
-                    if(canPlaceTile || placeSolidAsUnsolid)
+                    bool doNotPlaceSolid = !existingTileSolid && iAmSolid && !canPlaceTile; //If the existing tile is a floor tile, but I am solid, and I do not already have placement permission, place the tile as floor instead
+                    if(canPlaceTile || doNotPlaceSolid)
                     {
                         var dualTile = tile.GetTileID();
                         bool iAmWall = dualTile.CountsAsWall();
@@ -208,7 +209,11 @@ public class WorldNode : MonoBehaviour
                                 dualTile = myTile;
                             }
                         }
-                        World.SetTile(v, dualTile, iAmWall ? 2 : iAmSolid && !placeSolidAsUnsolid ? 1 : 0);
+                        //Might have to correct walls if painting over an existing tall wall.
+                        //Another approach may be to move wall determination to a post-processing type layer, after all calculations have been done, such that tall walls.
+                        //That way the determination can be done more easily
+                        //For now we will continue to use the current approach until bugs appear or functionality is needed .
+                        World.SetTile(v, dualTile, iAmWall ? 2 : iAmSolid && !doNotPlaceSolid ? 1 : 0);
                         ref World.TileData data = ref World.SafeGetTileData(v);
                         if (canPlaceTile && data.ProgressionNumber == 0)
                         {
@@ -398,7 +403,7 @@ public class WorldNode : MonoBehaviour
         for (float i = 0; i < dist; ++i)
         {
             //Vector3Int v = new(Mathf.FloorToInt(start.x / 2), Mathf.FloorToInt(start.y / 2));
-            bool isRoadblock = DiamondBrush(start, radias);
+            bool isRoadblock = CircleBrush(start, radias);
             start += norm;
             if (isRoadblock)
             {
@@ -424,7 +429,7 @@ public class WorldNode : MonoBehaviour
     }
     private bool CanGenerateRoadBlock { get; set; } = false;
     private bool TryGeneratingEndRoadBlock { get; set; } = false;
-    public bool DiamondBrush(Vector2 center, float radias)
+    public bool CircleBrush(Vector2 center, float radias)
     {
         bool isValidForRoadblock = false;
         var tile = radias < 1 ? TileID.DarkGrass : TileID.Grass;
@@ -439,18 +444,38 @@ public class WorldNode : MonoBehaviour
                 if (dist > rSquared)
                     continue;
                 Vector3Int v = new(Mathf.FloorToInt(center.x / 2 + i), Mathf.FloorToInt(center.y / 2 + j));
-                bool canGenerate = World.SafeGetTileData(v).IsRoadblock;
+                ref World.TileData data = ref World.GetTileData(v.x, v.y);
+                bool canGenerate = data.IsRoadblock;
                 DualGridTile existingTile = World.GetTile(v);
-                if (existingTile == null || ((World.SolidTile(v) || existingTile.IsLiquid) && OverrideTiles))
+                if (existingTile == null || ((World.SolidTile(v) || existingTile.IsLiquid || existingTile.CountsAsWall()) && OverrideTiles))
                 {
                     if (existingTile == null)
                         World.SetTile(v, tile, 0);
                     else
                     {
-                        var tile2 = existingTile.IsLiquid ? TileID.Grass : (existingTile == TileID.Dirt || existingTile == TileID.Grass) ? tile : existingTile;
+                        DualGridTile tile2;
+                        if (existingTile.IsLiquid)
+                        {
+                            tile2 = TileID.Grass;
+                        }
+                        else if(existingTile.CountsAsWall() || data.TileHeightLevel == 2)
+                        {
+                            tile2 = existingTile.CountsAsWall() ? existingTile.MyTileVariant() : existingTile;
+                            data.TileHeightLevel = 0;
+                            //need to correct tile height relations above if possible
+                            CorrectTallWallWhenPaintingOver(v, Vector3Int.up);
+                            CorrectTallWallWhenPaintingOver(v, Vector3Int.down);
+                        }
+                        else if (existingTile == TileID.Dirt || existingTile == TileID.Grass)
+                        {
+                            tile2 = tile;
+                        }
+                        else
+                        {
+                            tile2 = existingTile;
+                        }
                         World.SetTile(v, tile2, 0);
                     }
-                    ref World.TileData data = ref World.SafeGetTileData(v);
                     data.IsRoadblock = true;
                     data.ProgressionNumber = GenerationNumber;
                     World.CreateRoadblockTileVisuals(v, ref data);
@@ -464,5 +489,36 @@ public class WorldNode : MonoBehaviour
             percent += iter;
         }
         return isValidForRoadblock;
+    }
+    public void CorrectTallWallWhenPaintingOver(Vector3Int pos, Vector3Int direction)
+    {
+        ref World.TileData data1 = ref World.GetTileData(pos.x, pos.y + direction.y);
+        if (data1.TileHeightLevel == 2)
+        {
+            ref World.TileData data2 = ref World.GetTileData(pos.x, pos.y + direction.y * 2);
+            bool bothLevel2 = data2.TileHeightLevel == 2;
+            if(direction == Vector3Int.up)
+            {
+                if(bothLevel2) //If going up and both tiles are level 2, convert to wall
+                {
+                    World.SetTile(pos + direction, !data1.TileType.CountsAsWall() ? data1.TileType.MyWallVariant() : data1.TileType, 2);
+                }
+                else //If going up and not both are level 2, that means the tile above is not a tall tile 
+                {
+                    World.SetTile(pos + direction, data1.TileType, 1);
+                }
+            }
+            else if (direction == Vector3Int.down)
+            {
+                if (bothLevel2) //If going down and both tiles are level 2, convert to solid tile
+                {
+                    World.SetTile(pos + direction, data1.TileType, 2);
+                }
+                else //If going down and not both are level 2, that means the tile below is not a wall tile
+                {
+                    World.SetTile(pos + direction, data1.TileType.CountsAsWall() ? data1.TileType.MyTileVariant() : data1.TileType, 1);
+                }
+            }
+        }
     }
 }
