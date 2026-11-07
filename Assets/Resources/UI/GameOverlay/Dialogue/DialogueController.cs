@@ -113,13 +113,13 @@ public class DialogueController : MonoBehaviour
             RightPortrait.SetExpression(dEvent.RightType, dEvent.RightExpression);
             DialogueText.text = dEvent.text.WithColor(ColorHelper.GetNPCHexColor(currentSpeaker));
             int max = DialogueText.textInfo.characterCount;
-            float value = AnimationCounter * 40f;
+            float value = AnimationCounter * 33.33f;
             if(PreviousCharCount != CurrentCharCount)
             {
                 PlayDialogueSound(currentSpeaker);
+                PreviousCharCount = CurrentCharCount;
             }
             DialogueText.maxVisibleCharacters = CurrentCharCount = (int)Mathf.Clamp(value, 0, max);
-            PreviousCharCount = CurrentCharCount;
 
             LeftPortrait.ActiveSpeaker = dEvent.SpeakerIsPlayer;
             RightPortrait.ActiveSpeaker = !dEvent.SpeakerIsPlayer;
@@ -164,23 +164,33 @@ public class DialogueController : MonoBehaviour
         }
         DoneSectionGroup.alpha = Mathf.Clamp01(DoneSectionGroup.alpha);
     }
-    public static void PlayDialogueSound(NPCType npcType)
+    public static void PlayDialogueSound(NPCType t)
     {
         Vector2 soundPos = Player.Instance.Position;
-        switch (npcType)
+        if(t == NPCType.Bubblemancer)
         {
-            case NPCType.None:
-                break;
-            case NPCType.Gachapon:
-                break;
-            case NPCType.ThoughtBubble:
-                break;
-            case NPCType.OilKing:
-                break;
-            case NPCType.Fizzy:
-                break;
-            case NPCType.Bubblemancer:
-                break;
+            AudioManager.PlaySound(SoundID.ThoughtBubbleBlip, soundPos, 0.5f, Utils.RandFloat(0.9f, 1.1f));
+            return;
         }
+        else if(t == NPCType.Fizzy)
+        {
+            AudioManager.PlaySound(SoundID.Blip, soundPos, 0.5f, Utils.RandFloat(0.7f, 0.9f));
+        }
+        if (t == NPCType.Gachapon)
+        {
+            AudioManager.PlaySound(SoundID.GhostBlip, soundPos, 0.5f, Utils.RandFloat(1.4f, 1.5f));
+            return;
+        }
+        else if(t == NPCType.OilKing)
+        {
+            AudioManager.PlaySound(SoundID.KingOilBlip, soundPos, 0.5f, Utils.RandFloat(0.95f, 1.05f));
+            return;
+        }
+        else if(t == NPCType.ThoughtBubble)
+        {
+            AudioManager.PlaySound(SoundID.ThoughtBubbleBlip, soundPos, 0.5f, Utils.RandFloat(1.4f, 1.6f));
+            return;
+        }
+        AudioManager.PlaySound(SoundID.Blip, soundPos, 0.5f, Utils.RandFloat(1.1f, 1.3f));
     }
 }

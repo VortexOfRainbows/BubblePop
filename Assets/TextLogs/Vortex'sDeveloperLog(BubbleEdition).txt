@@ -26,13 +26,11 @@ Need to do:
 	5. Ice and Stone tiles
 3. MINIMAP
 4. Characters can spawn in your run and give specific items?
-	1. Character dialogue systems!
 5. Bubblemancer Farm area for the game to start in and character select to take place in
 	1. Needs: Furniture to fill out bubblemancer's house, farm crops..? bubble themed, maybe?)
 	2. Needs: Sheep!
 6. Roof system for lighting (this will be slightly less torturous than previously expected... hopefully)
-7. Finish dialogue system implementations
-	1. Next: Add sounds, implement more expressions
+7. More dialogue expression
 8. Death screen to include score tallies related to stuff you obtained
 9. Shop powers to include descriptions (potentially)
 
@@ -62,6 +60,8 @@ Done:
 1. Add Sarah's bubblemancer chest to the lobby area with complete (?) functionality
 2. Adjust hub node to relayout bubblemancer's house!
 3. Import some blip sounds for dialogue
+4. Add system for blip sounds to appear during dialogue. slowed dialogue speed slightly.
+	1. All characters now have a blip sound, though these are mostly temporary/tentative
 
 10/28/26 to 11/5/26 Welcome back to Lighting Jail young lion
 1. Super DUPER WIP height system changes for walls, in preparation for taller walls and shadows

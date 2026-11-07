@@ -81,6 +81,11 @@ public static class SoundID
     public static SoundClip GhostDeath = new("NPCs/", "Forlikeaghost");
     public static SoundClip Detonation = new("Player/", "DebuffExplode");
     public static SoundClip FireTrail = new("Player/", "FireTrail");
+
+    public static SoundClip Blip = new("Dialogue/", "Blip");
+    public static SoundClip GhostBlip = new("Dialogue/", "GhostBlip");
+    public static SoundClip ThoughtBubbleBlip = new("Dialogue/", "ThoughtBubbleBlip");
+    public static SoundClip KingOilBlip = new("Dialogue/", "OilBlip");
 }
 public class SoundClip
 {
