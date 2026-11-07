@@ -366,12 +366,13 @@ public static class Lighting
         RenderTexture addedSolidTexture = RenderTexture.GetTemporary(SolidTileRT.width,SolidTileRT.height, SolidTileRT.depth, SolidTileRT.format);
         AddBlit.SetTexture("_Mask", TopSolidRT);
         BlitWithClear(SolidTileRT, addedSolidTexture, AddBlit);
-        OcclusionBlit.SetTexture("_TopTexture", TopOcclusionTileRT);
-        BlitWithClear(OcclusionTileRT, CombinedOcclusionRT, OcclusionBlit);
+        //OcclusionBlit.SetTexture("_TopTexture", TopOcclusionTileRT);
+        //BlitWithClear(OcclusionTileRT, CombinedOcclusionRT, OcclusionBlit);
 
         LightShaper.SetVector("_TexelScaler", new Vector2(1 / Camera.main.aspect, 1));
         LightShaper.SetFloat("_SizeMult", .5f / CameraManager.OcclusionTileCamera.orthographicSize);
-        LightShaper.SetTexture("_Mask", CombinedOcclusionRT);
+        LightShaper.SetTexture("_Mask", OcclusionTileRT);
+        LightShaper.SetTexture("_Mask2", TopOcclusionTileRT);
         LightShaper.SetVector("_Sun", (Vector2)CameraManager.SolidTileCamera.transform.localPosition);
         BlitWithClear(addedSolidTexture, ShadowMaskInfo, LightShaper);
         RenderTexture.ReleaseTemporary(addedSolidTexture);
