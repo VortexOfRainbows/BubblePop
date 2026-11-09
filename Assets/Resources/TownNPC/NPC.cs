@@ -22,12 +22,14 @@ public class NPC : Entity
         OilKing,
         Fizzy,
         Bubblemancer,
+        Shady,
     }
     public enum DialogueType
     {
         None,
         GachaponShop,
         GachaponMansion,
+        ShadyShop,
     }
     public NPCType Type = NPCType.None;
     public DialogueType Dialogue = DialogueType.None;
@@ -59,6 +61,11 @@ public class NPC : Entity
                 AddEquip(Main.GlobalEquipData.Gachapon);
                 AddEquip(Main.GlobalEquipData.GachaponHat);
                 AddEquip(Main.GlobalEquipData.GachaponCape);
+                break;
+            case NPCType.Shady:
+                AddEquip(Main.GlobalEquipData.Gachapon);
+                AddEquip(Main.GlobalEquipData.GachaponHat);
+                AddEquip(Main.GlobalEquipData.SusCape);
                 break;
             case NPCType.ThoughtBubble:
                 AddEquip(Main.GlobalEquipData.ThoughtBubble);
@@ -202,6 +209,13 @@ public class NPC : Entity
                     GetDialogueSegmentWithArguments("GachaponMansion1_1", p, NPCType.Gachapon, "default", "default"),
                     GetDialogueSegmentWithArguments("GachaponMansion1_2", p),
                     GetDialogueSegmentWithArguments("GachaponMansion1_3", p)
+                    );
+                break;
+            case DialogueType.ShadyShop:
+                DialogueController.EnqueueDialogueChain(
+                    GetDialogueSegmentWithArguments("GachaponShop1_1", p, NPCType.Shady, "default", "default"),
+                    GetDialogueSegmentWithArguments("GachaponShop1_2", p),
+                    GetDialogueSegmentWithArguments("GachaponShop1_3", p)
                     );
                 break;
         }
