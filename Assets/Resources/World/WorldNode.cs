@@ -203,7 +203,7 @@ public class WorldNode : MonoBehaviour
                             var tileBelow = TileMap.GetTile(new Vector3Int(i, j - 1));
                             if (tileBelow != null && (tileBelow.GetTileID() == dualTile || (tileBelow.GetTileID().CountsAsWall() && TileMap.GetTile(new Vector3Int(i, j - 2)) == tileBelow)))
                                 dualTile = myTile;
-                            if(tileAbove != tile && tileBelow != tile) //if neither tiles are the same as me, it means I am an erroneously placed wall in editor (2x walls need 2x tiles placed)
+                            if(tileAbove != tile && tileBelow != tile && !tileBelow.GetTileID().CountsAsWall()) //if neither tiles are the same as me, it means I am an erroneously placed wall in editor (2x walls need 2x tiles placed)
                             {
                                 iAmWall = false;
                                 dualTile = myTile;

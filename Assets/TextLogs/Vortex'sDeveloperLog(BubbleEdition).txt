@@ -43,6 +43,7 @@ Bug Watchlist:
 1. (This should've been fixed with the wave card rework, but keep an eye out for this) With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Soup sometimes causes power numbers to spazz out
 3. Achievement popups are effected by lighting
+4. In order to get procedurally generating tall walls around the world, adjustments like making tall-wall logic generate post-worldgen is probably appropriate (and will simplify other logic too)
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -54,8 +55,8 @@ Done:
 
 11/8/26 to 11/9/26
 1. Modified a handful of existing nodes to contain new tall walls
-	1. Next: might need to change worldgen procedure for tall walls to make combinations of tall walls generate more reliably.
-2. 
+2. Changed worldgen procedure for tall walls to make combinations of tall walls generate more reliably
+	1. Basically tall walls now allow other type of tall wall below them when checking if they are allowed to spawn
 
 11/5/26 to 11/7/26
 1. Add Sarah's bubblemancer chest to the lobby area with complete (?) functionality
