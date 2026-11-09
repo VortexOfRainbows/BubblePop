@@ -215,11 +215,19 @@ public class NPC : Entity
                     );
                 break;
             case DialogueType.ShadyShop:
-                DialogueController.EnqueueDialogueChain(
-                    GetDialogueSegmentWithArguments("GachaponShop1_1", p, NPCType.Shady, "default", "default"),
-                    GetDialogueSegmentWithArguments("GachaponShop1_2", p),
-                    GetDialogueSegmentWithArguments("GachaponShop1_3", p)
-                    );
+                rand = Utils.RandInt(4);
+                if(rand == 0)
+                {
+                    DialogueController.EnqueueDialogueChain(
+                        GetDialogueSegmentWithArguments("ShadyShop1_1", p, NPCType.Shady, "default", "default"),
+                        GetDialogueSegmentWithArguments("ShadyShop1_2", p),
+                        GetDialogueSegmentWithArguments("ShadyShop1_3", p)
+                        );
+                }
+                else
+                {
+                    DialogueController.EnqueueDialogueChain(GetDialogueSegmentWithArguments(Utils.RandBool(2) ? "ShadyShop2_1" : "ShadyShop3_1", p, NPCType.Shady, "default", "default"));
+                }
                 break;
         }
     }

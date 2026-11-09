@@ -177,7 +177,7 @@ public class DialogueController : MonoBehaviour
         {
             AudioManager.PlaySound(SoundID.Blip, soundPos, volume, Utils.RandFloat(0.7f, 0.9f));
         }
-        if (t == NPCType.Gachapon)
+        if (t == NPCType.Gachapon || t == NPCType.Shady)
         {
             AudioManager.PlaySound(SoundID.GhostBlip, soundPos, volume, Utils.RandFloat(1.4f, 1.5f));
             return;
