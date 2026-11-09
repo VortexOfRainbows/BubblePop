@@ -18469,6 +18469,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7573328573185486376, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
+      propertyPath: m_Tiles.Array.data[296].second.m_AllTileFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7573328573185486376, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
+      propertyPath: m_Tiles.Array.data[297].second.m_AllTileFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7573328573185486376, guid: 8473113d0351dd74b8d3124f4e0914f0, type: 3}
       propertyPath: m_Tiles.Array.data[298].second.m_AllTileFlags
       value: 1
       objectReference: {fileID: 0}
