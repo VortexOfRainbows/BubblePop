@@ -92,7 +92,9 @@ public static class ColorHelper
                 return "#B4946B";
             case NPC.NPCType.OilKing:
                 return "#8A84AA";
+            case NPC.NPCType.Shady:
+                return RarityColorHex[5];
         }
-        return "FFFFFF";
+        return "#FFFFFF";
     }
 }

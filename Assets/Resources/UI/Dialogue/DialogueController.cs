@@ -167,30 +167,31 @@ public class DialogueController : MonoBehaviour
     public static void PlayDialogueSound(NPCType t)
     {
         Vector2 soundPos = Player.Instance.Position;
+        float volume = 0.75f;
         if(t == NPCType.Bubblemancer)
         {
-            AudioManager.PlaySound(SoundID.ThoughtBubbleBlip, soundPos, 0.5f, Utils.RandFloat(0.9f, 1.1f));
+            AudioManager.PlaySound(SoundID.ThoughtBubbleBlip, soundPos, volume, Utils.RandFloat(0.9f, 1.1f));
             return;
         }
         else if(t == NPCType.Fizzy)
         {
-            AudioManager.PlaySound(SoundID.Blip, soundPos, 0.5f, Utils.RandFloat(0.7f, 0.9f));
+            AudioManager.PlaySound(SoundID.Blip, soundPos, volume, Utils.RandFloat(0.7f, 0.9f));
         }
         if (t == NPCType.Gachapon)
         {
-            AudioManager.PlaySound(SoundID.GhostBlip, soundPos, 0.5f, Utils.RandFloat(1.4f, 1.5f));
+            AudioManager.PlaySound(SoundID.GhostBlip, soundPos, volume, Utils.RandFloat(1.4f, 1.5f));
             return;
         }
         else if(t == NPCType.OilKing)
         {
-            AudioManager.PlaySound(SoundID.KingOilBlip, soundPos, 0.5f, Utils.RandFloat(0.95f, 1.05f));
+            AudioManager.PlaySound(SoundID.KingOilBlip, soundPos, volume, Utils.RandFloat(0.95f, 1.05f));
             return;
         }
         else if(t == NPCType.ThoughtBubble)
         {
-            AudioManager.PlaySound(SoundID.ThoughtBubbleBlip, soundPos, 0.5f, Utils.RandFloat(1.4f, 1.6f));
+            AudioManager.PlaySound(SoundID.ThoughtBubbleBlip, soundPos, volume, Utils.RandFloat(1.4f, 1.6f));
             return;
         }
-        AudioManager.PlaySound(SoundID.Blip, soundPos, 0.5f, Utils.RandFloat(1.1f, 1.3f));
+        AudioManager.PlaySound(SoundID.Blip, soundPos, volume, Utils.RandFloat(1.1f, 1.3f));
     }
 }

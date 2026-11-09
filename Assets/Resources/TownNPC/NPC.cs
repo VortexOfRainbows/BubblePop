@@ -12,6 +12,7 @@ public class NPC : Entity
         {NPCType.Gachapon, "G"},
         {NPCType.Fizzy, "F"},
         {NPCType.OilKing, "K"},
+        {NPCType.Shady, "S"},
     };
     public static string GetDialogueVariant(NPCType type) => DialogueVariantPair[type];
     public enum NPCType
@@ -159,6 +160,8 @@ public class NPC : Entity
         }
         //Might need to add an additional override for Left if the player is ever not the one in the left slot. Though this is probably not gonna happen.
         string dialogue = argumentSectionEnd >= rawSegment.Length ? string.Empty : rawSegment[(argumentSectionEnd != 0 ? argumentSectionEnd + 1 : 0)..];
+        if(expression == default)
+            expression = playerTalking ? LeftExpression : RightExpression;
         return new(dialogue, playerTalking, variant, Right, playerTalking ? expression : LeftExpression, playerTalking ? RightExpression : expression);
     }
     public static string GetDialogueSegment(string segment, NPCType variant) => Localization.TryGetVariant($"Dialogue.{segment}", GetDialogueVariant(variant));

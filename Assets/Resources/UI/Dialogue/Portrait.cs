@@ -57,7 +57,8 @@ public class Portrait : MonoBehaviour
             { NPCType.Fizzy, Fizzy },
             { NPCType.OilKing, KingOil },
             { NPCType.Gachapon, Gachapon },
-            { NPCType.ThoughtBubble, ThoughtBubble }
+            { NPCType.ThoughtBubble, ThoughtBubble },
+            { NPCType.Shady, Shady }
         };
     }
     public Image BG;

@@ -19693,6 +19693,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shadypon
       objectReference: {fileID: 0}
+    - target: {fileID: 3775304236594553158, guid: a9ce47bdc7a7e5f43a2490a5a516bfae, type: 3}
+      propertyPath: AllowRepeatedDialogue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8646479885160805761, guid: a9ce47bdc7a7e5f43a2490a5a516bfae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 32
