@@ -209,6 +209,21 @@ public class WorldTilemap : MonoBehaviour
             }
         }
     }
+    public static bool TileIsNotSolidOrRendersBelow2(int i, int j, float myLayerOffset)
+    {
+        ref var UnsafeData = ref World.UnsafeGetTileData(i, j);
+        if (UnsafeData.TileHeightLevel != 1)
+            return true;
+        var otherTile = UnsafeData.TileType;
+        return otherTile.LayerOffset > myLayerOffset && !otherTile.HasWallVariant();
+    }
+    public static bool TileIsNotBlendableSolidWall2(int i, int j, float myLayerOffset)
+    {
+        return TileIsNotSolidOrRendersBelow2(i + 1, j - 1, myLayerOffset) || TileIsNotSolidOrRendersBelow2(i, j + 1, myLayerOffset) ||
+               TileIsNotSolidOrRendersBelow2(i + 1, j + 1, myLayerOffset) || TileIsNotSolidOrRendersBelow2(i, j - 1, myLayerOffset) ||
+               TileIsNotSolidOrRendersBelow2(i - 1, j + 1, myLayerOffset) || TileIsNotSolidOrRendersBelow2(i + 1, j, myLayerOffset) ||
+               TileIsNotSolidOrRendersBelow2(i - 1, j - 1, myLayerOffset) || TileIsNotSolidOrRendersBelow2(i - 1, j, myLayerOffset);
+    }
     public static bool TileIsNotSolidOrRendersBelow(int i, int j, float myLayerOffset)
     {
         ref var UnsafeData = ref World.UnsafeGetTileData(i, j);
@@ -279,7 +294,7 @@ public class WorldTilemap : MonoBehaviour
                         else
                         {
                             tile.MarkForGroundUpdate[Top.ID] = true;
-                            if (!tile.MarkForSpecialWallUpdate[Top.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall(i2, j2, tile.LayerOffset))
+                            if (!tile.MarkForSpecialWallUpdate[Top.ID] && tile.HasWallVariant() && TileIsNotBlendableSolidWall2(i2, j2, tile.LayerOffset))
                                 tile.MarkForSpecialWallUpdate[Top.ID] = true;
                         }
                     }

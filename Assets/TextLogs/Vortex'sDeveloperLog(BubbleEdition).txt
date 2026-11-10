@@ -54,6 +54,8 @@ Done:
 11/9/26 to 11/10/26
 1. In order to get procedurally generating tall walls around the world, adjustments like making tall-wall logic generate post-worldgen is probably appropriate (and will simplify other logic too)
 	1. Now tall wall processing happens as the last step in generic worldgen, which should make wall behaviors more consistent when generating.
+2. Fix small blending issues with tall walls. Tall walls now spawn naturally around the edge of the world to spice up the vertical appearance of the world.
+3. Modified a few more older nodes to contain new tile features
 
 11/8/26 to 11/9/26
 1. Modified a handful of existing nodes to contain new tall walls

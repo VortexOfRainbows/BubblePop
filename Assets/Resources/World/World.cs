@@ -487,6 +487,12 @@ public partial class World : MonoBehaviour
         Noise.SetCellularDistanceFunction(FastNoiseLite.CellularDistanceFunction.EuclideanSq);
         Noise.SetSeed(1337);
         Noise.SetFrequency(0.04f);
+        FastNoiseLite Noise2 = new();
+        Noise2.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
+        Noise2.SetFractalType(FastNoiseLite.FractalType.PingPong);
+        Noise2.SetCellularDistanceFunction(FastNoiseLite.CellularDistanceFunction.EuclideanSq);
+        Noise2.SetSeed(6767);
+        Noise2.SetFrequency(0.03f);
 
         World.GetCorners(out int left, out int right, out int bottom, out int top);
         //Replacing these singular set tile statements with a list of replace tile statements did not actually speed up the process (unlike the other optimizations), though maybe that is because it was erroneously adding elements multiple times. Either way im not gonna change this for now.
@@ -502,8 +508,17 @@ public partial class World : MonoBehaviour
                     {
                         if (!HasTile(pos))
                         {
-                            float f = Noise.GetNoise(i, j);
-                            World.SetTile(pos, f < 0.2f && f > -0.2f ? TileID.Dirt : TileID.Grass, 1);
+                            float f1 = Noise.GetNoise(i, j);
+                            float f2 = Noise2.GetNoise(i, j);
+                            int level = f2 > 0.5f || f2 < -0.5f ? 2 : 1;
+                            if (level == 1)
+                            {
+                                World.SetTile(pos, f1 < 0.2f && f1 > -0.2f ? TileID.Dirt : TileID.Grass, level);
+                            }
+                            else if(level == 2)
+                            {
+                                World.SetTile(pos, f1 < 0.2f && f1 > -0.2f ? TileID.DirtWall : TileID.GrassWall, level);
+                            }
                         }
                         else
                         {
@@ -552,7 +567,7 @@ public partial class World : MonoBehaviour
                             //To be considered a tall wall, the tile below must be the same as me, or already be an existing 2x height wall tile.
                             bool tileBelowIsWall = dataBelow.TileHeightLevel == 2;
                             bool tileBelowIsSame = tileBelow == myWall || (tileBelow == myTile && tileBelowIsWall);
-                            bool tileBelowIsAlreadyFloor = !tileBelow.CountsAsWall() && dataBelow.TileHeightLevel == 2;
+                            bool tileBelowIsAlreadyFloor = tileBelow != null && !tileBelow.CountsAsWall() && dataBelow.TileHeightLevel == 2;
                             if (tileBelowIsWall && (tileBelowIsSame || tileBelowIsAlreadyFloor))
                             {
                                 SetTile(new Vector3Int(i, j), myTile, 2);
