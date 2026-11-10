@@ -196,19 +196,6 @@ public class WorldNode : MonoBehaviour
                     {
                         var dualTile = tile.GetTileID();
                         bool iAmWall = dualTile.CountsAsWall();
-                        if (iAmWall)
-                        {
-                            var myTile = dualTile.MyTileVariant();
-                            var tileAbove = TileMap.GetTile(new Vector3Int(i, j + 1));
-                            var tileBelow = TileMap.GetTile(new Vector3Int(i, j - 1));
-                            if (tileBelow != null && (tileBelow.GetTileID() == dualTile || (tileBelow.GetTileID().CountsAsWall() && TileMap.GetTile(new Vector3Int(i, j - 2)) == tileBelow)))
-                                dualTile = myTile;
-                            if(tileAbove != tile && tileBelow != tile && !tileBelow.GetTileID().CountsAsWall()) //if neither tiles are the same as me, it means I am an erroneously placed wall in editor (2x walls need 2x tiles placed)
-                            {
-                                iAmWall = false;
-                                dualTile = myTile;
-                            }
-                        }
                         //Might have to correct walls if painting over an existing tall wall.
                         //Another approach may be to move wall determination to a post-processing type layer, after all calculations have been done, such that tall walls.
                         //That way the determination can be done more easily
@@ -463,8 +450,8 @@ public class WorldNode : MonoBehaviour
                             tile2 = existingTile.CountsAsWall() ? existingTile.MyTileVariant() : existingTile;
                             data.TileHeightLevel = 0;
                             //need to correct tile height relations above if possible
-                            CorrectTallWallWhenPaintingOver(v, Vector3Int.up);
-                            CorrectTallWallWhenPaintingOver(v, Vector3Int.down);
+                            //CorrectTallWallWhenPaintingOver(v, Vector3Int.up);
+                            //CorrectTallWallWhenPaintingOver(v, Vector3Int.down);
                         }
                         else if (existingTile == TileID.Dirt || existingTile == TileID.Grass)
                         {

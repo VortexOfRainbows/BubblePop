@@ -508,7 +508,7 @@ public partial class World : MonoBehaviour
                         else
                         {
                             ref TileData data = ref UnsafeGetTileData(pos);
-                            if(data.IsLiquid)
+                            if (data.IsLiquid)
                                 WaterCollisionMap.SetTile(pos, WaterCollisionTile);
                         }
                         //if (SolidTile(pos))
@@ -538,6 +538,32 @@ public partial class World : MonoBehaviour
                                 RoadblockTilemap.SetTile(new(ttop, DepthTile, c, Matrix4x4.identity), true);
                             if (SolidTile(tbot))
                                 RoadblockTilemap.SetTile(new(tbot, DepthTile, c, Matrix4x4.identity), true);
+                        }
+                        if (data.TileType.CountsAsWall())
+                        {
+                            var myWall = data.TileType;
+                            var myTile = data.TileType.MyTileVariant();
+                            ref TileData dataTwiceBelow = ref GetTileData(i, j - 2);
+                            ref TileData dataBelow = ref GetTileData(i, j - 1);
+                            ref TileData dataAbove = ref GetTileData(i, j + 1);
+                            var tileAbove = dataAbove.TileType;
+                            var tileBelow = dataBelow.TileType;
+                            //Rules:
+                            //To be considered a tall wall, the tile below must be the same as me, or already be an existing 2x height wall tile.
+                            bool tileBelowIsWall = dataBelow.TileHeightLevel == 2;
+                            bool tileBelowIsSame = tileBelow == myWall || (tileBelow == myTile && tileBelowIsWall);
+                            bool tileBelowIsAlreadyFloor = !tileBelow.CountsAsWall() && dataBelow.TileHeightLevel == 2;
+                            if (tileBelowIsWall && (tileBelowIsSame || tileBelowIsAlreadyFloor))
+                            {
+                                SetTile(new Vector3Int(i, j), myTile, 2);
+                            }
+                            else
+                            {
+                                //Shorten the tile to a 1x height wall if the tile above is not the same as me
+                                bool tileAboveIsDifferent = tileAbove != myWall && (tileAbove != myTile || dataAbove.TileHeightLevel != 2);
+                                if(tileAboveIsDifferent)
+                                    SetTile(new Vector3Int(i, j), myTile, 1);
+                            }
                         }
                         //else if(passNum == 2 && !data.IsRoadblock)
                         //{
