@@ -1,0 +1,68 @@
+Dev Build 4.0 (tentative version number)
+
+THIS CHANGELOG IS NOT COMPLETELY COMPREHENSIVE!
+
+New:
+1. Added two additional tile-height layers
+	1. This mostly materializes as Tall Walls and Sunken Areas (currently all filled with water)
+2. Added Water Tiles, Mushroom Tiles, and Tall Tiles
+3. A ton of new nodes of all resource types
+4. All current placeholder power sprites have been replaced with final power sprites
+5. Added new foliage that can spawn on water tiles
+6. New black market powers: Silver Solution, Antiburger 
+7. Added a dialogue system. Mostly this will be only accessible in Gachapon shops for now.
+	1. There's not too much going on right now, but I hope you enjoy the character banter and expressions!
+8. Burger resprite
+
+Changes:
+1. Modified some older nodes to add newer features and change weights
+2. Repeat nodes should now be less common, as they are weighted down by 4x + 1 on each repeat x
+3. Some existing enemies have been given amphibious behaviors
+4. Enemy snapping when out of bounds is now controlled by the position of the collision box rather than the geometric center
+	1. Logic should also be more consistent for things like chests
+5. Breakable objects are now more consistently collideable among enemies (mostly enemies can get stuck on them, LOL)
+6. Replace Thought Bubble: Calculated achievement with Thought Bubble: Disease Control
+	1. The old achievement was not only difficult, but also hard to maintain as more systems in the game began to rely on click inputs, which could mean accidentally breaking the achievement interactions more easily.
+
+Balance Changes:
+1. (BUFF) Peaclock attack start range 10 -> 16, max distance 24 -> 28
+2. (BUFF) Infectors now implement pathfinding when no host is nearby (previously, they did not pathfind around tiles). It's a bit jank, so I'll keep an eye on it. 
+3. (NERF) Infectors now are slightly slower with slightly more drag
+4. (FIX) The border size should now be more consistent across different resolutions
+5. (FIX) Added a small check for clear areas when generating paths to hopefully prevent certain worldgen crashes
+
+Fixes:
+1. (FIX) Hide crucible button now displays the correct keybind
+2. (FIX) Thought bubbles trail now appears behind 4 layers offset (this should make it generally appear behind the player now)
+3. Fix small inconsistencies with where stone fragments would appear on stone walls and how wall corners would be placed
+
+Misc:
+1. Adjustments to lighting shaders and adjacent mechanics to accommodate for new tile levels
+	1. This could lead to extra lag, so I'm keeping an eye on this
+2. Overhaul systems for disabling offscreen elements that use too much resources
+	1. Applies to bubbleshroom, bubbleplant, bubblelilypad
+	2. The animations and lights are now disables based on the light radius (basically it will not cull to early for bigger radius lights)
+	3. This may have slightly worse performance than before, but should still be better overall compared to pre-culling
+
+Enemy Stuff:
+
+Standardization of NPC Water/World/NPC/WorldObj collision (does not change projectile/player collision unless stated). Shadows have also been adjusted slightly. In general, this should make enemies able to squeeze through tiles and each other better. This type of stuff might be changed later if the impacts are undesirable. Some anchorings and spawn position offsets have also been adjusted.
+	1. Duck: Hitbox radius 0.9 -> 0.7, and position shifted closer to the shadow
+	2. Flamingo: Now has a circular collision hitbox of radius 0.75, instead of a rectangular tile collider.
+	3. Leonard: Now has a circular collision hitbox of radius 2.0 -> 0.875.
+		1. This is MUCH smaller than before, which should make it possible for Leonard to squeeze through 1-tile gaps
+	4. Soap: Circular collision hitbox radius 1.0 -> 0.75
+	5. Soap Fragment: radius 0.7 -> 0.65
+	6. Boxer world hitbox moved slightly downward
+All of the following NPCs used rectangular hitboxes for world collision. Now those are only for projectile/player, and they use a circular hitbox for tiles:
+	7. Chicken: radius 0.9 -> 0.6 (and shifted downward). 
+	8. Ent: radius 1.1 -> 0.8 (and shifted downward).
+	9. Crow:  radius 0.7 -> 0.65 (and shifted downward). 
+	10. Gatligator: radius 1.1 -> 0.9 (and shifted downward).
+	11. Snow Golem: radius 1.2 -> 0.85 (and shifted downward).
+	12. Infector: radius 0.9 -> 0.85 (and shifted downward).
+	13. Peaclock: radius 1.5 -> 0.875 (and shifted downward).
+	14. Rock Spider: radius unchanged 0.7, but shifted downward.
+	15. Rock Golem: radius 1.5 -> 0.875.
+	16-17. Sentinels: radius .9 -> 0.5 (and shifted downward).
+	18. Snobble: radius 0.85 -> 0.75 (and shifted downward). Projectile/Player hitbox 1.45 by 1.35 -> 1.35 by 1.35
