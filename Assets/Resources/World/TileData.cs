@@ -19,6 +19,8 @@ public partial class World : MonoBehaviour
     public static bool SolidTile(int x, int y) => UnsafeGetTileData(x, y).IsSolid;
     public static bool AreaIsClear(Vector3Int area, int squareRadius = 0)
     {
+        if(!InWorldBounds(area, squareRadius + 1))
+            return false;
         for (int i = -squareRadius; i <= squareRadius; ++i)
             for (int j = -squareRadius; j <= squareRadius; ++j)
                 if (HasTile(area.x + i, area.y + j))

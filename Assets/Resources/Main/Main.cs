@@ -42,6 +42,7 @@ public partial class Main : MonoBehaviour
     public RawImage TileLightRenderTarget;
     public RawImage BorderRenderTarget;
     public RawImage LightShapeVisualizer;
+    public RawImage OilOverlay;
     public Light2D GlobalLight;
     public static Transform SpritebatchParent => Instance.SpritebatchSuperParent;
     public static int UICameraLayerID { get; private set; } = -1;

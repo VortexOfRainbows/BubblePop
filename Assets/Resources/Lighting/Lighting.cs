@@ -25,6 +25,7 @@ public static class Lighting
     public static RawImage ShadowImage => Main.Instance.TileLightRenderTarget;
     public static RawImage BorderImage => Main.Instance.BorderRenderTarget;
     public static RawImage LightShapeVisualizer => Main.Instance.LightShapeVisualizer;
+    public static RawImage OilImage => Main.Instance.OilOverlay;
     //public static RawImage BorderMaskRenderTexture => Main.Instance.BorderMaskRenderTarget;
     public static Light2D GlobalLight => Main.Instance.GlobalLight;
     public static void LoadTextures()
@@ -346,6 +347,11 @@ public static class Lighting
             BorderImage.material.SetFloat("_MaxMask", 0.5f + MaskValue);
             BorderImage.material.SetFloat("_ProgressionThreshold", PreviousProgNum);
             BorderImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
+        }
+        if(OilImage != null)
+        {
+            float baseTexelSize = 2.25f / 1080f;
+            OilImage.material.SetVector("_TexelScaler", new Vector2(baseTexelSize / Camera.main.aspect, baseTexelSize));
         }
     }
     public static void LateUpdate()
