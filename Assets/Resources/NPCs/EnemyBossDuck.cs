@@ -4,8 +4,7 @@ public class EnemyBossDuck : EnemyDuck
 {
     public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
     {
-        //scale *= 2;
-        //offset = Vector2.one * -1.25f;
+        offset.y -= 0.35f;
     }
     public override float AmphibiousTransitionSpeedMult => 1.4f;
     public override float AmphibiousJumpHeight => 1.6f;

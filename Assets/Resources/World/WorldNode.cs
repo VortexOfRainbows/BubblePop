@@ -436,6 +436,7 @@ public class WorldNode : MonoBehaviour
                 DualGridTile existingTile = World.GetTile(v);
                 if (existingTile == null || ((World.SolidTile(v) || existingTile.IsLiquid || existingTile.CountsAsWall()) && OverrideTiles))
                 {
+                    bool CountAsRoadblocks = true;
                     if (existingTile == null)
                         World.SetTile(v, tile, 0);
                     else
@@ -444,6 +445,7 @@ public class WorldNode : MonoBehaviour
                         if (existingTile.IsLiquid)
                         {
                             tile2 = TileID.Grass;
+                            CountAsRoadblocks = false;
                         }
                         else if(existingTile.CountsAsWall() || data.TileHeightLevel == 2)
                         {
@@ -463,7 +465,7 @@ public class WorldNode : MonoBehaviour
                         }
                         World.SetTile(v, tile2, 0);
                     }
-                    data.IsRoadblock = true;
+                    data.IsRoadblock = CountAsRoadblocks; //Don't put roadblocks on liquid tiles, as that can make the bounds of the area inconsistent
                     data.ProgressionNumber = GenerationNumber;
                     World.CreateRoadblockTileVisuals(v, ref data);
                     canGenerate = true;

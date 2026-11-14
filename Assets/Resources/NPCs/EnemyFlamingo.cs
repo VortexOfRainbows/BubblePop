@@ -6,6 +6,11 @@ public class EnemyFlamingo : EnemyDuck
     public override float AmphibiousWaterToLandSlowdown => 0.95f;
     private static readonly float ProjVelocity = 3f;
     private int projectileTimer = 300;
+    public override void ModifyUIOffsets(ref Vector2 offset, ref float scale)
+    {
+        base.ModifyUIOffsets(ref offset, ref scale);
+        offset.y -= 0.8f;
+    }
     public override void InitStatics(ref EnemyID.StaticEnemyData data)
     {
         data.BaseMaxLife = 12;
