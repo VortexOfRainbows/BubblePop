@@ -49,14 +49,27 @@ public class PowerUpObject : MonoBehaviour
     }
     public void TryCollecting()
     {
+        Player p = Player.FindClosest(transform.position, out _, out float dist);
         float radius = 1.0f;
         radius *= transform.localScale.x;
         radius += Player.Instance.transform.localScale.x * 0.7f;
-        Player p = Player.FindClosest(transform.position, out _, out _);
-        if (p.Distance(gameObject) < radius)
+        if (dist < radius)
         {
             if (!PickedUp && CoinManager.CurrentCoins >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))
                 PickUp(p);
+        }
+        if(dist < 8)
+        {
+            //The velocity check serves 2 purposes
+            // 1. Make sure the player is standing still so that the popup doesn't spam while the player is moving around (which most likely indicates combat or other activity)
+            // 2. The powerup popup logic uses distance for priority, so the distance can't be changing.
+            bool allowPopup = Cost > 0 && p.RB.velocity.sqrMagnitude < 4; // Might want to add different conditions depending on what is desired by players.
+            if(allowPopup)
+            {
+                string name = MyPower.UnlockedName;
+                string desc = MyPower.ShortDescription;
+                PopUpTextUI.Enable(name, desc, transform.position, 4, dist);
+            }
         }
     }
     private Color? GlowColor = null;

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
+
 public class PopUpTextUI : MonoBehaviour
 {
     private const int HoverUI = 0;
@@ -12,9 +13,17 @@ public class PopUpTextUI : MonoBehaviour
     public static readonly Queue<PowerUp> PowerupQueue = new();
     public static readonly Queue<UnlockCondition> UnlockQueue = new();
     public static bool ForceHide = false;
-    public static void Enable(string name, string desc, int duration = 4)
+    public static Vector2? HoverOverridePosition = null;
+    public static float HoverPopupPriority = float.MaxValue;
+    public static void Enable(string name, string desc, Vector2? overridePosition = null, int duration = 4, float priority = -1)
     {
-        Enable(HoverTextInstance, name, desc, duration);
+        bool withinReasonableBoundsOfPreviousPriority = (overridePosition.HasValue && HoverOverridePosition.HasValue && (overridePosition.Value - HoverOverridePosition.Value).sqrMagnitude < 0.5f && Mathf.Abs(priority - HoverPopupPriority) < 0.2f);
+        if (HoverPopupPriority >= priority || withinReasonableBoundsOfPreviousPriority)
+        {
+            HoverOverridePosition = overridePosition;
+            Enable(HoverTextInstance, name, desc, duration);
+            HoverPopupPriority = priority;
+        }
     }
     public static void Enable(PopUpTextUI instance, string name, string desc, int duration = DefaultPopupDuration)
     {
@@ -89,6 +98,8 @@ public class PopUpTextUI : MonoBehaviour
             ReadyToRenderNormal = false;
             if(Type != AchievementPopUpUI)
                 Visual.SetActive(false);
+            if(Type == HoverUI)
+                HoverPopupPriority = float.MaxValue; 
         }
     }
     private List<Color> defaultColors = null;
@@ -259,7 +270,18 @@ public class PopUpTextUI : MonoBehaviour
         {
             if (Type == HoverUI)
             {
-                transform.position = Input.mousePosition + new Vector3(40, -40) * MainGameCanvas.scaleFactor;
+                float scaleFactor = MainGameCanvas.scaleFactor;
+                if (HoverOverridePosition.HasValue)
+                {
+                    SnapToScreen();
+                    Vector2 value = HoverOverridePosition.Value;
+                    value = CameraManager.MainCamera.WorldToScreenPoint(value);
+                    Vector2 size = visualRect.sizeDelta;
+                    value += new Vector2(-1 * size.x / 2, 60 + 2.0f * size.y / 2) * scaleFactor;
+                    transform.position = value;
+                }
+                else
+                    transform.position = Input.mousePosition + new Vector3(40, -40) * scaleFactor;
                 SnapToScreen();
             }
         }

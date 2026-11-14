@@ -145,6 +145,10 @@ public partial class Entity : MonoBehaviour
     {
         return (other.transform.position - transform.position).magnitude;
     }
+    public float DistanceSquared(GameObject other)
+    {
+        return (other.transform.position - transform.position).sqrMagnitude;
+    }
     public Rigidbody2D RB;
     //public float Anim = 0;
     protected List<Animator> ChildAnimators = new();
