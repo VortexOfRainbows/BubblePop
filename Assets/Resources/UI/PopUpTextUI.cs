@@ -35,9 +35,6 @@ public class PopUpTextUI : MonoBehaviour
             {
                 instance.AchievementElement.NameText.text = name;
                 instance.AchievementElement.DescriptionText.text = desc;
-                instance.ReadyToRenderNormal = false;
-                //Not needed as the color is naturally part of the text using tags
-                //instance.Name.color = ColorHelper.RarityColors[instance.AchievementElement.GetRare() - 1];
             }
             instance.Visual.SetActive(true);
         }
@@ -45,11 +42,10 @@ public class PopUpTextUI : MonoBehaviour
         {
             if (instance.Name.text != name || instance.Description.text != desc)
             {
-                instance.SetName(name);
-                instance.SetDescription(desc);
-                //instance.ReadyToRenderFixed = false;
-                instance.ReadyToRenderNormal = false;
-                instance.Visual.SetActive(false);
+                instance.Visual.SetActive(true);
+                instance.Name.SetText(name);
+                instance.Description.SetText(desc);
+                instance.ForceRefreshBoxSizes();
             }
         }
         instance.enabledDuration = duration;
@@ -78,10 +74,7 @@ public class PopUpTextUI : MonoBehaviour
     public TMPro.TextMeshProUGUI Name;
     public TMPro.TextMeshProUGUI Description;
     public RectTransform myRect;
-    public bool ReadyToRenderNormal = false;
     public int Type = 0;
-    public void SetName(string name) => Name.text = name;
-    public void SetDescription(string desc) => Description.text = desc;
     public void Start()
     {
         if (Type == HoverUI)
@@ -95,12 +88,13 @@ public class PopUpTextUI : MonoBehaviour
     {
         if (--enabledDuration < 0)
         {
-            ReadyToRenderNormal = false;
             if(Type != AchievementPopUpUI)
                 Visual.SetActive(false);
             if(Type == HoverUI)
                 HoverPopupPriority = float.MaxValue; 
         }
+        else
+            Visual.SetActive(true);
     }
     private List<Color> defaultColors = null;
     private List<Image> childImages = null;
@@ -193,6 +187,32 @@ public class PopUpTextUI : MonoBehaviour
             }
         }
     }
+    public void ForceRefreshBoxSizes()
+    {
+        float DefaultSize = 610;
+        if (Type == HoverUI)
+        {
+            visualRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, DefaultSize);
+            visualRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 1000f); // Give plenty of vertical room for Auto-Size
+            LayoutRebuilder.ForceRebuildLayoutImmediate(visualRect);
+        }
+        Description.ForceMeshUpdate();
+        Name.ForceMeshUpdate();
+        Vector2 DescriptionSize = Description.GetRenderedValues(false);
+        Vector2 NameSize = Name.GetRenderedValues(false);
+        float height = Mathf.Max(NameSize.y, DescriptionSize.y + NameSize.y) + 30f;
+        float width = Mathf.Min(DefaultSize, Mathf.Max(NameSize.x, DescriptionSize.x) + 10f);
+        if (Type == HoverUI)
+        {
+            visualRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+            visualRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(visualRect);
+            //Canvas.ForceUpdateCanvases();
+            Description.ForceMeshUpdate();
+            Name.ForceMeshUpdate();
+            SnapToScreen();
+        }
+    }
     private void UpdateSizing()
     {
         if (Type == PowerPopUpUI)
@@ -205,25 +225,11 @@ public class PopUpTextUI : MonoBehaviour
             //AchievementElement.DescriptionArea.sizeDelta = new Vector2(Mathf.Max(600, myRect.sizeDelta.x), 0);
         }
     }
-    public void SnapToScreen(bool sizeOnly = false)
+    public void SnapToScreen()
     {
-        Vector2 DescriptionSize = Description.GetRenderedValues(false);
-        Vector2 NameSize = Name.GetRenderedValues(false);
-        float DefaultSize = 610;
-        float height = DescriptionSize.y + NameSize.y;
-        if (height < NameSize.y)
-            height = NameSize.y;
-        height += 30;
-        float width = Mathf.Min(DefaultSize, Mathf.Max(NameSize.x, DescriptionSize.x) + 10);
-        visualRect.sizeDelta = new Vector2(width, height);
-        if (!sizeOnly)
-        {
-            //Clamp so it won't leave the boundaries of the screen
-            //Debug.Log($"{transform.position}, {width}, {height}, {MainGameCanvas.scaleFactor}");
-            width = Screen.width - visualRect.rect.width * MainGameCanvas.scaleFactor;
-            height = visualRect.rect.height * MainGameCanvas.scaleFactor;
-            transform.position = new Vector2(Mathf.Clamp(transform.position.x, 0, width), Mathf.Clamp(transform.position.y, height, 10000) + myRect.rect.height / 2 * MainGameCanvas.scaleFactor);
-        }
+        float width = Screen.width - visualRect.rect.width * MainGameCanvas.scaleFactor;
+        float height = visualRect.rect.height * MainGameCanvas.scaleFactor;
+        transform.position = new Vector2(Mathf.Clamp(transform.position.x, 0, width), Mathf.Clamp(transform.position.y, height, 10000));
     }
     public void Update()
     {
@@ -231,28 +237,8 @@ public class PopUpTextUI : MonoBehaviour
             myRect = GetComponent<RectTransform>();
         if (enabledDuration >= 0)
         {
-            if (!Visual.activeSelf) //Move the thing off screen when turned off that way the dimensions can adjust correctly!
-            {
-                if (Type == HoverUI)
-                {
-                    transform.position = new Vector3(30000, transform.position.y, 0);
-                    SnapToScreen(true);
-                    Visual.SetActive(true);
-                }
-                else if (Type == PowerPopUpUI)
-                {
-                    transform.position = new Vector3(30000, transform.position.y, 0);
-                    Visual.SetActive(true);
-                }
-            }
-            else
-            {
-                ReadyToRenderNormal = true;
-                if(Type == PowerPopUpUI)
-                {
-                    transform.localPosition = new Vector3(MainGameCanvas.GetComponent<RectTransform>().rect.width / 2 + 75, -150, 0);
-                }
-            }
+            if (Type == PowerPopUpUI)
+                transform.localPosition = new Vector3(MainGameCanvas.GetComponent<RectTransform>().rect.width / 2 + 75, -150, 0);
         }
         if(Type == HoverUI)
             HoverTextInstance = this;
@@ -266,26 +252,25 @@ public class PopUpTextUI : MonoBehaviour
             UpdateMiddleInstance();
             PopupAchievementInstance = this;
         }
-        if (ReadyToRenderNormal)
-        {
-            if (Type == HoverUI)
-            {
-                float scaleFactor = MainGameCanvas.scaleFactor;
-                if (HoverOverridePosition.HasValue)
-                {
-                    SnapToScreen();
-                    Vector2 value = HoverOverridePosition.Value;
-                    value = CameraManager.MainCamera.WorldToScreenPoint(value);
-                    Vector2 size = visualRect.sizeDelta;
-                    value += new Vector2(-1 * size.x / 2, 60 + 2.0f * size.y / 2) * scaleFactor;
-                    transform.position = value;
-                }
-                else
-                    transform.position = Input.mousePosition + new Vector3(40, -40) * scaleFactor;
-                SnapToScreen();
-            }
-        }
         if (Main.GamePaused)
             FixedUpdate();
+    }
+    public void LateUpdate()
+    {
+        if (Type == HoverUI)
+        {
+            float scaleFactor = MainGameCanvas.scaleFactor;
+            if (HoverOverridePosition.HasValue)
+            {
+                Vector2 value = HoverOverridePosition.Value;
+                value = CameraManager.MainCamera.WorldToScreenPoint(value);
+                Vector2 size = visualRect.sizeDelta;
+                value += new Vector2(-1 * size.x / 2, 60 + 2.0f * size.y / 2) * scaleFactor;
+                transform.position = value;
+            }
+            else
+                transform.position = Input.mousePosition + new Vector3(40, -40) * scaleFactor;
+            SnapToScreen();
+        }
     }
 }

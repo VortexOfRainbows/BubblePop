@@ -51,13 +51,15 @@ Sounds Needed:
 
 Done: 	
 
-11/14/26
+11/14/26 to 11/17/26
 1. Fixed UI offsets for Flamingo and Leonard after hitbox changes adjusted them
 2. Water tiles that are bridged over in worldgen are no longer considered roadblocks
 3. WIP descriptions for powers in the shop:
-	1. Needs: Make UI resizing happen immediately, rather than the current system which waits for a unity update frame. This should update the other popup UIs too.
-	2. Needs: Make the UI smaller than the other UI, utilizing the quick resizing
-	3. Needs: A setting to turn it off, as some players might not want it
+	1. Needs: Make the UI smaller than the other UI, utilizing the quick resizing
+	2. Needs: A setting to turn it off, as some players might not want it (Maybe also adjust how it turns on/off to require standing still for a duration?)
+	3. Maybe: Adjust the UI to use new UI boxes. Maybe this would look good?
+4. UI resizing for hover-UI is now immediate
+	1. Old system  waits for a unity update frame which caused slight visual stutter.
 
 -- 4.0 Released on Steam --
 

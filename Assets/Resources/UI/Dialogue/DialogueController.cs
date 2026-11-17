@@ -70,9 +70,6 @@ public class DialogueController : MonoBehaviour
     public void Update()
     {
         Instance = this;
-        if(Main.DebugCheats && Input.GetKeyDown(KeyCode.N))
-            WantsOpen = !WantsOpen;
-
         LeftPortrait.enabled = RightPortrait.enabled = WantsOpen;
 
         Vector2 defaultPosition = new(transform.localPosition.x, 0);
