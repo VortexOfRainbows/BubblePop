@@ -58,12 +58,12 @@ public class PowerUpObject : MonoBehaviour
             if (!PickedUp && CoinManager.CurrentCoins >= Cost && transform.lossyScale.x > 0.8f && (VeloEndTimer == 0 || VeloEndTimer >= 0.9f))
                 PickUp(p);
         }
-        if(dist < 8)
+        if(dist < 8 && PlayerData.ShowShopDescriptions)
         {
             //The velocity check serves 2 purposes
             // 1. Make sure the player is standing still so that the popup doesn't spam while the player is moving around (which most likely indicates combat or other activity)
             // 2. The powerup popup logic uses distance for priority, so the distance can't be changing.
-            bool allowPopup = Cost > 0 && p.RB.velocity.sqrMagnitude < 4; // Might want to add different conditions depending on what is desired by players.
+            bool allowPopup = Cost > 0 && p.RB.velocity.sqrMagnitude < 4 && p.StartedMovingTimer <= 0; // Might want to add different conditions depending on what is desired by players.
             if(allowPopup)
             {
                 string name = MyPower.UnlockedName;

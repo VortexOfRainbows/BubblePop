@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 
 public class PopUpTextUI : MonoBehaviour
@@ -60,7 +59,7 @@ public class PopUpTextUI : MonoBehaviour
     public static void UpdateUnlock(PopUpTextUI instance, UnlockCondition u)
     {
         if (instance.AchievementElement != null)
-            instance.AchievementElement.Init(u.MyID, instance.MainGameCanvas);
+            instance.AchievementElement.Init(u.MyID, CharacterSelect.Instance.GetComponent<Canvas>());
     }
     public RectTransform visualRect;
     public float enabledDuration = 0;
@@ -200,7 +199,10 @@ public class PopUpTextUI : MonoBehaviour
         Name.ForceMeshUpdate();
         Vector2 DescriptionSize = Description.GetRenderedValues(false);
         Vector2 NameSize = Name.GetRenderedValues(false);
-        float height = Mathf.Max(NameSize.y, DescriptionSize.y + NameSize.y) + 30f;
+        float flatValue = 30;
+        if (DescriptionSize.y <= 0)
+            flatValue = 20;
+        float height = Mathf.Max(NameSize.y, DescriptionSize.y + NameSize.y) + flatValue;
         float width = Mathf.Min(DefaultSize, Mathf.Max(NameSize.x, DescriptionSize.x) + 10f);
         if (Type == HoverUI)
         {
@@ -260,16 +262,21 @@ public class PopUpTextUI : MonoBehaviour
         if (Type == HoverUI)
         {
             float scaleFactor = MainGameCanvas.scaleFactor;
+            float scaler = 1.0f;
             if (HoverOverridePosition.HasValue)
             {
+                scaler = 0.75f;
                 Vector2 value = HoverOverridePosition.Value;
                 value = CameraManager.MainCamera.WorldToScreenPoint(value);
                 Vector2 size = visualRect.sizeDelta;
-                value += new Vector2(-1 * size.x / 2, 60 + 2.0f * size.y / 2) * scaleFactor;
+                value += new Vector2(-1 * size.x / 2 * scaler, (60 + 2.0f * size.y / 2) * scaler) * scaleFactor;
                 transform.position = value;
             }
             else
+            {
                 transform.position = Input.mousePosition + new Vector3(40, -40) * scaleFactor;
+            }
+            transform.localScale = Vector2.one * scaler;
             SnapToScreen();
         }
     }

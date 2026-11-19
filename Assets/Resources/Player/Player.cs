@@ -508,6 +508,7 @@ public partial class Player : Entity
         TimesHitThisLifeThisWave = 0;
     }
     public float abilityTimer = 0;
+    public float StartedMovingTimer = 0.0f;
     private void MovementUpdate()
     {
         Vector2 velocity = RB.velocity;
@@ -542,18 +543,21 @@ public partial class Player : Entity
                 }
             }
         }
+        bool isMoving = false;
         Vector2 movespeed = Vector2.zero;
         if (Control.Up && !Control.Down)
         {
             if (velocity.y < 0)
                 velocity.y *= cDeaccel;
             movespeed.y += cSpeed * Control.Movement.y;
+            isMoving = true;
         }
         else if (!Control.Up && Control.Down)
         {
             if (velocity.y > 0)
                 velocity.y *= cDeaccel;
             movespeed.y += cSpeed * Control.Movement.y;
+            isMoving = true;
         }
         else
             velocity.y *= cDeaccel;
@@ -562,15 +566,23 @@ public partial class Player : Entity
             if (velocity.x > 0)
                 velocity.x *= cDeaccel;
             movespeed.x += cSpeed * Control.Movement.x;
+            isMoving = true;
         }
         else if (Control.Right && !Control.Left)
         {
             if (velocity.x < 0)
                 velocity.x *= cDeaccel;
             movespeed.x += cSpeed * Control.Movement.x;
+            isMoving = true;
         }
         else
             velocity.x *= cDeaccel;
+
+        if (isMoving)
+            StartedMovingTimer = 0.4f;
+        else
+            StartedMovingTimer -= Time.fixedDeltaTime;
+
         movespeed = movespeed.normalized;
 
         abilityTimer -= Time.fixedDeltaTime * AbilityRecoverySpeed;

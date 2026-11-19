@@ -23,11 +23,13 @@ public static class PlayerData
     public static bool PauseDuringPowerSelect = true;
     public static bool PauseDuringCardSelect = true;
     public static bool BriefDescriptionsByDefault = true;
+    public static bool ShowShopDescriptions = true;
     public static void SaveSettingsToggles()
     {
         SaveBool("PauseDuringPowerSelect", PauseDuringPowerSelect);
         SaveBool("PauseDuringCardSelect", PauseDuringCardSelect);
         SaveBool("BriefDescriptionsByDefault", BriefDescriptionsByDefault);
+        SaveBool("ShowShopDescriptions", ShowShopDescriptions);
     }
     public static void SaveSettingSliders()
     {
@@ -60,6 +62,7 @@ public static class PlayerData
         PauseDuringPowerSelect = GetBool("PauseDuringPowerSelect", true);
         PauseDuringCardSelect = GetBool("PauseDuringCardSelect", true);
         BriefDescriptionsByDefault = GetBool("BriefDescriptionsByDefault", true);
+        ShowShopDescriptions = GetBool("ShowShopDescriptions", true);
         PlayerDeaths = GetInt("Deaths");
         SFXVolume = GetFloat("SFX", 1);
         MusicVolume = GetFloat("Music", 1);

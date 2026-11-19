@@ -32,7 +32,6 @@ Need to do:
 	2. Needs: Sheep!
 6. Roof system for lighting (this will be slightly less torturous than previously expected... hopefully)
 7. Death screen to include score tallies related to stuff you obtained
-8. Shop powers to include descriptions (potentially)
 
 Multiplayer Task List:
 1. Controller support for oil king ability
@@ -42,8 +41,7 @@ Multiplayer Task List:
 Bug Watchlist:
 1. (This should've been fixed with the wave card rework, but keep an eye out for this) With pause on card select off, enemies appear strangely offset from their cards (seemingly only minez can replicate this)
 2. Soup sometimes causes power numbers to spazz out
-3. Achievement popups are effected by lighting
-4. Secret rooms can sometimes attach to water making them currently inaccessible
+3. Secret rooms can sometimes attach to water making them currently inaccessible
 
 Sounds Needed:
 1. Debuff detonation (fire)
@@ -51,15 +49,17 @@ Sounds Needed:
 
 Done: 	
 
-11/14/26 to 11/17/26
+11/14/26 to 11/18/26
 1. Fixed UI offsets for Flamingo and Leonard after hitbox changes adjusted them
 2. Water tiles that are bridged over in worldgen are no longer considered roadblocks
-3. WIP descriptions for powers in the shop:
-	1. Needs: Make the UI smaller than the other UI, utilizing the quick resizing
-	2. Needs: A setting to turn it off, as some players might not want it (Maybe also adjust how it turns on/off to require standing still for a duration?)
-	3. Maybe: Adjust the UI to use new UI boxes. Maybe this would look good?
+3. Add descriptions for powers in the shop:
+	1. Now has UI smaller than the other UI, utilizing the quick resizing
+	2. Also has a setting to turn it off, as some players might not want it (Maybe also adjust how it turns on/off to require standing still for a duration?)
+	3. Only turns on when player is standing still
 4. UI resizing for hover-UI is now immediate
 	1. Old system  waits for a unity update frame which caused slight visual stutter.
+5. All UI popups (hover, shop, power pickup, achievement) now have improved visuals (now uses the standard blue UI box)
+6. Fix bug where achievement popups were effected by lighting and were layered improperly
 
 -- 4.0 Released on Steam --
 

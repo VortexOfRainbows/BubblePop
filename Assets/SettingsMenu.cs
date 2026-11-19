@@ -80,6 +80,7 @@ public class SettingsMenu : MonoBehaviour
         SingleSetting.RequestNewSetting(AudioLayout).Assign("Sound", () => PlayerData.SFXVolume, val => PlayerData.SFXVolume = val, 0, 1);
         SingleSetting.RequestNewSetting(AudioLayout).Assign("Music", () => PlayerData.MusicVolume, val => PlayerData.MusicVolume = val, 0, 1);
         SingleSetting.RequestDivider(GameplayLayout, "Gameplay");
+        SingleSetting.RequestNewSetting(GameplayLayout).Assign("Power Shop Descriptions", () => PlayerData.ShowShopDescriptions, val => PlayerData.ShowShopDescriptions = val);
         SingleSetting.RequestNewSetting(GameplayLayout).Assign("Pause During Power Select", () => PlayerData.PauseDuringPowerSelect, val => PlayerData.PauseDuringPowerSelect = val);
         SingleSetting.RequestNewSetting(GameplayLayout).Assign("Pause During Card Select", () => PlayerData.PauseDuringCardSelect, val => PlayerData.PauseDuringCardSelect = val);
         SingleSetting.RequestNewSetting(GameplayLayout).Assign("Power Descriptions Brief By Default", () => PlayerData.BriefDescriptionsByDefault, val => PlayerData.BriefDescriptionsByDefault = val);
