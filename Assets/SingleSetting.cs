@@ -10,6 +10,7 @@ public class SingleSetting : MonoBehaviour
     public TextMeshProUGUI Label;
     public Toggle Toggle;
     public Slider Slider;
+    public KeyCode Key;
     public StandardButton DiscreteButton;
     public TMP_InputField SliderInputField;
     public TextMeshProUGUI DiscreteValueDisplayField;
@@ -170,6 +171,19 @@ public class SingleSetting : MonoBehaviour
         DiscreteBinder.Setting = DiscreteBinder.Setting + 1;
         LoadDiscreteSetting();
         PlayerData.SaveSettingSliders();
+    }
+    #endregion
+    #region KeyCode
+    public void Assign(string Label, Func<bool> get, Action<bool> set, KeyCode input)
+    {
+        this.Label.text = Label;
+        BGImage.sprite = Main.TextureAssets.SecondaryUISquare;
+        MyType = SettingType.Toggle;
+        ToggleBinder = new(get, set);
+        LoadToggleSetting();
+        Toggle.gameObject.SetActive(true);
+        BoolModeImage.gameObject.SetActive(true);
+        BoolModeImage.color = ColorHelper.Cyan.WithAlpha(0.5f);
     }
     #endregion
 }

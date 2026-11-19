@@ -779,10 +779,6 @@ MonoBehaviour:
   - {fileID: 2576768733286284267}
   - {fileID: 6679877432524073309}
   - {fileID: 49509002290433914}
-  AudioLayout: {fileID: 663817113619283271}
-  ControlsLayout: {fileID: 0}
-  GameplayLayout: {fileID: 6679877432524073309}
-  GraphicsLayout: {fileID: 49509002290433914}
   WantsVisible: 0
 --- !u!114 &1949886109202670303
 MonoBehaviour:
@@ -921,7 +917,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 12893694592092370, guid: a4cb0e75db9e87a41bd72a65fb42cf9d, type: 3}
       propertyPath: DestinationType
-      value: 51
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 2091746991780074682, guid: a4cb0e75db9e87a41bd72a65fb42cf9d, type: 3}
       propertyPath: m_Name
@@ -1146,6 +1142,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 572775645858503210}
     m_Modifications:
+    - target: {fileID: 12893694592092370, guid: a4cb0e75db9e87a41bd72a65fb42cf9d, type: 3}
+      propertyPath: DestinationType
+      value: 51
+      objectReference: {fileID: 0}
     - target: {fileID: 2091746991780074682, guid: a4cb0e75db9e87a41bd72a65fb42cf9d, type: 3}
       propertyPath: m_Name
       value: ControlsButton
@@ -1366,7 +1366,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 12893694592092370, guid: a4cb0e75db9e87a41bd72a65fb42cf9d, type: 3}
       propertyPath: DestinationType
-      value: 52
+      value: 53
       objectReference: {fileID: 0}
     - target: {fileID: 2091746991780074682, guid: a4cb0e75db9e87a41bd72a65fb42cf9d, type: 3}
       propertyPath: m_Name
