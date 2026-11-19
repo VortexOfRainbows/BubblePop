@@ -7,26 +7,38 @@ public class SettingsMenu : MonoBehaviour
     public StandardButton BackButton;
     public CanvasGroup MyGroup;
     public GameObject Visual;
-    public Transform AudioLayout;
-    public Transform GameplayLayout;
-    public Transform GraphicsLayout;
+    public Transform[] Layouts;
+    private Transform AudioLayout;
+    private Transform ControlsLayout;
+    private Transform GameplayLayout;
+    private Transform GraphicsLayout;
+
+    private static void DisableLayouts()
+    {
+        for (int i = 0; i < Instance.Layouts.Length; ++i)
+        {
+            Instance.Layouts[i].gameObject.SetActive(false);
+        }
+    }
     public static void SwapToAudio()
     {
+        DisableLayouts();
         Instance.AudioLayout.gameObject.SetActive(true);
-        Instance.GameplayLayout.gameObject.SetActive(false);
-        Instance.GraphicsLayout.gameObject.SetActive(false);
+    }
+    public static void SwapToControls()
+    {
+        DisableLayouts();
+        Instance.ControlsLayout.gameObject.SetActive(true);
     }
     public static void SwapToGameplay()
     {
+        DisableLayouts();
         Instance.GameplayLayout.gameObject.SetActive(true);
-        Instance.AudioLayout.gameObject.SetActive(false);
-        Instance.GraphicsLayout.gameObject.SetActive(false);
     }
     public static void SwapToGraphics()
     {
+        DisableLayouts();
         Instance.GraphicsLayout.gameObject.SetActive(true);
-        Instance.AudioLayout.gameObject.SetActive(false);
-        Instance.GameplayLayout.gameObject.SetActive(false);
     }
     public static void ToggleVisibility(bool? state = null)
     {
@@ -68,6 +80,11 @@ public class SettingsMenu : MonoBehaviour
     }
     public void Init()
     {
+        AudioLayout = Layouts[(int)StandardButton.ButtonDestinationType.AudioSettings - 50];
+        ControlsLayout = Layouts[(int)StandardButton.ButtonDestinationType.ControlsSettings - 50];
+        GameplayLayout = Layouts[(int)StandardButton.ButtonDestinationType.GameplaySettings - 50];
+        GraphicsLayout = Layouts[(int)StandardButton.ButtonDestinationType.GraphicsSettings - 50];
+
         Instance = this;
         WantsVisible = false;
         MyGroup.alpha = 0;

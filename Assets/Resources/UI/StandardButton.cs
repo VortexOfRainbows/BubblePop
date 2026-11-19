@@ -49,8 +49,9 @@ public class StandardButton : Button
         CompendiumExport = 33,
 
         AudioSettings = 50,
-        GameplaySettings = 51,
-        GraphicsSettings = 52,
+        ControlsSettings = 51,
+        GameplaySettings = 52,
+        GraphicsSettings = 53,
         UIUndoButton = 100,
     }
     public static Dictionary<ButtonDestinationType, UnityEngine.Events.UnityAction> ButtonActions;
@@ -84,6 +85,7 @@ public class StandardButton : Button
         ButtonToActionDict[ButtonDestinationType.CompendiumExport] = Compendium.ExportTierList;
 
         ButtonToActionDict[ButtonDestinationType.AudioSettings] = SettingsMenu.SwapToAudio;
+        ButtonToActionDict[ButtonDestinationType.ControlsSettings] = SettingsMenu.SwapToControls;
         ButtonToActionDict[ButtonDestinationType.GameplaySettings] = SettingsMenu.SwapToGameplay;
         ButtonToActionDict[ButtonDestinationType.GraphicsSettings] = SettingsMenu.SwapToGraphics;
         ButtonToActionDict[ButtonDestinationType.UIUndoButton] = Main.GoBackInUIHierarchy;
